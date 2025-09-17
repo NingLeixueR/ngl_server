@@ -75,190 +75,22 @@ namespace ngl
 		return get_log(asource, ELOG_ERROR, true);
 	}
 
-	struct actor_base::impl_actor_base
-	{
-		nguid										m_guid = nguid::make();			// actor guid
-		std::unique_ptr<actor_manage_dbclient>		m_dbclient = nullptr;			// dbclient组件管理器
-		bool										m_isload = false;				// 数据是否加载完成
-		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;
-		actor_base*									m_actor = nullptr;
-
-		i32_session									m_kcpsession = -1;
-
-		//# 间隔一段时间发起的全员(所有actor)广播
-		//# 可以在这个广播里推送一些需要处理的任务,例如 保存数据
-		//# 推送全员广播的 单位(毫秒)
-		static int									m_broadcast;	
-		//# 推送广播的定时器id
-		static int									m_broadcasttimer;
-		//# 是否接收广播消息
-		bool										m_isbroadcast = false;	
-
-		inline impl_actor_base(actor_base* aactor, const actorparmbase& aparm):
-			m_guid(aparm.m_type, aparm.m_area, aparm.m_id),
-			m_isload(aparm.m_manage_dbclient),
-			m_actor(aactor)
-		{
-			if (aparm.m_manage_dbclient)
-			{
-				m_dbclient = std::make_unique<actor_manage_dbclient>(aactor);
-				m_dbclient->set_loadfinish_function([aactor](bool adbishave)
-					{
-						aactor->loaddb_finish(adbishave);
-					});
-			}
-		}
-
-		inline void erase_actor()const
-		{
-			m_actor->erase_actor_before();
-			actor_manage::instance().erase_actor(m_guid);
-		}
-
-		inline bool is_single()const
-		{
-			return enum_actor::is_signle(m_guid.type());
-		}
-
-		inline nguid& guid()
-		{
-			return m_guid;
-		}
-
-		inline i64_actorid id_guid()const
-		{
-			return m_guid;
-		}
-
-		inline i32_actordataid id()const
-		{
-			return m_guid.actordataid();
-		}
-
-		inline i16_area area()const
-		{
-			return m_guid.area();
-		}
-
-		inline ENUM_ACTOR type()const
-		{
-			return m_guid.type();
-		}
-
-		inline bool isloadfinish()const
-		{
-			return m_dbclient == nullptr || m_dbclient->isloadfinish();
-		}
-
-		inline void add_dbclient(ndbclient_base* adbclient, i64_actorid aid)
-		{
-			if (m_dbclient == nullptr)
-			{
-				tools::no_core_dump();
-				return;
-			}
-			m_dbclient->add(adbclient, aid);
-		}
-
-		inline void save()
-		{
-			m_dbclient->save();
-		}
-
-		inline std::unique_ptr<actor_manage_dbclient>& get_actor_manage_dbclient()
-		{
-			return m_dbclient;
-		}
-
-		inline bool isload()const
-		{
-			return m_isload;
-		}
-
-		inline void set_db_component(ndb_component* acomponent)
-		{
-			m_dbcomponent[acomponent->type()] = acomponent;
-		}
-
-		inline void db_component_init_data()
-		{
-			for (const auto& [_, ldbcomponent] : m_dbcomponent)
-			{
-				ldbcomponent->init_data();
-			}
-		}
-
-		inline void init_db_component(bool acreate)const
-		{
-			for (const auto& [key, value] : m_dbcomponent)
-			{
-				if (acreate)
-				{
-					value->create();
-				}
-				else
-				{
-					value->init();
-				}
-			}
-		}
-
-		inline void set_kcpssion(i32_session asession)
-		{
-			m_kcpsession = asession;
-		}
-
-		inline i32_session get_kcpssion()const
-		{
-			return m_kcpsession;
-		}
-
-		inline int32_t set_timer(const np_timerparm& aparm)
-		{
-			auto lparm = std::make_shared<np_timerparm>(aparm);
-			return ntimer::addtimer(m_actor, lparm);
-		}
-
-		inline bool isbroadcast()const
-		{
-			return m_isbroadcast;
-		}
-
-		inline void set_broadcast(bool aisbroadcast)
-		{
-			m_isbroadcast = aisbroadcast;
-		}
-
-		static void start_broadcast()
-		{
-			wheel_parm lparm
-			{
-				.m_ms = m_broadcast,
-				.m_intervalms = [](int64_t) 
-				{
-					return actor_base::impl_actor_base::m_broadcast; 
-				} ,
-				.m_count = 0x7fffffff,
-				.m_fun = [](const wheel_node*)
-				{
-					auto pro = std::make_shared<np_actor_broadcast>();
-					handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(
-						nguid::make(), nguid::make(), pro
-					);
-					actor_manage::instance().broadcast_task(lpram);
-				}
-			};
-			m_broadcasttimer = (int32_t)twheel::wheel().addtimer(lparm);
-		}
-	};
-
-	int actor_base::impl_actor_base::m_broadcast			= 10000;
-	int actor_base::impl_actor_base::m_broadcasttimer		= -1;
+	int actor_base::m_broadcast = 10000;
+	int actor_base::m_broadcasttimer = -1;
 
 	actor_base::actor_base(const actorparmbase& aparm):
 		tools_log(this)
+		, m_guid(aparm.m_type, aparm.m_area, aparm.m_id)
+		, m_isload(aparm.m_manage_dbclient)
 	{
-		m_impl_actor_base.make_unique(this, aparm);
+		if (aparm.m_manage_dbclient)
+		{
+			m_dbclient = std::make_unique<actor_manage_dbclient>(this);
+			m_dbclient->set_loadfinish_function([this](bool adbishave)
+				{
+					loaddb_finish(adbishave);
+				});
+		}
 		if (aparm.m_enscript != enscript_none)
 		{
 			m_enscript = aparm.m_enscript;
@@ -277,47 +109,53 @@ namespace ngl
 
 	void actor_base::erase_actor()
 	{
-		m_impl_actor_base()->erase_actor();
+		erase_actor_before();
+		actor_manage::instance().erase_actor(m_guid);
 	}
 
 	bool actor_base::is_single()
 	{
-		return m_impl_actor_base()->is_single();
+		return enum_actor::is_signle(m_guid.type());
 	}
 
 	nguid& actor_base::guid()
 	{
-		return m_impl_actor_base()->guid();
+		return m_guid;
 	}
 	
 	i64_actorid actor_base::id_guid()
 	{
-		return m_impl_actor_base()->id_guid();
+		return m_guid;
 	}
 
 	i32_actordataid actor_base::id()
 	{
-		return m_impl_actor_base()->id();
+		return m_guid.actordataid();
 	}
 
 	i16_area actor_base::area()
 	{
-		return m_impl_actor_base()->area();
+		return m_guid.area();
 	}
 
 	ENUM_ACTOR actor_base::type()
 	{
-		return m_impl_actor_base()->type();
+		return m_guid.type();
 	}
 
 	bool actor_base::isloadfinish()
 	{
-		return m_impl_actor_base()->isloadfinish();
+		return m_dbclient == nullptr || m_dbclient->isloadfinish();
 	}
 
 	void actor_base::add_dbclient(ndbclient_base* adbclient, i64_actorid aid)
 	{
-		m_impl_actor_base()->add_dbclient(adbclient, aid);
+		if (m_dbclient == nullptr)
+		{
+			tools::no_core_dump();
+			return;
+		}
+		m_dbclient->add(adbclient, aid);
 	}
 
 	actor_base::~actor_base()
@@ -351,52 +189,83 @@ namespace ngl
 
 	void actor_base::save()
 	{
-		m_impl_actor_base()->m_dbclient->save();
+		m_dbclient->save();
 	}
 
 	std::unique_ptr<actor_manage_dbclient>& actor_base::get_actor_manage_dbclient()
 	{
-		return m_impl_actor_base()->m_dbclient;
+		return m_dbclient;
 	}
 
 	bool actor_base::isload()
 	{
-		return m_impl_actor_base()->isload();
+		return m_isload;
 	}
 
 	void actor_base::set_db_component(ndb_component* acomponent)
 	{
-		m_impl_actor_base()->set_db_component(acomponent);
+		m_dbcomponent[acomponent->type()] = acomponent;
 	}
 
 	void actor_base::db_component_init_data()
 	{
-		m_impl_actor_base()->db_component_init_data();
+		for (const auto& [_, ldbcomponent] : m_dbcomponent)
+		{
+			ldbcomponent->init_data();
+		}
 	}
 
 	void actor_base::init_db_component(bool acreate)
 	{
-		m_impl_actor_base()->init_db_component(acreate);
+		for (const auto& [key, value] : m_dbcomponent)
+		{
+			if (acreate)
+			{
+				value->create();
+			}
+			else
+			{
+				value->init();
+			}
+		}
 	}
 
 	void actor_base::start_broadcast()
 	{
-		impl_actor_base::start_broadcast();
+		wheel_parm lparm
+		{
+			.m_ms = m_broadcast,
+			.m_intervalms = [](int64_t)
+			{
+				return actor_base::m_broadcast;
+			} ,
+			.m_count = 0x7fffffff,
+			.m_fun = [](const wheel_node*)
+			{
+				auto pro = std::make_shared<np_actor_broadcast>();
+				handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(
+					nguid::make(), nguid::make(), pro
+				);
+				actor_manage::instance().broadcast_task(lpram);
+			}
+		};
+		m_broadcasttimer = (int32_t)twheel::wheel().addtimer(lparm);
 	}
 
 	int32_t actor_base::set_timer(const np_timerparm& aparm)
 	{
-		return m_impl_actor_base()->set_timer(aparm);
+		auto lparm = std::make_shared<np_timerparm>(aparm);
+		return ntimer::addtimer(this, lparm);
 	}
 
 	bool actor_base::isbroadcast()
 	{
-		return m_impl_actor_base()->isbroadcast();
+		return m_isbroadcast;
 	}
 
 	void actor_base::set_broadcast(bool aisbroadcast)
 	{
-		m_impl_actor_base()->set_broadcast(aisbroadcast);
+		m_isbroadcast = aisbroadcast;
 	}
 
 	int32_t actor_base::create_group(ENUM_ACTOR atype/*= ACTOR_NONE*/)
@@ -426,12 +295,12 @@ namespace ngl
 
 	void actor_base::set_kcpssion(i32_session asession)
 	{
-		m_impl_actor_base()->set_kcpssion(asession);
+		m_kcpsession = asession;
 	}
 
 	i32_session actor_base::get_kcpssion()
 	{
-		return m_impl_actor_base()->get_kcpssion();
+		return m_kcpsession;
 	}
 
 	bool actor_base::iskcp()
