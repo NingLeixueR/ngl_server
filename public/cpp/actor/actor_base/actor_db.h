@@ -368,7 +368,10 @@ namespace ngl
 							return;
 						}
 						TDBTAB ldata;
-						db_manage::unserialize<TDBTAB>(ldb, false, ldata, ljson.c_str(), ljson.size());
+						if (!db_manage::unserialize<TDBTAB>(ldb, false, ldata, ljson.c_str(), ljson.size()))
+						{
+							return;
+						}
 						ngl::db_data<TDBTAB>::set(ldata.mid(), ldata);
 						db_manage::save<TDBTAB>(ldb, ldata.mid());
 						pro.m_data = true;
