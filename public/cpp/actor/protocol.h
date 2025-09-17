@@ -18,25 +18,48 @@
 
 namespace ngl
 {
+	enum eprotocol_tar
+	{};
+
 	class protocol
 	{
 		protocol() = delete;
 		protocol(const protocol&) = delete;
 		protocol& operator=(const protocol&) = delete;
+
 	public:
-		using fun_pack	= std::function<std::shared_ptr<void>(std::shared_ptr<pack>&)>;
-		using fun_run	= std::function<bool(std::shared_ptr<pack>&, std::shared_ptr<void>&)>;
+		using fun_pack = std::function<std::shared_ptr<void>(std::shared_ptr<pack>&)>;
+		using fun_run = std::function<bool(std::shared_ptr<pack>&, std::shared_ptr<void>&)>;
+	private:
+		struct pfun
+		{
+			protocol::fun_pack								m_packfun;		// 解包回调
+			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;		// actor类型对应的逻辑回调
+		};
+		static std::map<i32_protocolnum, protocol::pfun>	m_protocolfun;	// 协议号关联pfun
+		static std::shared_mutex							m_mutex;		// 锁
 
-		static void push(std::shared_ptr<pack>& apack);
+	public:
+		static pfun* find(i32_protocolnum aprotocolnum);
 
-		// # 注册协议
-		static void register_protocol(
-			i32_protocolnum aprotocolnumber			/*协议号*/
-			, ENUM_ACTOR aenumactor					/*处理此消息的actor类型*/
-			, const fun_pack& apackfun				/*解包回调*/			
-			, const fun_run& arunfun				/*逻辑回调*/
-			, const char* aname						/*debug name*/
+		static const char* name(i32_protocolnum aprotocolnum/*协议号*/);
+
+		static void print(
+			const char* amsg						/*打印描述*/
+			, i32_protocolnum aprotocolnum			/*协议号*/
 		);
+
+		// # 注册网络协议
+		static void register_protocol(
+			int aprotocolnumber							/*协议号*/
+			, ENUM_ACTOR aenumactor						/*actor类型*/
+			, const protocol::fun_pack& apackfun		/*解包回调*/
+			, const protocol::fun_run& arunfun			/*逻辑回调*/
+			, const char* aname							/*debug name*/
+		);
+
+		// # 解析网络数据包[net pack],交付给上层逻辑 
+		static void push(std::shared_ptr<pack>& apack);
 
 		// # ACTOR间通信 
 		template <typename T>

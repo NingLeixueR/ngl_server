@@ -6,119 +6,84 @@
 
 namespace ngl
 {
-	enum eprotocol_tar
-	{};
+	std::map<i32_protocolnum, protocol::pfun> protocol::m_protocolfun;
+	std::shared_mutex protocol::m_mutex;
 
-	class impl_protocol
+	const char* protocol::name(i32_protocolnum aprotocolnum/*协议号*/)
 	{
-		struct pfun
-		{
-			protocol::fun_pack								m_packfun;		// 解包回调
-			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;		// actor类型对应的逻辑回调
-		};
+		const char* lname = em<eprotocol_tar>::get_name((eprotocol_tar)(aprotocolnum));
+		return lname != nullptr ? lname : "none";
+	}
 
-		static std::map<i32_protocolnum, impl_protocol::pfun>				m_protocolfun;	// 协议号关联pfun
-		static std::shared_mutex											m_mutex;		// 锁
-
-		static const char* name(
-			i32_protocolnum aprotocolnum			/*协议号*/
-		)
-		{
-			const char* lname = em<eprotocol_tar>::get_name((eprotocol_tar)(aprotocolnum));
-			return lname != nullptr ? lname : "none";
-		}
-
-		static void print(
-			const char* amsg						/*打印描述*/
-			, i32_protocolnum aprotocolnum			/*协议号*/
-		)
-		{
-			log_error()->print(
-				"protocol::push msg:{} protocolnum:{} name:{}"
-				, amsg, aprotocolnum, name(aprotocolnum)
-			);
-		}
-
-		static pfun* find(i32_protocolnum aprotocolnum)
-		{
-			lock_read(m_mutex);
-			auto itor = m_protocolfun.find(aprotocolnum);
-			if (itor == m_protocolfun.end())
-			{
-				print("protocol num none", aprotocolnum);
-				return nullptr;
-			}
-			return &itor->second;
-		}
-	public:
-		// # 解析网络数据包[net pack],交付给上层逻辑 
-		static void push(std::shared_ptr<pack>& apack)
-		{
-			i32_protocolnum lprotocolnum = apack->m_head.get_protocolnumber();
-			pfun* lpfun = find(lprotocolnum);
-			if(lpfun == nullptr)
-			{
-				return;
-			}
-			std::shared_ptr<void> lptrpram = lpfun->m_packfun(apack);
-			if (lptrpram == nullptr)
-			{
-				return;
-			}
-			
-			auto lactortype = (ENUM_ACTOR)apack->m_head.get_actortype();
-			if (lactortype == nguid::none<ENUM_ACTOR>())
-			{
-				for (std::pair<const ENUM_ACTOR, protocol::fun_run>& item : lpfun->m_runfun)
-				{
-					item.second(apack, lptrpram);
-				}
-			}
-			else
-			{
-				auto itorrun = lpfun->m_runfun.find(lactortype);
-				if (itorrun != lpfun->m_runfun.end())
-				{
-					itorrun->second(apack, lptrpram);
-				}
-			}
-			return;
-		}
-
-		// # 注册网络协议
-		static void register_protocol(
-			int aprotocolnumber							/*协议号*/
-			, ENUM_ACTOR aenumactor						/*actor类型*/
-			, const protocol::fun_pack& apackfun		/*解包回调*/
-			, const protocol::fun_run& arunfun			/*逻辑回调*/
-			, const char* aname							/*debug name*/
-		)
-		{
-			lock_write(m_mutex);
-			pfun& lprotocol = m_protocolfun[aprotocolnumber];
-			lprotocol.m_packfun = apackfun;
-			lprotocol.m_runfun[aenumactor] = arunfun;
-			em<eprotocol_tar>::set((eprotocol_tar)aprotocolnumber, aname);
-		}
-	};
-
-	std::map<i32_protocolnum, impl_protocol::pfun> impl_protocol::m_protocolfun;
-	std::shared_mutex impl_protocol::m_mutex;
-
-	void protocol::push(std::shared_ptr<pack>& apack)
+	void protocol::print(
+		const char* amsg						/*打印描述*/
+		, i32_protocolnum aprotocolnum			/*协议号*/
+	)
 	{
-		impl_protocol::push(apack);
+		log_error()->print(
+			"protocol::push msg:{} protocolnum:{} name:{}"
+			, amsg, aprotocolnum, name(aprotocolnum)
+		);
 	}
 
 	void protocol::register_protocol(
-		i32_protocolnum aprotocolnumber				/*协议号*/
+		int aprotocolnumber							/*协议号*/
 		, ENUM_ACTOR aenumactor						/*actor类型*/
 		, const protocol::fun_pack& apackfun		/*解包回调*/
 		, const protocol::fun_run& arunfun			/*逻辑回调*/
 		, const char* aname							/*debug name*/
 	)
 	{
-		impl_protocol::register_protocol(aprotocolnumber, aenumactor, apackfun, arunfun, aname);
+		lock_write(m_mutex);
+		pfun& lprotocol = m_protocolfun[aprotocolnumber];
+		lprotocol.m_packfun = apackfun;
+		lprotocol.m_runfun[aenumactor] = arunfun;
+		em<eprotocol_tar>::set((eprotocol_tar)aprotocolnumber, aname);
+	}
+
+	protocol::pfun* protocol::find(i32_protocolnum aprotocolnum)
+	{
+		lock_read(m_mutex);
+		auto itor = m_protocolfun.find(aprotocolnum);
+		if (itor == m_protocolfun.end())
+		{
+			print("protocol num none", aprotocolnum);
+			return nullptr;
+		}
+		return &itor->second;
+	}
+
+	void protocol::push(std::shared_ptr<pack>& apack)
+	{
+		i32_protocolnum lprotocolnum = apack->m_head.get_protocolnumber();
+		pfun* lpfun = find(lprotocolnum);
+		if (lpfun == nullptr)
+		{
+			return;
+		}
+		std::shared_ptr<void> lptrpram = lpfun->m_packfun(apack);
+		if (lptrpram == nullptr)
+		{
+			return;
+		}
+
+		auto lactortype = (ENUM_ACTOR)apack->m_head.get_actortype();
+		if (lactortype == nguid::none<ENUM_ACTOR>())
+		{
+			for (std::pair<const ENUM_ACTOR, protocol::fun_run>& item : lpfun->m_runfun)
+			{
+				item.second(apack, lptrpram);
+			}
+		}
+		else
+		{
+			auto itorrun = lpfun->m_runfun.find(lactortype);
+			if (itorrun != lpfun->m_runfun.end())
+			{
+				itorrun->second(apack, lptrpram);
+			}
+		}
+		return;
 	}
 
 	class telnet_cmd_admin
