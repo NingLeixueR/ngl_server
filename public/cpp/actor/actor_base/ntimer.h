@@ -27,7 +27,7 @@ namespace ngl
 		}
 
 		//ET_MONTH,		// 每月触发
-		static bool month(np_timerparm& aparm, int amonthday/*1-31*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
+		static bool parm_month(np_timerparm& aparm, int amonthday/*1-31*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (
 				localtime::check_monthday(amonthday) 
@@ -49,7 +49,7 @@ namespace ngl
 		}
 
 		// 每周触发 1-7
-		static bool week(np_timerparm& aparm, int aweek/*1-7*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
+		static bool parm_week(np_timerparm& aparm, int aweek/*1-7*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (
 				localtime::check_week(aweek) 
@@ -73,7 +73,7 @@ namespace ngl
 		}
 
 		// 每日触发  ahour时amin分asec秒
-		static bool day(np_timerparm& aparm, int ahour, int amin, int asec, int acount = 0x7fffffff)
+		static bool parm_day(np_timerparm& aparm, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (
 				localtime::check_hour(ahour) 
@@ -96,7 +96,7 @@ namespace ngl
 		}
 
 		// 每小时触发  amin分asec秒
-		static bool hour(np_timerparm& aparm, int amin, int asec, int acount = 0x7fffffff)
+		static bool parm_hour(np_timerparm& aparm, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_minute(amin) && localtime::check_sec(asec))
 			{
@@ -115,7 +115,7 @@ namespace ngl
 		}
 
 		// 每分钟触发  asec秒
-		static bool min(np_timerparm& aparm, int asec, int acount = 0x7fffffff)
+		static bool parm_min(np_timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_sec(asec))
 			{
