@@ -782,7 +782,6 @@ namespace ngl
 		}
 	};
 
-	
 	template <typename T>
 	bool json_format<T>::read(njson_read& ajson, const char* akey, T& adata)
 	{
@@ -906,6 +905,13 @@ namespace ngl
 	bool tools::json2custom(const std::string& json, T& adata)
 	{
 		njson_read ljread(json);
-		return njson::read(ljread, tools::type_name<T>().c_str(), adata);
+		return adata.json_read(ljread);
+	}
+
+	template <typename T>
+	bool tools::custom2json(const T& adata, std::string& json)
+	{
+		njson_write ljwrite(json);
+		return adata.json_write(ljwrite);
 	}
 }//namespace ngl
