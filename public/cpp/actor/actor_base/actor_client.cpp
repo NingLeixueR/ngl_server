@@ -336,13 +336,13 @@ namespace ngl
 			return true;
 		}
 		auto lparm = adata.get_data();
-		const std::set<i32_serverid>& lconnectserverid = m_impl_actor_client()->m_connectserverid;
+		const std::set<i32_serverid>& lconnectserverid = m_connectserverid;
 		if (lconnectserverid.contains(lparm->m_serverid))
 		{
 			lparm->m_fun();
 			return true;
 		}
-		m_impl_actor_client()->m_connectfun[lparm->m_serverid].push_back(lparm->m_fun);
+		m_connectfun[lparm->m_serverid].push_back(lparm->m_fun);
 		return true;
 	}
 	
