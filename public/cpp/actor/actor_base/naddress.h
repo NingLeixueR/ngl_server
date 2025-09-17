@@ -32,6 +32,12 @@ namespace ngl
 		using ergodic_callbackfun	= std::function<bool(const map_guidserver&, const map_servernode&)>;
 		//# [foreach]»Øµ÷
 		using foreach_callbackfun	= std::function<bool(const actor_node_session&)>;
+
+		static naddress::map_guidserver		m_actorserver;
+		static naddress::map_typeguid		m_actortypeserver;
+		static naddress::map_servernode		m_session;
+		static naddress::map_rolegateway	m_rolegateway;
+		static std::map<i64_actorid, std::map<int64_t, std::function<void()>>> m_nguidfun;
 	public:
 #pragma region base
 		//# debug ´òÓ¡
