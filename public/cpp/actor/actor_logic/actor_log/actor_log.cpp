@@ -56,7 +56,7 @@ namespace ngl
 
 		// create
 		np_timerparm tparmcreate;
-		if (make_timerparm::day(tparmcreate, 0, 0, 0) == false)
+		if (make_timerparm::parm_day(tparmcreate, 0, 0, 0) == false)
 		{
 			log_error()->print("actor_log::init() make_timerparm::make_timerparm::day(tparmcreate, 0, 0, 0) == false!!!");
 			return;
