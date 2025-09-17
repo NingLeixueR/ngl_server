@@ -285,6 +285,9 @@ namespace ngl
 		template <typename T>
 		static bool json2custom(const std::string& json, T& adata);
 
+		template <typename T>
+		static bool custom2json(const T& adata, std::string& json);
+
 		template <typename TKEY, typename TVAL>
 		static void copy(const std::map<TKEY, TVAL>& asource, google::protobuf::Map<TKEY, TVAL>& atarget)
 		{
