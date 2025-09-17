@@ -114,34 +114,10 @@ namespace ngl
 			return false;
 		}
 
-
-
 		template <typename T>
-		inline bool do_serialize_json(T& adata)
+		inline void serialize(T& adata, bool isbinary)
 		{
-			std::string ltemp;
-			if (!tools::proto2json(adata, ltemp))
-			{
-				return false;
-			}
-			if (ltemp.size() > m_buff->m_buffsize)
-			{
-				m_mallocbuff = std::make_shared<dbuff>(ltemp.size() + 1);
-				memcpy(m_mallocbuff->m_buff, ltemp.c_str(), ltemp.size() + 1);
-				m_mallocbuff->m_pos = ltemp.size() + 1;
-			}
-			else
-			{
-				memcpy(m_buff->m_buff, ltemp.c_str(), ltemp.size() + 1);
-				m_buff->m_pos = ltemp.size() + 1;
-			}
-			return true;
-		}
-
-		template <typename T, bool ISBINARY>
-		inline void serialize(T& adata)
-		{
-			if constexpr (ISBINARY)
+			if(isbinary)
 			{
 				if (!do_serialize_binary(adata))
 				{
@@ -151,10 +127,25 @@ namespace ngl
 			}
 			else
 			{
-				if (!do_serialize_json(adata))
+				std::string ltemp;
+				if constexpr (is_protobuf_message<T>::value)
 				{
-					log_error()->print("do_serialize_json fail T=[{}:{}]", tools::type_name<T>(), adata.mid());
-					return;
+					tools::proto2json(adata, ltemp);
+				}
+				else
+				{
+					tools::custom2json(adata, ltemp);
+				}
+				if (ltemp.size() > m_buff->m_buffsize)
+				{
+					m_mallocbuff = std::make_shared<dbuff>(ltemp.size() + 1);
+					memcpy(m_mallocbuff->m_buff, ltemp.c_str(), ltemp.size() + 1);
+					m_mallocbuff->m_pos = ltemp.size() + 1;
+				}
+				else
+				{
+					memcpy(m_buff->m_buff, ltemp.c_str(), ltemp.size() + 1);
+					m_buff->m_pos = ltemp.size() + 1;
 				}
 			}
 			return;
