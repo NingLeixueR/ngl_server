@@ -20,8 +20,29 @@ namespace ngl
 		actor_manage(const actor_manage&) = delete;
 		actor_manage& operator=(const actor_manage&) = delete;
 
-		struct impl_actor_manage;
-		ngl::impl<impl_actor_manage> m_impl_actor_manage;
+		//// ---- 线程相关
+		std::list<nthread*>	m_workthread;		// 工作线程
+		bool				m_suspend = false;	// 是否挂起
+		std::list<nthread*>	m_suspendthread;	// 挂起的工作线程
+		std::jthread		m_thread;			// 管理线程
+		i32_threadsize		m_threadnum = -1;	// 工作线程数量
+
+		ngl_lockinit;
+
+		// # 索引actor
+		std::map<nguid, ptractor>							m_actorbyid;
+		// # 支持广播的actor
+		std::map<nguid, ptractor>							m_actorbroadcast;
+		// # 按类型索引actor
+		std::map<ENUM_ACTOR, std::map<nguid, ptractor>>		m_actorbytype;
+		// # 有任务的actor列表
+		std::list<ptractor>									m_actorlist;
+		// # 包含哪些actortype
+		std::set<i16_actortype>								m_actortype;
+		// # 删除actor后需要执行的操作(延迟操作:删除的瞬间actor正是运行状态,等待其回归后进行删除)
+		std::map<nguid, std::function<void()>>				m_delactorfun;
+		// # actor就绪状态(如果需要加载db，db加载完成)
+		std::set<nguid>										m_ready;
 
 		actor_manage();
 		~actor_manage();
@@ -45,6 +66,22 @@ namespace ngl
 		bool ready(const nguid& aguid);
 
 		void set_ready(const nguid& aguid);
+
+		nguid nodetypebyguid();
+
+		ptractor& nosafe_get_actor(const nguid& aguid);
+
+		ptractor& nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram);
+
+		// # nosafe_开头的函数代表"内部操作未加锁"，不允许类外调用
+		void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram);
+
+		template <typename T, bool IS_SEND = true>
+		inline void push_task_id(const nguid& aguid, std::shared_ptr<T>& apram)
+		{
+			handle_pram lparm = handle_pram::create<T, IS_SEND>(aguid, nguid::make(), apram);
+			push_task_id(aguid, lparm);
+		}
 
 		//# 添加actor
 		bool add_actor(actor_base* apactor, const std::function<void()>& afun);
@@ -70,6 +107,8 @@ namespace ngl
 
 		//# 向当前进程所有actor广播消息
 		void broadcast_task(handle_pram& apram);
+
+		void run();
 
 		//# 暂时挂起所有线程，已执行单步操作(热更数据表)
 		void statrt_suspend_thread();
