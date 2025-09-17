@@ -5,8 +5,12 @@
 #include "actor_base.h"
 #include "tprotocol.h"
 #include "nrfun.h"
+#include "slist.h"
 #include "impl.h"
 #include "nlog.h"
+
+#include <deque>
+#include <queue>
 
 namespace ngl
 {
@@ -28,10 +32,27 @@ namespace ngl
 		actor(const actor&) = delete;
 		actor& operator=(const actor&) = delete;
 
-		struct impl_actor;
-		ngl::impl<impl_actor> m_impl_actor;
+#define STL_MESSAGELIST
+#ifdef STL_MESSAGELIST
+		template <typename T>
+		using tls = std::deque<T>;
+		template <typename T>
+		using trunls = std::deque<T>;
+#else
+		template <typename T>
+		using tls = slist_production<T>;
+		template <typename T>
+		using trunls = slist_consumption<T>;
+#endif//DEF_ACTOR_USE_LIST
 
-		nrfunbase* m_actorfun = nullptr;
+		tls<handle_pram>				m_list;							// 待处理消息列表
+		trunls<handle_pram>				m_locallist;					// 正在处理消息列表
+		actor_stat						m_stat = actor_stat_init;		// actor状态
+		std::shared_mutex				m_mutex;						// 锁:[m_list:待处理消息列表]
+		int32_t							m_weight = 0;					// 权重
+		int32_t							m_timeout = 0;					// 超时:(当actor处理消息超过此时间)
+		bool							m_release = false;				// 释放将忽略权重和超时
+		nrfunbase*						m_actorfun = nullptr;			// 注册可处理函数
 
 #pragma region register // 消息注册接口
 		template <typename TDerived>
@@ -202,6 +223,11 @@ namespace ngl
 
 		// # 由线程主动调用消费消息
 		void actor_handle(i32_threadid athreadid) final;
+
+		bool ahandle(i32_threadid athreadid, handle_pram& aparm);
+
+		// # 设置kcp
+		void set_kcp(const handle_pram& aparm);
 	public:
 #pragma region ActorBroadcast
 		// ############# [广播] ############# 
