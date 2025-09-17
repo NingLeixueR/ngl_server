@@ -8,18 +8,6 @@
 
 namespace ngl
 {
-	struct actor_client::impl_actor_client
-	{
-		impl_actor_client(const impl_actor_client&) = delete;
-		impl_actor_client& operator=(const impl_actor_client&) = delete;
-
-		std::map<i32_serverid, std::list<std::function<void()>>>	m_connectfun;
-		std::set<i32_serverid>										m_connectserverid;
-
-		impl_actor_client()
-		{}
-	};
-
 	actor_client::actor_client() :
 		actor(
 			actorparm
@@ -33,7 +21,6 @@ namespace ngl
 				.m_weight	= 0x7fffffff
 			})
 	{
-		m_impl_actor_client.make_unique();
 	}
 
 	actor_client::~actor_client()
@@ -317,13 +304,13 @@ namespace ngl
 
 	void actor_client::set_connect_fnish(i32_serverid aserverid)
 	{
-		m_impl_actor_client()->m_connectserverid.insert(aserverid);
+		m_connectserverid.insert(aserverid);
 	}
 
 	void actor_client::connect_fnish()
 	{
-		auto& lconnectfun = m_impl_actor_client()->m_connectfun;
-		const std::set<i32_serverid>& lconnectserverid = m_impl_actor_client()->m_connectserverid;
+		auto& lconnectfun = m_connectfun;
+		const std::set<i32_serverid>& lconnectserverid = m_connectserverid;
 		if (lconnectfun.empty())
 		{
 			return;
