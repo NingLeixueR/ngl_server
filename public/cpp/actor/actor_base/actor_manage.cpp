@@ -61,7 +61,7 @@ namespace ngl
 			ngl_lock_s;
 			if (m_actorbyid.contains(guid))
 			{
-				std::cout << std::format("impl_actor_manage add_actor m_actorbyid.contains(guid:{}) fail", guid) << std::endl;
+				std::cout << std::format("actor_manage add_actor m_actorbyid.contains(guid:{}) fail", guid) << std::endl;
 				return false;
 			}
 			m_actorbyid[guid] = apactor;
@@ -123,7 +123,7 @@ namespace ngl
 			ptractor* lpactorptr = tools::findmap(m_actorbyid, aguid);
 			if (lpactorptr == nullptr)
 			{
-				std::cout << std::format("impl_actor_manage erase_actor_byid m_actorbyid.find(guid:{}) fail", aguid) << std::endl;
+				std::cout << std::format("actor_manage erase_actor_byid m_actorbyid.find(guid:{}) fail", aguid) << std::endl;
 				return;
 			}
 			lpactor = *lpactorptr;
