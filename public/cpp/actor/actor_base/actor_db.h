@@ -318,7 +318,7 @@ namespace ngl
 							return;
 						}
 
-						db_manage::serialize<TDBTAB, false>(ldb, *ldata);
+						db_manage::serialize<TDBTAB>(ldb, false, *ldata);
 						pro.m_data = ldb->m_malloc.buff();
 					};
 
@@ -348,7 +348,7 @@ namespace ngl
 						}
 						ngl::db_data<TDBTAB>::foreach_index(lbegindex, lendindex, [&pro, ldb](int32_t aindex, TDBTAB& aitem)
 							{
-								db_manage::serialize<TDBTAB, false>(ldb, aitem);
+								db_manage::serialize<TDBTAB>(ldb, false, aitem);
 								pro.m_data.push_back(ldb->m_malloc.buff());
 							});
 					};
@@ -368,10 +368,7 @@ namespace ngl
 							return;
 						}
 						TDBTAB ldata;
-						if (!tools::json2proto(ljson, ldata))
-						{
-							return;
-						}
+						db_manage::unserialize<TDBTAB>(ldb, false, ldata, ljson.c_str(), ljson.size());
 						ngl::db_data<TDBTAB>::set(ldata.mid(), ldata);
 						db_manage::save<TDBTAB>(ldb, ldata.mid());
 						pro.m_data = true;

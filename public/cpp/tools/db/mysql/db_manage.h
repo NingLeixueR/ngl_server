@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ttab_mergearea.h"
+#include "ttab_servers.h"
 #include "nserialize.h"
 #include "db_data.h"
 #include "db_buff.h"
@@ -17,37 +18,43 @@ namespace ngl
 		{
 			if (nconfig::get_publicconfig()->find("dbprotobinary", m_dbprotobinary) == false)
 			{
-				log_error()->print("db xml config dbprotobinary falile");
+				std::cout << "db xml config dbprotobinary falile" << std::endl;
+				tools::no_core_dump();
 			}
 		}
 
-		template <typename T, bool ISBINARY>
-		static void serialize(db* adb, T& adata)
+		template <typename T>
+		static void serialize(db* adb, bool isbinary, T& adata)
 		{
-			return adb->m_malloc.serialize<T, ISBINARY>(adata);
+			return adb->m_malloc.serialize<T>(adata, isbinary);
 		}
 
 		// 数据库保存方式  二进制或者Json格式
-
-		template <typename T, bool ISBINARY>
-		static bool unserialize(db* adb, T& adata, char* abuff, int alen)
+		template <typename T>
+		static bool unserialize(db* adb, bool isbinary, T& adata, const char* abuff, int alen)
 		{
-			if constexpr (ISBINARY)
+			if (isbinary)
 			{
 				ngl::ser::serialize_pop lserialize(abuff, alen);
 				return ngl::ser::nserialize::pop(&lserialize, adata);
 			}
 			else
 			{
-				ngl::njson_read lread(abuff);
-				return njson::read(lread, tools::type_name<T>().c_str(), adata);
+				if constexpr (is_protobuf_message<T>::value)
+				{
+					return tools::json2proto(abuff, adata);
+				}
+				else
+				{
+					return tools::json2custom(abuff, adata);
+				}
 			}
 		}
 		
 		template <typename T>
 		static void save(db* adb, T* adata)
 		{
-			db_manage::serialize<T,true>(adb, *adata);
+			serialize<T>(adb, m_dbprotobinary, *adata);
 
 			MYSQL_BIND lbind[1];
 			memset(lbind, 0, sizeof(MYSQL_BIND));
@@ -161,8 +168,8 @@ namespace ngl
 				[adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
 					T ldata;
-					bool lunserialize = db_manage::unserialize<T,true>(
-						adb, ldata, amysqlrow[1], alens[1]
+					bool lunserialize = db_manage::unserialize<T>(
+						adb, m_dbprotobinary, ldata, amysqlrow[1], alens[1]
 					);
 					if (lunserialize == false)
 					{
@@ -192,9 +199,7 @@ namespace ngl
 				[adb](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
 					T ldata;
-					if (!ngl::db_manage::unserialize<T,true>(
-						adb, ldata, amysqlrow[1], alens[1]
-					))
+					if (!unserialize<T>(adb, m_dbprotobinary, ldata, amysqlrow[1], alens[1]))
 					{
 						return false;
 					}
