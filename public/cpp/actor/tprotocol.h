@@ -34,7 +34,6 @@ namespace ngl
 			// # 为了给脚本提供根据结构名字发送数据给其他actor
 			std::array<func, enscript_count> m_toactor;
 
-
 			template <enscript SCRIPT>
 			const func& toactor()
 			{
