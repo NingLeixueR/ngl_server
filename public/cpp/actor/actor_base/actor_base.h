@@ -85,9 +85,21 @@ namespace ngl
 		actor_base(const actor_base&) = delete;
 		actor_base& operator=(const actor_base&) = delete;
 	private:
-		struct impl_actor_base;
-		struct impl_group;
-		impl<impl_actor_base>	m_impl_actor_base;
+		nguid										m_guid = nguid::make();			// actor guid
+		std::unique_ptr<actor_manage_dbclient>		m_dbclient = nullptr;			// dbclient组件管理器
+		bool										m_isload = false;				// 数据是否加载完成
+		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;					// dbclient组件
+		i32_session									m_kcpsession = -1;				// kcp session
+
+		//# 间隔一段时间发起的全员(所有actor)广播
+		//# 可以在这个广播里推送一些需要处理的任务,例如 保存数据
+		//# 推送全员广播的 单位(毫秒)
+		static int									m_broadcast;
+		//# 推送广播的定时器id
+		static int									m_broadcasttimer;
+		//# 是否接收广播消息
+		bool										m_isbroadcast = false;
+
 		ngroup					m_group;
 	public:
 		explicit actor_base(const actorparmbase& aparm);
