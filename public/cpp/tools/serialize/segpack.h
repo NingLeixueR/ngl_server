@@ -4,7 +4,6 @@
 #include "segpack.h"
 #include "type.h"
 #include "pack.h"
-#include "impl.h"
 
 #include <functional>
 #include <map>
