@@ -18,6 +18,20 @@ namespace ngl
 		asio_tcp() = delete;
 		asio_tcp(const asio_tcp&) = delete;
 		asio_tcp& operator=(const asio_tcp&) = delete;
+
+		asio::ip::tcp::acceptor* m_acceptor_v4;
+		asio::ip::tcp::acceptor* m_acceptor_v6;
+		i16_port														m_port;
+		tcp_callback													m_fun;
+		tcp_closecallback												m_closefun;
+		tcp_sendfinishcallback											m_sendfinishfun;
+		std::shared_mutex												m_maplock;
+		serviceio_info													m_service_io_;
+		std::shared_mutex												m_ipportlock;
+		i32_sessionid													m_sessionid;
+		std::unordered_map<i32_sessionid, std::shared_ptr<service_tcp>> m_data;
+		std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>	m_ipport;
+		std::unordered_map<i32_sessionid, std::function<void()>>		m_sessionclose;
 	public:
 		friend class service_tcp;
 
@@ -39,6 +53,30 @@ namespace ngl
 			, const tcp_closecallback& aclosefun				// 关闭回调
 			, const tcp_sendfinishcallback& asendfinishfun		//发送失败的回调
 		);
+
+	private:
+		service_tcp* get_tcp(i32_sessionid asessionid);
+
+		template <typename T>
+		bool spack(i32_sessionid asessionid, std::shared_ptr<T>& apack);
+
+		template <typename TPACK>
+		void async_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist, std::shared_ptr<TPACK>& apack, char* abuff, int32_t abufflen);
+
+		void do_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist);
+
+		void handle_write(service_tcp* ap, const std::error_code& error, std::shared_ptr<pack> apack);
+
+		void handle_write(service_tcp* ap, const std::error_code& error, std::shared_ptr<void> apack);
+
+		void close_socket(asio::ip::tcp::socket& socket);
+
+		void accept_handle(bool aisv4, const std::shared_ptr<service_tcp>& aservice, const std::error_code& error);
+
+		void accept(bool aisv4);
+
+		void start(const std::shared_ptr<service_tcp>& aservice);
+	public:
 
 		// # 发起连接
 		service_tcp* connect(
@@ -67,8 +105,5 @@ namespace ngl
 
 		// # 设置连接关闭回调
 		void set_close(i32_sessionid asession, const std::function<void()>& afun);
-	private:
-		struct impl_asio_tcp;
-		ngl::impl<impl_asio_tcp> m_impl_asio_tcp;
 	};	
 }// namespace ngl
