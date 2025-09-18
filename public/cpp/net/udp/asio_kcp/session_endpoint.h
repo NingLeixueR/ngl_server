@@ -6,7 +6,6 @@
 #include "type.h"
 #include "pack.h"
 #include "nlog.h"
-#include "impl.h"
 #include "ikcp.h"
 
 #include <asio.hpp>

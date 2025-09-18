@@ -377,7 +377,7 @@ namespace ngl
 			{
 				if (ec)
 				{
-					log_error()->print("impl_asio_kcp::sendbuff error [{}]", ec.message());
+					log_error()->print("asio_kcp::sendbuff error [{}]", ec.message());
 				}
 			});
 		return 0;
@@ -389,7 +389,7 @@ namespace ngl
 			{
 				if (ec)
 				{
-					log_error()->print("impl_asio_kcp::sendbuff error [{}]", ec.message());
+					log_error()->print("asio_kcp::sendbuff error [{}]", ec.message());
 				}
 			});
 		return 0;
