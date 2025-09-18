@@ -1,3 +1,5 @@
+#pragma once
+
 #include "session_manage.h"
 #include "cmd.h"
 
