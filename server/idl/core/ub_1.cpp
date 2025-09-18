@@ -1,7 +1,9 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-09-15 10:07:14
+// 创建时间 25-09-18 11:42:55
+#include "session_endpoint.cpp"
 #include "attribute_value.cpp"
 #include "time_consuming.cpp"
+#include "session_manage.cpp"
 #include "server_session.cpp"
 #include "activitytimedb.cpp"
 #include "operator_file.cpp"
@@ -46,6 +48,7 @@
 #include "asio_kcp.cpp"
 #include "activity.cpp"
 #include "xmlinfo.cpp"
+#include "udp_cmd.cpp"
 #include "testlua.cpp"
 #include "segpack.cpp"
 #include "remakes.cpp"
