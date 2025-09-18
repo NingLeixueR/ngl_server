@@ -16,7 +16,6 @@
 
 #include "operator_file.h"
 #include "localtime.h"
-#include "impl.h"
 
 
 bool is_sname(const std::string& astrname, const std::string& akey)
