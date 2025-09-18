@@ -35,8 +35,10 @@ namespace ngl
 
 	class segpack
 	{
-		struct impl_segpack;
-		ngl::impl<impl_segpack> m_impl_segpack;
+		std::map<i32_socket, std::shared_ptr<pack>> m_data; //残包暂时保管
+		bpool			m_pool;
+		segpack_rate	m_rate;
+		segpack*		m_segpack;
 
 	public:
 		segpack();
