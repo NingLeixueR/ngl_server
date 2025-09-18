@@ -33,8 +33,6 @@ namespace ngl
 		static bool is_heartbeat(i32_protocolnum aprotocolnum);
 	};
 
-
-
 	class segpack
 	{
 		std::map<i32_socket, std::shared_ptr<pack>> m_data; //残包暂时保管
