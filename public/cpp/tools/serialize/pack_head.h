@@ -1,6 +1,7 @@
 #pragma once
 
 #include "nserialize.h"
+#include "localtime.h"
 #include "csvtable.h"
 #include "tools.h"
 #include "type.h"
