@@ -3,7 +3,6 @@
 #include "handle_pram.h"
 #include "nguid.h"
 #include "type.h"
-#include "impl.h"
 
 #include <map>
 

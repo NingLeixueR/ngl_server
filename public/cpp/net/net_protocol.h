@@ -9,7 +9,6 @@
 #include "asio_tcp.h"
 #include "asio_kcp.h"
 #include "segpack.h"
-#include "impl.h"
 #include "pack.h"
 
 #include <vector>

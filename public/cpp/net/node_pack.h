@@ -2,7 +2,6 @@
 
 #include "threadtools.h"
 #include "pack.h"
-#include "impl.h"
 
 namespace ngl
 {

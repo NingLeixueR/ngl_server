@@ -4,7 +4,6 @@
 #include "asio_base.h"
 #include "pack.h"
 #include "nlog.h"
-#include "impl.h"
 
 namespace ngl
 {

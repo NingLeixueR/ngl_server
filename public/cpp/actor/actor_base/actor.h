@@ -6,7 +6,6 @@
 #include "tprotocol.h"
 #include "nrfun.h"
 #include "slist.h"
-#include "impl.h"
 #include "nlog.h"
 
 #include <deque>
