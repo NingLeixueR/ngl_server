@@ -3,7 +3,6 @@
 #include "threadtools.h"
 #include "handle_pram.h"
 #include "actor_base.h"
-#include "impl.h"
 
 namespace ngl
 {

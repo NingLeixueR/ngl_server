@@ -3,7 +3,6 @@
 #include "nprotocol.h"
 #include "naddress.h"
 #include "actor.h"
-#include "impl.h"
 
 namespace ngl
 {

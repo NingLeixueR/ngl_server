@@ -9,7 +9,6 @@
 #include "ngroup.h"
 #include "nguid.h"
 #include "type.h"
-#include "impl.h"
 #include "ukcp.h"
 
 #include <memory>
