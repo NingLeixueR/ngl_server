@@ -8,7 +8,6 @@
 #include "nlog.h"
 #include "impl.h"
 #include "ikcp.h"
-#include "impl.h"
 
 #include <asio.hpp>
 #include <memory>
