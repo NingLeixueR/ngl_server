@@ -38,15 +38,15 @@ namespace ngl
 		actor_log(const actor_log&) = delete;
 		actor_log& operator=(const actor_log&) = delete;
 
-		std::shared_ptr<logfile> m_log;
+		std::map<ELOG_TYPE, std::shared_ptr<logfile>> m_logarr;
 	public:
-		actor_log(i32_actordataid aid);
+		actor_log(int32_t atype);
 
 		virtual ~actor_log() = default;
 
 		static ENUM_ACTOR actor_type();
 
-		static i64_actorid actorid(ENUM_ACTOR aactortype, ELOG_TYPE alogtype);
+		static i64_actorid actorid(i32_actordataid aid);
 
 		virtual void init();
 

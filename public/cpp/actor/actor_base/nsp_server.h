@@ -42,7 +42,7 @@ namespace ngl
 
 		static void log(const char* amessage)
 		{
-			m_dbmodule->get_actor()->log_error()->print(
+			log_error()->print(
 				"{}:{}"
 				, tools::type_name<tnsp_server>()
 				, amessage

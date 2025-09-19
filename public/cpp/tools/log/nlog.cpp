@@ -35,11 +35,11 @@ namespace ngl
 
 	std::shared_ptr<nactor_logitem> g_nonelog = std::make_shared<nactor_logitem>();
 
-	std::shared_ptr<nactor_logitem> get_log(const std::source_location& asource, ELOGLEVEL alevel, bool anet)
+	std::shared_ptr<nactor_logitem> get_log(const std::source_location& asource, ELOGLEVEL alevel, ELOG_TYPE atype, bool anet)
 	{
 		if (nactor_logitem::check_level(alevel))
 		{
-			return std::make_shared<nactor_logitem>(alevel, ACTOR_NONE, anet? ELOG_NETWORK:ELOG_LOCAL, asource);
+			return std::make_shared<nactor_logitem>(alevel, ACTOR_NONE, atype, anet, asource);
 		}
 		else
 		{
@@ -49,46 +49,46 @@ namespace ngl
 
 	std::shared_ptr<nactor_logitem> log_debug(const std::source_location& asource)
 	{
-		return get_log(asource, ELOG_DEBUG, false);
+		return get_log(asource, ELOG_DEBUG, ELOG_DEFAULT, false);
 	}
 
 	std::shared_ptr<nactor_logitem> log_debug_net(const std::source_location& asource)
 	{
-		return get_log(asource, ELOG_DEBUG, true);
+		return get_log(asource, ELOG_DEBUG, ELOG_DEFAULT, true);
 	}
 	
 	std::shared_ptr<nactor_logitem> log_info(const std::source_location& asource)
 	{
-		return get_log(asource, ELOG_INFO, false);
+		return get_log(asource, ELOG_INFO, ELOG_DEFAULT, false);
 	}
 
 	std::shared_ptr<nactor_logitem> log_info_net(const std::source_location& asource)
 	{
-		return get_log(asource, ELOG_INFO, true);
+		return get_log(asource, ELOG_INFO, ELOG_DEFAULT, true);
 	}
 
 	std::shared_ptr<nactor_logitem> log_warn(const std::source_location& asource)
 	{
-		return get_log(asource, ELOG_WARN, false);
+		return get_log(asource, ELOG_WARN, ELOG_DEFAULT, false);
 	}
 
 	std::shared_ptr<nactor_logitem> log_warn_net(const std::source_location& asource)
 	{
-		return get_log(asource, ELOG_WARN, true);
+		return get_log(asource, ELOG_WARN, ELOG_DEFAULT, true);
 	}
 
 	std::shared_ptr<nactor_logitem> log_error(const std::source_location& asource)
 	{
-		return get_log(asource, ELOG_ERROR, false);
+		return get_log(asource, ELOG_ERROR, ELOG_DEFAULT, false);
 	}
 
 	std::shared_ptr<nactor_logitem> log_error_net(const std::source_location& asource)
 	{
-		return get_log(asource, ELOG_ERROR, true);
+		return get_log(asource, ELOG_ERROR, ELOG_DEFAULT, true);
 	}
 
 	std::shared_ptr<nactor_logitem> log_bi(const std::source_location& asource)
 	{
-		return std::make_shared<nactor_logitem>(ELOG_ERROR, ACTOR_NONE, ELOG_BI, asource);
+		return get_log(asource, ELOG_ERROR, ELOG_BI, true);
 	}
 }// namespace ngl

@@ -9,9 +9,8 @@ namespace ngl
 {
 	enum ELOG_TYPE
 	{
-		ELOG_LOCAL		= 0,
-		ELOG_NETWORK	= 1,
-		ELOG_BI			= 2,
+		ELOG_DEFAULT	= 0x00000001,
+		ELOG_BI			= 0x00000002,
 		ELOG_COUNT,
 	};
 
@@ -29,6 +28,7 @@ namespace ngl
 		{
 			i32_actordataid m_id;			// nlogactor
 			std::string		m_dir;			// 文件夹
+			ELOG_TYPE		m_type;			// 日志类型
 			enum
 			{
 				min_flush_time = 1000,

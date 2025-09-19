@@ -39,7 +39,7 @@ namespace ngl
 			}
 			if (localtime::checkutc(lpnotice->mfinishtime()) == false)
 			{
-				nactor()->log_error()->print(
+				log_error()->print(
 					"remove_notice {}:{}-{}:{}"
 					, lpnotice->mid()
 					, localtime::time2str(lpnotice->mstarttime(), "%Y-%m-%d %H:%M:%S")

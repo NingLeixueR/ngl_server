@@ -171,7 +171,7 @@ namespace ngl
 
 	template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 	class ndbclient : 
-		public ndbclient_base, tools_log
+		public ndbclient_base
 	{
 		ndbclient(const ndbclient&) = delete;
 		ndbclient& operator=(const ndbclient&) = delete;
@@ -258,7 +258,6 @@ namespace ngl
 		{
 			m_manage_dbclient = aactor->get_actor_manage_dbclient();
 			m_actor = aactor;
-			set_logactor(aactor);
 		}
 
 		// # 获取数据
@@ -289,8 +288,6 @@ namespace ngl
 			m_manage_dbclient	= amdb;
 			m_id				= aid;
 			m_load				= false;
-
-			set_logactor(aactor);
 
 			m_tab = ttab_dbload::instance().get_tabdb<TDBTAB>();
 			if (m_tab == nullptr)

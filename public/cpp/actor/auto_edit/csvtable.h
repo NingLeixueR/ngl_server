@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-09-15 10:10:55
+// 创建时间 // 创建时间 25-09-18 19:34:23
 #pragma once
 
 #include "csv.h"
@@ -209,17 +209,18 @@ struct tab_servers
 	int32_t                          m_reloadcsv                     ; // [index:10][load:y] 连接的reloadcsv进程id
 	int32_t                          m_login                         ; // [index:11][load:y] 连接的login进程id
 	int16_t                          m_crossarea                     ; // [index:12][load:y] 跨服区服
+	int32_t                          m_log                           ; // [index:13][load:y] 连接的log进程id
 	std::vector<int32_t>             m_actorserver                   ; // [index:13][load:y] 连接的actorserver进程id(跨服需要填写多个actorserver)
 	std::vector<net_works>           m_net                           ; // [index:14][load:y] 服务器网络相关(net_works:m_type(0tcp1ws2kcp),m_ip,m_nip,m_port)
 	/*********************************/
 	tab_servers();
 	// 序列化反序列化相关
-	dprotocol(tab_servers, m_id, m_name, m_area, m_type, m_tcount, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_actorserver, m_net)
+	dprotocol(tab_servers, m_id, m_name, m_area, m_type, m_tcount, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_log, m_actorserver, m_net)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_area,m_type,m_tcount,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_actorserver,m_net);
+		def_rcsv2(m_id,m_name,lm_remarks,m_area,m_type,m_tcount,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_log,m_actorserver,m_net);
 	}
 };
 struct tab_dbload

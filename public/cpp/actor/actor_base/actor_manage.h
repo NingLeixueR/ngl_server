@@ -159,7 +159,6 @@ namespace ngl
 					lptemp->set_activity_stat(actor_stat_free);
 					lptemp->init();
 					lptemp->init_db_component(false);
-					actor::create_log(lptemp->type());
 				});
 			ltemp.template init_rfun<T>();
 			T::nregister();

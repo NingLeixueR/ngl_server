@@ -6,8 +6,7 @@
 
 namespace ngl
 {
-	class ndb_component : 
-		public tools_log
+	class ndb_component
 	{
 		ndb_component() = delete;
 		ndb_component(const ndb_component&) = delete;

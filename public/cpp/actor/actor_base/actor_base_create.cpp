@@ -39,7 +39,7 @@ namespace ngl
 			break;
 			case ACTOR_LOG:
 			{
-				linitfun.operator()<actor_log>(ACTOR_LOG, lpactor_base, aid);
+				linitfun.operator()<actor_log>(ACTOR_LOG, lpactor_base, *(int32_t*)aparm);
 			}
 			break;
 			case ACTOR_EXAMPLE_GUESS_NUMBER:

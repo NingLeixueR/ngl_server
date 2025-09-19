@@ -1,10 +1,7 @@
 #include "actor_manage.h"
 #include "ndbclient.h"
-
 #include "actor.h"
 #include "net.h"
-
-
 
 namespace ngl
 {

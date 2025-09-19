@@ -24,35 +24,9 @@ namespace ngl
 	class ndb_component;
 	class ndbclient_base;
 	class actor_manage_dbclient;
+
 	template <typename TDBTAB>
 	struct data_modified;
-
-	// # actor的log辅助
-	class tools_log
-	{
-		tools_log(const tools_log&) = delete;
-		tools_log& operator=(const tools_log&) = delete;
-
-		actor_base* m_actor;
-
-		std::shared_ptr<nactor_logitem> get_log(const std::source_location& asource, ELOGLEVEL aloglevel, bool anet)const;
-	public:
-		explicit tools_log(actor_base* aactor = nullptr);
-
-		void set_logactor(actor_base* aactor);
-
-		std::shared_ptr<nactor_logitem> log_debug(const std::source_location& asource = std::source_location::current())const;
-		std::shared_ptr<nactor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current())const;
-
-		std::shared_ptr<nactor_logitem> log_info(const std::source_location& asource = std::source_location::current())const;
-		std::shared_ptr<nactor_logitem> log_info_net(const std::source_location& asource = std::source_location::current())const;
-
-		std::shared_ptr<nactor_logitem> log_warn(const std::source_location& asource = std::source_location::current())const;
-		std::shared_ptr<nactor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current())const;
-
-		std::shared_ptr<nactor_logitem> log_error(const std::source_location& asource = std::source_location::current())const;
-		std::shared_ptr<nactor_logitem> log_error_net(const std::source_location& asource = std::source_location::current())const;
-	};
 
 	struct actorparmbase
 	{
@@ -77,8 +51,7 @@ namespace ngl
 	template <typename T>
 	struct message;
 
-	class actor_base : 
-		public tools_log
+	class actor_base
 	{
 		actor_base() = delete;
 		actor_base(const actor_base&) = delete;
@@ -612,15 +585,6 @@ namespace ngl
 		static void start_broadcast();
 #pragma endregion 
 
-		static void create_log(ENUM_ACTOR atype)
-		{
-			if (atype != ngl::ACTOR_LOG)
-			{
-				nlogactor lnlogactor(atype, ngl::ELOG_LOCAL);
-				ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
-			}
-		}
-
 		//# actor_base::create 
 		//# 构造actor对象会自动被调用
 		template <typename TDerived>
@@ -630,7 +594,6 @@ namespace ngl
 			if (lfirst.exchange(false))
 			{
 				TDerived::nregister();
-				create_log(atype);
 			}
 		}
 
