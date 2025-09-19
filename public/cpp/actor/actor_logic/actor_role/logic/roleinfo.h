@@ -20,7 +20,7 @@ namespace ngl
 
 		virtual void initdata();
 
-		const i64_actorid m_id();
+		const i64_actorid roleid();
 
 		pbdb::db_brief* get_brief();
 		const pbdb::db_brief* get_constbrief();
