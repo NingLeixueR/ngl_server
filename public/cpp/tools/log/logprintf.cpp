@@ -82,6 +82,8 @@ namespace ngl
 	logfile::logfile(const config& aconfig) :
 		m_config(aconfig)
 	{
+		em<ELOG_TYPE>::set(em_pram(ELOG_DEFAULT));
+		em<ELOG_TYPE>::set(em_pram(ELOG_BI));
 		create();
 	}
 
@@ -99,30 +101,6 @@ namespace ngl
 	{
 		m_stream.close();
 	}
-
-	/*std::string& elog_name(ELOG_TYPE aactortype)
-	{
-		static std::string llocal = "local";
-		static std::string lnetwork = "network";
-		static std::string lbi = "bi";
-		static std::string lnone = "none";
-		switch (aactortype)
-		{
-		case ELOG_LOCAL:
-		{
-			return llocal;
-		}
-		case ELOG_NETWORK:
-		{
-			return lnetwork;
-		}
-		case ELOG_BI:
-		{
-			return lbi;
-		}
-		}
-		return lnone;
-	}*/
 
 	bool logfile::create_directories(const std::string& apath)
 	{
@@ -156,6 +134,12 @@ namespace ngl
 			Throw("not create path {}", lpath);
 		}
 
+		lpath = std::format("{}/{}", lpath, em<ELOG_TYPE>::get_tolower_name(m_config.m_type));
+		if (create_directories(lpath) == false)
+		{
+			Throw("not create path {}", lpath);
+		}
+
 		std::string ltimestr = tools::time2str((int)localtime::gettime(), "%Y-%m-%d");
 		lpath = std::format("{}/{}", lpath, ltimestr);
 		if (create_directories(lpath) == false)
@@ -165,7 +149,7 @@ namespace ngl
 
 		std::cout << "log dir:[" << lpath << "]" << std::endl;
 
-		std::string ldaytimestr = tools::time2str((int)localtime::gettime(), "%H%M%S");
+		std::string ldaytimestr = tools::time2str((int)localtime::gettime(), "%H-%M-%S");
 		std::string lopfile = std::format("{}/{}_{}.log", lpath, ldaytimestr, m_fcount);
 		++m_fcount;
 		

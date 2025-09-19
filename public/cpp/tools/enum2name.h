@@ -31,6 +31,11 @@ namespace ngl
 			tools::transform_tolower(astr);
 		}
 	public:
+		static bool empty()
+		{
+			return m_datae2n.empty();
+		}
+
 		static void set(ENUMT aenum, const char* aname, int anum = 0)
 		{
 			data& ltemp = m_datae2n[anum][aenum];
