@@ -1,8 +1,8 @@
 #pragma once
-
 #include "actor_activity_manage.h"
 #include "actor_example_manage.h"
 #include "actor_example_match.h"
+#include "actor_robot_manage.h"
 #include "actor_role_manage.h"
 #include "actor_gateway_g2c.h"
 #include "actor_gateway_c2g.h"
