@@ -225,7 +225,6 @@ namespace ngl
 		{
 			ttab_mergearea::instance().foreach([&afun](i16_area aarea, std::set<i16_area>& aset)
 				{
-					//std::map<i32_serverid, const tab_servers*>
 					auto lpmap = tools::findmap(ttab_servers::instance().m_areaserver, aarea);
 					if (lpmap == nullptr)
 					{
