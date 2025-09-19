@@ -82,8 +82,11 @@ namespace ngl
 	logfile::logfile(const config& aconfig) :
 		m_config(aconfig)
 	{
-		em<ELOG_TYPE>::set(em_pram(ELOG_DEFAULT));
-		em<ELOG_TYPE>::set(em_pram(ELOG_BI));
+		if (em<ELOG_TYPE>::empty())
+		{
+			em<ELOG_TYPE>::set(em_pram(ELOG_DEFAULT));
+			em<ELOG_TYPE>::set(em_pram(ELOG_BI));
+		}
 		create();
 	}
 
