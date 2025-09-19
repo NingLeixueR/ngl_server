@@ -152,7 +152,7 @@ namespace ngl
 
 		// 获取指定utc后几个小时
 		static int getutcbyhour(time_t utc, int hour);
-		static int getutcbymin(time_t utc, int min);
+		static int getutcbymin(time_t utc, int amin);
 
 		static bool checkutc(time_t autc1, time_t autc2);
 		static bool checkutc(time_t autc);
