@@ -9,7 +9,7 @@ namespace ngl
 		log_error()->print("roleinfo load finish {}", data());
 	}
 
-	const i64_actorid roleinfo::m_id()
+	const i64_actorid roleinfo::roleid()
 	{
 		return (int)db()->getconst()->mid();
 	}
@@ -158,6 +158,7 @@ namespace ngl
 		tdb_brief::nsp_cli<actor_role>::instance(get_actor()->id_guid()).change(get_actor()->id_guid());
 
 		change_event(eevents_logic::eevents_logic_rolegoldchange, loldvalue, loldvalue + avalues);
+		log_bi()->print("add_gold|{}|{}|{}|{}", lrb->mid(), lrb->mname(), loldvalue, lrb->mmoneygold());
 	}
 
 	int32_t roleinfo::silver()
@@ -186,8 +187,10 @@ namespace ngl
 			);
 			return;
 		}
-		lrb->set_mmoneysilver(lrb->mmoneysilver() + avalues);
+		int32_t loldvalue = lrb->mmoneysilver();
+		lrb->set_mmoneysilver(loldvalue + avalues);
 		tdb_brief::nsp_cli<actor_role>::instance(get_actor()->id_guid()).change(get_actor()->id_guid());
+		log_bi()->print("add_silver|{}|{}|{}|{}", lrb->mid(), lrb->mname(), loldvalue, lrb->mmoneysilver());
 	}
 
 	int32_t roleinfo::notalkutc()
