@@ -1,6 +1,8 @@
 #pragma once
 
 #include "threadtools.h"
+#include "nprotocol.h"
+#include "worklist.h"
 #include "nlog.h"
 #include "impl.h"
 
@@ -34,15 +36,54 @@ namespace ngl
 
 	struct http_parm
 	{
-		struct impl_http;
-		impl<impl_http> m_impl_http;
+		ENUM_MODE			m_mode = ENUM_MODE_NULL;	// http模式
+		ENUM_TYPE			m_type = ENUM_TYPE_NULL;	// http类型
+		CURL*				m_curl = nullptr;			// curl指针
+		std::string			m_url;						// 请求的url
+		std::string			m_param;					// 请求参数
+		int					m_timeout = 0;				// 超时时间
+		std::string			m_cookies;					// cookie
+		curl_slist*			m_http_headers = nullptr;	// http头
+		using callback = std::function<void(int, http_parm&)>;
+		callback			m_callback;					// 回调
+		std::string			m_recvdata;					// 接收的数据
 
-		std::string m_recvdata;
+		http_parm()
+		{}
 
-		http_parm();
-		~http_parm();
-		void headers(std::vector<std::string>& m_headers);
-		void log(int aerror);		
+		~http_parm()
+		{
+			if (m_http_headers != nullptr)
+			{
+				curl_slist_free_all(m_http_headers);
+				m_http_headers = nullptr;
+			}
+			if (m_curl != nullptr)
+			{
+				curl_easy_cleanup(m_curl);
+				m_curl = nullptr;
+			}
+		}
+
+		void headers(std::vector<std::string>& aheaders)
+		{
+			int lsize = (int)aheaders.size();
+			for (int i = 0; i < lsize; i++)
+			{
+				m_http_headers = curl_slist_append(m_http_headers, aheaders[i].c_str());
+				curl_easy_setopt(m_curl, CURLOPT_HTTPHEADER, m_http_headers);
+			}
+		}
+
+		void log(int aerror)
+		{
+			log_info()->print("error[{}]url[{}]param[{}]mode[{}]type[{}]data[{}]"
+				, aerror, m_url, m_param
+				, (m_mode == ENUM_MODE_HTTP ? "http" : "https")
+				, (m_type == ENUM_TYPE_POST ? "post" : "get")
+				, m_recvdata
+			);
+		}
 	};
 
 	class manage_curl
@@ -50,10 +91,11 @@ namespace ngl
 		manage_curl(const manage_curl&) = delete;
 		manage_curl& operator=(const manage_curl&) = delete;
 
-		struct impl_manage_curl;
-		ngl::impl<impl_manage_curl> m_impl_manage_curl;
+		std::unique_ptr<std::thread>			m_thread;
+		worklist<std::shared_ptr<http_parm>>	m_list;
 
 		manage_curl();
+
 		~manage_curl();
 
 		static manage_curl& instance()
@@ -61,6 +103,12 @@ namespace ngl
 			static manage_curl temp;
 			return temp;
 		}
+
+		void work(http_parm& ahttp);
+
+		CURLcode visit(http_parm& ahttp);
+
+		static size_t callback_write(void* buffer, size_t size, size_t nmemb, std::string* lpVoid);
 	public:
 		// # 设置http类型
 		static void set_mode(std::shared_ptr<http_parm>& ahttp, ENUM_MODE aval);
