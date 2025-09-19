@@ -177,9 +177,9 @@ namespace ngl
 		return mktime(&tmTime);
 	}
 
-	int localtime::getutcbymin(time_t utc, int min)
+	int localtime::getutcbymin(time_t utc, int amin)
 	{
-		time_t ltemp = utc + ((int)MINUTES_SECOND * min);
+		time_t ltemp = utc + ((int)MINUTES_SECOND * amin);
 		std::tm ltime;
 		gettm(ltemp, ltime);
 		ltime.tm_sec = 0;
