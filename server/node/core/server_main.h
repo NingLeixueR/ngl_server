@@ -292,8 +292,8 @@ bool start_db(int argc, char** argv)
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
-		ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+		int32_t llogtype = ngl::ELOG_DEFAULT;
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
 	}	
 
 	ngl::db_pool::instance().init(nconfig::m_db.m_dbarg);
@@ -337,8 +337,8 @@ bool start_crossdb()
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
-		ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+		int32_t llogtype = ngl::ELOG_DEFAULT;
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
 	}
 
 	ngl::db_pool::instance().init(nconfig::m_crossdb.m_dbarg);
@@ -363,8 +363,8 @@ bool start_world()
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
-		ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+		int32_t llogtype = ngl::ELOG_DEFAULT;
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
 	}
 
 	ngl::actor_events_logic::instance();
@@ -401,8 +401,8 @@ bool start_login()
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
-		ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+		int32_t llogtype = ngl::ELOG_DEFAULT;
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
 	}
 
 	ngl::actor_login::instance();
@@ -425,8 +425,8 @@ bool start_gateway()
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
-		ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+		int32_t llogtype = ngl::ELOG_DEFAULT;
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
 	}
 
 	ngl::actor_gateway::instance();
@@ -450,8 +450,9 @@ bool start_log()
 	ngl::actor_client::instance();
 
 	ngl::tools::no_core_dump(ngl::sysconfig::logwritelevel() >= ngl::ELOG_MAX || ngl::sysconfig::logwritelevel() <= ngl::ELOG_NONE);
-	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+
+	int32_t llogtype = ngl::ELOG_DEFAULT | ngl::ELOG_BI;
+	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
 	ngl::actor_gmclient::instance();
 
 	ngl::actor_client::instance().actor_server_register();
@@ -471,8 +472,8 @@ bool start_actor()
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
-		ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+		int32_t llogtype = ngl::ELOG_DEFAULT;
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
 	}
 
 	ngl::actor_gmclient::instance();
@@ -493,8 +494,8 @@ bool start_game()
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
-		ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+		int32_t llogtype = ngl::ELOG_DEFAULT;
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
 	}
 
 	ngl::actor_role_manage::instance();
@@ -519,8 +520,8 @@ bool start_cross()
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
-		ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+		int32_t llogtype = ngl::ELOG_DEFAULT;
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
 	}
 
 	ngl::actor_chat::instance();
@@ -609,8 +610,8 @@ bool start_csvserver()
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
-		ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+		int32_t llogtype = ngl::ELOG_DEFAULT;
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
 	}
 
 	ngl::actor_csvserver::instance();
@@ -633,8 +634,8 @@ bool start_robot(int argc, char** argv)
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
-		ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+		int32_t llogtype = ngl::ELOG_DEFAULT;
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
 	}
 
 	ngl::actor_gmclient::instance();

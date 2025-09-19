@@ -313,53 +313,6 @@ namespace ngl
 
 		def_portocol_function(nguid, m_id)
 	};
-
-	/////////////////////////////////////////////////////
-	// 用于生成actor_log的guid的32位dataid部分		   //
-	// 16位用于存储记录日志的actor的ENUM_ACTOR		   //
-	// 16位用于存储日志类型(本地日志、网络日志、bi日志)//
-	/////////////////////////////////////////////////////
-	union nlogactor
-	{
-		nlogactor() = delete;
-
-		int32_t m_value32;
-		int16_t m_value16[2];	//ENUM_ACTOR aactortype, ELOG_TYPE alogtype
-
-		static int16_t m_localnum;
-
-		explicit nlogactor(int32_t avalue) :
-			m_value32(avalue)
-		{}
-
-		nlogactor(ENUM_ACTOR avalue1, ELOG_TYPE avalue2);
-
-		inline ENUM_ACTOR actor_type()const
-		{
-			return (ENUM_ACTOR)m_value16[0];
-		}
-
-		inline ELOG_TYPE log_type()const
-		{
-			if ((0x8000 & m_value16[1]) != 0)
-			{
-				return ELOG_TYPE::ELOG_LOCAL;
-			}
-			return (ELOG_TYPE)m_value16[1];
-		}
-
-		static ENUM_ACTOR actor_type(int32_t avalue)
-		{
-			nlogactor ltemp(avalue);
-			return ltemp.actor_type();
-		}
-
-		static ELOG_TYPE log_type(int32_t avalue)
-		{
-			nlogactor ltemp(avalue);
-			return ltemp.log_type();
-		}
-	};
 }//namespace ngl
 
 template <>

@@ -100,7 +100,7 @@ namespace ngl
 		m_stream.close();
 	}
 
-	std::string& elog_name(ELOG_TYPE aactortype)
+	/*std::string& elog_name(ELOG_TYPE aactortype)
 	{
 		static std::string llocal = "local";
 		static std::string lnetwork = "network";
@@ -122,7 +122,7 @@ namespace ngl
 		}
 		}
 		return lnone;
-	}
+	}*/
 
 	bool logfile::create_directories(const std::string& apath)
 	{
@@ -144,27 +144,20 @@ namespace ngl
 			Throw("not create path {}", lpath);
 		}
 
-		ENUM_ACTOR lactortype = nlogactor::actor_type(m_config.m_id);
-		const char* lname = (lactortype == ACTOR_NONE) ? "sys_global" : em<ENUM_ACTOR>::get_tolower_name(lactortype);
-		if (lname == "")
+		const tab_servers* ltabserver = ttab_servers::instance().tab();
+		if (ltabserver == nullptr)
 		{
-			Throw("not create path {}", lpath);
+			Throw("ttab_servers::instance().tab() fail {}", nconfig::m_nodeid);
 		}
-		lpath = std::format("{}/{}", lpath, lname);
+
+		lpath = std::format("{}/{}", lpath, ltabserver->m_name);
 		if (create_directories(lpath) == false)
 		{
 			Throw("not create path {}", lpath);
 		}
 
-		std::string ltimestr = tools::time2str((int)localtime::gettime(), "%Y%m%d");
+		std::string ltimestr = tools::time2str((int)localtime::gettime(), "%Y-%m-%d");
 		lpath = std::format("{}/{}", lpath, ltimestr);
-		if (create_directories(lpath) == false)
-		{
-			Throw("not create path {}", lpath);
-		}
-
-		std::string lelogname = elog_name(nlogactor::log_type(m_config.m_id));
-		lpath = std::format("{}/{}", lpath, lelogname);
 		if (create_directories(lpath) == false)
 		{
 			Throw("not create path {}", lpath);
@@ -224,13 +217,9 @@ namespace ngl
 
 	std::shared_ptr<logfile> logfile::create_make(const config& aconfig)
 	{
-		switch (nlogactor::log_type(aconfig.m_id))
+		switch (aconfig.m_type)
 		{
-		case ELOG_LOCAL:
-		{
-			return std::make_shared<logfile_default>(aconfig);
-		}
-		case ELOG_NETWORK:
+		case ELOG_DEFAULT:
 		{
 			return std::make_shared<logfile_default>(aconfig);
 		}

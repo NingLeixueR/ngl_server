@@ -14,73 +14,13 @@ namespace ngl
 		return actor_manage::instance().get_clientguid();
 	}
 
-	//# 日志相关
-	const std::shared_ptr<nactor_logitem> g_actor_nonelog = std::make_shared<nactor_logitem>();
-
-	tools_log::tools_log(actor_base* aactor /*= nullptr*/) :
-		m_actor(aactor)
-	{}
-
-	void tools_log::set_logactor(actor_base* aactor)
-	{
-		m_actor = aactor;
-	}
-
-	std::shared_ptr<nactor_logitem> tools_log::get_log(const std::source_location& asource, ELOGLEVEL aloglevel, bool anet)const
-	{
-		if(m_actor == nullptr || !nactor_logitem::check_level(aloglevel))
-		{
-			return g_actor_nonelog;
-		}
-		return std::make_shared<nactor_logitem>(aloglevel, m_actor->type(), anet ? ELOG_NETWORK : ELOG_LOCAL, asource);
-	}
-
-	std::shared_ptr<nactor_logitem> tools_log::log_debug(const std::source_location& asource/* = std::source_location::current()*/)const
-	{
-		return get_log(asource, ELOG_DEBUG, false);
-	}
-
-	std::shared_ptr<nactor_logitem> tools_log::log_debug_net(const std::source_location& asource/* = std::source_location::current()*/)const
-	{
-		return get_log(asource, ELOG_DEBUG, true);
-	}
-
-	std::shared_ptr<nactor_logitem> tools_log::log_info(const std::source_location& asource/* = std::source_location::current()*/)const
-	{
-		return get_log(asource, ELOG_INFO, false);
-	}
-
-	std::shared_ptr<nactor_logitem> tools_log::log_info_net(const std::source_location& asource/* = std::source_location::current()*/)const
-	{
-		return get_log(asource, ELOG_INFO, true);
-	}
-
-	std::shared_ptr<nactor_logitem> tools_log::log_warn(const std::source_location& asource/* = std::source_location::current()*/)const
-	{
-		return get_log(asource, ELOG_WARN, false);
-	}
-
-	std::shared_ptr<nactor_logitem> tools_log::log_warn_net(const std::source_location& asource/* = std::source_location::current()*/)const
-	{
-		return get_log(asource, ELOG_WARN, true);
-	}
-
-	std::shared_ptr<nactor_logitem> tools_log::log_error(const std::source_location& asource/* = std::source_location::current()*/)const
-	{
-		return get_log(asource, ELOG_ERROR, false);
-	}
-
-	std::shared_ptr<nactor_logitem> tools_log::log_error_net(const std::source_location& asource/* = std::source_location::current()*/)const
-	{
-		return get_log(asource, ELOG_ERROR, true);
-	}
+	
 
 	int actor_base::m_broadcast = 10000;
 	int actor_base::m_broadcasttimer = -1;
 
 	actor_base::actor_base(const actorparmbase& aparm):
-		tools_log(this)
-		, m_guid(aparm.m_type, aparm.m_area, aparm.m_id)
+		m_guid(aparm.m_type, aparm.m_area, aparm.m_id)
 		, m_isload(aparm.m_manage_dbclient)
 	{
 		if (aparm.m_manage_dbclient)

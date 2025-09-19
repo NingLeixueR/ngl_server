@@ -24,7 +24,6 @@ namespace ngl
 	{
 		m_actor = aactor;
 		m_actor->set_db_component(this);
-		set_logactor(aactor);
 	}
 
 	actor_base* ndb_component::get_actor()

@@ -343,12 +343,13 @@ namespace ngl
 	struct np_logitem
 	{
 		int				m_serverid = -1;			// 服务器id
-		ELOGLEVEL		m_loglevel;					// 日志类型
+		ELOGLEVEL		m_loglevel;					// 日志等级
+		ELOG_TYPE		m_type;						// 日志类型
 		std::string		m_src;						// 触发日志的文件位置
 		std::string		m_data;						// 日志内容
 		int32_t			m_time = -1;				// 日志发生时间
 
-		dprotocol(logitem, m_serverid, m_loglevel, m_src, m_data, m_time)
+		dprotocol(logitem, m_serverid, m_loglevel, m_type, m_src, m_data, m_time)
 	};
 
 	struct nactor_logitem
@@ -362,26 +363,28 @@ namespace ngl
 	public:
 		std::stringstream		m_stream;
 		ELOGLEVEL				m_level;
+		bool					m_isnet;
 		/** 临时数据 **/
 		static bool				m_init;
 	public:
-		dprotocol(nactor_logitem, m_src, m_actortype, m_logtype)
-
+		
 		nactor_logitem(ELOGLEVEL alevel = ELOG_NONE) :
+			m_level(alevel),
 			m_actortype(ACTOR_NONE),
-			m_logtype(ELOG_LOCAL),
-			m_level(alevel)
+			m_logtype(ELOG_DEFAULT),
+			m_isnet(false)
 		{
 		}
 
 		nactor_logitem(
-			ELOGLEVEL alevel, ENUM_ACTOR aactortype, ELOG_TYPE alogtype
+			ELOGLEVEL alevel, ENUM_ACTOR aactortype, ELOG_TYPE alogtype, bool aisnet
 			, const std::source_location& asource = std::source_location::current()
 		) :
-			m_actortype(aactortype)
+			m_level(alevel)
+			, m_actortype(aactortype)
 			, m_logtype(alogtype)
+			, m_isnet(aisnet)
 			, m_source(asource)
-			, m_level(alevel)
 		{
 		}
 
@@ -404,8 +407,7 @@ namespace ngl
 			m_src = std::format("{:^20}:{:^5}", m_src, m_source.line());
 		}
 
-		void send(std::shared_ptr<np_logitem> pro);
-
+		void send(std::shared_ptr<np_logitem> pro, bool aisnet);
 	public:
 		static bool check_level(ELOGLEVEL alevel)
 		{
@@ -445,11 +447,12 @@ namespace ngl
 			{
 				auto pro = std::make_shared<np_logitem>();
 				pro->m_loglevel = m_level;
+				pro->m_type = m_logtype;
 				pro->m_serverid = nconfig::m_nodeid;
 				pro->m_time = ltime;
 				pro->m_src.swap(m_src);
 				pro->m_data.swap(ldata);
-				send(pro);
+				send(pro, m_isnet);
 			}
 		}
 

@@ -97,6 +97,7 @@ struct tab_servers
 	int32_t m_db;						// [index:9][load:y] 连接的db进程id
 	int32_t m_reloadcsv;				// [index:10][load:y] 连接的reloadcsv进程id
 	int32_t m_login;					// [index:11][load:y] 连接的login进程id
+	int32_t m_log;						// [index:13][load:y] 连接的log进程id
 	int16_t m_crossarea;				// [index:12][load:y] 跨服区服
 	vector<int32_t> m_actorserver;		// [index:13][load:y] 连接的actorserver进程id(跨服需要填写多个actorserver)
 	vector<net_works> m_net;			// [index:14][load:y] 服务器网络相关(net_works:m_type(0tcp1ws2kcp),m_ip,m_nip,m_port)

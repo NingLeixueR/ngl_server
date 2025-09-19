@@ -2,8 +2,7 @@
 
 namespace ngl
 {
-	actor_log::actor_log(i32_actordataid aid):
-		m_log(nullptr),
+	actor_log::actor_log(int32_t atype):
 		actor(
 			actorparm
 			{
@@ -11,19 +10,26 @@ namespace ngl
 				{
 					.m_type = ACTOR_LOG, 
 					.m_area = tab_self_area,
-					.m_id = aid
+					.m_id = nconfig::m_nodeid
 				},
 				.m_weight = 0x7fffffff
 			})
 	{
-		logfile::config lconfig
+		for (int i = ELOG_DEFAULT;i< ELOG_COUNT;i = i<<1)
 		{
-			.m_id = aid,
-			.m_dir = std::format("log/{}", ttab_servers::instance().tab()->m_name),
-			.m_flush_time = 10,
-		};
-		nconfig::get_publicconfig()->find("log_flushtime", lconfig.m_flush_time);
-		m_log = logfile::create_make(lconfig);
+			if ((atype & i) != 0)
+			{
+				logfile::config lconfig
+				{
+					.m_id = nconfig::m_nodeid,
+					.m_dir = "log",
+					.m_type = (ELOG_TYPE)i,
+					.m_flush_time = 10,
+				};
+				nconfig::get_publicconfig()->find("log_flushtime", lconfig.m_flush_time);
+				m_logarr[(ELOG_TYPE)i] = logfile::create_make(lconfig);
+			}
+		}
 	}
 
 	ENUM_ACTOR actor_log::actor_type()
@@ -31,10 +37,9 @@ namespace ngl
 		return ACTOR_LOG;
 	}
 
-	i64_actorid actor_log::actorid(ENUM_ACTOR aactortype, ELOG_TYPE alogtype)
+	i64_actorid actor_log::actorid(i32_actordataid aid)
 	{
-		nlogactor ltemp(aactortype, alogtype);
-		return nguid::make(actor_type(), tab_self_area, ltemp.m_value32);
+		return nguid::make(actor_type(), tab_self_area, aid);
 	}
 
 	void actor_log::init()
@@ -43,7 +48,8 @@ namespace ngl
 
 		// ÉèÖÃtimer_handle¶¨Ê±Æ÷
 		// flush
-		int32_t lflushtime = m_log->m_config.flush_time() / 1000;
+		
+		int32_t lflushtime = m_logarr.begin()->second->m_config.flush_time() / 1000;
 		np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, lflushtime) == false)
 		{
@@ -86,13 +92,19 @@ namespace ngl
 		std::shared_ptr<log_timerparm> lparm = std::static_pointer_cast<log_timerparm>(adata.get_data()->m_parm);
 		if (lparm->m_type == log_timerparm::e_logflush)
 		{
-			m_log->flush();
+			for (std::pair<const ELOG_TYPE, std::shared_ptr<logfile>>& item : m_logarr)
+			{
+				item.second->flush();
+			}
 			return true;
 		}
 		if (lparm->m_type == log_timerparm::e_create)
 		{
-			m_log->close_fstream();
-			m_log->create();
+			for (std::pair<const ELOG_TYPE, std::shared_ptr<logfile>>& item : m_logarr)
+			{
+				item.second->close_fstream();
+				item.second->create();
+			}
 			return true;
 		}
 		return true;

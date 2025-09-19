@@ -125,7 +125,7 @@ namespace ngl
 			return;
 		}
 
-		actor_activity_manage::instance().log_error()->print(
+		log_error()->print(
 			"activity [{}] rolelevelchange roleid:[{}] beforelevel[{}] nowlevel[{}]",
 			nguid(activityid()), aroleid, abeforelevel, anowlevel
 		);
@@ -160,7 +160,7 @@ namespace ngl
 			return;
 		}
 
-		actor_activity_manage::instance().log_error()->print(
+		log_error()->print(
 			"activity [{}] rolegoldchange roleid:[{}] beforegold[{}] nowgold[{}]",
 			nguid(activityid()), aroleid, abeforegold, anowgold
 		);

@@ -56,7 +56,7 @@ namespace ngl
 
 		void log(const char* amessage)
 		{
-			m_actor->log_error()->print(
+			log_error()->print(
 				"{}:{}"
 				, tools::type_name<tnsp_client>()
 				, amessage
