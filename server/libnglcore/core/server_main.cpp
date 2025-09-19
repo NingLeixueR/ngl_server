@@ -1,8 +1,9 @@
-#pragma once
-
+#include "server_main.h"
 #include "init_server.h"
 
 #define DEF_COUNT (2000)
+
+Dumper lDumper;
 
 void init_DB_ACCOUNT(const char* aname, int beg)
 {
@@ -159,7 +160,7 @@ void init_DB_NOTICE()
 	for (int i = 1; i < 10; ++i)
 	{
 		pbdb::db_notice ltemp;
-		ltemp.set_mid((ngl::ttab_servers::instance().tab()->m_area*100)+i);
+		ltemp.set_mid((ngl::ttab_servers::instance().tab()->m_area * 100) + i);
 		if (ngl::tools::to_utf8(lvec[i], lvec[i]) == false)
 			continue;
 		ltemp.set_mnotice(lvec[i]);
@@ -238,7 +239,7 @@ void init_DB_FRIENDS()
 				if (j1 != j2)
 				{
 					ngl::i64_actorid lactor2 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, j2);
-					ngl::i64_actorid lactor3 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, j2+10);
+					ngl::i64_actorid lactor3 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, j2 + 10);
 					lfriends.add_mfriends(lactor2);
 					lfriends.add_mapplyfriends(lactor3);
 				}
@@ -262,7 +263,7 @@ void init_DB_TESTLUA()
 		ltestlua.set_mid(lactor1);
 		for (int j = 0; j < 10; ++j)
 		{
-			ltestlua.add_mvalue(i*1000 + i);
+			ltestlua.add_mvalue(i * 1000 + i);
 		}
 		pbdb::db_testlua::luadata ltemp;
 		for (int i = 0; i < 5; ++i)
@@ -294,14 +295,14 @@ bool start_db(int argc, char** argv)
 	{
 		int32_t llogtype = ngl::ELOG_DEFAULT;
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
-	}	
+	}
 
 	ngl::db_pool::instance().init(nconfig::m_db.m_dbarg);
 	ngl::tdb::tdb_init(false);
 	ngl::db_manage::init();
 
 	ngl::actor_gmclient::instance();
-	
+
 	ngl::actor_client::instance().actor_server_register();
 
 	// ----------------test start-------------------- //
@@ -321,7 +322,7 @@ bool start_db(int argc, char** argv)
 			init_DB_RANKLIST();
 			init_DB_FRIENDS();
 			init_DB_TESTLUA();
-		}		
+		}
 	}
 	return true;
 }
@@ -583,11 +584,11 @@ bool start_pushserverconfig()
 
 			lwrite.set_nonformatstr(true);
 			std::string lnet = lwrite.get();
-			
+
 			lstream << "&net=" << lnet;
 
 			std::cout << lnet << std::endl;
-			
+
 			std::string lstr = lstream.str();
 			ngl::manage_curl::set_param(lhttp, lstr);
 
@@ -750,7 +751,7 @@ bool start_robot(int argc, char** argv)
 			{
 				ngl::sleep::seconds(1);
 				continue;
-			}			
+			}
 			for (int j = 0; j < lcmdvec.size() && j < lms.size(); ++j)
 			{
 				ngl::sleep::milliseconds(lms[j]);
@@ -761,4 +762,105 @@ bool start_robot(int argc, char** argv)
 		}
 	}
 	return true;
+}
+
+int ngl_main(int argc, char** argv)
+{
+	if (argc <= 3)
+	{
+		std::cout << "参数错误:EXE name areaid tab_servers::tcount" << std::endl;
+		return 0;
+	}
+
+	// # 名称
+	std::string lname = argv[1];
+
+	// # 区服id
+	int32_t larea = ngl::tools::lexical_cast<int32_t>(argv[2]);
+
+	// # 区服id下功能进程的序号
+	int32_t ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
+
+	// # 初始化关联枚举NODE_TYPE与字符串
+	nconfig::init();
+
+	nconfig::set_server(argv[1]);
+
+	// # 加载xml配置
+	nconfig::load("./config", std::format("{}_{}", lname, ltcount));
+
+	// # 加载csv配置
+	ngl::csvbase::set_path("./csv", lname);
+
+	const ngl::tab_servers* tab = ngl::ttab_servers::instance().tab(argv[1], larea, ltcount);
+	if (tab == nullptr)
+	{
+		return 0;
+	}
+
+	nconfig::set_nodeid(tab->m_id);
+
+	std::string lnodename;
+	if (larea < 0)
+	{
+		lnodename = std::format("node_{}__{}_{}", lname, -larea, ltcount);
+	}
+	else
+	{
+		lnodename = std::format("node_{}_{}_{}", lname, tab->m_area, ltcount);
+	}
+
+#ifdef WIN32
+	// # 设置控制台窗口名称
+	SetConsoleTitle(lnodename.c_str());
+#endif
+
+	Dumper::m_excname = lnodename;
+	switch (nconfig::node_type())
+	{
+	case ngl::DB:
+		start_db(argc, argv);
+		break;
+	case ngl::GAME:
+		start_game();
+		break;
+	case ngl::ACTORSERVER:
+		start_actor();
+		break;
+	case ngl::LOG:
+		start_log();
+		break;
+	case ngl::GATEWAY:
+		start_gateway();
+		break;
+	case ngl::LOGIN:
+		start_login();
+		break;
+	case ngl::WORLD:
+		start_world();
+		break;
+	case ngl::RELOADCSV:
+		start_csvserver();
+		break;
+	case ngl::ROBOT:
+		start_robot(argc, argv);
+		break;
+	case ngl::CROSS:
+		start_cross();
+		break;
+	case ngl::CROSSDB:
+		start_crossdb();
+		break;
+	case ngl::PUSHSERVERCONFIG:
+		start_pushserverconfig();
+		break;
+	default:
+		return 0;
+	}
+
+	while (1)
+	{
+		ngl::sleep::seconds(1);
+	}
+	return 0;
 }
