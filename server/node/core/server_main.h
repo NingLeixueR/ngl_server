@@ -449,7 +449,10 @@ bool start_log()
 
 	ngl::actor_client::instance();
 
-	ngl::tools::no_core_dump(ngl::sysconfig::logwritelevel() >= ngl::ELOG_MAX || ngl::sysconfig::logwritelevel() <= ngl::ELOG_NONE);
+	if (ngl::sysconfig::logwritelevel() >= ngl::ELOG_MAX || ngl::sysconfig::logwritelevel() <= ngl::ELOG_NONE)
+	{
+		ngl::tools::no_core_dump();
+	}
 
 	int32_t llogtype = ngl::ELOG_DEFAULT | ngl::ELOG_BI;
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
