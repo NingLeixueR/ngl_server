@@ -1,8 +1,8 @@
 #pragma once
 
-#include "pb_fieldnumber_copy.h"
 #include "ndb_modular.h"
 #include "threadtools.h"
+#include "pb_field.h"
 #include "tools.h"
 #include "type.h"
 
@@ -111,15 +111,11 @@ namespace ngl
 			}, true);
 
 		// # ÍË³ö¶©ÔÄ
-		actor::register_actor_s<
-			TDerived, np_channel_exit<T>
-		>(std::bind_front(&tnsp_server::handle), true);
 		actor::register_actor_s<TDerived, np_channel_exit<T>>(
 			[](TDerived* aactor, const message<np_channel_exit<T>>& adata)
 			{
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
 			}, true);
-		/**/
 	}
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>

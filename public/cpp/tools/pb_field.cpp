@@ -1,4 +1,5 @@
-#include "pb_fieldnumber_copy.h"
+#pragma once
+#include "pb_field.h"
 
 
 namespace ngl

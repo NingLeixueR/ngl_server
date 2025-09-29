@@ -141,6 +141,7 @@ int main(int argc, char** argv)
 			char ltmbuff[1024] = { 0 };
 			ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
 			*m_stream << ltmbuff << std::endl;
+			*m_stream << "#include \"pb_field.cpp\"" << std::endl;
 			return m_stream;
 		};
 
