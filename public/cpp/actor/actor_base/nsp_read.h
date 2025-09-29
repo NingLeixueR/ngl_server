@@ -42,7 +42,7 @@ namespace ngl
 			lpread->m_type = enp_channel_readall;
 			lpread->m_actor = aactor;
 			nsp_instance<type_nsp_read>::init(aactor->id_guid(), lpread);
-			lpread->register_handles();
+			lpread->init();
 			return *lpread;
 		}
 
@@ -53,7 +53,7 @@ namespace ngl
 			lpread->m_actor = aactor;
 			lpread->m_ids = aids;
 			nsp_instance<type_nsp_read>::init(aactor->id_guid(), lpread);
-			lpread->register_handles();
+			lpread->init();
 			return *lpread;
 		}
 
@@ -72,7 +72,7 @@ namespace ngl
 			m_callback.set_loadfinishfun(aid, afun);
 		}
 
-		void register_handles();
+		void init();
 
 		const T* getconst(i64_dataid adataid)
 		{
@@ -115,7 +115,7 @@ namespace ngl
 namespace ngl
 {
 	template <typename TDerived, typename TACTOR, typename T>
-	void nsp_read<TDerived, TACTOR, T>::register_handles()
+	void nsp_read<TDerived, TACTOR, T>::init()
 	{
 		if (m_isregister.exchange(false))
 		{
@@ -125,6 +125,38 @@ namespace ngl
 			nsp_instance<type_nsp_read>::template register_handle<TDerived, np_channel_check<T>>();
 			// ´¦Àí×¢²á»Ø¸´
 			nsp_instance<type_nsp_read>::template register_handle<TDerived, np_channel_read_register_reply<T>>();
+
+			std::set<i16_area> lareaset;
+			ttab_servers::instance().get_arealist_nonrepet(nconfig::m_nodeid, lareaset);
+
+			auto ltype = (ENUM_ACTOR)nguid::type(TACTOR::actorid());
+			for (i16_area area : lareaset)
+			{
+				m_nspserver[area] = nguid::make(ltype, area, nguid::none_actordataid());
+				m_register[area] = false;
+			}
+
+			i64_actorid lactorid = m_actor->id_guid();
+			for (std::pair<const i16_area, bool>& item : m_register)
+			{
+				i16_area larea = item.first;
+				wheel_parm lparm
+				{
+					.m_ms = 1000,
+					.m_intervalms = [](int64_t) {return 10000; } ,
+					.m_count = 0x7fffffff,
+					.m_fun = [larea, lactorid](const wheel_node* anode)
+					{
+						auto pro = std::make_shared<np_channel_check<T>>(
+							np_channel_check<T>{
+								.m_timer = anode->m_timerid,
+								.m_area = larea,
+							});
+						msg_info(*pro);
+						actor::send_actor(lactorid, nguid::make(), pro);
+					}
+				}; twheel::wheel().addtimer(lparm);
+			}
 		}
 	}
 
