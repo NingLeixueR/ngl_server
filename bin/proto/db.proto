@@ -44,12 +44,6 @@ message db_account
 	optional int32	marea			= 5;				// 区服id
 }
 
-message brief_activityvalues
-{
-	map<int32,int32> mactivity_rolelv = 1;		// 活动期间玩家等级变化值 key:活动id value:等级增加值
-	map<int32,int32> mactivity_rolegold = 2;	// 活动期间玩家获取金币量 key:活动id value:等级增加值
-}
-
 message brief_base
 {
 	optional string mname			= 1;					// 名字
@@ -61,12 +55,18 @@ message brief_base
 	optional int32 mcreateutc		= 7;					// 创角时间
 }
 
+message brief_activityvalues
+{
+	map<int32,int32> mactivity_rolelv = 1;		// 活动期间玩家等级变化值 key:活动id value:等级增加值
+	map<int32,int32> mactivity_rolegold = 2;	// 活动期间玩家获取金币量 key:活动id value:等级增加值
+}
+
 // ENUM_DB_BRIEF,			// 玩家简要数据
 message db_brief
 {
 	optional int64 mid				= 1;					// role id
-	brief_base mbase				= 2;					// 基本数据
-	optional brief_activityvalues mactivityvalues	= 3;	//活动值
+	brief_base mbase				= 2;					// 基本数据(actor_role write)
+	optional brief_activityvalues mactivityvalues	= 3;	// 活动值(actor_activity_manage write)
 }
 
 // ENUM_DB_ROLE,			// 玩家数据

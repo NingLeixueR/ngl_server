@@ -28,8 +28,6 @@ namespace ngl
 		void initdata()final
 		{
 			log_error()->print("friends###loaddb_finish {}", data());
-			
-			tdb_brief::nsp_cread<actor_friends>::instance_readall((actor_friends*)get_actor());
 		}
 
 		bool check_friends(
