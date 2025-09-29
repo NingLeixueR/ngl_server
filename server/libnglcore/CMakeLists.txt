@@ -15,7 +15,7 @@ SOURCE_GROUP("Protobuf Source Files" FILES ${CORE_PROTOBUF_LIST_CSRC})
 
 ADD_DEFINITIONS(-DNGL_EXPORT)
 
-ADD_LIBRARY(libnglcore SHARED 
+ADD_LIBRARY(nglcore SHARED 
 	${CORE_LIST_INCLUDE}
 	${CORE_LIST_SRC}
 	${CORE_LIST_CSRC}
@@ -24,13 +24,13 @@ ADD_LIBRARY(libnglcore SHARED
 
 #set_target_properties
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
-	target_link_libraries(libnglcore protobuf)
-	target_link_libraries(libnglcore pthread)
-	target_link_libraries(libnglcore uuid)
-	target_link_libraries(libnglcore mysqlclient)
-	target_link_libraries(libnglcore curl)
-	target_link_libraries(libnglcore hiredis)
-	target_link_libraries(libnglcore lua)
+	target_link_libraries(nglcore protobuf)
+	target_link_libraries(nglcore pthread)
+	target_link_libraries(nglcore uuid)
+	target_link_libraries(nglcore mysqlclient)
+	target_link_libraries(nglcore curl)
+	target_link_libraries(nglcore hiredis)
+	target_link_libraries(nglcore lua)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
