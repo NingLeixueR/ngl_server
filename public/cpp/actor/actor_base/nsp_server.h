@@ -38,8 +38,6 @@ namespace ngl
 		// # 订阅注册处理
 		static void init(ndb_modular<ENUMDB, T, TDerived>* adbmodule);
 
-		// # 数据同步
-		static void channel_data(TDerived* aactor, const message<np_channel_data<T>>& adata);
 
 		// # 出现新结点，广播给其他结点
 		static void broadcast_addnode(
@@ -52,13 +50,17 @@ namespace ngl
 
 		static void sync_data(i64_nodeid anodeid);
 
-		static void channel_register_read(TDerived*, message<np_channel_read_register<T>>& adata);
 
 		static bool check_map(const std::set<int32_t>& aset1, const std::set<int32_t>& aset2);
 
-		static void channel_register_write(TDerived*, message<np_channel_write_register<T>>& adata);
+		// # 数据同步
+		static void handle(TDerived* aactor, const message<np_channel_data<T>>& adata);
 
-		static void channel_exit(TDerived*, message<np_channel_exit<T>>& adata);
+		static void handle(TDerived*, const message<np_channel_read_register<T>>& adata);
+
+		static void handle(TDerived*, const message<np_channel_write_register<T>>& adata);
+
+		static void handle(TDerived*, const message<np_channel_exit<T>>& adata);
 	};
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
@@ -89,23 +91,39 @@ namespace ngl
 
 		// # 订阅注册处理
 		// 只读注册
-		actor::register_actor_s<
-			TDerived, np_channel_read_register<T>
-		>(std::bind_front(&tnsp_server::channel_register_read), true);
+		actor::register_actor_s<TDerived, np_channel_data<T>>(
+			[](TDerived* aactor, const message<np_channel_data<T>>& adata)
+			{
+				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
+			}, true);
+
+		actor::register_actor_s<TDerived, np_channel_read_register<T>>(
+			[](TDerived* aactor, const message<np_channel_read_register<T>>& adata)
+			{
+				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
+			}, true);
 
 		// # 订阅数据被修改
-		actor::register_actor_s<
-			TDerived, np_channel_data<T>
-		>(std::bind_front(&tnsp_server::channel_data), true);
+		actor::register_actor_s<TDerived, np_channel_data<T>>(
+			[](TDerived* aactor, const message<np_channel_data<T>>& adata)
+			{
+				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
+			}, true);
 
 		// # 退出订阅
 		actor::register_actor_s<
 			TDerived, np_channel_exit<T>
-		>(std::bind_front(&tnsp_server::channel_exit), true);
+		>(std::bind_front(&tnsp_server::handle), true);
+		actor::register_actor_s<TDerived, np_channel_exit<T>>(
+			[](TDerived* aactor, const message<np_channel_exit<T>>& adata)
+			{
+				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
+			}, true);
+		/**/
 	}
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	void nsp_server<ENUMDB, TDerived, T>::channel_data(TDerived* aactor, const message<np_channel_data<T>>& adata)
+	void nsp_server<ENUMDB, TDerived, T>::handle(TDerived* aactor, const message<np_channel_data<T>>& adata)
 	{
 		const np_channel_data<T>* recv = adata.get_data();
 		const std::map<int64_t, T>& lmap = recv->m_data;
@@ -234,7 +252,7 @@ namespace ngl
 	}
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	void nsp_server<ENUMDB, TDerived, T>::channel_register_read(TDerived*, message<np_channel_read_register<T>>& adata)
+	void nsp_server<ENUMDB, TDerived, T>::handle(TDerived*, const message<np_channel_read_register<T>>& adata)
 	{
 		const np_channel_read_register<T>* recv = adata.get_data();
 		if (recv->m_type == enp_channel_readall)
@@ -311,7 +329,7 @@ namespace ngl
 	};
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	void nsp_server<ENUMDB, TDerived, T>::channel_register_write(TDerived*, message<np_channel_write_register<T>>& adata)
+	void nsp_server<ENUMDB, TDerived, T>::handle(TDerived*, const message<np_channel_write_register<T>>& adata)
 	{
 		const np_channel_write_register<T>* recv = adata.get_data();
 
@@ -388,7 +406,7 @@ namespace ngl
 	}
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	void nsp_server<ENUMDB, TDerived, T>::channel_exit(TDerived*, message<np_channel_exit<T>>& adata)
+	void nsp_server<ENUMDB, TDerived, T>::handle(TDerived*, const message<np_channel_exit<T>>& adata)
 	{
 
 	}
