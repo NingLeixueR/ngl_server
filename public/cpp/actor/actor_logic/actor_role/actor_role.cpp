@@ -3,7 +3,8 @@
 #include "actor_events.h"
 #include "manage_curl.h"
 #include "nsp_server.h"
-#include "nsp_client.h"
+#include "nsp_read.h"
+#include "nsp_write.h"
 #include "actor_role.h"
 #include "nregister.h"
 #include "nforward.h"
@@ -65,10 +66,10 @@ namespace ngl
 		set_timer(tparm);
 		*/
 
-		
-		tdb_brief::nsp_cli<actor_role>::instance(id_guid(), true).init_parts(this, { id_guid() });
-		tdb_brief::nsp_cli<actor_role>::instance(id_guid()).set_changedata_fun(
-			[this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
+		tdb_brief::nsp_cwrite<actor_role>::instance_writepart(this, { id_guid() }, { pb_field::field_number<pbdb::db_brief>("mbase") });
+		tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).set_changedatafun(
+			id_guid()
+			, [this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 			{
 				if (afirstsynchronize)
 				{// 数据完全加载
@@ -85,8 +86,7 @@ namespace ngl
 		lparm.m_actorid = id_guid();
 		actor_events_logic::trigger_event(lparm);
 
-		tdb_brief::nsp_cli<actor_role>::instance(id_guid()).exit();
-		tdb_brief::nsp_cli<actor_role>::freensp(id_guid());
+		tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).exit();
 
 		m_drop.exit();
 	}
@@ -293,7 +293,7 @@ namespace ngl
 		*pro->mutable_mrole()	= *lpdinfo;
 		*pro->mutable_mbag()	= *lpdbag;
 		*pro->mutable_mtask()	= *lpdtask;
-		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_role>::instance(id_guid()).getconst(id_guid());
+		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).getconst(id_guid());
 		if (lpbrief != nullptr)
 		{
 			*pro->mutable_mbrief() = *lpbrief;

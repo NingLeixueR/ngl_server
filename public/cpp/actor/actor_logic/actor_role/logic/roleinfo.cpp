@@ -16,12 +16,35 @@ namespace ngl
 
 	pbdb::db_brief* roleinfo::get_brief()
 	{
-		return tdb_brief::nsp_cli<actor_role>::instance(get_actor()->id_guid()).get(get_actor()->id_guid());
+		static tdb_brief::nsp_cwrite<actor_role>* lpdb = nsp_instance<tdb_brief::nsp_cwrite<actor_role>>::nclient(get_actor()->id_guid());
+		if (lpdb == nullptr)
+		{
+			tools::no_core_dump();
+			return nullptr;
+		}
+		return lpdb->get(get_actor()->id_guid());
+	}
+
+	void roleinfo::change()
+	{
+		static tdb_brief::nsp_cwrite<actor_role>* lpdb = nsp_instance<tdb_brief::nsp_cwrite<actor_role>>::nclient(get_actor()->id_guid());
+		if (lpdb == nullptr)
+		{
+			tools::no_core_dump();
+			return;
+		}
+		lpdb->change();
 	}
 
 	const pbdb::db_brief* roleinfo::get_constbrief()
 	{
-		return tdb_brief::nsp_cli<actor_role>::instance(get_actor()->id_guid()).getconst(get_actor()->id_guid());
+		static tdb_brief::nsp_cwrite<actor_role>* lpdb = nsp_instance<tdb_brief::nsp_cwrite<actor_role>>::nclient(get_actor()->id_guid());
+		if (lpdb == nullptr)
+		{
+			tools::no_core_dump();
+			return nullptr;
+		}
+		return lpdb->getconst(get_actor()->id_guid());
 	}
 
 	void roleinfo::change_event(eevents_logic type, int abegvalue, int32_t anowvalue)
@@ -44,7 +67,7 @@ namespace ngl
 			);
 			return -1;
 		}
-		return lrb->mlv();
+		return lrb->m_base().mlv();
 	}
 
 	void roleinfo::change_lv(int avalues)
@@ -59,10 +82,10 @@ namespace ngl
 			);
 			return;
 		}
-		int32_t loldvalue = lrb->mlv();
-		lrb->set_mlv(loldvalue + avalues);
-		tdb_brief::nsp_cli<actor_role>::instance(get_actor()->id_guid()).change(get_actor()->id_guid());
-		static_task::update_change(nactor(), ETaskRoleLv, lrb->mlv());
+		int32_t loldvalue = lrb->m_base().mlv();
+		lrb->mutable_m_base()->set_mlv(loldvalue + avalues);
+		change();
+		static_task::update_change(nactor(), ETaskRoleLv, lrb->m_base().mlv());
 		change_event(eevents_logic::eevents_logic_rolelevelchange, loldvalue, loldvalue + avalues);
 	}
 
@@ -77,7 +100,7 @@ namespace ngl
 			);
 			return -1;
 		}
-		return lrb->mvip();
+		return lrb->m_base().mvip();
 	}
 
 	void roleinfo::change_vip(int avalues)
@@ -92,9 +115,9 @@ namespace ngl
 			);
 			return;
 		}
-		lrb->set_mvip(lrb->mvip() + avalues);
-		tdb_brief::nsp_cli<actor_role>::instance(get_actor()->id_guid()).change(get_actor()->id_guid());
-		static_task::update_change(nactor(), ETaskRoleLv, lrb->mlv());
+		lrb->mutable_m_base()->set_mvip(lrb->m_base().mvip() + avalues);
+		change();
+		static_task::update_change(nactor(), ETaskRoleLv, lrb->m_base().mlv());
 	}
 
 	const char* roleinfo::name()
@@ -108,7 +131,7 @@ namespace ngl
 			);
 			return "";
 		}
-		return lrb->mname().c_str();
+		return lrb->m_base().mname().c_str();
 	}
 
 	void roleinfo::rename(const char* aname)
@@ -123,8 +146,8 @@ namespace ngl
 			);
 			return;
 		}
-		lrb->set_mname(aname);
-		tdb_brief::nsp_cli<actor_role>::instance(get_actor()->id_guid()).change(get_actor()->id_guid());
+		lrb->mutable_m_base()->set_mname(aname);
+		change();
 	}
 
 	int32_t roleinfo::gold()
@@ -138,7 +161,7 @@ namespace ngl
 			);
 			return -1;
 		}
-		return lrb->mmoneygold();
+		return lrb->m_base().mmoneygold();
 	}
 
 	void roleinfo::change_gold(int avalues)
@@ -153,12 +176,12 @@ namespace ngl
 			);
 			return;
 		}
-		int32_t loldvalue = lrb->mmoneygold();
-		lrb->set_mmoneygold(loldvalue + avalues);
-		tdb_brief::nsp_cli<actor_role>::instance(get_actor()->id_guid()).change(get_actor()->id_guid());
+		int32_t loldvalue = lrb->m_base().mmoneygold();
+		lrb->mutable_m_base()->set_mmoneygold(loldvalue + avalues);
+		change();
 
 		change_event(eevents_logic::eevents_logic_rolegoldchange, loldvalue, loldvalue + avalues);
-		log_bi()->print("add_gold|{}|{}|{}|{}", lrb->mid(), lrb->mname(), loldvalue, lrb->mmoneygold());
+		log_bi()->print("add_gold|{}|{}|{}|{}", lrb->mid(), lrb->m_base().mname(), loldvalue, lrb->m_base().mmoneygold());
 	}
 
 	int32_t roleinfo::silver()
@@ -172,7 +195,7 @@ namespace ngl
 			);
 			return -1;
 		}
-		return lrb->mmoneysilver();
+		return lrb->m_base().mmoneysilver();
 	}
 
 	void roleinfo::change_silver(int avalues)
@@ -187,10 +210,10 @@ namespace ngl
 			);
 			return;
 		}
-		int32_t loldvalue = lrb->mmoneysilver();
-		lrb->set_mmoneysilver(loldvalue + avalues);
-		tdb_brief::nsp_cli<actor_role>::instance(get_actor()->id_guid()).change(get_actor()->id_guid());
-		log_bi()->print("add_silver|{}|{}|{}|{}", lrb->mid(), lrb->mname(), loldvalue, lrb->mmoneysilver());
+		int32_t loldvalue = lrb->m_base().mmoneysilver();
+		lrb->mutable_m_base()->set_mmoneysilver(loldvalue + avalues);
+		change();
+		log_bi()->print("add_silver|{}|{}|{}|{}", lrb->mid(), lrb->m_base().mname(), loldvalue, lrb->m_base().mmoneysilver());
 	}
 
 	int32_t roleinfo::notalkutc()
@@ -204,7 +227,7 @@ namespace ngl
 			);
 			return -1;
 		}
-		return lrb->mnotalkutc();
+		return lrb->m_base().mnotalkutc();
 	}
 
 	void roleinfo::change_notalkutc(int avalues)
@@ -219,8 +242,8 @@ namespace ngl
 			);
 			return;
 		}
-		lrb->set_mnotalkutc(avalues);
-		tdb_brief::nsp_cli<actor_role>::instance(get_actor()->id_guid()).change(get_actor()->id_guid());
+		lrb->mutable_m_base()->set_mnotalkutc(avalues);
+		change();
 	}
 
 	bool roleinfo::bantalk()
@@ -235,7 +258,7 @@ namespace ngl
 			return false;
 		}
 		int32_t lnow = (int32_t)localtime::gettime();
-		return lnow < lrb->mnotalkutc();
+		return lnow < lrb->m_base().mnotalkutc();
 	}
 
 }// namespace ngl

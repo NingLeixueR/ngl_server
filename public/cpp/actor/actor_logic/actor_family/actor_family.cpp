@@ -44,15 +44,14 @@ namespace ngl
 		set_timer(tparm);
 		*/
 
-		tdb_brief::nsp_cli<actor_family>::instance(id_guid(), true).init_onlyread(this);
+		tdb_brief::nsp_cread<actor_family>::instance_readall(this);
 		m_drop.init(this, {});
 
 	}
 
 	void actor_family::erase_actor_before()
 	{
-		tdb_brief::nsp_cli<actor_family>::instance(id_guid()).exit();
-		tdb_brief::nsp_cli<actor_family>::freensp(id_guid());
+		tdb_brief::nsp_cread<actor_family>::instance(id_guid()).exit();
 		m_drop.exit();
 	}
 

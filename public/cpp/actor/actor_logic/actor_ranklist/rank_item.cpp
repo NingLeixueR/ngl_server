@@ -6,6 +6,12 @@ namespace ngl
 {
 	const pbdb::db_brief* rank_item::get()const
 	{
-		return tdb_brief::nsp_cli<actor_ranklist>::instance(actor_ranklist::actorid()).getconst(m_actorid);
+		static tdb_brief::nsp_cread<actor_ranklist>* lpdb = nsp_instance<tdb_brief::nsp_cread<actor_ranklist>>::nclient(actor_ranklist::actorid());
+		if (lpdb == nullptr)
+		{
+			tools::no_core_dump();
+			return nullptr;
+		}
+		return lpdb->getconst(m_actorid);
 	}
 }//namespace ngl

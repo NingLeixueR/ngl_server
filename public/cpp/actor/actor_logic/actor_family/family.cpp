@@ -264,7 +264,7 @@ namespace ngl
 		*pro->mutable_minfo() = *lpfamilyconst;
 		for (int64_t aroleid : lpfamilyconst->mmember())
 		{
-			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_family>::instance(get_actor()->id_guid()).getconst(aroleid);
+			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_family>::instance(get_actor()->id_guid()).getconst(aroleid);
 			if (lpbrief != nullptr)
 			{
 				*pro->add_mmember() = *lpbrief;

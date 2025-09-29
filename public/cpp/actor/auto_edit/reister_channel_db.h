@@ -4,8 +4,10 @@ namespace ngl
 	void _reister_channel_db()
 	{
 		tprotocol::tp_customs::template func <
-			np_channel_register<T>
-			, np_channel_register_reply<T>
+			np_channel_write_register<T>
+			, np_channel_write_register_reply<T>
+			, np_channel_read_register<T>
+			, np_channel_read_register_reply<T>
 			, np_channel_data<T>
 			, np_channel_exit<T>
 			, np_channel_check<T>

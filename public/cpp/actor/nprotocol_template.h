@@ -329,30 +329,74 @@ namespace ngl
 
 		dprotocol(np_actorswitch_process, m_actor, m_serverid, m_toserverid, m_pram);
 	};
-		
-	template <typename TDATA>
-	struct np_channel_register
-	{
-		std::string m_msg;										// 调试查看信息
-		i64_actorid	m_actorid		= nguid::make();			// 子节点id
-		bool m_onlyread				= true;						// 是否只读
-		std::set<i64_actorid> m_dataid;							// 关注哪些数据,结点可读可写
 
-		dprotocol(np_channel_register, m_msg, m_actorid, m_onlyread, m_dataid)
+
+	enum enp_channel
+	{
+		enp_channel_readall		= 1,					// 只读全部
+		enp_channel_writeall	= 2,					// 可写全部
+		enp_channel_readpart	= 3,					// 只读部分
+		enp_channel_writepart	= 4,					// 可写部分
+	};
+		
+	// 只读注册
+	template <typename TDATA>
+	struct np_channel_read_register
+	{
+		std::string		m_msg;									// 调试查看信息
+		i64_actorid		m_actorid = nguid::make();				// 子节点id
+		enp_channel		m_type;									// 类型
+		//[[ 只有 <m_type == enp_channel_readpart> 下面数据有效
+		std::set<i64_actorid> m_readids;						// 只读哪些数据
+		//]]
+		// 结点只关心哪些字段编号
+		std::set<i32_fieldnumber> m_fieldnumbers;
+
+		dprotocol(np_channel_read_register, m_msg, m_actorid, m_type, m_readids, m_fieldnumbers)
 	};
 
 	template <typename TDATA>
-	struct np_channel_register_reply
+	struct np_channel_write_register
+	{
+		std::string		m_msg;									// 调试查看信息
+		i64_actorid		m_actorid = nguid::make();				// 子节点id
+		enp_channel		m_type;									// 类型
+		//[[ 只有 <m_type == enp_channel_writepart> 下面数据有效
+		std::set<i64_actorid> m_writeids;						// 写哪些数据
+		//]]
+		std::set<int32_t> m_fieldnumbers;						// 可修改哪些字段编号
+
+		dprotocol(np_channel_write_register, m_msg, m_actorid, m_type, m_writeids, m_fieldnumbers)
+	};
+
+	template <typename TDATA>
+	struct np_channel_read_register_reply
 	{
 		std::string m_msg;											// 调试查看信息
 		i64_actorid m_actorid;										// 子节点id
-		std::set<i64_actorid> m_onlyreads;							// 只读全部数据
-		std::set<i64_actorid> m_writealls;							// 读/写全部数据
-		// m_publishlist_write.first:<结点id>
-		// m_publishlist_write.second:<读写的数据id列表>
-		std::map<i64_actorid, std::set<i64_actorid>>			m_publishlist;
+		// 结点可修改哪些字段编号
+		std::map<i16_actortype, std::set<i32_fieldnumber>> m_node_fieldnumbers;
 
-		dprotocol(np_channel_register_reply, m_msg, m_actorid, m_onlyreads, m_writealls, m_publishlist)
+		dprotocol(np_channel_read_register_reply, m_msg, m_actorid, m_node_fieldnumbers)
+	};
+
+
+	template <typename TDATA>
+	struct np_channel_write_register_reply
+	{
+		std::string m_msg;											// 调试查看信息
+		i64_actorid m_actorid;										// 子节点id
+
+		std::set<i64_nodeid> m_nodereadalls;						// 读全部数据的结点
+		std::set<i64_nodeid> m_nodewritealls;						// 写全部数据的结点
+
+		// 部分读/写
+		std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
+
+		// 结点可修改哪些字段编号
+		std::map<i16_actortype, std::set<i32_fieldnumber>> m_node_fieldnumbers;
+
+		dprotocol(np_channel_register_reply, m_msg, m_actorid)
 	};
 
 	template <typename TDATA>
@@ -363,11 +407,16 @@ namespace ngl
 		bool m_add = true;										// 增加还是删除
 		// add
 		// [
-		bool m_onlyread = true;									// 是否只读
-		std::set<i64_actorid> m_dataid;							// 关注哪些数据,结点可读可写
+		enp_channel		m_type;									// 类型
+		//if (m_type == enp_channel_readpart || m_type == enp_channel_writepart)
+		//{
+		// (部分读/写)数据被哪些结点关心
+		std::set<i64_dataid> m_part;
+		//}
 		// ]
+		std::set<i32_fieldnumber> m_fieldnumbers;
 
-		dprotocol(np_channel_dataid_sync, m_msg, m_actorid, m_add, m_onlyread, m_dataid)
+		dprotocol(np_channel_dataid_sync, m_msg, m_actorid, m_add, m_type, m_part, m_fieldnumbers)
 	};
 
 	template <typename TDATA>
@@ -382,11 +431,13 @@ namespace ngl
 	struct np_channel_data
 	{
 		std::string m_msg;									// 调试查看信息
+		i64_nodeid m_actorid = 0;
 		bool m_firstsynchronize = false;					// 首次同步
 		bool m_recvfinish = false;
 		std::map<int64_t, TDATA> m_data;					// 1、数据同步2、数据修改3、数据增加
 		std::vector<int64_t> m_deldata;						// 数据被删除
-		def_protocol(np_channel_data<TDATA>, m_msg, m_firstsynchronize, m_recvfinish, m_data)
+
+		def_protocol(np_channel_data<TDATA>, m_msg, m_firstsynchronize, m_recvfinish, m_data, m_deldata)
 	};
 
 	template <typename TDATA>

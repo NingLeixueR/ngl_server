@@ -41,13 +41,12 @@ namespace ngl
 		}
 		set_timer(tparm);
 
-		tdb_brief::nsp_cli<actor_example_match>::instance(id_guid(), true).init_onlyread(this);
+		tdb_brief::nsp_cread<actor_example_match>::instance_readall(this);
 	}
 
 	void actor_example_match::erase_actor_before()
 	{
-		tdb_brief::nsp_cli<actor_example_match>::instance(id_guid()).exit();
-		tdb_brief::nsp_cli<actor_example_match>::freensp(id_guid());
+		tdb_brief::nsp_cread<actor_example_match>::instance(id_guid()).exit();
 	}
 
 	void actor_example_match::loaddb_finish(bool adbishave) 
@@ -77,7 +76,7 @@ namespace ngl
 		pro->set_mroomready(aroom->m_roomready);
 		for (const auto& [id, info] : aroom->m_players)
 		{
-			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_example_match>::instance(id_guid()).getconst(id);
+			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_example_match>::instance(id_guid()).getconst(id);
 			if (lpbrief != nullptr)
 			{
 				pbexample::PLAYER& lplayer = *pro->mutable_mplayers()->Add();
@@ -124,7 +123,7 @@ namespace ngl
 
 	room* actor_example_match::matching_room(i64_actorid aroleid, pbexample::EPLAY_TYPE atype)
 	{
-		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_example_match>::instance(id_guid()).getconst(aroleid);
+		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_example_match>::instance(id_guid()).getconst(aroleid);
 		if (lpbrief == nullptr)
 		{
 			return nullptr;

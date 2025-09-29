@@ -3,7 +3,8 @@
 #pragma once
 
 #include "ndb_modular.h"
-#include "nsp_client.h"
+#include "nsp_read.h"
+#include "nsp_write.h"
 #include "nsp_server.h"
 #include "actor_db.h"
 #include "db.pb.h"

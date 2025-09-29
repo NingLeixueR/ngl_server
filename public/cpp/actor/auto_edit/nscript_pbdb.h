@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-09-08 14:23:44】
+ // 创建时间【2025-09-23 11:27:25】
 
 #pragma once
 #include "ndefine.h"
@@ -121,6 +121,60 @@ namespace ngl
            ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::brief_activityvalues& adata)
+       {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
+       }
+   };
+   template <>
+   struct serialize_lua<pbdb::brief_base>
+   {
+       static void stack_push(lua_State* L, const pbdb::brief_base& adata)
+       {
+            ngl::nlua_table::table_push(L, "mname", adata.mname(),"mlv", adata.mlv(),"mmoneygold", adata.mmoneygold(),"mmoneysilver", adata.mmoneysilver(),"mvip", adata.mvip(),"mnotalkutc", adata.mnotalkutc(),"mcreateutc", adata.mcreateutc());
+       }
+       static bool stack_pop(lua_State* L, pbdb::brief_base& adata, bool apop = true)
+       {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
+           std::string lmname;
+           int32_t lmlv;
+           int32_t lmmoneygold;
+           int32_t lmmoneysilver;
+           int32_t lmvip;
+           int32_t lmnotalkutc;
+           int32_t lmcreateutc;
+           if(!ngl::nlua_table::table_pop(L, "mname", lmname, "mlv", lmlv, "mmoneygold", lmmoneygold, "mmoneysilver", lmmoneysilver, "mvip", lmvip, "mnotalkutc", lmnotalkutc, "mcreateutc", lmcreateutc))
+           {
+               return false;
+           }
+           adata.set_mname(lmname);
+           adata.set_mlv(lmlv);
+           adata.set_mmoneygold(lmmoneygold);
+           adata.set_mmoneysilver(lmmoneysilver);
+           adata.set_mvip(lmvip);
+           adata.set_mnotalkutc(lmnotalkutc);
+           adata.set_mcreateutc(lmcreateutc);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
+           return true;
+       }
+       static void table_push(lua_State * L, const char* aname, const pbdb::brief_base& adata)
+       {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
+       }
+       static bool table_pop(lua_State * L, const char* aname, pbdb::brief_base& adata)
        {
            ngl::nlua_table::table_start_pop(L, aname);
            if (!stack_pop(L, adata, false))
@@ -320,7 +374,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_brief& adata)
        {
-            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mname", adata.mname(),"mlv", adata.mlv(),"mmoneygold", adata.mmoneygold(),"mmoneysilver", adata.mmoneysilver(),"mvip", adata.mvip(),"mnotalkutc", adata.mnotalkutc(),"mcreateutc", adata.mcreateutc(),"mactivityvalues", adata.mactivityvalues());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"m_base", adata.m_base(),"mactivityvalues", adata.mactivityvalues());
        }
        static bool stack_pop(lua_State* L, pbdb::db_brief& adata, bool apop = true)
        {
@@ -329,25 +383,11 @@ namespace ngl
                return true;
            }
            int64_t lmid;
-           std::string lmname;
-           int32_t lmlv;
-           int32_t lmmoneygold;
-           int32_t lmmoneysilver;
-           int32_t lmvip;
-           int32_t lmnotalkutc;
-           int32_t lmcreateutc;
-           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mname", lmname, "mlv", lmlv, "mmoneygold", lmmoneygold, "mmoneysilver", lmmoneysilver, "mvip", lmvip, "mnotalkutc", lmnotalkutc, "mcreateutc", lmcreateutc, "mactivityvalues",  *adata.mutable_mactivityvalues()))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "m_base",  *adata.mutable_m_base(), "mactivityvalues",  *adata.mutable_mactivityvalues()))
            {
                return false;
            }
            adata.set_mid(lmid);
-           adata.set_mname(lmname);
-           adata.set_mlv(lmlv);
-           adata.set_mmoneygold(lmmoneygold);
-           adata.set_mmoneysilver(lmmoneysilver);
-           adata.set_mvip(lmvip);
-           adata.set_mnotalkutc(lmnotalkutc);
-           adata.set_mcreateutc(lmcreateutc);
            if (apop)
            {
                lua_pop(L, 1);

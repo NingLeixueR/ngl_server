@@ -50,18 +50,23 @@ message brief_activityvalues
 	map<int32,int32> mactivity_rolegold = 2;	// 活动期间玩家获取金币量 key:活动id value:等级增加值
 }
 
+message brief_base
+{
+	optional string mname			= 1;					// 名字
+	optional int32 mlv				= 2;					// 等级
+	optional int32 mmoneygold		= 3;					// 金币
+	optional int32 mmoneysilver		= 4;					// 银币
+	optional int32 mvip				= 5;					// vip等级
+	optional int32 mnotalkutc		= 6;					// 被禁言的期限
+	optional int32 mcreateutc		= 7;					// 创角时间
+}
+
 // ENUM_DB_BRIEF,			// 玩家简要数据
 message db_brief
 {
-	optional int64 mid				= 1;				// role id
-	optional string mname			= 2;				// 名字
-	optional int32 mlv				= 3;				// 等级
-	optional int32 mmoneygold		= 4;				// 金币
-	optional int32 mmoneysilver	= 5;				// 银币
-	optional int32 mvip			= 6;				// vip等级
-	optional int32 mnotalkutc		= 7;				// 被禁言的期限
-	optional int32 mcreateutc		= 8;				// 创角时间
-	optional brief_activityvalues mactivityvalues	= 9;	//活动值
+	optional int64 mid				= 1;					// role id
+	brief_base mbase				= 2;					// 基本数据
+	optional brief_activityvalues mactivityvalues	= 3;	//活动值
 }
 
 // ENUM_DB_ROLE,			// 玩家数据

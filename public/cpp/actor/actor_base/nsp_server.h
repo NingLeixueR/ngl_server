@@ -1,347 +1,501 @@
 #pragma once
 
+#include "pb_fieldnumber_copy.h"
 #include "ndb_modular.h"
-#include <algorithm>
-#include <ranges>
+#include "threadtools.h"
+#include "tools.h"
+#include "type.h"
+
+#include "ndb_modular.h"
 
 namespace ngl
 {
-	//# 订阅/发布[数据副本]
-	//# nsp_server负责分发数据,当数据发生变化
 	template <
 		pbdb::ENUM_DB ENUMDB,	// 数据类型枚举
 		typename TDerived,		// 寄宿的actor
-		typename TDATA			// 数据类型
+		typename T			// 数据类型
 	>
 	class nsp_server
 	{
+		// 结点可修改哪些字段编号
+		static std::map<i16_actortype, std::set<i32_fieldnumber>> m_noderead_fieldnumbers;
+		static std::map<i16_actortype, std::set<i32_fieldnumber>> m_nodewrite_fieldnumbers;
+
+		// (部分读/写)数据被哪些结点关心
+		static std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
+
+		// 读全部数据的结点
+		static std::set<i64_nodeid> m_nodereadalls;
+
+		// 写全部数据的结点
+		static std::set<i64_nodeid> m_nodewritealls; // 哪些结点写全部数据
+
+		// 数据
+		static ndb_modular<ENUMDB, T, TDerived>* m_dbmodule;
 	public:
-		using tnsp_server = nsp_server<ENUMDB, TDerived, TDATA>;
-		enum
+		using tnsp_server = nsp_server<ENUMDB, TDerived, T>;
+
+		// # 订阅注册处理
+		static void init(ndb_modular<ENUMDB, T, TDerived>* adbmodule);
+
+		// # 数据同步
+		static void channel_data(TDerived* aactor, const message<np_channel_data<T>>& adata);
+
+		// # 出现新结点，广播给其他结点
+		static void broadcast_addnode(
+			i64_nodeid anodeid
+			, enp_channel atype
+			, const std::set<i64_dataid>& areadids
+			, const std::set<i64_dataid>& awriteids
+			, const std::set<i32_fieldnumber>& afieldnumbers
+		);
+
+		static void sync_data(i64_nodeid anodeid);
+
+		static void channel_register_read(TDerived*, message<np_channel_read_register<T>>& adata);
+
+		static bool check_map(const std::set<int32_t>& aset1, const std::set<int32_t>& aset2);
+
+		static void channel_register_write(TDerived*, message<np_channel_write_register<T>>& adata);
+
+		static void channel_exit(TDerived*, message<np_channel_exit<T>>& adata);
+	};
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	std::map<i16_actortype, std::set<i32_fieldnumber>> nsp_server<ENUMDB, TDerived, T>::m_noderead_fieldnumbers;
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	std::map<i16_actortype, std::set<i32_fieldnumber>> nsp_server<ENUMDB, TDerived, T>::m_nodewrite_fieldnumbers;
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> nsp_server<ENUMDB, TDerived, T>::m_part;
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	std::set<i64_nodeid> nsp_server<ENUMDB, TDerived, T>::m_nodereadalls;
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	std::set<i64_nodeid> nsp_server<ENUMDB, TDerived, T>::m_nodewritealls;
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	ndb_modular<ENUMDB, T, TDerived>* nsp_server<ENUMDB, TDerived, T>::m_dbmodule;
+}//namespace ngl
+
+namespace ngl
+{
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	void nsp_server<ENUMDB, TDerived, T>::init(ndb_modular<ENUMDB, T, TDerived>* adbmodule)
+	{
+		m_dbmodule = adbmodule;
+
+		// # 订阅注册处理
+		// 只读注册
+		actor::register_actor_s<
+			TDerived, np_channel_read_register<T>
+		>(std::bind_front(&tnsp_server::channel_register_read), true);
+
+		// # 订阅数据被修改
+		actor::register_actor_s<
+			TDerived, np_channel_data<T>
+		>(std::bind_front(&tnsp_server::channel_data), true);
+
+		// # 退出订阅
+		actor::register_actor_s<
+			TDerived, np_channel_exit<T>
+		>(std::bind_front(&tnsp_server::channel_exit), true);
+	}
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	void nsp_server<ENUMDB, TDerived, T>::channel_data(TDerived* aactor, const message<np_channel_data<T>>& adata)
+	{
+		const np_channel_data<T>* recv = adata.get_data();
+		const std::map<int64_t, T>& lmap = recv->m_data;
+		for (const auto& lpair : lmap)
 		{
-			ESEND_MAX_COUNT = 100,
-		};
-	private:
-		nsp_server() = delete;
-		nsp_server(const nsp_server&) = delete;
-		nsp_server& operator=(const nsp_server&) = delete;
-
-		static std::set<i64_actorid>							m_onlyreads;								// 只读全部数据
-		static std::set<i64_actorid>							m_writealls;								// 读/写全部数据
-		// m_publishlist_write.first:<结点id>
-		// m_publishlist_write.second:<读写的数据id列表>
-		static std::map<i64_actorid, std::set<i64_actorid>>		m_publishlist;
-
-		static ndb_modular<ENUMDB, TDATA, TDerived>*			m_dbmodule;
-
-		template <typename TX>
-		static void msg_info(TX& adata)
+			data_modified<T>& ldata = m_dbmodule->get(lpair.first);
+			data_modified_continue_get(lpddata, ldata);
+			pb_field::copy(lpair.second, &(*lpddata), m_nodewrite_fieldnumbers[nguid::type(recv->m_actorid)]);
+		}
+		for (int64_t dataid : recv->m_deldata)
 		{
-			adata.m_msg = std::format("{}:{}", tools::type_name<TDerived>(), tools::type_name<TDATA>());
+			m_dbmodule->erase(dataid);
+		}
+	}
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	void nsp_server<ENUMDB, TDerived, T>::broadcast_addnode(
+		i64_nodeid anodeid
+		, enp_channel atype
+		, const std::set<i64_dataid>& areadids
+		, const std::set<i64_dataid>& awriteids
+		, const std::set<i32_fieldnumber>& afieldnumbers
+	)
+	{
+		if (!areadids.empty() && !awriteids.empty())
+		{
+			tools::no_core_dump();
 		}
 
-		static void log(const char* amessage)
+		auto pro = std::make_shared<np_channel_dataid_sync<T>>();
+		pro->m_actorid = anodeid;
+		pro->m_add = true;
+		pro->m_type = atype;
+
+		if (!areadids.empty())
 		{
-			log_error()->print(
-				"{}:{}"
-				, tools::type_name<tnsp_server>()
-				, amessage
-			);
+			pro->m_part = areadids;
 		}
-
-		static void channel_register(TDerived*, message<np_channel_register<TDATA>>& adata)
+		if (!awriteids.empty())
 		{
-			if (m_dbmodule->actorbase() == nullptr)
-			{
-				log("channel_register fail");
-				return;
-			}
-			const np_channel_register<TDATA>* recv = adata.get_data();
+			pro->m_part = awriteids;
+		}
+		pro->m_fieldnumbers = afieldnumbers;
 
-			i64_actorid lactorid = recv->m_actorid;
-			bool lonlyread = recv->m_onlyread;
-			const std::set<i64_actorid>& ldataid = recv->m_dataid;
-
-			if (m_onlyreads.contains(lactorid))
+		std::set<i64_nodeid> lnodes;
+		// 通知所有全部写结点
+		lnodes.insert(m_nodereadalls.begin(), m_nodereadalls.end());
+		if (atype == enp_channel_readall || atype == enp_channel_writeall)
+		{
+			for (const auto& item1 : m_part)
 			{
-				return;
-			}
-
-			if (m_writealls.contains(lactorid))
-			{
-				return;
-			}
-
-			if (m_publishlist.contains(lactorid))
-			{
-				return;
-			}
-
-			if (lonlyread)
-			{
-				m_onlyreads.insert(lactorid);
-			}
-			else
-			{
-				if (ldataid.empty())
+				for (const auto& item2 : item1.second)
 				{
-					m_writealls.insert(lactorid);
-				}
-				else
-				{
-					m_publishlist[lactorid] = ldataid;
-				}
-			}
-
-			{
-				auto pro = std::make_shared<np_channel_dataid_sync<TDATA>>();
-				pro->m_actorid = lactorid;
-				pro->m_add = true;
-				pro->m_onlyread = lonlyread;
-				pro->m_dataid = ldataid;
-
-				std::set<i64_actorid> lset;
-				// 发送给 m_writeall
-				lset.insert(m_writealls.begin(), m_writealls.end());
-				
-				if (lonlyread || ldataid.empty())
-				{
-					for (const auto& item : m_publishlist)
+					if (item2.second == enp_channel_writepart)
 					{
-						lset.insert(item.first);
+						lnodes.insert(item2.first);
 					}
 				}
-				else
+			}
+		}
+		else
+		{//通知部分写结点
+			//std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
+			static auto lfun = [](const std::set<i64_dataid>& aids, std::set<i64_nodeid>& anodes)
 				{
-					for (const auto& item : m_publishlist)
+					for (i64_dataid dataid : aids)
 					{
-						if (std::ranges::find_if(item.second, [&ldataid](i64_actorid dataid)
+						auto itor = m_part.find(dataid);
+						if (itor == m_part.end())
+						{
+							for (std::pair<const i64_nodeid, enp_channel>& item : itor->second)
 							{
-								return ldataid.contains(dataid);
-							}) != item.second.end())
-						{
-							lset.insert(item.first);
+								if (item.second == enp_channel_writepart)
+								{
+									anodes.insert(item.first);
+								}
+							}
 						}
 					}
-				}
-				lset.erase(lactorid);
-				msg_info(*pro);
-				actor::send_actor(lset, nguid::make(), pro);
-			}
-			
-
-			{//回复
-				auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
-				pro->m_actorid = lactorid;
-				pro->m_onlyreads = m_onlyreads;
-				pro->m_writealls = m_writealls;
-				pro->m_publishlist = m_publishlist;
-				msg_info(*pro);
-				actor::send_actor(lactorid, nguid::make(), pro);
-			}
-
-			{
-				auto pro = std::make_shared<np_channel_data<TDATA>>();
-				std::map<nguid, data_modified<TDATA>>& ldata = m_dbmodule->data();
-				if (lonlyread || ldataid.empty())
-				{
-					for (const std::pair<const nguid, data_modified<TDATA>>& itempair : ldata)
-					{
-						pro->m_firstsynchronize = true;
-						std::map<int64_t, TDATA>& lmapdata = pro->m_data;
-
-						data_modified_continue_getconst(lpddataconst, itempair.second);
-						lmapdata[itempair.first] = *lpddataconst;
-						if (lmapdata.size() >= ESEND_MAX_COUNT)
-						{
-							msg_info(*pro);
-							actor::send_actor(lactorid, nguid::make(), pro);
-							pro = std::make_shared<np_channel_data<TDATA>>();
-						}
-					}
-					pro->m_recvfinish = true;
-					msg_info(*pro);
-					actor::send_actor(lactorid, nguid::make(), pro);
-					return;
-				}
-				else
-				{
-					for (i64_actorid dataid : ldataid)
-					{
-						auto itor = ldata.find(dataid);
-						if (itor != ldata.end())
-						{
-							pro->m_firstsynchronize = true;
-							data_modified_continue_getconst(lpddataconst, itor->second);
-							(pro->m_data)[dataid] = *lpddataconst;
-						}
-					}
-				}
-				msg_info(*pro);
-				actor::send_actor(lactorid, nguid::make(), pro);
-			}
+				};
+			lfun(areadids, lnodes);
+			lfun(awriteids, lnodes);
 		}
 
-		static void channel_exit(TDerived*, message<np_channel_exit<TDATA>>& adata)
+		actor::send_actor(lnodes, nguid::make(), pro);
+	}
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	void nsp_server<ENUMDB, TDerived, T>::sync_data(i64_nodeid anodeid)
+	{
+		std::map<nguid, data_modified<T>>& lmap = m_dbmodule->data();
+		auto pro = std::make_shared<np_channel_data<T>>();
+		pro->m_firstsynchronize = true;
+		pro->m_recvfinish = true;
+		if (m_nodereadalls.contains(anodeid) || m_nodewritealls.contains(anodeid))
 		{
-			if (m_dbmodule->actorbase() == nullptr)
+			for (std::pair<const nguid, data_modified<T>>& item : lmap)
 			{
-				log("channel_exit fail");
-				return;
+				pro->m_data[item.first] = *item.second.getconst();
 			}
-			const np_channel_exit<TDATA>* recv = adata.get_data();
-
-			log(std::format("np_channel_exit {}", nguid(recv->m_actorid)).c_str());
-
-			auto pro = std::make_shared<np_channel_dataid_sync<TDATA>>();
-			pro->m_actorid = recv->m_actorid;
-			pro->m_add = false;
-
-			// 移除的结点性质
-			// 1、读/写全部数据  => 给全部[m_writealls + 全部part] 发送
-			bool lwriteall = m_writealls.contains(recv->m_actorid);
-			// 2、读全部数据 => 给全部[m_writealls + 全部part] 发送
-			bool lreadeall = m_onlyreads.contains(recv->m_actorid);
-			// 3、读写部分数据 => 给全部[m_writealls + part中相交的] 发送
-			//auto itor = m_publishlist.find(recv->m_actorid);
-
-			m_writealls.erase(recv->m_actorid);
-			m_onlyreads.erase(recv->m_actorid);
-
-			std::set<i64_actorid> lset;
-			lset.insert(m_writealls.begin(), m_writealls.end());
-			if (lwriteall || lreadeall)
-			{
-				for (const auto& item : m_publishlist)
-				{
-					lset.insert(item.first);
-				}
-			}
-			else
-			{
-				auto itor = m_publishlist.find(recv->m_actorid);
-				if (itor != m_publishlist.end())
-				{
-					for (const auto& item : m_publishlist)
-					{
-						if (item.first == recv->m_actorid)
-						{
-							continue;
-						}
-						std::set<i64_actorid> lvvset;
-						std::ranges::set_intersection(itor->second, item.second, std::inserter(lvvset, lvvset.end()));
-						if (!lvvset.empty())
-						{
-							lset.insert(item.first);
-						}
-					}
-				}
-			}
-
-			m_publishlist.erase(recv->m_actorid);
-			msg_info(*pro);
-			actor::send_actor(lset, nguid::make(), pro);
+			actor::send_actor(anodeid, nguid::make(), pro);
 		}
-
-		static void channel_data(TDerived*, message<np_channel_data<TDATA>>& adata)
+		else
 		{
-			const np_channel_data<TDATA>* recv = adata.get_data();
-			const std::map<int64_t, TDATA>& lmap = recv->m_data;
-			for (const auto& lpair : lmap)
+			// (部分读/写)数据被哪些结点关心
+			//static std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
+			std::set<i64_dataid> ldatas;
+			for (const auto& item1 : m_part)
 			{
-				// # m_dbmodule->get:数据不存在就创建
-				data_modified<TDATA>& ldata = m_dbmodule->get(lpair.first);
-				data_modified_continue_get(lpddata, ldata);
-				*lpddata = lpair.second;
+				if (item1.second.contains(anodeid))
+				{
+					ldatas.insert(item1.first);
+				}
 			}
-			for (int64_t dataid : recv->m_deldata)
+			for (i64_dataid dataid : ldatas)
 			{
-				m_dbmodule->erase(dataid);
+				auto itor = lmap.find(dataid);
+				if (itor != lmap.end())
+				{
+					data_modified<T>& ldatamodf = itor->second;
+					pro->m_data[dataid] = *ldatamodf.getconst();
+				}
+			}
+			actor::send_actor(anodeid, nguid::make(), pro);
+		}
+	}
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	void nsp_server<ENUMDB, TDerived, T>::channel_register_read(TDerived*, message<np_channel_read_register<T>>& adata)
+	{
+		const np_channel_read_register<T>* recv = adata.get_data();
+		if (recv->m_type == enp_channel_readall)
+		{
+			m_nodereadalls.insert(recv->m_actorid);
+		}
+		else
+		{
+			for (i64_dataid dataid : recv->m_readids)
+			{
+				m_part[dataid][recv->m_actorid] = enp_channel_readpart;
 			}
 		}
+
+		m_noderead_fieldnumbers[nguid::type(recv->m_actorid)] = recv->m_fieldnumbers;
+		broadcast_addnode(recv->m_actorid, recv->m_type, recv->m_readids, {}, recv->m_fieldnumbers);
+
+		sync_data(recv->m_actorid);
+	}
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	bool nsp_server<ENUMDB, TDerived, T>::check_map(const std::set<int32_t>& aset1, const std::set<int32_t>& aset2)
+	{
+		if (aset1.size() < aset2.size())
+		{
+			for (int32_t lid : aset1)
+			{
+				if (aset2.contains(lid))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		else
+		{
+			return check_map(aset2, aset1);
+		}
+	}
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	class actortypes_fieldnumbers_check
+	{
+		std::set<i16_actortype> m_actortypes;
+		std::set<int32_t>& m_fieldnumbers;						// 可修改哪些字段编号
+		std::map<i16_actortype, std::set<i32_fieldnumber>>& m_nodewrite_fieldnumbers;
 	public:
-		static void init(ndb_modular<ENUMDB, TDATA, TDerived>* adbmodule)
+		actortypes_fieldnumbers_check(
+			std::set<int32_t>& afieldnumbers
+			, std::map<i16_actortype, std::set<i32_fieldnumber>>& anodewrite_fieldnumbers
+		) :
+			m_fieldnumbers(afieldnumbers)
+			, m_nodewrite_fieldnumbers(anodewrite_fieldnumbers)
+		{}
+
+		void insert(i64_nodeid anodeid)
 		{
-			m_dbmodule = adbmodule;
-			// # 订阅注册处理
-			actor::register_actor_s<
-				TDerived, np_channel_register<TDATA>
-			>(std::bind_front(&tnsp_server::channel_register), true);
-
-			// # 订阅数据被修改
-			actor::register_actor_s<
-				TDerived, np_channel_data<TDATA>
-			>(std::bind_front(&tnsp_server::channel_data), true);
-
-			// # 退出订阅
-			actor::register_actor_s<
-				TDerived, np_channel_exit<TDATA>
-			>(std::bind_front(&tnsp_server::channel_exit), true);
+			m_actortypes.insert(nguid::type(anodeid));
 		}
 
-		static void sync(i64_actorid aactor)
+		void check()
 		{
-			if (m_publishlist.empty())
+			for (i16_actortype ltype : m_actortypes)
 			{
-				return;
-			}
-			std::set<i64_actorid>* lpset = tools::findmap(m_publishlist, aactor);
-			if (lpset == nullptr)
-			{
-				return;
-			}
-
-			auto pro = std::make_shared<np_channel_data<TDATA>>();
-			pro->m_firstsynchronize = true;
-			std::map<int64_t, TDATA>& lmap = pro->m_data;
-			if (lpset->empty())
-			{
-				for (std::pair<const nguid, data_modified<TDATA>>& lpair : m_dbmodule->data())
+				auto itor = m_nodewrite_fieldnumbers.find(ltype);
+				if (itor == m_nodewrite_fieldnumbers.end())
 				{
-					data_modified_continue_getconst(lpddataconst, lpair.second);
-					lmap[lpair.first] = *lpddataconst;
+					tools::no_core_dump();
 				}
+				nsp_server<ENUMDB, TDerived, T>::check_write(itor->second, m_fieldnumbers);
 			}
-			else
-			{
-				for (i64_actorid actorid : *lpset)
-				{
-					data_modified<TDATA>& ldata = m_dbmodule->get(actorid);
-					data_modified_continue_getconst(lpddataconst, ldata);
-					lmap[lpddataconst->mid()] = *lpddataconst;
-				}
-			}
-			if (!lmap.empty())
-			{
-				msg_info(*pro);
-				actor::send_actor(aactor, nguid::make(), pro);
-			}
-		}
-
-		// # 数据加载完成后主动同步给订阅者
-		static void loadfish_sync()
-		{
-			if (m_publishlist.empty())
-			{
-				return;
-			}
-			for (const auto& apair : m_publishlist)
-			{
-				sync(apair.first);
-			}
+			m_actortypes.clear();
 		}
 	};
 
-	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
-	std::map<i64_actorid, std::set<i64_actorid>> nsp_server<ENUMDB, TDerived, TDATA>::m_publishlist;
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	void nsp_server<ENUMDB, TDerived, T>::channel_register_write(TDerived*, message<np_channel_write_register<T>>& adata)
+	{
+		const np_channel_write_register<T>* recv = adata.get_data();
 
-	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
-	std::set<i64_actorid> nsp_server<ENUMDB, TDerived, TDATA>::m_onlyreads;
+		// 检查id 与字段序号
+		actortypes_fieldnumbers_check<ENUMDB, TDerived, T> lcheck(recv->m_fieldnumbers, m_nodewrite_fieldnumbers);
+		for (i64_nodeid nodeid : m_nodewritealls)
+		{
+			lcheck.insert(nodeid);
+		}
+		lcheck.check();
 
-	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
-	std::set<i64_actorid> nsp_server<ENUMDB, TDerived, TDATA>::m_writealls;
+		if (recv->m_writeall)
+		{// 全部可写
+			// (部分读/写)数据被哪些结点关心
+			//std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
+			for (const auto& item1 : m_part)
+			{
+				for (const auto& item2 : item1.second)
+				{
+					if (item2.second == enp_channel_writepart)
+					{
+						lcheck.insert(item2.first);
+					}
+				}
+			}
+			lcheck.check();
+			// 写全部数据的结点
+			m_nodewritealls.insert(recv->m_actorid);
+		}
+		else
+		{// 部分可写
+			for (i64_actorid dataid : recv->m_writeids)
+			{
+				// (部分读/写)数据被哪些结点关心
+				// std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
+				auto itor = m_part.find(dataid);
+				if (itor != m_part.end())
+				{
+					for (const auto& item : itor->second)
+					{
+						lcheck.insert(item.first);
+					}
+				}
+				m_part[dataid][recv->m_actorid] = enp_channel_writepart;
+			}
+			lcheck.check();
+		}
 
-	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
-	ndb_modular<ENUMDB, TDATA, TDerived>* nsp_server<ENUMDB, TDerived, TDATA>::m_dbmodule;
 
+		m_nodewrite_fieldnumbers[recv->m_actorid] = recv->m_fieldnumbers;
+
+		{//回复
+			auto pro = std::make_shared<np_channel_write_register<T>>();
+			pro->m_actorid = recv->m_actorid;
+			pro->m_nodereadalls = m_nodereadalls;
+			pro->m_nodewritealls = m_nodewritealls;
+			pro->m_nodewrite_fieldnumbers = m_nodewrite_fieldnumbers;
+			if (recv->m_writeall)
+			{
+				// 部分读/写
+				pro->m_part = m_part;
+			}
+			else
+			{
+				for (i64_actorid dataid : recv->m_writeids)
+				{
+					pro->m_part[dataid] = m_part[dataid];
+				}
+			}
+			actor::send_actor(recv->m_actorid, nguid::make(), pro);
+		}
+
+		broadcast_addnode(recv->m_actorid, recv->m_type, {}, recv->m_writeids, recv->m_fieldnumbers);
+	}
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	void nsp_server<ENUMDB, TDerived, T>::channel_exit(TDerived*, message<np_channel_exit<T>>& adata)
+	{
+
+	}
+
+
+	template <typename T>
+	class nsp_instance
+	{
+	private:
+		static std::map<i64_actorid, std::shared_ptr<T>>	m_instance;
+		static std::mutex									m_mutex;
+	public:
+		static T* nclient(i64_actorid aactorid)
+		{
+			monopoly_lock(m_mutex);
+			auto itor = m_instance.find(aactorid);
+			if (itor == m_instance.end())
+			{
+				tools::no_core_dump();
+				return nullptr;
+			}
+			return itor->second.get();
+		}
+
+		static T* init(i64_actorid aactorid, std::shared_ptr<T>& athis)
+		{
+			monopoly_lock(m_mutex);
+			if (m_instance.contains(aactorid))
+			{
+				tools::no_core_dump();
+			}
+			m_instance[aactorid] = athis;
+			return athis.get();
+		}
+
+		static void exit(i64_actorid aactorid)
+		{
+			monopoly_lock(m_mutex);
+			m_instance.erase(aactorid);
+		}
+
+		template <typename TDerived, typename TMESSAGE>
+		static void register_handle()
+		{
+			actor::register_actor_s<TDerived, TMESSAGE>([](TDerived* aacotor, const message<TMESSAGE>& adata)
+				{
+					nclient(aacotor->id_guid())->handle(aacotor, adata);
+				}, false);
+		}
+	};
+
+	template <typename T>
+	std::map<i64_actorid, std::shared_ptr<T>> nsp_instance<T>::m_instance;
+
+	template <typename T>
+	std::mutex nsp_instance<T>::m_mutex;
+
+	template <typename T>
+	class nsp_callback
+	{
+		template <typename TDATA>
+		struct tcallback
+		{
+			std::function<void(int64_t, const TDATA&, bool)>				m_changedatafun = nullptr;	// [回调] 当数据发生变化
+			std::function<void(int64_t)>									m_deldatafun = nullptr;		// [回调] 当数据被删除
+			std::function<void()>											m_loadfinishfun = nullptr;	// [回调] 数据加载完成
+		};
+		std::map<int64_t, tcallback<T>> m_call;
+	public:
+		void set_changedatafun(int64_t aid, const std::function<void(int64_t, const T&, bool)>& afun)
+		{
+			m_call[aid].m_changedatafun = afun;
+		}
+
+		void set_deldatafun(int64_t aid, const std::function<void(int64_t)>& afun)
+		{
+			m_call[aid].m_deldatafun = afun;
+		}
+
+		void set_loadfinishfun(int64_t aid, const std::function<void()>& afun)
+		{
+			m_call[aid].m_loadfinishfun = afun;
+		}
+
+		void changedatafun(int64_t aid, const T& adata, bool afrist)
+		{
+			for (auto& item : m_call)
+			{
+				item.second.m_changedatafun(aid, adata, afrist);
+			}
+		}
+
+		void deldatafun(int64_t aid)
+		{
+			for (auto& item : m_call)
+			{
+				item.second.m_deldatafun(aid);
+			}
+		}
+
+		void loadfinishfun()
+		{
+			for (auto& item : m_call)
+			{
+				item.second.m_loadfinishfun();
+			}
+		}
+
+	};
 }//namespace ngl
