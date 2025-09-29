@@ -39,4 +39,9 @@ namespace ngl
 	using i64_startfinishtime = int64_t;
 
 	using i64_hashcode		= size_t;
+
+	// nsp
+	using i64_dataid = int64_t;
+	using i64_nodeid = int64_t;
+	using i32_fieldnumber = int32_t;
 }//namespace ngl

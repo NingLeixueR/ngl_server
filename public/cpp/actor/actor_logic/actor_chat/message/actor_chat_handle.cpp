@@ -29,7 +29,7 @@ namespace ngl
 			//}
 			llastspeakutc = (int)localtime::gettime();
 
-			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_chat>::instance(id_guid()).getconst(adata.get_data()->identifier());
+			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_chat>::instance(id_guid()).getconst(adata.get_data()->identifier());
 			if (lpbrief == nullptr)
 			{
 				return true;
@@ -39,7 +39,7 @@ namespace ngl
 			lvec.push_back(pbnet::chatitem());
 			pbnet::chatitem& lchatitem = *lvec.rbegin();
 
-			lchatitem.set_mrolename(lpbrief->mname());
+			lchatitem.set_mrolename(lpbrief->m_base().mname());
 			lchatitem.set_mutc((int)localtime::gettime());
 			lchatitem.set_mcontent(recv.mcontent());
 			lchatitem.set_mroleid(lpbrief->mid());

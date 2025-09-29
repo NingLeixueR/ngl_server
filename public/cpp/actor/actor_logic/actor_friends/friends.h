@@ -16,6 +16,7 @@ namespace ngl
 		friends(const friends&) = delete;
 		friends& operator=(const friends&) = delete;
 
+		std::unique_ptr<tdb_brief::nsp_cread<actor_friends>> m_nread = nullptr;		
 	public:
 		friends() = default;
 
@@ -27,6 +28,8 @@ namespace ngl
 		void initdata()final
 		{
 			log_error()->print("friends###loaddb_finish {}", data());
+			
+			tdb_brief::nsp_cread<actor_friends>::instance_readall((actor_friends*)get_actor());
 		}
 
 		bool check_friends(
@@ -159,8 +162,7 @@ namespace ngl
 
 			for (i64_actorid afriends : lpfriendsconst->mfriends())
 			{
-				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::instance(
-					get_actor()->id_guid()).getconst(afriends);
+				const pbdb::db_brief* lpbrief = m_nread->getconst(afriends);
 				if (lpbrief == nullptr)
 				{
 					return;
@@ -170,8 +172,7 @@ namespace ngl
 
 			for (i64_actorid afriends : lpfriendsconst->mapplyfriends())
 			{
-				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::instance(
-					get_actor()->id_guid()).getconst(afriends);
+				const pbdb::db_brief* lpbrief = m_nread->getconst(afriends);
 				if (lpbrief == nullptr)
 				{
 					return;

@@ -50,12 +50,12 @@ namespace ngl
 		auto lrecv = adata.get_data();
 		int32_t lrankid = lrecv->m_rankid;
 		m_ranklist.remove_rank(lrankid);
-		tdb_brief::nsp_cli<actor_ranklist>::instance(id_guid()).foreach_change([lrankid](pbdb::db_brief& abrief)
-			{
-				abrief.mutable_mactivityvalues()->mutable_mactivity_rolelv()->erase(lrankid);
-				abrief.mutable_mactivityvalues()->mutable_mactivity_rolegold()->erase(lrankid);
-				return true;
-			});
+		std::map<i64_actorid, pbdb::db_brief>& lmap = tdb_brief::nsp_cwrite<actor_ranklist>::instance(id_guid()).get_map();
+		for (std::pair<const i64_actorid, pbdb::db_brief>& item : lmap)
+		{
+			item.second.mutable_mactivityvalues()->mutable_mactivity_rolelv()->erase(lrankid);
+			item.second.mutable_mactivityvalues()->mutable_mactivity_rolegold()->erase(lrankid);
+		}
 		if (lrecv->m_iscreate)
 		{
 			m_ranklist.add_rank(lrankid);			

@@ -37,11 +37,11 @@ void init_DB_ROLE(const char* aname, int beg)
 		ltemp.set_mid(lid);
 		pbdb::db_brief lrolebase;
 		lrolebase.set_mid(ngl::nguid::make(ngl::ACTOR_BRIEF, tab_self_area, i));
-		lrolebase.set_mname(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
-		lrolebase.set_mlv(i);
-		lrolebase.set_mmoneygold(0);
-		lrolebase.set_mmoneysilver(0);
-		lrolebase.set_mcreateutc((int32_t)ngl::localtime::gettime());
+		lrolebase.mutable_m_base()->set_mname(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
+		lrolebase.mutable_m_base()->set_mlv(i);
+		lrolebase.mutable_m_base()->set_mmoneygold(0);
+		lrolebase.mutable_m_base()->set_mmoneysilver(0);
+		lrolebase.mutable_m_base()->set_mcreateutc((int32_t)ngl::localtime::gettime());
 
 		ngl::ndbtab<pbdb::ENUM_DB_BRIEF, pbdb::db_brief>::save(0, lrolebase);
 		ngl::ndbtab<pbdb::ENUM_DB_ROLE, pbdb::db_role>::save(0, ltemp);

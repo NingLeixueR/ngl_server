@@ -49,16 +49,12 @@ namespace ngl
 		//nscript_data_push("csv", ltab);
 
 		
-		tdb_brief::nsp_cli<actor_testlua>::instance(id_guid(), true).init_parts(this, 
-			{
-				ngl::tools::nguidstr2int64("actor_brief#1#1")
-			});
+		//tdb_brief::nsp_cread<actor_testlua>::instance_readpart(this, { ngl::tools::nguidstr2int64("actor_brief#1#1") });
 	}
 
 	void actor_testlua::erase_actor_before()
 	{
-		tdb_brief::nsp_cli<actor_testlua>::instance(id_guid()).exit();
-		tdb_brief::nsp_cli<actor_testlua>::freensp(id_guid());
+		tdb_brief::nsp_cread<actor_testlua>::instance(id_guid()).exit();
 	}
 	
 	void actor_testlua::loaddb_finish(bool adbishave)

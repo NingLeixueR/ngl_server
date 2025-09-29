@@ -5,8 +5,8 @@
 #include "actor_create.h"
 #include "actor_brief.h"
 #include "ndb_modular.h"
-#include "nsp_server.h"
-#include "nsp_client.h"
+//#include "nsp_server.h"
+//#include "nsp_client.h"
 #include "manage_csv.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
@@ -60,13 +60,12 @@ namespace ngl
 			{
 				lset.insert(aroleid);
 			}
-			tdb_brief::nsp_cli<TACTOR>::instance(id_guid(), true).init_parts((TACTOR*)this, lset);
+			tdb_brief::nsp_cread<actor_example<TACTOR>>::instance_readpart(this, lset);
 		}
 
 		virtual void erase_actor_before()
 		{
-			tdb_brief::nsp_cli<TACTOR>::instance(id_guid()).exit();
-			tdb_brief::nsp_cli<TACTOR>::freensp(id_guid());
+			tdb_brief::nsp_cread<actor_example<TACTOR>>::instance(id_guid()).exit();
 		}
 	};
 }//namespace ngl

@@ -3,7 +3,7 @@
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "ndb_modular.h"
-#include "nsp_server.h"
+//#include "nsp_server.h"
 #include "manage_csv.h"
 #include "nprotocol.h"
 #include "db_manage.h"

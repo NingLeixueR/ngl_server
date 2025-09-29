@@ -3,7 +3,8 @@
 #include "actor_events.h"
 #include "manage_curl.h"
 #include "nsp_server.h"
-#include "nsp_client.h"
+#include "nsp_write.h"
+#include "nsp_read.h"
 #include "actor_role.h"
 #include "nregister.h"
 #include "ttab_task.h"
@@ -11,7 +12,6 @@
 #include "net.pb.h"
 #include "drop.h"
 #include "gcmd.h"
-
 namespace ngl
 {
 	bool actor_role::handle(const message<mforward<np_gm>>& adata)
