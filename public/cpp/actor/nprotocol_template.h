@@ -396,7 +396,7 @@ namespace ngl
 		// 结点可修改哪些字段编号
 		std::map<i16_actortype, std::set<i32_fieldnumber>> m_node_fieldnumbers;
 
-		dprotocol(np_channel_register_reply, m_msg, m_actorid)
+		dprotocol(np_channel_register_reply, m_msg, m_actorid, m_nodereadalls, m_nodewritealls, m_part, m_node_fieldnumbers)
 	};
 
 	template <typename TDATA>
@@ -405,16 +405,16 @@ namespace ngl
 		std::string m_msg;										// 调试查看信息
 		i64_actorid m_actorid = 0;								// 异变的子节点id
 		bool m_add = true;										// 增加还是删除
-		// add
-		// [
 		enp_channel		m_type;									// 类型
 		//if (m_type == enp_channel_readpart || m_type == enp_channel_writepart)
 		//{
 		// (部分读/写)数据被哪些结点关心
 		std::set<i64_dataid> m_part;
 		//}
-		// ]
+		
+		// add[
 		std::set<i32_fieldnumber> m_fieldnumbers;
+		// ]add
 
 		dprotocol(np_channel_dataid_sync, m_msg, m_actorid, m_add, m_type, m_part, m_fieldnumbers)
 	};
@@ -437,7 +437,7 @@ namespace ngl
 		std::map<int64_t, TDATA> m_data;					// 1、数据同步2、数据修改3、数据增加
 		std::vector<int64_t> m_deldata;						// 数据被删除
 
-		def_protocol(np_channel_data<TDATA>, m_msg, m_firstsynchronize, m_recvfinish, m_data, m_deldata)
+		def_protocol(np_channel_data<TDATA>, m_msg, m_actorid, m_firstsynchronize, m_recvfinish, m_data, m_deldata)
 	};
 
 	template <typename TDATA>
