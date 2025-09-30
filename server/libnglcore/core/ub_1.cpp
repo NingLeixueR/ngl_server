@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-09-29 19:23:28
+// 创建时间 25-09-30 11:31:13
 #include "pb_field.cpp"
 #include "session_endpoint.cpp"
 #include "attribute_value.cpp"
@@ -32,7 +32,6 @@
 #include "synthesis.cpp"
 #include "rank_item.cpp"
 #include "pack_head.cpp"
-#include "nsp_write.cpp"
 #include "nprotocol.cpp"
 #include "logprintf.cpp"
 #include "localtime.cpp"
@@ -44,7 +43,6 @@
 #include "ranklist.cpp"
 #include "protocol.cpp"
 #include "pb_field.cpp"
-#include "nsp_read.cpp"
 #include "naddress.cpp"
 #include "csvtable.cpp"
 #include "autoitem.cpp"

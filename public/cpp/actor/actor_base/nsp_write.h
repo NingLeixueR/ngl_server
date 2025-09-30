@@ -185,8 +185,50 @@ namespace ngl
 
 		void handle(TDerived*, const message<np_channel_write_register_reply<T>>& adata);
 
+		void handle(TDerived*, const message<np_channel_dataid_sync<T>>& adata);
+
 		void exit()
 		{
+			// 通知其他写结点，本结点退除
+			auto pro = std::make_shared<np_channel_dataid_sync<T>>();
+			////struct np_channel_dataid_sync
+			////{
+			////	std::string m_msg;										// 调试查看信息
+			////	i64_actorid m_actorid = 0;								// 异变的子节点id
+			////	bool m_add = true;										// 增加还是删除
+			////	enp_channel		m_type;									// 类型
+			////	//if (m_type == enp_channel_readpart || m_type == enp_channel_writepart)
+			////	//{
+			////	// (部分读/写)数据被哪些结点关心
+			////	std::set<i64_dataid> m_part;
+			////	//}
+
+			////	// add[
+			////	std::set<i32_fieldnumber> m_fieldnumbers;
+			////	// ]add
+			////};
+			pro->m_actorid = m_actor->id_guid();
+			pro->m_add = false;
+			pro->m_type = m_type;
+			if (m_type == enp_channel_readpart || m_type == enp_channel_writepart)
+			{
+				pro->m_part = m_ids;
+			}
+
+			std::set<i64_nodeid> lnodeids;
+			lnodeids.insert(m_nodewritealls.begin(), m_nodewritealls.end());
+			for (const auto& item1 : m_part)
+			{
+				for (const auto& item2 : item1.second)
+				{
+					if (item2.second == enp_channel_writepart)
+					{
+						lnodeids.insert(item2.first);
+					}
+				}				
+			}
+			actor::send_actor(lnodeids, nguid::make(), pro);
+
 			nsp_instance<type_nsp_write>::exit(m_actor->id_guid());
 		}
 	};
@@ -210,6 +252,8 @@ namespace ngl
 			nsp_instance<type_nsp_write>::template register_handle<TDerived, np_channel_check<T>>();
 			// 处理注册回复
 			nsp_instance<type_nsp_write>::template register_handle<TDerived, np_channel_write_register_reply<T>>();
+			// 处理注册回复
+			nsp_instance<type_nsp_write>::template register_handle<TDerived, np_channel_dataid_sync<T>>();
 
 			std::set<i16_area> lareaset;
 			ttab_servers::instance().get_arealist_nonrepet(nconfig::m_nodeid, lareaset);
@@ -336,5 +380,67 @@ namespace ngl
 		m_part = recv->m_part;
 
 		return;
+	}
+
+	template <typename TDerived, typename TACTOR, typename T>
+	void nsp_write<TDerived, TACTOR, T>::handle(TDerived*, const message<np_channel_dataid_sync<T>>& adata)
+	{
+		const np_channel_dataid_sync<T>* recv = adata.get_data();
+		if (recv == nullptr)
+		{
+			return;
+		}
+		if (recv->m_add)
+		{
+			if (recv->m_fieldnumbers.empty() && (recv->m_type == enp_channel_writeall || recv->m_type == enp_channel_writepart))
+			{
+				tools::no_core_dump();
+			}
+			if (recv->m_type == enp_channel_readpart || recv->m_type == enp_channel_writepart)
+			{
+				for (i64_dataid dataid : recv->m_part)
+				{
+					m_part[dataid][recv->m_actorid] = recv->m_type;
+				}
+			}
+			else
+			{
+				if (recv->m_type == enp_channel_readall)
+				{
+					m_nodereadalls.insert(recv->m_actorid);
+				}
+				else if(recv->m_type == enp_channel_writeall)
+				{
+					m_nodewritealls.insert(recv->m_actorid);
+				}
+			}
+			
+			m_node_fieldnumbers[nguid::type(recv->m_actorid)] = recv->m_fieldnumbers;
+		}
+		else
+		{
+			if (recv->m_type == enp_channel_readpart || recv->m_type == enp_channel_writepart)
+			{
+				if (recv->m_part.empty())
+				{
+					tools::no_core_dump();
+				}
+				for (i64_dataid dataid : recv->m_part)
+				{
+					m_part[dataid].erase(recv->m_actorid);
+				}
+			}
+			else
+			{
+				if (recv->m_type == enp_channel_readall)
+				{
+					m_nodereadalls.erase(recv->m_actorid);
+				}
+				else if (recv->m_type == enp_channel_writeall)
+				{
+					m_nodewritealls.erase(recv->m_actorid);
+				}
+			}
+		}
 	}
 }//namespace ngl

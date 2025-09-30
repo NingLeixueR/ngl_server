@@ -25,10 +25,21 @@ namespace ngl
 		{
 			if (aactor->type() != ACTOR_CLIENT && aactor->type() != ACTOR_SERVER)
 			{
-				log_error()->print(
-					"{}::handle_switch  m_fun.find({}) == end"
-					, aactor->guid(), apram.m_enum
-				);
+				tprotocol::info* lpinfo = tprotocol::get(apram.m_enum);
+				if (lpinfo == nullptr)
+				{
+					log_error()->print(
+						"{}::handle_switch  m_fun.find({}) == end"
+						, aactor->guid(), apram.m_enum
+					);
+				}
+				else
+				{
+					log_error()->print(
+						"{}::handle_switch  m_fun.find({}:{}) == end"
+						, aactor->guid(), apram.m_enum, lpinfo->m_name
+					);					
+				}				
 			}
 			return false;
 		}
