@@ -24,7 +24,7 @@ ADD_EXECUTABLE(node
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	link_directories("${CMAKE_SOURCE_DIR}/lib")
-	target_link_libraries(app
+	target_link_libraries(node
 		PRIVATE nglcore  # 等价于链接 libnglcore.so
 	)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
