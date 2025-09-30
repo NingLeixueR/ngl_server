@@ -24,6 +24,17 @@ ADD_LIBRARY(nglcore SHARED
 
 #set_target_properties
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+	
+	# 2. 设置 SO 的生成路径（关键：ARCHIVE_OUTPUT_DIRECTORY 对 Linux SO 生效）
+	# 方式1：生成到项目根目录的 lib 文件夹（绝对路径，推荐）
+	set_target_properties(nglcore PROPERTIES
+		# SO 生成路径：your_project/lib
+		LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib"
+		# 可选：按编译类型分目录（如 lib/Debug、lib/Release）
+		# LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/lib/Debug"
+		# LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/lib/Release"
+	)
+
 	target_link_libraries(nglcore protobuf)
 	target_link_libraries(nglcore pthread)
 	target_link_libraries(nglcore uuid)
