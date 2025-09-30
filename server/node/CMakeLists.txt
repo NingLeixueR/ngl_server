@@ -23,7 +23,8 @@ ADD_EXECUTABLE(node
 )
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
-	target_link_libraries(node nglcore)
+	find_library(NGLCORE_LIB nglcore PATHS ${PROJECT_SOURCE_DIR}/lib)
+	target_link_libraries(node ${NGLCORE_LIB})
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
