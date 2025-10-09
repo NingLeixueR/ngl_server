@@ -10,6 +10,30 @@
 
 namespace ngl
 {
+
+
+	template <typename TDerived>
+	class nsp_handle_print
+	{
+	public:
+		template <typename TRECV>
+		static void print(const char* aname, TDerived* aactor, const TRECV* arecv)
+		{
+			TRECV* lrecv = (TRECV*)arecv;
+
+			std::string lcustomstr;
+
+			tools::custom2json(*lrecv, lcustomstr);
+			log_error_net()->print(
+				"{}::handle<{}>( actor({}) : {} )"
+				, aname
+				, tools::type_name<TRECV>()
+				, nguid(aactor->id_guid())
+				, lcustomstr
+			);
+		}
+	};
+
 	template <
 		pbdb::ENUM_DB ENUMDB,	// 数据类型枚举
 		typename TDerived,		// 寄宿的actor
@@ -89,20 +113,24 @@ namespace ngl
 	{
 		m_dbmodule = adbmodule;
 
-		// # 订阅注册处理
-		// 只读注册
 		actor::register_actor_s<TDerived, np_channel_data<T>>(
 			[](TDerived* aactor, const message<np_channel_data<T>>& adata)
 			{
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
 			}, true);
 
+		// # 订阅注册处理
 		actor::register_actor_s<TDerived, np_channel_read_register<T>>(
 			[](TDerived* aactor, const message<np_channel_read_register<T>>& adata)
 			{
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
 			}, true);
-
+		actor::register_actor_s<TDerived, np_channel_write_register<T>>(
+			[](TDerived* aactor, const message<np_channel_write_register<T>>& adata)
+			{
+				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
+			}, true);
+		
 		// # 订阅数据被修改
 		actor::register_actor_s<TDerived, np_channel_data<T>>(
 			[](TDerived* aactor, const message<np_channel_data<T>>& adata)
@@ -166,7 +194,7 @@ namespace ngl
 
 		std::set<i64_nodeid> lnodes;
 		// 通知所有全部写结点
-		lnodes.insert(m_nodereadalls.begin(), m_nodereadalls.end());
+		lnodes.insert(m_nodewritealls.begin(), m_nodewritealls.end());
 		if (atype == enp_channel_readall || atype == enp_channel_writeall)
 		{
 			for (const auto& item1 : m_part)
@@ -204,7 +232,10 @@ namespace ngl
 			lfun(awriteids, lnodes);
 		}
 
-		actor::send_actor(lnodes, nguid::make(), pro);
+		if (!lnodes.empty())
+		{
+			actor::send_actor(lnodes, nguid::make(), pro);
+		}
 	}
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
@@ -213,20 +244,34 @@ namespace ngl
 		std::map<nguid, data_modified<T>>& lmap = m_dbmodule->data();
 		auto pro = std::make_shared<np_channel_data<T>>();
 		pro->m_firstsynchronize = true;
-		pro->m_recvfinish = true;
+		pro->m_recvfinish = false;
 		if (m_nodereadalls.contains(anodeid) || m_nodewritealls.contains(anodeid))
 		{
+			int32_t lconnt = 0;
 			for (std::pair<const nguid, data_modified<T>>& item : lmap)
 			{
+				if (++lconnt >= 100)
+				{
+					actor::send_actor(anodeid, nguid::make(), pro);
+					pro = std::make_shared<np_channel_data<T>>();
+					pro->m_firstsynchronize = true;
+					pro->m_recvfinish = false;
+					lconnt = 0;
+				}
 				pro->m_data[item.first] = *item.second.getconst();
 			}
-			actor::send_actor(anodeid, nguid::make(), pro);
+			if (lconnt > 0)
+			{
+				pro->m_recvfinish = true;
+				actor::send_actor(anodeid, nguid::make(), pro);
+			}
 		}
 		else
 		{
 			// (部分读/写)数据被哪些结点关心
 			//static std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
 			std::set<i64_dataid> ldatas;
+			int32_t lconnt = 0;
 			for (const auto& item1 : m_part)
 			{
 				if (item1.second.contains(anodeid))
@@ -240,17 +285,32 @@ namespace ngl
 				if (itor != lmap.end())
 				{
 					data_modified<T>& ldatamodf = itor->second;
+					if (++lconnt >= 100)
+					{
+						actor::send_actor(anodeid, nguid::make(), pro);
+						pro = std::make_shared<np_channel_data<T>>();
+						pro->m_firstsynchronize = true;
+						pro->m_recvfinish = false;
+						lconnt = 0;
+					}
 					pro->m_data[dataid] = *ldatamodf.getconst();
 				}
 			}
-			actor::send_actor(anodeid, nguid::make(), pro);
+			if (lconnt > 0)
+			{
+				pro->m_recvfinish = true;
+				actor::send_actor(anodeid, nguid::make(), pro);
+			}
 		}
 	}
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	void nsp_server<ENUMDB, TDerived, T>::handle(TDerived*, const message<np_channel_read_register<T>>& adata)
+	void nsp_server<ENUMDB, TDerived, T>::handle(TDerived* aactor, const message<np_channel_read_register<T>>& adata)
 	{
 		const np_channel_read_register<T>* recv = adata.get_data();
+
+		nsp_handle_print<TDerived>::print("nsp_server", aactor, recv);
+
 		if (recv->m_type == enp_channel_readall)
 		{
 			m_nodereadalls.insert(recv->m_actorid);
@@ -293,11 +353,11 @@ namespace ngl
 	class actortypes_fieldnumbers_check
 	{
 		std::set<i16_actortype> m_actortypes;
-		std::set<int32_t>& m_fieldnumbers;						// 可修改哪些字段编号
+		const std::set<int32_t>& m_fieldnumbers;						// 可修改哪些字段编号
 		std::map<i16_actortype, std::set<i32_fieldnumber>>& m_nodewrite_fieldnumbers;
 	public:
 		actortypes_fieldnumbers_check(
-			std::set<int32_t>& afieldnumbers
+			const std::set<int32_t>& afieldnumbers
 			, std::map<i16_actortype, std::set<i32_fieldnumber>>& anodewrite_fieldnumbers
 		) :
 			m_fieldnumbers(afieldnumbers)
@@ -318,16 +378,17 @@ namespace ngl
 				{
 					tools::no_core_dump();
 				}
-				nsp_server<ENUMDB, TDerived, T>::check_write(itor->second, m_fieldnumbers);
 			}
 			m_actortypes.clear();
 		}
 	};
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	void nsp_server<ENUMDB, TDerived, T>::handle(TDerived*, const message<np_channel_write_register<T>>& adata)
+	void nsp_server<ENUMDB, TDerived, T>::handle(TDerived* aactor, const message<np_channel_write_register<T>>& adata)
 	{
 		const np_channel_write_register<T>* recv = adata.get_data();
+
+		nsp_handle_print<TDerived>::print("nsp_server", aactor, recv);
 
 		// 检查id 与字段序号
 		actortypes_fieldnumbers_check<ENUMDB, TDerived, T> lcheck(recv->m_fieldnumbers, m_nodewrite_fieldnumbers);
@@ -337,7 +398,7 @@ namespace ngl
 		}
 		lcheck.check();
 
-		if (recv->m_writeall)
+		if (recv->m_type == enp_channel_writeall)
 		{// 全部可写
 			// (部分读/写)数据被哪些结点关心
 			//std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
@@ -378,12 +439,12 @@ namespace ngl
 		m_nodewrite_fieldnumbers[recv->m_actorid] = recv->m_fieldnumbers;
 
 		{//回复
-			auto pro = std::make_shared<np_channel_write_register<T>>();
+			auto pro = std::make_shared<np_channel_write_register_reply<T>>();
 			pro->m_actorid = recv->m_actorid;
-			pro->m_nodereadalls = m_nodereadalls;
-			pro->m_nodewritealls = m_nodewritealls;
-			pro->m_nodewrite_fieldnumbers = m_nodewrite_fieldnumbers;
-			if (recv->m_writeall)
+			pro->m_nodereadalls = m_nodewritealls;
+			pro->m_nodewritealls = m_nodereadalls;
+			pro->m_node_fieldnumbers = m_nodewrite_fieldnumbers;
+			if (recv->m_type == enp_channel_writeall)
 			{
 				// 部分读/写
 				pro->m_part = m_part;
@@ -399,12 +460,16 @@ namespace ngl
 		}
 
 		broadcast_addnode(recv->m_actorid, recv->m_type, {}, recv->m_writeids, recv->m_fieldnumbers);
+
+		sync_data(recv->m_actorid);
 	}
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	void nsp_server<ENUMDB, TDerived, T>::handle(TDerived*, const message<np_channel_exit<T>>& adata)
+	void nsp_server<ENUMDB, TDerived, T>::handle(TDerived* aactor, const message<np_channel_exit<T>>& adata)
 	{
+		//const np_channel_exit<T>* recv = adata.get_data();
 
+		//nsp_handle_print<TDerived>::print("nsp_server", aactor, recv);
 	}
 
 
@@ -512,4 +577,5 @@ namespace ngl
 		}
 
 	};
+
 }//namespace ngl

@@ -67,7 +67,7 @@ namespace ngl
 			);
 			return -1;
 		}
-		return lrb->m_base().mlv();
+		return lrb->mbase().mlv();
 	}
 
 	void roleinfo::change_lv(int avalues)
@@ -82,10 +82,10 @@ namespace ngl
 			);
 			return;
 		}
-		int32_t loldvalue = lrb->m_base().mlv();
-		lrb->mutable_m_base()->set_mlv(loldvalue + avalues);
+		int32_t loldvalue = lrb->mbase().mlv();
+		lrb->mutable_mbase()->set_mlv(loldvalue + avalues);
 		change();
-		static_task::update_change(nactor(), ETaskRoleLv, lrb->m_base().mlv());
+		static_task::update_change(nactor(), ETaskRoleLv, lrb->mbase().mlv());
 		change_event(eevents_logic::eevents_logic_rolelevelchange, loldvalue, loldvalue + avalues);
 	}
 
@@ -100,7 +100,7 @@ namespace ngl
 			);
 			return -1;
 		}
-		return lrb->m_base().mvip();
+		return lrb->mbase().mvip();
 	}
 
 	void roleinfo::change_vip(int avalues)
@@ -115,9 +115,9 @@ namespace ngl
 			);
 			return;
 		}
-		lrb->mutable_m_base()->set_mvip(lrb->m_base().mvip() + avalues);
+		lrb->mutable_mbase()->set_mvip(lrb->mbase().mvip() + avalues);
 		change();
-		static_task::update_change(nactor(), ETaskRoleLv, lrb->m_base().mlv());
+		static_task::update_change(nactor(), ETaskRoleLv, lrb->mbase().mlv());
 	}
 
 	const char* roleinfo::name()
@@ -131,7 +131,7 @@ namespace ngl
 			);
 			return "";
 		}
-		return lrb->m_base().mname().c_str();
+		return lrb->mbase().mname().c_str();
 	}
 
 	void roleinfo::rename(const char* aname)
@@ -146,7 +146,7 @@ namespace ngl
 			);
 			return;
 		}
-		lrb->mutable_m_base()->set_mname(aname);
+		lrb->mutable_mbase()->set_mname(aname);
 		change();
 	}
 
@@ -161,7 +161,7 @@ namespace ngl
 			);
 			return -1;
 		}
-		return lrb->m_base().mmoneygold();
+		return lrb->mbase().mmoneygold();
 	}
 
 	void roleinfo::change_gold(int avalues)
@@ -176,12 +176,12 @@ namespace ngl
 			);
 			return;
 		}
-		int32_t loldvalue = lrb->m_base().mmoneygold();
-		lrb->mutable_m_base()->set_mmoneygold(loldvalue + avalues);
+		int32_t loldvalue = lrb->mbase().mmoneygold();
+		lrb->mutable_mbase()->set_mmoneygold(loldvalue + avalues);
 		change();
 
 		change_event(eevents_logic::eevents_logic_rolegoldchange, loldvalue, loldvalue + avalues);
-		log_bi()->print("add_gold|{}|{}|{}|{}", lrb->mid(), lrb->m_base().mname(), loldvalue, lrb->m_base().mmoneygold());
+		log_bi()->print("add_gold|{}|{}|{}|{}", lrb->mid(), lrb->mbase().mname(), loldvalue, lrb->mbase().mmoneygold());
 	}
 
 	int32_t roleinfo::silver()
@@ -195,7 +195,7 @@ namespace ngl
 			);
 			return -1;
 		}
-		return lrb->m_base().mmoneysilver();
+		return lrb->mbase().mmoneysilver();
 	}
 
 	void roleinfo::change_silver(int avalues)
@@ -210,10 +210,10 @@ namespace ngl
 			);
 			return;
 		}
-		int32_t loldvalue = lrb->m_base().mmoneysilver();
-		lrb->mutable_m_base()->set_mmoneysilver(loldvalue + avalues);
+		int32_t loldvalue = lrb->mbase().mmoneysilver();
+		lrb->mutable_mbase()->set_mmoneysilver(loldvalue + avalues);
 		change();
-		log_bi()->print("add_silver|{}|{}|{}|{}", lrb->mid(), lrb->m_base().mname(), loldvalue, lrb->m_base().mmoneysilver());
+		log_bi()->print("add_silver|{}|{}|{}|{}", lrb->mid(), lrb->mbase().mname(), loldvalue, lrb->mbase().mmoneysilver());
 	}
 
 	int32_t roleinfo::notalkutc()
@@ -227,7 +227,7 @@ namespace ngl
 			);
 			return -1;
 		}
-		return lrb->m_base().mnotalkutc();
+		return lrb->mbase().mnotalkutc();
 	}
 
 	void roleinfo::change_notalkutc(int avalues)
@@ -242,7 +242,7 @@ namespace ngl
 			);
 			return;
 		}
-		lrb->mutable_m_base()->set_mnotalkutc(avalues);
+		lrb->mutable_mbase()->set_mnotalkutc(avalues);
 		change();
 	}
 
@@ -258,7 +258,7 @@ namespace ngl
 			return false;
 		}
 		int32_t lnow = (int32_t)localtime::gettime();
-		return lnow < lrb->m_base().mnotalkutc();
+		return lnow < lrb->mbase().mnotalkutc();
 	}
 
 }// namespace ngl

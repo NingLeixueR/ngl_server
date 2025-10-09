@@ -43,7 +43,13 @@ namespace ngl
 			lpread->m_actor = aactor;
 			nsp_instance<type_nsp_read>::init(aactor->id_guid(), lpread);
 			lpread->init();
+			log_error_net()->print("nsp_read::instance_readall( actor({}) )", nguid(aactor->id_guid()));
 			return *lpread;
+		}
+
+		static i64_actorid to_actorid(i64_actorid adataid)
+		{
+			return nguid::make_type(adataid, nactor_type<TACTOR>::type());
 		}
 
 		static type_nsp_read& instance_readpart(TDerived* aactor, const std::set<i64_actorid>& aids)
@@ -51,9 +57,13 @@ namespace ngl
 			auto lpread = std::make_shared<type_nsp_read>();
 			lpread->m_type = enp_channel_readpart;
 			lpread->m_actor = aactor;
-			lpread->m_ids = aids;
+			for (i64_actorid dataid : aids)
+			{
+				lpread->m_ids.insert(to_actorid(dataid));
+			}
 			nsp_instance<type_nsp_read>::init(aactor->id_guid(), lpread);
 			lpread->init();
+			log_error_net()->print("nsp_read::instance_readpart( actor({}) : {} )", nguid(aactor->id_guid()), aids);
 			return *lpread;
 		}
 
@@ -76,7 +86,7 @@ namespace ngl
 
 		const T* getconst(i64_dataid adataid)
 		{
-			auto itor = m_data.find(adataid);
+			auto itor = m_data.find(to_actorid(adataid));
 			if (itor == m_data.end())
 			{
 				return nullptr;
@@ -175,13 +185,15 @@ namespace ngl
 	template <typename TDerived, typename TACTOR, typename T>
 	bool nsp_read<TDerived, TACTOR, T>::is_care(i64_actorid adataid)
 	{
-		return m_type == enp_channel_readall || m_ids.contains(adataid);
+		return m_type == enp_channel_readall || m_ids.contains(to_actorid(adataid));
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
 	void nsp_read<TDerived, TACTOR, T>::handle(TDerived* aactor, const message<np_channel_data<T>>& adata)
 	{
 		const np_channel_data<T>* recv = adata.get_data();
+
+		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;
 
@@ -218,12 +230,15 @@ namespace ngl
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
-	void nsp_read<TDerived, TACTOR, T>::handle(TDerived*, const message<np_channel_check<T>>& adata)
+	void nsp_read<TDerived, TACTOR, T>::handle(TDerived* aactor, const message<np_channel_check<T>>& adata)
 	{
-		auto lprecv = adata.get_data();
-		if (m_register[lprecv->m_area])
+		const np_channel_check<T>* recv = adata.get_data();
+
+		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
+
+		if (m_register[recv->m_area])
 		{
-			twheel::wheel().removetimer(lprecv->m_timer);
+			twheel::wheel().removetimer(recv->m_timer);
 			return;
 		}
 		auto pro = std::make_shared<np_channel_read_register<T>>();
@@ -233,16 +248,19 @@ namespace ngl
 		log_error()->print(
 			"nsp_client register: {} -> {}"
 			, nguid(pro->m_actorid)
-			, nguid(m_nspserver[lprecv->m_area])
+			, nguid(m_nspserver[recv->m_area])
 		);
 		msg_info(*pro);
-		actor::send_actor(m_nspserver[lprecv->m_area], nguid::make(), pro);
+		actor::send_actor(m_nspserver[recv->m_area], nguid::make(), pro);
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
-	void nsp_read<TDerived, TACTOR, T>::handle(TDerived*, const message<np_channel_read_register_reply<T>>& adata)
+	void nsp_read<TDerived, TACTOR, T>::handle(TDerived* aactor, const message<np_channel_read_register_reply<T>>& adata)
 	{
 		const np_channel_read_register_reply<T>* recv = adata.get_data();
+
+		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
+
 		if (m_actor->id_guid() != recv->m_actorid)
 		{
 			tools::no_core_dump();

@@ -168,7 +168,7 @@ namespace ngl
 	{
 		if (isactiv_connect(aserverid))
 		{
-			log_error()->print("activ_connect [{}]", aserverid);
+			//log_error()->print("activ_connect [{}]", aserverid);
 			nets::connect(aserverid, [this, aserverid](i32_session asession)
 				{
 					set_node(aserverid, asession);
@@ -272,7 +272,7 @@ namespace ngl
 	bool actor_client::handle(const message<np_actornode_update>& adata)
 	{
 		auto lparm = adata.get_data();
-		log_error()->print("actor_client np_actornode_update serid[{}]", lparm->m_id);
+		//log_error()->print("actor_client np_actornode_update serid[{}]", lparm->m_id);
 		naddress::add_actor_address(lparm->m_id, lparm->m_add);
 		naddress::del_actor_address(lparm->m_del);
 		return true;

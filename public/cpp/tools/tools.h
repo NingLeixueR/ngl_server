@@ -18,8 +18,6 @@
 
 #include <google/protobuf/util/json_util.h>
 
-
-
 #ifdef WIN32
 #define snprintf _snprintf
 #endif //WIN32
@@ -286,7 +284,7 @@ namespace ngl
 		static bool json2custom(const std::string& json, T& adata);
 
 		template <typename T>
-		static bool custom2json(const T& adata, std::string& json);
+		static bool custom2json(T& adata, std::string& json);
 
 		template <typename TKEY, typename TVAL>
 		static void copy(const std::map<TKEY, TVAL>& asource, google::protobuf::Map<TKEY, TVAL>& atarget)
@@ -791,7 +789,6 @@ namespace ngl
 		{
 			return check_cjson_and(atype, acjsontype) && check_cjson_and(atype, args...);
 		}
-
 	};
 
 	template <typename T>

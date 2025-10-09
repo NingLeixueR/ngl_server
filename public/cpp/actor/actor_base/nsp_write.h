@@ -54,6 +54,11 @@ namespace ngl
 			return *lpwrite;
 		}
 
+		static i64_actorid to_actorid(i64_actorid adataid)
+		{
+			return nguid::make_type(adataid, nactor_type<TACTOR>::type());
+		}
+
 		static type_nsp_write& instance_writepart(
 			TDerived* aactor
 			, const std::set<i64_actorid>& aids
@@ -64,7 +69,10 @@ namespace ngl
 			lpwrite->m_type = enp_channel_writepart;
 			lpwrite->m_actor = aactor;
 			lpwrite->m_fieldnumbers = afieldnumbers; 
-			lpwrite->m_ids = aids;
+			for (i64_actorid dataid : aids)
+			{
+				lpwrite->m_ids.insert(to_actorid(dataid));
+			}
 			nsp_instance<type_nsp_write>::init(aactor->id_guid(), lpwrite);
 			lpwrite->init();
 			return *lpwrite;
@@ -94,24 +102,24 @@ namespace ngl
 
 		T* add(i64_dataid adataid)
 		{
-			m_changeids.insert(adataid);
+			m_changeids.insert(to_actorid(adataid));
 			return &m_data[adataid];
 		}
 
 		T* get(i64_dataid adataid)
 		{
-			auto itor = m_data.find(adataid);
+			auto itor = m_data.find(to_actorid(adataid));
 			if (itor == m_data.end())
 			{
 				return nullptr;
 			}
-			m_changeids.insert(adataid);
+			m_changeids.insert(to_actorid(adataid));
 			return &itor->second;
 		}
 
 		const T* getconst(i64_dataid adataid)
 		{
-			auto itor = m_data.find(adataid);
+			auto itor = m_data.find(to_actorid(adataid));
 			if (itor == m_data.end())
 			{
 				return nullptr;
@@ -304,13 +312,15 @@ namespace ngl
 	template <typename TDerived, typename TACTOR, typename T>
 	bool nsp_write<TDerived, TACTOR, T>::is_care(i64_actorid adataid)
 	{
-		return m_type == enp_channel_writeall || m_ids.contains(adataid);
+		return m_type == enp_channel_writeall || m_ids.contains(to_actorid(adataid));
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
 	void nsp_write<TDerived, TACTOR, T>::handle(TDerived* aactor, const message<np_channel_data<T>>& adata)
 	{
 		const np_channel_data<T>* recv = adata.get_data();
+
+		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;
 
@@ -341,12 +351,15 @@ namespace ngl
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
-	void nsp_write<TDerived, TACTOR, T>::handle(TDerived*, const message<np_channel_check<T>>& adata)
+	void nsp_write<TDerived, TACTOR, T>::handle(TDerived* aactor, const message<np_channel_check<T>>& adata)
 	{
-		auto lprecv = adata.get_data();
-		if (m_register[lprecv->m_area])
+		const np_channel_check<T>* recv = adata.get_data();
+
+		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
+
+		if (m_register[recv->m_area])
 		{
-			twheel::wheel().removetimer(lprecv->m_timer);
+			twheel::wheel().removetimer(recv->m_timer);
 			return;
 		}
 		auto pro = std::make_shared<np_channel_write_register<T>>();
@@ -358,16 +371,19 @@ namespace ngl
 		log_error()->print(
 			"nsp_write register: {} -> {}"
 			, nguid(pro->m_actorid)
-			, nguid(m_nspserver[lprecv->m_area])
+			, nguid(m_nspserver[recv->m_area])
 		);
 		msg_info(*pro);
-		actor::send_actor(m_nspserver[lprecv->m_area], nguid::make(), pro);
+		actor::send_actor(m_nspserver[recv->m_area], nguid::make(), pro);
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
-	void nsp_write<TDerived, TACTOR, T>::handle(TDerived*, const message<np_channel_write_register_reply<T>>& adata)
+	void nsp_write<TDerived, TACTOR, T>::handle(TDerived* aactor, const message<np_channel_write_register_reply<T>>& adata)
 	{
 		const np_channel_write_register_reply<T>* recv = adata.get_data();
+
+		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
+
 		if (m_actor->id_guid() != recv->m_actorid)
 		{
 			tools::no_core_dump();
@@ -383,13 +399,12 @@ namespace ngl
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
-	void nsp_write<TDerived, TACTOR, T>::handle(TDerived*, const message<np_channel_dataid_sync<T>>& adata)
+	void nsp_write<TDerived, TACTOR, T>::handle(TDerived* aactor, const message<np_channel_dataid_sync<T>>& adata)
 	{
 		const np_channel_dataid_sync<T>* recv = adata.get_data();
-		if (recv == nullptr)
-		{
-			return;
-		}
+
+		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
+
 		if (recv->m_add)
 		{
 			if (recv->m_fieldnumbers.empty() && (recv->m_type == enp_channel_writeall || recv->m_type == enp_channel_writepart))
