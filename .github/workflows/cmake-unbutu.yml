@@ -101,7 +101,8 @@ jobs:
         wget https://www.lua.org/ftp/lua-5.4.2.tar.gz
         tar -xzf lua-5.4.2.tar.gz
         cd lua-5.4.2
-        make linux test
+        #make linux test
+        #make clean
         make linux CFLAGS="-O2 -fPIC"
         sudo make install
         cd ..
