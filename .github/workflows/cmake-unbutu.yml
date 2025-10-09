@@ -96,12 +96,13 @@ jobs:
       run: |
        sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev && dpkg-query -L libcurl4-openssl-dev
        
-    - name: Install Lua 5.4.2
+    - name: Install Lua 5.4.2 with -fPIC
       run: |
         wget https://www.lua.org/ftp/lua-5.4.2.tar.gz
         tar -xzf lua-5.4.2.tar.gz
         cd lua-5.4.2
         make linux test
+        make linux CFLAGS="-O2 -fPIC"
         sudo make install
         cd ..
         lua -v  # Verify installation
