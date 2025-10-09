@@ -844,6 +844,12 @@ namespace ngl
 		{
 			json_format<int32_t>::write(ajson, akey, (int32_t)adata);
 		}
+		else if constexpr (is_protobuf_message<T>::value)
+		{
+			std::string ljsonstr;
+			tools::proto2json(adata, ljsonstr);
+			json_format<std::string>::write(ajson, akey, ljsonstr);
+		}
 		else
 		{
 			adata.json_write(ajson, akey);
@@ -909,9 +915,13 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool tools::custom2json(const T& adata, std::string& json)
+	bool tools::custom2json(T& adata, std::string& json)
 	{
-		njson_write ljwrite(json);
-		return adata.json_write(ljwrite);
+		njson_write ljwrite;
+		njson::write(ljwrite, tools::type_name<T>().c_str(), adata);
+
+		json = ljwrite.get();
+
+		return true;
 	}
 }//namespace ngl

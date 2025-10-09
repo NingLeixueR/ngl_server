@@ -53,7 +53,7 @@ namespace ngl
 
 	service_tcp* asio_tcp::connect(const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount)
 	{
-		log_error()->print("connect {}:{}", aip, aport);
+		//log_error()->print("connect {}:{}", aip, aport);
 		std::shared_ptr<service_tcp> lservice = nullptr;
 		{
 			monopoly_shared_lock(m_maplock);

@@ -57,7 +57,7 @@ namespace ngl
 		nguid lguid(adataid);
 		m_actorserver[lguid] = aserverid;
 		m_actortypeserver[lguid.type()].insert(adataid);
-		log_error()->print("#actor_address [[{}]->[{}]]", lguid, aserverid);
+		//log_error()->print("#actor_address [[{}]->[{}]]", lguid, aserverid);
 
 		auto itor = m_nguidfun.find(adataid);
 		if (itor != m_nguidfun.end())
@@ -109,7 +109,7 @@ namespace ngl
 		actor_node_session* lpsession = tools::findmap(m_session, aserverid);
 		if (lpsession == nullptr)
 		{
-			log_error()->print("get_session(serverid:{}) fail", aserverid);
+			//log_error()->print("get_session(serverid:{}) fail", aserverid);
 			return -1;
 		}
 		return lpsession->m_session;
@@ -120,7 +120,7 @@ namespace ngl
 		i32_serverid* lpserverid = tools::findmap(m_actorserver, aguid);
 		if (lpserverid == nullptr)
 		{
-			log_error()->print("get_session(nguid:{}) fail", aguid);
+			//log_error()->print("get_session(nguid:{}) fail", aguid);
 			return -1;
 		}
 		return *lpserverid;

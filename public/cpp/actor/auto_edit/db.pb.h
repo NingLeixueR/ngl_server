@@ -600,241 +600,6 @@ class db_account PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class brief_activityvalues_MactivityRolelvEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<brief_activityvalues_MactivityRolelvEntry_DoNotUse, 
-    ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
-    0 > {
-public:
-  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<brief_activityvalues_MactivityRolelvEntry_DoNotUse, 
-    ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
-    0 > SuperType;
-  brief_activityvalues_MactivityRolelvEntry_DoNotUse();
-  brief_activityvalues_MactivityRolelvEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void MergeFrom(const brief_activityvalues_MactivityRolelvEntry_DoNotUse& other);
-  static const brief_activityvalues_MactivityRolelvEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const brief_activityvalues_MactivityRolelvEntry_DoNotUse*>(&_brief_activityvalues_MactivityRolelvEntry_DoNotUse_default_instance_); }
-  static bool ValidateKey(void*) { return true; }
-  static bool ValidateValue(void*) { return true; }
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[1];
-  }
-
-  public:
-};
-
-// -------------------------------------------------------------------
-
-class brief_activityvalues_MactivityRolegoldEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<brief_activityvalues_MactivityRolegoldEntry_DoNotUse, 
-    ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
-    0 > {
-public:
-  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<brief_activityvalues_MactivityRolegoldEntry_DoNotUse, 
-    ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
-    0 > SuperType;
-  brief_activityvalues_MactivityRolegoldEntry_DoNotUse();
-  brief_activityvalues_MactivityRolegoldEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void MergeFrom(const brief_activityvalues_MactivityRolegoldEntry_DoNotUse& other);
-  static const brief_activityvalues_MactivityRolegoldEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const brief_activityvalues_MactivityRolegoldEntry_DoNotUse*>(&_brief_activityvalues_MactivityRolegoldEntry_DoNotUse_default_instance_); }
-  static bool ValidateKey(void*) { return true; }
-  static bool ValidateValue(void*) { return true; }
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[2];
-  }
-
-  public:
-};
-
-// -------------------------------------------------------------------
-
-class brief_activityvalues PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.brief_activityvalues) */ {
- public:
-  inline brief_activityvalues() : brief_activityvalues(nullptr) {};
-  virtual ~brief_activityvalues();
-
-  brief_activityvalues(const brief_activityvalues& from);
-  brief_activityvalues(brief_activityvalues&& from) noexcept
-    : brief_activityvalues() {
-    *this = ::std::move(from);
-  }
-
-  inline brief_activityvalues& operator=(const brief_activityvalues& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline brief_activityvalues& operator=(brief_activityvalues&& from) noexcept {
-    if (GetArena() == from.GetArena()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const brief_activityvalues& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const brief_activityvalues* internal_default_instance() {
-    return reinterpret_cast<const brief_activityvalues*>(
-               &_brief_activityvalues_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    3;
-
-  friend void swap(brief_activityvalues& a, brief_activityvalues& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(brief_activityvalues* other) {
-    if (other == this) return;
-    if (GetArena() == other->GetArena()) {
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(brief_activityvalues* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline brief_activityvalues* New() const final {
-    return CreateMaybeMessage<brief_activityvalues>(nullptr);
-  }
-
-  brief_activityvalues* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<brief_activityvalues>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const brief_activityvalues& from);
-  void MergeFrom(const brief_activityvalues& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(brief_activityvalues* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbdb.brief_activityvalues";
-  }
-  protected:
-  explicit brief_activityvalues(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  private:
-  static void ArenaDtor(void* object);
-  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kMactivityRolelvFieldNumber = 1,
-    kMactivityRolegoldFieldNumber = 2,
-  };
-  // map<int32, int32> mactivity_rolelv = 1;
-  int mactivity_rolelv_size() const;
-  private:
-  int _internal_mactivity_rolelv_size() const;
-  public:
-  void clear_mactivity_rolelv();
-  private:
-  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
-      _internal_mactivity_rolelv() const;
-  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
-      _internal_mutable_mactivity_rolelv();
-  public:
-  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
-      mactivity_rolelv() const;
-  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
-      mutable_mactivity_rolelv();
-
-  // map<int32, int32> mactivity_rolegold = 2;
-  int mactivity_rolegold_size() const;
-  private:
-  int _internal_mactivity_rolegold_size() const;
-  public:
-  void clear_mactivity_rolegold();
-  private:
-  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
-      _internal_mactivity_rolegold() const;
-  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
-      _internal_mutable_mactivity_rolegold();
-  public:
-  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
-      mactivity_rolegold() const;
-  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
-      mutable_mactivity_rolegold();
-
-  // @@protoc_insertion_point(class_scope:pbdb.brief_activityvalues)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
-      brief_activityvalues_MactivityRolelvEntry_DoNotUse,
-      ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
-      0 > mactivity_rolelv_;
-  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
-      brief_activityvalues_MactivityRolegoldEntry_DoNotUse,
-      ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
-      0 > mactivity_rolegold_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_db_2eproto;
-};
-// -------------------------------------------------------------------
-
 class brief_base PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.brief_base) */ {
  public:
@@ -877,7 +642,7 @@ class brief_base PROTOBUF_FINAL :
                &_brief_base_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    1;
 
   friend void swap(brief_base& a, brief_base& b) {
     a.Swap(&b);
@@ -1083,6 +848,241 @@ class brief_base PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class brief_activityvalues_MactivityRolelvEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<brief_activityvalues_MactivityRolelvEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<brief_activityvalues_MactivityRolelvEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    0 > SuperType;
+  brief_activityvalues_MactivityRolelvEntry_DoNotUse();
+  brief_activityvalues_MactivityRolelvEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const brief_activityvalues_MactivityRolelvEntry_DoNotUse& other);
+  static const brief_activityvalues_MactivityRolelvEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const brief_activityvalues_MactivityRolelvEntry_DoNotUse*>(&_brief_activityvalues_MactivityRolelvEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[2];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
+class brief_activityvalues_MactivityRolegoldEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<brief_activityvalues_MactivityRolegoldEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<brief_activityvalues_MactivityRolegoldEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    0 > SuperType;
+  brief_activityvalues_MactivityRolegoldEntry_DoNotUse();
+  brief_activityvalues_MactivityRolegoldEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const brief_activityvalues_MactivityRolegoldEntry_DoNotUse& other);
+  static const brief_activityvalues_MactivityRolegoldEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const brief_activityvalues_MactivityRolegoldEntry_DoNotUse*>(&_brief_activityvalues_MactivityRolegoldEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[3];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
+class brief_activityvalues PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.brief_activityvalues) */ {
+ public:
+  inline brief_activityvalues() : brief_activityvalues(nullptr) {};
+  virtual ~brief_activityvalues();
+
+  brief_activityvalues(const brief_activityvalues& from);
+  brief_activityvalues(brief_activityvalues&& from) noexcept
+    : brief_activityvalues() {
+    *this = ::std::move(from);
+  }
+
+  inline brief_activityvalues& operator=(const brief_activityvalues& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline brief_activityvalues& operator=(brief_activityvalues&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const brief_activityvalues& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const brief_activityvalues* internal_default_instance() {
+    return reinterpret_cast<const brief_activityvalues*>(
+               &_brief_activityvalues_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  friend void swap(brief_activityvalues& a, brief_activityvalues& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(brief_activityvalues* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(brief_activityvalues* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline brief_activityvalues* New() const final {
+    return CreateMaybeMessage<brief_activityvalues>(nullptr);
+  }
+
+  brief_activityvalues* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<brief_activityvalues>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const brief_activityvalues& from);
+  void MergeFrom(const brief_activityvalues& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(brief_activityvalues* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbdb.brief_activityvalues";
+  }
+  protected:
+  explicit brief_activityvalues(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMactivityRolelvFieldNumber = 1,
+    kMactivityRolegoldFieldNumber = 2,
+  };
+  // map<int32, int32> mactivity_rolelv = 1;
+  int mactivity_rolelv_size() const;
+  private:
+  int _internal_mactivity_rolelv_size() const;
+  public:
+  void clear_mactivity_rolelv();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
+      _internal_mactivity_rolelv() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
+      _internal_mutable_mactivity_rolelv();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
+      mactivity_rolelv() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
+      mutable_mactivity_rolelv();
+
+  // map<int32, int32> mactivity_rolegold = 2;
+  int mactivity_rolegold_size() const;
+  private:
+  int _internal_mactivity_rolegold_size() const;
+  public:
+  void clear_mactivity_rolegold();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
+      _internal_mactivity_rolegold() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
+      _internal_mutable_mactivity_rolegold();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
+      mactivity_rolegold() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
+      mutable_mactivity_rolegold();
+
+  // @@protoc_insertion_point(class_scope:pbdb.brief_activityvalues)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      brief_activityvalues_MactivityRolelvEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+      0 > mactivity_rolelv_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      brief_activityvalues_MactivityRolegoldEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+      0 > mactivity_rolegold_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_db_2eproto;
+};
+// -------------------------------------------------------------------
+
 class db_brief PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.db_brief) */ {
  public:
@@ -1196,29 +1196,29 @@ class db_brief PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMBaseFieldNumber = 2,
-    kMactivityvaluesFieldNumber = 9,
+    kMbaseFieldNumber = 2,
+    kMactivityvaluesFieldNumber = 3,
     kMidFieldNumber = 1,
   };
-  // .pbdb.brief_base m_base = 2;
-  bool has_m_base() const;
+  // .pbdb.brief_base mbase = 2;
+  bool has_mbase() const;
   private:
-  bool _internal_has_m_base() const;
+  bool _internal_has_mbase() const;
   public:
-  void clear_m_base();
-  const ::pbdb::brief_base& m_base() const;
-  ::pbdb::brief_base* release_m_base();
-  ::pbdb::brief_base* mutable_m_base();
-  void set_allocated_m_base(::pbdb::brief_base* m_base);
+  void clear_mbase();
+  const ::pbdb::brief_base& mbase() const;
+  ::pbdb::brief_base* release_mbase();
+  ::pbdb::brief_base* mutable_mbase();
+  void set_allocated_mbase(::pbdb::brief_base* mbase);
   private:
-  const ::pbdb::brief_base& _internal_m_base() const;
-  ::pbdb::brief_base* _internal_mutable_m_base();
+  const ::pbdb::brief_base& _internal_mbase() const;
+  ::pbdb::brief_base* _internal_mutable_mbase();
   public:
-  void unsafe_arena_set_allocated_m_base(
-      ::pbdb::brief_base* m_base);
-  ::pbdb::brief_base* unsafe_arena_release_m_base();
+  void unsafe_arena_set_allocated_mbase(
+      ::pbdb::brief_base* mbase);
+  ::pbdb::brief_base* unsafe_arena_release_mbase();
 
-  // .pbdb.brief_activityvalues mactivityvalues = 9;
+  // .pbdb.brief_activityvalues mactivityvalues = 3;
   bool has_mactivityvalues() const;
   private:
   bool _internal_has_mactivityvalues() const;
@@ -1258,7 +1258,7 @@ class db_brief PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  ::pbdb::brief_base* m_base_;
+  ::pbdb::brief_base* mbase_;
   ::pbdb::brief_activityvalues* mactivityvalues_;
   ::PROTOBUF_NAMESPACE_ID::int64 mid_;
   friend struct ::TableStruct_db_2eproto;
@@ -6837,72 +6837,6 @@ inline void db_account::set_marea(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // -------------------------------------------------------------------
 
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
-// brief_activityvalues
-
-// map<int32, int32> mactivity_rolelv = 1;
-inline int brief_activityvalues::_internal_mactivity_rolelv_size() const {
-  return mactivity_rolelv_.size();
-}
-inline int brief_activityvalues::mactivity_rolelv_size() const {
-  return _internal_mactivity_rolelv_size();
-}
-inline void brief_activityvalues::clear_mactivity_rolelv() {
-  mactivity_rolelv_.Clear();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
-brief_activityvalues::_internal_mactivity_rolelv() const {
-  return mactivity_rolelv_.GetMap();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
-brief_activityvalues::mactivity_rolelv() const {
-  // @@protoc_insertion_point(field_map:pbdb.brief_activityvalues.mactivity_rolelv)
-  return _internal_mactivity_rolelv();
-}
-inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
-brief_activityvalues::_internal_mutable_mactivity_rolelv() {
-  return mactivity_rolelv_.MutableMap();
-}
-inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
-brief_activityvalues::mutable_mactivity_rolelv() {
-  // @@protoc_insertion_point(field_mutable_map:pbdb.brief_activityvalues.mactivity_rolelv)
-  return _internal_mutable_mactivity_rolelv();
-}
-
-// map<int32, int32> mactivity_rolegold = 2;
-inline int brief_activityvalues::_internal_mactivity_rolegold_size() const {
-  return mactivity_rolegold_.size();
-}
-inline int brief_activityvalues::mactivity_rolegold_size() const {
-  return _internal_mactivity_rolegold_size();
-}
-inline void brief_activityvalues::clear_mactivity_rolegold() {
-  mactivity_rolegold_.Clear();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
-brief_activityvalues::_internal_mactivity_rolegold() const {
-  return mactivity_rolegold_.GetMap();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
-brief_activityvalues::mactivity_rolegold() const {
-  // @@protoc_insertion_point(field_map:pbdb.brief_activityvalues.mactivity_rolegold)
-  return _internal_mactivity_rolegold();
-}
-inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
-brief_activityvalues::_internal_mutable_mactivity_rolegold() {
-  return mactivity_rolegold_.MutableMap();
-}
-inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
-brief_activityvalues::mutable_mactivity_rolegold() {
-  // @@protoc_insertion_point(field_mutable_map:pbdb.brief_activityvalues.mactivity_rolegold)
-  return _internal_mutable_mactivity_rolegold();
-}
-
-// -------------------------------------------------------------------
-
 // brief_base
 
 // string mname = 1;
@@ -7168,6 +7102,72 @@ inline void brief_base::set_mcreateutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// brief_activityvalues
+
+// map<int32, int32> mactivity_rolelv = 1;
+inline int brief_activityvalues::_internal_mactivity_rolelv_size() const {
+  return mactivity_rolelv_.size();
+}
+inline int brief_activityvalues::mactivity_rolelv_size() const {
+  return _internal_mactivity_rolelv_size();
+}
+inline void brief_activityvalues::clear_mactivity_rolelv() {
+  mactivity_rolelv_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
+brief_activityvalues::_internal_mactivity_rolelv() const {
+  return mactivity_rolelv_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
+brief_activityvalues::mactivity_rolelv() const {
+  // @@protoc_insertion_point(field_map:pbdb.brief_activityvalues.mactivity_rolelv)
+  return _internal_mactivity_rolelv();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
+brief_activityvalues::_internal_mutable_mactivity_rolelv() {
+  return mactivity_rolelv_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
+brief_activityvalues::mutable_mactivity_rolelv() {
+  // @@protoc_insertion_point(field_mutable_map:pbdb.brief_activityvalues.mactivity_rolelv)
+  return _internal_mutable_mactivity_rolelv();
+}
+
+// map<int32, int32> mactivity_rolegold = 2;
+inline int brief_activityvalues::_internal_mactivity_rolegold_size() const {
+  return mactivity_rolegold_.size();
+}
+inline int brief_activityvalues::mactivity_rolegold_size() const {
+  return _internal_mactivity_rolegold_size();
+}
+inline void brief_activityvalues::clear_mactivity_rolegold() {
+  mactivity_rolegold_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
+brief_activityvalues::_internal_mactivity_rolegold() const {
+  return mactivity_rolegold_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >&
+brief_activityvalues::mactivity_rolegold() const {
+  // @@protoc_insertion_point(field_map:pbdb.brief_activityvalues.mactivity_rolegold)
+  return _internal_mactivity_rolegold();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
+brief_activityvalues::_internal_mutable_mactivity_rolegold() {
+  return mactivity_rolegold_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
+brief_activityvalues::mutable_mactivity_rolegold() {
+  // @@protoc_insertion_point(field_mutable_map:pbdb.brief_activityvalues.mactivity_rolegold)
+  return _internal_mutable_mactivity_rolegold();
+}
+
+// -------------------------------------------------------------------
+
 // db_brief
 
 // int64 mid = 1;
@@ -7198,88 +7198,88 @@ inline void db_brief::set_mid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   // @@protoc_insertion_point(field_set:pbdb.db_brief.mid)
 }
 
-// .pbdb.brief_base m_base = 2;
-inline bool db_brief::_internal_has_m_base() const {
-  return this != internal_default_instance() && m_base_ != nullptr;
+// .pbdb.brief_base mbase = 2;
+inline bool db_brief::_internal_has_mbase() const {
+  return this != internal_default_instance() && mbase_ != nullptr;
 }
-inline bool db_brief::has_m_base() const {
-  return _internal_has_m_base();
+inline bool db_brief::has_mbase() const {
+  return _internal_has_mbase();
 }
-inline void db_brief::clear_m_base() {
-  if (GetArena() == nullptr && m_base_ != nullptr) {
-    delete m_base_;
+inline void db_brief::clear_mbase() {
+  if (GetArena() == nullptr && mbase_ != nullptr) {
+    delete mbase_;
   }
-  m_base_ = nullptr;
+  mbase_ = nullptr;
 }
-inline const ::pbdb::brief_base& db_brief::_internal_m_base() const {
-  const ::pbdb::brief_base* p = m_base_;
+inline const ::pbdb::brief_base& db_brief::_internal_mbase() const {
+  const ::pbdb::brief_base* p = mbase_;
   return p != nullptr ? *p : *reinterpret_cast<const ::pbdb::brief_base*>(
       &::pbdb::_brief_base_default_instance_);
 }
-inline const ::pbdb::brief_base& db_brief::m_base() const {
-  // @@protoc_insertion_point(field_get:pbdb.db_brief.m_base)
-  return _internal_m_base();
+inline const ::pbdb::brief_base& db_brief::mbase() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_brief.mbase)
+  return _internal_mbase();
 }
-inline void db_brief::unsafe_arena_set_allocated_m_base(
-    ::pbdb::brief_base* m_base) {
+inline void db_brief::unsafe_arena_set_allocated_mbase(
+    ::pbdb::brief_base* mbase) {
   if (GetArena() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(m_base_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(mbase_);
   }
-  m_base_ = m_base;
-  if (m_base) {
+  mbase_ = mbase;
+  if (mbase) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbdb.db_brief.m_base)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbdb.db_brief.mbase)
 }
-inline ::pbdb::brief_base* db_brief::release_m_base() {
-  auto temp = unsafe_arena_release_m_base();
+inline ::pbdb::brief_base* db_brief::release_mbase() {
+  auto temp = unsafe_arena_release_mbase();
   if (GetArena() != nullptr) {
     temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
   }
   return temp;
 }
-inline ::pbdb::brief_base* db_brief::unsafe_arena_release_m_base() {
-  // @@protoc_insertion_point(field_release:pbdb.db_brief.m_base)
+inline ::pbdb::brief_base* db_brief::unsafe_arena_release_mbase() {
+  // @@protoc_insertion_point(field_release:pbdb.db_brief.mbase)
   
-  ::pbdb::brief_base* temp = m_base_;
-  m_base_ = nullptr;
+  ::pbdb::brief_base* temp = mbase_;
+  mbase_ = nullptr;
   return temp;
 }
-inline ::pbdb::brief_base* db_brief::_internal_mutable_m_base() {
+inline ::pbdb::brief_base* db_brief::_internal_mutable_mbase() {
   
-  if (m_base_ == nullptr) {
+  if (mbase_ == nullptr) {
     auto* p = CreateMaybeMessage<::pbdb::brief_base>(GetArena());
-    m_base_ = p;
+    mbase_ = p;
   }
-  return m_base_;
+  return mbase_;
 }
-inline ::pbdb::brief_base* db_brief::mutable_m_base() {
-  // @@protoc_insertion_point(field_mutable:pbdb.db_brief.m_base)
-  return _internal_mutable_m_base();
+inline ::pbdb::brief_base* db_brief::mutable_mbase() {
+  // @@protoc_insertion_point(field_mutable:pbdb.db_brief.mbase)
+  return _internal_mutable_mbase();
 }
-inline void db_brief::set_allocated_m_base(::pbdb::brief_base* m_base) {
+inline void db_brief::set_allocated_mbase(::pbdb::brief_base* mbase) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
   if (message_arena == nullptr) {
-    delete m_base_;
+    delete mbase_;
   }
-  if (m_base) {
+  if (mbase) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(m_base);
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(mbase);
     if (message_arena != submessage_arena) {
-      m_base = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, m_base, submessage_arena);
+      mbase = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, mbase, submessage_arena);
     }
     
   } else {
     
   }
-  m_base_ = m_base;
-  // @@protoc_insertion_point(field_set_allocated:pbdb.db_brief.m_base)
+  mbase_ = mbase;
+  // @@protoc_insertion_point(field_set_allocated:pbdb.db_brief.mbase)
 }
 
-// .pbdb.brief_activityvalues mactivityvalues = 9;
+// .pbdb.brief_activityvalues mactivityvalues = 3;
 inline bool db_brief::_internal_has_mactivityvalues() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || mactivityvalues_ != nullptr);

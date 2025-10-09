@@ -98,12 +98,12 @@ namespace ngl
 			case pbdb::eranklist::lv:
 				return init(abrief, aranklist, pbdb::eranklist::lv, [](const pbdb::db_brief& abrief)
 					{
-						return abrief.m_base().mlv();
+						return abrief.mbase().mlv();
 					});
 			case pbdb::eranklist::gold:
 				return init(abrief, aranklist, pbdb::eranklist::gold, [](const pbdb::db_brief& abrief)
 					{
-						return abrief.m_base().mmoneygold();
+						return abrief.mbase().mmoneygold();
 					});
 			case pbdb::eranklist::activity_lv + 1:
 				return init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_lv + 1),

@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-09-23 11:27:25】
+ // 创建时间【2025-10-09 17:42:07】
 
 #pragma once
 #include "ndefine.h"
@@ -374,7 +374,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_brief& adata)
        {
-            ngl::nlua_table::table_push(L, "mid", adata.mid(),"m_base", adata.m_base(),"mactivityvalues", adata.mactivityvalues());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mbase", adata.mbase(),"mactivityvalues", adata.mactivityvalues());
        }
        static bool stack_pop(lua_State* L, pbdb::db_brief& adata, bool apop = true)
        {
@@ -383,7 +383,7 @@ namespace ngl
                return true;
            }
            int64_t lmid;
-           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "m_base",  *adata.mutable_m_base(), "mactivityvalues",  *adata.mutable_mactivityvalues()))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mbase",  *adata.mutable_mbase(), "mactivityvalues",  *adata.mutable_mactivityvalues()))
            {
                return false;
            }

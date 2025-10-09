@@ -19,7 +19,14 @@ namespace ngl
 		void init(TACTOR* aactor, const std::set<i64_actorid>& adataid)
 		{
 			m_actor = aactor;
-			tdb_activitytimes::nsp_cread<TACTOR>::instance_readpart(m_actor, adataid);
+			if (adataid.empty())
+			{
+				tdb_activitytimes::nsp_cread<TACTOR>::instance_readall(m_actor);
+			}
+			else
+			{
+				tdb_activitytimes::nsp_cread<TACTOR>::instance_readpart(m_actor, adataid);
+			}
 		}
 
 		void exit()

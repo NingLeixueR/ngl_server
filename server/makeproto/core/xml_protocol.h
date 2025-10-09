@@ -670,8 +670,9 @@ namespace ngl
         m_stream << R"(#pragma once
 
 #include "ndb_modular.h"
-#include "nsp_client.h"
 #include "nsp_server.h"
+#include "nsp_write.h"
+#include "nsp_read.h"
 #include "actor_db.h"
 #include "db.pb.h"
 
@@ -687,9 +688,11 @@ namespace ngl
 		using db_actor   = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
 		using db_modular = ndb_modular<TDBTAB_TYPE, TDBTAB, TACTOR>;
 		// 订阅/发布[数据副本]
-		using nsp_ser	 = nsp_server<TDBTAB_TYPE, TACTOR, TDBTAB>;
+		using nsp_ser		= nsp_server<TDBTAB_TYPE, TACTOR, TDBTAB>;
 		template <typename TDerived>
-		using nsp_cli	 = nsp_client<TDerived, TACTOR, TDBTAB>;
+		using nsp_cread		= nsp_read<TDerived, TACTOR, TDBTAB>;
+		template <typename TDerived>
+		using nsp_cwrite	= nsp_write<TDerived, TACTOR, TDBTAB>;
 
 		// [aregister == true] 主要是注册协议,宏与类型的绑定
 		// [aregister == false] 实例化db_actor,db server需要
@@ -700,7 +703,7 @@ namespace ngl
 	void ndb_modular<ENUM, TDATA, TACTOR>::init_data()
 	{
 		initdata();
-		typedb<ENUM, TDATA, TACTOR>::nsp_ser::loadfish_sync();
+		//typedb<ENUM, TDATA, TACTOR>::nsp_ser::loadfish_sync();
 	}
 )";
 
@@ -812,8 +815,10 @@ namespace ngl
 	void _reister_channel_db()
 	{
 		tprotocol::tp_customs::template func <
-			np_channel_register<T>
-			, np_channel_register_reply<T>
+			np_channel_write_register<T>
+			, np_channel_write_register_reply<T>
+			, np_channel_read_register<T>
+			, np_channel_read_register_reply<T>
 			, np_channel_data<T>
 			, np_channel_exit<T>
 			, np_channel_check<T>

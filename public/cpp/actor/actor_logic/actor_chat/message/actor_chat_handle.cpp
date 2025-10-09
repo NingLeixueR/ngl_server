@@ -39,7 +39,7 @@ namespace ngl
 			lvec.push_back(pbnet::chatitem());
 			pbnet::chatitem& lchatitem = *lvec.rbegin();
 
-			lchatitem.set_mrolename(lpbrief->m_base().mname());
+			lchatitem.set_mrolename(lpbrief->mbase().mname());
 			lchatitem.set_mutc((int)localtime::gettime());
 			lchatitem.set_mcontent(recv.mcontent());
 			lchatitem.set_mroleid(lpbrief->mid());
