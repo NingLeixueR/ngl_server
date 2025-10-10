@@ -102,7 +102,7 @@ namespace ngl
 		template <typename TX>
 		static void msg_info(TX& adata);
 
-		bool is_care(i64_actorid adataid);
+		bool is_care(i64_actorid adataid)const;
 
 		void handle(TDerived* aactor, const message<np_channel_data<T>>& adata);
 
@@ -183,7 +183,7 @@ namespace ngl
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
-	bool nsp_read<TDerived, TACTOR, T>::is_care(i64_actorid adataid)
+	bool nsp_read<TDerived, TACTOR, T>::is_care(i64_actorid adataid)const
 	{
 		return m_type == enp_channel_readall || m_ids.contains(to_actorid(adataid));
 	}
