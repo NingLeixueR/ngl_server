@@ -31,14 +31,14 @@ namespace ngl
 			);
 		}
 
-		template <typename TACTOR, typename T, typename TX>
+		template <typename TACTOR, typename TX>
 		static void msg_info(TX& adata)
 		{
 			adata.m_msg = std::format(
 				"{}:{}:{}"
 				, tools::type_name<TDerived>()
 				, tools::type_name<TACTOR>()
-				, tools::type_name<T>()
+				, tools::type_name<typename TX::T>()
 			);
 		}
 	};

@@ -343,6 +343,7 @@ namespace ngl
 	template <typename TDATA>
 	struct np_channel_read_register
 	{
+		using T = TDATA;
 		std::string		m_msg;									// 调试查看信息
 		i64_actorid		m_actorid = nguid::make();				// 子节点id
 		enp_channel		m_type;									// 类型
@@ -358,6 +359,7 @@ namespace ngl
 	template <typename TDATA>
 	struct np_channel_write_register
 	{
+		using T = TDATA;
 		std::string		m_msg;									// 调试查看信息
 		i64_actorid		m_actorid = nguid::make();				// 子节点id
 		enp_channel		m_type;									// 类型
@@ -372,6 +374,7 @@ namespace ngl
 	template <typename TDATA>
 	struct np_channel_read_register_reply
 	{
+		using T = TDATA;
 		std::string m_msg;											// 调试查看信息
 		i64_actorid m_actorid;										// 子节点id
 		// 结点可修改哪些字段编号
@@ -384,6 +387,7 @@ namespace ngl
 	template <typename TDATA>
 	struct np_channel_write_register_reply
 	{
+		using T = TDATA;
 		std::string m_msg;											// 调试查看信息
 		i64_actorid m_actorid;										// 子节点id
 
@@ -402,6 +406,7 @@ namespace ngl
 	template <typename TDATA>
 	struct np_channel_dataid_sync
 	{
+		using T = TDATA;
 		std::string m_msg;										// 调试查看信息
 		i64_actorid m_actorid = 0;								// 异变的子节点id
 		bool m_add = true;										// 增加还是删除
@@ -422,6 +427,7 @@ namespace ngl
 	template <typename TDATA>
 	struct np_channel_exit
 	{
+		using T = TDATA;
 		std::string				m_msg;							// 调试查看信息
 		i64_actorid				m_actorid;
 		dprotocol(np_channel_exit, m_msg, m_actorid)
@@ -430,6 +436,7 @@ namespace ngl
 	template <typename TDATA>
 	struct np_channel_data
 	{
+		using T = TDATA;
 		std::string m_msg;									// 调试查看信息
 		i64_nodeid m_actorid = 0;
 		bool m_firstsynchronize = false;					// 首次同步
@@ -443,6 +450,7 @@ namespace ngl
 	template <typename TDATA>
 	struct np_channel_check
 	{
+		using T = TDATA;
 		std::string m_msg;									// 调试查看信息
 		int64_t m_timer;
 		i16_area m_area;
