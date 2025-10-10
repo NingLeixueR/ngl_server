@@ -175,9 +175,9 @@ namespace ngl
 					}
 					pb_field::copy(m_data[dataid], &pro->m_data[dataid], m_fieldnumbers);
 					std::set<i64_nodeid> lnodes;
-					for (const auto& item : m_part[dataid])
+					for (const auto& [lkey, lvalue] : m_part[dataid])
 					{
-						lnodes.insert(item.first);
+						lnodes.insert(lkey);
 					}
 					actor::send_actor(lnodes, nguid::make(), pro);
 				}
@@ -185,7 +185,7 @@ namespace ngl
 			
 		}
 
-		bool is_care(i64_actorid adataid);
+		bool is_care(i64_actorid adataid)const;
 
 		void handle(TDerived* aactor, const message<np_channel_data<T>>& adata);
 
@@ -310,7 +310,7 @@ namespace ngl
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
-	bool nsp_write<TDerived, TACTOR, T>::is_care(i64_actorid adataid)
+	bool nsp_write<TDerived, TACTOR, T>::is_care(i64_actorid adataid)const
 	{
 		return m_type == enp_channel_writeall || m_ids.contains(to_actorid(adataid));
 	}
