@@ -153,7 +153,7 @@ namespace ngl
 					}
 					pb_field::copy(m_data[dataid], &pro->m_data[dataid], m_fieldnumbers);
 				}
-				nsp_handle_print<TDerived>::msg_info<TACTOR>(*pro);
+				nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 				actor::send_actor(lnodes, nguid::make(), pro);
 			}
 
@@ -177,7 +177,7 @@ namespace ngl
 					{
 						lnodes.insert(lkey);
 					}
-					nsp_handle_print<TDerived>::msg_info<TACTOR>(*pro);
+					nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 					actor::send_actor(lnodes, nguid::make(), pro);
 				}
 			}
@@ -289,7 +289,7 @@ namespace ngl
 							.m_timer = anode->m_timerid,
 							.m_area = larea,
 						});
-					nsp_handle_print<TDerived>::msg_info<TACTOR>(*pro);
+					nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 					actor::send_actor(lactorid, nguid::make(), pro);
 				}
 			}; twheel::wheel().addtimer(lparm);
@@ -355,7 +355,7 @@ namespace ngl
 		pro->m_writeids = m_ids;
 		pro->m_fieldnumbers = m_fieldnumbers;
 
-		nsp_handle_print<TDerived>::msg_info<TACTOR>(*pro);
+		nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 		actor::send_actor(m_nspserver[recv->m_area], nguid::make(), pro);
 	}
 

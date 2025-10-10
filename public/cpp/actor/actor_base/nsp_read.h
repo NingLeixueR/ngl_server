@@ -159,7 +159,7 @@ namespace ngl
 								.m_timer = anode->m_timerid,
 								.m_area = larea,
 							});
-						nsp_handle_print<TDerived>::msg_info<TACTOR>(*pro);
+						nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 						actor::send_actor(lactorid, nguid::make(), pro);
 					}
 				}; twheel::wheel().addtimer(lparm);
@@ -235,7 +235,7 @@ namespace ngl
 			, nguid(pro->m_actorid)
 			, nguid(m_nspserver[recv->m_area])
 		);
-		nsp_handle_print<TDerived>::msg_info<TACTOR>(*pro);
+		nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 		actor::send_actor(m_nspserver[recv->m_area], nguid::make(), pro);
 	}
 
