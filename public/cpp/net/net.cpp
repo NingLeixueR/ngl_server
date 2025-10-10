@@ -99,6 +99,7 @@ namespace ngl
 		
 		for (const net_works& item : tab->m_net)
 		{
+			uint16_t lport = item.m_port + nconfig::m_tcount;
 			if (item.m_type == ENET_TCP || item.m_type == ENET_WS)
 			{
 				if (m_net[item.m_type] != nullptr)
@@ -110,11 +111,11 @@ namespace ngl
 				{
 					lserver = new net_tcp((int8_t)ENET_TCP);
 				}
-				lserver->init(item.m_port, asocketthreadnum, aouternet);
+				lserver->init(lport, asocketthreadnum, aouternet);
 			}
-			else if (item.m_type == ENET_KCP&& item.m_port != -1)
+			else if (item.m_type == ENET_KCP&& lport != -1)
 			{
-				m_kcpnet[isystemindex] = ukcp::create(item.m_port);
+				m_kcpnet[isystemindex] = ukcp::create(lport);
 			}
 		}
 		return true;

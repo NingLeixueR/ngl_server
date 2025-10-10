@@ -792,13 +792,12 @@ int ngl_main(int argc, char** argv)
 	// # ¼ÓÔØcsvÅäÖÃ
 	ngl::csvbase::set_path("./csv", lname);
 
-	const ngl::tab_servers* tab = ngl::ttab_servers::instance().tab(argv[1], larea, ltcount);
+	const ngl::tab_servers* tab = ngl::ttab_servers::instance().tab(argv[1], larea, 1);
 	if (tab == nullptr)
 	{
 		return 0;
 	}
-
-	nconfig::set_nodeid(tab->m_id);
+	nconfig::set_nodeid(tab->m_id, ltcount);
 
 	std::string lnodename;
 	if (larea < 0)

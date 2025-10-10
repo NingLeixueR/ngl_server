@@ -18,6 +18,7 @@ namespace ngl
 	std::string				xmlnode::m_nodename;
 	NODE_TYPE				xmlnode::m_nodetype;
 	i32_id					xmlnode::m_nodeid;
+	i32_id					xmlnode::m_tcount;
 	mail_info				xmlnode::m_mail;
 	telnet_info				xmlnode::m_telnet;
 
@@ -64,9 +65,10 @@ namespace ngl
 		m_nodetype = lnodetype;
 	}
 
-	void xmlnode::set_nodeid(int anodeid)
+	void xmlnode::set_nodeid(int anodeid, int atcount)
 	{
 		m_nodeid = anodeid;
+		m_tcount = atcount;
 	}
 
 	void xmlnode::load(const std::string& axmlpath, const std::string& aname)
