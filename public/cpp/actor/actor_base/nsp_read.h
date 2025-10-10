@@ -99,9 +99,6 @@ namespace ngl
 			return m_data;
 		}
 
-		template <typename TX>
-		static void msg_info(TX& adata);
-
 		bool is_care(i64_actorid adataid)const;
 
 		void handle(TDerived* aactor, const message<np_channel_data<T>>& adata);
@@ -162,24 +159,12 @@ namespace ngl
 								.m_timer = anode->m_timerid,
 								.m_area = larea,
 							});
-						msg_info(*pro);
+						nsp_handle_print<TDerived>::msg_info<TACTOR, T>(*pro);
 						actor::send_actor(lactorid, nguid::make(), pro);
 					}
 				}; twheel::wheel().addtimer(lparm);
 			}
 		}
-	}
-
-	template <typename TDerived, typename TACTOR, typename T>
-	template <typename TX>
-	void nsp_read<TDerived, TACTOR, T>::msg_info(TX& adata)
-	{
-		adata.m_msg = std::format(
-			"{}:{}:{}"
-			, tools::type_name<TDerived>()
-			, tools::type_name<TACTOR>()
-			, tools::type_name<T>()
-		);
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
@@ -250,7 +235,7 @@ namespace ngl
 			, nguid(pro->m_actorid)
 			, nguid(m_nspserver[recv->m_area])
 		);
-		msg_info(*pro);
+		nsp_handle_print<TDerived>::msg_info<TACTOR, T>(*pro);
 		actor::send_actor(m_nspserver[recv->m_area], nguid::make(), pro);
 	}
 

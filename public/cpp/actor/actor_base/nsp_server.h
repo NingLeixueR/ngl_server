@@ -10,8 +10,6 @@
 
 namespace ngl
 {
-
-
 	template <typename TDerived>
 	class nsp_handle_print
 	{
@@ -32,12 +30,23 @@ namespace ngl
 				, lcustomstr
 			);
 		}
+
+		template <typename TACTOR, typename T, typename TX>
+		static void msg_info(TX& adata)
+		{
+			adata.m_msg = std::format(
+				"{}:{}:{}"
+				, tools::type_name<TDerived>()
+				, tools::type_name<TACTOR>()
+				, tools::type_name<T>()
+			);
+		}
 	};
 
 	template <
 		pbdb::ENUM_DB ENUMDB,	// 数据类型枚举
 		typename TDerived,		// 寄宿的actor
-		typename T			// 数据类型
+		typename T				// 数据类型
 	>
 	class nsp_server
 	{
@@ -433,7 +442,6 @@ namespace ngl
 		if (recv->m_type == enp_channel_writeall)
 		{// 全部可写
 			// (部分读/写)数据被哪些结点关心
-			//std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
 			for (const auto& item1 : m_part)
 			{
 				for (const auto& item2 : item1.second)
@@ -454,7 +462,6 @@ namespace ngl
 			for (i64_actorid dataid : recv->m_writeids)
 			{
 				// (部分读/写)数据被哪些结点关心
-				// std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
 				auto itor = m_part.find(dataid);
 				if (itor != m_part.end())
 				{
