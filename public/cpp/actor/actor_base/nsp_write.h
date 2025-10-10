@@ -95,9 +95,6 @@ namespace ngl
 			m_call.set_loadfinishfun(aid, afun);
 		}
 
-		template <typename TX>
-		static void msg_info(TX& adata);
-
 		std::set<i64_dataid> m_changeids;
 
 		T* add(i64_dataid adataid)
@@ -156,6 +153,7 @@ namespace ngl
 					}
 					pb_field::copy(m_data[dataid], &pro->m_data[dataid], m_fieldnumbers);
 				}
+				nsp_handle_print<TDerived>::msg_info<TACTOR, T>(*pro);
 				actor::send_actor(lnodes, nguid::make(), pro);
 			}
 
@@ -179,6 +177,7 @@ namespace ngl
 					{
 						lnodes.insert(lkey);
 					}
+					nsp_handle_print<TDerived>::msg_info<TACTOR, T>(*pro);
 					actor::send_actor(lnodes, nguid::make(), pro);
 				}
 			}
@@ -289,24 +288,12 @@ namespace ngl
 								.m_timer = anode->m_timerid,
 								.m_area = larea,
 							});
-						msg_info(*pro);
+						nsp_handle_print<TDerived>::msg_info<TACTOR, T>(*pro);
 						actor::send_actor(lactorid, nguid::make(), pro);
 					}
 				}; twheel::wheel().addtimer(lparm);
 			}
 		}
-	}
-
-	template <typename TDerived, typename TACTOR, typename T>
-	template <typename TX>
-	void nsp_write<TDerived, TACTOR, T>::msg_info(TX& adata)
-	{
-		adata.m_msg = std::format(
-			"{}:{}:{}"
-			, tools::type_name<TDerived>()
-			, tools::type_name<TACTOR>()
-			, tools::type_name<T>()
-		);
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
@@ -368,12 +355,7 @@ namespace ngl
 		pro->m_writeids = m_ids;
 		pro->m_fieldnumbers = m_fieldnumbers;
 
-		log_error()->print(
-			"nsp_write register: {} -> {}"
-			, nguid(pro->m_actorid)
-			, nguid(m_nspserver[recv->m_area])
-		);
-		msg_info(*pro);
+		nsp_handle_print<TDerived>::msg_info<TACTOR, T>(*pro);
 		actor::send_actor(m_nspserver[recv->m_area], nguid::make(), pro);
 	}
 
