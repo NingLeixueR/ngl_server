@@ -261,38 +261,38 @@ namespace ngl
 			nsp_instance<type_nsp_write>::template register_handle<TDerived, np_channel_write_register_reply<T>>();
 			// ´¦Àí×¢²á»Ø¸´
 			nsp_instance<type_nsp_write>::template register_handle<TDerived, np_channel_dataid_sync<T>>();
+		}
 
-			std::set<i16_area> lareaset;
-			ttab_servers::instance().get_arealist_nonrepet(nconfig::m_nodeid, lareaset);
+		std::set<i16_area> lareaset;
+		ttab_servers::instance().get_arealist_nonrepet(nconfig::m_nodeid, lareaset);
 
-			auto ltype = (ENUM_ACTOR)nguid::type(TACTOR::actorid());
-			for (i16_area area : lareaset)
+		auto ltype = (ENUM_ACTOR)nguid::type(TACTOR::actorid());
+		for (i16_area area : lareaset)
+		{
+			m_nspserver[area] = nguid::make(ltype, area, nguid::none_actordataid());
+			m_register[area] = false;
+		}
+
+		i64_actorid lactorid = m_actor->id_guid();
+		for (std::pair<const i16_area, bool>& item : m_register)
+		{
+			i16_area larea = item.first;
+			wheel_parm lparm
 			{
-				m_nspserver[area] = nguid::make(ltype, area, nguid::none_actordataid());
-				m_register[area] = false;
-			}
-
-			i64_actorid lactorid = m_actor->id_guid();
-			for (std::pair<const i16_area, bool>& item : m_register)
-			{
-				i16_area larea = item.first;
-				wheel_parm lparm
+				.m_ms = 1000,
+				.m_intervalms = [](int64_t) {return 10000; } ,
+				.m_count = 0x7fffffff,
+				.m_fun = [larea, lactorid](const wheel_node* anode)
 				{
-					.m_ms = 1000,
-					.m_intervalms = [](int64_t) {return 10000; } ,
-					.m_count = 0x7fffffff,
-					.m_fun = [larea, lactorid](const wheel_node* anode)
-					{
-						auto pro = std::make_shared<np_channel_check<T>>(
-							np_channel_check<T>{
-								.m_timer = anode->m_timerid,
-								.m_area = larea,
-							});
-						nsp_handle_print<TDerived>::msg_info<TACTOR, T>(*pro);
-						actor::send_actor(lactorid, nguid::make(), pro);
-					}
-				}; twheel::wheel().addtimer(lparm);
-			}
+					auto pro = std::make_shared<np_channel_check<T>>(
+						np_channel_check<T>{
+							.m_timer = anode->m_timerid,
+							.m_area = larea,
+						});
+					nsp_handle_print<TDerived>::msg_info<TACTOR, T>(*pro);
+					actor::send_actor(lactorid, nguid::make(), pro);
+				}
+			}; twheel::wheel().addtimer(lparm);
 		}
 	}
 
