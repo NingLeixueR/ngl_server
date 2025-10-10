@@ -54,6 +54,8 @@ namespace ngl
 		// 写全部数据的结点
 		static std::set<i64_nodeid> m_nodewritealls; // 哪些结点写全部数据
 
+		static std::set<i64_nodeid> m_nodepart;
+
 		// 数据
 		static ndb_modular<ENUMDB, T, TDerived>* m_dbmodule;
 	public:
@@ -101,6 +103,9 @@ namespace ngl
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	std::set<i64_nodeid> nsp_server<ENUMDB, TDerived, T>::m_nodewritealls;
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	std::set<i64_nodeid> nsp_server<ENUMDB, TDerived, T>::m_nodepart;
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	ndb_modular<ENUMDB, T, TDerived>* nsp_server<ENUMDB, TDerived, T>::m_dbmodule;
@@ -311,12 +316,26 @@ namespace ngl
 
 		nsp_handle_print<TDerived>::print("nsp_server", aactor, recv);
 
+		if (m_nodereadalls.contains(recv->m_actorid))
+		{
+			return;
+		}
+		if (m_nodewritealls.contains(recv->m_actorid))
+		{
+			return;
+		}
+		if (m_nodepart.contains(recv->m_actorid))
+		{
+			return;
+		}
+
 		if (recv->m_type == enp_channel_readall)
 		{
 			m_nodereadalls.insert(recv->m_actorid);
 		}
 		else
 		{
+			m_nodepart.insert(recv->m_actorid);
 			for (i64_dataid dataid : recv->m_readids)
 			{
 				m_part[dataid][recv->m_actorid] = enp_channel_readpart;
@@ -390,6 +409,19 @@ namespace ngl
 
 		nsp_handle_print<TDerived>::print("nsp_server", aactor, recv);
 
+		if (m_nodereadalls.contains(recv->m_actorid))
+		{
+			return;
+		}
+		if (m_nodewritealls.contains(recv->m_actorid))
+		{
+			return;
+		}
+		if (m_nodepart.contains(recv->m_actorid))
+		{
+			return;
+		}
+
 		// 检查id 与字段序号
 		actortypes_fieldnumbers_check<ENUMDB, TDerived, T> lcheck(recv->m_fieldnumbers, m_nodewrite_fieldnumbers);
 		for (i64_nodeid nodeid : m_nodewritealls)
@@ -418,6 +450,7 @@ namespace ngl
 		}
 		else
 		{// 部分可写
+			m_nodepart.insert(recv->m_actorid);
 			for (i64_actorid dataid : recv->m_writeids)
 			{
 				// (部分读/写)数据被哪些结点关心
@@ -467,11 +500,38 @@ namespace ngl
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	void nsp_server<ENUMDB, TDerived, T>::handle(TDerived* aactor, const message<np_channel_exit<T>>& adata)
 	{
-		//const np_channel_exit<T>* recv = adata.get_data();
+		const np_channel_exit<T>* recv = adata.get_data();
+		nsp_handle_print<TDerived>::print("nsp_server", aactor, recv);
 
-		//nsp_handle_print<TDerived>::print("nsp_server", aactor, recv);
+		{
+			auto itor = m_nodereadalls.find(recv->m_actorid);
+			if (itor != m_nodereadalls.end())
+			{
+				m_nodereadalls.erase(itor);
+				return;
+			}
+		}
+		{
+			auto itor = m_nodewritealls.find(recv->m_actorid);
+			if (itor != m_nodewritealls.end())
+			{
+				m_nodewritealls.erase(itor);
+				return;
+			}
+		}
+		{
+			auto itor = m_nodepart.find(recv->m_actorid);
+			if (itor != m_nodepart.end())
+			{
+				m_nodepart.erase(itor);
+				for (auto itor = m_part.begin(); itor != m_part.end(); ++itor)
+				{
+					itor->second.erase(recv->m_actorid);
+				}
+				return;
+			}
+		}
 	}
-
 
 	template <typename T>
 	class nsp_instance
