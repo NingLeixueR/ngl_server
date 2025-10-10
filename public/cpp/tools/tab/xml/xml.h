@@ -123,6 +123,7 @@ namespace ngl
 		static std::string			 m_nodename;
 		static NODE_TYPE			 m_nodetype;
 		static i32_id				 m_nodeid;
+		static i32_id				 m_tcount;
 		static mail_info			 m_mail;
 		static telnet_info			 m_telnet;
 
@@ -134,7 +135,7 @@ namespace ngl
 
 		static void set_server(const char* aservertypename);
 
-		static void set_nodeid(int anodeid);
+		static void set_nodeid(int anodeid, int atcount);
 
 		static void load(const std::string& axmlpath, const std::string& aname);
 
