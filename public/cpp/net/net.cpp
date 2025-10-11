@@ -99,7 +99,7 @@ namespace ngl
 		
 		for (const net_works& item : tab->m_net)
 		{
-			uint16_t lport = item.m_port + nconfig::m_tcount;
+			uint16_t lport = item.m_port + (nconfig::m_tcount-1);
 			if (item.m_type == ENET_TCP || item.m_type == ENET_WS)
 			{
 				if (m_net[item.m_type] != nullptr)
