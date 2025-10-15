@@ -86,7 +86,12 @@ namespace ngl
 		lpublicxml->find("gmurl", m_gmurl);
 		lpublicxml->find("lua", m_lua);
 
-		init_gatewayids(1);
+		int32_t lgatewaycount = 1;
+		if (lpublicxml->find("gatewaycount", lgatewaycount))
+		{
+			init_gatewayids(lgatewaycount);
+		}
+		
 	}
 
 	void sysconfig::init_gatewayids(int atcout)
