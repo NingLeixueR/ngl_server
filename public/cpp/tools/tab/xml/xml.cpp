@@ -18,7 +18,8 @@ namespace ngl
 	std::string				xmlnode::m_nodename;
 	NODE_TYPE				xmlnode::m_nodetype;
 	i32_id					xmlnode::m_nodeid;
-	i32_id					xmlnode::m_tcount;
+	int16_t					xmlnode::m_tid;
+	int16_t					xmlnode::m_tcount;
 	mail_info				xmlnode::m_mail;
 	telnet_info				xmlnode::m_telnet;
 
@@ -45,7 +46,7 @@ namespace ngl
 
 	i16_area xmlnode::area()
 	{
-		auto ltab = ttab_servers::instance().tab(m_nodeid);
+		auto ltab = ttab_servers::instance().tab(m_tid);
 		if (ltab == nullptr)
 		{
 			tools::no_core_dump();
@@ -65,10 +66,11 @@ namespace ngl
 		m_nodetype = lnodetype;
 	}
 
-	void xmlnode::set_nodeid(int anodeid, int atcount)
+	void xmlnode::set_nodeid(int atid, int atcount)
 	{
-		m_nodeid = anodeid;
-		m_tcount = atcount;
+		m_nodeid = nnodeid::nodeid(atid, atcount);
+		m_tid = nnodeid::tid(m_nodeid);
+		m_tcount = nnodeid::tcount(m_nodeid);
 	}
 
 	void xmlnode::load(const std::string& axmlpath, const std::string& aname)

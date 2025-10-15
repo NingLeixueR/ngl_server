@@ -108,11 +108,7 @@ namespace ngl
 		auto lrecv = adata.get_data();
 		auto lpack = adata.get_pack();
 
-		if (!naddress::set_node(lrecv->m_node))
-		{
-			//tools::no_core_dump();
-			return true;
-		}
+		naddress::set_node(lrecv->m_node);
 
 		i32_serverid lserverid = lrecv->m_node.m_serverid;
 		log_error()->print("actor_server np_actornode_register [{}]", lserverid);

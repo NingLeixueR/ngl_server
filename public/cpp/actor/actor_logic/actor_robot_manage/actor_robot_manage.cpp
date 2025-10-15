@@ -11,7 +11,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_ROBOT_MANAGE,
 					.m_area = tab_self_area,
-					.m_id = nconfig::m_nodeid,
+					.m_id = nconfig::m_tid,
 					.m_manage_dbclient = false
 				},
 				.m_weight = 0x7fffffff,
@@ -77,13 +77,14 @@ namespace ngl
 			tools::no_core_dump();
 			return;
 		}
-
-		nets::sendbyserver(tab->m_login, pro, nguid::moreactor(), instance().id_guid());
+		
+		nets::sendbyserver(nnodeid::nodeid(tab->m_login, 1), pro, nguid::moreactor(), instance().id_guid());
 	}
 
 	bool actor_robot_manage::check_connect(i32_serverid aserverid)const
 	{
-		return ttab_servers::instance().tab(aserverid) != nullptr && ttab_servers::instance().connect(aserverid) != nullptr;
+		net_works lnets;
+		return ttab_servers::instance().tab(nnodeid::tid(aserverid)) != nullptr && ttab_servers::instance().connect(aserverid, lnets);
 	}
 
 	void actor_robot_manage::connect(i32_serverid aserverid, const std::function<void(i32_sessionid)>& afun) const
@@ -98,7 +99,7 @@ namespace ngl
 	{
 		auto ldata = std::make_shared<np_robot_pram>();
 		ldata->m_parm.swap(aparm);
-		i64_actorid lid = ngl::nguid::make(ACTOR_ROBOT_MANAGE, tab_self_area, nconfig::m_nodeid);
+		i64_actorid lid = ngl::nguid::make(ACTOR_ROBOT_MANAGE, tab_self_area, nconfig::m_tid);
 		handle_pram lparm = ngl::handle_pram::create<np_robot_pram, false, false>(lid, nguid::moreactor(), ldata);
 		actor_manage::instance().push_task_id(lid, lparm);
 		return true;

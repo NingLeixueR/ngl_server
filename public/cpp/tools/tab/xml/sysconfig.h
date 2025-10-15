@@ -82,7 +82,7 @@ namespace ngl
 		static std::string& gmurl()			{ return m_gmurl; }
 		static std::string& lua()			{ return m_lua; }
 		
-		static void init_gatewayids();
+		static void init_gatewayids(int atcout);
 		static std::set<i32_serverid>& gatewayids();
 	};
 }//namespace ngl

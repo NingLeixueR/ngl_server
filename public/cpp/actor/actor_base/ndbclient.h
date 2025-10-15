@@ -191,7 +191,7 @@ namespace ngl
 				return;
 			}
 			auto pro = std::make_shared<np_actornode_connect_task>();
-			pro->m_serverid = tab->m_db;
+			pro->m_serverid = nnodeid::nodeid(tab->m_db, 1);
 			pro->m_fun = std::bind_front(&type_ndbclient::loaddb, this, m_id);
 			nguid lclientguid = actor_client::actorid();
 			actor::send_actor(lclientguid, m_actor->guid(), pro);
@@ -208,7 +208,7 @@ namespace ngl
 		i32_actordataid dbnodeid()
 		{
 			const tab_servers* tab = ttab_servers::instance().tab();
-			return tab->m_db;
+			return nnodeid::nodeid(tab->m_db, 1);
 		}
 
 		// # »ñÈ¡db actorµÄguid

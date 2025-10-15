@@ -153,20 +153,22 @@ namespace ngl
 		return nets::sendpack(asession, lpack);
 	}
 
-	const std::string& nets::ip(net_works const* apstruct)
+	bool nets::ipport(i32_serverid aserverid, std::tuple<ENET_PROTOCOL, str_ip, i16_port>& apair)
 	{
-		return nconfig::node_type() != ROBOT ? apstruct->m_nip : apstruct->m_ip;
-	}
-
-	net_works const* nets::ipport(i32_serverid aserverid, std::pair<str_ip, i16_port>& apair)
-	{
-		net_works const* lpstruct = ttab_servers::instance().connect(aserverid);
-		if (lpstruct == nullptr)
+		net_works lnets;
+		if (!ttab_servers::instance().connect(aserverid, lnets))
 		{
-			return nullptr;
+			return false;
 		}
-		apair = std::make_pair(ip(lpstruct), lpstruct->m_port);
-		return lpstruct;
+		if (nconfig::m_nodetype == ROBOT)
+		{
+			apair = std::make_tuple(lnets.m_type, lnets.m_ip, lnets.m_port);
+		}
+		else
+		{
+			apair = std::make_tuple(lnets.m_type, lnets.m_nip, lnets.m_port);
+		}
+		return true;
 	}
 
 	bool nets::connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection)
@@ -177,20 +179,20 @@ namespace ngl
 			afun(lsession);
 			return true;
 		}
-		std::pair<str_ip, i16_port> lpair;
-		net_works const* lpstruct = ipport(aserverid, lpair);
-		if (lpstruct == nullptr)
+		std::tuple<ENET_PROTOCOL, str_ip, i16_port> lpair;
+		if (!ipport(aserverid, lpair))
 		{
 			return false;
 		}
-		net_protocol* lserver = m_net[lpstruct->m_type];
+		
+		net_protocol* lserver = m_net[std::get<0>(lpair)];
 		if (lserver == nullptr)
 		{
 			return false;
 		}
-		log_info()->print("Connect Server {}@{}:{}", aserverid, lpair.first, lpair.second);
+		log_info()->print("Connect Server {}@{}:{}", aserverid, std::get<1>(lpair), std::get<2>(lpair));
 
-		return lserver->connect(lpair.first, lpair.second, [aserverid, afun](i32_session asession)
+		return lserver->connect(std::get<1>(lpair), std::get<2>(lpair), [aserverid, afun](i32_session asession)
 			{
 				server_session::add(aserverid, asession);
 				if (afun != nullptr)

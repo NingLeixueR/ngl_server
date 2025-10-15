@@ -222,16 +222,7 @@ namespace ngl
 			handle_cmd::add("/switch") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_SWITCH_LINE>();
-					const tab_servers* tab = ttab_servers::instance().find_first(GAME, nconfig::area(), [](const tab_servers* atab)->bool
-						{
-							return atab->m_id != nconfig::m_nodeid;
-						});
-
-					if (tab == nullptr)
-					{
-						return;
-					}
-					pro->set_mline(tab->m_tcount);
+					pro->set_mline(pro->mline()+1);
 					message lmessage(0, nullptr, pro);
 					role->handle(lmessage);
 				};
@@ -459,12 +450,14 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata)
 	{
-		const tab_servers* tab = ttab_servers::instance().node_tnumber(GAME, adata.get_data()->mline());
+		const tab_servers* tab = ttab_servers::instance().tab("game", nconfig::area());
 		if (tab == nullptr)
 		{
 			return false;
 		}
-		i32_sessionid lsession = server_session::sessionid(tab->m_id);
+		
+		int32_t lserverid = nnodeid::nodeid(tab->m_id, adata.get_data()->mline());
+		i32_sessionid lsession = server_session::sessionid(lserverid);
 		if (lsession == -1)
 		{
 			log_error()->print("PROBUFF_NET_SWITCH_LINE ERROR line[{}] severid[{}]", adata.get_data()->mline(), tab->m_id);
@@ -473,7 +466,7 @@ namespace ngl
 		np_actorswitch_process_role pro;
 		pro.m_create = false;
 		pro.m_gatewayid = m_gatewayid;
-		actor_create::switch_process(id_guid(), nconfig::m_nodeid, tab->m_id, pro);
+		actor_create::switch_process(id_guid(), nconfig::m_nodeid, lserverid, pro);
 		return true;
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata)

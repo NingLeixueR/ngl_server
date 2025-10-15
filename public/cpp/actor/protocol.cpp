@@ -224,9 +224,9 @@ namespace ngl
 						nets::sendmsg(pack->m_id, "²ÎÊı´íÎó");
 						return;
 					}
-					i32_serverid lserverid = tools::lexical_cast<i32_serverid>(avec[1]);
-					ttab_servers::instance().tab(lserverid);
-					i32_session lsession = server_session::sessionid(lserverid);
+					i32_serverid ltid = tools::lexical_cast<i32_serverid>(avec[1]);
+					i32_serverid ltcount = tools::lexical_cast<i32_serverid>(avec[2]);
+					i32_session lsession = server_session::sessionid(nnodeid::nodeid(ltid, ltcount));
 					nets::sendmsg(lsession, "/login libo 123456");
 					wheel_parm lparm
 					{

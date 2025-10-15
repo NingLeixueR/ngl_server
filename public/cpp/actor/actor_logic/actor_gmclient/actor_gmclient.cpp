@@ -10,7 +10,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_GMCLIENT,
 					.m_area = tab_self_area,
-					.m_id = ttab_servers::instance().tab()->m_id,
+					.m_id = nconfig::m_tid,
 				},
 				.m_weight = 0x7fffffff,
 			})
@@ -24,7 +24,7 @@ namespace ngl
 
 	i64_actorid actor_gmclient::actorid(i16_area area)
 	{
-		return nguid::make(actor_type(), area, ttab_servers::instance().tab()->m_id);
+		return nguid::make(actor_type(), area, nconfig::m_tid);
 	}
 
 	void actor_gmclient::init()

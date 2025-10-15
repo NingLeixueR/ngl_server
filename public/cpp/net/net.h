@@ -138,9 +138,7 @@ namespace ngl
 
 		static bool sendmsg(i32_sessionid asession, const std::string& amsg);
 
-		static const std::string& ip(net_works const* apstruct);
-
-		static net_works const* ipport(i32_serverid aserverid, std::pair<str_ip, i16_port>& apair);
+		static bool ipport(i32_serverid aserverid, std::tuple<ENET_PROTOCOL, str_ip, i16_port>& apair);
 
 		static bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection);
 	};

@@ -14,7 +14,7 @@ namespace ngl
 		}
 		else
 		{
-			actor::send_actor(actor_log::actorid(nconfig::m_nodeid), nguid::make(), pro);
+			actor::send_actor(actor_log::actorid(nconfig::m_tid), nguid::make(), pro);
 		}
 	}
 

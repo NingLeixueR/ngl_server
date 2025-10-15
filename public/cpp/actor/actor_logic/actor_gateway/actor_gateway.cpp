@@ -14,7 +14,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_GATEWAY,
 					.m_area = tab_self_area,
-					.m_id	= nconfig::m_nodeid, 
+					.m_id	= nconfig::m_tcount,
 					.m_manage_dbclient = false
 				},
 				.m_weight = 0x7fffffff
@@ -74,13 +74,13 @@ namespace ngl
 		{
 			.m_isremove = aisremove,
 			.m_actorid = nguid::make(ACTOR_ROLE, aguid.area(), aguid.actordataid()),
-			.m_gatewayid = ttab_servers::instance().tab()->m_id,
+			.m_gatewayid = nconfig::m_nodeid,
 		};
 
-		for (i32_serverid iserverid : ttab_servers::instance().tab()->m_actorserver)
+		for (int32_t tid : ttab_servers::instance().tab()->m_actorserver)
 		{
 			i64_actorid lactorserve = actor_server::actorid();
-			actor::send_server(iserverid, pro, lactorserve, nguid::make());
+			actor::send_server(nnodeid::nodeid(tid, 1), pro, lactorserve, nguid::make());
 		}
 	}
 

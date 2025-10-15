@@ -646,7 +646,8 @@ bool start_robot(int argc, char** argv)
 
 	ngl::actor_robot_manage::instance();
 
-	ngl::actor_robot_manage::instance().connect(ngl::ttab_servers::instance().tab()->m_login, [](int asession)
+	ngl::i32_serverid llogin = ngl::nnodeid::nodeid(ngl::ttab_servers::instance().tab()->m_login, 1);
+	ngl::actor_robot_manage::instance().connect(llogin, [](int asession)
 		{
 			std::cout << "连接Login服务器成功" << std::endl;
 		});
@@ -792,7 +793,7 @@ int ngl_main(int argc, char** argv)
 	// # 加载csv配置
 	ngl::csvbase::set_path("./csv", lname);
 
-	const ngl::tab_servers* tab = ngl::ttab_servers::instance().tab(argv[1], larea, 1);
+	const ngl::tab_servers* tab = ngl::ttab_servers::instance().tab(argv[1], larea);
 	if (tab == nullptr)
 	{
 		return 0;

@@ -7,6 +7,52 @@
 
 namespace ngl
 {
+	class nnodeid
+	{
+		int32_t m_nodeid;
+	public:
+		nnodeid(int32_t anodeid) :
+			m_nodeid(anodeid)
+		{}
+
+		nnodeid(int16_t atid, int16_t atcount) :
+			m_nodeid(nodeid(atid, atcount))
+		{}
+
+
+		static int32_t nodeid(int16_t atid, int16_t atcount)
+		{
+			int16_t m_nodeid[2] = { atid, atcount };
+			return *(int32_t*)(m_nodeid);
+		}
+
+		int32_t nodeid()
+		{
+			return m_nodeid;
+		}
+
+		static int16_t tcount(int32_t anodeid)
+		{
+			return ((int16_t*)&anodeid)[1];
+		}
+
+		static int16_t tid(int32_t anodeid)
+		{
+			return ((int16_t*)&anodeid)[0];
+		}
+
+		int16_t tcount()
+		{
+			return tcount(m_nodeid);
+		}
+
+		int16_t tid()
+		{
+			return tid(m_nodeid);
+		}
+	};
+
+
 	class ttab_servers :
 		public manage_csv<tab_servers>
 	{
@@ -91,10 +137,10 @@ namespace ngl
 
 		const tab_servers* tab()
 		{
-			return tab(nconfig::m_nodeid);
+			return tab(nconfig::m_tid);
 		}
 
-		const tab_servers* tab(const std::string& aname, int area, int32_t atcount)
+		const tab_servers* tab(const std::string& aname, int area)
 		{
 			i16_area larea = ttab_mergearea::instance().mergeid(area);
 			if (larea != nguid::none_area())
@@ -109,7 +155,7 @@ namespace ngl
 					, item.second.m_name
 					, item.second.m_tcount
 				) << std::endl;
-				if (item.second.m_area == area && item.second.m_name == aname && item.second.m_tcount == atcount)
+				if (item.second.m_area == area && item.second.m_name == aname)
 				{
 					return &item.second;
 				}
@@ -117,6 +163,30 @@ namespace ngl
 			return nullptr;
 		}
 
+		const tab_servers* tab(NODE_TYPE atype, int area)
+		{
+			i16_area larea = ttab_mergearea::instance().mergeid(area);
+			if (larea != nguid::none_area())
+			{
+				area = larea;
+			}
+			for (const std::pair<const int, tab_servers>& item : tablecsv())
+			{
+				std::cout << std::format(
+					"m_area:[{}] m_name:[{}] m_tcount:[{}]"
+					, item.second.m_area
+					, item.second.m_name
+					, item.second.m_tcount
+				) << std::endl;
+				if (item.second.m_area == area && item.second.m_type == atype)
+				{
+					return &item.second;
+				}
+			}
+			return nullptr;
+		}
+
+	private:
 		const net_works* nworks(ENET_PROTOCOL atype, const tab_servers* atab)
 		{
 			for (auto& item : atab->m_net)
@@ -133,26 +203,52 @@ namespace ngl
 		{
 			return nworks(atype, tab());
 		}
-
-		const net_works* get_nworks(ENET_PROTOCOL atype)
+	public:
+		bool get_nworks(const tab_servers* atab, ENET_PROTOCOL atype, int32_t atcount, net_works& anetwork)
 		{
-			//nconfig::m_nodeid
+			const net_works* lpnet = nworks(atype, atab);
+			if (lpnet == nullptr)
+			{
+				return false;
+			}
+			anetwork = *lpnet;
+			anetwork.m_port += (atcount - 1);
+			return true;
+		}
+
+		bool get_nworks(ENET_PROTOCOL atype, int32_t atcount, net_works& anetwork)
+		{
 			const tab_servers* ltab = tab();
 			if (ltab == nullptr)
 			{
-				return nullptr;
+				return false;
 			}
-			return nworks(atype, ltab);
+			return get_nworks(ltab, atype, atcount, anetwork);
 		}
 
-		const net_works* get_nworks(const std::string& aname, int area, int32_t atcount, ENET_PROTOCOL atype)
+		bool get_nworks(ENET_PROTOCOL atype, net_works& anetwork)
 		{
-			const tab_servers* ltab = tab(aname, area, atcount);
+			return get_nworks(atype, nconfig::m_tcount, anetwork);
+		}
+
+		bool get_nworks(const std::string& aname, int area, int32_t atcount, ENET_PROTOCOL atype, net_works& anetwork)
+		{
+			const tab_servers* ltab = tab(aname, area);
 			if (ltab == nullptr)
 			{
-				return nullptr;
+				return false;
 			}
-			return nworks(atype, ltab);
+			return get_nworks(ltab, atype, atcount, anetwork);
+		}
+
+		bool get_nworks(NODE_TYPE anodetype, int area, ENET_PROTOCOL atype, int32_t atcount, net_works& anetwork)
+		{
+			const tab_servers* ltab = tab(anodetype, area);
+			if (ltab == nullptr)
+			{
+				return false;
+			}
+			return get_nworks(ltab, atype, atcount, anetwork);
 		}
 
 		bool isefficient(ENET_PROTOCOL atype)
@@ -160,41 +256,43 @@ namespace ngl
 			return atype == ENET_TCP || atype == ENET_WS;
 		}
 	private:
-		const net_works* connect(i32_serverid alocalserver, i32_serverid aotherserver)
+		bool connect(i32_serverid alocalserver, i32_serverid aotherserver, net_works& anetwork)
 		{
-			tools::no_core_dump(alocalserver != aotherserver);
-			const tab_servers* ltab1 = tab(alocalserver);
-			const tab_servers* ltab2 = tab(aotherserver);
-			if (alocalserver > aotherserver)
+			if (alocalserver == aotherserver)
 			{
-				std::swap(ltab1, ltab2);
+				tools::no_core_dump();
+				return false;
 			}
-			for (const net_works& item1 : ltab1->m_net)
+
+			const tab_servers* ltab1 = tab(nnodeid::tid(alocalserver));
+			const tab_servers* ltab2 = tab(nnodeid::tid(aotherserver));
+			if (ltab1 == nullptr || ltab2 == nullptr)
 			{
-				if (isefficient(item1.m_type) == false)
-				{
-					continue;
-				}
-				for (const net_works& item2 : ltab2->m_net)
-				{
-					if (item1.m_type == item2.m_type)
-					{
-						// 返回other的结构
-						return alocalserver > aotherserver ? &item1 : &item2;
-					}
-				}
+				tools::no_core_dump();
+				return false;
 			}
-			return nullptr;
+			net_works lnets1;
+			if (!get_nworks(ltab1->m_type, nconfig::area(), ENET_TCP, nnodeid::tcount(alocalserver), lnets1))
+			{
+				tools::no_core_dump();
+				return false;
+			}
+			if (!get_nworks(ltab2->m_type, nconfig::area(), ENET_TCP, nnodeid::tcount(aotherserver), anetwork))
+			{
+				tools::no_core_dump();
+				return false;
+			}
+			return true;
 		}
 	public:
-		net_works const* connect(i32_serverid aserverid)
+		bool connect(i32_serverid aserverid, net_works& anetwork)
 		{
-			return connect(nconfig::m_nodeid, aserverid);
+			return connect(nconfig::m_nodeid, aserverid, anetwork);
 		}
 
-		NODE_TYPE node_type(i32_serverid aserverid)
+		NODE_TYPE node_type(int32_t atid)
 		{
-			const tab_servers* ltab = tab(aserverid);
+			const tab_servers* ltab = tab(atid);
 			if (ltab == nullptr)
 			{
 				tools::no_core_dump();
@@ -205,19 +303,7 @@ namespace ngl
 
 		NODE_TYPE node_type()
 		{
-			return node_type(nconfig::m_nodeid);
-		}
-
-		const tab_servers* node_tnumber(NODE_TYPE atype, int32_t anumber)
-		{
-			for (const std::pair<const int, tab_servers>& pair : ttab_servers::tablecsv())
-			{
-				if (pair.second.m_type == atype && pair.second.m_tcount == anumber)
-				{
-					return &pair.second;
-				}
-			}
-			return nullptr;
+			return node_type(nconfig::m_tid);
 		}
 
 		// 便利所有服务器
@@ -277,6 +363,7 @@ namespace ngl
 			return true;
 		}
 
+		// 获取的是服务器的tid  没有结合tcount
 		bool get_server(NODE_TYPE atype, i16_area aarea, std::set<i32_serverid>& aset)
 		{
 			return foreach_server(atype, aarea, [&aset](const tab_servers* iserver)

@@ -37,7 +37,7 @@ namespace ngl
 				// 自动关闭此进程
 				// 防止玩家数据无法保存造成回档
 				i32_serverid lserverid = server_session::serverid(asession);
-				if (lserverid != -1 && ttab_servers::instance().node_type(lserverid) == NODE_TYPE::DB)
+				if (lserverid != -1 && ttab_servers::instance().node_type(nnodeid::tid(lserverid)) == NODE_TYPE::DB)
 				{
 					tools::no_core_dump();
 				}

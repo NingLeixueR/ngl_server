@@ -10,7 +10,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_LOG, 
 					.m_area = tab_self_area,
-					.m_id = nconfig::m_nodeid
+					.m_id = nconfig::m_tid
 				},
 				.m_weight = 0x7fffffff
 			})

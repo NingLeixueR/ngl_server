@@ -86,21 +86,30 @@ namespace ngl
 		lpublicxml->find("gmurl", m_gmurl);
 		lpublicxml->find("lua", m_lua);
 
-		init_gatewayids();
+		init_gatewayids(1);
 	}
 
-	void sysconfig::init_gatewayids()
+	void sysconfig::init_gatewayids(int atcout)
 	{
 		m_gatewayids.clear();
+		std::set<i32_serverid> lgatewayids;
 		std::set<i16_area>* lareas = ttab_mergearea::instance().mergelist(tab_self_area);
 		if (lareas != nullptr)
 		{
 			for (i16_area aarea : *lareas)
 			{
-				ttab_servers::instance().get_server(GATEWAY, aarea, sysconfig::m_gatewayids);
+				ttab_servers::instance().get_server(GATEWAY, aarea, lgatewayids);
 			}
 		}
-		ttab_servers::instance().get_server(GATEWAY, tab_self_area, m_gatewayids);
+		ttab_servers::instance().get_server(GATEWAY, tab_self_area, lgatewayids);
+
+		for (i32_serverid ltabid : lgatewayids)
+		{
+			for (int i = 1; i <= atcout; ++i)
+			{
+				m_gatewayids.insert(nnodeid::nodeid(ltabid, i));
+			}
+		}
 	}
 
 	std::set<i32_serverid>& sysconfig::gatewayids()

@@ -264,7 +264,7 @@ namespace ngl
 		}
 
 		std::set<i16_area> lareaset;
-		ttab_servers::instance().get_arealist_nonrepet(nconfig::m_nodeid, lareaset);
+		ttab_servers::instance().get_arealist_nonrepet(nconfig::m_tid, lareaset);
 
 		auto ltype = (ENUM_ACTOR)nguid::type(TACTOR::actorid());
 		for (i16_area area : lareaset)
