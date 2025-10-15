@@ -87,7 +87,7 @@ namespace ngl
 		lpublicxml->find("lua", m_lua);
 
 		int32_t lgatewaycount = 1;
-		if (lpublicxml->find("gatewaycount", lgatewaycount))
+		if (lpublicxml->find("gateway_count", lgatewaycount))
 		{
 			init_gatewayids(lgatewaycount);
 		}
