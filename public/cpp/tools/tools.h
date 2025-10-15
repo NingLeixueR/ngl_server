@@ -408,15 +408,14 @@ namespace ngl
 		{
 			std::vector<std::string> lvec;
 			splite(abuff, afg, lvec);
-			splite(0, lvec, args...);
-			return true;
+			return splite(0, lvec, args...);
 		}
 
 	private:
 		template <typename T>
 		static bool splite(int32_t aindex, std::vector<std::string>& avec, T& adata)
 		{
-			if (aindex > avec.size())
+			if (aindex >= avec.size())
 			{
 				return false;
 			}

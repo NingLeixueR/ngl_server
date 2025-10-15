@@ -92,8 +92,12 @@ namespace ngl
 		lpublicxml->foreach([](const std::pair<const std::string, std::string>& apair)
 			{
 				std::string lname;
-				int32_t lcout = 0;
-				if (!tools::splite(apair.first.c_str(), "_", lname, lcout))
+				std::string lvalue;
+				if (!tools::splite(apair.first.c_str(), "_", lname, lvalue))
+				{
+					return;
+				}
+				if (lvalue != "count")
 				{
 					return;
 				}
@@ -102,8 +106,8 @@ namespace ngl
 				{
 					return;
 				}
-				m_nodecountbyname[lname] = lcout;
-				m_nodecountbytype[ltype] = lcout;
+				m_nodecountbyname[lname] = tools::lexical_cast<int32_t>(apair.second);
+				m_nodecountbytype[ltype] = tools::lexical_cast<int32_t>(apair.second);
 			}		
 		);
 
