@@ -9,15 +9,13 @@
 
 namespace ngl
 {
+	int actor_base::m_broadcast = 10000;
+	int actor_base::m_broadcasttimer = -1;
+
 	i64_actorid actor_base::actorclient_guid()
 	{
 		return actor_manage::instance().get_clientguid();
 	}
-
-	
-
-	int actor_base::m_broadcast = 10000;
-	int actor_base::m_broadcasttimer = -1;
 
 	actor_base::actor_base(const actorparmbase& aparm):
 		m_guid(aparm.m_type, aparm.m_area, aparm.m_id)

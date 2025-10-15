@@ -474,9 +474,7 @@ namespace ngl
 
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
-		static void send_actor(
-			const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata
-		)
+		static void send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata);
 			push_task_id(aguid, lpram);
