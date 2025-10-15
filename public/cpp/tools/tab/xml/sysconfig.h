@@ -49,7 +49,10 @@ namespace ngl
 		static int32_t		m_rate_count;			// 速率 每秒多少条
 		static int32_t		m_heart_beat_interval;	// 心跳间隔(单位秒)
 		static int32_t		m_net_timeout;			// 用来检查包头中的时间与服务器时间
+		static std::map<std::string, int32_t>		m_nodecountbyname;			// 结点数量
+		static std::map<NODE_TYPE, int32_t>			m_nodecountbytype;			// 结点数量
 
+		static int32_t		m_gamecount;			// game数量
 		static std::string	m_gmurl;				// gm url
 
 		// # 网关列表
@@ -82,6 +85,9 @@ namespace ngl
 		static std::string& gmurl()			{ return m_gmurl; }
 		static std::string& lua()			{ return m_lua; }
 		
+		static int32_t node_count(const char* anodename);
+		static int32_t node_count(NODE_TYPE atype);
+
 		static void init_gatewayids(int atcout);
 		static std::set<i32_serverid>& gatewayids();
 	};

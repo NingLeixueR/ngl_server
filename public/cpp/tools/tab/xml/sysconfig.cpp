@@ -25,6 +25,8 @@ namespace ngl
 	int32_t		sysconfig::m_rate_count			= 20;
 	int32_t		sysconfig::m_heart_beat_interval = 10;
 	int32_t		sysconfig::m_net_timeout		= 600000;
+	std::map<std::string, int32_t>	sysconfig::m_nodecountbyname;
+	std::map<NODE_TYPE, int32_t>	sysconfig::m_nodecountbytype;
 	std::string	sysconfig::m_gmurl;
 	std::set<i32_serverid> sysconfig::m_gatewayids;
 	std::string	sysconfig::m_lua;
@@ -86,12 +88,46 @@ namespace ngl
 		lpublicxml->find("gmurl", m_gmurl);
 		lpublicxml->find("lua", m_lua);
 
-		int32_t lgatewaycount = 1;
-		if (lpublicxml->find("gateway_count", lgatewaycount))
+
+		lpublicxml->foreach([](const std::pair<const std::string, std::string>& apair)
+			{
+				std::string lname;
+				int32_t lcout = 0;
+				if (!tools::splite(apair.first.c_str(), "_", lname, lcout))
+				{
+					return;
+				}
+				NODE_TYPE ltype = em<NODE_TYPE>::get_enum(lname.c_str());
+				if (ltype == em<NODE_TYPE>::enum_null())
+				{
+					return;
+				}
+				m_nodecountbyname[lname] = lcout;
+				m_nodecountbytype[ltype] = lcout;
+			}		
+		);
+
+		init_gatewayids(node_count("gateway"));
+	}
+
+	int32_t sysconfig::node_count(const char* anodename)
+	{
+		auto itor = m_nodecountbyname.find(anodename);
+		if (itor == m_nodecountbyname.end())
 		{
-			init_gatewayids(lgatewaycount);
+			return 1;
 		}
-		
+		return itor->second;
+	}
+
+	int32_t sysconfig::node_count(NODE_TYPE atype)
+	{
+		auto itor = m_nodecountbytype.find(atype);
+		if (itor == m_nodecountbytype.end())
+		{
+			return 1;
+		}
+		return itor->second;
 	}
 
 	void sysconfig::init_gatewayids(int atcout)

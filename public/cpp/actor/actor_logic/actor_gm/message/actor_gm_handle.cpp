@@ -19,10 +19,15 @@ namespace ngl
 			{
 				return false;
 			}
+
 			if (ttab_servers::instance().tab()->m_id != tab->m_id)
 			{
-				i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, tab_self_area, tab->m_id);
-				agm->sendbyactorid(lactorid, adata->get_pack(), *adata->get_data());
+				int32_t lcount = sysconfig::node_count(atype);
+				for (int i = 0;i< lcount;++i)
+				{
+					i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, tab_self_area, nnodeid::nodeid(tab->m_id, i));
+					agm->sendbyactorid(lactorid, adata->get_pack(), *adata->get_data());
+				}				
 				return true;
 			}
 			return false;

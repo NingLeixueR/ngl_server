@@ -71,6 +71,14 @@ namespace ngl
 
 		//# ¸ù¾İkey²éÕÒvalue
 		bool find(const char* akey, std::string& adata);
+
+		void foreach(const std::function<void(const std::pair<const std::string,std::string>&)>& afun)
+		{
+			for (const auto& item : m_data)
+			{
+				afun(item);
+			}
+		}
 	};
 
 	struct dbserver_info
