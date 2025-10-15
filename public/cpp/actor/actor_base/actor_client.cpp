@@ -16,7 +16,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_CLIENT,
 					.m_area = tab_self_area,
-					.m_id	= nconfig::m_nodeid
+					.m_id	= nconfig::m_tid
 				},
 				.m_weight	= 0x7fffffff
 			})
@@ -29,7 +29,7 @@ namespace ngl
 
 	i64_actorid actor_client::actorid()
 	{
-		return nguid::make(ACTOR_CLIENT, tab_self_area, nconfig::m_nodeid);
+		return nguid::make(ACTOR_CLIENT, tab_self_area, nconfig::m_tid);
 	}
 
 	void actor_client::nregister()
@@ -56,7 +56,7 @@ namespace ngl
 
 	void set_node(int32_t aserverid, int asession)
 	{
-		const tab_servers* tab = ttab_servers::instance().tab(aserverid);
+		const tab_servers* tab = ttab_servers::instance().tab(nnodeid::tid(aserverid));
 		if (tab == nullptr)
 		{
 			return;
@@ -71,8 +71,10 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_connect_actor_server>& adata)
 	{
+		int32_t lserverid = adata.get_data()->m_serverid;
+		
 		const tab_servers* tab = ttab_servers::instance().tab();
-		const tab_servers* tabactor = ttab_servers::instance().tab(adata.get_data()->m_serverid);
+		const tab_servers* tabactor = ttab_servers::instance().tab(nnodeid::tid(lserverid));
 
 		if (tab == nullptr || tabactor == nullptr)
 		{
@@ -82,8 +84,8 @@ namespace ngl
 
 		i64_actorid	lactorid = id_guid();
 		i64_actorid lactorserve = actor_server::actorid();
-		set_node(tabactor->m_id, adata.get_data()->m_session);
-		naddress::add_actor_address(tabactor->m_id, lactorserve);
+		set_node(lserverid, adata.get_data()->m_session);
+		naddress::add_actor_address(lserverid, lactorserve);
 
 		//注册结点
 		np_actornode_register lpram
@@ -99,7 +101,7 @@ namespace ngl
 					, tab->m_area
 				),
 				.m_nodetype = tab->m_type,
-				.m_serverid = tab->m_id,
+				.m_serverid = nconfig::m_nodeid,
 			}
 		};
 		actor_manage::instance().get_type(lpram.m_node.m_actortype);
@@ -154,7 +156,7 @@ namespace ngl
 		const tab_servers* tab = ttab_servers::instance().tab();
 		for (int32_t id : tab->m_actorserver)
 		{
-			actor_server_register(id);
+			actor_server_register(nnodeid::nodeid(id, 1));
 		}
 		return true;
 	}
@@ -257,7 +259,7 @@ namespace ngl
 		connect_fnish();
 
 		// 当前结点类型如果是登陆服务器，且连接的结点为[GAME/GATEWAY]
-		NODE_TYPE lservertype = ttab_servers::instance().node_type(lserverid);
+		NODE_TYPE lservertype = ttab_servers::instance().node_type(nnodeid::tid(lserverid));
 		if (xmlnode::node_type() == ngl::LOGIN && (lservertype == ngl::GAME || lservertype == ngl::GATEWAY))
 		{
 			auto pro = std::make_shared<np_actorserver_connect>();
@@ -309,13 +311,12 @@ namespace ngl
 
 	void actor_client::connect_fnish()
 	{
-		auto& lconnectfun = m_connectfun;
 		const std::set<i32_serverid>& lconnectserverid = m_connectserverid;
-		if (lconnectfun.empty())
+		if (m_connectfun.empty())
 		{
 			return;
 		}
-		for (auto itor = lconnectfun.begin(); itor != lconnectfun.end(); ++itor)
+		for (auto itor = m_connectfun.begin(); itor != m_connectfun.end(); ++itor)
 		{
 			if (!lconnectserverid.contains(itor->first))
 			{
@@ -325,7 +326,7 @@ namespace ngl
 			{
 				fun();
 			}
-			itor = lconnectfun.erase(itor);
+			itor = m_connectfun.erase(itor);
 		}
 	}
 	

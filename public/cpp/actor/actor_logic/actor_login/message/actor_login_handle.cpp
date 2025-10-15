@@ -24,7 +24,7 @@ namespace ngl
 			.m_id = lparm->m_serverid,
 			.m_rolesize = 0
 		};
-		switch (ttab_servers::instance().node_type(lparm->m_serverid))
+		switch (ttab_servers::instance().node_type(nnodeid::tid(lparm->m_serverid)))
 		{
 		case ngl::NODE_TYPE::GAME:
 			m_game.insert(std::make_pair(lparm->m_serverid, ltemp));

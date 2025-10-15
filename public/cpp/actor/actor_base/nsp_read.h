@@ -134,7 +134,7 @@ namespace ngl
 			nsp_instance<type_nsp_read>::template register_handle<TDerived, np_channel_read_register_reply<T>>();
 
 			std::set<i16_area> lareaset;
-			ttab_servers::instance().get_arealist_nonrepet(nconfig::m_nodeid, lareaset);
+			ttab_servers::instance().get_arealist_nonrepet(nconfig::m_tid, lareaset);
 
 			auto ltype = (ENUM_ACTOR)nguid::type(TACTOR::actorid());
 			for (i16_area area : lareaset)

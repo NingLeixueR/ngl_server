@@ -40,16 +40,6 @@ namespace ngl
 
 		static void nregister();
 
-		/*template <typename T>
-		void sendrole(i32_serverid agameid, i64_actorid arole, const T& adata)
-		{
-			np_actor_forward<T, forward_c2g> ltemp;
-			ltemp.set_data(std::make_shared<T>(adata));
-			ltemp.m_uid.push_back(nguid::actordataid(arole));
-			ltemp.m_area.push_back(nguid::area(arole));
-			nets::sendbyserver(agameid, ltemp, arole, id_guid());
-		}*/
-
 		// # ֪ͨactor_server [actorid]->[gateway server id]
 		void sync_actorserver_gatewayid(const nguid& aguid, bool aisremove);
 

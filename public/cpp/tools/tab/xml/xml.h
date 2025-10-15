@@ -122,8 +122,9 @@ namespace ngl
 		static xmlinfo				 m_publicinfo;
 		static std::string			 m_nodename;
 		static NODE_TYPE			 m_nodetype;
-		static i32_id				 m_nodeid;
-		static i32_id				 m_tcount;
+		static i32_id				 m_nodeid;		// server id
+		static int16_t				 m_tid;			// 对应tab_servers表中的id
+		static int16_t				 m_tcount;		// 实例id
 		static mail_info			 m_mail;
 		static telnet_info			 m_telnet;
 
@@ -135,7 +136,7 @@ namespace ngl
 
 		static void set_server(const char* aservertypename);
 
-		static void set_nodeid(int anodeid, int atcount);
+		static void set_nodeid(int atid, int atcount);
 
 		static void load(const std::string& axmlpath, const std::string& aname);
 

@@ -78,16 +78,24 @@ namespace ngl
 					foreach([this](_robot& arobot)
 						{
 							const tab_servers* tab = ttab_servers::instance().tab();
-							const tab_servers* tabgame = ttab_servers::instance().tab("game", tab->m_area, 0);
+							const tab_servers* tabgame = ttab_servers::instance().tab("game", tab->m_area);
 							if (tabgame == nullptr)
 							{
 								return true;
 							}
-							const net_works* lpstruct = ttab_servers::instance().get_nworks(ENET_KCP);
-							const net_works* lpstructgame = ttab_servers::instance().nworks(ENET_KCP);
+							net_works lpstruct;
+							if (!ttab_servers::instance().get_nworks(ENET_KCP, lpstruct))
+							{
+								return true;
+							}
+							net_works lpstructgame;
+							if (!ttab_servers::instance().get_nworks("game", nconfig::area(), 1, ENET_KCP, lpstructgame))
+							{
+								return true;
+							}
 							// 获取本机uip
 							ngl::asio_udp_endpoint lendpoint(
-								asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port
+								asio::ip::address::from_string(lpstructgame.m_ip), lpstructgame.m_port
 							);
 							i32_session lsession = arobot.m_session;
 							i64_actorid lactorid = arobot.m_robot->id_guid();
