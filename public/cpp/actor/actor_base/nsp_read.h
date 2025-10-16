@@ -15,9 +15,11 @@ namespace ngl
 
 		TDerived*														m_actor = nullptr;
 		nsp_callback<T>													m_callback;
+
 		std::function<void(int64_t, const T&, bool)>					m_changedatafun;	// [回调] 当数据发生变化
 		std::function<void(int64_t)>									m_deldatafun;		// [回调] 当数据被删除
 		std::function<void()>											m_loadfinishfun;	// [回调] 数据加载完成
+
 		std::map<i16_area, i64_actorid>									m_nspserver;
 		std::map<i16_area, bool>										m_register;
 
