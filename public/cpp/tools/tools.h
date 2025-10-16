@@ -61,7 +61,7 @@ namespace ngl
 				}
 				if (!std::isdigit(*lpchar))
 				{
-					return false;
+					throw std::string("isdigit fail");
 				}
 			}
 			return true;
@@ -87,13 +87,13 @@ namespace ngl
 				{
 					if (ldian)
 					{
-						return false;
+						throw std::string("isdigit fail");
 					}
 					ldian = true;
 				}
 				if (!std::isdigit(*lpchar))
 				{
-					return false;
+					throw std::string("isdigit fail");
 				}
 			}
 			return true;
@@ -105,18 +105,12 @@ namespace ngl
 	{
 		static int32_t fun(const std::string& source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoi(source.c_str());
 		}
 		static int32_t fun(const char* source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoi(source);
 		}
 	};
@@ -126,18 +120,12 @@ namespace ngl
 	{
 		static uint32_t fun(const std::string& source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoi(source.c_str());
 		}
 		static uint32_t fun(const char* source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoi(source);
 		}
 	};
@@ -147,18 +135,12 @@ namespace ngl
 	{
 		static int16_t fun(const std::string& source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoi(source.c_str());
 		}
 		static int16_t fun(const char* source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoi(source);
 		}
 	};
@@ -168,18 +150,12 @@ namespace ngl
 	{
 		static uint16_t fun(const std::string& source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoi(source.c_str());
 		}
 		static uint16_t fun(const char* source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoi(source);
 		}
 	};
@@ -189,18 +165,12 @@ namespace ngl
 	{
 		static int8_t fun(const std::string& source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoi(source.c_str());
 		}
 		static int8_t fun(const char* source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoi(source);
 		}
 	};
@@ -210,18 +180,12 @@ namespace ngl
 	{
 		static uint8_t fun(const std::string& source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoi(source.c_str());
 		}
 		static uint8_t fun(const char* source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoi(source);
 		}
 	};
@@ -231,19 +195,13 @@ namespace ngl
 	{
 		static int64_t fun(const std::string& source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoll(source.c_str());
 		}
 
 		static int64_t fun(const char* source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoll(source);
 		}
 	};
@@ -253,19 +211,13 @@ namespace ngl
 	{
 		static uint64_t fun(const std::string& source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoll(source.c_str());
 		}
 
 		static uint64_t fun(const char* source)
 		{
-			if (!lexical_check::func_number(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_number(source);
 			return atoll(source);
 		}
 	};
@@ -275,19 +227,13 @@ namespace ngl
 	{
 		static float fun(const std::string& source)
 		{
-			if (!lexical_check::func_float(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_float(source);
 			return (float)std::atof(source.c_str());
 		}
 
 		static float fun(const char* source)
 		{
-			if (!lexical_check::func_float(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_float(source);
 			return (float)std::atof(source);
 		}
 	};
@@ -297,19 +243,13 @@ namespace ngl
 	{
 		static double fun(const std::string& source)
 		{
-			if (!lexical_check::func_float(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_float(source);
 			return std::atof(source.c_str());
 		}
 
 		static double fun(const char* source)
 		{
-			if (!lexical_check::func_float(source))
-			{
-				throw "isdigit fail";
-			}
+			lexical_check::func_float(source);
 			return std::atof(source);
 		}
 	};
