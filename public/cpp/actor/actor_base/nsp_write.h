@@ -28,10 +28,10 @@ namespace ngl
 		std::map<i64_actorid, T>										m_data;
 
 		std::set<int32_t>												m_fieldnumbers;
-		std::set<i64_nodeid> m_nodereadalls;							// 读全部数据的结点
-		std::set<i64_nodeid> m_nodewritealls;							// 写全部数据的结点
+		std::set<i64_nodeid>											m_nodereadalls;		// 读全部数据的结点
+		std::set<i64_nodeid>											m_nodewritealls;	// 写全部数据的结点
 		//// 部分读/写
-		std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
+		std::map<i64_dataid, std::map<i64_nodeid, enp_channel>>			m_part;
 
 		
 	public:
