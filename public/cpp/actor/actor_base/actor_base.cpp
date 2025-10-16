@@ -155,6 +155,8 @@ namespace ngl
 
 	void actor_base::init_db_component(bool acreate)
 	{
+		log_error()->print("[{}] init_db_component [{}]", (nguid)id_guid(), acreate?"true":"false");
+
 		for (const auto& [key, value] : m_dbcomponent)
 		{
 			if (acreate)
