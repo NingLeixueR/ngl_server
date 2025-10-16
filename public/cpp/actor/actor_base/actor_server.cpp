@@ -167,6 +167,11 @@ namespace ngl
 
 		print(lparm->m_mass.m_add);
 
+		if (lparm->m_fun != nullptr)
+		{
+			lparm->m_fun();
+		}
+
 		handle(message(adata.thread(), lpack, pro));
 		return true;
 	}
