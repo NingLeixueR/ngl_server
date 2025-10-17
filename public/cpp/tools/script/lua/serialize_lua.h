@@ -75,7 +75,7 @@ namespace ngl
 			{
 				return false;
 			}
-			aval = lua_tonumber(L, -1);
+			aval = lua_tointeger(L, -1);
 			if (apop)
 			{
 				lua_pop(L, 1);

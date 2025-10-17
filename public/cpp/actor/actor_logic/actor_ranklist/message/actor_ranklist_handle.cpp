@@ -30,6 +30,7 @@ namespace ngl
 					}
 					auto prorank = m_ranklist.get_ranklist(nguid::make(), (pbdb::eranklist)lrank.m_type, lrank.m_page);
 					tools::proto2json(*prorank, pro.m_data);
+					return true;
 				};
 		}
 
