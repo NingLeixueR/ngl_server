@@ -11,8 +11,8 @@ namespace ngl
 		using type_nsp_read = nsp_read<TDerived, TACTOR, T>;
 	private:
 
-		static std::atomic<bool>										m_isregister
-
+		static std::atomic<bool>										m_isregister;
+		
 		TDerived*														m_actor = nullptr;
 		nsp_callback<T>													m_callback;
 
