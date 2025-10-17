@@ -20,7 +20,6 @@ namespace ngl
 			TRECV* lrecv = (TRECV*)arecv;
 
 			std::string lcustomstr;
-
 			tools::custom2json(*lrecv, lcustomstr);
 			log_error_net()->print(
 				"{}::handle<{}>( actor({}) : {} )"
@@ -73,7 +72,6 @@ namespace ngl
 		// # 订阅注册处理
 		static void init(ndb_modular<ENUMDB, T, TDerived>* adbmodule);
 
-
 		// # 出现新结点，广播给其他结点
 		static void broadcast_addnode(
 			i64_nodeid anodeid
@@ -84,7 +82,6 @@ namespace ngl
 		);
 
 		static void sync_data(i64_nodeid anodeid);
-
 
 		static bool check_map(const std::set<int32_t>& aset1, const std::set<int32_t>& aset2);
 
@@ -224,7 +221,6 @@ namespace ngl
 		}
 		else
 		{//通知部分写结点
-			//std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
 			static auto lfun = [](const std::set<i64_dataid>& aids, std::set<i64_nodeid>& anodes)
 				{
 					for (i64_dataid dataid : aids)
@@ -283,7 +279,6 @@ namespace ngl
 		else
 		{
 			// (部分读/写)数据被哪些结点关心
-			//static std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
 			std::set<i64_dataid> ldatas;
 			int32_t lconnt = 0;
 			for (const auto& item1 : m_part)
@@ -640,7 +635,6 @@ namespace ngl
 				item.second.m_loadfinishfun();
 			}
 		}
-
 	};
 
 }//namespace ngl

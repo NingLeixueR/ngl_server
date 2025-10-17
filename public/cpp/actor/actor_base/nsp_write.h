@@ -32,8 +32,6 @@ namespace ngl
 		std::set<i64_nodeid>											m_nodewritealls;	// 写全部数据的结点
 		//// 部分读/写
 		std::map<i64_dataid, std::map<i64_nodeid, enp_channel>>			m_part;
-
-		
 	public:
 		static type_nsp_write& instance(i64_actorid aactorid)
 		{
@@ -181,7 +179,6 @@ namespace ngl
 					actor::send_actor(lnodes, nguid::make(), pro);
 				}
 			}
-			
 		}
 
 		bool is_care(i64_actorid adataid)const;
@@ -198,22 +195,6 @@ namespace ngl
 		{
 			// 通知其他写结点，本结点退除
 			auto pro = std::make_shared<np_channel_dataid_sync<T>>();
-			////struct np_channel_dataid_sync
-			////{
-			////	std::string m_msg;										// 调试查看信息
-			////	i64_actorid m_actorid = 0;								// 异变的子节点id
-			////	bool m_add = true;										// 增加还是删除
-			////	enp_channel		m_type;									// 类型
-			////	//if (m_type == enp_channel_readpart || m_type == enp_channel_writepart)
-			////	//{
-			////	// (部分读/写)数据被哪些结点关心
-			////	std::set<i64_dataid> m_part;
-			////	//}
-
-			////	// add[
-			////	std::set<i32_fieldnumber> m_fieldnumbers;
-			////	// ]add
-			////};
 			pro->m_actorid = m_actor->id_guid();
 			pro->m_add = false;
 			pro->m_type = m_type;
@@ -376,7 +357,6 @@ namespace ngl
 		m_nodereadalls = recv->m_nodereadalls;
 		m_nodewritealls = recv->m_nodewritealls;
 		m_part = recv->m_part;
-
 		return;
 	}
 
@@ -411,7 +391,6 @@ namespace ngl
 					m_nodewritealls.insert(recv->m_actorid);
 				}
 			}
-			
 			m_node_fieldnumbers[nguid::type(recv->m_actorid)] = recv->m_fieldnumbers;
 		}
 		else
