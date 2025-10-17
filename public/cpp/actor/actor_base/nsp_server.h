@@ -636,5 +636,4 @@ namespace ngl
 			}
 		}
 	};
-
 }//namespace ngl
