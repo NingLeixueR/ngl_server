@@ -113,7 +113,6 @@ namespace ngl
 		}
 	};
 
-
 	template <typename TDerived, typename TACTOR, typename T>
 	std::atomic<bool> nsp_read<TDerived, TACTOR, T>::m_isregister = true;
 }//namespace ngl
@@ -180,7 +179,6 @@ namespace ngl
 		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;
-
 		for (const auto& apair : recv->m_data)
 		{
 			if (is_care(apair.first))

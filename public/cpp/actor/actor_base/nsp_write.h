@@ -221,11 +221,9 @@ namespace ngl
 		}
 	};
 
-
 	template <typename TDerived, typename TACTOR, typename T>
 	std::atomic<bool> nsp_write<TDerived, TACTOR, T>::m_isregister = true;
 }//namespace ngl
-
 
 namespace ngl
 {
@@ -273,7 +271,8 @@ namespace ngl
 					nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 					actor::send_actor(lactorid, nguid::make(), pro);
 				}
-			}; twheel::wheel().addtimer(lparm);
+			}; 
+			twheel::wheel().addtimer(lparm);
 		}
 	}
 
