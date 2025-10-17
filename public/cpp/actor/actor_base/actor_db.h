@@ -161,12 +161,14 @@ namespace ngl
 			m_cache_del.push(aid);
 		}
 
+		// # 异步删除一组数据
 		static void del(i32_threadid, const std::vector<i64_actorid>& aids)
 		{
 			ngl::db_data<TDBTAB>::remove(aids);
 			m_cache_del.push(aids);
 		}
 
+		// # 数据保存
 		static void save(i32_threadid athreadid, const pack*, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			const std::map<nguid, TDBTAB>& lmap = adata.m_data;
@@ -230,6 +232,7 @@ namespace ngl
 			>(false);
 		}
 
+		// # 同步:加载数据
 		bool handle(const message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			std::string lname = tools::type_name<TDBTAB>();
@@ -238,12 +241,14 @@ namespace ngl
 			return true;
 		}
 
+		// # 异步:保存数据
 		bool handle(const message<np_actordb_save<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			ndbtab<TDBTAB_TYPE, TDBTAB>::save(adata.thread(), adata.get_pack(), *adata.get_data());
 			return true;
 		}
 
+		// # 异步:删除数据
 		bool handle(const message<np_actordb_delete<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			ndbtab<TDBTAB_TYPE, TDBTAB>::del(adata.thread(), adata.get_data()->m_data);
@@ -280,8 +285,8 @@ namespace ngl
 			return true;
 		}
 
+		// # 支持gm操作
 		using handle_cmd = cmd<tactor_db, std::string, int, int, ngl::njson_read&>;
-
 		bool handle(const message<mforward<np_gm>>& adata)
 		{
 			const mforward<np_gm>& parm = *adata.get_data();
@@ -377,7 +382,6 @@ namespace ngl
 						pro.m_data = true;
 					};
 			}
-
 			if (handle_cmd::function(loperator, adata.thread(), parm.identifier(), lojson) == false)
 			{
 				log_error()->print("GM actor_db operator[{}] ERROR", loperator);

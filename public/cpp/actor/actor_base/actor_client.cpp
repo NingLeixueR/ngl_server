@@ -274,7 +274,6 @@ namespace ngl
 	bool actor_client::handle(const message<np_actornode_update>& adata)
 	{
 		auto lparm = adata.get_data();
-		//log_error()->print("actor_client np_actornode_update serid[{}]", lparm->m_id);
 		naddress::add_actor_address(lparm->m_id, lparm->m_add);
 		naddress::del_actor_address(lparm->m_del);
 		return true;
@@ -287,7 +286,6 @@ namespace ngl
 		int32_t lthreadid = adata.thread();
 
 		message<np_actornode_update> lmessage(lthreadid, lpack, (np_actornode_update*)&lparm->m_mass);
-
 		handle(lmessage);
 
 		if (nconfig::m_nodetype != NODE_TYPE::ROBOT)

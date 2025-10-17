@@ -7,7 +7,6 @@
 
 namespace ngl
 {
-
 	// 用于创建非单例actor
 	std::shared_ptr<actor_base> actor_base::create(ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm/* = nullptr*/)
 	{
