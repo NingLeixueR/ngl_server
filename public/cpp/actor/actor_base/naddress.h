@@ -84,9 +84,7 @@ namespace ngl
 		static void remove_gatewayid(const nguid& aguid);
 
 		//# 获取一组actor_role.actorid与gatewayid的关联
-		static void gatewayid(
-			const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset
-		);
+		static void gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset);
 #pragma endregion
 		//# 遍历[std::function<bool(const actor_node_session&)>] 
 		//# 如果返回值为false

@@ -105,5 +105,4 @@ namespace ngl
 		);
 		return *this;
 	}
-
 }//namespace ngl

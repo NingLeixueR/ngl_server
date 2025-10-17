@@ -246,7 +246,6 @@ namespace ngl
 		}
 	};
 
-
 	class nscript_manage
 	{
 	public:
@@ -356,9 +355,7 @@ namespace ngl
 			return false;
 		}
 
-		static bool data_checkdel(
-			enscript atype, void* anscript, const char* aname, std::vector<int64_t>& adelids
-		)
+		static bool data_checkdel(enscript atype, void* anscript, const char* aname, std::vector<int64_t>& adelids)
 		{
 			if (atype == enscript_lua)
 			{
@@ -368,6 +365,4 @@ namespace ngl
 			return false;
 		}
 	};
-
-
 }//namespace ngl

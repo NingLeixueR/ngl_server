@@ -33,13 +33,11 @@ namespace ngl
 	{
 		i64_actorid lactorrole = nguid::make(ACTOR_ROLE, aarea, aroleid);
 		i32_serverid lserverid = get_server(lactorrole);
-
 		if (lserverid == -1)
 		{
 			tools::no_core_dump();
 			return -1;
 		}
-
 		return get_session(lserverid);
 	}
 
@@ -57,8 +55,6 @@ namespace ngl
 		nguid lguid(adataid);
 		m_actorserver[lguid] = aserverid;
 		m_actortypeserver[lguid.type()].insert(adataid);
-		//log_error()->print("#actor_address [[{}]->[{}]]", lguid, aserverid);
-
 		auto itor = m_nguidfun.find(adataid);
 		if (itor != m_nguidfun.end())
 		{
@@ -90,7 +86,9 @@ namespace ngl
 	void naddress::del_actor_address(const std::vector<i64_actorid>& avec)
 	{
 		for (const i64_actorid item : avec)
+		{
 			del_actor_address(item);
+		}
 	}
 
 	void naddress::set_session(i32_serverid aserverid, i32_sessionid asession)
@@ -109,7 +107,7 @@ namespace ngl
 		actor_node_session* lpsession = tools::findmap(m_session, aserverid);
 		if (lpsession == nullptr)
 		{
-			//log_error()->print("get_session(serverid:{}) fail", aserverid);
+			log_error()->print("get_session(serverid:{}) fail", aserverid);
 			return -1;
 		}
 		return lpsession->m_session;
@@ -120,7 +118,7 @@ namespace ngl
 		i32_serverid* lpserverid = tools::findmap(m_actorserver, aguid);
 		if (lpserverid == nullptr)
 		{
-			//log_error()->print("get_session(nguid:{}) fail", aguid);
+			log_error()->print("get_session(nguid:{}) fail", aguid);
 			return -1;
 		}
 		return *lpserverid;
