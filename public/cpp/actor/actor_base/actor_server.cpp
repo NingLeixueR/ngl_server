@@ -17,6 +17,11 @@ namespace ngl
 	{
 	}
 
+	i64_actorid actor_server::actorid()
+	{
+		return nguid::make(ACTOR_SERVER, tab_self_area, nguid::none_actordataid());
+	}
+
 	void actor_server::nregister()
 	{
 		//# 设置未找到协议处理函数

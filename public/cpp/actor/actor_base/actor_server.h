@@ -24,10 +24,7 @@ namespace ngl
 
 		static void nregister();
 
-		static i64_actorid actorid()
-		{
-			return nguid::make(ACTOR_SERVER, tab_self_area, nguid::none_actordataid());
-		}
+		static i64_actorid actorid();
 
 		void print(const std::vector<i64_actorid>& avec)const;
 
