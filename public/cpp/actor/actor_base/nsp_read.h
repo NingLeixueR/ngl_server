@@ -118,7 +118,6 @@ namespace ngl
 	std::atomic<bool> nsp_read<TDerived, TACTOR, T>::m_isregister = true;
 }//namespace ngl
 
-
 namespace ngl
 {
 	template <typename TDerived, typename TACTOR, typename T>
