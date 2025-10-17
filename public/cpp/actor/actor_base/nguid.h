@@ -337,7 +337,6 @@ struct std::formatter<ngl::nguid>
 	}
 };
 
-
 namespace ngl
 {
 	template <>

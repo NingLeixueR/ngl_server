@@ -724,7 +724,6 @@ namespace ngl
 		continue;											\
 	}
 
-
 #define data_modified_dump_get(NAME, DATA)					\
 	auto NAME = (DATA).get();								\
 	if(NAME == nullptr)										\
