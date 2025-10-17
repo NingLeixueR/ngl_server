@@ -63,21 +63,21 @@
 #define def_rcsv2(...) return ngl::rcsv::readcsv(apair __VA_OPT__(,) ##__VA_ARGS__);
 #endif
 
-#define def_parmname														\
-	static std::vector<const char*>& parms(const char* astr = nullptr)		\
-	{																		\
-		static std::vector<const char*> tempvec;							\
-		if(astr == nullptr)													\
-		{																	\
-			return tempvec;													\
-		}																	\
-		static std::string tempstr(astr);									\
-		static std::atomic<bool> lregister = true;							\
-		if (lregister.exchange(false) && !tempstr.empty())					\
-		{																	\
-			tempvec = tools::split_str(&tempstr[0], tempstr.size());		\
-		}																	\
-		return tempvec;														\
+#define def_parmname																\
+	static std::vector<const char*>& parms(const char* astr = nullptr)				\
+	{																				\
+		static std::vector<const char*> tempvec;									\
+		if(astr == nullptr)															\
+		{																			\
+			return tempvec;															\
+		}																			\
+		static std::string tempstr(astr);											\
+		static std::atomic<bool> lregister = true;									\
+		if (lregister.exchange(false) && !tempstr.empty())							\
+		{																			\
+			tempvec = tools::split_str(&tempstr[0], (int32_t)tempstr.size());		\
+		}																			\
+		return tempvec;																\
 	}
 
 #include "njson.h"

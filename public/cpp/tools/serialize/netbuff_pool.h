@@ -117,7 +117,7 @@ namespace ngl
 			auto itor = std::lower_bound(m_bytes.begin(), m_bytes.end(), abytes);
 			if (itor != m_bytes.end())
 			{
-				int lpos = itor - m_bytes.begin();
+				int32_t lpos = (int32_t)(itor - m_bytes.begin());
 				{
 					monopoly_shared_lock(m_mutex);
 					if (m_pool[lpos].empty() == false)

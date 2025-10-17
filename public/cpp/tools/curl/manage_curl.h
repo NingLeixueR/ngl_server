@@ -132,7 +132,7 @@ namespace ngl
 		// # 辅助设置http访问参数
 		static void param(std::string& astrparam, const char* akey, const std::string& aval);
 		static void param(std::string& astrparam, const char* akey, const char* aval);
-		static void param(std::string& astrparam, const char* akey, int aval);
+		static void param(std::string& astrparam, const char* akey, int64_t aval);
 		
 		// # 发送
 		static void send(std::shared_ptr<http_parm>& adata);

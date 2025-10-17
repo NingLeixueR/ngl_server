@@ -68,7 +68,7 @@ namespace ngl
 		ltempbi.m_tid = atid;
 		ltempbi.m_count = acount;
 		ltempbi.m_roleid = get_actor()->id_guid();
-		ltempbi.m_time = localtime::gettime();
+		ltempbi.m_time = (int32_t)localtime::gettime();
 		ltempbi.m_mask = local_get_remakes(nactor());
 		ltempbi.m_adddec = aisadd ? 1 : 2;
 		ltempbi.print();

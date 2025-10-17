@@ -40,7 +40,7 @@ namespace ngl
 			{
 				return true;
 			}
-			int32_t lnow = localtime::gettime();
+			int32_t lnow = (int32_t)localtime::gettime();
 			for (int32_t activityid : tab->m_activityids)
 			{
 				const pbdb::db_activitytimes* lpactivitytimes = 

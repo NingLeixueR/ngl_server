@@ -174,7 +174,7 @@ namespace ngl
 		gettm(ltemp, tmTime);
 		tmTime.tm_min = 0;
 		tmTime.tm_sec = 0;
-		return mktime(&tmTime);
+		return (int)mktime(&tmTime);
 	}
 
 	int localtime::getutcbymin(time_t utc, int amin)
@@ -183,7 +183,7 @@ namespace ngl
 		std::tm ltime;
 		gettm(ltemp, ltime);
 		ltime.tm_sec = 0;
-		return mktime(&ltime);
+		return (int)mktime(&ltime);
 	}
 
 	time_t localtime::getweekday(time_t utc, int aweek/*0-6*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/)

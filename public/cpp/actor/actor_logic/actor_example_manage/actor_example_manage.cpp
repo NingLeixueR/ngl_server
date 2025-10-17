@@ -104,7 +104,7 @@ namespace ngl
 
 	bool actor_example_manage::timer_handle(const message<np_timerparm>& adata)
 	{
-		int32_t lnow = localtime::gettime();
+		int32_t lnow = (int32_t)localtime::gettime();
 		pbexample::ECROSS lecross = tab_self_area > 0 ? pbexample::ECROSS::ECROSS_ORDINARY : pbexample::ECROSS::ECROSS_CROSS_ORDINARY;
 		for (std::pair<const pbexample::EPLAY_TYPE, std::map<i64_actorid, playinfo>>& item1 : m_info)
 		{

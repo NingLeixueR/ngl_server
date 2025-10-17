@@ -52,7 +52,7 @@ namespace ngl
 			});
 
 			auto pro = std::make_shared<np_thruput_test>();
-			pro->m_rounds = m_rounds.size() - 1;
+			pro->m_rounds = (int32_t)m_rounds.size() - 1;
 			for (int i = 0; i < aeverycount; ++i)
 			{
 				actor::send_actor(ACTOR_ROBOT, pro);

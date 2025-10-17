@@ -120,7 +120,7 @@ namespace ngl
 		void change(pbdb::eranklist atype, pbdb::db_ranklist& aranklist)
 		{
 			pbdb::rankitem& ltemp = (*aranklist.mutable_mitems())[atype];
-			m_data[atype].m_time = localtime::gettime();
+			m_data[atype].m_time = (int32_t)localtime::gettime();
 			ltemp.set_mtime(m_data[atype].m_time);
 			ltemp.set_mvalue(m_data[atype].m_value);
 		}

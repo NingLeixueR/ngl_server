@@ -71,7 +71,7 @@ namespace ngl
 		);
 
 		// 加载初始化活动
-		int32_t lnow = localtime::gettime();
+		int32_t lnow = (int32_t)localtime::gettime();
 		for (std::pair<const nguid, data_modified<pbdb::db_activitytimes>>& lpair : m_activitytimedb.data())
 		{
 			const tab_activity* ltab = ttab_activity::instance().tab(nguid::actordataid(lpair.first));
@@ -100,14 +100,14 @@ namespace ngl
 					}
 					if (ltabalways->m_type == EActivityAlways::EActivityAlwaysWeek)
 					{
-						int32_t lbeg = localtime::getweekday(
+						int32_t lbeg = (int32_t)localtime::getweekday(
 							lnow,
 							ltabalways->m_wbday==7?0: ltabalways->m_wbday, 
 							ltabalways->m_wbhour, 
 							ltabalways->m_wbminute, 
 							ltabalways->m_wbsecond
 						);
-						int32_t lend = localtime::getweekday(
+						int32_t lend = (int32_t)localtime::getweekday(
 							lnow,
 							ltabalways->m_weday == 7 ? 0 : ltabalways->m_weday,
 							ltabalways->m_wehour,
@@ -155,18 +155,18 @@ namespace ngl
 						{
 							continue;
 						}
-						start_activity(lactoractivityid, lbeg.second, lend.second - lbeg.second);
+						start_activity(lactoractivityid, (int32_t)lbeg.second, (int32_t)(lend.second - lbeg.second));
 						continue;
 					}
 					else if (ltabalways->m_type == EActivityAlways::EActivityAlwaysFixed)
 					{
-						int32_t lbeg = localtime::getsecond2time(
+						int32_t lbeg = (int32_t)localtime::getsecond2time(
 							lnow,
 							ltabalways->m_fbhour,
 							ltabalways->m_fbminute,
 							ltabalways->m_fbsecond
 						);
-						int32_t lend = localtime::getsecond2time(
+						int32_t lend = (int32_t)localtime::getsecond2time(
 							lnow+ ltabalways->m_fixedday* localtime::DAY_SECOND,
 							ltabalways->m_fbhour,
 							ltabalways->m_fbminute,
@@ -244,7 +244,7 @@ namespace ngl
 		{
 			return;
 		}
-		int32_t lnow = localtime::gettime();
+		int32_t lnow = (int32_t)localtime::gettime();
 		if (lnow < atime)
 		{//未来时间定时开启活动
 			post_timer(aactivityid, eactivity_start, atime, aduration);
@@ -291,11 +291,11 @@ namespace ngl
 		int32_t lduration = 0;
 		if (atype == eactivity_close)
 		{
-			lduration = (abeg + aduration) - localtime::gettime();
+			lduration = (abeg + aduration) - (int32_t)localtime::gettime();
 		}
 		else if (atype == eactivity_start)
 		{
-			lduration = abeg - localtime::gettime();
+			lduration = abeg - (int32_t)localtime::gettime();
 		}
 
 		if (lduration < 0)

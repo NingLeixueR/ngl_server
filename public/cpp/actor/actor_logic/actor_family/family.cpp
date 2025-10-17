@@ -363,7 +363,7 @@ namespace ngl
 		{
 			return false;
 		}
-		data_modified_return_getconst(lpfamilyconst, *lpmodifiedfamily, 7);
+		data_modified_return_getconst(lpfamilyconst, *lpmodifiedfamily, false);
 		for (const int64_t afamilyer : lpfamilyconst->mmember())
 		{
 			if (afamilyer == aroleid)

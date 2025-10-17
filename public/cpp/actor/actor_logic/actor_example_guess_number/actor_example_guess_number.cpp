@@ -52,7 +52,7 @@ namespace ngl
 		pro->set_mwhoguess(m_rolesds[m_index % m_rolesds.size()]);
 		++m_index;
 		send_client(m_rolesds, pro);
-		m_setputc = localtime::gettime();
+		m_setputc = (int32_t)localtime::gettime();
 	}
 
 	void actor_example_guess_number::bomb(i64_actorid aroleid/* = nguid::make()*/)
@@ -81,7 +81,7 @@ namespace ngl
 		{
 			return;
 		}
-		m_bombutc = localtime::gettime();
+		m_bombutc = (int32_t)localtime::gettime();
 		m_bombrole = abombrole;
 	}
 
@@ -116,7 +116,7 @@ namespace ngl
 
 	bool actor_example_guess_number::timer_handle(const message<np_timerparm>& adata)
 	{
-		int32_t lnow = localtime::gettime();
+		int32_t lnow = (int32_t)localtime::gettime();
 		if (isfinish() == false)
 		{
 			if (m_setputc == 0)

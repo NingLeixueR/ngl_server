@@ -52,7 +52,7 @@ namespace ngl
 
 	int32_t aoi::idbyxy(float ax, float ay)
 	{
-		return id(std::ceil(ax / grid_w()), std::ceil(ay / grid_l()));
+		return id((uint32_t)std::ceil(ax / grid_w()), (uint32_t)std::ceil(ay / grid_l()));
 	}
 
 	void aoi::idaround_list(int32_t aid, std::set<int32_t>& avec)
@@ -110,11 +110,7 @@ namespace ngl
 
 	float aoi::distance(aoi* aaoi, int aid1, int aid2)
 	{
-		float lx1 = aaoi->idx(aid1);
-		float ly1 = aaoi->idy(aid1);
-		float lx2 = aaoi->idx(aid2);
-		float ly2 = aaoi->idy(aid2);
-		return distance(lx1, ly1, lx2, ly2);
+		return distance((float)aaoi->idx(aid1), (float)aaoi->idy(aid1), (float)aaoi->idx(aid2), (float)aaoi->idy(aid2));
 	}
 
 	float aoi::distance(float ax1, float ay1, float ax2, float ay2)
@@ -126,11 +122,11 @@ namespace ngl
 
 	float aoi::distance(const pbnet::VECTOR2& apos1, const pbnet::VECTOR2& apos2)
 	{
-		return distance(apos1.mx(), apos1.my(), apos2.mx(), apos2.my());
+		return distance((float)apos1.mx(), (float)apos1.my(), (float)apos2.mx(), (float)apos2.my());
 	}
 
 	float aoi::distance(const pbnet::VECTOR3& apos1, const pbnet::VECTOR3& apos2)
 	{
-		return distance(apos1.mx(), apos1.my(), apos2.mx(), apos2.my());
+		return distance((float)apos1.mx(), (float)apos1.my(), (float)apos2.mx(), (float)apos2.my());
 	}
 }
