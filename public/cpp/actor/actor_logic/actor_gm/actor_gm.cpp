@@ -90,7 +90,7 @@ namespace ngl
 			tools::no_core_dump();
 			return;
 		}
-		actor_gm::sendtophp(apro->identifier(), *apro->data());
+		actor_gm::sendtophp((i32_sessionid)apro->identifier(), *apro->data());
 	}
 
 	bool actor_gm::timer_handle(const message<np_timerparm>& adata)

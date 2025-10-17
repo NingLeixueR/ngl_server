@@ -104,7 +104,7 @@ namespace ngl
 			monopoly_shared_lock(m_mutex);
 			m_list.swap(m_locallist);
 		}
-		int32_t llistcount = m_locallist.size();
+		int32_t llistcount = (int32_t)m_locallist.size();
 		if (m_weight < llistcount || llistcount >= 1000)
 		{
 			log_error()->print(

@@ -435,7 +435,7 @@ namespace ngl
 			};
 			static bool push(serialize_push* aserialize, const std::string& adata)
 			{
-				int32_t lsize = adata.size();
+				int32_t lsize = (int32_t)adata.size();
 				if (!serialize_format<int32_t>::push(aserialize, lsize))
 				{
 					return false;
@@ -460,7 +460,7 @@ namespace ngl
 
 			static void bytes(serialize_byte* aserialize, const std::string& adata)
 			{
-				int32_t lsize = adata.size();
+				int32_t lsize = (int32_t)adata.size();
 				serialize_format<int32_t>::bytes(aserialize, lsize);
 				aserialize->move_pos(lsize);
 			}
@@ -472,7 +472,7 @@ namespace ngl
 		{
 			static bool push(serialize_push* aserialize, const std::vector<T>& adata)
 			{
-				int32_t lsize = adata.size();
+				int32_t lsize = (int32_t)adata.size();
 				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
 				{
 					return false;
@@ -510,7 +510,7 @@ namespace ngl
 
 			static void bytes(serialize_byte* aserialize, const std::vector<T>& adata)
 			{
-				int32_t lsize = adata.size();
+				int32_t lsize = (int32_t)adata.size();
 				serialize_format<int32_t>::bytes(aserialize, lsize);
 				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
 				{
@@ -524,7 +524,7 @@ namespace ngl
 		{
 			static bool push(serialize_push* aserialize, const std::set<T>& adata)
 			{
-				int32_t lsize = adata.size();
+				int32_t lsize = (int32_t)adata.size();
 				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
 				{
 					return false;
@@ -560,7 +560,7 @@ namespace ngl
 
 			static void bytes(serialize_byte* aserialize, const std::set<T>& adata)
 			{
-				int32_t lsize = adata.size();
+				int32_t lsize = (int32_t)adata.size();
 				serialize_format<int32_t>::bytes(aserialize, lsize);
 				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
 				{
@@ -624,7 +624,7 @@ namespace ngl
 		{
 			static bool push(serialize_push* aserialize, const std::map<TKEY, TVAL>& adata)
 			{
-				int32_t lsize = adata.size();
+				int32_t lsize = (int32_t)adata.size();
 				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
 				{
 					return false;
@@ -669,7 +669,7 @@ namespace ngl
 
 			static void bytes(serialize_byte* aserialize, const std::map<TKEY, TVAL>& adata)
 			{
-				int32_t lsize = adata.size();
+				int32_t lsize = (int32_t)adata.size();
 				serialize_format<int32_t>::bytes(aserialize, lsize);
 				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
 				{

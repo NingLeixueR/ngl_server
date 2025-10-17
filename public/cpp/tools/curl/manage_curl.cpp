@@ -148,7 +148,7 @@ namespace ngl
 		astrparam += std::format("{}={}", akey, aval);
 	}
 
-	void manage_curl::param(std::string& astrparam, const char* akey, int aval)
+	void manage_curl::param(std::string& astrparam, const char* akey, int64_t aval)
 	{
 		if (astrparam.empty() == false)
 		{
@@ -204,7 +204,7 @@ namespace ngl
 		std::string data((const char*)userp);
 		size_t to_copy = std::min(data.size() - email_sender::instance().m_index, size * nmemb);
 		memcpy(ptr, data.c_str() + email_sender::instance().m_index, to_copy);
-		email_sender::instance().m_index += to_copy;
+		email_sender::instance().m_index += (int32_t)to_copy;
 		return to_copy;
 	}
 

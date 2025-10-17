@@ -85,7 +85,7 @@ namespace ngl
 	void unit::update(int64_t alastupdate, pbnet::VECTOR2& apos)
 	{
 		int64_t lvalue = alastupdate - m_lastupdate;
-		apos.set_mx(x() + (speed() * cos(angle()) * lvalue));
-		apos.set_my(y() + (speed() * sin(angle()) * lvalue));
+		apos.set_mx((int32_t)(x() + (speed() * cos(angle()) * lvalue)));
+		apos.set_my((int32_t)(y() + (speed() * sin(angle()) * lvalue)));
 	}
 }// namespace ngl

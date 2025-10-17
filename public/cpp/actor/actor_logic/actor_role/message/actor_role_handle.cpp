@@ -102,15 +102,15 @@ namespace ngl
 		{
 			for (i64_actorid taskid : recv->m_taskids)
 			{
-				static_task::receive_task(this, taskid);
+				static_task::receive_task(this, (int32_t)taskid);
 			}
 		}
 		else
 		{
 			for (i64_actorid taskid : recv->m_taskids)
 			{
-				static_task::finish_task(this, taskid);
-				static_task::erase_task(this, taskid);
+				static_task::finish_task(this, (int32_t)taskid);
+				static_task::erase_task(this, (int32_t)taskid);
 			}
 		}
 		log_error()->print("actor_role.np_operator_task {}:{}:{}:{}", 

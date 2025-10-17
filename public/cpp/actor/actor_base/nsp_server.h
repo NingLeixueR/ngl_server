@@ -380,8 +380,8 @@ namespace ngl
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	class actortypes_fieldnumbers_check
 	{
-		std::set<i16_actortype> m_actortypes;
-		const std::set<int32_t>& m_fieldnumbers;						// ¿ÉĞŞ¸ÄÄÄĞ©×Ö¶Î±àºÅ
+		std::set<i16_actortype>		m_actortypes;
+		const std::set<int32_t>&	m_fieldnumbers; // ¿ÉĞŞ¸ÄÄÄĞ©×Ö¶Î±àºÅ
 		std::map<i16_actortype, std::set<i32_fieldnumber>>& m_nodewrite_fieldnumbers;
 	public:
 		actortypes_fieldnumbers_check(
@@ -401,8 +401,7 @@ namespace ngl
 		{
 			for (i16_actortype ltype : m_actortypes)
 			{
-				auto itor = m_nodewrite_fieldnumbers.find(ltype);
-				if (itor == m_nodewrite_fieldnumbers.end())
+				if (!m_nodewrite_fieldnumbers.contains(ltype))
 				{
 					tools::no_core_dump();
 				}
@@ -475,8 +474,7 @@ namespace ngl
 			lcheck.check();
 		}
 
-
-		m_nodewrite_fieldnumbers[recv->m_actorid] = recv->m_fieldnumbers;
+		m_nodewrite_fieldnumbers[nguid::type(recv->m_actorid)] = recv->m_fieldnumbers;
 
 		{//»Ø¸´
 			auto pro = std::make_shared<np_channel_write_register_reply<T>>();

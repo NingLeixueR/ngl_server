@@ -137,7 +137,7 @@ namespace ngl
 			e_server_actor_send_count = 100,
 		};
 		int32_t ltemp[2] = { 0 };
-		ltemp[0] = localtime::gettime();
+		ltemp[0] = (int32_t)localtime::gettime();
 		std::map<int64_t, std::function<void()>>& lmap = m_nguidfun[aguid];
 		if (lmap.size() > e_server_actor_send_count)
 		{

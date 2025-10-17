@@ -113,7 +113,7 @@ namespace ngl
 		// # 此刻是活动第几天
 		int32_t day()
 		{
-			return localtime::getspandays(localtime::gettime(), start_utc());
+			return (int32_t)localtime::getspandays(localtime::gettime(), start_utc());
 		}
 
 		// # 获取活动表

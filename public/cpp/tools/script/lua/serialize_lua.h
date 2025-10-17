@@ -944,7 +944,7 @@ namespace ngl
 			lua_newtable(L);
 			for (size_t i = 0; i < adata.size(); ++i)
 			{
-				serialize_lua<T>::stack_push(L, adata[i]);
+				serialize_lua<T>::stack_push(L, adata[(int32_t)i]);
 				lua_rawseti(L, -2, i + 1);
 			}
 		}
@@ -995,7 +995,7 @@ namespace ngl
 			lua_newtable(L);
 			for (size_t i = 0; i < adata.size(); ++i)
 			{
-				serialize_lua<T>::stack_push(L, adata[i]);
+				serialize_lua<T>::stack_push(L, adata[(int32_t)i]);
 				lua_rawseti(L, -2, i + 1);
 			}
 		}
@@ -1280,7 +1280,7 @@ public:
 		if constexpr (POP)
 		{
 			ngl::nlua_table::table_start_pop(L, m_name);
-			m_pos = m_vec.size() - 1;
+			m_pos = (int32_t)m_vec.size() - 1;
 		}
 		else
 		{

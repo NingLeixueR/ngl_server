@@ -156,7 +156,7 @@ namespace ngl
 
 		pbdb::db_task::data ltemp;
 		ltemp.set_mtaskid(ataskid);
-		ltemp.set_mreceiveutc(localtime::gettime());
+		ltemp.set_mreceiveutc((int32_t)localtime::gettime());
 		ltemp.set_mfinshutc(-1);
 		for (auto& item : *lvec)
 		{
@@ -228,7 +228,7 @@ namespace ngl
 					itor->second.set_mreceive(true);
 				}
 			}
-			itor->second.set_mfinshutc(localtime::gettime());
+			itor->second.set_mfinshutc((int32_t)localtime::gettime());
 			*complete(arole)[ataskid].add_mhistory() = itor->second;
 			run(arole).erase(itor);
 			update_change(arole, ETaskTaskId, ataskid);

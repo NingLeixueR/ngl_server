@@ -142,7 +142,7 @@ namespace ngl
 		int32_t get_showcount()
 		{
 			int32_t lshow = showitem();
-			int32_t lcount = m_rankdata.size();
+			int32_t lcount = (int32_t)m_rankdata.size();
 			return lshow > lcount ? lcount : lshow;
 		}
 
