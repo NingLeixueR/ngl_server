@@ -109,6 +109,14 @@ namespace ngl
 
 		void exit()
 		{
+			{//·¢ËÍ¸øserver
+				auto pro = std::make_shared<np_channel_exit<T>>();
+				pro->m_actorid = m_actor->id_guid();
+				for (const auto& [_area, _actorid] : m_nspserver)
+				{
+					actor::send_actor(_actorid, nguid::make(), pro);
+				}
+			}
 			nsp_instance<type_nsp_read>::exit(m_actor->id_guid());
 		}
 	};
@@ -243,10 +251,6 @@ namespace ngl
 
 		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
-		if (m_actor->id_guid() != recv->m_actorid)
-		{
-			tools::no_core_dump();
-		}
 		m_register[nguid::area(recv->m_actorid)] = true;
 		m_node_fieldnumbers = recv->m_node_fieldnumbers;
 		return;

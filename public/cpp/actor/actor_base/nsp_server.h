@@ -346,6 +346,13 @@ namespace ngl
 			}
 		}
 
+		{// »Ø¸´
+			auto pro = std::make_shared<np_channel_read_register_reply<T>>();
+			pro->m_actorid = m_dbmodule->get_actor()->id_guid();
+			pro->m_node_fieldnumbers = m_nodewrite_fieldnumbers;
+			actor::send_actor(recv->m_actorid, nguid::make(), pro);
+		}
+		
 		m_noderead_fieldnumbers[nguid::type(recv->m_actorid)] = recv->m_fieldnumbers;
 		broadcast_addnode(recv->m_actorid, recv->m_type, recv->m_readids, {}, recv->m_fieldnumbers);
 
@@ -473,7 +480,7 @@ namespace ngl
 
 		{//»Ø¸´
 			auto pro = std::make_shared<np_channel_write_register_reply<T>>();
-			pro->m_actorid = recv->m_actorid;
+			pro->m_actorid = m_dbmodule->get_actor()->id_guid();
 			pro->m_nodereadalls = m_nodewritealls;
 			pro->m_nodewritealls = m_nodereadalls;
 			pro->m_node_fieldnumbers = m_nodewrite_fieldnumbers;
