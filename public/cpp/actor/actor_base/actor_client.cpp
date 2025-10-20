@@ -285,7 +285,7 @@ namespace ngl
 		auto lpack = adata.get_pack();
 		int32_t lthreadid = adata.thread();
 
-		message<np_actornode_update> lmessage(lthreadid, lpack, (np_actornode_update*)&lparm->m_mass);
+		message<np_actornode_update> lmessage(lthreadid, adata.get_shared_pack(), (np_actornode_update*)&lparm->m_mass);
 		handle(lmessage);
 
 		if (nconfig::m_nodetype != NODE_TYPE::ROBOT)

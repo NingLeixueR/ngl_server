@@ -230,7 +230,7 @@ namespace ngl
 		bool is_first_recharge(int32_t arechargeid);
 
 		//# CMD协议
-		using handle_cmd = cmd<actor_role, std::string, const pack*, actor_role*, const char*>;
+		using handle_cmd = cmd<actor_role, std::string, const std::shared_ptr<pack>&, actor_role*, const char*>;
 		//# GM协议
 		using handle_gm = cmd<actor_role, std::string, int, ngl::njson_read&>;
 
