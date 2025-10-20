@@ -193,29 +193,40 @@ namespace ngl
 
 		void exit()
 		{
-			// 通知其他写结点，本结点退除
-			auto pro = std::make_shared<np_channel_dataid_sync<T>>();
-			pro->m_actorid = m_actor->id_guid();
-			pro->m_add = false;
-			pro->m_type = m_type;
-			if (m_type == enp_channel_readpart || m_type == enp_channel_writepart)
 			{
-				pro->m_part = m_ids;
-			}
-
-			std::set<i64_nodeid> lnodeids;
-			lnodeids.insert(m_nodewritealls.begin(), m_nodewritealls.end());
-			for (const auto& item1 : m_part)
-			{
-				for (const auto& item2 : item1.second)
+				// 通知其他写结点，本结点退除
+				auto pro = std::make_shared<np_channel_dataid_sync<T>>();
+				pro->m_actorid = m_actor->id_guid();
+				pro->m_add = false;
+				pro->m_type = m_type;
+				if (m_type == enp_channel_readpart || m_type == enp_channel_writepart)
 				{
-					if (item2.second == enp_channel_writepart)
+					pro->m_part = m_ids;
+				}
+				// 发送给其他结点
+				std::set<i64_nodeid> lnodeids;
+				lnodeids.insert(m_nodewritealls.begin(), m_nodewritealls.end());
+				for (const auto& item1 : m_part)
+				{
+					for (const auto& item2 : item1.second)
 					{
-						lnodeids.insert(item2.first);
+						if (item2.second == enp_channel_writepart)
+						{
+							lnodeids.insert(item2.first);
+						}
 					}
-				}				
+				}
+				actor::send_actor(lnodeids, nguid::make(), pro);
 			}
-			actor::send_actor(lnodeids, nguid::make(), pro);
+			
+			{//发送给server
+				auto pro = std::make_shared<np_channel_exit<T>>();
+				pro->m_actorid = m_actor->id_guid();
+				for (const auto& [_area, _actorid] : m_nspserver)
+				{
+					actor::send_actor(_actorid, nguid::make(), pro);
+				}
+			}
 
 			nsp_instance<type_nsp_write>::exit(m_actor->id_guid());
 		}
@@ -346,10 +357,6 @@ namespace ngl
 
 		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
 
-		if (m_actor->id_guid() != recv->m_actorid)
-		{
-			tools::no_core_dump();
-		}
 		m_register[nguid::area(recv->m_actorid)] = true;
 		m_node_fieldnumbers = recv->m_node_fieldnumbers;
 
