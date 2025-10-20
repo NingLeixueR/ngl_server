@@ -166,7 +166,10 @@ namespace ngl
 		nguid lguid(lpram->mroleid());
 		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 		if (linfo == nullptr || linfo->m_session != lpram->msession())
-		{
+		{// ¶¥ºÅ²Ù×÷
+			net_protocol* lpprotocol = nets::net(linfo->m_socket);
+			lpprotocol->close(linfo->m_socket);
+			send_actor(id_guid(), id_guid(), adata.get_shared_data());
 			//tools::no_core_dump();
 			return true;
 		}
