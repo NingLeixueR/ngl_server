@@ -166,19 +166,12 @@ namespace ngl
 		nguid lguid(lpram->mroleid());
 		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 		if (linfo == nullptr || linfo->m_session != lpram->msession())
-		{// ¶¥ºÅ²Ù×÷
-			net_protocol* lpprotocol = nets::net(linfo->m_socket);
-			lpprotocol->close(linfo->m_socket);
-			send_actor(id_guid(), id_guid(), adata.get_shared_data());
+		{
 			//tools::no_core_dump();
 			return true;
 		}
 		
-		if (
-			sysconfig::robot_test() == false 
-			&& lpack->m_id != linfo->m_socket 
-			&& linfo->m_socket > 0
-			)
+		if (lpack->m_id != linfo->m_socket && linfo->m_socket > 0)
 		{
 			i32_socket loldsocket = linfo->m_socket;
 			nets::net(linfo->m_socket)->close_net(linfo->m_socket);
