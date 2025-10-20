@@ -44,19 +44,19 @@ namespace ngl
 	private:
 		message() = delete;
 
-		std::shared_ptr<T>	m_shared_data		= nullptr;	// 数据
-		T*					m_original_data		= nullptr;	// 数据
-		i32_threadid		m_thread			= 0;		// 线程id
-		const pack*			m_pack				= nullptr;	// 如果消息来自网络，这个值不为空即为网络数据包
+		std::shared_ptr<T>		m_shared_data		= nullptr;	// 数据
+		T*						m_original_data		= nullptr;	// 数据
+		i32_threadid			m_thread			= 0;		// 线程id
+		std::shared_ptr<pack>	m_pack				= nullptr;	// 如果消息来自网络，这个值不为空即为网络数据包
 	public:
-		inline message(i32_threadid athread, const pack* apack, std::shared_ptr<T>& adata) :
+		inline message(i32_threadid athread, std::shared_ptr<pack> apack, std::shared_ptr<T>& adata) :
 			m_thread(athread),
 			m_pack(apack),
 			m_shared_data(adata)
 		{
 		}
 
-		inline message(i32_threadid athread, const pack* apack, T* adata) :
+		inline message(i32_threadid athread, std::shared_ptr<pack> apack, T* adata) :
 			m_thread(athread),
 			m_pack(apack),
 			m_original_data(adata)
@@ -78,6 +78,11 @@ namespace ngl
 		}
 
 		inline const pack* get_pack()const
+		{
+			return m_pack.get();
+		}
+
+		inline const std::shared_ptr<pack>& get_shared_pack()const
 		{
 			return m_pack;
 		}

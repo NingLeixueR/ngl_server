@@ -177,7 +177,7 @@ namespace ngl
 			lparm->m_fun();
 		}
 
-		handle(message(adata.thread(), lpack, pro));
+		handle(message(adata.thread(), adata.get_shared_pack(), pro));
 		return true;
 	}
 
