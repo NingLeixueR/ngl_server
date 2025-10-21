@@ -261,7 +261,7 @@ namespace ngl
 		
 	}
 
-	void actor_role::handle_after()
+	void actor_role::handle_after(handle_pram&)
 	{
 		// ### 同步这次消息的背包变动
 		m_bag.sync_client();
@@ -271,7 +271,8 @@ namespace ngl
 			auto pro = std::shared_ptr<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>();
 			m_attribute.topb(*pro);
 			send_client(id_guid(), pro);
-		}		
+		}	
+		tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).change();
 	}
 
 	i64_actorid actor_role::roleid()

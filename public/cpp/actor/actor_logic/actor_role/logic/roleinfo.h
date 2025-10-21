@@ -25,8 +25,6 @@ namespace ngl
 		pbdb::db_brief* get_brief();
 		const pbdb::db_brief* get_constbrief();
 
-		void change();
-
 		void change_event(eevents_logic type, int abegvalue, int32_t anowvalue);
 
 		// # µÈ¼¶

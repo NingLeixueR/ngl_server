@@ -76,7 +76,7 @@ namespace ngl
 		struct tcustoms
 		{
 			template <typename T>
-			static info* funcx(int32_t aprotocolnum = -1)
+			static info* funcx_s(int32_t aprotocolnum = -1)
 			{
 				size_t lcode = hash_code<T>();
 				if (m_keyval.contains(lcode))
@@ -91,9 +91,17 @@ namespace ngl
 				m_protocol[linfo.m_protocol] = &linfo;
 
 				m_nameprotocol[linfo.m_name] = &linfo;
-				
-				//std::cout << std::format("{}-{}", linfo.m_protocol, linfo.m_name) << std::endl;
 				return &linfo;
+			}
+
+
+			template <typename T>
+			static info* funcx(int32_t aprotocolnum = -1)
+			{
+				info* lpinfo = funcx_s<T>(aprotocolnum);
+				funcx_s<np_mass_actor<T>>(-1);
+				//std::cout << std::format("{}-{}", linfo.m_protocol, linfo.m_name) << std::endl;
+				return lpinfo;
 			}
 
 			template <typename T>

@@ -43,6 +43,9 @@ namespace ngl
 
 		static void nregister();
 
+		//# 执行handle之后调用
+		virtual void handle_after(handle_pram&);
+
 		//# gm请求
 		using handle_gm = cmd<actor_role, std::string, int, ngl::njson_read&>;
 

@@ -79,8 +79,8 @@ namespace ngl
 
 	bool actor::ahandle(i32_threadid athreadid, handle_pram& aparm)
 	{
-		Try
-		{
+		//Try
+		//{
 			set_kcp(aparm);
 			nrfunbase* lprfun = m_actorfun;
 			if (lprfun == nullptr)
@@ -94,8 +94,8 @@ namespace ngl
 			}
 			lprfun->notfindfun(this, athreadid, aparm);
 			return true;
-		}Catch
-		return false;
+		//}Catch
+		//return false;
 	}
 
 	void actor::actor_handle(i32_threadid athreadid)
@@ -122,10 +122,7 @@ namespace ngl
 				break;
 			}
 			handle_pram& lparm = m_locallist.front();
-			if (ahandle(athreadid, lparm) == true)
-			{
-				handle_after(lparm);
-			}
+			ahandle(athreadid, lparm);
 			m_locallist.pop_front();
 			++lcount;
 		}

@@ -95,17 +95,12 @@ namespace ngl
 			add_data(*lpdbranklist);
 		}
 
-		/*static tdb_brief::nsp_cread<actor_ranklist>* lpdb = nsp_instance<tdb_brief::nsp_cread<actor_ranklist>>::nclient(get_actor()->id_guid());
-		if (lpdb == nullptr)
-		{
-			tools::no_core_dump();
-			return;
-		}
-		tdb_brief::nsp_cli<actor_ranklist>::instance(get_actor()->id_guid()).set_changedata_fun(
+		tdb_brief::nsp_cread<actor_ranklist>::instance(get_actor()->id_guid()).set_changedatafun(get_actor()->id_guid(),
 			[this](int64_t aid, const pbdb::db_brief& abrief, bool afirstsynchronize)
 			{
-				update_value(abrief, afirstsynchronize);				
-			});*/
+				update_value(abrief, afirstsynchronize);
+			}
+		);
 	}
 
 	pbdb::db_ranklist* ranklist::get(i64_actorid aactorid)

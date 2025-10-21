@@ -53,9 +53,14 @@ namespace ngl
 	void actor_activity_manage::erase_actor_before()
 	{
 		tdb_brief::nsp_cwrite<actor_activity_manage>::instance(id_guid()).exit();
-		tdb_keyvalue::nsp_cwrite<actor_activity_manage>::instance(id_guid()).exit();
+		tdb_keyvalue::nsp_cread<actor_activity_manage>::instance(id_guid()).exit();
 
 		m_drop.exit();
+	}
+
+	void actor_activity_manage::handle_after(handle_pram&)
+	{
+		tdb_brief::nsp_cwrite<actor_activity_manage>::instance(id_guid()).change();
 	}
 
 	void actor_activity_manage::loaddb_finish(bool adbishave)
