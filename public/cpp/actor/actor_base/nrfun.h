@@ -49,7 +49,7 @@ namespace ngl
 		i32_threadid			m_thread			= 0;		// 线程id
 		std::shared_ptr<pack>	m_pack				= nullptr;	// 如果消息来自网络，这个值不为空即为网络数据包
 	public:
-		inline message(i32_threadid athread, std::shared_ptr<pack> apack, std::shared_ptr<T>& adata) :
+		inline message(i32_threadid athread, const std::shared_ptr<pack>& apack, const std::shared_ptr<T>& adata) :
 			m_thread(athread),
 			m_pack(apack),
 			m_shared_data(adata)
@@ -126,6 +126,10 @@ namespace ngl
 		//# actor间消息处理,不注册网络层
 		template <typename TTTDerived, typename T>
 		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun, bool aisload = false);
+
+		//# 群发处理
+		template <typename TTTDerived, typename T>
+		nrfun& rfun_mass(const std::function<void(TTTDerived*, message<T>&)>& afun, bool aisload = false);
 
 		//# gateway注册c2g接收转发协议处理协议
 		template <typename T>

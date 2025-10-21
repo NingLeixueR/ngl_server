@@ -264,7 +264,7 @@ namespace ngl
 		nguid lactorid = adata.m_actor;
 		nguid lrequestactor = adata.m_requestactor;
 		std::set<i64_actorid>& lmassactors = adata.m_massactors;
-		if (lactorid != nguid::make() && lmassactors.empty())
+		if (lactorid == nguid::make() && !lmassactors.empty())
 		{
 			std::map<i32_serverid, std::set<i64_actorid>> lserveractors;
 			for (i64_actorid actorid : lmassactors)

@@ -66,6 +66,8 @@ namespace ngl
 
 		// Êý¾Ý
 		static ndb_modular<ENUMDB, T, TDerived>* m_dbmodule;
+
+		static std::set<i16_area> m_areaset;
 	public:
 		using tnsp_server = nsp_server<ENUMDB, TDerived, T>;
 
@@ -115,6 +117,9 @@ namespace ngl
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	ndb_modular<ENUMDB, T, TDerived>* nsp_server<ENUMDB, TDerived, T>::m_dbmodule;
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	std::set<i16_area> nsp_server<ENUMDB, TDerived, T>::m_areaset;
 }//namespace ngl
 
 namespace ngl
@@ -123,6 +128,8 @@ namespace ngl
 	void nsp_server<ENUMDB, TDerived, T>::init(ndb_modular<ENUMDB, T, TDerived>* adbmodule)
 	{
 		m_dbmodule = adbmodule;
+
+		ttab_servers::instance().get_arealist_nonrepet(nconfig::m_tid, m_areaset);
 
 		actor::register_actor_s<TDerived, np_channel_data<T>>(
 			[](TDerived* aactor, const message<np_channel_data<T>>& adata)
@@ -161,12 +168,19 @@ namespace ngl
 	void nsp_server<ENUMDB, TDerived, T>::handle(TDerived* aactor, const message<np_channel_data<T>>& adata)
 	{
 		const np_channel_data<T>* recv = adata.get_data();
+		if (!m_nodewrite_fieldnumbers.contains(nguid::type(recv->m_actorid)))
+		{
+			return;
+		}
 		const std::map<int64_t, T>& lmap = recv->m_data;
 		for (const auto& lpair : lmap)
 		{
-			data_modified<T>& ldata = m_dbmodule->get(lpair.first);
-			data_modified_continue_get(lpddata, ldata);
-			pb_field::copy(lpair.second, &(*lpddata), m_nodewrite_fieldnumbers[nguid::type(recv->m_actorid)]);
+			if (m_areaset.contains(nguid::area(lpair.first)))
+			{
+				data_modified<T>& ldata = m_dbmodule->get(lpair.first);
+				data_modified_continue_get(lpddata, ldata);
+				pb_field::copy(lpair.second, &(*lpddata), m_nodewrite_fieldnumbers[nguid::type(recv->m_actorid)]);
+			}
 		}
 		for (int64_t dataid : recv->m_deldata)
 		{

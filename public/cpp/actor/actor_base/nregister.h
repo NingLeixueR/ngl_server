@@ -21,9 +21,14 @@ namespace ngl
 				std::shared_ptr<T> ldata = std::static_pointer_cast<T>(apram.m_data);
 				message<T> lmessage(athreadid, apram.m_pack, ldata);
 				afun((TTTDerived*)aactor, lmessage);
+				((TTTDerived*)aactor)->handle_after(apram);
 			}
 		};
 		protocol::registry_actor<T>(nactor_type<TDerived>::type(), tools::type_name<T>().c_str());
+		if constexpr (!is_protobuf_message<T>::value)
+		{
+			protocol::registry_actor_mass<T>(nactor_type<TDerived>::type(), tprotocol::protocol<np_mass_actor<T>>(), tools::type_name<T>().c_str());
+		}
 		return *this;
 	}
 
@@ -39,6 +44,7 @@ namespace ngl
 				std::shared_ptr<T> ldata = std::static_pointer_cast<T>(apram.m_data);
 				message<T> lmessage(athreadid, apram.m_pack, ldata);
 				(((TTTDerived*)(aactor))->*afun)(lmessage);
+				((TTTDerived*)aactor)->handle_after(apram);
 			}
 		};
 		return *this;

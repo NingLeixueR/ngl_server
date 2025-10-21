@@ -136,48 +136,59 @@ namespace ngl
 
 		void change()
 		{
+			if (!m_changeids.empty())
 			{
-				auto pro = std::make_shared<np_channel_data<T>>();
-				std::set<i64_nodeid> lnodes;
-				lnodes.insert(m_nodereadalls.begin(), m_nodereadalls.end());
-				lnodes.insert(m_nodewritealls.begin(), m_nodewritealls.end());
-				pro->m_firstsynchronize = false;
-				pro->m_recvfinish = true;
-				for (i64_dataid dataid : m_changeids)
-				{
-					if (!m_data.contains(dataid))
-					{
-						continue;
-					}
-					pb_field::copy(m_data[dataid], &pro->m_data[dataid], m_fieldnumbers);
-				}
-				nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
-				actor::send_actor(lnodes, nguid::make(), pro);
-			}
-
-			{
-				for (i64_dataid dataid : m_changeids)
 				{
 					auto pro = std::make_shared<np_channel_data<T>>();
+					pro->m_actorid = m_actor->id_guid();
+					std::set<i64_nodeid> lnodes;
+					lnodes.insert(m_nodereadalls.begin(), m_nodereadalls.end());
+					lnodes.insert(m_nodewritealls.begin(), m_nodewritealls.end());
+
+					for (const auto& [_area, _actorid] : m_nspserver)
+					{
+						lnodes.insert(_actorid);
+					}
+
 					pro->m_firstsynchronize = false;
 					pro->m_recvfinish = true;
-					if (!m_data.contains(dataid))
+					for (i64_dataid dataid : m_changeids)
 					{
-						continue;
-					}
-					if (!m_part.contains(dataid))
-					{
-						continue;
-					}
-					pb_field::copy(m_data[dataid], &pro->m_data[dataid], m_fieldnumbers);
-					std::set<i64_nodeid> lnodes;
-					for (const auto& [lkey, lvalue] : m_part[dataid])
-					{
-						lnodes.insert(lkey);
+						if (!m_data.contains(dataid))
+						{
+							continue;
+						}
+						pb_field::copy(m_data[dataid], &pro->m_data[dataid], m_fieldnumbers);
 					}
 					nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 					actor::send_actor(lnodes, nguid::make(), pro);
 				}
+
+				{
+					for (i64_dataid dataid : m_changeids)
+					{
+						auto pro = std::make_shared<np_channel_data<T>>();
+						pro->m_firstsynchronize = false;
+						pro->m_recvfinish = true;
+						if (!m_data.contains(dataid))
+						{
+							continue;
+						}
+						if (!m_part.contains(dataid))
+						{
+							continue;
+						}
+						pb_field::copy(m_data[dataid], &pro->m_data[dataid], m_fieldnumbers);
+						std::set<i64_nodeid> lnodes;
+						for (const auto& [lkey, lvalue] : m_part[dataid])
+						{
+							lnodes.insert(lkey);
+						}
+						nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
+						actor::send_actor(lnodes, nguid::make(), pro);
+					}
+				}
+				m_changeids.clear();
 			}
 		}
 

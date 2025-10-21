@@ -71,6 +71,9 @@ namespace ngl
 
 		static void nregister();
 
+		//# 执行handle之后调用
+		virtual void handle_after(handle_pram&);
+
 		std::shared_ptr<activity>& get_activity(i64_actorid aactivityid);
 
 		void erase_activity(i64_actorid aactivityid);

@@ -80,7 +80,7 @@ namespace ngl
 		virtual i32_serverid get_getwayserverid();
 
 		//# 执行handle之后调用
-		virtual void handle_after();
+		virtual void handle_after(handle_pram&);
 
 		virtual void erase_actor_before();
 
