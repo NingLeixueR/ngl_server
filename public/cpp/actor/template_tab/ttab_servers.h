@@ -272,12 +272,12 @@ namespace ngl
 				return false;
 			}
 			net_works lnets1;
-			if (!get_nworks(ltab1->m_type, nconfig::area(), ENET_TCP, nnodeid::tcount(alocalserver), lnets1))
+			if (!get_nworks(ltab1->m_type, ltab1->m_area, ENET_TCP, nnodeid::tcount(alocalserver), lnets1))
 			{
 				tools::no_core_dump();
 				return false;
 			}
-			if (!get_nworks(ltab2->m_type, nconfig::area(), ENET_TCP, nnodeid::tcount(aotherserver), anetwork))
+			if (!get_nworks(ltab2->m_type, ltab2->m_area, ENET_TCP, nnodeid::tcount(aotherserver), anetwork))
 			{
 				tools::no_core_dump();
 				return false;
