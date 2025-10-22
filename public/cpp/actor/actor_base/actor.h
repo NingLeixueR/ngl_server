@@ -197,8 +197,6 @@ namespace ngl
 		};
 		template <typename TDerived, ENUM_ACTOR ACTOR>
 		using register_secondary_forward_c2g = template_arg<c2g_secondary_forward_handle<TDerived, ACTOR>>;
-
-		
 #pragma endregion 
 	public:
 		explicit actor(const actorparm& aparm);
