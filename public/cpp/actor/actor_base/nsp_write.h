@@ -122,12 +122,15 @@ namespace ngl
 			return &itor->second;
 		}
 
-		std::map<i64_actorid, T>& get_map()
-		{
-			std::transform(m_data.begin(), m_data.end(), std::inserter(m_changeids, m_changeids.end()),
-				[](const auto& pair) { return pair.first; });
-			return m_data;
-		}
+		////////////////////// 不应该提供这个方法(防止误用频繁更改数据) ////////////////////////
+		// 应该使用[get_mapconst]配合[get]方法使用
+		//std::map<i64_actorid, T>& get_map()
+		//{
+		//	std::transform(m_data.begin(), m_data.end(), std::inserter(m_changeids, m_changeids.end()),
+		//		[](const auto& pair) { return pair.first; });
+		//	return m_data;
+		//}
+		///////
 
 		const std::map<i64_actorid, T>& get_mapconst()
 		{
