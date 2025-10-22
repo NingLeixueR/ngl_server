@@ -47,7 +47,7 @@ namespace ngl
 
 		tdb_keyvalue::nsp_cwrite<actor_role_manage>::instance_writepart(this, { pbdb::db_keyvalue_ekv_account_ban }, { pb_field::field_number<pbdb::db_keyvalue>("mvalue") });
 		
-		tdb_keyvalue::nsp_cwrite<actor_role_manage>::instance(id_guid()).set_changedatafun(id_guid(), 
+		tdb_keyvalue::nsp_cwrite<actor_role_manage>::instance(id_guid()).set_changedatafun( 
 			[this](int64_t aid, const pbdb::db_keyvalue& akeyval, bool afirstsynchronize)
 			{
 				log_error()->print(

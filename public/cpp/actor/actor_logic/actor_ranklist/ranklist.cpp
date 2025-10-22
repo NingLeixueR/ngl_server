@@ -95,7 +95,7 @@ namespace ngl
 			add_data(*lpdbranklist);
 		}
 
-		tdb_brief::nsp_cread<actor_ranklist>::instance(get_actor()->id_guid()).set_changedatafun(get_actor()->id_guid(),
+		tdb_brief::nsp_cread<actor_ranklist>::instance(get_actor()->id_guid()).set_changedatafun(
 			[this](int64_t aid, const pbdb::db_brief& abrief, bool afirstsynchronize)
 			{
 				update_value(abrief, afirstsynchronize);
@@ -124,7 +124,7 @@ namespace ngl
 		{
 			int32_t lcount = m_ranks[atype]->getpage(aroleid, apage, [&pro,this](int32_t aindex, const rank_item* aitem)
 				{
-					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cwrite<actor_ranklist>::instance(get_actor()->id_guid()).getconst(aitem->m_actorid);
+					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_ranklist>::instance(get_actor()->id_guid()).getconst(aitem->m_actorid);
 					if (lpbrief != nullptr)
 					{
 						*pro->add_mitems() = *lpbrief;
