@@ -616,44 +616,44 @@ namespace ngl
 			std::function<void(int64_t)>									m_deldatafun = nullptr;		// [回调] 当数据被删除
 			std::function<void()>											m_loadfinishfun = nullptr;	// [回调] 数据加载完成
 		};
-		std::map<int64_t, tcallback<T>> m_call;
+		tcallback<T> m_call;
 	public:
-		void set_changedatafun(int64_t aid, const std::function<void(int64_t, const T&, bool)>& afun)
+		void set_changedatafun(const std::function<void(int64_t, const T&, bool)>& afun)
 		{
-			m_call[aid].m_changedatafun = afun;
+			m_call.m_changedatafun = afun;
 		}
 
-		void set_deldatafun(int64_t aid, const std::function<void(int64_t)>& afun)
+		void set_deldatafun(const std::function<void(int64_t)>& afun)
 		{
-			m_call[aid].m_deldatafun = afun;
+			m_call.m_deldatafun = afun;
 		}
 
-		void set_loadfinishfun(int64_t aid, const std::function<void()>& afun)
+		void set_loadfinishfun(const std::function<void()>& afun)
 		{
-			m_call[aid].m_loadfinishfun = afun;
+			m_call.m_loadfinishfun = afun;
 		}
 
 		void changedatafun(int64_t aid, const T& adata, bool afrist)
 		{
-			for (auto& item : m_call)
+			if (m_call.m_changedatafun != nullptr)
 			{
-				item.second.m_changedatafun(aid, adata, afrist);
-			}
+				m_call.m_changedatafun(aid, adata, afrist);
+			}			
 		}
 
 		void deldatafun(int64_t aid)
 		{
-			for (auto& item : m_call)
+			if (m_call.m_deldatafun != nullptr)
 			{
-				item.second.m_deldatafun(aid);
+				m_call.m_deldatafun(aid);
 			}
 		}
 
 		void loadfinishfun()
 		{
-			for (auto& item : m_call)
+			if (m_call.m_loadfinishfun != nullptr)
 			{
-				item.second.m_loadfinishfun();
+				m_call.m_loadfinishfun();
 			}
 		}
 	};

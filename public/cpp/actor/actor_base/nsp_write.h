@@ -78,19 +78,19 @@ namespace ngl
 
 		void init();
 
-		void set_changedatafun(int64_t aid, const std::function<void(int64_t, const T&, bool)>& afun)
+		void set_changedatafun(const std::function<void(int64_t, const T&, bool)>& afun)
 		{
-			m_call.set_changedatafun(aid, afun);
+			m_call.set_changedatafun(afun);
 		}
 
-		void set_deldatafun(int64_t aid, const std::function<void(int64_t)>& afun)
+		void set_deldatafun(const std::function<void(int64_t)>& afun)
 		{
-			m_call.set_deldatafun(aid, afun);
+			m_call.set_deldatafun(afun);
 		}
 
-		void set_loadfinishfun(int64_t aid, const std::function<void()>& afun)
+		void set_loadfinishfun(const std::function<void()>& afun)
 		{
-			m_call.set_loadfinishfun(aid, afun);
+			m_call.set_loadfinishfun(afun);
 		}
 
 		std::set<i64_dataid> m_changeids;
@@ -325,7 +325,7 @@ namespace ngl
 				{
 					pb_field::copy(apair.second, &m_data[apair.first], m_node_fieldnumbers[nguid::type(apair.first)]);
 				}
-				m_call.changedatafun(apair.first, apair.second, lfirstsynchronize);
+				m_call.changedatafun(apair.first, m_data[apair.first], lfirstsynchronize);
 			}
 		}
 
@@ -336,6 +336,11 @@ namespace ngl
 				m_data.erase(dataid);
 				m_call.deldatafun(dataid);
 			}
+		}
+
+		if (lfirstsynchronize && recv->m_recvfinish)
+		{
+			m_call.loadfinishfun();
 		}
 	}
 
