@@ -68,8 +68,7 @@ namespace ngl
 
 		tdb_brief::nsp_cwrite<actor_role>::instance_writepart(this, { id_guid() }, { pb_field::field_number<pbdb::db_brief>("mbase") });
 		tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).set_changedatafun(
-			id_guid()
-			, [this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
+			[this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 			{
 				if (afirstsynchronize)
 				{// 数据完全加载
