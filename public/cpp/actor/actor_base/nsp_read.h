@@ -14,11 +14,7 @@ namespace ngl
 		static std::atomic<bool>										m_isregister;
 		
 		TDerived*														m_actor = nullptr;
-		nsp_callback<T>													m_callback;
-
-		std::function<void(int64_t, const T&, bool)>					m_changedatafun;	// [回调] 当数据发生变化
-		std::function<void(int64_t)>									m_deldatafun;		// [回调] 当数据被删除
-		std::function<void()>											m_loadfinishfun;	// [回调] 数据加载完成
+		nsp_callback<T>													m_call;
 
 		std::map<i16_area, i64_actorid>									m_nspserver;
 		std::map<i16_area, bool>										m_register;
@@ -67,19 +63,19 @@ namespace ngl
 			return *lpread;
 		}
 
-		void set_changedatafun(int64_t aid, const std::function<void(int64_t, const T&, bool)>& afun)
+		void set_changedatafun(const std::function<void(int64_t, const T&, bool)>& afun)
 		{
-			m_callback.set_changedatafun(aid, afun);
+			m_call.set_changedatafun(afun);
 		}
 
-		void set_deldatafun(int64_t aid, const std::function<void(int64_t)>& afun)
+		void set_deldatafun(const std::function<void(int64_t)>& afun)
 		{
-			m_callback.set_deldatafun(aid, afun);
+			m_call.set_deldatafun(afun);
 		}
 
-		void set_loadfinishfun(int64_t aid, const std::function<void()>& afun)
+		void set_loadfinishfun(const std::function<void()>& afun)
 		{
-			m_callback.set_loadfinishfun(aid, afun);
+			m_call.set_loadfinishfun(afun);
 		}
 
 		void init();
@@ -199,10 +195,7 @@ namespace ngl
 				{
 					pb_field::copy(apair.second, &m_data[apair.first], m_node_fieldnumbers[nguid::type(apair.first)]);
 				}
-				if (m_changedatafun != nullptr)
-				{
-					m_changedatafun(apair.first, apair.second, lfirstsynchronize);
-				}
+				m_call.changedatafun(apair.first, m_data[apair.first], lfirstsynchronize);
 			}
 		}
 
@@ -211,11 +204,13 @@ namespace ngl
 			if (is_care(dataid))
 			{
 				m_data.erase(dataid);
-				if (m_deldatafun != nullptr)
-				{
-					m_deldatafun(dataid);
-				}
+				m_call.deldatafun(dataid);
 			}
+		}
+
+		if (lfirstsynchronize && recv->m_recvfinish)
+		{
+			m_call.loadfinishfun();
 		}
 	}
 
