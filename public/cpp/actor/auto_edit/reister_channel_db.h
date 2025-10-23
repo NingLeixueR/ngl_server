@@ -3,6 +3,7 @@ namespace ngl
 	template <typename T>
 	void _reister_channel_db()
 	{
+
 		tprotocol::tp_customs::template func <
 			np_channel_write_register<T>
 			, np_channel_write_register_reply<T>
@@ -10,9 +11,12 @@ namespace ngl
 			, np_channel_read_register_reply<T>
 			, np_channel_data<T>
 			, np_channel_exit<T>
-			, np_channel_check<T>
 			, np_channel_dataid_sync<T>
-		>(-1);
+		>(-1, 30);
+
+		tprotocol::tp_customs::template func <
+			np_channel_check<T>
+		>(-1, 0);
 	}
 
 	void reister_channel_db()

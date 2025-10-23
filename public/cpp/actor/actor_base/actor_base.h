@@ -71,8 +71,7 @@ namespace ngl
 		static int									m_broadcasttimer;
 		//# 是否接收广播消息
 		bool										m_isbroadcast = false;
-
-		ngroup					m_group;
+		ngroup										m_group;
 	public:
 		explicit actor_base(const actorparmbase& aparm);
 
@@ -260,7 +259,6 @@ namespace ngl
 				m_enscript, m_script, tools::type_name<typename T::TDATA>().c_str(), asource, adata, aedit
 			);
 		}
-
 
 		// # 告诉脚本数据被删除了
 		// parm aname			数据名称
@@ -499,7 +497,6 @@ namespace ngl
 				push_task_id(asetguid, lpram);
 			}
 		}
-
 #pragma endregion
 
 		// # 方便调试打印协议
@@ -518,7 +515,6 @@ namespace ngl
 				log_error()->print("{}", lstr);
 			}
 		}
-
 #pragma region group
 		//# 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
 		int32_t create_group(ENUM_ACTOR atype = ACTOR_NONE);
@@ -670,9 +666,9 @@ namespace ngl
 
 	template <bool SCRIPT>
 	template <typename T>
-	tprotocol::info* tprotocol::tcustoms<SCRIPT>::func(int32_t aprotocolnum /*= -1*/)
+	tprotocol::info* tprotocol::tcustoms<SCRIPT>::func(int32_t aprotocolnum /*= -1*/, int8_t ahigh /*= 0*/)
 	{
-		info* linfo = funcx<T>(aprotocolnum);
+		info* linfo = funcx<T>(aprotocolnum, ahigh);
 		if (linfo != nullptr)
 		{
 			if constexpr (SCRIPT)
@@ -686,4 +682,4 @@ namespace ngl
 		}
 		return linfo;
 	}
-}
+}//namespace ngl

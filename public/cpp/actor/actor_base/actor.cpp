@@ -62,8 +62,21 @@ namespace ngl
 
 	void actor::push(handle_pram& apram)
 	{
+		int8_t highvalue = 0;
+		tprotocol::info* lpinfo = tprotocol::get(apram.m_enum);
+		if (lpinfo != nullptr)
+		{
+			highvalue = lpinfo->m_highvalue;
+		}
 		monopoly_shared_lock(m_mutex);
-		m_list.push_back(apram);
+		if (highvalue == 0)
+		{
+			m_list.push_back(apram);
+		}
+		else
+		{
+			m_hightlist[highvalue].push_back(apram);
+		}
 	}
 
 	void actor::set_kcp(const handle_pram& aparm)
@@ -98,12 +111,38 @@ namespace ngl
 		//return false;
 	}
 
-	void actor::actor_handle(i32_threadid athreadid)
+	void actor::consume_handle(i32_threadid athreadid, actor::trunls<handle_pram>& als)
+	{
+		handle_pram& lparm = als.front();
+		ahandle(athreadid, lparm);
+		als.pop_front();
+	}
+
+	void actor::actor_highthandle(i32_threadid athreadid)
 	{
 		{
 			monopoly_shared_lock(m_mutex);
-			m_list.swap(m_locallist);
+			m_hightlist.swap(m_localhightlist);
 		}
+		for (auto itor = m_localhightlist.rbegin();itor != m_localhightlist.rend();++itor)
+		{
+			if (!itor->second.empty())
+			{
+				consume_handle(athreadid, itor->second);
+			}
+		}
+		m_localhightlist.clear();
+	}
+
+	void actor::actor_handle(i32_threadid athreadid)
+	{
+		actor_highthandle(athreadid);
+
+		{
+			monopoly_shared_lock(m_mutex);
+			m_list.swap(m_locallist);		
+		}
+
 		int32_t llistcount = (int32_t)m_locallist.size();
 		if (m_weight < llistcount || llistcount >= 1000)
 		{
@@ -121,10 +160,9 @@ namespace ngl
 			{
 				break;
 			}
-			handle_pram& lparm = m_locallist.front();
-			ahandle(athreadid, lparm);
-			m_locallist.pop_front();
+			consume_handle(athreadid, m_locallist);
 			++lcount;
+			actor_highthandle(athreadid);
 		}
 		if (!m_locallist.empty())
 		{
