@@ -21,7 +21,7 @@ namespace ngl
            , ngl::np_actor_forward<PB, forward_g2c<forward>>
            , ngl::np_actor_forward<PB, forward_c2g<forward>>
            , np_actormodule_forward<PB>
-       >(lprotocolnum);
+       >(lprotocolnum, 0);
    }
    template <typename PB, typename ...ARG>
    void help_role_tprotocol_forward_pb(const PB* apb, const ARG*... arg)

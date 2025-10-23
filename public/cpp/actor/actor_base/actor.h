@@ -31,6 +31,7 @@ namespace ngl
 		actor(const actor&) = delete;
 		actor& operator=(const actor&) = delete;
 
+	public:
 #define STL_MESSAGELIST
 #ifdef STL_MESSAGELIST
 		template <typename T>
@@ -43,15 +44,17 @@ namespace ngl
 		template <typename T>
 		using trunls = slist_consumption<T>;
 #endif//DEF_ACTOR_USE_LIST
-
-		tls<handle_pram>				m_list;							// 待处理消息列表
-		trunls<handle_pram>				m_locallist;					// 正在处理消息列表
-		actor_stat						m_stat = actor_stat_init;		// actor状态
-		std::shared_mutex				m_mutex;						// 锁:[m_list:待处理消息列表]
-		int32_t							m_weight = 0;					// 权重
-		int32_t							m_timeout = 0;					// 超时:(当actor处理消息超过此时间)
-		bool							m_release = false;				// 释放将忽略权重和超时
-		nrfunbase*						m_actorfun = nullptr;			// 注册可处理函数
+	private:
+		tls<handle_pram>					m_list;							// 待处理消息列表
+		std::map<int8_t, tls<handle_pram>>	m_hightlist;					// 待处理消息列表(高特权)			
+		trunls<handle_pram>					m_locallist;					// 正在处理消息列表
+		std::map<int8_t, tls<handle_pram>>	m_localhightlist;				// 正在处理消息列表(高特权)	
+		actor_stat							m_stat = actor_stat_init;		// actor状态
+		std::shared_mutex					m_mutex;						// 锁:[m_list:待处理消息列表]
+		int32_t								m_weight = 0;					// 权重
+		int32_t								m_timeout = 0;					// 超时:(当actor处理消息超过此时间)
+		bool								m_release = false;				// 释放将忽略权重和超时
+		nrfunbase*							m_actorfun = nullptr;			// 注册可处理函数
 
 #pragma region register // 消息注册接口
 		template <typename TDerived>
@@ -217,6 +220,12 @@ namespace ngl
 
 		// # 向消息列表中添加新的消息
 		void push(handle_pram& apram) final;
+
+		// # 消费消息
+		void consume_handle(i32_threadid athreadid, actor::trunls<handle_pram>& als);
+
+		// # 检查是否存在优先级更高的消息
+		void actor_highthandle(i32_threadid athreadid);
 
 		// # 由线程主动调用消费消息
 		void actor_handle(i32_threadid athreadid) final;

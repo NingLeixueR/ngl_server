@@ -28,6 +28,8 @@ namespace ngl
 			i32_protocolnum	m_protocol;
 			std::string		m_name;
 
+			int8_t			m_highvalue = 0; // 高权限值(0-127)
+
 			using func = std::function<bool(int64_t, void*)>;
 			// # 为了给脚本提供根据结构名字发送数据给客户端
 			std::array<func, enscript_count> m_toclient;
@@ -76,7 +78,7 @@ namespace ngl
 		struct tcustoms
 		{
 			template <typename T>
-			static info* funcx_s(int32_t aprotocolnum = -1)
+			static info* funcx_s(int32_t aprotocolnum = -1, int8_t ahigh = 0)
 			{
 				size_t lcode = hash_code<T>();
 				if (m_keyval.contains(lcode))
@@ -85,27 +87,25 @@ namespace ngl
 				}
 				info& linfo = m_keyval[lcode];
 				linfo.m_name = tools::type_name<T>();
-
 				linfo.m_protocol = (aprotocolnum == -1) ? ++m_customs : aprotocolnum;
+				linfo.m_highvalue = ahigh;
 
 				m_protocol[linfo.m_protocol] = &linfo;
-
 				m_nameprotocol[linfo.m_name] = &linfo;
 				return &linfo;
 			}
 
-
 			template <typename T>
-			static info* funcx(int32_t aprotocolnum = -1)
+			static info* funcx(int32_t aprotocolnum = -1, int8_t ahigh = 0)
 			{
-				info* lpinfo = funcx_s<T>(aprotocolnum);
+				info* lpinfo = funcx_s<T>(aprotocolnum, ahigh);
 				funcx_s<np_mass_actor<T>>(-1);
 				//std::cout << std::format("{}-{}", linfo.m_protocol, linfo.m_name) << std::endl;
 				return lpinfo;
 			}
 
 			template <typename T>
-			static info* func(int32_t aprotocolnum = -1);
+			static info* func(int32_t aprotocolnum = -1, int8_t ahigh = 0);
 		};
 
 		struct tforward
@@ -120,7 +120,7 @@ namespace ngl
 			return true;
 		}
 
-		using tp_customs = template_arg<tcustoms<false>, int32_t>;
+		using tp_customs = template_arg<tcustoms<false>, int32_t, int8_t>;
 		using tp_customs_script = template_arg<tcustoms<true>>;
 
 		template <typename T>
@@ -182,6 +182,11 @@ namespace ngl
 		static info* get(i32_protocolnum aprotocolnum)
 		{
 			info** linfo = tools::findmap(m_protocol, aprotocolnum);
+			if (linfo == nullptr)
+			{
+				tools::no_core_dump();
+				return nullptr;
+			}
 			return *linfo;
 		}
 
