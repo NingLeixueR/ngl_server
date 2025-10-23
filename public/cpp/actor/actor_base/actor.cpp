@@ -122,6 +122,10 @@ namespace ngl
 	{
 		{
 			monopoly_shared_lock(m_mutex);
+			if (m_hightlist.empty())
+			{
+				return;
+			}
 			m_hightlist.swap(m_localhightlist);
 		}
 		for (auto itor = m_localhightlist.rbegin();itor != m_localhightlist.rend();++itor)
