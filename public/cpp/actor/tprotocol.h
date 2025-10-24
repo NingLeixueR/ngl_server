@@ -184,7 +184,7 @@ namespace ngl
 			info** linfo = tools::findmap(m_protocol, aprotocolnum);
 			if (linfo == nullptr)
 			{
-				tools::no_core_dump();
+				//tools::no_core_dump();
 				return nullptr;
 			}
 			return *linfo;
