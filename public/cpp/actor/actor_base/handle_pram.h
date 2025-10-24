@@ -277,14 +277,12 @@ namespace ngl
 			}
 
 			std::shared_ptr<T> ldata = std::static_pointer_cast<T>(adata.m_data);
-			np_mass_actor<T> pro(ldata);
-
 			for (const auto& item1 : lserveractors)
 			{
-				pro.m_actorids.clear();
+				np_mass_actor<T> pro(ldata);
 				i32_serverid lserverid = item1.first;
 				pro.m_actorids = item1.second;
-				handle_pram_send<np_mass_actor<T>>::sendbyserver(lserverid, lactorid, lrequestactor, pro);
+				handle_pram_send<np_mass_actor<T>>::sendbyserver(lserverid, nguid::make(), lrequestactor, pro);
 			}
 		}
 		return true;
