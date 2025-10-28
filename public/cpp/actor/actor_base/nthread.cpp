@@ -40,13 +40,16 @@ namespace ngl
 				monopoly_shared_lock(m_mutex);
 				lpactor = m_actor;
 			}
-			if (lpactor != nullptr && !lpactor->list_empty())
+			if (lpactor != nullptr)
 			{
-				lpactor->actor_handle(m_id);
+				if (!lpactor->list_empty())
 				{
-					monopoly_shared_lock(m_mutex);
-					m_actor = nullptr;
-					m_isactivity = false;
+					lpactor->actor_handle(m_id);
+					{
+						monopoly_shared_lock(m_mutex);
+						m_actor = nullptr;
+						m_isactivity = false;
+					}
 				}
 				actor_manage::instance().push(lpactor, this);
 			}

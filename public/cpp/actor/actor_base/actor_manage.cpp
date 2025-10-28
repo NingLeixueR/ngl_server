@@ -205,7 +205,7 @@ namespace ngl
 			}
 			else
 			{
-				if (!apactor->list_empty())
+				if(!apactor->list_empty())
 				{
 					m_actorlist.push_back(apactor);
 					apactor->set_activity_stat(actor_stat_list);

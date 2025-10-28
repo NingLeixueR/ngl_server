@@ -45,7 +45,7 @@ namespace ngl
 	bool actor::list_empty()
 	{
 		monopoly_shared_lock(m_mutex);
-		return m_list.empty();
+		return m_list.empty() && m_hightlist.empty();
 	}
 
 	actor_stat actor::get_activity_stat()
@@ -111,42 +111,26 @@ namespace ngl
 		//return false;
 	}
 
-	void actor::consume_handle(i32_threadid athreadid, actor::trunls<handle_pram>& als)
-	{
-		handle_pram& lparm = als.front();
-		ahandle(athreadid, lparm);
-		als.pop_front();
-	}
-
-	void actor::actor_highthandle(i32_threadid athreadid)
-	{
-		{
-			monopoly_shared_lock(m_mutex);
-			if (m_hightlist.empty())
-			{
-				return;
-			}
-			m_hightlist.swap(m_localhightlist);
-		}
-		for (auto itor = m_localhightlist.rbegin();itor != m_localhightlist.rend();++itor)
-		{
-			if (!itor->second.empty())
-			{
-				consume_handle(athreadid, itor->second);
-			}
-		}
-		m_localhightlist.clear();
-	}
-
 	void actor::actor_handle(i32_threadid athreadid)
 	{
-		actor_highthandle(athreadid);
-
 		{
 			monopoly_shared_lock(m_mutex);
+			m_hightlist.swap(m_localhightlist);
 			m_list.swap(m_locallist);		
 		}
 
+		if (!m_localhightlist.empty())
+		{
+			for (auto itor = m_localhightlist.rbegin(); itor != m_localhightlist.rend(); ++itor)
+			{
+				for (auto itor2 = itor->second.begin(); itor2 != itor->second.end(); ++itor2)
+				{
+					ahandle(athreadid, *itor2);
+				}
+			}
+			m_localhightlist.clear();
+		}
+		
 		int32_t llistcount = (int32_t)m_locallist.size();
 		if (m_weight < llistcount || llistcount >= 1000)
 		{
@@ -164,9 +148,10 @@ namespace ngl
 			{
 				break;
 			}
-			consume_handle(athreadid, m_locallist);
+			handle_pram& lparm = m_locallist.front();
+			ahandle(athreadid, lparm);
+			m_locallist.pop_front();
 			++lcount;
-			actor_highthandle(athreadid);
 		}
 		if (!m_locallist.empty())
 		{
