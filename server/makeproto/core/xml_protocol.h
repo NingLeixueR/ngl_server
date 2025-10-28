@@ -545,7 +545,7 @@ namespace ngl
         m_stream << "           , ngl::np_actor_forward<PB, forward_g2c<forward>>" << std::endl;
         m_stream << "           , ngl::np_actor_forward<PB, forward_c2g<forward>>" << std::endl;
         m_stream << "           , np_actormodule_forward<PB>" << std::endl;
-        m_stream << "       >(lprotocolnum);" << std::endl;
+        m_stream << "       >(lprotocolnum, 0);" << std::endl;
         m_stream << "   }" << std::endl;
         m_stream << "   template <typename PB, typename ...ARG>" << std::endl;
         m_stream << "   void help_role_tprotocol_forward_pb(const PB* apb, const ARG*... arg)" << std::endl;
@@ -815,15 +815,18 @@ namespace ngl
 	void _reister_channel_db()
 	{
 		tprotocol::tp_customs::template func <
-			np_channel_write_register<T>
+			np_channel_data<T>
+			, np_channel_write_register<T>
 			, np_channel_write_register_reply<T>
 			, np_channel_read_register<T>
 			, np_channel_read_register_reply<T>
-			, np_channel_data<T>
 			, np_channel_exit<T>
-			, np_channel_check<T>
 			, np_channel_dataid_sync<T>
-		>(-1);
+		>(-1, 1);
+
+		tprotocol::tp_customs::template func <
+			np_channel_check<T>
+		>(-1, 0);
 	}
 
 	void reister_channel_db()
