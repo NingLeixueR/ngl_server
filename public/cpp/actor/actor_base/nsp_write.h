@@ -164,6 +164,7 @@ namespace ngl
 						pb_field::copy(m_data[dataid], &pro->m_data[dataid], m_fieldnumbers);
 					}
 					nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
+					lnodes.erase(m_actor->id_guid());
 					actor::send_actor(lnodes, nguid::make(), pro);
 				}
 
@@ -188,6 +189,7 @@ namespace ngl
 							lnodes.insert(lkey);
 						}
 						nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
+						lnodes.erase(m_actor->id_guid());
 						actor::send_actor(lnodes, nguid::make(), pro);
 					}
 				}
@@ -311,7 +313,6 @@ namespace ngl
 	void nsp_write<TDerived, TACTOR, T>::handle(TDerived* aactor, const message<np_channel_data<T>>& adata)
 	{
 		const np_channel_data<T>* recv = adata.get_data();
-
 		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;

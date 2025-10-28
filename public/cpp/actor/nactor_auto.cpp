@@ -31,7 +31,7 @@ namespace ngl
 			, np_actordb_save<DBTYPE, TDB>
 			, np_actordb_delete<DBTYPE, TDB>
 			, np_actortime_db_cache<TDB>
-		>(-1, 0);
+		>(-1, 1);
 	}
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
