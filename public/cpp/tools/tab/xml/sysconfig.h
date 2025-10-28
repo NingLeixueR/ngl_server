@@ -1,6 +1,8 @@
 #pragma once
 
+#include "csvtable.h"
 #include "type.h"
+
 #include <vector>
 #include <set>
 
