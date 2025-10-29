@@ -125,6 +125,20 @@ namespace ngl
 		actor_manage::instance().push_task_id(id_guid(), apram);
 	}
 
+	bool actor_base::nscript_using()
+	{
+		return m_script != nullptr && m_enscript != enscript_none;
+	}
+
+	bool actor_base::nscript_db_loadfinish()
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::db_loadfinish(m_enscript, m_script);
+	}
+
 	void actor_base::save()
 	{
 		m_dbclient->save();

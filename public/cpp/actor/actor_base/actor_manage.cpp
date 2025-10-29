@@ -412,7 +412,7 @@ namespace ngl
 			actor_manage::instance().finish_suspend_thread();
 			log_info()->print("finish actor_suspendthread");
 		}
-		Catch;		
+		Catch
 	}
 
 	void actor_manage::run()
@@ -449,7 +449,6 @@ namespace ngl
 				bool ret = !m_actorlist.empty() && !m_workthread.empty() && !m_suspend;
 				return ret;
 			};
-
 		while (true)
 		{
 			cv_lock(m_cv, m_mutex, lfun)

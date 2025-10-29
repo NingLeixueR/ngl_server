@@ -112,9 +112,7 @@ namespace ngl
 		//# 初始化数据
 		//# 一般actor对象会在其重载虚函数中
 		//# 让dbclient与actor对象进行绑定
-		virtual void init() 
-		{
-		}
+		virtual void init() {}
 
 		//# 获取actor状态
 		virtual actor_stat get_activity_stat() = 0;
@@ -132,22 +130,16 @@ namespace ngl
 		virtual void push(handle_pram& apram) = 0;
 
 		//# 执行handle之后调用
-		virtual void handle_after(handle_pram&) 
-		{
-		}
+		virtual void handle_after(handle_pram&) {}
 
 		//# 派生actor重载此函数 会在数据加载完成后调用
-		virtual void loaddb_finish(bool adbishave) 
-		{
-		}
+		virtual void loaddb_finish(bool adbishave) {}
 
 		//# 删除actor时候会被调用
 		virtual void release() = 0;
 
 		//# 移除actor前一刻调用
-		virtual void erase_actor_before() 
-		{
-		}
+		virtual void erase_actor_before() {}
 #pragma endregion 
 
 		//# 保存dbclient
@@ -188,26 +180,16 @@ namespace ngl
 		static void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
 #pragma region nscript
-	public:
+	private:
 		//# 对脚本语言的支持
 		void* m_script = nullptr;
 		enscript m_enscript = enscript_none;					// 脚本支持
-
+	public:
 		// # actor是否使用脚本
-		bool nscript_using()
-		{
-			return m_script != nullptr && m_enscript != enscript_none;
-		}
+		bool nscript_using();
 
 		// # 通知脚本db数据加载完毕
-		bool nscript_db_loadfinish()
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			return nscript_manage::db_loadfinish(m_enscript, m_script);
-		}
+		bool nscript_db_loadfinish();
 
 		template <typename T>
 		struct nscript_data_csv
@@ -342,6 +324,7 @@ namespace ngl
 		template <typename T>
 		static bool sendpack_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
+		//# 通过proto结构名称与json消息体构造包
 		static std::shared_ptr<pack> jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		//# 给指定连接发送数据
