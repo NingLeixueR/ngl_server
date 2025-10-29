@@ -151,6 +151,7 @@ namespace ngl
 			m_data.del(aid);
 		}
 
+		// # 返回保护数据
 		inline data_modified<TDATA>* db()
 		{ 
 			return m_data.get_dbdata();
@@ -162,6 +163,7 @@ namespace ngl
 			return (TACTOR*)get_actor();
 		}
 
+		// # 创建数据
 		inline void create()
 		{
 			m_id = m_actor->id_guid();
@@ -170,9 +172,10 @@ namespace ngl
 			m_data.add(m_id, TDATA());
 		}
 
+		// # 清空数据
 		inline void clear()
 		{
-			m_data.set(m_id, TDATA());
+			get_actor_dbclient()->clear();
 		}
 
 		// # 当数据全部加载后调用
