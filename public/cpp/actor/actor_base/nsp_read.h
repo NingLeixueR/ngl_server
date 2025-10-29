@@ -208,9 +208,36 @@ namespace ngl
 			}
 		}
 
-		if (lfirstsynchronize && recv->m_recvfinish)
+		if (lfirstsynchronize)
 		{
-			m_call.loadfinishfun();
+			if (recv->m_recvfinish)
+			{
+				if (m_actor->nscript_using())
+				{
+					actor_base::nscript_data_nsp<T> ltemp(m_data);
+					m_actor->nscript_data_push("nsp", ltemp, true);
+				}
+				m_call.loadfinishfun();
+			}
+		}
+		else
+		{
+			if (m_actor->nscript_using())
+			{
+				std::map<i64_actorid, T> ldata;
+				for (const auto& apair : recv->m_data)
+				{
+					if (is_care(apair.first))
+					{
+						ldata[apair.first] = m_data[apair.first];
+					}
+				}
+				if (!ldata.empty())
+				{
+					actor_base::nscript_data_nsp<T> ltemp(m_data);
+					m_actor->nscript_data_push("nsp", ltemp, true);
+				}
+			}			
 		}
 	}
 
