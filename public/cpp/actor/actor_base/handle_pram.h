@@ -58,8 +58,6 @@ namespace ngl
 		//# 根据[连接]获取[id]
 		static i32_serverid		get_server(i64_actorid aactorid);
 
-		static void				server_actor_send(const nguid& aguid, const std::function<void()>& afun);
-
 		//# 根据[actorid]获取[gatewayid]
 		static i32_serverid		gatewayid(i64_actorid aactorid);
 
@@ -231,17 +229,6 @@ namespace ngl
 					}
 					return true;
 				}
-
-				// # 加入等待队列
-				log_error()->print(
-					"handle_pram_send<{}>::send fail add wait list actorid[{}] serverid[{}]"
-					, tools::type_name<T>(), nguid(lactorid), lactorid
-				);
-				handle_pram::server_actor_send(lactorid, [adata]()
-					{
-						handle_pram ldata = adata;
-						handle_pram_send<T>::send(ldata);
-					});
 				return false;
 			}
 			return handle_pram_send<T>::sendbyserver(lserverid, adata);
@@ -309,16 +296,6 @@ namespace ngl
 				{
 					adata.m_failfun();
 				}
-				// # 加入等待队列
-				log_error()->print(
-					"handle_pram_send<pack>::send fail add wait list actorid[{}] serverid[{}]"
-					, nguid(lactorid), lactorid
-				);
-				handle_pram::server_actor_send(lactorid, [adata]()
-					{
-						handle_pram ldata = adata;
-						handle_pram_send<pack>::send(ldata);
-					});
 				return false;
 			}
 			return handle_pram_send<pack>::sendbyserver(lserverid, adata);

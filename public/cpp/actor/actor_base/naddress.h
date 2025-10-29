@@ -36,7 +36,6 @@ namespace ngl
 		static naddress::map_typeguid		m_actortypeserver;
 		static naddress::map_servernode		m_session;
 		static naddress::map_rolegateway	m_rolegateway;
-		static std::map<i64_actorid, std::map<int64_t, std::function<void()>>> m_nguidfun;
 	public:
 #pragma region base
 		//# debug 打印
@@ -65,9 +64,6 @@ namespace ngl
 
 		//# 获取server id
 		static i32_serverid get_server(const nguid& aguid);
-
-		// 如果[get_server]获取失败，暂时保存发送列表等收到了发送
-		static void server_actor_send(const nguid& aguid, const std::function<void()>& afun);
 
 		//# 获取ENUM_ACTOR 对应的服务器
 		static void get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
