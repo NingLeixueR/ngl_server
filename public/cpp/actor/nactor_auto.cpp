@@ -75,10 +75,11 @@ namespace ngl
 		tprotocol_customs_200000000();
 
 		tprotocol::set_customs_index(100000000);
+		// 会注册T与np_mass_actor<T>
 		tprotocol::tp_customs_script::template func <
 			/*100000001*/np_gm
-			/*100000002*/, np_gm_response
-			/*100000003*/, np_arg_null
+			/*100000003*/, np_gm_response
+			/*100000005*/, np_arg_null
 		>();
 
 		// 占用110000000->120000000
@@ -87,31 +88,31 @@ namespace ngl
 		tprotocol::set_customs_index(120000000);
 		tprotocol::tp_customs_script::template func <
 			/*120000001*/mforward<np_gm>
-			/*120000002*/, mforward<np_gm_response>
-			/*120000003*/, np_actorswitch_process<np_actorswitch_process_role>
-			/*120000004*/, np_testlua
+			/*120000003*/, mforward<np_gm_response>
+			/*120000005*/, np_actorswitch_process<np_actorswitch_process_role>
+			/*120000007*/, np_testlua
 		>();
 
 		// ### 事件相关协议 start ### //
 		tprotocol::set_customs_index(130000000);
 		tprotocol::tp_customs_script::template func <
 			/*130000001*/ actor_events_logic::np_event_register
-			/*130000002*/, actor_events_map::np_event_register
+			/*130000003*/, actor_events_map::np_event_register
 		>();
 
 		//# actor_events_logic
 		tprotocol::set_customs_index(130010000);
 		tprotocol::tp_customs_script::template func <
 			/*130010001*/ np_eevents_logic_rolelogin
-			/*130010002*/, np_eevents_logic_roleoffline
-			/*130010003*/, np_eevents_logic_rolevaluechange
+			/*130010003*/, np_eevents_logic_roleoffline
+			/*130010005*/, np_eevents_logic_rolevaluechange
 		>();
 
 		//# actor_events_map
 		tprotocol::set_customs_index(130020000);
 		tprotocol::tp_customs_script::template func <
 			/*130020001*/ np_eevents_map_leaveview
-			/*130020002*/, np_eevents_map_enterview
+			/*130020003*/, np_eevents_map_enterview
 		>();
 	}
 
