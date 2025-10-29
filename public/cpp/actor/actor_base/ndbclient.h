@@ -395,6 +395,14 @@ namespace ngl
 			}
 		}
 
+		void clear()
+		{
+			for (const std::pair<const nguid, data_modified<TDBTAB>>& item : m_data)
+			{
+				del(item.first);
+			}
+		}
+
 		void del(const nguid& aid)
 		{
 			m_dellist.push_back((int64_t)aid);
