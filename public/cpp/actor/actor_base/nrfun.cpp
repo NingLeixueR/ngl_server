@@ -29,15 +29,13 @@ namespace ngl
 				if (lpinfo == nullptr)
 				{
 					log_error()->print(
-						"{}::handle_switch  m_fun.find({}) == end"
-						, aactor->guid(), apram.m_enum
+						"{}::handle_switch  m_fun.find({}) == end", aactor->guid(), apram.m_enum
 					);
 				}
 				else
 				{
 					log_error()->print(
-						"{}::handle_switch  m_fun.find({}:{}) == end"
-						, aactor->guid(), apram.m_enum, lpinfo->m_name
+						"{}::handle_switch  m_fun.find({}:{}) == end", aactor->guid(), apram.m_enum, lpinfo->m_name
 					);					
 				}				
 			}
@@ -47,8 +45,7 @@ namespace ngl
 		if (lisloadfinish == false && itor->second.m_isdbload == true)
 		{
 			log_error()->print(
-				"{}::handle_switch isloadfinish() == {}"
-				, aactor->guid(), lisloadfinish
+				"{}::handle_switch isloadfinish() == {}", aactor->guid(), lisloadfinish
 			);
 			return false;
 		}
