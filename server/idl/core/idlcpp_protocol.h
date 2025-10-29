@@ -286,6 +286,7 @@ namespace ngl
 	{
 		tprotocol::set_customs_index(200000000);
 		// 新增内部协议需要补充
+		// 注册T与"np_mass_actor<T>"
 		tprotocol::tp_customs_script::template func <
 )";
 		int lindex = 200000000;
@@ -300,13 +301,11 @@ namespace ngl
 					std::cout << item2.name << std::endl;
 					if (isdouhao)
 					{
-						m_stream << "			/*" << ++lindex << "*/, " << item2.name << std::endl;
-						//m_stream << "			/*" << ++lindex << ", np_mass_actor<" << item2.name << ">*/" << std::endl;
+						m_stream << "			/*" << (lindex +=2) << "*/, " << item2.name << std::endl;
 					}
 					else
 					{
-						m_stream << "			/*" << ++lindex << "*/" << item2.name << std::endl;
-						//m_stream << "			/*" << ++lindex << ", np_mass_actor<" << item2.name << ">*/" << std::endl;
+						m_stream << "			/*" << (lindex += 2) << "*/" << item2.name << std::endl;
 						isdouhao = true;
 					}
 				}				
@@ -327,13 +326,11 @@ namespace ngl
 					std::cout << item2.name << std::endl;
 					if (isdouhao)
 					{
-						m_stream << std::format("			/*{}*/, mforward<{}>", ++lindex, item2.name) << std::endl;
-						//m_stream << std::format("			/*{}, np_mass_actor<mforward<{}>>", ++lindex, item2.name) << ">*/" << std::endl;
+						m_stream << std::format("			/*{}*/, mforward<{}>", lindex += 2, item2.name) << std::endl;
 					}
 					else
 					{
-						m_stream << std::format("			/*{}*/mforward<{}>", ++lindex, item2.name) << std::endl;
-						//m_stream << std::format("			/*{}, np_mass_actor<mforward<{}>>", ++lindex, item2.name) << ">*/" << std::endl;
+						m_stream << std::format("			/*{}*/mforward<{}>", lindex += 2, item2.name) << std::endl;
 						isdouhao = true;
 					}
 				}
