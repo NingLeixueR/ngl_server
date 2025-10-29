@@ -92,6 +92,8 @@ namespace ngl
 
 				m_protocol[linfo.m_protocol] = &linfo;
 				m_nameprotocol[linfo.m_name] = &linfo;
+
+				log_error()->print("{}-{}", linfo.m_protocol, linfo.m_name);
 				return &linfo;
 			}
 
@@ -100,7 +102,6 @@ namespace ngl
 			{
 				info* lpinfo = funcx_s<T>(aprotocolnum, ahigh);
 				funcx_s<np_mass_actor<T>>(-1);
-				log_error()->print("{}-{}", linfo.m_protocol, linfo.m_name);
 				return lpinfo;
 			}
 
