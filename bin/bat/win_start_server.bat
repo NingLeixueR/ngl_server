@@ -1,14 +1,14 @@
 #一区
 set /P area=区服id
-start node_actor actor %rebot_value1% 1
-start node_game game %rebot_value1% 1
-#start node_game game %rebot_value1% 2
-start node_db db %rebot_value1% 1
-start node_login login  %rebot_value1% 1
-start node_log log  %rebot_value1% 1
-start node_gateway gateway %rebot_value1% 1
-#start node_gateway gateway %rebot_value1% 2
-start node_world world %rebot_value1% 1
+start node_actor actor %area% 1
+start node_game game %area% 1
+#start node_game game %area% 2
+start node_db db %area% 1
+start node_login login  %area% 1
+start node_log log  %area% 1
+start node_gateway gateway %area% 1
+#start node_gateway gateway %area% 2
+start node_world world %area% 1
 
 
 
