@@ -100,7 +100,7 @@ namespace ngl
 			{
 				info* lpinfo = funcx_s<T>(aprotocolnum, ahigh);
 				funcx_s<np_mass_actor<T>>(-1);
-				//std::cout << std::format("{}-{}", linfo.m_protocol, linfo.m_name) << std::endl;
+				log_error()->print("{}-{}", linfo.m_protocol, linfo.m_name);
 				return lpinfo;
 			}
 
