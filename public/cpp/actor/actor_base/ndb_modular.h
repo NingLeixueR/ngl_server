@@ -148,7 +148,7 @@ namespace ngl
 		// # 删除指定数据
 		inline void erase(nguid aid)
 		{
-			m_data.del(aid);
+			get_actor_dbclient()->del(aid, true);
 		}
 
 		// # 返回保护数据
