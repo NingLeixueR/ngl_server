@@ -28,6 +28,11 @@ namespace ngl
 		log_error()->print("actor address:{}", m_actorserver);
 	}
 
+	void naddress::print_address(const char* ainfo, i32_serverid aserverid, const nguid& aguid)
+	{
+		log_error()->print("{} actor address:{}-{}", ainfo, aserverid, aguid);
+	}
+
 	i32_sessionid naddress::sessionbyrole(i16_area aarea, i32_actordataid aroleid)
 	{
 		i64_actorid lactorrole = nguid::make(ACTOR_ROLE, aarea, aroleid);
@@ -54,6 +59,10 @@ namespace ngl
 		nguid lguid(adataid);
 		m_actorserver[lguid] = aserverid;
 		m_actortypeserver[lguid.type()].insert(adataid);
+#ifdef _DEBUG
+		print_address("ADD", aserverid, adataid);
+#endif
+		
 	}
 
 	void naddress::add_actor_address(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
@@ -61,15 +70,22 @@ namespace ngl
 		for (const i64_actorid item : avec)
 		{
 			add_actor_address(aserverid, item);
+#ifdef _DEBUG
+			print_address("ADD", aserverid, item);
+#endif
 		}
-		//#ifdef _DEBUG
-		//		print_address();
-		//#endif
 	}
 
 	void naddress::del_actor_address(i64_actorid adataid)
 	{
 		nguid lguid(adataid);
+#ifdef _DEBUG
+		auto itor = m_actorserver.find(adataid);
+		if (itor != m_actorserver.end())
+		{
+			print_address("DEL", itor->second, itor->first);
+		}
+#endif
 		m_actorserver.erase(lguid);
 	}
 

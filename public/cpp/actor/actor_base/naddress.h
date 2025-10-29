@@ -15,7 +15,6 @@ namespace ngl
 		naddress() = delete;
 		naddress(const naddress&) = delete;
 		naddress& operator=(const naddress&) = delete;
-
 	public:
 		//# [ACTOR_ID] -> SERVER_ID
 		//# [ACTOR_TYPE + EARE_ID + DATA_ID] -> SERVER_ID
@@ -40,6 +39,7 @@ namespace ngl
 #pragma region base
 		//# debug 打印
 		static void print_address();
+		static void print_address(const char* ainfo, i32_serverid aserverid, const nguid& aguid);
 
 		//# 设置结点
 		static bool set_node(const nactornode& anode);
