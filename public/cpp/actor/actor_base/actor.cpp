@@ -69,7 +69,7 @@ namespace ngl
 			highvalue = lpinfo->m_highvalue;
 		}
 		monopoly_shared_lock(m_mutex);
-		if (highvalue == 0)
+		if (highvalue <= 0)
 		{
 			m_list.push_back(apram);
 		}
