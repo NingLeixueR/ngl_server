@@ -27,6 +27,11 @@ namespace ngl
 		static db_cache			m_cache_save;	// 数据保存队列
 		static db_cache			m_cache_del;	// 数据删除队列
 
+		enum
+		{
+			esend_max_cout = 10,
+		};
+
 		static void cachelist(enum_cache_list atype, std::set<i64_actorid>& aset);
 	public:
 		// # 初始化
@@ -44,7 +49,7 @@ namespace ngl
 			m_cache_save.set_cachefun(std::bind_front(&cachelist, enum_clist_save), m_tab->m_dbcacheintervalms);
 			m_cache_del.set_cachefun(std::bind_front(&cachelist, enum_clist_del), m_tab->m_dbcacheintervalms);
 
-			if (m_tab->m_isloadall == true)
+			if (m_tab->m_isloadall)
 			{// 加载全部数据
 				db_manage::select<TDBTAB>(db_pool::instance().get(0));
 			}
@@ -69,7 +74,7 @@ namespace ngl
 			int lsendmaxcount = m_tab->m_sendmaxcount;
 			if (lsendmaxcount <= 0)
 			{
-				lsendmaxcount = 10;
+				lsendmaxcount = esend_max_cout;
 			}
 			i64_actorid lrequestactor = apack->m_head.get_request_actor();
 			np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro;
@@ -322,7 +327,6 @@ namespace ngl
 						{
 							return;
 						}
-
 						db_manage::serialize<TDBTAB>(ldb, false, *ldata);
 						pro.m_data = ldb->m_malloc.buff();
 					};
@@ -345,7 +349,6 @@ namespace ngl
 						}
 						int32_t lbegindex = lpage.m_everypagecount * (lpage.m_page - 1);
 						int32_t lendindex = lbegindex + lpage.m_everypagecount;
-
 						db* ldb = db_pool::instance().get(athread);
 						if (ldb == nullptr)
 						{
@@ -361,7 +364,6 @@ namespace ngl
 				handle_cmd::add("change") = [this](int athread, int id, ngl::njson_read& aos)
 					{
 						gcmd<bool> pro(id, "change", false);
-
 						std::string ljson;
 						if (!njson::read(aos, "data", ljson))
 						{
@@ -400,7 +402,6 @@ namespace ngl
 		auto pro = std::make_shared<np_actortime_db_cache<TDBTAB>>();
 		pro->m_type = atype;
 		pro->m_ls.swap(aset);
-
 		ENUM_ACTOR ltype = nactor_type<actor_db<TDBTAB_TYPE, TDBTAB>>::type();
 		i64_actorid lactorid = nguid::make(ltype, tab_self_area, nguid::none_actordataid());
 		actor::send_actor(lactorid, nguid::make(), pro);

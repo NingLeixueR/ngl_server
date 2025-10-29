@@ -47,20 +47,18 @@ namespace ngl
 		nguid					m_requestactor	= nguid::make();			// 哪个actor发送的
 		std::set<i64_actorid>   m_massactors;								// 群发列表
 
-		using forwardtype = std::function<
-			void(const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram&)
-		>;
+		using forwardfunction = void(const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram&);
+		using forwardtype = std::function<forwardfunction>;
 
 		forwardtype				m_forwardfun	= nullptr;			// 转发函数
 		bool					m_forwardtype	= false;			// 转发给所有类型
 		std::function<void()>	m_failfun		= nullptr;			// 如何actor_client都找不到目标actor则调用
-
 		bool					m_issend		= true;				// 是否会发送给其他进程
 
 		//# 根据[连接]获取[id]
 		static i32_serverid		get_server(i64_actorid aactorid);
 
-		static void server_actor_send(const nguid& aguid, const std::function<void()>& afun);
+		static void				server_actor_send(const nguid& aguid, const std::function<void()>& afun);
 
 		//# 根据[actorid]获取[gatewayid]
 		static i32_serverid		gatewayid(i64_actorid aactorid);
@@ -145,7 +143,6 @@ namespace ngl
 			lpram.m_data			= adata;
 			lpram.m_actor			= aid;
 			lpram.m_requestactor	= arid;
-			lpram.m_forwardfun		= nullptr;
 			lpram.m_issend			= IS_SEND;
 			make_forwardfun<T, IS_FORWARDFUN&& IS_SEND>(lpram);
 			lpram.m_failfun			= afailfun;
@@ -165,8 +162,6 @@ namespace ngl
 			lpram.m_data			= adata;
 			lpram.m_actor			= aid;
 			lpram.m_requestactor	= arid;
-			lpram.m_forwardfun		= nullptr;
-			lpram.m_issend			= true;
 			make_client<T>(lpram);
 			lpram.m_failfun			= afailfun;
 			return lpram;
@@ -184,9 +179,7 @@ namespace ngl
 			lpram.m_data = adata;
 			lpram.m_actor = aid;
 			lpram.m_requestactor = arid;
-			lpram.m_forwardfun = nullptr;
 			lpram.m_issend = true;
-			lpram.m_forwardfun = nullptr;
 			lpram.m_failfun = afailfun;
 			return lpram;
 		}
@@ -199,10 +192,8 @@ namespace ngl
 			handle_pram lpram;
 			lpram.m_enum			= tprotocol::protocol<T>();
 			lpram.m_data			= adata;
-			lpram.m_actor			= nguid::make();
 			lpram.m_massactors		= aids;
 			lpram.m_requestactor	= arid;
-			lpram.m_forwardfun		= nullptr;
 			lpram.m_issend			= IS_SEND;
 			make_massfun<T, IS_SEND>(lpram);
 			return lpram;
