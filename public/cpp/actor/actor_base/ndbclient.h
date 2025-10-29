@@ -403,8 +403,12 @@ namespace ngl
 			}
 		}
 
-		void del(const nguid& aid)
+		void del(const nguid& aid, bool ascript = false)
 		{
+			if (ascript)
+			{
+				m_actor->nscript_data_del<TDBTAB>(aid);
+			}
 			m_dellist.push_back((int64_t)aid);
 			m_data.erase((int64_t)aid);
 			if (aid == m_id)
@@ -413,12 +417,11 @@ namespace ngl
 			}
 		}
 
-		void del(std::vector<int64_t>& adelvec)
+		void del(std::vector<int64_t>& adelvec, bool ascript = false)
 		{
-			for (int64_t delval : adelvec)
+			for (int64_t dataid : adelvec)
 			{
-				m_dellist.push_back(delval);
-				m_data.erase(delval);
+				del(dataid, false);
 			}
 		}
 
