@@ -281,8 +281,8 @@ inline void json_write(ngl::njson_write& ijsn, const char* akey)		\
 		return lret;														\
 	}
 
-#define def_nlua_function2(...)			\
-	def_nlua_push2(__VA_ARGS__)			\
+#define def_nlua_function2(...)				\
+	def_nlua_push2(__VA_ARGS__)				\
 	def_nlua_pop2(__VA_ARGS__)
 
 

@@ -12,8 +12,8 @@ namespace ngl
 {
 	struct segpack_rate_interval
 	{
-		int m_resetutc;		// 上次重置的utc
-		int m_ratecount;	// 收到数据包的数量
+		int m_resetutc = 0;		// 上次重置的utc
+		int m_ratecount = 0;	// 收到数据包的数量
 
 		segpack_rate_interval();
 		void reset();
@@ -37,7 +37,7 @@ namespace ngl
 		std::map<i32_socket, std::shared_ptr<pack>> m_data; //残包暂时保管
 		bpool			m_pool;
 		segpack_rate	m_rate;
-		segpack*		m_segpack;
+		segpack*		m_segpack = nullptr;
 
 	public:
 		enum class edopush

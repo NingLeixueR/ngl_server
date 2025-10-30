@@ -4,9 +4,6 @@
 
 namespace ngl
 {
-	bpool::bpool()
-	{}
-
 	char* bpool::malloc(int32_t alen)
 	{
 		return netbuff_pool::malloc(alen);

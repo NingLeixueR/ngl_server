@@ -199,6 +199,11 @@ namespace ngl
 		return isready();		
 	}
 
+	bool pack_head::push_format(ngl::ser::serialize_push* aserialize)const
+	{
+		return aserialize->basetype((void*)m_data, sizeof(int32_t) * EPH_SUM);
+	}
+
 	void pack_head::reservebuff(char* abuff, int abufflen, std::pair<char*, int32_t>& apair)
 	{
 		apair.first = &(abuff[size()]);
