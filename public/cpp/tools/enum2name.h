@@ -22,7 +22,6 @@ namespace ngl
 			std::string m_toupper;		// 转换为大写
 			std::string m_never;		// 不改变大小写
 		};
-
 		static std::map<int, std::map<ENUMT, data>> m_datae2n;
 		static std::map<int, std::map<std::string, ENUMT>> m_datan2e;
 
@@ -44,7 +43,6 @@ namespace ngl
 			ltemp.m_toupper = aname;
 			tools::transform_tolower(ltemp.m_tolower);
 			tools::transform_toupper(ltemp.m_toupper);
-
 			m_datan2e[anum][ltemp.m_never] = aenum;
 			m_datan2e[anum][ltemp.m_tolower] = aenum;
 			m_datan2e[anum][ltemp.m_toupper] = aenum;
@@ -86,6 +84,7 @@ namespace ngl
 			}
 			return &itor2->second;
 		}
+
 		static const char* get_name(const ENUMT aenum, int anum = 0)
 		{
 			const data* ltempdata = get_data(aenum, anum);

@@ -1,6 +1,4 @@
-#pragma once
 #include "pb_field.h"
-
 
 namespace ngl
 {
@@ -13,7 +11,7 @@ namespace ngl
         for (int i = 0; i < desc->field_count(); ++i)
         {
             const google::protobuf::FieldDescriptor* field = desc->field(i);
-            if (field_numbers.contains(field->number()) == 0)
+            if (field_numbers.contains(field->number()))
             {
                 continue;
             }
@@ -21,7 +19,6 @@ namespace ngl
         }
     }
 
-    // 复制单个字段（处理所有类型的字段：基础类型、repeated、消息类型等）
     void pb_field::copyfield(
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
