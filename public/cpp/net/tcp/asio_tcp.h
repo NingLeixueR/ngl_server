@@ -76,7 +76,6 @@ namespace ngl
 
 		void start(const std::shared_ptr<service_tcp>& aservice);
 	public:
-
 		// # 发起连接
 		service_tcp* connect(
 			const str_ip& aip							// ip
