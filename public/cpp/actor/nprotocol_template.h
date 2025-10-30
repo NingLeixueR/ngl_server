@@ -23,8 +23,7 @@
 
 namespace ngl
 {
-	// ---- [actor db client -> actor db server]
-	// ---- 从db server加载数据
+	// [db client -> db server]
 	// 从db server加载数据
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_load
@@ -49,9 +48,8 @@ namespace ngl
 		def_protocol(actor_db_load_response<T>, m_stat, m_data, m_over)
 	};
 
-	// ---- [actor db server -> actor db client]
-	// ---- 保存数据
-	// 从db server加载数据
+	// [db client -> db server]
+	// 保存数据
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_save
 	{
@@ -70,7 +68,7 @@ namespace ngl
 		def_protocol(actor_db_save<T>, m_data)
 	};
 
-	// 从db server删除数据
+	// 删除数据
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_delete
 	{
@@ -79,7 +77,7 @@ namespace ngl
 		dprotocol(actor_db_delete<T>, m_data)
 	};
 
-	// db cache list  保存缓存列表
+	// 保存数据缓存列表
 	enum enum_cache_list
 	{
 		enum_clist_save = 1,
@@ -94,7 +92,7 @@ namespace ngl
 		dprotocol(actor_time_db_cache<T>, m_ls)
 	};
 
-	// ---- 模块间转发
+	// 模块间转发
 	template <typename T>
 	struct np_actormodule_forward
 	{
@@ -275,7 +273,7 @@ namespace ngl
 		dprotocol(np_actor_forward, m_data)
 	};
 	
-	// # 群发数据给其他actor
+	// 群发数据给其他actor
 	template <typename T>
 	struct np_mass_actor
 	{
@@ -317,7 +315,7 @@ namespace ngl
 	};
 
 
-	// ---- actor 切换进程
+	// actor 切换进程
 	//ACTOR_SPROCESS_ROLE
 	template <typename T>
 	struct np_actorswitch_process

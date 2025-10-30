@@ -15,23 +15,15 @@ namespace ngl
 		return lname != nullptr ? lname : "none";
 	}
 
-	void protocol::print(
-		const char* amsg						/*打印描述*/
-		, i32_protocolnum aprotocolnum			/*协议号*/
-	)
+	void protocol::print(const char* amsg, i32_protocolnum aprotocolnum)
 	{
 		log_error()->print(
-			"protocol::push msg:{} protocolnum:{} name:{}"
-			, amsg, aprotocolnum, name(aprotocolnum)
+			"protocol::push msg:{} protocolnum:{} name:{}", amsg, aprotocolnum, name(aprotocolnum)
 		);
 	}
 
 	void protocol::register_protocol(
-		int aprotocolnumber							/*协议号*/
-		, ENUM_ACTOR aenumactor						/*actor类型*/
-		, const protocol::fun_pack& apackfun		/*解包回调*/
-		, const protocol::fun_run& arunfun			/*逻辑回调*/
-		, const char* aname							/*debug name*/
+		int aprotocolnumber, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname
 	)
 	{
 		lock_write(m_mutex);
@@ -128,7 +120,6 @@ namespace ngl
 		}
 		std::string& lkey = lvec[0];
 		std::ranges::transform(lkey, lkey.begin(), tolower);
-
 		if (telnet_cmd_admin::check(apack->m_id) == false)
 		{
 			if (lvec[0] == "/login" && lvec.size() >= 3)
