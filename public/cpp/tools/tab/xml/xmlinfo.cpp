@@ -34,4 +34,12 @@ namespace ngl
 		adata = *lp;
 		return true;
 	}
+
+	void xmlinfo::foreach(const std::function<void(const std::pair<const std::string, std::string>&)>& afun)
+	{
+		for (const auto& item : m_data)
+		{
+			afun(item);
+		}
+	}
 }// namespace ngl

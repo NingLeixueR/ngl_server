@@ -10,6 +10,70 @@
 
 namespace ngl
 {
+	bool xml::readxml(const char* aname, tinyxml2::XMLDocument& axml, tinyxml2::XMLElement*& acon)
+	{
+		if (axml.LoadFile(aname) != tinyxml2::XML_SUCCESS)
+		{
+			std::cout << "Failed to load XML file[" << aname << "]." << std::endl;
+			return false;
+		}
+		acon = axml.FirstChildElement("con");
+		return acon != nullptr;
+	}
+
+	tinyxml2::XMLElement* xml::get_child(tinyxml2::XMLElement* aele, const char* astr)
+	{
+		std::vector<std::string> lvec;
+		if (tools::splite(astr, ".", lvec) == false)
+		{
+			return nullptr;
+		}
+		tinyxml2::XMLElement* valElement = aele;
+		for (const auto& item : lvec)
+		{
+			valElement = valElement->FirstChildElement(item.c_str());
+			if (valElement == nullptr)
+			{
+				return nullptr;
+			}
+		}
+		return valElement;
+	}
+
+	void xml::foreach(tinyxml2::XMLElement* aele, const char* akey, const std::function<void(tinyxml2::XMLElement*)>& afun)
+	{
+		for (tinyxml2::XMLNode* child = aele->FirstChildElement(); child; child = child->NextSiblingElement())
+		{
+			tinyxml2::XMLElement* lxele = child->ToElement();
+			if (lxele != nullptr && std::string(lxele->Name()) == akey)
+			{
+				afun(lxele);
+			}
+		}
+	}
+
+	void xml::foreach(tinyxml2::XMLElement* aele, const std::function<void(tinyxml2::XMLElement*)>& afun)
+	{
+		for (tinyxml2::XMLNode* child = aele->FirstChildElement(); child; child = child->NextSiblingElement())
+		{
+			tinyxml2::XMLElement* lxele = child->ToElement();
+			if (lxele != nullptr)
+			{
+				afun(lxele);
+			}
+		}
+	}
+
+	void xml::foreach_xmlattr(tinyxml2::XMLElement* aele, const std::function<void(const char*, const char*)>& afun)
+	{
+		for (const tinyxml2::XMLAttribute* attribute = aele->FirstAttribute(); attribute; attribute = attribute->Next())
+		{
+			const char* lkey = attribute->Name();
+			const char* lval = attribute->Value();
+			afun(lkey, lval);
+		}
+	}
+
 	tinyxml2::XMLDocument	xmlnode::m_doc;
 	tinyxml2::XMLElement*	xmlnode::m_con;
 	dbserver_info			xmlnode::m_db;

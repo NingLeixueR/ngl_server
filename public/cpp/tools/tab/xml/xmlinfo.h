@@ -11,14 +11,11 @@ namespace ngl
 {
 	struct dbarg
 	{
-		uint32_t	m_port;
+		uint32_t	m_port = 0;
 		std::string m_ip;
 		std::string m_account;
 		std::string m_passworld;
 		std::string m_dbname;
-		dbarg() :
-			m_port(0)
-		{}
 	};
 
 	struct mailarg
@@ -30,16 +27,12 @@ namespace ngl
 		std::vector<std::pair<std::string, std::string>> m_recvs;// key:mail value:name
 		std::string m_title;
 		std::string m_content;
-
-		mailarg() = default;
 	};
 
 	struct telnetarg
 	{
 		std::string m_account;
 		std::string m_passworld;
-
-		telnetarg() = default;
 	};
 
 	class xmlinfo
@@ -72,13 +65,8 @@ namespace ngl
 		//# 根据key查找value
 		bool find(const char* akey, std::string& adata);
 
-		void foreach(const std::function<void(const std::pair<const std::string,std::string>&)>& afun)
-		{
-			for (const auto& item : m_data)
-			{
-				afun(item);
-			}
-		}
+		//# 遍历所有key/value
+		void foreach(const std::function<void(const std::pair<const std::string, std::string>&)>& afun);
 	};
 
 	struct dbserver_info

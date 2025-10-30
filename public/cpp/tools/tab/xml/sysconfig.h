@@ -21,11 +21,12 @@ namespace ngl
 	struct sysconfig
 	{
 	private:
-		//##### 日志相关
+		// [[ 日志相关 
 		static ELOGLEVEL	m_logwritelevel;		// 日志等级(写入文件)
 		static ELOGLEVEL	m_logconsolelevel;		// 日志等级(控制台显示)
 		static int32_t		m_logline;				// 单个日志文件的行数
 		static int32_t		m_logflushtime;			// 日志写入文件的间隔时间
+		// ]] 日志相关 
 
 		static int32_t		m_consumings;			// 检测actor消息耗时
 
@@ -33,9 +34,7 @@ namespace ngl
 		static std::string	m_xorkey;
 		static int32_t		m_xorkeynum;			//2^n-1 n为xorkey的字符数
 		static bool			m_isxor;
-		
 		static bool			m_varint;				// 是否开启varint
-
 		static bool			m_robot_test;			// 是否机器人测试
 
 		static int32_t		m_kcpping;				// kcp发送ping的间隔(毫秒)
@@ -44,7 +43,6 @@ namespace ngl
 
 		static int32_t		m_sessionewait;			// 等待gateway移除session的时间(毫秒)
 		static int32_t		m_open_servertime;		// 开服时间
-
 		static int32_t		m_head_version;			// 协议头的版本号
 
 		static int32_t		m_rate_interval;		// 速率检测的间隔(单位秒)

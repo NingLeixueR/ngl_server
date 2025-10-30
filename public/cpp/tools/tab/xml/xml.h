@@ -14,35 +14,9 @@ namespace ngl
 	class xml
 	{
 	public:
-		static bool readxml(const char* aname, tinyxml2::XMLDocument& axml, tinyxml2::XMLElement*& acon)
-		{
-			if (axml.LoadFile(aname) != tinyxml2::XML_SUCCESS)
-			{
-				std::cout << "Failed to load XML file[" << aname << "]." << std::endl;
-				return false;
-			}
-			acon = axml.FirstChildElement("con");
-			return acon != nullptr;
-		}
+		static bool readxml(const char* aname, tinyxml2::XMLDocument& axml, tinyxml2::XMLElement*& acon);
 
-		static tinyxml2::XMLElement* get_child(tinyxml2::XMLElement* aele, const char* astr)
-		{
-			std::vector<std::string> lvec;
-			if (tools::splite(astr, ".", lvec) == false)
-			{
-				return nullptr;
-			}
-			tinyxml2::XMLElement* valElement = aele;
-			for (const auto& item : lvec)
-			{
-				valElement = valElement->FirstChildElement(item.c_str());
-				if (valElement == nullptr)
-				{
-					return nullptr;
-				}
-			}
-			return valElement;
-		}
+		static tinyxml2::XMLElement* get_child(tinyxml2::XMLElement* aele, const char* astr);
 
 		template <typename T>
 		static bool get(tinyxml2::XMLElement* aele, const char* akey, T& aval)
@@ -77,39 +51,11 @@ namespace ngl
 			return true;
 		}
 
-		static void foreach(tinyxml2::XMLElement* aele, const char* akey, const std::function<void(tinyxml2::XMLElement*)>& afun)
-		{
-			for (tinyxml2::XMLNode* child = aele->FirstChildElement(); child; child = child->NextSiblingElement())
-			{
-				tinyxml2::XMLElement* lxele = child->ToElement();
-				if (lxele != nullptr&& std::string(lxele->Name()) == akey)
-				{
-					afun(lxele);
-				}
-			}
-		}
+		static void foreach(tinyxml2::XMLElement* aele, const char* akey, const std::function<void(tinyxml2::XMLElement*)>& afun);
 
-		static void foreach(tinyxml2::XMLElement* aele, const std::function<void(tinyxml2::XMLElement*)>& afun)
-		{
-			for (tinyxml2::XMLNode* child = aele->FirstChildElement(); child; child = child->NextSiblingElement())
-			{
-				tinyxml2::XMLElement* lxele = child->ToElement();
-				if (lxele != nullptr)
-				{
-					afun(lxele);
-				}
-			}
-		}
+		static void foreach(tinyxml2::XMLElement* aele, const std::function<void(tinyxml2::XMLElement*)>& afun);
 
-		static void foreach_xmlattr(tinyxml2::XMLElement* aele, const std::function<void(const char*, const char*)>& afun)
-		{
-			for (const tinyxml2::XMLAttribute* attribute = aele->FirstAttribute(); attribute; attribute = attribute->Next())
-			{
-				const char* lkey = attribute->Name();
-				const char* lval = attribute->Value();
-				afun(lkey, lval);
-			}
-		}
+		static void foreach_xmlattr(tinyxml2::XMLElement* aele, const std::function<void(const char*, const char*)>& afun);
 	};
 
 	class xmlnode
