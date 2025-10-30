@@ -1,3 +1,5 @@
+#pragma once
+
 #include "pb_field.h"
 
 namespace ngl
