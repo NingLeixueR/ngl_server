@@ -11,7 +11,7 @@
 * Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-ï»¿#include "actor_manage.h"
+#include "actor_manage.h"
 #include "nthread.h"
 
 namespace ngl

@@ -11,7 +11,7 @@
 * ��������μ���Ŀ��Ŀ¼�µ� LICENSE �ļ���
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-﻿#pragma once
+#pragma once
 
 #include "actor_manage.h"
 #include "naddress.h"
@@ -54,10 +54,10 @@ namespace ngl
 		// # 更新结点中的actor
 		bool handle(const message<np_actornode_update_server>& adata);
 
-		//# 向actor客户端同步结点信息(群发)
+		//# 向actor客户端同步结点信�?群发)
 		bool handle(const message<np_actornode_update_mass>& adata);
 
-		// # 更新gateway表 actor_role.guidid与gateway server id对应关系
+		// # 更新gateway�?actor_role.guidid与gateway server id对应关系
 		bool handle(const message<np_actor_gatewayid_updata>& adata);
 	};
 }//namespace ngl
