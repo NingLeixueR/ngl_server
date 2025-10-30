@@ -65,7 +65,7 @@ namespace ngl
 		dprotocol(np_connect_actor_server, m_serverid, m_session)
 	};
 
-	// ---- [actor client -> actor server] register
+	// [actor client -> actor server]
 	// 注册结点
 	struct np_actornode_register
 	{
@@ -75,8 +75,8 @@ namespace ngl
 		dprotocol(np_actornode_register, m_node, m_add)
 	};
 
-	// ---- [actor client -> actor server] register
-	// 注册结点
+	// [actor_client -> actor_server]
+	// [回复]注册结点
 	struct np_actornode_register_response
 	{
 		std::vector<nactornode> m_vec;
@@ -84,8 +84,8 @@ namespace ngl
 		dprotocol(np_actornode_register_response, m_vec)
 	};
 
-	// ---- [actor client -> actor client] connect(actor客户端相互连接,id大的) 
-	// 客户端间相互连接
+	// [actor_client -> actor_client]
+	// 客户端间相互连接(actor客户端相互连接,id大的) 
 	struct np_actorclient_node_connect
 	{
 		i32_serverid m_id = -1;
@@ -93,8 +93,8 @@ namespace ngl
 		dprotocol(np_actorclient_node_connect, m_id)
 	};
 
-	// ---- [actor server -> actor client]	[actor client -> actor server] 
-	// ---- 服务器向客户端同步结点信息		客户端向服务器同步结点信息
+	// [actor_server -> actor_client]	[actor_client -> actor_server] 
+	// 服务器向客户端同步结点信息		客户端向服务器同步结点信息
 	struct np_actornode_update
 	{
 		i32_serverid m_id = -1;				// 服务器id
@@ -120,9 +120,8 @@ namespace ngl
 		dprotocol(np_actornode_update_mass_client, m_mass)
 	};
 
-	// ---- [local actor client]
-	// ---- 连接成功后执行任务
-	// 将任务添加到ActorClient中,当指定类型的Actor连接成功后执行该任务
+	// 连接成功后执行任务
+	// 将任务添加到actor_client中,当指定类型的Actor连接成功后执行该任务
 	struct np_actornode_connect_task
 	{
 		i32_serverid m_serverid;
@@ -131,9 +130,9 @@ namespace ngl
 		dprotocol(np_actornode_connect_task, m_serverid)
 	};
 
-	// ---- [login -> game]
-	// ---- [login -> gateway]
-	// ---- 通知服务器玩家账号验证通过
+	// [login server -> game server]
+	// [login server -> gateway server]
+	// 通知服务器玩家账号验证通过
 	struct np_actorrole_login
 	{
 		std::string		m_session;
@@ -173,7 +172,7 @@ namespace ngl
 		dprotocol(np_actorswitch_process_plays, m_players);
 	};
 
-	// ---- 服务器会通过此消息告诉对方连接成功 
+	// 服务器会通过此消息告诉对方连接成功 
 	struct np_actorserver_connect
 	{
 		i32_serverid m_serverid;
@@ -181,7 +180,7 @@ namespace ngl
 		dprotocol(np_actorserver_connect, m_serverid);
 	};
 
-	// ---- SESSION断开连接		ACTOR_SESSION_CLOSE
+	// SESSION断开连接
 	struct np_actor_session_close
 	{
 		i32_sessionid m_sessionid = 0;
@@ -189,7 +188,8 @@ namespace ngl
 		dprotocol(np_actor_session_close, m_sessionid)
 	};
 
-	// ---- [game,login] 玩家与gateway断开连接  ACTOR_DISCONNECT_CLOSE,
+	// [gateway -> game,gateway -> login] 
+	// 玩家与gateway断开连接
 	struct np_actor_disconnect_close
 	{
 		i64_actorid m_actorid;
@@ -206,14 +206,14 @@ namespace ngl
 		dprotocol(np_actor_gatewayid_updata, m_isremove, m_actorid, m_gatewayid)
 	};
 
-	// ---- 间隔一段时间发起的全员(所有actor)广播
-	// ## 可以在这个广播里推送一些需要处理的任务,例如 保存数据
+	// 间隔一段时间发起的全员(所有actor)广播
+	// 可以在这个广播里推送一些需要处理的任务,例如 保存数据
 	struct np_actor_broadcast
 	{
 		dprotocol(np_actor_broadcast)
 	};
 
-	// ---- 重新加载csv
+	// 重新加载csv
 	struct np_actor_reloadcsv
 	{
 		std::map<std::string, std::string> m_csvcontent;
@@ -221,7 +221,7 @@ namespace ngl
 		dprotocol(np_actor_reloadcsv, m_csvcontent)
 	};
 
-	// ---- 核实csv版本
+	// 核实csv版本
 	struct np_actor_csv_verify_version
 	{
 		std::map<std::string, std::string> m_verify; // key: tab typeid(TAB).hash_code() val:md5
@@ -229,7 +229,7 @@ namespace ngl
 		dprotocol(np_actor_csv_verify_version, m_verify)
 	};
 
-	// ---- 发送物品给actor role模块
+	// 发送物品给actor_role
 	struct np_actor_senditem
 	{
 		std::string					m_src;//物品来源
@@ -263,7 +263,7 @@ namespace ngl
 		dprotocol(gateway_socket, m_session, m_area, m_accountid, m_dataid, m_gameid, m_gatewayid, m_socket, m_iscreate)
 	};
 
-	// ---- 更新连接数据
+	// 更新连接数据
 	struct np_actor_gatewayinfo_updata
 	{
 		std::vector<gateway_socket>	m_add;
@@ -273,7 +273,7 @@ namespace ngl
 		dprotocol(np_actor_gatewayinfo_updata, m_add, m_delsocket, m_delactorid)
 	};
 
-	// ---- 新增邮件
+	// 新增邮件
 	struct np_actor_addmail
 	{
 		i64_actorid					m_roleid = -1;
@@ -294,7 +294,7 @@ namespace ngl
 		dprotocol(ncalendar_info, m_time, m_calendarid, m_start)
 	};
 
-	// ---- 通知kcp服务器创建连接
+	// 通知kcp服务器创建连接
 	struct np_actor_kcp
 	{
 		std::string			m_kcpsession;
@@ -317,7 +317,7 @@ namespace ngl
 		dprotocol(calendar_utc, m_time, m_beg, m_end)
 	};
 
-	// ---- 新增邮件
+	// 新增邮件
 	struct np_actor_addnotice
 	{
 		std::string m_notice;		// 内容
@@ -327,7 +327,7 @@ namespace ngl
 		dprotocol(np_actor_addnotice, m_notice, m_starttime, m_finishtime)
 	};
 
-	// ---- 关闭指定actor(不能关闭actor_role)
+	// 关闭指定actor(不能关闭actor_role)
 	struct np_actor_close
 	{
 		dprotocol(np_actor_close)
@@ -339,7 +339,7 @@ namespace ngl
 # define FindSrcPos(STR) STR.rfind("/")
 #endif
 
-	// ---- 日志发送 
+	// 日志发送 
 	struct np_logitem
 	{
 		int				m_serverid = -1;			// 服务器id
@@ -487,7 +487,7 @@ namespace ngl
 		}
 	};
 
-	///### 例子小游戏
+	///# 例子小游戏
 	// 玩家登陆
 	// 1、获取匹配信息
 	// 2、例子小游戏信息
@@ -497,7 +497,8 @@ namespace ngl
 		dprotocol(np_login_request_info, m_roleid)
 	};
 
-	// actor_example_match->actor_example_manage 为指定玩家创建指定例子小游戏
+	// actor_example_match->actor_example_manage 
+	// 为指定玩家创建指定例子小游戏
 	struct np_create_example
 	{
 		pbexample::EPLAY_TYPE m_type;
