@@ -18,7 +18,6 @@ namespace ngl
         // 拷贝 src 到 dst，但只复制字段编号在 field_numbers 中的字段
         // field_numbers：需要复制的字段编号列表（如 {1, 3, 5}）
         static void copy(const google::protobuf::Message& src, google::protobuf::Message* dst, const std::set<int>& field_numbers);
-
     private:
         // 复制单个字段（处理所有类型的字段：基础类型、repeated、消息类型等）
         static void copyfield(
@@ -46,7 +45,6 @@ namespace ngl
             const google::protobuf::FieldDescriptor* field,
             int index
         );
-
     public:
         template <typename T>
         static int32_t field_number(const char* afieldname)
@@ -60,8 +58,7 @@ namespace ngl
             }
 
             // 2. 根据字段名（"mactivityvalues"）获取该字段的描述符（FieldDescriptor）
-            const google::protobuf::FieldDescriptor* field_descriptor =
-                db_brief_descriptor->FindFieldByName(afieldname);
+            const google::protobuf::FieldDescriptor* field_descriptor = db_brief_descriptor->FindFieldByName(afieldname);
             if (field_descriptor == nullptr) 
             {
                 tools::no_core_dump();

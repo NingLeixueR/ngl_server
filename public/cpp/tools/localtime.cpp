@@ -38,7 +38,6 @@ namespace ngl
 		return sec >= 0 && sec < 59;
 	}
 
-	/** 设置时间 */
 	bool localtime::settime(time_t sti)
 	{
 		time_t lnow = gettime();
@@ -52,7 +51,6 @@ namespace ngl
 		return true;
 	}
 
-	/** 获取时间*/
 	time_t localtime::gettime()
 	{
 		time_t lnow = time(nullptr);
@@ -126,7 +124,6 @@ namespace ngl
 		return std::mktime(&tm_struct);
 	}
 
-	//获取utc时刻那天的 小时分钟的utc
 	time_t localtime::getsecond2time(time_t utc, int hour, int minute, int sec/*0-59*/)
 	{
 		std::tm tmTime;

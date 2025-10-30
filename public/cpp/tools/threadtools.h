@@ -11,9 +11,6 @@
 
 namespace ngl
 {
-	//using mutex			= std::shared_mutex;
-	//using shared_lock		= std::shared_lock<mutex>; // ¶ÁËø
-	//using unique_lock		= std::unique_lock<mutex>; // Ğ´Ëø
 	using thread			= std::thread;
 
 	// # ĞÅºÅÁ¿

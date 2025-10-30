@@ -22,9 +22,9 @@ namespace ngl
 	template <typename T>
 	class lsnode
 	{
-		node<T>* m_head;
-		node<T>* m_tail;
-		int m_size;
+		node<T>* m_head = nullptr;
+		node<T>* m_tail = nullptr;
+		int m_size = 0;
 	public:
 		inline lsnode() :
 			m_head(nullptr),
@@ -44,21 +44,25 @@ namespace ngl
 		{
 		}
 
+		// # 队列是否为空
 		inline bool empty()const
 		{
 			return m_size <= 0;
 		}
 
+		// # 队头
 		inline node<T>* begin()
 		{
 			return m_head;
 		}
 
+		// # 队尾
 		inline node<T>* end()
 		{
 			return nullptr;
 		}
 
+		// # 在队头加入一组结点
 		inline void push_front(lsnode<T>& als)
 		{
 			if (als.empty())
@@ -80,6 +84,7 @@ namespace ngl
 			als.clear(nullptr);
 		}
 
+		// # 在队头加入结点
 		inline void push_front(node<T>* adata)
 		{
 			if (adata == nullptr)
@@ -101,6 +106,7 @@ namespace ngl
 			}
 		}
 
+		// # 在队尾加入结点
 		inline void push_back(node<T>* adata)
 		{
 			if (adata == nullptr)
@@ -122,6 +128,7 @@ namespace ngl
 			}
 		}
 
+		// # 扩展队列空间
 		inline int expand(int asize)
 		{// 只有freelist才会扩展
 			for (int i = 0; i < asize; ++i)
@@ -131,11 +138,13 @@ namespace ngl
 			return asize;
 		}
 
+		// # 结点数量
 		inline int size()const
 		{ 
 			return m_size; 
 		}
 
+		// # 清空列表
 		inline void clear(const std::function<void(node<T>*)>& afun)
 		{
 			if (afun != nullptr)
@@ -147,13 +156,13 @@ namespace ngl
 					m_head = m_head->m_next;
 					afun(lptemp);
 				}
-			}
-			
+			}			
 			m_head = nullptr;
 			m_tail = nullptr;
 			m_size = 0;
 		}
 
+		// # 对头
 		inline node<T>* front()
 		{
 			if (empty())
@@ -163,6 +172,7 @@ namespace ngl
 			return m_head;
 		}
 
+		// # 弹出一个队头结点
 		inline void pop(const std::function<void(node<T>*)>& afun)
 		{
 			if (empty())
@@ -184,6 +194,7 @@ namespace ngl
 			}
 		}
 
+		// # 交换两个队列
 		inline void swap(lsnode<T>& adata)
 		{
 			std::swap(m_head, adata.m_head);
@@ -455,4 +466,4 @@ namespace ngl
 	};
 
 	extern void test_slist();
-}
+}//namespace ngl
