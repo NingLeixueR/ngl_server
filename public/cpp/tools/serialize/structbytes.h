@@ -5,16 +5,23 @@
 #include "pack.h"
 #include "nlog.h"
 
+#include <set>
+
 namespace ngl
 {
 	class encryption_bytexor
 	{
+		static std::set<i32_protocolnum> m_protocolnum;
+
+		static void check_init()
+		{
+			m_protocolnum.insert(tprotocol::protocol<np_gm>());
+			m_protocolnum.insert(tprotocol::protocol<np_gm_response>());
+		}
 	public:
 		static bool check_xor(int aprotocolnum)
 		{
-			static const int32_t lprotocolnum1 = tprotocol::protocol<np_gm>();
-			static const int32_t lprotocolnum2 = tprotocol::protocol<np_gm_response>();
-			if(lprotocolnum1 == aprotocolnum || lprotocolnum2 == aprotocolnum)
+			if (m_protocolnum.contains(aprotocolnum))
 			{
 				return false;
 			}
@@ -39,10 +46,8 @@ namespace ngl
 				if (apack->m_head.getvalue(EPH_BYTES) != apack->m_pos)
 				{
 					log_error()->print(
-						"[##structbytes::tostruct()] [T:{}] [{} != {}]"
-						, tools::type_name<T>()
-						, apack->m_head.getvalue(EPH_BYTES)
-						, apack->m_pos
+						"[##structbytes::tostruct() {} byte<{}!={}>]"
+						, tools::type_name<T>(), apack->m_head.getvalue(EPH_BYTES), apack->m_pos
 					);
 					return false;
 				}
@@ -70,10 +75,8 @@ namespace ngl
 			if (!ngl::ser::nserialize::push(&lser, adata))
 			{
 				log_error()->print(
-					"[##structbytes::tobytes()] [T:{}] [actorid:{}] [requestactorid:{}] "
-					, tools::type_name<T>()
-					, aactorid
-					, arequestactorid
+					"[##structbytes::tobytes() {} actorid:{} requestactorid:{}] "
+					, tools::type_name<T>(), aactorid, arequestactorid
 				);
 				return false;
 			}

@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-10-28 15:14:13
+// 创建时间 25-10-30 16:36:02
 #include "pb_field.cpp"
 #include "session_endpoint.cpp"
 #include "attribute_value.cpp"
@@ -16,6 +16,7 @@
 #include "gateway_info.cpp"
 #include "events_logic.cpp"
 #include "xmlprotocol.cpp"
+#include "structbytes.cpp"
 #include "pb_protocol.cpp"
 #include "ndb_modular.cpp"
 #include "manage_curl.cpp"

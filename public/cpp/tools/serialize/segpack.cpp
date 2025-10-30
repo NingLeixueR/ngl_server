@@ -120,8 +120,7 @@ namespace ngl
 			m_data.erase(aid);
 			log_error()->print(
 				"sockect recv {} len >= SOCKECT_MAX_BUFF_SIZE({})"
-				, apack->m_head
-				, (int)net_config_recv_buff_maxbyte
+				, apack->m_head, (int)net_config_recv_buff_maxbyte
 			);
 			return false;
 		}
@@ -134,8 +133,7 @@ namespace ngl
 
 	bool segpack::is_heartbeat(std::shared_ptr<pack>& apack)
 	{
-		//只有包头的包
-		//检测是否是心跳包
+		//只有包头的包,检测是否是心跳包
 		if (segpack_heartbeat::is_heartbeat(apack->m_head.get_protocolnumber()))
 		{
 			return true;

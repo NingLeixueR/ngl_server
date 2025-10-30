@@ -21,12 +21,17 @@ namespace ngl
 
 		// # 设置mask
 		static void				head_set_mask(int32_t* abuff);
+
 		static EPH_HEAD_VAL		head_check_mask(const int32_t* abuff, int awpos);
+
 		void					set_mask();
+
 		EPH_HEAD_VAL			check_mask()const;
 
-		// # 给包头设置/获取时间
+		// # 设置包头时间
 		static void		head_set_time(int32_t* abuff);
+
+		// # 获取包头时间
 		static i32_time head_get_time(const int32_t* abuff);
 
 		// # 设置时间戳
@@ -39,8 +44,11 @@ namespace ngl
 		// # aactor:发送给哪个actor /* aenum == ACTOR_NONE 此值无效 */
 		// # arequestactorid:哪个actor发送的
 		static void head_set_actor(int32_t* abuff, i64_actorid aactor, i64_actorid arequestactorid);
+
 		static void head_set_actor(int32_t* abuff, i64_actorid aactor);
+
 		void set_actor(i64_actorid aactor, i64_actorid arequestactorid);
+
 		void set_requestactor(i64_actorid arequestactorid);
 
 		// # 获取要发送给哪个actor
@@ -79,15 +87,15 @@ namespace ngl
 		// # 获取协议号
 		i32_protocolnum protocolnum()const;
 
-		// # 获取/设置协议号
+		// # 获取协议号
 		i32_protocolnum get_protocolnumber()const;
-		void			set_protocol(i32_protocolnum aprotocolnum);
+
+		// # 设置协议号
+		void set_protocol(i32_protocolnum aprotocolnum);
 		
 		EPH_HEAD_VAL push(const char*& abuff, int32_t& alen);
-		bool push_format(ngl::ser::serialize_push* aserialize)const
-		{
-			return aserialize->basetype((void*)m_data, sizeof(int32_t) * EPH_SUM);
-		}
+
+		bool push_format(ngl::ser::serialize_push* aserialize)const;
 
 		void reservebuff(char* abuff, int abufflen, std::pair<char*, int32_t>& apair);
 	};

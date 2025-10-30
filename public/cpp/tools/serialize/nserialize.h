@@ -1,5 +1,11 @@
 #pragma once
 
+#include "net.pb.h"
+#include "tools.h"
+
+#include <google/protobuf/util/json_util.h>
+#include <google/protobuf/message_lite.h>
+#include <google/protobuf/descriptor.h>
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
@@ -13,12 +19,6 @@
 #include <set>
 #include <map>
 
-#include <google/protobuf/util/json_util.h>
-#include <google/protobuf/message_lite.h>
-#include <google/protobuf/descriptor.h>
-
-#include "net.pb.h"
-#include "tools.h"
 
 namespace ngl
 {
@@ -30,8 +30,8 @@ namespace ngl
 		class serialize
 		{
 			TBUFF m_buff;
-			int32_t m_len;
-			int32_t m_pos;
+			int32_t m_len = 0;
+			int32_t m_pos = 0;
 		public:
 			serialize(TBUFF abuff, int32_t alen) :
 				m_buff(abuff),
@@ -65,13 +65,9 @@ namespace ngl
 
 		class serialize_byte
 		{
-			int32_t m_pos;
+			int32_t m_pos = 0;
 		public:
-			serialize_byte() :
-				m_pos(0)
-			{}
-
-			int32_t pos()
+			inline int32_t pos()
 			{
 				return m_pos;
 			}
@@ -834,5 +830,4 @@ namespace ngl
 			}
 		}
 	}//namespce ser
-
 }//namespce ngl

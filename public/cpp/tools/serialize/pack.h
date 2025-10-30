@@ -12,7 +12,6 @@ namespace ngl
 	class bpool
 	{
 	public:
-		bpool();
 		char* malloc(int32_t alen);
 		void free(char* ap, int32_t alen);
 	};
