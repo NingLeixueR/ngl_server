@@ -11,7 +11,7 @@
 * Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-ï»¿#include "actor_gateway_c2g.h"
+#include "actor_gateway_c2g.h"
 #include "nregister.h"
 #include "nforward.h"
 
@@ -47,7 +47,7 @@ namespace ngl
 	{
 		// ç»‘å®šDBç»“æ„:DB.set(this);
 
-		// è®¾ç½®timer_handleå®šæ—¶å™¨
+		// è®¾ç½®timer_handleå®šæ—¶å™?
 		/*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
@@ -64,7 +64,7 @@ namespace ngl
 
 	void actor_gateway_c2g::nregister()
 	{
-		// å®šæ—¶å™¨
+		// å®šæ—¶å™?
 		actor::register_timer<actor_gateway_c2g>(&actor_gateway_c2g::timer_handle);
 
 		// ç»‘å®šè‡ªå®šä¹‰np_æ¶ˆæ¯

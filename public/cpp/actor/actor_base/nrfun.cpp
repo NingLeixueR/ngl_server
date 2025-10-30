@@ -11,7 +11,7 @@
 * Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-ï»¿#include "time_consuming.h"
+#include "time_consuming.h"
 #include "sysconfig.h"
 #include "nrfun.h"
 

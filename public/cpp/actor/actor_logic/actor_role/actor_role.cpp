@@ -11,7 +11,7 @@
 * ��������μ���Ŀ��Ŀ¼�µ� LICENSE �ļ���
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-﻿#include "ttab_specialid.h"
+#include "ttab_specialid.h"
 #include "ttab_recharge.h"
 #include "actor_events.h"
 #include "manage_curl.h"
@@ -69,7 +69,7 @@ namespace ngl
 		m_task.set(this);
 		m_rolekv.set(this);
 
-		// 设置timer_handle定时器
+		// 设置timer_handle定时�?
 		/*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
@@ -148,7 +148,7 @@ namespace ngl
 
 	void actor_role::nregister()
 	{
-		// 定时器
+		// 定时�?
 		actor::register_timer<actor_role>(&actor_role::timer_handle);
 
 		// 绑定自定义np_消息
@@ -275,7 +275,7 @@ namespace ngl
 
 	void actor_role::handle_after(handle_pram&)
 	{
-		// ### 同步这次消息的背包变动
+		// ### 同步这次消息的背包变�?
 		m_bag.sync_client();
 		if (m_attribute.sync())
 		{

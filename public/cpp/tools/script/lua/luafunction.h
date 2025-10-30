@@ -24,7 +24,7 @@ namespace ngl
 		const char* m_function		= nullptr;
 		int32_t m_callcount			= 0;
 		int32_t m_returncount		= 0;
-		std::function<bool()> m_returnfunction;
+		std::function<bool()> m_returnfunction = nullptr;
 	public:
 		luafunction(lua_State* aL, const char* ascriptpath, const char* afunction) :
 			L(aL),

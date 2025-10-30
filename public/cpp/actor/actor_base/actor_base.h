@@ -11,7 +11,7 @@
 * ��������μ���Ŀ��Ŀ¼�µ� LICENSE �ļ���
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-﻿#pragma once
+#pragma once
 
 #include "ttab_servers.h"
 #include "handle_pram.h"
@@ -50,17 +50,17 @@ namespace ngl
 		enscript		m_enscript			= enscript_none;					// 脚本支持
 	};
 
-	// # actor的状态
+	// # actor的状�?
 	enum actor_stat
 	{
-		actor_stat_init,  // 初始化阶段
+		actor_stat_init,  // 初始化阶�?
 		actor_stat_free,  // 状态为空闲
-		actor_stat_list,  // 繁忙-在等待线程的actor队列中
+		actor_stat_list,  // 繁忙-在等待线程的actor队列�?
 		actor_stat_run,	  // 繁忙-在线程中执行任务
-		actor_stat_close, // 关闭状态
+		actor_stat_close, // 关闭状�?
 	};
 
-	// # 消息的简单封装
+	// # 消息的简单封�?
 	template <typename T>
 	struct message;
 
@@ -71,7 +71,7 @@ namespace ngl
 		actor_base& operator=(const actor_base&) = delete;
 	private:
 		nguid										m_guid = nguid::make();			// actor guid
-		std::unique_ptr<actor_manage_dbclient>		m_dbclient = nullptr;			// dbclient组件管理器
+		std::unique_ptr<actor_manage_dbclient>		m_dbclient = nullptr;			// dbclient组件管理�?
 		bool										m_isload = false;				// 数据是否加载完成
 		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;					// dbclient组件
 		i32_session									m_kcpsession = -1;				// kcp session
@@ -93,7 +93,7 @@ namespace ngl
 		using ptr_manage_dbc = std::unique_ptr<actor_manage_dbclient>;
 		ptr_manage_dbc& get_actor_manage_dbclient();
 
-		//# 是否需要从数据库加载数据
+		//# 是否需要从数据库加载数�?
 		bool			isload();
 
 		//# 是否加载完成
@@ -102,7 +102,7 @@ namespace ngl
 		//# 设置db_component组件
 		void			set_db_component(ndb_component* acomponent);
 
-		//# 初始化数据(在数据加载完成后)
+		//# 初始化数�?在数据加载完成后)
 		void			db_component_init_data();
 
 		//# 初始化db_component
@@ -111,9 +111,9 @@ namespace ngl
 		//# 添加dbclient
 		void			add_dbclient(ndbclient_base* adbclient, i64_actorid aid);
 
-		//# 向actor_db发送数据请求后的返回
+		//# 向actor_db发送数据请求后的返�?
 		//# DBTYPE 数据类型
-		//# TDBTAB 数据表
+		//# TDBTAB 数据�?
 		//# TACTOR 持有该数据表的actor
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 		bool handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata);
@@ -122,18 +122,18 @@ namespace ngl
 #pragma region virtual_function
 		virtual ~actor_base();
 
-		//# 初始化数据
-		//# 一般actor对象会在其重载虚函数中
+		//# 初始化数�?
+		//# 一般actor对象会在其重载虚函数�?
 		//# 让dbclient与actor对象进行绑定
 		virtual void init() {}
 
-		//# 获取actor状态
+		//# 获取actor状�?
 		virtual actor_stat get_activity_stat() = 0;
 
-		//# 设置actor状态
+		//# 设置actor状�?
 		virtual void set_activity_stat(actor_stat astat) = 0;
 
-		//# 检查任务列表是否为空
+		//# 检查任务列表是否为�?
 		virtual bool list_empty() = 0;
 
 		//# 进行任务
@@ -145,20 +145,20 @@ namespace ngl
 		//# 执行handle之后调用
 		virtual void handle_after(handle_pram&) {}
 
-		//# 派生actor重载此函数 会在数据加载完成后调用
+		//# 派生actor重载此函�?会在数据加载完成后调�?
 		virtual void loaddb_finish(bool adbishave) {}
 
-		//# 删除actor时候会被调用
+		//# 删除actor时候会被调�?
 		virtual void release() = 0;
 
-		//# 移除actor前一刻调用
+		//# 移除actor前一刻调�?
 		virtual void erase_actor_before() {}
 #pragma endregion 
 
 		//# 保存dbclient
 		virtual void save();
 
-		//# 是否为单例
+		//# 是否为单�?
 		bool is_single();
 
 		//# 获取actor guid
@@ -194,7 +194,7 @@ namespace ngl
 
 #pragma region nscript
 	private:
-		//# 对脚本语言的支持
+		//# 对脚本语言的支�?
 		void* m_script = nullptr;
 		enscript m_enscript = enscript_none;					// 脚本支持
 	public:
@@ -238,10 +238,10 @@ namespace ngl
 			dprotocol(nscript_data_nsp<T>, data)
 		};
 
-		// # 向脚本压入数据(1、csv数据 2、db数据 3、nsp数据)
+		// # 向脚本压入数�?1、csv数据 2、db数据 3、nsp数据)
 		// parm aname			数据名称
 		// parm asource			数据来源(csv,db,nsp)
-		// parm adata			压入的数据
+		// parm adata			压入的数�?
 		// parm aedit			是否可以在脚本中修改
 		template <typename T>
 		bool nscript_data_push(const char* asource, const T& adata, bool aedit/* = false*/)
@@ -321,15 +321,15 @@ namespace ngl
 #pragma endregion 
 
 #pragma region net
-		//# 生成包
+		//# 生成�?
 		template <typename T>
 		static std::shared_ptr<pack> net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		//# 发送数据到指定服务器
+		//# 发送数据到指定服务�?
 		template <typename T>
 		static bool send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		//# 向一组服务器发送数据
+		//# 向一组服务器发送数�?
 		template <typename T>
 		static bool send_server(const std::set<i32_serverid>& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
@@ -340,11 +340,11 @@ namespace ngl
 		//# 通过proto结构名称与json消息体构造包
 		static std::shared_ptr<pack> jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		//# 给指定连接发送数据
+		//# 给指定连接发送数�?
 		template <typename T>
 		static bool sendpack_session(i32_sessionid asession, std::shared_ptr<pack>& apack);
 
-		//# 给指定连接发送数据
+		//# 给指定连接发送数�?
 		template <typename T>
 		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 #pragma endregion 
@@ -359,15 +359,15 @@ namespace ngl
 		//# 是否支持udp.kcp
 		static bool iskcp();
 
-		//# 通过udp.kcp发送数据
+		//# 通过udp.kcp发送数�?
 		template <typename T>
 		bool sendkcp(T& adata, i64_actorid aactorid, int16_t asystemindex = 0);
 
-		//# 通过udp.kcp发送数据
+		//# 通过udp.kcp发送数�?
 		template <typename T>
 		static bool static_sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0);
 
-		//# 通过udp.kcp发送数据
+		//# 通过udp.kcp发送数�?
 		template <typename T>
 		static bool static_sendkcp(const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0);
 
@@ -397,7 +397,7 @@ namespace ngl
 			return lguid.make_type(nguid::none_type());
 		}
 	public:
-		//# 根据actor_role.guidid给所在客户端发送数据
+		//# 根据actor_role.guidid给所在客户端发送数�?
 		template <typename T>
 		static void send_client(i64_actorid aid, const std::shared_ptr<T>& adata)
 		{
@@ -423,7 +423,7 @@ namespace ngl
 			push_task_id(actorclient_guid(), lpram);
 		}
 
-		//# 向所有客户端发送消息
+		//# 向所有客户端发送消�?
 		template <typename T>
 		static void send_client(const std::shared_ptr<T>& adata)
 		{
@@ -437,7 +437,7 @@ namespace ngl
 			send_server(lgatewayids, *pro, nguid::make(), nguid::make());
 		}
 
-		//# 往指定区服所有客户端发送消息
+		//# 往指定区服所有客户端发送消�?
 		template <typename T>
 		static void send_client(i16_area aarea, const std::shared_ptr<T>& adata)
 		{
@@ -512,22 +512,22 @@ namespace ngl
 			}
 		}
 #pragma region group
-		//# 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
+		//# 创建一个群发分�?可以指定ActorType,主要是为了区分客户端与普通actor)
 		int32_t create_group(ENUM_ACTOR atype = ACTOR_NONE);
 		
-		//# 移除一个分组
+		//# 移除一个分�?
 		void remove_group(int32_t agroupid);
 		
-		//# 将成员加入某个群发分组
+		//# 将成员加入某个群发分�?
 		bool add_group_member(int32_t agroupid, i64_actorid amember);
 		
-		//# 将成员从某个群发分组中移除
+		//# 将成员从某个群发分组中移�?
 		void remove_group_member(int32_t agroupid, i64_actorid amember);
 		
-		//# 获取group id中的actor列表与类型
+		//# 获取group id中的actor列表与类�?
 		const std::set<i64_actorid>* get_group(int32_t agroupid);
 
-		//# 给一组成员发送消息
+		//# 给一组成员发送消�?
 		template <typename T>
 		bool send_group(int agroupid, std::shared_ptr<T>& adata)
 		{
@@ -571,7 +571,7 @@ namespace ngl
 		//# 设置是否支持广播
 		void set_broadcast(bool aisbroadcast);
 
-		//# 启动广播定时器
+		//# 启动广播定时�?
 		static void start_broadcast();
 #pragma endregion 
 
@@ -595,7 +595,7 @@ namespace ngl
 	class actor_instance
 	{
 	public:
-		// 定义在 actor_manage.h
+		// 定义�?actor_manage.h
 		static T& instance();
 	};
 }//namespace ngl
