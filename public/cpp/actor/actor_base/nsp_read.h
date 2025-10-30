@@ -205,7 +205,7 @@ namespace ngl
 			{
 				if (m_actor->nscript_using())
 				{
-					m_actor->nscript_data_del<T>(dataid);
+					m_actor->template nscript_data_del<T>(dataid);
 				}
 				m_data.erase(dataid);
 				m_call.deldatafun(dataid);
