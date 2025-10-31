@@ -26,7 +26,7 @@ namespace ngl
 	struct redis_arg
 	{
 		str_ip		m_ip;
-		i16_port	m_port;
+		i16_port	m_port = 0;
 		std::string m_passworld;
 	};
 
@@ -41,17 +41,10 @@ namespace ngl
 			redisReply* lreply = cmd(arc, "GET %s:%d", atab, akey);
 			if (lreply != nullptr)
 			{
-				/*ngl::unserialize lunserialize((const char*)lreply->str, lreply->len);
-				if (lunserialize.pop(adata))
-				{
-					freeReplyObject(lreply);
-					return true;
-				}
-				else
-				{
-					freeReplyObject(lreply);
-					return false;
-				}*/
+				ngl::ser::serialize_pop lserialize((const char*)lreply->str, lreply->len);
+				bool lsuccess =  ngl::ser::nserialize::pop(&lserialize, adata);
+				freeReplyObject(lreply);
+				return lsuccess;
 			}
 			return false;
 		}
@@ -87,16 +80,18 @@ namespace ngl
 		static bool set(redisContext* arc, const char* atab, int akey, const T& adata)
 		{
 			char lbuff[REDIS_DATA_MAX] = { 0x0 };
-			/*ngl::serialize lflow(lbuff, REDIS_DATA_MAX);
-			if (lflow.push(adata))
+
+			ngl::ser::serialize_push lserialize(lbuff, REDIS_DATA_MAX);
+			bool lsuccess = ngl::ser::nserialize::push(&lserialize, adata);
+			if (lsuccess)
 			{
-				redisReply* lreply = cmd(arc, "SET %s:%d %b", atab, akey, lflow.buff(), (size_t)lflow.byte());
+				redisReply* lreply = cmd(arc, "SET %s:%d %b", atab, akey, lserialize.buff(), (size_t)lserialize.pos());
 				if (lreply != nullptr)
 				{
 					freeReplyObject(lreply);
 					return true;
 				}
-			}*/
+			}
 			return false;
 		}
 
@@ -105,7 +100,7 @@ namespace ngl
 
 	class redis
 	{
-		redisContext*	m_rc;
+		redisContext*	m_rc = nullptr;
 		redis_arg		m_arg;
 		redis();
 
@@ -139,49 +134,31 @@ namespace ngl
 		template <typename T>
 		bool get(int akey, T& adata)
 		{
-			return get(T::name(), akey, adata);
-		}
-
-	/*	template <typename T>
-		bool get(int akey, protobuf_data<T>& adata)
-		{
-			return get(tools::typename<T>(), akey, adata);
+			return get(tools::type_name<T>(), akey, adata);
 		}
 
 		template <typename T>
-		bool get(std::map<int, protobuf_data<T>>& adata)
+		bool get(std::map<int, T>& adata)
 		{
-			return redis_cmd::get(m_rc, T::name(), adata);
+			return redis_cmd::get(m_rc, tools::type_name<T>(), adata);
 		}
-
-		template <typename T>
-		bool set(int akey, const protobuf_data<T>& adata)
-		{
-			return set(tools::protobuf_tabname<T>::name(), akey, adata);
-		}*/
 
 		template <typename T>
 		bool set(int akey, const T& adata)
 		{
-			return set(T::name(), akey, adata);
+			return set(tools::type_name<T>(), akey, adata);
 		}
 
 		template <typename T>
 		bool set(std::map<int, T>& adata)
 		{
-			return set(T::name(), adata);
+			return set(tools::type_name<T>(), adata);
 		}
-
-	/*	template <typename T>
-		bool set(std::map<int, protobuf_data<T>>& adata)
-		{
-			return set(tools::protobuf_tabname<T>::name(), adata);
-		}*/
 
 		template <typename T>
 		bool del(int aid)
 		{
-			return redis_cmd::del(m_rc, T::name(), aid);
+			return redis_cmd::del(m_rc, tools::type_name<T>(), aid);
 		}
 	};
 

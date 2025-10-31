@@ -77,7 +77,7 @@ namespace ngl
 {
 	void test_hiredis()
 	{
-		/*ngl::redis_arg larg;
+		ngl::redis_arg larg;
 		larg.m_ip = "127.0.0.1";
 		larg.m_port = 6379;
 		larg.m_passworld = "123456";
@@ -88,20 +88,20 @@ namespace ngl
 			pbdb::db_role ltemp;
 			
 			ngl::i64_actorid lid = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
-			ltemp->set_mid(lid);
+			ltemp.set_mid(lid);
 			pbdb::db_brief lrolebase;
 			lrolebase.set_mid(lid);
-			lrolebase.set_mname(std::string("libo") + ngl::tools::lexical_cast<std::string>(i));
-			lrolebase.set_mlv(i);
-			lrolebase.set_mmoneygold(i + 1000);
-			lrolebase.set_mmoneysilver(i + 2000);
+			lrolebase.mutable_mbase()->set_mname(std::string("libo") + ngl::tools::lexical_cast<std::string>(i));
+			lrolebase.mutable_mbase()->set_mlv(i);
+			lrolebase.mutable_mbase()->set_mmoneygold(i + 1000);
+			lrolebase.mutable_mbase()->set_mmoneysilver(i + 2000);
 			lredis.set(i, ltemp);
 		}
 
 		for (int i = 1; i < 10; ++i)
 		{
-			protobuf_data<pbdb::db_role> ltemp2;
-			lredis.get(i, ltemp2);
+			pbdb::db_role ltemp;
+			lredis.get(i, ltemp);
 		}
 		
 
@@ -114,6 +114,6 @@ namespace ngl
 		np_connect_actor_server ltempk2;
 		lredis.get(322, ltempk2);
 
-		std::cout << std::endl;*/
+		std::cout << std::endl;
 	}
 }// namespace ngl
