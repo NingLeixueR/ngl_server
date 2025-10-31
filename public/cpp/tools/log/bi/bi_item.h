@@ -62,6 +62,4 @@ namespace ngl
 			log_bi()->print("item|{}", bi::push(m_serverid, m_roleid, m_itemid, m_tid, m_count, m_time, m_adddec, m_mask));
 		}
 	};
-
-
 }

@@ -13,6 +13,8 @@
 */
 #pragma once
 
+#include "cJSON.h"
+
 #include <functional>
 #include <string>
 #include <vector>
@@ -20,8 +22,6 @@
 #include <list>
 #include <map>
 #include <set>
-
-#include "cJSON.h"
 
 namespace ngl
 {
