@@ -1,4 +1,17 @@
-ï»¿#include "actor_robot.h"
+/*
+* Copyright (c) [2020-2025] NingLeixueR
+* 
+* ÏîÄ¿Ãû³Æ£ºngl_server
+* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* 
+* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
+* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
+* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* 
+* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*/
+#include "actor_robot.h"
 #include "nregister.h"
 #include "nforward.h"
 
@@ -38,7 +51,7 @@ namespace ngl
 	{
 		// ç»‘å®šDBç»“æ„:DB.set(this);
 
-		// è®¾ç½®timer_handleå®šæ—¶å™¨
+		// è®¾ç½®timer_handleå®šæ—¶å™?
 		/*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
@@ -55,7 +68,7 @@ namespace ngl
 
 	void actor_robot::nregister()
 	{
-		// å®šæ—¶å™¨
+		// å®šæ—¶å™?
 		actor::register_timer<actor_robot>(&actor_robot::timer_handle);
 
 		// ç»‘å®šè‡ªå®šä¹‰np_æ¶ˆæ¯

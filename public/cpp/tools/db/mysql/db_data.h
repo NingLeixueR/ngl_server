@@ -1,3 +1,16 @@
+/*
+* Copyright (c) [2020-2025] NingLeixueR
+* 
+* 项目名称：ngl_server
+* 项目地址：https://github.com/NingLeixueR/ngl_server
+* 
+* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
+* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
+* 但需保留原始版权和许可声明。
+* 
+* 许可详情参见项目根目录下的 LICENSE 文件：
+* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*/
 #pragma once
 
 #include "nserialize.h"
@@ -31,11 +44,13 @@ namespace ngl
 			return m_idindex;
 		}
 
+		// # 设置数据索引
 		static void set_index(int64_t aid)
 		{
 			m_idindex.insert(aid);
 		}
 
+		// # 删除数据索引
 		static void erase_index(int64_t aid)
 		{
 			m_idindex.erase(aid);
@@ -97,6 +112,7 @@ namespace ngl
 			return edbdata_load;
 		}
 
+		// # 查找指定数据
 		static T* find(i64_actorid aid)
 		{
 			auto itor = m_data.find(aid);
@@ -116,6 +132,8 @@ namespace ngl
 			}
 			T& ldata = m_data[aid];
 			ldata.set_mid(aid);
+			ldata = adata;
+			set_index(aid);
 			return &ldata;
 		}
 
