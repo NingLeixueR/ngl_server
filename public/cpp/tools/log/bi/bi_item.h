@@ -48,14 +48,14 @@ namespace ngl
 
 	struct bi_item
 	{
-		i32_serverid m_serverid;
-		i64_actorid m_roleid;
-		int32_t m_itemid;
-		int32_t m_tid;
-		int32_t m_count;
-		int32_t m_time;
-		int32_t m_adddec;// 1:增加 2:减少
-		std::string m_mask;
+		i32_serverid	m_serverid = 0;
+		i64_actorid		m_roleid = 0;
+		int32_t			m_itemid = 0;
+		int32_t			m_tid = 0;
+		int32_t			m_count = 0;
+		int32_t			m_time = 0;
+		int32_t			m_adddec = 0;// 1:增加 2:减少
+		std::string		m_mask;
 
 		void print()
 		{
