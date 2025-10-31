@@ -50,7 +50,7 @@ namespace ngl
 		enscript		m_enscript			= enscript_none;					// 脚本支持
 	};
 
-	// # actor的状态
+	//# actor的状态
 	enum actor_stat
 	{
 		actor_stat_init,  // 初始化阶段
@@ -60,7 +60,7 @@ namespace ngl
 		actor_stat_close, // 关闭状态
 	};
 
-	// # 消息的简单封装
+	//# 消息的简单封装
 	template <typename T>
 	struct message;
 
@@ -198,10 +198,10 @@ namespace ngl
 		void* m_script = nullptr;
 		enscript m_enscript = enscript_none;					// 脚本支持
 	public:
-		// # actor是否使用脚本
+		//# actor是否使用脚本
 		bool nscript_using();
 
-		// # 通知脚本db数据加载完毕
+		//# 通知脚本db数据加载完毕
 		bool nscript_db_loadfinish();
 
 		template <typename T>
@@ -238,7 +238,7 @@ namespace ngl
 			dprotocol(nscript_data_nsp<T>, data)
 		};
 
-		// # 向脚本压入数捿1、csv数据 2、db数据 3、nsp数据)
+		//# 向脚本压入数捿1、csv数据 2、db数据 3、nsp数据)
 		// parm aname			数据名称
 		// parm asource			数据来源(csv,db,nsp)
 		// parm adata			压入的数据
@@ -255,7 +255,7 @@ namespace ngl
 			);
 		}
 
-		// # 告诉脚本数据被删除了
+		//# 告诉脚本数据被删除了
 		// parm aname			数据名称
 		// parm adataid			数据id
 		template <typename T>
@@ -268,7 +268,7 @@ namespace ngl
 			return nscript_manage::data_del(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
 		}
 
-		// # 检查数据是否被修改
+		//# 检查数据是否被修改
 		template <typename T>
 		bool nscript_data_checkout(int64_t adataid, T& adata)
 		{
@@ -495,7 +495,7 @@ namespace ngl
 		}
 #pragma endregion
 
-		// # 方便调试打印协议
+		//# 方便调试打印协议
 		template <typename T>
 		void handle_print(const message<T>& adata)
 		{
