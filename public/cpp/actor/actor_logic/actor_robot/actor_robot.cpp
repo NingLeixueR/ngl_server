@@ -36,9 +36,9 @@ namespace ngl
 
 	void actor_robot::init()
 	{
-		// 绑定DB结构:DB.set(this);
+		// 缁戝畾DB缁撴瀯:DB.set(this);
 
-		// 设置timer_handle定时器
+		// 璁剧疆timer_handle瀹氭椂鍣?
 		/*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
@@ -55,10 +55,10 @@ namespace ngl
 
 	void actor_robot::nregister()
 	{
-		// 定时器
+		// 瀹氭椂鍣?
 		actor::register_timer<actor_robot>(&actor_robot::timer_handle);
 
-		// 绑定自定义np_消息
+		// 缁戝畾鑷畾涔塶p_娑堟伅
 		register_handle<actor_robot>::func<
 			np_thruput_test
 			, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE

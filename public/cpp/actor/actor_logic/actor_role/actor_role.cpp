@@ -50,13 +50,13 @@ namespace ngl
 
 	void actor_role::init()
 	{
-		// 绑定DB结构:DB.set(this);
+		// 缁戝畾DB缁撴瀯:DB.set(this);
 		m_info.set(this);
 		m_bag.set(this);
 		m_task.set(this);
 		m_rolekv.set(this);
 
-		// 设置timer_handle定时器
+		// 璁剧疆timer_handle瀹氭椂鍣?
 		/*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
@@ -71,7 +71,7 @@ namespace ngl
 			[this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 			{
 				if (afirstsynchronize)
-				{// 数据完全加载
+				{// 鏁版嵁瀹屽叏鍔犺浇
 					login_finish();
 				}
 			});
@@ -125,7 +125,7 @@ namespace ngl
 		//m_info.sync_actor_brief();
 		loginpay();
 
-		// # 登陆事件
+		// # 鐧婚檰浜嬩欢
 		np_eevents_logic_rolelogin lparm;
 		lparm.m_actorid = id_guid();
 		actor_events_logic::trigger_event(lparm);
@@ -135,10 +135,10 @@ namespace ngl
 
 	void actor_role::nregister()
 	{
-		// 定时器
+		// 瀹氭椂鍣?
 		actor::register_timer<actor_role>(&actor_role::timer_handle);
 
-		// 绑定自定义np_消息
+		// 缁戝畾鑷畾涔塶p_娑堟伅
 		register_handle<actor_role>::func<
 			np_actor_disconnect_close
 			, mforward<np_gm>
@@ -172,7 +172,7 @@ namespace ngl
 
 	void actor_role::loginpay()
 	{
-		// ### 检查是否有充值未发货
+		// ### 妫�鏌ユ槸鍚︽湁鍏呭�兼湭鍙戣揣
 		requestgm("http://127.0.0.1:800/pay/pay_login.php", std::format("roleid={}", id_guid()), [this](int, http_parm& ahttp)
 			{
 				if (ahttp.m_recvdata.empty())
@@ -262,7 +262,7 @@ namespace ngl
 
 	void actor_role::handle_after(handle_pram&)
 	{
-		// ### 同步这次消息的背包变动
+		// ### 鍚屾杩欐娑堟伅鐨勮儗鍖呭彉鍔?
 		m_bag.sync_client();
 		if (m_attribute.sync())
 		{
@@ -340,7 +340,7 @@ namespace ngl
 		
 		if (areporting && lstat == 0)
 		{
-			// ### 发货成功上报gm ###
+			// ### 鍙戣揣鎴愬姛涓婃姤gm ###
 			auto lhttp = ngl::manage_curl::make_http();
 			ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
 			ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
