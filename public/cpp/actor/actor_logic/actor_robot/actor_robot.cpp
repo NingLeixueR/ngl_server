@@ -1,4 +1,4 @@
-ï»¿#include "actor_robot.h"
+#include "actor_robot.h"
 #include "nregister.h"
 #include "nforward.h"
 
@@ -36,9 +36,9 @@ namespace ngl
 
 	void actor_robot::init()
 	{
-		// ç»‘å®šDBç»“æ„:DB.set(this);
+		// °ó¶¨DB½á¹¹:DB.set(this);
 
-		// è®¾ç½®timer_handleå®šæ—¶å™¨
+		// ÉèÖÃtimer_handle¶¨Ê±Æ÷
 		/*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
@@ -55,10 +55,10 @@ namespace ngl
 
 	void actor_robot::nregister()
 	{
-		// å®šæ—¶å™¨
+		// ¶¨Ê±Æ÷
 		actor::register_timer<actor_robot>(&actor_robot::timer_handle);
 
-		// ç»‘å®šè‡ªå®šä¹‰np_æ¶ˆæ¯
+		// °ó¶¨×Ô¶¨Òånp_ÏûÏ¢
 		register_handle<actor_robot>::func<
 			np_thruput_test
 			, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE

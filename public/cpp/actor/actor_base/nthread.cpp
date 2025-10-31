@@ -1,4 +1,4 @@
-﻿#include "actor_manage.h"
+#include "actor_manage.h"
 #include "nthread.h"
 
 namespace ngl
