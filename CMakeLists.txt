@@ -159,6 +159,7 @@ INCLUDE_DIRECTORIES(public/cpp/third_party/utf8cpp)
 INCLUDE_DIRECTORIES(public/cpp/third_party/utf8cpp/utf8)
 INCLUDE_DIRECTORIES(public/cpp/third_party/lua)
 INCLUDE_DIRECTORIES(public/cpp/third_party/lua/include)
+INCLUDE_DIRECTORIES(public/cpp/third_party/pb)
 
 INCLUDE_DIRECTORIES(third_party/lua-cjson-2.1.0/lua-cjson-2.1.0/)
 
