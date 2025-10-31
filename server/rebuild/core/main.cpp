@@ -13,10 +13,8 @@
 #include <set>
 #include <map>
 
-
 #include "operator_file.h"
 #include "localtime.h"
-
 
 bool is_sname(const std::string& astrname, const std::string& akey)
 {
@@ -250,7 +248,5 @@ int main(int argc, char** argv)
 			lwritetxt.write(lneirong);
 		}
 	}
-
-
 	return 0;
 }

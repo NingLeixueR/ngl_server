@@ -16,11 +16,10 @@
 #include <google/protobuf/dynamic_message.h>
 #include <google/protobuf/descriptor.h>
 
-#include "net.pb.h"
-
-#include "tools.h"
 #include "operator_file.h"
 #include "xmlprotocol.h"
+#include "net.pb.h"
+#include "tools.h"
 
 class xml_protocol
 {
@@ -85,18 +84,10 @@ public:
     static void nscript_func(const google::protobuf::Descriptor* messageDescriptor, std::string& lnamespace, const std::string& astruct)
     {
         std::stringstream m_stream;
-
         std::string lmesname;
         
-        //if (astruct == "")
-        //{
-        lmesname = messageDescriptor->full_name();//std::format("{}::{}", lnamespace, messageDescriptor->full_name());
+        lmesname = messageDescriptor->full_name();
         ngl::tools::replace("\\.", "::", lmesname, lmesname);
-       // }
-       // else
-       // {
-       //     lmesname = std::format("{}::{}::{}", lnamespace, astruct, messageDescriptor->name());
-       // }
 
         std::string lfstr1 = "M";
         std::string lfstr2 = "Entry";
@@ -120,7 +111,6 @@ public:
         m_stream << "       {" << std::endl;
         if (messageDescriptor->field_count() > 0)
         {
-            //ngl::nlua_table::table_push(L, "mcount", adata.mcount(), "mreward", adata.mreward());
             m_stream << "            ngl::nlua_table::table_push(L, ";
             std::cout << "name: " << messageDescriptor->name() << std::endl;
             for (int i = 0; i < messageDescriptor->field_count(); ++i)
@@ -209,7 +199,6 @@ public:
                     {
                         nscript_func(field->message_type(), lnamespace, messageDescriptor->name());
                     }
-                    //m_stream << "           *adata.mutable_" << field->name() << "() = " << field->name() << ";" << std::endl;
                 }
                 else if(field->is_repeated())
                 {
@@ -243,7 +232,6 @@ public:
         m_stream << "       static bool table_pop(lua_State * L, const char* aname, " << lmesname << "& adata)" << std::endl;
         m_stream << "       {" << std::endl;
        
-        
         m_stream << "           ngl::nlua_table::table_start_pop(L, aname);" << std::endl;
         m_stream << "           if (!stack_pop(L, adata, false))" << std::endl;
         m_stream << "           {" << std::endl;
@@ -316,7 +304,6 @@ public:
         nscript_auto(fileDescriptor, aname);
         return;
     }
-
 
     static void xml_fun(const google::protobuf::FileDescriptor* fileDescriptor, int32_t& aprotocol, const std::string& axml)
     {

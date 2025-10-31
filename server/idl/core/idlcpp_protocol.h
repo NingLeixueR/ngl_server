@@ -1,13 +1,14 @@
 #ifndef _IDLCPP_PROTOCOL_H_
 #define _IDLCPP_PROTOCOL_H_
 
-#include "idl.h"
 #include "localtime.h"
 #include "tools.h"
+#include "idl.h"
+
 #include <algorithm>
+#include <ranges>
 #include <string>
 #include <map>
-#include <ranges>
 
 class idlcppprotocol
 {
@@ -53,11 +54,9 @@ public:
 			delete lpInamespace;
 			ngl::writefile lfile("..\\idl\\idlfile\\" + item.first + ".h");
 			lfile.write(lstr);
-			//_h(".\\idlfile\\" + item.first, item.second, item.first == "game_db", item.first == "csvtable");
 		}
 	}
 
-	
 	void _cpp()
 	{
 		std::map<std::string, idl_file>& lmap = idl::instance().data();
@@ -87,7 +86,6 @@ public:
 			
 			ngl::writefile lfile("..\\idl\\idlfile\\" + item.first + ".cpp");
 			lfile.write(lstr);
-			//_cpp(".\\idlfile\\" + item.first, item.second, item.first == "game_db", item.first == "csvtable");
 		}
 	}
 
@@ -170,14 +168,6 @@ public:
 				m_stream << "	}\n";
 				m_stream << "	partial class RCsv" << std::endl;
 				m_stream << "	{" << std::endl;
-				//m_stream << "		public static bool readcsv(csvpair apair, ref "<< item.name<<" adata)" << std::endl;
-				//m_stream << "		{" << std::endl;
-				//m_stream << "			Int32 ltemp = 0;" << std::endl;
-				//m_stream << "			if(readcsv(apair, ref ltemp) == false)" << std::endl;
-				//m_stream << "				return false;" << std::endl;
-				//m_stream << "			adata = ("<< item.name <<")ltemp;" << std::endl;
-				//m_stream << "			return true;" << std::endl;
-				//m_stream << "		}" << std::endl;
 				m_stream << "		public static bool ReadCsv(CsvPair apair, List<" << item.name << "> avec)" << std::endl;
 				m_stream << "		{" << std::endl;
 				m_stream << "			string ltempstr = Read(apair);" << std::endl;
@@ -260,7 +250,6 @@ public:
 			m_stream << "}" << std::endl;
 			ngl::writefile lfile(".\\idlfile\\" + item.first + ".cs");
 			lfile.write(m_stream.str());
-			//_h(".\\idlfile\\" + item.first, item.second, item.first == "game_db", item.first == "csvtable");
 		}
 	}
 
@@ -448,7 +437,6 @@ namespace ngl
 		m_stream << R"(		);
 	}
 }//namespace ngl)";
-
 		lfile.write(m_stream.str());
 	}
 
@@ -457,7 +445,6 @@ namespace ngl
 		std::map<std::string, idl_file>& lmap = idl::instance().data();
 		for (std::pair<const std::string, idl_file>& item : lmap)
 		{
-			//Struct lStruct(lstr, item.second.m_struct, item.second.m_enum);
 			std::set<std::string> lset;
 			if (item.first == "csvtable")
 			{
@@ -472,8 +459,6 @@ namespace ngl
 					{
 						lset.insert(struc.name);
 						ngl::writefile lfile(std::format("../../public/cpp/actor/template_tab/t{}.h", struc.name));
-
-
 						std::string lcsvpp = std::format(R"(#pragma once
 
 #include "manage_csv.h"
@@ -535,8 +520,4 @@ namespace ngl
 		}
 	}
 };
-
-
-
-
 #endif//_IDLCPP_PROTOCOL_H_
