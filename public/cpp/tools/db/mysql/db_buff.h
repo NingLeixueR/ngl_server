@@ -151,12 +151,12 @@ namespace ngl
 				{
 					m_mallocbuff = std::make_shared<dbuff>(ltemp.size() + 1);
 					memcpy(m_mallocbuff->m_buff, ltemp.c_str(), ltemp.size() + 1);
-					m_mallocbuff->m_pos = ltemp.size() + 1;
+					m_mallocbuff->m_pos = (int32_t)ltemp.size() + 1;
 				}
 				else
 				{
 					memcpy(m_buff->m_buff, ltemp.c_str(), ltemp.size() + 1);
-					m_buff->m_pos = ltemp.size() + 1;
+					m_buff->m_pos = (int32_t)ltemp.size() + 1;
 				}
 			}
 			return;
