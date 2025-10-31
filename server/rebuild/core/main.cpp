@@ -240,6 +240,10 @@ int main(int argc, char** argv)
 			{
 				continue;
 			}
+			if (item.find("pb.h") != std::string::npos)
+			{
+				continue;
+			}
 			std::cout << "+head [" << item << std::endl;
 			ngl::writefile lwritetxt(item);
 			lwritetxt.write(lhead);
