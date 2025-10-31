@@ -1,7 +1,7 @@
-#include "idl.h"
 #include "idlcpp_protocol.h"
-#include <vector>
+#include "idl.h"
 
+#include <vector>
 
 int main(int argc, char* argv[])
 {
@@ -30,7 +30,5 @@ int main(int argc, char* argv[])
 		idl::instance().analysis("../../public/cpp/actor/actor_base/nactortype.h");
 		idlcppprotocol::instance()._auto_actor_enum();
 	}
-
-
 	return 0;
 }

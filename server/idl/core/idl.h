@@ -682,8 +682,5 @@ public:
 			}			
 		}
 	}
-
 };
-
-
 #endif//_IDL_H_
