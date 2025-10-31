@@ -161,23 +161,6 @@ namespace ngl
 	template <typename TDATA>
 	using mforward = np_actormodule_forward<TDATA>;
 
-	template <typename T>
-	bool tools::proto2json(const mforward<T>& adata, std::string& json)
-	{
-		const T* ldata = adata.data();
-		if (ldata == nullptr)
-		{
-			return false;
-		}
-		std::string ltemp;
-		if (!proto2json(*ldata, ltemp))
-		{
-			return false;
-		}
-		json = std::format(R"({{"msg":"{}","identifier":"{}","data":{}}})", tools::type_name<T>(), adata.identifier(), ltemp);
-		return true;
-	}
-
 	struct forward
 	{
 		int32_t m_bufflen = 0;

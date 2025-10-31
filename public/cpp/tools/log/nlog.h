@@ -29,13 +29,6 @@
 
 namespace ngl
 {
-	/**
-		此文件内定义的extern全局命名ngl的log_方法
-		其在actor类内部会调用actor_base中的log_方法
-		log_方法如果在全局调用会写入对应sys_global目录下的日志文件
-		log_方法如果actor类内调用则会写入对应actor_xxx目录下
-	*/
-
 	class elog_name
 	{
 	public:
@@ -62,32 +55,10 @@ namespace ngl
 	template <typename T>
 	void tools::print_json2proto(const T& adata, bool aislog/* = false*/)
 	{
-		std::string json;
-		if (tools::proto2json(adata, json))
+		std::string ljson;
+		if (tools::proto2json(adata, ljson))
 		{
-			const google::protobuf::Descriptor* descriptor = adata.GetDescriptor();
-			if (descriptor != nullptr)
-			{
-				if (aislog)
-				{
-					log_error()->print("{}:{}", descriptor->full_name(), tools::format_json(json));
-				}
-				else
-				{
-					std::cout << std::format("{}:{}", descriptor->full_name(), tools::format_json(json)) << std::endl;
-				}
-			}
-			else
-			{
-				if (aislog)
-				{
-					log_error()->print("{}", json);
-				}
-				else
-				{
-					std::cout << std::format("{}", json) << std::endl;
-				}
-			}
+			log_error()->print("{}:{}", tools::type_name<T>(), ljson);
 		}
 	}
 }//namespace ngl
@@ -126,7 +97,7 @@ struct std::formatter<std::vector<T>>
 	auto format(const std::vector<T>& vec, std::format_context& ctx)const
 	{
 		auto out = ctx.out();
-		std::format_to(out, "[");
+		std::format_to(out, "vector[");
 		for (auto it = vec.begin(); it != vec.end(); ++it) 
 		{
 			std::format_to(out, "{},", *it);
@@ -147,7 +118,7 @@ struct std::formatter<std::list<T>>
 	auto format(const std::vector<T>& vec, std::format_context& ctx)const
 	{
 		auto out = ctx.out();
-		std::format_to(out, "vector[");
+		std::format_to(out, "list[");
 		for (auto it = vec.begin(); it != vec.end(); ++it) 
 		{
 			std::format_to(out, "{},", *it);
@@ -199,7 +170,6 @@ struct std::formatter<std::map<TKEY, TVAL>>
 	}
 };
 
-//const ::PROTOBUF_NAMESPACE_ID::RepeatedField<T>
 template <typename T>
 struct std::formatter<google::protobuf::RepeatedField<T>>
 {

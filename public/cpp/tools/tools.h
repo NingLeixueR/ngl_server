@@ -356,9 +356,6 @@ namespace ngl
 			return google::protobuf::util::MessageToJsonString(adata, &json, options).ok();		
 		}
 
-		template <typename T>
-		static bool proto2json(const mforward<T>& adata, std::string& json);
-
 		// 以json格式打印pb数据
 		template <typename T>
 		static void print_json2proto(const T& adata, bool aislog = false);
