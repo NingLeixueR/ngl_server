@@ -44,11 +44,13 @@ namespace ngl
 			return m_idindex;
 		}
 
+		// # 设置数据索引
 		static void set_index(int64_t aid)
 		{
 			m_idindex.insert(aid);
 		}
 
+		// # 删除数据索引
 		static void erase_index(int64_t aid)
 		{
 			m_idindex.erase(aid);
@@ -110,6 +112,7 @@ namespace ngl
 			return edbdata_load;
 		}
 
+		// # 查找指定数据
 		static T* find(i64_actorid aid)
 		{
 			auto itor = m_data.find(aid);
@@ -129,6 +132,8 @@ namespace ngl
 			}
 			T& ldata = m_data[aid];
 			ldata.set_mid(aid);
+			ldata = adata;
+			set_index(aid);
 			return &ldata;
 		}
 

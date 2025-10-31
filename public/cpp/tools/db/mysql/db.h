@@ -12,15 +12,14 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
-  
+
+#include <mysql.h>
 #include <iostream> 
 #include <cstdint>
 #include <sstream>
 #include <vector>
 #include <string>
 #include <map>  
-
-#include <mysql.h>
 
 #include "db_buff.h"
 #include "xmlinfo.h"

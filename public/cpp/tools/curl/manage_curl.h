@@ -49,20 +49,18 @@ namespace ngl
 
 	struct http_parm
 	{
-		ENUM_MODE			m_mode = ENUM_MODE_NULL;	// http模式
-		ENUM_TYPE			m_type = ENUM_TYPE_NULL;	// http类型
-		CURL*				m_curl = nullptr;			// curl指针
-		std::string			m_url;						// 请求的url
-		std::string			m_param;					// 请求参数
-		int					m_timeout = 0;				// 超时时间
-		std::string			m_cookies;					// cookie
-		curl_slist*			m_http_headers = nullptr;	// http头
 		using callback = std::function<void(int, http_parm&)>;
-		callback			m_callback;					// 回调
-		std::string			m_recvdata;					// 接收的数据
 
-		http_parm()
-		{}
+		ENUM_MODE			m_mode = ENUM_MODE_NULL;				// http模式
+		ENUM_TYPE			m_type = ENUM_TYPE_NULL;				// http类型
+		CURL*				m_curl = nullptr;						// curl指针
+		std::string			m_url;									// 请求的url
+		std::string			m_param;								// 请求参数
+		int					m_timeout = 0;							// 超时时间
+		std::string			m_cookies;								// cookie
+		curl_slist*			m_http_headers = nullptr;				// http头
+		callback			m_callback = nullptr;					// 回调
+		std::string			m_recvdata;								// 接收的数据
 
 		~http_parm()
 		{
