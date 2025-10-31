@@ -1,4 +1,4 @@
-ï»¿#include "ttab_specialid.h"
+#include "ttab_specialid.h"
 #include "ttab_recharge.h"
 #include "actor_events.h"
 #include "manage_curl.h"
@@ -50,13 +50,13 @@ namespace ngl
 
 	void actor_role::init()
 	{
-		// ç»‘å®šDBç»“æ„:DB.set(this);
+		// °ó¶¨DB½á¹¹:DB.set(this);
 		m_info.set(this);
 		m_bag.set(this);
 		m_task.set(this);
 		m_rolekv.set(this);
 
-		// è®¾ç½®timer_handleå®šæ—¶å™¨
+		// ÉèÖÃtimer_handle¶¨Ê±Æ÷
 		/*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
@@ -71,7 +71,7 @@ namespace ngl
 			[this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 			{
 				if (afirstsynchronize)
-				{// æ•°æ®å®Œå…¨åŠ è½½
+				{// Êı¾İÍêÈ«¼ÓÔØ
 					login_finish();
 				}
 			});
@@ -125,7 +125,7 @@ namespace ngl
 		//m_info.sync_actor_brief();
 		loginpay();
 
-		// # ç™»é™†äº‹ä»¶
+		// # µÇÂ½ÊÂ¼ş
 		np_eevents_logic_rolelogin lparm;
 		lparm.m_actorid = id_guid();
 		actor_events_logic::trigger_event(lparm);
@@ -135,10 +135,10 @@ namespace ngl
 
 	void actor_role::nregister()
 	{
-		// å®šæ—¶å™¨
+		// ¶¨Ê±Æ÷
 		actor::register_timer<actor_role>(&actor_role::timer_handle);
 
-		// ç»‘å®šè‡ªå®šä¹‰np_æ¶ˆæ¯
+		// °ó¶¨×Ô¶¨Òånp_ÏûÏ¢
 		register_handle<actor_role>::func<
 			np_actor_disconnect_close
 			, mforward<np_gm>
@@ -172,7 +172,7 @@ namespace ngl
 
 	void actor_role::loginpay()
 	{
-		// ### æ£€æŸ¥æ˜¯å¦æœ‰å……å€¼æœªå‘è´§
+		// ### ¼ì²éÊÇ·ñÓĞ³äÖµÎ´·¢»õ
 		requestgm("http://127.0.0.1:800/pay/pay_login.php", std::format("roleid={}", id_guid()), [this](int, http_parm& ahttp)
 			{
 				if (ahttp.m_recvdata.empty())
@@ -262,7 +262,7 @@ namespace ngl
 
 	void actor_role::handle_after(handle_pram&)
 	{
-		// ### åŒæ­¥è¿™æ¬¡æ¶ˆæ¯çš„èƒŒåŒ…å˜åŠ¨
+		// ### Í¬²½Õâ´ÎÏûÏ¢µÄ±³°ü±ä¶¯
 		m_bag.sync_client();
 		if (m_attribute.sync())
 		{
@@ -340,7 +340,7 @@ namespace ngl
 		
 		if (areporting && lstat == 0)
 		{
-			// ### å‘è´§æˆåŠŸä¸ŠæŠ¥gm ###
+			// ### ·¢»õ³É¹¦ÉÏ±¨gm ###
 			auto lhttp = ngl::manage_curl::make_http();
 			ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
 			ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);

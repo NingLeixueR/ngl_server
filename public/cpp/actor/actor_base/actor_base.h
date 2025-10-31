@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 
 #include "ttab_servers.h"
 #include "handle_pram.h"
@@ -30,24 +30,24 @@ namespace ngl
 
 	struct actorparmbase
 	{
-		ENUM_ACTOR		m_type				= nguid::none_type();				// actorç±»å‹
-		i16_area		m_area				= tab_self_area;					// åŒºæœ
-		i32_actordataid m_id				= nguid::none_actordataid();		// æ•°æ®id
-		bool			m_manage_dbclient	= false;							// æ˜¯å¦æœ‰æ•°æ®åº“ä¾èµ–
-		enscript		m_enscript			= enscript_none;					// è„šæœ¬æ”¯æŒ
+		ENUM_ACTOR		m_type				= nguid::none_type();				// actorÀàĞÍ
+		i16_area		m_area				= tab_self_area;					// Çø·ş
+		i32_actordataid m_id				= nguid::none_actordataid();		// Êı¾İid
+		bool			m_manage_dbclient	= false;							// ÊÇ·ñÓĞÊı¾İ¿âÒÀÀµ
+		enscript		m_enscript			= enscript_none;					// ½Å±¾Ö§³Ö
 	};
 
-	// # actorçš„çŠ¶æ€
+	// # actorµÄ×´Ì¬
 	enum actor_stat
 	{
-		actor_stat_init,  // åˆå§‹åŒ–é˜¶æ®µ
-		actor_stat_free,  // çŠ¶æ€ä¸ºç©ºé—²
-		actor_stat_list,  // ç¹å¿™-åœ¨ç­‰å¾…çº¿ç¨‹çš„actoré˜Ÿåˆ—ä¸­
-		actor_stat_run,	  // ç¹å¿™-åœ¨çº¿ç¨‹ä¸­æ‰§è¡Œä»»åŠ¡
-		actor_stat_close, // å…³é—­çŠ¶æ€
+		actor_stat_init,  // ³õÊ¼»¯½×¶Î
+		actor_stat_free,  // ×´Ì¬Îª¿ÕÏĞ
+		actor_stat_list,  // ·±Ã¦-ÔÚµÈ´ıÏß³ÌµÄactor¶ÓÁĞÖĞ
+		actor_stat_run,	  // ·±Ã¦-ÔÚÏß³ÌÖĞÖ´ĞĞÈÎÎñ
+		actor_stat_close, // ¹Ø±Õ×´Ì¬
 	};
 
-	// # æ¶ˆæ¯çš„ç®€å•å°è£…
+	// # ÏûÏ¢µÄ¼òµ¥·â×°
 	template <typename T>
 	struct message;
 
@@ -58,50 +58,50 @@ namespace ngl
 		actor_base& operator=(const actor_base&) = delete;
 	private:
 		nguid										m_guid = nguid::make();			// actor guid
-		std::unique_ptr<actor_manage_dbclient>		m_dbclient = nullptr;			// dbclientç»„ä»¶ç®¡ç†å™¨
-		bool										m_isload = false;				// æ•°æ®æ˜¯å¦åŠ è½½å®Œæˆ
-		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;					// dbclientç»„ä»¶
+		std::unique_ptr<actor_manage_dbclient>		m_dbclient = nullptr;			// dbclient×é¼ş¹ÜÀíÆ÷
+		bool										m_isload = false;				// Êı¾İÊÇ·ñ¼ÓÔØÍê³É
+		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;					// dbclient×é¼ş
 		i32_session									m_kcpsession = -1;				// kcp session
 
-		//# é—´éš”ä¸€æ®µæ—¶é—´å‘èµ·çš„å…¨å‘˜(æ‰€æœ‰actor)å¹¿æ’­
-		//# å¯ä»¥åœ¨è¿™ä¸ªå¹¿æ’­é‡Œæ¨é€ä¸€äº›éœ€è¦å¤„ç†çš„ä»»åŠ¡,ä¾‹å¦‚ ä¿å­˜æ•°æ®
-		//# æ¨é€å…¨å‘˜å¹¿æ’­çš„ å•ä½(æ¯«ç§’)
+		//# ¼ä¸ôÒ»¶ÎÊ±¼ä·¢ÆğµÄÈ«Ô±(ËùÓĞactor)¹ã²¥
+		//# ¿ÉÒÔÔÚÕâ¸ö¹ã²¥ÀïÍÆËÍÒ»Ğ©ĞèÒª´¦ÀíµÄÈÎÎñ,ÀıÈç ±£´æÊı¾İ
+		//# ÍÆËÍÈ«Ô±¹ã²¥µÄ µ¥Î»(ºÁÃë)
 		static int									m_broadcast;
-		//# æ¨é€å¹¿æ’­çš„å®šæ—¶å™¨id
+		//# ÍÆËÍ¹ã²¥µÄ¶¨Ê±Æ÷id
 		static int									m_broadcasttimer;
-		//# æ˜¯å¦æ¥æ”¶å¹¿æ’­æ¶ˆæ¯
+		//# ÊÇ·ñ½ÓÊÕ¹ã²¥ÏûÏ¢
 		bool										m_isbroadcast = false;
 		ngroup										m_group;
 	public:
 		explicit actor_base(const actorparmbase& aparm);
 
 #pragma region db
-		//# è·å–actor_manage_dbclientå®ä¾‹
+		//# »ñÈ¡actor_manage_dbclientÊµÀı
 		using ptr_manage_dbc = std::unique_ptr<actor_manage_dbclient>;
 		ptr_manage_dbc& get_actor_manage_dbclient();
 
-		//# æ˜¯å¦éœ€è¦ä»æ•°æ®åº“åŠ è½½æ•°æ®
+		//# ÊÇ·ñĞèÒª´ÓÊı¾İ¿â¼ÓÔØÊı¾İ
 		bool			isload();
 
-		//# æ˜¯å¦åŠ è½½å®Œæˆ
+		//# ÊÇ·ñ¼ÓÔØÍê³É
 		bool			isloadfinish();
 
-		//# è®¾ç½®db_componentç»„ä»¶
+		//# ÉèÖÃdb_component×é¼ş
 		void			set_db_component(ndb_component* acomponent);
 
-		//# åˆå§‹åŒ–æ•°æ®(åœ¨æ•°æ®åŠ è½½å®Œæˆå)
+		//# ³õÊ¼»¯Êı¾İ(ÔÚÊı¾İ¼ÓÔØÍê³Éºó)
 		void			db_component_init_data();
 
-		//# åˆå§‹åŒ–db_component
+		//# ³õÊ¼»¯db_component
 		void			init_db_component(bool acreate);
 
-		//# æ·»åŠ dbclient
+		//# Ìí¼Ódbclient
 		void			add_dbclient(ndbclient_base* adbclient, i64_actorid aid);
 
-		//# å‘actor_dbå‘é€æ•°æ®è¯·æ±‚åçš„è¿”å›
-		//# DBTYPE æ•°æ®ç±»å‹
-		//# TDBTAB æ•°æ®è¡¨
-		//# TACTOR æŒæœ‰è¯¥æ•°æ®è¡¨çš„actor
+		//# Ïòactor_db·¢ËÍÊı¾İÇëÇóºóµÄ·µ»Ø
+		//# DBTYPE Êı¾İÀàĞÍ
+		//# TDBTAB Êı¾İ±í
+		//# TACTOR ³ÖÓĞ¸ÃÊı¾İ±íµÄactor
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 		bool handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata);
 #pragma endregion 
@@ -109,86 +109,86 @@ namespace ngl
 #pragma region virtual_function
 		virtual ~actor_base();
 
-		//# åˆå§‹åŒ–æ•°æ®
-		//# ä¸€èˆ¬actorå¯¹è±¡ä¼šåœ¨å…¶é‡è½½è™šå‡½æ•°ä¸­
-		//# è®©dbclientä¸actorå¯¹è±¡è¿›è¡Œç»‘å®š
+		//# ³õÊ¼»¯Êı¾İ
+		//# Ò»°ãactor¶ÔÏó»áÔÚÆäÖØÔØĞéº¯ÊıÖĞ
+		//# ÈÃdbclientÓëactor¶ÔÏó½øĞĞ°ó¶¨
 		virtual void init() {}
 
-		//# è·å–actorçŠ¶æ€
+		//# »ñÈ¡actor×´Ì¬
 		virtual actor_stat get_activity_stat() = 0;
 
-		//# è®¾ç½®actorçŠ¶æ€
+		//# ÉèÖÃactor×´Ì¬
 		virtual void set_activity_stat(actor_stat astat) = 0;
 
-		//# æ£€æŸ¥ä»»åŠ¡åˆ—è¡¨æ˜¯å¦ä¸ºç©º
+		//# ¼ì²éÈÎÎñÁĞ±íÊÇ·ñÎª¿Õ
 		virtual bool list_empty() = 0;
 
-		//# è¿›è¡Œä»»åŠ¡
+		//# ½øĞĞÈÎÎñ
 		virtual void actor_handle(i32_threadid athreadid) = 0;
 
-		//# æ·»åŠ ä»»åŠ¡
+		//# Ìí¼ÓÈÎÎñ
 		virtual void push(handle_pram& apram) = 0;
 
-		//# æ‰§è¡Œhandleä¹‹åè°ƒç”¨
+		//# Ö´ĞĞhandleÖ®ºóµ÷ÓÃ
 		virtual void handle_after(handle_pram&) {}
 
-		//# æ´¾ç”Ÿactoré‡è½½æ­¤å‡½æ•° ä¼šåœ¨æ•°æ®åŠ è½½å®Œæˆåè°ƒç”¨
+		//# ÅÉÉúactorÖØÔØ´Ëº¯Êı »áÔÚÊı¾İ¼ÓÔØÍê³Éºóµ÷ÓÃ
 		virtual void loaddb_finish(bool adbishave) {}
 
-		//# åˆ é™¤actoræ—¶å€™ä¼šè¢«è°ƒç”¨
+		//# É¾³ıactorÊ±ºò»á±»µ÷ÓÃ
 		virtual void release() = 0;
 
-		//# ç§»é™¤actorå‰ä¸€åˆ»è°ƒç”¨
+		//# ÒÆ³ıactorÇ°Ò»¿Ìµ÷ÓÃ
 		virtual void erase_actor_before() {}
 #pragma endregion 
 
-		//# ä¿å­˜dbclient
+		//# ±£´ædbclient
 		virtual void save();
 
-		//# æ˜¯å¦ä¸ºå•ä¾‹
+		//# ÊÇ·ñÎªµ¥Àı
 		bool is_single();
 
-		//# è·å–actor guid
+		//# »ñÈ¡actor guid
 		nguid& guid();
 
-		//# è·å–actor guid i64_actorid
+		//# »ñÈ¡actor guid i64_actorid
 		i64_actorid id_guid();
 
-		//# è·å–actor guidçš„æ•°æ®id
+		//# »ñÈ¡actor guidµÄÊı¾İid
 		i32_actordataid id();
 
-		//# è·å–actor guidçš„åŒºæœid
+		//# »ñÈ¡actor guidµÄÇø·şid
 		i16_area area();
 
-		//# è·å–actor guidçš„actor type
+		//# »ñÈ¡actor guidµÄactor type
 		ENUM_ACTOR type();
 
-		//# ç§»é™¤actorè‡ªèº«
+		//# ÒÆ³ıactor×ÔÉí
 		virtual void erase_actor();
 
-		//# ç§»é™¤æŒ‡å®šactor
+		//# ÒÆ³ıÖ¸¶¨actor
 		static void erase_actor(const nguid& aguid);
 
-		//# ç»™actorè‡ªèº«æ·»åŠ ä»»åŠ¡
+		//# ¸øactor×ÔÉíÌí¼ÓÈÎÎñ
 		void push_task_id(handle_pram& apram);
 
-		//# å‘æŒ‡å®šactoræ·»åŠ ä»»åŠ¡
+		//# ÏòÖ¸¶¨actorÌí¼ÓÈÎÎñ
 		static void push_task_id(const nguid& aguid, handle_pram& apram);
 		static void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram);
 
-		//# ç»™æŒ‡å®šç±»å‹çš„actoræ·»åŠ ä»»åŠ¡
+		//# ¸øÖ¸¶¨ÀàĞÍµÄactorÌí¼ÓÈÎÎñ
 		static void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
 #pragma region nscript
 	private:
-		//# å¯¹è„šæœ¬è¯­è¨€çš„æ”¯æŒ
+		//# ¶Ô½Å±¾ÓïÑÔµÄÖ§³Ö
 		void* m_script = nullptr;
-		enscript m_enscript = enscript_none;					// è„šæœ¬æ”¯æŒ
+		enscript m_enscript = enscript_none;					// ½Å±¾Ö§³Ö
 	public:
-		// # actoræ˜¯å¦ä½¿ç”¨è„šæœ¬
+		// # actorÊÇ·ñÊ¹ÓÃ½Å±¾
 		bool nscript_using();
 
-		// # é€šçŸ¥è„šæœ¬dbæ•°æ®åŠ è½½å®Œæ¯•
+		// # Í¨Öª½Å±¾dbÊı¾İ¼ÓÔØÍê±Ï
 		bool nscript_db_loadfinish();
 
 		template <typename T>
@@ -225,11 +225,11 @@ namespace ngl
 			dprotocol(nscript_data_nsp<T>, data)
 		};
 
-		// # å‘è„šæœ¬å‹å…¥æ•°æ®(1ã€csvæ•°æ® 2ã€dbæ•°æ® 3ã€nspæ•°æ®)
-		// parm aname			æ•°æ®åç§°
-		// parm asource			æ•°æ®æ¥æº(csv,db,nsp)
-		// parm adata			å‹å…¥çš„æ•°æ®
-		// parm aedit			æ˜¯å¦å¯ä»¥åœ¨è„šæœ¬ä¸­ä¿®æ”¹
+		// # Ïò½Å±¾Ñ¹ÈëÊı¾İ(1¡¢csvÊı¾İ 2¡¢dbÊı¾İ 3¡¢nspÊı¾İ)
+		// parm aname			Êı¾İÃû³Æ
+		// parm asource			Êı¾İÀ´Ô´(csv,db,nsp)
+		// parm adata			Ñ¹ÈëµÄÊı¾İ
+		// parm aedit			ÊÇ·ñ¿ÉÒÔÔÚ½Å±¾ÖĞĞŞ¸Ä
 		template <typename T>
 		bool nscript_data_push(const char* asource, const T& adata, bool aedit/* = false*/)
 		{
@@ -242,9 +242,9 @@ namespace ngl
 			);
 		}
 
-		// # å‘Šè¯‰è„šæœ¬æ•°æ®è¢«åˆ é™¤äº†
-		// parm aname			æ•°æ®åç§°
-		// parm adataid			æ•°æ®id
+		// # ¸æËß½Å±¾Êı¾İ±»É¾³ıÁË
+		// parm aname			Êı¾İÃû³Æ
+		// parm adataid			Êı¾İid
 		template <typename T>
 		bool nscript_data_del(int64_t adataid)
 		{
@@ -255,7 +255,7 @@ namespace ngl
 			return nscript_manage::data_del(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
 		}
 
-		// # æ£€æŸ¥æ•°æ®æ˜¯å¦è¢«ä¿®æ”¹
+		// # ¼ì²éÊı¾İÊÇ·ñ±»ĞŞ¸Ä
 		template <typename T>
 		bool nscript_data_checkout(int64_t adataid, T& adata)
 		{
@@ -308,59 +308,59 @@ namespace ngl
 #pragma endregion 
 
 #pragma region net
-		//# ç”ŸæˆåŒ…
+		//# Éú³É°ü
 		template <typename T>
 		static std::shared_ptr<pack> net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		//# å‘é€æ•°æ®åˆ°æŒ‡å®šæœåŠ¡å™¨
+		//# ·¢ËÍÊı¾İµ½Ö¸¶¨·şÎñÆ÷
 		template <typename T>
 		static bool send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		//# å‘ä¸€ç»„æœåŠ¡å™¨å‘é€æ•°æ®
+		//# ÏòÒ»×é·şÎñÆ÷·¢ËÍÊı¾İ
 		template <typename T>
 		static bool send_server(const std::set<i32_serverid>& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		//# å‘é€packåˆ°æŒ‡å®šæœåŠ¡å™¨
+		//# ·¢ËÍpackµ½Ö¸¶¨·şÎñÆ÷
 		template <typename T>
 		static bool sendpack_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
-		//# é€šè¿‡protoç»“æ„åç§°ä¸jsonæ¶ˆæ¯ä½“æ„é€ åŒ…
+		//# Í¨¹ıproto½á¹¹Ãû³ÆÓëjsonÏûÏ¢Ìå¹¹Ôì°ü
 		static std::shared_ptr<pack> jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		//# ç»™æŒ‡å®šè¿æ¥å‘é€æ•°æ®
+		//# ¸øÖ¸¶¨Á¬½Ó·¢ËÍÊı¾İ
 		template <typename T>
 		static bool sendpack_session(i32_sessionid asession, std::shared_ptr<pack>& apack);
 
-		//# ç»™æŒ‡å®šè¿æ¥å‘é€æ•°æ®
+		//# ¸øÖ¸¶¨Á¬½Ó·¢ËÍÊı¾İ
 		template <typename T>
 		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 #pragma endregion 
 
 #pragma region kcp
-		//# è®¾ç½®udp.kcp session
+		//# ÉèÖÃudp.kcp session
 		void set_kcpssion(i32_session asession);
 
-		//# è·å–udp.kcp session
+		//# »ñÈ¡udp.kcp session
 		i32_session get_kcpssion();
 
-		//# æ˜¯å¦æ”¯æŒudp.kcp
+		//# ÊÇ·ñÖ§³Öudp.kcp
 		static bool iskcp();
 
-		//# é€šè¿‡udp.kcpå‘é€æ•°æ®
+		//# Í¨¹ıudp.kcp·¢ËÍÊı¾İ
 		template <typename T>
 		bool sendkcp(T& adata, i64_actorid aactorid, int16_t asystemindex = 0);
 
-		//# é€šè¿‡udp.kcpå‘é€æ•°æ®
+		//# Í¨¹ıudp.kcp·¢ËÍÊı¾İ
 		template <typename T>
 		static bool static_sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0);
 
-		//# é€šè¿‡udp.kcpå‘é€æ•°æ®
+		//# Í¨¹ıudp.kcp·¢ËÍÊı¾İ
 		template <typename T>
 		static bool static_sendkcp(const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0);
 
 		virtual const char* kcp_session();
 
-		//# å‘èµ·kcpè¿æ¥
+		//# ·¢ÆğkcpÁ¬½Ó
 		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot);
 #pragma endregion 
 
@@ -384,7 +384,7 @@ namespace ngl
 			return lguid.make_type(nguid::none_type());
 		}
 	public:
-		//# æ ¹æ®actor_role.guididç»™æ‰€åœ¨å®¢æˆ·ç«¯å‘é€æ•°æ®
+		//# ¸ù¾İactor_role.guidid¸øËùÔÚ¿Í»§¶Ë·¢ËÍÊı¾İ
 		template <typename T>
 		static void send_client(i64_actorid aid, const std::shared_ptr<T>& adata)
 		{
@@ -410,7 +410,7 @@ namespace ngl
 			push_task_id(actorclient_guid(), lpram);
 		}
 
-		//# å‘æ‰€æœ‰å®¢æˆ·ç«¯å‘é€æ¶ˆæ¯
+		//# ÏòËùÓĞ¿Í»§¶Ë·¢ËÍÏûÏ¢
 		template <typename T>
 		static void send_client(const std::shared_ptr<T>& adata)
 		{
@@ -424,7 +424,7 @@ namespace ngl
 			send_server(lgatewayids, *pro, nguid::make(), nguid::make());
 		}
 
-		//# å¾€æŒ‡å®šåŒºæœæ‰€æœ‰å®¢æˆ·ç«¯å‘é€æ¶ˆæ¯
+		//# ÍùÖ¸¶¨Çø·şËùÓĞ¿Í»§¶Ë·¢ËÍÏûÏ¢
 		template <typename T>
 		static void send_client(i16_area aarea, const std::shared_ptr<T>& adata)
 		{
@@ -438,7 +438,7 @@ namespace ngl
 #pragma endregion
 
 #pragma region send_actor
-		//# å‘æŒ‡å®šactorå‘é€pack
+		//# ÏòÖ¸¶¨actor·¢ËÍpack
 		static void send_actor_pack(const nguid& aguid, const std::shared_ptr<pack>& adata)
 		{
 			handle_pram lpram = handle_pram::create_pack(aguid, nguid::make(), adata);
@@ -453,7 +453,7 @@ namespace ngl
 			push_task_type(atype, lpram);
 		}
 
-		//# å‘é€æ•°æ®åˆ°æŒ‡å®šçš„actor
+		//# ·¢ËÍÊı¾İµ½Ö¸¶¨µÄactor
 		template <typename T, bool IS_SEND = true>
 		static void send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
 		{
@@ -461,7 +461,7 @@ namespace ngl
 			push_task_id(aguid, lpram);
 		}
 
-		//# å‘é€æ•°æ®åˆ°æŒ‡å®šçš„actor
+		//# ·¢ËÍÊı¾İµ½Ö¸¶¨µÄactor
 		template <typename T, bool IS_SEND = true>
 		static void send_actor(
 			const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun
@@ -482,7 +482,7 @@ namespace ngl
 		}
 #pragma endregion
 
-		// # æ–¹ä¾¿è°ƒè¯•æ‰“å°åè®®
+		// # ·½±ãµ÷ÊÔ´òÓ¡Ğ­Òé
 		template <typename T>
 		void handle_print(const message<T>& adata)
 		{
@@ -499,22 +499,22 @@ namespace ngl
 			}
 		}
 #pragma region group
-		//# åˆ›å»ºä¸€ä¸ªç¾¤å‘åˆ†ç»„(å¯ä»¥æŒ‡å®šActorType,ä¸»è¦æ˜¯ä¸ºäº†åŒºåˆ†å®¢æˆ·ç«¯ä¸æ™®é€šactor)
+		//# ´´½¨Ò»¸öÈº·¢·Ö×é(¿ÉÒÔÖ¸¶¨ActorType,Ö÷ÒªÊÇÎªÁËÇø·Ö¿Í»§¶ËÓëÆÕÍ¨actor)
 		int32_t create_group(ENUM_ACTOR atype = ACTOR_NONE);
 		
-		//# ç§»é™¤ä¸€ä¸ªåˆ†ç»„
+		//# ÒÆ³ıÒ»¸ö·Ö×é
 		void remove_group(int32_t agroupid);
 		
-		//# å°†æˆå‘˜åŠ å…¥æŸä¸ªç¾¤å‘åˆ†ç»„
+		//# ½«³ÉÔ±¼ÓÈëÄ³¸öÈº·¢·Ö×é
 		bool add_group_member(int32_t agroupid, i64_actorid amember);
 		
-		//# å°†æˆå‘˜ä»æŸä¸ªç¾¤å‘åˆ†ç»„ä¸­ç§»é™¤
+		//# ½«³ÉÔ±´ÓÄ³¸öÈº·¢·Ö×éÖĞÒÆ³ı
 		void remove_group_member(int32_t agroupid, i64_actorid amember);
 		
-		//# è·å–group idä¸­çš„actoråˆ—è¡¨ä¸ç±»å‹
+		//# »ñÈ¡group idÖĞµÄactorÁĞ±íÓëÀàĞÍ
 		const std::set<i64_actorid>* get_group(int32_t agroupid);
 
-		//# ç»™ä¸€ç»„æˆå‘˜å‘é€æ¶ˆæ¯
+		//# ¸øÒ»×é³ÉÔ±·¢ËÍÏûÏ¢
 		template <typename T>
 		bool send_group(int agroupid, std::shared_ptr<T>& adata)
 		{
@@ -549,21 +549,21 @@ namespace ngl
 #pragma endregion 
 		
 #pragma region broadcast
-		//# è®¾ç½®å®šæ—¶ä»»åŠ¡å‚æ•°
+		//# ÉèÖÃ¶¨Ê±ÈÎÎñ²ÎÊı
 		int32_t set_timer(const np_timerparm& aparm);
 
-		//# æ˜¯å¦æ”¯æŒå¹¿æ’­
+		//# ÊÇ·ñÖ§³Ö¹ã²¥
 		bool isbroadcast();
 
-		//# è®¾ç½®æ˜¯å¦æ”¯æŒå¹¿æ’­
+		//# ÉèÖÃÊÇ·ñÖ§³Ö¹ã²¥
 		void set_broadcast(bool aisbroadcast);
 
-		//# å¯åŠ¨å¹¿æ’­å®šæ—¶å™¨
+		//# Æô¶¯¹ã²¥¶¨Ê±Æ÷
 		static void start_broadcast();
 #pragma endregion 
 
 		//# actor_base::create 
-		//# æ„é€ actorå¯¹è±¡ä¼šè‡ªåŠ¨è¢«è°ƒç”¨
+		//# ¹¹Ôìactor¶ÔÏó»á×Ô¶¯±»µ÷ÓÃ
 		template <typename TDerived>
 		static void first_nregister(ENUM_ACTOR atype)
 		{
@@ -574,7 +574,7 @@ namespace ngl
 			}
 		}
 
-		//# ç”¨äºåˆ›å»ºéå•ä¾‹actor
+		//# ÓÃÓÚ´´½¨·Çµ¥Àıactor
 		static std::shared_ptr<actor_base> create(ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm = nullptr);
 	};
 
@@ -582,7 +582,7 @@ namespace ngl
 	class actor_instance
 	{
 	public:
-		// å®šä¹‰åœ¨ actor_manage.h
+		// ¶¨ÒåÔÚ actor_manage.h
 		static T& instance();
 	};
 }//namespace ngl

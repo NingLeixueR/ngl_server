@@ -1,4 +1,4 @@
-ï»¿#include "actor_gateway_g2c.h"
+#include "actor_gateway_g2c.h"
 #include "nregister.h"
 #include "nforward.h"
 
@@ -32,9 +32,9 @@ namespace ngl
 
 	void actor_gateway_g2c::init()
 	{
-		// ç»‘å®šDBç»“æ„:DB.set(this);
+		// °ó¶¨DB½á¹¹:DB.set(this);
 
-		// è®¾ç½®timer_handleå®šæ—¶å™¨
+		// ÉèÖÃtimer_handle¶¨Ê±Æ÷
 		/*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
@@ -51,15 +51,15 @@ namespace ngl
 
 	void actor_gateway_g2c::nregister()
 	{
-		// å®šæ—¶å™¨
+		// ¶¨Ê±Æ÷
 		actor::register_timer<actor_gateway_g2c>(&actor_gateway_g2c::timer_handle);
 
-		// ç»‘å®šè‡ªå®šä¹‰np_æ¶ˆæ¯
+		// °ó¶¨×Ô¶¨Òånp_ÏûÏ¢
 		register_handle<actor_gateway_g2c>::func<
 			np_actor_gatewayinfo_updata
 		>(false);
 
-		// ç»‘å®špbæ¶ˆæ¯
+		// °ó¶¨pbÏûÏ¢
 		nforward::g2c();
 	}
 

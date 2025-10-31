@@ -1,4 +1,4 @@
-﻿#include "actor_manage.h"
+#include "actor_manage.h"
 #include "ntimer.h"
 
 namespace ngl
