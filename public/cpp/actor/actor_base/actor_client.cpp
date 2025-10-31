@@ -1,3 +1,16 @@
+/*
+* Copyright (c) [2020-2025] NingLeixueR
+* 
+* 项目名称：ngl_server
+* 项目地址：https://github.com/NingLeixueR/ngl_server
+* 
+* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
+* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
+* 但需保留原始版权和许可声明。
+* 
+* 许可详情参见项目根目录下的 LICENSE 文件：
+* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*/
 #include "server_session.h"
 #include "actor_client.h"
 #include "actor_server.h"
@@ -74,9 +87,8 @@ namespace ngl
 		int32_t lserverid = adata.get_data()->m_serverid;
 		
 		const tab_servers* tab = ttab_servers::instance().tab();
-		const tab_servers* tabactor = ttab_servers::instance().tab(nnodeid::tid(lserverid));
 
-		if (tab == nullptr || tabactor == nullptr)
+		if (tab == nullptr || ttab_servers::instance().tab(nnodeid::tid(lserverid)) == nullptr)
 		{
 			tools::no_core_dump();
 			return true;
@@ -94,11 +106,8 @@ namespace ngl
 			{
 				.m_name = std::format(
 					"node<id:{},type:{},name:{},tcount:{},area:{}>"
-					, tab->m_id
-					, em<NODE_TYPE>::get_name(tab->m_type)
-					, tab->m_name
-					, tab->m_tcount
-					, tab->m_area
+					, tab->m_id, em<NODE_TYPE>::get_name(tab->m_type)
+					, tab->m_name, tab->m_tcount, tab->m_area
 				),
 				.m_nodetype = tab->m_type,
 				.m_serverid = nconfig::m_nodeid,

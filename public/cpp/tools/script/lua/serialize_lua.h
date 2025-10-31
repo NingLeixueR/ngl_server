@@ -1,3 +1,16 @@
+/*
+* Copyright (c) [2020-2025] NingLeixueR
+* 
+* 项目名称：ngl_server
+* 项目地址：https://github.com/NingLeixueR/ngl_server
+* 
+* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
+* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
+* 但需保留原始版权和许可声明。
+* 
+* 许可详情参见项目根目录下的 LICENSE 文件：
+* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*/
 #pragma once
 
 #include "lua.hpp"
@@ -18,160 +31,43 @@ namespace ngl
 	class luaapi
 	{
 	public:
-		static bool isnumber(lua_State* L)
-		{
-			return lua_isnumber(L, -1);
-		}
-		static void pushnumber(lua_State* L, double adata)
-		{
-			lua_pushnumber(L, adata);
-		}
-		static bool popnumber(lua_State* L, double& adata, bool apop = true)
-		{
-			if (!isnumber(L))
-			{
-				return false;
-			}
-			adata = lua_tonumber(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
-		}
+		static bool isnumber(lua_State* L);
 
-		static bool isnil(lua_State* L)
-		{
-			return lua_isnil(L, -1);
-		}
-		static void pushnil(lua_State* L)
-		{
-			lua_pushnil(L);
-		}
-		static bool popnil(lua_State* L, bool apop = true)
-		{
-			if (!isnil(L))
-			{
-				return false;
-			}
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
-		}
+		static void pushnumber(lua_State* L, double adata);
 
-		static bool isinteger(lua_State* L)
-		{
-			return lua_isinteger(L, -1);
-		}
-		static void pushinteger(lua_State* L, int64_t aval)
-		{
-			lua_pushinteger(L, aval);
-		}
-		static bool popinteger(lua_State* L, int64_t& aval, bool apop = true)
-		{
-			if (!isinteger(L))
-			{
-				return false;
-			}
-			aval = lua_tointeger(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
-		}
+		static bool popnumber(lua_State* L, double& adata, bool apop = true);
 
-		static bool isstring(lua_State* L)
-		{
-			return lua_isstring(L, -1);
-		}
-		static const char* pushstring(lua_State* L, const char* astr)
-		{
-			return lua_pushstring(L, astr);
-		}
-		static const char* pushstring(lua_State* L, const std::string& astr)
-		{
-			return lua_pushstring(L, astr.c_str());
-		}
-		static bool popstring(lua_State* L, std::string& aval, bool apop = true)
-		{
-			if (!isstring(L))
-			{
-				return false;
-			}
-			const char* lpstr = lua_tostring(L, -1);
-			if (lpstr == nullptr)
-			{
-				return false;
-			}
-			aval = lpstr;
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
-		}
-		static bool popstring(lua_State* L, const char*& aval, bool apop = true)
-		{
-			if (!isstring(L))
-			{
-				return false;
-			}
-			aval = lua_tostring(L, -1);
-			if (aval == nullptr)
-			{
-				return false;
-			}
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
-		}
+		static bool isnil(lua_State* L);
 
-		static bool isboolean(lua_State* L)
-		{
-			return lua_isboolean(L, -1);
-		}
-		static void pushboolean(lua_State* L, bool aval)
-		{
-			lua_pushboolean(L, aval);
-		}
-		static bool popboolean(lua_State* L, bool& aval, bool apop = true)
-		{
-			if (!isboolean(L))
-			{
-				return false;
-			}
-			aval = lua_toboolean(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
-		}
+		static void pushnil(lua_State* L);
 
-		static void register_func(lua_State* L, const char* afuncname, lua_CFunction fn)
-		{
-			lua_register(L, afuncname, fn);
-		}
+		static bool popnil(lua_State* L, bool apop = true);
 
-		static void add_package_path(lua_State* L, const char* apath)
-		{
-			lua_getglobal(L, "package");
-			lua_getfield(L, -1, "path");
-			std::string lpath = lua_tostring(L, -1);
+		static bool isinteger(lua_State* L);
 
-			// 添加自定义路径（保留原有路径）
-			lpath += std::format(";{}?.lua", apath);
+		static void pushinteger(lua_State* L, int64_t aval);
 
-			lua_pop(L, 1);
-			lua_pushstring(L, lpath.c_str());
-			lua_setfield(L, -2, "path");
-			lua_pop(L, 1);
-		}
+		static bool popinteger(lua_State* L, int64_t& aval, bool apop = true);
+
+		static bool isstring(lua_State* L);
+
+		static const char* pushstring(lua_State* L, const char* astr);
+
+		static const char* pushstring(lua_State* L, const std::string& astr);
+
+		static bool popstring(lua_State* L, std::string& aval, bool apop = true);
+
+		static bool popstring(lua_State* L, const char*& aval, bool apop = true);
+
+		static bool isboolean(lua_State* L);
+
+		static void pushboolean(lua_State* L, bool aval);
+
+		static bool popboolean(lua_State* L, bool& aval, bool apop = true);
+
+		static void register_func(lua_State* L, const char* afuncname, lua_CFunction fn);
+
+		static void add_package_path(lua_State* L, const char* apath);
 	};
 
 

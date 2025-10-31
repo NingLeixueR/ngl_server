@@ -1,3 +1,16 @@
+/*
+* Copyright (c) [2020-2025] NingLeixueR
+* 
+* 项目名称：ngl_server
+* 项目地址：https://github.com/NingLeixueR/ngl_server
+* 
+* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
+* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
+* 但需保留原始版权和许可声明。
+* 
+* 许可详情参见项目根目录下的 LICENSE 文件：
+* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*/
 #pragma once
 
 #include "threadtools.h"
@@ -36,20 +49,18 @@ namespace ngl
 
 	struct http_parm
 	{
-		ENUM_MODE			m_mode = ENUM_MODE_NULL;	// http模式
-		ENUM_TYPE			m_type = ENUM_TYPE_NULL;	// http类型
-		CURL*				m_curl = nullptr;			// curl指针
-		std::string			m_url;						// 请求的url
-		std::string			m_param;					// 请求参数
-		int					m_timeout = 0;				// 超时时间
-		std::string			m_cookies;					// cookie
-		curl_slist*			m_http_headers = nullptr;	// http头
 		using callback = std::function<void(int, http_parm&)>;
-		callback			m_callback;					// 回调
-		std::string			m_recvdata;					// 接收的数据
 
-		http_parm()
-		{}
+		ENUM_MODE			m_mode = ENUM_MODE_NULL;				// http模式
+		ENUM_TYPE			m_type = ENUM_TYPE_NULL;				// http类型
+		CURL*				m_curl = nullptr;						// curl指针
+		std::string			m_url;									// 请求的url
+		std::string			m_param;								// 请求参数
+		int					m_timeout = 0;							// 超时时间
+		std::string			m_cookies;								// cookie
+		curl_slist*			m_http_headers = nullptr;				// http头
+		callback			m_callback = nullptr;					// 回调
+		std::string			m_recvdata;								// 接收的数据
 
 		~http_parm()
 		{
