@@ -37,7 +37,7 @@ namespace ngl
 
 	void actor_server::nregister()
 	{
-		//# è®¾ç½®æœªæ‰¾åˆ°åè®®å¤„ç†å‡½æ•°
+		//# ÉèÖÃÎ´ÕÒµ½Ğ­Òé´¦Àíº¯Êı
 		nrfun<actor_server>::instance().set_notfindfun(
 			[](int, handle_pram& apram)
 			{
@@ -73,7 +73,7 @@ namespace ngl
 				nets::sendmore(lsessionvec, lpram, nguid::moreactor(), id_guid());
 			}
 			{
-				// -- actor_client_node_update ç»™å…¶ä»–ç»“ç‚¹
+				// -- actor_client_node_update ¸øÆäËû½áµã
 				np_actornode_update lpram
 				{
 					.m_id = aserverid,
@@ -149,7 +149,7 @@ namespace ngl
 		const i32_serverid lserverid = lrecv->m_data.m_id;//lpack == nullptr?nconfig::m_nodeid:lpack->m_id;
 		naddress::add_actor_address(lserverid, lrecv->m_data.m_add);
 		naddress::del_actor_address(lrecv->m_data.m_del);
-		// # åˆ†å‘ç»™å…¶ä»–ç»“ç‚¹
+		// # ·Ö·¢¸øÆäËû½áµã
 		std::set<i32_sessionid> lsession;
 		naddress::foreach([lserverid, &lsession](const actor_node_session& anode)->bool
 			{

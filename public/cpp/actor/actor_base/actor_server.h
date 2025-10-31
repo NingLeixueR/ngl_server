@@ -41,23 +41,23 @@ namespace ngl
 
 		void print(const std::vector<i64_actorid>& avec)const;
 
-		// # å›å¤/è½¬å‘[np_actornode_register]è¯·æ±‚
+		// # »Ø¸´/×ª·¢[np_actornode_register]ÇëÇó
 		void reply_np_actornode_register(const pack* apack, i32_serverid aserverid);
 		void forward_np_actornode_register(
 			const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd
 		);
 
 		// # [actor client -> actor server] register
-		// # æ³¨å†Œç»“ç‚¹
+		// # ×¢²á½áµã
 		bool handle(const message<np_actornode_register>& adata);
 
-		// # æ›´æ–°ç»“ç‚¹ä¸­çš„actor
+		// # ¸üĞÂ½áµãÖĞµÄactor
 		bool handle(const message<np_actornode_update_server>& adata);
 
-		//# å‘actorå®¢æˆ·ç«¯åŒæ­¥ç»“ç‚¹ä¿¡æ¯ç¾¤å‘)
+		//# Ïòactor¿Í»§¶ËÍ¬²½½áµãĞÅÏ¢(Èº·¢)
 		bool handle(const message<np_actornode_update_mass>& adata);
 
-		// # æ›´æ–°gateway actor_role.guididä¸gateway server idå¯¹åº”å…³ç³»
+		// # ¸üĞÂgateway±í actor_role.guididÓëgateway server id¶ÔÓ¦¹ØÏµ
 		bool handle(const message<np_actor_gatewayid_updata>& adata);
 	};
 }//namespace ngl
