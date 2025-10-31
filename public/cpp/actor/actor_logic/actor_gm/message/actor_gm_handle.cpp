@@ -32,7 +32,6 @@ namespace ngl
 			{
 				return false;
 			}
-
 			if (ttab_servers::instance().tab()->m_id != tab->m_id)
 			{
 				int32_t lcount = sysconfig::node_count(atype);
