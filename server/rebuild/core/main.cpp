@@ -39,7 +39,8 @@ void find(
 	const std::string& atxt, 
 	const std::string& targetPath, 
 	std::set<std::string>& adir, 
-	std::map<std::string, int>& avec1
+	std::map<std::string, int>& avec1,
+	std::set<std::string>& avec2
 )
 {
 	std::filesystem::path myPath(targetPath);
@@ -61,7 +62,7 @@ void find(
 			std::string lpath2 = &lpath.c_str()[sizeof("../../")-1];
 			std::cout << "dir:[" << lpath2 << "]" << std::endl;
 			adir.insert(lpath2);
-			find(awz, atxt, lpath, adir, avec1);
+			find(awz, atxt, lpath, adir, avec1, avec2);
 		}
 		else
 		{
@@ -85,12 +86,13 @@ void find(
 
 				if (awz)
 				{
-					avec1.insert(std::make_pair(targetPath + lname, lmaxline));
+					avec1.insert(std::make_pair(targetPath + '/' + lname, lmaxline));
 				}
 				else
 				{
 					avec1.insert(std::make_pair(lname, lmaxline));
 				}
+				avec2.insert(targetPath + '/' + lname);
 				continue;
 			}
 		}
@@ -104,14 +106,16 @@ int main(int argc, char** argv)
 	std::map<std::string, int> lvec5;
 	std::set<std::string> ldic;
 
+	std::set<std::string> lset_head;
+
 	std::stringstream m_streamtxt;
 	for (int i = 2; i < argc; ++i)
 	{
 		std::string targetPath = argv[i];
 		ldic.insert(targetPath);
-		find(false, ".cpp", targetPath, ldic, lvec1);
-		find(false, ".c", targetPath, ldic, lvec5);
-		find(false, ".h", targetPath, ldic, lvec3);
+		find(false, ".cpp", targetPath, ldic, lvec1, lset_head);
+		find(false, ".c", targetPath, ldic, lvec5, lset_head);
+		find(false, ".h", targetPath, ldic, lvec3, lset_head);
 	}
 
 	std::map<int, std::map<std::string,int>> lmap;
@@ -124,8 +128,7 @@ int main(int argc, char** argv)
 		else
 		{
 			lmap2[item.first.size()].insert(item);
-		}
-		
+		}		
 	}
 
 	auto lsavefun = [&argv](int aindex, std::stringstream& astream)
@@ -205,5 +208,45 @@ int main(int argc, char** argv)
 			lsumline += apair.second;
 		});
 	std::cout << "当前源码行数：" << lsumline << std::endl;
+
+
+	std::string lhead = R"(/*
+* Copyright (c) [2020-2025] NingLeixueR
+* 
+* 项目名称：ngl_server
+* 项目地址：https://github.com/NingLeixueR/ngl_server
+* 
+* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
+* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
+* 但需保留原始版权和许可声明。
+* 
+* 许可详情参见项目根目录下的 LICENSE 文件：
+* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*/)";
+	lhead += "\r\n";
+	for (const std::string& item : lset_head)
+	{
+		ngl::readfile lfiletxt(item);
+		std::string lneirong;
+		lfiletxt.read(lneirong);
+
+		if (!lneirong.empty())
+		{
+			if (lneirong.find("Copyright (c) [2020-2025] NingLeixueR") != std::string::npos)
+			{
+				continue;
+			}
+			if (item.find("third_party") != std::string::npos)
+			{
+				continue;
+			}
+			std::cout << "+head [" << item << std::endl;
+			ngl::writefile lwritetxt(item);
+			lwritetxt.write(lhead);
+			lwritetxt.write(lneirong);
+		}
+	}
+
+
 	return 0;
 }
