@@ -35,9 +35,7 @@ namespace ngl
 			m_buff(new char[abuffsize]),
 			m_buffsize(abuffsize),
 			m_pos(0)
-		{
-
-		}
+		{}
 
 		~dbuff()
 		{

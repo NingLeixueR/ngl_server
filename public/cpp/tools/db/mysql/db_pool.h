@@ -24,14 +24,14 @@ namespace ngl
 
 		std::vector<db*> m_vec;
 
-		db_pool()
-		{}
+		db_pool(){}
 	public:
 		static db_pool& instance()
 		{
 			static db_pool ltemp;
 			return ltemp;
 		}
+
 		// # 初始化db连接池:目前连接池 只支持单配置，
 		// # 这意味着单个进程只能由一个数据库连接配置
 		void init(const dbarg& adbarg);
