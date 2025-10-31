@@ -1,3 +1,16 @@
+/*
+* Copyright (c) [2020-2025] NingLeixueR
+* 
+* 项目名称：ngl_server
+* 项目地址：https://github.com/NingLeixueR/ngl_server
+* 
+* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
+* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
+* 但需保留原始版权和许可声明。
+* 
+* 许可详情参见项目根目录下的 LICENSE 文件：
+* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*/
 #pragma once
 
 #include "localtime.h"
@@ -16,13 +29,6 @@
 
 namespace ngl
 {
-	/**
-		此文件内定义的extern全局命名ngl的log_方法
-		其在actor类内部会调用actor_base中的log_方法
-		log_方法如果在全局调用会写入对应sys_global目录下的日志文件
-		log_方法如果actor类内调用则会写入对应actor_xxx目录下
-	*/
-
 	class elog_name
 	{
 	public:
@@ -47,34 +53,12 @@ namespace ngl
 
 
 	template <typename T>
-	void tools::print_json2proto(const T& adata, bool aislog/* = false*/)
+	void tools::print_json(const T& adata, bool aislog/* = false*/)
 	{
-		std::string json;
-		if (tools::proto2json(adata, json))
+		std::string ljson;
+		if (tools::proto2json(adata, ljson))
 		{
-			const google::protobuf::Descriptor* descriptor = adata.GetDescriptor();
-			if (descriptor != nullptr)
-			{
-				if (aislog)
-				{
-					log_error()->print("{}:{}", descriptor->full_name(), tools::format_json(json));
-				}
-				else
-				{
-					std::cout << std::format("{}:{}", descriptor->full_name(), tools::format_json(json)) << std::endl;
-				}
-			}
-			else
-			{
-				if (aislog)
-				{
-					log_error()->print("{}", json);
-				}
-				else
-				{
-					std::cout << std::format("{}", json) << std::endl;
-				}
-			}
+			log_error()->print("{}:{}", tools::type_name<T>(), tools::format_json(ljson));
 		}
 	}
 }//namespace ngl
@@ -113,7 +97,7 @@ struct std::formatter<std::vector<T>>
 	auto format(const std::vector<T>& vec, std::format_context& ctx)const
 	{
 		auto out = ctx.out();
-		std::format_to(out, "[");
+		std::format_to(out, "vector[");
 		for (auto it = vec.begin(); it != vec.end(); ++it) 
 		{
 			std::format_to(out, "{},", *it);
@@ -134,7 +118,7 @@ struct std::formatter<std::list<T>>
 	auto format(const std::vector<T>& vec, std::format_context& ctx)const
 	{
 		auto out = ctx.out();
-		std::format_to(out, "vector[");
+		std::format_to(out, "list[");
 		for (auto it = vec.begin(); it != vec.end(); ++it) 
 		{
 			std::format_to(out, "{},", *it);
@@ -186,7 +170,6 @@ struct std::formatter<std::map<TKEY, TVAL>>
 	}
 };
 
-//const ::PROTOBUF_NAMESPACE_ID::RepeatedField<T>
 template <typename T>
 struct std::formatter<google::protobuf::RepeatedField<T>>
 {

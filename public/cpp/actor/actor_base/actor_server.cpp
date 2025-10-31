@@ -24,7 +24,7 @@ namespace ngl
 
 	void actor_server::nregister()
 	{
-		//# 设置未找到协议处理函数
+		//# 璁剧疆鏈壘鍒板崗璁鐞嗗嚱鏁?
 		nrfun<actor_server>::instance().set_notfindfun(
 			[](int, handle_pram& apram)
 			{
@@ -60,7 +60,7 @@ namespace ngl
 				nets::sendmore(lsessionvec, lpram, nguid::moreactor(), id_guid());
 			}
 			{
-				// -- actor_client_node_update 给其他结点
+				// -- actor_client_node_update 缁欏叾浠栫粨鐐?
 				np_actornode_update lpram
 				{
 					.m_id = aserverid,
@@ -136,7 +136,7 @@ namespace ngl
 		const i32_serverid lserverid = lrecv->m_data.m_id;//lpack == nullptr?nconfig::m_nodeid:lpack->m_id;
 		naddress::add_actor_address(lserverid, lrecv->m_data.m_add);
 		naddress::del_actor_address(lrecv->m_data.m_del);
-		// # 分发给其他结点
+		// # 鍒嗗彂缁欏叾浠栫粨鐐?
 		std::set<i32_sessionid> lsession;
 		naddress::foreach([lserverid, &lsession](const actor_node_session& anode)->bool
 			{

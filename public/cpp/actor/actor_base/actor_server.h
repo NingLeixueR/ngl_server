@@ -28,23 +28,23 @@ namespace ngl
 
 		void print(const std::vector<i64_actorid>& avec)const;
 
-		// # 回复/转发[np_actornode_register]请求
+		// # 鍥炲/杞彂[np_actornode_register]璇锋眰
 		void reply_np_actornode_register(const pack* apack, i32_serverid aserverid);
 		void forward_np_actornode_register(
 			const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd
 		);
 
 		// # [actor client -> actor server] register
-		// # 注册结点
+		// # 娉ㄥ唽缁撶偣
 		bool handle(const message<np_actornode_register>& adata);
 
-		// # 更新结点中的actor
+		// # 鏇存柊缁撶偣涓殑actor
 		bool handle(const message<np_actornode_update_server>& adata);
 
-		//# 向actor客户端同步结点信息(群发)
+		//# 鍚慳ctor瀹㈡埛绔悓姝ョ粨鐐逛俊鎭?缇ゅ彂)
 		bool handle(const message<np_actornode_update_mass>& adata);
 
-		// # 更新gateway表 actor_role.guidid与gateway server id对应关系
+		// # 鏇存柊gateway琛?actor_role.guidid涓巊ateway server id瀵瑰簲鍏崇郴
 		bool handle(const message<np_actor_gatewayid_updata>& adata);
 	};
 }//namespace ngl
