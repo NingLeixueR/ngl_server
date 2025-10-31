@@ -87,9 +87,8 @@ namespace ngl
 		int32_t lserverid = adata.get_data()->m_serverid;
 		
 		const tab_servers* tab = ttab_servers::instance().tab();
-		const tab_servers* tabactor = ttab_servers::instance().tab(nnodeid::tid(lserverid));
 
-		if (tab == nullptr || tabactor == nullptr)
+		if (tab == nullptr || ttab_servers::instance().tab(nnodeid::tid(lserverid)) == nullptr)
 		{
 			tools::no_core_dump();
 			return true;
@@ -107,11 +106,8 @@ namespace ngl
 			{
 				.m_name = std::format(
 					"node<id:{},type:{},name:{},tcount:{},area:{}>"
-					, tab->m_id
-					, em<NODE_TYPE>::get_name(tab->m_type)
-					, tab->m_name
-					, tab->m_tcount
-					, tab->m_area
+					, tab->m_id, em<NODE_TYPE>::get_name(tab->m_type)
+					, tab->m_name, tab->m_tcount, tab->m_area
 				),
 				.m_nodetype = tab->m_type,
 				.m_serverid = nconfig::m_nodeid,
