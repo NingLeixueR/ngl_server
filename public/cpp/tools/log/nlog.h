@@ -53,12 +53,12 @@ namespace ngl
 
 
 	template <typename T>
-	void tools::print_json2proto(const T& adata, bool aislog/* = false*/)
+	void tools::print_json(const T& adata, bool aislog/* = false*/)
 	{
 		std::string ljson;
 		if (tools::proto2json(adata, ljson))
 		{
-			log_error()->print("{}:{}", tools::type_name<T>(), ljson);
+			log_error()->print("{}:{}", tools::type_name<T>(), tools::format_json(ljson));
 		}
 	}
 }//namespace ngl

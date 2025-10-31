@@ -358,7 +358,7 @@ namespace ngl
 
 		// 以json格式打印pb数据
 		template <typename T>
-		static void print_json2proto(const T& adata, bool aislog = false);
+		static void print_json(const T& adata, bool aislog = false);
 
 		// 通过json获取结构
 		template <typename T>
