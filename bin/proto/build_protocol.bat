@@ -8,8 +8,8 @@ protoc.exe --experimental_allow_proto3_optional  --csharp_out=./pro net.proto
 protoc.exe --experimental_allow_proto3_optional  --csharp_out=./pro db.proto
 protoc.exe --experimental_allow_proto3_optional  --csharp_out=./pro example.proto
 
-xcopy pro\*.cc ..\..\public\cpp\actor\auto_edit\ /s/y
-xcopy pro\*.h ..\..\public\cpp\actor\auto_edit\ /s/y
+xcopy pro\*.cc ..\..\public\cpp\third_party\pb\ /s/y
+xcopy pro\*.h ..\..\public\cpp\third_party\pb\ /s/y
 xcopy pro\*.cs ..\..\public\csharp\csharp\csharp\protobuf /s/y
 
 #xcopy /E /I /Y pro\phpcode  ..\..\..\php\
