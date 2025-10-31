@@ -1,4 +1,4 @@
-ï»¿#include <type_traits>
+#include <type_traits>
 #include <filesystem>
 #include <functional>
 #include <algorithm>
@@ -79,7 +79,7 @@ void find(
 			
 			if (is_sname(lname, atxt))
 			{
-				// æ–‡ä»¶è¡Œæ•°
+				// ÎÄ¼þÐÐÊý
 				ngl::readfile lrf(lpath);
 				int lmaxline = lrf.get_maxline();
 
@@ -140,9 +140,9 @@ int main(int argc, char** argv)
 	auto lmalloc = [/*&lmapinclude*/]()->std::stringstream*
 		{
 			std::stringstream* m_stream = new std::stringstream();
-			*m_stream << "// æ³¨æ„ã€rebuild.bat å·¥å…·ç”Ÿæˆæ–‡ä»¶ï¼Œä¸è¦æ‰‹åŠ¨ä¿®æ”¹ã€‘" << std::endl;
+			*m_stream << "// ×¢Òâ¡¾rebuild.bat ¹¤¾ßÉú³ÉÎÄ¼þ£¬²»ÒªÊÖ¶¯ÐÞ¸Ä¡¿" << std::endl;
 			char ltmbuff[1024] = { 0 };
-			ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// åˆ›å»ºæ—¶é—´ %y-%m-%d %H:%M:%S");
+			ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// ´´½¨Ê±¼ä %y-%m-%d %H:%M:%S");
 			*m_stream << ltmbuff << std::endl;
 			*m_stream << "#include \"pb_field.cpp\"" << std::endl;
 			return m_stream;
@@ -207,20 +207,20 @@ int main(int argc, char** argv)
 		{
 			lsumline += apair.second;
 		});
-	std::cout << "å½“å‰æºç è¡Œæ•°ï¼š" << lsumline << std::endl;
+	std::cout << "µ±Ç°Ô´ÂëÐÐÊý£º" << lsumline << std::endl;
 
 
 	std::string lhead = R"(/*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* é¡¹ç›®åç§°ï¼šngl_server
-* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
+* ÏîÄ¿Ãû³Æ£ºngl_server
+* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
 * 
-* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
-* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
-* ä½†éœ€ä¿ç•™åŽŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜Žã€‚
+* ±¾ÎÄ¼þÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ð­Òé·¢²¼¡£
+* Äú¿ÉÒÔ°´ÕÕÐ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ÐÞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
+* µ«Ðè±£ÁôÔ­Ê¼°æÈ¨ºÍÐí¿ÉÉùÃ÷¡£
 * 
-* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
+* Ðí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼þ£º
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */)";
 	lhead += "\r\n";
