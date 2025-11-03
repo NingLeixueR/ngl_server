@@ -40,7 +40,7 @@ namespace ngl
 		bool				m_suspend = false;	
 
 		// # 挂起的工作线程
-		std::list<nthread*>	m_suspendthread;
+		std::list<nthread*>	m_suspendthreads;
 
 		// # 管理线程
 		std::jthread		m_thread;	
