@@ -79,7 +79,7 @@ namespace ngl
 		static i32_serverid get_server(const nguid& aguid);
 
 		//# 获取ENUM_ACTOR 对应的服务器
-		static void get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
+		static void get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& aservers);
 #pragma endregion
 
 #pragma region gateway
