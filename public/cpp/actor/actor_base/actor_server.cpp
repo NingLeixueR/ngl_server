@@ -56,6 +56,7 @@ namespace ngl
 		const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd
 	)
 	{
+		// 同步其他结点
 		std::set<i32_sessionid> lsessionvec;
 		naddress::foreach([&lsessionvec, apack](const actor_node_session& asnode)
 			{
@@ -67,19 +68,19 @@ namespace ngl
 			});
 		if (!lsessionvec.empty())
 		{
+
 			{
-				np_actornode_register_response lpram;
-				lpram.m_vec.push_back(anode);
-				nets::sendmore(lsessionvec, lpram, nguid::moreactor(), id_guid());
+				np_actornode_register_response pro;
+				pro.m_vec.push_back(anode);
+				nets::sendmore(lsessionvec, pro, nguid::moreactor(), id_guid());
 			}
 			{
-				// -- actor_client_node_update 给其他结点
-				np_actornode_update lpram
+				np_actornode_update pro
 				{
 					.m_id = aserverid,
 					.m_add = aadd,
 				};
-				nets::sendmore(lsessionvec, lpram, nguid::moreactor(), id_guid());
+				nets::sendmore(lsessionvec, pro, nguid::moreactor(), id_guid());
 			}			
 		}
 	}
@@ -216,7 +217,7 @@ namespace ngl
 				return true;
 			}
 		);
-		if (lsessionvec.empty() == false)
+		if (!lsessionvec.empty())
 		{
 			nets::sendmore(lsessionvec, *lrecv, nguid::moreactor(), id_guid());
 		}
