@@ -33,6 +33,7 @@
      gcc (GCC) 13.1.0
      ```
   * 在win编译运行(vs2022)
+  * cmake版本3.31.8
 
 ## 例子游戏
   * [猜数字](https://github.com/NingLeixueR/ngl_server/wiki/%E4%BE%8B%E5%AD%90%E6%B8%B8%E6%88%8F%E2%80%90%E7%8C%9C%E6%95%B0%E5%AD%97)
