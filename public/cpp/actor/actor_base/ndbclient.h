@@ -139,7 +139,6 @@ namespace ngl
 
 		void set(actor_base* aactor, const TDBTAB& adata, bool achange = false)
 		{
-			check_init();
 			m_actor = aactor;
 			m_data = adata;
 			m_pdata = nullptr;
