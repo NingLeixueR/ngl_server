@@ -43,10 +43,8 @@ namespace ngl
 
 	void actor_manage::get_type(std::vector<i16_actortype>& aactortype)
 	{
-		for (i16_actortype item : m_actortype)
-		{
-			aactortype.push_back(item);
-		}
+		aactortype.reserve(m_actortype.size());
+		std::copy(m_actortype.begin(), m_actortype.end(), std::back_inserter(aactortype));
 	}
 
 	// # nosafe_开头的函数代表"内部操作未加锁"，不允许类外调用
