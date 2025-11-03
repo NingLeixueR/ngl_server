@@ -13,16 +13,16 @@
 */
 #pragma once
 
+#include "ttab_attribute.h"
+#include "manage_csv.h"
+#include "nlog.h"
+#include "net.h"
+
 #include <functional>
 #include <vector>
 #include <array>
 #include <set>
 #include <map>
-
-#include "ttab_attribute.h"
-#include "manage_csv.h"
-#include "nlog.h"
-#include "net.h"
 
 namespace ngl
 {
@@ -183,8 +183,6 @@ namespace ngl
 		}
 	};
 }// namespace ngl
-
-//std::map<EnumAttribute, int64_t>
 
 template <>
 struct std::formatter<ngl::EnumAttribute>

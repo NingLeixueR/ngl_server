@@ -15,7 +15,6 @@
 #include "actor_ranklist.h"
 #include "activity_rank.h"
 
-
 namespace ngl
 {
 	void activity_rank::start()

@@ -62,7 +62,6 @@ namespace ngl
 		data_modified<pbdb::db_activitytimes>* m_activitytimes	= nullptr;
 		activitydb* m_activitydb								= nullptr;
 		activitytimedb* m_activitytimedb						= nullptr;
-
 	public:
 		activity(
 			int32_t activityid

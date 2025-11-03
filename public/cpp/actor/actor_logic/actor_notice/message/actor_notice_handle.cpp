@@ -24,7 +24,6 @@ namespace ngl
 	};
 	bool actor_notice::handle(const message<mforward<np_gm>>& adata)
 	{
-		//using type = mforward<np_gm_response>;
 		ngl::njson_read lojson(adata.get_data()->data()->m_json.c_str());
 
 		std::string loperator;
@@ -62,7 +61,6 @@ namespace ngl
 
 			handle_cmd::add("del_notice") = [this](int id, ngl::njson_read& aos)
 				{
-					// ·µ»Ø bool
 					gcmd<bool> pro(id, "del_notice", false);
 					int64_t lid = 0;
 					if (!njson::read(aos, "data", lid))

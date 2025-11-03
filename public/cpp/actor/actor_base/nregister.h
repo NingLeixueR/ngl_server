@@ -72,6 +72,7 @@ namespace ngl
 		rfun<TTTDerived, T>(afun, nactor_type<TDerived>::type(), aisload);
 		return *this;
 	}
+
 	template <typename TDerived>
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived>& nrfun<TDerived>::rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload/* = false*/)

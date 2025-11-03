@@ -12,27 +12,24 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once 
+
 #include "actor_example_manage.h"
 #include "ttab_specialid.h"
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "actor_brief.h"
 #include "ndb_modular.h"
-//#include "nsp_server.h"
-//#include "nsp_client.h"
+#include "example.pb.h"
 #include "manage_csv.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
 #include "db_manage.h"
 #include "db_data.h"
 #include "db_pool.h"
+#include "net.pb.h"
 #include "ntimer.h"
 #include "net.h"
 #include "db.h"
-
-#include "example.pb.h"
-#include "net.pb.h"
-
 
 namespace ngl
 {
@@ -46,9 +43,10 @@ namespace ngl
 		std::vector<i64_actorid> m_rolesds;
 		pbexample::EPLAY_TYPE m_playertype;
 	public:
-		actor_example(pbexample::EPLAY_TYPE aplayertype, ENUM_ACTOR atype, int32_t aindex, const std::map<int32_t, i64_actorid>& aroleids) :actor(
-			actorparm
-			{
+		actor_example(pbexample::EPLAY_TYPE aplayertype, ENUM_ACTOR atype, int32_t aindex, const std::map<int32_t, i64_actorid>& aroleids) :
+			actor(
+				actorparm
+				{
 				.m_parm
 					{
 						.m_type = atype,
@@ -56,7 +54,7 @@ namespace ngl
 						.m_id = aindex
 					},
 				.m_weight = 0x7fffffff,
-			}),
+				}),
 			m_playertype(aplayertype)
 		{
 			m_rolesds.reserve(aroleids.size());

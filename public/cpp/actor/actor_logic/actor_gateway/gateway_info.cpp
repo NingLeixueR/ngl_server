@@ -61,30 +61,13 @@ namespace ngl
 
 	void gateway_info::remove_socket(i32_socket asocket)
 	{
-		//if (sysconfig::robot_test())
-		//{
-		//	for (std::pair<const i16_area, std::map<i32_actordataid, gateway_socket>>& item : m_info)
-		//	{
-		//		for (std::pair<const i32_actordataid, gateway_socket>& itemgateway : item.second)
-		//		{
-		//			if (itemgateway.second.m_socket == asocket)
-		//			{
-		//				itemgateway.second.m_socket = 0;
-		//			}
-		//		}
-		//	}
-		//	m_sockinfo.erase(asocket);
-		//}
-		//else
-		//{
-			auto itor = m_sockinfo.find(asocket);
-			if (itor == m_sockinfo.end())
-			{
-				return;
-			}
-			itor->second->m_socket = 0;
-			m_sockinfo.erase(itor);
-		//}
+		auto itor = m_sockinfo.find(asocket);
+		if (itor == m_sockinfo.end())
+		{
+			return;
+		}
+		itor->second->m_socket = 0;
+		m_sockinfo.erase(itor);
 	}
 
 	void gateway_info::remove_actorid(i64_actorid aactorid)

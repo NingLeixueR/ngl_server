@@ -13,13 +13,13 @@
 */
 #pragma once
 
-#include <vector>
-#include <string>
-#include <map>
-
 #include "actor_role.h"
 #include "tools.h"
 #include "nlog.h"
+
+#include <vector>
+#include <string>
+#include <map>
 
 namespace ngl
 {

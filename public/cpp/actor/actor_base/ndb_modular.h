@@ -70,7 +70,7 @@ namespace ngl
 		//# 获取m_dbclient
 		ndbclient_base*		dbclientbase();
 
-		// # 当数据全部加载后调用
+		//# 当数据全部加载后调用
 		virtual void		init_data();
 	};
 

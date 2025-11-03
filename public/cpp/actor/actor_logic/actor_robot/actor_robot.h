@@ -14,16 +14,15 @@
 #pragma once
 
 #include "actor_manage.h"
+#include "example.pb.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
 #include "db_manage.h"
 #include "db_data.h"
 #include "db_pool.h"
+#include "net.pb.h"
 #include "net.h"
 #include "db.h"
-
-#include "example.pb.h"
-#include "net.pb.h"
 
 namespace ngl
 {

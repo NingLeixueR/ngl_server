@@ -86,7 +86,6 @@ namespace ngl
 
 		// ## ֪ͨactor_server [actorid]->[gateway server id]
 		sync_actorserver_gatewayid(lguid, false);
-
 		return true;
 	}
 
@@ -269,7 +268,6 @@ namespace ngl
 		pro.m_conv			= lpram->mconv();
 
 		nets::sendbyserver((i32_serverid)lpram->mserverid(), pro, nguid::make(), nguid::make());
-
 		return true;
 	}
 }//namespace ngl

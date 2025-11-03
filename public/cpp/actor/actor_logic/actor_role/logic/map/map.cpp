@@ -172,7 +172,6 @@ namespace ngl
 
 		aunit->set_x(ax);
 		aunit->set_y(ay);
-
 		return true;
 	}
 
@@ -246,6 +245,7 @@ namespace ngl
 		}
 		lpunit->set_angle(aangle);
 	}
+
 	// 改变速度
 	void aoimap::change_speed(i64_actorid aroleid, int32_t aspeed)
 	{

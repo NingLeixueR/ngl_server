@@ -11,10 +11,10 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "tprotocol.h"
-#include "nscript.h"
 #include "actor_manage.h"
 #include "actor_base.h"
+#include "tprotocol.h"
+#include "nscript.h"
 
 extern "C"
 {

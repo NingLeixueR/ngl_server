@@ -111,7 +111,7 @@ namespace ngl
 		tdb_brief::nsp_cread<actor_ranklist>::instance(get_actor()->id_guid()).set_changedatafun(
 			[this](int64_t aid, const pbdb::db_brief& abrief, bool afirstsynchronize)
 			{
-				//update_value(abrief, afirstsynchronize);
+				update_value(abrief, afirstsynchronize);
 			}
 		);
 	}

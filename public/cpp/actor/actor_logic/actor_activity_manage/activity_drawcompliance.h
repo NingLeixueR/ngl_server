@@ -12,6 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
+
 #include "ttab_activity_drawcompliance.h"
 #include "activity.h"
 

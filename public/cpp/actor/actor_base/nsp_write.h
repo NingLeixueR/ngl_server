@@ -45,6 +45,7 @@ namespace ngl
 		std::set<i64_nodeid>											m_nodewritealls;	// 写全部数据的结点
 		//// 部分读/写
 		std::map<i64_dataid, std::map<i64_nodeid, enp_channel>>			m_part;
+		std::set<i64_dataid>											m_changeids;
 	public:
 		static type_nsp_write& instance(i64_actorid aactorid)
 		{
@@ -105,8 +106,6 @@ namespace ngl
 		{
 			m_call.set_loadfinishfun(afun);
 		}
-
-		std::set<i64_dataid> m_changeids;
 
 		T* add(i64_dataid adataid)
 		{
@@ -256,7 +255,6 @@ namespace ngl
 					actor::send_actor(_actorid, nguid::make(), pro);
 				}
 			}
-
 			nsp_instance<type_nsp_write>::exit(m_actor->id_guid());
 		}
 	};
@@ -326,10 +324,10 @@ namespace ngl
 	void nsp_write<TDerived, TACTOR, T>::handle(TDerived* aactor, const message<np_channel_data<T>>& adata)
 	{
 		const np_channel_data<T>* recv = adata.get_data();
+
 		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;
-
 		for (const auto& apair : recv->m_data)
 		{
 			if (is_care(apair.first))

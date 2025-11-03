@@ -29,7 +29,6 @@ namespace ngl
 		data_modified_return_getconst(lpdbbag, lbag);
 		auto lpmap = lpdbbag->mitems();
 		
-
 		for (auto itor = lpmap.begin(); itor != lpmap.end(); ++itor)
 		{
 			int32_t tid = itor->second.mtid();

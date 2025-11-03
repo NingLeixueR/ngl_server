@@ -120,7 +120,6 @@ namespace ngl
 		pro->m_type = std::get<0>(*lptuple);
 		pro->m_actorexampleid = std::get<1>(*lptuple);
 		actor::send_actor(adata.get_data()->m_roleid, id_guid(), pro);
-
 		return true;
 	}
 }//namespace ngl

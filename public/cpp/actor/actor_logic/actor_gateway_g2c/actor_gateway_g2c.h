@@ -112,6 +112,5 @@ namespace ngl
 
 		bool handle(const message<np_actor_gatewayinfo_updata>& adata);
 	};
-
 }//namespace ngl
 

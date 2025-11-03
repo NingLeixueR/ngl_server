@@ -22,7 +22,6 @@ namespace ngl
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_NOTICE_RESPONSE>();
 		if (aactorid == -1)
 		{
-			//std::pair<const nguid, data_modified<pbdb::db_notice>>
 			for (std::pair<const nguid, data_modified<pbdb::db_notice>>& lpair : data())
 			{
 				data_modified_continue_getconst(lpdbnotice, lpair.second);

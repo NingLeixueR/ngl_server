@@ -54,10 +54,10 @@ namespace ngl
 
 	struct obstacle
 	{
-		int m_id;			// 格子编号
-		eobstacles m_pass;	// 是否可以通过格子
-		int m_value;		// 付出的代价
-		int m_parent;
+		int m_id = 0;			// 格子编号
+		eobstacles m_pass;		// 是否可以通过格子
+		int m_value = 0;		// 付出的代价
+		int m_parent = 0;
 
 		void clear()
 		{
@@ -121,7 +121,6 @@ namespace ngl
 			int lstatrt = id(ax1, ay1);
 			int lfinish = id(ax2, ay2);
 			int lcurrent = lstatrt;
-			//std::list<int> ls;
 			class lessfun
 			{
 			public:
@@ -179,7 +178,6 @@ namespace ngl
 					do
 					{
 						apath.push_front(lcurrent);
-						//std::cout << "(" << lcurrent << ")";
 						lcurrent = m_grid[lcurrent].m_parent;
 					} while (lcurrent != -1);
 					clear();

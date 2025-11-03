@@ -12,6 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
+
 #include "nactor_auto.h"
 #include "manage_csv.h"
 #include "tools.h"
@@ -207,12 +208,7 @@ namespace ngl
 		{
 			std::string lsrc = std::format(
 				"drop<{}>::use({},{},{},{}) src={}"
-				, typeid(TACTOR).name()
-				, aid
-				, acount
-				, nguid(aroleid)
-				, amailid
-				, asrc
+				, typeid(TACTOR).name(), aid, acount, nguid(aroleid), amailid, asrc
 			);
 			log_error()->print(lsrc);
 			if (amailid == -1)
@@ -243,7 +239,6 @@ namespace ngl
 				actor::send_actor(nguid::make_self(ACTOR_MAIL), nguid::make(), pro);
 				return true;
 			}
-
 			return false;
 		}
 	};
