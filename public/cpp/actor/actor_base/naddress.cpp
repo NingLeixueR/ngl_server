@@ -74,8 +74,7 @@ namespace ngl
 		m_actortypeserver[lguid.type()].insert(adataid);
 #ifdef _DEBUG
 		print_address("ADD", aserverid, adataid);
-#endif
-		
+#endif		
 	}
 
 	void naddress::add_actor_address(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
@@ -143,14 +142,14 @@ namespace ngl
 		return *lpserverid;
 	}
 
-	void naddress::get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec)
+	void naddress::get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& aservers)
 	{
-		std::set<nguid>* lset = tools::findmap(m_actortypeserver, (i16_actortype)atype);
-		if (lset != nullptr)
+		std::set<nguid>* lguids = tools::findmap(m_actortypeserver, (i16_actortype)atype);
+		if (lguids != nullptr)
 		{
-			for (const nguid& aguid : *lset)
+			for (const nguid& aguid : *lguids)
 			{
-				avec.insert(get_server(aguid));
+				aservers.insert(get_server(aguid));
 			}
 		}
 	}
