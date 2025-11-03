@@ -55,35 +55,32 @@ namespace ngl
 	class nmodified
 	{
 	private:
-		static std::set<i64_actorid> m_modified;
+		std::set<i64_actorid> m_modified;
 	public:
 		// # 哪些被修改
-		static std::set<i64_actorid>& which_modified()
+		std::set<i64_actorid>& which_modified()
 		{
 			return m_modified;
 		}
 
 		// # 检查是否被修改
-		static bool is_modified(i64_actorid aidentifier)
+		bool is_modified(i64_actorid aidentifier)
 		{
 			return m_modified.contains(aidentifier);
 		}
 
 		// # 设置为修改状态
-		static void modified(i64_actorid aidentifier)
+		void modified(i64_actorid aidentifier)
 		{
 			m_modified.insert(aidentifier);
 		}
 
 		// # 清空修改状态被
-		static void clear_modified(i64_actorid aidentifier)
+		void clear_modified(i64_actorid aidentifier)
 		{
 			m_modified.erase(aidentifier);
 		}
 	};
-
-	template <typename TDBTAB>
-	std::set<i64_actorid> nmodified<TDBTAB>::m_modified;
 
 	template <typename TDBTAB>
 	struct data_modified 
@@ -95,34 +92,54 @@ namespace ngl
 		mutable TDBTAB m_data;
 		mutable TDBTAB* m_pdata = nullptr;
 		actor_base* m_actor = nullptr;
+		nmodified<TDBTAB>* m_modified = nullptr;
 	public:
-		data_modified() = default;
+		data_modified():m_modified(nullptr)
+		{}
+
+		inline void init(nmodified<TDBTAB>* amodified)
+		{
+			m_modified = amodified;
+		}
+
+		inline void check_init()const
+		{
+			if (m_modified == nullptr)
+			{
+				tools::no_core_dump();
+			}
+		}
 
 		inline i64_actorid identifier()const
 		{
+			check_init();
 			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
 			return ldata.mid();
 		}
 
 		inline bool is_modified()
 		{
-			return nmodified<TDBTAB>::is_modified(identifier());
+			check_init();
+			return m_modified->is_modified(identifier());
 		}
 
 		// # 设置为修改状态
 		inline void modified()const
 		{
-			nmodified<TDBTAB>::modified(identifier());
+			check_init();
+			m_modified->modified(identifier());
 		}
 
 		// # 清空修改状态
 		inline void clear_modified()const
 		{
-			nmodified<TDBTAB>::clear_modified(identifier());
+			check_init();
+			m_modified->clear_modified(identifier());
 		}
 
 		void set(actor_base* aactor, const TDBTAB& adata, bool achange = false)
 		{
+			check_init();
 			m_actor = aactor;
 			m_data = adata;
 			m_pdata = nullptr;
@@ -135,6 +152,7 @@ namespace ngl
 		// # get与getconst获取数据前先 "检查脚本语言中的备份是否被修改"
 		TDBTAB* get(bool achange = true, bool anscript = true)
 		{
+			check_init();
 			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
 			i64_actorid lidentifier = identifier();
 			if ((achange || anscript) && (lidentifier == 0 || lidentifier == nguid::make()))
@@ -162,6 +180,7 @@ namespace ngl
 
 		const TDBTAB* getconst(bool anscript = true)const
 		{
+			check_init();
 			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
 			// # 检查脚本语言中的备份是否被修改
 			if (anscript && m_actor != nullptr)
@@ -192,6 +211,7 @@ namespace ngl
 		using type_ndbclient = ndbclient<DBTYPE, TDBTAB, TACTOR>;
 		
 		tab_dbload* m_tab = nullptr;
+		nmodified<TDBTAB> m_modified;
 	public:
 		// # 向actor_client设置连接后事件
 		// # 当与db服务器发生连接时触发加载数据事件
@@ -257,6 +277,7 @@ namespace ngl
 		void create(const nguid& aid) final
 		{
 			m_dbdata = &m_data[aid];
+			m_dbdata->init(&m_modified);
 			m_dbdata->get()->set_mid(aid);
 			m_id = aid;
 		}
@@ -383,7 +404,7 @@ namespace ngl
 			}
 			else
 			{
-				std::set<i64_actorid>& lmodified = nmodified<TDBTAB>::which_modified();
+				std::set<i64_actorid>& lmodified = m_modified.which_modified();
 				for (i64_actorid lactorid : lmodified)
 				{
 					lpdata = tools::findmap(m_data, nguid(lactorid));
@@ -482,22 +503,13 @@ namespace ngl
 			m_actor->nscript_data_push("db", ltemp, true);
 		}
 	public:
-		const TDBTAB* set(const nguid& aid, const TDBTAB& adbtab)
-		{
-			m_data[aid] = adbtab;
-			if (aid == m_id)
-			{
-				m_dbdata = &m_data[aid];
-			}
-			return &m_data[aid];
-		}
-
 		// # 加载完成
 		bool loadfinish()
 		{
 			if (m_id != (int64_t)-1)
 			{
 				m_dbdata = &m_data[m_id];
+				m_dbdata->init(&m_modified);
 			}
 			m_load = true;
 			m_manage_dbclient->on_load_finish(false);
@@ -508,7 +520,9 @@ namespace ngl
 		{
 			for (const std::pair<const nguid, TDBTAB>& lpair : adata)
 			{
-				m_data[lpair.first].set(m_actor, lpair.second);
+				data_modified<TDBTAB>& ldata = m_data[lpair.first];
+				ldata.set(m_actor, lpair.second);
+				ldata.init(&m_modified);
 			}
 
 			auto itor = m_data.find(m_id);
