@@ -22,9 +22,9 @@ namespace ngl
 	{
 		pbnet::eunit			m_type;		
 		attribute				m_attribute;
-		int64_t					m_id;
+		int64_t					m_id = 0;
 		pbnet::UNIT_POSITION	m_position;
-		int64_t					m_lastupdate;
+		int64_t					m_lastupdate = 0;
 	public:
 		unit(pbnet::eunit atype, int64_t aid);
 

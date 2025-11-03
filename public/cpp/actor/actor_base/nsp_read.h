@@ -275,9 +275,7 @@ namespace ngl
 		pro->m_type = m_type;
 		pro->m_readids = m_ids;
 		log_error()->print(
-			"nsp_client register: {} -> {}"
-			, nguid(pro->m_actorid)
-			, nguid(m_nspserver[recv->m_area])
+			"nsp_client register: {} -> {}", nguid(pro->m_actorid), nguid(m_nspserver[recv->m_area])
 		);
 		nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 		actor::send_actor(m_nspserver[recv->m_area], nguid::make(), pro);

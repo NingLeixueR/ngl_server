@@ -13,7 +13,6 @@
 */
 #include "actor_robot_manage.h"
 
-
 namespace ngl
 {
 	actor_robot_manage::actor_robot_manage() :

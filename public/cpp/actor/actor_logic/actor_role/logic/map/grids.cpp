@@ -67,4 +67,4 @@ namespace ngl
 		}
 		return &m_grid[agid];
 	}
-}
+}//namespace ngl

@@ -63,10 +63,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print(
-				"roleinfo::lv fail role[{}]"
-				, nguid(get_actor()->id_guid())
-			);
+			log_error()->print("roleinfo::lv fail role[{}]", nguid(get_actor()->id_guid()));
 			return -1;
 		}
 		return lrb->mbase().mlv();
@@ -77,11 +74,7 @@ namespace ngl
 		pbdb::db_brief* lrb = get_brief();
 		if (lrb == nullptr)
 		{
-			log_error()->print(
-				"roleinfo::change_lv fail role[{}] value[{}]"
-				, nguid(get_actor()->id_guid())
-				, avalues
-			);
+			log_error()->print("roleinfo::change_lv fail role[{}] value[{}]", nguid(get_actor()->id_guid()), avalues);
 			return;
 		}
 		int32_t loldvalue = lrb->mbase().mlv();
@@ -95,10 +88,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print(
-				"roleinfo::vip fail role[{}]"
-				, nguid(get_actor()->id_guid())
-			);
+			log_error()->print("roleinfo::vip fail role[{}]", nguid(get_actor()->id_guid()));
 			return -1;
 		}
 		return lrb->mbase().mvip();
@@ -109,11 +99,7 @@ namespace ngl
 		pbdb::db_brief* lrb = get_brief();
 		if (lrb == nullptr)
 		{
-			log_error()->print(
-				"roleinfo::change_vip fail role[{}] value[{}]"
-				, nguid(get_actor()->id_guid())
-				, avalues
-			);
+			log_error()->print("roleinfo::change_vip fail role[{}] value[{}]", nguid(get_actor()->id_guid()), avalues);
 			return;
 		}
 		lrb->mutable_mbase()->set_mvip(lrb->mbase().mvip() + avalues);
@@ -125,10 +111,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print(
-				"roleinfo::name fail role[{}]"
-				, nguid(get_actor()->id_guid())
-			);
+			log_error()->print("roleinfo::name fail role[{}]", nguid(get_actor()->id_guid()));
 			return "";
 		}
 		return lrb->mbase().mname().c_str();
@@ -139,11 +122,7 @@ namespace ngl
 		pbdb::db_brief* lrb = get_brief();
 		if (lrb == nullptr)
 		{
-			log_error()->print(
-				"roleinfo::rename fail role[{}] value[{}]"
-				, nguid(get_actor()->id_guid())
-				, aname
-			);
+			log_error()->print("roleinfo::rename fail role[{}] value[{}]", nguid(get_actor()->id_guid()), aname);
 			return;
 		}
 		lrb->mutable_mbase()->set_mname(aname);
@@ -154,10 +133,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print(
-				"roleinfo::gold fail role[{}]"
-				, nguid(get_actor()->id_guid())
-			);
+			log_error()->print("roleinfo::gold fail role[{}]", nguid(get_actor()->id_guid()));
 			return -1;
 		}
 		return lrb->mbase().mmoneygold();
@@ -168,11 +144,7 @@ namespace ngl
 		pbdb::db_brief* lrb = get_brief();
 		if (lrb == nullptr)
 		{
-			log_error()->print(
-				"roleinfo::change_gold fail role[{}] value[{}]"
-				, nguid(get_actor()->id_guid())
-				, avalues
-			);
+			log_error()->print("roleinfo::change_gold fail role[{}] value[{}]", nguid(get_actor()->id_guid()), avalues);
 			return;
 		}
 		int32_t loldvalue = lrb->mbase().mmoneygold();
@@ -186,10 +158,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print(
-				"roleinfo::silver fail role[{}]"
-				, nguid(get_actor()->id_guid())
-			);
+			log_error()->print("roleinfo::silver fail role[{}]", nguid(get_actor()->id_guid()));
 			return -1;
 		}
 		return lrb->mbase().mmoneysilver();
@@ -200,11 +169,7 @@ namespace ngl
 		pbdb::db_brief* lrb = get_brief();
 		if (lrb == nullptr)
 		{
-			log_error()->print(
-				"roleinfo::change_silver fail role[{}] value[{}]"
-				, nguid(get_actor()->id_guid())
-				, avalues
-			);
+			log_error()->print("roleinfo::change_silver fail role[{}] value[{}]", nguid(get_actor()->id_guid()), avalues);
 			return;
 		}
 		int32_t loldvalue = lrb->mbase().mmoneysilver();
@@ -217,10 +182,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print(
-				"roleinfo::notalkutc fail role[{}]"
-				, nguid(get_actor()->id_guid())
-			);
+			log_error()->print("roleinfo::notalkutc fail role[{}]", nguid(get_actor()->id_guid()));
 			return -1;
 		}
 		return lrb->mbase().mnotalkutc();
@@ -231,11 +193,7 @@ namespace ngl
 		pbdb::db_brief* lrb = get_brief();
 		if (lrb == nullptr)
 		{
-			log_error()->print(
-				"roleinfo::change_notalkutc fail role[{}] value[{}]"
-				, nguid(get_actor()->id_guid())
-				, avalues
-			);
+			log_error()->print("roleinfo::change_notalkutc fail role[{}] value[{}]", nguid(get_actor()->id_guid()), avalues);
 			return;
 		}
 		lrb->mutable_mbase()->set_mnotalkutc(avalues);
@@ -246,10 +204,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print(
-				"roleinfo::bantalk fail role[{}]"
-				, nguid(get_actor()->id_guid())
-			);
+			log_error()->print("roleinfo::bantalk fail role[{}]", nguid(get_actor()->id_guid()));
 			return false;
 		}
 		int32_t lnow = (int32_t)localtime::gettime();

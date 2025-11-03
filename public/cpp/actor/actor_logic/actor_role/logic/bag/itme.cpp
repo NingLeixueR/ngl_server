@@ -51,8 +51,7 @@ namespace ngl
 			case EMoneySilver:
 				arole->m_info.change_silver(acount);
 				break;
-			}
-			
+			}			
 			return true;
 		}
 	public:

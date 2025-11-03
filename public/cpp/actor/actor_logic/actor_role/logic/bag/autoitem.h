@@ -13,11 +13,11 @@
 */
 #pragma once
 
+#include "type.h"
+
 #include <vector>
 #include <list>
 #include <map>
-
-#include "type.h"
 
 namespace ngl
 {

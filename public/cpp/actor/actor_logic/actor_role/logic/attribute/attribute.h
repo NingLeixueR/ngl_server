@@ -13,12 +13,6 @@
 */
 #pragma once 
 
-#include <functional>
-#include <vector>
-#include <array>
-#include <set>
-#include <map>
-
 #include "attribute_value.h"
 #include "ttab_attribute.h"
 #include "manage_csv.h"
@@ -26,6 +20,12 @@
 #include "net.pb.h"
 #include "nlog.h"
 #include "net.h"
+
+#include <functional>
+#include <vector>
+#include <array>
+#include <set>
+#include <map>
 
 namespace ngl
 {
@@ -185,7 +185,9 @@ namespace ngl
 			}
 		}
 	};
+
 	class aoimap;
+
 	// 动态属性,可以在战斗中改变的属性
 	class dynamic_attribute
 	{

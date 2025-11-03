@@ -142,4 +142,4 @@ namespace ngl
 	{
 		return distance((float)apos1.mx(), (float)apos1.my(), (float)apos2.mx(), (float)apos2.my());
 	}
-}
+}//namespace ngl

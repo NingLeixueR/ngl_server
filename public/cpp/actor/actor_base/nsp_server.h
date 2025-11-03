@@ -19,8 +19,6 @@
 #include "tools.h"
 #include "type.h"
 
-#include "ndb_modular.h"
-
 namespace ngl
 {
 	template <typename TDerived>
@@ -83,6 +81,11 @@ namespace ngl
 		static std::set<i16_area> m_areaset;
 	public:
 		using tnsp_server = nsp_server<ENUMDB, TDerived, T>;
+
+		enum
+		{
+			esend_maxcount = 100,
+		};
 
 		// # ¶©ÔÄ×¢²á´¦Àí
 		static void init(ndb_modular<ENUMDB, T, TDerived>* adbmodule);
@@ -287,7 +290,7 @@ namespace ngl
 			int32_t lconnt = 0;
 			for (std::pair<const nguid, data_modified<T>>& item : lmap)
 			{
-				if (++lconnt >= 100)
+				if (++lconnt >= esend_maxcount)
 				{
 					actor::send_actor(anodeid, nguid::make(), pro);
 					pro = std::make_shared<np_channel_data<T>>();

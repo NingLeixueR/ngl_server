@@ -29,9 +29,7 @@ namespace ngl
 		{
 			log_error()->print(
 				"synthesis::use id:{} role:{} consume::use faile {}"
-				, aid
-				, arole->id_guid()
-				, tab->m_consume
+				, aid, arole->id_guid(), tab->m_consume
 			);
 			return false;
 		}
@@ -40,9 +38,7 @@ namespace ngl
 		{
 			log_error()->print(
 				"synthesis::use id:{} role:{} drop::use faile {}"
-				, aid
-				, arole->id_guid()
-				, tab->m_generate
+				, aid, arole->id_guid(), tab->m_generate
 			);
 			return false;
 		}

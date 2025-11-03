@@ -15,8 +15,8 @@
 
 #include "nactor_auto.h"
 #include "manage_csv.h"
-#include "db.pb.h"
 #include "net.pb.h"
+#include "db.pb.h"
 
 namespace ngl
 {

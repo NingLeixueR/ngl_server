@@ -39,5 +39,4 @@ namespace ngl
 		// # 获取unit列表
 		std::set<i64_actorid>* get_unitlist();
 	};
-
 }//namespace ngl

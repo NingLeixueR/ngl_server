@@ -29,4 +29,4 @@ namespace ngl
 	{
 		return &m_unitlist;
 	}
-}
+}//namespace ngl

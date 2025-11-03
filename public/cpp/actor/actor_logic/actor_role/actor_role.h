@@ -17,6 +17,7 @@
 #include "actor_manage.h"
 #include "events_logic.h"
 #include "manage_curl.h"
+#include "example.pb.h"
 #include "db_manage.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
@@ -26,6 +27,7 @@
 #include "remakes.h"
 #include "db_pool.h"
 #include "db_data.h"
+#include "net.pb.h"
 #include "ntimer.h"
 #include "rolekv.h"
 #include "drop.h"
@@ -35,8 +37,6 @@
 #include "net.h"
 #include "db.h"
 
-#include "example.pb.h"
-#include "net.pb.h"
 
 namespace ngl
 {

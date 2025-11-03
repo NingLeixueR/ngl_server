@@ -45,9 +45,6 @@ namespace ngl
 
 	void actor_gateway_c2g::init()
 	{
-		// 绑定DB结构:DB.set(this);
-
-		// 设置timer_handle定时�?
 		/*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
@@ -64,15 +61,12 @@ namespace ngl
 
 	void actor_gateway_c2g::nregister()
 	{
-		// 定时�?
 		actor::register_timer<actor_gateway_c2g>(&actor_gateway_c2g::timer_handle);
 
-		// 绑定自定义np_消息
 		register_handle<actor_gateway_c2g>::func<
 			np_actor_gatewayinfo_updata
 		>(false);
 
-		// 绑定pb消息
 		nforward::c2g();
 	}
 
