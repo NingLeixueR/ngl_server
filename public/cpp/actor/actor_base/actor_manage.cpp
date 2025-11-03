@@ -47,7 +47,6 @@ namespace ngl
 		std::copy(m_actortype.begin(), m_actortype.end(), std::back_inserter(aactortype));
 	}
 
-	// # nosafe_开头的函数代表"内部操作未加锁"，不允许类外调用
 	void actor_manage::nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram)
 	{
 		actor_stat lstat = lpactor->get_activity_stat();
@@ -194,7 +193,7 @@ namespace ngl
 			{
 				if (m_suspend)
 				{
-					m_suspendthread.push_back(atorthread);
+					m_suspendthreads.push_back(atorthread);
 				}
 				else
 				{
@@ -228,7 +227,6 @@ namespace ngl
 				ngl_post;
 			}
 		}
-
 		if (lrelease)
 		{
 			apactor->release();
@@ -351,10 +349,10 @@ namespace ngl
 			m_suspend = true;
 			if (m_workthreads.empty() == false)
 			{
-				m_suspendthread.insert(m_suspendthread.end(), m_workthreads.begin(), m_workthreads.end());
+				m_suspendthreads.insert(m_suspendthreads.end(), m_workthreads.begin(), m_workthreads.end());
 				m_workthreads.clear();
 			}
-			lthreadnum = (int)m_suspendthread.size();
+			lthreadnum = (int)m_suspendthreads.size();
 		}
 	}
 
@@ -362,8 +360,8 @@ namespace ngl
 	{
 		ngl_lock_s;
 		m_suspend = false;
-		m_workthreads.insert(m_workthreads.end(), m_suspendthread.begin(), m_suspendthread.end());
-		m_suspendthread.clear();
+		m_workthreads.insert(m_workthreads.end(), m_suspendthreads.begin(), m_suspendthreads.end());
+		m_suspendthreads.clear();
 		ngl_post;
 	}
 
