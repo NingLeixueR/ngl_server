@@ -757,7 +757,6 @@ bool start_robot(int argc, char** argv)
 			{
 				ngl::sleep::milliseconds(lms[j]);
 				std::vector<std::string> lcmdvec2 = lcmdvec[j];
-				lcmdvec2.push_back(ngl::tools::lexical_cast<std::string>(i));
 				ngl::actor_robot_manage::parse_command(lcmdvec2);
 			}
 		}
