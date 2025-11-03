@@ -56,7 +56,7 @@ namespace ngl
 		using tls = slist_production<T>;
 		template <typename T>
 		using trunls = slist_consumption<T>;
-#endif//DEF_ACTOR_USE_LIST
+#endif//STL_MESSAGELIST
 	private:
 		tls<handle_pram>					m_list;							// 待处理消息列表
 		std::map<int32_t, tls<handle_pram>>	m_hightlist;					// 待处理消息列表(高特权)			
@@ -85,8 +85,8 @@ namespace ngl
 			{
 				// # 注册广播处理函数
 				register_actornonet<TDerived, np_actor_broadcast>(
-						true, (Tfun<actor, np_actor_broadcast>) & actor::handle
-					);
+					true, (Tfun<actor, np_actor_broadcast>) & actor::handle
+				);
 			}
 			// # 注册actor close处理函数
 			register_actornonet<TDerived, np_actor_close>(
@@ -219,10 +219,13 @@ namespace ngl
 
 		virtual ~actor();
 
+		// # 获取actor的状态
 		actor_stat get_activity_stat() final;
 
+		// # 设置actor的状态
 		void set_activity_stat(actor_stat astat) final;
 
+		// # 等待ready
 		void wait_ready(const nguid& aguid);
 	private:
 		// # 释放actor消息列表

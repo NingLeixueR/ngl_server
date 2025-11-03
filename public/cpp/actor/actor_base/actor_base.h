@@ -536,7 +536,7 @@ namespace ngl
 			{
 				return false;
 			}
-			std::set<i64_actorid> lclient;
+			std::set<i64_actorid> lclients;
 			std::set<i64_actorid> lactors;
 			for (i64_actorid aactor : *lset)
 			{
@@ -546,12 +546,12 @@ namespace ngl
 				}
 				else
 				{
-					lclient.insert(aactor);
+					lclients.insert(aactor);
 				}
 			}
-			if (!lclient.empty())
+			if (!lclients.empty())
 			{
-				send_client(lclient, adata);
+				send_client(lclients, adata);
 			}
 			if (!lactors.empty())
 			{

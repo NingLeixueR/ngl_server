@@ -109,9 +109,7 @@ namespace ngl
 		m_dbclient->add(adbclient, aid);
 	}
 
-	actor_base::~actor_base()
-	{
-	}
+	actor_base::~actor_base(){}
 
 	void actor_base::erase_actor(const nguid& aguid)
 	{
@@ -273,7 +271,7 @@ namespace ngl
 	bool actor_base::iskcp()
 	{
 		net_works lnetwork;
-		
+	
 		static bool lkcp = ttab_servers::instance().get_nworks(ENET_KCP, lnetwork);
 		return lkcp;
 	}

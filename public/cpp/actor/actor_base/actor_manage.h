@@ -33,28 +33,44 @@ namespace ngl
 		actor_manage& operator=(const actor_manage&) = delete;
 
 		//// ---- 线程相关
-		std::list<nthread*>	m_workthread;		// 工作线程
-		bool				m_suspend = false;	// 是否挂起
-		std::list<nthread*>	m_suspendthread;	// 挂起的工作线程
-		std::jthread		m_thread;			// 管理线程
-		i32_threadsize		m_threadnum = -1;	// 工作线程数量
+		// # 工作线程
+		std::list<nthread*>	m_workthreads;
 
-		ngl_lockinit;
+		// # 是否挂起
+		bool				m_suspend = false;	
+
+		// # 挂起的工作线程
+		std::list<nthread*>	m_suspendthread;
+
+		// # 管理线程
+		std::jthread		m_thread;	
+
+		// # 工作线程数量
+		i32_threadsize		m_threadnum = -1;	
 
 		// # 索引actor
 		std::map<nguid, ptractor>							m_actorbyid;
+
 		// # 支持广播的actor
 		std::map<nguid, ptractor>							m_actorbroadcast;
+
 		// # 按类型索引actor
 		std::map<ENUM_ACTOR, std::map<nguid, ptractor>>		m_actorbytype;
+
 		// # 有任务的actor列表
 		std::list<ptractor>									m_actorlist;
+
 		// # 包含哪些actortype
 		std::set<i16_actortype>								m_actortype;
-		// # 删除actor后需要执行的操作(延迟操作:删除的瞬间actor正是运行状态,等待其回归后进行删除)
+
+		// # 删除actor后需要执行的操作
+		// (延迟操作:删除的瞬间actor正是运行状态,等待其回归后进行删除)
 		std::map<nguid, std::function<void()>>				m_delactorfun;
+
 		// # actor就绪状态(如果需要加载db，db加载完成)
 		std::set<nguid>										m_ready;
+
+		ngl_lockinit;
 
 		actor_manage();
 		~actor_manage();
@@ -82,19 +98,18 @@ namespace ngl
 
 		//# 根据node类型获取(actor_client/actor_server)的guid
 		nguid nodetypebyguid();
-
 	private:
 		// # nosafe_开头的函数代表"内部操作未加锁"，不允许类外调用
-		//# 根据guid获取actor实例
+		// # 根据guid获取actor实例
 		ptractor& nosafe_get_actor(const nguid& aguid);
 
-		//# 根据guid获取actor实例,如果本结点没有找到该actor实例，则根据结点类型获取(actor_client/actor_server)的guid，用于转发
+		// # 根据guid获取actor实例,如果本结点没有找到该actor实例，则根据结点类型获取(actor_client/actor_server)的guid，用于转发
 		ptractor& nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram);
 
-		//# 向actor实例插入任务
+		// # 向actor实例插入任务
 		void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram);
 	public:
-		//# 将消息T封装后传递给指定guid的actor
+		// # 将消息T封装后传递给指定guid的actor
 		template <typename T, bool IS_SEND = true>
 		inline void push_task_id(const nguid& aguid, std::shared_ptr<T>& apram)
 		{
@@ -102,43 +117,43 @@ namespace ngl
 			push_task_id(aguid, lparm);
 		}
 
-		//# 添加actor
+		// # 添加actor
 		bool add_actor(actor_base* apactor, const std::function<void()>& afun);
 
-		//# 添加actor
+		// # 添加actor
 		bool add_actor(const ptractor& apactor, const std::function<void()>& afun);
 
-		//# 移除actor
+		// # 移除actor
 		void erase_actor(const nguid& aguid, const std::function<void()>& afun = nullptr);
 
-		//# 是否存在某个actor
+		// # 是否存在某个actor
 		bool is_have_actor(const nguid& aguid);
 
-		//# 工作线程将actor添加到m_actorlist
+		// # 工作线程将actor添加到m_actorlist
 		void push(const ptractor& apactor, nthread* atorthread = nullptr);
 
-		//# 向actor中添加任务
+		// # 向actor中添加任务
 		void push_task_id(const nguid& aguid, handle_pram& apram);
 		void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram);
 
-		//# 向某个类型的actor中添加任务
+		// # 向某个类型的actor中添加任务
 		void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
-		//# 向当前进程所有actor广播消息
+		// # 向当前进程所有actor广播消息
 		void broadcast_task(handle_pram& apram);
 
 	private:
-		//# actor_manage 调度actor实例处理任务的线程实例
+		// # actor_manage 调度actor实例处理任务的线程实例
 		void run();
 	public:
-		//# 暂时挂起所有线程，已执行单步操作(热更数据表)
+		// # 暂时挂起所有线程，已执行单步操作(热更数据表)
 		void statrt_suspend_thread();
 		void finish_suspend_thread();
 
-		//# 获取actor数量
+		// # 获取actor数量
 		int32_t actor_count();
 
-		//# 获取actor stat 数据
+		// # 获取actor stat 数据
 		struct msg_actor
 		{
 			std::string m_actor_name;
@@ -153,10 +168,10 @@ namespace ngl
 		void get_actor_stat(msg_actor_stat& adata);
 	};
 
-	//# 暂时挂起 actor_manage
-	//# 自动调用
-	//# 构造调用actor_manage.statrt_suspend_thread
-	//# 析构调用actor_manage.finish_suspend_thread
+	// # 暂时挂起 actor_manage
+	// # 自动调用
+	// # 构造调用actor_manage.statrt_suspend_thread
+	// # 析构调用actor_manage.finish_suspend_thread
 	class actor_suspendthread
 	{
 		actor_suspendthread(const actor_suspendthread&) = delete;
@@ -166,7 +181,7 @@ namespace ngl
 		~actor_suspendthread();
 	};
 
-	// 进程单利actor 自动注册协议与自动添加actor_manage
+	// # 进程单利actor 自动注册协议与自动添加actor_manage
 	template <typename T>
 	T& actor_instance<T>::instance()
 	{

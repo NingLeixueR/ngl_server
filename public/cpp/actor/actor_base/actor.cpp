@@ -43,8 +43,7 @@ namespace ngl
 		}
 	}
 
-	actor::~actor()
-	{}
+	actor::~actor(){}
 
 	void actor::release()
 	{
