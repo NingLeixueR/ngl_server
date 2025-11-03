@@ -179,7 +179,6 @@ namespace ngl
 	{
 		if (isactiv_connect(aserverid))
 		{
-			//log_error()->print("activ_connect [{}]", aserverid);
 			nets::connect(aserverid, [this, aserverid](i32_session asession)
 				{
 					set_node(aserverid, asession);
@@ -211,7 +210,6 @@ namespace ngl
 			if (nconfig::m_nodeid != node.m_serverid && server_session::sessionid(node.m_serverid) == -1)
 			{
 				// # 比较id(较大的主动连接较小的)
-				// # NODE_TYPE lservertype = ttab_servers::node_type(node.m_serverid);
 				activ_connect(node.m_serverid);
 			}
 		}

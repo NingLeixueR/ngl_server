@@ -351,7 +351,6 @@ namespace ngl
 
 					dprotocol(query_page, m_everypagecount, m_page)
 				};
-
 				handle_cmd::add("queryall") = [this](int athread, int id, ngl::njson_read& aos)
 					{
 						gcmd<std::vector<std::string>> pro(id, "queryall");

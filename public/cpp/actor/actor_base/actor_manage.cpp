@@ -30,14 +30,14 @@ namespace ngl
 
 	void actor_manage::init(i32_threadsize apthreadnum)
 	{
-		if (!m_workthread.empty())
+		if (!m_workthreads.empty())
 		{
 			return;
 		}
 		m_threadnum = apthreadnum;
 		for (int32_t i = 0; i < m_threadnum; ++i)
 		{
-			m_workthread.push_back(new nthread(i));
+			m_workthreads.push_back(new nthread(i));
 		}
 	}
 
@@ -198,7 +198,7 @@ namespace ngl
 				}
 				else
 				{
-					m_workthread.push_back(atorthread);
+					m_workthreads.push_back(atorthread);
 				}
 			}
 			if (!m_actorbyid.contains(apactor->id_guid()))
@@ -349,10 +349,10 @@ namespace ngl
 		{
 			ngl_lock_s;
 			m_suspend = true;
-			if (m_workthread.empty() == false)
+			if (m_workthreads.empty() == false)
 			{
-				m_suspendthread.insert(m_suspendthread.end(), m_workthread.begin(), m_workthread.end());
-				m_workthread.clear();
+				m_suspendthread.insert(m_suspendthread.end(), m_workthreads.begin(), m_workthreads.end());
+				m_workthreads.clear();
 			}
 			lthreadnum = (int)m_suspendthread.size();
 		}
@@ -362,7 +362,7 @@ namespace ngl
 	{
 		ngl_lock_s;
 		m_suspend = false;
-		m_workthread.insert(m_workthread.end(), m_suspendthread.begin(), m_suspendthread.end());
+		m_workthreads.insert(m_workthreads.end(), m_suspendthread.begin(), m_suspendthread.end());
 		m_suspendthread.clear();
 		ngl_post;
 	}
@@ -440,14 +440,14 @@ namespace ngl
 				{
 					{
 						ngl_lock_s;
-						if (m_actorlist.empty() || m_workthread.empty() || m_suspend)
+						if (m_actorlist.empty() || m_workthreads.empty() || m_suspend)
 						{
 							break;
 						}
-						lpthread = *m_workthread.begin();
+						lpthread = *m_workthreads.begin();
 						lpactor = *m_actorlist.begin();
 						m_actorlist.pop_front();
-						m_workthread.pop_front();
+						m_workthreads.pop_front();
 						lpactor->set_activity_stat(actor_stat_run);
 					}
 					lpthread->push(lpactor);
