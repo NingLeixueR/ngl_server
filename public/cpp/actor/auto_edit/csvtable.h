@@ -12,7 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-11-04 09:19:52
+// 创建时间 // 创建时间 25-11-04 12:50:31
 #pragma once
 
 #include "csv.h"
@@ -203,7 +203,7 @@ struct net_works
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv2(m_type,m_ip,m_nip,m_port);
+		def_rcsv(m_type,m_ip,m_nip,m_port);
 	}
 };
 struct tab_servers
@@ -233,7 +233,7 @@ struct tab_servers
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_area,m_type,m_tcount,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_log,m_actorserver,m_net);
+		def_rcsv(m_id,m_name,lm_remarks,m_area,m_type,m_tcount,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_log,m_actorserver,m_net);
 	}
 };
 struct tab_dbload
@@ -254,7 +254,7 @@ struct tab_dbload
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_isloadall,m_network,m_sendmaxcount,m_dbcacheintervalms);
+		def_rcsv(m_id,m_name,lm_remarks,m_isloadall,m_network,m_sendmaxcount,m_dbcacheintervalms);
 	}
 };
 struct tab_errormessage
@@ -272,7 +272,7 @@ struct tab_errormessage
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_message);
+		def_rcsv(m_id,m_name,lm_remarks,m_message);
 	}
 };
 struct tab_specialid
@@ -290,7 +290,7 @@ struct tab_specialid
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_value);
+		def_rcsv(m_id,m_name,lm_remarks,m_value);
 	}
 };
 struct tab_attribute
@@ -311,7 +311,7 @@ struct tab_attribute
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_fightcoefficient,m_initvalue,m_uplimit,m_lowlimit);
+		def_rcsv(m_id,m_name,lm_remarks,m_fightcoefficient,m_initvalue,m_uplimit,m_lowlimit);
 	}
 };
 struct tab_item
@@ -332,7 +332,7 @@ struct tab_item
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_ranks,m_type,m_quality,m_isstack);
+		def_rcsv(m_id,m_name,lm_remarks,m_ranks,m_type,m_quality,m_isstack);
 	}
 };
 struct attributevalue
@@ -348,7 +348,7 @@ struct attributevalue
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv2(m_id,m_isratio,m_value);
+		def_rcsv(m_id,m_isratio,m_value);
 	}
 };
 struct tab_equip
@@ -367,7 +367,7 @@ struct tab_equip
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_position,m_attributevalues);
+		def_rcsv(m_id,m_name,lm_remarks,m_position,m_attributevalues);
 	}
 };
 struct tab_equiplv
@@ -386,7 +386,7 @@ struct tab_equiplv
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_consume,m_attributevalues);
+		def_rcsv(m_id,m_name,lm_remarks,m_consume,m_attributevalues);
 	}
 };
 struct tab_card
@@ -405,7 +405,7 @@ struct tab_card
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_quality,m_attributevalues);
+		def_rcsv(m_id,m_name,lm_remarks,m_quality,m_attributevalues);
 	}
 };
 struct trandom
@@ -422,7 +422,7 @@ struct trandom
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv2(m_id,m_min,m_max,m_weight);
+		def_rcsv(m_id,m_min,m_max,m_weight);
 	}
 };
 struct tab_random
@@ -444,7 +444,7 @@ struct tab_random
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_randomdatas,m_exclusive,m_count,m_activityids,m_childrandomids);
+		def_rcsv(m_id,m_name,lm_remarks,m_randomdatas,m_exclusive,m_count,m_activityids,m_childrandomids);
 	}
 };
 struct tconsume
@@ -459,7 +459,7 @@ struct tconsume
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv2(m_tid,m_count);
+		def_rcsv(m_tid,m_count);
 	}
 };
 struct tab_consume
@@ -477,7 +477,7 @@ struct tab_consume
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_consumeitems);
+		def_rcsv(m_id,m_name,lm_remarks,m_consumeitems);
 	}
 };
 struct tab_synthesis
@@ -496,7 +496,7 @@ struct tab_synthesis
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_consume,m_generate);
+		def_rcsv(m_id,m_name,lm_remarks,m_consume,m_generate);
 	}
 };
 struct tweek
@@ -513,7 +513,7 @@ struct tweek
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv2(m_weekstart,m_opentime,m_weekfinish,m_closetime);
+		def_rcsv(m_weekstart,m_opentime,m_weekfinish,m_closetime);
 	}
 };
 struct tserveropen
@@ -530,7 +530,7 @@ struct tserveropen
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv2(m_beg,m_opentime,m_end,m_closetime);
+		def_rcsv(m_beg,m_opentime,m_end,m_closetime);
 	}
 };
 struct tregularslot
@@ -545,7 +545,7 @@ struct tregularslot
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv2(m_opentime,m_closetime);
+		def_rcsv(m_opentime,m_closetime);
 	}
 };
 struct tab_mail
@@ -565,7 +565,7 @@ struct tab_mail
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_title,m_author,m_content);
+		def_rcsv(m_id,m_name,lm_remarks,m_title,m_author,m_content);
 	}
 };
 struct tab_chat
@@ -584,7 +584,7 @@ struct tab_chat
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_time,m_count);
+		def_rcsv(m_id,m_name,lm_remarks,m_time,m_count);
 	}
 };
 struct activity_task
@@ -600,7 +600,7 @@ struct activity_task
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv2(m_begday,m_endday,m_taskids);
+		def_rcsv(m_begday,m_endday,m_taskids);
 	}
 };
 struct tab_activity
@@ -622,7 +622,7 @@ struct tab_activity
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_type,m_open,m_task,m_taskday,m_ranktype);
+		def_rcsv(m_id,m_name,lm_remarks,m_type,m_open,m_task,m_taskday,m_ranktype);
 	}
 };
 struct tab_activityopenserver
@@ -647,7 +647,7 @@ struct tab_activityopenserver
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_openday,m_openhour,m_openminute,m_opensecond,m_closeday,m_closehour,m_closeminute,m_closesecond);
+		def_rcsv(m_id,m_name,lm_remarks,m_openday,m_openhour,m_openminute,m_opensecond,m_closeday,m_closehour,m_closeminute,m_closesecond);
 	}
 };
 struct tab_activityalways
@@ -688,7 +688,7 @@ struct tab_activityalways
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_type,m_wbday,m_wbhour,m_wbminute,m_wbsecond,m_weday,m_wehour,m_weminute,m_wesecond,m_mbday,m_mbhour,m_mbminute,m_mbsecond,m_meday,m_mehour,m_meminute,m_mesecond,m_fixedday,m_fbhour,m_fbminute,m_fbsecond,m_fehour,m_feminute,m_fesecond);
+		def_rcsv(m_id,m_name,lm_remarks,m_type,m_wbday,m_wbhour,m_wbminute,m_wbsecond,m_weday,m_wehour,m_weminute,m_wesecond,m_mbday,m_mbhour,m_mbminute,m_mbsecond,m_meday,m_mehour,m_meminute,m_mesecond,m_fixedday,m_fbhour,m_fbminute,m_fbsecond,m_fehour,m_feminute,m_fesecond);
 	}
 };
 struct tab_activity_drawcompliance
@@ -707,7 +707,7 @@ struct tab_activity_drawcompliance
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_dropid,m_mailid);
+		def_rcsv(m_id,m_name,lm_remarks,m_dropid,m_mailid);
 	}
 };
 struct tab_activity_toprank
@@ -728,7 +728,7 @@ struct tab_activity_toprank
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_activityid,m_rank,m_dropid,m_mailid);
+		def_rcsv(m_id,m_name,lm_remarks,m_activityid,m_rank,m_dropid,m_mailid);
 	}
 };
 struct task_condition
@@ -744,7 +744,7 @@ struct task_condition
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv2(m_type,m_condition,m_parmint);
+		def_rcsv(m_type,m_condition,m_parmint);
 	}
 };
 struct tab_task
@@ -768,7 +768,7 @@ struct tab_task
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_type,m_typeparm,m_taskreceive,m_taskcomplete,m_dropid,m_autoreceive,m_mailid);
+		def_rcsv(m_id,m_name,lm_remarks,m_type,m_typeparm,m_taskreceive,m_taskcomplete,m_dropid,m_autoreceive,m_mailid);
 	}
 };
 struct obstacles_data
@@ -782,7 +782,7 @@ struct obstacles_data
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv2(m_data);
+		def_rcsv(m_data);
 	}
 };
 struct tab_map
@@ -806,7 +806,7 @@ struct tab_map
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_w,m_l,m_nx,m_ny,m_obstaclenx,m_obstacleny,m_obstacles);
+		def_rcsv(m_id,m_name,lm_remarks,m_w,m_l,m_nx,m_ny,m_obstaclenx,m_obstacleny,m_obstacles);
 	}
 };
 struct tab_matching
@@ -827,7 +827,7 @@ struct tab_matching
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_count,m_time,m_iswaitconfirm,m_waitconfirmtime);
+		def_rcsv(m_id,m_name,lm_remarks,m_count,m_time,m_iswaitconfirm,m_waitconfirmtime);
 	}
 };
 struct Vector2
@@ -842,7 +842,7 @@ struct Vector2
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv2(m_x,m_y);
+		def_rcsv(m_x,m_y);
 	}
 };
 struct tab_plays
@@ -865,7 +865,7 @@ struct tab_plays
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_type,m_mapid,m_preparation_tm,m_play_tm,m_settlement_tm,m_birthpoint);
+		def_rcsv(m_id,m_name,lm_remarks,m_type,m_mapid,m_preparation_tm,m_play_tm,m_settlement_tm,m_birthpoint);
 	}
 };
 struct tab_recharge
@@ -891,7 +891,7 @@ struct tab_recharge
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_price,m_gold,m_bonus,m_firstbonus,m_dropid,m_vipexp,m_count,m_activityid,m_mailid);
+		def_rcsv(m_id,m_name,lm_remarks,m_price,m_gold,m_bonus,m_firstbonus,m_dropid,m_vipexp,m_count,m_activityid,m_mailid);
 	}
 };
 struct tab_familylv
@@ -910,7 +910,7 @@ struct tab_familylv
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_exp,m_maxmembers);
+		def_rcsv(m_id,m_name,lm_remarks,m_exp,m_maxmembers);
 	}
 };
 struct tab_mergearea
@@ -928,7 +928,7 @@ struct tab_mergearea
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_mergeid);
+		def_rcsv(m_id,m_name,lm_remarks,m_mergeid);
 	}
 };
 struct tab_ranklist
@@ -949,7 +949,7 @@ struct tab_ranklist
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_maxitem,m_showitem,m_everypagecount,m_minvalue);
+		def_rcsv(m_id,m_name,lm_remarks,m_maxitem,m_showitem,m_everypagecount,m_minvalue);
 	}
 };
 }//namespace ngl
