@@ -61,9 +61,9 @@
 #endif
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
-#define def_rcsv2(...) return ngl::rcsv::readcsv(apair, ##__VA_ARGS__);
+#define def_rcsv(...) return ngl::rcsv::readcsv(apair, ##__VA_ARGS__);
 #else
-#define def_rcsv2(...) return ngl::rcsv::readcsv(apair __VA_OPT__(,) ##__VA_ARGS__);
+#define def_rcsv(...) return ngl::rcsv::readcsv(apair __VA_OPT__(,) ##__VA_ARGS__);
 #endif
 
 #define def_parmname																\
