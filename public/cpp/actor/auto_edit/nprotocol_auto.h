@@ -12,7 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-11-04 09:20:17
+// 创建时间 // 创建时间 25-11-04 12:51:34
 #pragma once
 
 #include "ndb_modular.h"
