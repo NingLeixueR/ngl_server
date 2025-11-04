@@ -243,7 +243,7 @@ namespace ngl
 		{//º”‘ÿxxx.csv
 			std::string lcsvname = path();
 			ngl::rcsv lrcsv;
-			if (lrcsv.read(lcsvname, m_verify) == true)
+			if (lrcsv.read(lcsvname, m_verify))
 			{
 				lrcsv.readcsv(m_tablecsv);
 			}			
