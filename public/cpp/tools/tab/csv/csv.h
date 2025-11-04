@@ -54,7 +54,7 @@ namespace ngl
 		static bool read(csvpair& apair, T& adata);
 	};
 
-	struct csv_help
+	struct csv_helper
 	{
 		template <typename TNUMBER>
 		static bool number(csvpair& apair, TNUMBER& adata);
@@ -93,7 +93,7 @@ namespace ngl
 	{
 		static bool read(csvpair& apair, int8_t& adata)
 		{
-			return csv_help::number(apair, adata);
+			return csv_helper::number(apair, adata);
 		}
 	};
 
@@ -102,7 +102,7 @@ namespace ngl
 	{
 		static bool read(csvpair& apair, int16_t& adata)
 		{
-			return csv_help::number(apair, adata);
+			return csv_helper::number(apair, adata);
 		}
 	};
 
@@ -111,7 +111,7 @@ namespace ngl
 	{
 		static bool read(csvpair& apair, int32_t& adata)
 		{
-			return csv_help::number(apair, adata);
+			return csv_helper::number(apair, adata);
 		}
 	};
 
@@ -120,7 +120,7 @@ namespace ngl
 	{
 		static bool read(csvpair& apair, int64_t& adata)
 		{
-			return csv_help::number(apair, adata);
+			return csv_helper::number(apair, adata);
 		}
 	};
 
@@ -129,7 +129,7 @@ namespace ngl
 	{
 		static bool read(csvpair& apair, uint8_t& adata)
 		{
-			return csv_help::number(apair, adata);
+			return csv_helper::number(apair, adata);
 		}
 	};
 
@@ -138,7 +138,7 @@ namespace ngl
 	{
 		static bool read(csvpair& apair, uint16_t& adata)
 		{
-			return csv_help::number(apair, adata);
+			return csv_helper::number(apair, adata);
 		}
 	};
 
@@ -147,7 +147,7 @@ namespace ngl
 	{
 		static bool read(csvpair& apair, uint32_t& adata)
 		{
-			return csv_help::number(apair, adata);
+			return csv_helper::number(apair, adata);
 		}
 	};
 
@@ -156,7 +156,7 @@ namespace ngl
 	{
 		static bool read(csvpair& apair, uint64_t& adata)
 		{
-			return csv_help::number(apair, adata);
+			return csv_helper::number(apair, adata);
 		}
 	};
 
@@ -165,7 +165,7 @@ namespace ngl
 	{
 		static bool read(csvpair& apair, float& adata)
 		{
-			return csv_help::number(apair, adata);
+			return csv_helper::number(apair, adata);
 		}
 	};
 
@@ -174,7 +174,7 @@ namespace ngl
 	{
 		static bool read(csvpair& apair, double& adata)
 		{
-			return csv_help::number(apair, adata);
+			return csv_helper::number(apair, adata);
 		}
 	};
 
@@ -183,7 +183,7 @@ namespace ngl
 	{
 		static bool read(csvpair& apair, bool& adata)
 		{
-			return csv_help::number(apair, adata);
+			return csv_helper::number(apair, adata);
 		}
 	};
 
@@ -327,7 +327,7 @@ namespace ngl
 		bool readcsv(std::map<int, T>& adata)
 		{
 			csvpair lpair;
-			for (; csv_help::readline(m_data, m_pos, lpair.m_data);)
+			for (; csv_helper::readline(m_data, m_pos, lpair.m_data);)
 			{
 				if (!lpair.m_data.empty())
 				{
@@ -346,8 +346,7 @@ namespace ngl
 			return true;
 		}
 	};
-
-	
+		
 	template <typename T>
 	bool csv_read<T>::read(csvpair& apair, T& adata)
 	{
@@ -368,7 +367,7 @@ namespace ngl
 	}
 
 	template <typename TNUMBER>
-	bool csv_help::number(csvpair& apair, TNUMBER& adata)
+	bool csv_helper::number(csvpair& apair, TNUMBER& adata)
 	{
 		std::string ltemp;
 		csv_read<std::string>::read(apair, ltemp);
