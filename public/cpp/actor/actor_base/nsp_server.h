@@ -281,7 +281,7 @@ namespace ngl
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	void nsp_server<ENUMDB, TDerived, T>::sync_data(i64_nodeid anodeid)
 	{
-		std::map<nguid, data_modified<T>>& lmap = m_dbmodule->data();
+		std::map<nguid, data_modified<T>>& lmap = m_dbmodule->foreach_data();
 		auto pro = std::make_shared<np_channel_data<T>>();
 		pro->m_firstsynchronize = true;
 		pro->m_recvfinish = false;

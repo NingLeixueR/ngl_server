@@ -38,7 +38,8 @@ namespace ngl
 
 		bool value(const char* akey, std::string& adata)
 		{
-			data_modified<pbdb::db_rolekeyvalue>& ltemp = data()[get_actor()->id_guid()];
+			
+			data_modified<pbdb::db_rolekeyvalue>& ltemp = get(get_actor()->id_guid());
 			const pbdb::db_rolekeyvalue* lpdata = ltemp.getconst();
 			if (lpdata == nullptr)
 			{
@@ -79,7 +80,7 @@ namespace ngl
 		template <typename T>
 		void set_value(const char* akey, T& adata)
 		{
-			data_modified_return_get(lpdbrolekeyvalue, data()[get_actor()->id_guid()]);
+			data_modified_return_get(lpdbrolekeyvalue, get(get_actor()->id_guid()));
 			(*lpdbrolekeyvalue->mutable_mdata())[akey] = std::format("{}", adata);
 		}
 

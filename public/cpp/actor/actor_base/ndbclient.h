@@ -294,9 +294,14 @@ namespace ngl
 		}
 
 		// # 获取数据
-		std::map<nguid, data_modified<TDBTAB>>& get_data()
+		const std::map<nguid, data_modified<TDBTAB>>& get_data()
 		{ 
 			return m_data; 
+		}
+
+		std::map<nguid, data_modified<TDBTAB>>& get_foreach_data()
+		{
+			return m_data;
 		}
 
 		// # 获取nguid数据
@@ -306,7 +311,15 @@ namespace ngl
 			{
 				return m_dbdata;
 			}
-			return tools::findmap(m_data, aid);
+			if (m_data.contains(aid))
+			{
+				return &m_data[aid];
+			}
+			data_modified<TDBTAB>& ldata = m_data[aid];
+			ldata.set(m_actor, TDBTAB());
+			ldata.init(&m_modified);
+			ldata.get(true, false)->set_mid(aid);
+			return &ldata;
 		}
 
 		// # 获取数据

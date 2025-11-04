@@ -90,7 +90,7 @@ namespace ngl
 
 		// 加载初始化活动
 		int32_t lnow = (int32_t)localtime::gettime();
-		for (std::pair<const nguid, data_modified<pbdb::db_activitytimes>>& lpair : m_activitytimedb.data())
+		for (const auto& lpair : m_activitytimedb.data())
 		{
 			const tab_activity* ltab = ttab_activity::instance().tab(nguid::actordataid(lpair.first));
 			if (ltab == nullptr)

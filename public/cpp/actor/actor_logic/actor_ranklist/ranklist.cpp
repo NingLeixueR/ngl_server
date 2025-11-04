@@ -28,19 +28,7 @@ namespace ngl
 
 	bool ranklist::update_value(pbdb::eranklist atype, rank_item& litem, const pbdb::db_brief& abrief, bool afirstsynchronize)
 	{
-		data_modified<pbdb::db_ranklist>* lpdb_ranklist = find(abrief.mid());
-		if (lpdb_ranklist == nullptr)
-		{
-			pbdb::db_ranklist* lpdata = get(abrief.mid());
-			lpdata->set_mid(abrief.mid());
-			lpdb_ranklist = find(abrief.mid());
-			if (lpdb_ranklist == nullptr)
-			{
-				tools::no_core_dump();
-				return true;
-			}
-		}
-		return litem.init(atype, abrief, lpdb_ranklist);
+		return litem.init(atype, abrief, &get(abrief.mid()));
 	}
 
 	bool ranklist::update_value(const pbdb::db_brief& abrief, bool afirstsynchronize)
@@ -98,7 +86,7 @@ namespace ngl
 	void ranklist::initdata()
 	{
 		log_error()->print("actor_ranklist###loaddb_finish {}", data());
-		for (std::pair<const nguid, data_modified<pbdb::db_ranklist>>& item : data())
+		for (const auto& item : data())
 		{
 			const pbdb::db_ranklist* lpdbranklist = item.second.getconst();
 			if (lpdbranklist == nullptr)
@@ -114,18 +102,6 @@ namespace ngl
 				update_value(abrief, afirstsynchronize);
 			}
 		);
-	}
-
-	pbdb::db_ranklist* ranklist::get(i64_actorid aactorid)
-	{
-		data_modified<pbdb::db_ranklist>* lprank = find(aactorid);
-		if (lprank == nullptr)
-		{
-			pbdb::db_ranklist ldbranklist;
-			ldbranklist.set_mid(aactorid);
-			add(aactorid, ldbranklist);
-		}
-		return data()[aactorid].get();
 	}
 
 	std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> ranklist::get_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage)

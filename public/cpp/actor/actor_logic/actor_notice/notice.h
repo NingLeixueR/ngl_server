@@ -41,7 +41,7 @@ namespace ngl
 			log_error()->print("actor_notice###loaddb_finish {}", data());
 			m_maxid = 0;
 
-			for (std::pair<const nguid, data_modified<pbdb::db_notice>>& lpair : data())
+			for (const auto& lpair : data())
 			{
 				const pbdb::db_notice* lpdata = lpair.second.getconst();
 				if (lpdata == nullptr)
