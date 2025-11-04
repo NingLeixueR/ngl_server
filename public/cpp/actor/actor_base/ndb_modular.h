@@ -98,31 +98,44 @@ namespace ngl
 		}
 
 		//# 遍历data
+		inline void foreach(const std::function<void(const data_modified<TDATA>&)>& afun)
+		{
+			for (const auto& apair : data())
+			{
+				afun(apair.second);
+			}
+		}
+
 		inline void foreach(const std::function<void(data_modified<TDATA>&)>& afun)
 		{
-			for (std::pair<const nguid, data_modified<TDATA>>& apair : data())
+			for (auto& apair : foreach_data())
 			{
 				afun(apair.second);
 			}
 		}
 
 		//# 查找指定数据
-		inline data_modified<TDATA>* find(const std::function<bool(data_modified<TDATA>&)>& afun)
+		inline data_modified<TDATA>* find(const std::function<bool(const data_modified<TDATA>&)>& afun)
 		{
-			for (std::pair<const nguid, data_modified<TDATA>>& apair : data())
+			for (const auto& apair : data())
 			{
 				if (afun(apair.second))
 				{
-					return &apair.second;
+					return &get(apair.first);
 				}
 			}
 			return nullptr;
 		}
 
 		//# 获取所有数据
-		inline std::map<nguid, data_modified<TDATA>>& data()
+		inline const std::map<nguid, data_modified<TDATA>>& data()
 		{
 			return m_data.get_data();
+		}
+
+		inline std::map<nguid, data_modified<TDATA>>& foreach_data()
+		{
+			return m_data.get_foreach_data();
 		}
 
 		//# 获取m_id对应的数据
@@ -134,7 +147,11 @@ namespace ngl
 		// # 查找指定数据
 		inline data_modified<TDATA>* find(nguid aid)
 		{
-			return tools::findmap(data(), aid);
+			if (!data().contains(aid))
+			{
+				return nullptr;
+			}
+			return &get(aid);
 		}
 
 		// # 与find类似(只是没有就添加)
@@ -148,14 +165,7 @@ namespace ngl
 			{
 				tools::no_core_dump();
 			}
-			data_modified<TDATA>& ldata = data()[aid];
-			TDATA* lpdata = ldata.get(false, false);
-			if (lpdata == nullptr)
-			{
-				tools::no_core_dump();
-			}
-			lpdata->set_mid(aid);
-			return ldata;
+			return *m_data.get_data(aid);
 		}
 
 		// # 删除指定数据

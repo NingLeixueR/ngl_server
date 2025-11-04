@@ -22,7 +22,7 @@ namespace ngl
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_NOTICE_RESPONSE>();
 		if (aactorid == -1)
 		{
-			for (std::pair<const nguid, data_modified<pbdb::db_notice>>& lpair : data())
+			for (const auto& lpair : data())
 			{
 				data_modified_continue_getconst(lpdbnotice, lpair.second);
 				*pro->add_mnotices() = *lpdbnotice;
@@ -42,7 +42,7 @@ namespace ngl
 	void notice::remove_notice()
 	{
 		int32_t lnow = (int32_t)localtime::gettime();
-		for (std::pair<const nguid, data_modified<pbdb::db_notice>>& lpair : data())
+		for (const auto& lpair : data())
 		{
 			data_modified_continue_getconst(lpnotice, lpair.second);
 			if (lpnotice->mfinishtime() != -1)

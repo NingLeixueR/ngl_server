@@ -63,12 +63,8 @@ namespace ngl
 		// 没有就添加
 		void update_keyvalue(const pbdb::db_keyvalue* adata)
 		{
-			pbdb::db_keyvalue* lpdata = data()[adata->mid()].get();
-			if (lpdata == nullptr)
-			{
-				return;
-			}
-			*lpdata = *adata;
+			data_modified<pbdb::db_keyvalue>& lpdata = get(adata->mid());
+			*lpdata.get() = *adata;
 		}
 
 		virtual void initdata()

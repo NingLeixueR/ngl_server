@@ -84,7 +84,7 @@ namespace ngl
 		void initdata()final
 		{
 			log_error()->print("{}", data());
-			for (std::pair<const nguid, data_modified<pbdb::db_family>>& lpair : data())
+			for (const auto& lpair : data())
 			{
 				const pbdb::db_family* lpdbfamilyconst = lpair.second.getconst();
 				if (lpdbfamilyconst == nullptr)

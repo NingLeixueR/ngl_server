@@ -44,7 +44,8 @@ namespace ngl
 		// 没有就添加
 		void update_brief(const pbdb::db_brief* adata)
 		{
-			*(data()[adata->mid()].get()) = *adata;
+			auto& ldata = get(adata->mid());
+			*ldata.get() = *adata;
 		}
 
 		virtual void initdata()
