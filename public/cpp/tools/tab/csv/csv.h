@@ -48,53 +48,149 @@ namespace ngl
 		}
 	};
 	
-	template <typename E, bool IS_ENUM>
-	class enum_operator_readcsv
+	template <typename T>
+	struct csv_read
 	{
-	public:
-		static bool operator_readcsv(csvpair& apair, E& adata)
-		{
-			return adata.rcsv(apair);
-		}
+		static bool read(csvpair& apair, T& adata);
 	};
 
-	class rcsv
+	struct csv_help
 	{
-	public:
-		std::string m_data;
-		int m_pos;
-	public:
-		bool read(const std::string& aname, std::string& averify);
+		template <typename TNUMBER>
+		static bool number(csvpair& apair, TNUMBER& adata);
 
-		bool readline(std::string& adata)
+		static bool readline(std::string& adata, int32_t& apos, std::string& aline)
 		{
-			adata.clear();
+			aline.clear();
 			bool lbool = false;
-			auto lsize = (int)m_data.size();
-			for (; m_pos < lsize; ++m_pos)
+			auto lsize = (int)adata.size();
+			for (; apos < lsize; ++apos)
 			{
 				if (!lbool)
 				{
-					if (m_data[m_pos] == '\r')
+					if (adata[apos] == '\r')
 					{
 						continue;
 					}
-					if (m_data[m_pos] == '\n')
+					if (adata[apos] == '\n')
 					{
-						++m_pos;
+						++apos;
 						return true;
 					}
 				}
-				if (m_data[m_pos] == '\"')
+				if (adata[apos] == '\"')
 				{
 					lbool = lbool ? false : true;
 				}
-				adata += m_data[m_pos];
+				aline += adata[apos];
 			}
-			return !adata.empty();
+			return !aline.empty();
 		}
+	};
 
-		static void read(csvpair& apair, std::string& ltemp)
+	template <>
+	struct csv_read<int8_t>
+	{
+		static bool read(csvpair& apair, int8_t& adata)
+		{
+			return csv_help::number(apair, adata);
+		}
+	};
+
+	template <>
+	struct csv_read<int16_t>
+	{
+		static bool read(csvpair& apair, int16_t& adata)
+		{
+			return csv_help::number(apair, adata);
+		}
+	};
+
+	template <>
+	struct csv_read<int32_t>
+	{
+		static bool read(csvpair& apair, int32_t& adata)
+		{
+			return csv_help::number(apair, adata);
+		}
+	};
+
+	template <>
+	struct csv_read<int64_t>
+	{
+		static bool read(csvpair& apair, int64_t& adata)
+		{
+			return csv_help::number(apair, adata);
+		}
+	};
+
+	template <>
+	struct csv_read<uint8_t>
+	{
+		static bool read(csvpair& apair, uint8_t& adata)
+		{
+			return csv_help::number(apair, adata);
+		}
+	};
+
+	template <>
+	struct csv_read<uint16_t>
+	{
+		static bool read(csvpair& apair, uint16_t& adata)
+		{
+			return csv_help::number(apair, adata);
+		}
+	};
+
+	template <>
+	struct csv_read<uint32_t>
+	{
+		static bool read(csvpair& apair, uint32_t& adata)
+		{
+			return csv_help::number(apair, adata);
+		}
+	};
+
+	template <>
+	struct csv_read<uint64_t>
+	{
+		static bool read(csvpair& apair, uint64_t& adata)
+		{
+			return csv_help::number(apair, adata);
+		}
+	};
+
+	template <>
+	struct csv_read<float>
+	{
+		static bool read(csvpair& apair, float& adata)
+		{
+			return csv_help::number(apair, adata);
+		}
+	};
+
+	template <>
+	struct csv_read<double>
+	{
+		static bool read(csvpair& apair, double& adata)
+		{
+			return csv_help::number(apair, adata);
+		}
+	};
+
+	template <>
+	struct csv_read<bool>
+	{
+		static bool read(csvpair& apair, bool& adata)
+		{
+			return csv_help::number(apair, adata);
+		}
+	};
+
+	template <>
+	struct csv_read<std::string>
+	{
+		static bool read(csvpair& apair, std::string& adata)
 		{
 			std::string& lret = apair.m_data;
 			int& lpos = apair.m_pos;
@@ -118,209 +214,103 @@ namespace ngl
 					apair.m_doublequotationmarks = apair.m_doublequotationmarks ? false : true;
 					continue;
 				}
-				ltemp += lret[lpos];
-			}
-		}
-
-		rcsv() :
-			m_pos(0)
-		{
-		}
-
-		// 基本类型
-	private:
-		template <typename TNUMBER>
-		static bool number_csv(csvpair& apair, TNUMBER& adata)
-		{
-			std::string ltemp;
-			rcsv::read(apair, ltemp);
-			if (ltemp != "")
-			{
-				adata = tools::lexical_cast<TNUMBER>(ltemp.c_str());
-			}
-			else
-			{
-				adata = TNUMBER();
+				adata += lret[lpos];
 			}
 			return true;
 		}
-	public:
-		static bool readcsv(csvpair& apair, int8_t& adata)		{ return number_csv(apair, adata); }
-		static bool readcsv(csvpair& apair, int16_t& adata)		{ return number_csv(apair, adata); }
-		static bool readcsv(csvpair& apair, int32_t& adata)		{ return number_csv(apair, adata); }
-		static bool readcsv(csvpair& apair, int64_t& adata)		{ return number_csv(apair, adata); }
-		static bool readcsv(csvpair& apair, uint8_t& adata)		{ return number_csv(apair, adata); }
-		static bool readcsv(csvpair& apair, uint16_t& adata)	{ return number_csv(apair, adata); }
-		static bool readcsv(csvpair& apair, uint32_t& adata)	{ return number_csv(apair, adata); }
-		static bool readcsv(csvpair& apair, uint64_t& adata)	{ return number_csv(apair, adata); }
-		static bool readcsv(csvpair& apair, float& adata)		{ return number_csv(apair, adata); }
-		static bool readcsv(csvpair& apair, double& adata)		{ return number_csv(apair, adata); }
-		static bool readcsv(csvpair& apair, bool& adata)		{ return number_csv(apair, adata); }
+	};
 
-		// stl
-		template <typename T, bool BASE_TYPE>
-		class readcsv_stl
+	template <typename T>
+	struct csv_read<std::vector<T>>
+	{
+		static bool read(csvpair& apair, std::vector<T>& adata)
 		{
-		public:
-			static bool fun(csvpair& apair, const std::function<void(T&)>& afun)
+			std::string ltempstr;
+			csv_read<std::string>::read(apair, ltempstr);
+			csvpair lpair;
+			lpair.m_data = ltempstr;
+			lpair.m_fg = '*';
+			for (; lpair.m_pos < lpair.m_data.size();)
 			{
-				std::string ltempstr;
-				read(apair, ltempstr);
-				csvpair lpair;
-				lpair.m_data = ltempstr;
-				for (; lpair.m_pos < lpair.m_data.size();)
+				T ltemp;
+				if (csv_read<T>::read(lpair, ltemp))
 				{
-					T ltemp;
-					int32_t lret = readveccsv(lpair, ltemp);
-					if (lret == -1)
-					{
-						return false;
-					}
-					if (lret == 0)
-					{
-						afun(ltemp);
-					}
-					else if (lret == 1)
-					{
-						break;
-					}
-					else
-					{
-						return false;
-					}
+					adata.push_back(ltemp);
 				}
-				return true;
 			}
-		};
-
-		template <typename T>
-		class readcsv_stl<T, false>
-		{
-		public:
-			static bool fun(csvpair& apair, const std::function<void(T&)>& afun)
-			{
-				std::string ltempstr;
-				read(apair, ltempstr);
-				csvpair lpair;
-				lpair.m_data = ltempstr;
-				for (; lpair.m_pos < lpair.m_data.size();)
-				{
-					T ltemp;
-					if (readcsv(lpair, ltemp))
-					{
-						afun(ltemp);
-					}
-				}
-				return true;
-			}
-		};
-
-		static bool readcsv(csvpair& apair, std::string& adata)
-		{
-			read(apair, adata);
+			lpair.m_fg = ',';
 			return true;
 		}
+	};
 
-		template <typename T>
-		static bool readcsv(csvpair& apair, std::vector<T>& avec)
-		{
-			return readcsv_stl<T, std::is_class<T>::value>::fun(apair, [&avec](T& adata)
-				{
-					avec.push_back(adata);
-				});
-		}
-
-		template <typename T>
-		static bool readcsv(csvpair& apair, std::list<T>& avec)
-		{
-			return readcsv_stl<T, std::is_class<T>::value>::fun(apair, [&avec](T& adata)
-				{
-					avec.push_back(adata);
-				});
-		}
-
-		template <typename T>
-		static bool readcsv(csvpair& apair, std::set<T>& avec)
-		{
-			return readcsv_stl<T, std::is_class<T>::value>::fun(apair, [&avec](T& adata)
-				{
-					avec.insert(adata);
-				});
-			return true;
-		}
-
-		template <typename T>
-		static bool readcsv(csvpair& apair, T& adata)
-		{
-			ngl::csvpair lcpair;
-			lcpair.m_fg = '*';
-			if (readcsv(apair, lcpair.m_data) == false)
-			{
-				return false;
-			}
-			if (lcpair.m_data == "")
-			{
-				return true;
-			}
-			return enum_operator_readcsv<T, std::is_enum<T>::value>::operator_readcsv(lcpair, adata);
-		}
-
-		template <typename T>
-		static int readveccsv(csvpair& apair, T& adata)
-		{
-			ngl::csvpair lcpair;
-			lcpair.m_fg = '*';
-			if (readcsv(apair, lcpair.m_data) == false)
-			{
-				return -1;
-			}
-			if (lcpair.m_data == "")
-			{
-				return 1;
-			}
-			if (enum_operator_readcsv<T, std::is_enum<T>::value>::operator_readcsv(lcpair, adata) == false)
-			{
-				return -1;
-			}
-			//adata.rcsv(lcpair);
-			return 0;
-		}
-		
-		static bool readveccsv(csvpair& apair, int8_t& adata)		{ return readcsv(apair, adata); }
-		static bool readveccsv(csvpair& apair, int16_t& adata)		{ return readcsv(apair, adata); }
-		static bool readveccsv(csvpair& apair, int32_t& adata)		{ return readcsv(apair, adata); }
-		static bool readveccsv(csvpair& apair, int64_t& adata)		{ return readcsv(apair, adata); }
-		static bool readveccsv(csvpair& apair, uint8_t& adata)		{ return readcsv(apair, adata); }
-		static bool readveccsv(csvpair& apair, uint16_t& adata)		{ return readcsv(apair, adata); }
-		static bool readveccsv(csvpair& apair, uint32_t& adata)		{ return readcsv(apair, adata); }
-		static bool readveccsv(csvpair& apair, uint64_t& adata)		{ return readcsv(apair, adata); }
-		static bool readveccsv(csvpair& apair, float& adata)		{ return readcsv(apair, adata); }
-		static bool readveccsv(csvpair& apair, double& adata)		{ return readcsv(apair, adata); }
-		static bool readveccsv(csvpair& apair, std::string& adata)	{ return readcsv(apair, adata); }
-
-		template <typename TKEY, typename TVALUE>
-		static bool readcsv(csvpair& apair, std::map<TKEY, TVALUE>& amap)
+	template <typename T>
+	struct csv_read<std::list<T>>
+	{
+		static bool read(csvpair& apair, std::list<T>& adata)
 		{
 			std::string ltempstr;
 			read(apair, ltempstr);
 			csvpair lpair;
 			lpair.m_data = ltempstr;
-			int lsize = apair.m_data.size();
-			for (; apair.m_pos < lsize;)
+			lpair.m_fg = '*';
+			for (; lpair.m_pos < lpair.m_data.size();)
 			{
-				TKEY lkey;
-				TVALUE lvalue;
-				if (readcsv(lpair, lkey) == false)
+				T ltemp;
+				if (csv_read<T>::read(lpair, ltemp))
 				{
-					return false;
+					adata.insert(ltemp);
 				}
-				if (readcsv(lpair, lvalue) == false)
-				{
-					return false;
-				}
-				amap.insert(std::make_pair(lkey, lvalue));
 			}
+			lpair.m_fg = ',';
 			return true;
+		}
+	};
+
+	template <typename T>
+	struct csv_read<std::set<T>>
+	{
+		static bool read(csvpair& apair, std::set<T>& adata)
+		{
+			std::string ltempstr;
+			csv_read<std::string>::read(apair, ltempstr);
+			csvpair lpair;
+			lpair.m_data = ltempstr;
+			lpair.m_fg = '*';
+			for (; lpair.m_pos < lpair.m_data.size();)
+			{
+				T ltemp;
+				if (csv_read<T>::read(lpair, ltemp))
+				{
+					adata.insert(ltemp);
+				}
+			}
+			lpair.m_fg = ',';
+			return true;
+		}
+	};
+
+	class rcsv
+	{
+	public:
+		std::string m_data;
+		int m_pos;
+	public:
+		bool read(const std::string& aname, std::string& averify);
+
+		rcsv() :
+			m_pos(0)
+		{
+		}
+	private:
+	public:
+		template <typename T>
+		static bool readcsv(csvpair& apair, T& adata)
+		{
+			if (apair.m_data.empty())
+			{
+				return false;
+			}
+			return csv_read<T>::read(apair, adata);
 		}
 
 		template <typename T, typename ...ARG>
@@ -337,9 +327,9 @@ namespace ngl
 		bool readcsv(std::map<int, T>& adata)
 		{
 			csvpair lpair;
-			for (; readline(lpair.m_data);)
+			for (; csv_help::readline(m_data, m_pos, lpair.m_data);)
 			{
-				if (lpair.m_data.empty() != true)
+				if (!lpair.m_data.empty())
 				{
 					if (lpair.m_data[0] == '#')
 					{
@@ -355,35 +345,41 @@ namespace ngl
 			}
 			return true;
 		}
-		
-		template <typename T>
-		bool readcsv(std::vector<T>& adata)
-		{
-			csvpair lpair;
-			for (; readline(lpair.m_data);)
-			{
-				T ltemp;
-				ltemp.rcsv(lpair);
-				adata.push_back(ltemp);
-				lpair.clear();
-			}
-			return true;
-		}
 	};
 
-	template <typename E>
-	class enum_operator_readcsv<E, true>
+	
+	template <typename T>
+	bool csv_read<T>::read(csvpair& apair, T& adata)
 	{
-	public:
-		static bool operator_readcsv(csvpair& apair, E& adata)
+		if constexpr (std::is_enum<T>::value)
 		{
-			int ltemp = 0;
-			if (rcsv::readcsv(apair, ltemp))
+			int32_t lvalue = 0;
+			if (csv_read<int32_t>::read(apair, lvalue))
 			{
-				adata = (E)ltemp;
+				adata = (T)lvalue;
 				return true;
 			}
-			return false;
 		}
-	};
+		else
+		{
+			return adata.rcsv(apair);
+		}
+		return false;
+	}
+
+	template <typename TNUMBER>
+	bool csv_help::number(csvpair& apair, TNUMBER& adata)
+	{
+		std::string ltemp;
+		csv_read<std::string>::read(apair, ltemp);
+		if (ltemp != "")
+		{
+			adata = tools::lexical_cast<TNUMBER>(ltemp.c_str());
+		}
+		else
+		{
+			adata = TNUMBER();
+		}
+		return true;
+	}
 }//namespace ngl
