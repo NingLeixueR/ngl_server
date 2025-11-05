@@ -129,6 +129,7 @@ INCLUDE_DIRECTORIES(public/cpp/tools/db/redis/)
 INCLUDE_DIRECTORIES(public/cpp/tools/curl/)
 INCLUDE_DIRECTORIES(public/cpp/tools/log/)
 INCLUDE_DIRECTORIES(public/cpp/tools/log/bi)
+INCLUDE_DIRECTORIES(public/cpp/tools/dmp)
 
 INCLUDE_DIRECTORIES(public/cpp/tools/script)
 INCLUDE_DIRECTORIES(public/cpp/tools/script/lua)

@@ -12,7 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-11-04 12:48:07】
+ // 创建时间【2025-11-05 11:43:39】
 
 #pragma once
 #include "ndefine.h"

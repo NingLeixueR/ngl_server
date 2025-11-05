@@ -3,8 +3,6 @@
 
 #define DEF_COUNT (2000)
 
-Dumper lDumper;
-
 void init_DB_ACCOUNT(const char* aname, int beg)
 {
 	for (int i = beg; i < beg + DEF_COUNT; ++i)
@@ -813,8 +811,7 @@ int ngl_main(int argc, char** argv)
 	// # 设置控制台窗口名称
 	SetConsoleTitle(lnodename.c_str());
 #endif
-
-	Dumper::m_excname = lnodename;
+	
 	switch (nconfig::node_type())
 	{
 	case ngl::DB:

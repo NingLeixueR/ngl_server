@@ -40,7 +40,6 @@
 #include "dbredis.h"
 #include "ntimer.h"
 #include "net.pb.h"
-#include "dumper.h"
 #include "db.pb.h"
 #include "nlog.h"
 #include "nlog.h"
