@@ -29,7 +29,7 @@ test_thruput 10 400 400
 
 print_thruput 0
 
-TESTS 1000 d /chat 1 1 china
+TESTS 1000 d /chat 1 1 ribenrensb3
 TESTS 1000 d /lv 100
 TESTS 1000 d /gold 100
 TESTS 1000 d /ranklist 0 1 1
