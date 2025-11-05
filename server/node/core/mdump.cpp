@@ -15,6 +15,9 @@
 
 #include "dumper.h"
 
+DumperHandler Dumper::dumperHandler;
+std::string Dumper::m_excname;
+
 // 1. 生成 Dump 文件的函数（复用之前的实现）
 void CreateMiniDump(EXCEPTION_POINTERS* pExcepInfo, const TCHAR* dumpPath) {
     HANDLE hFile = CreateFile(dumpPath, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -59,10 +62,6 @@ LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* pExcepInfo)
 
     return EXCEPTION_EXECUTE_HANDLER; // 允许系统默认处理（如弹窗）
 }
-
-
-DumperHandler Dumper::dumperHandler;
-std::string Dumper::m_excname;
 
 void cxerr()
 {
