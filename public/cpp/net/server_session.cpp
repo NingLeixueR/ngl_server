@@ -24,7 +24,6 @@ namespace ngl
 
 	void server_session::add(i32_serverid aserverid, i32_sessionid asession)
 	{
-		//log_error()->print("server_session::add [{}:{}] [{}]", aserverid, ttab_servers::instance().tab(nnodeid::tid(aserverid))->m_name, asession);
 		{
 			lock_write(m_mutex);
 			m_server.erase(aserverid);
@@ -32,20 +31,38 @@ namespace ngl
 			m_server.insert(std::make_pair(aserverid, asession));
 			m_session.insert(std::make_pair(asession, aserverid));
 		}
+		auto ltab = ttab_servers::instance().tab(nnodeid::tid(aserverid));
+		if (ltab != nullptr)
+		{
+			log_error()->print(
+				"server_session::add [{}:{}_{}]",
+				nnodeid::tid(aserverid), ltab->m_name, nnodeid::tcount(aserverid)
+			);
+		}
 	}
 
 	void server_session::remove(i32_sessionid asession)
 	{
-		lock_write(m_mutex);
-		auto itor = m_session.find(asession);
-		if (itor == m_session.end())
+		i32_serverid lserverid = 0;
 		{
-			return;
+			lock_write(m_mutex);
+			auto itor = m_session.find(asession);
+			if (itor == m_session.end())
+			{
+				return;
+			}
+			lserverid = itor->second;
+			m_server.erase(lserverid);
+			m_session.erase(itor);
 		}
-		
-		log_error()->print("server_session::remove [{}:{}] [{}]", itor->second, ttab_servers::instance().tab(nnodeid::tid(itor->second))->m_name, asession);
-		m_server.erase(itor->second);
-		m_session.erase(itor);
+		auto ltab = ttab_servers::instance().tab(nnodeid::tid(lserverid));
+		if (ltab != nullptr)
+		{
+			log_error()->print(
+				"server_session::remove [{}:{}_{}]",
+				nnodeid::tid(lserverid), ltab->m_name, nnodeid::tcount(lserverid)
+			);
+		}
 	}
 
 	i32_sessionid server_session::sessionid(i32_serverid aserverid)
