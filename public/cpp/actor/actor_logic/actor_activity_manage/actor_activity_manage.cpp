@@ -103,7 +103,13 @@ namespace ngl
 			start_activity(lpair.first, lbeg, lduration);
 		}
 
-		for (const auto& [activityid, tab] : ttab_activity::instance().tablecsv())
+		auto ltabmap = ttab_activity::instance().tablecsv();
+		if (ltabmap == nullptr)
+		{
+			tools::no_core_dump();
+			return;
+		}
+		for (const auto& [activityid, tab] : *ltabmap)
 		{
 			i64_actorid lactoractivityid = tab2actor(ACTOR_ACTIVITY_MANAGE, activityid);
 			if (!m_activitys.contains(lactoractivityid))
@@ -201,7 +207,13 @@ namespace ngl
 		if (lkeyvalue != nullptr)
 		{
 			int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->mvalue());
-			for (const auto& [activityid, tab] : ttab_activityopenserver::instance().tablecsv())
+			auto ltabmap = ttab_activityopenserver::instance().tablecsv();
+			if (ltabmap == nullptr)
+			{
+				tools::no_core_dump();
+				return;
+			}
+			for (const auto& [activityid, tab] : *ltabmap)
 			{
 				if (!m_activitys.contains(activityid))
 				{

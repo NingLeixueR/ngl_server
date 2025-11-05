@@ -314,7 +314,13 @@ namespace ngl
 	{
 		log_error()->print("task load finish {}", data());
 		// ### 检查是否有可接受的任务
-		for (const auto& atask : ttab_task::instance().tablecsv())
+		auto ltabmap = ttab_task::instance().tablecsv();
+		if (ltabmap == nullptr)
+		{
+			tools::no_core_dump();
+			return;
+		}
+		for (const auto& atask : *ltabmap)
 		{
 			// # 检查任务是否可接收
 			if (static_task::receive_task(nactor(), atask.second.m_id) == true)

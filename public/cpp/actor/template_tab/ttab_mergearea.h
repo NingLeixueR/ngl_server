@@ -80,20 +80,26 @@ namespace ngl
 			return ltemp;
 		}
 
-		const std::map<int, tab_mergearea>& tablecsv()
+		const std::map<int, tab_mergearea>* tablecsv()
 		{
 			ttab_mergearea* ttab = allcsv::get<ttab_mergearea>();
 			if (ttab == nullptr)
 			{
 				tools::no_core_dump();
+				return nullptr;
 			}
-			return ttab->m_tablecsv;
+			return &ttab->m_tablecsv;
 		}
 
 		const tab_mergearea* tab(int32_t aid)
 		{
-			auto itor = tablecsv().find(aid);
-			if (itor == tablecsv().end())
+			auto lpmap = tablecsv();
+			if (lpmap == nullptr)
+			{
+				return nullptr;
+			}
+			auto itor = lpmap->find(aid);
+			if (itor == lpmap->end())
 			{
 				return nullptr;
 			}

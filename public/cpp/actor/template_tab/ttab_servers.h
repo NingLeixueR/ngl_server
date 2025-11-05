@@ -84,7 +84,13 @@ namespace ngl
 		{
 			std::cout << "[ttab_servers] reload" << std::endl;
 			m_areaserver.clear();
-			for (std::pair<const int, tab_servers>& item : tablecsv())
+			auto ltabmap = tablecsv();
+			if (ltabmap == nullptr)
+			{
+				tools::no_core_dump();
+				return;
+			}
+			for (std::pair<const int, tab_servers>& item : *ltabmap)
 			{
 				m_areaserver[item.second.m_area][item.first] = &item.second;
 
@@ -128,20 +134,26 @@ namespace ngl
 			return ltemp;
 		}
 
-		std::map<int, tab_servers>& tablecsv()
+		std::map<int, tab_servers>* tablecsv()
 		{
 			ttab_servers* ttab = allcsv::get<ttab_servers>();
 			if (ttab == nullptr)
 			{
 				tools::no_core_dump();
+				return nullptr;
 			}
-			return ttab->m_tablecsv;
+			return &ttab->m_tablecsv;
 		}
 
 		const tab_servers* tab(int32_t aid)
 		{
-			auto itor = tablecsv().find(aid);
-			if (itor == tablecsv().end())
+			auto lpmap = tablecsv();
+			if (lpmap == nullptr)
+			{
+				return nullptr;
+			}
+			auto itor = lpmap->find(aid);
+			if (itor == lpmap->end())
 			{
 				return nullptr;
 			}
@@ -160,7 +172,13 @@ namespace ngl
 			{
 				area = larea;
 			}
-			for (const std::pair<const int, tab_servers>& item : tablecsv())
+			auto ltabmap = tablecsv();
+			if (ltabmap == nullptr)
+			{
+				tools::no_core_dump();
+				return nullptr;
+			}
+			for (const std::pair<const int, tab_servers>& item : *ltabmap)
 			{
 				std::cout << std::format(
 					"m_area:[{}] m_name:[{}] m_tcount:[{}]"
@@ -183,7 +201,13 @@ namespace ngl
 			{
 				area = larea;
 			}
-			for (const std::pair<const int, tab_servers>& item : tablecsv())
+			auto ltabmap = tablecsv();
+			if (ltabmap == nullptr)
+			{
+				tools::no_core_dump();
+				return nullptr;
+			}
+			for (const std::pair<const int, tab_servers>& item : *ltabmap)
 			{
 				std::cout << std::format(
 					"m_area:[{}] m_name:[{}] m_tcount:[{}]"

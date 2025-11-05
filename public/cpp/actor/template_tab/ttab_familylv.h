@@ -38,7 +38,13 @@ namespace ngl
 			std::cout << "[ttab_familylv] reload" << std::endl;
 			m_failylvexp.clear();
 			m_failyrolecount.clear();
-			for (const auto& apair : tablecsv())
+			auto ltabmap = tablecsv();
+			if (ltabmap == nullptr)
+			{
+				tools::no_core_dump();
+				return;
+			}
+			for (const auto& apair : *ltabmap)
 			{
 				m_failylvexp[apair.first] = apair.second.m_exp;
 				m_failyrolecount[apair.first] = apair.second.m_maxmembers;
@@ -53,20 +59,26 @@ namespace ngl
 			return ltemp;
 		}
 
-		const std::map<int, tab_familylv>& tablecsv()
+		const std::map<int, tab_familylv>* tablecsv()
 		{
 			ttab_familylv* ttab = allcsv::get<ttab_familylv>();
 			if (ttab == nullptr)
 			{
 				tools::no_core_dump();
+				return nullptr;
 			}
-			return ttab->m_tablecsv;
+			return &ttab->m_tablecsv;
 		}
 
 		const tab_familylv* tab(int32_t aid)
 		{
-			auto itor = tablecsv().find(aid);
-			if (itor == tablecsv().end())
+			auto lpmap = tablecsv();
+			if (lpmap == nullptr)
+			{
+				return nullptr;
+			}
+			auto itor = lpmap->find(aid);
+			if (itor == lpmap->end())
 			{
 				return nullptr;
 			}
