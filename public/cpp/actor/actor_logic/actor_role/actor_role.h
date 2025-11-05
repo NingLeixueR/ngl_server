@@ -196,7 +196,7 @@ namespace ngl
 		template <ENUM_ACTOR ACTOR, typename T>
 		bool handle_forward(const message<T>& adata)
 		{
-			const T* lparm = *adata.get_data();
+			const T* lparm = adata.get_data();
 			if (lparm == nullptr)
 			{
 				return false;
