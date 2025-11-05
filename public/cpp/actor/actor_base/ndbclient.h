@@ -316,9 +316,10 @@ namespace ngl
 				return &m_data[aid];
 			}
 			data_modified<TDBTAB>& ldata = m_data[aid];
-			ldata.set(m_actor, TDBTAB());
+			TDBTAB lTDBTAB;
+			lTDBTAB.set_mid(aid);
+			ldata.set(m_actor, lTDBTAB);
 			ldata.init(&m_modified);
-			ldata.get(true, false)->set_mid(aid);
 			return &ldata;
 		}
 
