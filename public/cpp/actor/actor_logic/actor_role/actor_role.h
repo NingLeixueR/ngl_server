@@ -196,21 +196,25 @@ namespace ngl
 		template <ENUM_ACTOR ACTOR, typename T>
 		bool handle_forward(const message<T>& adata)
 		{
-			const T& lparm = adata.get_shared_data() == nullptr ? *adata.get_data() : *adata.get_shared_data();
-			if (forward_before(lparm) == false)
+			const T* lparm = *adata.get_data();
+			if (lparm == nullptr)
+			{
+				return false;
+			}
+			if (forward_before(*lparm) == false)
 			{
 				return false;
 			}
 			std::shared_ptr<mforward<T>> pro(nullptr);
-			pro = std::make_shared<mforward<T>>(id_guid(), lparm);
+			pro = std::make_shared<mforward<T>>(id_guid(), *lparm);
 			i64_actorid lguid;
-			switch (forward_type(lparm))
+			switch (forward_type(*lparm))
 			{
 			case ecross_ordinary:
-				lguid = nguid::make(ACTOR, tab_self_area, forward_dataid(lparm));
+				lguid = nguid::make(ACTOR, tab_self_area, forward_dataid(*lparm));
 				break;
 			case ecross_cross_ordinary:
-				lguid = nguid::make(ACTOR, tab_self_cros_area, forward_dataid(lparm));
+				lguid = nguid::make(ACTOR, tab_self_cros_area, forward_dataid(*lparm));
 				break; 
 			case ecross_cross_example:
 				lguid = m_example.second;
