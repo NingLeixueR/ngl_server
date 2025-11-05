@@ -51,20 +51,26 @@ namespace ngl
 			return ltemp;
 		}
 
-		const std::map<int, tab_dbload>& tablecsv()
+		const std::map<int, tab_dbload>* tablecsv()
 		{
 			ttab_dbload* ttab = allcsv::get<ttab_dbload>();
 			if (ttab == nullptr)
 			{
 				tools::no_core_dump();
+				return nullptr;
 			}
-			return ttab->m_tablecsv;
+			return &ttab->m_tablecsv;
 		}
 
 		const tab_dbload* tab(int32_t aid)
 		{
-			auto itor = tablecsv().find(aid);
-			if (itor == tablecsv().end())
+			auto lpmap = tablecsv();
+			if (lpmap == nullptr)
+			{
+				return nullptr;
+			}
+			auto itor = lpmap->find(aid);
+			if (itor == lpmap->end())
 			{
 				return nullptr;
 			}

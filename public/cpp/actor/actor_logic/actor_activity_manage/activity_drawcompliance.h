@@ -80,7 +80,13 @@ namespace ngl
 				itor = lmap->insert({ aroleid, ltemp }).first;
 			}
 
-			for (const auto& [_id, _data] : ttab_activity_drawcompliance::instance().tablecsv())
+			auto ltabmap = ttab_activity_drawcompliance::instance().tablecsv();
+			if (ltabmap == nullptr)
+			{
+				tools::no_core_dump();
+				return;
+			}
+			for (const auto& [_id, _data] : *ltabmap)
 			{
 				if (itor->second.mcount() > _id)
 				{
