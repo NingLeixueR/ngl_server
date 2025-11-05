@@ -14,20 +14,19 @@
 #pragma once
 
 #include "threadtools.h"
+#include "example.pb.h"
 #include "nactortype.h"
 #include "nserialize.h"
 #include "localtime.h"
 #include "sysconfig.h"
 #include "ndefine.h"
+#include "net.pb.h"
 #include "nguid.h"
 #include "db.pb.h"
 #include "tools.h"
 #include "pack.h"
 #include "type.h"
 #include "xml.h"
-
-#include "example.pb.h"
-#include "net.pb.h"
 
 #include <source_location>
 #include <iostream>

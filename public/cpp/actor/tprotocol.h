@@ -38,12 +38,12 @@ namespace ngl
 	public:
 		struct info
 		{
+			using func = std::function<bool(int64_t, void*)>;
+
 			i32_protocolnum	m_protocol;
 			std::string		m_name;
-
 			int8_t			m_highvalue = 0; // 高权限值(0-127)
 
-			using func = std::function<bool(int64_t, void*)>;
 			// # 为了给脚本提供根据结构名字发送数据给客户端
 			std::array<func, enscript_count> m_toclient;
 			// # 为了给脚本提供根据结构名字发送数据给其他actor
@@ -198,7 +198,6 @@ namespace ngl
 			info** linfo = tools::findmap(m_protocol, aprotocolnum);
 			if (linfo == nullptr)
 			{
-				//tools::no_core_dump();
 				return nullptr;
 			}
 			return *linfo;

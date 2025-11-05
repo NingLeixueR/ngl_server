@@ -100,7 +100,7 @@ namespace ngl
 		
 		tprotocol::set_customs_index(120000000);
 		tprotocol::tp_customs_script::template func <
-			/*120000001*/mforward<np_gm>
+			/*120000001*/ mforward<np_gm>
 			/*120000003*/, mforward<np_gm_response>
 			/*120000005*/, np_actorswitch_process<np_actorswitch_process_role>
 			/*120000007*/, np_testlua
