@@ -23,7 +23,7 @@ namespace ngl
 		net_tcp(const net_tcp&) = delete;
 		net_tcp& operator=(const net_tcp&) = delete;
 
-		asio_tcp*				m_server;
+		asio_tcp*				m_server = nullptr;
 		std::vector<segpack*>	m_segpackvec;
 	private:
 		bool socket_recv(service_io* ap, const char* abuff, int32_t abufflen);
