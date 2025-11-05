@@ -279,7 +279,7 @@ namespace ngl
 			nsp_instance<type_nsp_write>::template register_handle<TDerived, np_channel_check<T>>();
 			// 处理注册回复
 			nsp_instance<type_nsp_write>::template register_handle<TDerived, np_channel_write_register_reply<T>>();
-			// 处理注册回复
+			// 接收结点信息
 			nsp_instance<type_nsp_write>::template register_handle<TDerived, np_channel_dataid_sync<T>>();
 		}
 
