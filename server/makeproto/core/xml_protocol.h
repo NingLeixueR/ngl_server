@@ -1,5 +1,14 @@
 #pragma once
 
+#include "operator_file.h"
+#include "xmlprotocol.h"
+#include "net.pb.h"
+#include "tools.h"
+
+#include <google/protobuf/compiler/importer.h>
+#include <google/protobuf/dynamic_message.h>
+#include <google/protobuf/descriptor.h>
+
 #include <functional>
 #include <filesystem>
 #include <algorithm>
@@ -11,15 +20,6 @@
 #include <regex>
 #include <set>
 #include <map>
-
-#include <google/protobuf/compiler/importer.h>
-#include <google/protobuf/dynamic_message.h>
-#include <google/protobuf/descriptor.h>
-
-#include "operator_file.h"
-#include "xmlprotocol.h"
-#include "net.pb.h"
-#include "tools.h"
 
 class xml_protocol
 {
