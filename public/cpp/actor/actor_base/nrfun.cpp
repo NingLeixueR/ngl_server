@@ -38,7 +38,7 @@ namespace ngl
 		{
 			if (aactor->type() != ACTOR_CLIENT && aactor->type() != ACTOR_SERVER)
 			{
-				tprotocol::info* lpinfo = tprotocol::get(apram.m_enum);
+				const tprotocol::info* lpinfo = tprotocol::get(apram.m_enum);
 				if (lpinfo == nullptr)
 				{
 					log_error()->print(
