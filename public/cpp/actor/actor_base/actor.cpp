@@ -75,7 +75,7 @@ namespace ngl
 	void actor::push(handle_pram& apram)
 	{
 		int8_t highvalue = 0;
-		tprotocol::info* lpinfo = tprotocol::get(apram.m_enum);
+		const tprotocol::info* lpinfo = tprotocol::get(apram.m_enum);
 		if (lpinfo != nullptr)
 		{
 			highvalue = lpinfo->m_highvalue;
