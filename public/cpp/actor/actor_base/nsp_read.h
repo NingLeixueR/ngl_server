@@ -31,6 +31,7 @@ namespace ngl
 
 		std::map<i16_area, i64_actorid>									m_nspserver;
 		std::map<i16_area, bool>										m_register;
+		std::map<i16_area, bool>										m_loadfinish;
 
 		enp_channel														m_type;				// 类型
 		//[[ 只有 <m_type == enp_channel_readpart> 下面数据有效
@@ -39,6 +40,7 @@ namespace ngl
 
 		std::map<i16_actortype, std::set<i32_fieldnumber>>				m_node_fieldnumbers;
 		std::map<i64_actorid, T>										m_data;
+
 	public:
 		static type_nsp_read& instance(i64_actorid aactorid)
 		{
@@ -156,6 +158,7 @@ namespace ngl
 			{
 				m_nspserver[area] = nguid::make(ltype, area, nguid::none_actordataid());
 				m_register[area] = false;
+				m_loadfinish[area] = false;
 			}
 
 			i64_actorid lactorid = m_actor->id_guid();
@@ -229,6 +232,14 @@ namespace ngl
 		{
 			if (recv->m_recvfinish)
 			{
+				m_loadfinish[nguid::area(recv->m_actorid)] = true;
+				for (const auto& item : m_loadfinish)
+				{
+					if (!item.second)
+					{
+						return;
+					}
+				}
 				if (m_actor->nscript_using())
 				{
 					actor_base::nscript_data_nsp<T> ltemp(m_data);
