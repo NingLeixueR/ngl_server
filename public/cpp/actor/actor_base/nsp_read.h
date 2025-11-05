@@ -112,6 +112,8 @@ namespace ngl
 
 		bool is_care(i64_actorid adataid)const;
 
+		bool is_loadfinish()const;
+
 		void handle(TDerived* aactor, const message<np_channel_data<T>>& adata);
 
 		void handle(TDerived*, const message<np_channel_check<T>>& adata);
@@ -192,6 +194,19 @@ namespace ngl
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
+	bool nsp_read<TDerived, TACTOR, T>::is_loadfinish()const
+	{
+		for (const auto& item : m_loadfinish)
+		{
+			if (!item.second)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	template <typename TDerived, typename TACTOR, typename T>
 	void nsp_read<TDerived, TACTOR, T>::handle(TDerived* aactor, const message<np_channel_data<T>>& adata)
 	{
 		const np_channel_data<T>* recv = adata.get_data();
@@ -233,19 +248,15 @@ namespace ngl
 			if (recv->m_recvfinish)
 			{
 				m_loadfinish[nguid::area(recv->m_actorid)] = true;
-				for (const auto& item : m_loadfinish)
+				if (is_loadfinish())
 				{
-					if (!item.second)
+					if (m_actor->nscript_using())
 					{
-						return;
+						actor_base::nscript_data_nsp<T> ltemp(m_data);
+						m_actor->nscript_data_push("nsp", ltemp, true);
 					}
+					m_call.loadfinishfun();
 				}
-				if (m_actor->nscript_using())
-				{
-					actor_base::nscript_data_nsp<T> ltemp(m_data);
-					m_actor->nscript_data_push("nsp", ltemp, true);
-				}
-				m_call.loadfinishfun();
 			}
 		}
 		else
