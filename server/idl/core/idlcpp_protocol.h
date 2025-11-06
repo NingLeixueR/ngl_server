@@ -52,7 +52,7 @@ public:
 				lStruct._h_protocol();
 			}
 			delete lpInamespace;
-			ngl::writefile lfile("..\\idl\\idlfile\\" + item.first + ".h");
+			ngl::writefile lfile("..\\compile_befor\\idl\\idlfile\\" + item.first + ".h");
 			lfile.write(lstr);
 		}
 	}
@@ -84,7 +84,7 @@ public:
 			}
 
 			
-			ngl::writefile lfile("..\\idl\\idlfile\\" + item.first + ".cpp");
+			ngl::writefile lfile("..\\compile_befor\\idl\\idlfile\\" + item.first + ".cpp");
 			lfile.write(lstr);
 		}
 	}
@@ -248,7 +248,7 @@ public:
 				m_stream << "	}" << std::endl;
 			}
 			m_stream << "}" << std::endl;
-			ngl::writefile lfile(".\\idlfile\\" + item.first + ".cs");
+			ngl::writefile lfile("..\\compile_befor\\idl\\idlfile\\" + item.first + ".cs");
 			lfile.write(m_stream.str());
 		}
 	}
