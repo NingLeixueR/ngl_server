@@ -46,9 +46,9 @@ INCLUDE_DIRECTORIES(public/cpp/net/udp/asio_kcp)
 INCLUDE_DIRECTORIES(public/cpp/net/udp/kcp)
 INCLUDE_DIRECTORIES(public/cpp/actor/)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_base)
-INCLUDE_DIRECTORIES(public/cpp/actor/auto_edit)
+INCLUDE_DIRECTORIES(public/cpp/actor/auto)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic)
-INCLUDE_DIRECTORIES(public/cpp/actor/template_tab)
+INCLUDE_DIRECTORIES(public/cpp/actor/tab)
 INCLUDE_DIRECTORIES(public/cpp/actor/pb)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_role/)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_role/message)
@@ -133,16 +133,6 @@ INCLUDE_DIRECTORIES(public/cpp/tools/dmp)
 
 INCLUDE_DIRECTORIES(public/cpp/tools/script)
 INCLUDE_DIRECTORIES(public/cpp/tools/script/lua)
-
-
-INCLUDE_DIRECTORIES(public/cpp/logic)
-INCLUDE_DIRECTORIES(public/cpp/logic/public)
-INCLUDE_DIRECTORIES(public/cpp/logic/public/role)
-INCLUDE_DIRECTORIES(public/cpp/logic/public/role/attribute)
-INCLUDE_DIRECTORIES(public/cpp/logic/public/role/bag)
-INCLUDE_DIRECTORIES(public/cpp/logic/public/role/map)
-INCLUDE_DIRECTORIES(public/cpp/logic/public/role/task)
-INCLUDE_DIRECTORIES(public/cpp/logic/public/template_tab)
 
 
 INCLUDE_DIRECTORIES(public/cpp/third_party)

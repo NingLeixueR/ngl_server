@@ -569,7 +569,7 @@ namespace ngl
         {
 
             // 读取文件nactor_auto.h
-            ngl::readfile lfile("../../public/cpp/actor/auto_edit/nactor_auto.h");
+            ngl::readfile lfile("../../public/cpp/actor/auto/nactor_auto.h");
             lfile.read(ldata);
         }
         // 正则表达式：匹配 "using <name> = typedb<...>;"
@@ -651,7 +651,7 @@ namespace ngl
             }
         }
 
-        ngl::writefile lfile("../../public/cpp/actor/auto_edit/nactor_auto.h");
+        ngl::writefile lfile("../../public/cpp/actor/auto/nactor_auto.h");
 
         std::stringstream m_stream;
         m_stream << R"(#pragma once
@@ -792,7 +792,7 @@ namespace ngl
         }
         m_stream2 << R"(    }
 }//namespace ngl)";
-        ngl::writefile lfile2("../../public/cpp/actor/auto_edit/nactor_auto_tdb.cpp");
+        ngl::writefile lfile2("../../public/cpp/actor/auto/nactor_auto_tdb.cpp");
         lfile2.write(m_stream2.str());
 
 
@@ -839,7 +839,7 @@ namespace ngl
         m_stream3 << "\t}" << std::endl;
         m_stream3 << "}//namespace ngl" << std::endl;
 
-        ngl::writefile lfile3("../../public/cpp/actor/auto_edit/reister_channel_db.h");
+        ngl::writefile lfile3("../../public/cpp/actor/auto/reister_channel_db.h");
         lfile3.write(m_stream3.str());
     }
 
