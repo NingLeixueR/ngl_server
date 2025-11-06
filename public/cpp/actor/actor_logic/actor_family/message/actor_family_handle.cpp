@@ -29,7 +29,7 @@ namespace ngl
 					gcmd<bool> pro(id, "change_familyname", false);
 					struct gm_changename
 					{
-						int64_t m_familid;
+						int64_t m_familid = 0;
 						std::string m_familname;
 						dprotocol(gm_changename, m_familid, m_familname)
 					};

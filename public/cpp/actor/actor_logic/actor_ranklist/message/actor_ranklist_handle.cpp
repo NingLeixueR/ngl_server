@@ -30,9 +30,9 @@ namespace ngl
 					gcmd<std::string> pro(id, "ranklist");
 					struct json_rank
 					{
-						int32_t m_type;
-						int32_t m_page;
-						int32_t m_everynum;
+						int32_t m_type = 0;
+						int32_t m_page = 0;
+						int32_t m_everynum = 0;
 
 						dprotocol(json_rank, m_type, m_page)
 					};
