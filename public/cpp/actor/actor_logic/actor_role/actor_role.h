@@ -261,21 +261,13 @@ namespace ngl
 		bool handle(const message<np_actor_senditem>& adata);
 		bool handle(const message<np_eevents_logic_rolelogin>& adata);
 		bool handle(const message<np_example_actorid>& adata);
-		// [请求]获取背包信息
 		bool handle(const message<pbnet::PROBUFF_NET_BAG_SYNC>& adata);
-		// 修改方向,速度
 		bool handle(const message<pbnet::PROBUFF_NET_CHANGE_ANGLE>& adata);
-		// [请求]cmd协议
 		bool handle(const message<pbnet::PROBUFF_NET_CMD>& adata);
-		// [请求]服务器时间
 		bool handle(const message<pbnet::PROBUFF_NET_GET_TIME>& adata);
-		// [请求]充值
 		bool handle(const message<pbnet::PROBUFF_NET_RECHARGE>& adata);
-		// [请求]获取角色信息
 		bool handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata);
-		// [请求]切换线路
 		bool handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata);
-		// [请求]领取任务奖励
 		bool handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata);
 	};
 }//namespace ngl

@@ -65,7 +65,6 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-		// [ÇëÇó]É¾³ıºÃÓÑ
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_TESTLUA>>& adata);
 	};
 }// namespace ngl
