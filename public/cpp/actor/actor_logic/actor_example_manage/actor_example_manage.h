@@ -89,7 +89,6 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-		// 进入例子游戏
 		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>>& adata);
 		bool handle(const message<np_create_example>& adata);
 		bool handle(const message<np_example_equit>& adata);
