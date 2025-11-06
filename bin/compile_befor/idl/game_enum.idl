@@ -1,0 +1,78 @@
+enum ENET_CONFIG
+{
+	net_config_send_buff_maxbyte = 8129,
+	net_config_recv_buff_maxbyte = 8129,
+	net_config_logic_pthread_max_size = 8,
+	net_config_socket_pthread_max_size = 8,
+};
+
+enum EUDP_OPERATOR
+{
+	EUDP_OPERATOR_ACK,			// 确认包
+	EUDP_OPERATOR_DATA,			// 传输子数据包
+	EUDP_OPERATOR_HEARTBEAT,	// 心跳主要用来确认对端是否在线
+};
+
+enum EPH
+{
+	EPH_BYTES = 0,				// 协议字节数
+	EPH_TIME,					// 发送端的时间戳
+	EPH_PROTOCOLNUM,			// 协议号
+	EPH_PROTOCOLTYPE,			// 协议类型 EPROTOCOL_TYPE
+	EPH_ACTOR_TYPEAREA,			// ACTOR_TYPE_AREA
+	EPH_ACTOR_ID,				// ACTOR_ID
+	EPH_REQUEST_ACTOR_TYPEAREA,	// Request REQUEST_ACTOR_TYPE_AREA
+	EPH_REQUEST_ACTOR_ID,		// Request ACTOR_ID
+	EPH_SUM,
+};
+
+enum EPH_MODULE
+{
+	EPH_MODULE_TIME,
+	EPH_MODULE_LOGIC,
+	EPH_MODULE_COUNT,
+};
+
+enum enum_attribute
+{
+	attribute_null = -1,
+	attribute_attack = 0,				// [攻击]
+	attribute_defense,					// [防御]
+	attribute_hp,						// [血量]
+	attribute_anger,					// [怒气]
+	attribute_speed,					// [速度]
+	attribute_count,
+};
+
+enum enum_config
+{
+	attribute_ratio_value = 10000,			// 属性比例值(万分比)
+	unit_corelist_role_maxcount = 50,		// 视野中玩家的最大数量
+	unit_corelist_monster_maxcount = 1000,	// 视野中怪物的最大数量
+	unit_corelist_region_maxcount = 1000,	// 视野中区域的最大数量
+};
+
+// ## 模块提供的属性
+enum enum_module_attribute
+{
+	em_attribute_null = -2,
+	em_attribute_root = 0,		// 链尾
+	em_attribute_buff = 1,		// 玩家buff添加的属性
+	em_attribute_base = 2,		// 玩家基础属性
+	em_attribute_pet = 3,		// 宠物基础属性
+	em_attribute_pet1 = 4,		// 宠物1基础属性
+	em_attribute_pet2 = 5,		// 宠物2基础属性
+	em_attribute_pet3 = 6,		// 宠物3基础属性
+	em_attribute_pet4 = 7,		// 宠物4基础属性
+	em_attribute_count,
+
+
+	em_attribute_effectindex = 10000, // 效果添加的属性[此值+效果id]
+
+};
+
+enum enum_effect
+{
+	em_buff,		// buff
+	em_skill,		// 技能
+};

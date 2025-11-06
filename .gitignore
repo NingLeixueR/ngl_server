@@ -1,5 +1,5 @@
-bin/idl/idlfile
-bin/proto/pro
+bin/compile_befor/idl/idlfile
+bin/compile_befor/proto/pro
 bin/Debug
 bin/Release
 obj
