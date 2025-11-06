@@ -1,10 +1,11 @@
 cd idl
-build_actor.bat
+call build_actor.bat
 cd ..\compile_befor\idl
-build_idl.bat
+call build_idl.bat
 cd ..\compile_befor\idl
-build_protocol.bat
+call build_protocol.bat
 cd ..\compile_befor\proto
-build_protocol.bat
+call build_protocol.bat
 cd ..\compile_befor\idl
-rebuild.bat
+call rebuild.bat
+pause
