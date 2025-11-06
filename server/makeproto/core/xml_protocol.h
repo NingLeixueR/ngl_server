@@ -1653,7 +1653,7 @@ namespace ngl
             {//g2c
                 std::string lcontent;
                 {
-                    ngl::readfile lreadfile("../../public/cpp/actor/nprotocol_g2c.cpp");
+                    ngl::readfile lreadfile("../../public/cpp/actor/actor_logic/nprotocol_g2c.cpp");
                     lreadfile.readcurrent(lcontent);
                 }
 
@@ -1690,7 +1690,7 @@ namespace ngl
                     ++i;
                 }
                 lcontent += lend;
-                ngl::writefile lhfile("../../public/cpp/actor/nprotocol_g2c.cpp");
+                ngl::writefile lhfile("../../public/cpp/actor/actor_logic/nprotocol_g2c.cpp");
                 lhfile.write(lcontent);
             }
 
@@ -1698,7 +1698,7 @@ namespace ngl
             {//c2g
                 std::string lcontent;
                 {
-                    ngl::readfile lreadfile("../../public/cpp/actor/nprotocol_c2g.cpp");
+                    ngl::readfile lreadfile("../../public/cpp/actor/actor_logic/nprotocol_c2g.cpp");
                     lreadfile.readcurrent(lcontent);
                 }
                 ngl::tools::replace("\r\n", "\n", lcontent, lcontent);
@@ -1786,7 +1786,7 @@ namespace ngl
                 }
 
                 lcontent += lend;
-                ngl::writefile lhfile("../../public/cpp/actor/nprotocol_c2g.cpp");
+                ngl::writefile lhfile("../../public/cpp/actor/actor_logic/nprotocol_c2g.cpp");
                 lhfile.write(lcontent);
 
             }
