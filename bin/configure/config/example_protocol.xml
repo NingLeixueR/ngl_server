@@ -1,29 +1,29 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <con>
-	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_JOIN" number="150"/>
-	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_JOIN" number="150"/>
-	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE" number="151"/>
-	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE" number="151"/>
-	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING" number="152"/>
-	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING" number="152"/>
-	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT" number="153"/>
-	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT" number="153"/>
-	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM" number="154"/>
-	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM" number="154"/>
-	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL" number="155"/>
-	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL" number="155"/>
-	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_CREATE" number="156"/>
-	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_CREATE" number="156"/>
-	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE" number="157"/>
-	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE" number="157"/>
-	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE" number="158"/>
-	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE" number="158"/>
-	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO" number="159"/>
-	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO" number="159"/>
-	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER" number="160"/>
-	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER" number="160"/>
-	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR" number="161"/>
-	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR" number="161"/>
-	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB" number="162"/>
-	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB" number="162"/>
+	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_JOIN" number="152"/>
+	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_JOIN" number="152"/>
+	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE" number="153"/>
+	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE" number="153"/>
+	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING" number="154"/>
+	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING" number="154"/>
+	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT" number="155"/>
+	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT" number="155"/>
+	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM" number="156"/>
+	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM" number="156"/>
+	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL" number="157"/>
+	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL" number="157"/>
+	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_CREATE" number="158"/>
+	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_CREATE" number="158"/>
+	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE" number="159"/>
+	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE" number="159"/>
+	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE" number="160"/>
+	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE" number="160"/>
+	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO" number="161"/>
+	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO" number="161"/>
+	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER" number="162"/>
+	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER" number="162"/>
+	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR" number="163"/>
+	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR" number="163"/>
+	<config client = "1" name="class pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB" number="164"/>
+	<config client = "1" name="pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB" number="164"/>
 </con>

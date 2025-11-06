@@ -3,7 +3,6 @@
 		<public>
 			<!-- 
 			为了php可以使用自定义协议，需要将varint禁用 
-			[log_iswrite] 日志是否写入文件
 			[log_flushtime] 日志flush时间
 			[log_fileline] 单个日志文件的行数
 			[log_level] 日志等级(
@@ -13,6 +12,12 @@
 				ELOG_ERROR,   // 3:错误
 			)
 			[log_console] 是否打印到控制台
+			dbprotobinary
+			如果此值为true 
+			将"proto的二进制"保存
+			如果此值为false 
+			将把"proto的json串"保存
+			version 版本: 1正式版本 0测试版本(测试版本可以使用cmd)
 			-->
 				<config
 					actor_delayed ="1000" 
@@ -27,11 +32,16 @@
 					kcpping = "10"
 					kcppinginterval = "20"
 					kcpsession = "abcdefghigklmn"
-					logflushtime = "10000"
+					log_flushtime = "10000000"
 					logline = "10000"
-					logwritelevel = "1"
+					logwritelevel = "3"
 					logconsolelevel = "3"
 					consumings = "100"
+					dbprotobinary = "true"
+					lua = "../script/lua/"
+					version = "0"
+					gateway_count = "2"
+					game_count = "2"
 				></config>
 		</public>
 		<db>
@@ -44,13 +54,13 @@
 			<!-- md5("123456") = e10adc3949ba59abbe56e057f20f883e -->
 			<telnet account="libo" passworld="e10adc3949ba59abbe56e057f20f883e"/>
 		</telnet>
-	<email>
-		<email
-			smtp="smtp.163.com:25"
-			email="xxx@163.com"
-			passworld="xxx"
-			recvmail="[libo1@youxigu.com:李博][348634371@qq.com:李博QQ]"
-			title = "孤勇者"
-			content="都 是勇敢的."/>
-	</email>
+		<email>
+				<email 
+					smtp="smtp.163.com:25" 
+					email="15101192850@163.com" 
+					passworld="NChaNkmFgvJbzQ2i" 
+					recvmail="[libo1@youxigu.com:李博][348634371@qq.com:李博QQ]"
+					title = "孤勇者"
+					content="都 是勇敢的."/>
+		</email>
 </con>
