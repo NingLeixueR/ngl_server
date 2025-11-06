@@ -74,66 +74,72 @@
 	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_CREATE" number="117"/>
 	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE" number="118"/>
 	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE" number="118"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_JOIN" number="119"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_JOIN" number="119"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE" number="120"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE" number="120"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN" number="121"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN" number="121"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE" number="122"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE" number="122"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_CEDE" number="123"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_CEDE" number="123"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE" number="124"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE" number="124"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_LEAVE" number="125"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_LEAVE" number="125"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE" number="126"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE" number="126"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_LIST" number="127"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_LIST" number="127"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE" number="128"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE" number="128"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_CHANGENAME" number="129"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_CHANGENAME" number="129"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE" number="130"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE" number="130"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_SIGN" number="131"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_SIGN" number="131"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE" number="132"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE" number="132"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE" number="133"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE" number="133"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_RANKLIST" number="134"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_RANKLIST" number="134"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_RANKLIST_RESPONSE" number="135"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_RANKLIST_RESPONSE" number="135"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND" number="136"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND" number="136"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_RESPONSE" number="137"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_RESPONSE" number="137"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_ADD" number="138"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_ADD" number="138"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE" number="139"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE" number="139"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD" number="140"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD" number="140"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE" number="141"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE" number="141"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_ERASE" number="142"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_ERASE" number="142"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE" number="143"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE" number="143"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_ROLESTAT" number="144"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_ROLESTAT" number="144"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE" number="145"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_SYNC_ATTRIBUTE" number="145"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_SYNC_UNIT" number="146"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_SYNC_UNIT" number="146"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW" number="147"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW" number="147"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_SYNC_POSITION" number="148"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_SYNC_POSITION" number="148"/>
-	<config client = "1" name="class pbnet::PROBUFF_NET_CHANGE_ANGLE" number="149"/>
-	<config client = "1" name="pbnet::PROBUFF_NET_CHANGE_ANGLE" number="149"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_INFO" number="119"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_INFO" number="119"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE" number="120"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE" number="120"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_JOIN" number="121"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_JOIN" number="121"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE" number="122"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE" number="122"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN" number="123"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN" number="123"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE" number="124"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE" number="124"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_CEDE" number="125"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_CEDE" number="125"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE" number="126"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE" number="126"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_LEAVE" number="127"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_LEAVE" number="127"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE" number="128"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE" number="128"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_LIST" number="129"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_LIST" number="129"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE" number="130"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE" number="130"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_CHANGENAME" number="131"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_CHANGENAME" number="131"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE" number="132"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE" number="132"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_SIGN" number="133"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_SIGN" number="133"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE" number="134"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE" number="134"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE" number="135"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE" number="135"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_RANKLIST" number="136"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_RANKLIST" number="136"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_RANKLIST_RESPONSE" number="137"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_RANKLIST_RESPONSE" number="137"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND" number="138"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND" number="138"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_RESPONSE" number="139"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_RESPONSE" number="139"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_ADD" number="140"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_ADD" number="140"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE" number="141"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE" number="141"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD" number="142"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD" number="142"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE" number="143"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE" number="143"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_ERASE" number="144"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_ERASE" number="144"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE" number="145"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE" number="145"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ROLESTAT" number="146"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ROLESTAT" number="146"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE" number="147"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_SYNC_ATTRIBUTE" number="147"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_SYNC_UNIT" number="148"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_SYNC_UNIT" number="148"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW" number="149"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW" number="149"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_SYNC_POSITION" number="150"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_SYNC_POSITION" number="150"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_CHANGE_ANGLE" number="151"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_CHANGE_ANGLE" number="151"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_TESTLUA" number="1"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_TESTLUA" number="1"/>
 </con>
