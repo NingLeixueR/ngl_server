@@ -466,59 +466,59 @@ namespace ngl
 #include "xml.h"
 
 namespace ngl
-{
-	class t{} :
-		public manage_csv<{}>
+{{
+	class t{0} :
+		public manage_csv<{0}>
 	{{
-		t{}(const t{}&) = delete;
-		t{}& operator=(const t{}&) = delete;
+		t{0}(const t{0}&) = delete;
+		t{0}& operator=(const t{0}&) = delete;
 
-		t{}()
+		t{0}()
 		{{
 			allcsv::loadcsv(this);
 		}}
 
 		void reload()final
 		{{
-			std::cout << "{} reload" << std::endl;
+			std::cout << "{0} reload" << std::endl;
 		}}	
 
 	public:
-		using type_tab = {};
+		using type_tab = {0};
 
-		static t{}& instance()
+		static t{0}& instance()
 		{{
-			static t{} ltemp;
+			static t{0} ltemp;
 			return ltemp;
 		}}
 
-		const std::map<int, {}>* tablecsv()
+		const std::map<int, {0}>* tablecsv()
 		{{
-			t{}* ttab = allcsv::get<t{}>();
-			if(ttab == nullptr);
-			{
+			t{0}* ttab = allcsv::get<t{0}>();
+			if(ttab == nullptr)
+			{{
 				tools::no_core_dump();
 				return nullptr; 
-			}
+			}}
 			return &ttab->m_tablecsv;
 		}}
 
-		const {}* tab(int32_t aid)
+		const {0}* tab(int32_t aid)
 		{{
 			auto lpmap = tablecsv();
 			if (lpmap == nullptr)
-			{
+			{{
 				return nullptr;
-			}
+			}}
 			auto itor = lpmap->find(aid);
 			if (itor == lpmap->end())
-			{
+			{{
 				return nullptr;
-			}
+			}}
 			return &itor->second;
 		}}
 	}};
-}//namespace ngl)", struc.name);
+}}//namespace ngl)", struc.name);
 						lfile.write(lcsvpp.c_str());
 					}
 				}

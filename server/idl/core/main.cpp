@@ -7,7 +7,7 @@ int main(int argc, char* argv[])
 {
 	if (argv[1] == std::string("idl"))
 	{
-		vector<const char*> lv = { "../idl/csvtable" };
+		vector<const char*> lv = { "../compile_befor/idl/csvtable" };
 		for (const char* item : lv)
 		{
 			idl::instance().analysis(string(item) + ".idl");
@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	else if (argv[1] == std::string("protocol"))
 	{
 		idl::instance(true);
-		idl::instance().analysis("../../public/cpp/actor/nprotocol.h");
+		idl::instance().analysis("../../public/cpp/actor/protocol/nprotocol.h");
 		idlcppprotocol::instance()._nprotocol_auto();
 	}
 	else if (argv[1] == std::string("actor"))
