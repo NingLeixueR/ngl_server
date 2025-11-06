@@ -46,7 +46,7 @@ namespace ngl
 			m_path = std::format("{}/{}", apath, aname);
 			if (tools::directories_exists(m_path) == false)
 			{
-				m_path = std::format("{}/csv", apath);
+				m_path = apath;
 			}
 		}
 
