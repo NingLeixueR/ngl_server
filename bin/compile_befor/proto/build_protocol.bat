@@ -19,4 +19,3 @@ xcopy pbname_match.cpp ..\..\..\public\cpp\actor\auto\ /s/y
 xcopy nscript_pbdb.h ..\..\..\public\cpp\actor\auto\ /s/y
 xcopy nscript_pbexample.h ..\..\..\public\cpp\actor\auto\ /s/y
 xcopy nscript_pbnet.h ..\..\..\public\cpp\actor\auto\ /s/y
-pause
