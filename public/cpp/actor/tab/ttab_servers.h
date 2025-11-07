@@ -32,7 +32,6 @@ namespace ngl
 			m_nodeid(nodeid(atid, atcount))
 		{}
 
-
 		static int32_t nodeid(int16_t atid, int16_t atcount)
 		{
 			int16_t m_nodeid[2] = { atid, atcount };
