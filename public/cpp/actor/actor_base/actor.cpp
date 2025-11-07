@@ -143,7 +143,7 @@ namespace ngl
 			m_localhightlist.clear();
 		}
 		
-		int32_t llistcount = (int32_t)m_locallist.size();
+		auto llistcount = (int32_t)m_locallist.size();
 		if (m_weight < llistcount || llistcount >= 1000)
 		{
 			log_error()->print(

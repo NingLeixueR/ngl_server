@@ -106,7 +106,12 @@ namespace ngl
 	size_t localtime::time2str(char* str, int len, time_t anow, const char* format /*= "%Y-%m-%d %H:%M:%S"*/)
 	{//Year-Month-Day Hour:Minuts:Second %y-%m-%d %H:%M:%S
 		time_t curr = ((anow < 0) ? gettime() : anow);
-		std::tm tmTime = *std::localtime(&curr);
+		std::tm tmTime;
+#ifdef _WIN32
+		localtime_s(&tmTime, &curr);
+#else
+		localtime_r(&curr, &tmTime);
+#endif
 		return strftime(str, len, format, &tmTime);
 	}
 
