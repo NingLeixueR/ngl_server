@@ -104,9 +104,9 @@ namespace ngl
 		{}
 	};
 
-	item_create_material	g_item_create_material;
-	item_create_money		g_item_create_moneygold(EMoneyGold);
-	item_create_money		g_item_create_moneysilver(EMoneySilver);
-	item_create_equip		g_item_create_equip;
-	item_create_card		g_item_create_card;
+	const item_create_material	g_item_create_material;
+	const item_create_money		g_item_create_moneygold(EMoneyGold);
+	const item_create_money		g_item_create_moneysilver(EMoneySilver);
+	const item_create_equip		g_item_create_equip;
+	const item_create_card		g_item_create_card;
 }// namespace ngl
