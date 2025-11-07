@@ -75,7 +75,7 @@
 			return tempvec;															\
 		}																			\
 		static std::string tempstr(astr);											\
-		static std::atomic<bool> lregister = true;									\
+		static std::atomic lregister = true;										\
 		if (lregister.exchange(false) && !tempstr.empty())							\
 		{																			\
 			tempvec = tools::split_str(&tempstr[0], (int32_t)tempstr.size());		\

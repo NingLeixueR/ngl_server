@@ -343,7 +343,7 @@ namespace ngl
 				return;
 			}
 
-			static std::atomic<bool> lregister = true;
+			static std::atomic lregister = true;
 			if (lregister.exchange(false))
 			{
 				nrfun<TACTOR>::instance()

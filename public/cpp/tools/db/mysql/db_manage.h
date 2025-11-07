@@ -140,7 +140,7 @@ namespace ngl
 		static const char* where_area()
 		{
 			static std::string lareastr;
-			static std::atomic<bool> linit = true;
+			static std::atomic linit = true;
 			if (linit.exchange(false))
 			{
 				if (lareastr.empty())
