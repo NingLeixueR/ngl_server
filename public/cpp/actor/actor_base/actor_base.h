@@ -210,7 +210,7 @@ namespace ngl
 			using TDATA = T;
 			const std::map<int32_t, T>& data;
 
-			nscript_data_csv(const std::map<int32_t, T>& adata) :
+			explicit nscript_data_csv(const std::map<int32_t, T>& adata) :
 				data(adata)
 			{}
 
