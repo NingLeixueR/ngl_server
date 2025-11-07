@@ -68,6 +68,8 @@ namespace ngl
 		std::function<void()>	m_failfun		= nullptr;			// 如何actor_client都找不到目标actor则调用
 		bool					m_issend		= true;				// 是否会发送给其他进程
 
+		DEFINE_MOVE_CONSTRUCTOR(handle_pram, m_enum, m_data, m_pack, m_actor, m_requestactor, m_massactors, m_forwardfun, m_forwardtype, m_failfun)
+
 		//# 根据[连接]获取[id]
 		static i32_serverid		get_server(i64_actorid aactorid);
 
