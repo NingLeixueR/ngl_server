@@ -609,7 +609,7 @@ namespace ngl
 		{
 			lptemp->m_toclient[enscript_lua] = [](int64_t aactorid, void* aL)->bool
 				{
-					lua_State* L = (lua_State*)(aL);
+					auto L = (lua_State*)(aL);
 					auto pro = std::make_shared<typename T::BASE_TYPE>();
 					if (!ngl::nlua_stack::stack_pop(L, *pro))
 					{
@@ -620,7 +620,7 @@ namespace ngl
 				};
 			lptemp->m_toactor[enscript_lua] = [](int64_t aactorid, void* aL)->bool
 				{
-					lua_State* L = (lua_State*)(aL);
+					lua_State* auto L = (lua_State*)(aL);
 					auto pro = std::make_shared<typename T::BASE_TYPE>();
 					if (!ngl::nlua_stack::stack_pop(L, *pro))
 					{
@@ -635,7 +635,6 @@ namespace ngl
 	template <enscript SCRIPT>
 	struct tcustoms_send
 	{
-		[[maybe_unused]]
 		template <typename TX>
 		static bool send_actor([[maybe_unused]] int64_t aactorid, [[maybe_unused]] void* aL)
 		{
@@ -649,7 +648,7 @@ namespace ngl
 		template <typename TX>
 		static bool send_actor(int64_t aactorid, void* aL)
 		{
-			lua_State* L = (lua_State*)(aL);
+			auto L = (lua_State*)(aL);
 			auto pro = std::make_shared<TX>();
 			if (!ngl::nlua_stack::stack_pop(L, *pro))
 			{
