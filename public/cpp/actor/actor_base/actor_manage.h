@@ -159,11 +159,7 @@ namespace ngl
 			std::string m_actor_name;
 			std::map<i16_area, std::vector<i32_actordataid>> m_actor;
 
-			msg_actor(msg_actor&& other) noexcept
-				: m_actor_name(std::move(other.m_actor_name))
-				, m_actor(std::move(other.m_actor))
-			{
-			}
+			DEFINE_MOVE_CONSTRUCTOR(msg_actor, m_actor_name, m_actor)
 
 			dprotocol(msg_actor, m_actor_name, m_actor)
 		};
