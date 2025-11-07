@@ -578,7 +578,7 @@ namespace ngl
 		//# actor_base::create 
 		//# 构造actor对象会自动被调用
 		template <typename TDerived>
-		static void first_nregister(ENUM_ACTOR atype)
+		static void first_nregister([[maybe_unused]] ENUM_ACTOR atype)
 		{
 			static std::atomic<bool> lfirst = true;
 			if (lfirst.exchange(false))
