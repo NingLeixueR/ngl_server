@@ -187,7 +187,7 @@ namespace ngl
 	T& actor_instance<T>::instance()
 	{
 		static T ltemp;
-		static std::atomic<bool> lfirst = true;
+		static std::atomic lfirst = true;
 		if (lfirst.exchange(false))
 		{
 			T* lptemp = &ltemp;

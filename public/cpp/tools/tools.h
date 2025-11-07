@@ -801,7 +801,7 @@ namespace ngl
 		static std::string& type_name()
 		{
 			static std::string lname = typeid(T).name();
-			static std::atomic<bool> lfirst = true;
+			static std::atomic lfirst = true;
 			if (lfirst.exchange(false))
 			{
 				type_name_handle(lname);

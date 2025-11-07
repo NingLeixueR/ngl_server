@@ -144,7 +144,7 @@ namespace ngl
 		template <typename TTAB>
 		static void loadcsv(TTAB* athis)
 		{
-			static std::atomic<bool> lload = true;
+			static std::atomic lload = true;
 			if (lload.exchange(false))
 			{
 				using TAB = typename TTAB::type_tab;
