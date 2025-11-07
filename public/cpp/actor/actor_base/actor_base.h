@@ -231,7 +231,7 @@ namespace ngl
 		{
 			using TDATA = T;
 			const std::map<int64_t, T>& data;
-			nscript_data_nsp(const std::map<int64_t, T>& adata) :
+			explicit nscript_data_nsp(const std::map<int64_t, T>& adata) :
 				data(adata)
 			{}
 
