@@ -620,7 +620,7 @@ namespace ngl
 				};
 			lptemp->m_toactor[enscript_lua] = [](int64_t aactorid, void* aL)->bool
 				{
-					lua_State* auto L = (lua_State*)(aL);
+					auto L = (lua_State*)(aL);
 					auto pro = std::make_shared<typename T::BASE_TYPE>();
 					if (!ngl::nlua_stack::stack_pop(L, *pro))
 					{
@@ -668,11 +668,7 @@ namespace ngl
 		{
 			if constexpr (SCRIPT)
 			{
-				linfo->m_toactor[enscript_lua] = std::bind(
-					&tcustoms_send<enscript_lua>::send_actor<T>
-					, std::placeholders::_1
-					, std::placeholders::_2
-				);
+				linfo->m_toactor[enscript_lua] = std::bind_front(tcustoms_send<enscript_lua>::send_actor<T>);
 			}
 		}
 		return linfo;
