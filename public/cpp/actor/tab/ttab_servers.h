@@ -24,11 +24,11 @@ namespace ngl
 	{
 		int32_t m_nodeid;
 	public:
-		nnodeid(int32_t anodeid) :
+		explicit nnodeid(int32_t anodeid) :
 			m_nodeid(anodeid)
 		{}
 
-		nnodeid(int16_t atid, int16_t atcount) :
+		explicit nnodeid(int16_t atid, int16_t atcount) :
 			m_nodeid(nodeid(atid, atcount))
 		{}
 
