@@ -635,8 +635,9 @@ namespace ngl
 	template <enscript SCRIPT>
 	struct tcustoms_send
 	{
+		[[maybe_unused]]
 		template <typename TX>
-		static bool send_actor(int64_t aactorid, void* aL)
+		static bool send_actor([[maybe_unused]] int64_t aactorid, [[maybe_unused]] void* aL)
 		{
 			return true;
 		}
