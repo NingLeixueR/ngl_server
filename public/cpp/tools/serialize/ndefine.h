@@ -296,41 +296,5 @@ inline void json_write(ngl::njson_write& ijsn, const char* akey)		\
 	def_nlua_function(__VA_ARGS__)
 
 
-#define ARGC(...) ARGC_IMPL(__VA_ARGS__, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+#define ARGC(...) ARGC_IMPL(__VA_ARGS__, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
 #define ARGC_IMPL(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, N, ...) N
-
-#define CONCAT(prefix, num) CONCAT_IMPL(prefix, num)
-#define CONCAT_IMPL(prefix, num) prefix##num
-
-#define MOVE_CTOR_INIT_0()
-#define MOVE_CTOR_INIT_1(m) m(std::move(other.m))
-#define MOVE_CTOR_INIT_2(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_1(__VA_ARGS__)
-
-#define MOVE_CTOR_INIT_3(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_2(__VA_ARGS__)
-#define MOVE_CTOR_INIT_4(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_3(__VA_ARGS__)
-#define MOVE_CTOR_INIT_5(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_4(__VA_ARGS__)
-#define MOVE_CTOR_INIT_6(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_5(__VA_ARGS__)
-#define MOVE_CTOR_INIT_7(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_6(__VA_ARGS__)
-#define MOVE_CTOR_INIT_8(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_7(__VA_ARGS__)
-#define MOVE_CTOR_INIT_9(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_8(__VA_ARGS__)
-#define MOVE_CTOR_INIT_10(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_9(__VA_ARGS__)
-#define MOVE_CTOR_INIT_11(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_10(__VA_ARGS__)
-#define MOVE_CTOR_INIT_12(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_11(__VA_ARGS__)
-#define MOVE_CTOR_INIT_13(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_12(__VA_ARGS__)
-#define MOVE_CTOR_INIT_14(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_13(__VA_ARGS__)
-#define MOVE_CTOR_INIT_15(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_14(__VA_ARGS__)
-#define MOVE_CTOR_INIT_16(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_15(__VA_ARGS__)
-#define MOVE_CTOR_INIT_17(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_16(__VA_ARGS__)
-#define MOVE_CTOR_INIT_18(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_17(__VA_ARGS__)
-#define MOVE_CTOR_INIT_19(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_18(__VA_ARGS__)
-#define MOVE_CTOR_INIT_20(m, ...) MOVE_CTOR_INIT_1(m), MOVE_CTOR_INIT_19(__VA_ARGS__)
-
-#define DEFINE_MOVE_CONSTRUCTOR(NAME, ...) \
-    NAME(NAME&& other) noexcept \
-        : CONCAT(MOVE_CTOR_INIT_, ARGC(__VA_ARGS__))(__VA_ARGS__) \
-    {} \
-    \
-	NAME() = default;												\
-	NAME(const NAME&) = default;									\
-	NAME& operator=(const NAME&) = default;							\
-	NAME& operator=(NAME&& other) = default;
