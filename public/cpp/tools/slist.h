@@ -208,7 +208,7 @@ namespace ngl
 		}
 
 		// # 交换两个队列
-		inline void swap(lsnode<T>& adata)
+		inline void swap(lsnode<T>& adata)noexcept
 		{
 			std::swap(m_head, adata.m_head);
 			std::swap(m_tail, adata.m_tail);
@@ -450,7 +450,7 @@ namespace ngl
 			m_free.push_front(alist.get_free());
 		}
 
-		inline void swap(slist_consumption<T>& ar)
+		inline void swap(slist_consumption<T>& ar)noexcept
 		{
 			m_list.swap(ar.get_list());
 		}
