@@ -318,7 +318,7 @@ namespace ngl
 
 			if (handle_cmd::empty())
 			{
-				handle_cmd::add("query") = [this](int athread, int id, ngl::njson_read& aos)
+				handle_cmd::add("query") = [](int athread, int id, ngl::njson_read& aos)
 					{
 						gcmd<std::string> pro(id, "query");
 						int64_t lid = 0;
@@ -351,7 +351,7 @@ namespace ngl
 
 					dprotocol(query_page, m_everypagecount, m_page)
 				};
-				handle_cmd::add("queryall") = [this](int athread, int id, ngl::njson_read& aos)
+				handle_cmd::add("queryall") = [](int athread, int id, ngl::njson_read& aos)
 					{
 						gcmd<std::vector<std::string>> pro(id, "queryall");
 						query_page lpage;
@@ -373,7 +373,7 @@ namespace ngl
 							});
 					};
 
-				handle_cmd::add("change") = [this](int athread, int id, ngl::njson_read& aos)
+				handle_cmd::add("change") = [](int athread, int id, ngl::njson_read& aos)
 					{
 						gcmd<bool> pro(id, "change", false);
 						std::string ljson;
