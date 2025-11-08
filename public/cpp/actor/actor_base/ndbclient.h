@@ -94,6 +94,8 @@ namespace ngl
 		actor_base* m_actor = nullptr;
 		nmodified<TDBTAB>* m_modified = nullptr;
 	public:
+		data_modified() = default;
+
 		inline void init(nmodified<TDBTAB>* amodified)
 		{
 			m_modified = amodified;
@@ -435,7 +437,7 @@ namespace ngl
 					return;
 				}
 				// # 异步发送pack
-				m_actor->send_actor_pack(lactorid, lpack);
+				actor::send_actor_pack(lactorid, lpack);
 			}
 		}
 
@@ -494,7 +496,7 @@ namespace ngl
 					return;
 				}
 				// # 异步发送pack
-				m_actor->send_actor_pack(lactorid, lpack);
+				actor::send_actor_pack(lactorid, lpack);
 			}
 		}
 
