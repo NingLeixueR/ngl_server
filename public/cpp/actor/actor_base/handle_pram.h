@@ -318,12 +318,9 @@ namespace ngl
 	template <typename T>
 	bool handle_pram_send<T>::sendclient(handle_pram& adata)
 	{
-
-		nguid lactorid			= adata.m_actor;
-		nguid lrequestactor		= adata.m_requestactor;
-		auto ldata				= (np_actor_forward<T, forward_g2c<T>>*)adata.m_data.get();
-		std::vector<i32_actordataid>& luid	= ldata->m_data.m_uid;
-		std::vector<i16_area>& larea		= ldata->m_data.m_area;
+		auto ldata = (np_actor_forward<T, forward_g2c<T>>*)adata.m_data.get();
+		std::vector<i32_actordataid>& luid = ldata->m_data.m_uid;
+		std::vector<i16_area>& larea = ldata->m_data.m_area;
 		std::set<i32_serverid> lgateway;
 		for (int i = 0; i < luid.size() && i < larea.size(); ++i)
 		{
