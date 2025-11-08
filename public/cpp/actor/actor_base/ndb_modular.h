@@ -64,7 +64,7 @@ namespace ngl
 		//# 设置m_actor关联m_dbclient
 		void				init();
 
-		//# m_dbclient.create()
+		//# 创建数据
 		void				create();
 
 		//# 获取m_dbclient
