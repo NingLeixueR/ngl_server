@@ -467,7 +467,7 @@ namespace ngl
 		{
 			for (int64_t dataid : adelvec)
 			{
-				del(dataid, false);
+				del(dataid, ascript);
 			}
 		}
 
