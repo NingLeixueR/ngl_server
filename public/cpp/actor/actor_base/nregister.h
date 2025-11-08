@@ -32,7 +32,7 @@ namespace ngl
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				auto ldata = std::static_pointer_cast<T>(apram.m_data);
-				message<T> lmessage(athreadid, apram.m_pack, ldata);
+				message lmessage(athreadid, apram.m_pack, ldata);
 				afun((TTTDerived*)aactor, lmessage);
 				((TTTDerived*)aactor)->handle_after(apram);
 			}
@@ -57,7 +57,7 @@ namespace ngl
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				auto ldata = std::static_pointer_cast<T>(apram.m_data);
-				message<T> lmessage(athreadid, apram.m_pack, ldata);
+				message lmessage(athreadid, apram.m_pack, ldata);
 				(((TTTDerived*)(aactor))->*afun)(lmessage);
 				((TTTDerived*)aactor)->handle_after(apram);
 			}
@@ -93,7 +93,7 @@ namespace ngl
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				auto ltemp = (type_forward_c2g*)apram.m_data.get();
-				message<type_forward_c2g> lmessage(athreadid, apram.m_pack, ltemp);
+				message lmessage(athreadid, apram.m_pack, ltemp);
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
@@ -114,7 +114,7 @@ namespace ngl
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				auto ltemp = (type_forward_g2c*)apram.m_data.get();
-				message<type_forward_g2c> lmessage(athreadid, apram.m_pack, ltemp);
+				message lmessage(athreadid, apram.m_pack, ltemp);
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
