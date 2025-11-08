@@ -64,7 +64,7 @@ namespace ngl
 		}
 
 		// # 检查是否被修改
-		bool is_modified(i64_actorid aidentifier)
+		bool is_modified(i64_actorid aidentifier)const
 		{
 			return m_modified.contains(aidentifier);
 		}
