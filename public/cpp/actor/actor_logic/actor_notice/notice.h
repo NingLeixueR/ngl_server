@@ -27,9 +27,7 @@ namespace ngl
 		int64_t m_maxid = -1;
 		int64_t m_removetimer = -1;
 	public:
-		notice()
-		{
-		}
+		notice() = default;
 
 		void related_actorid() final
 		{
