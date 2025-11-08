@@ -33,7 +33,7 @@ namespace ngl
 		ngl::sem			m_sem;					// 信号量
 
 	public:
-		nthread(i32_threadid aid);
+		explicit nthread(i32_threadid aid);
 
 		// # 返回线程id
 		i32_threadid id();
