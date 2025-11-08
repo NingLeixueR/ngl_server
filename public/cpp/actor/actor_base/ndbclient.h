@@ -94,9 +94,6 @@ namespace ngl
 		actor_base* m_actor = nullptr;
 		nmodified<TDBTAB>* m_modified = nullptr;
 	public:
-		data_modified():m_modified(nullptr)
-		{}
-
 		inline void init(nmodified<TDBTAB>* amodified)
 		{
 			m_modified = amodified;
