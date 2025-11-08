@@ -130,7 +130,7 @@ namespace ngl
 		ptractor lpactor = nullptr;
 		{
 			ngl_lock_s;
-			ptractor* lpactorptr = tools::findmap(m_actorbyid, aguid);
+			const ptractor* lpactorptr = tools::findmap(m_actorbyid, aguid);
 			if (lpactorptr == nullptr)
 			{
 				std::cout << std::format("actor_manage erase_actor_byid m_actorbyid.find(guid:{}) fail", aguid) << std::endl;
