@@ -55,7 +55,7 @@ namespace ngl
 			return true;
 		}
 	public:
-		item_create_money(EItemType amoney) :
+		explicit item_create_money(EItemType amoney) :
 			item_create(amoney)
 		{}
 	};

@@ -26,9 +26,6 @@ namespace ngl
 	{
 	}
 
-	net_protocol::~net_protocol()
-	{}
-
 	bpool& net_protocol::get_pool()
 	{
 		return m_pool;

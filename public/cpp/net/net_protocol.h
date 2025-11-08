@@ -45,12 +45,10 @@ namespace ngl
 		std::list<pack>			m_packlist;
 		int8_t					m_index;
 
-		net_protocol(int8_t aindex);
+		explicit net_protocol(int8_t aindex);
 
 		bool socket_recv(int asessionid, int aislanip, const char* abuff, int32_t abufflen);
 	public:
-		~net_protocol();
-
 		bpool& get_pool();
 
 		// # ≥ı ºªØnet_protocol

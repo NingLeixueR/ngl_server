@@ -23,9 +23,6 @@ namespace ngl
 		public tdb_task::db_modular
 	{
 	public:
-		task() 
-		{}
-
 		virtual void initdata();
 	};
 
