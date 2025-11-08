@@ -212,7 +212,7 @@ namespace ngl
 		{
 			std::map<int64_t, T>& m_data;
 
-			dmap_checkout(std::map<int64_t, T>& adata) :
+			explicit dmap_checkout(std::map<int64_t, T>& adata) :
 				m_data(adata)
 			{}
 
