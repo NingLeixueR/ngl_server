@@ -26,7 +26,7 @@ namespace ngl
 		pbnet::UNIT_POSITION	m_position;
 		int64_t					m_lastupdate = 0;
 	public:
-		unit(pbnet::eunit atype, int64_t aid);
+		explicit unit(pbnet::eunit atype, int64_t aid);
 
 		attribute& get_attribute();
 
@@ -53,7 +53,7 @@ namespace ngl
 	class unit_role : public unit
 	{
 	public:
-		unit_role(int64_t aid) :
+		explicit unit_role(int64_t aid) :
 			unit(pbnet::eunit_role, aid)
 		{}
 	};
@@ -61,7 +61,7 @@ namespace ngl
 	class unit_monster : public unit
 	{
 	public:
-		unit_monster(int64_t aid) :
+		explicit unit_monster(int64_t aid) :
 			unit(pbnet::eunit_monster, aid)
 		{}
 	};
@@ -69,7 +69,7 @@ namespace ngl
 	class unit_region : public unit
 	{
 	public:
-		unit_region(int64_t aid) :
+		explicit unit_region(int64_t aid) :
 			unit(pbnet::eunit_region, aid)
 		{}
 	};

@@ -24,7 +24,7 @@ namespace ngl
 	{
 		static std::map<EItemType, item_create*> m_data;
 	protected:
-		item_create(EItemType atype)
+		explicit item_create(EItemType atype)
 		{
 			m_data[atype] = this;
 		}

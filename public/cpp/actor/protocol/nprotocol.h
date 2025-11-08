@@ -381,7 +381,7 @@ namespace ngl
 		static bool				m_init;
 	public:
 		
-		nactor_logitem(ELOGLEVEL alevel = ELOG_NONE) :
+		explicit nactor_logitem(ELOGLEVEL alevel = ELOG_NONE) :
 			m_level(alevel),
 			m_actortype(ACTOR_NONE),
 			m_logtype(ELOG_DEFAULT),
@@ -389,7 +389,7 @@ namespace ngl
 		{
 		}
 
-		nactor_logitem(
+		explicit nactor_logitem(
 			ELOGLEVEL alevel, ENUM_ACTOR aactortype, ELOG_TYPE alogtype, bool aisnet
 			, const std::source_location& asource = std::source_location::current()
 		) :
@@ -398,10 +398,6 @@ namespace ngl
 			, m_logtype(alogtype)
 			, m_isnet(aisnet)
 			, m_source(asource)
-		{
-		}
-
-		~nactor_logitem()
 		{
 		}
 	private:

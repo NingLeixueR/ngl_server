@@ -280,7 +280,7 @@ namespace ngl
 			m_data(std::make_shared<T>())
 		{}
 
-		np_mass_actor(const std::shared_ptr<T>& adata) :
+		explicit np_mass_actor(const std::shared_ptr<T>& adata) :
 			m_data(adata)
 		{}
 

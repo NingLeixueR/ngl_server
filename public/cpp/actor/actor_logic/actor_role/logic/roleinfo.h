@@ -26,10 +26,7 @@ namespace ngl
 		roleinfo(const roleinfo&) = delete;
 		roleinfo& operator=(const roleinfo&) = delete;
 	public:
-		roleinfo() 
-		{}
-
-		~roleinfo(){}
+		roleinfo() = default;
 
 		virtual void initdata();
 

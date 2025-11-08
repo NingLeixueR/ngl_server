@@ -33,7 +33,7 @@ namespace ngl
 	{
 		const tab_ranklist* m_tab;
 	public:
-		rankset_base(pbdb::eranklist aranktype) :
+		explicit rankset_base(pbdb::eranklist aranktype) :
 			m_tab(ttab_ranklist::instance().tab(aranktype))
 		{
 			if (m_tab == nullptr)
