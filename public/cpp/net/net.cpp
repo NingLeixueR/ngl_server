@@ -122,7 +122,7 @@ namespace ngl
 				auto& lserver = m_net[item.m_type];
 				if (item.m_type == ENET_TCP)
 				{
-					lserver = new net_tcp((int8_t)ENET_TCP);
+					lserver = new net_tcp(ENET_TCP);
 				}
 				lserver->init(lport, asocketthreadnum, aouternet);
 			}
