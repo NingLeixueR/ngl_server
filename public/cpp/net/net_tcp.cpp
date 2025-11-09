@@ -57,7 +57,7 @@ namespace ngl
 				close(asession);
 			};
 		m_server = new asio_tcp(
-			m_index, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid asessionid, bool abool, const pack*) 
+			m_protocol, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid asessionid, bool abool, const pack*) 
 			{
 				if (abool)
 				{

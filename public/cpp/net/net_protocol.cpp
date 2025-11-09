@@ -18,8 +18,8 @@
 
 namespace ngl
 {
-	net_protocol::net_protocol(int8_t aindex):
-		m_index(aindex)
+	net_protocol::net_protocol(ENET_PROTOCOL aprotocol):
+		m_protocol(aprotocol)
 		, m_port(0x0)
 		, m_socketthreadnum(0x0)
 		, m_outernet(false)
@@ -138,7 +138,7 @@ namespace ngl
 	{
 		for (auto& item : asession)
 		{
-			if (nets::session2type(item.first) != (ENET_PROTOCOL)m_index)
+			if (nets::session2type(item.first) != (ENET_PROTOCOL)m_protocol)
 			{
 				continue;
 			}
@@ -155,7 +155,7 @@ namespace ngl
 	{
 		for (i32_sessionid item : asession)
 		{
-			if (nets::session2type(item) != (ENET_PROTOCOL)m_index)
+			if (nets::session2type(item) != (ENET_PROTOCOL)m_protocol)
 			{
 				continue;
 			}

@@ -37,15 +37,15 @@ namespace ngl
 		net_protocol& operator=(const net_protocol&) = delete;
 
 	protected:
-		i16_port				m_port;											// 服务器监听端口号
-		i32_threadsize			m_socketthreadnum;								// socket 接收数据线程数
-		bpool					m_pool;
-		bool					m_outernet;									    // 是否允许外网连接
-		std::shared_mutex		m_mutex;
-		std::list<pack>			m_packlist;
-		int8_t					m_index;
+		i16_port				m_port = 0;											// 服务器监听端口号
+		i32_threadsize			m_socketthreadnum = 0;								// socket 接收数据线程数
+		bpool					m_pool;												// 发送池
+		bool					m_outernet = false;									// 是否允许外网连接
+		std::shared_mutex		m_mutex;											// 互斥量
+		std::list<pack>			m_packlist;											// 发送队列
+		ENET_PROTOCOL			m_protocol = ENET_NULL;								// 协议
 
-		explicit net_protocol(int8_t aindex);
+		explicit net_protocol(ENET_PROTOCOL aprotocol);
 
 		bool socket_recv(int asessionid, int aislanip, const char* abuff, int32_t abufflen);
 	public:
@@ -84,8 +84,10 @@ namespace ngl
 		// # 向某个服务器发送pack
 		bool sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
+		// # 设置断线重连
 		virtual void set_close(int asession, const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun) = 0;
 
+		// # 尝试连接指定ip和端口
 		virtual bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun) = 0;
 
 		// # aip/aport		要连接的ip/端口
@@ -110,6 +112,7 @@ namespace ngl
 			return true;
 		}
 
+		// # 向服务器发送消息
 		template <typename Y, typename T = Y>
 		bool sendbyserver(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
@@ -137,6 +140,7 @@ namespace ngl
 			std::shared_ptr<pack>& apack
 		);
 
+		// # 向客户端发送消息
 		template <typename T>
 		bool send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata)
 		{
@@ -170,6 +174,7 @@ namespace ngl
 			return true;
 		}
 
+		// # 向客户端发送消息
 		template <typename T>
 		void send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
 		{
