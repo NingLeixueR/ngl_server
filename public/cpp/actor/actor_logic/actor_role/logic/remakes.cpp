@@ -38,23 +38,38 @@ namespace ngl
 		return "";
 	}
 
-	dremakes::dremakes(actor_role* arole, const char* aremakes)
+	dremakes::dremakes(actor_role* arole, const char* aremakes):
+		m_role(arole)
 	{
-		m_role->m_remakes.add_remakes(aremakes);
+		if (m_role != nullptr)
+		{
+			m_role->m_remakes.add_remakes(aremakes);
+		}
 	}
 
-	dremakes::dremakes(actor_role* arole, const std::string& aremakes)
+	dremakes::dremakes(actor_role* arole, const std::string& aremakes) :
+		m_role(arole)
 	{
-		m_role->m_remakes.add_remakes(aremakes.c_str());
+		if (m_role != nullptr)
+		{
+			m_role->m_remakes.add_remakes(aremakes.c_str());
+		}
 	}
 
 	dremakes::~dremakes()
 	{
-		m_role->m_remakes.erase_remakes();
+		if (m_role != nullptr)
+		{
+			m_role->m_remakes.erase_remakes();
+		}
 	}
 
 	const char* dremakes::get_remake(actor_role* arole)
 	{
-		return arole->m_remakes.get_remakes();
+		if (arole != nullptr)
+		{
+			return arole->m_remakes.get_remakes();
+		}
+		return "";
 	}
 }//namespace ngl
