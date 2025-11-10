@@ -21,16 +21,23 @@
 #include <unordered_set>
 
 #include "tools.h"
+#include "type.h"
 
 namespace ngl
 {
+    enum epb_field
+    {
+        epb_field_read,		    // 读
+        epb_field_write,	    // 写(既然可写必定也可读)
+    };
+
     // 工具类：只复制指定字段编号的内容
     class pb_field
     {
     public:
         // 拷贝 src 到 dst，但只复制字段编号在 field_numbers 中的字段
         // field_numbers：需要复制的字段编号列表（如 {1, 3, 5}）
-        static void copy(const google::protobuf::Message& src, google::protobuf::Message* dst, const std::set<int>& field_numbers);
+        static void copy(const google::protobuf::Message& src, google::protobuf::Message* dst, const std::map<i32_fieldnumber, epb_field>& field_numbers);
     private:
         // 复制单个字段（处理所有类型的字段：基础类型、repeated、消息类型等）
         static void copyfield(

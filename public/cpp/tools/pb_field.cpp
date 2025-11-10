@@ -17,20 +17,23 @@
 
 namespace ngl
 {
-    void pb_field::copy(const google::protobuf::Message& src, google::protobuf::Message* dst, const std::set<int>& field_numbers)
+    void pb_field::copy(const google::protobuf::Message& src, google::protobuf::Message* dst, const std::map<i32_fieldnumber, epb_field>& field_numbers)
     {
         const google::protobuf::Descriptor* desc = src.GetDescriptor();
         const google::protobuf::Reflection* src_refl = src.GetReflection();
         const google::protobuf::Reflection* dst_refl = dst->GetReflection();
 
-        for (int i = 0; i < desc->field_count(); ++i)
+        for (auto [_fieldnumber, _fieldtype] : field_numbers)
         {
-            const google::protobuf::FieldDescriptor* field = desc->field(i);
-            if (field_numbers.contains(field->number()))
-            {
-                continue;
+            if (_fieldtype != epb_field_read)
+            {// epb_field_write or epb_field_readwrite
+                const google::protobuf::FieldDescriptor* field = desc->field(_fieldnumber);
+                if (field == nullptr)
+                {
+                    continue;
+                }
+                copyfield(src, dst, src_refl, dst_refl, field);
             }
-            copyfield(src, dst, src_refl, dst_refl, field);
         }
     }
 

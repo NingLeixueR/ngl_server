@@ -323,15 +323,6 @@ namespace ngl
 		dprotocol(np_actorswitch_process, m_actor, m_serverid, m_toserverid, m_pram);
 	};
 
-
-	enum enp_channel
-	{
-		enp_channel_readall		= 1,					// 只读全部
-		enp_channel_writeall	= 2,					// 可写全部
-		enp_channel_readpart	= 3,					// 只读部分
-		enp_channel_writepart	= 4,					// 可写部分
-	};
-		
 	// 只读注册
 	template <typename TDATA>
 	struct np_channel_read_register
@@ -339,14 +330,16 @@ namespace ngl
 		using T = TDATA;
 		std::string		m_msg;									// 调试查看信息
 		i64_actorid		m_actorid = nguid::make();				// 子节点id
-		enp_channel		m_type;									// 类型
-		//[[ 只有 <m_type == enp_channel_readpart> 下面数据有效
+
+		// 结点是否读全部结点
+		bool m_readall = false;
+		//[[ m_readall == true 下面数据有效
 		std::set<i64_actorid> m_readids;						// 只读哪些数据
 		//]]
 		// 结点只关心哪些字段编号
 		std::set<i32_fieldnumber> m_fieldnumbers;
 
-		dprotocol(np_channel_read_register, m_msg, m_actorid, m_type, m_readids, m_fieldnumbers)
+		dprotocol(np_channel_read_register, m_msg, m_actorid, m_readall, m_readids, m_fieldnumbers)
 	};
 
 	template <typename TDATA>
@@ -355,13 +348,14 @@ namespace ngl
 		using T = TDATA;
 		std::string		m_msg;									// 调试查看信息
 		i64_actorid		m_actorid = nguid::make();				// 子节点id
-		enp_channel		m_type;									// 类型
+		// 结点是否写全部结点
+		bool m_writeall = false;
 		//[[ 只有 <m_type == enp_channel_writepart> 下面数据有效
 		std::set<i64_actorid> m_writeids;						// 写哪些数据
 		//]]
 		std::set<int32_t> m_fieldnumbers;						// 可修改哪些字段编号
 
-		dprotocol(np_channel_write_register, m_msg, m_actorid, m_type, m_writeids, m_fieldnumbers)
+		dprotocol(np_channel_write_register, m_msg, m_actorid, m_writeall, m_writeids, m_fieldnumbers)
 	};
 
 	template <typename TDATA>
@@ -371,7 +365,8 @@ namespace ngl
 		std::string m_msg;											// 调试查看信息
 		i64_actorid m_actorid;										// 子节点id
 		// 结点可修改哪些字段编号
-		std::map<i16_actortype, std::set<i32_fieldnumber>> m_node_fieldnumbers;
+		//std::map<i16_actortype, std::set<i32_fieldnumber>> m_node_fieldnumbers;
+		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>> m_node_fieldnumbers;
 
 		dprotocol(np_channel_read_register_reply, m_msg, m_actorid, m_node_fieldnumbers)
 	};
@@ -388,12 +383,12 @@ namespace ngl
 		std::set<i64_nodeid> m_nodewritealls;						// 写全部数据的结点
 
 		// 部分读/写
-		std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
+		//std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
 
 		// 结点可修改哪些字段编号
 		std::map<i16_actortype, std::set<i32_fieldnumber>> m_node_fieldnumbers;
 
-		dprotocol(np_channel_register_reply, m_msg, m_actorid, m_nodereadalls, m_nodewritealls, m_part, m_node_fieldnumbers)
+		dprotocol(np_channel_register_reply, m_msg, m_actorid, m_nodereadalls, m_nodewritealls, /*m_part,*/ m_node_fieldnumbers)
 	};
 
 	template <typename TDATA>
@@ -403,7 +398,7 @@ namespace ngl
 		std::string m_msg;										// 调试查看信息
 		i64_actorid m_actorid = 0;								// 异变的子节点id
 		bool m_add = true;										// 增加还是删除
-		enp_channel		m_type;									// 类型
+		//enp_channel		m_type;									// 类型
 		//if (m_type == enp_channel_readpart || m_type == enp_channel_writepart)
 		//{
 		// (部分读/写)数据被哪些结点关心
@@ -414,7 +409,7 @@ namespace ngl
 		std::set<i32_fieldnumber> m_fieldnumbers;
 		// ]add
 
-		dprotocol(np_channel_dataid_sync, m_msg, m_actorid, m_add, m_type, m_part, m_fieldnumbers)
+		dprotocol(np_channel_dataid_sync, m_msg, m_actorid, m_add,/* m_type,*/ m_part, m_fieldnumbers)
 	};
 
 	template <typename TDATA>
