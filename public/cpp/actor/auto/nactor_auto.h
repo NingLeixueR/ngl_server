@@ -1,9 +1,9 @@
 #pragma once
 
+#include "nsp_server_function.h"
+#include "nsp_write_function.h"
+#include "nsp_read_function.h"
 #include "ndb_modular.h"
-#include "nsp_server.h"
-#include "nsp_write.h"
-#include "nsp_read.h"
 #include "actor_db.h"
 #include "db.pb.h"
 

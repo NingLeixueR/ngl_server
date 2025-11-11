@@ -13,24 +13,19 @@
 */
 #pragma once
 
+#include "nprotocol_template.h"
+#include "tools.h"
+#include "type.h"
+
 #include <google/protobuf/compiler/importer.h>
 #include <google/protobuf/dynamic_message.h>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/message.h>
-#include <vector>
 #include <unordered_set>
-
-#include "tools.h"
-#include "type.h"
+#include <vector>
 
 namespace ngl
 {
-    enum epb_field
-    {
-        epb_field_read,		    // 读
-        epb_field_write,	    // 写(既然可写必定也可读)
-    };
-
     // 工具类：只复制指定字段编号的内容
     class pb_field
     {
