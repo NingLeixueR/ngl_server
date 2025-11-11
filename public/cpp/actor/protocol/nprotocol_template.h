@@ -323,57 +323,43 @@ namespace ngl
 		dprotocol(np_actorswitch_process, m_actor, m_serverid, m_toserverid, m_pram);
 	};
 
-	// 只读注册
+	// 注册
 	template <typename TDATA>
-	struct np_channel_read_register
-	{
-		using T = TDATA;
-		std::string		m_msg;									// 调试查看信息
-		i64_actorid		m_actorid = nguid::make();				// 子节点id
-
-		// 结点是否读全部结点
-		bool m_readall = false;
-		//[[ m_readall == true 下面数据有效
-		std::set<i64_actorid> m_readids;						// 只读哪些数据
-		//]]
-		// 结点只关心哪些字段编号
-		std::set<i32_fieldnumber> m_fieldnumbers;
-
-		dprotocol(np_channel_read_register, m_msg, m_actorid, m_readall, m_readids, m_fieldnumbers)
-	};
-
-	template <typename TDATA>
-	struct np_channel_write_register
+	struct np_channel_register
 	{
 		using T = TDATA;
 		std::string		m_msg;									// 调试查看信息
 		i64_actorid		m_actorid = nguid::make();				// 子节点id
 		// 结点是否写全部结点
-		bool m_writeall = false;
-		//[[ 只有 <m_type == enp_channel_writepart> 下面数据有效
+		bool m_read = false;	//结点是[读/写]
+		bool m_all = false;		// 是否可以操作全部结点
+		//[[ m_all == false 下面数据有效
 		std::set<i64_actorid> m_writeids;						// 写哪些数据
+		std::set<i64_actorid> m_readids;						// 写哪些数据
 		//]]
 		std::set<int32_t> m_fieldnumbers;						// 可修改哪些字段编号
 
-		dprotocol(np_channel_write_register, m_msg, m_actorid, m_writeall, m_writeids, m_fieldnumbers)
+		dprotocol(np_channel_write_register, m_msg, m_actorid, m_read, m_all, m_writeids, m_readids, m_fieldnumbers)
 	};
 
-	template <typename TDATA>
-	struct np_channel_read_register_reply
+	enum epb_field
 	{
-		using T = TDATA;
-		std::string m_msg;											// 调试查看信息
-		i64_actorid m_actorid;										// 子节点id
-		// 结点可修改哪些字段编号
-		//std::map<i16_actortype, std::set<i32_fieldnumber>> m_node_fieldnumbers;
-		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>> m_node_fieldnumbers;
-
-		dprotocol(np_channel_read_register_reply, m_msg, m_actorid, m_node_fieldnumbers)
+		epb_field_read,		    // 读
+		epb_field_write,	    // 写(既然可写必定也可读)
 	};
 
+	struct nsp_care
+	{
+		bool m_read = false;
+		bool m_all = false;
+		std::set<i64_actorid> m_readids;
+		std::set<i64_actorid> m_writeids;
+
+		dprotocol(nsp_care, m_read, m_all, m_readids, m_writeids)
+	};
 
 	template <typename TDATA>
-	struct np_channel_write_register_reply
+	struct np_channel_register_reply
 	{
 		using T = TDATA;
 		std::string m_msg;											// 调试查看信息
@@ -382,13 +368,12 @@ namespace ngl
 		std::set<i64_nodeid> m_nodereadalls;						// 读全部数据的结点
 		std::set<i64_nodeid> m_nodewritealls;						// 写全部数据的结点
 
-		// 部分读/写
-		//std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> m_part;
+		std::map<i64_nodeid, nsp_care> m_care;
 
 		// 结点可修改哪些字段编号
-		std::map<i16_actortype, std::set<i32_fieldnumber>> m_node_fieldnumbers;
+		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>> m_node_fieldnumbers;
 
-		dprotocol(np_channel_register_reply, m_msg, m_actorid, m_nodereadalls, m_nodewritealls, /*m_part,*/ m_node_fieldnumbers)
+		dprotocol(np_channel_register_reply, m_msg, m_actorid, m_nodereadalls, m_nodewritealls, m_care, m_node_fieldnumbers)
 	};
 
 	template <typename TDATA>
@@ -397,20 +382,26 @@ namespace ngl
 		using T = TDATA;
 		std::string m_msg;										// 调试查看信息
 		i64_actorid m_actorid = 0;								// 异变的子节点id
-		bool m_add = true;										// 增加还是删除
-		//enp_channel		m_type;									// 类型
-		//if (m_type == enp_channel_readpart || m_type == enp_channel_writepart)
+		bool		m_read = true;								// 结点是读是写
+		bool		m_all = false;								// 结点是[读/写]全部数据么
+		//if (!m_all)
 		//{
-		// (部分读/写)数据被哪些结点关心
-		std::set<i64_dataid> m_part;
+		// 哪部分只读关心
+		std::set<i64_dataid> m_readpart;
 		//}
-		
-		// add[
-		std::set<i32_fieldnumber> m_fieldnumbers;
-		// ]add
+		//if (!m_all && !m_read)
+		//{
+		// 哪部分[读/写]关心
+		std::set<i64_dataid> m_writepart;
+		//}
 
-		dprotocol(np_channel_dataid_sync, m_msg, m_actorid, m_add,/* m_type,*/ m_part, m_fieldnumbers)
+		std::set<i32_fieldnumber> m_fieldnumbers;
+
+		dprotocol(np_channel_dataid_sync, m_msg, m_actorid, m_read, m_all, m_readpart, m_writepart, m_fieldnumbers)
 	};
+
+
+
 
 	template <typename TDATA>
 	struct np_channel_exit

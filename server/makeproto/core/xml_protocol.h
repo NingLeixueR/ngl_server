@@ -657,9 +657,6 @@ namespace ngl
         m_stream << R"(#pragma once
 
 #include "ndb_modular.h"
-#include "nsp_server.h"
-#include "nsp_write.h"
-#include "nsp_read.h"
 #include "actor_db.h"
 #include "db.pb.h"
 
@@ -1006,8 +1003,6 @@ namespace ngl
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "ndb_modular.h"
-#include "nsp_server.h"
-#include "nsp_client.h"
 #include "db_manage.h"
 #include "ndbclient.h"
 #include "nprotocol.h"

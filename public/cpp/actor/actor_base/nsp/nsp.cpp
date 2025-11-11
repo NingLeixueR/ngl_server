@@ -22,11 +22,12 @@ namespace ngl
 
 	bool nsp_regload::is_register(i16_area aarea)const
 	{
-		if (!m_register.contains(aarea))
+		auto itor = m_register.find(aarea);
+		if (itor == m_register.end())
 		{
 			return false;
 		}
-		return m_register[aarea];
+		return itor->second;
 	}
 
 	bool nsp_regload::is_register()const
@@ -48,11 +49,12 @@ namespace ngl
 
 	bool nsp_regload::is_loadfinish(i16_area aarea)const
 	{
-		if (!m_loadfinish.contains(aarea))
+		auto itor = m_loadfinish.find(aarea);
+		if (itor == m_loadfinish.end())
 		{
 			return false;
 		}
-		return m_loadfinish[aarea];
+		return itor->second;
 	}
 
 	i64_actorid nsp_regload::nspserid(i16_area aarea)const
@@ -86,40 +88,50 @@ namespace ngl
 		}
 	}
 
+	void operator_field::set_field(i16_actortype atype, const std::map<i32_fieldnumber, epb_field>& anode_fieldnumbers)
+	{
+		if (m_node_fieldnumbers.contains(atype))
+		{
+			std::map<i32_fieldnumber, epb_field>& lmap = m_node_fieldnumbers[atype];
+			for (const auto& [_fieldnumber, _fieldtype] : anode_fieldnumbers)
+			{
+
+				auto itor = lmap.find(_fieldnumber);
+				if (itor != lmap.end())
+				{
+					if (itor->second != _fieldtype)
+					{
+						tools::no_core_dump();
+					}
+				}
+				else
+				{
+					lmap.insert(std::make_pair(_fieldnumber, _fieldtype));
+				}
+			}
+		}
+		else
+		{
+			m_node_fieldnumbers.insert(std::make_pair(atype, anode_fieldnumbers));
+		}
+	}
+
 	void operator_field::set_field(const std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& anode_fieldnumbers)
 	{
 		// 合并前进行检测, 出现重复且不一致的字段,直接异常处理
 		std::ranges::for_each(anode_fieldnumbers, [this](const auto& apair)
 			{
-				if (m_node_fieldnumbers.contains(apair.first))
-				{
-					std::map<i32_fieldnumber, epb_field>& lmap = m_node_fieldnumbers[apair.first];
-					for (const auto& [_fieldnumber, _fieldtype] : apair.second)
-					{
-
-						auto itor = lmap.find(_fieldnumber);
-						if (itor != lmap.end())
-						{
-							if (itor->second != _fieldtype)
-							{
-								tools::no_core_dump();
-							}
-						}
-						else
-						{
-							lmap.insert(std::make_pair(_fieldnumber, _fieldtype));
-						}
-					}
-				}
-				else
-				{
-					m_node_fieldnumbers.insert(apair);
-				}
+				set_field(apair.first, apair.second);
 			});
 	}
 
 	void operator_field::add_field(i16_actortype atype, i32_fieldnumber afieldnumber, epb_field afieldtype)
 	{
+		auto& lmap = m_node_fieldnumbers[atype];
+		if (!lmap.empty() && lmap.contains(afieldnumber) && lmap[afieldnumber] == afieldtype)
+		{
+			tools::no_core_dump();
+		}
 		m_node_fieldnumbers[atype][afieldnumber] = afieldtype;
 	}
 
@@ -132,84 +144,100 @@ namespace ngl
 		return nullptr;
 	}
 
+	std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& operator_field::field_numbers()
+	{
+		return m_node_fieldnumbers;
+	}
+
 	void care_data::init(bool aread)
 	{
-		m_read = aread;
-		m_all = true;
+		m_core.m_read = aread;
+		m_core.m_all = true;
 	}
 
 	void care_data::init(const std::set<i64_actorid>& aids)
 	{
-		m_read = true;
-		m_all = false;
-		m_readids = aids;
+		m_core.m_read = true;
+		m_core.m_all = false;
+		m_core.m_readids = aids;
 	}
 
 	void care_data::init(const std::set<i64_actorid>& areadids, const std::set<i64_actorid>& awriteids)
 	{
-		m_read = false;
-		m_all = false;
-		m_readids = areadids;
-		m_writeids = awriteids;
+		m_core.m_read = false;
+		m_core.m_all = false;
+		m_core.m_readids = areadids;
+		m_core.m_writeids = awriteids;
 	}
 
 	void care_data::init(bool aread, const std::set<i64_actorid>& awriteids)
 	{
-		m_read = false;
-		m_all = true;
-		m_writeids = awriteids;
+		m_core.m_read = false;
+		m_core.m_all = true;
+		m_core.m_writeids = awriteids;
+	}
+
+	void care_data::init(const nsp_care& acore)
+	{
+		m_core = acore;
 	}
 
 	bool care_data::is_care(i64_actorid adataid)const
 	{
-		if (m_read)
+		if (m_core.m_read)
 		{
-			return m_all || m_readids.contains(adataid);
+			return m_core.m_all || m_core.m_readids.contains(adataid);
 		}
 		else
 		{
-			return m_all || m_writeids.contains(adataid) || m_readids.contains(adataid);
+			return m_core.m_all || m_core.m_writeids.contains(adataid) || m_core.m_readids.contains(adataid);
 		}
 	}
 
 	bool care_data::is_read(i64_actorid adataid)const
 	{
-		return m_all || m_writeids.contains(adataid) || m_readids.contains(adataid);
+		return m_core.m_all || m_core.m_writeids.contains(adataid) || m_core.m_readids.contains(adataid);
 	}
 
 	bool care_data::is_write(i64_actorid adataid)const
 	{
-		if (m_read)
+		if (m_core.m_read)
 		{
 			return false;
 		}
 		else
 		{
-			return m_all || m_writeids.contains(adataid);
+			return m_core.m_all || m_core.m_writeids.contains(adataid);
 		}
 	}
 
 	bool care_data::is_readall()const
 	{
-		return m_all;
+		return m_core.m_all;
 	}
 
 	bool care_data::is_writeall()const
 	{
-		if (m_read)
+		if (m_core.m_read)
 		{
 			return false;
 		}
-		return m_all;
+		return m_core.m_all;
 	}
 
 	std::set<i64_actorid>& care_data::readids()
 	{
-		return m_readids;
+		return m_core.m_readids;
 	}
 
 	std::set<i64_actorid>& care_data::writeids()
 	{
-		return m_writeids;
+		return m_core.m_writeids;
 	}
+
+	const nsp_care& care_data::get_core()const
+	{
+		return m_core;
+	}
+
 }//namespace ngl

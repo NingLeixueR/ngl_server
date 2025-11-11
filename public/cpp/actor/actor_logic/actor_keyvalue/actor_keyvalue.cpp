@@ -12,7 +12,6 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "actor_keyvalue.h"
-#include "nsp_server.h"
 #include "net.pb.h"
 
 namespace ngl

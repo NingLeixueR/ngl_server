@@ -15,11 +15,8 @@
 #include "ttab_recharge.h"
 #include "actor_events.h"
 #include "manage_curl.h"
-#include "nsp_server.h"
 #include "actor_role.h"
 #include "nregister.h"
-#include "nsp_write.h"
-#include "nsp_read.h"
 #include "nforward.h"
 #include "net.pb.h"
 #include "drop.h"
@@ -76,7 +73,13 @@ namespace ngl
 		set_timer(tparm);
 		*/
 
-		tdb_brief::nsp_cwrite<actor_role>::instance_writepart(this, { id_guid() }, { pb_field::field_number<pbdb::db_brief>("mbase") });
+		tdb_brief::nsp_cwrite<actor_role>::instance_writepart(
+			this
+			, { }
+			, { pb_field::field_number<pbdb::db_brief>("mbase") }
+			, { }
+			, { id_guid() }
+			);
 		tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).set_changedatafun(
 			[this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 			{

@@ -1,5 +1,6 @@
 #pragma once 
 
+#include "nprotocol_template.h"
 #include "ttab_servers.h"
 #include "pb_field.h"
 #include "nguid.h"
@@ -45,6 +46,8 @@ namespace ngl
 	{
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>> m_node_fieldnumbers;
 	public:
+
+		void set_field(i16_actortype atype, const std::map<i32_fieldnumber, epb_field>& anode_fieldnumbers);
 		// # 设置
 		void set_field(const std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& anode_fieldnumbers);
 
@@ -66,14 +69,13 @@ namespace ngl
 			}
 			pb_field::copy(asource, &atarget, itor->second);
 		}
+
+		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& field_numbers();
 	};
 
 	class care_data
 	{
-		bool m_read = false;
-		bool m_all = false;
-		std::set<i64_actorid> m_readids;
-		std::set<i64_actorid> m_writeids;
+		nsp_care m_core;
 	public:
 		void init(bool aread);
 
@@ -85,6 +87,8 @@ namespace ngl
 
 		// # "全部读,部分写" 构造
 		void init(bool aread, const std::set<i64_actorid>& awriteids);
+
+		void init(const nsp_care& acore);
 
 		// # 是否关心
 		bool is_care(i64_actorid adataid)const;
@@ -106,6 +110,8 @@ namespace ngl
 
 		// # 可写列表
 		std::set<i64_actorid>& writeids();
+
+		const nsp_care& get_core()const;
 	};
 
 	template <typename T>
