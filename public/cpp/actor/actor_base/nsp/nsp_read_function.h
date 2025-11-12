@@ -97,6 +97,10 @@ namespace ngl
 	void nsp_read<TDerived, TACTOR, T>::init()
 	{
 		m_regload.init(TACTOR::actorid());
+		m_regload.foreach_nspser([this](i16_area aarea, i64_actorid aactorid)
+			{
+				m_exit.insert(aactorid);
+			});
 
 		if (m_isregister.exchange(false))
 		{
@@ -154,15 +158,7 @@ namespace ngl
 	{
 		auto pro = std::make_shared<np_channel_exit<T>>();
 		pro->m_actorid = m_actor->id_guid();
-		{//发送给nsp_server
-			m_regload.foreach_nspser([&pro](i16_area aarea, i64_actorid aactorid)
-				{
-					actor::send_actor(aactorid, nguid::make(), pro);
-				});
-		}		
-		{//发送给nsp_write
-			actor::send_actor(m_exit, nguid::make(), pro);			
-		}
+		actor::send_actor(m_exit, nguid::make(), pro);
 		nsp_instance<nsp_read<TDerived, TACTOR, T>>::exit(m_actor->id_guid());
 	}
 
