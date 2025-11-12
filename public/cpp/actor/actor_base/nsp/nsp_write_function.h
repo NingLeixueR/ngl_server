@@ -73,7 +73,7 @@ namespace ngl
 		std::set<i32_fieldnumber> lreadfield;
 		if (areadfieldnumbers.empty())
 		{//当[awritefieldnumbers]为空,则认为其读全部字段
-			pb_field::field_number<T>(lreadfield);
+			pb_field::all_field_number<T>(lreadfield);
 		}
 		for (i32_fieldnumber fieldnumber : (lreadfield.empty() ? areadfieldnumbers : lreadfield))
 		{
@@ -106,6 +106,11 @@ namespace ngl
 	void nsp_write<TDerived, TACTOR, T>::init()
 	{
 		m_regload.init(TACTOR::actorid());
+
+		m_regload.foreach_nspser([this](i16_area aarea, i64_actorid aactorid)
+			{
+				m_exit.insert(aactorid);
+			});
 
 		if (m_isregister.exchange(false))
 		{
@@ -222,6 +227,12 @@ namespace ngl
 				});
 
 			actor::send_actor(lnodes, nguid::make(), pro);
+		}
+
+		{
+			auto pro = std::make_shared<np_channel_exit<T>>();
+			pro->m_actorid = m_actor->id_guid();
+			actor::send_actor(m_exit, nguid::make(), pro);
 		}
 		nsp_instance<nsp_write<TDerived, TACTOR, T>>::exit(m_actor->id_guid());
 	}
@@ -353,8 +364,11 @@ namespace ngl
 		m_nodereadalls = recv->m_nodereadalls;
 		m_nodewritealls = recv->m_nodewritealls;
 
+		m_exit.insert(recv->m_nodewritealls.begin(), recv->m_nodewritealls.end());
+
 		for (const auto& [_nodeid, _care] : recv->m_care)
 		{
+			m_exit.insert(_nodeid);
 			m_othercare[_nodeid].init(_care);
 		}
 		return;
@@ -398,6 +412,7 @@ namespace ngl
 			{
 				m_othercare[recv->m_actorid].init(recv->m_readpart, recv->m_writepart);
 			}
+			m_exit.insert(recv->m_actorid);
 		}
 	}
 

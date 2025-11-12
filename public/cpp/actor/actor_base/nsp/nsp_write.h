@@ -45,6 +45,8 @@ namespace ngl
 
 
 		std::map<i64_actorid, T>										m_data;
+		// # 其他结点/当本结点exit()时需要通知哪些结点(1、所有nsp_server结点。2、所有nsp_write结点)
+		std::set<i64_actorid> m_exit;
 
 		// 被改变的数据列表
 		std::set<i64_dataid>											m_changeids;
