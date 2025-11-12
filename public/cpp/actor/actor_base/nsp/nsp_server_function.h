@@ -63,7 +63,7 @@ namespace ngl
 			return;
 		}
 
-		i16_area larea = nguid::area(lactorid);
+		i16_actortype ltype = nguid::type(lactorid);
 		if (recv->m_read)
 		{
 			if (recv->m_all)
@@ -91,12 +91,12 @@ namespace ngl
 		
 		for (i32_fieldnumber fieldnumber : recv->m_readfield)
 		{
-			m_operator_field.add_field(larea, fieldnumber, epb_field_read);
+			m_operator_field.add_field(ltype, fieldnumber, epb_field_read);
 		}
 
 		for (i32_fieldnumber fieldnumber : recv->m_writefield)
 		{
-			m_operator_field.add_field(larea, fieldnumber, epb_field_write);
+			m_operator_field.add_field(ltype, fieldnumber, epb_field_write);
 		}
 
 		m_nodepart.insert(lactorid);
@@ -229,7 +229,8 @@ namespace ngl
 			return;
 		}
 		care_data lcare = m_care[lactorid];
-		i16_area larea = nguid::area(lactorid);
+
+		i16_actortype ltype = nguid::type(lactorid);
 		for (const auto& [ _dataid, _data] : recv->m_data)
 		{
 			if (!lcare.is_write(_dataid))
@@ -238,7 +239,7 @@ namespace ngl
 				return;
 			}
 			data_modified<T>& ldata = m_dbmodule->get(_dataid);
-			m_operator_field.field_copy(larea, _data, *ldata.get());
+			m_operator_field.field_copy(ltype, _data, *ldata.get());
 		}
 		for (i64_actorid dataid : recv->m_deldata)
 		{

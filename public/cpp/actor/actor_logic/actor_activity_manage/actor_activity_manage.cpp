@@ -55,8 +55,11 @@ namespace ngl
 		m_activitydb.set(this);
 		m_activitytimedb.set(this);
 
-		tdb_brief::nsp_cwrite<actor_activity_manage>::instance_writeall(this, { pb_field::field_number<pbdb::db_brief>("mactivityvalues") });
-		tdb_keyvalue::nsp_cread<actor_activity_manage>::instance_readall(this);
+		std::set<i32_fieldnumber> lfieldset;
+		pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mactivityvalues");
+		tdb_brief::nsp_cwrite<actor_activity_manage>::instance_writeall(this, {}, lfieldset);
+
+		tdb_keyvalue::nsp_cread<actor_activity_manage>::instance_readall(this, {});
 
 		tdb_activitytimes::nsp_ser::init(&m_activitytimedb);
 
