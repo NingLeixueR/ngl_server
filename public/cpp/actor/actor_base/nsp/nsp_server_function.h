@@ -1,3 +1,17 @@
+/*
+* Copyright (c) [2020-2025] NingLeixueR
+* 
+* 项目名称：ngl_server
+* 项目地址：https://github.com/NingLeixueR/ngl_server
+* 
+* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
+* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
+* 但需保留原始版权和许可声明。
+* 
+* 许可详情参见项目根目录下的 LICENSE 文件：
+* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*/
+#pragma once
 #include "nsp_server.h"
 
 namespace ngl
@@ -40,7 +54,11 @@ namespace ngl
 		{
 			return;
 		}
-		if (recv->m_readall && m_nodereadalls.contains(lactorid))
+		if (m_nodewritealls.contains(lactorid))
+		{
+			return;
+		}
+		if (m_nodereadalls.contains(lactorid))
 		{
 			return;
 		}
@@ -71,9 +89,14 @@ namespace ngl
 			}
 		}
 		
-		for (i32_fieldnumber fieldnumber : recv->m_fieldnumbers)
+		for (i32_fieldnumber fieldnumber : recv->m_readfield)
 		{
 			m_operator_field.add_field(larea, fieldnumber, epb_field_read);
+		}
+
+		for (i32_fieldnumber fieldnumber : recv->m_writefield)
+		{
+			m_operator_field.add_field(larea, fieldnumber, epb_field_write);
 		}
 
 		m_nodepart.insert(lactorid);
@@ -93,13 +116,12 @@ namespace ngl
 				}
 				pro->m_care[_nodeid] = _care.get_core();
 			}
-			pro->m_care = m_nodewritealls;
-			pro->m_node_fieldnumbers = m_operator_field.fieldnumbers();
-			actor::send_actor(lactorid, pro);
+			pro->m_node_fieldnumbers = m_operator_field.field_numbers();
+			actor::send_actor(lactorid, nguid::make(), pro);
 		}
 		// 同步数据
 		{
-			std::function<std::shared_ptr<np_channel_data<T>>()> lmalloc = []()->std::shared_ptr<np_channel_data<T>>
+			std::function<std::shared_ptr<np_channel_data<T>>()> lmalloc = [lnspserver]()->std::shared_ptr<np_channel_data<T>>
 				{
 					auto pro = std::make_shared<np_channel_data<T>>();
 					pro->m_actorid = lnspserver;
@@ -109,9 +131,9 @@ namespace ngl
 			auto pro = lmalloc();
 
 			int32_t lindex = 0;
-			if (recv->m_readall)
+			if (recv->m_all)
 			{
-				m_dbmodule->foreach([&pro,&lindex](const data_modified<T>& adata)
+				m_dbmodule->foreach([&pro,&lindex, &lmalloc, lactorid](const data_modified<T>& adata)
 					{
 						const T& ldata = *adata.getconst();
 						pro->m_data[ldata.mid()] = ldata;
@@ -125,28 +147,34 @@ namespace ngl
 			}
 			else 
 			{
-				//std::set<i64_actorid> m_readids;
-				for (i64_actorid readid : recv->m_readids)
-				{
-					data_modified<T>* lpmodifieddata = m_dbmodule->find(readid);
-					if (lpmodifieddata == nullptr)
+				auto lfun = [&pro, &lindex, &lmalloc, lactorid](const std::set<i64_actorid>& aids)
 					{
-						continue;
-					}
-					const T* lpdata = lpmodifieddata->getconst();
-					if (lpdata == nullptr)
-					{
-						continue;
-					}
-					pro->m_data[lpdata->mid()] = *lpdata;
-					++lindex;
-					if (lindex % esend_maxcount == 0)
-					{
-						actor::send_actor(lactorid, nguid::make(), pro);
-						pro = lmalloc();
-					}
-				}
+						for (i64_actorid id : aids)
+						{
+							data_modified<T>* lpmodifieddata = m_dbmodule->find(id);
+							if (lpmodifieddata == nullptr)
+							{
+								continue;
+							}
+							const T* lpdata = lpmodifieddata->getconst();
+							if (lpdata == nullptr)
+							{
+								continue;
+							}
+							pro->m_data[lpdata->mid()] = *lpdata;
+							++lindex;
+							if (lindex % esend_maxcount == 0)
+							{
+								actor::send_actor(lactorid, nguid::make(), pro);
+								pro = lmalloc();
+							}
+						}
+					};
+				
+				lfun(recv->m_readids);
+				lfun(recv->m_writeids);
 			}
+
 			if (lindex % esend_maxcount == 0)
 			{
 				pro = lmalloc();
@@ -159,18 +187,20 @@ namespace ngl
 		{
 			auto pro = std::make_shared<np_channel_dataid_sync<T>>();
 			pro->m_actorid = lactorid;
-			pro->m_read = true;
-			pro->m_all = recv->m_readall;
-			if (!recv->m_readall)
+			pro->m_read = recv->m_read;
+			pro->m_all = recv->m_all;
+			if (!recv->m_all)
 			{
 				pro->m_readpart = recv->m_readids;
+				pro->m_writepart = recv->m_writeids;
 			}
-			pro->m_fieldnumbers = recv->m_fieldnumbers;
+			pro->m_writefield = recv->m_writefield;
+			pro->m_readfield = recv->m_readfield;
 
 			std::set<i64_nodeid> lnodes;
-			lnodes.insert(m_nodereadalls);
-			lnodes.insert(m_nodewritealls);
-			lnodes.insert(m_nodepart);
+			lnodes.insert(m_nodereadalls.begin(), m_nodereadalls.end());
+			lnodes.insert(m_nodewritealls.begin(), m_nodereadalls.end());
+			lnodes.insert(m_nodepart.begin(), m_nodereadalls.end());
 			actor::send_actor(lnodes, nguid::make(), pro);
 		}
 	}
@@ -208,7 +238,7 @@ namespace ngl
 				return;
 			}
 			data_modified<T>& ldata = m_dbmodule->get(_dataid);
-			m_operator_field.field_copy(larea, _data, ldata.get());
+			m_operator_field.field_copy(larea, _data, *ldata.get());
 		}
 		for (i64_actorid dataid : recv->m_deldata)
 		{

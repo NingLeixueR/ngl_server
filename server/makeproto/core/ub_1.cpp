@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-11-06 22:53:04
+// 创建时间 25-11-12 11:44:37
 #include "pb_field.cpp"
 #include "session_endpoint.cpp"
 #include "attribute_value.cpp"
@@ -23,6 +23,7 @@
 #include "manage_curl.cpp"
 #include "handle_pram.cpp"
 #include "time_wheel.cpp"
+#include "nsp_server.cpp"
 #include "nserialize.cpp"
 #include "nscript_pb.cpp"
 #include "manage_csv.cpp"
@@ -34,6 +35,7 @@
 #include "synthesis.cpp"
 #include "rank_item.cpp"
 #include "pack_head.cpp"
+#include "nsp_write.cpp"
 #include "nprotocol.cpp"
 #include "logprintf.cpp"
 #include "localtime.cpp"
@@ -45,6 +47,7 @@
 #include "ranklist.cpp"
 #include "protocol.cpp"
 #include "pb_field.cpp"
+#include "nsp_read.cpp"
 #include "naddress.cpp"
 #include "csvtable.cpp"
 #include "autoitem.cpp"
@@ -84,6 +87,7 @@
 #include "grid.cpp"
 #include "drop.cpp"
 #include "xml.cpp"
+#include "nsp.cpp"
 #include "net.cpp"
 #include "map.cpp"
 #include "csv.cpp"

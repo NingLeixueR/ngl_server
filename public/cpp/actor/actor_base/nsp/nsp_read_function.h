@@ -1,3 +1,17 @@
+/*
+* Copyright (c) [2020-2025] NingLeixueR
+* 
+* 项目名称：ngl_server
+* 项目地址：https://github.com/NingLeixueR/ngl_server
+* 
+* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
+* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
+* 但需保留原始版权和许可声明。
+* 
+* 许可详情参见项目根目录下的 LICENSE 文件：
+* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*/
+#pragma once
 #include "nsp_read.h"
 
 namespace ngl
@@ -80,8 +94,6 @@ namespace ngl
 			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<TDerived, np_channel_register_reply<T>>();
 			// 
 			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<TDerived, np_channel_dataid_sync<T>>();
-
-			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<TDerived, np_channel_exit<T>>();
 		}
 		i64_actorid lactorid = m_actor->id_guid();
 		m_regload.foreach_nspser([lactorid](i16_area aarea, i64_actorid aactorid)
@@ -233,9 +245,17 @@ namespace ngl
 			tools::no_core_dump();
 			return;
 		}
-		std::ranges::copy(
-			*lmapfieldtype | std::views::keys, std::inserter(pro->m_fieldnumbers, pro->m_fieldnumbers.begin())
-		);
+		for (const auto [_fieldnumber, _efield] : *lmapfieldtype)
+		{
+			if (_efield == epb_field_read)
+			{
+				pro->m_readfield.insert(_fieldnumber);
+			}
+			else
+			{
+				pro->m_writefield.insert(_fieldnumber);
+			}
+		}
 
 		i64_actorid lnspserid = m_regload.nspserid(recv->m_area);
 		log_error()->print(
@@ -258,8 +278,6 @@ namespace ngl
 		std::ranges::copy(
 			recv->m_care | std::views::keys, std::inserter(m_exit, m_exit.begin())
 		);
-
-		m_exit.insert(m_exit.m_nodewritealls);
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
@@ -269,6 +287,14 @@ namespace ngl
 
 		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
-		m_operator_field.set_field(nguid::area(recv->m_actorid), recv->m_fieldnumbers);
+		i16_area larea = nguid::area(recv->m_actorid);
+		for (i32_fieldnumber fieldnumber : recv->m_readfield)
+		{
+			m_operator_field.add_field(larea, fieldnumber, epb_field_read);
+		}
+		for (i32_fieldnumber fieldnumber : recv->m_writefield)
+		{
+			m_operator_field.add_field(larea, fieldnumber, epb_field_write);
+		}
 	}
 }

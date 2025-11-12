@@ -106,14 +106,6 @@ namespace ngl
 			}
 		}
 
-		inline void foreach(const std::function<void(data_modified<TDATA>&)>& afun)
-		{
-			for (auto& apair : foreach_data())
-			{
-				afun(apair.second);
-			}
-		}
-
 		//# 查找指定数据
 		inline data_modified<TDATA>* find(const std::function<bool(const data_modified<TDATA>&)>& afun)
 		{

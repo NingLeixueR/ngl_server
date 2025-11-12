@@ -85,13 +85,13 @@ namespace ngl
 		void handle(TDerived* aactor, const message<np_channel_data<T>>& adata);
 
 		// # 向[nsp server]注册此模块
-		void handle(TDerived*, const message<np_channel_check<T>>& adata);
+		void handle(TDerived* aactor, const message<np_channel_check<T>>& adata);
 
 		// # 向[nsp server]注册此模块的回复
-		void handle(TDerived*, const message<np_channel_register_reply<T>>& adata);
+		void handle(TDerived* aactor, const message<np_channel_register_reply<T>>& adata);
 
 		// # 同步新增的[operator_field]
-		void handle(TDerived*, const message<np_channel_dataid_sync<T>>& adata);
+		void handle(TDerived* aactor, const message<np_channel_dataid_sync<T>>& adata);
 	};
 
 	template <typename TDerived, typename TACTOR, typename T>

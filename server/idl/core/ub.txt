@@ -1,6 +1,7 @@
 INCLUDE_DIRECTORIES(../../public/cpp)
 INCLUDE_DIRECTORIES(public/cpp/actor)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_base)
+INCLUDE_DIRECTORIES(public/cpp/actor/actor_base/nsp)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_activity_manage)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_activity_manage/message)

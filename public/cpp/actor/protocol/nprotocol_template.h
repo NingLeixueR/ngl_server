@@ -337,9 +337,10 @@ namespace ngl
 		std::set<i64_actorid> m_writeids;						// 写哪些数据
 		std::set<i64_actorid> m_readids;						// 写哪些数据
 		//]]
-		std::set<int32_t> m_fieldnumbers;						// 可修改哪些字段编号
+		std::set<int32_t> m_writefield;					// 可修改哪些字段编号
+		std::set<int32_t> m_readfield;					// 可读哪些字段编号
 
-		dprotocol(np_channel_write_register, m_msg, m_actorid, m_read, m_all, m_writeids, m_readids, m_fieldnumbers)
+		dprotocol(np_channel_register, m_msg, m_actorid, m_read, m_all, m_writeids, m_readids, m_writefield, m_readfield)
 	};
 
 	enum epb_field
@@ -395,9 +396,10 @@ namespace ngl
 		std::set<i64_dataid> m_writepart;
 		//}
 
-		std::set<i32_fieldnumber> m_fieldnumbers;
+		std::set<i32_fieldnumber> m_readfield;
+		std::set<i32_fieldnumber> m_writefield;
 
-		dprotocol(np_channel_dataid_sync, m_msg, m_actorid, m_read, m_all, m_readpart, m_writepart, m_fieldnumbers)
+		dprotocol(np_channel_dataid_sync, m_msg, m_actorid, m_read, m_all, m_readpart, m_writepart, m_readfield, m_writefield)
 	};
 
 

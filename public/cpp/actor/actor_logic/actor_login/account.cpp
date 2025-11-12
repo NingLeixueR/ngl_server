@@ -29,14 +29,15 @@ namespace ngl
 	void account::initdata()
 	{
 		log_error()->print("actor_login###loaddb_finish {}", data());
-		foreach([this](data_modified<pbdb::db_account>& dbaccount)
-			{
-				data_modified_return_get(lpdbaccount, dbaccount);
-				i16_area larea = lpdbaccount->marea();
-				const std::string& laccount = lpdbaccount->maccount();
-				m_areaofaccount[larea].m_data[laccount] = &dbaccount;
-				m_max_accountid = std::max(m_max_accountid, nguid::actordataid(lpdbaccount->mid()));
-			});
+		auto lmapdata = foreach_data();
+		for (auto itor = lmapdata.begin();itor!= lmapdata.end();++itor)
+		{
+			data_modified_return_get(lpdbaccount, itor->second);
+			i16_area larea = lpdbaccount->marea();
+			const std::string& laccount = lpdbaccount->maccount();
+			m_areaofaccount[larea].m_data[laccount] = &itor->second;
+			m_max_accountid = std::max(m_max_accountid, nguid::actordataid(lpdbaccount->mid()));
+		}
 	}
 
 	int32_t& account::max_accountid()
