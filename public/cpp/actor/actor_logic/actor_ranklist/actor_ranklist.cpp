@@ -56,7 +56,8 @@ namespace ngl
 		}
 		set_timer(tparm);
 		*/
-		tdb_brief::nsp_cread<actor_ranklist>::instance_readall(this);
+		std::set<i32_fieldnumber> lfieldset;
+		tdb_brief::nsp_cread<actor_ranklist>::instance_readall(this, pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mbase", "mactivityvalues"));
 	}
 
 	void actor_ranklist::erase_actor_before()

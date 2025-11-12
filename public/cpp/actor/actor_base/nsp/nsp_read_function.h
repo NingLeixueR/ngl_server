@@ -23,13 +23,22 @@ namespace ngl
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
-	nsp_read<TDerived, TACTOR, T>& nsp_read<TDerived, TACTOR, T>::instance_readall(TDerived* aactor)
+	nsp_read<TDerived, TACTOR, T>& nsp_read<TDerived, TACTOR, T>::instance_readall(TDerived* aactor, const std::set<i32_fieldnumber>& afieldnumbers)
 	{
 		auto lpread = std::make_shared<nsp_read<TDerived, TACTOR, T>>();
 		lpread->m_actor = aactor;
 		nsp_instance<nsp_read<TDerived, TACTOR, T>>::init(aactor->id_guid(), lpread);
 
 		lpread->m_care.init(true);
+		std::set<i32_fieldnumber> lfield;
+		if (afieldnumbers.empty())
+		{//当[awritefieldnumbers]为空,则认为其读全部字段
+			pb_field::all_field_number<T>(lfield);
+		}
+		for (i32_fieldnumber fieldnumber : (lfield.empty() ? afieldnumbers : lfield))
+		{
+			lpread->m_operator_field.add_field(nguid::type(aactor->id_guid()), fieldnumber, epb_field_read);
+		}
 
 		lpread->init();
 		log_error_net()->print("nsp_read::instance_readall( actor({}) )", nguid(aactor->id_guid()));
@@ -37,14 +46,19 @@ namespace ngl
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
-	nsp_read<TDerived, TACTOR, T>& nsp_read<TDerived, TACTOR, T>::instance_readpart(TDerived* aactor, const std::set<i64_actorid>& aids)
+	nsp_read<TDerived, TACTOR, T>& nsp_read<TDerived, TACTOR, T>::instance_readpart(
+		TDerived* aactor
+		, const std::set<i32_fieldnumber>& afieldnumbers
+		, const std::set<i64_actorid>& aids
+	)
 	{
 		auto lpread = std::make_shared<nsp_read<TDerived, TACTOR, T>>();
 		lpread->m_actor = aactor;
 		lpread->m_care.init(aids);
-		for (i64_actorid dataid : aids)
+
+		for (i32_fieldnumber fieldnumber : afieldnumbers)
 		{
-			lpread->m_operator_field.add_field(nguid::type(aactor->id_guid()), dataid, epb_field_read);
+			lpread->m_operator_field.add_field(nguid::type(aactor->id_guid()), fieldnumber, epb_field_read);
 		}
 		nsp_instance<nsp_read<TDerived, TACTOR, T>>::init(aactor->id_guid(), lpread);
 
@@ -160,11 +174,12 @@ namespace ngl
 		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;
+		i16_actortype ltype = nguid::type(aactor->id_guid());
 		for (const auto& apair : recv->m_data)
 		{
 			if (m_care.is_care(apair.first))
 			{
-				m_operator_field.field_copy(nguid::type(apair.first), apair.second, m_data[apair.first]);
+				m_operator_field.field_copy(ltype, apair.second, m_data[apair.first]);
 				m_call.changedatafun(apair.first, m_data[apair.first], lfirstsynchronize);
 			}
 		}
@@ -287,14 +302,14 @@ namespace ngl
 
 		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
-		i16_area larea = nguid::area(recv->m_actorid);
+		i16_actortype ltype = nguid::type(recv->m_actorid);
 		for (i32_fieldnumber fieldnumber : recv->m_readfield)
 		{
-			m_operator_field.add_field(larea, fieldnumber, epb_field_read);
+			m_operator_field.add_field(ltype, fieldnumber, epb_field_read);
 		}
 		for (i32_fieldnumber fieldnumber : recv->m_writefield)
 		{
-			m_operator_field.add_field(larea, fieldnumber, epb_field_write);
+			m_operator_field.add_field(ltype, fieldnumber, epb_field_write);
 		}
 	}
 }

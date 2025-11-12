@@ -17,6 +17,20 @@
 
 namespace ngl
 {
+    //for (int i = 0; i < desc->field_count(); ++i) {
+    //    const google::protobuf::FieldDescriptor* field_desc = desc->field(i);
+    //    if (field_desc == nullptr) continue;
+
+    //    // 获取字段号和字段名
+    //    int field_number = field_desc->number();
+    //    std::string field_name = field_desc->name();
+
+    //    std::cout << "Field " << i + 1 << ": name = " << field_name
+    //        << ", number = " << field_number << std::endl;
+    //}
+
+
+
     void pb_field::copy(const google::protobuf::Message& src, google::protobuf::Message* dst, const std::map<i32_fieldnumber, epb_field>& field_numbers)
     {
         const google::protobuf::Descriptor* desc = src.GetDescriptor();

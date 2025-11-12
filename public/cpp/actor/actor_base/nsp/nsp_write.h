@@ -53,14 +53,17 @@ namespace ngl
 	public:
 		static nsp_write<TDerived, TACTOR, T>& instance(i64_actorid aactorid);
 
-		static nsp_write<TDerived, TACTOR, T>& instance_writeall(TDerived* aactor, const std::set<int32_t>& afieldnumbers);
+		static nsp_write<TDerived, TACTOR, T>& instance_writeall(
+			TDerived* aactor
+			, const std::set<i32_fieldnumber>& areadfieldnumbers
+			, const std::set<i32_fieldnumber>& awritefieldnumbers);
 
 		static nsp_write<TDerived, TACTOR, T>& instance_writepart(
 			TDerived* aactor
-			, const std::set<int32_t>& areadfieldnumbers			/* 只读哪些字段 */
-			, const std::set<int32_t>& awritefieldnumbers			/* 读/写哪些字段 */
-			, const std::set<i64_actorid>& areadids					/* 只读哪些数据 */
-			, const std::set<i64_actorid>& awriteids				/* 读/写哪些数据 */
+			, const std::set<i32_fieldnumber>& areadfieldnumbers			/* 只读哪些字段 */
+			, const std::set<i32_fieldnumber>& awritefieldnumbers			/* 读/写哪些字段 */
+			, const std::set<i64_actorid>& areadids							/* 只读哪些数据 */
+			, const std::set<i64_actorid>& awriteids						/* 读/写哪些数据 */
 		);
 
 		static i64_actorid to_actorid(i64_actorid adataid);

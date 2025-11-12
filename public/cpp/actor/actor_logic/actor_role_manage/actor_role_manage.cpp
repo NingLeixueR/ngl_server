@@ -58,10 +58,11 @@ namespace ngl
 		set_timer(tparm);
 		*/
 
+		std::set<i32_fieldnumber> lfieldset;
 		tdb_keyvalue::nsp_cwrite<actor_role_manage>::instance_writepart(
 			this
 			, { }
-			, { pb_field::field_number<pbdb::db_keyvalue>("mvalue") }
+			, pb_field::field_number<pbdb::db_keyvalue>(lfieldset, "mvalue")
 			, { }
 			, { pbdb::db_keyvalue_ekv_account_ban }		
 		);

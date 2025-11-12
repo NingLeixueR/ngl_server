@@ -73,13 +73,14 @@ namespace ngl
 		set_timer(tparm);
 		*/
 
+		std::set<i32_fieldnumber> lfieldset;
 		tdb_brief::nsp_cwrite<actor_role>::instance_writepart(
 			this
 			, { }
-			, { pb_field::field_number<pbdb::db_brief>("mbase") }
+			, pb_field::field_number<pbdb::db_brief>(lfieldset, "mbase")
 			, { }
 			, { id_guid() }
-			);
+		);
 		tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).set_changedatafun(
 			[this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 			{

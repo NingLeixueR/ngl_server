@@ -71,7 +71,8 @@ namespace ngl
 			{
 				lset.insert(aroleid);
 			}
-			tdb_brief::nsp_cread<actor_example<TACTOR>>::instance_readpart(this, lset);
+			std::set<i32_fieldnumber> lfieldset;
+			tdb_brief::nsp_cread<actor_example<TACTOR>>::instance_readpart(this, pb_field::field_number<pbdb::db_brief>(lfieldset, "mbase"), lset);
 		}
 
 		virtual void erase_actor_before()

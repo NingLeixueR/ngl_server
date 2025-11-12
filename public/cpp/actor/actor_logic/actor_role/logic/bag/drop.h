@@ -35,11 +35,11 @@ namespace ngl
 			m_actor = aactor;
 			if (adataid.empty())
 			{
-				tdb_activitytimes::nsp_cread<TACTOR>::instance_readall(m_actor);
+				tdb_activitytimes::nsp_cread<TACTOR>::instance_readall(m_actor, {});
 			}
 			else
 			{
-				tdb_activitytimes::nsp_cread<TACTOR>::instance_readpart(m_actor, adataid);
+				tdb_activitytimes::nsp_cread<TACTOR>::instance_readpart(m_actor, {}, adataid);
 			}
 		}
 

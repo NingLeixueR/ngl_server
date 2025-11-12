@@ -62,26 +62,76 @@ namespace ngl
         );
     public:
         template <typename T>
-        static int32_t field_number(const char* afieldname)
+        static std::set<i32_fieldnumber>& field_number(std::set<i32_fieldnumber>& afieldset)
         {
-            // 1. 获取 db_brief 消息的描述符（Descriptor）
+            return afieldset;
+        }
+
+        template <typename T>
+        static std::set<i32_fieldnumber>& field_number(std::set<i32_fieldnumber>& afieldset, const char* afieldname)
+        {
             const google::protobuf::Descriptor* db_brief_descriptor = T::descriptor();
             if (db_brief_descriptor == nullptr) 
             {
                 tools::no_core_dump();
-                return -1;
+                return afieldset;
             }
-
-            // 2. 根据字段名（"mactivityvalues"）获取该字段的描述符（FieldDescriptor）
             const google::protobuf::FieldDescriptor* field_descriptor = db_brief_descriptor->FindFieldByName(afieldname);
             if (field_descriptor == nullptr) 
             {
                 tools::no_core_dump();
-                return -1;
+                return afieldset;
+            }
+            afieldset.insert(field_descriptor->number());
+            return afieldset;
+        }
+
+        template <typename T, typename ...TARGS>
+        static std::set<i32_fieldnumber>& field_number(std::set<i32_fieldnumber>& afieldset, const char* afieldname, TARGS... args)
+        {
+            field_number<T>(afieldset, afieldname);
+            return field_number<T>(afieldset, args...);
+        }
+
+    private:
+       
+        template <typename T>
+        static void all_field_number(const  std::function<void(i32_fieldnumber, const std::string&)>& afieldfun)
+        {
+            const google::protobuf::Descriptor* desc = T::descriptor();
+            if (desc == nullptr)
+            {
+                tools::no_core_dump();
+                return;
             }
 
-            return field_descriptor->number();
+            for (int i = 0; i < desc->field_count(); ++i)
+            {
+                const google::protobuf::FieldDescriptor* field_desc = desc->field(i);
+                if (field_desc == nullptr)
+                {
+                    continue;
+                }
+                afieldfun(field_desc->number(), field_desc->name());
+            }
+        }
+    public:
+        template <typename T>
+        static void all_field_number(std::map<i32_fieldnumber, std::string>& afieldmap)
+        {
+            all_field_number<T>([&afieldmap](i32_fieldnumber afieldnumber, const std::string& afieldname)
+                {
+                    afieldmap[afieldnumber] = afieldname;
+                });
+        }
+
+        template <typename T>
+        static void all_field_number(std::set<i32_fieldnumber>& afieldset)
+        {
+            all_field_number<T>([&afieldset](i32_fieldnumber afieldnumber, const std::string& afieldname)
+                {
+                    afieldset.insert(afieldnumber);
+                });
         }
     };
-
 }

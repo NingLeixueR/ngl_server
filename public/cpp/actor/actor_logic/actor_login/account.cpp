@@ -29,7 +29,7 @@ namespace ngl
 	void account::initdata()
 	{
 		log_error()->print("actor_login###loaddb_finish {}", data());
-		auto lmapdata = foreach_data();
+		auto& lmapdata = foreach_data();
 		for (auto itor = lmapdata.begin();itor!= lmapdata.end();++itor)
 		{
 			data_modified_return_get(lpdbaccount, itor->second);
