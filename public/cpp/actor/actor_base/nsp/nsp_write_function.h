@@ -69,6 +69,7 @@ namespace ngl
 	{
 		auto lpwrite = std::make_shared<nsp_write<TDerived, TACTOR, T>>();
 		lpwrite->m_actor = aactor;
+		nsp_instance<nsp_write<TDerived, TACTOR, T>>::init(aactor->id_guid(), lpwrite);
 		lpwrite->m_care.init(areadids, awriteids);
 		std::set<i32_fieldnumber> lreadfield;
 		if (areadfieldnumbers.empty())
@@ -87,7 +88,6 @@ namespace ngl
 		{
 			lpwrite->m_operator_field.add_field(nguid::type(aactor->id_guid()), dataid, epb_field_write);
 		}
-		nsp_instance<nsp_write<TDerived, TACTOR, T>>::init(aactor->id_guid(), lpwrite);
 
 		lpwrite->m_care.init(areadids, awriteids);
 
