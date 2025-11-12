@@ -60,14 +60,11 @@ namespace ngl
 
 	};
 
-	//template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	//std::map<i16_actortype, std::set<i32_fieldnumber>> nsp_server<ENUMDB, TDerived, T>::m_noderead_fieldnumbers;
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	operator_field nsp_server<ENUMDB, TDerived, T>::m_operator_field;
 
-	//template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	//std::map<i16_actortype, std::set<i32_fieldnumber>> nsp_server<ENUMDB, TDerived, T>::m_nodewrite_fieldnumbers;
-
-	//template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	//std::map<i64_dataid, std::map<i64_nodeid, enp_channel>> nsp_server<ENUMDB, TDerived, T>::m_part;
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	std::map<i64_actorid, care_data> nsp_server<ENUMDB, TDerived, T>::m_care;
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	std::set<i64_nodeid> nsp_server<ENUMDB, TDerived, T>::m_nodereadalls;
@@ -75,17 +72,16 @@ namespace ngl
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	std::set<i64_nodeid> nsp_server<ENUMDB, TDerived, T>::m_nodewritealls;
 
-	//template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	//std::set<i64_nodeid> nsp_server<ENUMDB, TDerived, T>::m_nodepart;
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	std::set<i64_nodeid> nsp_server<ENUMDB, TDerived, T>::m_nodepart;
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	ndb_modular<ENUMDB, T, TDerived>* nsp_server<ENUMDB, TDerived, T>::m_dbmodule;
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	operator_field nsp_server<ENUMDB, TDerived, T>::m_operator_field;
+	std::set<i16_area> nsp_server<ENUMDB, TDerived, T>::m_areaset;
 
-	//template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	//std::set<i16_area> nsp_server<ENUMDB, TDerived, T>::m_areaset;
+
 }//namespace ngl
 
 namespace ngl

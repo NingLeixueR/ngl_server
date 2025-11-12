@@ -86,8 +86,8 @@ namespace ngl
 	struct data_modified 
 	{
 	private:
-		data_modified(const data_modified&) = delete;
-		data_modified& operator=(const data_modified&) = delete;
+		//data_modified(const data_modified&) = delete;
+		//data_modified& operator=(const data_modified&) = delete;
 
 		mutable TDBTAB m_data;
 		mutable TDBTAB* m_pdata = nullptr;

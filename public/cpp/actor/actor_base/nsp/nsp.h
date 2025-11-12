@@ -1,3 +1,16 @@
+/*
+* Copyright (c) [2020-2025] NingLeixueR
+* 
+* 项目名称：ngl_server
+* 项目地址：https://github.com/NingLeixueR/ngl_server
+* 
+* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
+* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
+* 但需保留原始版权和许可声明。
+* 
+* 许可详情参见项目根目录下的 LICENSE 文件：
+* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*/
 #pragma once 
 
 #include "nprotocol_template.h"
@@ -68,6 +81,7 @@ namespace ngl
 				return false;
 			}
 			pb_field::copy(asource, &atarget, itor->second);
+			return true;
 		}
 
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& field_numbers();
@@ -155,7 +169,11 @@ namespace ngl
 		{
 			actor::register_actor_s<TDerived, TMESSAGE>([](TDerived* aacotor, const message<TMESSAGE>& adata)
 				{
-					nclient(aacotor->id_guid())->handle(aacotor, adata);
+					T* lpclass = nclient(aacotor->id_guid());
+					if (lpclass != nullptr)
+					{
+						lpclass->handle(aacotor, adata);
+					}
 				}, false);
 		}
 	};
