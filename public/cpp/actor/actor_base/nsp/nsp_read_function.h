@@ -170,12 +170,13 @@ namespace ngl
 		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;
-		i16_actortype ltype = nguid::type(aactor->id_guid());
+		i16_actortype ltypesource = nguid::type(aactor->id_guid());
+		i16_actortype ltypetarget = nguid::type(m_actor->id_guid());
 		for (const auto& apair : recv->m_data)
 		{
 			if (m_care.is_care(apair.first))
 			{
-				m_operator_field.field_copy(ltype, apair.second, m_data[apair.first]);
+				m_operator_field.field_copy(ltypesource, ltypetarget, apair.second, m_data[apair.first]);
 				m_call.changedatafun(apair.first, m_data[apair.first], lfirstsynchronize);
 			}
 		}
@@ -283,7 +284,7 @@ namespace ngl
 
 		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
-		m_regload.set_register(recv->m_actorid);
+		m_regload.set_register(nguid::area(recv->m_actorid));
 		m_operator_field.set_field(recv->m_node_fieldnumbers);
 
 		std::ranges::copy(

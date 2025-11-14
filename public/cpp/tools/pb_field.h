@@ -32,7 +32,18 @@ namespace ngl
     public:
         // 拷贝 src 到 dst，但只复制字段编号在 field_numbers 中的字段
         // field_numbers：需要复制的字段编号列表（如 {1, 3, 5}）
-        static void copy(const google::protobuf::Message& src, google::protobuf::Message* dst, const std::map<i32_fieldnumber, epb_field>& field_numbers);
+        static void copy(
+            const google::protobuf::Message& src
+            , google::protobuf::Message* dst
+            , const std::map<i32_fieldnumber, epb_field>& fieldsrc
+            , const std::map<i32_fieldnumber, epb_field>& fielddst
+        );
+
+        static void copy(
+            const google::protobuf::Message& src
+            , google::protobuf::Message* dst
+            , const std::map<i32_fieldnumber, epb_field>& fieldsrc
+        );
     private:
         // 复制单个字段（处理所有类型的字段：基础类型、repeated、消息类型等）
         static void copyfield(

@@ -72,25 +72,6 @@ namespace ngl
 		}
 		set_timer(tparm);
 		*/
-
-		std::set<i32_fieldnumber> lfieldset;
-		tdb_brief::nsp_cwrite<actor_role>::instance_writepart(
-			this
-			, { }
-			, pb_field::field_number<pbdb::db_brief>(lfieldset, "mbase")
-			, { }
-			, { id_guid() }
-		);
-		tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).set_changedatafun(
-			[this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
-			{
-				if (afirstsynchronize)
-				{
-					login_finish();
-				}
-			});
-
-		m_drop.init(this, {});
 	}
 
 	void actor_role::erase_actor_before()
@@ -130,6 +111,24 @@ namespace ngl
 	void actor_role::loaddb_finish(bool adbishave)
 	{
 		log_error()->print("actor_role###loaddb_finish#[{}]", guid());
+		std::set<i32_fieldnumber> lfieldset;
+		tdb_brief::nsp_cwrite<actor_role>::instance_writepart(
+			this
+			, { }
+			, pb_field::field_number<pbdb::db_brief>(lfieldset, "mbase")
+			, { }
+			, { id_guid() }
+		);
+		tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).set_changedatafun(
+			[this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
+			{
+				if (afirstsynchronize)
+				{
+					login_finish();
+				}
+			});
+
+		m_drop.init(this, {});
 	}
 
 	void actor_role::login_finish()

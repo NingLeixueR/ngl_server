@@ -31,25 +31,43 @@ namespace ngl
 
 
 
-    void pb_field::copy(const google::protobuf::Message& src, google::protobuf::Message* dst, const std::map<i32_fieldnumber, epb_field>& field_numbers)
+    void pb_field::copy(
+        const google::protobuf::Message& src
+        , google::protobuf::Message* dst
+        , const std::map<i32_fieldnumber, epb_field>& fieldsrc
+        , const std::map<i32_fieldnumber, epb_field>& fielddst
+    )
     {
         const google::protobuf::Descriptor* desc = src.GetDescriptor();
         const google::protobuf::Reflection* src_refl = src.GetReflection();
         const google::protobuf::Reflection* dst_refl = dst->GetReflection();
 
-        for (auto [_fieldnumber, _fieldtype] : field_numbers)
+        for (auto [_fieldnumber, _fieldtype] : fieldsrc)
         {
             if (_fieldtype != epb_field_read)
             {// epb_field_write or epb_field_readwrite
-                const google::protobuf::FieldDescriptor* field = desc->field(_fieldnumber);
-                if (field == nullptr)
+                if (fielddst.contains(_fieldnumber))
                 {
-                    continue;
-                }
-                copyfield(src, dst, src_refl, dst_refl, field);
+                    const google::protobuf::FieldDescriptor* field = desc->field(_fieldnumber);
+                    if (field == nullptr)
+                    {
+                        continue;
+                    }
+                    copyfield(src, dst, src_refl, dst_refl, field);
+                }                
             }
         }
     }
+
+    void pb_field::copy(
+        const google::protobuf::Message& src
+        , google::protobuf::Message* dst
+        , const std::map<i32_fieldnumber, epb_field>& fieldsrc
+    )
+    {
+        copy(src, dst, fieldsrc, fieldsrc);
+    }
+
 
     void pb_field::copyfield(
         const google::protobuf::Message& src

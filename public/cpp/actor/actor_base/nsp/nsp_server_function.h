@@ -46,6 +46,113 @@ namespace ngl
 	}
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	void nsp_server<ENUMDB, TDerived, T>::channel_register_reply(i64_actorid aactorid)
+	{// 回复
+		auto pro = std::make_shared<np_channel_register_reply<T>>();
+		pro->m_actorid = m_dbmodule->get_actor()->id_guid();
+		pro->m_nodereadalls = m_nodereadalls;
+		pro->m_nodewritealls = m_nodewritealls;
+		for (const auto& [_nodeid, _care] : m_care)
+		{
+			if (aactorid == _nodeid)
+			{
+				continue;
+			}
+			pro->m_care[_nodeid] = _care.get_core();
+		}
+		pro->m_node_fieldnumbers = m_operator_field.field_numbers();
+		actor::send_actor(aactorid, nguid::make(), pro);
+	}
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	void nsp_server<ENUMDB, TDerived, T>::channel_channel_data(i64_actorid aactorid, const np_channel_register<T>* recv)
+	{
+		i64_actorid lnspserver = m_dbmodule->get_actor()->id_guid();
+		std::function<std::shared_ptr<np_channel_data<T>>()> lmalloc = [lnspserver]()->std::shared_ptr<np_channel_data<T>>
+			{
+				auto pro = std::make_shared<np_channel_data<T>>();
+				pro->m_actorid = lnspserver;
+				pro->m_firstsynchronize = true;
+				return pro;
+			};
+		auto pro = lmalloc();
+
+		int32_t lindex = 0;
+		if (recv->m_all)
+		{
+			m_dbmodule->foreach([&pro, &lindex, &lmalloc, aactorid](const data_modified<T>& adata)
+				{
+					const T& ldata = *adata.getconst();
+					pro->m_data[ldata.mid()] = ldata;
+					++lindex;
+					if (lindex % esend_maxcount == 0)
+					{
+						actor::send_actor(aactorid, nguid::make(), pro);
+						pro = lmalloc();
+					}
+				});
+		}
+		else
+		{
+			auto lfun = [&pro, &lindex, &lmalloc, aactorid](const std::set<i64_actorid>& aids)
+				{
+					for (i64_actorid id : aids)
+					{
+						data_modified<T>* lpmodifieddata = m_dbmodule->find(id);
+						if (lpmodifieddata == nullptr)
+						{
+							continue;
+						}
+						const T* lpdata = lpmodifieddata->getconst();
+						if (lpdata == nullptr)
+						{
+							continue;
+						}
+						pro->m_data[lpdata->mid()] = *lpdata;
+						++lindex;
+						if (lindex % esend_maxcount == 0)
+						{
+							actor::send_actor(aactorid, nguid::make(), pro);
+							pro = lmalloc();
+						}
+					}
+				};
+
+			lfun(recv->m_readids);
+			lfun(recv->m_writeids);
+		}
+
+		if (lindex % esend_maxcount == 0)
+		{
+			pro = lmalloc();
+		}
+		pro->m_recvfinish = true;
+		actor::send_actor(aactorid, nguid::make(), pro);
+	}
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
+	void nsp_server<ENUMDB, TDerived, T>::channel_dataid_sync(i64_actorid aactorid, const np_channel_register<T>* recv)
+	{
+		auto pro = std::make_shared<np_channel_dataid_sync<T>>();
+		pro->m_actorid = aactorid;
+		pro->m_read = recv->m_read;
+		pro->m_all = recv->m_all;
+		if (!recv->m_all)
+		{
+			pro->m_readpart = recv->m_readids;
+			pro->m_writepart = recv->m_writeids;
+		}
+		pro->m_writefield = recv->m_writefield;
+		pro->m_readfield = recv->m_readfield;
+
+		std::set<i64_nodeid> lnodes;
+		lnodes.insert(m_nodereadalls.begin(), m_nodereadalls.end());
+		lnodes.insert(m_nodewritealls.begin(), m_nodereadalls.end());
+		lnodes.insert(m_nodepart.begin(), m_nodereadalls.end());
+		actor::send_actor(lnodes, nguid::make(), pro);
+	}
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	void nsp_server<ENUMDB, TDerived, T>::handle(TDerived*, const message<np_channel_register<T>>& adata)
 	{
 		const np_channel_register<T>* recv = adata.get_data();
@@ -101,26 +208,29 @@ namespace ngl
 
 		m_nodepart.insert(lactorid);
 
-		i64_actorid lnspserver = m_dbmodule->get_actor()->id_guid();
-
-		{// 回复
-			auto pro = std::make_shared<np_channel_register_reply<T>>();
-			pro->m_actorid = lnspserver;
-			pro->m_nodereadalls = m_nodereadalls;
-			pro->m_nodewritealls = m_nodewritealls;
-			for (const auto& [_nodeid, _care] : m_care)
-			{
-				if (lactorid == _nodeid)
-				{
-					continue;
-				}
-				pro->m_care[_nodeid] = _care.get_core();
-			}
-			pro->m_node_fieldnumbers = m_operator_field.field_numbers();
-			actor::send_actor(lactorid, nguid::make(), pro);
-		}
+		channel_register_reply(lactorid);
+		channel_channel_data(lactorid, recv);
+		channel_dataid_sync(lactorid, recv);
+		//i64_actorid lnspserver = m_dbmodule->get_actor()->id_guid();
+		//
+		//{// 回复
+		//	auto pro = std::make_shared<np_channel_register_reply<T>>();
+		//	pro->m_actorid = lnspserver;
+		//	pro->m_nodereadalls = m_nodereadalls;
+		//	pro->m_nodewritealls = m_nodewritealls;
+		//	for (const auto& [_nodeid, _care] : m_care)
+		//	{
+		//		if (lactorid == _nodeid)
+		//		{
+		//			continue;
+		//		}
+		//		pro->m_care[_nodeid] = _care.get_core();
+		//	}
+		//	pro->m_node_fieldnumbers = m_operator_field.field_numbers();
+		//	actor::send_actor(lactorid, nguid::make(), pro);
+		//}
 		// 同步数据
-		{
+		/*{
 			std::function<std::shared_ptr<np_channel_data<T>>()> lmalloc = [lnspserver]()->std::shared_ptr<np_channel_data<T>>
 				{
 					auto pro = std::make_shared<np_channel_data<T>>();
@@ -181,28 +291,10 @@ namespace ngl
 			}
 			pro->m_recvfinish = true;
 			actor::send_actor(lactorid, nguid::make(), pro);
-		}
+		}*/
 
 		// 通知其他结点，有新结点加入
-		{
-			auto pro = std::make_shared<np_channel_dataid_sync<T>>();
-			pro->m_actorid = lactorid;
-			pro->m_read = recv->m_read;
-			pro->m_all = recv->m_all;
-			if (!recv->m_all)
-			{
-				pro->m_readpart = recv->m_readids;
-				pro->m_writepart = recv->m_writeids;
-			}
-			pro->m_writefield = recv->m_writefield;
-			pro->m_readfield = recv->m_readfield;
-
-			std::set<i64_nodeid> lnodes;
-			lnodes.insert(m_nodereadalls.begin(), m_nodereadalls.end());
-			lnodes.insert(m_nodewritealls.begin(), m_nodereadalls.end());
-			lnodes.insert(m_nodepart.begin(), m_nodereadalls.end());
-			actor::send_actor(lnodes, nguid::make(), pro);
-		}
+		
 	}
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>

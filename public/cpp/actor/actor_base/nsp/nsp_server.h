@@ -52,6 +52,12 @@ namespace ngl
 		// # ¶©ÔÄ×¢²á´¦Àí
 		static void init(ndb_modular<ENUMDB, T, TDerived>* adbmodule);
 
+		static void channel_register_reply(i64_actorid aactorid);
+
+		static void channel_channel_data(i64_actorid aactorid, const np_channel_register<T>* recv);
+
+		static void channel_dataid_sync(i64_actorid aactorid, const np_channel_register<T>* recv);
+
 		static void handle(TDerived*, const message<np_channel_register<T>>& adata);
 
 		static void handle(TDerived*, const message<np_channel_exit<T>>& adata);
