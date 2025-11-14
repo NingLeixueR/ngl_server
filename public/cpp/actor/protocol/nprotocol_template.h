@@ -419,7 +419,7 @@ namespace ngl
 	{
 		using T = TDATA;
 		std::string m_msg;									// 调试查看信息
-		i64_nodeid m_actorid = 0;
+		i64_nodeid m_actorid = 0;							// 谁修改的数据
 		bool m_firstsynchronize = false;					// 首次同步
 		bool m_recvfinish = false;
 		std::map<int64_t, TDATA> m_data;					// 1、数据同步2、数据修改3、数据增加

@@ -89,8 +89,6 @@ namespace ngl
 			lpwrite->m_operator_field.add_field(nguid::type(aactor->id_guid()), dataid, epb_field_write);
 		}
 
-		lpwrite->m_care.init(areadids, awriteids);
-
 		lpwrite->init();
 		log_error_net()->print("nsp_read::instance_readpart( actor({}) : {} : {})", nguid(aactor->id_guid()), areadids,  awriteids);
 		return *lpwrite;
@@ -241,15 +239,16 @@ namespace ngl
 	void nsp_write<TDerived, TACTOR, T>::handle(TDerived* aactor, const message<np_channel_data<T>>& adata)
 	{
 		const np_channel_data<T>* recv = adata.get_data();
-
 		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;
+		i16_actortype ltypesource = nguid::type(aactor->id_guid());
+		i16_actortype ltypetarget = nguid::type(m_actor->id_guid());
 		for (const auto& apair : recv->m_data)
 		{
 			if (m_care.is_care(apair.first))
 			{
-				m_operator_field.field_copy(nguid::type(aactor->id_guid()), apair.second, m_data[apair.first]);
+				m_operator_field.field_copy(ltypesource, ltypetarget, apair.second, m_data[apair.first]);
 				m_call.changedatafun(apair.first, m_data[apair.first], lfirstsynchronize);
 			}
 		}
@@ -318,7 +317,7 @@ namespace ngl
 		}
 		auto pro = std::make_shared<np_channel_register<T>>();
 		pro->m_actorid = m_actor->id_guid();
-		pro->m_read = true;
+		pro->m_read = false;
 		pro->m_all = m_care.is_readall();
 		if (!pro->m_all)
 		{
@@ -358,7 +357,7 @@ namespace ngl
 
 		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
 
-		m_regload.set_register(recv->m_actorid);
+		m_regload.set_register(nguid::area(recv->m_actorid));
 		m_operator_field.set_field(recv->m_node_fieldnumbers);
 
 		m_nodereadalls = recv->m_nodereadalls;

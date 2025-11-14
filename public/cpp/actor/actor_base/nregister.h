@@ -34,7 +34,10 @@ namespace ngl
 				auto ldata = std::static_pointer_cast<T>(apram.m_data);
 				message lmessage(athreadid, apram.m_pack, ldata);
 				afun((TTTDerived*)aactor, lmessage);
-				((TTTDerived*)aactor)->handle_after(apram);
+				if (aactor->isloadfinish())
+				{
+					((TTTDerived*)aactor)->handle_after(apram);
+				}
 			}
 		};
 		protocol::registry_actor<T>(nactor_type<TDerived>::type(), tools::type_name<T>().c_str());
@@ -59,7 +62,10 @@ namespace ngl
 				auto ldata = std::static_pointer_cast<T>(apram.m_data);
 				message lmessage(athreadid, apram.m_pack, ldata);
 				(((TTTDerived*)(aactor))->*afun)(lmessage);
-				((TTTDerived*)aactor)->handle_after(apram);
+				if (aactor->isloadfinish())
+				{
+					((TTTDerived*)aactor)->handle_after(apram);
+				}
 			}
 		};
 		return *this;

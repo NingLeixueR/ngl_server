@@ -72,15 +72,27 @@ namespace ngl
 
 		// # 根据字段类型进行数据拷贝
 		template <typename T>
-		bool field_copy(i16_actortype atype, const T& asource, T& atarget)
+		bool field_copy(i16_actortype atypesource, i16_actortype atypetarget, const T& asource, T& atarget)
 		{
-			auto itor = m_node_fieldnumbers.find(atype);
-			if (itor == m_node_fieldnumbers.end())
+			std::map<i32_fieldnumber, epb_field>* lpsource =  get_field(atypesource);
+			std::map<i32_fieldnumber, epb_field>* lptarget = get_field(atypetarget);
+			if (lpsource == nullptr || lptarget == nullptr)
 			{
-				tools::no_core_dump();
 				return false;
 			}
-			pb_field::copy(asource, &atarget, itor->second);
+			pb_field::copy(asource, &atarget, *lpsource, *lptarget);
+			return true;
+		}
+
+		template <typename T>
+		bool field_copy(i16_actortype atype, const T& asource, T& atarget)
+		{
+			std::map<i32_fieldnumber, epb_field>* lp = get_field(atype);
+			if (lp == nullptr)
+			{
+				return false;
+			}
+			pb_field::copy(asource, &atarget, *lp, *lp);
 			return true;
 		}
 

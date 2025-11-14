@@ -54,16 +54,6 @@ namespace ngl
 		// 绑定DB结构:DB.set(this);
 		m_activitydb.set(this);
 		m_activitytimedb.set(this);
-
-		std::set<i32_fieldnumber> lfieldset;
-		pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mactivityvalues");
-		tdb_brief::nsp_cwrite<actor_activity_manage>::instance_writeall(this, {}, lfieldset);
-
-		tdb_keyvalue::nsp_cread<actor_activity_manage>::instance_readall(this, {});
-
-		tdb_activitytimes::nsp_ser::init(&m_activitytimedb);
-
-		m_drop.init(this, {});
 	}
 
 	void actor_activity_manage::erase_actor_before()
@@ -81,9 +71,19 @@ namespace ngl
 
 	void actor_activity_manage::loaddb_finish(bool adbishave)
 	{
-		// 等待 actor_ranklist loaddb_finish
-		wait_ready(actor_ranklist::actorid());
+		std::set<i32_fieldnumber> lfieldset;
+		pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mactivityvalues");
+		tdb_brief::nsp_cwrite<actor_activity_manage>::instance_writeall(this, {}, lfieldset);
 
+		//tdb_keyvalue::nsp_cread<actor_activity_manage>::instance_readall(this, {});
+
+		//tdb_activitytimes::nsp_ser::init(&m_activitytimedb);
+
+		//m_drop.init(this, {});
+
+		// 等待 actor_ranklist loaddb_finish
+		//wait_ready(actor_ranklist::actorid());
+		return;
 		actor_events_logic::tfun::func(
 			actorid()
 			, eevents_logic_rolelogin

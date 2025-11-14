@@ -30,7 +30,12 @@ namespace ngl
 
 	void nsp_regload::set_register(i16_area aarea)
 	{
-		m_register[aarea] = false;
+		if (!m_register.contains(aarea))
+		{
+			tools::no_core_dump();
+			return;
+		}
+		m_register[aarea] = true;
 	}
 
 	bool nsp_regload::is_register(i16_area aarea)const
@@ -57,7 +62,12 @@ namespace ngl
 
 	void nsp_regload::set_loadfinish(i16_area aarea)
 	{
-		m_loadfinish[aarea] = false;
+		if (!m_loadfinish.contains(aarea))
+		{
+			tools::no_core_dump();
+			return;
+		}
+		m_loadfinish[aarea] = true;
 	}
 
 	bool nsp_regload::is_loadfinish(i16_area aarea)const
