@@ -248,7 +248,14 @@ namespace ngl
 		{
 			if (m_care.is_care(apair.first))
 			{
-				m_operator_field.field_copy(ltypesource, ltypetarget, apair.second, m_data[apair.first]);
+				if (lfirstsynchronize)
+				{
+					m_operator_field.field_copy(ltypesource, ltypetarget, apair.second, m_data[apair.first]);
+				}
+				else
+				{
+					m_operator_field.field_copy(ltypetarget, apair.second, m_data[apair.first]);
+				}
 				m_call.changedatafun(apair.first, m_data[apair.first], lfirstsynchronize);
 			}
 		}
