@@ -16,22 +16,6 @@
 
 namespace ngl
 {
-
-	class autolog
-	{
-		std::string m_name;
-	public:
-		autolog(const char* aname):
-			m_name(aname)
-		{
-			log_error()->print("{} start", m_name);
-		}
-
-		~autolog()
-		{
-			log_error()->print("{} finish", m_name);
-		}
-	};
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	void nsp_server<ENUMDB, TDerived, T>::init(ndb_modular<ENUMDB, T, TDerived>* adbmodule)
 	{
@@ -43,16 +27,13 @@ namespace ngl
 		actor::register_actor_s<TDerived, np_channel_register<T>>(
 			[](TDerived* aactor, const message<np_channel_register<T>>& adata)
 			{
-				autolog llog("np_channel_register");
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
-				log_error()->print("np_channel_register finish");
 			}, true);
 
 		// # 订阅数据被修改
 		actor::register_actor_s<TDerived, np_channel_data<T>>(
 			[](TDerived* aactor, const message<np_channel_data<T>>& adata)
 			{
-				autolog llog("np_channel_data");
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
 			}, true);
 
@@ -60,7 +41,6 @@ namespace ngl
 		actor::register_actor_s<TDerived, np_channel_exit<T>>(
 			[](TDerived* aactor, const message<np_channel_exit<T>>& adata)
 			{
-				autolog llog("np_channel_exit");
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
 			}, true);
 	}

@@ -17,6 +17,12 @@
 
 namespace ngl
 {
+
+    enum
+    {
+        epb_mid = 1, // 必须为 proto 结构的主键
+    };
+
     void pb_field::copy(
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
@@ -28,6 +34,14 @@ namespace ngl
         const google::protobuf::Descriptor* dsrc = dst->GetDescriptor();
         const google::protobuf::Reflection* src_refl = src.GetReflection();
         const google::protobuf::Reflection* dst_refl = dst->GetReflection();
+
+        if (!fieldsrc.contains(epb_mid))
+        {// mid必须为epb_mid 且复制必须携带
+
+            const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(epb_mid);
+            const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(epb_mid);
+            copyfield(src, dst, src_refl, dst_refl, dst_field);
+        }
 
         for (auto [_fieldnumber, _fieldtype] : fieldsrc)
         {
@@ -41,6 +55,11 @@ namespace ngl
             {
                 continue;
             }
+            if (_fieldnumber == epb_mid && !fieldsrc.contains(epb_mid))
+            {
+                tools::no_core_dump();
+                continue;
+            }
             auto itor = fieldsrc.find(_fieldnumber);
             if (itor != fieldsrc.end() && fielddst.contains(_fieldnumber))
             {
@@ -52,7 +71,6 @@ namespace ngl
         }
     }
 
-    // # src必须是有全部字段
     void pb_field::copy(
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
@@ -64,24 +82,27 @@ namespace ngl
         const google::protobuf::Reflection* src_refl = src.GetReflection();
         const google::protobuf::Reflection* dst_refl = dst->GetReflection();
 
+        if (!fieldsrc.contains(epb_mid))
+        {// mid必须为epb_mid 且复制必须携带
+
+            const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(epb_mid);
+            const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(epb_mid);
+            copyfield(src, dst, src_refl, dst_refl, dst_field);
+        }
+
         for (auto [_fieldnumber, _fieldtype] : fieldsrc)
         {
-            // epb_field_write or epb_field_readwrite
-            if (fieldsrc.contains(_fieldnumber))
+            const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(_fieldnumber);
+            const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(_fieldnumber);
+            if (src_field == nullptr || dst_field == nullptr)
             {
-                const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(_fieldnumber);
-                const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(_fieldnumber);
-                if (src_field == nullptr || dst_field == nullptr)
-                {
-                    continue;
-                }
-                if (src_field->cpp_type() != dst_field->cpp_type())
-                {
-                    continue;
-                }
-
-                copyfield(src, dst, src_refl, dst_refl, dst_field);
+                continue;
             }
+            if (src_field->cpp_type() != dst_field->cpp_type())
+            {
+                continue;
+            }
+            copyfield(src, dst, src_refl, dst_refl, dst_field);
         }
     }
 
