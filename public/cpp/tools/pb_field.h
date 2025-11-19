@@ -105,7 +105,6 @@ namespace ngl
         }
 
     private:
-       
         template <typename T>
         static void all_field_number(const  std::function<void(i32_fieldnumber, const std::string&)>& afieldfun)
         {

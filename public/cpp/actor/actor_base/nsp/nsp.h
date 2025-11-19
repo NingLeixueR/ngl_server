@@ -134,7 +134,6 @@ namespace ngl
 			return true;
 		}
 
-		// # asource应该拥有全部数据 应该是nsp_server--np_channel_data<T>-->nsp_client(write/read)
 		template <typename T>
 		bool field_copy(i16_actortype atype, const T& asource, T& atarget)
 		{
