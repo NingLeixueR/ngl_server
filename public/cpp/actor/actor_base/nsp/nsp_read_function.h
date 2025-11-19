@@ -167,7 +167,7 @@ namespace ngl
 		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;
-		i16_actortype ltypesource = nguid::type(aactor->id_guid());
+		i16_actortype ltypesource = nguid::type(recv->m_actorid);
 		i16_actortype ltypetarget = nguid::type(m_actor->id_guid());
 		for (const auto& apair : recv->m_data)
 		{
@@ -175,7 +175,7 @@ namespace ngl
 			{
 				if (lfirstsynchronize)
 				{
-					m_operator_field.field_copy(ltypesource, apair.second, m_data[apair.first]);
+					m_operator_field.field_copy(ltypetarget, apair.second, m_data[apair.first]);
 				}
 				else
 				{
