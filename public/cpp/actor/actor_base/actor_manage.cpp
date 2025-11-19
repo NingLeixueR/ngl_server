@@ -316,14 +316,17 @@ namespace ngl
 				nosafe_push_task_id(value, apram);
 			}
 		}
-		// 2.然后发给actor_client，发给其他服务器
-		nguid lguid = nodetypebyguid();
-		ptractor* lpptractor = tools::findmap(m_actorbyid, lguid);
-		if (lpptractor == nullptr)
+		if (apram.m_issend)
 		{
-			return;
+			// 2.然后发给actor_client，发给其他服务器
+			nguid lguid = nodetypebyguid();
+			ptractor* lpptractor = tools::findmap(m_actorbyid, lguid);
+			if (lpptractor == nullptr)
+			{
+				return;
+			}
+			nosafe_push_task_id(*lpptractor, apram);
 		}
-		nosafe_push_task_id(*lpptractor, apram);
 		ngl_post;
 	}
 

@@ -57,15 +57,65 @@ namespace ngl
 	// 对"数据字段"进行封装
 	class operator_field
 	{
+		bool m_nspserver = false;// 只有nep server设置时不检查"因为同一字段设置读/写，写优先于读，进行读覆盖写的检测"
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>> m_node_fieldnumbers;
 	public:
+		void init(bool anspserver);
 
 		void set_field(i16_actortype atype, const std::map<i32_fieldnumber, epb_field>& anode_fieldnumbers);
 		// # 设置
 		void set_field(const std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& anode_fieldnumbers);
 
 		// # 添加
+	private:
+		void nspser_add_field(std::map<i32_fieldnumber, epb_field>& afieldmap, i32_fieldnumber afieldnumber, epb_field afieldtype);
+		void nspcli_add_field(std::map<i32_fieldnumber, epb_field>& afieldmap, i32_fieldnumber afieldnumber, epb_field afieldtype);
+	public:
 		void add_field(i16_actortype atype, i32_fieldnumber afieldnumber, epb_field afieldtype);
+	
+		template <typename T>
+		void add_field(i16_actortype atype, epb_field afieldtype, const std::set<i32_fieldnumber>& afield)
+		{
+			if (afieldtype == epb_field_read && afield.empty())
+			{//当[awritefieldnumbers]为空,则认为其读全部字段
+				std::set<i32_fieldnumber> lreadfield;
+				pb_field::all_field_number<T>(lreadfield);
+				for (i32_fieldnumber field : lreadfield)
+				{
+					add_field(atype, field, afieldtype);
+				}
+			}
+			else
+			{
+				if (afield.empty())
+				{//afieldtype == epb_field_write 不允许[afield]为空
+					tools::no_core_dump();
+				}
+				for (i32_fieldnumber field : afield)
+				{
+					add_field(atype, field, afieldtype);
+				}
+			}
+		}
+
+		template <typename T>
+		void add_field(i16_actortype atype, const std::set<i32_fieldnumber>& areadfield, const std::set<i32_fieldnumber>& awritefield)
+		{
+			std::set<i32_fieldnumber> lreadfield;
+			if (areadfield.empty())
+			{//当[awritefieldnumbers]为空,则认为其读全部字段
+				pb_field::all_field_number<T>(lreadfield);
+			}
+
+			for (i32_fieldnumber field : awritefield)
+			{
+				add_field(atype, field, epb_field_write);
+			}
+			for (i32_fieldnumber field : (lreadfield.empty() ? areadfield : lreadfield))
+			{
+				add_field(atype, field, epb_field_read);
+			}
+		}
 
 		// # 根据类型获取
 		std::map<i32_fieldnumber, epb_field>* get_field(i16_actortype atype);
@@ -74,7 +124,7 @@ namespace ngl
 		template <typename T>
 		bool field_copy(i16_actortype atypesource, i16_actortype atypetarget, const T& asource, T& atarget)
 		{
-			std::map<i32_fieldnumber, epb_field>* lpsource =  get_field(atypesource);
+			std::map<i32_fieldnumber, epb_field>* lpsource = get_field(atypesource);
 			std::map<i32_fieldnumber, epb_field>* lptarget = get_field(atypetarget);
 			if (lpsource == nullptr || lptarget == nullptr)
 			{
@@ -84,6 +134,7 @@ namespace ngl
 			return true;
 		}
 
+		// # asource应该拥有全部数据 应该是nsp_server--np_channel_data<T>-->nsp_client(write/read)
 		template <typename T>
 		bool field_copy(i16_actortype atype, const T& asource, T& atarget)
 		{
@@ -92,7 +143,7 @@ namespace ngl
 			{
 				return false;
 			}
-			pb_field::copy(asource, &atarget, *lp, *lp);
+			pb_field::copy(asource, &atarget, *lp);
 			return true;
 		}
 

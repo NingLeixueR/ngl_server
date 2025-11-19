@@ -17,20 +17,6 @@
 
 namespace ngl
 {
-    //for (int i = 0; i < desc->field_count(); ++i) {
-    //    const google::protobuf::FieldDescriptor* field_desc = desc->field(i);
-    //    if (field_desc == nullptr) continue;
-
-    //    // 获取字段号和字段名
-    //    int field_number = field_desc->number();
-    //    std::string field_name = field_desc->name();
-
-    //    std::cout << "Field " << i + 1 << ": name = " << field_name
-    //        << ", number = " << field_number << std::endl;
-    //}
-
-
-
     void pb_field::copy(
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
@@ -39,33 +25,64 @@ namespace ngl
     )
     {
         const google::protobuf::Descriptor* desc = src.GetDescriptor();
+        const google::protobuf::Descriptor* dsrc = dst->GetDescriptor();
         const google::protobuf::Reflection* src_refl = src.GetReflection();
         const google::protobuf::Reflection* dst_refl = dst->GetReflection();
 
         for (auto [_fieldnumber, _fieldtype] : fieldsrc)
         {
-            if (_fieldtype != epb_field_read)
-            {// epb_field_write or epb_field_readwrite
-                if (fielddst.contains(_fieldnumber))
-                {
-                    const google::protobuf::FieldDescriptor* field = desc->field(_fieldnumber);
-                    if (field == nullptr)
-                    {
-                        continue;
-                    }
-                    copyfield(src, dst, src_refl, dst_refl, field);
-                }                
+            const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(_fieldnumber);
+            const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(_fieldnumber);
+            if (src_field == nullptr || dst_field == nullptr)
+            {
+                continue;
             }
+            if (src_field->cpp_type() != dst_field->cpp_type()) 
+            {
+                continue;
+            }
+            auto itor = fieldsrc.find(_fieldnumber);
+            if (itor != fieldsrc.end() && fielddst.contains(_fieldnumber))
+            {
+                if (itor->second == epb_field_write)
+                {
+                    copyfield(src, dst, src_refl, dst_refl, dst_field);
+                }
+            }           
         }
     }
 
+    // # src必须是有全部字段
     void pb_field::copy(
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
         , const std::map<i32_fieldnumber, epb_field>& fieldsrc
     )
     {
-        copy(src, dst, fieldsrc, fieldsrc);
+        const google::protobuf::Descriptor* desc = src.GetDescriptor();
+        const google::protobuf::Descriptor* dsrc = dst->GetDescriptor();
+        const google::protobuf::Reflection* src_refl = src.GetReflection();
+        const google::protobuf::Reflection* dst_refl = dst->GetReflection();
+
+        for (auto [_fieldnumber, _fieldtype] : fieldsrc)
+        {
+            // epb_field_write or epb_field_readwrite
+            if (fieldsrc.contains(_fieldnumber))
+            {
+                const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(_fieldnumber);
+                const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(_fieldnumber);
+                if (src_field == nullptr || dst_field == nullptr)
+                {
+                    continue;
+                }
+                if (src_field->cpp_type() != dst_field->cpp_type())
+                {
+                    continue;
+                }
+
+                copyfield(src, dst, src_refl, dst_refl, dst_field);
+            }
+        }
     }
 
 

@@ -16,24 +16,43 @@
 
 namespace ngl
 {
+
+	class autolog
+	{
+		std::string m_name;
+	public:
+		autolog(const char* aname):
+			m_name(aname)
+		{
+			log_error()->print("{} start", m_name);
+		}
+
+		~autolog()
+		{
+			log_error()->print("{} finish", m_name);
+		}
+	};
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	void nsp_server<ENUMDB, TDerived, T>::init(ndb_modular<ENUMDB, T, TDerived>* adbmodule)
 	{
 		m_dbmodule = adbmodule;
-
+		m_operator_field.init(false);
 		ttab_servers::instance().get_arealist_nonrepet(nconfig::m_tid, m_areaset);
 
 		// # 订阅注册处理
 		actor::register_actor_s<TDerived, np_channel_register<T>>(
 			[](TDerived* aactor, const message<np_channel_register<T>>& adata)
 			{
+				autolog llog("np_channel_register");
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
+				log_error()->print("np_channel_register finish");
 			}, true);
 
 		// # 订阅数据被修改
 		actor::register_actor_s<TDerived, np_channel_data<T>>(
 			[](TDerived* aactor, const message<np_channel_data<T>>& adata)
 			{
+				autolog llog("np_channel_data");
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
 			}, true);
 
@@ -41,6 +60,7 @@ namespace ngl
 		actor::register_actor_s<TDerived, np_channel_exit<T>>(
 			[](TDerived* aactor, const message<np_channel_exit<T>>& adata)
 			{
+				autolog llog("np_channel_exit");
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
 			}, true);
 	}
@@ -142,13 +162,11 @@ namespace ngl
 			pro->m_readpart = recv->m_readids;
 			pro->m_writepart = recv->m_writeids;
 		}
-		pro->m_writefield = recv->m_writefield;
-		pro->m_readfield = recv->m_readfield;
+		pro->m_field = recv->m_field;
 
 		std::set<i64_nodeid> lnodes;
-		lnodes.insert(m_nodereadalls.begin(), m_nodereadalls.end());
-		lnodes.insert(m_nodewritealls.begin(), m_nodereadalls.end());
-		lnodes.insert(m_nodepart.begin(), m_nodereadalls.end());
+		std::ranges::for_each(m_nodereadalls, [&lnodes](i64_nodeid aid) { lnodes.insert(aid); });
+		std::ranges::for_each(m_nodewritealls, [&lnodes](i64_nodeid aid) { lnodes.insert(aid); });
 		actor::send_actor(lnodes, nguid::make(), pro);
 	}
 
@@ -196,15 +214,7 @@ namespace ngl
 			}
 		}
 		
-		for (i32_fieldnumber fieldnumber : recv->m_readfield)
-		{
-			m_operator_field.add_field(ltype, fieldnumber, epb_field_read);
-		}
-
-		for (i32_fieldnumber fieldnumber : recv->m_writefield)
-		{
-			m_operator_field.add_field(ltype, fieldnumber, epb_field_write);
-		}
+		m_operator_field.set_field(ltype, recv->m_field);
 
 		m_nodepart.insert(lactorid);
 
