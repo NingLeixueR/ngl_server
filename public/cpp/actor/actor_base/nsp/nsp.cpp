@@ -11,6 +11,7 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+#include "pb_field.h"
 #include "nsp.h"
 
 namespace ngl
@@ -111,6 +112,11 @@ namespace ngl
 		}
 	}
 
+	void operator_field::init(bool anspserver)
+	{
+		m_nspserver = anspserver;
+	}
+
 	void operator_field::set_field(i16_actortype atype, const std::map<i32_fieldnumber, epb_field>& anode_fieldnumbers)
 	{
 		if (m_node_fieldnumbers.contains(atype))
@@ -118,7 +124,6 @@ namespace ngl
 			std::map<i32_fieldnumber, epb_field>& lmap = m_node_fieldnumbers[atype];
 			for (const auto& [_fieldnumber, _fieldtype] : anode_fieldnumbers)
 			{
-
 				auto itor = lmap.find(_fieldnumber);
 				if (itor != lmap.end())
 				{
@@ -148,14 +153,42 @@ namespace ngl
 			});
 	}
 
+	void operator_field::nspser_add_field(std::map<i32_fieldnumber, epb_field>& afieldmap, i32_fieldnumber afieldnumber, epb_field afieldtype)
+	{
+		if (!afieldmap.empty() && afieldmap.contains(afieldnumber))
+		{
+			auto itor = afieldmap.find(afieldnumber);
+			if (itor != afieldmap.end() && itor->second == afieldtype)
+			{
+				tools::no_core_dump();
+			}
+		}
+		afieldmap[afieldnumber] = afieldtype;
+	}
+
+	void operator_field::nspcli_add_field(std::map<i32_fieldnumber, epb_field>& afieldmap, i32_fieldnumber afieldnumber, epb_field afieldtype)
+	{
+		if (!afieldmap.empty() && afieldmap.contains(afieldnumber))
+		{
+			auto itor = afieldmap.find(afieldnumber);
+			if (itor != afieldmap.end() && itor->second == epb_field_write)
+			{
+				return;
+			}
+		}
+		afieldmap[afieldnumber] = afieldtype;
+	}
+
 	void operator_field::add_field(i16_actortype atype, i32_fieldnumber afieldnumber, epb_field afieldtype)
 	{
-		auto& lmap = m_node_fieldnumbers[atype];
-		if (!lmap.empty() && lmap.contains(afieldnumber) && lmap[afieldnumber] == afieldtype)
+		if (m_nspserver)
 		{
-			tools::no_core_dump();
+			nspser_add_field(m_node_fieldnumbers[atype], afieldnumber, afieldtype);
 		}
-		m_node_fieldnumbers[atype][afieldnumber] = afieldtype;
+		else
+		{
+			nspcli_add_field(m_node_fieldnumbers[atype], afieldnumber, afieldtype);
+		}
 	}
 
 	std::map<i32_fieldnumber, epb_field>* operator_field::get_field(i16_actortype atype)

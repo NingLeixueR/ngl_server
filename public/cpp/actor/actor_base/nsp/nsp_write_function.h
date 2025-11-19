@@ -34,25 +34,14 @@ namespace ngl
 		lpwrite->m_actor = aactor;
 		nsp_instance<nsp_write<TDerived, TACTOR, T>>::init(aactor->id_guid(), lpwrite);
 
+		lpwrite->m_operator_field.init(false);
 		lpwrite->m_care.init(false);
-		std::set<i32_fieldnumber> lreadfield;
-		if (areadfieldnumbers.empty())
-		{//当[awritefieldnumbers]为空,则认为其读全部字段
-			pb_field::all_field_number<T>(lreadfield);
-		}
-		for (i32_fieldnumber fieldnumber : (lreadfield.empty()? areadfieldnumbers: lreadfield))
-		{
-			lpwrite->m_operator_field.add_field(nguid::type(aactor->id_guid()), fieldnumber, epb_field_read);
-		}
-
-		if (awritefieldnumbers.empty())
-		{//不允许[awritefieldnumbers]为空
-			tools::no_core_dump();
-		}
-		for (i32_fieldnumber fieldnumber : awritefieldnumbers)
-		{
-			lpwrite->m_operator_field.add_field(nguid::type(aactor->id_guid()), fieldnumber, epb_field_write);
-		}
+		
+		lpwrite->m_operator_field.add_field<T>(
+			nguid::type(aactor->id_guid())
+			, areadfieldnumbers
+			, awritefieldnumbers
+		);
 
 		lpwrite->init();
 		return *lpwrite;
@@ -70,24 +59,27 @@ namespace ngl
 		auto lpwrite = std::make_shared<nsp_write<TDerived, TACTOR, T>>();
 		lpwrite->m_actor = aactor;
 		nsp_instance<nsp_write<TDerived, TACTOR, T>>::init(aactor->id_guid(), lpwrite);
-		lpwrite->m_care.init(areadids, awriteids);
-		std::set<i32_fieldnumber> lreadfield;
-		if (areadfieldnumbers.empty())
-		{//当[awritefieldnumbers]为空,则认为其读全部字段
-			pb_field::all_field_number<T>(lreadfield);
-		}
-		for (i32_fieldnumber fieldnumber : (lreadfield.empty() ? areadfieldnumbers : lreadfield))
-		{
-			lpwrite->m_operator_field.add_field(nguid::type(aactor->id_guid()), fieldnumber, epb_field_read);
-		}
-		if (awritefieldnumbers.empty())
-		{//不允许[awritefieldnumbers]为空
-			tools::no_core_dump();
-		}
-		for (i64_actorid dataid : awritefieldnumbers)
-		{
-			lpwrite->m_operator_field.add_field(nguid::type(aactor->id_guid()), dataid, epb_field_write);
-		}
+
+		lpwrite->m_operator_field.init(false);
+
+		std::set<i64_actorid> lreadids;
+		std::ranges::for_each(areadids, [&lreadids](i64_actorid areadid)
+			{
+					lreadids.insert(nsp_write<TDerived, TACTOR, T>::to_actorid(areadid));
+			});
+		std::set<i64_actorid> lwriteids;
+		std::ranges::for_each(awriteids, [&lwriteids](i64_actorid areadid)
+			{
+				lwriteids.insert(nsp_write<TDerived, TACTOR, T>::to_actorid(areadid));
+			});
+
+		lpwrite->m_care.init(lreadids, lwriteids);
+		
+		lpwrite->m_operator_field.add_field<T>(
+			nguid::type(aactor->id_guid())
+			, areadfieldnumbers
+			, awritefieldnumbers
+		);
 
 		lpwrite->init();
 		log_error_net()->print("nsp_read::instance_readpart( actor({}) : {} : {})", nguid(aactor->id_guid()), areadids,  awriteids);
@@ -337,17 +329,7 @@ namespace ngl
 			tools::no_core_dump();
 			return;
 		}
-		for (const auto [_fieldnumber, _efield] : *lmapfieldtype)
-		{
-			if (_efield == epb_field_read)
-			{
-				pro->m_readfield.insert(_fieldnumber);
-			}
-			else
-			{
-				pro->m_writefield.insert(_fieldnumber);
-			}
-		}
+		pro->m_field = *lmapfieldtype;
 
 		i64_actorid lnspserid = m_regload.nspserid(recv->m_area);
 		log_error()->print(
@@ -388,14 +370,7 @@ namespace ngl
 		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
 	
 		i16_actortype ltype = nguid::type(recv->m_actorid);
-		for (i32_fieldnumber fieldnumber : recv->m_readfield)
-		{
-			m_operator_field.add_field(ltype, fieldnumber, epb_field_read);
-		}
-		for (i32_fieldnumber fieldnumber : recv->m_writefield)
-		{
-			m_operator_field.add_field(ltype, fieldnumber, epb_field_write);
-		}
+		m_operator_field.set_field(ltype, recv->m_field);
 
 		if (recv->m_read)
 		{

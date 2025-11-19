@@ -107,8 +107,8 @@ namespace ngl
 					auto pro = std::make_shared<np_channel_data<T>>();
 					pro->m_actorid = m_actor->id_guid();
 					std::set<i64_nodeid> lnodes;
-					lnodes.insert(m_nodereadalls.begin(), m_nodereadalls.end());
-					lnodes.insert(m_nodewritealls.begin(), m_nodewritealls.end());
+					std::ranges::for_each(m_nodereadalls, [&lnodes](i64_nodeid aid) { lnodes.insert(aid); });
+					std::ranges::for_each(m_nodewritealls, [&lnodes](i64_nodeid aid) { lnodes.insert(aid); });
 					m_regload.foreach_nspser([&lnodes](i16_area, i64_actorid aactorid)
 						{
 							lnodes.insert(aactorid);

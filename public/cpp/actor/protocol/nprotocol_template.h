@@ -323,6 +323,12 @@ namespace ngl
 		dprotocol(np_actorswitch_process, m_actor, m_serverid, m_toserverid, m_pram);
 	};
 
+	enum epb_field
+	{
+		epb_field_read,		    // 读
+		epb_field_write,	    // 写(既然可写必定也可读)
+	};
+
 	// 注册
 	template <typename TDATA>
 	struct np_channel_register
@@ -337,17 +343,12 @@ namespace ngl
 		std::set<i64_actorid> m_writeids;						// 写哪些数据
 		std::set<i64_actorid> m_readids;						// 写哪些数据
 		//]]
-		std::set<int32_t> m_writefield;					// 可修改哪些字段编号
-		std::set<int32_t> m_readfield;					// 可读哪些字段编号
 
-		dprotocol(np_channel_register, m_msg, m_actorid, m_read, m_all, m_writeids, m_readids, m_writefield, m_readfield)
+		std::map<i32_fieldnumber, epb_field> m_field;			// 可修改/可读哪些字段编号
+
+		dprotocol(np_channel_register, m_msg, m_actorid, m_read, m_all, m_writeids, m_readids, m_field)
 	};
 
-	enum epb_field
-	{
-		epb_field_read,		    // 读
-		epb_field_write,	    // 写(既然可写必定也可读)
-	};
 
 	struct nsp_care
 	{
@@ -396,10 +397,9 @@ namespace ngl
 		std::set<i64_dataid> m_writepart;
 		//}
 
-		std::set<i32_fieldnumber> m_readfield;
-		std::set<i32_fieldnumber> m_writefield;
+		std::map<i32_fieldnumber, epb_field> m_field;			// 可修改/可读哪些字段编号
 
-		dprotocol(np_channel_dataid_sync, m_msg, m_actorid, m_read, m_all, m_readpart, m_writepart, m_readfield, m_writefield)
+		dprotocol(np_channel_dataid_sync, m_msg, m_actorid, m_read, m_all, m_readpart, m_writepart, m_field)
 	};
 
 

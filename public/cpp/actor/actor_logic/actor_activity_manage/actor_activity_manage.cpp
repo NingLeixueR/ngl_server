@@ -75,15 +75,15 @@ namespace ngl
 		pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mactivityvalues");
 		tdb_brief::nsp_cwrite<actor_activity_manage>::instance_writeall(this, {}, lfieldset);
 
-		//tdb_keyvalue::nsp_cread<actor_activity_manage>::instance_readall(this, {});
+		tdb_keyvalue::nsp_cread<actor_activity_manage>::instance_readall(this, {});
 
-		//tdb_activitytimes::nsp_ser::init(&m_activitytimedb);
+		tdb_activitytimes::nsp_ser::init(&m_activitytimedb);
 
-		//m_drop.init(this, {});
+		m_drop.init(this, {});
 
 		// µÈ´ý actor_ranklist loaddb_finish
-		//wait_ready(actor_ranklist::actorid());
-		return;
+		wait_ready(actor_ranklist::actorid());
+
 		actor_events_logic::tfun::func(
 			actorid()
 			, eevents_logic_rolelogin

@@ -366,22 +366,22 @@ bool start_world()
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
 	}
 
-	//ngl::actor_events_logic::instance();
-	//ngl::actor_gm::instance();
-	//ngl::actor_mail::instance();
-	//ngl::actor_chat::instance();
+	ngl::actor_events_logic::instance();
+	ngl::actor_gm::instance();
+	ngl::actor_mail::instance();
+	ngl::actor_chat::instance();
 	ngl::actor_brief::instance();
-	//ngl::actor_notice::instance();
-	//ngl::actor_keyvalue::instance();
-	//ngl::actor_ranklist::instance();
+	ngl::actor_notice::instance();
+	ngl::actor_keyvalue::instance();
+	ngl::actor_ranklist::instance();
 	ngl::actor_activity_manage::instance();
-	//ngl::actor_family::instance();
-	//ngl::actor_friends::instance();
-	//ngl::actor_gmclient::instance();
-	//ngl::actor_example_match::instance();
-	//ngl::actor_example_manage::instance();
-	//ngl::actor_testlua::instance();
-	//ngl::actor_testlua2::instance();
+	ngl::actor_family::instance();
+	ngl::actor_friends::instance();
+	ngl::actor_gmclient::instance();
+	ngl::actor_example_match::instance();
+	ngl::actor_example_manage::instance();
+	ngl::actor_testlua::instance();
+	ngl::actor_testlua2::instance();
 
 	ngl::actor_client::instance().actor_server_register();
 	return true;
