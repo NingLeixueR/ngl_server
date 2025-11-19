@@ -197,24 +197,24 @@ namespace ngl
 
 	void actor_base::start_broadcast()
 	{
-		//wheel_parm lparm
-		//{
-		//	.m_ms = m_broadcast,
-		//	.m_intervalms = [](int64_t)
-		//	{
-		//		return actor_base::m_broadcast;
-		//	} ,
-		//	.m_count = 0x7fffffff,
-		//	.m_fun = [](const wheel_node*)
-		//	{
-		//		auto pro = std::make_shared<np_actor_broadcast>();
-		//		handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(
-		//			nguid::make(), nguid::make(), pro
-		//		);
-		//		actor_manage::instance().broadcast_task(lpram);
-		//	}
-		//};
-		//m_broadcasttimer = (int32_t)twheel::wheel().addtimer(lparm);
+		wheel_parm lparm
+		{
+			.m_ms = m_broadcast,
+			.m_intervalms = [](int64_t)
+			{
+				return actor_base::m_broadcast;
+			} ,
+			.m_count = 0x7fffffff,
+			.m_fun = [](const wheel_node*)
+			{
+				auto pro = std::make_shared<np_actor_broadcast>();
+				handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(
+					nguid::make(), nguid::make(), pro
+				);
+				actor_manage::instance().broadcast_task(lpram);
+			}
+		};
+		m_broadcasttimer = (int32_t)twheel::wheel().addtimer(lparm);
 	}
 
 	int32_t actor_base::set_timer(const np_timerparm& aparm)
