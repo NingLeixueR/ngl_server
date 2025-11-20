@@ -279,7 +279,7 @@ namespace ngl
 			m_attribute.topb(*pro);
 			send_client(id_guid(), pro);
 		}	
-		tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).change();
+		tdb_brief::nsp_cwrite<actor_role>::change(id_guid());
 	}
 
 	i64_actorid actor_role::roleid()

@@ -66,7 +66,7 @@ namespace ngl
 
 	void actor_activity_manage::handle_after(handle_pram&)
 	{
-		tdb_brief::nsp_cwrite<actor_activity_manage>::instance(id_guid()).change();
+		tdb_brief::nsp_cwrite<actor_activity_manage>::change(id_guid());
 	}
 
 	void actor_activity_manage::loaddb_finish(bool adbishave)

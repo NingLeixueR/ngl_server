@@ -24,6 +24,16 @@ namespace ngl
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
+	void nsp_write<TDerived, TACTOR, T>::change(i64_actorid aactorid)
+	{
+		auto lp = nsp_instance<nsp_write<TDerived, TACTOR, T>>::nclient(aactorid);
+		if (lp != nullptr)
+		{
+			lp->change();
+		}
+	}
+
+	template <typename TDerived, typename TACTOR, typename T>
 	nsp_write<TDerived, TACTOR, T>& nsp_write<TDerived, TACTOR, T>::instance_writeall(
 		TDerived* aactor
 		, const std::set<i32_fieldnumber>& areadfieldnumbers
