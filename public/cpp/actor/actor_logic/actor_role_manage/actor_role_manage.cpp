@@ -84,7 +84,7 @@ namespace ngl
 
 	void actor_role_manage::handle_after(handle_pram&)
 	{
-		tdb_keyvalue::nsp_cwrite<actor_role_manage>::instance(id_guid()).change();
+		tdb_brief::nsp_cwrite<actor_role_manage>::change(id_guid());
 	}
 
 	void actor_role_manage::erase_actor_before()

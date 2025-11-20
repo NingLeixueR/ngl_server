@@ -117,6 +117,7 @@ namespace ngl
 
 		// # 消息结束调用
 		void change();
+		static void change(i64_actorid aactorid);
 
 		// # 数据同步处理
 		void handle(TDerived* aactor, const message<np_channel_data<T>>& adata);
