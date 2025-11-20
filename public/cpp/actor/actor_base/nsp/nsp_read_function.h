@@ -32,7 +32,7 @@ namespace ngl
 		lpread->m_operator_field.init(false);
 		lpread->m_care.init(true);
 		
-		lpread->m_operator_field.add_field<T>(nguid::type(aactor->id_guid()), epb_field_read, afieldnumbers);
+		lpread->m_operator_field.template add_field<T>(nguid::type(aactor->id_guid()), epb_field_read, afieldnumbers);
 
 		lpread->init();
 		log_error_net()->print("nsp_read::instance_readall( actor({}) )", nguid(aactor->id_guid()));

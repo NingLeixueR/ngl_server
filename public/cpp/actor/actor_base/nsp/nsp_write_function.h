@@ -37,7 +37,7 @@ namespace ngl
 		lpwrite->m_operator_field.init(false);
 		lpwrite->m_care.init(false);
 		
-		lpwrite->m_operator_field.add_field<T>(
+		lpwrite->m_operator_field.template add_field<T>(
 			nguid::type(aactor->id_guid())
 			, areadfieldnumbers
 			, awritefieldnumbers
