@@ -197,13 +197,16 @@ namespace ngl
 		static std::map<i64_actorid, std::shared_ptr<T>>	m_instance;
 		static std::mutex									m_mutex;
 	public:
-		static T* nclient(i64_actorid aactorid)
+		static T* nclient(i64_actorid aactorid, bool adump)
 		{
 			monopoly_lock(m_mutex);
 			auto itor = m_instance.find(aactorid);
 			if (itor == m_instance.end())
 			{
-				tools::no_core_dump();
+				if (adump)
+				{
+					tools::no_core_dump();
+				}
 				return nullptr;
 			}
 			return itor->second.get();

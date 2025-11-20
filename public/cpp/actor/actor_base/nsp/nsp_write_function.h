@@ -20,13 +20,13 @@ namespace ngl
 	template <typename TDerived, typename TACTOR, typename T>
 	nsp_write<TDerived, TACTOR, T>& nsp_write<TDerived, TACTOR, T>::instance(i64_actorid aactorid)
 	{
-		return *nsp_instance<nsp_write<TDerived, TACTOR, T>>::nclient(aactorid);
+		return *nsp_instance<nsp_write<TDerived, TACTOR, T>>::nclient(aactorid, true);
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
 	void nsp_write<TDerived, TACTOR, T>::change(i64_actorid aactorid)
 	{
-		auto lp = nsp_instance<nsp_write<TDerived, TACTOR, T>>::nclient(aactorid);
+		auto lp = nsp_instance<nsp_write<TDerived, TACTOR, T>>::nclient(aactorid, false);
 		if (lp != nullptr)
 		{
 			lp->change();

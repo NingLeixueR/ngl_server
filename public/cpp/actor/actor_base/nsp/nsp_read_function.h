@@ -19,7 +19,7 @@ namespace ngl
 	template <typename TDerived, typename TACTOR, typename T>
 	nsp_read<TDerived, TACTOR, T>& nsp_read<TDerived, TACTOR, T>::instance(i64_actorid aactorid)
 	{
-		return *nsp_instance<nsp_read<TDerived, TACTOR, T>>::nclient(aactorid);
+		return *nsp_instance<nsp_read<TDerived, TACTOR, T>>::nclient(aactorid, true);
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
