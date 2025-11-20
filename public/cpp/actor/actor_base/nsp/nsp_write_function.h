@@ -421,9 +421,7 @@ namespace ngl
 		pro->m_field = *lmapfieldtype;
 
 		i64_actorid lnspserid = m_regload.nspserid(recv->m_area);
-		log_error()->print(
-			"nsp_write register: {} -> {}", nguid(pro->m_actorid), nguid(lnspserid)
-		);
+		log_error()->print("nsp_write register: {} -> {}", nguid(pro->m_actorid), nguid(lnspserid));
 		nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 		actor::send_actor(lnspserid, nguid::make(), pro);
 	}
