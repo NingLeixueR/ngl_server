@@ -34,19 +34,18 @@ namespace ngl
 		nsp_callback<T>													m_call;
 
 		// # 负责管理向[nsp server]注册本结点的状态与管理数据加载状态
-		nsp_regload m_regload;
+		nsp_regload														m_regload;
 
 		// # 本结点关注"哪些数据"
-		care_data m_care;
+		care_data														m_care;
 
 		// # "哪些结点"关注"哪些数据字段"
-		operator_field m_operator_field;
+		operator_field													m_operator_field;
 
 		// # 其他结点/当本结点exit()时需要通知哪些结点(1、所有nsp_server结点。2、所有nsp_write结点)
-		std::set<i64_actorid> m_exit;
+		std::set<i64_actorid>											m_exit;
 
 		std::map<i64_actorid, T>										m_data;
-
 	public:
 		// # 获取单例
 		static nsp_read<TDerived, TACTOR, T>& instance(i64_actorid aactorid);
@@ -57,7 +56,7 @@ namespace ngl
 		// # [读部分数据]首充获取单例-需创建并初始化
 		static nsp_read<TDerived, TACTOR, T>& instance_readpart(TDerived* aactor, const std::set<i32_fieldnumber>& afieldnumbers, const std::set<i64_actorid>& aids);
 
-		// # 替换数据guid的[actor type]
+		// # 替换数据guid的[actor_type]
 		static i64_actorid to_actorid(i64_actorid adataid);
 
 		// # 设置数据发生变化的回调

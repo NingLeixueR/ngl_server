@@ -107,7 +107,7 @@ namespace ngl
 			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<TDerived, np_channel_check<T>>();
 			// 处理注册回复
 			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<TDerived, np_channel_register_reply<T>>();
-			// 
+			// 接收结点信息
 			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<TDerived, np_channel_dataid_sync<T>>();
 		}
 		i64_actorid lactorid = m_actor->id_guid();
