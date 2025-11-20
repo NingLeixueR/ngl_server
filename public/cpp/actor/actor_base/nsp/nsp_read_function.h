@@ -175,11 +175,11 @@ namespace ngl
 			{
 				if (lfirstsynchronize)
 				{
-					m_operator_field.field_copy(ltypetarget, apair.second, m_data[apair.first]);
+					m_operator_field.field_copy(ltypetarget, apair.second, m_data[apair.first], true);
 				}
 				else
 				{
-					m_operator_field.field_copy(ltypesource, ltypetarget, apair.second, m_data[apair.first]);
+					m_operator_field.field_copy(ltypesource, ltypetarget, apair.second, m_data[apair.first], true);
 				}
 				m_call.changedatafun(apair.first, m_data[apair.first], lfirstsynchronize);
 			}
