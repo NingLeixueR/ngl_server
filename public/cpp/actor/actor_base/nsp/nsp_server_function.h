@@ -195,96 +195,11 @@ namespace ngl
 		}
 		
 		m_operator_field.set_field(ltype, recv->m_field);
-
 		m_nodepart.insert(lactorid);
 
 		channel_register_reply(lactorid);
 		channel_channel_data(lactorid, recv);
 		channel_dataid_sync(lactorid, recv);
-		//i64_actorid lnspserver = m_dbmodule->get_actor()->id_guid();
-		//
-		//{// 回复
-		//	auto pro = std::make_shared<np_channel_register_reply<T>>();
-		//	pro->m_actorid = lnspserver;
-		//	pro->m_nodereadalls = m_nodereadalls;
-		//	pro->m_nodewritealls = m_nodewritealls;
-		//	for (const auto& [_nodeid, _care] : m_care)
-		//	{
-		//		if (lactorid == _nodeid)
-		//		{
-		//			continue;
-		//		}
-		//		pro->m_care[_nodeid] = _care.get_core();
-		//	}
-		//	pro->m_node_fieldnumbers = m_operator_field.field_numbers();
-		//	actor::send_actor(lactorid, nguid::make(), pro);
-		//}
-		// 同步数据
-		/*{
-			std::function<std::shared_ptr<np_channel_data<T>>()> lmalloc = [lnspserver]()->std::shared_ptr<np_channel_data<T>>
-				{
-					auto pro = std::make_shared<np_channel_data<T>>();
-					pro->m_actorid = lnspserver;
-					pro->m_firstsynchronize = true;
-					return pro;
-				};
-			auto pro = lmalloc();
-
-			int32_t lindex = 0;
-			if (recv->m_all)
-			{
-				m_dbmodule->foreach([&pro,&lindex, &lmalloc, lactorid](const data_modified<T>& adata)
-					{
-						const T& ldata = *adata.getconst();
-						pro->m_data[ldata.mid()] = ldata;
-						++lindex;
-						if (lindex % esend_maxcount == 0)
-						{
-							actor::send_actor(lactorid, nguid::make(), pro);
-							pro = lmalloc();
-						}
-					});
-			}
-			else 
-			{
-				auto lfun = [&pro, &lindex, &lmalloc, lactorid](const std::set<i64_actorid>& aids)
-					{
-						for (i64_actorid id : aids)
-						{
-							data_modified<T>* lpmodifieddata = m_dbmodule->find(id);
-							if (lpmodifieddata == nullptr)
-							{
-								continue;
-							}
-							const T* lpdata = lpmodifieddata->getconst();
-							if (lpdata == nullptr)
-							{
-								continue;
-							}
-							pro->m_data[lpdata->mid()] = *lpdata;
-							++lindex;
-							if (lindex % esend_maxcount == 0)
-							{
-								actor::send_actor(lactorid, nguid::make(), pro);
-								pro = lmalloc();
-							}
-						}
-					};
-				
-				lfun(recv->m_readids);
-				lfun(recv->m_writeids);
-			}
-
-			if (lindex % esend_maxcount == 0)
-			{
-				pro = lmalloc();
-			}
-			pro->m_recvfinish = true;
-			actor::send_actor(lactorid, nguid::make(), pro);
-		}*/
-
-		// 通知其他结点，有新结点加入
-		
 	}
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
@@ -321,7 +236,7 @@ namespace ngl
 				return;
 			}
 			data_modified<T>& ldata = m_dbmodule->get(_dataid);
-			m_operator_field.field_copy(ltype, _data, *ldata.get());
+			m_operator_field.field_copy(ltype, _data, *ldata.get(), true);
 		}
 		for (i64_actorid dataid : recv->m_deldata)
 		{
