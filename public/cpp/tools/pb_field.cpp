@@ -43,6 +43,7 @@ namespace ngl
             if (src_field == nullptr || dst_field == nullptr)
             {
                 tools::no_core_dump();
+                return;
             }
             copyfield(src, dst, src_refl, dst_refl, dst_field);
         }
@@ -90,6 +91,7 @@ namespace ngl
             if (src_field == nullptr || dst_field == nullptr)
             {
                 tools::no_core_dump();
+                return;
             }
             copyfield(src, dst, src_refl, dst_refl, dst_field);
         }
