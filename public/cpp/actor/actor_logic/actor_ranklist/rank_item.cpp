@@ -18,7 +18,6 @@ namespace ngl
 {
 	const pbdb::db_brief* rank_item::get()const
 	{
-		static auto linstance = tdb_brief::nsp_cwrite<actor_role>::instance(actor_ranklist::actorid());
-		return linstance.getconst(m_actorid);
+		return tdb_brief::nsp_cwrite<actor_role>::instance(actor_ranklist::actorid()).getconst(m_actorid);
 	}
 }//namespace ngl
