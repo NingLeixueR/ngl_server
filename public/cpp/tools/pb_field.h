@@ -37,12 +37,14 @@ namespace ngl
             , google::protobuf::Message* dst
             , const std::map<i32_fieldnumber, epb_field>& fieldsrc
             , const std::map<i32_fieldnumber, epb_field>& fielddst
+            , bool amessage /* 是否是消息，消息强制复制mid */
         );
 
         static void copy(
             const google::protobuf::Message& src
             , google::protobuf::Message* dst
             , const std::map<i32_fieldnumber, epb_field>& fieldsrc
+            , bool amessage /* 是否是消息，消息强制复制mid */
         );
     private:
         // 复制单个字段（处理所有类型的字段：基础类型、repeated、消息类型等）

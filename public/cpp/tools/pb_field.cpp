@@ -28,6 +28,7 @@ namespace ngl
         , google::protobuf::Message* dst
         , const std::map<i32_fieldnumber, epb_field>& fieldsrc
         , const std::map<i32_fieldnumber, epb_field>& fielddst
+        , bool amessage /* 是否是消息，消息强制复制mid */
     )
     {
         const google::protobuf::Descriptor* desc = src.GetDescriptor();
@@ -35,12 +36,18 @@ namespace ngl
         const google::protobuf::Reflection* src_refl = src.GetReflection();
         const google::protobuf::Reflection* dst_refl = dst->GetReflection();
 
-        if (!fieldsrc.contains(epb_mid))
+        if (amessage)
         {// mid必须为epb_mid 且复制必须携带
-
-            const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(epb_mid);
-            const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(epb_mid);
-            copyfield(src, dst, src_refl, dst_refl, dst_field);
+            if (!fieldsrc.contains(epb_mid))
+            {
+                const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(epb_mid);
+                const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(epb_mid);
+                copyfield(src, dst, src_refl, dst_refl, dst_field);
+            }
+            else
+            {
+                tools::no_core_dump();
+            }
         }
 
         for (auto [_fieldnumber, _fieldtype] : fieldsrc)
@@ -55,11 +62,7 @@ namespace ngl
             {
                 continue;
             }
-            if (_fieldnumber == epb_mid && !fieldsrc.contains(epb_mid))
-            {
-                tools::no_core_dump();
-                continue;
-            }
+            
             auto itor = fieldsrc.find(_fieldnumber);
             if (itor != fieldsrc.end() && fielddst.contains(_fieldnumber))
             {
@@ -75,6 +78,7 @@ namespace ngl
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
         , const std::map<i32_fieldnumber, epb_field>& fieldsrc
+        , bool amessage /* 是否是消息，消息强制复制mid */
     )
     {
         const google::protobuf::Descriptor* desc = src.GetDescriptor();
@@ -82,12 +86,18 @@ namespace ngl
         const google::protobuf::Reflection* src_refl = src.GetReflection();
         const google::protobuf::Reflection* dst_refl = dst->GetReflection();
 
-        if (!fieldsrc.contains(epb_mid))
+        if (amessage)
         {// mid必须为epb_mid 且复制必须携带
-
-            const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(epb_mid);
-            const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(epb_mid);
-            copyfield(src, dst, src_refl, dst_refl, dst_field);
+            if (!fieldsrc.contains(epb_mid))
+            {
+                const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(epb_mid);
+                const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(epb_mid);
+                copyfield(src, dst, src_refl, dst_refl, dst_field);
+            }
+            else
+            {
+                tools::no_core_dump();
+            }
         }
 
         for (auto [_fieldnumber, _fieldtype] : fieldsrc)

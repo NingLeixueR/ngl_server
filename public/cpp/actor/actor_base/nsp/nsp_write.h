@@ -100,9 +100,7 @@ namespace ngl
 		{
 			if (!m_changeids.empty())
 			{
-
-				std::map<i32_fieldnumber, epb_field>* lpfield = m_operator_field.get_field(nguid::area(m_actor->id_guid()));
-
+				i16_actortype ltype = nguid::type(m_actor->id_guid());
 				{
 					auto pro = std::make_shared<np_channel_data<T>>();
 					pro->m_actorid = m_actor->id_guid();
@@ -121,7 +119,7 @@ namespace ngl
 						{
 							continue;
 						}
-						pb_field::copy(m_data[dataid], &pro->m_data[dataid], *lpfield);
+						m_operator_field.field_copy(ltype, m_data[dataid], pro->m_data[dataid], true);
 					}
 
 					for (i64_dataid dataid : m_delids)
@@ -141,7 +139,7 @@ namespace ngl
 						auto pro = std::make_shared<np_channel_data<T>>();
 						pro->m_firstsynchronize = false;
 						pro->m_recvfinish = true;
-						pb_field::copy(m_data[dataid], &pro->m_data[dataid], *lpfield);
+						m_operator_field.field_copy(ltype, m_data[dataid], pro->m_data[dataid], true);
 						for (const auto& [_nodeid, _caredata] : m_othercare)
 						{
 							if (_caredata.is_care(dataid))
