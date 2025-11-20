@@ -234,7 +234,7 @@ namespace ngl
 		{
 			actor::register_actor_s<TDerived, TMESSAGE>([](TDerived* aacotor, const message<TMESSAGE>& adata)
 				{
-					T* lpclass = nclient(aacotor->id_guid());
+					T* lpclass = nclient(aacotor->id_guid(), true);
 					if (lpclass != nullptr)
 					{
 						lpclass->handle(aacotor, adata);
