@@ -131,6 +131,19 @@ namespace ngl
 		m_drop.init(this, {});
 	}
 
+	void actor_role::handle_after(handle_pram&)
+	{
+		m_bag.sync_client();
+		if (m_attribute.sync())
+		{
+			m_attribute.set_sync(false);
+			auto pro = std::shared_ptr<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>();
+			m_attribute.topb(*pro);
+			send_client(id_guid(), pro);
+		}
+		tdb_brief::nsp_cwrite<actor_role>::change(id_guid());
+	}
+
 	void actor_role::login_finish()
 	{
 		log_error()->print("actor_role###login_finish#[{}]", guid());
@@ -267,19 +280,6 @@ namespace ngl
 				catch (...) {}
 			});
 		
-	}
-
-	void actor_role::handle_after(handle_pram&)
-	{
-		m_bag.sync_client();
-		if (m_attribute.sync())
-		{
-			m_attribute.set_sync(false);
-			auto pro = std::shared_ptr<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>();
-			m_attribute.topb(*pro);
-			send_client(id_guid(), pro);
-		}	
-		tdb_brief::nsp_cwrite<actor_role>::change(id_guid());
 	}
 
 	i64_actorid actor_role::roleid()
