@@ -29,24 +29,14 @@ namespace ngl
 
 	pbdb::db_brief* roleinfo::get_brief()
 	{
-		static tdb_brief::nsp_cwrite<actor_role>* lpdb = nsp_instance<tdb_brief::nsp_cwrite<actor_role>>::nclient(get_actor()->id_guid());
-		if (lpdb == nullptr)
-		{
-			tools::no_core_dump();
-			return nullptr;
-		}
-		return lpdb->get(get_actor()->id_guid());
+		static auto linstance = tdb_brief::nsp_cwrite<actor_role>::instance(get_actor()->id_guid());
+		return linstance.get(get_actor()->id_guid());
 	}
 
 	const pbdb::db_brief* roleinfo::get_constbrief()
 	{
-		static tdb_brief::nsp_cwrite<actor_role>* lpdb = nsp_instance<tdb_brief::nsp_cwrite<actor_role>>::nclient(get_actor()->id_guid());
-		if (lpdb == nullptr)
-		{
-			tools::no_core_dump();
-			return nullptr;
-		}
-		return lpdb->getconst(get_actor()->id_guid());
+		static auto linstance = tdb_brief::nsp_cwrite<actor_role>::instance(get_actor()->id_guid());
+		return linstance.getconst(get_actor()->id_guid());
 	}
 
 	void roleinfo::change_event(eevents_logic type, int abegvalue, int32_t anowvalue)
