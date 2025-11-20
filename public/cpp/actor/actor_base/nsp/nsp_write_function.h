@@ -112,7 +112,7 @@ namespace ngl
 			nsp_instance<nsp_write<TDerived, TACTOR, T>>::template register_handle<TDerived, np_channel_register_reply<T>>();
 			// 接收结点信息
 			nsp_instance<nsp_write<TDerived, TACTOR, T>>::template register_handle<TDerived, np_channel_dataid_sync<T>>();
-
+			// 结点退出
 			nsp_instance<nsp_write<TDerived, TACTOR, T>>::template register_handle<TDerived, np_channel_exit<T>>();			
 		}
 
@@ -191,6 +191,85 @@ namespace ngl
 	const std::map<i64_actorid, T>& nsp_write<TDerived, TACTOR, T>::get_mapconst()
 	{
 		return m_data;
+	}
+
+	template <typename TDerived, typename TACTOR, typename T>
+	void nsp_write<TDerived, TACTOR, T>::change()
+	{
+		if (!m_changeids.empty())
+		{
+			i16_actortype ltype = nguid::type(m_actor->id_guid());
+			{
+				auto pro = std::make_shared<np_channel_data<T>>();
+				pro->m_actorid = m_actor->id_guid();
+				std::set<i64_nodeid> lnodes;
+				std::ranges::for_each(m_nodereadalls, [&lnodes](i64_nodeid aid) { lnodes.insert(aid); });
+				std::ranges::for_each(m_nodewritealls, [&lnodes](i64_nodeid aid) { lnodes.insert(aid); });
+				m_regload.foreach_nspser([&lnodes](i16_area, i64_actorid aactorid)
+					{
+						lnodes.insert(aactorid);
+					});
+				pro->m_firstsynchronize = false;
+				pro->m_recvfinish = true;
+				for (i64_dataid dataid : m_changeids)
+				{
+					if (!m_data.contains(dataid))
+					{
+						continue;
+					}
+					m_operator_field.field_copy(ltype, m_data[dataid], pro->m_data[dataid], true);
+				}
+
+				for (i64_dataid dataid : m_delids)
+				{
+					pro->m_deldata.push_back(dataid);
+				}
+
+				nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
+				lnodes.erase(m_actor->id_guid());
+				actor::send_actor(lnodes, nguid::make(), pro);
+			}
+
+			{
+				for (i64_dataid dataid : m_changeids)
+				{
+					std::set<i64_nodeid> lnodes;
+					auto pro = std::make_shared<np_channel_data<T>>();
+					pro->m_firstsynchronize = false;
+					pro->m_recvfinish = true;
+					m_operator_field.field_copy(ltype, m_data[dataid], pro->m_data[dataid], true);
+					for (const auto& [_nodeid, _caredata] : m_othercare)
+					{
+						if (_caredata.is_care(dataid))
+						{
+							lnodes.insert(_nodeid);
+						}
+					}
+					lnodes.erase(m_actor->id_guid());
+					actor::send_actor(lnodes, nguid::make(), pro);
+				}
+
+				for (i64_dataid dataid : m_delids)
+				{
+					std::set<i64_nodeid> lnodes;
+					auto pro = std::make_shared<np_channel_data<T>>();
+					pro->m_firstsynchronize = false;
+					pro->m_recvfinish = true;
+					pro->m_deldata.push_back(dataid);
+					for (const auto& [_nodeid, _caredata] : m_othercare)
+					{
+						if (_caredata.is_care(dataid))
+						{
+							lnodes.insert(_nodeid);
+						}
+					}
+					lnodes.erase(m_actor->id_guid());
+					actor::send_actor(lnodes, nguid::make(), pro);
+				}
+			}
+			m_changeids.clear();
+			m_delids.clear();
+		}
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
