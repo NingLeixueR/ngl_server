@@ -47,7 +47,7 @@ namespace ngl
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	void nsp_server<ENUMDB, TDerived, T>::channel_register_reply(i64_actorid aactorid)
-	{// »Ø¸´
+	{
 		auto pro = std::make_shared<np_channel_register_reply<T>>();
 		pro->m_actorid = m_dbmodule->get_actor()->id_guid();
 		pro->m_nodereadalls = m_nodereadalls;
@@ -155,14 +155,23 @@ namespace ngl
 	{
 		const np_channel_register<T>* recv = adata.get_data();
 		i64_actorid lactorid = recv->m_actorid;
+
+		if (!m_areaset.contains(nguid::area(lactorid)))
+		{
+			log_error()->print("np_channel_register fial area[{}]", nguid::area(lactorid));
+			return;
+		}
+
 		if (m_care.contains(lactorid))
 		{
 			return;
 		}
+
 		if (m_nodewritealls.contains(lactorid))
 		{
 			return;
 		}
+
 		if (m_nodereadalls.contains(lactorid))
 		{
 			return;
