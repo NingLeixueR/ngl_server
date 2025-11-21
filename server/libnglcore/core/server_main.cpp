@@ -861,3 +861,23 @@ int ngl_main(int argc, char** argv)
 	}
 	return 0;
 }
+
+std::function<void()> dump_logic()
+{
+	std::string ltitle = std::format("{}", g_nodename);
+	return [ltitle]()
+		{
+			std::cout << "dump_logic()" << std::endl;
+			ngl::manage_curl::parameter lparm
+			{
+				.m_smtp = ngl::xmlnode::m_mail.m_mailarg.m_smtp,
+				.m_email = ngl::xmlnode::m_mail.m_mailarg.m_email,
+				.m_password = ngl::xmlnode::m_mail.m_mailarg.m_password,
+				.m_name = ngl::xmlnode::m_mail.m_mailarg.m_name,
+				.m_title = ltitle,
+				.m_content = "code dump",
+			};
+			lparm.m_recvs.emplace_back(std::make_pair("348634371@qq.com", "Àî²©QQ"));
+			ngl::manage_curl::sendemail(lparm);
+		};
+}
