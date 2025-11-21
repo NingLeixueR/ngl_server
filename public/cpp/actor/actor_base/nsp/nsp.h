@@ -21,48 +21,57 @@
 
 namespace ngl
 {
+	// # nsp client 包括nsp_read与nsp_write
+	// # nsp client 加载状况
 	class nsp_regload
 	{
-		std::map<i16_area, i64_actorid>	 m_nspserver;
-		std::map<i16_area, bool> m_register;
-		std::map<i16_area, bool> m_loadfinish;
+		// # 需要连接的nsp服务器列表
+		std::map<i16_area, i64_actorid>		m_nspserver;
+		// # 注册状态
+		std::map<i16_area, bool>			m_register;
+		// # 加载状态
+		std::map<i16_area, bool>			m_loadfinish;
 	public:
 		void init(i64_actorid aactorid);
 
-		// 设置[area]完成注册
+		// # 设置[area]完成注册
 		void set_register(i16_area aarea);
 
-		// [area]是否完成注册
+		// # [area]是否完成注册
 		bool is_register(i16_area aarea)const;
 
-		// 所有[area]是否都完成注册
+		// # 所有[area]是否都完成注册
 		bool is_register()const;
 
-		// 设置[area]加载数据完成
+		// # 设置[area]加载数据完成
 		void set_loadfinish(i16_area aarea);
 
-		// [area]是否加载数据完成
+		// # [area]是否加载数据完成
 		bool is_loadfinish(i16_area aarea)const;
 
-		// 所有[area]是否都加载数据完成
+		// # 所有[area]是否都加载数据完成
 		bool is_loadfinish()const;
 
-		// 根据[area]获取nsp server
+		// # 根据[area]获取nsp server
 		i64_actorid nspserid(i16_area aarea)const;
 
-		// 遍历所有需要连接的nsp server
+		// # 遍历所有需要连接的nsp server
 		void foreach_nspser(const std::function<void(i16_area, i64_actorid)>& afun)const;
 	};
 
-	// 对"数据字段"进行封装
+	// # 对"数据字段"进行封装
 	class operator_field
 	{
-		bool m_nspserver = false;// 只有nep server设置时不检查"因为同一字段设置读/写，写优先于读，进行读覆盖写的检测"
+		// # 只有nep server设置时不检查"因为同一字段设置读/写，写优先于读，进行读覆盖写的检测"
+		bool m_nspserver = false;
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>> m_node_fieldnumbers;
 	public:
+		// # 初始化
 		void init(bool anspserver);
 
+		// # 设置"数据字段"
 		void set_field(i16_actortype atype, const std::map<i32_fieldnumber, epb_field>& anode_fieldnumbers);
+
 		// # 设置
 		void set_field(const std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& anode_fieldnumbers);
 
@@ -134,6 +143,7 @@ namespace ngl
 			return true;
 		}
 
+		// # 根据字段类型进行数据拷贝
 		template <typename T>
 		bool field_copy(i16_actortype atype, const T& asource, T& atarget, bool amessage)
 		{
@@ -146,13 +156,16 @@ namespace ngl
 			return true;
 		}
 
+		// # 获取所有区服的数据字段
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& field_numbers();
 	};
 
+	// # 关注哪些数据
 	class care_data
 	{
 		nsp_care m_core;
 	public:
+		// # "全部读,全部写" 构造
 		void init(bool aread);
 
 		// # "部分读" 构造
@@ -164,6 +177,7 @@ namespace ngl
 		// # "全部读,部分写" 构造
 		void init(bool aread, const std::set<i64_actorid>& awriteids);
 
+		// # 使用nsp_care数据初始化
 		void init(const nsp_care& acore);
 
 		// # 是否关心
@@ -187,6 +201,7 @@ namespace ngl
 		// # 可写列表
 		std::set<i64_actorid>& writeids();
 
+		// # 获取关注数据
 		const nsp_care& get_core()const;
 	};
 
@@ -243,39 +258,41 @@ namespace ngl
 		}
 	};
 
-	template <typename T>
-	std::map<i64_actorid, std::shared_ptr<T>> nsp_instance<T>::m_instance;
-
-	template <typename T>
-	std::mutex nsp_instance<T>::m_mutex;
-
+	// nsp client 注册回调
 	template <typename T>
 	class nsp_callback
 	{
 		template <typename TDATA>
 		struct tcallback
 		{
-			std::function<void(int64_t, const TDATA&, bool)>				m_changedatafun = nullptr;	// [回调] 当数据发生变化
-			std::function<void(int64_t)>									m_deldatafun = nullptr;		// [回调] 当数据被删除
-			std::function<void()>											m_loadfinishfun = nullptr;	// [回调] 数据加载完成
+			// [回调] 当数据发生变化
+			std::function<void(int64_t, const TDATA&, bool)>				m_changedatafun = nullptr;
+			// [回调] 当数据被删除
+			std::function<void(int64_t)>									m_deldatafun = nullptr;
+			// [回调] 数据加载完成
+			std::function<void()>											m_loadfinishfun = nullptr;
 		};
 		tcallback<T> m_call;
 	public:
+		// # 设置数据被修改或首次获取数据的回调
 		void set_changedatafun(const std::function<void(int64_t, const T&, bool)>& afun)
 		{
 			m_call.m_changedatafun = afun;
 		}
 
+		// # 设置数据被删除的回调
 		void set_deldatafun(const std::function<void(int64_t)>& afun)
 		{
 			m_call.m_deldatafun = afun;
 		}
 
+		// # 设置数据加载完成的回调
 		void set_loadfinishfun(const std::function<void()>& afun)
 		{
 			m_call.m_loadfinishfun = afun;
 		}
 
+		// # 调用数据被修改或首次获取数据的回调
 		void changedatafun(int64_t aid, const T& adata, bool afrist)
 		{
 			if (m_call.m_changedatafun != nullptr)
@@ -284,6 +301,7 @@ namespace ngl
 			}
 		}
 
+		// # 调用数据被删除的回调
 		void deldatafun(int64_t aid)
 		{
 			if (m_call.m_deldatafun != nullptr)
@@ -292,6 +310,7 @@ namespace ngl
 			}
 		}
 
+		// # 调用数据加载完成的回调
 		void loadfinishfun()
 		{
 			if (m_call.m_loadfinishfun != nullptr)
@@ -309,15 +328,10 @@ namespace ngl
 		static void print(const char* aname, TDerived* aactor, const TRECV* arecv)
 		{
 			TRECV* lrecv = (TRECV*)arecv;
-
 			std::string lcustomstr;
 			tools::custom2json(*lrecv, lcustomstr);
-			log_error_net()->print(
-				"{}::handle<{}>( actor({}) : {} )"
-				, aname
-				, tools::type_name<TRECV>()
-				, nguid(aactor->id_guid())
-				, lcustomstr
+			log_error()->print(
+				"{}::handle<{}>( actor({}) : {} )", aname, tools::type_name<TRECV>(), nguid(aactor->id_guid()), lcustomstr
 			);
 		}
 
@@ -325,13 +339,17 @@ namespace ngl
 		static void msg_info(TX& adata)
 		{
 			adata.m_msg = std::format(
-				"{}:{}:{}"
-				, tools::type_name<TDerived>()
-				, tools::type_name<TACTOR>()
-				, tools::type_name<typename TX::T>()
+				"{}:{}:{}", tools::type_name<TDerived>(), tools::type_name<TACTOR>(), tools::type_name<typename TX::T>()
 			);
 		}
 	};
+}//namespace ngl
 
+namespace ngl
+{
+	template <typename T>
+	std::map<i64_actorid, std::shared_ptr<T>> nsp_instance<T>::m_instance;
 
+	template <typename T>
+	std::mutex nsp_instance<T>::m_mutex;
 }//namespace ngl

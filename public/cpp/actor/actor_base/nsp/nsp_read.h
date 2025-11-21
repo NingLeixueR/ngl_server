@@ -45,6 +45,7 @@ namespace ngl
 		// # 其他结点/当本结点exit()时需要通知哪些结点(1、所有nsp_server结点。2、所有nsp_write结点)
 		std::set<i64_actorid>											m_exit;
 
+		// # 副本数据
 		std::map<i64_actorid, T>										m_data;
 	public:
 		// # 获取单例
