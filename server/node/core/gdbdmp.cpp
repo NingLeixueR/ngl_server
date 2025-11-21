@@ -91,17 +91,12 @@ typedef void VOID;
 void sighandler(int sig);
 
 static bool_x isDumping = false;
-DumperHandler Dumper::dumperHandler;
+std::function<void()> Dumper::m_callback;
 std::string Dumper::m_excname;
 
-void cxerr()
-{
-	return;
-}
 
 Dumper::Dumper() {
 	dumperHandler = nullptr;
-	Dumper::setDumperHandler(cxerr);
 
 
 	struct rlimit rlim;

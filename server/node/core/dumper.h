@@ -1,19 +1,22 @@
 #pragma once
 
+#include <functional>
 #include <string>
 
-typedef void (*DumperHandler)();
-
-class Dumper {
-	static DumperHandler dumperHandler;
+class Dumper 
+{
+	static std::function<void()> m_callback;
 public:
 	Dumper();
 
-	static void setDumperHandler(DumperHandler val) {
-		dumperHandler = val;
+	static void setDumperHandler(const std::function<void()>& afun)
+	{
+		m_callback = afun;
 	}
-	static DumperHandler getDumperHandler() {
-		return dumperHandler;
+
+	static const std::function<void()>& getDumperHandler()
+	{
+		return m_callback;
 	}
 
 	static std::string m_excname;

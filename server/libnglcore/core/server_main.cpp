@@ -762,6 +762,8 @@ bool start_robot(int argc, char** argv)
 	return true;
 }
 
+std::string g_nodename = "node";
+
 int ngl_main(int argc, char** argv)
 {
 	if (argc <= 3)
@@ -797,19 +799,18 @@ int ngl_main(int argc, char** argv)
 	}
 	nconfig::set_nodeid(tab->m_id, ltcount);
 
-	std::string lnodename;
 	if (larea < 0)
 	{
-		lnodename = std::format("node_{}__{}_{}", lname, -larea, ltcount);
+		g_nodename = std::format("node_{}__{}_{}", lname, -larea, ltcount);
 	}
 	else
 	{
-		lnodename = std::format("node_{}_{}_{}", lname, tab->m_area, ltcount);
+		g_nodename = std::format("node_{}_{}_{}", lname, tab->m_area, ltcount);
 	}
 
 #ifdef WIN32
 	// # 设置控制台窗口名称
-	SetConsoleTitle(lnodename.c_str());
+	SetConsoleTitle(g_nodename.c_str());
 #endif
 	
 	switch (nconfig::node_type())
