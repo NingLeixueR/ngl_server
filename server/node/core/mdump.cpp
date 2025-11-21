@@ -15,7 +15,7 @@
 
 #include "dumper.h"
 
-DumperHandler Dumper::dumperHandler;
+std::function<void()> Dumper::m_callback;
 std::string Dumper::m_excname;
 
 // 1. 生成 Dump 文件的函数（复用之前的实现）
@@ -70,8 +70,6 @@ void cxerr()
 
 Dumper::Dumper()
 {
-	dumperHandler = nullptr;
-	Dumper::setDumperHandler(cxerr);
 	::SetUnhandledExceptionFilter(ExceptionFilter);
 }
 
