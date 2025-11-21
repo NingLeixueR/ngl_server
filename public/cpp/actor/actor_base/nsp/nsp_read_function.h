@@ -281,9 +281,10 @@ namespace ngl
 		m_regload.set_register(nguid::area(recv->m_actorid));
 		m_operator_field.set_field(recv->m_node_fieldnumbers);
 
-		std::ranges::copy(
-			recv->m_care | std::views::keys, std::inserter(m_exit, m_exit.begin())
-		);
+		std::ranges::for_each(recv->m_care, [this](const auto& apair)
+			{
+				m_exit.insert(apair.first);
+			});
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
