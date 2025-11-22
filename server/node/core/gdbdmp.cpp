@@ -96,9 +96,6 @@ std::string Dumper::m_excname;
 
 
 Dumper::Dumper() {
-	dumperHandler = nullptr;
-
-
 	struct rlimit rlim;
 	rlim.rlim_cur = RLIM_INFINITY;
 	rlim.rlim_max = RLIM_INFINITY;
