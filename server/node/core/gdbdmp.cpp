@@ -127,9 +127,9 @@ void sighandler(int sig)
 	signal(SIGPIPE, SIG_DFL);
 
 	// 调用上层处理器
-	DumperHandler dumperHandler = Dumper::getDumperHandler();
-	if (dumperHandler) {
-		(*dumperHandler)();
+	auto dumperHandler = Dumper::getDumperHandler();
+	if (dumperHandler != nullptr) {
+		dumperHandler();
 	}
 
 	raise(sig);
