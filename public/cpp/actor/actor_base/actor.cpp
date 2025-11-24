@@ -144,7 +144,7 @@ namespace ngl
 		}
 		
 		auto llistcount = (int32_t)m_locallist.size();
-		if (m_weight < llistcount || llistcount >= 1000)
+		if (m_weight < llistcount || llistcount >= 0x7F)
 		{
 			log_error()->print(
 				"actor handle {}:[weight:{}/count:{}]",
