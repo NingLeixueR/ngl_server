@@ -30,14 +30,10 @@ namespace ngl
 
 	void protocol::print(const char* amsg, i32_protocolnum aprotocolnum)
 	{
-		log_error()->print(
-			"protocol::push msg:{} protocolnum:{} name:{}", amsg, aprotocolnum, name(aprotocolnum)
-		);
+		log_error()->print("protocol::push msg:{} protocolnum:{} name:{}", amsg, aprotocolnum, name(aprotocolnum));
 	}
 
-	void protocol::register_protocol(
-		int aprotocolnumber, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname
-	)
+	void protocol::register_protocol(int aprotocolnumber, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname)
 	{
 		lock_write(m_mutex);
 		pfun& lprotocol = m_protocolfun[aprotocolnumber];
