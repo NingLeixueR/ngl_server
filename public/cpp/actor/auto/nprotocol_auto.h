@@ -12,10 +12,13 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-11-06 22:52:38
+// 创建时间 // 创建时间 25-11-24 15:25:11
 #pragma once
 
 #include "ndb_modular.h"
+#include "nsp_read.h"
+#include "nsp_write.h"
+#include "nsp_server.h"
 #include "actor_db.h"
 #include "db.pb.h"
 
