@@ -37,8 +37,6 @@ namespace ngl
 		static std::set<i64_nodeid>					m_nodepart;
 		// # 数据
 		static ndb_modular<ENUMDB, T, TDerived>*	m_dbmodule;
-		// # 结点区服列表
-		static std::set<i16_area>					m_areaset;
 	public:
 		using tnsp_server = nsp_server<ENUMDB, TDerived, T>;
 
@@ -86,7 +84,4 @@ namespace ngl
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	ndb_modular<ENUMDB, T, TDerived>* nsp_server<ENUMDB, TDerived, T>::m_dbmodule;
-
-	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
-	std::set<i16_area> nsp_server<ENUMDB, TDerived, T>::m_areaset;
 }//namespace ngl
