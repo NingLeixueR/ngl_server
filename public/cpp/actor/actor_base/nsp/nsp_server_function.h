@@ -21,7 +21,6 @@ namespace ngl
 	{
 		m_dbmodule = adbmodule;
 		m_operator_field.init(false);
-		ttab_servers::instance().get_arealist_nonrepet(nconfig::m_tid, m_areaset);
 
 		// # ¶©ÔÄ×¢²á´¦Àí
 		actor::register_actor_s<TDerived, np_channel_register<T>>(
@@ -155,12 +154,6 @@ namespace ngl
 	{
 		const np_channel_register<T>* recv = adata.get_data();
 		i64_actorid lactorid = recv->m_actorid;
-
-		if (!m_areaset.contains(nguid::area(lactorid)))
-		{
-			log_error()->print("np_channel_register fial area[{}]", nguid::area(lactorid));
-			return;
-		}
 
 		if (m_care.contains(lactorid))
 		{
