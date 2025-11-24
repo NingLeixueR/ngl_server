@@ -396,7 +396,7 @@ namespace ngl
 						pro.m_data = true;
 					};
 			}
-			if (handle_cmd::function(loperator, adata.thread(), parm.identifier(), lojson) == false)
+			if (handle_cmd::function(loperator, adata.thread(), (int32_t)parm.identifier(), lojson) == false)
 			{
 				log_error()->print("GM actor_db operator[{}] ERROR", loperator);
 			}
