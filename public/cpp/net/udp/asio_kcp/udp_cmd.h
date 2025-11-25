@@ -40,5 +40,4 @@ namespace ngl
 
 		static bool sendcmd(asio_kcp* akcp, i32_sessionid asession, ecmd acmd, const std::string& ajson);
 	};
-
 }//namespace ngl

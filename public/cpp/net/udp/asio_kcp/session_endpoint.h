@@ -36,21 +36,19 @@ namespace ngl
 
 	struct session_endpoint
 	{
-		i32_sessionid		m_session;
 		asio_udp_endpoint	m_endpoint;
+		i32_sessionid		m_session = 0;
 		std::string			m_ip;
-		i16_port			m_port;
-		asio_kcp*			m_asiokcp;
-		int64_t				m_timerid;
-		ikcpcb*				m_kcp;
-		bool				m_isconnect;		// 是否接收到kcp_cmd::ecmd_connect 或者ecmd_connect_ret
-		int					m_pingtm;			// 进行ping计时 
-		int64_t				m_pingtimerid;
-		i64_actorid			m_actorid;
+		i16_port			m_port = 0;
+		asio_kcp*			m_asiokcp = nullptr;
+		int64_t				m_timerid = 0;
+		ikcpcb*				m_kcp = nullptr;
+		bool				m_isconnect = false;		// 是否接收到kcp_cmd::ecmd_connect 或者ecmd_connect_ret
+		int32_t				m_pingtm = 0;				// 进行ping计时 
+		int64_t				m_pingtimerid = 0;			// ping定时器id
+		i64_actorid			m_actorid = 0;
 
 		typedef int (*output)(const char* buf, int len, struct IKCPCB* kcp, void* user);
-
-		session_endpoint();
 
 		~session_endpoint();
 
@@ -58,7 +56,7 @@ namespace ngl
 
 		static i16_port port(session_endpoint* ap);
 
-		void create(int32_t aconv, IUINT32 asessionid, void* auser);
+		void create(int32_t aconv, uint32_t asessionid, void* auser);
 
 		void removetimer();
 
@@ -70,7 +68,7 @@ namespace ngl
 
 		int wndsize(int sndwnd, int rcvwnd);
 
-		void update(IUINT32 current);
+		void update(uint32_t current);
 
 		int input(const char* data, long size);
 

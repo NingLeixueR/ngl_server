@@ -16,7 +16,7 @@
 #include "protocol.h"
 #include "cmd.h"
 
-#define USE_WHEEL_TIMER
+//#define USE_WHEEL_TIMER
 
 namespace ngl
 {
@@ -27,7 +27,9 @@ namespace ngl
 		i32_sessionid session = apstruct->m_session;
 		xmlinfo const* linfo = nconfig::get_publicconfig();
 		if (linfo == nullptr)
+		{
 			return false;
+		}
 		if (aconnect)
 		{
 			apstruct->m_actorid = aactorid;
@@ -89,12 +91,8 @@ namespace ngl
 				njson_read ltempjson(ajson.c_str());
 
 				i64_actorid lactorid;
-				if (!njson::read(ltempjson, "actorid", lactorid))
-				{
-					return;
-				}
 				std::string lsession;
-				if (!njson::read(ltempjson, "session", lsession))
+				if (!njson::read(ltempjson, "actorid", lactorid, "session", lsession))
 				{
 					return;
 				}
@@ -109,7 +107,7 @@ namespace ngl
 
 				if (ap->function_econnect(apstruct, lactorid, true))
 				{
-					udp_cmd::sendcmd(ap, apstruct->m_session, udp_cmd::ecmd_connect_ret, "");
+					udp_cmd::sendcmd(ap, apstruct->m_session, udp_cmd::ecmd_connect_ret, "{}");
 				}
 			});
 	}

@@ -233,12 +233,19 @@ namespace ngl
 
 		i16_area larea = nguid::none_area();
 		i32_actordataid lactordataid = nguid::none_actordataid();
+		int32_t lgametid = 0;
 		// 多robot公用一个tcp连接会有问题
 		if (sysconfig::robot_test())
 		{
 			i64_actorid request_actor = lpack->m_head.get_request_actor();
 			larea = nguid::area(request_actor);
 			lactordataid = nguid::actordataid(request_actor);
+			gateway_socket* lpstruct = m_info.get(lpack->m_id);
+			if (lpstruct == nullptr)
+			{
+				return true;
+			}
+			lgametid = lpstruct->m_gameid;
 		}
 		else
 		{
@@ -249,6 +256,7 @@ namespace ngl
 			}
 			larea = lpstruct->m_area;
 			lactordataid = lpstruct->m_dataid;
+			lgametid = lpstruct->m_gameid;
 		}
 
 		std::string lkcpsession;
@@ -267,7 +275,7 @@ namespace ngl
 		pro.m_uport			= lpram->muport();
 		pro.m_conv			= lpram->mconv();
 
-		nets::sendbyserver((i32_serverid)lpram->mserverid(), pro, nguid::make(), nguid::make());
+		nets::sendbyserver((i32_serverid)lgametid, pro, nguid::make(), nguid::make());
 		return true;
 	}
 }//namespace ngl

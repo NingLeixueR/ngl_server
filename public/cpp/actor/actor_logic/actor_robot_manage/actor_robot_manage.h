@@ -30,7 +30,6 @@ namespace ngl
 	{
 		actor_robot_manage();
 	public:
-
 		std::map<std::string, _robot> m_maprobot;
 
 		friend class actor_instance<actor_robot_manage>;

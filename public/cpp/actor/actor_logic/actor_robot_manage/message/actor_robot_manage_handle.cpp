@@ -18,7 +18,7 @@ namespace ngl
 	{
 		auto lrecv = adata.get_data();
 		std::string lparm1;
-		if (lrecv->m_parm.size() > 1)
+		if (lrecv->m_parm.size() >= 1)
 		{
 			lparm1 = lrecv->m_parm[0];
 			std::ranges::transform(lparm1, lparm1.begin(), tolower);
@@ -86,7 +86,7 @@ namespace ngl
 				};
 
 			// 进行kcp连接
-			handle_cmd::add("x1") = [this](const std::vector<std::string>& avec)
+			handle_cmd::add("kcp") = [this](const std::vector<std::string>& avec)
 				{
 					foreach([this](_robot& arobot)
 						{
@@ -133,22 +133,12 @@ namespace ngl
 				};
 
 			// 使用kcp连接发送GET_TIME协议
-			handle_cmd::add("x2") = [this](const std::vector<std::string>& avec)
+			handle_cmd::add("kcp_gettime") = [this](const std::vector<std::string>& avec)
 				{
 					pbnet::PROBUFF_NET_GET_TIME pro;
 					foreach([&pro, this](_robot& arobot)
 						{
 							sendkcp(&arobot, pro);
-							return true;
-						});
-				};
-
-			handle_cmd::add("x3") = [this](const std::vector<std::string>& avec)
-				{
-					pbnet::PROBUFF_NET_FRIEND pro;
-					foreach([&pro, this](_robot& arobot)
-						{
-							send(&arobot, pro);
 							return true;
 						});
 				};
