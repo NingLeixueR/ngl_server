@@ -36,16 +36,22 @@ namespace ngl
 		asio_kcp(const asio_kcp&) = delete;
 		asio_kcp& operator=(const asio_kcp&) = delete;
 
-	private:		
+	public:
+		enum
+		{
+			e_buff_byte = 1500,
+			e_buffrecv_byte = 10240,
+		};
+	private:
 		session_manage						m_session;
 		std::function<void(i32_session)>	m_connectfun;
 		bpool								m_pool;
 		asio::io_context					m_context;
 		asio_udp::socket					m_socket;
 		asio_udp_endpoint					m_remoteport;
-		char								m_buff[1500];
+		char								m_buff[e_buff_byte];
 		std::size_t							m_bytes_received;
-		char								m_buffrecv[10240];
+		char								m_buffrecv[e_buffrecv_byte];
 		std::function<void(char*, int)>		m_wait;
 		asio_udp_endpoint					m_waitendpoint;
 		i16_port							m_port;

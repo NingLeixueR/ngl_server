@@ -16,7 +16,7 @@
 #include "protocol.h"
 #include "cmd.h"
 
-//#define USE_WHEEL_TIMER
+#define USE_WHEEL_TIMER
 
 namespace ngl
 {
@@ -34,10 +34,11 @@ namespace ngl
 		{
 			apstruct->m_actorid = aactorid;
 #ifdef USE_WHEEL_TIMER 
+
 			wheel_parm lparm
 			{
-				.m_ms = sysconfig::kcpping() * 1000,
-				.m_intervalms = [](int64_t) {return sysconfig::kcpping() * 1000; } ,
+				.m_ms = sysconfig::kcpping() * localtime::MILLISECOND,
+				.m_intervalms = [](int64_t) {return sysconfig::kcpping() * localtime::MILLISECOND; } ,
 				.m_count = 0x7fffffff,
 				.m_fun = [session, this](const wheel_node* anode)
 				{
@@ -63,8 +64,8 @@ namespace ngl
 #ifdef USE_WHEEL_TIMER 
 			wheel_parm lparm
 			{
-				.m_ms = sysconfig::kcpping() * 1000,
-				.m_intervalms = [](int64_t) {return sysconfig::kcpping() * 1000; } ,
+				.m_ms = sysconfig::kcpping() * localtime::MILLISECOND,
+				.m_intervalms = [](int64_t) {return sysconfig::kcpping() * localtime::MILLISECOND; } ,
 				.m_count = 0x7fffffff,
 				.m_fun = [session, this](const wheel_node* anode)
 				{
@@ -215,7 +216,7 @@ namespace ngl
 
 	void asio_kcp::start()
 	{
-		m_socket.async_receive_from(asio::buffer(m_buff, 1500), m_remoteport,
+		m_socket.async_receive_from(asio::buffer(m_buff, e_buff_byte), m_remoteport,
 			[this](const std::error_code& ec, std::size_t bytes_received)
 			{
 				m_bytes_received = bytes_received;
@@ -238,7 +239,7 @@ namespace ngl
 								while (true)
 								{
 									//从 buf中 提取真正数据，返回提取到的数据大小
-									int lrecv = lpstruct->recv(m_buffrecv, 10240);
+									int lrecv = lpstruct->recv(m_buffrecv, e_buffrecv_byte);
 									if (lrecv == -3)
 									{
 										// ret == -3 m_buffrecv 的大小不够 
