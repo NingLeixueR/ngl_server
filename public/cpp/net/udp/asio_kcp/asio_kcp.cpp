@@ -207,9 +207,7 @@ namespace ngl
 		}
 		else
 		{
-			log_error()->print("time[{} < {} + {} ]"
-				, localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout()
-			);
+			log_error()->print("time[{} < {} + {} ]", localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout());
 		}
 		return true;
 	}
@@ -429,10 +427,7 @@ namespace ngl
 		// #### 发起连接
 		ptr_se lpstruct = m_session.add(aconv, aendpoint, aactorid);
 		njson_write ltempjson;
-		njson::write(ltempjson
-			, "actorid", aactorid
-			, "session", akcpsess
-		);
+		njson::write(ltempjson, "actorid", aactorid, "session", akcpsess);
 		ltempjson.set_nonformatstr(true);
 		std::string lparm = ltempjson.get();
 		udp_cmd::sendcmd(this, lpstruct->m_session, udp_cmd::ecmd_connect, lparm);
