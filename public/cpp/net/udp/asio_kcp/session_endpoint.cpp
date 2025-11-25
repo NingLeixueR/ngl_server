@@ -23,18 +23,6 @@ namespace ngl
 			.m_time_wheel_count = 4,
 		});
 
-	session_endpoint::session_endpoint()
-		: m_session(0)
-		, m_port(0)
-		, m_asiokcp(nullptr)
-		, m_timerid(0)
-		, m_isconnect(false)
-		, m_pingtm(0)
-		, m_pingtimerid(0)
-		, m_actorid(-1)
-		, m_kcp(nullptr)
-	{}
-
 	session_endpoint::~session_endpoint()
 	{
 		removetimer();
@@ -51,7 +39,7 @@ namespace ngl
 		return ap->m_endpoint.port();
 	}
 
-	void session_endpoint::create(int32_t aconv, IUINT32 asessionid, void* auser)
+	void session_endpoint::create(int32_t aconv, uint32_t asessionid, void* auser)
 	{
 		m_kcp = ikcp_create(aconv, auser);
 	}
@@ -88,7 +76,7 @@ namespace ngl
 		return ikcp_wndsize(m_kcp, sndwnd, rcvwnd);
 	}
 
-	void session_endpoint::update(IUINT32 current)
+	void session_endpoint::update(uint32_t current)
 	{
 		ikcp_update(m_kcp, current);
 	}
