@@ -21,7 +21,7 @@ namespace ngl
 {
 	std::array<net_protocol*, ENET_COUNT> nets::m_net;
 	std::map<int16_t, ukcp*> nets::m_kcpnet;
-	int16_t nets::m_kcpindex = 1000;
+	int16_t nets::m_kcpindex = 0;
 
 	net_protocol* nets::net_first()
 	{
@@ -92,6 +92,10 @@ namespace ngl
 
 	int16_t nets::create_kcp()
 	{
+		if (m_kcpindex == 0)
+		{
+			m_kcpindex = nconfig::m_tcount*1000 + m_kcpindex;
+		}
 		++m_kcpindex;
 		m_kcpnet[m_kcpindex] = ukcp::create(m_kcpindex);
 		return m_kcpindex;

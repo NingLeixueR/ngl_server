@@ -16,7 +16,7 @@
 #include "protocol.h"
 #include "cmd.h"
 
-#define USE_WHEEL_TIMER
+//#define USE_WHEEL_TIMER
 
 namespace ngl
 {
@@ -32,7 +32,6 @@ namespace ngl
 		}
 		if (aconnect)
 		{
-			apstruct->m_actorid = aactorid;
 #ifdef USE_WHEEL_TIMER 
 
 			wheel_parm lparm
@@ -82,6 +81,7 @@ namespace ngl
 		}
 		return true;
 	}
+
 	//## udp_cmd::ecmd_connect
 	void asio_kcp::function_ecmd_connect()const
 	{
@@ -101,7 +101,7 @@ namespace ngl
 				{
 					return;
 				}
-
+				
 				apstruct->m_actorid = lactorid;
 
 				log_error()->print("kcp connect : {}@{}", session_endpoint::ip(apstruct.get()), session_endpoint::port(apstruct.get()));
@@ -112,21 +112,24 @@ namespace ngl
 				}
 			});
 	}
+
 	//## udp_cmd::ecmd_connect_ret
 	void asio_kcp::function_ecmd_connect_ret()const
 	{
-		// 除了robot 其他服务器均不允许定时ping 
-		//if (nconfig::m_nodetype != ngl::ROBOT)
-		//	return;
 		udp_cmd::register_fun(udp_cmd::ecmd_connect_ret, [](asio_kcp* ap, ptr_se& apstruct, const std::string& ajson)
 			{
 				apstruct->m_isconnect = true;
 				apstruct->m_pingtm = (int)localtime::gettime();
-				// 定时发送cmd:ping
-				ap->function_econnect(apstruct, -1, false);
+				// 除了robot 其他服务器均不允许定时ping 
+				if (nconfig::m_nodetype == ngl::ROBOT)
+				{
+					// 定时发送cmd:ping
+					ap->function_econnect(apstruct, -1, false);
+				}
 				ap->m_connectfun(apstruct->m_session);
 			});
 	}
+
 	//## udp_cmd::ecmd_ping
 	void asio_kcp::asio_kcp::function_ecmd_ping()const
 	{
@@ -135,6 +138,7 @@ namespace ngl
 				apstruct->m_pingtm = (int)localtime::gettime();
 			});
 	}
+
 	//## udp_cmd::ecmd_close
 	void asio_kcp::function_ecmd_close()const
 	{
@@ -183,7 +187,6 @@ namespace ngl
 		std::shared_ptr<pack> lpack = pack::make_pack(&m_pool, 0);
 		lpack->m_protocol = ENET_KCP;
 		lpack->m_id = apstruct->m_session;
-		lpack->m_head.set_requestactor(apstruct->m_actorid);
 		//lpack->m_segpack = m_segpack;
 		if (EPH_HEAD_SUCCESS != lpack->m_head.push(abuff, abufflen))
 		{
@@ -200,6 +203,17 @@ namespace ngl
 		}
 		lpack->malloc(len);
 		memcpy(lpack->m_buff, abuff, len);
+		
+		i64_actorid lactorid = apstruct->m_actorid;
+		if (nconfig::node_type() == GAME)
+		{
+			lactorid = nguid::make_type(apstruct->m_actorid, ACTOR_ROLE);
+		}
+		else if (nconfig::node_type() == ROBOT)
+		{
+			lactorid = nguid::make_type(apstruct->m_actorid, ACTOR_ROBOT);
+		}
+		lpack->m_head.set_actor(lactorid, lactorid);
 		lpack->m_pos = len;
 		if (localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
 		{

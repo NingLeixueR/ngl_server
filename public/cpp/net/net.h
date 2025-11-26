@@ -229,7 +229,7 @@ namespace ngl
 			log_error()->print("get_kcpssion() = -1, is_single() == [{}]", is_single());
 			return false;
 		}
-		if (iskcp() == false)
+		if (support_kcp() == false)
 		{
 			return false;
 		}
@@ -241,7 +241,7 @@ namespace ngl
 	template <typename T>
 	bool actor_base::static_sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex/* = 0*/)
 	{
-		if (iskcp() == false)
+		if (support_kcp() == false)
 		{
 			return false;
 		}
@@ -252,7 +252,7 @@ namespace ngl
 	template <typename T>
 	bool actor_base::static_sendkcp(const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex/* = 0*/)
 	{
-		if (iskcp() == false)
+		if (support_kcp() == false)
 		{
 			return false;
 		}

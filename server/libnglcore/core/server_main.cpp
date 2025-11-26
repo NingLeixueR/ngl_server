@@ -779,7 +779,15 @@ int ngl_main(int argc, char** argv)
 	int32_t larea = ngl::tools::lexical_cast<int32_t>(argv[2]);
 
 	// # 区服id下功能进程的序号
-	int32_t ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
+	int32_t ltcount = 0;
+	if (lname != "robot")
+	{
+		ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
+	}
+	else
+	{
+		ltcount = ngl::tools::lexical_cast<int32_t>(argv[5]);
+	}
 
 	// # 初始化关联枚举NODE_TYPE与字符串
 	nconfig::init();

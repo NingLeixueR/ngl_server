@@ -13,6 +13,7 @@
 */
 #include "session_manage.h"
 #include "asio_kcp.h"
+#include "nguid.h"
 
 namespace ngl
 {
@@ -53,7 +54,7 @@ namespace ngl
 		ltemp->m_ip = lip;
 		ltemp->m_port = lport;
 		ltemp->m_asiokcp = m_asiokcp;
-		ltemp->m_actorid = aactorid;
+		ltemp->m_actorid = nguid::make(ACTOR_ROLE, nguid::area(aactorid), nguid::actordataid(aactorid));
 		ltemp->create(aconv, m_sessionid, (void*)ltemp.get());
 
 		//设置kcp对象的回调函数
