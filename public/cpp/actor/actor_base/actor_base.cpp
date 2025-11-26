@@ -268,10 +268,9 @@ namespace ngl
 		return m_kcpsession;
 	}
 
-	bool actor_base::iskcp()
+	bool actor_base::support_kcp()
 	{
-		net_works lnetwork;
-	
+		static net_works lnetwork;
 		static bool lkcp = ttab_servers::instance().get_nworks(ENET_KCP, lnetwork);
 		return lkcp;
 	}
@@ -283,7 +282,7 @@ namespace ngl
 
 	bool actor_base::connect_kcp(int16_t anum, const std::string& aip, i16_port aprot)
 	{
-		if (iskcp() == false)
+		if (support_kcp() == false)
 		{
 			return false;
 		}

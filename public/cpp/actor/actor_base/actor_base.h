@@ -357,7 +357,7 @@ namespace ngl
 		i32_session get_kcpssion();
 
 		//# 是否支持udp.kcp
-		static bool iskcp();
+		static bool support_kcp();
 
 		//# 通过udp.kcp发送数据
 		template <typename T>
