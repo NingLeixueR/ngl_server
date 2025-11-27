@@ -94,6 +94,7 @@ namespace ngl
 		auto lpram = adata.get_data();
 		pbnet::PROBUFF_NET_KCPSESSION_RESPONSE pro;
 		pro.set_mkcpsession(lpram->m_kcpsession);
+		pro.set_m_kcpnum(lpram->m_kcpnum);
 		nets::sendbysession(lpram->m_sessionid, pro, lpram->m_actoridclient, nguid::make());
 		return true;
 	}
