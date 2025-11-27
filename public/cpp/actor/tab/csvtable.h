@@ -1,18 +1,5 @@
-/*
-* Copyright (c) [2020-2025] NingLeixueR
-* 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
-* 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
-* 
-* 许可详情参见项目根目录下的 LICENSE 文件：
-* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
-*/
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-11-06 22:50:57
+// 创建时间 // 创建时间 25-11-27 16:22:43
 #pragma once
 
 #include "csv.h"
@@ -51,6 +38,8 @@ enum EPH
 	EPH_ACTOR_ID,	// ACTOR_ID
 	EPH_REQUEST_ACTOR_TYPEAREA,	// Request ACTOR_TYPE_AREA
 	EPH_REQUEST_ACTOR_ID,	// Request ACTOR_ID
+	EPH_CUSTOM1,	// 自定义1
+	EPH_CUSTOM2,	// 自定义2
 	EPH_SUM,	
 };
 enum NODE_TYPE

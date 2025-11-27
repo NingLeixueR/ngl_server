@@ -38,18 +38,22 @@ namespace ngl
 		template <typename T>
 		bool send(i32_sessionid asession, T& adata)
 		{
-			i64_actorid lactorid1;
-			i64_actorid lactorid2;
-			if (!m_kcp.find_actorid(asession, lactorid1, lactorid2))
+			i64_actorid lactoridserver;
+			i64_actorid lactoridclient;
+			if (!m_kcp.find_actorid(asession, lactoridserver, lactoridclient))
 			{
 				return false;
 			}
+			std::shared_ptr<pack> lpack;
 			if (nconfig::node_type() != ROBOT)
 			{
-				std::swap(lactorid1, lactorid2);
+				lpack = net_pack<T>::npack(&m_pool, adata, lactoridclient, lactoridserver);
+			}
+			else
+			{
+				lpack = net_pack<T>::npack(&m_pool, adata, lactoridserver, lactoridclient);
 			}
 
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, lactorid1, lactorid2);
 			if (lpack == nullptr)
 			{
 				return false;

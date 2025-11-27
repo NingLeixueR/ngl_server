@@ -114,7 +114,7 @@ namespace ngl
 							i64_actorid lactorid = arobot.m_robot->id_guid();
 
 							arobot.m_robot->set_kcpindex(nets::create_kcp());
-							nets::kcp(kcpindex())->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
+							nets::kcp(arobot.m_robot->kcpindex())->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
 								, [this, tabgame, lpstruct, lsession, lactorid, arobot](char* buff, int len)
 								{
 									log_error()->print("GetIp Finish : {}", buff);
@@ -127,6 +127,7 @@ namespace ngl
 									pro.set_mconv(ukcp::m_conv);
 									pro.set_mactoridclient(lactorid);
 									pro.set_mactoridserver(nguid::make_type(lactorid, ACTOR_ROLE));
+									pro.set_m_kcpnum(pbnet::KCP_ROLE1);
 									nets::sendbysession(lsession, pro, nguid::moreactor(), lactorid);
 								});
 							return true;

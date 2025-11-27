@@ -542,6 +542,31 @@ inline bool ENUM_CHAT_CHANNEL_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ENUM_CHAT_CHANNEL>(
     ENUM_CHAT_CHANNEL_descriptor(), name, value);
 }
+enum ENUM_KCP : int {
+  KCP_ROLE1 = 0,
+  KCP_ROLE2 = 1,
+  ENUM_KCP_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  ENUM_KCP_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool ENUM_KCP_IsValid(int value);
+constexpr ENUM_KCP ENUM_KCP_MIN = KCP_ROLE1;
+constexpr ENUM_KCP ENUM_KCP_MAX = KCP_ROLE2;
+constexpr int ENUM_KCP_ARRAYSIZE = ENUM_KCP_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ENUM_KCP_descriptor();
+template<typename T>
+inline const std::string& ENUM_KCP_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, ENUM_KCP>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function ENUM_KCP_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    ENUM_KCP_descriptor(), enum_t_value);
+}
+inline bool ENUM_KCP_Parse(
+    const std::string& name, ENUM_KCP* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ENUM_KCP>(
+    ENUM_KCP_descriptor(), name, value);
+}
 enum eunit : int {
   eunit_role = 0,
   eunit_monster = 1,
@@ -6346,6 +6371,7 @@ class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
     kMconvFieldNumber = 4,
     kMactoridserverFieldNumber = 5,
     kMactoridclientFieldNumber = 6,
+    kMKcpnumFieldNumber = 7,
   };
   // string muip = 2;
   bool has_muip() const;
@@ -6441,6 +6467,19 @@ class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
   void _internal_set_mactoridclient(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
+  // .pbnet.ENUM_KCP m_kcpnum = 7;
+  bool has_m_kcpnum() const;
+  private:
+  bool _internal_has_m_kcpnum() const;
+  public:
+  void clear_m_kcpnum();
+  ::pbnet::ENUM_KCP m_kcpnum() const;
+  void set_m_kcpnum(::pbnet::ENUM_KCP value);
+  private:
+  ::pbnet::ENUM_KCP _internal_m_kcpnum() const;
+  void _internal_set_m_kcpnum(::pbnet::ENUM_KCP value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_KCPSESSION)
  private:
   class _Internal;
@@ -6456,6 +6495,7 @@ class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::int32 mconv_;
   ::PROTOBUF_NAMESPACE_ID::int64 mactoridserver_;
   ::PROTOBUF_NAMESPACE_ID::int64 mactoridclient_;
+  int m_kcpnum_;
   friend struct ::TableStruct_net_2eproto;
 };
 // -------------------------------------------------------------------
@@ -17211,6 +17251,34 @@ inline void PROBUFF_NET_KCPSESSION::set_mactoridclient(::PROTOBUF_NAMESPACE_ID::
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION.mactoridclient)
 }
 
+// .pbnet.ENUM_KCP m_kcpnum = 7;
+inline bool PROBUFF_NET_KCPSESSION::_internal_has_m_kcpnum() const {
+  bool value = (_has_bits_[0] & 0x00000040u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_KCPSESSION::has_m_kcpnum() const {
+  return _internal_has_m_kcpnum();
+}
+inline void PROBUFF_NET_KCPSESSION::clear_m_kcpnum() {
+  m_kcpnum_ = 0;
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline ::pbnet::ENUM_KCP PROBUFF_NET_KCPSESSION::_internal_m_kcpnum() const {
+  return static_cast< ::pbnet::ENUM_KCP >(m_kcpnum_);
+}
+inline ::pbnet::ENUM_KCP PROBUFF_NET_KCPSESSION::m_kcpnum() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_KCPSESSION.m_kcpnum)
+  return _internal_m_kcpnum();
+}
+inline void PROBUFF_NET_KCPSESSION::_internal_set_m_kcpnum(::pbnet::ENUM_KCP value) {
+  _has_bits_[0] |= 0x00000040u;
+  m_kcpnum_ = value;
+}
+inline void PROBUFF_NET_KCPSESSION::set_m_kcpnum(::pbnet::ENUM_KCP value) {
+  _internal_set_m_kcpnum(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION.m_kcpnum)
+}
+
 // -------------------------------------------------------------------
 
 // PROBUFF_NET_KCPSESSION_RESPONSE
@@ -20517,6 +20585,11 @@ template <> struct is_proto_enum< ::pbnet::ENUM_CHAT_CHANNEL> : ::std::true_type
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::pbnet::ENUM_CHAT_CHANNEL>() {
   return ::pbnet::ENUM_CHAT_CHANNEL_descriptor();
+}
+template <> struct is_proto_enum< ::pbnet::ENUM_KCP> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::pbnet::ENUM_KCP>() {
+  return ::pbnet::ENUM_KCP_descriptor();
 }
 template <> struct is_proto_enum< ::pbnet::eunit> : ::std::true_type {};
 template <>

@@ -22,6 +22,7 @@ namespace ngl
 	std::array<net_protocol*, ENET_COUNT> nets::m_net;
 	std::map<int16_t, ukcp*> nets::m_kcpnet;
 	int16_t nets::m_kcpindex = 0;
+	net_works nets::m_kcpworks;
 
 	net_protocol* nets::net_first()
 	{
@@ -80,9 +81,19 @@ namespace ngl
 		return true;
 	}
 
-	ukcp* nets::kcp(int16_t anum /*= isystemindex*/)
+	ukcp* nets::kcp(int16_t anum)
 	{
 		auto itor = m_kcpnet.find(anum);
+		if (itor == m_kcpnet.end())
+		{
+			return nullptr;
+		}
+		return itor->second;
+	}
+
+	ukcp* nets::serkcp(pbnet::ENUM_KCP anum)
+	{
+		auto itor = m_kcpnet.find(m_kcpworks.m_port + anum);
 		if (itor == m_kcpnet.end())
 		{
 			return nullptr;
@@ -94,14 +105,25 @@ namespace ngl
 	{
 		if (m_kcpindex == 0)
 		{
-			m_kcpindex = nconfig::m_tcount*1000 + m_kcpindex;
+			m_kcpindex = nconfig::m_tcount*1000;
 		}
 		++m_kcpindex;
 		m_kcpnet[m_kcpindex] = ukcp::create(m_kcpindex);
 		return m_kcpindex;
 	}
 
-	bool nets::init(i32_threadsize asocketthreadnum, bool aouternet)
+	int16_t nets::create_kcp(pbnet::ENUM_KCP aenum)
+	{
+		int16_t lkcpindex = m_kcpworks.m_port + aenum;
+		if (!m_kcpnet.contains(lkcpindex))
+		{
+			m_kcpnet[lkcpindex] = ukcp::create(lkcpindex);
+			return lkcpindex;
+		}
+		return lkcpindex;		
+	}
+
+	bool nets::init(i32_threadsize asocketthreadnum, bool aouternet, const std::set<pbnet::ENUM_KCP>& akcp)
 	{
 		if (check_serverkcp() == false)
 		{
@@ -113,7 +135,7 @@ namespace ngl
 		{
 			return false;
 		}
-		
+		bool lfirstkcp = true;
 		for (const net_works& item : tab->m_net)
 		{
 			uint16_t lport = item.m_port + (nconfig::m_tcount-1);
@@ -130,9 +152,21 @@ namespace ngl
 				}
 				lserver->init(lport, asocketthreadnum, aouternet);
 			}
-			else if (item.m_type == ENET_KCP&& lport != -1)
+			else if (item.m_type == ENET_KCP&& lport != -1 && nconfig::node_type() != ROBOT)
 			{
-				m_kcpnet[isystemindex] = ukcp::create(lport);
+				if (lfirstkcp)
+				{
+					lfirstkcp = false;
+					m_kcpworks = item;
+					for (pbnet::ENUM_KCP kcptype : akcp)
+					{
+						nets::create_kcp(kcptype);
+					}
+				}	
+				else
+				{
+					tools::no_core_dump();
+				}
 			}
 		}
 		return true;

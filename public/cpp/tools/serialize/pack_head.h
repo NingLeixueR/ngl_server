@@ -64,6 +64,14 @@ namespace ngl
 
 		void set_requestactor(i64_actorid arequestactorid);
 
+		void set_custom1(int32_t avalue);
+		void set_custom2(int32_t avalue);
+		void set_custom(int64_t avalue);
+
+		int32_t custom1()const;
+		int32_t custom2()const;
+		int64_t custom()const;
+
 		// # 获取要发送给哪个actor
 		i64_actorid		get_actor()const;
 

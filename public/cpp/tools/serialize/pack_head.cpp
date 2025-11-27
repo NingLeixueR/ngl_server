@@ -54,6 +54,36 @@ namespace ngl
 		*(i64_actorid*)(&m_data[EPH::EPH_REQUEST_ACTOR_TYPEAREA]) = arequestactor;
 	}
 
+	void pack_head::set_custom1(int32_t avalue)
+	{
+		m_data[EPH::EPH_CUSTOM1] = avalue;
+	}
+
+	void pack_head::set_custom2(int32_t avalue)
+	{
+		m_data[EPH::EPH_CUSTOM2] = avalue;
+	}
+
+	void pack_head::set_custom(int64_t avalue)
+	{
+		*(int64_t*)(&m_data[EPH::EPH_CUSTOM1]) = avalue;
+	}
+
+	int32_t pack_head::custom1()const
+	{
+		return m_data[EPH::EPH_CUSTOM1];
+	}
+
+	int32_t pack_head::custom2()const
+	{
+		return m_data[EPH::EPH_CUSTOM2];
+	}
+
+	int64_t pack_head::custom()const
+	{
+		return *(int64_t*)(&m_data[EPH::EPH_CUSTOM1]);
+	}
+
 	void pack_head::set_time()
 	{
 		head_set_time(m_data);

@@ -53,7 +53,7 @@
 #include <chrono>
 #include <thread>
 
-bool init_server(int aid)
+bool init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {})
 {
 	// # 加载并关联协议号
 	ngl::xmlprotocol::load();
@@ -72,7 +72,7 @@ bool init_server(int aid)
 
 	// # 启动网络监听
 	const ngl::tab_servers* tab = ngl::ttab_servers::instance().tab();
-	ngl::nets::init(tab->m_threadnum, tab->m_outernet);
+	ngl::nets::init(tab->m_threadnum, tab->m_outernet, akcp);
 
 	// # 初始化actor管理模块
 	ngl::actor_manage::instance().init(tab->m_actorthreadnum);
