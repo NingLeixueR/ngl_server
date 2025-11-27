@@ -353,16 +353,20 @@ namespace ngl
 		static bool support_kcp();
 
 	private:
-		int16_t m_kcpindex = 0;
+		std::map<pbnet::ENUM_KCP, int16_t> m_kcpindex;
 	public:
-		void set_kcpindex(int16_t akcpindex)
+		void set_kcpindex(pbnet::ENUM_KCP aenum, int16_t akcpindex)
 		{
-			m_kcpindex = akcpindex;
+			m_kcpindex[aenum] = akcpindex;
 		}
 
-		int16_t kcpindex()
+		int16_t kcpindex(pbnet::ENUM_KCP aenum)
 		{
-			return m_kcpindex;
+			if (m_kcpindex.contains(aenum))
+			{
+				return -1;
+			}
+			return m_kcpindex[aenum];
 		}
 
 		//# 通过udp.kcp发送数据
