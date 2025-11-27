@@ -88,7 +88,7 @@ namespace ngl
 			// 进行kcp连接
 			handle_cmd::add("kcp") = [this](const std::vector<std::string>& avec)
 				{
-					foreach([this](_robot& arobot)
+					foreach([this, &avec](_robot& arobot)
 						{
 							const tab_servers* tab = ttab_servers::instance().tab();
 							const tab_servers* tabgame = ttab_servers::instance().tab("game", tab->m_area);
@@ -106,16 +106,17 @@ namespace ngl
 							{
 								return true;
 							}
+							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
 							// 获取本机uip
 							ngl::asio_udp_endpoint lendpoint(
-								asio::ip::address::from_string(lpstructgame.m_ip), lpstructgame.m_port
+								asio::ip::address::from_string(lpstructgame.m_ip), lpstructgame.m_port + lkcpenum
 							);
 							i32_session lsession = arobot.m_session;
 							i64_actorid lactorid = arobot.m_robot->id_guid();
 
-							arobot.m_robot->set_kcpindex(nets::create_kcp());
-							nets::kcp(arobot.m_robot->kcpindex())->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
-								, [this, tabgame, lpstruct, lsession, lactorid, arobot](char* buff, int len)
+							arobot.m_robot->set_kcpindex(lkcpenum, nets::create_kcp());
+							nets::kcp(arobot.m_robot->kcpindex(lkcpenum))->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
+								, [this, tabgame, lpstruct, lsession, lactorid, &arobot, lkcpenum](char* buff, int len)
 								{
 									log_error()->print("GetIp Finish : {}", buff);
 									ukcp::m_localuip = buff;
@@ -123,11 +124,11 @@ namespace ngl
 									pbnet::PROBUFF_NET_KCPSESSION pro;
 									pro.set_mserverid(tabgame->m_id);
 									pro.set_muip(ukcp::m_localuip);
-									pro.set_muport(arobot.m_robot->kcpindex());
+									pro.set_muport(arobot.m_robot->kcpindex(lkcpenum));
 									pro.set_mconv(ukcp::m_conv);
 									pro.set_mactoridclient(lactorid);
 									pro.set_mactoridserver(nguid::make_type(lactorid, ACTOR_ROLE));
-									pro.set_m_kcpnum(pbnet::KCP_ROLE1);
+									pro.set_m_kcpnum(lkcpenum);
 									nets::sendbysession(lsession, pro, nguid::moreactor(), lactorid);
 								});
 							return true;
@@ -138,9 +139,10 @@ namespace ngl
 			handle_cmd::add("kcp_gettime") = [this](const std::vector<std::string>& avec)
 				{
 					pbnet::PROBUFF_NET_GET_TIME pro;
-					foreach([&pro, this](_robot& arobot)
+					foreach([&pro, this, &avec](_robot& arobot)
 						{
-							actor::sendkcp(arobot.m_robot->id_guid(), pro, arobot.m_robot->kcpindex());
+							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
+							actor::sendkcp(arobot.m_robot->id_guid(), pro, arobot.m_robot->kcpindex(lkcpenum));
 							return true;
 						});
 				};
