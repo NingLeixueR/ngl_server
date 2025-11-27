@@ -187,15 +187,16 @@ namespace ngl
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
 	{
+		auto lpram = adata.get_data();
 		const tab_servers* tab = ttab_servers::instance().tab();
-		m_kcpsessionmd5 = adata.get_data()->mkcpsession();
 
 		net_works lpstructgame;
 		if (!ttab_servers::instance().get_nworks("game", nconfig::area(), 1, ENET_KCP, lpstructgame))
 		{
 			return false;
 		}
-		return connect_kcp(m_kcp, lpstructgame.m_ip, lpstructgame.m_port);
+		std::string lkcpsession = lpram->mkcpsession();
+		return connect_kcp(kcpindex(), lpstructgame.m_ip, lpstructgame.m_port, nguid::make_type(id_guid(), ACTOR_ROLE), lkcpsession);
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
 	{

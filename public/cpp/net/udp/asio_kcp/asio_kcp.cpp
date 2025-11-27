@@ -22,7 +22,7 @@ namespace ngl
 {
 	//## [udp_cmd::ecmd_connect]		调用aconnect为true
 	//## [udp_cmd::ecmd_connect_ret]	调用aconnect为false
-	bool asio_kcp::function_econnect(ptr_se& apstruct, i64_actorid aactorid, bool aconnect)
+	bool asio_kcp::function_econnect(ptr_se& apstruct, bool aconnect)
 	{
 		i32_sessionid session = apstruct->m_session;
 		xmlinfo const* linfo = nconfig::get_publicconfig();
@@ -91,22 +91,24 @@ namespace ngl
 				apstruct->m_pingtm = (int)localtime::gettime();
 				njson_read ltempjson(ajson.c_str());
 
-				i64_actorid lactorid;
+				i64_actorid lactoridclient;
+				i64_actorid lactoridserver;
 				std::string lsession;
-				if (!njson::read(ltempjson, "actorid", lactorid, "session", lsession))
+				if (!njson::read(ltempjson, "actoridclient", lactoridclient, "actoridserver", lactoridserver, "session", lsession))
 				{
 					return;
 				}
-				if (ukcp::check_session(lactorid, lsession) == false)
+				if (ukcp::check_session(lactoridserver, lactoridclient, lsession) == false)
 				{
 					return;
 				}
 				
-				apstruct->m_actorid = lactorid;
+				apstruct->m_actoridclient = lactoridclient;
+				apstruct->m_actoridserver = lactoridserver;
 
 				log_error()->print("kcp connect : {}@{}", session_endpoint::ip(apstruct.get()), session_endpoint::port(apstruct.get()));
 
-				if (ap->function_econnect(apstruct, lactorid, true))
+				if (ap->function_econnect(apstruct, true))
 				{
 					udp_cmd::sendcmd(ap, apstruct->m_session, udp_cmd::ecmd_connect_ret, "{}");
 				}
@@ -124,7 +126,7 @@ namespace ngl
 				if (nconfig::m_nodetype == ngl::ROBOT)
 				{
 					// 定时发送cmd:ping
-					ap->function_econnect(apstruct, -1, false);
+					ap->function_econnect(apstruct, false);
 				}
 				ap->m_connectfun(apstruct->m_session);
 			});
@@ -204,14 +206,14 @@ namespace ngl
 		lpack->malloc(len);
 		memcpy(lpack->m_buff, abuff, len);
 		
-		i64_actorid lactorid = apstruct->m_actorid;
+		i64_actorid lactorid;
 		if (nconfig::node_type() == GAME)
 		{
-			lactorid = nguid::make_type(apstruct->m_actorid, ACTOR_ROLE);
+			lactorid = nguid::make_type(apstruct->m_actoridserver, ACTOR_ROLE);
 		}
 		else if (nconfig::node_type() == ROBOT)
 		{
-			lactorid = nguid::make_type(apstruct->m_actorid, ACTOR_ROBOT);
+			lactorid = nguid::make_type(apstruct->m_actoridclient, ACTOR_ROBOT);
 		}
 		lpack->m_head.set_actor(lactorid, lactorid);
 		lpack->m_pos = len;
@@ -368,6 +370,18 @@ namespace ngl
 		return true;
 	}
 
+	bool asio_kcp::sendpackbyactorid(i64_actorid aactorid, const std::shared_ptr<pack>& apack)
+	{
+		ptr_se lpstruct = m_session.findbyactorid(aactorid);
+		if (lpstruct == nullptr)
+		{
+			return false;
+		}
+
+		send(lpstruct->m_endpoint, apack->m_buff, apack->m_len);
+		return true;
+	}
+
 	bool asio_kcp::send(i32_sessionid asessionid, const char* buf, int len)
 	{
 		ptr_se lpstruct = m_session.find(asessionid);
@@ -421,41 +435,75 @@ namespace ngl
 
 	void asio_kcp::connect(int32_t aconv
 		, std::string& akcpsess
-		, i64_actorid aactorid
+		, i64_actorid aactoridlocal
+		, i64_actorid aactoridremote
 		, const std::string& aip
 		, i16_port aport
 		, const std::function<void(i32_session)>& afun
 	)
 	{
 		ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(aip), aport);
-		connect(aconv, akcpsess, aactorid, lendpoint, afun);
+		connect(aconv, akcpsess, aactoridlocal, aactoridremote, lendpoint, afun);
 	}
 
 	void asio_kcp::connect(int32_t aconv
 		, std::string& akcpsess
-		, i64_actorid aactorid
+		, i64_actorid aactoridserver
+		, i64_actorid aactoridclient
 		, const asio_udp_endpoint& aendpoint
 		, const std::function<void(i32_session)>& afun
 	)
 	{
 		// #### 发起连接
-		ptr_se lpstruct = m_session.add(aconv, aendpoint, aactorid);
+		ptr_se lpstruct = m_session.add(aconv, aendpoint, aactoridserver, aactoridclient);
 		njson_write ltempjson;
-		njson::write(ltempjson, "actorid", aactorid, "session", akcpsess);
+		njson::write(ltempjson, "actoridserver", aactoridserver, "actoridclient", aactoridclient, "session", akcpsess);
 		ltempjson.set_nonformatstr(true);
 		std::string lparm = ltempjson.get();
 		udp_cmd::sendcmd(this, lpstruct->m_session, udp_cmd::ecmd_connect, lparm);
 		m_connectfun = afun;
 	}
 
-	i64_actorid asio_kcp::find_actorid(i32_session asession)
+	i64_actorid asio_kcp::find_actoridserver(i32_session asession)
 	{
 		ptr_se lpstruct = m_session.find(asession);
 		if (lpstruct == nullptr)
 		{
 			return -1;
 		}
-		return lpstruct->m_actorid;
+		return lpstruct->m_actoridserver;
+	}
+
+	i64_actorid asio_kcp::find_actoridclient(i32_session asession)
+	{
+		ptr_se lpstruct = m_session.find(asession);
+		if (lpstruct == nullptr)
+		{
+			return -1;
+		}
+		return lpstruct->m_actoridclient;
+	}
+
+	bool asio_kcp::find_actorid(i32_session asession, i64_actorid& aactoridserver, i64_actorid& aactoridclient)
+	{
+		ptr_se lpstruct = m_session.find(asession);
+		if (lpstruct == nullptr)
+		{
+			return false;
+		}
+		aactoridserver = lpstruct->m_actoridserver;
+		aactoridclient = lpstruct->m_actoridclient;
+		return true;
+	}
+
+	i32_session asio_kcp::find_session(i64_actorid aactorid)
+	{
+		ptr_se lpstruct = m_session.findbyactorid(aactorid);
+		if (lpstruct == nullptr)
+		{
+			return -1;
+		}
+		return lpstruct->m_session;
 	}
 
 	void asio_kcp::close(i32_session asession)
@@ -463,10 +511,10 @@ namespace ngl
 		m_session.erase(asession);
 	}
 
-	void asio_kcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport)
+	void asio_kcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aactoridlocal, i64_actorid aactoridremote)
 	{
 		ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(aip), aport);
-		m_session.reset_add(aconv, lendpoint, -1);
+		m_session.reset_add(aconv, lendpoint, aactoridlocal, aactoridremote);
 	}
 
 	void asio_kcp::close_net(i32_session asession)

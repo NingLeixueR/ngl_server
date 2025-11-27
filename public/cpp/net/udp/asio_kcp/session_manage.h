@@ -37,6 +37,8 @@ namespace ngl
 		session_manage& operator=(const session_manage&) = delete;
 
 		std::map<i32_sessionid, ptr_se>						m_dataofsession;
+		std::map<i64_actorid, i32_sessionid>				m_actoridofsession;		// client/server¶ÔÓ¦µÄsessionid
+
 		std::map<std::string, std::map<i16_port, ptr_se>>	m_dataofendpoint;
 		int32_t												m_sessionid;
 		std::shared_mutex									m_mutex;
@@ -44,9 +46,9 @@ namespace ngl
 	public:
 		session_manage(asio_kcp* asiokcp);
 
-		ptr_se add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactorid);
+		ptr_se add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridlocal, i64_actorid aactoridremote);
 
-		ptr_se reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactorid);
+		ptr_se reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridlocal, i64_actorid aactoridremote);
 
 		void erase(const asio_udp_endpoint& aendpoint);
 
@@ -57,6 +59,8 @@ namespace ngl
 		ptr_se _find(const asio_udp_endpoint& aendpoint);
 	public:
 		ptr_se find(i32_sessionid asession);
+
+		ptr_se findbyactorid(i64_actorid aactorid);
 
 		ptr_se find(const asio_udp_endpoint& aendpoint);
 

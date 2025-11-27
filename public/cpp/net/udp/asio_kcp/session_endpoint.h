@@ -46,7 +46,8 @@ namespace ngl
 		bool				m_isconnect = false;		// 是否接收到kcp_cmd::ecmd_connect 或者ecmd_connect_ret
 		int32_t				m_pingtm = 0;				// 进行ping计时 
 		int64_t				m_pingtimerid = 0;			// ping定时器id
-		i64_actorid			m_actorid = 0;
+		i64_actorid			m_actoridclient = 0;		// robot
+		i64_actorid			m_actoridserver = 0;		// server
 
 		typedef int (*output)(const char* buf, int len, struct IKCPCB* kcp, void* user);
 

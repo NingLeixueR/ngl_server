@@ -67,11 +67,6 @@ namespace ngl
 		nforward::g2c();
 	}
 
-	const char* actor_robot::kcp_session()
-	{
-		return m_kcpsessionmd5.c_str();
-	}
-
 	bool actor_robot::timer_handle(const message<np_timerparm>& adata)
 	{
 		return true;

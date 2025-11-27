@@ -113,10 +113,9 @@ namespace ngl
 							i32_session lsession = arobot.m_session;
 							i64_actorid lactorid = arobot.m_robot->id_guid();
 
-							int16_t lkcp = nets::create_kcp();
-							arobot.m_robot->m_kcp = lkcp;
-							nets::kcp(arobot.m_robot->m_kcp)->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
-								, [this, tabgame, lpstruct, lsession, lactorid, lkcp](char* buff, int len)
+							arobot.m_robot->set_kcpindex(nets::create_kcp());
+							nets::kcp(kcpindex())->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
+								, [this, tabgame, lpstruct, lsession, lactorid, arobot](char* buff, int len)
 								{
 									log_error()->print("GetIp Finish : {}", buff);
 									ukcp::m_localuip = buff;
@@ -124,8 +123,10 @@ namespace ngl
 									pbnet::PROBUFF_NET_KCPSESSION pro;
 									pro.set_mserverid(tabgame->m_id);
 									pro.set_muip(ukcp::m_localuip);
-									pro.set_muport(lkcp);
+									pro.set_muport(arobot.m_robot->kcpindex());
 									pro.set_mconv(ukcp::m_conv);
+									pro.set_mactoridclient(lactorid);
+									pro.set_mactoridserver(nguid::make_type(lactorid, ACTOR_ROLE));
 									nets::sendbysession(lsession, pro, nguid::moreactor(), lactorid);
 								});
 							return true;
@@ -138,7 +139,7 @@ namespace ngl
 					pbnet::PROBUFF_NET_GET_TIME pro;
 					foreach([&pro, this](_robot& arobot)
 						{
-							sendkcp(&arobot, pro);
+							actor::sendkcp(arobot.m_robot->id_guid(), pro, arobot.m_robot->kcpindex());
 							return true;
 						});
 				};

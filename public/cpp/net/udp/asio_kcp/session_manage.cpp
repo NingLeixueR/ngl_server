@@ -29,7 +29,7 @@ namespace ngl
 		m_asiokcp(asiokcp)
 	{}
 
-	ptr_se session_manage::add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactorid)
+	ptr_se session_manage::add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridclient, i64_actorid aactoridserver)
 	{
 		std::string lip = aendpoint.address().to_string();
 		i16_port lport = aendpoint.port();
@@ -54,8 +54,11 @@ namespace ngl
 		ltemp->m_ip = lip;
 		ltemp->m_port = lport;
 		ltemp->m_asiokcp = m_asiokcp;
-		ltemp->m_actorid = nguid::make(ACTOR_ROLE, nguid::area(aactorid), nguid::actordataid(aactorid));
+		ltemp->m_actoridclient = aactoridclient;
+		ltemp->m_actoridserver = aactoridserver;
 		ltemp->create(aconv, m_sessionid, (void*)ltemp.get());
+		m_actoridofsession[aactoridclient] = m_sessionid;
+		m_actoridofsession[aactoridserver] = m_sessionid;
 
 		//设置kcp对象的回调函数
 		ltemp->setoutput(udp_output);
@@ -79,10 +82,10 @@ namespace ngl
 		return ltemp;
 	}
 
-	ptr_se session_manage::reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactorid)
+	ptr_se session_manage::reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridlocal, i64_actorid aactoridremote)
 	{
 		erase(aendpoint);
-		return add(aconv, aendpoint, aactorid);
+		return add(aconv, aendpoint, aactoridlocal, aactoridremote);
 	}
 
 	void session_manage::erase(const asio_udp_endpoint& aendpoint)
@@ -148,12 +151,18 @@ namespace ngl
 	ptr_se session_manage::find(i32_sessionid asession)
 	{
 		monopoly_shared_lock(m_mutex);
-		auto itor = m_dataofsession.find(asession);
-		if (itor == m_dataofsession.end())
+		return _find(asession);
+	}
+
+	ptr_se session_manage::findbyactorid(i64_actorid aactorid)
+	{
+		monopoly_shared_lock(m_mutex);
+		auto itor = m_actoridofsession.find(aactorid);
+		if (itor == m_actoridofsession.end())
 		{
 			return nullptr;
 		}
-		return itor->second;
+		return _find(itor->second);
 	}
 
 	ptr_se session_manage::find(const asio_udp_endpoint& aendpoint)
@@ -172,7 +181,4 @@ namespace ngl
 		}
 		return &lpstruct->m_endpoint;
 	}
-
-
-
 }//namespace ngl

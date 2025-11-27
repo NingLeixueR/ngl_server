@@ -24,54 +24,67 @@ namespace ngl
 	{}
 
 	void ukcp::connect(std::string& akcpsess
-		, i64_actorid aactorid
+		, i64_actorid aactoridserver
+		, i64_actorid aactoridclient
 		, const std::string& aip
 		, i16_port aport
 		, const std::function<void(i32_session)>& afun
 	)
 	{
-		m_kcp.connect(m_conv, akcpsess, aactorid, aip, aport, afun);
+		m_kcp.connect(m_conv, akcpsess, aactoridserver, aactoridclient, aip, aport, afun);
 	}
 
 	void ukcp::connect(std::string& akcpsess
-		, i64_actorid aactorid
+		, i64_actorid aactoridserver
+		, i64_actorid aactoridclient
 		, const asio_udp_endpoint& aendpoint
 		, const std::function<void(i32_session)>& afun
 	)
 	{
-		m_kcp.connect(m_conv, akcpsess, aactorid, aendpoint, afun);
+		m_kcp.connect(m_conv, akcpsess, aactoridserver, aactoridclient, aendpoint, afun);
 	}
 
-	i64_actorid ukcp::find_actorid(i32_session asession)
+	i64_actorid ukcp::find_actoridserver(i32_session asession)
 	{
-		return m_kcp.find_actorid(asession);
+		return m_kcp.find_actoridserver(asession);
+	}
+
+	i64_actorid ukcp::find_actoridclient(i32_session asession)
+	{
+		return m_kcp.find_actoridclient(asession);
+	}
+
+	bool ukcp::find_actorid(i32_session asession, i64_actorid& aactoridserver, i64_actorid& aactoridclient)
+	{
+		return m_kcp.find_actorid(asession, aactoridserver, aactoridclient);
 	}
 
 	// 生成kcp-session以验证连接
-	bool ukcp::create_session(i64_actorid aactorid, std::string& asession)
+	bool ukcp::create_session(i64_actorid aactoridclient, i64_actorid aactoridserver, std::string& asession)
 	{
-		std::string lkcpsession = std::format("{}&{}&{}", sysconfig::kcpsession(), nguid::area(aactorid), nguid::actordataid(aactorid));
+		std::string lkcpsession = std::format("{}&{}&{}", sysconfig::kcpsession(), aactoridclient, aactoridserver);
 		asession = tools::md5(lkcpsession);
+		log_error_net()->print("ukcp::create_session({}:{})", lkcpsession, asession);
 		return true;
 	}
 
-	bool ukcp::check_session(i64_actorid aactorid, const std::string& asession)
+	bool ukcp::check_session(i64_actorid aactoridclient, i64_actorid aactoridserver, const std::string& asession)
 	{
 		std::string lsession;
-		if (create_session(aactorid, lsession) == false)
+		if (create_session(aactoridclient, aactoridserver, lsession) == false)
 		{
 			return false;
 		}
 		return asession == lsession;
 	}
 
-	void ukcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport)
+	void ukcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient)
 	{
-		m_kcp.reset_add(aconv, aip, aport);
+		m_kcp.reset_add(aconv, aip, aport, aactoridserver, aactoridclient);
 	}
 
-	void ukcp::reset_add(const std::string& aip, i16_port aport)
+	void ukcp::reset_add(const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient)
 	{
-		m_kcp.reset_add(m_conv, aip, aport);
+		m_kcp.reset_add(m_conv, aip, aport, aactoridserver, aactoridclient);
 	}
 }// namespace ngl

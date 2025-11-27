@@ -99,7 +99,6 @@ namespace ngl
 		{
 			return;
 		}
-		set_kcpssion(aparm.m_pack->m_id);
 	}
 
 	bool actor::ahandle(i32_threadid athreadid, handle_pram& aparm)
