@@ -362,11 +362,12 @@ namespace ngl
 
 		int16_t kcpindex(pbnet::ENUM_KCP aenum)
 		{
-			if (m_kcpindex.contains(aenum))
+			auto itor = m_kcpindex.find(aenum);
+			if (itor == m_kcpindex.end())
 			{
 				return -1;
 			}
-			return m_kcpindex[aenum];
+			return itor->second;
 		}
 
 		//# 通过udp.kcp发送数据
