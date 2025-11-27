@@ -16,8 +16,6 @@
 #include "ttab_servers.h"
 #include "net_protocol.h"
 
-#define isystemindex (0)
-
 namespace ngl
 {
 	class nets
@@ -29,6 +27,7 @@ namespace ngl
 		static std::array<net_protocol*, ENET_COUNT>	m_net;
 		static std::map<int16_t, ukcp*>					m_kcpnet;
 		static int16_t									m_kcpindex;
+		static net_works								m_kcpworks;
 	public:
 		static net_protocol* net_first();
 
@@ -38,7 +37,7 @@ namespace ngl
 
 		static net_protocol* nettype(ENET_PROTOCOL atype);
 
-		static bool init(i32_threadsize asocketthreadnum, bool aouternet);
+		static bool init(i32_threadsize asocketthreadnum, bool aouternet, const std::set<pbnet::ENUM_KCP>& akcp);
 
 		// 服务器只监听一个端口
 		static bool check_serverkcp();
@@ -46,7 +45,12 @@ namespace ngl
 		// robot 创建随机端口
 		static int16_t create_kcp();
 
-		static ukcp* kcp(int16_t anum = isystemindex);
+		// server 创建指定端口
+		static int16_t create_kcp(pbnet::ENUM_KCP aenum);
+
+		// 获取实例 
+		static ukcp* kcp(int16_t anum);
+		static ukcp* serkcp(pbnet::ENUM_KCP aenum);
 
 		template <typename Y, typename T = Y>
 		static bool sendbyserver(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
@@ -228,6 +232,17 @@ namespace ngl
 			return false;
 		}
 		nets::kcp(aindex)->sendbyactorid(aactorid, adata);
+		return true;
+	}
+
+	template <typename T>
+	bool actor_base::sendkcp(const pack* apack, T& adata)
+	{
+		if (support_kcp() == false)
+		{
+			return false;
+		}
+		nets::kcp((int16_t)apack->m_head.custom())->sendbyactorid(apack->m_head.get_request_actor(), adata);
 		return true;
 	}
 }//namespace ngl

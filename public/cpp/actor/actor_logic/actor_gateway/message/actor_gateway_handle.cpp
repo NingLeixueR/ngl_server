@@ -274,7 +274,7 @@ namespace ngl
 		pro.m_uip			= lpram->muip();
 		pro.m_uport			= lpram->muport();
 		pro.m_conv			= lpram->mconv();
-
+		pro.m_kcpnum		= lpram->m_kcpnum();
 
 		nets::sendbyserver((i32_serverid)lgametid, pro, nguid::make(), nguid::make());
 		return true;

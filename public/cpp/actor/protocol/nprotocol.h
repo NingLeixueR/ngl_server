@@ -14,6 +14,7 @@
 #pragma once
 
 #include "nprotocol_template.h"
+#include "net.pb.h"
 
 namespace ngl
 {
@@ -317,8 +318,11 @@ namespace ngl
 		std::string			m_uip;
 		i16_port			m_uport = -1;
 		int32_t				m_conv = -1;
+		// 想要连接哪个服务器  哪个kcp实例
+		NODE_TYPE			m_nodetype;
+		pbnet::ENUM_KCP		m_kcpnum;
 
-		dprotocol(np_actor_kcp, m_kcpsession, m_sessionid, m_actoridclient, m_actoridserver, m_uip, m_uport, m_conv)
+		dprotocol(np_actor_kcp, m_kcpsession, m_sessionid, m_actoridclient, m_actoridserver, m_uip, m_uport, m_conv, m_nodetype, m_kcpnum)
 	};
 
 	struct calendar_utc

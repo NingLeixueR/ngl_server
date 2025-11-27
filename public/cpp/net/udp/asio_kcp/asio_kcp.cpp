@@ -207,15 +207,13 @@ namespace ngl
 		memcpy(lpack->m_buff, abuff, len);
 		
 		i64_actorid lactorid;
-		if (nconfig::node_type() == GAME)
+		if (nconfig::node_type() != ROBOT)
 		{
-			lactorid = nguid::make_type(apstruct->m_actoridserver, ACTOR_ROLE);
+			lpack->m_head.set_actor(apstruct->m_actoridserver, apstruct->m_actoridclient);
 		}
-		else if (nconfig::node_type() == ROBOT)
-		{
-			lactorid = nguid::make_type(apstruct->m_actoridclient, ACTOR_ROBOT);
-		}
-		lpack->m_head.set_actor(lactorid, lactorid);
+		
+		lpack->m_head.set_custom(m_port);
+
 		lpack->m_pos = len;
 		if (localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
 		{

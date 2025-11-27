@@ -39,6 +39,8 @@ enum EPH
 	EPH_ACTOR_ID,								// ACTOR_ID
 	EPH_REQUEST_ACTOR_TYPEAREA,					// Request ACTOR_TYPE_AREA
 	EPH_REQUEST_ACTOR_ID,						// Request ACTOR_ID
+	EPH_CUSTOM1,								// 自定义1
+	EPH_CUSTOM2,								// 自定义2
 	EPH_SUM,	
 };
 

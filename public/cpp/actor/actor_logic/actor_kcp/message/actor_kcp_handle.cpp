@@ -19,7 +19,7 @@ namespace ngl
 	{
 		auto lpram = adata.get_data();
 		auto lpack = adata.get_pack();
-		nets::kcp()->reset_add(lpram->m_conv, lpram->m_uip, lpram->m_uport, lpram->m_actoridserver, lpram->m_actoridclient);
+		nets::serkcp(lpram->m_kcpnum)->reset_add(lpram->m_conv, lpram->m_uip, lpram->m_uport, lpram->m_actoridserver, lpram->m_actoridclient);
 		nets::sendbysession(lpack->m_id, *lpram, nguid::make(), nguid::make());
 		return true;
 	}
