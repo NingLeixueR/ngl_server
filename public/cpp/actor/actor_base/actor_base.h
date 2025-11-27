@@ -74,7 +74,6 @@ namespace ngl
 		std::unique_ptr<actor_manage_dbclient>		m_dbclient = nullptr;			// dbclient组件管理
 		bool										m_isload = false;				// 数据是否加载完成
 		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;					// dbclient组件
-		i32_session									m_kcpsession = -1;				// kcp session
 
 		//# 间隔一段时间发起的全员(所有actor)广播
 		//# 可以在这个广播里推送一些需要处理的任务,例如 保存数据
@@ -350,31 +349,28 @@ namespace ngl
 #pragma endregion 
 
 #pragma region kcp
-		//# 设置udp.kcp session
-		void set_kcpssion(i32_session asession);
-
-		//# 获取udp.kcp session
-		i32_session get_kcpssion();
-
 		//# 是否支持udp.kcp
 		static bool support_kcp();
 
-		//# 通过udp.kcp发送数据
-		template <typename T>
-		bool sendkcp(T& adata, i64_actorid aactorid, int16_t asystemindex = 0);
+	private:
+		int16_t m_kcpindex = 0;
+	public:
+		void set_kcpindex(int16_t akcpindex)
+		{
+			m_kcpindex = akcpindex;
+		}
+
+		int16_t kcpindex()
+		{
+			return m_kcpindex;
+		}
 
 		//# 通过udp.kcp发送数据
 		template <typename T>
-		static bool static_sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0);
-
-		//# 通过udp.kcp发送数据
-		template <typename T>
-		static bool static_sendkcp(const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0);
-
-		virtual const char* kcp_session();
+		static bool sendkcp(i64_actorid aactorid, T& adata, int16_t aindex = 0);
 
 		//# 发起kcp连接
-		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot);
+		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession);
 #pragma endregion 
 
 #pragma region send_client

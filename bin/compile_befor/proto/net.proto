@@ -274,6 +274,8 @@ message PROBUFF_NET_KCPSESSION//XXX [actor_gateway]
 	optional string muip		= 2;
 	optional int32	muport		= 3;
 	optional int32	mconv		= 4;
+	optional int64  mactoridserver = 5;
+	optional int64  mactoridclient = 6;
 };
 
 // [»Ø¸´]kcp-session

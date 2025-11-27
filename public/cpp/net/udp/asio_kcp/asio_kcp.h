@@ -61,7 +61,7 @@ namespace ngl
 		~asio_kcp();
 
 	private:
-		bool function_econnect(ptr_se& apstruct, i64_actorid aactorid, bool aconnect);
+		bool function_econnect(ptr_se& apstruct, bool aconnect);
 
 		void function_ecmd_connect()const;
 
@@ -89,10 +89,14 @@ namespace ngl
 		// # 通过kcp发送pack
 		bool sendpack(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack);
 
+		// # 通过kcp发送pack
+		bool sendpackbyactorid(i64_actorid aactorid, const std::shared_ptr<pack>& apack);
+
 		// # 发起连接
 		void connect(int32_t aconv
 			, std::string& akcpsess
-			, i64_actorid aactorid
+			, i64_actorid aactoridserver
+			, i64_actorid aactoridclient
 			, const std::string& aip
 			, i16_port aport
 			, const std::function<void(i32_session)>& afun
@@ -101,13 +105,20 @@ namespace ngl
 		// # 发起连接
 		void connect(int32_t aconv
 			, std::string& akcpsess
-			, i64_actorid aactorid
+			, i64_actorid aactoridserver
+			, i64_actorid aactoridclient
 			, const asio_udp_endpoint& aendpoint
 			, const std::function<void(i32_session)>& afun
 		);
 
 		// # 查找连接关联的actor
-		i64_actorid find_actorid(i32_session asession);
+		i64_actorid find_actoridserver(i32_session asession);
+		i64_actorid find_actoridclient(i32_session asession);
+		bool find_actorid(i32_session asession, i64_actorid& aactoridserver, i64_actorid& aactoridclient);
+
+
+		// # 根据actorid获取session
+		i32_session find_session(i64_actorid aactoridclient);
 
 		// # 关闭连接
 		void close(i32_session asession);
@@ -115,7 +126,7 @@ namespace ngl
 		void close_net(i32_session asession);
 
 		// # 重置连接
-		void reset_add(int32_t aconv, const std::string& aip, i16_port aport);
+		void reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient);
 
 		bool sempack(const ptr_se& apstruct, const char* abuff, int abufflen);
 
@@ -124,6 +135,8 @@ namespace ngl
 		bool send(i32_sessionid asessionid, const char* buf, int len);
 
 		int send(const asio_udp_endpoint& aendpoint, const char* buf, int len);
+
+
 
 		int sendbuff(i32_session asession, const char* buf, int len);
 

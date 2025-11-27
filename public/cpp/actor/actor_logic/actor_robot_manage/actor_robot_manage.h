@@ -74,12 +74,6 @@ namespace ngl
 			nets::sendbysession(arobot->m_session, adata, nguid::moreactor(), arobot->m_actor_roleid);
 		}
 
-		template <typename T>
-		void sendkcp(_robot* arobot, T& adata)
-		{
-			arobot->m_robot->sendkcp(adata, nguid::moreactor(), arobot->m_robot->m_kcp);
-		}		
-
 		bool getdata(_robot* arobot);
 
 		using handle_cmd = cmd<actor_robot_manage, std::string, const std::vector<std::string>&>;

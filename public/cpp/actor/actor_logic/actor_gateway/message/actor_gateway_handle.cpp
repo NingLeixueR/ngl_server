@@ -94,7 +94,7 @@ namespace ngl
 		auto lpram = adata.get_data();
 		pbnet::PROBUFF_NET_KCPSESSION_RESPONSE pro;
 		pro.set_mkcpsession(lpram->m_kcpsession);
-		nets::sendbysession(lpram->m_sessionid, pro, nguid::make(ACTOR_ROBOT, lpram->m_area, lpram->m_dataid), nguid::make());
+		nets::sendbysession(lpram->m_sessionid, pro, lpram->m_actoridclient, nguid::make());
 		return true;
 	}
 
@@ -260,7 +260,7 @@ namespace ngl
 		}
 
 		std::string lkcpsession;
-		if (ukcp::create_session(nguid::make(nguid::none_type(), larea, lactordataid), lkcpsession) == false)
+		if (ukcp::create_session(lpram->mactoridserver(), lpram->mactoridclient(), lkcpsession) == false)
 		{
 			return true;
 		}
@@ -269,11 +269,12 @@ namespace ngl
 		np_actor_kcp pro;
 		pro.m_kcpsession	= lkcpsession;
 		pro.m_sessionid		= lpack->m_id;
-		pro.m_area			= larea;
-		pro.m_dataid		= lactordataid;
+		pro.m_actoridclient = lpram->mactoridclient();
+		pro.m_actoridserver = lpram->mactoridserver();
 		pro.m_uip			= lpram->muip();
 		pro.m_uport			= lpram->muport();
 		pro.m_conv			= lpram->mconv();
+
 
 		nets::sendbyserver((i32_serverid)lgametid, pro, nguid::make(), nguid::make());
 		return true;

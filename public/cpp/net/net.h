@@ -221,42 +221,13 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool actor_base::sendkcp(T& adata, i64_actorid aactorid, int16_t asystemindex/* = 0*/)
-	{
-		i32_session lkcpsession = get_kcpssion();
-		if (lkcpsession == -1)
-		{
-			log_error()->print("get_kcpssion() = -1, is_single() == [{}]", is_single());
-			return false;
-		}
-		if (support_kcp() == false)
-		{
-			return false;
-		}
-
-		nets::kcp(asystemindex)->send(lkcpsession, adata, aactorid, id_guid());
-		return true;
-	}
-
-	template <typename T>
-	bool actor_base::static_sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex/* = 0*/)
+	bool actor_base::sendkcp(i64_actorid aactorid, T& adata, int16_t aindex/* = 0*/)
 	{
 		if (support_kcp() == false)
 		{
 			return false;
 		}
-		nets::kcp(asystemindex)->send(asession, adata, aactorid, arequestactorid);
-		return true;
-	}
-
-	template <typename T>
-	bool actor_base::static_sendkcp(const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex/* = 0*/)
-	{
-		if (support_kcp() == false)
-		{
-			return false;
-		}
-		nets::kcp(asystemindex)->send(asession, adata, aactorid, arequestactorid);
+		nets::kcp(aindex)->sendbyactorid(aactorid, adata);
 		return true;
 	}
 }//namespace ngl

@@ -258,16 +258,6 @@ namespace ngl
 		return m_group.get_group(agroupid);
 	}
 
-	void actor_base::set_kcpssion(i32_session asession)
-	{
-		m_kcpsession = asession;
-	}
-
-	i32_session actor_base::get_kcpssion()
-	{
-		return m_kcpsession;
-	}
-
 	bool actor_base::support_kcp()
 	{
 		static net_works lnetwork;
@@ -275,26 +265,19 @@ namespace ngl
 		return lkcp;
 	}
 
-	const char* actor_base::kcp_session()
+	bool actor_base::connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)
 	{
-		return "";
-	}
-
-	bool actor_base::connect_kcp(int16_t anum, const std::string& aip, i16_port aprot)
-	{
+		if (nconfig::node_type() != ROBOT)
+		{//不允许服务器主动进行kcp连接
+			return false;
+		}
 		if (support_kcp() == false)
 		{
 			return false;
 		}
-		std::string lkcpsession = kcp_session();
-		if (lkcpsession == "")
-		{
-			return false;
-		}
-		nets::kcp(anum)->connect(lkcpsession, id_guid(), aip, aprot, [this](i32_session asession)
+		nets::kcp(anum)->connect(akcpsession, aactoridserver, id_guid(), aip, aprot, [this](i32_session asession)
 			{
-				set_kcpssion(asession);
-				log_error()->print("kcp m_kcpsession = {}", get_kcpssion());
+				log_error()->print("kcp {} m_kcpsession = {}", (nguid)id_guid(), asession);
 			});
 		return true;
 	}

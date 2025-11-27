@@ -438,7 +438,7 @@ namespace ngl
 		{
 			pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
 			pro.set_mutc((int32_t)localtime::gettime());
-			sendkcp(pro, lrequest);
+			actor::sendkcp(id_guid(), pro);
 		}
 		else
 		{

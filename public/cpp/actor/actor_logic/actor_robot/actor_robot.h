@@ -95,10 +95,8 @@ namespace ngl
 	{
 		// ----- Data Begin -----
 		pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE	m_data;
-		std::string								m_kcpsessionmd5;
 	public:
 		i32_session								m_session;
-		int16_t									m_kcp;
 		// ----- Data End   -----
 	public:
 		actor_robot() = delete;
@@ -118,8 +116,6 @@ namespace ngl
 		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();
-
-		virtual const char* kcp_session();
 
 		bool timer_handle(const message<np_timerparm>& adata);
 

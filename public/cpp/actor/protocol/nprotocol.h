@@ -312,13 +312,13 @@ namespace ngl
 	{
 		std::string			m_kcpsession;
 		i32_session			m_sessionid = -1;
-		i16_area			m_area = -1;
-		i32_actordataid		m_dataid = -1;
+		i64_actorid			m_actoridclient = -1;
+		i64_actorid			m_actoridserver = -1;
 		std::string			m_uip;
 		i16_port			m_uport = -1;
 		int32_t				m_conv = -1;
 
-		dprotocol(np_actor_kcp, m_kcpsession, m_sessionid, m_area, m_dataid, m_uip, m_uport, m_conv)
+		dprotocol(np_actor_kcp, m_kcpsession, m_sessionid, m_actoridclient, m_actoridserver, m_uip, m_uport, m_conv)
 	};
 
 	struct calendar_utc

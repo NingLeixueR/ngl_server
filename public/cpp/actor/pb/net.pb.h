@@ -6344,6 +6344,8 @@ class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
     kMserveridFieldNumber = 1,
     kMuportFieldNumber = 3,
     kMconvFieldNumber = 4,
+    kMactoridserverFieldNumber = 5,
+    kMactoridclientFieldNumber = 6,
   };
   // string muip = 2;
   bool has_muip() const;
@@ -6413,6 +6415,32 @@ class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
   void _internal_set_mconv(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // int64 mactoridserver = 5;
+  bool has_mactoridserver() const;
+  private:
+  bool _internal_has_mactoridserver() const;
+  public:
+  void clear_mactoridserver();
+  ::PROTOBUF_NAMESPACE_ID::int64 mactoridserver() const;
+  void set_mactoridserver(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_mactoridserver() const;
+  void _internal_set_mactoridserver(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // int64 mactoridclient = 6;
+  bool has_mactoridclient() const;
+  private:
+  bool _internal_has_mactoridclient() const;
+  public:
+  void clear_mactoridclient();
+  ::PROTOBUF_NAMESPACE_ID::int64 mactoridclient() const;
+  void set_mactoridclient(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_mactoridclient() const;
+  void _internal_set_mactoridclient(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_KCPSESSION)
  private:
   class _Internal;
@@ -6426,6 +6454,8 @@ class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::int64 mserverid_;
   ::PROTOBUF_NAMESPACE_ID::int32 muport_;
   ::PROTOBUF_NAMESPACE_ID::int32 mconv_;
+  ::PROTOBUF_NAMESPACE_ID::int64 mactoridserver_;
+  ::PROTOBUF_NAMESPACE_ID::int64 mactoridclient_;
   friend struct ::TableStruct_net_2eproto;
 };
 // -------------------------------------------------------------------
@@ -17123,6 +17153,62 @@ inline void PROBUFF_NET_KCPSESSION::_internal_set_mconv(::PROTOBUF_NAMESPACE_ID:
 inline void PROBUFF_NET_KCPSESSION::set_mconv(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_mconv(value);
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION.mconv)
+}
+
+// int64 mactoridserver = 5;
+inline bool PROBUFF_NET_KCPSESSION::_internal_has_mactoridserver() const {
+  bool value = (_has_bits_[0] & 0x00000010u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_KCPSESSION::has_mactoridserver() const {
+  return _internal_has_mactoridserver();
+}
+inline void PROBUFF_NET_KCPSESSION::clear_mactoridserver() {
+  mactoridserver_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_KCPSESSION::_internal_mactoridserver() const {
+  return mactoridserver_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_KCPSESSION::mactoridserver() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_KCPSESSION.mactoridserver)
+  return _internal_mactoridserver();
+}
+inline void PROBUFF_NET_KCPSESSION::_internal_set_mactoridserver(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000010u;
+  mactoridserver_ = value;
+}
+inline void PROBUFF_NET_KCPSESSION::set_mactoridserver(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_mactoridserver(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION.mactoridserver)
+}
+
+// int64 mactoridclient = 6;
+inline bool PROBUFF_NET_KCPSESSION::_internal_has_mactoridclient() const {
+  bool value = (_has_bits_[0] & 0x00000020u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_KCPSESSION::has_mactoridclient() const {
+  return _internal_has_mactoridclient();
+}
+inline void PROBUFF_NET_KCPSESSION::clear_mactoridclient() {
+  mactoridclient_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_KCPSESSION::_internal_mactoridclient() const {
+  return mactoridclient_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_KCPSESSION::mactoridclient() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_KCPSESSION.mactoridclient)
+  return _internal_mactoridclient();
+}
+inline void PROBUFF_NET_KCPSESSION::_internal_set_mactoridclient(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000020u;
+  mactoridclient_ = value;
+}
+inline void PROBUFF_NET_KCPSESSION::set_mactoridclient(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_mactoridclient(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION.mactoridclient)
 }
 
 // -------------------------------------------------------------------

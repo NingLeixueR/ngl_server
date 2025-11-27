@@ -36,14 +36,36 @@ namespace ngl
 
 #pragma region kcp_send
 		template <typename T>
-		bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		bool send(i32_sessionid asession, T& adata)
 		{
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
+			i64_actorid lactorid1;
+			i64_actorid lactorid2;
+			if (!m_kcp.find_actorid(asession, lactorid1, lactorid2))
+			{
+				return false;
+			}
+			if (nconfig::node_type() != ROBOT)
+			{
+				std::swap(lactorid1, lactorid2);
+			}
+
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, lactorid1, lactorid2);
 			if (lpack == nullptr)
 			{
 				return false;
 			}
 			return m_kcp.sendpack(asession, lpack);
+		}
+
+		template <typename T>
+		bool sendbyactorid(i64_actorid aactoridclient, T& adata)
+		{
+			i32_session lsession = m_kcp.find_session(aactoridclient);
+			if (lsession == -1)
+			{
+				return false;
+			}
+			return send(lsession, adata);
 		}
 
 		template <typename T>
@@ -55,39 +77,6 @@ namespace ngl
 				return false;
 			}
 			return m_kcp.sendpack(aendpoint, lpack);
-		}
-	private:
-		template <typename T, typename TITOR>
-		bool send(TITOR abeg, TITOR aend, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
-			if (lpack == nullptr)
-			{
-				return false;
-			}
-			for (; abeg != aend; ++abeg)
-			{
-				m_kcp.sendpack(*abeg, lpack);
-			}
-			return true;
-		}
-	public:
-		template <typename T>
-		bool send(std::vector<i32_sessionid> avec, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			return send(avec.begin(), avec.end(), adata, aactorid, arequestactorid);
-		}
-
-		template <typename T>
-		bool send(std::list<i32_sessionid> avec, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			return send(avec.begin(), avec.end(), adata, aactorid, arequestactorid);
-		}
-
-		template <typename T>
-		bool send(std::set<i32_sessionid> avec, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			return send(avec.begin(), avec.end(), adata, aactorid, arequestactorid);
 		}
 #pragma endregion 
 
@@ -128,28 +117,32 @@ namespace ngl
 
 		// ## 发起连接
 		void connect(std::string& akcpsess
-			, i64_actorid aactorid
+			, i64_actorid aactoridserver
+			, i64_actorid aactoridclient
 			, const std::string& aip, i16_port aport
 			, const std::function<void(i32_session)>& afun
 		);
 		void connect(std::string& akcpsess
-			, i64_actorid aactorid
+			, i64_actorid aactoridserver
+			, i64_actorid aactoridclient
 			, const asio_udp_endpoint& aendpoint
 			, const std::function<void(i32_session)>& afun
 		);
 
 		// ## 查找session对应的actorid
-		i64_actorid find_actorid(i32_session asession);
+		i64_actorid find_actoridserver(i32_session asession);
+		i64_actorid find_actoridclient(i32_session asession);
+		bool find_actorid(i32_session asession, i64_actorid& aactoridserver, i64_actorid& aactoridclient);
 
 		// ## 生成kcp-session以验证连接
-		static bool create_session(i64_actorid aactorid, std::string& asession);
+		static bool create_session(i64_actorid aactoridclient, i64_actorid aactoridserver, std::string& asession);
 
 		// ## 检查kcp-session以验证连接
-		static bool check_session(i64_actorid aactorid, const std::string& asession);
+		static bool check_session(i64_actorid aactoridclient, i64_actorid aactoridserver, const std::string& asession);
 
 		// ## 重置连接
-		void reset_add(int32_t aconv, const std::string& aip, i16_port aport);
+		void reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient);
 
-		void reset_add(const std::string& aip, i16_port aport);
+		void reset_add(const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient);
 	};
 }// namespace ngl
