@@ -196,7 +196,7 @@ namespace ngl
 			return false;
 		}
 		std::string lkcpsession = lpram->mkcpsession();
-		return connect_kcp(kcpindex(lpram->m_kcpnum()), lpstructgame.m_ip, lpstructgame.m_port, nguid::make_type(id_guid(), ACTOR_ROLE), lkcpsession);
+		return connect_kcp(kcpindex(lpram->m_kcpnum()), lpstructgame.m_ip, lpstructgame.m_port + lpram->m_kcpnum(), nguid::make_type(id_guid(), ACTOR_ROLE), lkcpsession);
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
 	{
