@@ -1,4 +1,4 @@
-TESTS 1000 d /time
+﻿TESTS 1000 d /time
 TESTS 1000 d /chat 1 2 ribenrensb3
 TESTS 1000 d /time
 TESTS 1000 d /chat 1 1 china
@@ -36,9 +36,9 @@ TESTS 1000 d /ranklist 0 1 1
 START
 
 #创建kcp连接
-kcp enum
+kcp enum serverid tcount
 #测试kcp,使用kcp获取服务器时间
-kcp_gettime enum
+kcp_gettime enum serverid tcount
 
 robot 1 1 libo 2 2
 

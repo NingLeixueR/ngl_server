@@ -19,6 +19,12 @@ namespace ngl
 	{
 		auto lpram = adata.get_data();
 		auto lpack = adata.get_pack();
+		
+		if (!actor_manage::instance().is_have_actor(lpram->m_actoridserver))
+		{
+			log_error()->print("np_actor_kcp fail actor:{}",nguid(lpram->m_actoridserver));
+			return true;
+		}
 		nets::serkcp(lpram->m_kcpnum)->reset_add(lpram->m_conv, lpram->m_uip, lpram->m_uport, lpram->m_actoridserver, lpram->m_actoridclient);
 		nets::sendbysession(lpack->m_id, *lpram, nguid::make(), nguid::make());
 		return true;

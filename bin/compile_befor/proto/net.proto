@@ -100,6 +100,7 @@ message PROBUFF_NET_ACOUNT_LOGIN_RESPONSE//XXX [actor_manage_robot]
 	optional string msession		= 3;
 	optional string maccount		= 4;				// 帐号
 	optional int32 mgatewayid		= 5;				// 网关id
+	optional int32 mgameid			= 6;
 };
 
 // [请求]玩家登录
@@ -107,7 +108,7 @@ message PROBUFF_NET_ROLE_LOGIN//XXX [actor_gateway,actor_manage_role]
 {
 	optional int64 mroleid			= 1;	// 玩家id
 	optional string msession		= 2;
-	optional bool miscreate		= 3;
+	optional bool miscreate			= 3;
 	optional int32 marea			= 4;	// 区服id
 	optional int32 mgatewayid	    = 5;
 };
@@ -269,8 +270,9 @@ message PROBUFF_NET_MAIL_DEL_RESPONSE//G2C [actor_robot]
 
 enum ENUM_KCP
 {
-	KCP_ROLE1 = 0;
-	KCP_ROLE2 = 1;
+	KCP_NULL = 0;
+	KCP_ROLE1 = 1;
+	KCP_ROLE2 = 2;
 };
 
 
@@ -290,7 +292,8 @@ message PROBUFF_NET_KCPSESSION//XXX [actor_gateway]
 message PROBUFF_NET_KCPSESSION_RESPONSE//G2C [actor_robot]
 {
 	optional string mkcpsession	= 1;
-	optional ENUM_KCP m_kcpnum = 2;
+	optional int64	mserverid	= 2;		// 玩家要进行kcp连接的服务器
+	optional ENUM_KCP m_kcpnum = 3;
 };
 
 // [请求]领取任务奖励

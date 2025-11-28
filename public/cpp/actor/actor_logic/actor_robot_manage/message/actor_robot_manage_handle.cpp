@@ -12,6 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "actor_robot_manage.h"
+#include "ttab_kcp.h"
 namespace ngl
 {
 	bool actor_robot_manage::handle(const message<np_robot_pram>& adata)
@@ -90,9 +91,12 @@ namespace ngl
 				{
 					foreach([this, &avec](_robot& arobot)
 						{
-							const tab_servers* tab = ttab_servers::instance().tab();
-							const tab_servers* tabgame = ttab_servers::instance().tab("game", tab->m_area);
-							if (tabgame == nullptr)
+							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
+							int16_t lservertid = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[2]);
+							int16_t ltcount = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[3]);
+							int32_t lserverid = nnodeid::nodeid(lservertid, ltcount);
+							const tab_kcp* ltab = ttab_kcp::instance().tab(lkcpenum);
+							if (ltab == nullptr)
 							{
 								return true;
 							}
@@ -101,30 +105,37 @@ namespace ngl
 							{
 								return true;
 							}
-							net_works lpstructgame;
-							if (!ttab_servers::instance().get_nworks("game", nconfig::area(), 1, ENET_KCP, lpstructgame))
+
+							const tab_servers* tabserver = ttab_servers::instance().tab(lservertid);
+							if (tabserver == nullptr)
 							{
 								return true;
 							}
-							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
+
+							net_works lpstructserver;
+							if (!ttab_servers::instance().get_nworks(ltab->m_type, nconfig::area(), ENET_KCP, tabserver->m_tcount, lpstructserver))
+							{
+								return true;
+							}
+
 							// 获取本机uip
 							ngl::asio_udp_endpoint lendpoint(
-								asio::ip::address::from_string(lpstructgame.m_ip), lpstructgame.m_port + lkcpenum
+								asio::ip::address::from_string(lpstructserver.m_ip), lpstructserver.m_port + lkcpenum
 							);
 							i32_session lsession = arobot.m_session;
 							i64_actorid lactorid = arobot.m_robot->id_guid();
 
-							arobot.m_robot->set_kcpindex(lkcpenum, nets::create_kcp());
-							nets::kcp(arobot.m_robot->kcpindex(lkcpenum))->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
-								, [this, tabgame, lpstruct, lsession, lactorid, &arobot, lkcpenum](char* buff, int len)
+							arobot.m_robot->set_kcpindex(lserverid, lkcpenum, nets::create_kcp());
+							nets::kcp(arobot.m_robot->kcpindex(lserverid, lkcpenum))->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
+								, [this, lpstruct, lsession, lactorid, &arobot, lkcpenum, lserverid](char* buff, int len)
 								{
 									log_error()->print("GetIp Finish : {}", buff);
 									ukcp::m_localuip = buff;
 									// 获取kcp-session
 									pbnet::PROBUFF_NET_KCPSESSION pro;
-									pro.set_mserverid(tabgame->m_id);
+									pro.set_mserverid(lserverid);
 									pro.set_muip(ukcp::m_localuip);
-									pro.set_muport(arobot.m_robot->kcpindex(lkcpenum));
+									pro.set_muport(arobot.m_robot->kcpindex(lserverid, lkcpenum));
 									pro.set_mconv(ukcp::m_conv);
 									pro.set_mactoridclient(lactorid);
 									pro.set_mactoridserver(nguid::make_type(lactorid, ACTOR_ROLE));
@@ -142,7 +153,9 @@ namespace ngl
 					foreach([&pro, this, &avec](_robot& arobot)
 						{
 							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
-							actor::sendkcp(arobot.m_robot->id_guid(), pro, arobot.m_robot->kcpindex(lkcpenum));
+							int16_t lservertid = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[2]);
+							int16_t ltcount = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[3]);
+							actor::sendkcp(arobot.m_robot->id_guid(), pro, arobot.m_robot->kcpindex(lservertid, ltcount, lkcpenum));
 							return true;
 						});
 				};
@@ -190,6 +203,8 @@ namespace ngl
 		lrobot.m_robot = create((i16_area)lrecv->marea(), nguid::actordataid(lrecv->mroleid()));
 		lrobot.m_account = lrecv->maccount();
 		lrobot.m_actor_roleid = nguid::make_type(lrobot.m_robot->id_guid(), ACTOR_ROLE);
+		lrobot.m_gameid = lrecv->mgameid();
+		lrobot.m_gatewayid = lrecv->mgatewayid();
 
 		connect(lrecv->mgatewayid(), [lrecv, &lrobot, this](int asession)
 			{
