@@ -36,7 +36,9 @@ TESTS 1000 d /ranklist 0 1 1
 START
 
 #创建kcp连接
-kcp
+kcp enum
 #测试kcp,使用kcp获取服务器时间
-kcp_gettime
+kcp_gettime enum
+
+robot 1 1 libo 2 2
 
