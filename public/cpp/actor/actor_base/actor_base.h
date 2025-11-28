@@ -353,21 +353,36 @@ namespace ngl
 		static bool support_kcp();
 
 	private:
-		std::map<pbnet::ENUM_KCP, int16_t> m_kcpindex;
-	public:
-		void set_kcpindex(pbnet::ENUM_KCP aenum, int16_t akcpindex)
+		struct kcpport
 		{
-			m_kcpindex[aenum] = akcpindex;
+			std::map<pbnet::ENUM_KCP, int16_t> m_data;
+		};
+		std::map<i32_serverid, kcpport> m_kcpindex;
+	public:
+		void set_kcpindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex)
+		{
+			m_kcpindex[aserverid].m_data[aenum] = akcpindex;
 		}
 
-		int16_t kcpindex(pbnet::ENUM_KCP aenum)
+		int16_t kcpindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum)
 		{
-			auto itor = m_kcpindex.find(aenum);
+			auto itor = m_kcpindex.find(aserverid);
 			if (itor == m_kcpindex.end())
 			{
 				return -1;
 			}
-			return itor->second;
+			auto itor2 = itor->second.m_data.find(aenum);
+			if (itor2 == itor->second.m_data.end())
+			{
+				return -1;
+			}
+			return itor2->second;
+		}
+
+		int16_t kcpindex(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum)
+		{
+			int32_t lserverid = nnodeid::nodeid(aservertid, atcount);
+			return kcpindex(lserverid, aenum);
 		}
 
 		//# 通过udp.kcp发送数据

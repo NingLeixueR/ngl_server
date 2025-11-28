@@ -543,13 +543,14 @@ inline bool ENUM_CHAT_CHANNEL_Parse(
     ENUM_CHAT_CHANNEL_descriptor(), name, value);
 }
 enum ENUM_KCP : int {
-  KCP_ROLE1 = 0,
-  KCP_ROLE2 = 1,
+  KCP_NULL = 0,
+  KCP_ROLE1 = 1,
+  KCP_ROLE2 = 2,
   ENUM_KCP_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ENUM_KCP_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool ENUM_KCP_IsValid(int value);
-constexpr ENUM_KCP ENUM_KCP_MIN = KCP_ROLE1;
+constexpr ENUM_KCP ENUM_KCP_MIN = KCP_NULL;
 constexpr ENUM_KCP ENUM_KCP_MAX = KCP_ROLE2;
 constexpr int ENUM_KCP_ARRAYSIZE = ENUM_KCP_MAX + 1;
 
@@ -2525,6 +2526,7 @@ class PROBUFF_NET_ACOUNT_LOGIN_RESPONSE PROTOBUF_FINAL :
     kMroleidFieldNumber = 2,
     kMareaFieldNumber = 1,
     kMgatewayidFieldNumber = 5,
+    kMgameidFieldNumber = 6,
   };
   // string msession = 3;
   bool has_msession() const;
@@ -2623,6 +2625,19 @@ class PROBUFF_NET_ACOUNT_LOGIN_RESPONSE PROTOBUF_FINAL :
   void _internal_set_mgatewayid(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // int32 mgameid = 6;
+  bool has_mgameid() const;
+  private:
+  bool _internal_has_mgameid() const;
+  public:
+  void clear_mgameid();
+  ::PROTOBUF_NAMESPACE_ID::int32 mgameid() const;
+  void set_mgameid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_mgameid() const;
+  void _internal_set_mgameid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_ACOUNT_LOGIN_RESPONSE)
  private:
   class _Internal;
@@ -2637,6 +2652,7 @@ class PROBUFF_NET_ACOUNT_LOGIN_RESPONSE PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::int64 mroleid_;
   ::PROTOBUF_NAMESPACE_ID::int32 marea_;
   ::PROTOBUF_NAMESPACE_ID::int32 mgatewayid_;
+  ::PROTOBUF_NAMESPACE_ID::int32 mgameid_;
   friend struct ::TableStruct_net_2eproto;
 };
 // -------------------------------------------------------------------
@@ -6614,7 +6630,8 @@ class PROBUFF_NET_KCPSESSION_RESPONSE PROTOBUF_FINAL :
 
   enum : int {
     kMkcpsessionFieldNumber = 1,
-    kMKcpnumFieldNumber = 2,
+    kMserveridFieldNumber = 2,
+    kMKcpnumFieldNumber = 3,
   };
   // string mkcpsession = 1;
   bool has_mkcpsession() const;
@@ -6645,7 +6662,20 @@ class PROBUFF_NET_KCPSESSION_RESPONSE PROTOBUF_FINAL :
   std::string* _internal_mutable_mkcpsession();
   public:
 
-  // .pbnet.ENUM_KCP m_kcpnum = 2;
+  // int64 mserverid = 2;
+  bool has_mserverid() const;
+  private:
+  bool _internal_has_mserverid() const;
+  public:
+  void clear_mserverid();
+  ::PROTOBUF_NAMESPACE_ID::int64 mserverid() const;
+  void set_mserverid(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_mserverid() const;
+  void _internal_set_mserverid(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // .pbnet.ENUM_KCP m_kcpnum = 3;
   bool has_m_kcpnum() const;
   private:
   bool _internal_has_m_kcpnum() const;
@@ -6668,6 +6698,7 @@ class PROBUFF_NET_KCPSESSION_RESPONSE PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr mkcpsession_;
+  ::PROTOBUF_NAMESPACE_ID::int64 mserverid_;
   int m_kcpnum_;
   friend struct ::TableStruct_net_2eproto;
 };
@@ -15096,6 +15127,34 @@ inline void PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::set_mgatewayid(::PROTOBUF_NAMESPA
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ACOUNT_LOGIN_RESPONSE.mgatewayid)
 }
 
+// int32 mgameid = 6;
+inline bool PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::_internal_has_mgameid() const {
+  bool value = (_has_bits_[0] & 0x00000020u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::has_mgameid() const {
+  return _internal_has_mgameid();
+}
+inline void PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::clear_mgameid() {
+  mgameid_ = 0;
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::_internal_mgameid() const {
+  return mgameid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::mgameid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ACOUNT_LOGIN_RESPONSE.mgameid)
+  return _internal_mgameid();
+}
+inline void PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::_internal_set_mgameid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000020u;
+  mgameid_ = value;
+}
+inline void PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::set_mgameid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_mgameid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ACOUNT_LOGIN_RESPONSE.mgameid)
+}
+
 // -------------------------------------------------------------------
 
 // PROBUFF_NET_ROLE_LOGIN
@@ -17391,9 +17450,37 @@ inline void PROBUFF_NET_KCPSESSION_RESPONSE::unsafe_arena_set_allocated_mkcpsess
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.mkcpsession)
 }
 
-// .pbnet.ENUM_KCP m_kcpnum = 2;
-inline bool PROBUFF_NET_KCPSESSION_RESPONSE::_internal_has_m_kcpnum() const {
+// int64 mserverid = 2;
+inline bool PROBUFF_NET_KCPSESSION_RESPONSE::_internal_has_mserverid() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_KCPSESSION_RESPONSE::has_mserverid() const {
+  return _internal_has_mserverid();
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::clear_mserverid() {
+  mserverid_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_KCPSESSION_RESPONSE::_internal_mserverid() const {
+  return mserverid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_KCPSESSION_RESPONSE::mserverid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.mserverid)
+  return _internal_mserverid();
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::_internal_set_mserverid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000002u;
+  mserverid_ = value;
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_mserverid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_mserverid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.mserverid)
+}
+
+// .pbnet.ENUM_KCP m_kcpnum = 3;
+inline bool PROBUFF_NET_KCPSESSION_RESPONSE::_internal_has_m_kcpnum() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
 }
 inline bool PROBUFF_NET_KCPSESSION_RESPONSE::has_m_kcpnum() const {
@@ -17401,7 +17488,7 @@ inline bool PROBUFF_NET_KCPSESSION_RESPONSE::has_m_kcpnum() const {
 }
 inline void PROBUFF_NET_KCPSESSION_RESPONSE::clear_m_kcpnum() {
   m_kcpnum_ = 0;
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline ::pbnet::ENUM_KCP PROBUFF_NET_KCPSESSION_RESPONSE::_internal_m_kcpnum() const {
   return static_cast< ::pbnet::ENUM_KCP >(m_kcpnum_);
@@ -17411,7 +17498,7 @@ inline ::pbnet::ENUM_KCP PROBUFF_NET_KCPSESSION_RESPONSE::m_kcpnum() const {
   return _internal_m_kcpnum();
 }
 inline void PROBUFF_NET_KCPSESSION_RESPONSE::_internal_set_m_kcpnum(::pbnet::ENUM_KCP value) {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
   m_kcpnum_ = value;
 }
 inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_m_kcpnum(::pbnet::ENUM_KCP value) {

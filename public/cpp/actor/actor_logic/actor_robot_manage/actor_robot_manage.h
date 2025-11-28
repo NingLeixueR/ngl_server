@@ -23,6 +23,8 @@ namespace ngl
 		std::string						m_account;
 		std::shared_ptr<actor_robot>	m_robot = nullptr;
 		i64_actorid						m_actor_roleid = nguid::make();
+		i32_serverid					m_gameid = -1;
+		i32_serverid					m_gatewayid = -1;
 	};
 
 	class actor_robot_manage : 

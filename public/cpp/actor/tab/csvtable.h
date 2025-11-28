@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-11-27 16:22:43
+// 创建时间 // 创建时间 25-11-28 16:06:58
 #pragma once
 
 #include "csv.h"
@@ -939,6 +939,24 @@ struct tab_ranklist
 	{
 		std::string lm_remarks;
 		def_rcsv(m_id,m_name,lm_remarks,m_maxitem,m_showitem,m_everypagecount,m_minvalue);
+	}
+};
+struct tab_kcp
+{
+	/*********************************/
+	int32_t                          m_id                            ; // [index:0][load:y] 序号/ENUM_KCP
+	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
+	NODE_TYPE                        m_type                          ; // [index:4][load:y] 服务器类型(1、DB(数据库服务器)2、ACTORSERVER(actor 服务器))3、GAME(逻辑服务器)4、GATEWAY(网关服务器)5、LOGIN(登录服务器)6、ROBOT(测试机器人服务器)7、WORLD(世界服务器)8、LOG(日志服务器)9、RELOADCSV(重载分发csv服务器)10、CROSS(跨服服务器)11、CROSSDB(跨服数据库服务器)12、PUSHSERVERCONFIG(将服务器配置上传lbgmsys))
+	/*********************************/
+	tab_kcp();
+	// 序列化反序列化相关
+	dprotocol(tab_kcp, m_id, m_name, m_type)
+	// csv相关
+	inline bool rcsv(ngl::csvpair& apair)
+	{
+		std::string lm_remarks;
+		def_rcsv(m_id,m_name,lm_remarks,m_type);
 	}
 };
 }//namespace ngl

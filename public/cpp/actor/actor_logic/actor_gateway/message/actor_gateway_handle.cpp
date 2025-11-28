@@ -16,6 +16,7 @@
 #include "actor_gateway.h"
 #include "actor_server.h"
 #include "nregister.h"
+#include "ttab_kcp.h"
 
 namespace ngl
 {
@@ -95,6 +96,8 @@ namespace ngl
 		pbnet::PROBUFF_NET_KCPSESSION_RESPONSE pro;
 		pro.set_mkcpsession(lpram->m_kcpsession);
 		pro.set_m_kcpnum(lpram->m_kcpnum);
+		pro.set_mserverid(lpram->m_serverid);
+		
 		nets::sendbysession(lpram->m_sessionid, pro, lpram->m_actoridclient, nguid::make());
 		return true;
 	}
@@ -173,9 +176,7 @@ namespace ngl
 		auto lpram = adata.get_data();
 		auto lpack = adata.get_pack();
 
-		log_error()->print("# GateWay Login[{}][{}][{}] #"
-			, lpack->m_id, nguid(lpram->mroleid()), lpram->msession()
-		);
+		log_error()->print("# GateWay Login[{}][{}][{}] #", lpack->m_id, nguid(lpram->mroleid()), lpram->msession());
 		nguid lguid(lpram->mroleid());
 		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 		if (linfo == nullptr || linfo->m_session != lpram->msession())
@@ -234,31 +235,6 @@ namespace ngl
 
 		i16_area larea = nguid::none_area();
 		i32_actordataid lactordataid = nguid::none_actordataid();
-		int32_t lgametid = 0;
-		// 多robot公用一个tcp连接会有问题
-		if (sysconfig::robot_test())
-		{
-			i64_actorid request_actor = lpack->m_head.get_request_actor();
-			larea = nguid::area(request_actor);
-			lactordataid = nguid::actordataid(request_actor);
-			gateway_socket* lpstruct = m_info.get(lpack->m_id);
-			if (lpstruct == nullptr)
-			{
-				return true;
-			}
-			lgametid = lpstruct->m_gameid;
-		}
-		else
-		{
-			gateway_socket* lpstruct = m_info.get(lpack->m_id);
-			if (lpstruct == nullptr)
-			{
-				return true;
-			}
-			larea = lpstruct->m_area;
-			lactordataid = lpstruct->m_dataid;
-			lgametid = lpstruct->m_gameid;
-		}
 
 		std::string lkcpsession;
 		if (ukcp::create_session(lpram->mactoridserver(), lpram->mactoridclient(), lkcpsession) == false)
@@ -276,8 +252,14 @@ namespace ngl
 		pro.m_uport			= lpram->muport();
 		pro.m_conv			= lpram->mconv();
 		pro.m_kcpnum		= lpram->m_kcpnum();
+		pro.m_serverid		= lpram->mserverid();
 
-		nets::sendbyserver((i32_serverid)lgametid, pro, nguid::make(), nguid::make());
+		const tab_kcp* ltab = ttab_kcp::instance().tab(pro.m_kcpnum);
+		if (ltab == nullptr)
+		{
+			return true;
+		}
+		nets::sendbyserver(lpram->mserverid(), pro, nguid::make(), nguid::make());
 		return true;
 	}
 }//namespace ngl

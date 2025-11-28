@@ -277,7 +277,7 @@ namespace ngl
 			return get_nworks(ltab, atype, atcount, anetwork);
 		}
 
-		bool get_nworks(NODE_TYPE anodetype, int area, ENET_PROTOCOL atype, int32_t atcount, net_works& anetwork)
+		bool get_nworks(NODE_TYPE anodetype, i16_area area, ENET_PROTOCOL atype, int32_t atcount, net_works& anetwork)
 		{
 			const tab_servers* ltab = tab(anodetype, area);
 			if (ltab == nullptr)
