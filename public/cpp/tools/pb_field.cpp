@@ -121,6 +121,10 @@ namespace ngl
         , const google::protobuf::FieldDescriptor* field
     )
     {
+        if (field == nullptr)
+        {
+            return;
+        }
         if (field->is_repeated())
         {
             // ´¦Àí repeated ×Ö¶Î£¨ÖØ¸´×Ö¶Î£©
