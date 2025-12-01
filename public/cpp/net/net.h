@@ -49,7 +49,7 @@ namespace ngl
 		static int16_t create_kcp(pbnet::ENUM_KCP aenum);
 
 		// »ñÈ¡ÊµÀý 
-		static ukcp* kcp(int16_t anum);
+		static ukcp* kcp(int16_t auport);
 		static ukcp* serkcp(pbnet::ENUM_KCP aenum);
 
 		template <typename Y, typename T = Y>
@@ -225,24 +225,24 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool actor_base::send_kcp(i64_actorid aactorid, T& adata, int16_t aindex/* = 0*/)
+	bool actor_base::send_kcp(i64_actorid aactorid, T& adata, int16_t auport/* = 0*/)
 	{
 		if (support_kcp() == false)
 		{
 			return false;
 		}
-		nets::kcp(aindex)->send(aactorid, adata);
+		nets::kcp(auport)->send(aactorid, adata);
 		return true;
 	}
 
 	template <typename T>
-	bool actor_base::send_kcp(const std::set<i64_actorid>& aactorids, T& adata, int16_t aindex/* = 0*/)
+	bool actor_base::send_kcp(const std::set<i64_actorid>& aactorids, T& adata, int16_t auport/* = 0*/)
 	{
 		if (support_kcp() == false)
 		{
 			return false;
 		}
-		nets::kcp(aindex)->send(aactorids, adata);
+		nets::kcp(auport)->send(aactorids, adata);
 		return true;
 	}
 
@@ -253,12 +253,7 @@ namespace ngl
 		{
 			return false;
 		}
-		nets::kcp((int16_t)apack->m_head.custom())->send(apack->m_head.get_request_actor(), adata);
+		nets::kcp((int16_t)apack->m_head.custom1())->send(apack->m_head.get_request_actor(), adata);
 		return true;
 	}
 }//namespace ngl
-
-
-
-
-	
