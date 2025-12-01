@@ -35,10 +35,15 @@ TESTS 1000 d /gold 100
 TESTS 1000 d /ranklist 0 1 1
 START
 
+#使用tcp 发送任意协议(借助json)
+protocol 协议名称 协议json
+
+
 #创建kcp连接
 kcp enum serverid tcount
 #测试kcp,使用kcp获取服务器时间
 kcp_gettime enum serverid tcount
+#使用kcp 发送任意协议(借助json)
+kcp_protocol enum serverid tcount 协议名称 协议json
 
-robot 1 1 libo 2 2
 
