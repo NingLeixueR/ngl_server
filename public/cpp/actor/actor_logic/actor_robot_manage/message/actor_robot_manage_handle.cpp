@@ -159,7 +159,24 @@ namespace ngl
 							return true;
 						});
 				};
+			// kcp json 发送消息
+			handle_cmd::add("kcp_protocol") = [this](const std::vector<std::string>& avec)
+				{
+					foreach([this, &avec](_robot& arobot)
+						{
+							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
+							int16_t lservertid = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[2]);
+							int16_t ltcount = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[3]);
+							std::shared_ptr<pack> lpack = actor_base::jsonpack(avec[4], avec[5], nguid::moreactor(), arobot.m_actor_roleid);
+							if (lpack != nullptr)
+							{
+								nets::sendpack(arobot.m_session, lpack);
+							}
+							return true;
+						});
+				};
 
+			// tcp json 发送消息
 			handle_cmd::add("protocol") = [this](const std::vector<std::string>& avec)
 				{
 					foreach([this, &avec](_robot& arobot)
