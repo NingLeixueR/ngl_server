@@ -387,10 +387,13 @@ namespace ngl
 
 		//# 通过udp.kcp发送数据
 		template <typename T>
-		static bool sendkcp(i64_actorid aactorid, T& adata, int16_t aindex = 0);
+		static bool send_kcp(i64_actorid aactorid, T& adata, int16_t aindex = 0);
 
 		template <typename T>
-		static bool sendkcp(const pack* apack, T& adata);
+		static bool send_kcp(const std::set<i64_actorid>& aactorids, T& adata, int16_t aindex = 0);
+
+		template <typename T>
+		static bool send_kcp(const pack* apack, T& adata);
 
 		//# 发起kcp连接
 		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession);
