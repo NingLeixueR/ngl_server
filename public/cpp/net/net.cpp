@@ -81,9 +81,9 @@ namespace ngl
 		return true;
 	}
 
-	ukcp* nets::kcp(int16_t anum)
+	ukcp* nets::kcp(int16_t auport)
 	{
-		auto itor = m_kcpnet.find(anum);
+		auto itor = m_kcpnet.find(auport);
 		if (itor == m_kcpnet.end())
 		{
 			return nullptr;

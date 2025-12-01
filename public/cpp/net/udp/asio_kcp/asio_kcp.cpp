@@ -212,7 +212,7 @@ namespace ngl
 			lpack->m_head.set_actor(apstruct->m_actoridserver, apstruct->m_actoridclient);
 		}
 		
-		lpack->m_head.set_custom(m_port);
+		lpack->m_head.set_custom1(m_port);
 
 		lpack->m_pos = len;
 		if (localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())

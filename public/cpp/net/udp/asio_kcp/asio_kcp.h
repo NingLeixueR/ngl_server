@@ -116,7 +116,6 @@ namespace ngl
 		i64_actorid find_actoridclient(i32_session asession);
 		bool find_actorid(i32_session asession, i64_actorid& aactoridserver, i64_actorid& aactoridclient);
 
-
 		// # 根据actorid获取session
 		i32_session find_session(i64_actorid aactoridclient);
 
@@ -135,8 +134,6 @@ namespace ngl
 		bool send(i32_sessionid asessionid, const char* buf, int len);
 
 		int send(const asio_udp_endpoint& aendpoint, const char* buf, int len);
-
-
 
 		int sendbuff(i32_session asession, const char* buf, int len);
 
