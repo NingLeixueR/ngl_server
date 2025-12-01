@@ -225,24 +225,35 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool actor_base::sendkcp(i64_actorid aactorid, T& adata, int16_t aindex/* = 0*/)
+	bool actor_base::send_kcp(i64_actorid aactorid, T& adata, int16_t aindex/* = 0*/)
 	{
 		if (support_kcp() == false)
 		{
 			return false;
 		}
-		nets::kcp(aindex)->sendbyactorid(aactorid, adata);
+		nets::kcp(aindex)->send(aactorid, adata);
 		return true;
 	}
 
 	template <typename T>
-	bool actor_base::sendkcp(const pack* apack, T& adata)
+	bool actor_base::send_kcp(const std::set<i64_actorid>& aactorids, T& adata, int16_t aindex/* = 0*/)
 	{
 		if (support_kcp() == false)
 		{
 			return false;
 		}
-		nets::kcp((int16_t)apack->m_head.custom())->sendbyactorid(apack->m_head.get_request_actor(), adata);
+		nets::kcp(aindex)->send(aactorids, adata);
+		return true;
+	}
+
+	template <typename T>
+	bool actor_base::send_kcp(const pack* apack, T& adata)
+	{
+		if (support_kcp() == false)
+		{
+			return false;
+		}
+		nets::kcp((int16_t)apack->m_head.custom())->send(apack->m_head.get_request_actor(), adata);
 		return true;
 	}
 }//namespace ngl

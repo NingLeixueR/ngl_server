@@ -36,40 +36,41 @@ namespace ngl
 
 #pragma region kcp_send
 		template <typename T>
-		bool send(i32_sessionid asession, T& adata)
+		bool send(const std::set<i64_actorid>& aactorcliends, T& adata)
 		{
-			i64_actorid lactoridserver;
-			i64_actorid lactoridclient;
-			if (!m_kcp.find_actorid(asession, lactoridserver, lactoridclient))
-			{
-				return false;
-			}
 			std::shared_ptr<pack> lpack;
-			if (nconfig::node_type() != ROBOT)
+			lpack = net_pack<T>::npack(&m_pool, adata, 0, 0);
+			for (i64_actorid lactorcliend : aactorcliends)
 			{
-				lpack = net_pack<T>::npack(&m_pool, adata, lactoridclient, lactoridserver);
+				i32_session lsession = m_kcp.find_session(lactorcliend);
+				if (lsession == -1)
+				{
+					continue;
+				}
+				i64_actorid lactoridserver = 0;
+				i64_actorid lactoridclient = 0;
+				if (!m_kcp.find_actorid(lsession, lactoridserver, lactoridclient))
+				{
+					continue;
+				}
+				if (nconfig::node_type() != ROBOT)
+				{
+					pack_head::head_set_actor((int32_t*)lpack->m_buff, lactoridclient, lactoridserver);
+				}
+				else
+				{
+					pack_head::head_set_actor((int32_t*)lpack->m_buff, lactoridserver, lactoridclient);
+				}
+				m_kcp.sendpack(lsession, lpack);
 			}
-			else
-			{
-				lpack = net_pack<T>::npack(&m_pool, adata, lactoridserver, lactoridclient);
-			}
-
-			if (lpack == nullptr)
-			{
-				return false;
-			}
-			return m_kcp.sendpack(asession, lpack);
+			return true;
 		}
 
 		template <typename T>
-		bool sendbyactorid(i64_actorid aactoridclient, T& adata)
+		bool send(i64_actorid aactoridclient, T& adata)
 		{
-			i32_session lsession = m_kcp.find_session(aactoridclient);
-			if (lsession == -1)
-			{
-				return false;
-			}
-			return send(lsession, adata);
+			std::set<i64_actorid> lactorcliend = { aactoridclient };
+			return send(lactorcliend, adata);
 		}
 
 		template <typename T>

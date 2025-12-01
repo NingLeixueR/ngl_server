@@ -155,10 +155,11 @@ namespace ngl
 							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
 							int16_t lservertid = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[2]);
 							int16_t ltcount = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[3]);
-							actor::sendkcp(arobot.m_robot->id_guid(), pro, arobot.m_robot->kcpindex(lservertid, ltcount, lkcpenum));
+							actor::send_kcp(arobot.m_robot->id_guid(), pro, arobot.m_robot->kcpindex(lservertid, ltcount, lkcpenum));
 							return true;
 						});
 				};
+
 			// kcp json ·¢ËÍÏûÏ¢
 			handle_cmd::add("kcp_protocol") = [this](const std::vector<std::string>& avec)
 				{
