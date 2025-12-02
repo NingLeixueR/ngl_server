@@ -22,6 +22,71 @@
 
 namespace ngl
 {
+	bool nready::is_ready(int32_t aready = e_ready_all)
+	{
+		if (aready == e_ready_null || m_readyfun.empty())
+		{
+			return true;
+		}
+		if (aready == e_ready_all)
+		{
+			auto itor = m_readyfun.begin();
+			while (itor != m_readyfun.end())
+			{
+				if (itor->second())
+				{
+					itor = m_readyfun.erase(itor);
+				}
+				else
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		else
+		{
+			for (int32_t i = 1; i <= 32; ++i)
+			{
+				if (((1 << i) & aready) != 0)
+				{
+					auto itor = m_readyfun.find(1 << i);
+					if (itor == m_readyfun.end())
+					{
+						continue;
+					}
+					if (!itor->second())
+					{
+						return false;
+					}
+					m_readyfun.erase(itor);
+				}
+			}
+			return true;
+		}
+	}
+
+	void nready::set_ready(int32_t aready, const std::function<bool()>& afun)
+	{
+		m_readyfun[aready] = afun;
+	}
+
+	void nready::set_readybycustom(int anumber, const std::function<bool()>& afun)
+	{
+		if (anumber > 16)
+		{
+			log_error()->print("set_readybycustom fail [{}]", anumber);
+			return;
+		}
+		enum_ready lvalue = (enum_ready)(e_ready_custom << anumber);
+		if (m_readyfun.contains(lvalue))
+		{
+			log_error()->print("set_readybycustom fail [{}]", anumber);
+			return;
+		}
+		m_readyfun[lvalue] = afun;
+	}
+
 	int actor_base::m_broadcast = 10000;
 	int actor_base::m_broadcasttimer = -1;
 
@@ -60,6 +125,11 @@ namespace ngl
 				nscript_manage::init_sysdata(m_enscript, m_script, lsysdata);
 			}
 		}
+	}
+
+	nready& actor_base::ready()
+	{
+		return m_ready;
 	}
 
 	void actor_base::erase_actor()
