@@ -41,6 +41,10 @@ namespace ngl
 				{
 					loaddb_finish(adbishave);
 				});
+			ready().set_ready(nready::e_ready_db, [this]() 
+				{
+					return m_dbclient == nullptr || m_dbclient->isloadfinish();
+				});
 		}
 		if (aparm.m_enscript != enscript_none)
 		{
@@ -92,11 +96,6 @@ namespace ngl
 	ENUM_ACTOR actor_base::type()
 	{
 		return m_guid.type();
-	}
-
-	bool actor_base::isloadfinish()
-	{
-		return m_dbclient == nullptr || m_dbclient->isloadfinish();
 	}
 
 	void actor_base::add_dbclient(ndbclient_base* adbclient, i64_actorid aid)
@@ -160,10 +159,10 @@ namespace ngl
 		return m_dbclient;
 	}
 
-	bool actor_base::isload()
-	{
-		return m_isload;
-	}
+	//bool actor_base::isload()
+	//{
+	//	return m_isload;
+	//}
 
 	void actor_base::set_db_component(ndb_component* acomponent)
 	{

@@ -72,7 +72,7 @@ namespace ngl
 		// 绑定自定义np_消息
 		register_handle<actor_gmclient>::func<
 			mforward<np_gm>
-		>(false);
+		>(nready::e_ready_all);
 	}
 
 	bool actor_gmclient::timer_handle(const message<np_timerparm>& adata)

@@ -78,7 +78,7 @@ namespace ngl
 			, mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>
 			, mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>
 			, mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>
-		>(false);
+		>(nready::e_ready_all);
 	}
 
 	void actor_example_match::sync_match_info(room* aroom, i64_actorid aroleid /*= nguid::make()*/)

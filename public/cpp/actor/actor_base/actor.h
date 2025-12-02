@@ -85,12 +85,12 @@ namespace ngl
 			{
 				// # 注册广播处理函数
 				register_actornonet<TDerived, np_actor_broadcast>(
-					true, (Tfun<actor, np_actor_broadcast>) & actor::handle
+					nready::e_ready_all, (Tfun<actor, np_actor_broadcast>) & actor::handle
 				);
 			}
 			// # 注册actor close处理函数
 			register_actornonet<TDerived, np_actor_close>(
-				true, (Tfun<actor, np_actor_close>) & actor::handle
+				nready::e_ready_all, (Tfun<actor, np_actor_close>) & actor::handle
 			);
 		}
 
@@ -98,30 +98,30 @@ namespace ngl
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, np_timerparm> afun = &TDerived::timer_handle)
 		{
-			ninst<TDerived>().template rfun_nonet<TDerived, np_timerparm>(afun, false);
+			ninst<TDerived>().template rfun_nonet<TDerived, np_timerparm>(afun, nready::e_ready_all);
 		}
 
 #pragma region register_actor
 
 		// # 用来注册匿名函数挂载在对应actor上
 		template <typename TDerived, typename T>
-		static void register_actor_s(const std::function<void(TDerived*, message<T>&)>& afun, bool aisload = true)
+		static void register_actor_s(const std::function<void(TDerived*, message<T>&)>& afun, int32_t aready/*nready::enum_ready*/)
 		{
-			ninst<TDerived>().template rfun<TDerived, T>(afun, aisload);
+			ninst<TDerived>().template rfun<TDerived, T>(afun, aready);
 		}
 
 		// # 注册actor成员函数(可以是非handle)
 		template <typename TDerived, typename T>
-		static void register_actor(bool aisload, T afun)
+		static void register_actor(int32_t aready/*nready::enum_ready*/, T afun)
 		{
-			ninst<TDerived>().template rfun<TDerived, T>(afun, aisload);
+			ninst<TDerived>().template rfun<TDerived, T>(afun, aready);
 		}
 
 		template <typename TDerived, typename T, typename ...ARG>
-		static void register_actor(bool aisload, T afun, ARG... argfun)
+		static void register_actor(int32_t aready/*nready::enum_ready*/, T afun, ARG... argfun)
 		{
-			register_actor<TDerived, T>(aisload, afun);
-			register_actor<TDerived, ARG...>(aisload, argfun...);
+			register_actor<TDerived, T>(aready, afun);
+			register_actor<TDerived, ARG...>(aready, argfun...);
 		}
 	private:
 		// # 注册actor成员handle函数
@@ -129,16 +129,16 @@ namespace ngl
 		struct register_actor_handle
 		{
 			template <typename T>
-			static void func(bool aisload)
+			static void func(int32_t aready/*nready::enum_ready*/)
 			{
 				ninst<TDerived>().template rfun<TDerived, T>(
-					(Tfun<TDerived, T>) & TDerived::handle, aisload
+					(Tfun<TDerived, T>) & TDerived::handle, aready
 				);
 			}
 		};
 	public:
 		template <typename TDerived>
-		using register_handle = template_arg<actor::register_actor_handle<TDerived>, bool>;
+		using register_handle = template_arg<actor::register_actor_handle<TDerived>, int32_t>;
 		
 #pragma endregion 
 
@@ -147,23 +147,23 @@ namespace ngl
 		struct cregister_actor_handle
 		{
 			template <typename T>
-			static void func(bool aisload = false)
+			static void func(int32_t aready/*nready::enum_ready*/)
 			{
 				ninst<TDerived>().template rfun<actor, T>(
-					(Tfun<actor, T>) & actor::handle_script<T>, aisload
+					(Tfun<actor, T>) & actor::handle_script<T>, aready
 				);
 			}
 		};
 		
 		template <typename TDerived>
-		using register_script_handle = template_arg<actor::cregister_actor_handle<TDerived>, bool>;
+		using register_script_handle = template_arg<actor::cregister_actor_handle<TDerived>, int32_t>;
 
 #pragma region register_actornonet
 		//# 与register_actor类似 只不过不注册网络层
 		template <typename TDerived, typename T>
-		static void register_actornonet(bool aisload, const Tfun<TDerived, T> afun)
+		static void register_actornonet(nready::enum_ready aready, const Tfun<TDerived, T> afun)
 		{
-			ninst<TDerived>().template rfun_nonet<TDerived, T>(afun, aisload);
+			ninst<TDerived>().template rfun_nonet<TDerived, T>(afun, aready);
 		}
 #pragma endregion 
 	public:

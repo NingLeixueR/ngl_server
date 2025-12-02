@@ -41,26 +41,23 @@ namespace ngl
 				const tprotocol::info* lpinfo = tprotocol::get(apram.m_enum);
 				if (lpinfo == nullptr)
 				{
-					log_error()->print(
-						"{}::handle_switch  m_fun.find({}) == end", aactor->guid(), apram.m_enum
-					);
+					log_error()->print("{}::handle_switch  m_fun.find({}) == end", aactor->guid(), apram.m_enum);
 				}
 				else
 				{
-					log_error()->print(
-						"{}::handle_switch  m_fun.find({}:{}) == end", aactor->guid(), apram.m_enum, lpinfo->m_name
-					);					
+					log_error()->print("{}::handle_switch  m_fun.find({}:{}) == end", aactor->guid(), apram.m_enum, lpinfo->m_name);					
 				}				
 			}
 			return false;
 		}
-		bool lisloadfinish = aactor->isloadfinish();
-		if (lisloadfinish == false && itor->second.m_isdbload == true)
+
+		if (itor->second.m_ready != nready::e_ready_null)
 		{
-			log_error()->print(
-				"{}::handle_switch isloadfinish() == {}", aactor->guid(), lisloadfinish
-			);
-			return false;
+			if (!aactor->ready().is_ready(itor->second.m_ready))
+			{
+				log_error()->print("{}::handle_switch isloadfinish() == {}", aactor->guid(), itor->second.m_ready);
+				return false;
+			}
 		}
 		time_consuming lconsuming(std::format("{}-{}-{}", aactor->guid(), apram.m_enum, tprotocol::protocol_name(apram.m_enum)));
 		lconsuming.consuming_start();

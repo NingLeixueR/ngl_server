@@ -64,6 +64,89 @@ namespace ngl
 	template <typename T>
 	struct message;
 
+	class nready
+	{
+	public:
+		enum enum_ready
+		{
+			e_ready_all		= 0xFFFFFFFF,			// 检查所有数据是否加载完成
+			e_ready_null	= 0x00000000,			// 不需要检测是否加载完成
+			e_ready_db		= 0x00000001,			// 数据库数据加载情况
+			e_ready_nsp		= 0x00000002,			// nsp数据同步情况
+			e_ready_custom	= 0x00008000,			// 自定义ready方法
+		};
+	private:
+		std::map<int32_t, std::function<bool()>> m_readyfun;
+	public:
+		//# 是否就绪
+		bool is_ready(int32_t aready = e_ready_all)
+		{
+			if (aready == e_ready_null || m_readyfun.empty())
+			{
+				return true;
+			}
+			if (aready == e_ready_all)
+			{
+				auto itor = m_readyfun.begin();
+				while (itor != m_readyfun.end())
+				{
+					if (itor->second())
+					{
+						itor = m_readyfun.erase(itor);
+					}
+					else
+					{
+						return false;
+					}
+				}
+				return true;
+			}
+			else
+			{
+				for (int32_t i = 1; i <= 32 ;++i)
+				{
+					if (((1 << i) & aready) != 0)
+					{
+						auto itor = m_readyfun.find(1 << i);
+						if (itor == m_readyfun.end())
+						{
+							continue;
+						}
+						if (!itor->second())
+						{
+							return false;
+						}
+						m_readyfun.erase(itor);
+					}
+				}
+				return true;
+			}
+		}
+
+		//# 设置就绪函数
+		void set_ready(int32_t aready, const std::function<bool()>& afun)
+		{
+			m_readyfun[aready] = afun;
+		}
+
+		//# 设置自定义就绪函数
+		void set_readybycustom(int anumber, const std::function<bool()>& afun)
+		{
+			if (anumber > 16)
+			{
+				log_error()->print("set_readybycustom fail [{}]", anumber);
+				return;
+			}
+			enum_ready lvalue = (enum_ready)(e_ready_custom << anumber);
+			if (m_readyfun.contains(lvalue))
+			{
+				log_error()->print("set_readybycustom fail [{}]", anumber);
+				return;
+			}
+			m_readyfun[lvalue] = afun;
+		}
+	};
+
 	class actor_base
 	{
 		actor_base() = delete;
@@ -92,11 +175,11 @@ namespace ngl
 		using ptr_manage_dbc = std::unique_ptr<actor_manage_dbclient>;
 		ptr_manage_dbc& get_actor_manage_dbclient();
 
-		//# 是否需要从数据库加载数据
-		bool			isload();
-
-		//# 是否加载完成
-		bool			isloadfinish();
+		nready m_ready;
+		nready& ready()
+		{
+			return m_ready;
+		}
 
 		//# 设置db_component组件
 		void			set_db_component(ndb_component* acomponent);
@@ -110,7 +193,7 @@ namespace ngl
 		//# 添加dbclient
 		void			add_dbclient(ndbclient_base* adbclient, i64_actorid aid);
 
-		//# 向actor_db发送数据请求后的返囿
+		//# 向actor_db发送数据请求后的返回
 		//# DBTYPE 数据类型
 		//# TDBTAB 数据结构
 		//# TACTOR 持有该数据表的actor

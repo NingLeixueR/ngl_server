@@ -73,7 +73,7 @@ namespace ngl
 			np_actorserver_connect
 			, np_actor_disconnect_close
 			, pbnet::PROBUFF_NET_ACOUNT_LOGIN
-		>(false);
+		>(nready::e_ready_all);
 	}
 
 	data_modified<pbdb::db_account>* actor_login::get_account(

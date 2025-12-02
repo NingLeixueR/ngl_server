@@ -27,7 +27,7 @@ namespace ngl
 
 	struct nlogicfun
 	{
-		bool m_isdbload = false;
+		int32_t m_ready = nready::e_ready_all;//nready::enum_ready
 		tlogicfun m_fun = nullptr;
 	};
 
@@ -123,22 +123,23 @@ namespace ngl
 			return ltemp;
 		}
 
+
 		//# 允许任意std::function<void(TTTDerived*, T&)>挂载到指定actor上
 		template <typename TTTDerived, typename T>
-		nrfun& rfun(const std::function<void(TTTDerived*, message<T>&)>& afun, bool aisload = false);
+		nrfun& rfun(const std::function<void(TTTDerived*, message<T>&)>& afun, int32_t aready = nready::e_ready_all);
 
 		//# bool aisload = false 
 		//# 是否允许db数据加载完成之前处理此消息
 		template <typename TTTDerived, typename T>
-		nrfun& rfun(const Tfun<TTTDerived, T> afun, bool aisload = false);
+		nrfun& rfun(const Tfun<TTTDerived, T> afun, int32_t aready = nready::e_ready_all);
 
 		//# actor间消息处理
 		template <typename TTTDerived, typename T>
-		nrfun& rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload = false);
+		nrfun& rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, int32_t aready = nready::e_ready_all);
 
 		//# actor间消息处理,不注册网络层
 		template <typename TTTDerived, typename T>
-		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun, bool aisload = false);
+		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun, int32_t aready = nready::e_ready_all);
 
 		//# gateway注册c2g接收转发协议处理协议
 		template <typename T>

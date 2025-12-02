@@ -347,7 +347,7 @@ namespace ngl
 			{
 				nrfun<TACTOR>::instance()
 					.template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(
-						&actor_base::template handle<DBTYPE, TDBTAB, TACTOR>, false
+						&actor_base::template handle<DBTYPE, TDBTAB, TACTOR>, nready::e_ready_null
 					);
 			}
 			init_load();

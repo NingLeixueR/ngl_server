@@ -81,7 +81,7 @@ namespace ngl
 			, mforward<pbnet::PROBUFF_NET_MAIL_READ>
 			, mforward<pbnet::PROBUFF_NET_MAIL_DRAW>
 			, mforward<pbnet::PROBUFF_NET_MAIL_DEL>
-		>(false);
+		>(nready::e_ready_all);
 	}
 
 	bool actor_mail::sendmail(i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm)
