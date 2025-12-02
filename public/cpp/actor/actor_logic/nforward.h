@@ -69,7 +69,7 @@ namespace ngl
 			}
 			if (ngl::ROBOT == xmlnode::m_nodetype)
 			{
-				actor::register_handle<actor_robot>:: template func <ARG...>(nread::e_ready_null);
+				actor::register_handle<actor_robot>:: template func <ARG...>(nready::e_ready_null);
 				return;
 			}
 		}

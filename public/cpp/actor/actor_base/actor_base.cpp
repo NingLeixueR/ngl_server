@@ -22,7 +22,7 @@
 
 namespace ngl
 {
-	bool nready::is_ready(int32_t aready = e_ready_all)
+	bool nready::is_ready(int32_t aready /*= e_ready_all*/)
 	{
 		if (aready == e_ready_null || m_readyfun.empty())
 		{
