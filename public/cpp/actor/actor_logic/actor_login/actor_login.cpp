@@ -57,6 +57,11 @@ namespace ngl
 		}
 		set_timer(tparm);
 		*/
+
+		ready().set_readybycustom(1, [this]()
+			{
+				return !(m_game.empty() || m_gateway.empty());
+			});
 	}
 
 	void actor_login::loaddb_finish(bool adbishave)
@@ -71,7 +76,9 @@ namespace ngl
 		// 绑定自定义np_消息
 		register_handle<actor_login>::func<
 			np_actorserver_connect
-			, np_actor_disconnect_close
+		>(nready::e_ready_null);
+		register_handle<actor_login>::func<
+			np_actor_disconnect_close
 			, pbnet::PROBUFF_NET_ACOUNT_LOGIN
 		>(nready::e_ready_all);
 	}
