@@ -112,7 +112,7 @@ namespace ngl
 	public:
 		explicit actor_base(const actorparmbase& aparm);
 
-		nready& ready();
+		nready&			ready();
 
 #pragma region db
 		//# »ñÈ¡actor_manage_dbclientÊµÀı
