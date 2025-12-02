@@ -81,9 +81,6 @@ namespace ngl
 
 		m_drop.init(this, {});
 
-		// µÈ´ý actor_ranklist loaddb_finish
-		wait_ready(actor_ranklist::actorid());
-
 		actor_events_logic::tfun::func(
 			actorid()
 			, eevents_logic_rolelogin
