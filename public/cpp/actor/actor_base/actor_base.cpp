@@ -229,11 +229,6 @@ namespace ngl
 		return m_dbclient;
 	}
 
-	//bool actor_base::isload()
-	//{
-	//	return m_isload;
-	//}
-
 	void actor_base::set_db_component(ndb_component* acomponent)
 	{
 		m_dbcomponent[acomponent->type()] = acomponent;
