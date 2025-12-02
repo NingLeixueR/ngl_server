@@ -91,21 +91,10 @@ namespace ngl
 		}
 	}
 
-	void actor::set_kcp(const handle_pram& aparm)
-	{
-		if (aparm.m_pack == nullptr
-			|| aparm.m_pack->m_protocol != ENET_KCP
-			|| is_single())
-		{
-			return;
-		}
-	}
-
 	bool actor::ahandle(i32_threadid athreadid, handle_pram& aparm)
 	{
 		//Try
 		//{
-			set_kcp(aparm);
 			nrfunbase* lprfun = m_actorfun;
 			if (lprfun == nullptr)
 			{
