@@ -84,14 +84,10 @@ namespace ngl
 			if (isbroadcast())
 			{
 				// # 注册广播处理函数
-				register_actornonet<TDerived, np_actor_broadcast>(
-					nready::e_ready_all, (Tfun<actor, np_actor_broadcast>) & actor::handle
-				);
+				register_actornonet<TDerived, np_actor_broadcast>(nready::e_ready_all, (Tfun<actor, np_actor_broadcast>) & actor::handle);
 			}
 			// # 注册actor close处理函数
-			register_actornonet<TDerived, np_actor_close>(
-				nready::e_ready_all, (Tfun<actor, np_actor_close>) & actor::handle
-			);
+			register_actornonet<TDerived, np_actor_close>(nready::e_ready_all, (Tfun<actor, np_actor_close>) & actor::handle);
 		}
 
 		// # 注册定时器
@@ -131,9 +127,7 @@ namespace ngl
 			template <typename T>
 			static void func(int32_t aready/*nready::enum_ready*/)
 			{
-				ninst<TDerived>().template rfun<TDerived, T>(
-					(Tfun<TDerived, T>) & TDerived::handle, aready
-				);
+				ninst<TDerived>().template rfun<TDerived, T>((Tfun<TDerived, T>) & TDerived::handle, aready);
 			}
 		};
 	public:
@@ -149,9 +143,7 @@ namespace ngl
 			template <typename T>
 			static void func(int32_t aready/*nready::enum_ready*/)
 			{
-				ninst<TDerived>().template rfun<actor, T>(
-					(Tfun<actor, T>) & actor::handle_script<T>, aready
-				);
+				ninst<TDerived>().template rfun<actor, T>((Tfun<actor, T>) & actor::handle_script<T>, aready);
 			}
 		};
 		
@@ -175,9 +167,7 @@ namespace ngl
 			template <typename T>
 			static void func()
 			{
-				ninst<TDerived>().template rfun_c2g<T>(
-					(Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>>)&TDerived::handle
-				);
+				ninst<TDerived>().template rfun_c2g<T>((Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>>)&TDerived::handle);
 			}
 		};
 		template <typename TDerived>
@@ -189,9 +179,7 @@ namespace ngl
 			template <typename T>
 			static void func()
 			{
-				ninst<TDerived>().template rfun_g2c<T>(
-					(Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>>) & TDerived::handle
-				);
+				ninst<TDerived>().template rfun_g2c<T>((Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>>) & TDerived::handle);
 			}
 		};
 		template <typename TDerived>
@@ -205,10 +193,7 @@ namespace ngl
 			template <typename T>
 			static void func()
 			{
-				ninst<TDerived>().template rfun<TDerived, T>(
-					(Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>
-					, false
-				);
+				ninst<TDerived>().template rfun<TDerived, T>((Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>, nready::e_ready_all);
 			}
 		};
 		template <typename TDerived, ENUM_ACTOR ACTOR>
@@ -241,9 +226,6 @@ namespace ngl
 		void actor_handle(i32_threadid athreadid) final;
 
 		bool ahandle(i32_threadid athreadid, handle_pram& aparm);
-
-		// # 设置kcp
-		void set_kcp(const handle_pram& aparm);
 	public:
 #pragma region ActorBroadcast
 		// ############# [广播] ############# 
