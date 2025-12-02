@@ -27,21 +27,21 @@ namespace ngl
 			[](TDerived* aactor, const message<np_channel_register<T>>& adata)
 			{
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
-			}, true);
+			}, nready::e_ready_db);
 
 		// # 订阅数据被修改
 		actor::register_actor_s<TDerived, np_channel_data<T>>(
 			[](TDerived* aactor, const message<np_channel_data<T>>& adata)
 			{
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
-			}, true);
+			}, nready::e_ready_db);
 
 		// # 退出订阅
 		actor::register_actor_s<TDerived, np_channel_exit<T>>(
 			[](TDerived* aactor, const message<np_channel_exit<T>>& adata)
 			{
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
-			}, true);
+			}, nready::e_ready_db);
 	}
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>

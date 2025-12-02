@@ -69,7 +69,7 @@ namespace ngl
 		register_handle<actor_robot_manage>::func<
 			np_robot_pram
 			, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
-		>(false);
+		>(nready::e_ready_all);
 	}
 
 	std::shared_ptr<actor_robot> actor_robot_manage::create(i16_area aarea, i32_actordataid aroleid)

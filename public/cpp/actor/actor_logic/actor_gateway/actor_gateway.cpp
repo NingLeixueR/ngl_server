@@ -73,7 +73,7 @@ namespace ngl
 			, np_actor_kcp
 			, pbnet::PROBUFF_NET_ROLE_LOGIN
 			, pbnet::PROBUFF_NET_KCPSESSION
-		>(false);
+		>(nready::e_ready_all);
 	}
 
 	void actor_gateway::sync_actorserver_gatewayid(const nguid& aguid, bool aisremove)

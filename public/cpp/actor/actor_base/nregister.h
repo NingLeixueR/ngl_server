@@ -24,17 +24,17 @@ namespace ngl
 {
 	template <typename TDerived>
 	template <typename TTTDerived, typename T>
-	nrfun<TDerived>& nrfun<TDerived>::rfun(const std::function<void(TTTDerived*, message<T>&)>& afun, bool aisload /*= false*/)
+	nrfun<TDerived>& nrfun<TDerived>::rfun(const std::function<void(TTTDerived*, message<T>&)>& afun, int32_t aready /*= nready::e_ready_all*/)
 	{	
 		m_fun[tprotocol::protocol<T>()] = nlogicfun
 		{
-			.m_isdbload = aisload,
+			.m_ready = aready,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				auto ldata = std::static_pointer_cast<T>(apram.m_data);
 				message lmessage(athreadid, apram.m_pack, ldata);
 				afun((TTTDerived*)aactor, lmessage);
-				if (aactor->isloadfinish())
+				if (aactor->ready().is_ready(nready::e_ready_db))
 				{
 					((TTTDerived*)aactor)->handle_after(apram);
 				}
@@ -52,17 +52,17 @@ namespace ngl
 
 	template <typename TDerived>
 	template <typename TTTDerived, typename T>
-	nrfun<TDerived>& nrfun<TDerived>::rfun_nonet(const Tfun<TTTDerived, T> afun, bool aisload/* = false*/)
+	nrfun<TDerived>& nrfun<TDerived>::rfun_nonet(const Tfun<TTTDerived, T> afun, int32_t aready /*= nready::e_ready_all*/)
 	{
 		m_fun[tprotocol::protocol<T>()] = nlogicfun
 		{
-			.m_isdbload = aisload,
+			.m_ready = aready,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				auto ldata = std::static_pointer_cast<T>(apram.m_data);
 				message lmessage(athreadid, apram.m_pack, ldata);
 				(((TTTDerived*)(aactor))->*afun)(lmessage);
-				if (aactor->isloadfinish())
+				if (aactor->ready().is_ready(nready::e_ready_db))
 				{
 					((TTTDerived*)aactor)->handle_after(apram);
 				}
@@ -73,17 +73,17 @@ namespace ngl
 
 	template <typename TDerived>
 	template <typename TTTDerived, typename T>
-	nrfun<TDerived>& nrfun<TDerived>::rfun(const Tfun<TTTDerived, T> afun, bool aisload/* = false*/)
+	nrfun<TDerived>& nrfun<TDerived>::rfun(const Tfun<TTTDerived, T> afun, int32_t aready /*= nready::e_ready_all*/)
 	{
-		rfun<TTTDerived, T>(afun, nactor_type<TDerived>::type(), aisload);
+		rfun<TTTDerived, T>(afun, nactor_type<TDerived>::type(), aready);
 		return *this;
 	}
 
 	template <typename TDerived>
 	template <typename TTTDerived, typename T>
-	nrfun<TDerived>& nrfun<TDerived>::rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload/* = false*/)
+	nrfun<TDerived>& nrfun<TDerived>::rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, int32_t aready /*= nready::e_ready_all*/)
 	{
-		rfun_nonet<TTTDerived, T>(afun, aisload);
+		rfun_nonet<TTTDerived, T>(afun, aready);
 		protocol::registry_actor<T>(atype, tools::type_name<T>().c_str());
 		return *this;
 	}
@@ -95,7 +95,7 @@ namespace ngl
 		using type_forward_c2g = np_actor_forward<T, forward_c2g<forward>>;
 		m_fun[tprotocol::protocol<np_actor_forward<T, forward_c2g<forward>>>()] = nlogicfun
 		{
-			.m_isdbload = false,
+			.m_ready = nready::e_ready_null,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				auto ltemp = (type_forward_c2g*)apram.m_data.get();
@@ -116,7 +116,7 @@ namespace ngl
 		using type_forward_g2c = np_actor_forward<T, forward_g2c<forward>>;
 		m_fun[tprotocol::protocol<np_actor_forward<T, forward_g2c<forward>>>()] = nlogicfun
 		{
-			.m_isdbload = false,
+			.m_ready = nready::e_ready_null,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				auto ltemp = (type_forward_g2c*)apram.m_data.get();

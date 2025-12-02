@@ -169,7 +169,7 @@ namespace ngl
 			, np_example_actorid
 			, pbnet::PROBUFF_NET_ROLE_SYNC
 			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD
-		>(false);
+		>(nready::e_ready_all);
 
 		nforward::c2g();
 	}

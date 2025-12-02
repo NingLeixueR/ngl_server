@@ -68,7 +68,7 @@ namespace ngl
 		// 绑定自定义np_消息
 		register_handle<actor_kcp>::func<
 			np_actor_kcp
-		>(false);
+		>(nready::e_ready_all);
 	}
 
 	bool actor_kcp::timer_handle(const message<np_timerparm>& adata)
