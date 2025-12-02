@@ -14,8 +14,8 @@ xcopy pro\*.cs ..\..\..\public\csharp\csharp\csharp\protobuf /s/y
 
 cd ../../Debug/
 makeproto.exe ../compile_befor/proto
-xcopy pb_protocol.cpp ..\..\..\public\cpp\actor\auto\ /s/y
-xcopy pbname_match.cpp ..\..\..\public\cpp\actor\auto\ /s/y
-xcopy nscript_pbdb.h ..\..\..\public\cpp\actor\auto\ /s/y
-xcopy nscript_pbexample.h ..\..\..\public\cpp\actor\auto\ /s/y
-xcopy nscript_pbnet.h ..\..\..\public\cpp\actor\auto\ /s/y
+xcopy pb_protocol.cpp ..\..\public\cpp\actor\auto\ /s/y
+xcopy pbname_match.cpp ..\..\public\cpp\actor\auto\ /s/y
+xcopy nscript_pbdb.h ..\..\public\cpp\actor\auto\ /s/y
+xcopy nscript_pbexample.h ..\..\public\cpp\actor\auto\ /s/y
+xcopy nscript_pbnet.h ..\..\public\cpp\actor\auto\ /s/y
