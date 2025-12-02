@@ -121,7 +121,7 @@ namespace ngl
         , const google::protobuf::FieldDescriptor* field
     )
     {
-        if (field == nullptr)
+        if (field == nullptr || src_refl == nullptr || dst_refl == nullptr)
         {
             return;
         }
