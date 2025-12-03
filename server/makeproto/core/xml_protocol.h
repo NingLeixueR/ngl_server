@@ -656,6 +656,9 @@ namespace ngl
         std::stringstream m_stream;
         m_stream << R"(#pragma once
 
+#include "nsp_server_function.h"
+#include "nsp_write_function.h"
+#include "nsp_read_function.h"
 #include "ndb_modular.h"
 #include "actor_db.h"
 #include "db.pb.h"
@@ -799,10 +802,8 @@ namespace ngl
 	{
 		tprotocol::tp_customs::template func <
 			np_channel_data<T>
-			, np_channel_write_register<T>
-			, np_channel_write_register_reply<T>
-			, np_channel_read_register<T>
-			, np_channel_read_register_reply<T>
+			, np_channel_register<T>
+			, np_channel_register_reply<T>
 			, np_channel_exit<T>
 			, np_channel_dataid_sync<T>
 		>(-1, 1);
