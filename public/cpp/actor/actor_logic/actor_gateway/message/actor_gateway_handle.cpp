@@ -16,7 +16,6 @@
 #include "actor_gateway.h"
 #include "actor_server.h"
 #include "nregister.h"
-#include "ttab_kcp.h"
 
 namespace ngl
 {
@@ -254,11 +253,6 @@ namespace ngl
 		pro.m_kcpnum		= lpram->m_kcpnum();
 		pro.m_serverid		= lpram->mserverid();
 
-		const tab_kcp* ltab = ttab_kcp::instance().tab(pro.m_kcpnum);
-		if (ltab == nullptr)
-		{
-			return true;
-		}
 		nets::sendbyserver(lpram->mserverid(), pro, nguid::make(), nguid::make());
 		return true;
 	}

@@ -25,7 +25,7 @@ namespace ngl
 			log_error()->print("np_actor_kcp fail actor:{}",nguid(lpram->m_actoridserver));
 			return true;
 		}
-		nets::serkcp(lpram->m_kcpnum)->reset_add(lpram->m_conv, lpram->m_uip, lpram->m_uport, lpram->m_actoridserver, lpram->m_actoridclient);
+		nets::serkcp(lpram->m_kcpnum, nconfig::m_tcount)->reset_add(lpram->m_conv, lpram->m_uip, lpram->m_uport, lpram->m_actoridserver, lpram->m_actoridclient);
 		nets::sendbysession(lpack->m_id, *lpram, nguid::make(), nguid::make());
 		return true;
 	}

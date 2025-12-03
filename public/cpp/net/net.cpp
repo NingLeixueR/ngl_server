@@ -91,14 +91,36 @@ namespace ngl
 		return itor->second;
 	}
 
-	ukcp* nets::serkcp(pbnet::ENUM_KCP anum)
+	ukcp* nets::serkcp(pbnet::ENUM_KCP anum, int16_t atcount)
 	{
-		auto itor = m_kcpnet.find(m_kcpworks.m_port + anum);
+		auto itor = m_kcpnet.find(kcp_port(m_kcpworks, atcount, anum));
 		if (itor == m_kcpnet.end())
 		{
 			return nullptr;
 		}
 		return itor->second;
+	}
+
+	int16_t nets::kcp_port(const net_works& aitem, int16_t atcount, pbnet::ENUM_KCP aenum)
+	{
+		return aitem.m_port + aenum + atcount * 1000;
+	}
+
+	int16_t nets::kcp_ipport(int32_t atid, int16_t atcount, pbnet::ENUM_KCP aenum)
+	{
+		const tab_servers* tab = ttab_servers::instance().tab();
+		if (tab == nullptr)
+		{
+			return -1;
+		}
+		for (const net_works& item : tab->m_net)
+		{
+			if (item.m_type == ENET_KCP)
+			{
+				return kcp_port(item, atcount, aenum);
+			}
+		}
+		return -1;
 	}
 
 	int16_t nets::create_kcp()
@@ -114,13 +136,13 @@ namespace ngl
 
 	int16_t nets::create_kcp(pbnet::ENUM_KCP aenum)
 	{
-		int16_t lkcpindex = m_kcpworks.m_port + aenum;
-		if (!m_kcpnet.contains(lkcpindex))
+		int16_t luport = kcp_port(m_kcpworks, nconfig::m_tcount, aenum);
+		if (!m_kcpnet.contains(luport))
 		{
-			m_kcpnet[lkcpindex] = ukcp::create(lkcpindex);
-			return lkcpindex;
+			m_kcpnet[luport] = ukcp::create(luport);
+			return luport;
 		}
-		return lkcpindex;		
+		return luport;
 	}
 
 	bool nets::init(i32_threadsize asocketthreadnum, bool aouternet, const std::set<pbnet::ENUM_KCP>& akcp)
@@ -135,37 +157,36 @@ namespace ngl
 		{
 			return false;
 		}
+		std::map<ENET_PROTOCOL, bool> lfirst;
 		bool lfirstkcp = true;
 		for (const net_works& item : tab->m_net)
 		{
-			uint16_t lport = item.m_port + (nconfig::m_tcount-1);
+			if (lfirst.contains(item.m_type) && m_net[item.m_type] != nullptr)
+			{
+				tools::no_core_dump();
+			}
+			lfirst[item.m_type] = true;
+			net_works lnwork;
+			if (!ttab_servers::instance().get_nworks(item.m_type, nconfig::m_tcount, lnwork))
+			{
+				return true;
+			}
+
 			if (item.m_type == ENET_TCP || item.m_type == ENET_WS)
 			{
-				if (m_net[item.m_type] != nullptr)
-				{
-					continue;
-				}
 				auto& lserver = m_net[item.m_type];
 				if (item.m_type == ENET_TCP)
 				{
 					lserver = new net_tcp(ENET_TCP);
 				}
-				lserver->init(lport, asocketthreadnum, aouternet);
+				lserver->init(lnwork.m_port, asocketthreadnum, aouternet);
 			}
-			else if (item.m_type == ENET_KCP&& lport != -1 && nconfig::node_type() != ROBOT)
+			else if (item.m_type == ENET_KCP && nconfig::node_type() != ROBOT)
 			{
-				if (lfirstkcp)
+				m_kcpworks = lnwork;
+				for (pbnet::ENUM_KCP kcptype : akcp)
 				{
-					lfirstkcp = false;
-					m_kcpworks = item;
-					for (pbnet::ENUM_KCP kcptype : akcp)
-					{
-						nets::create_kcp(kcptype);
-					}
-				}	
-				else
-				{
-					tools::no_core_dump();
+					nets::create_kcp(kcptype);
 				}
 			}
 		}

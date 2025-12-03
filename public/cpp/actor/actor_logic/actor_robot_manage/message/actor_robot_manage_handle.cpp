@@ -12,7 +12,6 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "actor_robot_manage.h"
-#include "ttab_kcp.h"
 namespace ngl
 {
 	bool actor_robot_manage::handle(const message<np_robot_pram>& adata)
@@ -95,11 +94,6 @@ namespace ngl
 							int16_t lservertid = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[2]);
 							int16_t ltcount = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[3]);
 							int32_t lserverid = nnodeid::nodeid(lservertid, ltcount);
-							const tab_kcp* ltab = ttab_kcp::instance().tab(lkcpenum);
-							if (ltab == nullptr)
-							{
-								return true;
-							}
 							net_works lpstruct;
 							if (!ttab_servers::instance().get_nworks(ENET_KCP, lpstruct))
 							{
@@ -113,14 +107,16 @@ namespace ngl
 							}
 
 							net_works lpstructserver;
-							if (!ttab_servers::instance().get_nworks(ltab->m_type, nconfig::area(), ENET_KCP, tabserver->m_tcount, lpstructserver))
+							if (!ttab_servers::instance().get_nworks(tabserver->m_type, nconfig::area(), ENET_KCP, ltcount, lpstructserver))
 							{
 								return true;
 							}
 
+							log_error()->print("kcp connect server[{}:{}] {}@{}", lservertid, ltcount, lpstructserver.m_ip, nets::kcp_port(lpstructserver, ltcount, lkcpenum));
+
 							// 获取本机uip
 							ngl::asio_udp_endpoint lendpoint(
-								asio::ip::address::from_string(lpstructserver.m_ip), lpstructserver.m_port + lkcpenum
+								asio::ip::address::from_string(lpstructserver.m_ip), nets::kcp_port(lpstructserver, ltcount, lkcpenum)
 							);
 							i32_session lsession = arobot.m_session;
 							i64_actorid lactorid = arobot.m_robot->id_guid();
@@ -129,7 +125,7 @@ namespace ngl
 							nets::kcp(arobot.m_robot->kcpindex(lserverid, lkcpenum))->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
 								, [this, lpstruct, lsession, lactorid, &arobot, lkcpenum, lserverid](char* buff, int len)
 								{
-									log_error()->print("GetIp Finish : {}", buff);
+									log_error()->print("Local GetIp Finish : {}", buff);
 									ukcp::m_localuip = buff;
 									// 获取kcp-session
 									pbnet::PROBUFF_NET_KCPSESSION pro;
@@ -223,6 +219,12 @@ namespace ngl
 		lrobot.m_actor_roleid = nguid::make_type(lrobot.m_robot->id_guid(), ACTOR_ROLE);
 		lrobot.m_gameid = lrecv->mgameid();
 		lrobot.m_gatewayid = lrecv->mgatewayid();
+
+		log_error()->print(
+			"connect game[{}:{}] gateway[{}:{}]"
+			, nnodeid::tid(lrobot.m_gameid), nnodeid::tcount(lrobot.m_gameid)
+			, nnodeid::tid(lrobot.m_gatewayid), nnodeid::tcount(lrobot.m_gatewayid)
+		);
 
 		connect(lrecv->mgatewayid(), [lrecv, &lrobot, this](int asession)
 			{
