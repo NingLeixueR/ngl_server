@@ -190,13 +190,18 @@ namespace ngl
 		auto lpram = adata.get_data();
 		const tab_servers* tab = ttab_servers::instance().tab();
 
-		net_works lpstructgame;
-		if (!ttab_servers::instance().get_nworks("game", nconfig::area(), 1, ENET_KCP, lpstructgame))
+		net_works lpstructserver;
+		if (!ttab_servers::instance().get_nworks("game", nconfig::area(), nnodeid::tcount(lpram->mserverid()), ENET_KCP, lpstructserver))
 		{
 			return false;
 		}
-		std::string lkcpsession = lpram->mkcpsession();		
-		return connect_kcp(kcpindex(lpram->mserverid(), lpram->m_kcpnum()), lpstructgame.m_ip, lpstructgame.m_port + lpram->m_kcpnum(), nguid::make_type(id_guid(), ACTOR_ROLE), lkcpsession);
+		
+		std::string lkcpsession = lpram->mkcpsession();	
+		return connect_kcp(
+			kcpindex(lpram->mserverid(), lpram->m_kcpnum())
+			, lpstructserver.m_ip, nets::kcp_port(lpstructserver, nnodeid::tcount(lpram->mserverid()), lpram->m_kcpnum())
+			, nguid::make_type(id_guid(), ACTOR_ROLE), lkcpsession
+		);
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
 	{

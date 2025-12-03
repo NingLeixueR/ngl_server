@@ -267,6 +267,7 @@ namespace ngl
 
 		// 当前结点类型如果是登陆服务器，且连接的结点为[GAME/GATEWAY]
 		NODE_TYPE lservertype = ttab_servers::instance().node_type(nnodeid::tid(lserverid));
+		log_error()->print("np_actorclient_node_connect [{}:{}]", nnodeid::tid(lserverid), nnodeid::tcount(lserverid));
 		if (xmlnode::node_type() == ngl::LOGIN && (lservertype == ngl::GAME || lservertype == ngl::GATEWAY))
 		{
 			auto pro = std::make_shared<np_actorserver_connect>();
