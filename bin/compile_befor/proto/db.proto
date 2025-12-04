@@ -28,17 +28,15 @@ enum ENUM_DB
 	// # 跨服
 	ENUM_DBCROSS_TEST		= 1001;		// 测试跨服
 
-	
 	ENUM_DB_FAIL			= -1;		// 无
+	ENUM_DB_ALL				= -2;		// 全部
 };
-
-
 
 // ENUM_DB_ACCOUNT,				// 账号数据
 message db_account
 {
-	optional int64	mid			= 1;				// 帐号id
-	optional int64	mroleid		= 2;				// 角色id
+	optional int64	mid				= 1;				// 帐号id
+	optional int64	mroleid			= 2;				// 角色id
 	optional string maccount		= 3;				// 账号
 	optional string mpassworld		= 4;				// 密码
 	optional int32	marea			= 5;				// 区服id
@@ -77,9 +75,9 @@ message db_role
 	message recharge
 	{
 		optional int32 mrechargeid		= 1;	// 充值id
-		optional int32 mutc			= 2;	// 充值时间
+		optional int32 mutc				= 2;	// 充值时间
 	}
-	repeated recharge mrecharge		= 2;
+	repeated recharge mrecharge			= 2;
 }
 
 //ENUM_DB_BAG,			// 背包数据

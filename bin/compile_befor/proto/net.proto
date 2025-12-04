@@ -54,13 +54,11 @@ message PROBUFF_NET_DELIVER_GOODS_RECHARGE//G2C [actor_robot]
 	map<int32,int32> mitems			= 4;
 };
 
-
 // [发送]错误码
 message PROBUFF_NET_ERROR//G2C [actor_robot]
 {
 	optional string merrmessage	= 2; // 错误描述
 };
-
 
 // [请求]服务器时间
 message PROBUFF_NET_GET_TIME//C2G [actor_role]
@@ -96,21 +94,43 @@ message PROBUFF_NET_ACOUNT_LOGIN//XXX [actor_login]
 message PROBUFF_NET_ACOUNT_LOGIN_RESPONSE//XXX [actor_manage_robot]
 {
 	optional int32 marea			= 1;				// 区服id
-	optional int64 mroleid			= 2;				// 玩家id
-	optional string msession		= 3;
+	optional int64 mroleid			= 2;				// 玩家id(如果roleid == 0 说明玩家还未创建账号)
+	optional string msession		= 3;				// session
 	optional string maccount		= 4;				// 帐号
 	optional int32 mgatewayid		= 5;				// 网关id
-	optional int32 mgameid			= 6;
+	optional int32 mgameid			= 6;				// 逻辑服务器id
 };
 
 // [请求]玩家登录
 message PROBUFF_NET_ROLE_LOGIN//XXX [actor_gateway,actor_manage_role]
 {
 	optional int64 mroleid			= 1;	// 玩家id
-	optional string msession		= 2;
-	optional bool miscreate			= 3;
-	optional int32 marea			= 4;	// 区服id
-	optional int32 mgatewayid	    = 5;
+	optional string msession		= 2;	// session
+	optional int32 marea			= 3;	// 区服id
+	optional int32 mgatewayid		= 5;	// gatewayid
+	optional int32 mgameid			= 6;	// gameid
+};
+
+// 登录 角色未创建
+message PROBUFF_NET_ROLE_NOT_CREATE//G2C [actor_robot]
+{
+	optional int64 mroleid			= 1;	// 玩家id
+};
+
+message PROBUFF_NET_ROLE_CREATE//XXX [actor_manage_role]
+{
+	optional string mname			= 1;	// 名字
+};
+
+message PROBUFF_NET_ROLE_CREATE_RESPONSE//G2C [actor_robot]
+{
+	enum estat
+	{
+		e_stat_success = 0;
+		e_stat_fail = 1;
+	};
+	optional estat mstat			= 1;	// 状态		
+	optional string mname			= 2;	// 名字
 };
 
 // [请求]获取角色信息
