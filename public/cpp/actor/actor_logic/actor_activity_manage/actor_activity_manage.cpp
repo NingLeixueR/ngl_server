@@ -73,6 +73,7 @@ namespace ngl
 	{
 		if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
 		{
+			log_error()->print("actor_activity_manage::loaddb_finish [{}:{}]", (int32_t)atype, (int32_t)astat);
 			return;
 		}
 		std::set<i32_fieldnumber> lfieldset;

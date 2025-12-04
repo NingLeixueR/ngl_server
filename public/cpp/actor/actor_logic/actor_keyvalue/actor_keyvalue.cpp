@@ -64,6 +64,7 @@ namespace ngl
 	{
 		if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
 		{
+			log_error()->print("actor_keyvalue::loaddb_finish [{}:{}]", (int32_t)atype, (int32_t)astat);
 			return;
 		}
 	}
