@@ -515,7 +515,7 @@ namespace ngl
 			m_actor->nscript_data_push("db", ltemp, true);
 		}
 	public:
-		bool loadfinish(const std::map<nguid, TDBTAB>& adata, enum_dbstat astat)
+		bool loadfinish(const std::map<nguid, TDBTAB>& adata, enum_dbstat astat, bool aloadfinish)
 		{
 			for (const std::pair<const nguid, TDBTAB>& lpair : adata)
 			{
@@ -529,8 +529,11 @@ namespace ngl
 			{
 				m_dbdata = &itor->second;
 			}
-			m_load = true;
-			m_manage_dbclient->on_load_finish(DBTYPE, astat);
+			if (aloadfinish)
+			{
+				m_load = true;
+				m_manage_dbclient->on_load_finish(DBTYPE, astat);
+			}
 			return true;
 		}
 
@@ -542,10 +545,7 @@ namespace ngl
 				, tools::type_name<type_message>()
 				, adata.get_data()->m_over ? "finish" : "no finishi"
 			);
-			if (adata.get_data()->m_over)
-			{
-				loadfinish(adata.get_data()->data(), adata.get_data()->m_stat);
-			}
+			loadfinish(adata.get_data()->data(), adata.get_data()->m_stat, adata.get_data()->m_over);
 			return true;
 		}
 
