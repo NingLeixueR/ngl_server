@@ -91,8 +91,9 @@ namespace ngl
 			}
 			i64_actorid lrequestactor = apack->m_head.get_request_actor();
 			np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro;
-			pro.m_stat = true;
+			pro.m_id = nguid::make();
 			pro.m_over = false;
+			pro.m_stat = enum_dbstat_success;
 			ngl::db_data<TDBTAB>::foreach_index(
 				[lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
 				{
@@ -102,7 +103,7 @@ namespace ngl
 					{
 						nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
 						pro = np_actordb_load_response<TDBTAB_TYPE, TDBTAB>();
-						pro.m_stat = true;
+						pro.m_stat = enum_dbstat_success;
 						pro.m_over = false;
 					}
 				});
@@ -139,18 +140,24 @@ namespace ngl
 			}
 			else
 			{
+				np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro; 
+				pro.m_id = lid;
+				pro.m_over = true;
+
 				if(db_data<TDBTAB>::data_stat(lid) == db_data<TDBTAB>::edbdata_notdata)
 				{
 					log_error()->print("load fail notdata {}:{}", tools::type_name<ndbtab<TDBTAB_TYPE, TDBTAB>>(), nguid(lid));
-					return;
+					TDBTAB ltemp;
+					ltemp.set_mid(lid);
+					db_data<TDBTAB>::set(lid, ltemp);
+					pro.m_stat = enum_dbstat_create;
 				}
-					
-				load(athreadid, lid);
+				else
+				{
+					load(athreadid, lid);
+					pro.m_stat = enum_dbstat_success;
+				}
 				
-				np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro;
-				pro.m_over = true;
-				pro.m_stat = false;
-
 				TDBTAB* ldata = ngl::db_data<TDBTAB>::find(lid);
 				if (ldata != nullptr)
 				{

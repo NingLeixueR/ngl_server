@@ -65,8 +65,12 @@ namespace ngl
 		tdb_brief::nsp_cread<actor_friends>::instance(id_guid()).exit();
 	}
 
-	void actor_friends::loaddb_finish(bool adbishave)
+	void actor_friends::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 	{
+		if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
+		{
+			return;
+		}
 		actor_events_logic::tfun::func<>(
 			actorid()
 			, eevents_logic_rolelogin

@@ -108,27 +108,41 @@ namespace ngl
 		}
 	}
 
-	void actor_role::loaddb_finish(bool adbishave)
+	void actor_role::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 	{
+		if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
+		{
+			return;
+		}
 		log_error()->print("actor_role###loaddb_finish#[{}]", guid());
-		std::set<i32_fieldnumber> lfieldset;
-		tdb_brief::nsp_cwrite<actor_role>::instance_writepart(
-			this
-			, { }
-			, pb_field::field_number<pbdb::db_brief>(lfieldset, "mbase")
-			, { }
-			, { id_guid() }
-		);
-		tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).set_changedatafun(
-			[this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
-			{
-				if (afirstsynchronize)
+		if (atype == pbdb::ENUM_DB_ALL)
+		{
+			std::set<i32_fieldnumber> lfieldset;
+			tdb_brief::nsp_cwrite<actor_role>::instance_writepart(
+				this
+				, { }
+				, pb_field::field_number<pbdb::db_brief>(lfieldset, "mbase")
+				, { }
+				, { id_guid() }
+			);
+			tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).set_changedatafun(
+				[this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 				{
-					login_finish();
-				}
-			});
-
-		m_drop.init(this, {});
+					if (afirstsynchronize)
+					{
+						login_finish();
+					}
+				});
+			m_drop.init(this, {});
+		}
+		
+		if (astat == enum_dbstat_create && atype == pbdb::ENUM_DB_ROLE)
+		{
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>();
+			pro->set_mroleid(id_guid());
+			actor::send_client(pro);
+			return;
+		}
 	}
 
 	void actor_role::handle_after(handle_pram&)
@@ -169,6 +183,7 @@ namespace ngl
 			, np_example_actorid
 			, pbnet::PROBUFF_NET_ROLE_SYNC
 			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD
+			, pbnet::PROBUFF_NET_ROLE_CREATE
 		>(nready::e_ready_all);
 
 		nforward::c2g();
@@ -178,7 +193,6 @@ namespace ngl
 	{
 		return m_gatewayid;
 	}
-
 
 	void actor_role::requestgm(const char* aurl, const std::string& aparm, const std::function<void(int, http_parm&)>& acall)
 	{
@@ -417,5 +431,34 @@ namespace ngl
 	bool actor_role::handle(const message<np_arg_null>&)
 	{
 		return true;
+	}
+
+	void actor_role::create_init(const std::string& aname)
+	{
+		pbdb::db_brief* lpbrief = tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).add(id_guid());
+		if (lpbrief == nullptr)
+		{
+			return;
+		}
+		pbdb::brief_base* lpbriefbase = lpbrief->mutable_mbase();
+		if (lpbriefbase == nullptr)
+		{
+			return;
+		}
+		lpbriefbase->set_mlv(1);
+		lpbriefbase->set_mcreateutc(localtime::gettime());
+		lpbriefbase->set_mmoneygold(0);
+		lpbriefbase->set_mmoneysilver(0);
+		lpbriefbase->set_mname(aname);
+		lpbriefbase->set_mnotalkutc(0);
+		lpbriefbase->set_mvip(0);
+
+		pbdb::db_role* lprole = m_info.get().get();
+		if (lprole == nullptr)
+		{
+			return;
+		}
+
+		sync_data_client();
 	}
 }//namespace ngl

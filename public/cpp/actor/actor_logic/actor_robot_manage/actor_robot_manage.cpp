@@ -56,8 +56,12 @@ namespace ngl
 		*/
 	}
 
-	void actor_robot_manage::loaddb_finish(bool adbishave)
+	void actor_robot_manage::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 	{
+		if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
+		{
+			return;
+		}
 	}
 
 	void actor_robot_manage::nregister()
@@ -69,6 +73,7 @@ namespace ngl
 		register_handle<actor_robot_manage>::func<
 			np_robot_pram
 			, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
+			, pbnet::PROBUFF_NET_ROLE_NOT_CREATE
 		>(nready::e_ready_all);
 	}
 
@@ -149,6 +154,17 @@ namespace ngl
 			return nullptr;
 		}
 		return &itor->second;
+	}
+
+	_robot* actor_robot_manage::get_robot(i64_actorid aroleid)
+	{
+		auto itor = m_maprobotbyactorid.find(aroleid);
+		if (itor == m_maprobotbyactorid.end())
+		{
+			return nullptr;
+		}
+		return itor->second;
+
 	}
 
 	bool actor_robot_manage::getdata(_robot* arobot)

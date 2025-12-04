@@ -627,7 +627,7 @@ namespace ngl
                         << enumValueDescriptor->number() << std::endl;
                     if (lmap.contains(enumValueDescriptor->name()) == false)
                     {
-                        if (enumValueDescriptor->name() == "ENUM_DB_COUNT" || enumValueDescriptor->name() == "ENUM_DB_FAIL")
+                        if (enumValueDescriptor->name() == "ENUM_DB_COUNT" || enumValueDescriptor->name() == "ENUM_DB_FAIL" || enumValueDescriptor->name() == "ENUM_DB_ALL")
                         {
                             continue;
                         }
@@ -1039,7 +1039,7 @@ namespace ngl
 
 		virtual void init();
 
-		virtual void loaddb_finish(bool adbishave);
+		virtual void loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat);
 
 		static void nregister();
 
@@ -1100,8 +1100,12 @@ namespace ngl
         */
 	}}
 
-	void {0}::loaddb_finish(bool adbishave)
+	void {0}::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 	{{
+        if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
+		{{
+			return;
+		}}
 	}}
 
 	void {0}::nregister()

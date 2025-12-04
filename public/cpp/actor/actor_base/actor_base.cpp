@@ -102,9 +102,9 @@ namespace ngl
 		if (aparm.m_manage_dbclient)
 		{
 			m_dbclient = std::make_unique<actor_manage_dbclient>(this);
-			m_dbclient->set_loadfinish_function([this](bool adbishave)
+			m_dbclient->set_loadfinish_function([this](pbdb::ENUM_DB atype, enum_dbstat astat)
 				{
-					loaddb_finish(adbishave);
+					loaddb_finish(atype, astat);
 				});
 			ready().set_ready(nready::e_ready_db, [this]() 
 				{

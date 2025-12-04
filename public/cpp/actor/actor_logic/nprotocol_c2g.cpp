@@ -28,6 +28,7 @@ namespace ngl
 			, pbnet::PROBUFF_NET_CMD
 			, pbnet::PROBUFF_NET_GET_TIME
 			, pbnet::PROBUFF_NET_RECHARGE
+			, pbnet::PROBUFF_NET_ROLE_CREATE
 			, pbnet::PROBUFF_NET_ROLE_SYNC
 			, pbnet::PROBUFF_NET_SWITCH_LINE
 			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD

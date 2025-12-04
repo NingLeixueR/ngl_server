@@ -45,19 +45,28 @@ namespace ngl
 		def_protocol(np_actordb_load, m_id)
 	};
 
+	enum enum_dbstat
+	{
+		enum_dbstat_fail = -1,		// 加载失败
+		enum_dbstat_success,		// 数据库中有数据,加载成功
+		enum_dbstat_create,			// 数据库中没有数据,但是创建了新的数据
+	};
+
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_load_response
 	{
+		nguid				m_id = -1;			// np_actordb_load.m_id 
 		std::map<nguid, T>	m_data;
-		bool		m_stat = true;
-		bool		m_over = true;
+		//if(m_id != nguid::make())m_stat.enum_dbstat_create才有意义
+		enum_dbstat			m_stat = enum_dbstat_fail;
+		bool				m_over = true;
 
 		const std::map<nguid, T>& data()const
 		{
 			return m_data;
 		}
 
-		def_protocol(actor_db_load_response<T>, m_stat, m_data, m_over)
+		def_protocol(actor_db_load_response<T>, m_id, m_data, m_stat, m_over)
 	};
 
 	// [db client -> db server]

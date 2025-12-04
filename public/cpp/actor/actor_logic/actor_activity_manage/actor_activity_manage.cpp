@@ -69,8 +69,12 @@ namespace ngl
 		tdb_brief::nsp_cwrite<actor_activity_manage>::change(id_guid());
 	}
 
-	void actor_activity_manage::loaddb_finish(bool adbishave)
+	void actor_activity_manage::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 	{
+		if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
+		{
+			return;
+		}
 		std::set<i32_fieldnumber> lfieldset;
 		pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mactivityvalues");
 		tdb_brief::nsp_cwrite<actor_activity_manage>::instance_writeall(this, {}, lfieldset);

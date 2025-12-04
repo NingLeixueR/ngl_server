@@ -1,18 +1,5 @@
-/*
-* Copyright (c) [2020-2025] NingLeixueR
-* 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
-* 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
-* 
-* 许可详情参见项目根目录下的 LICENSE 文件：
-* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
-*/
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-11-05 11:43:39】
+ // 创建时间【2025-12-04 15:25:16】
 
 #pragma once
 #include "ndefine.h"
@@ -73,7 +60,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& adata)
        {
-            ngl::nlua_table::table_push(L, "marea", adata.marea(),"mroleid", adata.mroleid(),"msession", adata.msession(),"maccount", adata.maccount(),"mgatewayid", adata.mgatewayid());
+            ngl::nlua_table::table_push(L, "marea", adata.marea(),"mroleid", adata.mroleid(),"msession", adata.msession(),"maccount", adata.maccount(),"mgatewayid", adata.mgatewayid(),"mgameid", adata.mgameid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& adata, bool apop = true)
        {
@@ -86,7 +73,8 @@ namespace ngl
            std::string lmsession;
            std::string lmaccount;
            int32_t lmgatewayid;
-           if(!ngl::nlua_table::table_pop(L, "marea", lmarea, "mroleid", lmroleid, "msession", lmsession, "maccount", lmaccount, "mgatewayid", lmgatewayid))
+           int32_t lmgameid;
+           if(!ngl::nlua_table::table_pop(L, "marea", lmarea, "mroleid", lmroleid, "msession", lmsession, "maccount", lmaccount, "mgatewayid", lmgatewayid, "mgameid", lmgameid))
            {
                return false;
            }
@@ -95,6 +83,7 @@ namespace ngl
            adata.set_msession(lmsession);
            adata.set_maccount(lmaccount);
            adata.set_mgatewayid(lmgatewayid);
+           adata.set_mgameid(lmgameid);
            if (apop)
            {
                lua_pop(L, 1);
@@ -1814,7 +1803,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_KCPSESSION& adata)
        {
-            ngl::nlua_table::table_push(L, "mserverid", adata.mserverid(),"muip", adata.muip(),"muport", adata.muport(),"mconv", adata.mconv());
+            ngl::nlua_table::table_push(L, "mserverid", adata.mserverid(),"muip", adata.muip(),"muport", adata.muport(),"mconv", adata.mconv(),"mactoridserver", adata.mactoridserver(),"mactoridclient", adata.mactoridclient(),"m_kcpnum", adata.m_kcpnum());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_KCPSESSION& adata, bool apop = true)
        {
@@ -1826,7 +1815,10 @@ namespace ngl
            std::string lmuip;
            int32_t lmuport;
            int32_t lmconv;
-           if(!ngl::nlua_table::table_pop(L, "mserverid", lmserverid, "muip", lmuip, "muport", lmuport, "mconv", lmconv))
+           int64_t lmactoridserver;
+           int64_t lmactoridclient;
+           pbnet::ENUM_KCP lm_kcpnum;
+           if(!ngl::nlua_table::table_pop(L, "mserverid", lmserverid, "muip", lmuip, "muport", lmuport, "mconv", lmconv, "mactoridserver", lmactoridserver, "mactoridclient", lmactoridclient, "m_kcpnum", lm_kcpnum))
            {
                return false;
            }
@@ -1834,6 +1826,9 @@ namespace ngl
            adata.set_muip(lmuip);
            adata.set_muport(lmuport);
            adata.set_mconv(lmconv);
+           adata.set_mactoridserver(lmactoridserver);
+           adata.set_mactoridclient(lmactoridclient);
+           adata.set_m_kcpnum(lm_kcpnum);
            if (apop)
            {
                lua_pop(L, 1);
@@ -1862,7 +1857,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata)
        {
-            ngl::nlua_table::table_push(L, "mkcpsession", adata.mkcpsession());
+            ngl::nlua_table::table_push(L, "mkcpsession", adata.mkcpsession(),"mserverid", adata.mserverid(),"m_kcpnum", adata.m_kcpnum());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata, bool apop = true)
        {
@@ -1871,11 +1866,15 @@ namespace ngl
                return true;
            }
            std::string lmkcpsession;
-           if(!ngl::nlua_table::table_pop(L, "mkcpsession", lmkcpsession))
+           int64_t lmserverid;
+           pbnet::ENUM_KCP lm_kcpnum;
+           if(!ngl::nlua_table::table_pop(L, "mkcpsession", lmkcpsession, "mserverid", lmserverid, "m_kcpnum", lm_kcpnum))
            {
                return false;
            }
            adata.set_mkcpsession(lmkcpsession);
+           adata.set_mserverid(lmserverid);
+           adata.set_m_kcpnum(lm_kcpnum);
            if (apop)
            {
                lua_pop(L, 1);
@@ -2612,11 +2611,97 @@ namespace ngl
        }
    };
    template <>
+   struct serialize_lua<pbnet::PROBUFF_NET_ROLE_CREATE>
+   {
+       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLE_CREATE& adata)
+       {
+            ngl::nlua_table::table_push(L, "mname", adata.mname());
+       }
+       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_CREATE& adata, bool apop = true)
+       {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
+           std::string lmname;
+           if(!ngl::nlua_table::table_pop(L, "mname", lmname))
+           {
+               return false;
+           }
+           adata.set_mname(lmname);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
+           return true;
+       }
+       static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ROLE_CREATE& adata)
+       {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
+       }
+       static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_ROLE_CREATE& adata)
+       {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
+       }
+   };
+   template <>
+   struct serialize_lua<pbnet::PROBUFF_NET_ROLE_CREATE_RESPONSE>
+   {
+       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLE_CREATE_RESPONSE& adata)
+       {
+            ngl::nlua_table::table_push(L, "mstat", adata.mstat(),"mname", adata.mname());
+       }
+       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_CREATE_RESPONSE& adata, bool apop = true)
+       {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
+           pbnet::PROBUFF_NET_ROLE_CREATE_RESPONSE::estat lmstat;
+           std::string lmname;
+           if(!ngl::nlua_table::table_pop(L, "mstat", lmstat, "mname", lmname))
+           {
+               return false;
+           }
+           adata.set_mstat(lmstat);
+           adata.set_mname(lmname);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
+           return true;
+       }
+       static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ROLE_CREATE_RESPONSE& adata)
+       {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
+       }
+       static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_ROLE_CREATE_RESPONSE& adata)
+       {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
+       }
+   };
+   template <>
    struct serialize_lua<pbnet::PROBUFF_NET_ROLE_LOGIN>
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLE_LOGIN& adata)
        {
-            ngl::nlua_table::table_push(L, "mroleid", adata.mroleid(),"msession", adata.msession(),"miscreate", adata.miscreate(),"marea", adata.marea(),"mgatewayid", adata.mgatewayid());
+            ngl::nlua_table::table_push(L, "mroleid", adata.mroleid(),"msession", adata.msession(),"marea", adata.marea(),"mgatewayid", adata.mgatewayid(),"mgameid", adata.mgameid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_LOGIN& adata, bool apop = true)
        {
@@ -2626,18 +2711,18 @@ namespace ngl
            }
            int64_t lmroleid;
            std::string lmsession;
-           bool lmiscreate;
            int32_t lmarea;
            int32_t lmgatewayid;
-           if(!ngl::nlua_table::table_pop(L, "mroleid", lmroleid, "msession", lmsession, "miscreate", lmiscreate, "marea", lmarea, "mgatewayid", lmgatewayid))
+           int32_t lmgameid;
+           if(!ngl::nlua_table::table_pop(L, "mroleid", lmroleid, "msession", lmsession, "marea", lmarea, "mgatewayid", lmgatewayid, "mgameid", lmgameid))
            {
                return false;
            }
            adata.set_mroleid(lmroleid);
            adata.set_msession(lmsession);
-           adata.set_miscreate(lmiscreate);
            adata.set_marea(lmarea);
            adata.set_mgatewayid(lmgatewayid);
+           adata.set_mgameid(lmgameid);
            if (apop)
            {
                lua_pop(L, 1);
@@ -2651,6 +2736,48 @@ namespace ngl
            ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_ROLE_LOGIN& adata)
+       {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
+       }
+   };
+   template <>
+   struct serialize_lua<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>
+   {
+       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLE_NOT_CREATE& adata)
+       {
+            ngl::nlua_table::table_push(L, "mroleid", adata.mroleid());
+       }
+       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_NOT_CREATE& adata, bool apop = true)
+       {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
+           int64_t lmroleid;
+           if(!ngl::nlua_table::table_pop(L, "mroleid", lmroleid))
+           {
+               return false;
+           }
+           adata.set_mroleid(lmroleid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
+           return true;
+       }
+       static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ROLE_NOT_CREATE& adata)
+       {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
+       }
+       static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_ROLE_NOT_CREATE& adata)
        {
            ngl::nlua_table::table_start_pop(L, aname);
            if (!stack_pop(L, adata, false))

@@ -60,9 +60,13 @@ namespace ngl
 		tdb_brief::nsp_ser::init(&m_briefdb);
 	}
 
-	void actor_brief::loaddb_finish(bool adbishave)
+	void actor_brief::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 	{
-		log_error()->print("actor_brief::loaddb_finish({})", adbishave?"true":"false");
+		if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
+		{
+			return;
+		}
+		log_error()->print("actor_brief::loaddb_finish({})", astat == enum_dbstat_success ?"load":"create");
 	}
 
 	void actor_brief::nregister()

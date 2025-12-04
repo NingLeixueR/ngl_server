@@ -170,8 +170,11 @@ namespace ngl
 	template <typename TDerived, typename TACTOR, typename T>
 	T* nsp_write<TDerived, TACTOR, T>::add(i64_dataid adataid)
 	{
-		m_changeids.insert(to_actorid(adataid));
-		return &m_data[adataid];
+		i64_actorid ldataid = to_actorid(adataid);
+		m_changeids.insert(ldataid);
+		T* lpdata = &m_data[ldataid];
+		lpdata->set_mid(ldataid);
+		return lpdata;
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>

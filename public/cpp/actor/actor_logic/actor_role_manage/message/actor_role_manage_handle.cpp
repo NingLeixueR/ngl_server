@@ -88,7 +88,6 @@ namespace ngl
 		log_error()->print("actor_manage_role roleid:{}", recv->mroleid());
 		np_actorswitch_process_role pro
 		{
-			.m_create = recv->miscreate(),
 			.m_gatewayid = recv->mgatewayid(),
 		};
 		actor_create::switch_process(recv->mroleid(), 0, nconfig::m_nodeid, pro);
