@@ -76,7 +76,7 @@ namespace ngl
 
 		virtual void erase_actor_before();
 
-		virtual void loaddb_finish(bool adbishave);
+		virtual void loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat);
 
 		static void nregister();
 

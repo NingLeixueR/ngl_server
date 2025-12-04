@@ -313,11 +313,12 @@ enum ENUM_DB : int {
   ENUM_DB_COUNT = 16,
   ENUM_DBCROSS_TEST = 1001,
   ENUM_DB_FAIL = -1,
+  ENUM_DB_ALL = -2,
   ENUM_DB_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ENUM_DB_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool ENUM_DB_IsValid(int value);
-constexpr ENUM_DB ENUM_DB_MIN = ENUM_DB_FAIL;
+constexpr ENUM_DB ENUM_DB_MIN = ENUM_DB_ALL;
 constexpr ENUM_DB ENUM_DB_MAX = ENUM_DBCROSS_TEST;
 constexpr int ENUM_DB_ARRAYSIZE = ENUM_DB_MAX + 1;
 

@@ -452,6 +452,12 @@ namespace ngl
 	{
 		return true;
 	}
+	bool actor_role::handle(const message<pbnet::PROBUFF_NET_ROLE_CREATE>& adata)
+	{
+		auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLE_CREATE>();
+		create_init(pro->mname());
+		return true;
+	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
 	{
 		sync_data_client();

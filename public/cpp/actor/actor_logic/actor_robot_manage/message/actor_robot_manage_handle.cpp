@@ -214,6 +214,7 @@ namespace ngl
 	{
 		auto lrecv = adata.get_data();
 		_robot& lrobot = m_maprobot[lrecv->maccount()];
+		m_maprobotbyactorid[lrecv->mroleid()] = &lrobot;
 		lrobot.m_robot = create((i16_area)lrecv->marea(), nguid::actordataid(lrecv->mroleid()));
 		lrobot.m_account = lrecv->maccount();
 		lrobot.m_actor_roleid = nguid::make_type(lrobot.m_robot->id_guid(), ACTOR_ROLE);
@@ -234,11 +235,21 @@ namespace ngl
 				pro.set_mroleid(lrecv->mroleid());
 				pro.set_msession(lrecv->msession());
 				pro.set_marea(lrecv->marea());
-				pro.set_miscreate(false);
 				pro.set_mgatewayid(lrecv->mgatewayid());
 				nets::sendbysession(asession, pro, nguid::moreactor(), this->id_guid());
 			});
 
+		return true;
+	}
+	bool actor_robot_manage::handle(const message<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>& adata)
+	{
+		auto recv = adata.get_data();
+		pbnet::PROBUFF_NET_ROLE_CREATE pro;
+		std::cout << "创建角色请输入名字:" << std::endl;
+		std::string lname;
+		std::cin >> lname;
+		pro.set_mname(lname);
+		send(get_robot(recv->mroleid()), pro);
 		return true;
 	}
 }//namespace ngl

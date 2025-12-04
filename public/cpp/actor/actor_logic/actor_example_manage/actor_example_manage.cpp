@@ -58,8 +58,12 @@ namespace ngl
 	{
 	}
 
-	void actor_example_manage::loaddb_finish(bool adbishave) 
+	void actor_example_manage::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 	{
+		if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
+		{
+			return;
+		}
 	}
 
 	void actor_example_manage::enter_game(playinfo* applayinfo, i64_actorid aroleid, pbexample::ECROSS across, pbexample::EPLAY_TYPE atype)

@@ -515,20 +515,7 @@ namespace ngl
 			m_actor->nscript_data_push("db", ltemp, true);
 		}
 	public:
-		// # 加载完成
-		bool loadfinish()
-		{
-			if (m_id != (int64_t)-1)
-			{
-				m_dbdata = &m_data[m_id];
-				m_dbdata->init(&m_modified);
-			}
-			m_load = true;
-			m_manage_dbclient->on_load_finish(false);
-			return false;
-		}
-
-		bool loadfinish(const std::map<nguid, TDBTAB>& adata, bool aisover)
+		bool loadfinish(const std::map<nguid, TDBTAB>& adata, enum_dbstat astat)
 		{
 			for (const std::pair<const nguid, TDBTAB>& lpair : adata)
 			{
@@ -542,27 +529,23 @@ namespace ngl
 			{
 				m_dbdata = &itor->second;
 			}
-			if (aisover)
-			{
-				m_load = true;
-				m_manage_dbclient->on_load_finish(true);
-			}
+			m_load = true;
+			m_manage_dbclient->on_load_finish(DBTYPE, astat);
 			return true;
 		}
 
 		bool handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
 		{
-			if (!adata.get_data()->m_stat)
-			{//加载失败  数据库中没有数据
-				return loadfinish();
-			}
 			using type_message = np_actordb_load_response<DBTYPE, TDBTAB>;
 			log_error()->print(
 				"db load respones:[{}] recv_over[{}]"
 				, tools::type_name<type_message>()
 				, adata.get_data()->m_over ? "finish" : "no finishi"
 			);
-			loadfinish(adata.get_data()->data(), adata.get_data()->m_over);
+			if (adata.get_data()->m_over)
+			{
+				loadfinish(adata.get_data()->data(), adata.get_data()->m_stat);
+			}
 			return true;
 		}
 
@@ -578,10 +561,10 @@ namespace ngl
 	class actor_manage_dbclient
 	{
 		using tmap_dbclient = std::map<pbdb::ENUM_DB, ndbclient_base*>;
-		actor_base*						m_actor = nullptr;
-		tmap_dbclient					m_typedbclientmap;
-		tmap_dbclient					m_dbclientmap;			//已经加载完的
-		std::function<void(bool)>		m_fun;					//bool db数据库是否有该数据
+		actor_base*										m_actor = nullptr;
+		tmap_dbclient									m_typedbclientmap;
+		tmap_dbclient									m_dbclientmap;						//已经加载完的
+		std::function<void(pbdb::ENUM_DB, enum_dbstat)>		m_loadfinishfun;					//bool db数据库是否有该数据
 	public:
 		explicit actor_manage_dbclient(actor_base* aactor) :
 			m_actor(aactor)
@@ -598,9 +581,9 @@ namespace ngl
 			init(adbclient, m_actor, aid);
 		}
 
-		void set_loadfinish_function(const std::function<void(bool)>& afun)
+		void set_loadfinish_function(const std::function<void(pbdb::ENUM_DB, enum_dbstat)>& afun)
 		{
-			m_fun = afun;
+			m_loadfinishfun = afun;
 		}
 
 		void init(ndbclient_base* adbclient, actor_base* aactor, const nguid& aid)
@@ -608,13 +591,15 @@ namespace ngl
 			adbclient->init(this, aactor, aid);
 		}
 
-		bool on_load_finish(bool adbishave)
+		bool on_load_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 		{
 			if (m_typedbclientmap.empty())
 			{
 				log_error()->print("on_load_finish m_typedbclientmap.empty()");
 				return false;
 			}
+
+			m_loadfinishfun(atype, astat);
 			
 			for (auto itor = m_typedbclientmap.begin(); itor != m_typedbclientmap.end();)
 			{
@@ -648,7 +633,7 @@ namespace ngl
 
 			// 3、做一些初始化之类的工作,并且需要的话将其发送给客户端
 			// 3.1 c++内部操作
-			m_fun(adbishave);
+			m_loadfinishfun(pbdb::ENUM_DB_ALL, astat);
 			// 3.2 通知脚本
 			m_actor->nscript_db_loadfinish();
 			return true;

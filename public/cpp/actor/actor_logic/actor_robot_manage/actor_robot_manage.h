@@ -33,6 +33,7 @@ namespace ngl
 		actor_robot_manage();
 	public:
 		std::map<std::string, _robot> m_maprobot;
+		std::map<i64_actorid, _robot*> m_maprobotbyactorid;
 
 		friend class actor_instance<actor_robot_manage>;
 		static actor_robot_manage& instance() 
@@ -48,7 +49,7 @@ namespace ngl
 
 		virtual void init();
 
-		virtual void loaddb_finish(bool adbishave);
+		virtual void loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat);
 
 		static void nregister();
 
@@ -69,6 +70,7 @@ namespace ngl
 		void foreach(const std::function<bool(_robot&)>& afun);
 
 		_robot* get_robot(std::string aacount);
+		_robot* get_robot(i64_actorid aroleid);
 
 		template <typename T>
 		void send(_robot* arobot, T& adata)
@@ -85,5 +87,6 @@ namespace ngl
 		bool handle(const message<np_arg_null>&);
 		bool handle(const message<np_robot_pram>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>& adata);
 	};
 }//namespace ngl

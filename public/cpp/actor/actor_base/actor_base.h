@@ -166,7 +166,7 @@ namespace ngl
 		virtual void handle_after(handle_pram&) {}
 
 		//# 派生actor重载此函数会在数据加载完成后调用
-		virtual void loaddb_finish(bool adbishave) {}
+		virtual void loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat) {}
 
 		//# 删除actor时候会被调用
 		virtual void release() = 0;

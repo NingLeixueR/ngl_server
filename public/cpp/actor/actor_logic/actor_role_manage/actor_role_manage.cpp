@@ -92,8 +92,12 @@ namespace ngl
 		tdb_keyvalue::nsp_cread<actor_role_manage>::instance(id_guid()).exit();
 	}
 
-	void actor_role_manage::loaddb_finish(bool adbishave)
+	void actor_role_manage::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 	{
+		if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
+		{
+			return;
+		}
 	}
 
 	void actor_role_manage::nregister()

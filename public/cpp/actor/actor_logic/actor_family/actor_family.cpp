@@ -68,8 +68,12 @@ namespace ngl
 		m_drop.exit();
 	}
 
-	void actor_family::loaddb_finish(bool adbishave)
+	void actor_family::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 	{
+		if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
+		{
+			return;
+		}
 		actor_events_logic::tfun::func<>(
 			actorid()
 			, eevents_logic_rolelogin

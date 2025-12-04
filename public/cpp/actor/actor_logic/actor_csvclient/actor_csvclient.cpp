@@ -55,8 +55,12 @@ namespace ngl
 		set_timer(tparm);
 	}
 
-	void actor_csvclient::loaddb_finish(bool adbishave)
+	void actor_csvclient::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 	{
+		if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
+		{
+			return;
+		}
 	}
 
 	void actor_csvclient::nregister()

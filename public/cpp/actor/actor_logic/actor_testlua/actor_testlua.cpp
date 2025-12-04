@@ -70,8 +70,12 @@ namespace ngl
 		tdb_brief::nsp_cread<actor_testlua>::instance(id_guid()).exit();
 	}
 	
-	void actor_testlua::loaddb_finish(bool adbishave)
+	void actor_testlua::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 	{
+		if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
+		{
+			return;
+		}
 	}
 
 	void actor_testlua::nregister()

@@ -64,7 +64,7 @@ namespace ngl
 
 		virtual void init();
 
-		virtual void loaddb_finish(bool adbishave);
+		virtual void loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat);
 
 		void next_setp();
 

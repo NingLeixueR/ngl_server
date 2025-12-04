@@ -176,7 +176,7 @@ namespace ngl
 		bool	m_create = false;
 		int		m_gatewayid = 0;
 
-		dprotocol(np_actorswitch_process_role, m_create, m_gatewayid);
+		dprotocol(np_actorswitch_process_role, m_gatewayid);
 	};
 
 	struct np_actorswitch_process_plays
@@ -272,9 +272,8 @@ namespace ngl
 		i32_serverid		m_gameid = -1;
 		i32_serverid		m_gatewayid = -1;
 		i32_socket			m_socket = -1;
-		bool				m_iscreate = false;
 
-		dprotocol(gateway_socket, m_session, m_area, m_accountid, m_dataid, m_gameid, m_gatewayid, m_socket, m_iscreate)
+		dprotocol(gateway_socket, m_session, m_area, m_accountid, m_dataid, m_gameid, m_gatewayid, m_socket)
 	};
 
 	// 更新连接数据

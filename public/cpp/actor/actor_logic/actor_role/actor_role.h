@@ -84,7 +84,7 @@ namespace ngl
 
 		virtual void init(); 
 
-		virtual void loaddb_finish(bool adbishave);
+		virtual void loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat);
 
 		static void nregister();
 
@@ -254,6 +254,9 @@ namespace ngl
 		//# 定时器
 		bool timer_handle(const message<np_timerparm>& adata);
 
+		//# 角色创建初始化
+		void create_init(const std::string& aname);
+
 		bool handle(const message<np_arg_null>&);
 		bool handle(const message<mforward<np_gm>>& adata);
 		bool handle(const message<mforward<np_operator_task>>& adata);
@@ -266,6 +269,7 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_CMD>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_GET_TIME>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_RECHARGE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_ROLE_CREATE>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata);

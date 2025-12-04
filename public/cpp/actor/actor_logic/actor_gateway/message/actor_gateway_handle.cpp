@@ -71,7 +71,6 @@ namespace ngl
 				.m_gameid = lparm->m_gameid,
 				.m_gatewayid = lparm->m_gatewayid,
 				.m_socket = 0,
-				.m_iscreate = lparm->m_iscreate,
 		};
 		m_info.updata(ltemp);
 
@@ -219,8 +218,6 @@ namespace ngl
 		}
 
 		pbnet::PROBUFF_NET_ROLE_LOGIN lprampro = *lpram;
-		lprampro.set_miscreate(linfo->m_iscreate);
-		linfo->m_iscreate = false;
 		lprampro.set_mgatewayid(nconfig::m_nodeid);
 		lprampro.set_marea(linfo->m_area);
 		nets::sendbyserver(linfo->m_gameid, lprampro, nguid::moreactor(), id_guid());
