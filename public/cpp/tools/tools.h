@@ -906,6 +906,4 @@ namespace ngl
 		std::is_base_of<google::protobuf::MessageLite, std::remove_cv_t<std::remove_reference_t<T>>>,
 		has_protobuf_descriptor<std::remove_cv_t<std::remove_reference_t<T>>>
 	> {};
-
-
 }//namespace ngl
