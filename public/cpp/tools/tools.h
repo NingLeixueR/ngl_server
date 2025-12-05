@@ -877,6 +877,17 @@ namespace ngl
 		{
 			return check_cjson_and(atype, acjsontype) && check_cjson_and(atype, args...);
 		}
+
+		//É¾³ıÖØ¸´¶àÓàµÄach
+		static void erase_repeat(std::string& astrbuff, const char ach)
+		{
+			auto last = std::unique(astrbuff.begin(), astrbuff.end(),
+				[ach](char al, char ar) {
+					return al == ach && ar == ach;
+				});
+			astrbuff.erase(last, astrbuff.end());
+		}
+
 	};
 
 	template <typename T>

@@ -623,6 +623,20 @@ bool start_csvserver()
 	return true;
 }
 
+std::vector<std::string> get_lines()
+{
+	char lbuff[4096] = { 0 };
+	std::cin.getline(lbuff, 4096);
+	std::string lstrbuff = lbuff;
+	//[== É¾³ý¶àÓà¿Õ¸ñ
+	ngl::tools::erase_repeat(lstrbuff, ' ');
+	//É¾³ý¶àÓà¿Õ¸ñ ==]
+
+	std::vector<std::string> lvec;
+	ngl::tools::splite(lstrbuff.c_str(), " ", lvec);
+	return lvec;
+}
+
 bool start_robot(int argc, char** argv)
 {
 	ngl::log_error()->print("[{}] start", "ROBOT");
@@ -653,13 +667,7 @@ bool start_robot(int argc, char** argv)
 	{
 		while (1)
 		{
-			char lbuff[4096] = { 0 };
-			std::cin.getline(lbuff, 4096);
-			std::vector<std::string> lvec;
-			if (ngl::tools::splite(lbuff, " ", lvec) == false)
-			{
-				continue;
-			}
+			std::vector<std::string> lvec = get_lines();
 			ngl::actor_robot_manage::parse_command(lvec);
 		}
 	}
@@ -692,19 +700,10 @@ bool start_robot(int argc, char** argv)
 		std::vector<std::vector<std::string>> lcmdvec;
 		std::thread lthread([&ltest, &lms, &lcmdvec]()
 			{
-				std::string lcmd;
 				std::vector<std::string> lvec;
 				while (true)
 				{
-					lcmd.clear();
-					char lbuff[1024] = { 0x0 };
-					std::cin.getline(lbuff, 1024);
-					lcmd = lbuff;
-					lvec.clear();
-					if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
-					{
-						continue;
-					}
+					lvec = get_lines();
 					if (lvec[0] == "test" || lvec[0] == "TEST")
 					{
 						lms.clear();
