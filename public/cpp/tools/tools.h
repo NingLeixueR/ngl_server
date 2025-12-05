@@ -893,10 +893,7 @@ namespace ngl
 	struct has_protobuf_descriptor;
 
 	template <typename T>
-	struct has_protobuf_descriptor<
-		T,
-		std::void_t<decltype(T::descriptor())>
-	> : std::is_same<
+	struct has_protobuf_descriptor<T, std::void_t<decltype(T::descriptor())>> : std::is_same<
 		decltype(T::descriptor()),
 		const google::protobuf::Descriptor*
 	> {};
