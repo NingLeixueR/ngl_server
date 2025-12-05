@@ -76,8 +76,8 @@ namespace ngl
 			lnotice.set_mfinishtime(aend);
 			add(m_maxid, lnotice);
 
-			auto pro = sync_notice(m_maxid);
-			if (pro == nullptr)
+			pbnet::PROBUFF_NET_NOTICE_RESPONSE pro;
+			if (!sync_notice(m_maxid, pro))
 			{
 				return;
 			}
@@ -91,7 +91,7 @@ namespace ngl
 
 		void remove_notice();
 
-		std::shared_ptr<pbnet::PROBUFF_NET_NOTICE_RESPONSE> sync_notice(i64_actorid aactorid = -1);
+		bool sync_notice(i64_actorid aactorid, pbnet::PROBUFF_NET_NOTICE_RESPONSE& apro);
 	};
 }//namespace ngl
 

@@ -17,26 +17,26 @@
 
 namespace ngl
 {
-	std::shared_ptr<pbnet::PROBUFF_NET_NOTICE_RESPONSE> notice::sync_notice(i64_actorid aactorid/* = -1*/)
+	bool notice::sync_notice(i64_actorid aactorid, pbnet::PROBUFF_NET_NOTICE_RESPONSE& apro)
 	{
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_NOTICE_RESPONSE>();
-		if (aactorid == -1)
+		pbnet::PROBUFF_NET_NOTICE_RESPONSE pro;
+		if (aactorid == nguid::make())
 		{
 			for (const auto& lpair : data())
 			{
 				data_modified_continue_getconst(lpdbnotice, lpair.second);
-				*pro->add_mnotices() = *lpdbnotice;
+				*pro.add_mnotices() = *lpdbnotice;
 			}
-			return pro;
+			return true;
 		}
 		data_modified<pbdb::db_notice>* lpdb_notice = find(aactorid);
 		if (lpdb_notice == nullptr)
 		{
-			return nullptr;
+			return false;
 		}
-		data_modified_return_getconst(lpdbnotice, *lpdb_notice, nullptr);
-		*pro->add_mnotices() = *lpdbnotice;
-		return pro;
+		data_modified_return_getconst(lpdbnotice, *lpdb_notice, false);
+		*pro.add_mnotices() = *lpdbnotice;
+		return true;
 	}
 
 	void notice::remove_notice()

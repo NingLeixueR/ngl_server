@@ -112,8 +112,8 @@ namespace ngl
 		}
 		m_grids.idaround_list(lenter_pos, lgrids2);
 
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>();
-		pro->add_munits(aunit->id());
+		pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW pro;
+		pro.add_munits(aunit->id());
 		std::set<i64_actorid> lview;
 		// leave Àë¿ªÊÓÒ°
 		for (int32_t id : lgrids1)
@@ -133,7 +133,7 @@ namespace ngl
 		}
 		if (lview.empty() == false)
 		{
-			pro->set_misenter(false);
+			pro.set_misenter(false);
 			actor::send_client(lview, pro);
 
 			np_eevents_map_leaveview lparm;
