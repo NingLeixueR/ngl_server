@@ -69,20 +69,30 @@ namespace ngl
 		}
 
 		auto lactortype = (ENUM_ACTOR)apack->m_head.get_actortype();
-		if (lactortype == nguid::none<ENUM_ACTOR>())
-		{
-			for (std::pair<const ENUM_ACTOR, protocol::fun_run>& item : lpfun->m_runfun)
-			{
-				item.second(apack, lptrpram);
-			}
-		}
-		else
+		if (lactortype != nguid::none<ENUM_ACTOR>())
 		{
 			auto itorrun = lpfun->m_runfun.find(lactortype);
 			if (itorrun != lpfun->m_runfun.end())
 			{
 				itorrun->second(apack, lptrpram);
+				return;
 			}
+			else 
+			{
+				if (nconfig::node_type() != ROBOT)
+				{
+					return;
+				}
+				else
+				{
+					apack->m_head.set_actor(nguid::make(), nguid::make());
+				}
+			}
+		}
+		// (lactortype == nguid::none<ENUM_ACTOR>() && nconfig::node_type() == ROBOT) || lactortype == nguid::none<ENUM_ACTOR>()
+		for (std::pair<const ENUM_ACTOR, protocol::fun_run>& item : lpfun->m_runfun)
+		{
+			item.second(apack, lptrpram);
 		}
 		return;
 	}

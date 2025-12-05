@@ -69,5 +69,12 @@ namespace ngl
 			pbnet::PROBUFF_NET_SYNC_UNIT,
 			pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE
 		>();
+
+		if (ngl::GATEWAY == xmlnode::m_nodetype)
+		{// robot进程注册在非actor_robot中的消息
+			actor_gateway_g2c::register_forward_g2c<actor_gateway_g2c>::template func<
+				pbnet::PROBUFF_NET_ROLE_NOT_CREATE
+			>();
+		}		
 	}
 }//namespace ngl

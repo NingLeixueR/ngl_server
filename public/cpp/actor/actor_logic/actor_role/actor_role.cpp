@@ -110,12 +110,11 @@ namespace ngl
 
 	void actor_role::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 	{
-		if (atype != pbdb::ENUM_DB::ENUM_DB_ALL)
+		if (atype == pbdb::ENUM_DB::ENUM_DB_ALL)
 		{
-			log_error()->print("actor_role::loaddb_finish [{}:{}]", (int32_t)atype, (int32_t)astat);
-			return;
+			log_error()->print("actor_role###loaddb_finish#[{}]", guid());
 		}
-		log_error()->print("actor_role###loaddb_finish#[{}]", guid());
+		
 		if (atype == pbdb::ENUM_DB_ALL)
 		{
 			std::set<i32_fieldnumber> lfieldset;
@@ -127,9 +126,9 @@ namespace ngl
 				, { id_guid() }
 			);
 			tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).set_changedatafun(
-				[this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
+				[this, astat](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 				{
-					if (afirstsynchronize)
+					if (afirstsynchronize && astat == enum_dbstat_success)
 					{
 						login_finish();
 					}
@@ -137,7 +136,7 @@ namespace ngl
 			m_drop.init(this, {});
 		}
 		
-		if (astat == enum_dbstat_create && atype == pbdb::ENUM_DB_ROLE)
+		if (astat == enum_dbstat_create && atype == pbdb::ENUM_DB::ENUM_DB_ALL)
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>();
 			pro->set_mroleid(id_guid());
