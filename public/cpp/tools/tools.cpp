@@ -1428,4 +1428,13 @@ namespace ngl
 		lpbuffs.push_back(&apbuff[j]);
 		return lpbuffs;
 	}
+
+	void tools::erase_repeat(std::string& astrbuff, const char ach)
+	{
+		auto last = std::unique(astrbuff.begin(), astrbuff.end(),
+			[ach](char al, char ar) {
+				return al == ach && ar == ach;
+			});
+		astrbuff.erase(last, astrbuff.end());
+	}
 }// namespace ngl
