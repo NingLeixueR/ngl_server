@@ -132,8 +132,11 @@ namespace ngl
 
 	void protocol::telnet_cmd(const std::shared_ptr<pack>& apack)
 	{
+		std::string lcmdstr = apack->m_buff;
+		tools::erase_repeat(lcmdstr, ' ');
+
 		std::vector<std::string> lvec;
-		if (tools::splite(apack->m_buff, " ", lvec) == false)
+		if (tools::splite(lcmdstr.c_str(), " ", lvec) == false)
 		{
 			return;
 		}
