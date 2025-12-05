@@ -103,6 +103,13 @@ namespace ngl
 				lpram.m_pack = apack;
 
 				actor_manage& lmanages = actor_manage::instance();
+
+				if (nconfig::node_type() == ROBOT && apack->m_head.get_actor() == nguid::make())
+				{
+					lmanages.push_task_type(atype, lpram);
+					return true;
+				}
+
 				if (lactorguid.is_actortypenone() || lactorguid.is_moreactor(atype))
 				{// actor type 是否无效  || //发给同类型的所有actor
 					lmanages.push_task_type(atype, lpram);

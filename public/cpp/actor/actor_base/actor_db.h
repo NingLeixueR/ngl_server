@@ -151,6 +151,7 @@ namespace ngl
 					ltemp.set_mid(lid);
 					db_data<TDBTAB>::set(lid, ltemp);
 					pro.m_stat = enum_dbstat_create;
+					m_cache_save.push(lid);
 				}
 				else
 				{

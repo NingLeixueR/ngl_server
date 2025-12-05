@@ -245,9 +245,8 @@ namespace ngl
 	{
 		auto recv = adata.get_data();
 		pbnet::PROBUFF_NET_ROLE_CREATE pro;
-		std::cout << "创建角色请输入名字:" << std::endl;
-		std::string lname;
-		std::cin >> lname;
+		std::string lname = std::format("role_{}", recv->mroleid());
+		log_error()->print("创建角色[{}]", lname);
 		pro.set_mname(lname);
 		send(get_robot(recv->mroleid()), pro);
 		return true;
