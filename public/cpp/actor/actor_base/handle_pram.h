@@ -91,10 +91,7 @@ namespace ngl
 		template <typename T, bool IS_SEND = true>
 		static void	make_forwardfun(handle_pram& apram)
 		{
-			static auto lfun = [](
-				const std::map<i32_serverid, actor_node_session>&, 
-				const std::map<nguid, i32_serverid>&, handle_pram& adata
-				)
+			static auto lfun = [](const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram& adata)
 			{
 				handle_pram_send<T>::send(adata);
 			};
@@ -111,10 +108,7 @@ namespace ngl
 		template <typename T, bool IS_SEND = true>
 		static void	make_massfun(handle_pram& apram)
 		{
-			static auto lfun = [](const std::map<i32_serverid, actor_node_session>&
-				, const std::map<nguid, i32_serverid>&
-				, handle_pram& adata
-				)
+			static auto lfun = [](const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram& adata)
 				{
 					handle_pram_send<T>::sendmass(adata);
 				};
@@ -131,10 +125,7 @@ namespace ngl
 		template <typename T>
 		static void	make_client(handle_pram& apram)
 		{
-			static auto lfun = [](const std::map<i32_serverid, actor_node_session>&
-				, const std::map<nguid, i32_serverid>&
-				, handle_pram& adata
-				)
+			static auto lfun = [](const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram& adata)
 			{
 				handle_pram_send<T>::sendclient(adata);
 			};

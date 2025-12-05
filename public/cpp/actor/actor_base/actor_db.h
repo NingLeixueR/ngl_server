@@ -36,9 +36,9 @@ namespace ngl
 		ndbtab(const ndbtab&) = delete;
 		ndbtab& operator=(const ndbtab&) = delete;
 
-		static tab_dbload*		m_tab;			// 数据库加载策略
-		static db_cache			m_cache_save;	// 数据保存队列
-		static db_cache			m_cache_del;	// 数据删除队列
+		static tab_dbload*		m_tab;				// 数据库加载策略
+		static db_cache			m_cache_save;		// 数据保存队列
+		static db_cache			m_cache_del;		// 数据删除队列
 
 		enum
 		{

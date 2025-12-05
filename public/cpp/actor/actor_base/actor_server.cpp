@@ -52,9 +52,7 @@ namespace ngl
 		>(nready::e_ready_all);
 	}
 
-	void actor_server::forward_np_actornode_register(
-		const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd
-	)
+	void actor_server::forward_np_actornode_register(const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd)
 	{
 		// 同步其他结点
 		std::set<i32_sessionid> lsessionvec;

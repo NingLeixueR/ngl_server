@@ -37,38 +37,38 @@ namespace ngl
 		std::list<nthread*>	m_workthreads;
 
 		// # 是否挂起
-		bool				m_suspend = false;	
+		bool m_suspend = false;	
 
 		// # 挂起的工作线程
 		std::list<nthread*>	m_suspendthreads;
 
 		// # 管理线程
-		std::jthread		m_thread;	
+		std::jthread m_thread;	
 
 		// # 工作线程数量
-		i32_threadsize		m_threadnum = -1;	
+		i32_threadsize m_threadnum = -1;	
 
 		// # 索引actor
-		std::map<nguid, ptractor>							m_actorbyid;
+		std::map<nguid, ptractor> m_actorbyid;
 
 		// # 支持广播的actor
-		std::map<nguid, ptractor>							m_actorbroadcast;
+		std::map<nguid, ptractor> m_actorbroadcast;
 
 		// # 按类型索引actor
-		std::map<ENUM_ACTOR, std::map<nguid, ptractor>>		m_actorbytype;
+		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;
 
 		// # 有任务的actor列表
-		std::list<ptractor>									m_actorlist;
+		std::list<ptractor>	m_actorlist;
 
 		// # 包含哪些actortype
-		std::set<i16_actortype>								m_actortype;
+		std::set<i16_actortype>	m_actortype;
 
 		// # 删除actor后需要执行的操作
 		// (延迟操作:删除的瞬间actor正是运行状态,等待其回归后进行删除)
-		std::map<nguid, std::function<void()>>				m_delactorfun;
+		std::map<nguid, std::function<void()>> m_delactorfun;
 
 		// # actor就绪状态(如果需要加载db，db加载完成)
-		std::set<nguid>										m_ready;
+		std::set<nguid> m_ready;
 
 		ngl_lockinit;
 
