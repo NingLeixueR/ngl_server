@@ -2,6 +2,8 @@
 #include "dumper.h"
 #include "type.h"
 
+#include <format>
+
 Dumper lDumper;
 
 int main(int argc, char** argv)
