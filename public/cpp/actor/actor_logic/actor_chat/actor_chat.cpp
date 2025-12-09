@@ -89,17 +89,17 @@ namespace ngl
 		{
 			return true;
 		}
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT_RESPONSE>();
-		pro->set_mstat(true);
-		pro->set_mtype(pbnet::ENUM_UPDATA_SPEAK);
+		pbnet::PROBUFF_NET_CHAT_RESPONSE pro;
+		pro.set_mstat(true);
+		pro.set_mtype(pbnet::ENUM_UPDATA_SPEAK);
 
 		for (const auto& [_channelid, _update] : m_update_chatitem)
 		{
-			pro->set_mchannelid(_channelid);
-			pro->clear_mchatlist();
+			pro.set_mchannelid(_channelid);
+			pro.clear_mchatlist();
 			for (const pbnet::chatitem& item : _update)
 			{
-				*pro->add_mchatlist() = item;
+				*pro.add_mchatlist() = item;
 			}
 			send_client(pro);
 		}

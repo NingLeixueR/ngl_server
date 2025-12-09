@@ -415,7 +415,7 @@ bool start_gateway()
 {
 	ngl::log_error()->print("[{}] start", "GATEWAY");
 
-	if (!init_server(nconfig::m_nodeid))
+	if (!init_server(nconfig::m_nodeid, { pbnet::KCP_GATEWAY }))
 	{
 		return false;
 	}
@@ -432,6 +432,7 @@ bool start_gateway()
 	ngl::actor_gateway_g2c::instance();
 	ngl::actor_gateway_c2g::instance();
 	ngl::actor_gmclient::instance();
+	ngl::actor_kcp::instance();
 
 	ngl::actor_client::instance().actor_server_register();
 	return true;
@@ -487,7 +488,7 @@ bool start_game()
 {
 	ngl::log_error()->print("[{}] start", "GAME");
 
-	if (!init_server(nconfig::m_nodeid, { pbnet::KCP_ROLE1, pbnet::KCP_ROLE2 }))
+	if (!init_server(nconfig::m_nodeid, {}))
 	{
 		return false;
 	}
@@ -502,7 +503,6 @@ bool start_game()
 
 	ngl::actor_role_manage::instance();
 	ngl::actor_create::instance();
-	ngl::actor_kcp::instance();
 	ngl::actor_gmclient::instance();
 
 	ngl::actor_client::instance().actor_server_register();

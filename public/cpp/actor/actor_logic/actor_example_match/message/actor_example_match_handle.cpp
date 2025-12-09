@@ -65,8 +65,8 @@ namespace ngl
 			m_roomindex[lproom->m_type].m_roomlist[lproom->m_roomid] = room_index::eroom_ready;
 		}
 
-		auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>();
-		pro->set_mroomid(lproom->m_roomid);
+		pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE pro;
+		pro.set_mroomid(lproom->m_roomid);
 		send_client(lroleid, pro);
 
 		sync_match_info(lproom);

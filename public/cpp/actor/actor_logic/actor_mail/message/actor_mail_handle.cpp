@@ -130,8 +130,8 @@ namespace ngl
 			return true;
 		}
 		i64_actorid roleid = lparm->identifier();
-		auto pro = m_mails.sync_mail(roleid);
-		if (pro == nullptr)
+		pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE pro;
+		if (!m_mails.sync_mail(roleid, -1, pro))
 		{
 			return true;
 		}

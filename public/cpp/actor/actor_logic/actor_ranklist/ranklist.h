@@ -48,7 +48,7 @@ namespace ngl
 
 		virtual void initdata();
 				
-		std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> get_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage);
+		bool get_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage, pbnet::PROBUFF_NET_RANKLIST_RESPONSE& apro);
 
 		void sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t aactivityid, int32_t apage);
 

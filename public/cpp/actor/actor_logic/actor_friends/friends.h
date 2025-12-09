@@ -163,7 +163,7 @@ namespace ngl
 		// 同步好友信息
 		void syncfriends(i64_actorid aroleid)
 		{
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_FRIEND_RESPONSE>();
+			pbnet::PROBUFF_NET_FRIEND_RESPONSE pro;
 			data_modified<pbdb::db_friends>& lfriends = get(aroleid);
 			const pbdb::db_friends* lpfriendsconst = lfriends.getconst();
 			if (lpfriendsconst == nullptr)
@@ -178,7 +178,7 @@ namespace ngl
 				{
 					return;
 				}
-				*pro->add_mfriends() = *lpbrief;
+				*pro.add_mfriends() = *lpbrief;
 			}
 
 			for (i64_actorid afriends : lpfriendsconst->mapplyfriends())
@@ -188,7 +188,7 @@ namespace ngl
 				{
 					return;
 				}
-				*pro->add_mapplyfriends() = *lpbrief;
+				*pro.add_mapplyfriends() = *lpbrief;
 			}
 			actor::send_client(aroleid, pro);
 		}

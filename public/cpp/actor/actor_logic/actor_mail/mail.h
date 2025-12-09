@@ -218,20 +218,19 @@ namespace ngl
 			return true;
 		}
 
-		std::shared_ptr<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE> sync_mail(i64_actorid aroleid, i64_actorid amailid = -1)
+		bool sync_mail(i64_actorid aroleid, i64_actorid amailid, pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& apro)
 		{
 			data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>();
 			pbdb::db_mail* lpdbmail = lpdb_mail.get();
 			if (lpdbmail == nullptr)
 			{
-				return nullptr;
+				return false;
 			}
 			for (const auto& [_mailid, _mails] : *lpdbmail->mutable_mmail())
 			{
-				pro->mutable_mmail()->insert({ _mailid, _mails });
+				apro.mutable_mmail()->insert({ _mailid, _mails });
 			}
-			return pro;
+			return true;
 		}
 	};
 }// namespace ngl

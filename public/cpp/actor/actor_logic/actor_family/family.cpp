@@ -221,66 +221,68 @@ namespace ngl
 		return 0;
 	}
 
-	std::shared_ptr<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE> family::get_familylist(i64_actorid afamilyid)
+	bool family::get_familylist(i64_actorid afamilyid, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& apro)
 	{
 		if (afamilyid == -1)
 		{
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>();
-			pro->set_mfamilid(afamilyid);
+			apro.set_mfamilid(afamilyid);
 			for (const auto& lpair : data())
 			{
 				data_modified_continue_getconst(lpfamilyconst, lpair.second);
-				*pro->add_mfamily() = *lpfamilyconst;
+				*apro.add_mfamily() = *lpfamilyconst;
 			}
-			return pro;
+			return true;
 		}
 		else
 		{
 			ngl::data_modified<pbdb::db_family>* lpmodifiedfamily = find(afamilyid);
 			if (lpmodifiedfamily == nullptr)
 			{
-				return nullptr;
+				return false;
 			}
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>();
-			pro->set_mfamilid(afamilyid);
-			data_modified_return_getconst(lpfamilyconst, *lpmodifiedfamily, nullptr);
-			*pro->add_mfamily() = *lpfamilyconst;
-			return pro;
+			apro.set_mfamilid(afamilyid);
+			data_modified_return_getconst(lpfamilyconst, *lpmodifiedfamily, false);
+			*apro.add_mfamily() = *lpfamilyconst;
+			return true;
 		}
 	}
 
 	void family::sync_familylist(i64_actorid aroleid, i64_actorid afamilyid)
 	{
-		auto pro = get_familylist(afamilyid);
+		pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE pro;
+		if (!get_familylist(afamilyid, pro))
+		{
+			return;
+		}
 		actor::send_client(aroleid, pro);
 	}
 
 	void family::sync_family(i64_actorid aroleid)
 	{
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE>();
-		pro->set_mstat(0);
+		pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE pro;
+		pro.set_mstat(0);
 		auto itor = m_rolefamily.find(aroleid);
 		if (itor == m_rolefamily.end())
 		{
-			pro->set_mstat(1);
+			pro.set_mstat(1);
 			actor::send_client(aroleid, pro);
 			return;
 		}
 		ngl::data_modified<pbdb::db_family>* lpmodifiedfamily = find(itor->second);
 		if (lpmodifiedfamily == nullptr)
 		{
-			pro->set_mstat(2);
+			pro.set_mstat(2);
 			actor::send_client(aroleid, pro);
 			return;
 		}
 		data_modified_return_getconst(lpfamilyconst, *lpmodifiedfamily);
-		*pro->mutable_minfo() = *lpfamilyconst;
+		*pro.mutable_minfo() = *lpfamilyconst;
 		for (int64_t aroleid : lpfamilyconst->mmember())
 		{
 			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_family>::instance(get_actor()->id_guid()).getconst(aroleid);
 			if (lpbrief != nullptr)
 			{
-				*pro->add_mmember() = *lpbrief;
+				*pro.add_mmember() = *lpbrief;
 			}
 		}
 		actor::send_client(aroleid, pro);

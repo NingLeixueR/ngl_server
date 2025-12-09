@@ -17,16 +17,16 @@ namespace ngl
 {
 	bool actor_kcp::handle(const message<np_actor_kcp>& adata)
 	{
-		auto lpram = adata.get_data();
+		auto lpram = adata.get_shared_data();
 		auto lpack = adata.get_pack();
 		
-		if (!actor_manage::instance().is_have_actor(lpram->m_actoridserver))
+		if (lpram->m_actoridserver != nguid::make() && !actor_manage::instance().is_have_actor(lpram->m_actoridserver))
 		{
 			log_error()->print("np_actor_kcp fail actor:{}",nguid(lpram->m_actoridserver));
 			return true;
 		}
 		nets::serkcp(lpram->m_kcpnum, nconfig::m_tcount)->reset_add(lpram->m_conv, lpram->m_uip, lpram->m_uport, lpram->m_actoridserver, lpram->m_actoridclient);
-		nets::sendbysession(lpack->m_id, *lpram, nguid::make(), nguid::make());
+		actor::send_actor(nguid::make(ACTOR_GATEWAY, nconfig::area(), nconfig::m_tcount), id_guid(), lpram);
 		return true;
 	}
 }//namespace ngl

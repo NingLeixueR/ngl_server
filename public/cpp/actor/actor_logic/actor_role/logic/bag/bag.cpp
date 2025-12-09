@@ -231,27 +231,27 @@ namespace ngl
 		{
 			return;
 		}
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_BAG_UPDATE>();
-		auto ladditems = pro->mutable_madditems();
+		pbnet::PROBUFF_NET_BAG_UPDATE pro;
+		auto ladditems = pro.mutable_madditems();
 		for (const auto& [_id, _count] : m_autoitem->m_addstackitems)
 		{
 			auto ladditem = ladditems->Add();
 			ladditem->set_mid(_id);
 			ladditem->set_mcount(_count);
 		}
-		auto laddnostackitems = pro->mutable_maddnostackitems();
+		auto laddnostackitems = pro.mutable_maddnostackitems();
 		for (int32_t itemid : m_autoitem->m_addnostackitems)
 		{
 			laddnostackitems->Add(itemid);
 		}
-		auto ldelitems = pro->mutable_mdelitems();
+		auto ldelitems = pro.mutable_mdelitems();
 		for (const auto& [_id, _count] : m_autoitem->m_delstackitems)
 		{
 			auto ldelitem = ldelitems->Add();
 			ldelitem->set_mid(_id);
 			ldelitem->set_mcount(_count);
 		}
-		auto ldelnostackitems = pro->mutable_mdelnostackitems();
+		auto ldelnostackitems = pro.mutable_mdelnostackitems();
 		for (int32_t itemid : m_autoitem->m_delnostackitems)
 		{
 			ldelnostackitems->Add(itemid);

@@ -138,8 +138,8 @@ namespace ngl
 		
 		if (astat == enum_dbstat_create && atype == pbdb::ENUM_DB::ENUM_DB_ALL)
 		{
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>();
-			pro->set_mroleid(id_guid());
+			pbnet::PROBUFF_NET_ROLE_NOT_CREATE pro;
+			pro.set_mroleid(id_guid());
 			actor::send_client(pro);
 			return;
 		}
@@ -151,8 +151,8 @@ namespace ngl
 		if (m_attribute.sync())
 		{
 			m_attribute.set_sync(false);
-			auto pro = std::shared_ptr<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>();
-			m_attribute.topb(*pro);
+			pbnet::PROBUFF_NET_SYNC_ATTRIBUTE pro;
+			m_attribute.topb(pro);
 			send_client(id_guid(), pro);
 		}
 		tdb_brief::nsp_cwrite<actor_role>::change(id_guid());
@@ -308,17 +308,17 @@ namespace ngl
 
 	void actor_role::sync_data_client()
 	{
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>();
+		pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE pro;
 		data_modified_return_getconst(lpdinfo, m_info.get());
 		data_modified_return_getconst(lpdbag, m_bag.get());
 		data_modified_return_getconst(lpdtask, m_task.get());
-		*pro->mutable_mrole()	= *lpdinfo;
-		*pro->mutable_mbag()	= *lpdbag;
-		*pro->mutable_mtask()	= *lpdtask;
+		*pro.mutable_mrole()	= *lpdinfo;
+		*pro.mutable_mbag()	= *lpdbag;
+		*pro.mutable_mtask()	= *lpdtask;
 		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).getconst(id_guid());
 		if (lpbrief != nullptr)
 		{
-			*pro->mutable_mbrief() = *lpbrief;
+			*pro.mutable_mbrief() = *lpbrief;
 		}
 		send_client(id_guid(), pro);
 	}
@@ -378,13 +378,13 @@ namespace ngl
 
 		if (lgold > 0 || lstat == 0)
 		{
-			auto cpro = std::make_shared<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>();
-			cpro->set_mrechargeid(arechargeid);
-			cpro->set_morderid(aorderid);
-			cpro->set_mgold(lgold);
+			pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE cpro;
+			cpro.set_mrechargeid(arechargeid);
+			cpro.set_morderid(aorderid);
+			cpro.set_mgold(lgold);
 			for (auto itor = litems.begin(); itor != litems.end(); ++itor)
 			{
-				(*cpro->mutable_mitems())[itor->first] = itor->second;
+				(*cpro.mutable_mitems())[itor->first] = itor->second;
 			}
 			send_client(id_guid(), cpro);
 		}	
@@ -418,8 +418,8 @@ namespace ngl
 
 	void actor_role::echo_msg(const char* amsg)
 	{
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_MSG_RESPONSE>();
-		pro->set_mmsg(amsg);
+		pbnet::PROBUFF_NET_MSG_RESPONSE pro;
+		pro.set_mmsg(amsg);
 		send_client(id_guid(), pro);
 	}
 
