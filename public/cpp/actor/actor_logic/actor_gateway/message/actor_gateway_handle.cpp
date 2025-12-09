@@ -16,6 +16,7 @@
 #include "actor_gateway.h"
 #include "actor_server.h"
 #include "nregister.h"
+#include "actor_kcp.h"
 
 namespace ngl
 {
@@ -239,18 +240,18 @@ namespace ngl
 		}
 
 		// ### 通知kcp服务器创建连接
-		np_actor_kcp pro;
-		pro.m_kcpsession	= lkcpsession;
-		pro.m_sessionid		= lpack->m_id;
-		pro.m_actoridclient = lpram->mactoridclient();
-		pro.m_actoridserver = lpram->mactoridserver();
-		pro.m_uip			= lpram->muip();
-		pro.m_uport			= lpram->muport();
-		pro.m_conv			= lpram->mconv();
-		pro.m_kcpnum		= lpram->m_kcpnum();
-		pro.m_serverid		= lpram->mserverid();
+		auto pro = std::make_shared<np_actor_kcp>();
+		pro->m_kcpsession		= lkcpsession;
+		pro->m_sessionid		= lpack->m_id;
+		pro->m_actoridclient	= lpram->mactoridclient();
+		pro->m_actoridserver	= lpram->mactoridserver();
+		pro->m_uip				= lpram->muip();
+		pro->m_uport			= lpram->muport();
+		pro->m_conv				= lpram->mconv();
+		pro->m_kcpnum			= lpram->m_kcpnum();
+		pro->m_serverid			= lpram->mserverid();
 
-		nets::sendbyserver(lpram->mserverid(), pro, nguid::make(), nguid::make());
+		actor::send_actor(actor_kcp::actorid(pro->m_serverid), id_guid(), pro);
 		return true;
 	}
 }//namespace ngl

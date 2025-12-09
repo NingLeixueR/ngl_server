@@ -112,35 +112,38 @@ namespace ngl
 		);
 	}
 
-	std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> ranklist::get_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage)
+	bool ranklist::get_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage, pbnet::PROBUFF_NET_RANKLIST_RESPONSE& apro)
 	{
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>();
-		pro->set_mtype(atype);
-		pro->set_mpage(apage);
+		apro.set_mtype(atype);
+		apro.set_mpage(apage);
 		if (m_ranks.contains(atype))
 		{
-			int32_t lcount = m_ranks[atype]->getpage(aroleid, apage, [&pro,this](int32_t aindex, const rank_item* aitem)
+			int32_t lcount = m_ranks[atype]->getpage(aroleid, apage, [&apro,this](int32_t aindex, const rank_item* aitem)
 				{
 					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_ranklist>::instance(get_actor()->id_guid()).getconst(aitem->m_actorid);
 					if (lpbrief != nullptr)
 					{
-						*pro->add_mitems() = *lpbrief;
+						*apro.add_mitems() = *lpbrief;
 					}
 				});
-			pro->set_mcount(lcount);
-			pro->set_mrolerank(m_ranks[atype]->role_rank(aroleid));
+			apro.set_mcount(lcount);
+			apro.set_mrolerank(m_ranks[atype]->role_rank(aroleid));
 		}
 		else
 		{
-			pro->set_mcount(0);
-			pro->set_mrolerank(-1);
+			apro.set_mcount(0);
+			apro.set_mrolerank(-1);
 		}		
-		return pro;
+		return true;
 	}
 
 	void ranklist::sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t aactivityid, int32_t apage)
 	{
-		auto pro = get_ranklist(aroleid, atype, apage);
+		pbnet::PROBUFF_NET_RANKLIST_RESPONSE pro;
+		if (!get_ranklist(aroleid, atype, apage, pro))
+		{
+			return;
+		}
 		actor::send_client(aroleid, pro);
 	}
 

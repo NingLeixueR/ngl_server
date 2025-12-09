@@ -581,14 +581,13 @@ inline bool ENUM_CHAT_CHANNEL_Parse(
 }
 enum ENUM_KCP : int {
   KCP_NULL = 0,
-  KCP_ROLE1 = 1,
-  KCP_ROLE2 = 2,
+  KCP_GATEWAY = 1,
   ENUM_KCP_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ENUM_KCP_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool ENUM_KCP_IsValid(int value);
 constexpr ENUM_KCP ENUM_KCP_MIN = KCP_NULL;
-constexpr ENUM_KCP ENUM_KCP_MAX = KCP_ROLE2;
+constexpr ENUM_KCP ENUM_KCP_MAX = KCP_GATEWAY;
 constexpr int ENUM_KCP_ARRAYSIZE = ENUM_KCP_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ENUM_KCP_descriptor();

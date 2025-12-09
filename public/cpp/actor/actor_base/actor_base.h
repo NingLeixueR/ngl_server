@@ -406,9 +406,6 @@ namespace ngl
 			return kcpindex(lserverid, aenum);
 		}
 
-	private:
-		int16_t m_kcpuport = 0;
-		ENET_PROTOCOL m_currentprotocol = ENET_TCP;
 	public:
 		//# 通过udp.kcp发送数据
 		template <typename T>
@@ -426,117 +423,67 @@ namespace ngl
 
 #pragma region send_client
 		static i64_actorid actorclient_guid();
-	private:
-		template <typename T>
-		static std::shared_ptr<np_actor_forward<T, forward_g2c<T>>> create_cpro(const T& adata)
-		{
-			auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();
-			pro->m_data.m_data = adata;
-			return pro;
-		}
-
-		template <typename T>
-		static i64_actorid cpro_push_actorid(const std::shared_ptr<np_actor_forward<T, forward_g2c<T>>>& apro, i64_actorid aid)
-		{
-			nguid lguid(aid);
-			apro->m_data.m_uid.push_back(lguid.actordataid());
-			apro->m_data.m_area.push_back(lguid.area());
-			return lguid.make_type(nguid::none_type());
-		}
 
 		//# 根据actor_role.guidid给所在客户端发送数据
 		template <typename T>
-		static void send_tcp(i64_actorid aid, const T& adata)
+		static void send_client(i64_actorid aid, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
 		{
-			if (aid == nguid::make())
+			std::set<i64_actorid> lids = { aid };
+			send_client(lids, adata, aprotocol);
+		}
+
+		template <typename T>
+		static void send_client(const std::set<i64_actorid>& aids, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
+		{
+			auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();
+			pro->m_data.m_protocol = aprotocol;
+			pro->m_data.m_data = adata;
+			for (i64_actorid aactorid : aids)
 			{
-				return;
+				nguid lguid(aactorid);
+				pro->m_data.m_uid.push_back(lguid.actordataid());
+				pro->m_data.m_area.push_back(lguid.area());
 			}
-			auto pro = create_cpro(adata);
-			cpro_push_actorid(pro, aid);
 			handle_pram lpram = handle_pram::create<T>(nguid::make(), nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram);
 		}
 
 		template <typename T>
-		static void send_tcp(const std::set<i64_actorid>& asetids, const T& adata)
+		static void send_client(const std::vector<i64_actorid>& aids, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
 		{
-			auto pro = create_cpro(adata);
-			for (i64_actorid aactorid : asetids)
-			{
-				cpro_push_actorid(pro, aactorid);
-			}
-			handle_pram lpram = handle_pram::create<T>(nguid::make(), nguid::make(), pro);
-			push_task_id(actorclient_guid(), lpram);
+			std::set<i64_actorid> lids(aids.cbegin(), aids.cend());
+			send_client(lids, adata, aprotocol);
 		}
 
 		//# 向所有客户端发送消息
 		template <typename T>
-		static void send_tcp(const T& adata)
+		static void send_client(const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
 		{
 			std::set<i32_serverid>& lgatewayids = sysconfig::gatewayids();
 			if (lgatewayids.empty())
 			{
 				return;
 			}
-			auto pro = create_cpro(adata);
-			cpro_push_actorid(pro, nguid::make());
+			auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();
+			pro->m_data.m_protocol = aprotocol;
+			pro->m_data.m_data = adata;
+			nguid lguid(nguid::make());
+			pro->m_data.m_uid.push_back(lguid.actordataid());
+			pro->m_data.m_area.push_back(lguid.area());
 			send_server(lgatewayids, *pro, nguid::make(), nguid::make());
 		}
 
 		//# 往指定区服所有客户端发送消息
 		template <typename T>
-		static void send_tcpbyarea(i16_area aarea, const T& adata)
+		static void send_clientbyarea(i16_area aarea, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
 		{
-			auto pro = create_cpro(adata);
-			cpro_push_actorid(pro, nguid::make());
+			auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();
+			pro->m_data.m_protocol = aprotocol;
+			pro->m_data.m_data = adata;
 			ttab_servers::instance().foreach_server(GATEWAY, aarea, [&pro](const tab_servers* atab)
 				{
 					send_server(atab->m_id, *pro, nguid::make(), nguid::make());
 				});
-		}
-
-	public:
-		template <typename T>
-		static void send_client(ENET_PROTOCOL aprotocol, i64_actorid aid, const T& adata)
-		{
-			switch (aprotocol)
-			{
-			case ENET_TCP:
-				send_tcp(aid, adata);
-				break;
-			case ENET_KCP:
-				send_kcp(aid, *adata, m_kcpuport);
-				break;
-			}
-		}
-
-		template <typename T>
-		static void send_client(ENET_PROTOCOL aprotocol, const std::set<i64_actorid>& asetids, const T& adata)
-		{
-			switch (aprotocol)
-			{
-			case ENET_TCP:
-				send_tcp(asetids, adata);
-				break;
-			case ENET_KCP:
-				send_kcp(asetids, *adata, m_kcpuport);
-				break;
-			}
-		}
-
-		// tcp支持:向所有客户端发送消息
-		template <typename T>
-		static void send_client(const T& adata)
-		{
-			send_tcp(adata);
-		}
-
-		//# tcp支持:往指定区服所有客户端发送消息
-		template <typename T>
-		static void send_client(i16_area aarea, const T& adata)
-		{
-			send_tcpbyarea(aarea, adata);
 		}
 #pragma endregion
 
@@ -641,7 +588,7 @@ namespace ngl
 			}
 			if (!lclients.empty())
 			{
-				send_client(lclients, adata);
+				send_client(lclients, adata, this);
 			}
 			if (!lactors.empty())
 			{
@@ -700,19 +647,19 @@ namespace ngl
 			lptemp->m_toclient[enscript_lua] = [](int64_t aactorid, void* aL)->bool
 				{
 					auto L = (lua_State*)(aL);
-					auto pro = std::make_shared<typename T::BASE_TYPE>();
-					if (!ngl::nlua_stack::stack_pop(L, *pro))
+					typename T::BASE_TYPE pro;
+					if (!ngl::nlua_stack::stack_pop(L, pro))
 					{
 						return false;
 					}
-					actor_base::send_client(aactorid, pro);
+					actor_base::send_client(aactorid, pro, this);
 					return true;
 				};
 			lptemp->m_toactor[enscript_lua] = [](int64_t aactorid, void* aL)->bool
 				{
 					auto L = (lua_State*)(aL);
-					auto pro = std::make_shared<typename T::BASE_TYPE>();
-					if (!ngl::nlua_stack::stack_pop(L, *pro))
+					typename T::BASE_TYPE pro;
+					if (!ngl::nlua_stack::stack_pop(L, pro))
 					{
 						return false;
 					}

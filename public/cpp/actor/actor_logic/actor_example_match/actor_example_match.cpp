@@ -88,17 +88,17 @@ namespace ngl
 
 	void actor_example_match::sync_match_info(room* aroom, i64_actorid aroleid /*= nguid::make()*/)
 	{
-		auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>();
-		pro->set_mroomid(aroom->m_roomid);
-		pro->set_mtotalnumber(aroom->m_totalnumber);
-		pro->set_mroomcreate(aroom->m_roomcreate);
-		pro->set_mroomready(aroom->m_roomready);
+		pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING pro;
+		pro.set_mroomid(aroom->m_roomid);
+		pro.set_mtotalnumber(aroom->m_totalnumber);
+		pro.set_mroomcreate(aroom->m_roomcreate);
+		pro.set_mroomready(aroom->m_roomready);
 		for (const auto& [id, info] : aroom->m_players)
 		{
 			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_example_match>::instance(id_guid()).getconst(id);
 			if (lpbrief != nullptr)
 			{
-				pbexample::PLAYER& lplayer = *pro->mutable_mplayers()->Add();
+				pbexample::PLAYER& lplayer = *pro.mutable_mplayers()->Add();
 				lplayer.set_misconfirm(info.m_isconfirm);
 				*lplayer.mutable_mplayers() = *lpbrief;
 			}
@@ -115,9 +115,9 @@ namespace ngl
 
 	void actor_example_match::send_error(pbexample::PLAY_MATCHING_EERROR_CODE acode, std::set<i64_actorid>* aplayer/* = nullptr*/, int32_t aroomid /*= 0*/, i64_actorid aroleid /*= nguid::make()*/)
 	{
-		auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>();
-		pro->set_mroomid(aroomid);
-		pro->set_merrorcode(acode);
+		pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT pro;
+		pro.set_mroomid(aroomid);
+		pro.set_merrorcode(acode);
 		if (aplayer != nullptr)
 		{
 			send_client(*aplayer, pro);

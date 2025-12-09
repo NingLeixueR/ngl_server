@@ -135,7 +135,7 @@ namespace ngl
 		// # ¾üÍÅÇ©µ½
 		int32_t sign_family(i64_actorid aroleid, i64_actorid afamilyid);
 
-		std::shared_ptr<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE> get_familylist(i64_actorid afamilyid);
+		bool get_familylist(i64_actorid afamilyid, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& apro);
 
 		void sync_familylist(i64_actorid aroleid, i64_actorid afamilyid);
 

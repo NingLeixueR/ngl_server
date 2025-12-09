@@ -434,18 +434,15 @@ namespace ngl
 		auto lpack = adata.get_pack();
 		i64_actorid lrequest = lpack->m_head.get_request_actor();
 		log_error()->print("{},NAME={}", guid(), m_info.name());
-		if (lpack->m_protocol == ENET_KCP)
-		{
-			pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
-			pro.set_mutc((int32_t)localtime::gettime());
-			send_kcp(lpack, pro);
-		}
-		else
-		{
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>();
-			pro->set_mutc((int32_t)localtime::gettime());
-			send_client(id_guid(), pro);
-		}
+		//if (lpack->m_protocol == ENET_KCP)
+		//{
+		//	pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
+		//	pro.set_mutc((int32_t)localtime::gettime());
+		//	send_kcp(lpack, pro);
+		//}
+		pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
+		pro.set_mutc((int32_t)localtime::gettime());
+		send_client(id_guid(), pro, ENET_KCP);
 		return true;
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_RECHARGE>& adata)
@@ -454,8 +451,7 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_ROLE_CREATE>& adata)
 	{
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLE_CREATE>();
-		create_init(pro->mname());
+		create_init(adata.get_data()->mname());
 		return true;
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
@@ -493,8 +489,8 @@ namespace ngl
 			return true;
 		}
 
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>();
-		pro->set_mtaskid(adata.get_data()->mtaskid());
+		pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE pro;
+		pro.set_mtaskid(adata.get_data()->mtaskid());
 
 		std::map<int, int> ldrop;
 		std::string lsrc = std::format("task receive award");		
@@ -503,7 +499,7 @@ namespace ngl
 			log_error()->print("task:{} drop:{} fail!!!", adata.get_data()->mtaskid(), tab->m_dropid);
 			return true;
 		}
-		tools::copy(ldrop, *pro->mutable_mdrop());
+		tools::copy(ldrop, *pro.mutable_mdrop());
 		m_bag.add_item(ldrop);
 		return true;
 	}

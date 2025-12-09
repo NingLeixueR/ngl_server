@@ -215,11 +215,11 @@ namespace ngl
 			{
 				auto psenditem = std::make_shared<np_actor_senditem>();
 				psenditem->m_src = lsrc;
-				auto pro = std::make_shared<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>();
+				pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE pro;
 				std::map<int, int> lmap;
 				if (droplist(aid, acount, lmap))
 				{
-					map2goolemap(lmap, *pro->mutable_mitems());
+					map2goolemap(lmap, *pro.mutable_mitems());
 					actor::send_actor(aroleid, nguid::make(), psenditem);
 					actor::send_client(aroleid, pro);
 					if (amap != nullptr)

@@ -2882,13 +2882,12 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "ENUM_CHAT_CHANNEL_NULL\020\000\022\036\n\032ENUM_CHAT_CH"
   "ANNEL_ORDINARY\020\001\022$\n ENUM_CHAT_CHANNEL_CR"
   "OSS_ORDINARY\020\002\022\032\n\026ENUM_CHAT_CHANNEL_NONE"
-  "\020\003*6\n\010ENUM_KCP\022\014\n\010KCP_NULL\020\000\022\r\n\tKCP_ROLE"
-  "1\020\001\022\r\n\tKCP_ROLE2\020\002*<\n\005eunit\022\016\n\neunit_rol"
-  "e\020\000\022\021\n\reunit_monster\020\001\022\020\n\014eunit_region\020\002"
-  "*s\n\teunitstat\022\024\n\020eunitstat_normal\020\000\022\024\n\020e"
-  "unitstat_nomove\020\001\022\034\n\030eunitstat_nonormala"
-  "ttack\020\002\022\034\n\030eunitstat_noreleaseskill\020\004B\002H"
-  "\001b\006proto3"
+  "\020\003*)\n\010ENUM_KCP\022\014\n\010KCP_NULL\020\000\022\017\n\013KCP_GATE"
+  "WAY\020\001*<\n\005eunit\022\016\n\neunit_role\020\000\022\021\n\reunit_"
+  "monster\020\001\022\020\n\014eunit_region\020\002*s\n\teunitstat"
+  "\022\024\n\020eunitstat_normal\020\000\022\024\n\020eunitstat_nomo"
+  "ve\020\001\022\034\n\030eunitstat_nonormalattack\020\002\022\034\n\030eu"
+  "nitstat_noreleaseskill\020\004B\002H\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_net_2eproto_deps[1] = {
   &::descriptor_table_db_2eproto,
@@ -2987,7 +2986,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_net
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_net_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_net_2eproto = {
-  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 9329,
+  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 9316,
   &descriptor_table_net_2eproto_once, descriptor_table_net_2eproto_sccs, descriptor_table_net_2eproto_deps, 90, 1,
   schemas, file_default_instances, TableStruct_net_2eproto::offsets,
   file_level_metadata_net_2eproto, 90, file_level_enum_descriptors_net_2eproto, file_level_service_descriptors_net_2eproto,
@@ -3121,7 +3120,6 @@ bool ENUM_KCP_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
-    case 2:
       return true;
     default:
       return false;

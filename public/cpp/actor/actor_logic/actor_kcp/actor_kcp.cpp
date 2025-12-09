@@ -36,9 +36,9 @@ namespace ngl
 		return ACTOR_KCP;
 	}
 
-	i64_actorid actor_kcp::actorid()
+	i64_actorid actor_kcp::actorid(int32_t aserid)
 	{
-		return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
+		return nguid::make(actor_type(), tab_self_area, aserid);
 	}
 
 	void actor_kcp::init()

@@ -91,8 +91,8 @@ namespace ngl
 					foreach([this, &avec](_robot& arobot)
 						{
 							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
-							int16_t lservertid = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[2]);
-							int16_t ltcount = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[3]);
+							int16_t lservertid = tools::lexical_cast<int16_t>(avec[2]);
+							int16_t ltcount = tools::lexical_cast<int16_t>(avec[3]);
 							int32_t lserverid = nnodeid::nodeid(lservertid, ltcount);
 							net_works lpstruct;
 							if (!ttab_servers::instance().get_nworks(ENET_KCP, lpstruct))
@@ -134,7 +134,7 @@ namespace ngl
 									pro.set_muport(arobot.m_robot->kcpindex(lserverid, lkcpenum));
 									pro.set_mconv(ukcp::m_conv);
 									pro.set_mactoridclient(lactorid);
-									pro.set_mactoridserver(nguid::make_type(lactorid, ACTOR_ROLE));
+									pro.set_mactoridserver(nguid::make()/*nguid::make_type(lactorid, ACTOR_ROLE)*/);
 									pro.set_m_kcpnum(lkcpenum);
 									nets::sendbysession(lsession, pro, nguid::moreactor(), lactorid);
 								});

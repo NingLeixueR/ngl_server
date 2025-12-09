@@ -78,7 +78,8 @@ namespace ngl
 	}
 	bool actor_notice::handle(const message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata)
 	{
-		auto pro = m_notice.sync_notice(-1);
+		pbnet::PROBUFF_NET_NOTICE_RESPONSE pro;
+		m_notice.sync_notice(-1, pro);
 		send_client(adata.get_data()->identifier(), pro);
 		return true;
 	}

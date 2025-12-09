@@ -161,7 +161,7 @@ namespace ngl
 		}
 		if (lview.empty() == false)
 		{
-			pro->set_misenter(true);
+			pro.set_misenter(true);
 			actor::send_client(lview, pro);
 
 			np_eevents_map_enterview lparm;
@@ -180,9 +180,9 @@ namespace ngl
 		int lgrid = m_grids.id(aunit->x(), aunit->y());
 		m_grids.leave(aunit, lgrid);
 
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>();
-		pro->add_munits(aunit->id());
-		pro->set_misenter(false);
+		pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW pro;
+		pro.add_munits(aunit->id());
+		pro.set_misenter(false);
 
 		std::set<int32_t> lgrids;
 		m_grids.idaround_list(m_grids.id(aunit->x(), aunit->y()), lgrids);
@@ -199,8 +199,8 @@ namespace ngl
 
 	void aoimap::sync_position(unit* aunit, int32_t agridid)
 	{
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_SYNC_POSITION>();
-		(*pro->mutable_mposition())[aunit->id()] = aunit->position();
+		pbnet::PROBUFF_NET_SYNC_POSITION pro;
+		(*pro.mutable_mposition())[aunit->id()] = aunit->position();
 
 		std::set<int32_t> lgrids;
 		m_grids.idaround_list(agridid, lgrids);

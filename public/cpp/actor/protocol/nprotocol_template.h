@@ -245,6 +245,7 @@ namespace ngl
 		std::vector<int16_t> m_area;
 		std::vector<int32_t> m_uid;
 		T m_data;
+		ENET_PROTOCOL m_protocol = ENET_TCP;
 	};
 
 	namespace ser
@@ -254,17 +255,17 @@ namespace ngl
 		{
 			static bool push(serialize_push* aserialize, const forward_g2c<T>& adata)
 			{
-				return ngl::ser::nserialize::push(aserialize, adata.m_area, adata.m_uid, adata.m_data);
+				return ngl::ser::nserialize::push(aserialize, adata.m_area, adata.m_uid, adata.m_protocol, adata.m_data);
 			}
 
 			static bool pop(serialize_pop* aserialize, forward_g2c<T>& adata)
 			{
-				return ngl::ser::nserialize::pop(aserialize, adata.m_area, adata.m_uid, adata.m_data);
+				return ngl::ser::nserialize::pop(aserialize, adata.m_area, adata.m_uid, adata.m_protocol, adata.m_data);
 			}
 
 			static void bytes(serialize_byte* aserialize, const forward_g2c<T>& adata)
 			{
-				ngl::ser::nserialize::bytes(aserialize, adata.m_area, adata.m_uid, adata.m_data);
+				ngl::ser::nserialize::bytes(aserialize, adata.m_area, adata.m_uid, adata.m_protocol, adata.m_data);
 			}
 		};
 	}

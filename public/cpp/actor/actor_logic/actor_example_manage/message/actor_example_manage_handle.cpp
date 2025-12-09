@@ -67,10 +67,10 @@ namespace ngl
 				std::get<1>(m_playerexample[lpair.second]) = lpactor->id_guid();
 			}
 
-			auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_CREATE>();
-			pro->set_mexampleactorid(lpactor->id_guid());
-			pro->set_mtype(lprecv->m_type);
-			pro->set_mstat(pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_success);
+			pbexample::PROBUFF_EXAMPLE_PLAY_CREATE pro;
+			pro.set_mexampleactorid(lpactor->id_guid());
+			pro.set_mtype(lprecv->m_type);
+			pro.set_mstat(pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_success);
 			send_client(lplayinfo.m_roles, pro);
 		}
 		else
