@@ -101,7 +101,7 @@ namespace ngl
 			{
 				*pro.add_mchatlist() = item;
 			}
-			send_client(pro);
+			send_client(pro, ENET_KCP);
 		}
 		m_update_chatitem.clear();
 		return true;
