@@ -36,11 +36,33 @@ namespace ngl
 
 #pragma region kcp_send
 		template <typename T>
-		bool send(const std::set<i64_actorid>& aactorcliends, T& adata)
+		bool send(const std::set<i64_actorid>& aactors, T& adata)
 		{
 			std::shared_ptr<pack> lpack;
 			lpack = net_pack<T>::npack(&m_pool, adata, 0, 0);
-			for (i64_actorid lactorcliend : aactorcliends)
+			return sendpack(aactors, lpack);
+		}
+
+		template <typename T>
+		bool send(i64_actorid aactoridclient, T& adata)
+		{
+			std::set<i64_actorid> lactors = { aactoridclient };
+			return send(lactors, adata);
+		}
+
+		bool sendpack(std::shared_ptr<pack>& apack)
+		{
+			return m_kcp.sendpack(apack);
+		}
+
+		bool sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack)
+		{
+			return m_kcp.sendpackbyarea(aarea, apack);
+		}
+
+		bool sendpack(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack)
+		{
+			for (i64_actorid lactorcliend : aactors)
 			{
 				i32_session lsession = m_kcp.find_session(lactorcliend);
 				if (lsession == -1)
@@ -55,22 +77,21 @@ namespace ngl
 				}
 				if (nconfig::node_type() != ROBOT)
 				{
-					pack_head::head_set_actor((int32_t*)lpack->m_buff, lactoridclient, lactoridserver);
+					pack_head::head_set_actor((int32_t*)apack->m_buff, lactoridclient, lactoridserver);
 				}
 				else
 				{
-					pack_head::head_set_actor((int32_t*)lpack->m_buff, lactoridserver, lactoridclient);
+					pack_head::head_set_actor((int32_t*)apack->m_buff, lactoridserver, lactoridclient);
 				}
-				m_kcp.sendpack(lsession, lpack);
+				m_kcp.sendpack(lsession, apack);
 			}
 			return true;
 		}
 
-		template <typename T>
-		bool send(i64_actorid aactoridclient, T& adata)
+		bool sendpack(i64_actorid aactor, std::shared_ptr<pack>& apack)
 		{
-			std::set<i64_actorid> lactorcliend = { aactoridclient };
-			return send(lactorcliend, adata);
+			std::set<i64_actorid> lactors = { aactor };
+			return sendpack(lactors, apack);
 		}
 
 		template <typename T>
@@ -103,11 +124,7 @@ namespace ngl
 		}
 
 		// ## 发送原始udp包并等待其返回
-		bool sendu_waitrecv(
-			const asio_udp_endpoint& aendpoint, 
-			const char* buf, int len, 
-			const std::function<void(char*, int)>& afun
-		)
+		bool sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun)
 		{
 			std::unique_ptr<ngl::sem> lsem(new ngl::sem());
 			m_kcp.sendu_waitrecv(aendpoint, buf, len, [afun, &lsem](char* buff, int len)

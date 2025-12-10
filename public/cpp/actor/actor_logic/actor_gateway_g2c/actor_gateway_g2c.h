@@ -65,21 +65,21 @@ namespace ngl
 		{
 			auto lparm = adata.get_data();
 			auto lpack = adata.get_pack();
+			if (lparm->m_data.m_uid.empty())
+			{
+				return true;
+			}
 			// Game->Gate  需要把这个消息传递给Client服务器
 			if (lparm->m_data.m_protocol == ENET_TCP)
 			{
 				gateway_socket* info = nullptr;
 				std::map<i32_sessionid, i64_actorid> lmap;
-				if (lparm->m_data.m_uid.empty())
-				{
-					return true;
-				}
-				if (lparm->m_data.m_area[0] == -1 && lparm->m_data.m_uid[0] == -1)
+				if (lparm->m_data.m_area[0] == nguid::none_area() && lparm->m_data.m_uid[0] == nguid::none_actordataid())
 				{
 					// 获取所有客户端
 					get_allclient(lmap);
 				}
-				else if (lparm->m_data.m_area[0] != -1 && lparm->m_data.m_uid[0] == -1)
+				else if (lparm->m_data.m_area[0] != nguid::none_area() && lparm->m_data.m_uid[0] == nguid::none_actordataid())
 				{
 					// 获取指定区服上的所有客户端
 					get_allclientbyarea(lmap, lparm->m_data.m_area[0]);
@@ -111,7 +111,39 @@ namespace ngl
 			}
 			else if (lparm->m_data.m_protocol == ENET_KCP)
 			{
-
+				std::shared_ptr<pack> lsendpack = ngl::net_pack<T>::npack(&nets::net_first()->get_pool(), lparm->m_data.m_data, lpack->m_head.get_request_actor(), 0);
+				if (lsendpack == nullptr)
+				{
+					return true;
+				}
+				if (lparm->m_data.m_area[0] == nguid::none_area() && lparm->m_data.m_uid[0] == nguid::none_actordataid())
+				{
+					nets::kcp(nets::kcp_ipport(nconfig::m_tid, nconfig::m_tcount, pbnet::KCP_GATEWAY))->sendpack(lsendpack);
+				}
+				else if (lparm->m_data.m_area[0] != nguid::none_area() && lparm->m_data.m_uid[0] == nguid::none_actordataid())
+				{
+					// 获取指定区服上的所有客户端
+					nets::kcp(nets::kcp_ipport(nconfig::m_tid, nconfig::m_tcount, pbnet::KCP_GATEWAY))->sendpackbyarea(lparm->m_data.m_area[0], lsendpack);
+				}
+				else
+				{
+					int32_t luidsize = (int32_t)lparm->m_data.m_uid.size();
+					int32_t lareasize = (int32_t)lparm->m_data.m_area.size();
+					if (luidsize != lareasize)
+					{
+						log_error()->print("actor_gatewayg2c uidsize[{}]!=areasize[{}]", luidsize, lareasize);
+						return true;
+					}
+					std::set<i64_actorid> lids;
+					for (int i = 0; i < luidsize; ++i)
+					{
+						i16_area larea = lparm->m_data.m_area[i];
+						i32_actordataid ldataid = lparm->m_data.m_uid[i];
+						i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea, ldataid);
+						lids.insert(lactorid);
+					}
+					nets::kcp(nets::kcp_ipport(nconfig::m_tid, nconfig::m_tcount, pbnet::KCP_GATEWAY))->sendpack(lids, lsendpack);
+				}
 			}
 			return true;
 		}

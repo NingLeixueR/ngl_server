@@ -361,6 +361,24 @@ namespace ngl
 		return true;
 	}
 
+	bool asio_kcp::sendpack(const std::shared_ptr<pack>& apack)
+	{
+		m_session.foreach([this, &apack](ptr_se& aptr)
+			{
+				send(aptr->m_endpoint, apack->m_buff, apack->m_len);
+			});
+		return true;
+	}
+
+	bool asio_kcp::sendpackbyarea(i16_area aarea, const std::shared_ptr<pack>& apack)
+	{
+		m_session.foreach([this, &apack, aarea](ptr_se& aptr)
+			{
+				send(aptr->m_endpoint, apack->m_buff, apack->m_len);
+			});
+		return true;
+	}
+
 	// ## Í¨¹ýkcp·¢ËÍpack
 	bool asio_kcp::sendpack(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack)
 	{
