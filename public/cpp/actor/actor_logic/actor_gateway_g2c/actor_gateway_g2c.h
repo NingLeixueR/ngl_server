@@ -118,12 +118,12 @@ namespace ngl
 				}
 				if (lparm->m_data.m_area[0] == nguid::none_area() && lparm->m_data.m_uid[0] == nguid::none_actordataid())
 				{
-					nets::kcp(nets::kcp_ipport(nconfig::m_tid, nconfig::m_tcount, pbnet::KCP_GATEWAY))->sendpack(lsendpack);
+					nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->sendpack(lsendpack);
 				}
 				else if (lparm->m_data.m_area[0] != nguid::none_area() && lparm->m_data.m_uid[0] == nguid::none_actordataid())
 				{
 					// 获取指定区服上的所有客户端
-					nets::kcp(nets::kcp_ipport(nconfig::m_tid, nconfig::m_tcount, pbnet::KCP_GATEWAY))->sendpackbyarea(lparm->m_data.m_area[0], lsendpack);
+					nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->sendpackbyarea(lparm->m_data.m_area[0], lsendpack);
 				}
 				else
 				{
@@ -142,7 +142,7 @@ namespace ngl
 						i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea, ldataid);
 						lids.insert(lactorid);
 					}
-					nets::kcp(nets::kcp_ipport(nconfig::m_tid, nconfig::m_tcount, pbnet::KCP_GATEWAY))->sendpack(lids, lsendpack);
+					nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->sendpack(lids, lsendpack);
 				}
 			}
 			return true;

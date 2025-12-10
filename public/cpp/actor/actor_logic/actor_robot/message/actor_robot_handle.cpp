@@ -11,6 +11,7 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+#include "actor_robot_manage.h"
 #include "actor_robot.h"
 #include "nregister.h"
 #include "nforward.h"
@@ -299,6 +300,15 @@ namespace ngl
 		);
 		m_data = *adata.get_data();
 		handle_print(adata);
+
+		std::string lcmd = "kcp 1";
+		std::vector<std::string> lvec;
+		if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
+		{
+			return false;
+		}
+		ngl::actor_robot_manage::parse_command(lvec);
+
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata)

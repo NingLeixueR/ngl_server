@@ -91,9 +91,9 @@ namespace ngl
 					foreach([this, &avec](_robot& arobot)
 						{
 							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
-							int16_t lservertid = tools::lexical_cast<int16_t>(avec[2]);
-							int16_t ltcount = tools::lexical_cast<int16_t>(avec[3]);
-							int32_t lserverid = nnodeid::nodeid(lservertid, ltcount);
+							int16_t lservertid = nnodeid::tid(arobot.m_gatewayid);//tools::lexical_cast<int16_t>(avec[2]);
+							int16_t ltcount = nnodeid::tcount(arobot.m_gatewayid);//tools::lexical_cast<int16_t>(avec[3]);
+							int32_t lserverid = arobot.m_gatewayid; //nnodeid::nodeid(lservertid, ltcount);
 							net_works lpstruct;
 							if (!ttab_servers::instance().get_nworks(ENET_KCP, lpstruct))
 							{
@@ -149,8 +149,8 @@ namespace ngl
 					foreach([&pro, this, &avec](_robot& arobot)
 						{
 							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
-							int16_t lservertid = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[2]);
-							int16_t ltcount = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[3]);
+							int16_t lservertid = nnodeid::tid(arobot.m_gatewayid);//tools::lexical_cast<int16_t>(avec[2]);
+							int16_t ltcount = nnodeid::tcount(arobot.m_gatewayid);//tools::lexical_cast<int16_t>(avec[3]);
 							actor::send_kcp(arobot.m_robot->id_guid(), pro, arobot.m_robot->kcpindex(lservertid, ltcount, lkcpenum));
 							return true;
 						});
