@@ -86,6 +86,12 @@ namespace ngl
 		// # 通过kcp发送pack
 		bool sendpack(i32_sessionid asessionid, const std::shared_ptr<pack>& apack);
 
+		// # 通过kcp给所有client发送pack
+		bool sendpack(const std::shared_ptr<pack>& apack);
+
+		// # 通过kcp给指定area所有client发送pack
+		bool sendpackbyarea(i16_area aarea, const std::shared_ptr<pack>& apack);
+
 		// # 通过kcp发送pack
 		bool sendpack(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack);
 
