@@ -127,7 +127,7 @@ namespace ngl
 	{
 		if (m_kcpindex == 0)
 		{
-			m_kcpindex = nconfig::m_tcount*1000;
+			m_kcpindex = nconfig::m_tid * 100 + nconfig::m_tcount * 10;
 		}
 		++m_kcpindex;
 		m_kcpnet[m_kcpindex] = ukcp::create(m_kcpindex);
