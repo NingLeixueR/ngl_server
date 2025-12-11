@@ -91,12 +91,15 @@ namespace ngl
 		}
 	};
 
+	struct _robot;
+	
 	class actor_robot : public actor
 	{
 		// ----- Data Begin -----
 		pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE	m_data;
 	public:
 		i32_session								m_session;
+		_robot*									m_robot;
 		// ----- Data End   -----
 	public:
 		actor_robot() = delete;
@@ -166,5 +169,15 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_SYNC_POSITION>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_SYNC_UNIT>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>& adata);
+	};
+
+	struct _robot
+	{
+		i32_sessionid					m_session = -1;
+		std::string						m_account;
+		std::shared_ptr<actor_robot>	m_robot = nullptr;
+		i64_actorid						m_actor_roleid = nguid::make();
+		i32_serverid					m_gameid = -1;
+		i32_serverid					m_gatewayid = -1;
 	};
 }//namespace ngl

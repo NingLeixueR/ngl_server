@@ -17,16 +17,6 @@
 
 namespace ngl
 {
-	struct _robot
-	{
-		i32_sessionid					m_session = -1;
-		std::string						m_account;
-		std::shared_ptr<actor_robot>	m_robot = nullptr;
-		i64_actorid						m_actor_roleid = nguid::make();
-		i32_serverid					m_gameid = -1;
-		i32_serverid					m_gatewayid = -1;
-	};
-
 	class actor_robot_manage : 
 		public actor
 	{
@@ -79,6 +69,8 @@ namespace ngl
 		}
 
 		bool getdata(_robot* arobot);
+
+		bool kcp_connect(i64_actorid arobotid, pbnet::ENUM_KCP akcpenum, int16_t aservertid, int16_t atcount, i64_actorid aseractorid);
 
 		using handle_cmd = cmd<actor_robot_manage, std::string, const std::vector<std::string>&>;
 
