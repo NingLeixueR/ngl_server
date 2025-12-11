@@ -42,15 +42,15 @@ namespace ngl
 		static bool check_serverkcp();
 
 		// robot 创建随机端口
-		static int16_t create_kcp();
+		static i16_port create_kcp();
 
 		// server 创建指定端口
-		static int16_t create_kcp(pbnet::ENUM_KCP aenum);
+		static i16_port create_kcp(pbnet::ENUM_KCP aenum);
 
-		static int16_t kcp_port(int32_t atid, int16_t atcount, pbnet::ENUM_KCP aenum);
+		static i16_port kcp_port(int32_t atid, int16_t atcount, pbnet::ENUM_KCP aenum);
 
 		// 获取实例 
-		static ukcp* kcp(int16_t auport);
+		static ukcp* kcp(i16_port auport);
 		static ukcp* serkcp(pbnet::ENUM_KCP aenum, int16_t atcount);
 
 		template <typename Y, typename T = Y>

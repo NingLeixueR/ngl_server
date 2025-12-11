@@ -35,7 +35,9 @@ extern "C"
 		//actor_type#areaid#dataid
 		const char* nguidstr = nullptr;
 		const char* lmsgname = nullptr;
-		if (!ngl::nlua_stack::stack_pop(L, nguidstr, lmsgname))
+		const char* loperprotocol = nullptr;
+		// "kcp" | "tcp"
+		if (!ngl::nlua_stack::stack_pop(L, nguidstr, loperprotocol, lmsgname))
 		{
 			ngl::nlua_stack::stack_push(L, false);
 			return 1;
@@ -48,7 +50,7 @@ extern "C"
 			return 1;
 		}
 		auto lcall = linfo->toclient<ngl::enscript_lua>();
-		if (lcall != nullptr && !lcall(lactorid, L))
+		if (lcall != nullptr && !lcall(lactorid, loperprotocol, L))
 		{
 			ngl::nlua_stack::stack_push(L, false);
 			return 1;

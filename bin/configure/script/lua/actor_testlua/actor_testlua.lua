@@ -12,7 +12,7 @@ function handle(amsgname, amsg)
 
 	-- 如何发送数据给client,actor
 	-- nguid:actor_type#areaid#dataid
-	--send_client("guid", "msgname", "msgjson")
+	--send_client("guid", "kcp" or "tcp","msgname", "msgjson")
 	--send_actor("guid", "msgname", "msgjson")
 	
 	-- 因为 tab_servers 是只读的 所以不允许玩家修改，无法通过get获取
