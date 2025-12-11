@@ -27,7 +27,6 @@ namespace ngl
 		static std::array<net_protocol*, ENET_COUNT>	m_net;
 		static std::map<int16_t, ukcp*>					m_kcpnet;
 		static int16_t									m_kcpindex;
-		static net_works								m_kcpworks;
 	public:
 		static net_protocol* net_first();
 
@@ -229,33 +228,34 @@ namespace ngl
 	template <typename T>
 	bool actor_base::send_kcp(i64_actorid aactorid, T& adata, int16_t auport/* = 0*/)
 	{
-		if (support_kcp() == false)
+		ukcp* lpukcp = nets::kcp(auport);
+		if (lpukcp == nullptr)
 		{
 			return false;
 		}
-		nets::kcp(auport)->send(aactorid, adata);
-		return true;
+		return lpukcp->send(aactorid, adata);
 	}
 
 	template <typename T>
 	bool actor_base::send_kcp(const std::set<i64_actorid>& aactorids, T& adata, int16_t auport/* = 0*/)
 	{
-		if (support_kcp() == false)
+		ukcp* lpukcp = nets::kcp(auport);
+		if (lpukcp == nullptr)
 		{
 			return false;
 		}
-		nets::kcp(auport)->send(aactorids, adata);
-		return true;
+		return lpukcp->send(aactorids, adata);
 	}
 
 	template <typename T>
 	bool actor_base::send_kcp(const pack* apack, T& adata)
 	{
-		if (support_kcp() == false)
+		ukcp* lpukcp = nets::kcp((int16_t)apack->m_head.custom1());
+		if (lpukcp == nullptr)
 		{
 			return false;
 		}
-		nets::kcp((int16_t)apack->m_head.custom1())->send(apack->m_head.get_request_actor(), adata);
+		lpukcp->send(apack->m_head.get_request_actor(), adata);
 		return true;
 	}
 }//namespace ngl

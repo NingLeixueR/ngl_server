@@ -189,10 +189,19 @@ namespace ngl
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
 	{
 		auto lpram = adata.get_data();
-		const tab_servers* tab = ttab_servers::instance().tab();
+
+		i32_serverid lserverid = lpram->mserverid();
+		int16_t ltcount = nnodeid::tcount(lpram->mserverid());
+		int16_t ltid = nnodeid::tid(lpram->mserverid());
+
+		const tab_servers* tabserver = ttab_servers::instance().tab(ltid);
+		if (tabserver == nullptr)
+		{
+			return false;
+		}
 
 		net_works lpstructserver;
-		if (!ttab_servers::instance().get_nworks("gateway", nconfig::area(), nnodeid::tcount(lpram->mserverid()), ENET_KCP, lpstructserver))
+		if (!ttab_servers::instance().get_nworks(tabserver->m_type, nconfig::area(), ENET_TCP, ltcount, lpstructserver))
 		{
 			return false;
 		}
@@ -200,7 +209,7 @@ namespace ngl
 		std::string lkcpsession = lpram->mkcpsession();	
 		return connect_kcp(
 			kcpindex(lpram->mserverid(), lpram->m_kcpnum())
-			, lpstructserver.m_ip, nets::kcp_port(nnodeid::tid(lpram->mserverid()), nnodeid::tcount(lpram->mserverid()), lpram->m_kcpnum())
+			, lpstructserver.m_ip, nets::kcp_port(ltid, ltcount, lpram->m_kcpnum())
 			, lpram->mactoridserver(), lkcpsession
 		);
 	}

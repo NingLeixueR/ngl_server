@@ -181,11 +181,6 @@ namespace ngl
 	bool actor_robot_manage::kcp_connect(i64_actorid arobotid, pbnet::ENUM_KCP akcpenum, int16_t aservertid, int16_t atcount, i64_actorid aseractorid)
 	{
 		int32_t lserverid = nnodeid::nodeid(aservertid, atcount);
-		net_works lpstruct;
-		if (!ttab_servers::instance().get_nworks(ENET_KCP, lpstruct))
-		{
-			return false;
-		}
 
 		const tab_servers* tabserver = ttab_servers::instance().tab(aservertid);
 		if (tabserver == nullptr)
@@ -194,11 +189,10 @@ namespace ngl
 		}
 
 		net_works lpstructserver;
-		if (!ttab_servers::instance().get_nworks(tabserver->m_type, nconfig::area(), ENET_KCP, atcount, lpstructserver))
+		if (!ttab_servers::instance().get_nworks(tabserver->m_type, nconfig::area(), ENET_TCP, atcount, lpstructserver))
 		{
 			return false;
 		}
-
 
 		i16_port luport = nets::kcp_port(aservertid, atcount, akcpenum);
 		log_error()->print("kcp connect server[{}:{}] {}@{}", aservertid, atcount, lpstructserver.m_ip, luport);
@@ -225,7 +219,7 @@ namespace ngl
 		}
 
 		lpukcp->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
-			, [this, lpstruct, &lprobot, lserverid, akcpenum, aseractorid](char* buff, int len)
+			, [this, &lprobot, lserverid, akcpenum, aseractorid](char* buff, int len)
 			{
 				log_error()->print("Local GetIp Finish : {}", buff);
 				ukcp::m_localuip = buff;
