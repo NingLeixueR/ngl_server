@@ -504,6 +504,7 @@ bool start_game()
 	ngl::actor_role_manage::instance();
 	ngl::actor_create::instance();
 	ngl::actor_gmclient::instance();
+	ngl::actor_kcp::instance();
 
 	ngl::actor_client::instance().actor_server_register();
 	return true;
