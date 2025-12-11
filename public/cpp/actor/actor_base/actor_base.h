@@ -510,9 +510,7 @@ namespace ngl
 
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
-		static void send_actor(
-			const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun
-		)
+		static void send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata, afailfun);
 			push_task_id(aguid, lpram);
@@ -641,7 +639,7 @@ namespace ngl
 		info* lptemp = tcustoms<true>::func<T>(aprotocolnum);
 		if (lptemp != nullptr)
 		{
-			lptemp->m_toclient[enscript_lua] = [](int64_t aactorid, void* aL)->bool
+			lptemp->m_toclient[enscript_lua] = [](int64_t aactorid, const char* aoperprotocol, void* aL)->bool
 				{
 					auto L = (lua_State*)(aL);
 					typename T::BASE_TYPE pro;
@@ -649,7 +647,14 @@ namespace ngl
 					{
 						return false;
 					}
-					actor_base::send_client(aactorid, pro, this);
+					if (std::string("kcp") == aoperprotocol)
+					{
+						actor_base::send_client(aactorid, pro, ENET_KCP);
+					}
+					else if (std::string("tcp") == aoperprotocol)
+					{
+						actor_base::send_client(aactorid, pro, ENET_TCP);
+					}
 					return true;
 				};
 			lptemp->m_toactor[enscript_lua] = [](int64_t aactorid, void* aL)->bool

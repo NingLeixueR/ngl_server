@@ -80,7 +80,7 @@ namespace ngl
 		return true;
 	}
 
-	ukcp* nets::kcp(int16_t auport)
+	ukcp* nets::kcp(i16_port auport)
 	{
 		auto itor = m_kcpnet.find(auport);
 		if (itor == m_kcpnet.end())
@@ -100,12 +100,12 @@ namespace ngl
 		return itor->second;
 	}
 
-	int16_t nets::kcp_port(int32_t atid, int16_t atcount, pbnet::ENUM_KCP aenum)
+	i16_port nets::kcp_port(int32_t atid, int16_t atcount, pbnet::ENUM_KCP aenum)
 	{// tcount(1-10)*1000 = max(10000)  
 		return atid*1000 + aenum + (atcount * 1000);
 	}
 
-	int16_t nets::create_kcp()
+	i16_port nets::create_kcp()
 	{
 		if (m_kcpindex == 0)
 		{
@@ -116,9 +116,9 @@ namespace ngl
 		return m_kcpindex;
 	}
 
-	int16_t nets::create_kcp(pbnet::ENUM_KCP aenum)
+	i16_port nets::create_kcp(pbnet::ENUM_KCP aenum)
 	{
-		int16_t luport = kcp_port(nconfig::m_tid, nconfig::m_tcount, aenum);
+		i16_port luport = kcp_port(nconfig::m_tid, nconfig::m_tcount, aenum);
 		if (!m_kcpnet.contains(luport))
 		{
 			m_kcpnet[luport] = ukcp::create(luport);

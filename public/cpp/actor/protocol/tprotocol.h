@@ -39,13 +39,14 @@ namespace ngl
 		struct info
 		{
 			using func = std::function<bool(int64_t, void*)>;
+			using funclientc = std::function<bool(int64_t, const char*, void*)>;
 
 			i32_protocolnum	m_protocol;
 			std::string		m_name;
 			int8_t			m_highvalue = 0; // 高权限值(0-127)
 
 			// # 为了给脚本提供根据结构名字发送数据给客户端
-			std::array<func, enscript_count> m_toclient;
+			std::array<funclientc, enscript_count> m_toclient;
 			// # 为了给脚本提供根据结构名字发送数据给其他actor
 			std::array<func, enscript_count> m_toactor;
 
@@ -61,13 +62,13 @@ namespace ngl
 			}
 
 			template <enscript SCRIPT>
-			const func& toclient()
+			const funclientc& toclient()
 			{
 				if constexpr (SCRIPT < enscript_count && SCRIPT > 0)
 				{
 					return m_toclient[SCRIPT];
 				}
-				static const func lnullfun = nullptr;
+				static const funclientc lnullfun = nullptr;
 				return lnullfun;
 			}
 		};

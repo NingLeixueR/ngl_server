@@ -38,7 +38,7 @@
 					logconsolelevel = "3"
 					consumings = "100"
 					dbprotobinary = "true"
-					lua = "../script/lua/"
+					lua = "../configure/script/lua/"
 					version = "0"
 					gateway_count = "2"
 					game_count = "2"
