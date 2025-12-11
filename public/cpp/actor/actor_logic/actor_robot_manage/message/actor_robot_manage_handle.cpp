@@ -91,53 +91,10 @@ namespace ngl
 					foreach([this, &avec](_robot& arobot)
 						{
 							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
-							int16_t lservertid = nnodeid::tid(arobot.m_gatewayid);//tools::lexical_cast<int16_t>(avec[2]);
-							int16_t ltcount = nnodeid::tcount(arobot.m_gatewayid);//tools::lexical_cast<int16_t>(avec[3]);
-							int32_t lserverid = arobot.m_gatewayid; //nnodeid::nodeid(lservertid, ltcount);
-							net_works lpstruct;
-							if (!ttab_servers::instance().get_nworks(ENET_KCP, lpstruct))
-							{
-								return true;
-							}
-
-							const tab_servers* tabserver = ttab_servers::instance().tab(lservertid);
-							if (tabserver == nullptr)
-							{
-								return true;
-							}
-
-							net_works lpstructserver;
-							if (!ttab_servers::instance().get_nworks(tabserver->m_type, nconfig::area(), ENET_KCP, ltcount, lpstructserver))
-							{
-								return true;
-							}
-
-							log_error()->print("kcp connect server[{}:{}] {}@{}", lservertid, ltcount, lpstructserver.m_ip, nets::kcp_port(lpstructserver, ltcount, lkcpenum));
-
-							// 获取本机uip
-							ngl::asio_udp_endpoint lendpoint(
-								asio::ip::address::from_string(lpstructserver.m_ip), nets::kcp_port(lpstructserver, ltcount, lkcpenum)
-							);
-							i32_session lsession = arobot.m_session;
-							i64_actorid lactorid = arobot.m_robot->id_guid();
-
-							arobot.m_robot->set_kcpindex(lserverid, lkcpenum, nets::create_kcp());
-							nets::kcp(arobot.m_robot->kcpindex(lserverid, lkcpenum))->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
-								, [this, lpstruct, lsession, lactorid, &arobot, lkcpenum, lserverid](char* buff, int len)
-								{
-									log_error()->print("Local GetIp Finish : {}", buff);
-									ukcp::m_localuip = buff;
-									// 获取kcp-session
-									pbnet::PROBUFF_NET_KCPSESSION pro;
-									pro.set_mserverid(lserverid);
-									pro.set_muip(ukcp::m_localuip);
-									pro.set_muport(arobot.m_robot->kcpindex(lserverid, lkcpenum));
-									pro.set_mconv(ukcp::m_conv);
-									pro.set_mactoridclient(lactorid);
-									pro.set_mactoridserver(nguid::make()/*nguid::make_type(lactorid, ACTOR_ROLE)*/);
-									pro.set_m_kcpnum(lkcpenum);
-									nets::sendbysession(lsession, pro, nguid::moreactor(), lactorid);
-								});
+							int16_t lservertid = tools::lexical_cast<int16_t>(avec[2]);
+							int16_t ltcount = tools::lexical_cast<int16_t>(avec[3]);
+							int64_t lactorid = tools::lexical_cast<int64_t>(avec[4]);
+							kcp_connect(arobot.m_robot->id_guid(), lkcpenum, lservertid, ltcount, lactorid);
 							return true;
 						});
 				};
@@ -216,6 +173,7 @@ namespace ngl
 		_robot& lrobot = m_maprobot[lrecv->maccount()];
 		m_maprobotbyactorid[lrecv->mroleid()] = &lrobot;
 		lrobot.m_robot = create((i16_area)lrecv->marea(), nguid::actordataid(lrecv->mroleid()));
+		lrobot.m_robot->m_robot = &lrobot;
 		lrobot.m_account = lrecv->maccount();
 		lrobot.m_actor_roleid = nguid::make_type(lrobot.m_robot->id_guid(), ACTOR_ROLE);
 		lrobot.m_gameid = lrecv->mgameid();

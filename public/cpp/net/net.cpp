@@ -93,7 +93,7 @@ namespace ngl
 
 	ukcp* nets::serkcp(pbnet::ENUM_KCP anum, int16_t atcount)
 	{
-		auto itor = m_kcpnet.find(kcp_port(m_kcpworks, atcount, anum));
+		auto itor = m_kcpnet.find(kcp_port(nconfig::m_tid, atcount, anum));
 		if (itor == m_kcpnet.end())
 		{
 			return nullptr;
@@ -101,26 +101,9 @@ namespace ngl
 		return itor->second;
 	}
 
-	int16_t nets::kcp_port(const net_works& aitem, int16_t atcount, pbnet::ENUM_KCP aenum)
-	{
-		return aitem.m_port + aenum + atcount * 1000;
-	}
-
-	int16_t nets::kcp_ipport(int32_t atid, int16_t atcount, pbnet::ENUM_KCP aenum)
-	{
-		const tab_servers* tab = ttab_servers::instance().tab();
-		if (tab == nullptr)
-		{
-			return -1;
-		}
-		for (const net_works& item : tab->m_net)
-		{
-			if (item.m_type == ENET_KCP)
-			{
-				return kcp_port(item, atcount, aenum);
-			}
-		}
-		return -1;
+	int16_t nets::kcp_port(int32_t atid, int16_t atcount, pbnet::ENUM_KCP aenum)
+	{// tcount(1-10)*1000 = max(10000)  
+		return atid*1000 + aenum + (atcount * 1000);
 	}
 
 	int16_t nets::create_kcp()
@@ -136,7 +119,7 @@ namespace ngl
 
 	int16_t nets::create_kcp(pbnet::ENUM_KCP aenum)
 	{
-		int16_t luport = kcp_port(m_kcpworks, nconfig::m_tcount, aenum);
+		int16_t luport = kcp_port(nconfig::m_tid, nconfig::m_tcount, aenum);
 		if (!m_kcpnet.contains(luport))
 		{
 			m_kcpnet[luport] = ukcp::create(luport);

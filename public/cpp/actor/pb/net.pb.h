@@ -582,12 +582,13 @@ inline bool ENUM_CHAT_CHANNEL_Parse(
 enum ENUM_KCP : int {
   KCP_NULL = 0,
   KCP_GATEWAY = 1,
+  KCP_ROLE = 2,
   ENUM_KCP_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ENUM_KCP_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool ENUM_KCP_IsValid(int value);
 constexpr ENUM_KCP ENUM_KCP_MIN = KCP_NULL;
-constexpr ENUM_KCP ENUM_KCP_MAX = KCP_GATEWAY;
+constexpr ENUM_KCP ENUM_KCP_MAX = KCP_ROLE;
 constexpr int ENUM_KCP_ARRAYSIZE = ENUM_KCP_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ENUM_KCP_descriptor();
@@ -7170,6 +7171,8 @@ class PROBUFF_NET_KCPSESSION_RESPONSE PROTOBUF_FINAL :
   enum : int {
     kMkcpsessionFieldNumber = 1,
     kMserveridFieldNumber = 2,
+    kMactoridserverFieldNumber = 4,
+    kMactoridclientFieldNumber = 5,
     kMKcpnumFieldNumber = 3,
   };
   // string mkcpsession = 1;
@@ -7214,6 +7217,32 @@ class PROBUFF_NET_KCPSESSION_RESPONSE PROTOBUF_FINAL :
   void _internal_set_mserverid(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
+  // int64 mactoridserver = 4;
+  bool has_mactoridserver() const;
+  private:
+  bool _internal_has_mactoridserver() const;
+  public:
+  void clear_mactoridserver();
+  ::PROTOBUF_NAMESPACE_ID::int64 mactoridserver() const;
+  void set_mactoridserver(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_mactoridserver() const;
+  void _internal_set_mactoridserver(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // int64 mactoridclient = 5;
+  bool has_mactoridclient() const;
+  private:
+  bool _internal_has_mactoridclient() const;
+  public:
+  void clear_mactoridclient();
+  ::PROTOBUF_NAMESPACE_ID::int64 mactoridclient() const;
+  void set_mactoridclient(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_mactoridclient() const;
+  void _internal_set_mactoridclient(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
   // .pbnet.ENUM_KCP m_kcpnum = 3;
   bool has_m_kcpnum() const;
   private:
@@ -7238,6 +7267,8 @@ class PROBUFF_NET_KCPSESSION_RESPONSE PROTOBUF_FINAL :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr mkcpsession_;
   ::PROTOBUF_NAMESPACE_ID::int64 mserverid_;
+  ::PROTOBUF_NAMESPACE_ID::int64 mactoridserver_;
+  ::PROTOBUF_NAMESPACE_ID::int64 mactoridclient_;
   int m_kcpnum_;
   friend struct ::TableStruct_net_2eproto;
 };
@@ -18273,7 +18304,7 @@ inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_mserverid(::PROTOBUF_NAMESPACE_
 
 // .pbnet.ENUM_KCP m_kcpnum = 3;
 inline bool PROBUFF_NET_KCPSESSION_RESPONSE::_internal_has_m_kcpnum() const {
-  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  bool value = (_has_bits_[0] & 0x00000010u) != 0;
   return value;
 }
 inline bool PROBUFF_NET_KCPSESSION_RESPONSE::has_m_kcpnum() const {
@@ -18281,7 +18312,7 @@ inline bool PROBUFF_NET_KCPSESSION_RESPONSE::has_m_kcpnum() const {
 }
 inline void PROBUFF_NET_KCPSESSION_RESPONSE::clear_m_kcpnum() {
   m_kcpnum_ = 0;
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline ::pbnet::ENUM_KCP PROBUFF_NET_KCPSESSION_RESPONSE::_internal_m_kcpnum() const {
   return static_cast< ::pbnet::ENUM_KCP >(m_kcpnum_);
@@ -18291,12 +18322,68 @@ inline ::pbnet::ENUM_KCP PROBUFF_NET_KCPSESSION_RESPONSE::m_kcpnum() const {
   return _internal_m_kcpnum();
 }
 inline void PROBUFF_NET_KCPSESSION_RESPONSE::_internal_set_m_kcpnum(::pbnet::ENUM_KCP value) {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000010u;
   m_kcpnum_ = value;
 }
 inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_m_kcpnum(::pbnet::ENUM_KCP value) {
   _internal_set_m_kcpnum(value);
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.m_kcpnum)
+}
+
+// int64 mactoridserver = 4;
+inline bool PROBUFF_NET_KCPSESSION_RESPONSE::_internal_has_mactoridserver() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_KCPSESSION_RESPONSE::has_mactoridserver() const {
+  return _internal_has_mactoridserver();
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::clear_mactoridserver() {
+  mactoridserver_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_KCPSESSION_RESPONSE::_internal_mactoridserver() const {
+  return mactoridserver_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_KCPSESSION_RESPONSE::mactoridserver() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.mactoridserver)
+  return _internal_mactoridserver();
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::_internal_set_mactoridserver(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000004u;
+  mactoridserver_ = value;
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_mactoridserver(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_mactoridserver(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.mactoridserver)
+}
+
+// int64 mactoridclient = 5;
+inline bool PROBUFF_NET_KCPSESSION_RESPONSE::_internal_has_mactoridclient() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_KCPSESSION_RESPONSE::has_mactoridclient() const {
+  return _internal_has_mactoridclient();
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::clear_mactoridclient() {
+  mactoridclient_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_KCPSESSION_RESPONSE::_internal_mactoridclient() const {
+  return mactoridclient_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_KCPSESSION_RESPONSE::mactoridclient() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.mactoridclient)
+  return _internal_mactoridclient();
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::_internal_set_mactoridclient(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000008u;
+  mactoridclient_ = value;
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_mactoridclient(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_mactoridclient(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.mactoridclient)
 }
 
 // -------------------------------------------------------------------

@@ -38,6 +38,7 @@ START
 #使用tcp 发送任意协议(借助json)
 protocol 协议名称 协议json
 
+robot 1 1 libo 1 1
 
 #创建kcp连接
 kcp enum serverid tcount

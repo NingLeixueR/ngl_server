@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-12-09 14:56:57】
+ // 创建时间【2025-12-11 15:34:21】
 
 #pragma once
 #include "ndefine.h"
@@ -1857,7 +1857,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata)
        {
-            ngl::nlua_table::table_push(L, "mkcpsession", adata.mkcpsession(),"mserverid", adata.mserverid(),"m_kcpnum", adata.m_kcpnum());
+            ngl::nlua_table::table_push(L, "mkcpsession", adata.mkcpsession(),"mserverid", adata.mserverid(),"m_kcpnum", adata.m_kcpnum(),"mactoridserver", adata.mactoridserver(),"mactoridclient", adata.mactoridclient());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata, bool apop = true)
        {
@@ -1868,13 +1868,17 @@ namespace ngl
            std::string lmkcpsession;
            int64_t lmserverid;
            pbnet::ENUM_KCP lm_kcpnum;
-           if(!ngl::nlua_table::table_pop(L, "mkcpsession", lmkcpsession, "mserverid", lmserverid, "m_kcpnum", lm_kcpnum))
+           int64_t lmactoridserver;
+           int64_t lmactoridclient;
+           if(!ngl::nlua_table::table_pop(L, "mkcpsession", lmkcpsession, "mserverid", lmserverid, "m_kcpnum", lm_kcpnum, "mactoridserver", lmactoridserver, "mactoridclient", lmactoridclient))
            {
                return false;
            }
            adata.set_mkcpsession(lmkcpsession);
            adata.set_mserverid(lmserverid);
            adata.set_m_kcpnum(lm_kcpnum);
+           adata.set_mactoridserver(lmactoridserver);
+           adata.set_mactoridclient(lmactoridclient);
            if (apop)
            {
                lua_pop(L, 1);

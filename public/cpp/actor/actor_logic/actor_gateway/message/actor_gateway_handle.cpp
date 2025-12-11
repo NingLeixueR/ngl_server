@@ -96,6 +96,8 @@ namespace ngl
 		pro.set_mkcpsession(lpram->m_kcpsession);
 		pro.set_m_kcpnum(lpram->m_kcpnum);
 		pro.set_mserverid(lpram->m_serverid);
+		pro.set_mactoridserver(lpram->m_actoridserver);
+		pro.set_mactoridclient(lpram->m_actoridclient);
 		
 		nets::sendbysession(lpram->m_sessionid, pro, lpram->m_actoridclient, nguid::make());
 		return true;

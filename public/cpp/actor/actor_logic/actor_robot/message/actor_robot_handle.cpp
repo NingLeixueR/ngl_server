@@ -200,8 +200,8 @@ namespace ngl
 		std::string lkcpsession = lpram->mkcpsession();	
 		return connect_kcp(
 			kcpindex(lpram->mserverid(), lpram->m_kcpnum())
-			, lpstructserver.m_ip, nets::kcp_port(lpstructserver, nnodeid::tcount(lpram->mserverid()), lpram->m_kcpnum())
-			, nguid::make()/*nguid::make_type(id_guid(), ACTOR_ROLE)*/, lkcpsession
+			, lpstructserver.m_ip, nets::kcp_port(nnodeid::tid(lpram->mserverid()), nnodeid::tcount(lpram->mserverid()), lpram->m_kcpnum())
+			, lpram->mactoridserver(), lkcpsession
 		);
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
@@ -301,7 +301,7 @@ namespace ngl
 		m_data = *adata.get_data();
 		handle_print(adata);
 
-		std::string lcmd = "kcp 1";
+		std::string lcmd = std::format("kcp 1 {} {} {}", nnodeid::tid(m_robot->m_gatewayid), nnodeid::tcount(m_robot->m_gatewayid), (int64_t)nguid::make());
 		std::vector<std::string> lvec;
 		if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
 		{

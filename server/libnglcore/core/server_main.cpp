@@ -488,7 +488,7 @@ bool start_game()
 {
 	ngl::log_error()->print("[{}] start", "GAME");
 
-	if (!init_server(nconfig::m_nodeid, {}))
+	if (!init_server(nconfig::m_nodeid, { pbnet::KCP_ROLE }))
 	{
 		return false;
 	}

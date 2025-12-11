@@ -177,6 +177,73 @@ namespace ngl
 		return true;
 	}
 
+
+	bool actor_robot_manage::kcp_connect(i64_actorid arobotid, pbnet::ENUM_KCP akcpenum, int16_t aservertid, int16_t atcount, i64_actorid aseractorid)
+	{
+		int32_t lserverid = nnodeid::nodeid(aservertid, atcount);
+		net_works lpstruct;
+		if (!ttab_servers::instance().get_nworks(ENET_KCP, lpstruct))
+		{
+			return false;
+		}
+
+		const tab_servers* tabserver = ttab_servers::instance().tab(aservertid);
+		if (tabserver == nullptr)
+		{
+			return false;
+		}
+
+		net_works lpstructserver;
+		if (!ttab_servers::instance().get_nworks(tabserver->m_type, nconfig::area(), ENET_KCP, atcount, lpstructserver))
+		{
+			return false;
+		}
+
+
+		i16_port luport = nets::kcp_port(aservertid, atcount, akcpenum);
+		log_error()->print("kcp connect server[{}:{}] {}@{}", aservertid, atcount, lpstructserver.m_ip, luport);
+
+		// 获取本机uip
+		ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(lpstructserver.m_ip), luport);
+		i64_actorid robotid = nguid::make_type(arobotid, ACTOR_ROLE);
+		_robot* lprobot = get_robot(robotid);
+		if (lprobot == nullptr || lprobot->m_robot == nullptr)
+		{
+			return false;
+		}
+
+		lprobot->m_robot->set_kcpindex(lserverid, akcpenum, nets::create_kcp());
+		int16_t lindex = lprobot->m_robot->kcpindex(lserverid, akcpenum);
+		if (lindex == -1)
+		{
+			return false;
+		}
+		ukcp* lpukcp = nets::kcp(lprobot->m_robot->kcpindex(lserverid, akcpenum));
+		if (lpukcp == nullptr)
+		{
+			return false;
+		}
+
+		lpukcp->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
+			, [this, lpstruct, &lprobot, lserverid, akcpenum, aseractorid](char* buff, int len)
+			{
+				log_error()->print("Local GetIp Finish : {}", buff);
+				ukcp::m_localuip = buff;
+				// 获取kcp-session
+				pbnet::PROBUFF_NET_KCPSESSION pro;
+				pro.set_mserverid(lserverid);
+				pro.set_muip(ukcp::m_localuip);
+				pro.set_muport(lprobot->m_robot->kcpindex(lserverid, akcpenum));
+				pro.set_mconv(ukcp::m_conv);
+				pro.set_mactoridclient(lprobot->m_robot->id_guid());
+				pro.set_mactoridserver(aseractorid);
+				pro.set_m_kcpnum(akcpenum);
+				nets::sendbysession(lprobot->m_session, pro, nguid::moreactor(), lprobot->m_robot->id_guid());
+			});
+		return true;
+	}
+
+
 	bool actor_robot_manage::timer_handle(const message<np_timerparm>& adata)
 	{
 		return true;
