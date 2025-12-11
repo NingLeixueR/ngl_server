@@ -22,7 +22,6 @@ namespace ngl
 	std::array<net_protocol*, ENET_COUNT> nets::m_net;
 	std::map<int16_t, ukcp*> nets::m_kcpnet;
 	int16_t nets::m_kcpindex = 0;
-	net_works nets::m_kcpworks;
 
 	net_protocol* nets::net_first()
 	{
@@ -164,13 +163,13 @@ namespace ngl
 				}
 				lserver->init(lnwork.m_port, asocketthreadnum, aouternet);
 			}
-			else if (item.m_type == ENET_KCP && nconfig::node_type() != ROBOT)
+		}
+
+		if (!akcp.empty())
+		{
+			for (pbnet::ENUM_KCP kcptype : akcp)
 			{
-				m_kcpworks = lnwork;
-				for (pbnet::ENUM_KCP kcptype : akcp)
-				{
-					nets::create_kcp(kcptype);
-				}
+				nets::create_kcp(kcptype);
 			}
 		}
 		return true;

@@ -370,9 +370,6 @@ namespace ngl
 #pragma endregion 
 
 #pragma region kcp
-		//#  «∑Ò÷ß≥÷udp.kcp
-		static bool support_kcp();
-
 	private:
 		struct kcpport
 		{

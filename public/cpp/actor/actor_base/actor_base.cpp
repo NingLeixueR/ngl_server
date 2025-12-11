@@ -322,21 +322,10 @@ namespace ngl
 		return m_group.get_group(agroupid);
 	}
 
-	bool actor_base::support_kcp()
-	{
-		static net_works lnetwork;
-		static bool lkcp = ttab_servers::instance().get_nworks(ENET_KCP, lnetwork);
-		return lkcp;
-	}
-
 	bool actor_base::connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)
 	{
 		if (nconfig::node_type() != ROBOT)
 		{//不允许服务器主动进行kcp连接
-			return false;
-		}
-		if (support_kcp() == false)
-		{
 			return false;
 		}
 		nets::kcp(anum)->connect(akcpsession, aactoridserver, id_guid(), aip, aprot, [this](i32_session asession)
