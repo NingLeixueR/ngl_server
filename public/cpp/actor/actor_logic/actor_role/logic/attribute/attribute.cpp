@@ -68,8 +68,7 @@ namespace ngl
 		lattr.printf();
 
 		attribute lattr2;
-		for (EnumModule i = EnumModule::E_ModuleRoot;
-			i < EnumModule::E_ModuleCount; i = (EnumModule)(i + 1))
+		for (EnumModule i = EnumModule::E_ModuleRoot;i < EnumModule::E_ModuleCount; i = (EnumModule)(i + 1))
 		{
 			attribute_value lvalue = init_attribute_value(i, i != EnumModule::E_ModuleBuff ? 10 : -20);
 			lattr2.init_data(i, lvalue);

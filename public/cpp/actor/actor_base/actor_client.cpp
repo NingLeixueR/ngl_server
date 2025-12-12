@@ -154,10 +154,7 @@ namespace ngl
 	{
 		// # 需要尝试连接ActorServer结点 并向其注册自己
 		NODE_TYPE ltype = ttab_servers::instance().node_type();
-		if (nconfig::m_nodetype != ltype
-			|| ltype == ngl::ACTORSERVER
-			|| ltype == ngl::ROBOT
-			)
+		if (nconfig::m_nodetype != ltype || ltype == ngl::ACTORSERVER || ltype == ngl::ROBOT)
 		{
 			tools::no_core_dump();
 			return true;
@@ -182,7 +179,6 @@ namespace ngl
 			nets::connect(aserverid, [this, aserverid](i32_session asession)
 				{
 					set_node(aserverid, asession);
-
 					np_actorclient_node_connect pro;
 					pro.m_id = nconfig::m_nodeid;
 					nets::sendbysession(asession, pro, nguid::moreactor(), id_guid());

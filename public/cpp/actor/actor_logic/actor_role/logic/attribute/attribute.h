@@ -33,7 +33,7 @@ namespace ngl
 	{
 		// 模块属性(只能模块间发生变化通过updata[EnumModule,attribute_value])
 		std::map<EnumModule, attribute_value> m_moduledata;
-		bool m_sync;
+		bool m_sync = false;
 
 		attribute_value& root()
 		{
@@ -102,8 +102,7 @@ namespace ngl
 			root().update();
 		}
 	public:
-		attribute() :
-			m_sync(false)
+		attribute()
 		{}
 		
 		bool sync()
@@ -159,13 +158,13 @@ namespace ngl
 			return root().m_fightscore;
 		}
 
-		const map_attrvalue& get_attribute()
+		const std::map<EnumAttribute, int64_t>& get_attribute()
 		{
 			return root().m_fight;
 		}
 
 		//EnumModule aenum
-		const map_attrvalue& get_attribute(EnumModule aenum)
+		const std::map<EnumAttribute, int64_t>& get_attribute(EnumModule aenum)
 		{
 			return m_moduledata[aenum].m_fight;
 		}
@@ -193,8 +192,8 @@ namespace ngl
 	{
 	private:
 		std::map<EnumAttribute, int64_t> m_dynamic;
-		aoimap* m_map;
-		int64_t m_unitid;
+		aoimap* m_map = nullptr;
+		int64_t m_unitid = 0;
 		int32_t m_stat = pbnet::eunitstat_normal;	// 状态	 
 	public:
 		dynamic_attribute(aoimap* amap, int64_t aunitid) :
