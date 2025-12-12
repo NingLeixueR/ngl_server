@@ -59,7 +59,6 @@ namespace ngl
 		explicit asio_kcp(i16_port port);
 
 		~asio_kcp();
-
 	private:
 		bool function_econnect(ptr_se& apstruct, bool aconnect);
 
@@ -71,7 +70,6 @@ namespace ngl
 
 		void function_ecmd_close()const;
 	public:
-
 		// # 发送原始udp包
 		bool sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len);
 

@@ -16,7 +16,7 @@
 #include "protocol.h"
 #include "cmd.h"
 
-#define USE_WHEEL_TIMER
+//#define USE_WHEEL_TIMER
 
 namespace ngl
 {
@@ -151,7 +151,7 @@ namespace ngl
 				wheel_parm lparm
 				{
 					.m_ms = 1000,
-					.m_intervalms = [](int64_t) {return 1000; } ,
+					.m_intervalms = [](int64_t) {return 1000; },
 					.m_count = 0x7fffffff,
 					.m_fun = [ap,lession](const wheel_node*)
 					{
