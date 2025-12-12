@@ -87,7 +87,7 @@ namespace ngl
 		if (itor == m_nspserver.end())
 		{
 			tools::no_core_dump();
-			return -1;
+			return nguid::make();
 		}
 		return itor->second;
 	}
@@ -295,5 +295,4 @@ namespace ngl
 	{
 		return m_core;
 	}
-
 }//namespace ngl

@@ -35,9 +35,7 @@ namespace ngl
 
 	template <typename TDerived, typename TACTOR, typename T>
 	nsp_write<TDerived, TACTOR, T>& nsp_write<TDerived, TACTOR, T>::instance_writeall(
-		TDerived* aactor
-		, const std::set<i32_fieldnumber>& areadfieldnumbers
-		, const std::set<i32_fieldnumber>& awritefieldnumbers
+		TDerived* aactor, const std::set<i32_fieldnumber>& areadfieldnumbers, const std::set<i32_fieldnumber>& awritefieldnumbers
 	)
 	{
 		auto lpwrite = std::make_shared<nsp_write<TDerived, TACTOR, T>>();
