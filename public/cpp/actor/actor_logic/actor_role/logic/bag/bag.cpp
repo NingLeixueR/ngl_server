@@ -58,12 +58,7 @@ namespace ngl
 		auto lpair = lpdbbag->mutable_mitems()->insert({ aitem.mid(), aitem });
 		if (lpair.second == false)
 		{
-			log_error()->print(
-				"add_item roleid=[{}] tid=[{}] mutable_mitems()->insert({}) == false"
-				, get_actor()->id_guid()
-				, aitem.mtid()
-				, aitem.mid()
-			);
+			log_error()->print("add_item roleid=[{}] tid=[{}] mutable_mitems()->insert({}) == false", get_actor()->id_guid(), aitem.mtid(), aitem.mid());
 			return nullptr;
 		}
 		lpdbbag->set_mmaxid(lindexid);
