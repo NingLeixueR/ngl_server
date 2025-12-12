@@ -330,17 +330,13 @@ namespace ngl
 			TRECV* lrecv = (TRECV*)arecv;
 			std::string lcustomstr;
 			tools::custom2json(*lrecv, lcustomstr);
-			log_error()->print(
-				"{}::handle<{}>( actor({}) : {} )", aname, tools::type_name<TRECV>(), nguid(aactor->id_guid()), lcustomstr
-			);
+			log_error()->print("{}::handle<{}>( actor({}) : {} )", aname, tools::type_name<TRECV>(), nguid(aactor->id_guid()), lcustomstr);
 		}
 
 		template <typename TACTOR, typename TX>
 		static void msg_info(TX& adata)
 		{
-			adata.m_msg = std::format(
-				"{}:{}:{}", tools::type_name<TDerived>(), tools::type_name<TACTOR>(), tools::type_name<typename TX::T>()
-			);
+			adata.m_msg = std::format("{}:{}:{}", tools::type_name<TDerived>(), tools::type_name<TACTOR>(), tools::type_name<typename TX::T>());
 		}
 	};
 }//namespace ngl
