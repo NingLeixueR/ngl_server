@@ -117,7 +117,7 @@ namespace ngl
 							}
 							else if (lsername == "gateway")
 							{
-								lkcpenum = pbnet::KCP_ROLE;
+								lkcpenum = pbnet::KCP_GATEWAY;
 								lservertid = nnodeid::tid(arobot.m_gatewayid);
 								ltcount = nnodeid::tcount(arobot.m_gatewayid);
 							}
@@ -147,7 +147,7 @@ namespace ngl
 							}
 							else if (lsername == "gateway")
 							{
-								lkcpenum = pbnet::KCP_ROLE;
+								lkcpenum = pbnet::KCP_GATEWAY;
 								lservertid = nnodeid::tid(arobot.m_gatewayid);
 								ltcount = nnodeid::tcount(arobot.m_gatewayid);
 							}
