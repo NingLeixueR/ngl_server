@@ -40,11 +40,7 @@ namespace ngl
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
-	nsp_read<TDerived, TACTOR, T>& nsp_read<TDerived, TACTOR, T>::instance_readpart(
-		TDerived* aactor
-		, const std::set<i32_fieldnumber>& afieldnumbers
-		, const std::set<i64_actorid>& aids
-	)
+	nsp_read<TDerived, TACTOR, T>& nsp_read<TDerived, TACTOR, T>::instance_readpart(TDerived* aactor, const std::set<i32_fieldnumber>& afieldnumbers, const std::set<i64_actorid>& aids)
 	{
 		auto lpread = std::make_shared<nsp_read<TDerived, TACTOR, T>>();
 		lpread->m_actor = aactor;
@@ -264,9 +260,7 @@ namespace ngl
 		pro->m_field = *lmapfieldtype;
 
 		i64_actorid lnspserid = m_regload.nspserid(recv->m_area);
-		log_error()->print(
-			"nsp_read register: {} -> {}", nguid(pro->m_actorid), nguid(lnspserid)
-		);
+		log_error()->print("nsp_read register: {} -> {}", nguid(pro->m_actorid), nguid(lnspserid));
 		nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 		actor::send_actor(lnspserid, nguid::make(), pro);
 	}
