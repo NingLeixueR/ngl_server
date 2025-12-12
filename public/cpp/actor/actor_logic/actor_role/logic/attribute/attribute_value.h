@@ -50,27 +50,25 @@ namespace ngl
 		friend class attribute;
 	private:
 		// # [absolute] 属性绝对值  
-		map_attrvalue m_attr;
+		std::map<EnumAttribute, int64_t> m_attr;
 		// # 万分比属性[自身提供的]
-		map_attrratio m_rattr;
+		std::map<EnumAttribute, float> m_rattr;
 		// # 万分比属性[别人提供的]
-		map_attrratio m_orattr;
+		std::map<EnumAttribute, float> m_orattr;
 		// ## 以下比例属性 是往父链上添加的属性 ##
 		// # key:哪个模块加的比例属性
-		map_moduleratio m_crattr;		// 往父链的[万分比属性]上添加 
+		std::map<EnumModule, std::map<EnumAttribute, float>> m_crattr;		// 往父链的[万分比属性]上添加 
 		// # [m_attr+m_rattr] 产生的属性
-		map_attrvalue m_fight;
+		std::map<EnumAttribute, int64_t> m_fight;
 		// # 战力
-		int64_t m_fightscore;
+		int64_t m_fightscore = 0;
 
-		EnumModule m_module;
+		EnumModule m_module = EnumModule::E_ModuleNull;
 	public:
-		attribute_value() :
-			m_fightscore(0),
-			m_module(EnumModule::E_ModuleNull)
+		attribute_value()
 		{}
 	private:
-		void update(map_attrvalue& aattr, const map_attrratio& amr)
+		void update(std::map<EnumAttribute, int64_t>& aattr, const std::map<EnumAttribute, float>& amr)
 		{
 			for (const auto& [key, value] : amr)
 			{
@@ -106,7 +104,7 @@ namespace ngl
 			return m_fightscore;
 		}
 	public:
-		map_attrvalue& get_fight()
+		std::map<EnumAttribute, int64_t>& get_fight()
 		{
 			return m_fight;
 		}
@@ -115,7 +113,7 @@ namespace ngl
 		{
 			m_fight.clear();
 			m_fight = m_attr;
-			map_attrratio lrattr(m_rattr);
+			std::map<EnumAttribute, float> lrattr(m_rattr);
 			ttab_attribute::instance().add(lrattr, m_orattr);
 			update(m_fight, lrattr);
 			return fight();

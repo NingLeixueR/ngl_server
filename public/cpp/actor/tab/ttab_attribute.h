@@ -19,10 +19,6 @@
 
 namespace ngl
 {
-	using map_attrvalue = std::map<EnumAttribute, int64_t>;
-	using map_attrratio = std::map<EnumAttribute, float>;
-	using map_moduleratio = std::map<EnumModule, map_attrratio>;
-
 	struct ttab_attribute :
 		public manage_csv<tab_attribute>
 	{
@@ -134,7 +130,7 @@ namespace ngl
 			}
 		}
 
-		void add(map_attrvalue& al, const map_attrvalue& ar)
+		void add(std::map<EnumAttribute, int64_t>& al, const std::map<EnumAttribute, int64_t>& ar)
 		{
 			for (const auto& [key, value] : ar)
 			{
@@ -142,7 +138,7 @@ namespace ngl
 			}
 		}
 
-		void add(map_attrratio& al, const map_attrratio& ar)
+		void add(std::map<EnumAttribute, float>& al, const std::map<EnumAttribute, float>& ar)
 		{
 			for (const auto& [key, value] : ar)
 			{
@@ -150,7 +146,7 @@ namespace ngl
 			}
 		}
 
-		void dec(map_attrvalue& al, const map_attrvalue& ar)
+		void dec(std::map<EnumAttribute, int64_t>& al, const std::map<EnumAttribute, int64_t>& ar)
 		{
 			for (const auto& [key, value] : ar)
 			{
@@ -158,7 +154,7 @@ namespace ngl
 			}
 		}
 
-		void dec(map_attrratio& al, const map_attrratio& ar)
+		void dec(std::map<EnumAttribute, float>& al, const std::map<EnumAttribute, float>& ar)
 		{
 			for (const auto& [key, value] : ar)
 			{

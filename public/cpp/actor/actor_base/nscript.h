@@ -151,7 +151,7 @@ namespace ngl
 				L = nullptr;
 				return false;
 			}
-			m_scriptpath = std::format("../script/lua/{}/{}", asubdirectory, ascript);
+			m_scriptpath = std::format("../configure/script/lua/{}/{}", asubdirectory, ascript);
 			if (luaL_loadfile(L, m_scriptpath.c_str()) || lua_pcall(L, 0, 0, 0))
 			{
 				LOG_SCRIPT("can't run [{}#{}] : {} !", asubdirectory, m_scriptpath, lua_tostring(L, -1));
