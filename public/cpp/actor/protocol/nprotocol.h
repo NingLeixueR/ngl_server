@@ -432,10 +432,6 @@ namespace ngl
 			{
 				return;
 			}
-			if (m_init == false)
-			{
-				return;
-			}
 			if (!check_level(m_level))
 			{
 				return;
@@ -454,7 +450,7 @@ namespace ngl
 				logprintf::printf(m_level, m_src.c_str(), ltimebuff, ldata.c_str());
 			}
 
-			if (m_level >= ngl::sysconfig::logwritelevel())
+			if (m_init && m_level >= ngl::sysconfig::logwritelevel())
 			{
 				auto pro = std::make_shared<np_logitem>();
 				pro->m_loglevel = m_level;
