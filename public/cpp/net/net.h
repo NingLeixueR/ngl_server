@@ -226,7 +226,7 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool actor_base::send_kcp(i64_actorid aactorid, T& adata, int16_t auport/* = 0*/)
+	bool actor_base::send_kcp(i64_actorid aactorid, T& adata, i16_port auport/* = 0*/)
 	{
 		ukcp* lpukcp = nets::kcp(auport);
 		if (lpukcp == nullptr)
@@ -237,7 +237,7 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool actor_base::send_kcp(const std::set<i64_actorid>& aactorids, T& adata, int16_t auport/* = 0*/)
+	bool actor_base::send_kcp(const std::set<i64_actorid>& aactorids, T& adata, i16_port auport/* = 0*/)
 	{
 		ukcp* lpukcp = nets::kcp(auport);
 		if (lpukcp == nullptr)
