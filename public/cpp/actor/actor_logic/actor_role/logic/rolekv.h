@@ -37,8 +37,7 @@ namespace ngl
 		}
 
 		bool value(const char* akey, std::string& adata)
-		{
-			
+		{			
 			data_modified<pbdb::db_rolekeyvalue>& ltemp = get(get_actor()->id_guid());
 			const pbdb::db_rolekeyvalue* lpdata = ltemp.getconst();
 			if (lpdata == nullptr)
