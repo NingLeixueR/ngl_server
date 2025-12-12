@@ -58,10 +58,7 @@ namespace ngl
 		auto ltab = ttab_servers::instance().tab(nnodeid::tid(lserverid));
 		if (ltab != nullptr)
 		{
-			log_error()->print(
-				"server_session::remove [{}:{}_{}]",
-				nnodeid::tid(lserverid), ltab->m_name, nnodeid::tcount(lserverid)
-			);
+			log_error()->print("server_session::remove [{}:{}_{}]", nnodeid::tid(lserverid), ltab->m_name, nnodeid::tcount(lserverid));
 		}
 	}
 

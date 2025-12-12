@@ -16,7 +16,7 @@
 #include "protocol.h"
 #include "cmd.h"
 
-//#define USE_WHEEL_TIMER
+#define USE_WHEEL_TIMER
 
 namespace ngl
 {
@@ -495,7 +495,7 @@ namespace ngl
 		ptr_se lpstruct = m_session.find(asession);
 		if (lpstruct == nullptr)
 		{
-			return -1;
+			return nguid::make();
 		}
 		return lpstruct->m_actoridclient;
 	}

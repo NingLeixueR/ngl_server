@@ -44,17 +44,17 @@ namespace ngl
 		};
 	private:
 		session_manage						m_session;
-		std::function<void(i32_session)>	m_connectfun;
+		std::function<void(i32_session)>	m_connectfun = nullptr;
 		bpool								m_pool;
 		asio::io_context					m_context;
 		asio_udp::socket					m_socket;
 		asio_udp_endpoint					m_remoteport;
-		char								m_buff[e_buff_byte];
-		std::size_t							m_bytes_received;
-		char								m_buffrecv[e_buffrecv_byte];
-		std::function<void(char*, int)>		m_wait;
+		char								m_buff[e_buff_byte] = { 0x0 };
+		std::size_t							m_bytes_received = 0;
+		char								m_buffrecv[e_buffrecv_byte] = { 0x0 };
+		std::function<void(char*, int)>		m_wait = nullptr;
 		asio_udp_endpoint					m_waitendpoint;
-		i16_port							m_port;
+		i16_port							m_port = 0;
 	public:
 		explicit asio_kcp(i16_port port);
 
@@ -76,12 +76,7 @@ namespace ngl
 		bool sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len);
 
 		// # 发送原始udp包并等待其返回
-		bool sendu_waitrecv(
-			const asio_udp_endpoint& aendpoint, 
-			const char* buf, 
-			int len, 
-			const std::function<void(char*, int)>& afun
-		);
+		bool sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun);
 
 		// # 通过kcp发送pack
 		bool sendpack(i32_sessionid asessionid, const std::shared_ptr<pack>& apack);
