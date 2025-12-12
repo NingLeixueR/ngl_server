@@ -373,7 +373,7 @@ namespace ngl
 	private:
 		struct kcpport
 		{
-			std::map<pbnet::ENUM_KCP, int16_t> m_data;
+			std::map<pbnet::ENUM_KCP, i16_port> m_data;
 		};
 		std::map<i32_serverid, kcpport> m_kcpindex;
 	public:
@@ -382,7 +382,7 @@ namespace ngl
 			m_kcpindex[aserverid].m_data[aenum] = akcpindex;
 		}
 
-		int16_t kcpindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum)
+		i16_port kcpindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum)
 		{
 			auto itor = m_kcpindex.find(aserverid);
 			if (itor == m_kcpindex.end())
@@ -397,7 +397,7 @@ namespace ngl
 			return itor2->second;
 		}
 
-		int16_t kcpindex(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum)
+		i16_port kcpindex(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum)
 		{
 			int32_t lserverid = nnodeid::nodeid(aservertid, atcount);
 			return kcpindex(lserverid, aenum);
@@ -406,10 +406,10 @@ namespace ngl
 	public:
 		//# 通过udp.kcp发送数据
 		template <typename T>
-		static bool send_kcp(i64_actorid aactorid, T& adata, int16_t auport = 0);
+		static bool send_kcp(i64_actorid aactorid, T& adata, i16_port auport = 0);
 
 		template <typename T>
-		static bool send_kcp(const std::set<i64_actorid>& aactorids, T& adata, int16_t auport = 0);
+		static bool send_kcp(const std::set<i64_actorid>& aactorids, T& adata, i16_port auport = 0);
 
 		template <typename T>
 		static bool send_kcp(const pack* apack, T& adata);
