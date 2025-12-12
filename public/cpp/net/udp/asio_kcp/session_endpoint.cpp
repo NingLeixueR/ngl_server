@@ -105,5 +105,4 @@ namespace ngl
 	{
 		return ikcp_release(m_kcp);
 	}
-
 }//namespace ngl

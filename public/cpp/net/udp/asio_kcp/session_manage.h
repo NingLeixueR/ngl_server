@@ -43,6 +43,10 @@ namespace ngl
 		int32_t												m_sessionid;
 		std::shared_mutex									m_mutex;
 		asio_kcp*											m_asiokcp;
+	private:
+		ptr_se _find(i32_sessionid asession);
+
+		ptr_se _find(const asio_udp_endpoint& aendpoint);
 	public:
 		session_manage(asio_kcp* asiokcp);
 
@@ -53,11 +57,7 @@ namespace ngl
 		void erase(const asio_udp_endpoint& aendpoint);
 
 		void erase(i32_sessionid asession);
-	private:
-		ptr_se _find(i32_sessionid asession);
 
-		ptr_se _find(const asio_udp_endpoint& aendpoint);
-	public:
 		ptr_se find(i32_sessionid asession);
 
 		ptr_se findbyactorid(i64_actorid aactorid);
@@ -66,27 +66,8 @@ namespace ngl
 
 		asio_udp_endpoint* find_endpoint(i32_sessionid asession);
 
-		void foreach(const std::function<void(ptr_se&)>& acall)
-		{
-			for (std::pair<const i32_sessionid, ptr_se>& lpair : m_dataofsession)
-			{
-				acall(lpair.second);
-			}
-		}
+		void foreach(const std::function<void(ptr_se&)>& acall);
 
-		void foreachbyarea(i16_area aarea, const std::function<void(ptr_se&)>& acall)
-		{
-			for (std::pair<const i64_actorid, i32_sessionid>& lpair : m_actoridofsession)
-			{
-				if (nguid::area(lpair.first) == aarea)
-				{
-					ptr_se lptr = find(lpair.first);
-					if (lptr != nullptr)
-					{
-						acall(lptr);
-					}				
-				}
-			}
-		}
+		void foreachbyarea(i16_area aarea, const std::function<void(ptr_se&)>& acall);
 	};
 }//namespace ngl

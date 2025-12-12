@@ -181,4 +181,27 @@ namespace ngl
 		}
 		return &lpstruct->m_endpoint;
 	}
+
+	void session_manage::foreach(const std::function<void(ptr_se&)>& acall)
+	{
+		for (std::pair<const i32_sessionid, ptr_se>& lpair : m_dataofsession)
+		{
+			acall(lpair.second);
+		}
+	}
+
+	void session_manage::foreachbyarea(i16_area aarea, const std::function<void(ptr_se&)>& acall)
+	{
+		for (std::pair<const i64_actorid, i32_sessionid>& lpair : m_actoridofsession)
+		{
+			if (nguid::area(lpair.first) == aarea)
+			{
+				ptr_se lptr = find(lpair.first);
+				if (lptr != nullptr)
+				{
+					acall(lptr);
+				}
+			}
+		}
+	}
 }//namespace ngl
