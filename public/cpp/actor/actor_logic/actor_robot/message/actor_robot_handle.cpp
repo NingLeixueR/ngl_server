@@ -310,7 +310,10 @@ namespace ngl
 		handle_print(adata);
 
 		{
-			std::string lcmd = std::format("kcp {} {} {} {}", (int32_t)pbnet::ENUM_KCP::KCP_GATEWAY, nnodeid::tid(m_robot->m_gatewayid), nnodeid::tcount(m_robot->m_gatewayid), (int64_t)nguid::make());
+			pbnet::ENUM_KCP lkcpenum = pbnet::ENUM_KCP::KCP_GATEWAY;
+			int16_t lservertid = nnodeid::tid(m_robot->m_gatewayid);
+			int16_t ltcount = nnodeid::tcount(m_robot->m_gatewayid);
+			std::string lcmd = std::format("kcp {} {} {} {}", (int32_t)lkcpenum, lservertid, ltcount, (int64_t)nguid::make());
 			std::vector<std::string> lvec;
 			if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
 			{
@@ -319,7 +322,10 @@ namespace ngl
 			ngl::actor_robot_manage::parse_command(lvec);
 		}
 		{
-			std::string lcmd = std::format("kcp {} {} {} {}", (int32_t)pbnet::ENUM_KCP::KCP_ROLE, nnodeid::tid(m_robot->m_gameid), nnodeid::tcount(m_robot->m_gameid), nguid::make_type(id_guid(), ACTOR_ROLE));
+			pbnet::ENUM_KCP lkcpenum = pbnet::ENUM_KCP::KCP_ROLE;
+			int16_t lservertid = nnodeid::tid(m_robot->m_gameid);
+			int16_t ltcount = nnodeid::tcount(m_robot->m_gameid);
+			std::string lcmd = std::format("kcp {} {} {} {}", (int32_t)lkcpenum, lservertid, ltcount, nguid::make_type(id_guid(), ACTOR_ROLE));
 			std::vector<std::string> lvec;
 			if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
 			{
