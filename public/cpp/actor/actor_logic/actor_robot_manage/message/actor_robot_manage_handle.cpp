@@ -105,9 +105,26 @@ namespace ngl
 					pbnet::PROBUFF_NET_GET_TIME pro;
 					foreach([&pro, this, &avec](_robot& arobot)
 						{
-							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
-							int16_t lservertid = tools::lexical_cast<int16_t>(avec[2]);
-							int16_t ltcount = tools::lexical_cast<int16_t>(avec[3]);
+							std::string lsername = avec[1];
+							pbnet::ENUM_KCP lkcpenum;
+							int16_t lservertid = 0;
+							int16_t ltcount = 0;
+							if (lsername == "game")
+							{
+								lkcpenum = pbnet::KCP_ROLE;
+								lservertid = nnodeid::tid(arobot.m_gameid);
+								ltcount = nnodeid::tcount(arobot.m_gameid);
+							}
+							else if (lsername == "gateway")
+							{
+								lkcpenum = pbnet::KCP_ROLE;
+								lservertid = nnodeid::tid(arobot.m_gatewayid);
+								ltcount = nnodeid::tcount(arobot.m_gatewayid);
+							}
+							else
+							{
+								return false;
+							}
 							actor::send_kcp(arobot.m_robot->id_guid(), pro, arobot.m_robot->kcpindex(lservertid, ltcount, lkcpenum));
 							return true;
 						});
@@ -118,13 +135,30 @@ namespace ngl
 				{
 					foreach([this, &avec](_robot& arobot)
 						{
-							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
-							int16_t lservertid = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[2]);
-							int16_t ltcount = (pbnet::ENUM_KCP)tools::lexical_cast<int16_t>(avec[3]);
-							std::shared_ptr<pack> lpack = actor_base::jsonpack(avec[4], avec[5], nguid::moreactor(), arobot.m_actor_roleid);
+							std::string lsername = avec[1];
+							pbnet::ENUM_KCP lkcpenum;
+							int16_t lservertid = 0;
+							int16_t ltcount = 0;
+							if (lsername == "game")
+							{
+								lkcpenum = pbnet::KCP_ROLE;
+								lservertid = nnodeid::tid(arobot.m_gameid);
+								ltcount = nnodeid::tcount(arobot.m_gameid);
+							}
+							else if (lsername == "gateway")
+							{
+								lkcpenum = pbnet::KCP_ROLE;
+								lservertid = nnodeid::tid(arobot.m_gatewayid);
+								ltcount = nnodeid::tcount(arobot.m_gatewayid);
+							}
+							else
+							{
+								return false;
+							}
+							std::shared_ptr<pack> lpack = actor_base::jsonpack(avec[2], avec[3], nguid::moreactor(), arobot.m_actor_roleid);
 							if (lpack != nullptr)
 							{
-								nets::sendpack(arobot.m_session, lpack);
+								actor::sendpack_kcp(arobot.m_robot->id_guid(), lpack, arobot.m_robot->kcpindex(lservertid, ltcount, lkcpenum));
 							}
 							return true;
 						});

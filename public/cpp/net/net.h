@@ -246,16 +246,4 @@ namespace ngl
 		}
 		return lpukcp->send(aactorids, adata);
 	}
-
-	template <typename T>
-	bool actor_base::send_kcp(const pack* apack, T& adata)
-	{
-		ukcp* lpukcp = nets::kcp((int16_t)apack->m_head.custom1());
-		if (lpukcp == nullptr)
-		{
-			return false;
-		}
-		lpukcp->send(apack->m_head.get_request_actor(), adata);
-		return true;
-	}
 }//namespace ngl

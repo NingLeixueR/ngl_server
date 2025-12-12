@@ -411,8 +411,9 @@ namespace ngl
 		template <typename T>
 		static bool send_kcp(const std::set<i64_actorid>& aactorids, T& adata, i16_port auport = 0);
 
-		template <typename T>
-		static bool send_kcp(const pack* apack, T& adata);
+		static bool sendpack_kcp(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport = 0);
+
+		static bool sendpack_kcp(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport = 0);
 
 		//# 发起kcp连接
 		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession);

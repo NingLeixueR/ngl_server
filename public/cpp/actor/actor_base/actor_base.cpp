@@ -334,4 +334,24 @@ namespace ngl
 			});
 		return true;
 	}
+
+	bool actor_base::sendpack_kcp(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
+	{
+		ukcp* lpukcp = nets::kcp(auport);
+		if (lpukcp == nullptr)
+		{
+			return false;
+		}
+		return lpukcp->sendpack(aactorid, adata);
+	}
+
+	bool actor_base::sendpack_kcp(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
+	{
+		ukcp* lpukcp = nets::kcp(auport);
+		if (lpukcp == nullptr)
+		{
+			return false;
+		}
+		return lpukcp->sendpack(aactorids, adata);
+	}
 }//namespace ngl
