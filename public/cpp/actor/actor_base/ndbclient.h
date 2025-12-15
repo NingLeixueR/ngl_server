@@ -207,6 +207,11 @@ namespace ngl
 		ndbclient& operator=(const ndbclient&) = delete;
 
 		using type_ndbclient = ndbclient<DBTYPE, TDBTAB, TACTOR>;
+
+		enum
+		{
+			e_default_tcount = 1,		// 默认tcount
+		};
 		
 		tab_dbload* m_tab = nullptr;
 		nmodified<TDBTAB> m_modified;
@@ -239,7 +244,7 @@ namespace ngl
 		i32_actordataid dbnodeid()
 		{
 			const tab_servers* tab = ttab_servers::instance().tab();
-			return nnodeid::nodeid(tab->m_db, 1);
+			return nnodeid::nodeid(tab->m_db, e_default_tcount);
 		}
 
 		// # 获取db actor的guid
@@ -346,9 +351,7 @@ namespace ngl
 			if (lregister.exchange(false))
 			{
 				nrfun<TACTOR>::instance()
-					.template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(
-						&actor_base::template handle<DBTYPE, TDBTAB, TACTOR>, e_ready_null
-					);
+					.template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(&actor_base::template handle<DBTYPE, TDBTAB, TACTOR>, e_ready_null);
 			}
 			init_load();
 		}
@@ -540,11 +543,7 @@ namespace ngl
 		bool handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
 		{
 			using type_message = np_actordb_load_response<DBTYPE, TDBTAB>;
-			log_error()->print(
-				"db load respones:[{}] recv_over[{}]"
-				, tools::type_name<type_message>()
-				, adata.get_data()->m_over ? "finish" : "no finishi"
-			);
+			log_error()->print("db load respones:[{}] recv_over[{}]", tools::type_name<type_message>(), adata.get_data()->m_over ? "finish" : "don`t finishi");
 			loadfinish(adata.get_data()->data(), adata.get_data()->m_stat, adata.get_data()->m_over);
 			return true;
 		}
@@ -561,9 +560,9 @@ namespace ngl
 	class actor_manage_dbclient
 	{
 		using tmap_dbclient = std::map<pbdb::ENUM_DB, ndbclient_base*>;
-		actor_base*										m_actor = nullptr;
-		tmap_dbclient									m_typedbclientmap;
-		tmap_dbclient									m_dbclientmap;						//已经加载完的
+		actor_base*											m_actor = nullptr;
+		tmap_dbclient										m_typedbclientmap;
+		tmap_dbclient										m_dbclientmap;						//已经加载完的
 		std::function<void(pbdb::ENUM_DB, enum_dbstat)>		m_loadfinishfun;					//bool db数据库是否有该数据
 	public:
 		explicit actor_manage_dbclient(actor_base* aactor) :
@@ -647,9 +646,7 @@ namespace ngl
 		template <pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
 		ndbclient<ENUM, TDATA, TACTOR>* data(bool aloadfinish)
 		{
-			ndbclient_base** lp = ngl::tools::findmap<pbdb::ENUM_DB, ndbclient_base*>(
-				aloadfinish? m_dbclientmap : m_typedbclientmap, ENUM
-			);
+			ndbclient_base** lp = ngl::tools::findmap<pbdb::ENUM_DB, ndbclient_base*>(aloadfinish? m_dbclientmap : m_typedbclientmap, ENUM);
 			if (lp == nullptr)
 			{
 				return nullptr;

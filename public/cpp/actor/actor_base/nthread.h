@@ -48,6 +48,3 @@ namespace ngl
 		void run();
 	};
 }//namespace ngl
-
-
-

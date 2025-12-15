@@ -27,7 +27,7 @@ namespace ngl
 
 	struct nlogicfun
 	{
-		int32_t m_ready = e_ready_all;//nready::enum_ready
+		int32_t m_ready = e_ready_all;
 		tlogicfun m_fun = nullptr;
 	};
 
