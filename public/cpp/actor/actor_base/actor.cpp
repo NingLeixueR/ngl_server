@@ -134,15 +134,12 @@ namespace ngl
 		auto llistcount = (int32_t)m_locallist.size();
 		if (m_weight < llistcount || llistcount >= 0x7F)
 		{
-			log_error()->print(
-				"actor handle {}:[weight:{}/count:{}]",
-				nguid(id_guid()), m_weight, m_locallist.size()
-			);
+			log_error()->print("actor::actor_handle({}) {}:[weight:{}/count:{}]", athreadid, nguid(id_guid()), m_weight, m_locallist.size());
 		}
 		time_t lbeg = localtime::gettimems();
 		int32_t lcount = 0;
 		int32_t lweight = m_weight;
-		while (--lweight >= 0 && m_locallist.empty() != true)
+		while (--lweight >= 0 && !m_locallist.empty())
 		{
 			if (m_release == false && localtime::gettimems() - lbeg > m_timeout)
 			{

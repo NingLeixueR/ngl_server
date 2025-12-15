@@ -141,7 +141,7 @@ namespace ngl
 		struct cregister_actor_handle
 		{
 			template <typename T>
-			static void func(int32_t aready/*nready::enum_ready*/)
+			static void func(int32_t aready/*enum_ready*/)
 			{
 				ninst<TDerived>().template rfun<actor, T>((Tfun<actor, T>) & actor::handle_script<T>, aready);
 			}
