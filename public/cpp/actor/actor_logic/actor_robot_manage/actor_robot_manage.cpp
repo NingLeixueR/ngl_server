@@ -75,7 +75,7 @@ namespace ngl
 			np_robot_pram
 			, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
 			, pbnet::PROBUFF_NET_ROLE_NOT_CREATE
-		>(nready::e_ready_all);
+		>(e_ready_all);
 	}
 
 	std::shared_ptr<actor_robot> actor_robot_manage::create(i16_area aarea, i32_actordataid aroleid)

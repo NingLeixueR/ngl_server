@@ -255,7 +255,7 @@ namespace ngl
 				, np_actordb_save<TDBTAB_TYPE, TDBTAB>
 				, np_actortime_db_cache<TDBTAB>
 				, mforward<np_gm>
-			>(nready::e_ready_all);
+			>(e_ready_all);
 		}
 
 		// # 同步:加载数据

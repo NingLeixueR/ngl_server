@@ -39,6 +39,6 @@ namespace ngl
 	{
 		register_handle<actor_create>::func<
 			np_actorswitch_process<np_actorswitch_process_role>
-		>(nready::e_ready_all);
+		>(e_ready_all);
 	}
 }//namespace ngl

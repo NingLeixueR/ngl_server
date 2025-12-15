@@ -69,7 +69,7 @@ namespace ngl
 		// 绑定自定义np_消息
 		register_handle<actor_csvserver>::func<
 			np_actor_csv_verify_version
-		>(nready::e_ready_all);
+		>(e_ready_all);
 	}
 
 	bool actor_csvserver::timer_handle(const message<np_timerparm>& adata)

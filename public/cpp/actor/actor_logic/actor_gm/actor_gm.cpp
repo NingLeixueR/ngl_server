@@ -73,7 +73,7 @@ namespace ngl
 		register_handle<actor_gm>::func<
 			ngl::np_gm
 			, mforward<ngl::np_gm_response>
-		>(nready::e_ready_all);
+		>(e_ready_all);
 	}
 
 	void actor_gm::sendbytype(ENUM_ACTOR atype, const pack* apack, const ngl::np_gm& apro)

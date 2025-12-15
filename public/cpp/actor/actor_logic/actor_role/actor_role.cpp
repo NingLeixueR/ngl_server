@@ -184,7 +184,7 @@ namespace ngl
 			, pbnet::PROBUFF_NET_ROLE_SYNC
 			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD
 			, pbnet::PROBUFF_NET_ROLE_CREATE
-		>(nready::e_ready_all);
+		>(e_ready_all);
 
 		nforward::c2g();
 	}

@@ -84,17 +84,17 @@ namespace ngl
 			if (isbroadcast())
 			{
 				// # 注册广播处理函数
-				register_actornonet<TDerived, np_actor_broadcast>(nready::e_ready_all, (Tfun<actor, np_actor_broadcast>) & actor::handle);
+				register_actornonet<TDerived, np_actor_broadcast>(e_ready_all, (Tfun<actor, np_actor_broadcast>) & actor::handle);
 			}
 			// # 注册actor close处理函数
-			register_actornonet<TDerived, np_actor_close>(nready::e_ready_all, (Tfun<actor, np_actor_close>) & actor::handle);
+			register_actornonet<TDerived, np_actor_close>(e_ready_all, (Tfun<actor, np_actor_close>) & actor::handle);
 		}
 
 		// # 注册定时器
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, np_timerparm> afun = &TDerived::timer_handle)
 		{
-			ninst<TDerived>().template rfun_nonet<TDerived, np_timerparm>(afun, nready::e_ready_all);
+			ninst<TDerived>().template rfun_nonet<TDerived, np_timerparm>(afun, e_ready_all);
 		}
 
 #pragma region register_actor
@@ -153,7 +153,7 @@ namespace ngl
 #pragma region register_actornonet
 		//# 与register_actor类似 只不过不注册网络层
 		template <typename TDerived, typename T>
-		static void register_actornonet(nready::enum_ready aready, const Tfun<TDerived, T> afun)
+		static void register_actornonet(enum_ready aready, const Tfun<TDerived, T> afun)
 		{
 			ninst<TDerived>().template rfun_nonet<TDerived, T>(afun, aready);
 		}
@@ -193,7 +193,7 @@ namespace ngl
 			template <typename T>
 			static void func()
 			{
-				ninst<TDerived>().template rfun<TDerived, T>((Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>, nready::e_ready_all);
+				ninst<TDerived>().template rfun<TDerived, T>((Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>, e_ready_all);
 			}
 		};
 		template <typename TDerived, ENUM_ACTOR ACTOR>

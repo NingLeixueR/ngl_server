@@ -76,7 +76,7 @@ namespace ngl
 			mforward<np_gm>
 			, np_actor_addnotice
 			, mforward<pbnet::PROBUFF_NET_NOTICE>
-		>(nready::e_ready_all);
+		>(e_ready_all);
 	}
 
 	bool actor_notice::sendnotice(const std::string& anotice, int32_t astarttime, int32_t afinishtime)

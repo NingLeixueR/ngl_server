@@ -101,7 +101,7 @@ namespace ngl
 			, mforward<pbnet::PROBUFF_NET_FAMIL_CHANGENAME>
 			, mforward<pbnet::PROBUFF_NET_FAMIL_SIGN>
 			, mforward<pbnet::PROBUFF_NET_FAMIL_INFO>
-		>(nready::e_ready_all);
+		>(e_ready_all);
 	}
 
 	bool actor_family::timer_handle(const message<np_timerparm>& adata)

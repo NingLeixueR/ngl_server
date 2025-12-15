@@ -92,7 +92,7 @@ namespace ngl
 			, mforward<pbnet::PROBUFF_NET_FRIEND_ERASE>
 			, mforward<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD>
 			, mforward<pbnet::PROBUFF_NET_FRIEND>
-		>(nready::e_ready_all);
+		>(e_ready_all);
 	}
 
 	bool actor_friends::timer_handle(const message<np_timerparm>& adata)

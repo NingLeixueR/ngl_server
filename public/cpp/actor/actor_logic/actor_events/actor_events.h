@@ -107,7 +107,7 @@ namespace ngl
 							return;
 						}
 						actor::send_actor(*lmember, actorid(), adata.get_shared_data());
-					}, nready::e_ready_all
+					}, e_ready_all
 				);
 		}
 

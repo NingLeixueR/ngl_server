@@ -70,7 +70,7 @@ namespace ngl
 
 		register_handle<actor_gateway_g2c>::func<
 			np_actor_gatewayinfo_updata
-		>(nready::e_ready_all);
+		>(e_ready_all);
 
 		nforward::g2c();
 	}
