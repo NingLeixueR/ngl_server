@@ -22,13 +22,8 @@ namespace ngl
 {
 	class ngroup
 	{
-		struct info
-		{
-			ENUM_ACTOR m_type;
-			std::set<i64_actorid> m_actorlist;
-		};
-		std::map<int, info>				m_group;
-		int								m_currentoffset;
+		std::map<int, std::set<i64_actorid>>		m_group;
+		int											m_currentoffset = 0;
 	public:
 		inline ngroup() :
 			m_currentoffset(0)
@@ -38,8 +33,7 @@ namespace ngl
 		inline int create(ENUM_ACTOR atype = ACTOR_NONE)
 		{
 			auto& linfo = m_group[++m_currentoffset];
-			linfo.m_actorlist.clear();
-			linfo.m_type = atype;
+			linfo.clear();
 			return m_currentoffset;
 		}
 
@@ -52,44 +46,36 @@ namespace ngl
 		// # 在分组中添加一个成员
 		inline bool add_member(int agroupid, i64_actorid amember)
 		{
-			info* linfo = tools::findmap(m_group, agroupid);
-			if (linfo == nullptr)
+			std::set<i64_actorid>* lsets = tools::findmap(m_group, agroupid);
+			if (lsets == nullptr)
 			{
 				log_error()->print("add_group_member not find groupid[{}]", agroupid);
 				return false;
-			}
-			if (linfo->m_type != ACTOR_NONE)
-			{
-				amember = nguid::make_type(amember, linfo->m_type);
-			}
-			linfo->m_actorlist.insert(amember);
+			}			
+			lsets->insert(amember);
 			return true;
 		}
 
 		// # 在分组中移除一个成员
 		inline void remove_member(int agroupid, i64_actorid amember)
 		{
-			info* linfo = tools::findmap(m_group, agroupid);
-			if (linfo == nullptr)
+			std::set<i64_actorid>* lsets = tools::findmap(m_group, agroupid);
+			if (lsets == nullptr)
 			{
 				return;
 			}
-			if (linfo->m_type != ACTOR_NONE)
-			{
-				amember = nguid::make_type(amember, linfo->m_type);
-			}
-			linfo->m_actorlist.erase(amember);
+			lsets->erase(amember);
 		}
 
 		// # 获取分组中的所有成员
 		inline const std::set<i64_actorid>* get_group(int agroupid)
 		{
-			info* linfo = tools::findmap(m_group, agroupid);
-			if (linfo == nullptr)
+			std::set<i64_actorid>* lsets = tools::findmap(m_group, agroupid);
+			if (lsets == nullptr)
 			{
 				return nullptr;
 			}
-			return &linfo->m_actorlist;
+			return lsets;
 		}
 	};
 }//namespace ngl
