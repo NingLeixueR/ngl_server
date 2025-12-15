@@ -84,7 +84,7 @@ namespace ngl
 			, np_activityrank_operator
 			, np_get_rank
 			, mforward<pbnet::PROBUFF_NET_RANKLIST>
-		>(nready::e_ready_all);
+		>(e_ready_all);
 	}
 
 	bool actor_ranklist::timer_handle(const message<np_timerparm>& adata)

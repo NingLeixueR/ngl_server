@@ -112,7 +112,7 @@ namespace ngl
 			np_example_equit,
 			np_login_request_info
 			, mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>
-		>(nready::e_ready_all);
+		>(e_ready_all);
 	}
 
 	bool actor_example_manage::handle(const message<np_arg_null>&)

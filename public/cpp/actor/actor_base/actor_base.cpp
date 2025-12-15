@@ -66,25 +66,26 @@ namespace ngl
 		}
 	}
 
-	void nready::set_ready(int32_t aready, const std::function<bool()>& afun)
+	void nready::set_ready(enum_ready aready, const std::function<bool()>& afun)
 	{
 		m_readyfun[aready] = afun;
 	}
 
-	void nready::set_readybycustom(int anumber, const std::function<bool()>& afun)
+	void nready::set_readybycustom(const std::function<bool()>& afun)
 	{
-		if (anumber > 16)
+		if (m_custom > e_max_custom)
 		{
-			log_error()->print("set_readybycustom fail [{}]", anumber);
+			log_error()->print("set_readybycustom fail [{}]", m_custom);
 			return;
 		}
-		enum_ready lvalue = (enum_ready)(e_ready_custom << anumber);
+		enum_ready lvalue = (enum_ready)(e_ready_custom << m_custom);
 		if (m_readyfun.contains(lvalue))
 		{
-			log_error()->print("set_readybycustom fail [{}]", anumber);
+			log_error()->print("set_readybycustom fail [{}:{}]", m_custom, (int32_t)lvalue);
 			return;
 		}
 		m_readyfun[lvalue] = afun;
+		++m_custom;
 	}
 
 	int actor_base::m_broadcast = 10000;
@@ -106,7 +107,7 @@ namespace ngl
 				{
 					loaddb_finish(atype, astat);
 				});
-			ready().set_ready(nready::e_ready_db, [this]() 
+			ready().set_ready(e_ready_db, [this]() 
 				{
 					return m_dbclient == nullptr || m_dbclient->isloadfinish();
 				});

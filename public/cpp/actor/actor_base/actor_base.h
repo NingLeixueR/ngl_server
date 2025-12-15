@@ -65,28 +65,31 @@ namespace ngl
 	struct message;
 
 	//# 自定义"ready"组件
+	enum enum_ready
+	{
+		e_ready_all		= 0xFFFFFFFF,			// 检查所有数据是否加载完成
+		e_ready_null	= 0x00000000,			// 不需要检测是否加载完成
+		e_ready_db		= 0x00000001,			// 数据库数据加载情况
+		e_ready_nsp		= 0x00000002,			// nsp数据同步情况
+		e_ready_custom	= 0x00008000,			// 自定义ready方法
+
+		e_max_custom	= 10,					// 最多允许自定义ready方法数量
+	};
+
 	class nready
 	{
-	public:
-		enum enum_ready
-		{
-			e_ready_all		= 0xFFFFFFFF,			// 检查所有数据是否加载完成
-			e_ready_null	= 0x00000000,			// 不需要检测是否加载完成
-			e_ready_db		= 0x00000001,			// 数据库数据加载情况
-			e_ready_nsp		= 0x00000002,			// nsp数据同步情况
-			e_ready_custom	= 0x00008000,			// 自定义ready方法
-		};
 	private:
 		std::map<int32_t, std::function<bool()>> m_readyfun;
+		int32_t m_custom = 0;
 	public:
 		//# 是否就绪
 		bool is_ready(int32_t aready = e_ready_all);
 
 		//# 设置就绪函数
-		void set_ready(int32_t aready, const std::function<bool()>& afun);
+		void set_ready(enum_ready aready, const std::function<bool()>& afun);
 
 		//# 设置自定义就绪函数
-		void set_readybycustom(int anumber, const std::function<bool()>& afun);
+		void set_readybycustom(const std::function<bool()>& afun);
 	};
 
 	class actor_base

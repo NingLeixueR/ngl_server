@@ -49,7 +49,7 @@ namespace ngl
 			, np_actornode_update_server
 			, np_actornode_update_mass
 			, np_actor_gatewayid_updata
-		>(nready::e_ready_all);
+		>(e_ready_all);
 	}
 
 	void actor_server::forward_np_actornode_register(const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd)

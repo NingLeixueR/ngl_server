@@ -36,7 +36,7 @@ namespace ngl
 			}
 			if (ngl::GAME == xmlnode::m_nodetype)
 			{
-				actor::register_handle<actor_role>:: template func <ARG...>(nready::e_ready_all);
+				actor::register_handle<actor_role>:: template func <ARG...>(e_ready_all);
 				return;
 			}
 		}
@@ -69,7 +69,7 @@ namespace ngl
 			}
 			if (ngl::ROBOT == xmlnode::m_nodetype)
 			{
-				actor::register_handle<actor_robot>:: template func <ARG...>(nready::e_ready_null);
+				actor::register_handle<actor_robot>:: template func <ARG...>(e_ready_null);
 				return;
 			}
 		}

@@ -254,7 +254,7 @@ namespace ngl
 					{
 						lpclass->handle(aacotor, adata);
 					}
-				}, nready::e_ready_db);
+				}, e_ready_db);
 		}
 	};
 

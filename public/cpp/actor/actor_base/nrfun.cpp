@@ -51,7 +51,7 @@ namespace ngl
 			return false;
 		}
 
-		if (itor->second.m_ready != nready::e_ready_null)
+		if (itor->second.m_ready != e_ready_null)
 		{
 			if (!aactor->ready().is_ready(itor->second.m_ready))
 			{

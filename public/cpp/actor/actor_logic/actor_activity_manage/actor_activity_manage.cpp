@@ -248,7 +248,7 @@ namespace ngl
 			, np_eevents_logic_rolelogin
 			, np_eevents_logic_rolevaluechange
 			, np_get_rank_response
-		>(nready::e_ready_all);
+		>(e_ready_all);
 	}
 
 	std::shared_ptr<activity>& actor_activity_manage::get_activity(i64_actorid aactivityid)
