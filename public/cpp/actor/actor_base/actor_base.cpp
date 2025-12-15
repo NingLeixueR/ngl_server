@@ -297,31 +297,6 @@ namespace ngl
 		m_isbroadcast = aisbroadcast;
 	}
 
-	int32_t actor_base::create_group(ENUM_ACTOR atype/*= ACTOR_NONE*/)
-	{
-		return m_group.create(atype);
-	}
-
-	void actor_base::remove_group(int32_t agroupid)
-	{
-		m_group.remove(agroupid);
-	}
-
-	bool actor_base::add_group_member(int32_t agroupid, i64_actorid amember)
-	{
-		return m_group.add_member(agroupid, amember);
-	}
-
-	void actor_base::remove_group_member(int32_t agroupid, i64_actorid amember)
-	{
-		m_group.remove_member(agroupid, amember);
-	}
-
-	const std::set<i64_actorid>* actor_base::get_group(int32_t agroupid)
-	{
-		return m_group.get_group(agroupid);
-	}
-
 	bool actor_base::connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)
 	{
 		if (nconfig::node_type() != ROBOT)

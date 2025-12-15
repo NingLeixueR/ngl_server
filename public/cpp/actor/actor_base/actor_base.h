@@ -64,6 +64,7 @@ namespace ngl
 	template <typename T>
 	struct message;
 
+	//# 自定义"ready"组件
 	class nready
 	{
 	public:
@@ -99,6 +100,9 @@ namespace ngl
 		bool										m_isload = false;				// 数据是否加载完成
 		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;					// dbclient组件
 
+		//#################################################################################
+		// 系统广播
+		//#################################################################################
 		//# 间隔一段时间发起的全员(所有actor)广播
 		//# 可以在这个广播里推送一些需要处理的任务,例如 保存数据
 		//# 推送全员广播的 单位(毫秒)
@@ -107,11 +111,13 @@ namespace ngl
 		static int									m_broadcasttimer;
 		//# 是否接收广播消息
 		bool										m_isbroadcast = false;
-		ngroup										m_group;
+		//################################################################################
+
 		nready										m_ready;
 	public:
 		explicit actor_base(const actorparmbase& aparm);
 
+		//# 获取"ready"组件实例
 		nready&			ready();
 
 #pragma region db
@@ -544,55 +550,6 @@ namespace ngl
 				log_error()->print("{}", lstr);
 			}
 		}
-#pragma region group
-		//# 创建一个群发分绿可以指定ActorType,主要是为了区分客户端与普通actor)
-		int32_t create_group(ENUM_ACTOR atype = ACTOR_NONE);
-		
-		//# 移除一个分绿
-		void remove_group(int32_t agroupid);
-		
-		//# 将成员加入某个群发分绿
-		bool add_group_member(int32_t agroupid, i64_actorid amember);
-		
-		//# 将成员从某个群发分组中移除
-		void remove_group_member(int32_t agroupid, i64_actorid amember);
-		
-		//# 获取group id中的actor列表
-		const std::set<i64_actorid>* get_group(int32_t agroupid);
-
-		//# 给一组成员发送消息
-		template <typename T>
-		bool send_group(int agroupid, std::shared_ptr<T>& adata)
-		{
-			std::set<i64_actorid>* lset = get_group(agroupid);
-			if(lset == nullptr)
-			{
-				return false;
-			}
-			std::set<i64_actorid> lclients;
-			std::set<i64_actorid> lactors;
-			for (i64_actorid aactor : *lset)
-			{
-				if ((ENUM_ACTOR)nguid::type(aactor) != ACTOR_ROBOT)
-				{
-					lactors.insert(aactor);
-				}
-				else
-				{
-					lclients.insert(aactor);
-				}
-			}
-			if (!lclients.empty())
-			{
-				send_client(lclients, adata, this);
-			}
-			if (!lactors.empty())
-			{
-				send_actor(lactors, adata);
-			}
-			return true;
-		}
-#pragma endregion 
 		
 #pragma region broadcast
 		//# 设置定时任务参数
