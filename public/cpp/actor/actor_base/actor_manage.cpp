@@ -56,7 +56,7 @@ namespace ngl
 			return;
 		}
 		lpactor->push(apram);
-		if (lpactor->get_activity_stat() == actor_stat_free)
+		if (lstat == actor_stat_free)
 		{
 			m_actorlist.push_back(lpactor);
 			lpactor->set_activity_stat(actor_stat_list);
@@ -464,15 +464,15 @@ namespace ngl
 		while (true)
 		{
 			cv_lock(m_cv, m_mutex, lfun)
-				do
-				{
-					lpthread = *m_workthread.begin();
-					lpactor = *m_actorlist.begin();
-					m_actorlist.pop_front();
-					m_workthread.pop_front();
-					lpactor->set_activity_stat(actor_stat_run);
-					lpthread->push(lpactor);
-				} while (lfun());
+			do
+			{
+				lpthread = *m_workthread.begin();
+				lpactor = *m_actorlist.begin();
+				m_actorlist.pop_front();
+				m_workthread.pop_front();
+				lpactor->set_activity_stat(actor_stat_run);
+				lpthread->push(lpactor);
+			} while (lfun());
 		}
 #endif//OPEN_SEM				
 	}

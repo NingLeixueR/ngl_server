@@ -141,7 +141,6 @@ namespace ngl
 
 		// # 向当前进程所有actor广播消息
 		void broadcast_task(handle_pram& apram);
-
 	private:
 		// # actor_manage 调度actor实例处理任务的线程实例
 		void run();
