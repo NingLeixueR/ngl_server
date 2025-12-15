@@ -145,7 +145,7 @@ namespace ngl
 		auto lrecv = adata.get_data();
 		auto lpack = adata.get_pack();
 		
-		const i32_serverid lserverid = lrecv->m_data.m_id;//lpack == nullptr?nconfig::m_nodeid:lpack->m_id;
+		const i32_serverid lserverid = lrecv->m_data.m_id;
 		naddress::add_actor_address(lserverid, lrecv->m_data.m_add);
 		naddress::del_actor_address(lrecv->m_data.m_del);
 		// # 分发给其他结点

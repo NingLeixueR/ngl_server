@@ -132,7 +132,6 @@ namespace ngl
 		void setupluapaths()
 		{
 			luaapi::add_package_path(L, sysconfig::lua().c_str());
-
 			luaapi::register_func(L, "nguidstr2int64", nguidstr2int64);
 			luaapi::register_func(L, "send_client", send_client);
 			luaapi::register_func(L, "send_actor", send_actor);

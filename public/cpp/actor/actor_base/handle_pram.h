@@ -187,9 +187,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true>
-		static handle_pram create(
-			const std::set<i64_actorid>& aids, const nguid& arid, const std::shared_ptr<T>& adata
-		)
+		static handle_pram create(const std::set<i64_actorid>& aids, const nguid& arid, const std::shared_ptr<T>& adata)
 		{
 			handle_pram lpram;
 			lpram.m_enum			= tprotocol::protocol<T>();
