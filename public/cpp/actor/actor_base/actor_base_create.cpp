@@ -54,9 +54,7 @@ namespace ngl
 			break;
 			case ACTOR_EXAMPLE_GUESS_NUMBER:
 			{
-				linitfun.operator()<actor_example_guess_number>(
-					ACTOR_EXAMPLE_GUESS_NUMBER, lpactor_base, *(const std::map<int32_t, i64_actorid>*)aparm, aid
-				);
+				linitfun.operator()<actor_example_guess_number>(ACTOR_EXAMPLE_GUESS_NUMBER, lpactor_base, *(const std::map<int32_t, i64_actorid>*)aparm, aid);
 			}
 			break;
 			default:
