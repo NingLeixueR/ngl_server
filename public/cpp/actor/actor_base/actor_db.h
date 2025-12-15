@@ -291,11 +291,10 @@ namespace ngl
 				{
 				case enum_clist_save:
 				{
-					if (ngl::db_data<TDBTAB>::find(id) == nullptr)
+					if (ngl::db_data<TDBTAB>::find(id) != nullptr)
 					{
-						continue;
+						db_manage::save<TDBTAB>(db_pool::instance().get(adata.thread()), id);
 					}
-					db_manage::save<TDBTAB>(db_pool::instance().get(adata.thread()), id);
 				}
 				break;
 				case enum_clist_del:

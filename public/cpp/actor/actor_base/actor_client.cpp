@@ -69,15 +69,15 @@ namespace ngl
 
 	void set_node(int32_t aserverid, int asession)
 	{
-		const tab_servers* tab = ttab_servers::instance().tab(nnodeid::tid(aserverid));
-		if (tab == nullptr)
+		const tab_servers* ltab = ttab_servers::instance().tab(nnodeid::tid(aserverid));
+		if (ltab == nullptr)
 		{
 			return;
 		}
 		nactornode lnode;
-		lnode.m_name		= tab->m_name;
+		lnode.m_name		= ltab->m_name;
 		lnode.m_serverid	= aserverid;
-		lnode.m_nodetype	= tab->m_type;
+		lnode.m_nodetype	= ltab->m_type;
 		naddress::set_node(lnode);
 		naddress::set_session(aserverid, asession);
 	}
@@ -86,9 +86,9 @@ namespace ngl
 	{
 		int32_t lserverid = adata.get_data()->m_serverid;
 		
-		const tab_servers* tab = ttab_servers::instance().tab();
+		const tab_servers* ltab = ttab_servers::instance().tab();
 
-		if (tab == nullptr || ttab_servers::instance().tab(nnodeid::tid(lserverid)) == nullptr)
+		if (ltab == nullptr || ttab_servers::instance().tab(nnodeid::tid(lserverid)) == nullptr)
 		{
 			tools::no_core_dump();
 			return true;
@@ -106,10 +106,10 @@ namespace ngl
 			{
 				.m_name = std::format(
 					"node<id:{},type:{},name:{},tcount:{},area:{}>"
-					, tab->m_id, em<NODE_TYPE>::get_name(tab->m_type)
-					, tab->m_name, tab->m_tcount, tab->m_area
+					, ltab->m_id, em<NODE_TYPE>::get_name(ltab->m_type)
+					, ltab->m_name, ltab->m_tcount, ltab->m_area
 				),
-				.m_nodetype = tab->m_type,
+				.m_nodetype = ltab->m_type,
 				.m_serverid = nconfig::m_nodeid,
 			}
 		};
@@ -159,8 +159,8 @@ namespace ngl
 			tools::no_core_dump();
 			return true;
 		}
-		const tab_servers* tab = ttab_servers::instance().tab();
-		for (int32_t id : tab->m_actorserver)
+		const tab_servers* ltab = ttab_servers::instance().tab();
+		for (int32_t id : ltab->m_actorserver)
 		{
 			actor_server_register(nnodeid::nodeid(id, 1));
 		}
@@ -194,8 +194,8 @@ namespace ngl
 		}
 		auto lparm = adata.get_data();
 
-		const tab_servers* tab = ttab_servers::instance().tab();
-		if (tab == nullptr)
+		const tab_servers* ltab = ttab_servers::instance().tab();
+		if (ltab == nullptr)
 		{
 			tools::no_core_dump();
 			return true;
