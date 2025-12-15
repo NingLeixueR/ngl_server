@@ -113,6 +113,7 @@ namespace ngl
 		bool										m_isbroadcast = false;
 		//################################################################################
 
+		//# "ready"组件实例
 		nready										m_ready;
 	public:
 		explicit actor_base(const actorparmbase& aparm);
@@ -179,10 +180,10 @@ namespace ngl
 
 		//# 移除actor前一刻调用
 		virtual void erase_actor_before() {}
-#pragma endregion 
 
 		//# 保存dbclient
 		virtual void save();
+#pragma endregion 
 
 		//# 是否为单例
 		bool is_single();
@@ -408,7 +409,6 @@ namespace ngl
 			int32_t lserverid = nnodeid::nodeid(aservertid, atcount);
 			return kcpindex(lserverid, aenum);
 		}
-
 	public:
 		//# 通过udp.kcp发送数据
 		template <typename T>
@@ -436,6 +436,7 @@ namespace ngl
 			send_client(lids, adata, aprotocol);
 		}
 
+		//# 向一组客户端发送数据
 		template <typename T>
 		static void send_client(const std::set<i64_actorid>& aids, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
 		{
@@ -452,6 +453,7 @@ namespace ngl
 			push_task_id(actorclient_guid(), lpram);
 		}
 
+		//# 向一组客户端发送数据
 		template <typename T>
 		static void send_client(const std::vector<i64_actorid>& aids, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
 		{
@@ -499,6 +501,7 @@ namespace ngl
 			push_task_id(aguid, lpram);
 		}
 
+		//# 向所有类型的actor发送数据
 		template <typename T, bool IS_SEND = true>
 		static void send_actor(ENUM_ACTOR atype, const std::shared_ptr<T>& adata)
 		{
