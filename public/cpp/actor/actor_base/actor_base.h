@@ -280,9 +280,7 @@ namespace ngl
 			{
 				return false;
 			}
-			return nscript_manage::data_push(
-				m_enscript, m_script, tools::type_name<typename T::TDATA>().c_str(), asource, adata, aedit
-			);
+			return nscript_manage::data_push(m_enscript, m_script, tools::type_name<typename T::TDATA>().c_str(), asource, adata, aedit);
 		}
 
 		//# 告诉脚本数据被删除了
