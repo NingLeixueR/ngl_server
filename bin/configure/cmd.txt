@@ -47,7 +47,7 @@ kcp 2 2 1
 #测试kcp,使用kcp获取服务器时间
 kcp_gettime 服务器名称
 kcp_gettime game
-kcp_gettime gatewa
+kcp_gettime gateway
 #使用kcp 发送任意协议(借助json)
 kcp_protocol 服务器名称 协议名称 协议json
 
