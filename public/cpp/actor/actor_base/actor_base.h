@@ -130,16 +130,16 @@ namespace ngl
 		ptr_manage_dbc& get_actor_manage_dbclient();
 
 		//# 设置db_component组件
-		void			set_db_component(ndb_component* acomponent);
+		void set_db_component(ndb_component* acomponent);
 
 		//# 初始化数捿在数据加载完成后)
-		void			db_component_init_data();
+		void db_component_init_data();
 
 		//# 初始化db_component
-		void			init_db_component(bool acreate);
+		void init_db_component(bool acreate);
 
 		//# 添加dbclient
-		void			add_dbclient(ndbclient_base* adbclient, i64_actorid aid);
+		void add_dbclient(ndbclient_base* adbclient, i64_actorid aid);
 
 		//# 向actor_db发送数据请求后的返回
 		//# DBTYPE 数据类型
@@ -429,14 +429,6 @@ namespace ngl
 #pragma region send_client
 		static i64_actorid actorclient_guid();
 
-		//# 根据actor_role.guidid给所在客户端发送数据
-		template <typename T>
-		static void send_client(i64_actorid aid, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
-		{
-			std::set<i64_actorid> lids = { aid };
-			send_client(lids, adata, aprotocol);
-		}
-
 		//# 向一组客户端发送数据
 		template <typename T>
 		static void send_client(const std::set<i64_actorid>& aids, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
@@ -454,6 +446,14 @@ namespace ngl
 			push_task_id(actorclient_guid(), lpram);
 		}
 
+		//# 根据actor_role.guidid给所在客户端发送数据
+		template <typename T>
+		static void send_client(i64_actorid aid, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
+		{
+			std::set<i64_actorid> lids = { aid };
+			send_client(lids, adata, aprotocol);
+		}
+
 		//# 向一组客户端发送数据
 		template <typename T>
 		static void send_client(const std::vector<i64_actorid>& aids, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
@@ -467,17 +467,16 @@ namespace ngl
 		static void send_client(const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
 		{
 			std::set<i32_serverid>& lgatewayids = sysconfig::gatewayids();
-			if (lgatewayids.empty())
+			if (!lgatewayids.empty())
 			{
-				return;
-			}
-			auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();
-			pro->m_data.m_protocol = aprotocol;
-			pro->m_data.m_data = adata;
-			nguid lguid(nguid::make());
-			pro->m_data.m_uid.push_back(lguid.actordataid());
-			pro->m_data.m_area.push_back(lguid.area());
-			send_server(lgatewayids, *pro, nguid::make(), nguid::make());
+				auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();
+				pro->m_data.m_protocol = aprotocol;
+				pro->m_data.m_data = adata;
+				nguid lguid(nguid::make());
+				pro->m_data.m_uid.push_back(lguid.actordataid());
+				pro->m_data.m_area.push_back(lguid.area());
+				send_server(lgatewayids, *pro, nguid::make(), nguid::make());
+			}			
 		}
 
 		//# 往指定区服所有客户端发送消息
@@ -495,6 +494,7 @@ namespace ngl
 #pragma endregion
 
 #pragma region send_actor
+
 		//# 向指定actor发送pack
 		static void send_actor_pack(const nguid& aguid, const std::shared_ptr<pack>& adata)
 		{

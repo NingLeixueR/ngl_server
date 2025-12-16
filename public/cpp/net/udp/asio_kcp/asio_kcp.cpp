@@ -189,17 +189,12 @@ namespace ngl
 		std::shared_ptr<pack> lpack = pack::make_pack(&m_pool, 0);
 		lpack->m_protocol = ENET_KCP;
 		lpack->m_id = apstruct->m_session;
-		//lpack->m_segpack = m_segpack;
 		if (EPH_HEAD_SUCCESS != lpack->m_head.push(abuff, abufflen))
 		{
 			return false;
 		}
 		int len = lpack->m_head.getvalue(EPH_BYTES);
-		if (len < 0)
-		{
-			return false;
-		}
-		if (len != abufflen)
+		if (len < 0 || len != abufflen)
 		{
 			return false;
 		}
@@ -332,10 +327,11 @@ namespace ngl
 				if (ec)
 				{
 					log_error()->print("async_send_to err [{}]", ec.message());
+					
 					wheel_parm lparm
 					{
-						.m_ms = 1000,
-						.m_intervalms = [](int64_t) {return 1000; } ,
+						.m_ms = 1* localtime::MILLISECOND,
+						.m_intervalms = [](int64_t) {return 1* localtime::MILLISECOND; } ,
 						.m_count = 1,
 						.m_fun = [this, aendpoint, buf, len, afun](const wheel_node*)
 						{
@@ -427,7 +423,8 @@ namespace ngl
 	int asio_kcp::sendbuff(i32_session asession, const char* buf, int len)
 	{
 		ptr_se lpstruct = m_session.find(asession);
-		m_socket.async_send_to(asio::buffer(buf, len), lpstruct->m_endpoint, [](const std::error_code& ec, std::size_t)
+		m_socket.async_send_to(asio::buffer(buf, len), lpstruct->m_endpoint, 
+			[](const std::error_code& ec, std::size_t)
 			{
 				if (ec)
 				{
@@ -439,7 +436,8 @@ namespace ngl
 
 	int asio_kcp::sendbuff(const asio_udp_endpoint& aendpoint, const char* buf, int len)
 	{
-		m_socket.async_send_to(asio::buffer(buf, len), aendpoint, [](const std::error_code& ec, std::size_t)
+		m_socket.async_send_to(asio::buffer(buf, len), aendpoint, 
+			[](const std::error_code& ec, std::size_t)
 			{
 				if (ec)
 				{

@@ -226,12 +226,7 @@ namespace ngl
 	template <typename T>
 	bool actor_base::send_kcp(i64_actorid aactorid, T& adata, i16_port auport/* = 0*/)
 	{
-		ukcp* lpukcp = nets::kcp(auport);
-		if (lpukcp == nullptr)
-		{
-			return false;
-		}
-		return lpukcp->send(aactorid, adata);
+		return send_kcp({ aactorid }, adata, auport);
 	}
 
 	template <typename T>
