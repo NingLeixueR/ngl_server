@@ -148,7 +148,7 @@ namespace ngl
 			return nullptr;
 		}
 		std::map<int32_t, room>& lmap = m_room[atype];
-		if (atype == pbexample::EPLAY_TYPE::EPLAY_GUESS_NUMBER)
+		if ((atype & pbexample::EPLAY_TYPE::EPLAY_GUESS_NUMBER) != 0)
 		{
 			for (std::pair<const int32_t, room>& lpair : lmap)
 			{
