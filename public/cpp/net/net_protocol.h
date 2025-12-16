@@ -68,7 +68,7 @@ namespace ngl
 		virtual bool net_send(i32_sessionid asession, std::shared_ptr<pack>& lpack) = 0;
 		virtual bool net_send(i32_sessionid asession, std::shared_ptr<void>& lpack) = 0;
 
-		//## 服务器是否存在此session id
+		// # 服务器是否存在此session id
 		virtual bool exist_session(i32_sessionid asession) = 0;
 
 		// # 获取线程数量
