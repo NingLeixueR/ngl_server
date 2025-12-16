@@ -496,7 +496,7 @@ namespace ngl
 #pragma region send_actor
 
 		//# 向指定actor发送pack
-		static void send_actor_pack(const nguid& aguid, const std::shared_ptr<pack>& adata)
+		static void send_actor(const nguid& aguid, const std::shared_ptr<pack>& adata)
 		{
 			handle_pram lpram = handle_pram::create_pack(aguid, nguid::make(), adata);
 			push_task_id(aguid, lpram);
