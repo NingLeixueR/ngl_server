@@ -440,7 +440,7 @@ namespace ngl
 					return;
 				}
 				// # 异步发送pack
-				actor::send_actor_pack(lactorid, lpack);
+				actor::send_actor(lactorid, lpack);
 			}
 		}
 
@@ -499,7 +499,7 @@ namespace ngl
 					return;
 				}
 				// # 异步发送pack
-				actor::send_actor_pack(lactorid, lpack);
+				actor::send_actor(lactorid, lpack);
 			}
 		}
 
