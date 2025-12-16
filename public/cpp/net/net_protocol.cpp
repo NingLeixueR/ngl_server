@@ -72,12 +72,7 @@ namespace ngl
 		server_session::remove(asession);
 	}
 
-	bool net_protocol::connect(const std::string& aip
-		, i16_port aport
-		, const std::function<void(i32_sessionid)>& afun
-		, bool await
-		, bool areconnection					// 断线是否重连
-	)
+	bool net_protocol::connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection /*断线是否重连*/)
 	{
 		std::shared_ptr<ngl::sem> lsem(await ? new ngl::sem() : nullptr);
 		auto lfun = [this, afun, aip, aport, areconnection, lsem](i32_sessionid asession)
@@ -130,11 +125,7 @@ namespace ngl
 		return net_send(lsession, apack);
 	}
 
-	bool net_protocol::sendmore(
-		const std::map<i32_sessionid, i64_actorid>& asession, 
-		i64_actorid aactorid, 
-		std::shared_ptr<pack>& apack
-	)
+	bool net_protocol::sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack)
 	{
 		for (auto& item : asession)
 		{
@@ -148,10 +139,7 @@ namespace ngl
 		return  true;
 	}
 
-	bool net_protocol::sendmore(
-		const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid,
-		std::shared_ptr<pack>& apack
-	)
+	bool net_protocol::sendmore(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack)
 	{
 		for (i32_sessionid item : asession)
 		{

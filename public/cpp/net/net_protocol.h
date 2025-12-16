@@ -127,51 +127,15 @@ namespace ngl
 		// # 给一组sesion发送消息
 		// # key: session values:aactorid
 		// # std::map<uint32_t, uint32_t>& asession
-		bool sendmore(
-			const std::map<i32_sessionid, i64_actorid>& asession, 
-			i64_actorid aactorid, 
-			std::shared_ptr<pack>& apack
-		);
+		bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack);
 
-		bool sendmore(
-			const std::set<i32_sessionid>& asession,
-			i64_actorid aactorid,
-			i64_actorid arequestactorid,
-			std::shared_ptr<pack>& apack
-		);
+		bool sendmore(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack);
 
 		// # 向客户端发送消息
 		template <typename T>
 		bool send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata)
 		{
-			np_actor_forward<T, forward_g2c<forward>> pro;
-			pro.m_data.m_uid.push_back(auid);
-			pro.m_data.m_area.push_back(aarea);
-
-			forward& lforward = pro.m_data.m_data;
-
-			ngl::ser::serialize_byte lserializebyte;
-			ngl::ser::nserialize::bytes(&lserializebyte, adata);
-
-			lforward.m_bufflen = lserializebyte.pos();
-			lforward.m_buff = netbuff_pool::instance().malloc_private(lforward.m_bufflen);
-
-			ngl::ser::serialize_push lserializepush(lforward.m_buff, lforward.m_bufflen);
-			if (ngl::ser::nserialize::push(&lserializepush, adata))
-			{
-				if (agateway != 0)
-				{
-					i32_session lsession = server_session::sessionid(agateway);
-					if (lsession > 0)
-					{
-						send(lsession, pro, nguid::make(), nguid::make());
-						netbuff_pool::instance().free((char*)lforward.m_buff);
-						return true;
-					}
-				}
-			}
-			netbuff_pool::instance().free((char*)lforward.m_buff);
-			return true;
+			return send_client({ {auid, aarea} }, agateway, adata);
 		}
 
 		// # 向客户端发送消息
