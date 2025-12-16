@@ -88,7 +88,7 @@ namespace ngl
 		++m_custom;
 	}
 
-	int actor_base::m_broadcast = 10000;
+	int actor_base::m_broadcast = 10 * localtime::MILLISECOND;
 	int actor_base::m_broadcasttimer = -1;
 
 	i64_actorid actor_base::actorclient_guid()
@@ -304,10 +304,12 @@ namespace ngl
 		{//不允许服务器主动进行kcp连接
 			return false;
 		}
-		nets::kcp(anum)->connect(akcpsession, aactoridserver, id_guid(), aip, aprot, [this](i32_session asession)
+		nets::kcp(anum)->connect(akcpsession, aactoridserver, id_guid(), aip, aprot, 
+			[this](i32_session asession)
 			{
 				log_error()->print("kcp {} m_kcpsession = {}", (nguid)id_guid(), asession);
-			});
+			}
+		);
 		return true;
 	}
 
