@@ -45,11 +45,7 @@ namespace ngl
 		lpwrite->m_operator_field.init(false);
 		lpwrite->m_care.init(false);
 		
-		lpwrite->m_operator_field.template add_field<T>(
-			nguid::type(aactor->id_guid())
-			, areadfieldnumbers
-			, awritefieldnumbers
-		);
+		lpwrite->m_operator_field.template add_field<T>(nguid::type(aactor->id_guid()), areadfieldnumbers, awritefieldnumbers);
 
 		lpwrite->init();
 		return *lpwrite;
@@ -83,11 +79,7 @@ namespace ngl
 
 		lpwrite->m_care.init(lreadids, lwriteids);
 		
-		lpwrite->m_operator_field.template add_field<T>(
-			nguid::type(aactor->id_guid())
-			, areadfieldnumbers
-			, awritefieldnumbers
-		);
+		lpwrite->m_operator_field.template add_field<T>(nguid::type(aactor->id_guid()), areadfieldnumbers, awritefieldnumbers);
 
 		lpwrite->init();
 		log_error_net()->print("nsp_read::instance_readpart( actor({}) : {} : {})", nguid(aactor->id_guid()), areadids,  awriteids);
