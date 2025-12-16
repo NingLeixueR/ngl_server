@@ -31,16 +31,16 @@ namespace ngl
 		asio_tcp(const asio_tcp&) = delete;
 		asio_tcp& operator=(const asio_tcp&) = delete;
 
-		asio::ip::tcp::acceptor* m_acceptor_v4;
-		asio::ip::tcp::acceptor* m_acceptor_v6;
-		i16_port														m_port;
-		tcp_callback													m_fun;
-		tcp_closecallback												m_closefun;
-		tcp_sendfinishcallback											m_sendfinishfun;
-		std::shared_mutex												m_maplock;
-		serviceio_info													m_service_io_;
-		std::shared_mutex												m_ipportlock;
-		i32_sessionid													m_sessionid;
+		asio::ip::tcp::acceptor*	m_acceptor_v4 = nullptr;
+		asio::ip::tcp::acceptor*	m_acceptor_v6 = nullptr;
+		i16_port					m_port	= 0;
+		tcp_callback				m_fun = nullptr;
+		tcp_closecallback			m_closefun = nullptr;
+		tcp_sendfinishcallback		m_sendfinishfun = nullptr;
+		std::shared_mutex			m_maplock;
+		serviceio_info				m_service_io_;
+		std::shared_mutex			m_ipportlock;
+		i32_sessionid				m_sessionid = 0;
 		std::unordered_map<i32_sessionid, std::shared_ptr<service_tcp>> m_data;
 		std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>	m_ipport;
 		std::unordered_map<i32_sessionid, std::function<void()>>		m_sessionclose;
@@ -65,7 +65,6 @@ namespace ngl
 			, const tcp_closecallback& aclosefun				// 关闭回调
 			, const tcp_sendfinishcallback& asendfinishfun		//发送失败的回调
 		);
-
 	private:
 		service_tcp* get_tcp(i32_sessionid asessionid);
 

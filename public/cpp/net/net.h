@@ -97,13 +97,13 @@ namespace ngl
 		template <typename Y, typename T = Y>
 		static bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, const Y& adata, i64_actorid aactorid)
 		{
-			std::set<ENET_PROTOCOL> lset;
+			std::map<ENET_PROTOCOL, std::map<i32_sessionid, i64_actorid>> lmap;
 			for (const auto& lpair : asession)
 			{
 				ENET_PROTOCOL ltype = session2type(lpair.first);
 				if (ttab_servers::instance().isefficient(ltype))
 				{
-					lset.insert(ltype);
+					lmap[ltype].insert(lpair);
 				}
 			}
 			std::shared_ptr<pack> lpack = net_pack<T>::npack(&nets::net_first()->get_pool(), adata, aactorid, 0);
@@ -111,12 +111,12 @@ namespace ngl
 			{
 				return false;
 			}
-			for (ENET_PROTOCOL ltype : lset)
+			for (const auto& lpair : lmap)
 			{
-				net_protocol* lpprotocol = ngl::nets::nettype(ltype);
+				net_protocol* lpprotocol = ngl::nets::nettype(lpair.first);
 				if (lpprotocol != nullptr)
 				{
-					lpprotocol->sendmore(asession, aactorid, lpack);
+					lpprotocol->sendmore(lpair.second, aactorid, lpack);
 				}
 			}
 			return true;
@@ -171,9 +171,7 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool handle_pram_send<T>::sendbyserver(
-		i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const T& adata
-	)
+	bool handle_pram_send<T>::sendbyserver(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const T& adata)
 	{
 		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
 	}

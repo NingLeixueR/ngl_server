@@ -20,7 +20,7 @@ namespace ngl
 {
 	bool net_tcp::socket_recv(service_io* ap, const char* abuff, int32_t abufflen)
 	{
-		if (net_protocol::socket_recv(ap->m_sessionid, ap->m_is_lanip, abuff, abufflen) == false)
+		if (!net_protocol::socket_recv(ap->m_sessionid, ap->m_is_lanip, abuff, abufflen))
 		{
 			return false;
 		}
@@ -56,8 +56,7 @@ namespace ngl
 				}
 				close(asession);
 			};
-		m_server = new asio_tcp(
-			m_protocol, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid asessionid, bool abool, const pack*) 
+		m_server = new asio_tcp(m_protocol, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid asessionid, bool abool, const pack*) 
 			{
 				if (abool)
 				{

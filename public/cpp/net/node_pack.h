@@ -22,10 +22,10 @@ namespace ngl
 	{
 		node_pack() = delete;
 
-		std::shared_ptr<pack>	m_pack;
-		std::shared_ptr<void>	m_packvoid;
-		bool					m_ispack;
-		i32_sessionid			m_sessionid;
+		std::shared_ptr<pack>	m_pack		= nullptr;
+		std::shared_ptr<void>	m_packvoid	= nullptr;
+		bool					m_ispack	= false;
+		i32_sessionid			m_sessionid = 0;
 	public:
 		node_pack(i32_sessionid asessionid, std::shared_ptr<pack>& apack) :
 			m_pack(apack),
