@@ -19,12 +19,7 @@
 
 namespace ngl
 {
-	asio_tcp::asio_tcp(
-		i8_sesindex aindex, i16_port aport, i32_threadsize athread, 
-		const tcp_callback& acallfun, 
-		const tcp_closecallback& aclosefun, 
-		const tcp_sendfinishcallback& asendfinishfun
-	) :
+	asio_tcp::asio_tcp(i8_sesindex aindex, i16_port aport, i32_threadsize athread, const tcp_callback& acallfun, const tcp_closecallback& aclosefun, const tcp_sendfinishcallback& asendfinishfun) :
 		m_fun(acallfun),
 		m_closefun(aclosefun),
 		m_sendfinishfun(asendfinishfun),
@@ -35,24 +30,15 @@ namespace ngl
 		m_acceptor_v6(nullptr)
 	{
 		asio::io_service& lioservice = *m_service_io_.get_ioservice(m_service_io_.m_recvthreadsize);
-		m_acceptor_v4 = new asio::ip::tcp::acceptor(
-			lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port)
-		);
-		m_acceptor_v6 = new asio::ip::tcp::acceptor(
-			lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v6(), m_port)
-		);
+		m_acceptor_v4 = new asio::ip::tcp::acceptor(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port));
+		m_acceptor_v6 = new asio::ip::tcp::acceptor(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v6(), m_port));
 		m_acceptor_v4->set_option(asio::socket_base::reuse_address(true));
 		m_acceptor_v6->set_option(asio::socket_base::reuse_address(true));
 		accept(true);
 		accept(false);
 	}
 
-	asio_tcp::asio_tcp(
-		i8_sesindex aindex, i32_threadsize athread, 
-		const tcp_callback& acallfun, 
-		const tcp_closecallback& aclosefun, 
-		const tcp_sendfinishcallback& asendfinishfun
-	) :
+	asio_tcp::asio_tcp(i8_sesindex aindex, i32_threadsize athread, const tcp_callback& acallfun, const tcp_closecallback& aclosefun, const tcp_sendfinishcallback& asendfinishfun) :
 		m_fun(acallfun),
 		m_closefun(aclosefun),
 		m_sendfinishfun(asendfinishfun),
@@ -73,9 +59,8 @@ namespace ngl
 			lservice = std::make_shared<service_tcp>(m_service_io_, ++m_sessionid);
 			m_data[lservice->m_sessionid] = lservice;
 		}
-		lservice->m_socket.async_connect(
-			basio_iptcpendpoint(basio_ipaddress::from_string(aip), aport),
-			[this, lservice, aip, aport, afun, acount](const std::error_code& ec)
+		lservice->m_socket.async_connect(basio_iptcpendpoint(basio_ipaddress::from_string(aip), aport)
+			, [this, lservice, aip, aport, afun, acount](const std::error_code& ec)
 			{
 				if (ec)
 				{
@@ -155,9 +140,8 @@ namespace ngl
 	template <typename TPACK>
 	void asio_tcp::async_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist, std::shared_ptr<TPACK>& apack, char* abuff, int32_t abufflen)
 	{
-		tcp->m_socket.async_send(
-			asio::buffer(abuff, abufflen),
-			[this, alist, tcp, apack](const std::error_code& ec, std::size_t /*length*/)
+		tcp->m_socket.async_send(asio::buffer(abuff, abufflen)
+			, [this, alist, tcp, apack](const std::error_code& ec, std::size_t /*length*/)
 			{
 				alist->pop_front();
 				handle_write(tcp, ec, apack);
@@ -318,7 +302,8 @@ namespace ngl
 		if (socket.is_open())
 		{
 			socket.close(ec);
-			if (ec) {
+			if (ec) 
+			{
 				std::cerr << "Close error: " << ec.message() << "\n";
 			}
 		}
@@ -392,9 +377,8 @@ namespace ngl
 		}
 		if (aisv4)
 		{
-			m_acceptor_v4->async_accept(
-				lservice->m_socket,
-				[this, lservice](const std::error_code& error)
+			m_acceptor_v4->async_accept(lservice->m_socket
+				, [this, lservice](const std::error_code& error)
 				{
 					accept_handle(true, lservice, error);
 				}
@@ -402,9 +386,8 @@ namespace ngl
 		}
 		else
 		{
-			m_acceptor_v6->async_accept(
-				lservice->m_socket,
-				[this, lservice](const std::error_code& error)
+			m_acceptor_v6->async_accept(lservice->m_socket
+				, [this, lservice](const std::error_code& error)
 				{
 					accept_handle(false, lservice, error);
 				}
@@ -416,9 +399,8 @@ namespace ngl
 	{
 		std::swap(aservice->m_buff1, aservice->m_buff2);
 		char* lbuff = aservice->m_buff1;
-		aservice->m_socket.async_read_some(
-			asio::buffer(aservice->m_buff1, m_service_io_.m_buffmaxsize),
-			[this, lbuff, aservice](const std::error_code& error, size_t bytes_transferred)
+		aservice->m_socket.async_read_some(asio::buffer(aservice->m_buff1, m_service_io_.m_buffmaxsize)
+			, [this, lbuff, aservice](const std::error_code& error, size_t bytes_transferred)
 			{
 				if (!error)
 				{
@@ -447,4 +429,3 @@ namespace ngl
 		m_sessionclose[asession] = afun;
 	}
 }// namespace ngl
-

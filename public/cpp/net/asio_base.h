@@ -39,9 +39,9 @@ namespace ngl
 		serviceio_info() = delete;
 
 		std::vector<tuple_ioservice>	m_ioservices;
-		int32_t							m_next_index;
-		int32_t							m_recvthreadsize;
-		int32_t							m_buffmaxsize;
+		int32_t							m_next_index = 0;
+		int32_t							m_recvthreadsize = 0;
+		int32_t							m_buffmaxsize = 0;
 
 		basio_ioservice* get_ioservice(i32_threadid athreadid);
 		basio_ioservicework* get_ioservice_work(i32_threadid athreadid);
@@ -53,15 +53,15 @@ namespace ngl
 	{
 		service_io() = delete;
 	public:
-		i32_threadid			m_threadid;
-		i32_sessionid			m_sessionid;
-		basio_ioservice&		m_ioservice;
-		char*					m_buff1;
-		char*					m_buff2;
-		bool					m_is_lanip;
+		i32_threadid			m_threadid = 0;
+		i32_sessionid			m_sessionid = 0;
+		char*					m_buff1 = nullptr;
+		char*					m_buff2 = nullptr;
+		bool					m_is_lanip = false;
+		bool					m_issend = false;	// 是否发送状态
+		std::list<node_pack>	m_list;				// 发送队列(因为asio异步操作,不能在没有执行完成再次调用)
 		std::shared_mutex		m_mutex;
-		bool					m_issend;	// 是否发送状态
-		std::list<node_pack>	m_list;		// 发送队列(因为asio异步操作,不能在没有执行完成再次调用)
+		basio_ioservice&		m_ioservice;
 
 		service_io(serviceio_info& amsi, i32_session asessionid);
 		virtual ~service_io();

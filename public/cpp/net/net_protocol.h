@@ -27,7 +27,6 @@
 #include <vector>
 #include <memory>
 
-
 namespace ngl
 {
 	class net_protocol
