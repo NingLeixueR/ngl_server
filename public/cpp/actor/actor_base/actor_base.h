@@ -486,7 +486,8 @@ namespace ngl
 			auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();
 			pro->m_data.m_protocol = aprotocol;
 			pro->m_data.m_data = adata;
-			ttab_servers::instance().foreach_server(GATEWAY, aarea, [&pro](const tab_servers* atab)
+			ttab_servers::instance().foreach_server(GATEWAY, aarea
+				, [&pro](const tab_servers* atab)
 				{
 					send_server(atab->m_id, *pro, nguid::make(), nguid::make());
 				});

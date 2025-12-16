@@ -59,8 +59,8 @@ namespace ngl
 
 		std::shared_ptr<T>		m_shared_data		= nullptr;	// 数据
 		T*						m_original_data		= nullptr;	// 数据
-		i32_threadid			m_thread			= 0;		// 线程id
 		std::shared_ptr<pack>	m_pack				= nullptr;	// 如果消息来自网络，这个值不为空即为网络数据包
+		i32_threadid			m_thread			= 0;		// 线程id
 	public:
 		inline message(i32_threadid athread, const std::shared_ptr<pack>& apack, const std::shared_ptr<T>& adata) :
 			m_thread(athread),

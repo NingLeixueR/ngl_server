@@ -247,14 +247,16 @@ namespace ngl
 		template <typename TDerived, typename TMESSAGE>
 		static void register_handle()
 		{
-			actor::register_actor_s<TDerived, TMESSAGE>([](TDerived* aacotor, const message<TMESSAGE>& adata)
+			actor::register_actor_s<TDerived, TMESSAGE>(
+				[](TDerived* aacotor, const message<TMESSAGE>& adata)
 				{
 					T* lpclass = nclient(aacotor->id_guid(), true);
 					if (lpclass != nullptr)
 					{
 						lpclass->handle(aacotor, adata);
 					}
-				}, e_ready_db);
+				}, e_ready_db
+			);
 		}
 	};
 

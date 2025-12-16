@@ -226,7 +226,8 @@ namespace ngl
 	template <typename T>
 	bool actor_base::send_kcp(i64_actorid aactorid, T& adata, i16_port auport/* = 0*/)
 	{
-		return send_kcp({ aactorid }, adata, auport);
+		std::set<i64_actorid> lactorids = { aactorid };
+		return send_kcp(lactorids, adata, auport);
 	}
 
 	template <typename T>

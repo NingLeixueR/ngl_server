@@ -31,7 +31,7 @@ namespace ngl
 	class ndbclient_base
 	{
 	protected:
-		pbdb::ENUM_DB m_type;
+		pbdb::ENUM_DB m_type = pbdb::ENUM_DB::ENUM_DB_FAIL;
 		explicit ndbclient_base(pbdb::ENUM_DB atype) :
 			m_type(atype)
 		{}
@@ -89,10 +89,10 @@ namespace ngl
 		data_modified(const data_modified&) = delete;
 		data_modified& operator=(const data_modified&) = delete;
 
-		mutable TDBTAB m_data;
-		mutable TDBTAB* m_pdata = nullptr;
-		actor_base* m_actor = nullptr;
-		nmodified<TDBTAB>* m_modified = nullptr;
+		mutable TDBTAB		m_data;
+		mutable TDBTAB*		m_pdata		= nullptr;
+		actor_base*			m_actor		= nullptr;
+		nmodified<TDBTAB>*	m_modified	= nullptr;
 	public:
 		data_modified() = default;
 
@@ -350,8 +350,7 @@ namespace ngl
 			static std::atomic lregister = true;
 			if (lregister.exchange(false))
 			{
-				nrfun<TACTOR>::instance()
-					.template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(&actor_base::template handle<DBTYPE, TDBTAB, TACTOR>, e_ready_null);
+				nrfun<TACTOR>::instance().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(&actor_base::template handle<DBTYPE, TDBTAB, TACTOR>, e_ready_null);
 			}
 			init_load();
 		}

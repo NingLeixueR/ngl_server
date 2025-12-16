@@ -121,8 +121,8 @@ namespace ngl
 			{
 				wheel_parm lparm
 				{
-					.m_ms = 1000,
-					.m_intervalms = [](int64_t) {return 10000; } ,
+					.m_ms = 1 * localtime::MILLISECOND,
+					.m_intervalms = [](int64_t) {return 10 * localtime::MILLISECOND; } ,
 					.m_count = 0x7fffffff,
 					.m_fun = [aarea, lactorid](const wheel_node* anode)
 					{
@@ -297,7 +297,6 @@ namespace ngl
 				{
 					lnodes.insert(aactorid);
 				});
-
 			actor::send_actor(lnodes, nguid::make(), pro);
 		}
 
