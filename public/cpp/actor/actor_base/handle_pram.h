@@ -46,7 +46,6 @@ namespace ngl
 		static bool sendbyserver(i32_serverid aserverid, const handle_pram& adata);
 
 		static bool send(handle_pram& adata);
-		static bool sendmass(handle_pram& adata);
 
 		static bool sendclient(handle_pram& adata);
 	};
@@ -110,7 +109,7 @@ namespace ngl
 		{
 			static auto lfun = [](const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram& adata)
 				{
-					handle_pram_send<T>::sendmass(adata);
+					handle_pram_send<T>::send(adata);
 				};
 			if constexpr (IS_SEND)
 			{
@@ -133,48 +132,35 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
-		static handle_pram create(
-			const nguid& aid
-			, const nguid& arid
-			, const std::shared_ptr<T>& adata
-			, const std::function<void()>& afailfun = nullptr
-		)
+		static handle_pram create(const nguid& aid, const nguid& arid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
 		{
 			handle_pram lpram;
-			lpram.m_enum			= tprotocol::protocol<T>();
-			lpram.m_data			= adata;
-			lpram.m_actor			= aid;
-			lpram.m_requestactor	= arid;
-			lpram.m_issend			= IS_SEND;
+			lpram.m_enum = tprotocol::protocol<T>();
+			lpram.m_data = adata;
+			lpram.m_actor = aid;
+			lpram.m_requestactor = arid;
+			lpram.m_issend = IS_SEND;
 			make_forwardfun<T, IS_FORWARDFUN&& IS_SEND>(lpram);
-			lpram.m_failfun			= afailfun;
+			lpram.m_failfun = afailfun;
 			return lpram;
 		}
 
 		//Y:forwardªÚ’ﬂT
 		template <typename T, typename Y>
-		static handle_pram create(
-			const nguid& aid, const nguid& arid
-			, const std::shared_ptr<np_actor_forward<T, forward_g2c<Y>>>& adata
-			, const std::function<void()>& afailfun = nullptr
-		)
+		static handle_pram create(const nguid& aid, const nguid& arid, const std::shared_ptr<np_actor_forward<T, forward_g2c<Y>>>& adata, const std::function<void()>& afailfun = nullptr)
 		{
 			handle_pram lpram;
-			lpram.m_enum			= tprotocol::protocol<T>();
-			lpram.m_data			= adata;
-			lpram.m_actor			= aid;
-			lpram.m_requestactor	= arid;
+			lpram.m_enum = tprotocol::protocol<T>();
+			lpram.m_data = adata;
+			lpram.m_actor = aid;
+			lpram.m_requestactor = arid;
 			make_client<T>(lpram);
-			lpram.m_failfun			= afailfun;
+			lpram.m_failfun = afailfun;
 			return lpram;
 		}
 
 		template <typename T, typename Y>
-		static handle_pram create(
-			const nguid& aid, const nguid& arid
-			, const std::shared_ptr<np_actor_forward<T, forward_c2g<Y>>>& adata
-			, const std::function<void()>& afailfun = nullptr
-		)
+		static handle_pram create(const nguid& aid, const nguid& arid, const std::shared_ptr<np_actor_forward<T, forward_c2g<Y>>>& adata, const std::function<void()>& afailfun = nullptr)
 		{
 			handle_pram lpram;
 			lpram.m_enum = tprotocol::protocol<T>();
@@ -190,11 +176,11 @@ namespace ngl
 		static handle_pram create(const std::set<i64_actorid>& aids, const nguid& arid, const std::shared_ptr<T>& adata)
 		{
 			handle_pram lpram;
-			lpram.m_enum			= tprotocol::protocol<T>();
-			lpram.m_data			= adata;
-			lpram.m_massactors		= aids;
-			lpram.m_requestactor	= arid;
-			lpram.m_issend			= IS_SEND;
+			lpram.m_enum = tprotocol::protocol<T>();
+			lpram.m_data = adata;
+			lpram.m_massactors = aids;
+			lpram.m_requestactor = arid;
+			lpram.m_issend = IS_SEND;
 			make_massfun<T, IS_SEND>(lpram);
 			return lpram;
 		}
@@ -202,9 +188,9 @@ namespace ngl
 		static handle_pram create_pack(const nguid& aid, const nguid& arid, const std::shared_ptr<pack>& apack)
 		{
 			handle_pram lpram;
-			lpram.m_data			= apack;
-			lpram.m_actor			= aid;
-			lpram.m_requestactor	= arid;
+			lpram.m_data = apack;
+			lpram.m_actor = aid;
+			lpram.m_requestactor = arid;
 			make_forwardfun<pack, true>(lpram);
 			return lpram;
 		}
@@ -235,16 +221,7 @@ namespace ngl
 			}
 			return handle_pram_send<T>::sendbyserver(lserverid, adata);
 		}
-		return false;
-	}
-
-	template <typename T>
-	bool handle_pram_send<T>::sendmass(handle_pram& adata)
-	{
-		nguid lactorid = adata.m_actor;
-		nguid lrequestactor = adata.m_requestactor;
-		std::set<i64_actorid>& lmassactors = adata.m_massactors;
-		if (lactorid == nguid::make() && !lmassactors.empty())
+		else if (lactorid == nguid::make() && !lmassactors.empty())
 		{
 			std::map<i32_serverid, std::set<i64_actorid>> lserveractors;
 			for (i64_actorid actorid : lmassactors)
@@ -265,7 +242,7 @@ namespace ngl
 				handle_pram_send<np_mass_actor<T>>::sendbyserver(lserverid, nguid::make(), lrequestactor, pro);
 			}
 		}
-		return true;
+		return false;
 	}
 
 	template <>
@@ -322,9 +299,7 @@ namespace ngl
 		}
 		for (i32_serverid lserverid : lgateway)
 		{
-			handle_pram_send<np_actor_forward<T, forward_g2c<T>>>::sendbyserver(
-				lserverid, adata
-			);
+			handle_pram_send<np_actor_forward<T, forward_g2c<T>>>::sendbyserver(lserverid, adata);
 		}
 		return true;
 	}

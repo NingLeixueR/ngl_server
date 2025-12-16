@@ -41,9 +41,9 @@ namespace ngl
 			using func = std::function<bool(int64_t, void*)>;
 			using funclientc = std::function<bool(int64_t, const char*, void*)>;
 
-			i32_protocolnum	m_protocol;
-			std::string		m_name;
+			i32_protocolnum	m_protocol = 0;
 			int8_t			m_highvalue = 0; // 高权限值(0-127)
+			std::string		m_name;
 
 			// # 为了给脚本提供根据结构名字发送数据给客户端
 			std::array<funclientc, enscript_count> m_toclient;
@@ -107,7 +107,7 @@ namespace ngl
 				m_protocol[linfo.m_protocol] = &linfo;
 				m_nameprotocol[linfo.m_name] = &linfo;
 
-				log_error()->print("{}-{}", linfo.m_protocol, linfo.m_name);
+				//log_error()->print("{}-{}", linfo.m_protocol, linfo.m_name);
 				return &linfo;
 			}
 
