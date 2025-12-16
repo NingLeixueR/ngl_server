@@ -61,13 +61,14 @@ namespace ngl
 		// # 获取单例
 		static nsp_write<TDerived, TACTOR, T>& instance(i64_actorid aactorid);
 
-		// # [写全部数据]首充获取单例-需创建并初始化
+		// # [写全部数据]建并初始化
 		static nsp_write<TDerived, TACTOR, T>& instance_writeall(
 			TDerived* aactor
-			, const std::set<i32_fieldnumber>& areadfieldnumbers
-			, const std::set<i32_fieldnumber>& awritefieldnumbers);
+			, const std::set<i32_fieldnumber>& areadfieldnumbers  			/* 只读哪些字段 */
+			, const std::set<i32_fieldnumber>& awritefieldnumbers			/* 只读哪些字段 */
+		);
 
-		// # [写部分数据]首充获取单例-需创建并初始化
+		// # [写部分数据]创建并初始化
 		static nsp_write<TDerived, TACTOR, T>& instance_writepart(
 			TDerived* aactor
 			, const std::set<i32_fieldnumber>& areadfieldnumbers			/* 只读哪些字段 */

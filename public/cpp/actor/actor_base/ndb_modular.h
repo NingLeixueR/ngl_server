@@ -27,8 +27,8 @@ namespace ngl
 
 	private:
 		actor_base*				m_actor		= nullptr;							// 宿主actor
+		ndbclient_base*			m_dbclient  = nullptr;							// ndbclient基类
 		i64_actorid				m_id		= 0;								// 宿主actor id
-		ndbclient_base*			m_dbclient	= nullptr;							// ndbclient基类
 		pbdb::ENUM_DB			m_type		= pbdb::ENUM_DB::ENUM_DB_FAIL;		// 数据类型
 
 	protected:

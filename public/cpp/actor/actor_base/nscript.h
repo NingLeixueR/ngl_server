@@ -43,7 +43,7 @@ namespace ngl
 
 	struct nscript_sysdata
 	{
-		int64_t m_nguid;
+		i64_actorid m_nguid = nguid::make();
 
 		def_nlua_function2("m_nguid", m_nguid)
 	};
@@ -52,35 +52,41 @@ namespace ngl
 	class nscript
 	{
 	public:
+		// # 脚本类型
 		static enscript type()
 		{
 			return ESCRIPT;
 		}
 
+		// # 初始化脚本数据
 		template <typename T>
 		bool init_sysdata(const T& asys)
 		{
 			return false;
 		}
 
+		// # 初始化加载脚本文件
 		bool init(const char* asubdirectory, const char* ascript)
 		{
 			return false;
 		}
 
+		// # 压入数据
 		template <typename T>
-		bool data_push(const char* aname, const char* asource, const T& ajson, bool aedit)
+		bool data_push(const char* aname, const char* asource, const T& adata, bool aedit)
 		{
 			return false;
 		}
 
+		// # db模块加载完成,通知脚本模块
 		bool db_loadfinish()
 		{
 			return false;
 		}
 
+		// # 处理数据
 		template <typename T>
-		bool handle(const char* aname, const T& ajson)
+		bool handle(const char* aname, const T& adata)
 		{
 			return false;
 		}
@@ -98,6 +104,7 @@ namespace ngl
 			return false;
 		}
 
+		// # 检查数据状态
 		template <typename T>
 		bool data_checkout(const char* aname, std::map<int64_t, T>& adata)
 		{
@@ -110,6 +117,7 @@ namespace ngl
 			return false;
 		}
 
+		// # 检查一组数据是否被删除
 		bool data_checkdel(const char* aname, std::vector<int64_t>& adataid)
 		{
 			return false;
