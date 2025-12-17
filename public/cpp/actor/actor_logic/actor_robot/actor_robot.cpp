@@ -11,6 +11,7 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+#include "actor_robot_manage.h"
 #include "actor_robot.h"
 #include "nregister.h"
 #include "nforward.h"
@@ -70,6 +71,31 @@ namespace ngl
 		>(e_ready_all);
 
 		nforward::g2c();
+	}
+
+	void actor_robot::ukcp_connect(pbnet::ENUM_KCP akcpenum)
+	{
+		int16_t lservertid = 0;
+		int16_t ltcount = 0;
+		if (akcpenum == pbnet::ENUM_KCP::KCP_GATEWAY)
+		{
+			lservertid = nnodeid::tid(m_robot->m_gatewayid);
+			ltcount = nnodeid::tcount(m_robot->m_gatewayid);
+		}
+		else if (akcpenum == pbnet::ENUM_KCP::KCP_ROLE)
+		{
+			lservertid = nnodeid::tid(m_robot->m_gameid);
+			ltcount = nnodeid::tcount(m_robot->m_gameid);
+		}
+
+
+		std::string lcmd = std::format("kcp {} {} {} {}", (int32_t)akcpenum, lservertid, ltcount, (int64_t)nguid::make());
+		std::vector<std::string> lvec;
+		if (!ngl::tools::splite(lcmd.c_str(), " ", lvec))
+		{
+			return;
+		}
+		ngl::actor_robot_manage::parse_command(lvec);
 	}
 
 	bool actor_robot::timer_handle(const message<np_timerparm>& adata)
