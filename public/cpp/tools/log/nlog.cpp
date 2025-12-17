@@ -26,22 +26,22 @@ namespace ngl
 	{
 		switch (atype)
 		{
-		case ELOG_DEBUG:
-		{
-			return "debug";
-		}
-		case ELOG_INFO:
-		{
-			return "info";
-		}
-		case ELOG_WARN:
-		{
-			return "warn";
-		}
-		case ELOG_ERROR:
-		{
-			return "error";
-		}
+			case ELOG_DEBUG:
+			{
+				return "debug";
+			}
+			case ELOG_INFO:
+			{
+				return "info";
+			}
+			case ELOG_WARN:
+			{
+				return "warn";
+			}
+			case ELOG_ERROR:
+			{
+				return "error";
+			}
 		}
 		return "none";
 	}
