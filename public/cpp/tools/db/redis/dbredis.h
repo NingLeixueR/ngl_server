@@ -63,10 +63,9 @@ namespace ngl
 					}
 					//tab:key
 					std::size_t found = std::string(lreply->element[i]->str).find(':');
-					int lid = 0;
 					if (found != std::string::npos)
 					{
-						lid = tools::lexical_cast<int>(&(lreply->element[i]->str[found + 1]));
+						int lid = tools::lexical_cast<int>(&(lreply->element[i]->str[found + 1]));
 						get(atab, lid, adata[lid]);
 					}
 				}
