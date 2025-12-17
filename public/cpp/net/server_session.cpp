@@ -52,10 +52,10 @@ namespace ngl
 			m_server.erase(lserverid);
 			m_session.erase(itor);
 		}
-		auto ltab = ttab_servers::instance().tab(nnodeid::tid(lserverid));
-		if (ltab != nullptr)
+		auto tab = ttab_servers::instance().tab(nnodeid::tid(lserverid));
+		if (tab != nullptr)
 		{
-			log_error()->print("server_session::remove [{}:{}_{}]", nnodeid::tid(lserverid), ltab->m_name, nnodeid::tcount(lserverid));
+			log_error()->print("server_session::remove [{}:{}_{}]", nnodeid::tid(lserverid), tab->m_name, nnodeid::tcount(lserverid));
 		}
 	}
 

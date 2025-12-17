@@ -71,10 +71,10 @@ namespace ngl
 		virtual bool exist_session(i32_sessionid asession) = 0;
 
 		// # 获取线程数量
-		i32_threadsize socketthreadnum();
+		i32_threadsize socketthreadnum()const;
 
 		// # 获取监听端口号
-		i16_port port();
+		i16_port port()const;
 
 		// # 发送pack
 		bool sendpack(i32_sessionid asession, std::shared_ptr<pack>& apack);
@@ -126,15 +126,16 @@ namespace ngl
 		// # 给一组sesion发送消息
 		// # key: session values:aactorid
 		// # std::map<uint32_t, uint32_t>& asession
+		void set_more(i32_sessionid asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack);
 		bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack);
-
 		bool sendmore(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack);
 
 		// # 向客户端发送消息
 		template <typename T>
 		bool send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata)
 		{
-			return send_client({ {auid, aarea} }, agateway, adata);
+			std::vector<std::pair<i32_actordataid, i16_area>> lvecs = { {auid, aarea} };
+			return send_client(lvecs, agateway, adata);
 		}
 
 		// # 向客户端发送消息

@@ -17,20 +17,20 @@
 
 namespace ngl
 {
-	class net_tcp : public net_protocol
+	class net_tcp : 
+		public net_protocol
 	{
 		net_tcp() = delete;
 		net_tcp(const net_tcp&) = delete;
 		net_tcp& operator=(const net_tcp&) = delete;
 
-		asio_tcp*				m_server = nullptr;
-		std::vector<segpack*>	m_segpackvec;
+		std::shared_ptr<asio_tcp>				m_server = nullptr;
+		std::vector<std::shared_ptr<segpack>>	m_segpackvec;
 	private:
 		bool socket_recv(service_io* ap, const char* abuff, int32_t abufflen);
 	public:
 		explicit net_tcp(ENET_PROTOCOL aindex):
-			net_protocol(aindex),
-			m_server(nullptr)
+			net_protocol(aindex)
 		{}
 
 		// # 监听端口 线程数量

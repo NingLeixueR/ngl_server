@@ -29,17 +29,16 @@ namespace ngl
 
 	bool net_tcp::init(i16_port aport, i32_threadsize asocketthreadnum, bool aouternet)
 	{
-		net_protocol::init(aport, asocketthreadnum, aouternet);
-
-		i32_threadsize lsocketthreadnum = socketthreadnum();
-		for (int i = 0; i < lsocketthreadnum; ++i)
+		if (asocketthreadnum > net_config_socket_pthread_max_size || asocketthreadnum <= 0)
 		{
-			m_segpackvec.push_back(new segpack());
+			asocketthreadnum = net_config_socket_pthread_max_size;
 		}
 
-		if (lsocketthreadnum > net_config_socket_pthread_max_size || lsocketthreadnum <= 0)
+		net_protocol::init(aport, asocketthreadnum, aouternet);
+
+		for (int i = 0; i < asocketthreadnum; ++i)
 		{
-			lsocketthreadnum = net_config_socket_pthread_max_size;
+			m_segpackvec.push_back(std::make_shared<segpack>());
 		}
 
 		std::function<bool(service_io*, const char*, uint32_t)> lfun = std::bind_front(&net_tcp::socket_recv, this);
@@ -56,7 +55,7 @@ namespace ngl
 				}
 				close(asession);
 			};
-		m_server = new asio_tcp(m_protocol, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid asessionid, bool abool, const pack*) 
+		m_server = std::make_shared<asio_tcp>(m_protocol, port(), asocketthreadnum, lfun, lclosefun, [](i32_sessionid asessionid, bool abool, const pack*)
 			{
 				if (abool)
 				{

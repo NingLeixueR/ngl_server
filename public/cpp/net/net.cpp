@@ -101,15 +101,15 @@ namespace ngl
 	}
 
 	i16_port nets::kcp_port(int32_t atid, int16_t atcount, pbnet::ENUM_KCP aenum)
-	{// tcount(1-10)*1000 = max(10000)  
-		return atid*1000 + aenum + (atcount * 1000);
+	{
+		return (atid * enets_kcp_tid) + aenum + (atcount * enets_kcp_tcount);
 	}
 
 	i16_port nets::create_kcp()
 	{
 		if (m_kcpindex == 0)
 		{
-			m_kcpindex = nconfig::m_tid * 100 + nconfig::m_tcount * 10;
+			m_kcpindex = nconfig::m_tid * enets_robot_tid + nconfig::m_tcount * enets_robot_tcount;
 		}
 		++m_kcpindex;
 		m_kcpnet[m_kcpindex] = ukcp::create(m_kcpindex);
@@ -199,11 +199,11 @@ namespace ngl
 	{
 		auto lcount = (int)amsg.size();
 		auto lpack = std::make_shared<pack>();
-		lpack->malloc(lcount+1);
+		lpack->malloc(lcount + 1);
 		memcpy(lpack->m_buff, amsg.c_str(), lcount);
 		lpack->m_buff[lcount] = '\0';
-		lpack->m_len = lcount+1;
-		lpack->m_pos = lcount+1;
+		lpack->m_len = lcount + 1;
+		lpack->m_pos = lcount + 1;
 		return nets::sendpack(asession, lpack);
 	}
 
@@ -245,7 +245,6 @@ namespace ngl
 			return false;
 		}
 		log_info()->print("Connect Server {}@{}:{}", aserverid, std::get<1>(lpair), std::get<2>(lpair));
-
 		return lserver->connect(std::get<1>(lpair), std::get<2>(lpair), [aserverid, afun](i32_session asession)
 			{
 				server_session::add(aserverid, asession);
