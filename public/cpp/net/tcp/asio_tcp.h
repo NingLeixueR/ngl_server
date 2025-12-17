@@ -33,14 +33,14 @@ namespace ngl
 
 		std::shared_ptr<asio::ip::tcp::acceptor>	m_acceptor_v4 = nullptr;
 		std::shared_ptr<asio::ip::tcp::acceptor>	m_acceptor_v6 = nullptr;
-		i16_port					m_port	= 0;
-		tcp_callback				m_fun = nullptr;
-		tcp_closecallback			m_closefun = nullptr;
+		i16_port					m_port			= 0;
+		tcp_callback				m_fun			= nullptr;
+		tcp_closecallback			m_closefun		= nullptr;
 		tcp_sendfinishcallback		m_sendfinishfun = nullptr;
+		i32_sessionid				m_sessionid		= 0;
 		std::shared_mutex			m_maplock;
 		serviceio_info				m_service_io_;
 		std::shared_mutex			m_ipportlock;
-		i32_sessionid				m_sessionid = 0;
 		std::unordered_map<i32_sessionid, std::shared_ptr<service_tcp>> m_data;
 		std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>	m_ipport;
 		std::unordered_map<i32_sessionid, std::function<void()>>		m_sessionclose;

@@ -20,9 +20,6 @@ namespace ngl
 {
 	net_protocol::net_protocol(ENET_PROTOCOL aprotocol):
 		m_protocol(aprotocol)
-		, m_port(0x0)
-		, m_socketthreadnum(0x0)
-		, m_outernet(false)
 	{
 	}
 
@@ -75,7 +72,7 @@ namespace ngl
 	bool net_protocol::connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection /*断线是否重连*/)
 	{
 		std::shared_ptr<ngl::sem> lsem(await ? new ngl::sem() : nullptr);
-		auto lfun = [this, afun, aip, aport, areconnection, lsem](i32_sessionid asession)
+		connect(aip, aport, [this, afun, aip, aport, areconnection, lsem](i32_sessionid asession)
 			{
 				afun(asession);
 				if (lsem != nullptr)
@@ -86,8 +83,7 @@ namespace ngl
 				{
 					set_close(asession, aip, aport, afun);
 				}
-			};
-		connect(aip, aport, lfun);
+			});
 		if (lsem != nullptr)
 		{
 			lsem->wait();
@@ -95,12 +91,12 @@ namespace ngl
 		return true;
 	}
 
-	i32_threadsize net_protocol::socketthreadnum()
+	i32_threadsize net_protocol::socketthreadnum()const
 	{
 		return m_socketthreadnum;
 	}
 
-	i16_port net_protocol::port()
+	i16_port net_protocol::port()const
 	{
 		return m_port;
 	}
@@ -125,16 +121,21 @@ namespace ngl
 		return net_send(lsession, apack);
 	}
 
+	void net_protocol::set_more(i32_sessionid asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack)
+	{
+		if (nets::session2type(asession) != (ENET_PROTOCOL)m_protocol)
+		{
+			return;
+		}
+		apack->set_actor(aactorid, arequestactorid);
+		net_send(asession, apack);
+	}
+
 	bool net_protocol::sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack)
 	{
 		for (auto& item : asession)
 		{
-			if (nets::session2type(item.first) != (ENET_PROTOCOL)m_protocol)
-			{
-				continue;
-			}
-			apack->set_actor(item.second, aactorid);
-			net_send(item.first, apack);
+			set_more(item.first, item.second, aactorid, apack);
 		}
 		return  true;
 	}
@@ -143,12 +144,7 @@ namespace ngl
 	{
 		for (i32_sessionid item : asession)
 		{
-			if (nets::session2type(item) != (ENET_PROTOCOL)m_protocol)
-			{
-				continue;
-			}
-			apack->set_actor(aactorid, arequestactorid);
-			net_send(item, apack);
+			set_more(item, aactorid, arequestactorid, apack);
 		}
 		return  true;
 	}

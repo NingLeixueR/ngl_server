@@ -28,6 +28,14 @@ namespace ngl
 		static std::map<int16_t, ukcp*>					m_kcpnet;
 		static int16_t									m_kcpindex;
 	public:
+		enum
+		{
+			enets_robot_tid		= 100,
+			enets_robot_tcount	= 10,
+			enets_kcp_tid		= 1000,
+			enets_kcp_tcount	= 1000,
+		};
+
 		static net_protocol* net_first();
 
 		static ENET_PROTOCOL session2type(i32_session asession);
