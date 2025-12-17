@@ -39,10 +39,6 @@ namespace ngl
 		{
 		}
 
-		virtual ~sem()
-		{
-		}
-
 		inline void wait()
 		{
 			m_sem.acquire();

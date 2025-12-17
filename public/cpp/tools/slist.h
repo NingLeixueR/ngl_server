@@ -222,15 +222,15 @@ namespace ngl
 	{
 		lsnode<T> m_list;
 		lsnode<T> m_free;
-		std::function<void(node<T>*)> m_listfree;
+		std::function<void(node<T>*)> m_listfree = nullptr;
 	public:
-		inline slist_consumption():
-			m_listfree([this](node<T>* adata)
+		inline slist_consumption()
+		{
+			m_listfree = [this](node<T>* adata)
 				{
 					std::destroy_at(adata);
 					m_free.push_back(adata);
-				})
-		{
+				};
 		}
 
 		inline lsnode<T>& get_list()
@@ -288,31 +288,36 @@ namespace ngl
 	template <typename T>
 	class slist_production
 	{
-		int m_initcapacity;
-		int m_expand;
+		int m_initcapacity = 0;
+		int m_expand = 0;
+		int m_maxsize = 0;
 		lsnode<T> m_list;
 		lsnode<T> m_free;
-		std::function<void(node<T>*)> m_listfree;
-		std::function<void(node<T>*)> m_freefree;
-
-		int m_maxsize;
+		std::function<void(node<T>*)> m_listfree = nullptr;
+		std::function<void(node<T>*)> m_freefree = nullptr;
 	public:
-		inline slist_production(int asize = 10, int amaxsize = 1000, int aexpand = 10) :
+		enum
+		{
+			eslist_size = 10,
+			eslist_maxsize = 1000,
+			eslist_expand = 10,
+		};
+		inline slist_production(int asize = eslist_size, int amaxsize = eslist_maxsize, int aexpand = eslist_expand) :
 			m_expand(aexpand),
 			m_initcapacity(asize),
 			m_free(asize),
-			m_maxsize(amaxsize),
-			m_listfree([this](node<T>* adata)
+			m_maxsize(amaxsize)
+		{
+			m_listfree = [this](node<T>* adata)
 				{
 					std::destroy_at(adata);
 					m_free.push_back(adata);
-				}),
-			m_freefree([this](node<T>* adata)
+				};
+			m_freefree = [this](node<T>* adata)
 				{
 					std::destroy_at(adata);
 					std::free(adata);
-				})
-		{
+				};
 		}
 
 		~slist_production()

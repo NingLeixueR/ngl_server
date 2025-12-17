@@ -38,17 +38,17 @@ namespace ngl
 
 	bool localtime::check_hour(int hour/*0-23*/)
 	{
-		return hour >= 0 && hour < 24;
+		return hour >= 0 && hour <= 23;
 	}
 
 	bool localtime::check_minute(int minute/*0-59*/)
 	{
-		return minute >= 0 && minute < 59;
+		return minute >= 0 && minute <= 59;
 	}
 
 	bool localtime::check_sec(int sec/*0-59*/)
 	{
-		return sec >= 0 && sec < 59;
+		return sec >= 0 && sec <= 59;
 	}
 
 	bool localtime::settime(time_t sti)
@@ -120,7 +120,9 @@ namespace ngl
 		char lbuff[1024] = { 0 };
 		size_t lindex = time2str(lbuff, 1024, anow, format);
 		if (lindex < 0)
+		{
 			return "";
+		}
 		return lbuff;
 	}
 
@@ -437,8 +439,8 @@ namespace ngl
 	void test_isweek()
 	{
 		time_t ltemp1 = ngl::localtime::gettime();
-		time_t ltemp2 = ltemp1 - 10 * 24 * 60 * 60;
-		for (int i = 0; i < 20; ++i, ltemp2 += 24 * 60 * 60)
+		time_t ltemp2 = ltemp1 - 10 * localtime::DAY_SECOND;
+		for (int i = 0; i < 20; ++i, ltemp2 += localtime::DAY_SECOND)
 		{
 			std::cout << ngl::localtime::getmoon(ltemp2) << "." << ngl::localtime::getmoonday(ltemp2) << ":" << (ngl::localtime::issameweek(ltemp1, ltemp2) ? "yes" : "no") << std::endl;
 		}
