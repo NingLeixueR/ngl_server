@@ -87,8 +87,6 @@ namespace ngl
 			lservertid = nnodeid::tid(m_robot->m_gameid);
 			ltcount = nnodeid::tcount(m_robot->m_gameid);
 		}
-
-
 		std::string lcmd = std::format("kcp {} {} {} {}", (int32_t)akcpenum, lservertid, ltcount, (int64_t)nguid::make());
 		std::vector<std::string> lvec;
 		if (!ngl::tools::splite(lcmd.c_str(), " ", lvec))
