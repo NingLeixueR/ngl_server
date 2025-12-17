@@ -29,8 +29,8 @@ namespace ngl
 
 		slist_production<T>			m_list;
 		slist_consumption<T>		m_copylist;
-		std::function<void(T&)>		m_fun;
 		std::thread					m_thread;
+		std::function<void(T&)>		m_fun = nullptr;
 	public:
 		worklist(const std::function<void(T&)>& afun) :
 			m_fun(afun),
