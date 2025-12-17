@@ -51,13 +51,10 @@ namespace ngl
 			return false;
 		}
 
-		if (itor->second.m_ready != e_ready_null)
+		if (itor->second.m_ready != e_ready_null && !aactor->ready().is_ready(itor->second.m_ready))
 		{
-			if (!aactor->ready().is_ready(itor->second.m_ready))
-			{
-				log_error()->print("{}::handle_switch isloadfinish() == {}", aactor->guid(), itor->second.m_ready);
-				return false;
-			}
+			log_error()->print("{}::handle_switch isloadfinish() == {}", aactor->guid(), itor->second.m_ready);
+			return false;
 		}
 		time_consuming lconsuming(std::format("{}-{}-{}", aactor->guid(), apram.m_enum, tprotocol::protocol_name(apram.m_enum)));
 		lconsuming.consuming_start();

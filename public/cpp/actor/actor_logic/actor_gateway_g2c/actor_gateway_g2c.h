@@ -25,7 +25,8 @@
 
 namespace ngl
 {
-	class actor_gateway_g2c : public actor
+	class actor_gateway_g2c :
+		public actor
 	{
 		gateway_info m_info;
 
@@ -61,6 +62,86 @@ namespace ngl
 		bool handle(const message<np_arg_null>&);
 
 		template <typename T>
+		bool handle_tcp(const np_actor_forward<T, forward_g2c<forward>>* aparm, const pack* apack)
+		{
+			gateway_socket* info = nullptr;
+			std::map<i32_sessionid, i64_actorid> lmap;
+			if (aparm->m_data.m_area[0] == nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
+			{
+				// 获取所有客户端
+				get_allclient(lmap);
+			}
+			else if (aparm->m_data.m_area[0] != nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
+			{
+				// 获取指定区服上的所有客户端
+				get_allclientbyarea(lmap, aparm->m_data.m_area[0]);
+			}
+			else
+			{
+				auto luidsize = (int32_t)aparm->m_data.m_uid.size();
+				auto lareasize = (int32_t)aparm->m_data.m_area.size();
+				if (luidsize != lareasize)
+				{
+					log_error()->print("actor_gatewayg2c uidsize[{}]!=areasize[{}]", luidsize, lareasize);
+					return true;
+				}
+				for (int i = 0; i < luidsize; ++i)
+				{
+					i16_area larea = aparm->m_data.m_area[i];
+					i32_actordataid ldataid = aparm->m_data.m_uid[i];
+					info = m_info.get(larea, ldataid);
+					if (info == nullptr)
+					{
+						continue;
+					}
+					i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea, ldataid);
+					lmap.insert(std::make_pair(info->m_socket, lactorid));
+				}
+			}
+			nets::sendmore<forward, T>(lmap, aparm->m_data.m_data, apack->m_head.get_request_actor());
+			return true;
+		}
+
+		template <typename T>
+		bool handle_kcp(const np_actor_forward<T, forward_g2c<forward>>* aparm, const pack* apack)
+		{
+			std::shared_ptr<pack> lsendpack = ngl::net_pack<T>::npack(&nets::net_first()->get_pool(), aparm->m_data.m_data, apack->m_head.get_request_actor(), 0);
+			if (lsendpack == nullptr)
+			{
+				return true;
+			}
+			if (aparm->m_data.m_area[0] == nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
+			{
+				nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->sendpack(lsendpack);
+			}
+			else if (aparm->m_data.m_area[0] != nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
+			{
+				// 获取指定区服上的所有客户端
+				nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->sendpackbyarea(aparm->m_data.m_area[0], lsendpack);
+			}
+			else
+			{
+				auto luidsize = (int32_t)aparm->m_data.m_uid.size();
+				auto lareasize = (int32_t)aparm->m_data.m_area.size();
+				if (luidsize != lareasize)
+				{
+					log_error()->print("actor_gatewayg2c uidsize[{}]!=areasize[{}]", luidsize, lareasize);
+					return true;
+				}
+				std::set<i64_actorid> lids;
+				for (int i = 0; i < luidsize; ++i)
+				{
+					i16_area larea = aparm->m_data.m_area[i];
+					i32_actordataid ldataid = aparm->m_data.m_uid[i];
+					i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea, ldataid);
+					lids.insert(lactorid);
+				}
+				nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->sendpack(lids, lsendpack);
+			}
+			return true;
+		}
+
+		template <typename T>
 		bool handle(const message<np_actor_forward<T, forward_g2c<forward>>>& adata)
 		{
 			auto lparm = adata.get_data();
@@ -72,78 +153,11 @@ namespace ngl
 			// Game->Gate  需要把这个消息传递给Client服务器
 			if (lparm->m_data.m_protocol == ENET_TCP)
 			{
-				gateway_socket* info = nullptr;
-				std::map<i32_sessionid, i64_actorid> lmap;
-				if (lparm->m_data.m_area[0] == nguid::none_area() && lparm->m_data.m_uid[0] == nguid::none_actordataid())
-				{
-					// 获取所有客户端
-					get_allclient(lmap);
-				}
-				else if (lparm->m_data.m_area[0] != nguid::none_area() && lparm->m_data.m_uid[0] == nguid::none_actordataid())
-				{
-					// 获取指定区服上的所有客户端
-					get_allclientbyarea(lmap, lparm->m_data.m_area[0]);
-				}
-				else
-				{
-					int32_t luidsize = (int32_t)lparm->m_data.m_uid.size();
-					int32_t lareasize = (int32_t)lparm->m_data.m_area.size();
-					if (luidsize != lareasize)
-					{
-						log_error()->print("actor_gatewayg2c uidsize[{}]!=areasize[{}]", luidsize, lareasize);
-						return true;
-					}
-					for (int i = 0; i < luidsize; ++i)
-					{
-						i16_area larea = lparm->m_data.m_area[i];
-						i32_actordataid ldataid = lparm->m_data.m_uid[i];
-						info = m_info.get(larea, ldataid);
-						if (info == nullptr)
-						{
-							continue;
-						}
-						i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea, ldataid);
-						lmap.insert(std::make_pair(info->m_socket, lactorid));
-					}
-				}
-				nets::sendmore<forward, T>(lmap, lparm->m_data.m_data, lpack->m_head.get_request_actor());
-				return true;
+				return handle_tcp(lparm, lpack);
 			}
 			else if (lparm->m_data.m_protocol == ENET_KCP)
 			{
-				std::shared_ptr<pack> lsendpack = ngl::net_pack<T>::npack(&nets::net_first()->get_pool(), lparm->m_data.m_data, lpack->m_head.get_request_actor(), 0);
-				if (lsendpack == nullptr)
-				{
-					return true;
-				}
-				if (lparm->m_data.m_area[0] == nguid::none_area() && lparm->m_data.m_uid[0] == nguid::none_actordataid())
-				{
-					nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->sendpack(lsendpack);
-				}
-				else if (lparm->m_data.m_area[0] != nguid::none_area() && lparm->m_data.m_uid[0] == nguid::none_actordataid())
-				{
-					// 获取指定区服上的所有客户端
-					nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->sendpackbyarea(lparm->m_data.m_area[0], lsendpack);
-				}
-				else
-				{
-					int32_t luidsize = (int32_t)lparm->m_data.m_uid.size();
-					int32_t lareasize = (int32_t)lparm->m_data.m_area.size();
-					if (luidsize != lareasize)
-					{
-						log_error()->print("actor_gatewayg2c uidsize[{}]!=areasize[{}]", luidsize, lareasize);
-						return true;
-					}
-					std::set<i64_actorid> lids;
-					for (int i = 0; i < luidsize; ++i)
-					{
-						i16_area larea = lparm->m_data.m_area[i];
-						i32_actordataid ldataid = lparm->m_data.m_uid[i];
-						i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea, ldataid);
-						lids.insert(lactorid);
-					}
-					nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->sendpack(lids, lsendpack);
-				}
+				return handle_kcp(lparm, lpack);				
 			}
 			return true;
 		}

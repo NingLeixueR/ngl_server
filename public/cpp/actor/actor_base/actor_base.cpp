@@ -22,6 +22,24 @@
 
 namespace ngl
 {
+	bool nready::check_readybit(int32_t anum, int32_t aready)
+	{
+		if (((1 << anum) & aready) != 0)
+		{
+			auto itor = m_readyfun.find(1 << anum);
+			if (itor == m_readyfun.end())
+			{
+				return true;
+			}
+			if (!itor->second())
+			{
+				return false;
+			}
+			m_readyfun.erase(itor);
+		}
+		return true;
+	}
+
 	bool nready::is_ready(int32_t aready /*= e_ready_all*/)
 	{
 		if (aready == e_ready_null || m_readyfun.empty())
@@ -30,40 +48,24 @@ namespace ngl
 		}
 		if (aready == e_ready_all)
 		{
-			auto itor = m_readyfun.begin();
-			while (itor != m_readyfun.end())
+			for (auto itor = m_readyfun.begin(); itor != m_readyfun.end();++itor)
 			{
-				if (itor->second())
-				{
-					itor = m_readyfun.erase(itor);
-				}
-				else
+				if (!itor->second())
 				{
 					return false;
 				}
+				itor = m_readyfun.erase(itor);
 			}
 			return true;
 		}
-		else
+		for (int32_t i = 1; i <= 32; ++i)
 		{
-			for (int32_t i = 1; i <= 32; ++i)
+			if (!check_readybit(i, aready))
 			{
-				if (((1 << i) & aready) != 0)
-				{
-					auto itor = m_readyfun.find(1 << i);
-					if (itor == m_readyfun.end())
-					{
-						continue;
-					}
-					if (!itor->second())
-					{
-						return false;
-					}
-					m_readyfun.erase(itor);
-				}
+				return false;
 			}
-			return true;
 		}
+		return true;
 	}
 
 	void nready::set_ready(enum_ready aready, const std::function<bool()>& afun)
@@ -78,7 +80,7 @@ namespace ngl
 			log_error()->print("set_readybycustom fail [{}]", m_custom);
 			return;
 		}
-		enum_ready lvalue = (enum_ready)(e_ready_custom << m_custom);
+		auto lvalue = (enum_ready)(e_ready_custom << m_custom);
 		if (m_readyfun.contains(lvalue))
 		{
 			log_error()->print("set_readybycustom fail [{}:{}]", m_custom, (int32_t)lvalue);
@@ -139,32 +141,32 @@ namespace ngl
 		actor_manage::instance().erase_actor(m_guid);
 	}
 
-	bool actor_base::is_single()
+	bool actor_base::is_single()const
 	{
 		return enum_actor::is_signle(m_guid.type());
 	}
 
-	nguid& actor_base::guid()
+	const nguid& actor_base::guid()const
 	{
 		return m_guid;
 	}
 	
-	i64_actorid actor_base::id_guid()
+	i64_actorid actor_base::id_guid()const
 	{
 		return m_guid;
 	}
 
-	i32_actordataid actor_base::id()
+	i32_actordataid actor_base::id()const
 	{
 		return m_guid.actordataid();
 	}
 
-	i16_area actor_base::area()
+	i16_area actor_base::area()const
 	{
 		return m_guid.area();
 	}
 
-	ENUM_ACTOR actor_base::type()
+	ENUM_ACTOR actor_base::type()const
 	{
 		return m_guid.type();
 	}
@@ -288,7 +290,7 @@ namespace ngl
 		return ntimer::addtimer(this, lparm);
 	}
 
-	bool actor_base::isbroadcast()
+	bool actor_base::isbroadcast()const
 	{
 		return m_isbroadcast;
 	}

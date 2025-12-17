@@ -232,9 +232,6 @@ namespace ngl
 		auto lpram = adata.get_data();
 		auto lpack = adata.get_pack();
 
-		i16_area larea = nguid::none_area();
-		i32_actordataid lactordataid = nguid::none_actordataid();
-
 		std::string lkcpsession;
 		if (ukcp::create_session(lpram->mactoridserver(), lpram->mactoridclient(), lkcpsession) == false)
 		{

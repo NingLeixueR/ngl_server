@@ -174,7 +174,7 @@ namespace ngl
 		return true;
 	}
 
-	void actor::wait_ready(const nguid& aguid)
+	void actor::wait_ready(const nguid& aguid)const
 	{
 		while (!actor_manage::instance().ready(aguid))
 		{
