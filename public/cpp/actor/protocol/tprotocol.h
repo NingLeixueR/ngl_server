@@ -57,8 +57,7 @@ namespace ngl
 				{
 					return m_toactor[SCRIPT];
 				}
-				static const func lnullfun = nullptr;
-				return lnullfun;
+				return nullptr;
 			}
 
 			template <enscript SCRIPT>
@@ -68,8 +67,7 @@ namespace ngl
 				{
 					return m_toclient[SCRIPT];
 				}
-				static const funclientc lnullfun = nullptr;
-				return lnullfun;
+				return nullptr;
 			}
 		};
 	private:
@@ -162,7 +160,7 @@ namespace ngl
 			auto itor = m_keyval.find(lcode);
 			if (itor == m_keyval.end())
 			{
-				if (init_protobufs<TRC>() == false)
+				if (!init_protobufs<TRC>())
 				{
 					std::cout << tools::type_name<T>() << std::endl;
 					Throw("init_protobufs<TRC>() == false");
