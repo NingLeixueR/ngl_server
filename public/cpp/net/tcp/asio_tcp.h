@@ -31,8 +31,8 @@ namespace ngl
 		asio_tcp(const asio_tcp&) = delete;
 		asio_tcp& operator=(const asio_tcp&) = delete;
 
-		asio::ip::tcp::acceptor*	m_acceptor_v4 = nullptr;
-		asio::ip::tcp::acceptor*	m_acceptor_v6 = nullptr;
+		std::shared_ptr<asio::ip::tcp::acceptor>	m_acceptor_v4 = nullptr;
+		std::shared_ptr<asio::ip::tcp::acceptor>	m_acceptor_v6 = nullptr;
 		i16_port					m_port	= 0;
 		tcp_callback				m_fun = nullptr;
 		tcp_closecallback			m_closefun = nullptr;

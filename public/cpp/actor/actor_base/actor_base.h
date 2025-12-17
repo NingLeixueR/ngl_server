@@ -215,7 +215,7 @@ namespace ngl
 		static void erase_actor(const nguid& aguid);
 
 		//# 给actor自身添加任务
-		void push_task_id(handle_pram& apram);
+		void push_task_id(handle_pram& apram)const;
 
 		//# 向指定actor添加任务
 		static void push_task_id(const nguid& aguid, handle_pram& apram);
@@ -231,10 +231,10 @@ namespace ngl
 		enscript m_enscript = enscript_none;					// 脚本支持
 	public:
 		//# actor是否使用脚本
-		bool nscript_using();
+		bool nscript_using()const;
 
 		//# 通知脚本db数据加载完毕
-		bool nscript_db_loadfinish();
+		bool nscript_db_loadfinish()const;
 
 		template <typename T>
 		struct nscript_data_csv
@@ -425,7 +425,7 @@ namespace ngl
 		static bool sendpack_kcp(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport = 0);
 
 		//# 发起kcp连接
-		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession);
+		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const;
 #pragma endregion 
 
 #pragma region send_client

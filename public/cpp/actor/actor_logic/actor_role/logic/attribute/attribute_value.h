@@ -65,8 +65,7 @@ namespace ngl
 
 		EnumModule m_module = EnumModule::E_ModuleNull;
 	public:
-		attribute_value()
-		{}
+		attribute_value() = default;
 	private:
 		void update(std::map<EnumAttribute, int64_t>& aattr, const std::map<EnumAttribute, float>& amr)
 		{
