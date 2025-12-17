@@ -302,38 +302,16 @@ namespace ngl
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata)
 	{
-		log_error()->print("[LOGIC_ROLE_SYNC:{}:{}]"
-			, adata.get_data()->mbrief().mbase().mname()
-			, adata.get_data()->mbrief().mbase().mlv()
-		);
+		log_error()->print("[LOGIC_ROLE_SYNC:{}:{}]", adata.get_data()->mbrief().mbase().mname(), adata.get_data()->mbrief().mbase().mlv());
 		m_data = *adata.get_data();
 		handle_print(adata);
-
+		if (!m_firstsync)
 		{
-			pbnet::ENUM_KCP lkcpenum = pbnet::ENUM_KCP::KCP_GATEWAY;
-			int16_t lservertid = nnodeid::tid(m_robot->m_gatewayid);
-			int16_t ltcount = nnodeid::tcount(m_robot->m_gatewayid);
-			std::string lcmd = std::format("kcp {} {} {} {}", (int32_t)lkcpenum, lservertid, ltcount, (int64_t)nguid::make());
-			std::vector<std::string> lvec;
-			if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
-			{
-				return false;
-			}
-			ngl::actor_robot_manage::parse_command(lvec);
+			m_firstsync = true;
+
 		}
-		{
-			pbnet::ENUM_KCP lkcpenum = pbnet::ENUM_KCP::KCP_ROLE;
-			int16_t lservertid = nnodeid::tid(m_robot->m_gameid);
-			int16_t ltcount = nnodeid::tcount(m_robot->m_gameid);
-			std::string lcmd = std::format("kcp {} {} {} {}", (int32_t)lkcpenum, lservertid, ltcount, nguid::make_type(id_guid(), ACTOR_ROLE));
-			std::vector<std::string> lvec;
-			if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
-			{
-				return false;
-			}
-			ngl::actor_robot_manage::parse_command(lvec);
-		}	
-
+		ukcp_connect(pbnet::ENUM_KCP::KCP_GATEWAY);
+		ukcp_connect(pbnet::ENUM_KCP::KCP_ROLE);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata)
