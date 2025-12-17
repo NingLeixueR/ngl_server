@@ -1294,14 +1294,14 @@ namespace ngl
 
 	const std::string& tools::server_name()
 	{
-		const tab_servers* ltab = ttab_servers::instance().tab();
-		if (ltab == nullptr)
+		const tab_servers* tab = ttab_servers::instance().tab();
+		if (tab == nullptr)
 		{
 			tools::no_core_dump();
 			static std::string ltemp;
 			return ltemp;
 		}
-		return ltab->m_name;
+		return tab->m_name;
 	}
 
 

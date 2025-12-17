@@ -123,12 +123,12 @@ namespace ngl
 		return true;
 	}
 
-	void actor_robot_manage::create_robot(const std::string& arobotname)
+	void actor_robot_manage::create_robot(const std::string& arobotname)const
 	{
 		ngl::actor_robot_manage::login(arobotname, "123456");
 	}
 
-	void actor_robot_manage::create_robots(const std::string& arobotname, int abeg, int aend)
+	void actor_robot_manage::create_robots(const std::string& arobotname, int abeg, int aend)const
 	{
 		for (int i = abeg; i <= aend; ++i)
 		{

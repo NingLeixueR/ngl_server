@@ -81,6 +81,8 @@ namespace ngl
 	private:
 		std::map<int32_t, std::function<bool()>> m_readyfun;
 		int32_t m_custom = 0;
+
+		bool check_readybit(int32_t anum, int32_t aready);
 	public:
 		//# 是否就绪
 		bool is_ready(int32_t aready = e_ready_all);
@@ -189,22 +191,22 @@ namespace ngl
 #pragma endregion 
 
 		//# 是否为单例
-		bool is_single();
+		bool is_single()const;
 
 		//# 获取actor guid
-		nguid& guid();
+		const nguid& guid()const;
 
 		//# 获取actor guid i64_actorid
-		i64_actorid id_guid();
+		i64_actorid id_guid()const;
 
 		//# 获取actor guid的数据id
-		i32_actordataid id();
+		i32_actordataid id()const;
 
 		//# 获取actor guid的区服id
-		i16_area area();
+		i16_area area()const;
 
 		//# 获取actor guid的actor type
-		ENUM_ACTOR type();
+		ENUM_ACTOR type()const;
 
 		//# 移除actor自身
 		virtual void erase_actor();
@@ -410,7 +412,7 @@ namespace ngl
 			int32_t lserverid = nnodeid::nodeid(aservertid, atcount);
 			return kcpindex(lserverid, aenum);
 		}
-	public:
+
 		//# 通过udp.kcp发送数据
 		template <typename T>
 		static bool send_kcp(i64_actorid aactorid, T& adata, i16_port auport = 0);
@@ -541,7 +543,7 @@ namespace ngl
 
 		//# 方便调试打印协议
 		template <typename T>
-		void handle_print(const message<T>& adata)
+		void handle_print(const message<T>& adata)const
 		{
 			if constexpr (is_protobuf_message<T>::value)
 			{
@@ -561,7 +563,7 @@ namespace ngl
 		int32_t set_timer(const np_timerparm& aparm);
 
 		//# 是否支持广播
-		bool isbroadcast();
+		bool isbroadcast()const;
 
 		//# 设置是否支持广播
 		void set_broadcast(bool aisbroadcast);

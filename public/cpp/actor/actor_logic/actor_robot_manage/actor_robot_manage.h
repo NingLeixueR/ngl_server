@@ -53,9 +53,9 @@ namespace ngl
 
 		static bool parse_command(std::vector<std::string>& aparm);
 
-		void create_robots(const std::string& arobotname, int abeg, int aend);
+		void create_robots(const std::string& arobotname, int abeg, int aend)const;
 
-		void create_robot(const std::string& arobotname);
+		void create_robot(const std::string& arobotname)const;
 
 		void foreach(const std::function<bool(_robot&)>& afun);
 

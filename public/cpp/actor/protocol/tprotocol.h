@@ -57,7 +57,8 @@ namespace ngl
 				{
 					return m_toactor[SCRIPT];
 				}
-				return nullptr;
+				static const func ltemp = nullptr;
+				return ltemp;
 			}
 
 			template <enscript SCRIPT>
@@ -67,7 +68,8 @@ namespace ngl
 				{
 					return m_toclient[SCRIPT];
 				}
-				return nullptr;
+				static const funclientc ltemp = nullptr;
+				return ltemp;
 			}
 		};
 	private:

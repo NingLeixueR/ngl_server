@@ -16,9 +16,6 @@
 namespace ngl
 {
 	ndb_component::ndb_component(pbdb::ENUM_DB aenum) :
-		m_actor(nullptr),
-		m_id(0),
-		m_dbclient(nullptr),
 		m_type(aenum)
 	{}
 

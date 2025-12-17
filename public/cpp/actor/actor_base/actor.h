@@ -211,7 +211,7 @@ namespace ngl
 		void set_activity_stat(actor_stat astat) final;
 
 		// # 等待ready
-		void wait_ready(const nguid& aguid);
+		void wait_ready(const nguid& aguid)const;
 	private:
 		// # 释放actor消息列表
 		void release() final;

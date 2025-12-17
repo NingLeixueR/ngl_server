@@ -85,10 +85,8 @@ namespace ngl
 	bool actor_client::handle(const message<np_connect_actor_server>& adata)
 	{
 		int32_t lserverid = adata.get_data()->m_serverid;
-		
-		const tab_servers* ltab = ttab_servers::instance().tab();
-
-		if (ltab == nullptr || ttab_servers::instance().tab(nnodeid::tid(lserverid)) == nullptr)
+		const tab_servers* tab = ttab_servers::instance().tab();
+		if (tab == nullptr || ttab_servers::instance().tab(nnodeid::tid(lserverid)) == nullptr)
 		{
 			tools::no_core_dump();
 			return true;
@@ -106,10 +104,10 @@ namespace ngl
 			{
 				.m_name = std::format(
 					"node<id:{},type:{},name:{},tcount:{},area:{}>"
-					, ltab->m_id, em<NODE_TYPE>::get_name(ltab->m_type)
-					, ltab->m_name, ltab->m_tcount, ltab->m_area
+					, tab->m_id, em<NODE_TYPE>::get_name(tab->m_type)
+					, tab->m_name, tab->m_tcount, tab->m_area
 				),
-				.m_nodetype = ltab->m_type,
+				.m_nodetype = tab->m_type,
 				.m_serverid = nconfig::m_nodeid,
 			}
 		};
@@ -159,8 +157,8 @@ namespace ngl
 			tools::no_core_dump();
 			return true;
 		}
-		const tab_servers* ltab = ttab_servers::instance().tab();
-		for (int32_t id : ltab->m_actorserver)
+		const tab_servers* tab = ttab_servers::instance().tab();
+		for (int32_t id : tab->m_actorserver)
 		{
 			actor_server_register(nnodeid::nodeid(id, 1));
 		}
@@ -194,8 +192,8 @@ namespace ngl
 		}
 		auto lparm = adata.get_data();
 
-		const tab_servers* ltab = ttab_servers::instance().tab();
-		if (ltab == nullptr)
+		
+		if (const tab_servers* tab = ttab_servers::instance().tab(); tab == nullptr)
 		{
 			tools::no_core_dump();
 			return true;
