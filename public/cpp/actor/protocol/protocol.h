@@ -46,8 +46,8 @@ namespace ngl
 	private:
 		struct pfun
 		{
-			protocol::fun_pack								m_packfun;		// 解包回调
-			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;		// actor类型对应的逻辑回调
+			protocol::fun_pack								m_packfun = nullptr;		// 解包回调
+			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;					// actor类型对应的逻辑回调
 		};
 		static std::map<i32_protocolnum, protocol::pfun>	m_protocolfun;	// 协议号关联pfun
 		static std::shared_mutex							m_mutex;		// 锁

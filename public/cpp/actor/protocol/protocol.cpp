@@ -136,13 +136,13 @@ namespace ngl
 		tools::erase_repeat(lcmdstr, ' ');
 
 		std::vector<std::string> lvec;
-		if (tools::splite(lcmdstr.c_str(), " ", lvec) == false)
+		if (!tools::splite(lcmdstr.c_str(), " ", lvec))
 		{
 			return;
 		}
 		std::string& lkey = lvec[0];
 		std::ranges::transform(lkey, lkey.begin(), tolower);
-		if (telnet_cmd_admin::check(apack->m_id) == false)
+		if (!telnet_cmd_admin::check(apack->m_id))
 		{
 			if (lvec[0] == "/login" && lvec.size() >= 3)
 			{
