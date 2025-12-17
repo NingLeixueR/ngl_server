@@ -102,8 +102,7 @@ namespace ngl
 			root().update();
 		}
 	public:
-		attribute()
-		{}
+		attribute() = default;
 		
 		bool sync()
 		{

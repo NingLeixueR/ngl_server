@@ -203,17 +203,17 @@ namespace ngl
 		actor_manage::instance().push_task_type(atype, apram);
 	}
 
-	void actor_base::push_task_id(handle_pram& apram)
+	void actor_base::push_task_id(handle_pram& apram)const
 	{
 		actor_manage::instance().push_task_id(id_guid(), apram);
 	}
 
-	bool actor_base::nscript_using()
+	bool actor_base::nscript_using()const
 	{
 		return m_script != nullptr && m_enscript != enscript_none;
 	}
 
-	bool actor_base::nscript_db_loadfinish()
+	bool actor_base::nscript_db_loadfinish()const
 	{
 		if (!nscript_using())
 		{
@@ -300,7 +300,7 @@ namespace ngl
 		m_isbroadcast = aisbroadcast;
 	}
 
-	bool actor_base::connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)
+	bool actor_base::connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const
 	{
 		if (nconfig::node_type() != ROBOT)
 		{//不允许服务器主动进行kcp连接

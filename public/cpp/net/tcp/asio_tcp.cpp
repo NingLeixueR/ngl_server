@@ -30,8 +30,9 @@ namespace ngl
 		m_acceptor_v6(nullptr)
 	{
 		asio::io_service& lioservice = *m_service_io_.get_ioservice(m_service_io_.m_recvthreadsize);
-		m_acceptor_v4 = new asio::ip::tcp::acceptor(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port));
-		m_acceptor_v6 = new asio::ip::tcp::acceptor(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v6(), m_port));
+
+		m_acceptor_v4 = std::make_shared<asio::ip::tcp::acceptor>(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port));
+		m_acceptor_v6 = std::make_shared<asio::ip::tcp::acceptor>(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v6(), m_port));
 		m_acceptor_v4->set_option(asio::socket_base::reuse_address(true));
 		m_acceptor_v6->set_option(asio::socket_base::reuse_address(true));
 		accept(true);
@@ -59,8 +60,8 @@ namespace ngl
 			lservice = std::make_shared<service_tcp>(m_service_io_, ++m_sessionid);
 			m_data[lservice->m_sessionid] = lservice;
 		}
-		lservice->m_socket.async_connect(basio_iptcpendpoint(basio_ipaddress::from_string(aip), aport)
-			, [this, lservice, aip, aport, afun, acount](const std::error_code& ec)
+		lservice->m_socket.async_connect(basio_iptcpendpoint(basio_ipaddress::from_string(aip), aport), 
+			[this, lservice, aip, aport, afun, acount](const std::error_code& ec)
 			{
 				if (ec)
 				{
@@ -70,8 +71,8 @@ namespace ngl
 						// 加入定时队列
 						wheel_parm lparm
 						{
-							.m_ms = 1000,
-							.m_intervalms = [](int64_t) {return 1000; } ,
+							.m_ms = 1 * localtime::MILLISECOND,
+							.m_intervalms = [](int64_t) {return 1 * localtime::MILLISECOND; } ,
 							.m_count = 1,
 							.m_fun = [this, aip, aport, afun, acount](const wheel_node* anode)
 							{
@@ -108,7 +109,9 @@ namespace ngl
 	{
 		service_tcp* tcp = get_tcp(asessionid);
 		if (tcp == nullptr)
+		{
 			return false;
+		}
 		std::shared_ptr<std::list<node_pack>> llist = nullptr;
 		{
 			monopoly_shared_lock(tcp->m_mutex);
@@ -377,8 +380,7 @@ namespace ngl
 		}
 		if (aisv4)
 		{
-			m_acceptor_v4->async_accept(lservice->m_socket
-				, [this, lservice](const std::error_code& error)
+			m_acceptor_v4->async_accept(lservice->m_socket, [this, lservice](const std::error_code& error)
 				{
 					accept_handle(true, lservice, error);
 				}
@@ -386,8 +388,7 @@ namespace ngl
 		}
 		else
 		{
-			m_acceptor_v6->async_accept(lservice->m_socket
-				, [this, lservice](const std::error_code& error)
+			m_acceptor_v6->async_accept(lservice->m_socket, [this, lservice](const std::error_code& error)
 				{
 					accept_handle(false, lservice, error);
 				}
