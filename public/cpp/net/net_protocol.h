@@ -77,8 +77,8 @@ namespace ngl
 		i16_port port()const;
 
 		// # 发送pack
-		bool sendpack(i32_sessionid asession, std::shared_ptr<pack>& apack);
-		bool sendpack(i32_sessionid asession, std::shared_ptr<void>& apack);
+		bool send_server(i32_sessionid asession, std::shared_ptr<pack>& apack);
+		bool send_server(i32_sessionid asession, std::shared_ptr<void>& apack);
 
 		// # 向某个服务器发送pack
 		bool sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
@@ -104,7 +104,7 @@ namespace ngl
 			{
 				return false;
 			}
-			if (sendpack(asession, lpack) == false)
+			if (send_server(asession, lpack) == false)
 			{
 				return false;
 			}

@@ -165,7 +165,6 @@ namespace ngl
 
 		bool ahandle(i32_threadid athreadid, handle_pram& aparm);
 
-#pragma region ActorBroadcast
 		// ############# [广播] ############# 
 		// # 间隔一段时间发起的广播
 		// # 1、保存数据 
@@ -176,7 +175,6 @@ namespace ngl
 		// # 广播处理函数
 		bool handle(const message<np_actor_broadcast>& adata);
 		// ############# [广播] ############# 
-#pragma endregion
 		
 		// # 关闭此actor
 		bool handle(const message<np_actor_close>&)

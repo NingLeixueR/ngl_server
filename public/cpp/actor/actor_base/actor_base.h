@@ -94,6 +94,40 @@ namespace ngl
 		void set_readybycustom(const std::function<bool()>& afun);
 	};
 
+	template <typename T>
+	struct nscript_data_csv
+	{
+		using TDATA = T;
+		const std::map<int32_t, T>& data;
+
+		explicit nscript_data_csv(const std::map<int32_t, T>& adata) :
+			data(adata)
+		{}
+
+		dprotocol(nscript_data_csv<T>, data)
+	};
+
+	template <typename T>
+	struct nscript_data_db
+	{
+		using TDATA = T;
+		std::map<int64_t, T*> data;
+
+		dprotocol(nscript_data_db<T>, data)
+	};
+
+	template <typename T>
+	struct nscript_data_nsp
+	{
+		using TDATA = T;
+		const std::map<int64_t, T>& data;
+		explicit nscript_data_nsp(const std::map<int64_t, T>& adata) :
+			data(adata)
+		{}
+
+		dprotocol(nscript_data_nsp<T>, data)
+	};
+
 	class actor_base
 	{
 		actor_base() = delete;
@@ -120,13 +154,22 @@ namespace ngl
 
 		//# "ready"组件实例
 		nready										m_ready;
+
+		//# 对脚本语言的支持
+		void*										m_script = nullptr;
+		enscript									m_enscript = enscript_none;		// 脚本支持
+
+		struct kcpport
+		{
+			std::map<pbnet::ENUM_KCP, i16_port> m_data;
+		};
+		std::map<i32_serverid, kcpport> m_kcpindex;
 	public:
 		explicit actor_base(const actorparmbase& aparm);
 
 		//# 获取"ready"组件实例
 		nready&			ready();
 
-#pragma region db
 		//# 获取actor_manage_dbclient实例
 		using ptr_manage_dbc = std::unique_ptr<actor_manage_dbclient>;
 		ptr_manage_dbc& get_actor_manage_dbclient();
@@ -144,14 +187,9 @@ namespace ngl
 		void add_dbclient(ndbclient_base* adbclient, i64_actorid aid);
 
 		//# 向actor_db发送数据请求后的返回
-		//# DBTYPE 数据类型
-		//# TDBTAB 数据结构
-		//# TACTOR 持有该数据表的actor
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 		bool handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata);
-#pragma endregion 
 
-#pragma region virtual_function
 		virtual ~actor_base();
 
 		//# 初始化
@@ -188,7 +226,6 @@ namespace ngl
 
 		//# 保存dbclient
 		virtual void save();
-#pragma endregion 
 
 		//# 是否为单例
 		bool is_single()const;
@@ -224,51 +261,11 @@ namespace ngl
 		//# 给指定类型的actor添加任务
 		static void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
-#pragma region nscript
-	private:
-		//# 对脚本语言的支持
-		void* m_script = nullptr;
-		enscript m_enscript = enscript_none;					// 脚本支持
-	public:
 		//# actor是否使用脚本
 		bool nscript_using()const;
 
 		//# 通知脚本db数据加载完毕
 		bool nscript_db_loadfinish()const;
-
-		template <typename T>
-		struct nscript_data_csv
-		{
-			using TDATA = T;
-			const std::map<int32_t, T>& data;
-
-			explicit nscript_data_csv(const std::map<int32_t, T>& adata) :
-				data(adata)
-			{}
-
-			dprotocol(nscript_data_csv<T>, data)
-		};
-
-		template <typename T>
-		struct nscript_data_db
-		{
-			using TDATA = T;
-			std::map<int64_t, T*> data;
-
-			dprotocol(nscript_data_db<T>, data)
-		};
-
-		template <typename T>
-		struct nscript_data_nsp
-		{
-			using TDATA = T;
-			const std::map<int64_t, T>& data;
-			explicit nscript_data_nsp(const std::map<int64_t, T>& adata) :
-				data(adata)
-			{}
-
-			dprotocol(nscript_data_nsp<T>, data)
-		};
 
 		//# 向脚本压入数捿1、csv数据 2、db数据 3、nsp数据)
 		// parm aname			数据名称
@@ -348,9 +345,7 @@ namespace ngl
 			}
 			return nscript_manage::handle(m_enscript, m_script, tools::type_name<T>().c_str(), adata);
 		}
-#pragma endregion 
 
-#pragma region net
 		//# 生成包
 		template <typename T>
 		static std::shared_ptr<pack> net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
@@ -365,28 +360,20 @@ namespace ngl
 
 		//# 发送pack到指定服务器
 		template <typename T>
-		static bool sendpack_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
-
-		//# 通过proto结构名称与json消息体构造包
-		static std::shared_ptr<pack> jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid);
-
-		//# 给指定连接发送数据
-		template <typename T>
-		static bool sendpack_session(i32_sessionid asession, std::shared_ptr<pack>& apack);
+		static bool send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
 		//# 给指定连接发送数据
 		template <typename T>
 		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
-#pragma endregion 
+
+		//# 给指定连接发送数据
+		template <typename T>
+		static bool send(i32_sessionid asession, std::shared_ptr<pack>& apack);
+
+		//# 通过proto结构名称与json消息体构造包
+		static std::shared_ptr<pack> jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid);
 
 #pragma region kcp
-	private:
-		struct kcpport
-		{
-			std::map<pbnet::ENUM_KCP, i16_port> m_data;
-		};
-		std::map<i32_serverid, kcpport> m_kcpindex;
-	public:
 		void set_kcpindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex)
 		{
 			m_kcpindex[aserverid].m_data[aenum] = akcpindex;
@@ -413,6 +400,9 @@ namespace ngl
 			return kcpindex(lserverid, aenum);
 		}
 
+		//# 发起kcp连接
+		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const;
+
 		//# 通过udp.kcp发送数据
 		template <typename T>
 		static bool send_kcp(i64_actorid aactorid, T& adata, i16_port auport = 0);
@@ -423,9 +413,6 @@ namespace ngl
 		static bool sendpack_kcp(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport = 0);
 
 		static bool sendpack_kcp(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport = 0);
-
-		//# 发起kcp连接
-		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const;
 #pragma endregion 
 
 #pragma region send_client
@@ -488,8 +475,7 @@ namespace ngl
 			auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();
 			pro->m_data.m_protocol = aprotocol;
 			pro->m_data.m_data = adata;
-			ttab_servers::instance().foreach_server(GATEWAY, aarea
-				, [&pro](const tab_servers* atab)
+			ttab_servers::instance().foreach_server(GATEWAY, aarea, [&pro](const tab_servers* atab)
 				{
 					send_server(atab->m_id, *pro, nguid::make(), nguid::make());
 				});
@@ -497,11 +483,10 @@ namespace ngl
 #pragma endregion
 
 #pragma region send_actor
-
 		//# 向指定actor发送pack
 		static void send_actor(const nguid& aguid, const std::shared_ptr<pack>& adata)
 		{
-			handle_pram lpram = handle_pram::create_pack(aguid, nguid::make(), adata);
+			handle_pram lpram = handle_pram::create(aguid, nguid::make(), adata);
 			push_task_id(aguid, lpram);
 		}
 
@@ -541,6 +526,18 @@ namespace ngl
 		}
 #pragma endregion
 
+		//# 设置定时任务参数
+		int32_t set_timer(const np_timerparm& aparm);
+
+		//# 是否支持广播
+		bool isbroadcast()const;
+
+		//# 设置是否支持广播
+		void set_broadcast(bool aisbroadcast);
+
+		//# 启动广播定时器
+		static void start_broadcast();
+
 		//# 方便调试打印协议
 		template <typename T>
 		void handle_print(const message<T>& adata)const
@@ -557,20 +554,6 @@ namespace ngl
 				log_error()->print("{}", lstr);
 			}
 		}
-		
-#pragma region broadcast
-		//# 设置定时任务参数
-		int32_t set_timer(const np_timerparm& aparm);
-
-		//# 是否支持广播
-		bool isbroadcast()const;
-
-		//# 设置是否支持广播
-		void set_broadcast(bool aisbroadcast);
-
-		//# 启动广播定时器
-		static void start_broadcast();
-#pragma endregion 
 
 		//# actor_base::create 
 		//# 构造actor对象会自动被调用

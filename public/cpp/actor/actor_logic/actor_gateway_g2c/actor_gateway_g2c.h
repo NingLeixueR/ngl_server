@@ -112,7 +112,7 @@ namespace ngl
 			}
 			if (aparm->m_data.m_area[0] == nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
 			{
-				nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->sendpack(lsendpack);
+				nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->send_server(lsendpack);
 			}
 			else if (aparm->m_data.m_area[0] != nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
 			{
@@ -136,7 +136,7 @@ namespace ngl
 					i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea, ldataid);
 					lids.insert(lactorid);
 				}
-				nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->sendpack(lids, lsendpack);
+				nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->send_server(lids, lsendpack);
 			}
 			return true;
 		}

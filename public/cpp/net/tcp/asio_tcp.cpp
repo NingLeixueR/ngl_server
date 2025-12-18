@@ -129,12 +129,12 @@ namespace ngl
 		return true;
 	}
 
-	bool asio_tcp::sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
+	bool asio_tcp::send_server(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
 	{
 		return spack(asessionid, apack);
 	}
 
-	bool asio_tcp::sendpack(i32_sessionid asessionid, std::shared_ptr<void>& apack)
+	bool asio_tcp::send_server(i32_sessionid asessionid, std::shared_ptr<void>& apack)
 	{
 		return spack(asessionid, apack);
 	}

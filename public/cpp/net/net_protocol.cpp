@@ -101,12 +101,12 @@ namespace ngl
 		return m_port;
 	}
 
-	bool net_protocol::sendpack(i32_sessionid asession, std::shared_ptr<pack>& apack)
+	bool net_protocol::send_server(i32_sessionid asession, std::shared_ptr<pack>& apack)
 	{
 		return net_send(asession, apack);
 	}
 
-	bool net_protocol::sendpack(i32_sessionid asession, std::shared_ptr<void>& apack)
+	bool net_protocol::send_server(i32_sessionid asession, std::shared_ptr<void>& apack)
 	{
 		return net_send(asession, apack);
 	}
