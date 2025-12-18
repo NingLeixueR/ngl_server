@@ -509,7 +509,7 @@ namespace ngl
 				return;
 			}
 
-			actor_base::nscript_data_db<TDBTAB> ltemp;
+			nscript_data_db<TDBTAB> ltemp;
 			for (std::pair<const nguid, data_modified<TDBTAB>>& item : m_data)
 			{
 				ltemp.data.insert(std::make_pair((int64_t)item.first, item.second.get(false, false)));

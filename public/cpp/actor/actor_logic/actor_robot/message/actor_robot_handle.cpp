@@ -308,10 +308,9 @@ namespace ngl
 		if (!m_firstsync)
 		{
 			m_firstsync = true;
-
+			ukcp_connect(pbnet::ENUM_KCP::KCP_GATEWAY);
+			ukcp_connect(pbnet::ENUM_KCP::KCP_ROLE);
 		}
-		ukcp_connect(pbnet::ENUM_KCP::KCP_GATEWAY);
-		ukcp_connect(pbnet::ENUM_KCP::KCP_ROLE);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata)

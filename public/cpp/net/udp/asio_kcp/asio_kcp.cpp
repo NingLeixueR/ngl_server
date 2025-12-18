@@ -345,7 +345,7 @@ namespace ngl
 	}
 
 	// ## 通过kcp发送pack
-	bool asio_kcp::sendpack(i32_sessionid asessionid, const std::shared_ptr<pack>& apack)
+	bool asio_kcp::send_server(i32_sessionid asessionid, const std::shared_ptr<pack>& apack)
 	{
 		ptr_se lpstruct = m_session.find(asessionid);
 		if (lpstruct == nullptr)
@@ -357,7 +357,7 @@ namespace ngl
 		return true;
 	}
 
-	bool asio_kcp::sendpack(const std::shared_ptr<pack>& apack)
+	bool asio_kcp::send_server(const std::shared_ptr<pack>& apack)
 	{
 		m_session.foreach([this, &apack](ptr_se& aptr)
 			{
@@ -376,7 +376,7 @@ namespace ngl
 	}
 
 	// ## 通过kcp发送pack
-	bool asio_kcp::sendpack(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack)
+	bool asio_kcp::send_server(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack)
 	{
 		send(aendpoint, apack->m_buff, apack->m_len);
 		return true;

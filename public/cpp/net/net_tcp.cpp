@@ -89,12 +89,12 @@ namespace ngl
 
 	bool net_tcp::net_send(i32_sessionid asession, std::shared_ptr<pack>& lpack)
 	{
-		return m_server->sendpack(asession, lpack);
+		return m_server->send_server(asession, lpack);
 	}
 
 	bool net_tcp::net_send(i32_sessionid asession, std::shared_ptr<void>& lpack)
 	{
-		return m_server->sendpack(asession, lpack);
+		return m_server->send_server(asession, lpack);
 	}
 
 	bool net_tcp::exist_session(i32_sessionid asession)

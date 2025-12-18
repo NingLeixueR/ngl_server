@@ -97,8 +97,8 @@ namespace ngl
 		);
 
 		// # 发送pack
-		bool sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
-		bool sendpack(i32_sessionid asessionid, std::shared_ptr<void>& apack);
+		bool send_server(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
+		bool send_server(i32_sessionid asessionid, std::shared_ptr<void>& apack);
 
 		// # 关闭连接(会通知逻辑层)
 		void close(i32_sessionid sessionid);

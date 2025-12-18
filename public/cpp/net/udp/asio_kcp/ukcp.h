@@ -40,7 +40,7 @@ namespace ngl
 		{
 			std::shared_ptr<pack> lpack;
 			lpack = net_pack<T>::npack(&m_pool, adata, 0, 0);
-			return sendpack(aactors, lpack);
+			return send_server(aactors, lpack);
 		}
 
 		template <typename T>
@@ -50,9 +50,9 @@ namespace ngl
 			return send(lactors, adata);
 		}
 
-		bool sendpack(std::shared_ptr<pack>& apack)
+		bool send_server(std::shared_ptr<pack>& apack)
 		{
-			return m_kcp.sendpack(apack);
+			return m_kcp.send_server(apack);
 		}
 
 		bool sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack)
@@ -60,7 +60,7 @@ namespace ngl
 			return m_kcp.sendpackbyarea(aarea, apack);
 		}
 
-		bool sendpack(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack)
+		bool send_server(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack)
 		{
 			for (i64_actorid lactorcliend : aactors)
 			{
@@ -83,15 +83,15 @@ namespace ngl
 				{
 					pack_head::head_set_actor((int32_t*)apack->m_buff, lactoridserver, lactoridclient);
 				}
-				m_kcp.sendpack(lsession, apack);
+				m_kcp.send_server(lsession, apack);
 			}
 			return true;
 		}
 
-		bool sendpack(i64_actorid aactor, std::shared_ptr<pack>& apack)
+		bool send_server(i64_actorid aactor, std::shared_ptr<pack>& apack)
 		{
 			std::set<i64_actorid> lactors = { aactor };
-			return sendpack(lactors, apack);
+			return send_server(lactors, apack);
 		}
 
 		template <typename T>
@@ -102,7 +102,7 @@ namespace ngl
 			{
 				return false;
 			}
-			return m_kcp.sendpack(aendpoint, lpack);
+			return m_kcp.send_server(aendpoint, lpack);
 		}
 #pragma endregion 
 

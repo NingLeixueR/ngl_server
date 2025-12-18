@@ -203,7 +203,7 @@ namespace ngl
 				{
 					if (m_actor->nscript_using())
 					{
-						actor_base::nscript_data_nsp<T> ltemp(m_data);
+						nscript_data_nsp<T> ltemp(m_data);
 						m_actor->nscript_data_push("nsp", ltemp, true);
 					}
 					m_call.loadfinishfun();
@@ -224,7 +224,7 @@ namespace ngl
 				}
 				if (!ldata.empty())
 				{
-					actor_base::nscript_data_nsp<T> ltemp(m_data);
+					nscript_data_nsp<T> ltemp(m_data);
 					m_actor->nscript_data_push("nsp", ltemp, true);
 				}
 			}

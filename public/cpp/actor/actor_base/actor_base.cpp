@@ -322,7 +322,7 @@ namespace ngl
 		{
 			return false;
 		}
-		return lpukcp->sendpack(aactorid, adata);
+		return lpukcp->send_server(aactorid, adata);
 	}
 
 	bool actor_base::sendpack_kcp(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
@@ -332,6 +332,6 @@ namespace ngl
 		{
 			return false;
 		}
-		return lpukcp->sendpack(aactorids, adata);
+		return lpukcp->send_server(aactorids, adata);
 	}
 }//namespace ngl

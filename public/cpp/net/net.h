@@ -158,9 +158,9 @@ namespace ngl
 			return true;
 		}
 
-		static bool sendpack(i32_sessionid asession, std::shared_ptr<pack>& apack);
+		static bool send_server(i32_sessionid asession, std::shared_ptr<pack>& apack);
 
-		static bool sendpack(i32_sessionid asession, std::shared_ptr<void>& apack);
+		static bool send_server(i32_sessionid asession, std::shared_ptr<void>& apack);
 
 		static bool sendmsg(i32_sessionid asession, const std::string& amsg);
 
@@ -203,20 +203,20 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool actor_base::sendpack_server(i32_serverid aserverid, std::shared_ptr<pack>& apack)
+	bool actor_base::send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
 		i32_session lsession = server_session::sessionid(aserverid);
 		if (lsession == -1)
 		{
 			return false;
 		}
-		return nets::sendpack(lsession, apack);
+		return nets::send_server(lsession, apack);
 	}
 
 	template <typename T>
-	bool actor_base::sendpack_session(i32_sessionid asession, std::shared_ptr<pack>& apack)
+	bool actor_base::send(i32_sessionid asession, std::shared_ptr<pack>& apack)
 	{
-		return nets::sendpack(asession, apack);
+		return nets::send_server(asession, apack);
 	}
 
 	template <typename T>
