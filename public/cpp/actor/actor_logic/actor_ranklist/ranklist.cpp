@@ -140,7 +140,8 @@ namespace ngl
 	void ranklist::sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t aactivityid, int32_t apage)
 	{
 		pbnet::PROBUFF_NET_RANKLIST_RESPONSE pro;
-		if (!get_ranklist(aroleid, atype, apage, pro))
+		i64_actorid lbriefroleid = nguid::make_type(aroleid, ACTOR_BRIEF);
+		if (!get_ranklist(lbriefroleid, atype, apage, pro))
 		{
 			return;
 		}
