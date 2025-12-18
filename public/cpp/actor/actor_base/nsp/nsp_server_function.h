@@ -178,6 +178,8 @@ namespace ngl
 		{
 			if (recv->m_all)
 			{
+				care_data& lcare = m_care[lactorid];
+				lcare.init(true);
 				m_nodereadalls.insert(lactorid);
 			}
 			else
@@ -190,6 +192,8 @@ namespace ngl
 		{
 			if (recv->m_all)
 			{
+				care_data& lcare = m_care[lactorid];
+				lcare.init(false);
 				m_nodereadalls.insert(lactorid);
 			}
 			else
@@ -225,12 +229,13 @@ namespace ngl
 		const np_channel_data<T>* recv = adata.get_data();
 		i64_actorid lactorid = recv->m_actorid;
 
+		nsp_handle_print<TDerived>::print("nsp_server", m_dbmodule->nactor(), recv);
 		if (!m_care.contains(lactorid))
 		{
 			tools::no_core_dump();
 			return;
 		}
-		care_data lcare = m_care[lactorid];
+		care_data& lcare = m_care[lactorid];
 
 		i16_actortype ltype = nguid::type(lactorid);
 		for (const auto& [ _dataid, _data] : recv->m_data)

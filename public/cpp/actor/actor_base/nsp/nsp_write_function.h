@@ -312,7 +312,7 @@ namespace ngl
 	void nsp_write<TDerived, TACTOR, T>::handle(TDerived* aactor, const message<np_channel_data<T>>& adata)
 	{
 		const np_channel_data<T>* recv = adata.get_data();
-		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
+		//nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;
 		i16_actortype ltypesource = nguid::type(recv->m_actorid);
