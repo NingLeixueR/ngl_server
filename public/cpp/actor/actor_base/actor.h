@@ -76,7 +76,6 @@ namespace ngl
 		int32_t								m_timeout = 0;					// 超时:(当actor处理消息超过此时间)
 		bool								m_release = false;				// 释放将忽略权重和超时
 		nrfunbase*							m_actorfun = nullptr;			// 注册可处理函数
-
 	public:
 		template <typename TDerived>
 		void init_rfun()
@@ -140,7 +139,7 @@ namespace ngl
 
 		template <typename TDerived, ENUM_ACTOR ACTOR>
 		using register_secondary_forward_c2g = template_arg<c2g_secondary_forward_handle<TDerived, ACTOR>>;
-	public:
+
 		explicit actor(const actorparm& aparm);
 
 		// # 获取actor的状态
@@ -151,7 +150,7 @@ namespace ngl
 
 		// # 等待ready
 		void wait_ready(const nguid& aguid)const;
-	private:
+
 		// # 释放actor消息列表
 		void release() final;
 
@@ -165,7 +164,7 @@ namespace ngl
 		void actor_handle(i32_threadid athreadid) final;
 
 		bool ahandle(i32_threadid athreadid, handle_pram& aparm);
-	public:
+
 #pragma region ActorBroadcast
 		// ############# [广播] ############# 
 		// # 间隔一段时间发起的广播
