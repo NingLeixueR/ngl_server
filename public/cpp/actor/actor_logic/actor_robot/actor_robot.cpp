@@ -77,17 +77,24 @@ namespace ngl
 	{
 		int16_t lservertid = 0;
 		int16_t ltcount = 0;
-		if (akcpenum == pbnet::ENUM_KCP::KCP_GATEWAY)
+		i64_actorid lactorid = nguid::make();
+		switch (akcpenum)
+		{
+		case pbnet::ENUM_KCP::KCP_GATEWAY:
 		{
 			lservertid = nnodeid::tid(m_robot->m_gatewayid);
 			ltcount = nnodeid::tcount(m_robot->m_gatewayid);
 		}
-		else if (akcpenum == pbnet::ENUM_KCP::KCP_ROLE)
+		break;
+		case pbnet::ENUM_KCP::KCP_ROLE:
 		{
 			lservertid = nnodeid::tid(m_robot->m_gameid);
 			ltcount = nnodeid::tcount(m_robot->m_gameid);
+			lactorid = nguid::make_type(id_guid(), ACTOR_ROLE);
 		}
-		std::string lcmd = std::format("kcp {} {} {} {}", (int32_t)akcpenum, lservertid, ltcount, (int64_t)nguid::make());
+		break;
+		}
+		std::string lcmd = std::format("kcp {} {} {} {}", (int32_t)akcpenum, lservertid, ltcount, lactorid);
 		std::vector<std::string> lvec;
 		if (!ngl::tools::splite(lcmd.c_str(), " ", lvec))
 		{
