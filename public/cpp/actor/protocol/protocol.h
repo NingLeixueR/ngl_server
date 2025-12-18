@@ -205,8 +205,7 @@ namespace ngl
 		// # 群发消息(解析剥离np_mass_actor<T> 将T投递到对应actor)
 		template <typename T>
 		static void registry_actor_mass(
-			ENUM_ACTOR atype						/*actor类型*/
-			, int32_t aprotocolnum					/*协议号*/
+			int32_t aprotocolnum					/*协议号*/
 			, const char* aname						/*debug name*/
 		)
 		{
@@ -223,7 +222,7 @@ namespace ngl
 					}Catch
 					return nullptr;
 				};
-			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
+			fun_run lrunfun = [](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 				{
 					std::shared_ptr<np_mass_actor<T>> ldatapack = std::static_pointer_cast<np_mass_actor<T>>(aptrpram);
 					std::set<i64_actorid>& lactorids = ldatapack->m_actorids;
@@ -235,7 +234,7 @@ namespace ngl
 					actor_manage::instance().push_task_id(lactorids, lpram);
 					return true;
 				};
-			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
+			register_protocol(aprotocolnum, (ENUM_ACTOR)nguid::none_type(), lpackfun, lrunfun, aname);
 		}
 
 		// # 处理telnet命令

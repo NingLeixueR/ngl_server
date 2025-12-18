@@ -160,7 +160,7 @@ namespace ngl
 	{
 		const np_channel_data<T>* recv = adata.get_data();
 
-		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
+		//nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;
 		i16_actortype ltypesource = nguid::type(recv->m_actorid);

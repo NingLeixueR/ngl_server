@@ -327,7 +327,7 @@ namespace ngl
 	{
 	public:
 		template <typename TRECV>
-		static void print(const char* aname, TDerived* aactor, const TRECV* arecv)
+		static void print(const char* aname, const TDerived* aactor, const TRECV* arecv)
 		{
 			TRECV* lrecv = (TRECV*)arecv;
 			std::string lcustomstr;
