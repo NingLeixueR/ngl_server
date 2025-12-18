@@ -43,8 +43,6 @@ namespace ngl
 		}
 	}
 
-	actor::~actor(){}
-
 	void actor::release()
 	{
 		monopoly_shared_lock(m_mutex);

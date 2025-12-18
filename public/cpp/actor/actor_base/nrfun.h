@@ -148,4 +148,47 @@ namespace ngl
 		template <typename T>
 		nrfun& rfun_g2c(const Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>> afun);		
 	};
+
+	// # 注册actor成员handle函数
+	template <typename TDerived>
+	struct register_actor_handle
+	{
+		template <typename T>
+		static void func(int32_t aready/*nready::enum_ready*/)
+		{
+			nrfun<TDerived>::instance().template rfun<TDerived, T>((Tfun<TDerived, T>) & TDerived::handle, aready);
+		}
+	};
+
+	//# gateway注册接收转发协议处理协议
+	template <typename TDerived>
+	struct c2g_forward_handle
+	{
+		template <typename T>
+		static void func()
+		{
+			nrfun<TDerived>::instance().template rfun_c2g<T>((Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>>) & TDerived::handle);
+		}
+	};
+
+	template <typename TDerived>
+	struct g2c_forward_handle
+	{
+		template <typename T>
+		static void func()
+		{
+			nrfun<TDerived>::instance().template rfun_g2c<T>((Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>>) & TDerived::handle);
+		}
+	};
+
+	// # 二次转发
+	template <typename TDerived, ENUM_ACTOR ACTOR>
+	struct c2g_secondary_forward_handle
+	{
+		template <typename T>
+		static void func()
+		{
+			nrfun<TDerived>::instance().template rfun<TDerived, T>((Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>, e_ready_all);
+		}
+	};
 }//namespace ngl
