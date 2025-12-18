@@ -37,6 +37,14 @@ namespace ngl
 	template <typename T>
 	const T* null = (T*)nullptr;
 
+	//# 注册 脚本处理协议
+	template <typename TDerived>
+	struct cregister_actor_handle
+	{
+		template <typename T>
+		static void func(int32_t aready/*enum_ready*/);
+	};
+
 	class actor : 
 		public actor_base
 	{
@@ -69,18 +77,11 @@ namespace ngl
 		bool								m_release = false;				// 释放将忽略权重和超时
 		nrfunbase*							m_actorfun = nullptr;			// 注册可处理函数
 
-#pragma region register // 消息注册接口
-		template <typename TDerived>
-		static nrfun<TDerived>& ninst()
-		{
-			return nrfun<TDerived>::instance();
-		}
-
 	public:
 		template <typename TDerived>
 		void init_rfun()
 		{
-			m_actorfun = &ninst<TDerived>();
+			m_actorfun = &nrfun<TDerived>::instance();
 			if (isbroadcast())
 			{
 				// # 注册广播处理函数
@@ -94,23 +95,21 @@ namespace ngl
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, np_timerparm> afun = &TDerived::timer_handle)
 		{
-			ninst<TDerived>().template rfun_nonet<TDerived, np_timerparm>(afun, e_ready_all);
+			nrfun<TDerived>::instance().template rfun_nonet<TDerived, np_timerparm>(afun, e_ready_all);
 		}
-
-#pragma region register_actor
 
 		// # 用来注册匿名函数挂载在对应actor上
 		template <typename TDerived, typename T>
 		static void register_actor_s(const std::function<void(TDerived*, message<T>&)>& afun, int32_t aready/*nready::enum_ready*/)
 		{
-			ninst<TDerived>().template rfun<TDerived, T>(afun, aready);
+			nrfun<TDerived>::instance().template rfun<TDerived, T>(afun, aready);
 		}
 
 		// # 注册actor成员函数(可以是非handle)
 		template <typename TDerived, typename T>
 		static void register_actor(int32_t aready/*nready::enum_ready*/, T afun)
 		{
-			ninst<TDerived>().template rfun<TDerived, T>(afun, aready);
+			nrfun<TDerived>::instance().template rfun<TDerived, T>(afun, aready);
 		}
 
 		template <typename TDerived, typename T, typename ...ARG>
@@ -119,90 +118,30 @@ namespace ngl
 			register_actor<TDerived, T>(aready, afun);
 			register_actor<TDerived, ARG...>(aready, argfun...);
 		}
-	private:
-		// # 注册actor成员handle函数
-		template <typename TDerived>
-		struct register_actor_handle
-		{
-			template <typename T>
-			static void func(int32_t aready/*nready::enum_ready*/)
-			{
-				ninst<TDerived>().template rfun<TDerived, T>((Tfun<TDerived, T>) & TDerived::handle, aready);
-			}
-		};
-	public:
-		template <typename TDerived>
-		using register_handle = template_arg<actor::register_actor_handle<TDerived>, int32_t>;
-		
-#pragma endregion 
 
-		//# 注册 脚本处理协议
-		template <typename TDerived>
-		struct cregister_actor_handle
-		{
-			template <typename T>
-			static void func(int32_t aready/*enum_ready*/)
-			{
-				ninst<TDerived>().template rfun<actor, T>((Tfun<actor, T>) & actor::handle_script<T>, aready);
-			}
-		};
-		
-		template <typename TDerived>
-		using register_script_handle = template_arg<actor::cregister_actor_handle<TDerived>, int32_t>;
-
-#pragma region register_actornonet
 		//# 与register_actor类似 只不过不注册网络层
 		template <typename TDerived, typename T>
 		static void register_actornonet(enum_ready aready, const Tfun<TDerived, T> afun)
 		{
-			ninst<TDerived>().template rfun_nonet<TDerived, T>(afun, aready);
+			nrfun<TDerived>::instance().template rfun_nonet<TDerived, T>(afun, aready);
 		}
-#pragma endregion 
-	public:
-#pragma region 	register_gateway
-		//# gateway注册接收转发协议处理协议
+
 		template <typename TDerived>
-		struct c2g_forward_handle
-		{
-			template <typename T>
-			static void func()
-			{
-				ninst<TDerived>().template rfun_c2g<T>((Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>>)&TDerived::handle);
-			}
-		};
+		using register_handle = template_arg<register_actor_handle<TDerived>, int32_t>;
+		
+		template <typename TDerived>
+		using register_script_handle = template_arg<cregister_actor_handle<TDerived>, int32_t>;
+
 		template <typename TDerived>
 		using register_forward_c2g = template_arg<c2g_forward_handle<TDerived>>;
 		
 		template <typename TDerived>
-		struct g2c_forward_handle
-		{
-			template <typename T>
-			static void func()
-			{
-				ninst<TDerived>().template rfun_g2c<T>((Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>>) & TDerived::handle);
-			}
-		};
-		template <typename TDerived>
 		using register_forward_g2c = template_arg<g2c_forward_handle<TDerived>>;
-#pragma endregion 
 
-		// # 二次转发
-		template <typename TDerived, ENUM_ACTOR ACTOR>
-		struct c2g_secondary_forward_handle
-		{
-			template <typename T>
-			static void func()
-			{
-				ninst<TDerived>().template rfun<TDerived, T>((Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>, e_ready_all);
-			}
-		};
 		template <typename TDerived, ENUM_ACTOR ACTOR>
 		using register_secondary_forward_c2g = template_arg<c2g_secondary_forward_handle<TDerived, ACTOR>>;
-#pragma endregion 
 	public:
 		explicit actor(const actorparm& aparm);
-
-		virtual ~actor();
 
 		// # 获取actor的状态
 		actor_stat get_activity_stat() final;
@@ -260,4 +199,11 @@ namespace ngl
 			return nguid::make(atype, nconfig::area(), atabid);
 		}
 	};
+
+	template <typename TDerived>
+	template <typename T>
+	void cregister_actor_handle<TDerived>::func(int32_t aready/*enum_ready*/)
+	{
+		nrfun<TDerived>::instance().template rfun<actor, T>((Tfun<actor, T>) & actor::handle_script<T>, aready);
+	}
 }//namespace ngl
