@@ -193,13 +193,13 @@ namespace ngl
 	template <typename T>
 	bool actor_base::send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		return nets::send_server<i32_serverid>(aserverid, adata, aactorid, arequestactorid);
+		return nets::send_server(aserverid, adata, aactorid, arequestactorid);
 	}
 
 	template <typename T>
 	bool actor_base::send_server(const std::set<i32_serverid>& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		return nets::send_server<std::set<i32_serverid>>(aserverids, adata, aactorid, arequestactorid);
+		return nets::send_server(aserverids, adata, aactorid, arequestactorid);
 	}
 
 	template <typename T>
