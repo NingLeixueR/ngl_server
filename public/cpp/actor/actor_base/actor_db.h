@@ -94,21 +94,21 @@ namespace ngl
 			pro.m_id = nguid::make();
 			pro.m_over = false;
 			pro.m_stat = enum_dbstat_success;
-			ngl::db_data<TDBTAB>::foreach_index(
-				[lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
+			ngl::db_data<TDBTAB>::foreach_index([lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
 				{
 					nguid lguid(atab.mid());
 					pro.m_data.insert(std::make_pair(lguid, atab));
 					if (aindex % lsendmaxcount == 0)
 					{
-						nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
+						nets::send(apack->m_id, pro, lrequestactor, nguid::make());
 						pro = np_actordb_load_response<TDBTAB_TYPE, TDBTAB>();
 						pro.m_stat = enum_dbstat_success;
 						pro.m_over = false;
 					}
-				});
+				}
+			);
 			pro.m_over = true;
-			nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
+			nets::send(apack->m_id, pro, lrequestactor, nguid::make());
 			log_info()->print("loadall[{}]", tools::type_name<TDBTAB>());
 		}
 
@@ -166,7 +166,7 @@ namespace ngl
 				}
 
 				i64_actorid lrequestactor = apack->m_head.get_request_actor();
-				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
+				nets::send(apack->m_id, pro, lrequestactor, nguid::make());
 
 				log_error()->print("load finish {}:{}", tools::type_name<np_actordb_load<TDBTAB_TYPE, TDBTAB>>(), nguid(lrequestactor));
 			}

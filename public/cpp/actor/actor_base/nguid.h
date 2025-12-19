@@ -189,7 +189,7 @@ namespace ngl
 			return lguid.area();
 		}
 
-		//# sendmore 发送给同类型的所有actor
+		//# send 发送给同类型的所有actor
 		static i64_actorid moreactor(ENUM_ACTOR atype)
 		{
 			return make(atype, none_area(), none_actordataid());

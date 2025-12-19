@@ -177,7 +177,7 @@ namespace ngl
 		node_pack& item = *alist->begin();
 		if (tcp != nullptr)
 		{
-			if (item.ispack())
+			if (item.is_pack())
 			{//pack
 				std::shared_ptr<pack>& lpack = item.get_pack();
 				int32_t lsize = 0;

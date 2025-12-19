@@ -64,8 +64,8 @@ namespace ngl
 		virtual void close_net(i32_sessionid asession) = 0;
 
 		// # 发送消息
-		virtual bool net_send(i32_sessionid asession, std::shared_ptr<pack>& lpack) = 0;
-		virtual bool net_send(i32_sessionid asession, std::shared_ptr<void>& lpack) = 0;
+		virtual bool send_pack(i32_sessionid asession, std::shared_ptr<pack>& lpack) = 0;
+		virtual bool send_pack(i32_sessionid asession, std::shared_ptr<void>& lpack) = 0;
 
 		// # 服务器是否存在此session id
 		virtual bool exist_session(i32_sessionid asession) = 0;
@@ -76,12 +76,8 @@ namespace ngl
 		// # 获取监听端口号
 		i16_port port()const;
 
-		// # 发送pack
-		bool send_server(i32_sessionid asession, std::shared_ptr<pack>& apack);
-		bool send_server(i32_sessionid asession, std::shared_ptr<void>& apack);
-
 		// # 向某个服务器发送pack
-		bool sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
+		bool send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
 		// # 设置断线重连
 		virtual void set_close(int asession, const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun) = 0;
@@ -104,7 +100,7 @@ namespace ngl
 			{
 				return false;
 			}
-			if (send_server(asession, lpack) == false)
+			if (send_pack(asession, lpack) == false)
 			{
 				return false;
 			}
@@ -126,9 +122,9 @@ namespace ngl
 		// # 给一组sesion发送消息
 		// # key: session values:aactorid
 		// # std::map<uint32_t, uint32_t>& asession
-		void set_more(i32_sessionid asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack);
-		bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack);
-		bool sendmore(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack);
+		void mores(i32_sessionid asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack);
+		bool send(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack);
+		bool send(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack);
 
 		// # 向客户端发送消息
 		template <typename T>

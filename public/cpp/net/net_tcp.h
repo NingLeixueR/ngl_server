@@ -46,10 +46,10 @@ namespace ngl
 		virtual void set_close(int asession, const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun);
 
 		// # 发送消息
-		virtual bool net_send(i32_sessionid asession, std::shared_ptr<pack>& lpack);
+		virtual bool send_pack(i32_sessionid asession, std::shared_ptr<pack>& lpack);
 
 		// # 发送消息
-		virtual bool net_send(i32_sessionid asession, std::shared_ptr<void>& lpack);	
+		virtual bool send_pack(i32_sessionid asession, std::shared_ptr<void>& lpack);	
 
 		// # 查询session是否存在
 		virtual bool exist_session(i32_sessionid asession);

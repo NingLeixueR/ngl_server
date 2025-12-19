@@ -98,7 +98,7 @@ namespace ngl
 					lmap.insert(std::make_pair(info->m_socket, lactorid));
 				}
 			}
-			nets::sendmore<forward, T>(lmap, aparm->m_data.m_data, apack->m_head.get_request_actor());
+			nets::send<forward, T>(lmap, aparm->m_data.m_data, apack->m_head.get_request_actor());
 			return true;
 		}
 

@@ -119,7 +119,7 @@ namespace ngl
 			}
 			return true;
 		});
-		nets::sendbysession(adata.get_data()->m_session, lpram, lactorserve, lactorid);
+		nets::send(adata.get_data()->m_session, lpram, lactorserve, lactorid);
 		return true;
 	}
 
@@ -175,7 +175,7 @@ namespace ngl
 					set_node(aserverid, asession);
 					np_actorclient_node_connect pro;
 					pro.m_id = nconfig::m_nodeid;
-					nets::sendbysession(asession, pro, nguid::moreactor(), id_guid());
+					nets::send(asession, pro, nguid::moreactor(), id_guid());
 				}, false, true);
 		}
 	}
@@ -218,7 +218,7 @@ namespace ngl
 				lpro.m_add.push_back(item.first);
 			}
 		}
-		nets::sendbysession(asession, lpro, nguid::moreactor(), aclient->id_guid());
+		nets::send(asession, lpro, nguid::moreactor(), aclient->id_guid());
 	}
 
 	bool actor_client::handle(const message<np_actorclient_node_connect>& adata)
@@ -250,7 +250,7 @@ namespace ngl
 		{
 			np_actorclient_node_connect pro;
 			pro.m_id = nconfig::m_nodeid;
-			nets::sendbysession(lpack->m_id, pro, nguid::moreactor(), id_guid());
+			nets::send(lpack->m_id, pro, nguid::moreactor(), id_guid());
 		}
 
 		set_connect_fnish(lparm->m_id);
