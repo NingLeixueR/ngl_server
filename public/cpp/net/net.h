@@ -175,13 +175,13 @@ namespace ngl
 	template <typename T>
 	bool handle_pram_send<T>::send_server(i32_serverid aserverid, const handle_pram& adata)
 	{
-		return nets::send_server(aserverid, *(T*)adata.m_data.get(), adata.m_actor, adata.m_requestactor);
+		return nets::send_server<T>(aserverid, *(T*)adata.m_data.get(), adata.m_actor, adata.m_requestactor);
 	}
 
 	template <typename T>
 	bool handle_pram_send<T>::send_server(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const T& adata)
 	{
-		return nets::send_server(aserverid, adata, aactorid, arequestactorid);
+		return nets::send_server<T>(aserverid, adata, aactorid, arequestactorid);
 	}
 
 	template <typename T>
@@ -193,13 +193,13 @@ namespace ngl
 	template <typename T>
 	bool actor_base::send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		return nets::send_server(aserverid, adata, aactorid, arequestactorid);
+		return nets::send_server<T>(aserverid, adata, aactorid, arequestactorid);
 	}
 
 	template <typename T>
 	bool actor_base::send_server(const std::set<i32_serverid>& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		return nets::send_server(aserverids, adata, aactorid, arequestactorid);
+		return nets::send_server<T>(aserverids, adata, aactorid, arequestactorid);
 	}
 
 	template <typename T>
