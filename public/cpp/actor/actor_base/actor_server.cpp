@@ -97,8 +97,7 @@ namespace ngl
 		nets::sendbysession(apack->m_id, lpram, nguid::moreactor(), id_guid());
 
 		std::map<i32_serverid, np_actornode_update> lmapprotocol;
-		naddress::ergodic([aserverid, &lmapprotocol](
-			const std::map<nguid, i32_serverid>& amap, const std::map<i32_serverid, actor_node_session>&)
+		naddress::ergodic([aserverid, &lmapprotocol](const std::map<nguid, i32_serverid>& amap, const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>& arolegateway)
 			{
 				for (const std::pair<const nguid, i32_serverid>& ipair : amap)
 				{
@@ -111,6 +110,10 @@ namespace ngl
 					np_actornode_update& pro = lmapprotocol[lserverid];
 					pro.m_id = lserverid;
 					pro.m_add.push_back(lguid.id());
+					if (pro.m_rolegateway.empty())
+					{
+						pro.m_rolegateway = arolegateway;
+					}
 				}
 				return true;
 			});

@@ -112,8 +112,7 @@ namespace ngl
 			}
 		};
 		actor_manage::instance().get_type(lpram.m_node.m_actortype);
-		naddress::ergodic(
-			[&lpram](const std::map<nguid, i32_serverid>& aactorserver, const std::map<i32_serverid, actor_node_session>&)
+		naddress::ergodic([&lpram](const std::map<nguid, i32_serverid>& aactorserver, const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&)
 			{
 				for (const std::pair<const nguid, i32_serverid>& item : aactorserver)
 				{
@@ -207,6 +206,7 @@ namespace ngl
 				activ_connect(node.m_serverid);
 			}
 		}
+
 		return true;
 	}
 
@@ -278,6 +278,10 @@ namespace ngl
 		auto lparm = adata.get_data();
 		naddress::add_actor_address(lparm->m_id, lparm->m_add);
 		naddress::del_actor_address(lparm->m_del);
+		for (const auto& lpair : lparm->m_rolegateway)
+		{
+			naddress::add_gatewayid(lpair.first, lpair.second);
+		}		
 		return true;
 	}
 	
