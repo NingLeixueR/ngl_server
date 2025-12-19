@@ -324,7 +324,7 @@ namespace ngl
 			return m_id > r.m_id;
 		}
 
-		def_portocol_function(nguid, m_id)
+		dprotocol(nguid, m_id)
 	};
 }//namespace ngl
 

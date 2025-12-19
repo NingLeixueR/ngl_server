@@ -40,7 +40,7 @@ namespace ngl
 		//# [ACTOR_ID] -> [GATEWAY_SERVER_ID]
 		using map_rolegateway		= std::map<nguid, i32_serverid>;
 		//# [ergodic]回调
-		using ergodic_callbackfun	= std::function<bool(const map_guidserver&, const map_servernode&)>;
+		using ergodic_callbackfun	= std::function<bool(const map_guidserver&, const map_servernode&, const map_rolegateway&)>;
 		//# [foreach]回调
 		using foreach_callbackfun	= std::function<bool(const actor_node_session&)>;
 

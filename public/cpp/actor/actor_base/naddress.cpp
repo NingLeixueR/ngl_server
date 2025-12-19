@@ -164,7 +164,7 @@ namespace ngl
 
 	void naddress::ergodic(const ergodic_callbackfun& afun)
 	{
-		afun(m_actorserver, m_session);
+		afun(m_actorserver, m_session, m_rolegateway);
 	}
 
 	naddress::map_guidserver& naddress::get_actorserver_map()
