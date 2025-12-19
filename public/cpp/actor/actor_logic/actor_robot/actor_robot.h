@@ -74,10 +74,8 @@ namespace ngl
 		void print(int arounds)
 		{
 			std::cout << std::format("rounds:{} m_count:{} m_maxcount:{} beg:{} end:{} space:{}\n", 
-				arounds, m_rounds[arounds]->m_count.load(), 
-				m_rounds[arounds]->m_maxcount, 
-				m_rounds[arounds]->m_beg, m_rounds[arounds]->m_end, 
-				m_rounds[arounds]->m_end - m_rounds[arounds]->m_beg
+				arounds, m_rounds[arounds]->m_count.load(), m_rounds[arounds]->m_maxcount, 
+				m_rounds[arounds]->m_beg, m_rounds[arounds]->m_end, m_rounds[arounds]->m_end - m_rounds[arounds]->m_beg
 			);
 		}
 
