@@ -99,7 +99,7 @@ namespace ngl
 		pro.set_mactoridserver(lpram->m_actoridserver);
 		pro.set_mactoridclient(lpram->m_actoridclient);
 		
-		nets::sendbysession(lpram->m_sessionid, pro, lpram->m_actoridclient, nguid::make());
+		nets::send(lpram->m_sessionid, pro, lpram->m_actoridclient, nguid::make());
 		return true;
 	}
 

@@ -70,7 +70,7 @@ namespace ngl
 			{
 				np_actornode_register_response pro;
 				pro.m_vec.push_back(anode);
-				nets::sendmore(lsessionvec, pro, nguid::moreactor(), id_guid());
+				nets::send(lsessionvec, pro, nguid::moreactor(), id_guid());
 			}
 			{
 				np_actornode_update pro
@@ -78,7 +78,7 @@ namespace ngl
 					.m_id = aserverid,
 					.m_add = aadd,
 				};
-				nets::sendmore(lsessionvec, pro, nguid::moreactor(), id_guid());
+				nets::send(lsessionvec, pro, nguid::moreactor(), id_guid());
 			}			
 		}
 	}
@@ -94,7 +94,7 @@ namespace ngl
 				}
 				return true;
 			});
-		nets::sendbysession(apack->m_id, lpram, nguid::moreactor(), id_guid());
+		nets::send(apack->m_id, lpram, nguid::moreactor(), id_guid());
 
 		std::map<i32_serverid, np_actornode_update> lmapprotocol;
 		naddress::ergodic([aserverid, &lmapprotocol](const naddress::map_guidserver& amap, const naddress::map_servernode&, const naddress::map_rolegateway& arolegateway)
@@ -119,7 +119,7 @@ namespace ngl
 			});
 		for (const auto& [_, pro]: lmapprotocol)
 		{
-			nets::sendbysession(apack->m_id, pro, nguid::moreactor(), id_guid());
+			nets::send(apack->m_id, pro, nguid::moreactor(), id_guid());
 		}
 	}
 
@@ -164,7 +164,7 @@ namespace ngl
 		);
 		if (!lsession.empty())
 		{
-			nets::sendmore(lsession, lrecv->m_data, nguid::moreactor(), id_guid());
+			nets::send(lsession, lrecv->m_data, nguid::moreactor(), id_guid());
 		}
 		return true;
 	}
@@ -220,7 +220,7 @@ namespace ngl
 		);
 		if (!lsessionvec.empty())
 		{
-			nets::sendmore(lsessionvec, *lrecv, nguid::moreactor(), id_guid());
+			nets::send(lsessionvec, *lrecv, nguid::moreactor(), id_guid());
 		}
 		return true;
 	}

@@ -232,7 +232,7 @@ namespace ngl
 				pro.set_mactoridclient(lprobot->m_robot->id_guid());
 				pro.set_mactoridserver(aseractorid);
 				pro.set_m_kcpnum(akcpenum);
-				nets::sendbysession(lprobot->m_session, pro, nguid::moreactor(), lprobot->m_robot->id_guid());
+				nets::send(lprobot->m_session, pro, nguid::moreactor(), lprobot->m_robot->id_guid());
 			});
 		return true;
 	}

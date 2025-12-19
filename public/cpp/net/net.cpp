@@ -175,27 +175,27 @@ namespace ngl
 		return true;
 	}
 
-	bool nets::send_server(i32_sessionid asession, std::shared_ptr<pack>& apack)
+	bool nets::send_pack(i32_sessionid asession, std::shared_ptr<pack>& apack)
 	{
 		net_protocol* lpprotocol = net(asession);
 		if (lpprotocol == nullptr)
 		{
 			return false;
 		}
-		return lpprotocol->net_send(asession, apack);
+		return lpprotocol->send_pack(asession, apack);
 	}
 
-	bool nets::send_server(i32_sessionid asession, std::shared_ptr<void>& apack)
+	bool nets::send_pack(i32_sessionid asession, std::shared_ptr<void>& apack)
 	{
 		net_protocol* lpprotocol = net(asession);
 		if (lpprotocol == nullptr)
 		{
 			return false;
 		}
-		return lpprotocol->net_send(asession, apack);
+		return lpprotocol->send_pack(asession, apack);
 	}
 
-	bool nets::sendmsg(i32_sessionid asession, const std::string& amsg)
+	bool nets::send_msg(i32_sessionid asession, const std::string& amsg)
 	{
 		auto lcount = (int)amsg.size();
 		auto lpack = std::make_shared<pack>();
@@ -204,7 +204,7 @@ namespace ngl
 		lpack->m_buff[lcount] = '\0';
 		lpack->m_len = lcount + 1;
 		lpack->m_pos = lcount + 1;
-		return nets::send_server(asession, lpack);
+		return nets::send_pack(asession, lpack);
 	}
 
 	bool nets::ipport(i32_serverid aserverid, std::tuple<ENET_PROTOCOL, str_ip, i16_port>& apair)
@@ -262,7 +262,7 @@ namespace ngl
 		{
 			return false;
 		}
-		return nets::net(lsession)->send_server(lsession, apack);
+		return nets::net(lsession)->send_pack(lsession, apack);
 	}
 
 	bool handle_pram::send_pack(i32_serverid aserverid, std::shared_ptr<void>& apack)
@@ -272,6 +272,6 @@ namespace ngl
 		{
 			return false;
 		}
-		return nets::net(lsession)->send_server(lsession, apack);
+		return nets::net(lsession)->send_pack(lsession, apack);
 	}
 }//namespace ngl

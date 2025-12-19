@@ -42,7 +42,7 @@ namespace ngl
 		~node_pack()
 		{}
 
-		inline bool ispack()
+		inline bool is_pack()
 		{
 			return m_ispack;
 		}

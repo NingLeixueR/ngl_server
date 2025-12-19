@@ -149,12 +149,12 @@ namespace ngl
 				if (telnet_cmd_admin::login(apack->m_id, lvec[1], lvec[2]))
 				{
 					std::string lstr = std::format("{}:登陆成功\n", lvec[1]);
-					nets::sendmsg(apack->m_id, lstr);
+					nets::send_msg(apack->m_id, lstr);
 				}
 				else
 				{
 					std::string lstr = std::format("{}:登陆失败\n", lvec[1]);
-					nets::sendmsg(apack->m_id, lstr);
+					nets::send_msg(apack->m_id, lstr);
 				}
 			}
 			return;
@@ -166,7 +166,7 @@ namespace ngl
 				{
 					int32_t lcount = actor_manage::instance().actor_count();
 					std::string lstr = std::format("actor count:{}\n", lcount);
-					nets::sendmsg(pack->m_id, lstr);
+					nets::send_msg(pack->m_id, lstr);
 				};
 
 			handle_cmd::add("/print_guid") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
@@ -186,7 +186,7 @@ namespace ngl
 							lstr += std::format("\r\n{}==={}", lguid, serverid);
 						}
 					}
-					nets::sendmsg(pack->m_id, lstr);
+					nets::send_msg(pack->m_id, lstr);
 				};
 
 			handle_cmd::add("/sendmail") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
@@ -194,13 +194,13 @@ namespace ngl
 					// 接收邮件列表[邮件地址1:名字1]....[邮件地址n:名字n] 邮件标题 邮件内容
 					if (avec.size() < 4)
 					{
-						nets::sendmsg(pack->m_id, "参数错误");
+						nets::send_msg(pack->m_id, "参数错误");
 						return;
 					}
 					std::vector<std::pair<std::string, std::string>> lmail;
 					if (tools::splite_special(avec[1].c_str(), "\\[", "]", lmail) == false)
 					{
-						nets::sendmsg(pack->m_id, "参数错误");
+						nets::send_msg(pack->m_id, "参数错误");
 						return;
 					}
 					ngl::test_mail(avec[2].c_str(), avec[3].c_str(), lmail);
@@ -210,20 +210,20 @@ namespace ngl
 				{
 					if (avec.size() < 2)
 					{
-						nets::sendmsg(pack->m_id, "参数错误");
+						nets::send_msg(pack->m_id, "参数错误");
 						return;
 					}
 					time_t ltime = tools::lexical_cast<time_t>(avec[1]);
 					if (ngl::localtime::issameweek(ngl::localtime::gettime(), ltime))
 					{
 						std::cout << "同一周" << std::endl;
-						nets::sendmsg(pack->m_id, "同一周");
+						nets::send_msg(pack->m_id, "同一周");
 						return;
 					}
 					else
 					{
 						std::cout << "非同一周" << std::endl;
-						nets::sendmsg(pack->m_id, "非同一周");
+						nets::send_msg(pack->m_id, "非同一周");
 						return;
 					}
 				};
@@ -234,13 +234,13 @@ namespace ngl
 				{
 					if (avec.size() < 2)
 					{
-						nets::sendmsg(pack->m_id, "参数错误");
+						nets::send_msg(pack->m_id, "参数错误");
 						return;
 					}
 					i32_serverid ltid = tools::lexical_cast<i32_serverid>(avec[1]);
 					i32_serverid ltcount = tools::lexical_cast<i32_serverid>(avec[2]);
 					i32_session lsession = server_session::sessionid(nnodeid::nodeid(ltid, ltcount));
-					nets::sendmsg(lsession, "/login libo 123456");
+					nets::send_msg(lsession, "/login libo 123456");
 					wheel_parm lparm
 					{
 						.m_ms = (int32_t)(2000),
@@ -248,7 +248,7 @@ namespace ngl
 						.m_count = 1,
 						.m_fun = [lsession](const wheel_node* anode)
 						{
-							nets::sendmsg(lsession, "/each china");
+							nets::send_msg(lsession, "/each china");
 						}
 					};
 					twheel::wheel().addtimer(lparm);
@@ -258,7 +258,7 @@ namespace ngl
 				{
 					if (avec.size() < 2)
 					{
-						nets::sendmsg(pack->m_id, "参数错误");
+						nets::send_msg(pack->m_id, "参数错误");
 						return;
 					}
 					std::cout << std::format("###{}###",avec[1]) << std::endl;

@@ -69,7 +69,7 @@ namespace ngl
 			{
 				return false;
 			}
-			return sendbysession<Y,T>(lsession, adata, aactorid, arequestactorid);
+			return send<Y,T>(lsession, adata, aactorid, arequestactorid);
 		}
 
 		template <typename Y, typename T = Y>
@@ -86,13 +86,13 @@ namespace ngl
 			}
 			if (!lsessionvec.empty())
 			{
-				return sendmore<Y, T>(lsessionvec, adata, aactorid, arequestactorid);
+				return send<Y, T>(lsessionvec, adata, aactorid, arequestactorid);
 			}
 			return false;
 		}
 
 		template <typename Y, typename T = Y>
-		static bool sendbysession(i32_session asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool send(i32_session asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			net_protocol* lpprotocol = net(asession);
 			if (lpprotocol == nullptr)
@@ -103,7 +103,7 @@ namespace ngl
 		}
 
 		template <typename Y, typename T = Y>
-		static bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, const Y& adata, i64_actorid aactorid)
+		static bool send(const std::map<i32_sessionid, i64_actorid>& asession, const Y& adata, i64_actorid aactorid)
 		{
 			std::map<ENET_PROTOCOL, std::map<i32_sessionid, i64_actorid>> lmap;
 			for (const auto& lpair : asession)
@@ -124,14 +124,14 @@ namespace ngl
 				net_protocol* lpprotocol = ngl::nets::nettype(lpair.first);
 				if (lpprotocol != nullptr)
 				{
-					lpprotocol->sendmore(lpair.second, aactorid, lpack);
+					lpprotocol->send(lpair.second, aactorid, lpack);
 				}
 			}
 			return true;
 		}
 
 		template <typename Y, typename T = Y>
-		static bool sendmore(const std::set<i32_sessionid>& asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool send(const std::set<i32_sessionid>& asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			std::map<ENET_PROTOCOL, std::set<i32_sessionid>> lmap;
 			for (i32_sessionid asession : asession)
@@ -152,17 +152,17 @@ namespace ngl
 				net_protocol* lpprotocol = ngl::nets::nettype(apair.first);
 				if (lpprotocol != nullptr)
 				{
-					lpprotocol->sendmore(apair.second, aactorid, arequestactorid, lpack);
+					lpprotocol->send(apair.second, aactorid, arequestactorid, lpack);
 				}
 			}
 			return true;
 		}
 
-		static bool send_server(i32_sessionid asession, std::shared_ptr<pack>& apack);
+		static bool send_pack(i32_sessionid asession, std::shared_ptr<pack>& apack);
 
-		static bool send_server(i32_sessionid asession, std::shared_ptr<void>& apack);
+		static bool send_pack(i32_sessionid asession, std::shared_ptr<void>& apack);
 
-		static bool sendmsg(i32_sessionid asession, const std::string& amsg);
+		static bool send_msg(i32_sessionid asession, const std::string& amsg);
 
 		static bool ipport(i32_serverid aserverid, std::tuple<ENET_PROTOCOL, str_ip, i16_port>& apair);
 
@@ -187,7 +187,7 @@ namespace ngl
 	template <typename T>
 	bool handle_pram::send(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid)
 	{
-		return nets::sendbysession(asession, adata, aactorid.id(), arequestactorid.id());
+		return nets::send(asession, adata, aactorid.id(), arequestactorid.id());
 	}
 
 	template <typename T>
@@ -228,7 +228,7 @@ namespace ngl
 	template <typename T>
 	bool actor_base::send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		return nets::sendbysession(asession, adata, aactorid, arequestactorid);
+		return nets::send(asession, adata, aactorid, arequestactorid);
 	}
 
 	template <typename T>

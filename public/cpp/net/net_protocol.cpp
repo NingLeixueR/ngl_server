@@ -101,50 +101,40 @@ namespace ngl
 		return m_port;
 	}
 
-	bool net_protocol::send_server(i32_sessionid asession, std::shared_ptr<pack>& apack)
-	{
-		return net_send(asession, apack);
-	}
-
-	bool net_protocol::send_server(i32_sessionid asession, std::shared_ptr<void>& apack)
-	{
-		return net_send(asession, apack);
-	}
-
-	bool net_protocol::sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack)
+	bool net_protocol::send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
 		i32_sessionid lsession = server_session::sessionid(aserverid);
 		if (lsession == -1)
 		{
 			return false;
 		}
-		return net_send(lsession, apack);
+		return send_pack(lsession, apack);
 	}
 
-	void net_protocol::set_more(i32_sessionid asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack)
+	void net_protocol::mores(i32_sessionid asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack)
 	{
 		if (nets::session2type(asession) != (ENET_PROTOCOL)m_protocol)
 		{
 			return;
 		}
 		apack->set_actor(aactorid, arequestactorid);
-		net_send(asession, apack);
+		send_pack(asession, apack);
 	}
 
-	bool net_protocol::sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack)
+	bool net_protocol::send(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack)
 	{
 		for (auto& item : asession)
 		{
-			set_more(item.first, item.second, aactorid, apack);
+			mores(item.first, item.second, aactorid, apack);
 		}
 		return  true;
 	}
 
-	bool net_protocol::sendmore(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack)
+	bool net_protocol::send(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack)
 	{
 		for (i32_sessionid item : asession)
 		{
-			set_more(item, aactorid, arequestactorid, apack);
+			mores(item, aactorid, arequestactorid, apack);
 		}
 		return  true;
 	}

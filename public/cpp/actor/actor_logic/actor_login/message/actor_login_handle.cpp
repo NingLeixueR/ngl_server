@@ -121,7 +121,7 @@ namespace ngl
 			pro.set_maccount(lparm->maccount());
 			pro.set_mgatewayid(lppair_account->m_gatewayserverid);
 			pro.set_mgameid(lppair_account->m_gameserverid);
-			nets::sendbysession(adata.get_pack()->m_id, pro, lpack->m_head.get_request_actor(), id_guid());
+			nets::send(adata.get_pack()->m_id, pro, lpack->m_head.get_request_actor(), id_guid());
 		}
 		
 		return true;
