@@ -72,13 +72,13 @@ namespace ngl
 		bool spack(i32_sessionid asessionid, std::shared_ptr<T>& apack);
 
 		template <typename TPACK>
-		void async_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist, std::shared_ptr<TPACK>& apack, char* abuff, int32_t abufflen);
+		void async_send(service_tcp* atcp, const std::shared_ptr<std::list<node_pack>>& alist, std::shared_ptr<TPACK>& apack, char* abuff, int32_t abufflen);
 
-		void do_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist);
+		void do_send(service_tcp* atcp, const std::shared_ptr<std::list<node_pack>>& alist);
 
-		void handle_write(service_tcp* ap, const std::error_code& error, std::shared_ptr<pack> apack);
+		void handle_write(service_tcp* atcp, const std::error_code& error, std::shared_ptr<pack> apack);
 
-		void handle_write(service_tcp* ap, const std::error_code& error, std::shared_ptr<void> apack);
+		void handle_write(service_tcp* atcp, const std::error_code& error, std::shared_ptr<void> apack);
 
 		void close_socket(asio::ip::tcp::socket& socket);
 
@@ -97,12 +97,12 @@ namespace ngl
 		);
 
 		// # 发送pack
-		bool send_server(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
-		bool send_server(i32_sessionid asessionid, std::shared_ptr<void>& apack);
+		bool send(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
+		bool send(i32_sessionid asessionid, std::shared_ptr<void>& apack);
 
 		// # 关闭连接(会通知逻辑层)
 		void close(i32_sessionid sessionid);
-		void close(service_tcp* ap);
+		void close(service_tcp* atcp);
 
 		// # 关闭连接(不会通知逻辑层)
 		void close_net(i32_sessionid sessionid);
