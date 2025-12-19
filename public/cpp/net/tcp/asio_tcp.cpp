@@ -129,53 +129,53 @@ namespace ngl
 		return true;
 	}
 
-	bool asio_tcp::send_server(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
+	bool asio_tcp::send(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
 	{
 		return spack(asessionid, apack);
 	}
 
-	bool asio_tcp::send_server(i32_sessionid asessionid, std::shared_ptr<void>& apack)
+	bool asio_tcp::send(i32_sessionid asessionid, std::shared_ptr<void>& apack)
 	{
 		return spack(asessionid, apack);
 	}
 
 	template <typename TPACK>
-	void asio_tcp::async_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist, std::shared_ptr<TPACK>& apack, char* abuff, int32_t abufflen)
+	void asio_tcp::async_send(service_tcp* atcp, const std::shared_ptr<std::list<node_pack>>& alist, std::shared_ptr<TPACK>& apack, char* abuff, int32_t abufflen)
 	{
-		tcp->m_socket.async_send(asio::buffer(abuff, abufflen), [this, alist, tcp, apack](const std::error_code& ec, std::size_t /*length*/)
+		atcp->m_socket.async_send(asio::buffer(abuff, abufflen), [this, alist, atcp, apack](const std::error_code& ec, std::size_t /*length*/)
 			{
 				alist->pop_front();
-				handle_write(tcp, ec, apack);
+				handle_write(atcp, ec, apack);
 				if (ec)
 				{
 					log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
 					return;
 				}
-				do_send(tcp, alist);
+				do_send(atcp, alist);
 			}
 		);
 	}
 
-	void asio_tcp::do_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist)
+	void asio_tcp::do_send(service_tcp* atcp, const std::shared_ptr<std::list<node_pack>>& alist)
 	{
 		if (alist->empty())
 		{
 			{
-				monopoly_shared_lock(tcp->m_mutex);
-				if (tcp->m_list.empty() == false)
+				monopoly_shared_lock(atcp->m_mutex);
+				if (atcp->m_list.empty() == false)
 				{
-					tcp->m_list.swap(*alist);
+					atcp->m_list.swap(*alist);
 				}
 				else
 				{
-					tcp->m_issend = false;
+					atcp->m_issend = false;
 					return;
 				}
 			}
 		}
 
 		node_pack& item = *alist->begin();
-		if (tcp != nullptr)
+		if (atcp != nullptr)
 		{
 			if (item.is_pack())
 			{//pack
@@ -196,35 +196,35 @@ namespace ngl
 				{
 					return;
 				}
-				async_send(tcp, alist, lpack, &lpack->m_buff[lpos], lsize);
+				async_send(atcp, alist, lpack, &lpack->m_buff[lpos], lsize);
 			}
 			else
 			{
 				std::shared_ptr<void>& lpack = item.get_voidpack();
 				pack* lpackptr = (pack*)lpack.get();
-				async_send(tcp, alist, lpack, lpackptr->m_buff, lpackptr->m_pos);
+				async_send(atcp, alist, lpack, lpackptr->m_buff, lpackptr->m_pos);
 			}
 		}
 	}
 
-	void asio_tcp::handle_write(service_tcp* ap, const std::error_code& error, std::shared_ptr<pack> apack)
+	void asio_tcp::handle_write(service_tcp* atcp, const std::error_code& error, std::shared_ptr<pack> apack)
 	{
 		if (error)
 		{
 			log_error()->print("asio_tcp::handle_write[{}]", error.message().c_str());
-			close(ap);
+			close(atcp);
 		}
-		m_sendfinishfun(ap->m_sessionid, error ? true : false, apack.get());
+		m_sendfinishfun(atcp->m_sessionid, error ? true : false, apack.get());
 	}
 
-	void asio_tcp::handle_write(service_tcp* ap, const std::error_code& error, std::shared_ptr<void> apack)
+	void asio_tcp::handle_write(service_tcp* atcp, const std::error_code& error, std::shared_ptr<void> apack)
 	{
 		if (error)
 		{
 			log_error()->print("asio_tcp::handle_write[{}]", error.message().c_str());
-			close(ap);
+			close(atcp);
 		}
-		m_sendfinishfun(ap->m_sessionid, error ? true : false, (pack*)apack.get());
+		m_sendfinishfun(atcp->m_sessionid, error ? true : false, (pack*)apack.get());
 	}
 
 	void asio_tcp::close(i32_sessionid sessionid)
@@ -271,10 +271,10 @@ namespace ngl
 		}
 	}
 
-	void asio_tcp::close(service_tcp* ap)
+	void asio_tcp::close(service_tcp* atcp)
 	{
-		close(ap->m_sessionid);
-		close_socket(ap->m_socket);
+		close(atcp->m_sessionid);
+		close_socket(atcp->m_socket);
 	}
 
 	void  asio_tcp::close_socket(asio::ip::tcp::socket& socket)
