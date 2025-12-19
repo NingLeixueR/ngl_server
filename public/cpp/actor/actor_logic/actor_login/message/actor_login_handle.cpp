@@ -109,7 +109,7 @@ namespace ngl
 				.m_socketid		= adata.get_pack()->m_id,
 				.m_request_actor = lpack->m_head.get_request_actor(),
 			};
-			nets::sendbyserver(pro.m_gatewayid, pro, nguid::moreactor(), id_guid());
+			nets::send_server(pro.m_gatewayid, pro, nguid::moreactor(), id_guid());
 		}	
 
 		// # ֪ͨclient

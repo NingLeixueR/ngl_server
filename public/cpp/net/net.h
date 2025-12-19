@@ -62,7 +62,7 @@ namespace ngl
 		static ukcp* serkcp(pbnet::ENUM_KCP aenum, int16_t atcount);
 
 		template <typename Y, typename T = Y>
-		static bool sendbyserver(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool send_server(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			i32_session lsession = server_session::sessionid(aserverid);
 			if (lsession == -1)
@@ -73,7 +73,7 @@ namespace ngl
 		}
 
 		template <typename Y, typename T = Y>
-		static bool sendbyserver(const std::set<i32_serverid>& aserverids, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool send_server(const std::set<i32_serverid>& aserverids, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			std::set<i32_session> lsessionvec;
 			for (i32_serverid iserverid : aserverids)
@@ -173,15 +173,15 @@ namespace ngl
 namespace ngl
 {
 	template <typename T>
-	bool handle_pram_send<T>::sendbyserver(i32_serverid aserverid, const handle_pram& adata)
+	bool handle_pram_send<T>::send_server(i32_serverid aserverid, const handle_pram& adata)
 	{
-		return nets::sendbyserver(aserverid, *(T*)adata.m_data.get(), adata.m_actor, adata.m_requestactor);
+		return nets::send_server(aserverid, *(T*)adata.m_data.get(), adata.m_actor, adata.m_requestactor);
 	}
 
 	template <typename T>
-	bool handle_pram_send<T>::sendbyserver(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const T& adata)
+	bool handle_pram_send<T>::send_server(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const T& adata)
 	{
-		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
+		return nets::send_server(aserverid, adata, aactorid, arequestactorid);
 	}
 
 	template <typename T>
@@ -193,13 +193,13 @@ namespace ngl
 	template <typename T>
 	bool actor_base::send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
+		return nets::send_server(aserverid, adata, aactorid, arequestactorid);
 	}
 
 	template <typename T>
 	bool actor_base::send_server(const std::set<i32_serverid>& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		return nets::sendbyserver(aserverids, adata, aactorid, arequestactorid);
+		return nets::send_server(aserverids, adata, aactorid, arequestactorid);
 	}
 
 	template <typename T>
