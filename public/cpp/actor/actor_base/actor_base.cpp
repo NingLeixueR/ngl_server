@@ -285,9 +285,7 @@ namespace ngl
 			.m_fun = [](const wheel_node*)
 			{
 				auto pro = std::make_shared<np_actor_broadcast>();
-				handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(
-					nguid::make(), nguid::make(), pro
-				);
+				handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(nguid::make(), nguid::make(), pro);
 				actor_manage::instance().broadcast_task(lpram);
 			}
 		};
@@ -316,8 +314,7 @@ namespace ngl
 		{//不允许服务器主动进行kcp连接
 			return false;
 		}
-		nets::kcp(anum)->connect(akcpsession, aactoridserver, id_guid(), aip, aprot, 
-			[this](i32_session asession)
+		nets::kcp(anum)->connect(akcpsession, aactoridserver, id_guid(), aip, aprot, [this](i32_session asession)
 			{
 				log_error()->print("kcp {} m_kcpsession = {}", (nguid)id_guid(), asession);
 			}
