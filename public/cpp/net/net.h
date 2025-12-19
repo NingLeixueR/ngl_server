@@ -185,7 +185,7 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool handle_pram::netsend(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid)
+	bool handle_pram::send(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid)
 	{
 		return nets::sendbysession(asession, adata, aactorid.id(), arequestactorid.id());
 	}

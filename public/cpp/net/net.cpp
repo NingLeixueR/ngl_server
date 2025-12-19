@@ -255,7 +255,7 @@ namespace ngl
 			}, await, areconnection);
 	}
 
-	bool handle_pram::netsendpack(i32_serverid aserverid, std::shared_ptr<pack>& apack)
+	bool handle_pram::send_pack(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
 		i32_session lsession = server_session::sessionid(aserverid);
 		if (lsession == -1)
@@ -265,7 +265,7 @@ namespace ngl
 		return nets::net(lsession)->send_server(lsession, apack);
 	}
 
-	bool handle_pram::netsendpack(i32_serverid aserverid, std::shared_ptr<void>& apack)
+	bool handle_pram::send_pack(i32_serverid aserverid, std::shared_ptr<void>& apack)
 	{
 		i32_session lsession = server_session::sessionid(aserverid);
 		if (lsession == -1)

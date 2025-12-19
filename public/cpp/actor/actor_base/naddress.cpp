@@ -62,7 +62,7 @@ namespace ngl
 	{
 		if (apram.m_forwardfun != nullptr)
 		{
-			apram.m_forwardfun(m_session, m_actorserver, apram);
+			apram.m_forwardfun(apram);
 		}
 		return true;
 	}
