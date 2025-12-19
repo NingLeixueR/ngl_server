@@ -109,17 +109,16 @@ namespace ngl
 		};
 		actor_manage::instance().get_type(lpram.m_node.m_actortype);
 
-		naddress::ergodic([&lpram](const naddress::map_guidserver& aactorserver, const naddress::map_servernode&, const naddress::map_rolegateway&)
+		naddress::ergodic([&lpram](const naddress::map_guidserver& aactorserver, const naddress::map_servernode&, const naddress::map_rolegateway&){
+			for (const auto& item : aactorserver)
 			{
-				for (const auto& item : aactorserver)
+				if (lpram.m_node.m_serverid == item.second)
 				{
-					if (lpram.m_node.m_serverid == item.second)
-					{
-						lpram.m_add.push_back(item.first);
-					}
+					lpram.m_add.push_back(item.first);
 				}
-				return true;
-			});
+			}
+			return true;
+		});
 		nets::sendbysession(adata.get_data()->m_session, lpram, lactorserve, lactorid);
 		return true;
 	}
@@ -136,7 +135,8 @@ namespace ngl
 				pro->m_serverid = aactorserver;
 				pro->m_session = asession;
 				send_actor(id_guid(), id_guid(), pro);
-			}, false, true);
+			}, false, true
+		);
 	}
 
 	void actor_client::actor_server_register()
