@@ -108,9 +108,10 @@ namespace ngl
 			}
 		};
 		actor_manage::instance().get_type(lpram.m_node.m_actortype);
-		naddress::ergodic([&lpram](const std::map<nguid, i32_serverid>& aactorserver, const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&)
+
+		naddress::ergodic([&lpram](const naddress::map_guidserver& aactorserver, const naddress::map_servernode&, const naddress::map_rolegateway&)
 			{
-				for (const std::pair<const nguid, i32_serverid>& item : aactorserver)
+				for (const auto& item : aactorserver)
 				{
 					if (lpram.m_node.m_serverid == item.second)
 					{

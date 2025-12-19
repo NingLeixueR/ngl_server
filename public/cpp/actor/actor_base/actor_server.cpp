@@ -97,9 +97,9 @@ namespace ngl
 		nets::sendbysession(apack->m_id, lpram, nguid::moreactor(), id_guid());
 
 		std::map<i32_serverid, np_actornode_update> lmapprotocol;
-		naddress::ergodic([aserverid, &lmapprotocol](const std::map<nguid, i32_serverid>& amap, const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>& arolegateway)
+		naddress::ergodic([aserverid, &lmapprotocol](const naddress::map_guidserver& amap, const naddress::map_servernode&, const naddress::map_rolegateway& arolegateway)
 			{
-				for (const std::pair<const nguid, i32_serverid>& ipair : amap)
+				for (const auto& ipair : amap)
 				{
 					const nguid& lguid = ipair.first;
 					i32_serverid lserverid = ipair.second;
