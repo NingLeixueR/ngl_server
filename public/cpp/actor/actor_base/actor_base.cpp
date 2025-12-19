@@ -262,6 +262,16 @@ namespace ngl
 		}
 	}
 
+	bool actor_base::send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack)
+	{
+		i32_session lsession = server_session::sessionid(aserverid);
+		if (lsession == -1)
+		{
+			return false;
+		}
+		return nets::send_pack(lsession, apack);
+	}
+
 	void actor_base::start_broadcast()
 	{
 		wheel_parm lparm
