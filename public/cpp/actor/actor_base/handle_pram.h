@@ -41,12 +41,12 @@ namespace ngl
 	template <typename T>
 	struct handle_pram_send
 	{
-		static bool sendbyserver(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const T& adata);
-		static bool sendbyserver(i32_serverid aserverid, const handle_pram& adata);
+		static bool send_server(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const T& adata);
+		static bool send_server(i32_serverid aserverid, const handle_pram& adata);
 
 		static bool send(handle_pram& adata);
 
-		static bool sendclient(handle_pram& adata);
+		static bool send_client(handle_pram& adata);
 	};
 
 	struct handle_pram
@@ -107,7 +107,7 @@ namespace ngl
 		{
 			static auto lfun = [](handle_pram& adata)
 			{
-				handle_pram_send<T>::sendclient(adata);
+				handle_pram_send<T>::send_client(adata);
 			};
 			apram.m_forwardfun = lfun;
 		}
@@ -195,7 +195,7 @@ namespace ngl
 					handle_pram::get_serverlist(lactorid.type(), lset);
 					for (i32_serverid ltempserverid : lset)
 					{
-						handle_pram_send<T>::sendbyserver(ltempserverid, adata);
+						handle_pram_send<T>::send_server(ltempserverid, adata);
 					}
 					return true;
 				}
@@ -205,7 +205,7 @@ namespace ngl
 				}
 				return false;
 			}
-			return handle_pram_send<T>::sendbyserver(lserverid, adata);
+			return handle_pram_send<T>::send_server(lserverid, adata);
 		}
 		else if (lactorid == nguid::make() && !lmassactors.empty())
 		{
@@ -224,7 +224,7 @@ namespace ngl
 				np_mass_actor<T> pro(ldata);
 				i32_serverid lserverid = item1.first;
 				pro.m_actorids = item1.second;
-				handle_pram_send<np_mass_actor<T>>::sendbyserver(lserverid, nguid::make(), lrequestactor, pro);
+				handle_pram_send<np_mass_actor<T>>::send_server(lserverid, nguid::make(), lrequestactor, pro);
 			}
 		}
 		return false;
@@ -234,7 +234,7 @@ namespace ngl
 	class handle_pram_send<pack>
 	{
 	public:
-		static bool sendbyserver(i32_serverid aserverid, handle_pram& adata)
+		static bool send_server(i32_serverid aserverid, handle_pram& adata)
 		{
 			return handle_pram::send_pack(aserverid, adata.m_data);
 		}
@@ -252,7 +252,7 @@ namespace ngl
 					handle_pram::get_serverlist(lactorid.type(), lset);
 					for (i32_serverid ltempserverid : lset)
 					{
-						handle_pram_send<pack>::sendbyserver(ltempserverid, adata);
+						handle_pram_send<pack>::send_server(ltempserverid, adata);
 					}
 					return true;
 				}
@@ -262,12 +262,12 @@ namespace ngl
 				}
 				return false;
 			}
-			return handle_pram_send<pack>::sendbyserver(lserverid, adata);
+			return handle_pram_send<pack>::send_server(lserverid, adata);
 		}
 	};
 
 	template <typename T>
-	bool handle_pram_send<T>::sendclient(handle_pram& adata)
+	bool handle_pram_send<T>::send_client(handle_pram& adata)
 	{
 		auto ldata = (np_actor_forward<T, forward_g2c<T>>*)adata.m_data.get();
 		std::vector<i32_actordataid>& luid = ldata->m_data.m_uid;
@@ -284,7 +284,7 @@ namespace ngl
 		}
 		for (i32_serverid lserverid : lgateway)
 		{
-			handle_pram_send<np_actor_forward<T, forward_g2c<T>>>::sendbyserver(lserverid, adata);
+			handle_pram_send<np_actor_forward<T, forward_g2c<T>>>::send_server(lserverid, adata);
 		}
 		return true;
 	}

@@ -259,7 +259,7 @@ namespace ngl
 		{
 			np_actordb_load<DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
-			nets::sendbyserver(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
+			nets::send_server(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
 			log_error()->print("ndbclient loaddb [{}] [{}]", m_name, aid);
 		}
 

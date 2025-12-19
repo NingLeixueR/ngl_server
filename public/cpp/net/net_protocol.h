@@ -113,7 +113,7 @@ namespace ngl
 
 		// # 向服务器发送消息
 		template <typename Y, typename T = Y>
-		bool sendbyserver(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		bool send_server(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			i32_sessionid lsession = server_session::sessionid(aserverid);
 			if (lsession == -1)

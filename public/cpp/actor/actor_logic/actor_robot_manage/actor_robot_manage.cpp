@@ -96,7 +96,7 @@ namespace ngl
 			return;
 		}
 		
-		nets::sendbyserver(nnodeid::nodeid(tab->m_login, 1), pro, nguid::moreactor(), instance().id_guid());
+		nets::send_server(nnodeid::nodeid(tab->m_login, 1), pro, nguid::moreactor(), instance().id_guid());
 	}
 
 	bool actor_robot_manage::check_connect(i32_serverid aserverid)const
