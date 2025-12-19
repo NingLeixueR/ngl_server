@@ -58,8 +58,7 @@ namespace ngl
 		nguid					m_requestactor	= nguid::make();			// 哪个actor发送的
 		std::set<i64_actorid>   m_massactors;								// 群发列表
 
-		using forwardfunction = void(const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram&);
-		using forwardtype = std::function<forwardfunction>;
+		using forwardtype = std::function<void(handle_pram&)>;
 
 		forwardtype				m_forwardfun	= nullptr;			// 转发函数
 		bool					m_forwardtype	= false;			// 转发给所有类型
@@ -80,16 +79,16 @@ namespace ngl
 
 		//# 通过session发送消息T
 		template <typename T>
-		static bool	netsend(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid);
+		static bool	send(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid);
 		
 		//# 向服务器发送pack
-		static bool	netsendpack(i32_serverid aserverid, std::shared_ptr<pack>& apack);
-		static bool	netsendpack(i32_serverid aserverid, std::shared_ptr<void>& apack);
+		static bool	send_pack(i32_serverid aserverid, std::shared_ptr<pack>& apack);
+		static bool	send_pack(i32_serverid aserverid, std::shared_ptr<void>& apack);
 		
 		template <typename T, bool IS_SEND = true>
 		static void	make_forwardfun(handle_pram& apram)
 		{
-			static auto lfun = [](const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram& adata)
+			static auto lfun = [](handle_pram& adata)
 			{
 				handle_pram_send<T>::send(adata);
 			};
@@ -106,7 +105,7 @@ namespace ngl
 		template <typename T>
 		static void	make_client(handle_pram& apram)
 		{
-			static auto lfun = [](const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram& adata)
+			static auto lfun = [](handle_pram& adata)
 			{
 				handle_pram_send<T>::sendclient(adata);
 			};
@@ -237,7 +236,7 @@ namespace ngl
 	public:
 		static bool sendbyserver(i32_serverid aserverid, handle_pram& adata)
 		{
-			return handle_pram::netsendpack(aserverid, adata.m_data);
+			return handle_pram::send_pack(aserverid, adata.m_data);
 		}
 
 		static bool send(handle_pram& adata)
