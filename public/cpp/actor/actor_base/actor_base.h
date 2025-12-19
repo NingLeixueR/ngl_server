@@ -366,7 +366,6 @@ namespace ngl
 		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		//# 给指定连接发送数据
-		template <typename T>
 		static bool send(i32_sessionid asession, std::shared_ptr<pack>& apack);
 
 		//# 通过proto结构名称与json消息体构造包

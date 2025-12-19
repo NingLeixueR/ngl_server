@@ -272,6 +272,11 @@ namespace ngl
 		return nets::send_pack(lsession, apack);
 	}
 
+	bool actor_base::send(i32_sessionid asession, std::shared_ptr<pack>& apack)
+	{
+		return nets::send_pack(asession, apack);
+	}
+
 	void actor_base::start_broadcast()
 	{
 		wheel_parm lparm

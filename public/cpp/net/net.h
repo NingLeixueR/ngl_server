@@ -203,12 +203,6 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool actor_base::send(i32_sessionid asession, std::shared_ptr<pack>& apack)
-	{
-		return nets::send(asession, apack);
-	}
-
-	template <typename T>
 	std::shared_ptr<pack> actor_base::net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
 		return ::ngl::net_pack<T>::npack(&nets::net_first()->get_pool(), adata, aactorid, arequestactorid);
