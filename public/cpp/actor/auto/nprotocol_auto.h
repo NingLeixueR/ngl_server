@@ -12,7 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-12-04 11:45:17
+// 创建时间 // 创建时间 25-12-20 11:03:01
 #pragma once
 
 #include "ndb_modular.h"
@@ -27,7 +27,7 @@ namespace ngl
 {
 	void tprotocol_customs_200000000()
 	{
-		tprotocol::set_customs_index(200000001);
+		tprotocol::set_customs_index(200000000);
 		// 新增内部协议需要补充
 		// 注册T与"np_mass_actor<T>"
 		tprotocol::tp_customs_script::template func <

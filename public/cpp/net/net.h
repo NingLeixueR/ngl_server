@@ -46,6 +46,10 @@ namespace ngl
 
 		static bool init(i32_threadsize asocketthreadnum, bool aouternet, const std::set<pbnet::ENUM_KCP>& akcp);
 
+		static bool ipport(i32_serverid aserverid, std::tuple<ENET_PROTOCOL, str_ip, i16_port>& apair);
+
+		static bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection);
+
 		// 服务器只监听一个端口
 		static bool check_serverkcp();
 
@@ -60,36 +64,6 @@ namespace ngl
 		// 获取实例 
 		static ukcp* kcp(i16_port auport);
 		static ukcp* serkcp(pbnet::ENUM_KCP aenum, int16_t atcount);
-
-		template <typename Y, typename T = Y>
-		static bool send_server(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			i32_session lsession = server_session::sessionid(aserverid);
-			if (lsession == -1)
-			{
-				return false;
-			}
-			return send<Y,T>(lsession, adata, aactorid, arequestactorid);
-		}
-
-		template <typename Y, typename T = Y>
-		static bool send_server(const std::set<i32_serverid>& aserverids, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			std::set<i32_session> lsessionvec;
-			for (i32_serverid iserverid : aserverids)
-			{
-				i32_session lsession = server_session::sessionid(iserverid);
-				if (lsession != -1)
-				{
-					lsessionvec.insert(lsession);
-				}
-			}
-			if (!lsessionvec.empty())
-			{
-				return send<Y, T>(lsessionvec, adata, aactorid, arequestactorid);
-			}
-			return false;
-		}
 
 		template <typename Y, typename T = Y>
 		static bool send(i32_session asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
@@ -164,9 +138,36 @@ namespace ngl
 
 		static bool send_msg(i32_sessionid asession, const std::string& amsg);
 
-		static bool ipport(i32_serverid aserverid, std::tuple<ENET_PROTOCOL, str_ip, i16_port>& apair);
+		template <typename Y, typename T = Y>
+		static bool send_server(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		{
+			i32_session lsession = server_session::sessionid(aserverid);
+			if (lsession == -1)
+			{
+				return false;
+			}
+			return send<Y, T>(lsession, adata, aactorid, arequestactorid);
+		}
 
-		static bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection);
+		template <typename Y, typename T = Y>
+		static bool send_server(const std::set<i32_serverid>& aserverids, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		{
+			std::set<i32_session> lsessionvec;
+			for (i32_serverid iserverid : aserverids)
+			{
+				i32_session lsession = server_session::sessionid(iserverid);
+				if (lsession != -1)
+				{
+					lsessionvec.insert(lsession);
+				}
+			}
+			if (!lsessionvec.empty())
+			{
+				return send<Y, T>(lsessionvec, adata, aactorid, arequestactorid);
+			}
+			return false;
+		}
+
 	};
 }
 
