@@ -252,14 +252,14 @@ namespace ngl
 		static void erase_actor(const nguid& aguid);
 
 		//# 给actor自身添加任务
-		void push_task_id(handle_pram& apram)const;
+		//void push_task_id(handle_pram& apram)const;
 
 		//# 向指定actor添加任务
-		static void push_task_id(const nguid& aguid, handle_pram& apram);
-		static void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram);
+		//static void push_task_id(const nguid& aguid, handle_pram& apram);
+		//static void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram);
 
 		//# 给指定类型的actor添加任务
-		static void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
+		//static void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
 		//# actor是否使用脚本
 		bool nscript_using()const;
@@ -418,110 +418,43 @@ namespace ngl
 
 		//# 向一组客户端发送数据
 		template <typename T>
-		static void send_client(const std::set<i64_actorid>& aids, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
-		{
-			auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();
-			pro->m_data.m_protocol = aprotocol;
-			pro->m_data.m_data = adata;
-			for (i64_actorid aactorid : aids)
-			{
-				nguid lguid(aactorid);
-				pro->m_data.m_uid.push_back(lguid.actordataid());
-				pro->m_data.m_area.push_back(lguid.area());
-			}
-			handle_pram lpram = handle_pram::create<T>(nguid::make(), nguid::make(), pro);
-			push_task_id(actorclient_guid(), lpram);
-		}
+		static void send_client(const std::set<i64_actorid>& aids, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP);
 
 		//# 根据actor_role.guidid给所在客户端发送数据
 		template <typename T>
-		static void send_client(i64_actorid aid, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
-		{
-			std::set<i64_actorid> lids = { aid };
-			send_client(lids, adata, aprotocol);
-		}
+		static void send_client(i64_actorid aid, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP);
 
 		//# 向一组客户端发送数据
 		template <typename T>
-		static void send_client(const std::vector<i64_actorid>& aids, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
-		{
-			std::set<i64_actorid> lids(aids.cbegin(), aids.cend());
-			send_client(lids, adata, aprotocol);
-		}
+		static void send_client(const std::vector<i64_actorid>& aids, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP);
 
 		//# 向所有客户端发送消息
 		template <typename T>
-		static void send_client(const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
-		{
-			std::set<i32_serverid>& lgatewayids = sysconfig::gatewayids();
-			if (!lgatewayids.empty())
-			{
-				auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();
-				pro->m_data.m_protocol = aprotocol;
-				pro->m_data.m_data = adata;
-				nguid lguid(nguid::make());
-				pro->m_data.m_uid.push_back(lguid.actordataid());
-				pro->m_data.m_area.push_back(lguid.area());
-				send_server(lgatewayids, *pro, nguid::make(), nguid::make());
-			}			
-		}
+		static void send_client(const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP);
 
 		//# 往指定区服所有客户端发送消息
 		template <typename T>
-		static void send_clientbyarea(i16_area aarea, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP)
-		{
-			auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();
-			pro->m_data.m_protocol = aprotocol;
-			pro->m_data.m_data = adata;
-			ttab_servers::instance().foreach_server(GATEWAY, aarea, [&pro](const tab_servers* atab)
-				{
-					send_server(atab->m_id, *pro, nguid::make(), nguid::make());
-				});
-		}
+		static void send_clientbyarea(i16_area aarea, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP);
 #pragma endregion
 
 #pragma region send_actor
 		//# 向指定actor发送pack
-		static void send_actor(const nguid& aguid, const std::shared_ptr<pack>& adata)
-		{
-			handle_pram lpram = handle_pram::create(aguid, nguid::make(), adata);
-			push_task_id(aguid, lpram);
-		}
+		static void send_actor(const nguid& aguid, const std::shared_ptr<pack>& adata);
 
 		//# 向所有类型的actor发送数据
 		template <typename T, bool IS_SEND = true>
-		static void send_actor(ENUM_ACTOR atype, const std::shared_ptr<T>& adata)
-		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make_self(atype), nguid::make(), adata);
-			lpram.m_forwardtype = true;
-			push_task_type(atype, lpram);
-		}
+		static void send_actor(ENUM_ACTOR atype, const std::shared_ptr<T>& adata);
 
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
-		static void send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
-		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata);
-			push_task_id(aguid, lpram);
-		}
+		static void send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata);
 
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
-		static void send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
-		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata, afailfun);
-			push_task_id(aguid, lpram);
-		}
+		static void send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun);
 
 		template <typename T, bool IS_SEND = true>
-		static void send_actor(const std::set<i64_actorid>& asetguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
-		{
-			if (!asetguid.empty())
-			{
-				handle_pram lpram = handle_pram::create<T, IS_SEND>(asetguid, arequestguid, adata);
-				push_task_id(asetguid, lpram);
-			}
-		}
+		static void send_actor(const std::set<i64_actorid>& asetguid, const nguid& arequestguid, const std::shared_ptr<T>& adata);
 #pragma endregion
 
 		//# 设置定时任务参数
