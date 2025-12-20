@@ -47,11 +47,8 @@ namespace ngl
 
 		// # 发送消息
 		virtual bool send_pack(i32_sessionid asession, std::shared_ptr<pack>& lpack);
-
+		
 		// # 发送消息
-		virtual bool send_pack(i32_sessionid asession, std::shared_ptr<void>& lpack);	
-
-		// # 查询session是否存在
-		virtual bool exist_session(i32_sessionid asession);
+		virtual bool send_pack(i32_sessionid asession, std::shared_ptr<void>& lpack);
 	};
 }// namespace ngl
