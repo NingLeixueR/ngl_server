@@ -82,7 +82,6 @@
 #include "mail.cpp"
 #include "itme.cpp"
 #include "grid.cpp"
-#include "drop.cpp"
 #include "xml.cpp"
 #include "nsp.cpp"
 #include "net.cpp"
