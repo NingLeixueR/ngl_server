@@ -188,26 +188,6 @@ namespace ngl
 		actor_manage::instance().erase_actor(aguid);
 	}
 
-	void actor_base::push_task_id(const nguid& aguid, handle_pram& apram)
-	{
-		actor_manage::instance().push_task_id(aguid, apram);
-	}
-
-	void actor_base::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram)
-	{
-		actor_manage::instance().push_task_id(asetguid, apram);
-	}
-
-	void actor_base::push_task_type(ENUM_ACTOR atype, handle_pram& apram)
-	{
-		actor_manage::instance().push_task_type(atype, apram);
-	}
-
-	void actor_base::push_task_id(handle_pram& apram)const
-	{
-		actor_manage::instance().push_task_id(id_guid(), apram);
-	}
-
 	bool actor_base::nscript_using()const
 	{
 		return m_script != nullptr && m_enscript != enscript_none;
@@ -276,6 +256,13 @@ namespace ngl
 	{
 		return nets::send_pack(asession, apack);
 	}
+
+	void actor_base::send_actor(const nguid& aguid, const std::shared_ptr<pack>& adata)
+	{
+		handle_pram lpram = handle_pram::create(aguid, nguid::make(), adata);
+		actor_manage::instance().push_task_id(aguid, lpram);
+	}
+
 
 	void actor_base::start_broadcast()
 	{
