@@ -110,9 +110,6 @@ namespace ngl
 		// # 根据session获取ip与端口
 		bool get_ipport(i32_sessionid assionid, std::pair<str_ip, i16_port>& apair);
 
-		// # 查询session对应的连接是否存在
-		bool exist_session(i32_sessionid asession);
-
 		// # 设置连接关闭回调
 		void set_close(i32_sessionid asession, const std::function<void()>& afun);
 	};	

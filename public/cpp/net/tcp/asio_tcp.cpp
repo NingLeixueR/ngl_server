@@ -30,7 +30,6 @@ namespace ngl
 		m_acceptor_v6(nullptr)
 	{
 		asio::io_service& lioservice = *m_service_io_.get_ioservice(m_service_io_.m_recvthreadsize);
-
 		m_acceptor_v4 = std::make_shared<asio::ip::tcp::acceptor>(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port));
 		m_acceptor_v6 = std::make_shared<asio::ip::tcp::acceptor>(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v6(), m_port));
 		m_acceptor_v4->set_option(asio::socket_base::reuse_address(true));
@@ -339,12 +338,6 @@ namespace ngl
 		}
 		apair = *lpair;
 		return true;
-	}
-
-	bool asio_tcp::exist_session(i32_sessionid asession)
-	{
-		monopoly_shared_lock(m_ipportlock);
-		return m_ipport.find(asession) != m_ipport.end();
 	}
 
 	void  asio_tcp::accept_handle(bool aisv4, const std::shared_ptr<service_tcp>& aservice, const std::error_code& error)
