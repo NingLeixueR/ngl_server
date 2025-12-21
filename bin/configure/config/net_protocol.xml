@@ -26,6 +26,12 @@
 	<config client = "1" name="pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE" number="93"/>
 	<config client = "1" name="class pbnet::PROBUFF_NET_ROLE_LOGIN" number="94"/>
 	<config client = "1" name="pbnet::PROBUFF_NET_ROLE_LOGIN" number="94"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ROLE_NOT_CREATE" number="2"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ROLE_NOT_CREATE" number="2"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ROLE_CREATE" number="3"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ROLE_CREATE" number="3"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ROLE_CREATE_RESPONSE" number="4"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ROLE_CREATE_RESPONSE" number="4"/>
 	<config client = "1" name="class pbnet::PROBUFF_NET_ROLE_SYNC" number="95"/>
 	<config client = "1" name="pbnet::PROBUFF_NET_ROLE_SYNC" number="95"/>
 	<config client = "1" name="class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE" number="96"/>
