@@ -32,7 +32,7 @@ namespace ngl
 
 			handle_cmd::add("server_stat") = [this](int id, ngl::njson_read& aos)
 				{
-					gcmd<actor_manage::msg_actor_stat> lpro(id, "server_stat");
+					gcmd<msg_actor_stat> lpro(id, "server_stat");
 					actor_manage::instance().get_actor_stat(lpro.m_data);
 				};
 
