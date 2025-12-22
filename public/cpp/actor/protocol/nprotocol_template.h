@@ -470,4 +470,19 @@ namespace ngl
 
 		dprotocol(np_testlua, m_name, m_data)
 	};
+
+	// # 获取actor stat 数据
+	struct msg_actor_stat
+	{
+		struct msg_actor
+		{
+			std::string m_actor_name;
+			std::map<i16_area, std::vector<i32_actordataid>> m_actor;
+
+			dprotocol(msg_actor, m_actor_name, m_actor)
+		};
+		std::vector<msg_actor> m_vec;
+
+		dprotocol(msg_actor_stat, m_vec)
+	};
 }//namespace ngl
