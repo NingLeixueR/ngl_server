@@ -178,8 +178,7 @@ namespace ngl
             break;
         case google::protobuf::FieldDescriptor::CPPTYPE_ENUM:
         {
-            const google::protobuf::EnumValueDescriptor* enum_val =
-                src_refl->GetEnum(src, field);
+            const google::protobuf::EnumValueDescriptor* enum_val =src_refl->GetEnum(src, field);
             dst_refl->SetEnum(dst, field, enum_val);
             break;
         }
