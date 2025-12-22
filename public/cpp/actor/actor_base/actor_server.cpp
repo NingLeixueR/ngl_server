@@ -52,7 +52,7 @@ namespace ngl
 		>(e_ready_all);
 	}
 
-	void actor_server::forward_np_actornode_register(const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd)
+	void actor_server::forward_actornode_register(const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd)
 	{
 		// 同步其他结点
 		std::set<i32_sessionid> lsessionvec;
@@ -83,7 +83,7 @@ namespace ngl
 		}
 	}
 
-	void actor_server::reply_np_actornode_register(const pack* apack, i32_serverid aserverid)
+	void actor_server::reply_actornode_register(const pack* apack, i32_serverid aserverid)
 	{
 		np_actornode_register_response lpram;
 		naddress::foreach([&lpram, apack](const actor_node_session& anode)
@@ -138,8 +138,8 @@ namespace ngl
 
 		server_session::add(lserverid, lpack->m_id);
 
-		forward_np_actornode_register(lpack, lrecv->m_node, lserverid, lrecv->m_add);
-		reply_np_actornode_register(lpack, lserverid);
+		forward_actornode_register(lpack, lrecv->m_node, lserverid, lrecv->m_add);
+		reply_actornode_register(lpack, lserverid);
 		return true;
 	}
 

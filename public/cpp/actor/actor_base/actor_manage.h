@@ -29,6 +29,7 @@ namespace ngl
 {
 	class actor_manage
 	{
+	private:
 		actor_manage(const actor_manage&) = delete;
 		actor_manage& operator=(const actor_manage&) = delete;
 
@@ -71,6 +72,19 @@ namespace ngl
 
 		actor_manage();
 		~actor_manage();
+
+		// # nosafe_开头的函数代表"内部操作未加锁"，不允许类外调用
+		// # 根据guid获取actor实例
+		ptractor& nosafe_get_actor(const nguid& aguid);
+
+		// # 根据guid获取actor实例,如果本结点没有找到该actor实例，则根据结点类型获取(actor_client/actor_server)的guid，用于转发
+		ptractor& nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram);
+
+		// # 向actor实例插入任务
+		void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram);
+
+		// # actor_manage 调度actor实例处理任务的线程实例
+		void run();
 	public:
 		static actor_manage& instance()
 		{
@@ -89,17 +103,7 @@ namespace ngl
 
 		//# 根据node类型获取(actor_client/actor_server)的guid
 		nguid nodetypebyguid();
-	private:
-		// # nosafe_开头的函数代表"内部操作未加锁"，不允许类外调用
-		// # 根据guid获取actor实例
-		ptractor& nosafe_get_actor(const nguid& aguid);
 
-		// # 根据guid获取actor实例,如果本结点没有找到该actor实例，则根据结点类型获取(actor_client/actor_server)的guid，用于转发
-		ptractor& nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram);
-
-		// # 向actor实例插入任务
-		void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram);
-	public:
 		// # 将消息T封装后传递给指定guid的actor
 		template <typename T, bool IS_SEND = true>
 		inline void push_task_id(const nguid& aguid, std::shared_ptr<T>& apram)
@@ -132,10 +136,7 @@ namespace ngl
 
 		// # 向当前进程所有actor广播消息
 		void broadcast_task(handle_pram& apram);
-	private:
-		// # actor_manage 调度actor实例处理任务的线程实例
-		void run();
-	public:
+
 		// # 暂时挂起所有线程，已执行单步操作(热更数据表)
 		void statrt_suspend_thread();
 		void finish_suspend_thread();
