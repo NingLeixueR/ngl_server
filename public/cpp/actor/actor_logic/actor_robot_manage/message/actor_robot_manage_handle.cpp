@@ -172,7 +172,7 @@ namespace ngl
 							std::shared_ptr<pack> lpack = actor_base::jsonpack(avec[1], avec[2], nguid::moreactor(), arobot.m_actor_roleid);
 							if (lpack != nullptr)
 							{
-								nets::send_pack(arobot.m_session, lpack);
+								actor::send_pack(arobot.m_session, lpack);
 							}
 							return true;
 						});
