@@ -154,6 +154,7 @@ namespace ngl
 		struct msg_actor_stat
 		{
 			std::vector<msg_actor> m_vec;
+
 			dprotocol(msg_actor_stat, m_vec)
 		};
 		void get_actor_stat(msg_actor_stat& adata);
