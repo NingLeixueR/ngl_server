@@ -86,12 +86,7 @@ namespace ngl
 
 		m_drop.init(this, {});
 
-		actor_events_logic::tfun::func(
-			actorid()
-			, eevents_logic_rolelogin
-			, eevents_logic_rolelevelchange
-			, eevents_logic_rolegoldchange
-		);
+		actor_events_logic::tfun::func(actorid(), eevents_logic_rolelogin, eevents_logic_rolelevelchange, eevents_logic_rolegoldchange);
 
 		// 加载初始化活动
 		int32_t lnow = (int32_t)localtime::gettime();
@@ -129,32 +124,14 @@ namespace ngl
 					}
 					if (ltabalways->m_type == EActivityAlways::EActivityAlwaysWeek)
 					{
-						int32_t lbeg = (int32_t)localtime::getweekday(
-							lnow,
-							ltabalways->m_wbday==7?0: ltabalways->m_wbday, 
-							ltabalways->m_wbhour, 
-							ltabalways->m_wbminute, 
-							ltabalways->m_wbsecond
-						);
-						int32_t lend = (int32_t)localtime::getweekday(
-							lnow,
-							ltabalways->m_weday == 7 ? 0 : ltabalways->m_weday,
-							ltabalways->m_wehour,
-							ltabalways->m_weminute,
-							ltabalways->m_wesecond
-						);
+						int32_t lbeg = (int32_t)localtime::getweekday(lnow,ltabalways->m_wbday==7?0: ltabalways->m_wbday, ltabalways->m_wbhour, ltabalways->m_wbminute, ltabalways->m_wbsecond);
+						int32_t lend = (int32_t)localtime::getweekday(lnow, ltabalways->m_weday == 7 ? 0 : ltabalways->m_weday, ltabalways->m_wehour, ltabalways->m_weminute, ltabalways->m_wesecond);
 						start_activity(activityid, lbeg, lend - lbeg);
 						continue;
 					}
 					else if (ltabalways->m_type == EActivityAlways::EActivityAlwaysMonth)
 					{
-						std::pair<bool, time_t> lbeg = localtime::getmothday(
-							lnow,
-							ltabalways->m_mbday,
-							ltabalways->m_mbhour,
-							ltabalways->m_mbminute,
-							ltabalways->m_mbsecond
-						);
+						std::pair<bool, time_t> lbeg = localtime::getmothday(lnow, ltabalways->m_mbday, ltabalways->m_mbhour, ltabalways->m_mbminute, ltabalways->m_mbsecond);
 						if (lbeg.second)
 						{
 							continue;
@@ -169,13 +146,7 @@ namespace ngl
 									{
 										return false;
 									}
-									lend = localtime::getmothday(
-										lnow,
-										lmeday,
-										ltabalways->m_mehour,
-										ltabalways->m_meminute,
-										ltabalways->m_mesecond
-									);
+									lend = localtime::getmothday(lnow, lmeday, ltabalways->m_mehour, ltabalways->m_meminute, ltabalways->m_mesecond);
 									--lmeday;
 								} while (!lend.first);
 								return true;
@@ -189,18 +160,8 @@ namespace ngl
 					}
 					else if (ltabalways->m_type == EActivityAlways::EActivityAlwaysFixed)
 					{
-						int32_t lbeg = (int32_t)localtime::getsecond2time(
-							lnow,
-							ltabalways->m_fbhour,
-							ltabalways->m_fbminute,
-							ltabalways->m_fbsecond
-						);
-						int32_t lend = (int32_t)localtime::getsecond2time(
-							lnow+ ltabalways->m_fixedday* localtime::DAY_SECOND,
-							ltabalways->m_fbhour,
-							ltabalways->m_fbminute,
-							ltabalways->m_fbsecond
-						);
+						int32_t lbeg = (int32_t)localtime::getsecond2time(lnow, ltabalways->m_fbhour, ltabalways->m_fbminute, ltabalways->m_fbsecond);
+						int32_t lend = (int32_t)localtime::getsecond2time(lnow+ ltabalways->m_fixedday* localtime::DAY_SECOND, ltabalways->m_fbhour, ltabalways->m_fbminute, ltabalways->m_fbsecond);
 						start_activity(lactoractivityid, lbeg, lend - lbeg);
 						continue;
 					}
@@ -223,14 +184,8 @@ namespace ngl
 				if (!m_activitys.contains(activityid))
 				{
 					//lopenserver
-					int32_t lbeg = (tab.m_openday - 1) * localtime::DAY_SECOND
-						+ tab.m_openhour * localtime::HOUR_SECOND
-						+ tab.m_openminute * localtime::MINUTES_SECOND
-						+ tab.m_opensecond;
-					int32_t lend = (tab.m_closeday - 1) * localtime::DAY_SECOND
-						+ tab.m_closehour * localtime::HOUR_SECOND
-						+ tab.m_closeminute * localtime::MINUTES_SECOND
-						+ tab.m_closesecond;
+					int32_t lbeg = (tab.m_openday - 1) * localtime::DAY_SECOND + tab.m_openhour * localtime::HOUR_SECOND + tab.m_openminute * localtime::MINUTES_SECOND + tab.m_opensecond;
+					int32_t lend = (tab.m_closeday - 1) * localtime::DAY_SECOND + tab.m_closehour * localtime::HOUR_SECOND + tab.m_closeminute * localtime::MINUTES_SECOND + tab.m_closesecond;
 					start_activity(activityid, lbeg, lend - lbeg);
 				}
 			}
@@ -287,9 +242,7 @@ namespace ngl
 		}
 		if (lnow >= atime + aduration && aduration != -1)
 		{//关闭活动
-			m_activitys[aactivityid] = activity::make(
-				nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb
-			);
+			m_activitys[aactivityid] = activity::make(nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb);
 			m_activitys[aactivityid]->init();
 			m_activitys[aactivityid]->finish();
 			m_activitys[aactivityid] = nullptr;
@@ -297,9 +250,7 @@ namespace ngl
 		}
 		if ((lnow >= atime && lnow < atime + aduration) || (lnow >= atime && aduration == -1))
 		{//开启活动
-			m_activitys[aactivityid] = activity::make(
-				nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb
-			);
+			m_activitys[aactivityid] = activity::make(nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb);
 			m_activitys[aactivityid]->start();
 			m_activitys[aactivityid]->init();
 			if (aduration > 0)
