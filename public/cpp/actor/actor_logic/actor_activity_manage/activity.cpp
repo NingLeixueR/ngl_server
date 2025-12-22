@@ -22,13 +22,7 @@ namespace ngl
 	activity_drawcompliance g_activity_drawcompliance;
 	activity_rank g_activity_rank;
 
-	activity::activity(
-		int32_t activityid
-		, int32_t atime
-		, int32_t aduration
-		, activitydb& aactivitydb
-		, activitytimedb& aactivitytimedb
-	):
+	activity::activity(int32_t activityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb):
 		m_activitydb(&aactivitydb),
 		m_activitytimedb(&aactivitytimedb)
 	{
@@ -138,10 +132,7 @@ namespace ngl
 			return;
 		}
 
-		log_error()->print(
-			"activity [{}] rolelevelchange roleid:[{}] beforelevel[{}] nowlevel[{}]",
-			nguid(activityid()), aroleid, abeforelevel, anowlevel
-		);
+		log_error()->print("activity [{}] rolelevelchange roleid:[{}] beforelevel[{}] nowlevel[{}]", nguid(activityid()), aroleid, abeforelevel, anowlevel);
 
 		auto itor = std::ranges::find_if(lpactivity->m_ranktype, [](int atype)
 			{
@@ -173,10 +164,7 @@ namespace ngl
 			return;
 		}
 
-		log_error()->print(
-			"activity [{}] rolegoldchange roleid:[{}] beforegold[{}] nowgold[{}]",
-			nguid(activityid()), aroleid, abeforegold, anowgold
-		);
+		log_error()->print("activity [{}] rolegoldchange roleid:[{}] beforegold[{}] nowgold[{}]", nguid(activityid()), aroleid, abeforegold, anowgold);
 
 		auto itor = std::ranges::find_if(lpactivity->m_ranktype, [](int atype)
 			{
