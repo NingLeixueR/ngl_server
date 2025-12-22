@@ -389,18 +389,6 @@ namespace ngl
 		}
 	}
 
-	bool actor_manage::ready(const nguid& aguid)
-	{
-		ngl_lock_s;
-		return m_ready.contains(aguid);
-	}
-
-	void actor_manage::set_ready(const nguid& aguid)
-	{
-		ngl_lock_s;
-		m_ready.insert(aguid);
-	}
-
 	nguid actor_manage::nodetypebyguid()
 	{
 		return xmlnode::m_nodetype == ACTORSERVER ? actor_server::actorid() : actor_client::actorid();

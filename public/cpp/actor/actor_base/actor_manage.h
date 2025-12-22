@@ -67,9 +67,6 @@ namespace ngl
 		// (延迟操作:删除的瞬间actor正是运行状态,等待其回归后进行删除)
 		std::map<nguid, std::function<void()>> m_delactorfun;
 
-		// # actor就绪状态(如果需要加载db，db加载完成)
-		std::set<nguid> m_ready;
-
 		ngl_lockinit;
 
 		actor_manage();
@@ -89,12 +86,6 @@ namespace ngl
 
 		//# 获取本进程存在的actor类型
 		void get_type(std::vector<i16_actortype>& aactortype);
-
-		//# actor就绪状态(如果需要加载db，db加载完成)
-		bool ready(const nguid& aguid);
-
-		//# 设置就绪状态
-		void set_ready(const nguid& aguid);
 
 		//# 根据node类型获取(actor_client/actor_server)的guid
 		nguid nodetypebyguid();
