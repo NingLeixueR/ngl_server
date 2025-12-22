@@ -34,48 +34,30 @@ namespace ngl
 
 		// # 设置mask
 		static void				head_set_mask(int32_t* abuff);
-
-		static EPH_HEAD_VAL		head_check_mask(const int32_t* abuff, int awpos);
-
 		void					set_mask();
 
+		// # 检查mask
+		static EPH_HEAD_VAL		head_check_mask(const int32_t* abuff, int awpos);
 		EPH_HEAD_VAL			check_mask()const;
 
 		// # 设置包头时间
 		static void		head_set_time(int32_t* abuff);
+		void			set_time();
 
 		// # 获取包头时间
 		static i32_time head_get_time(const int32_t* abuff);
-
-		// # 设置时间戳
-		void			set_time();
-
-		// # 获取时间戳
 		i32_time		get_time()const;
 
 		// # 设置actor 
 		// # aactor:发送给哪个actor /* aenum == ACTOR_NONE 此值无效 */
 		// # arequestactorid:哪个actor发送的
 		static void head_set_actor(int32_t* abuff, i64_actorid aactor, i64_actorid arequestactorid);
-
 		static void head_set_actor(int32_t* abuff, i64_actorid aactor);
+		void		set_actor(i64_actorid aactor, i64_actorid arequestactorid);
+		void		set_requestactor(i64_actorid arequestactorid);
 
-		void set_actor(i64_actorid aactor, i64_actorid arequestactorid);
-
-		void set_requestactor(i64_actorid arequestactorid);
-
-		void set_custom1(int32_t avalue);
-		void set_custom2(int32_t avalue);
-		void set_custom(int64_t avalue);
-
-		int32_t custom1()const;
-		int32_t custom2()const;
-		int64_t custom()const;
-
-		// # 获取要发送给哪个actor
+		// # 获取actor
 		i64_actorid		get_actor()const;
-
-		// # 获取谁发送的actor
 		i64_actorid		get_request_actor()const;
 
 		// # 获取要发送给的actor的type

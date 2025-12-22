@@ -55,31 +55,19 @@ namespace ngl
 	public:
 		static pfun* find(i32_protocolnum aprotocolnum);
 
-		static const char* name(i32_protocolnum aprotocolnum/*协议号*/);
+		static const char* name(i32_protocolnum aprotocolnum);
 
-		static void print(
-			const char* amsg						/*打印描述*/
-			, i32_protocolnum aprotocolnum			/*协议号*/
-		);
+		static void print(const char* amsg, i32_protocolnum aprotocolnum);
 
 		// # 注册网络协议
-		static void register_protocol(
-			int aprotocolnumber							/*协议号*/
-			, ENUM_ACTOR aenumactor						/*actor类型*/
-			, const protocol::fun_pack& apackfun		/*解包回调*/
-			, const protocol::fun_run& arunfun			/*逻辑回调*/
-			, const char* aname							/*debug name*/
-		);
+		static void register_protocol(int aprotocolnumber, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname);
 
 		// # 解析网络数据包[net pack],交付给上层逻辑 
 		static void push(std::shared_ptr<pack>& apack);
 
 		// # ACTOR间通信 
 		template <typename T>
-		static void registry_actor(
-			ENUM_ACTOR atype						/*actor类型*/
-			, const char* aname						/*debug name*/
-		)
+		static void registry_actor(ENUM_ACTOR atype, const char* aname)
 		{
 			fun_pack lpackfun = [atype](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 			{
@@ -136,11 +124,7 @@ namespace ngl
 
 		// # gateway注册的转发c2g(由[client]>>[gateway]>>[服务器]) 
 		template <typename T>
-		static void registry_actor_c2g(
-			ENUM_ACTOR atype						/*actor类型*/
-			, int32_t aprotocolnum					/*协议号*/
-			, const char* aname						/*debug name*/
-		)
+		static void registry_actor_c2g(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
 			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 				{
@@ -170,11 +154,7 @@ namespace ngl
 
 		// # gateway注册的转发g2c(由[服务器]->[客户端]) 
 		template <typename T>
-		static void registry_actor_g2c(
-			ENUM_ACTOR atype						/*actor类型*/
-			, int32_t aprotocolnum					/*协议号*/
-			, const char* aname						/*debug name*/
-		)
+		static void registry_actor_g2c(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
 			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 				{
@@ -204,10 +184,7 @@ namespace ngl
 
 		// # 群发消息(解析剥离np_mass_actor<T> 将T投递到对应actor)
 		template <typename T>
-		static void registry_actor_mass(
-			int32_t aprotocolnum					/*协议号*/
-			, const char* aname						/*debug name*/
-		)
+		static void registry_actor_mass(int32_t aprotocolnum, const char* aname)
 		{
 			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 				{

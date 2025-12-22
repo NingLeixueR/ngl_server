@@ -58,10 +58,7 @@ namespace ngl
 			{
 				if (apack->m_head.getvalue(EPH_BYTES) != apack->m_pos)
 				{
-					log_error()->print(
-						"[##structbytes::tostruct() {} byte<{}!={}>]"
-						, tools::type_name<T>(), apack->m_head.getvalue(EPH_BYTES), apack->m_pos
-					);
+					log_error()->print("[##structbytes::tostruct() {} byte<{}!={}>]", tools::type_name<T>(), apack->m_head.getvalue(EPH_BYTES), apack->m_pos);
 					return false;
 				}
 
@@ -87,10 +84,7 @@ namespace ngl
 			ngl::ser::serialize_push lser(lpair.first, lpair.second);
 			if (!ngl::ser::nserialize::push(&lser, adata))
 			{
-				log_error()->print(
-					"[##structbytes::tobytes() {} actorid:{} requestactorid:{}] "
-					, tools::type_name<T>(), aactorid, arequestactorid
-				);
+				log_error()->print("[##structbytes::tobytes() {} actorid:{} requestactorid:{}] ", tools::type_name<T>(), aactorid, arequestactorid);
 				return false;
 			}
 
