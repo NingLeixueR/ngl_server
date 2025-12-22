@@ -30,15 +30,9 @@ namespace ngl
 	struct csvpair
 	{
 		std::string m_data;
-		int m_pos;
-		bool m_doublequotationmarks; // 双引号
-		char m_fg;//默认','
-
-		csvpair() :
-			m_pos(0),
-			m_doublequotationmarks(false),
-			m_fg(',')
-		{}
+		int m_pos = 0;
+		bool m_doublequotationmarks = false; // 双引号
+		char m_fg = ',';//默认','
 
 		void clear()
 		{

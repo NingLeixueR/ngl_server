@@ -21,7 +21,7 @@ namespace ngl
 	void xmlprotocol::read(const std::string& axmlname)
 	{
 		tinyxml2::XMLDocument ldoc;
-		tinyxml2::XMLElement* lcon;
+		tinyxml2::XMLElement* lcon = nullptr;
 		if (!xml::readxml(axmlname.c_str(), ldoc, lcon))
 		{
 			return;
