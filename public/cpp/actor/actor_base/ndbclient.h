@@ -563,6 +563,14 @@ namespace ngl
 		tmap_dbclient										m_typedbclientmap;
 		tmap_dbclient										m_dbclientmap;						//已经加载完的
 		std::function<void(pbdb::ENUM_DB, enum_dbstat)>		m_loadfinishfun;					//bool db数据库是否有该数据
+
+		void foreach_function(const std::function<void(ndbclient_base*)>& afun)
+		{
+			for (std::pair<const pbdb::ENUM_DB, ndbclient_base*>& lpair : m_dbclientmap)
+			{
+				afun(lpair.second);
+			}
+		}
 	public:
 		explicit actor_manage_dbclient(actor_base* aactor) :
 			m_actor(aactor)
@@ -651,15 +659,6 @@ namespace ngl
 			return (ndbclient<ENUM, TDATA, TACTOR>*)(*lp);
 		}
 
-	private:
-		void foreach_function(const std::function<void(ndbclient_base*)>& afun)
-		{
-			for(std::pair<const pbdb::ENUM_DB, ndbclient_base*>& lpair :m_dbclientmap)
-			{
-				afun(lpair.second);
-			}
-		}
-	public:
 		void save()
 		{
 			static std::function<void(ndbclient_base*)> lfun = [](ndbclient_base* ap)
@@ -685,9 +684,9 @@ namespace ngl
 					ap->nscript_push_data();
 				};
 			foreach_function(lfun);
-		}
+		}		
 	};
-}
+}//namespace ngl
 
 namespace ngl
 {
@@ -708,7 +707,6 @@ namespace ngl
 		}
 		return lp->handle(adata);
 	}
-
 }//namespace ngl
 
 #define data_modified_return_get(NAME, DATA, ...)			\
