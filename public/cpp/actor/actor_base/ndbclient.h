@@ -615,9 +615,7 @@ namespace ngl
 				log_error()->print("on_load_finish !m_typedbclientmap.empty()");
 				return false;
 			}
-
-			actor_manage::instance().set_ready(m_actor->id_guid());
-				
+	
 			m_actor->db_component_init_data();
 
 			// 1、将数据修改为[裁剪修改]
