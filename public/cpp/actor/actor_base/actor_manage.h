@@ -144,19 +144,6 @@ namespace ngl
 		int32_t actor_count();
 
 		// # 获取actor stat 数据
-		struct msg_actor
-		{
-			std::string m_actor_name;
-			std::map<i16_area, std::vector<i32_actordataid>> m_actor;
-
-			dprotocol(msg_actor, m_actor_name, m_actor)
-		};
-		struct msg_actor_stat
-		{
-			std::vector<msg_actor> m_vec;
-
-			dprotocol(msg_actor_stat, m_vec)
-		};
 		void get_actor_stat(msg_actor_stat& adata);
 	};
 
