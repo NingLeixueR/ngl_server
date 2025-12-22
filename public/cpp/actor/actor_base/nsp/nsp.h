@@ -247,15 +247,14 @@ namespace ngl
 		template <typename TDerived, typename TMESSAGE>
 		static void register_handle()
 		{
-			actor::register_actor_s<TDerived, TMESSAGE>(
-				[](TDerived* aacotor, const message<TMESSAGE>& adata)
+			actor::register_actor_s<TDerived, TMESSAGE>(e_ready_db, [](TDerived* aacotor, const message<TMESSAGE>& adata)
 				{
 					T* lpclass = nclient(aacotor->id_guid(), true);
 					if (lpclass != nullptr)
 					{
 						lpclass->handle(aacotor, adata);
 					}
-				}, e_ready_db
+				} 
 			);
 		}
 	};
@@ -277,25 +276,25 @@ namespace ngl
 		tcallback<T> m_call;
 	public:
 		// # 设置数据被修改或首次获取数据的回调
-		void set_changedatafun(const std::function<void(int64_t, const T&, bool)>& afun)
+		inline void set_changedatafun(const std::function<void(int64_t, const T&, bool)>& afun)
 		{
 			m_call.m_changedatafun = afun;
 		}
 
 		// # 设置数据被删除的回调
-		void set_deldatafun(const std::function<void(int64_t)>& afun)
+		inline void set_deldatafun(const std::function<void(int64_t)>& afun)
 		{
 			m_call.m_deldatafun = afun;
 		}
 
 		// # 设置数据加载完成的回调
-		void set_loadfinishfun(const std::function<void()>& afun)
+		inline void set_loadfinishfun(const std::function<void()>& afun)
 		{
 			m_call.m_loadfinishfun = afun;
 		}
 
 		// # 调用数据被修改或首次获取数据的回调
-		void changedatafun(int64_t aid, const T& adata, bool afrist)
+		inline void changedatafun(int64_t aid, const T& adata, bool afrist)
 		{
 			if (m_call.m_changedatafun != nullptr)
 			{
@@ -304,7 +303,7 @@ namespace ngl
 		}
 
 		// # 调用数据被删除的回调
-		void deldatafun(int64_t aid)
+		inline void deldatafun(int64_t aid)
 		{
 			if (m_call.m_deldatafun != nullptr)
 			{
@@ -313,7 +312,7 @@ namespace ngl
 		}
 
 		// # 调用数据加载完成的回调
-		void loadfinishfun()
+		inline void loadfinishfun()
 		{
 			if (m_call.m_loadfinishfun != nullptr)
 			{

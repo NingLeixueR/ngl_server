@@ -53,11 +53,7 @@ namespace ngl
 
 	template <typename TDerived, typename TACTOR, typename T>
 	nsp_write<TDerived, TACTOR, T>& nsp_write<TDerived, TACTOR, T>::instance_writepart(
-		TDerived* aactor
-		, const std::set<i32_fieldnumber>& areadfieldnumbers
-		, const std::set<i32_fieldnumber>& awritefieldnumbers
-		, const std::set<i64_actorid>& areadids
-		, const std::set<i64_actorid>& awriteids
+		TDerived* aactor, const std::set<i32_fieldnumber>& areadfieldnumbers, const std::set<i32_fieldnumber>& awritefieldnumbers, const std::set<i64_actorid>& areadids, const std::set<i64_actorid>& awriteids
 	)
 	{
 		auto lpwrite = std::make_shared<nsp_write<TDerived, TACTOR, T>>();
@@ -312,7 +308,8 @@ namespace ngl
 	void nsp_write<TDerived, TACTOR, T>::handle(TDerived* aactor, const message<np_channel_data<T>>& adata)
 	{
 		const np_channel_data<T>* recv = adata.get_data();
-		//nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
+
+		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;
 		i16_actortype ltypesource = nguid::type(recv->m_actorid);
@@ -413,7 +410,6 @@ namespace ngl
 		pro->m_field = *lmapfieldtype;
 
 		i64_actorid lnspserid = m_regload.nspserid(recv->m_area);
-		log_error()->print("nsp_write register: {} -> {}", nguid(pro->m_actorid), nguid(lnspserid));
 		nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 		actor::send_actor(lnspserid, nguid::make(), pro);
 	}
