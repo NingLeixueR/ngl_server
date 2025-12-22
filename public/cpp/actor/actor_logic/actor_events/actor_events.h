@@ -97,18 +97,16 @@ namespace ngl
 		static void register_parm(E_EVENTS atype)
 		{
 			m_parmtype[atype]= typeid(TPARM).hash_code();
-			actor::register_actor_s<tactor_events, TPARM>
-				(
-					[atype](tactor_events*, message<TPARM>& adata)
+			actor::register_actor_s<tactor_events, TPARM>(e_ready_all, [atype](tactor_events*, const message<TPARM>& adata)
+				{
+					std::set<i64_actorid>* lmember = tools::findmap(m_eventmember, atype);
+					if (lmember == nullptr)
 					{
-						std::set<i64_actorid>* lmember = tools::findmap(m_eventmember, atype);
-						if (lmember == nullptr)
-						{
-							return;
-						}
-						actor::send_actor(*lmember, actorid(), adata.get_shared_data());
-					}, e_ready_all
-				);
+						return;
+					}
+					actor::send_actor(*lmember, actorid(), adata.get_shared_data());
+				}
+			);
 		}
 
 		template <typename TPARM>

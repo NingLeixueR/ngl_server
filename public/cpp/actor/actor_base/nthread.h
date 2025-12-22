@@ -32,6 +32,7 @@ namespace ngl
 		std::shared_mutex	m_mutex;				// 互斥量
 		ngl::sem			m_sem;					// 信号量
 
+		void run();
 	public:
 		explicit nthread(i32_threadid aid);
 
@@ -43,8 +44,5 @@ namespace ngl
 
 		// # 向线程中添加actor
 		void push(ptractor aactor);
-
-	private:
-		void run();
 	};
 }//namespace ngl

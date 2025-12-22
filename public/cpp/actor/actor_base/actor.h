@@ -91,7 +91,7 @@ namespace ngl
 
 		// # 用来注册匿名函数挂载在对应actor上
 		template <typename TDerived, typename T>
-		static void register_actor_s(const std::function<void(TDerived*, message<T>&)>& afun, int32_t aready/*nready::enum_ready*/)
+		static void register_actor_s(int32_t aready, const std::function<void(TDerived*, const message<T>&)>& afun)
 		{
 			nrfun<TDerived>::instance().template rfun<TDerived, T>(afun, aready);
 		}

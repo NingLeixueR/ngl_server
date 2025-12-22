@@ -24,26 +24,24 @@ namespace ngl
 
 		// # 订阅注册处理
 		actor::register_actor_s<TDerived, np_channel_register<T>>(
-			[](TDerived* aactor, const message<np_channel_register<T>>& adata)
+			e_ready_db, [](TDerived* aactor, const message<np_channel_register<T>>& adata)
 			{
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
-			}, e_ready_db
+			}
 		);
-
 		// # 订阅数据被修改
 		actor::register_actor_s<TDerived, np_channel_data<T>>(
-			[](TDerived* aactor, const message<np_channel_data<T>>& adata)
+			e_ready_db, [](TDerived* aactor, const message<np_channel_data<T>>& adata)
 			{
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
-			}, e_ready_db
+			}
 		);
-
 		// # 退出订阅
 		actor::register_actor_s<TDerived, np_channel_exit<T>>(
-			[](TDerived* aactor, const message<np_channel_exit<T>>& adata)
+			e_ready_db, [](TDerived* aactor, const message<np_channel_exit<T>>& adata)
 			{
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
-			}, e_ready_db
+			}
 		);
 	}
 

@@ -31,8 +31,7 @@ namespace ngl
 			.m_ready = aready,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				auto ldata = std::static_pointer_cast<T>(apram.m_data);
-				message lmessage(athreadid, apram.m_pack, ldata);
+				message lmessage(athreadid, apram.m_pack, std::static_pointer_cast<T>(apram.m_data));
 				afun((TTTDerived*)aactor, lmessage);
 				if (aactor->ready().is_ready(e_ready_db))
 				{
@@ -57,8 +56,7 @@ namespace ngl
 			.m_ready = aready,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				auto ldata = std::static_pointer_cast<T>(apram.m_data);
-				message lmessage(athreadid, apram.m_pack, ldata);
+				message lmessage(athreadid, apram.m_pack, std::static_pointer_cast<T>(apram.m_data));
 				(((TTTDerived*)(aactor))->*afun)(lmessage);
 				if (aactor->ready().is_ready(e_ready_db))
 				{
@@ -96,8 +94,7 @@ namespace ngl
 			.m_ready = e_ready_null,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				auto ltemp = (type_forward_c2g*)apram.m_data.get();
-				message lmessage(athreadid, apram.m_pack, ltemp);
+				message lmessage(athreadid, apram.m_pack, (type_forward_c2g*)apram.m_data.get());
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
@@ -115,8 +112,7 @@ namespace ngl
 			.m_ready = e_ready_null,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				auto ltemp = (type_forward_g2c*)apram.m_data.get();
-				message lmessage(athreadid, apram.m_pack, ltemp);
+				message lmessage(athreadid, apram.m_pack, (type_forward_g2c*)apram.m_data.get());
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
