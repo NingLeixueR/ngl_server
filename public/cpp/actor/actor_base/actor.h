@@ -37,14 +37,6 @@ namespace ngl
 	template <typename T>
 	const T* null = (T*)nullptr;
 
-	//# 注册 脚本处理协议
-	template <typename TDerived>
-	struct cregister_actor_handle
-	{
-		template <typename T>
-		static void func(int32_t aready/*enum_ready*/);
-	};
-
 	class actor : 
 		public actor_base
 	{
