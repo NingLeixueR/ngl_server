@@ -84,7 +84,7 @@ namespace ngl
 			};
 			handle_cmd::add("server_stat") = [this](njson_read& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<actor_manage::msg_actor_stat> lpro(adata->get_pack()->m_id, "server_stat", this);
+					gcmd<msg_actor_stat> lpro(adata->get_pack()->m_id, "server_stat", this);
 					actor_manage::instance().get_actor_stat(lpro.m_data);
 				};
 			handle_cmd::add("guid") = [this](njson_read& aos, const message<ngl::np_gm>* adata)
