@@ -252,7 +252,7 @@ namespace ngl
 		return nets::send_pack(lsession, apack);
 	}
 
-	bool actor_base::send(i32_sessionid asession, std::shared_ptr<pack>& apack)
+	bool actor_base::send_pack(i32_sessionid asession, std::shared_ptr<pack>& apack)
 	{
 		return nets::send_pack(asession, apack);
 	}
@@ -262,7 +262,6 @@ namespace ngl
 		handle_pram lpram = handle_pram::create(aguid, nguid::make(), adata);
 		actor_manage::instance().push_task_id(aguid, lpram);
 	}
-
 
 	void actor_base::start_broadcast()
 	{
@@ -300,7 +299,33 @@ namespace ngl
 		m_isbroadcast = aisbroadcast;
 	}
 
-	bool actor_base::connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const
+	void actor_base::kcp_setindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex)
+	{
+		m_kcpindex[aserverid].m_data[aenum] = akcpindex;
+	}
+
+	i16_port actor_base::kcp_index(i32_serverid aserverid, pbnet::ENUM_KCP aenum)
+	{
+		auto itor = m_kcpindex.find(aserverid);
+		if (itor == m_kcpindex.end())
+		{
+			return -1;
+		}
+		auto itor2 = itor->second.m_data.find(aenum);
+		if (itor2 == itor->second.m_data.end())
+		{
+			return -1;
+		}
+		return itor2->second;
+	}
+
+	i16_port actor_base::kcp_index(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum)
+	{
+		int32_t lserverid = nnodeid::nodeid(aservertid, atcount);
+		return kcp_index(lserverid, aenum);
+	}
+
+	bool actor_base::kcp_connect(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const
 	{
 		if (nconfig::node_type() != ROBOT)
 		{//不允许服务器主动进行kcp连接
@@ -314,7 +339,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_base::sendpack_kcp(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
+	bool actor_base::kcp_sendpack(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
 	{
 		ukcp* lpukcp = nets::kcp(auport);
 		if (lpukcp == nullptr)
@@ -324,7 +349,7 @@ namespace ngl
 		return lpukcp->send_server(aactorid, adata);
 	}
 
-	bool actor_base::sendpack_kcp(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
+	bool actor_base::kcp_sendpack(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
 	{
 		ukcp* lpukcp = nets::kcp(auport);
 		if (lpukcp == nullptr)

@@ -216,14 +216,14 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool actor_base::send_kcp(i64_actorid aactorid, T& adata, i16_port auport/* = 0*/)
+	bool actor_base::kcp_send(i64_actorid aactorid, T& adata, i16_port auport/* = 0*/)
 	{
 		std::set<i64_actorid> lactorids = { aactorid };
-		return send_kcp(lactorids, adata, auport);
+		return kcp_send(lactorids, adata, auport);
 	}
 
 	template <typename T>
-	bool actor_base::send_kcp(const std::set<i64_actorid>& aactorids, T& adata, i16_port auport/* = 0*/)
+	bool actor_base::kcp_send(const std::set<i64_actorid>& aactorids, T& adata, i16_port auport/* = 0*/)
 	{
 		ukcp* lpukcp = nets::kcp(auport);
 		if (lpukcp == nullptr)
