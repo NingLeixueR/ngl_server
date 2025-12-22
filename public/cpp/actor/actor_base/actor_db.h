@@ -73,7 +73,7 @@ namespace ngl
 		}
 
 		// # 加载表中的所有数据
-		static void loadall(const pack* apack, [[maybe_unused]] const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata)
+		static void load(const pack* apack)
 		{
 			if (!m_tab->m_isloadall)
 			{
@@ -132,11 +132,11 @@ namespace ngl
 			{
 				return;
 			}
-			i64_actorid lid = adata.m_id.id();
-			if (lid == -1)
+			i64_actorid lid = adata.m_id.id();			
+			if (lid == nguid::none_actordataid())
 			{
 				//加载全部数据
-				loadall(apack, adata);
+				load(apack);
 			}
 			else
 			{
