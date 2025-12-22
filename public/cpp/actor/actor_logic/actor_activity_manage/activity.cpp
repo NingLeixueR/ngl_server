@@ -39,7 +39,7 @@ namespace ngl
 			return;
 		}
 
-		m_actorid = actor::tab2actor(ACTOR_ACTIVITY_MANAGE, activityid);
+		m_actorid = nguid::make(ACTOR_ACTIVITY_MANAGE, nguid::none_area(), activityid);
 
 		m_activity = aactivitydb.find(m_actorid);
 		if (m_activity == nullptr)

@@ -116,7 +116,7 @@ namespace ngl
 		}
 		for (const auto& [activityid, tab] : *ltabmap)
 		{
-			i64_actorid lactoractivityid = tab2actor(ACTOR_ACTIVITY_MANAGE, activityid);
+			i64_actorid lactoractivityid = nguid::make(ACTOR_ACTIVITY_MANAGE, nguid::none_area(), activityid);
 			if (!m_activitys.contains(lactoractivityid))
 			{
 				if (tab.m_open == EActivityOpen::EActivityOpenAlways)
