@@ -251,16 +251,7 @@ namespace ngl
 		//# 移除指定actor
 		static void erase_actor(const nguid& aguid);
 
-		//# 给actor自身添加任务
-		//void push_task_id(handle_pram& apram)const;
-
-		//# 向指定actor添加任务
-		//static void push_task_id(const nguid& aguid, handle_pram& apram);
-		//static void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram);
-
-		//# 给指定类型的actor添加任务
-		//static void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
-
+#pragma region nscript
 		//# actor是否使用脚本
 		bool nscript_using()const;
 
@@ -273,78 +264,37 @@ namespace ngl
 		// parm adata			压入的数据
 		// parm aedit			是否可以在脚本中修改
 		template <typename T>
-		bool nscript_data_push(const char* asource, const T& adata, bool aedit/* = false*/)
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			return nscript_manage::data_push(m_enscript, m_script, tools::type_name<typename T::TDATA>().c_str(), asource, adata, aedit);
-		}
+		bool nscript_data_push(const char* asource, const T& adata, bool aedit/* = false*/);
 
 		//# 告诉脚本数据被删除了
 		// parm aname			数据名称
 		// parm adataid			数据id
 		template <typename T>
-		bool nscript_data_del(int64_t adataid)
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			return nscript_manage::data_del(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
-		}
+		bool nscript_data_del(int64_t adataid);
 
 		//# 检查数据是否被修改
 		template <typename T>
-		bool nscript_data_checkout(int64_t adataid, T& adata)
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			return nscript_manage::data_checkout(m_enscript, m_script, tools::type_name<T>().c_str(), adataid, adata);
-		}
+		bool nscript_data_checkout(int64_t adataid, T& adata);
 
+		//# 检查一组数据是否被修改
 		template <typename T>
-		bool nscript_data_checkout(std::map<int64_t, T>& adata)
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			return nscript_manage::data_checkout(m_enscript, m_script, tools::type_name<T>().c_str(), adata);
-		}
+		bool nscript_data_checkout(std::map<int64_t, T>& adata);
 
+		//# 检查数据是否被删除
 		template <typename T>
-		bool nscript_data_checkdel(int64_t adataid)
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			return nscript_manage::data_checkdel(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
-		}
+		bool nscript_data_checkdel(int64_t adataid);
 
+		//# 检查一组数据是否被删除
 		template <typename T>
-		bool nscript_data_checkdel(std::vector<int64_t>& adeldata)
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			return nscript_manage::data_checkdel(m_enscript, m_script, tools::type_name<T>().c_str(), adeldata);
-		}
+		bool nscript_data_checkdel(std::vector<int64_t>& adeldata);
 
+		//# 脚本处理消息
 		template <typename T>
-		bool nscript_handle(const T& adata)
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			return nscript_manage::handle(m_enscript, m_script, tools::type_name<T>().c_str(), adata);
-		}
+		bool nscript_handle(const T& adata);
+#pragma endregion
+
+		//# 通过proto结构名称与json消息体构造包
+		static std::shared_ptr<pack> jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		//# 生成包
 		template <typename T>
@@ -352,6 +302,10 @@ namespace ngl
 
 		//# 给指定连接发送数据
 		static bool send_pack(i32_sessionid asession, std::shared_ptr<pack>& apack);
+
+		//# 给指定连接发送数据
+		template <typename T>
+		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		//# 发送数据到指定服务器
 		template <typename T>
@@ -364,13 +318,6 @@ namespace ngl
 		//# 发送pack到指定服务器
 		static bool send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
-		//# 给指定连接发送数据
-		template <typename T>
-		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
-
-		//# 通过proto结构名称与json消息体构造包
-		static std::shared_ptr<pack> jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid);
-
 #pragma region kcp
 		void kcp_setindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex);
 
@@ -381,19 +328,23 @@ namespace ngl
 		//# 发起kcp连接
 		bool kcp_connect(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const;
 
+		//# 通过udp.kcp发送pack给指定actor
 		static bool kcp_sendpack(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport = 0);
 
+		//# 通过udp.kcp发送pack给一组actor
 		static bool kcp_sendpack(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport = 0);
 
-		//# 通过udp.kcp发送数据
+		//# 通过udp.kcp发送数据给指定actor
 		template <typename T>
 		static bool kcp_send(i64_actorid aactorid, T& adata, i16_port auport = 0);
 
+		//# 通过udp.kcp发送数据给一组actor
 		template <typename T>
 		static bool kcp_send(const std::set<i64_actorid>& aactorids, T& adata, i16_port auport = 0);
 #pragma endregion
 
 #pragma region send_client
+		//# 获取进程依赖的actor路由(actor_client/actor_server)
 		static i64_actorid actorclient_guid();
 
 		//# 向一组客户端发送数据
@@ -418,21 +369,22 @@ namespace ngl
 #pragma endregion
 
 #pragma region send_actor
-		//# 向指定actor发送pack
+		//# 发送pack给指定actor
 		static void send_actor(const nguid& aguid, const std::shared_ptr<pack>& adata);
 
-		//# 向所有类型的actor发送数据
+		//# 发送数据向所有ENUM_ACTOR类型的actor
 		template <typename T, bool IS_SEND = true>
 		static void send_actor(ENUM_ACTOR atype, const std::shared_ptr<T>& adata);
 
-		//# 发送数据到指定的actor
+		//# 发送数据给指定actor
 		template <typename T, bool IS_SEND = true>
 		static void send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata);
 
-		//# 发送数据到指定的actor
+		//# 发送数据给指定actor
 		template <typename T, bool IS_SEND = true>
 		static void send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun);
 
+		//# 发送数据给一组actor
 		template <typename T, bool IS_SEND = true>
 		static void send_actor(const std::set<i64_actorid>& asetguid, const nguid& arequestguid, const std::shared_ptr<T>& adata);
 #pragma endregion
@@ -451,32 +403,12 @@ namespace ngl
 
 		//# 方便调试打印协议
 		template <typename T>
-		void handle_print(const message<T>& adata)const
-		{
-			if constexpr (is_protobuf_message<T>::value)
-			{
-				tools::print_json(*adata.get_data(), true);
-			}
-			else
-			{
-				njson_write ljson;
-				njson::write(ljson, "message", *adata.get_data());
-				std::string lstr = ljson.get();
-				log_error()->print("{}", lstr);
-			}
-		}
+		void handle_print(const message<T>& adata)const;
 
 		//# actor_base::create 
 		//# 构造actor对象会自动被调用
 		template <typename TDerived>
-		static void first_nregister([[maybe_unused]] ENUM_ACTOR atype)
-		{
-			static std::atomic lfirst = true;
-			if (lfirst.exchange(false))
-			{
-				TDerived::nregister();
-			}
-		}
+		static void first_nregister([[maybe_unused]] ENUM_ACTOR atype);
 
 		//# 用于创建非单例actor
 		static std::shared_ptr<actor_base> create(ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm = nullptr);
@@ -489,6 +421,105 @@ namespace ngl
 		static T& instance();
 	};
 }//namespace ngl
+
+namespace ngl
+{
+	template <typename T>
+	bool actor_base::nscript_data_push(const char* asource, const T& adata, bool aedit/* = false*/)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::data_push(m_enscript, m_script, tools::type_name<typename T::TDATA>().c_str(), asource, adata, aedit);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_data_del(int64_t adataid)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::data_del(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_data_checkout(int64_t adataid, T& adata)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::data_checkout(m_enscript, m_script, tools::type_name<T>().c_str(), adataid, adata);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_data_checkout(std::map<int64_t, T>& adata)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::data_checkout(m_enscript, m_script, tools::type_name<T>().c_str(), adata);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_data_checkdel(int64_t adataid)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::data_checkdel(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_data_checkdel(std::vector<int64_t>& adeldata)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::data_checkdel(m_enscript, m_script, tools::type_name<T>().c_str(), adeldata);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_handle(const T& adata)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::handle(m_enscript, m_script, tools::type_name<T>().c_str(), adata);
+	}
+
+	template <typename T>
+	void actor_base::handle_print(const message<T>& adata)const
+	{
+		if constexpr (is_protobuf_message<T>::value)
+		{
+			tools::print_json(*adata.get_data(), true);
+		}
+		else
+		{
+			njson_write ljson;
+			njson::write(ljson, "message", *adata.get_data());
+			std::string lstr = ljson.get();
+			log_error()->print("{}", lstr);
+		}
+	}
+
+	template <typename TDerived>
+	void actor_base::first_nregister([[maybe_unused]] ENUM_ACTOR atype)
+	{
+		static std::atomic lfirst = true;
+		if (lfirst.exchange(false))
+		{
+			TDerived::nregister();
+		}
+	}
+}
 
 namespace ngl
 {
