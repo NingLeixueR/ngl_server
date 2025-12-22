@@ -207,7 +207,7 @@ namespace ngl
 		}
 		
 		std::string lkcpsession = lpram->mkcpsession();	
-		return connect_kcp(kcpindex(lpram->mserverid(), lpram->m_kcpnum())
+		return kcp_connect(kcp_index(lpram->mserverid(), lpram->m_kcpnum())
 			, lpstructserver.m_ip, nets::kcp_port(ltid, ltcount, lpram->m_kcpnum())
 			, lpram->mactoridserver(), lkcpsession
 		);

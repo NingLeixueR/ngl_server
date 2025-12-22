@@ -125,7 +125,7 @@ namespace ngl
 							{
 								return false;
 							}
-							actor::send_kcp(arobot.m_robot->id_guid(), pro, arobot.m_robot->kcpindex(lservertid, ltcount, lkcpenum));
+							actor::kcp_send(arobot.m_robot->id_guid(), pro, arobot.m_robot->kcp_index(lservertid, ltcount, lkcpenum));
 							return true;
 						});
 				};
@@ -158,7 +158,7 @@ namespace ngl
 							std::shared_ptr<pack> lpack = actor_base::jsonpack(avec[2], avec[3], nguid::moreactor(), arobot.m_actor_roleid);
 							if (lpack != nullptr)
 							{
-								actor::sendpack_kcp(arobot.m_robot->id_guid(), lpack, arobot.m_robot->kcpindex(lservertid, ltcount, lkcpenum));
+								actor::kcp_sendpack(arobot.m_robot->id_guid(), lpack, arobot.m_robot->kcp_index(lservertid, ltcount, lkcpenum));
 							}
 							return true;
 						});

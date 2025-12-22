@@ -350,6 +350,9 @@ namespace ngl
 		template <typename T>
 		static std::shared_ptr<pack> net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
+		//# 给指定连接发送数据
+		static bool send_pack(i32_sessionid asession, std::shared_ptr<pack>& apack);
+
 		//# 发送数据到指定服务器
 		template <typename T>
 		static bool send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
@@ -365,53 +368,30 @@ namespace ngl
 		template <typename T>
 		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		//# 给指定连接发送数据
-		static bool send(i32_sessionid asession, std::shared_ptr<pack>& apack);
-
 		//# 通过proto结构名称与json消息体构造包
 		static std::shared_ptr<pack> jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid);
 
 #pragma region kcp
-		void set_kcpindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex)
-		{
-			m_kcpindex[aserverid].m_data[aenum] = akcpindex;
-		}
+		void kcp_setindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex);
 
-		i16_port kcpindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum)
-		{
-			auto itor = m_kcpindex.find(aserverid);
-			if (itor == m_kcpindex.end())
-			{
-				return -1;
-			}
-			auto itor2 = itor->second.m_data.find(aenum);
-			if (itor2 == itor->second.m_data.end())
-			{
-				return -1;
-			}
-			return itor2->second;
-		}
+		i16_port kcp_index(i32_serverid aserverid, pbnet::ENUM_KCP aenum);
 
-		i16_port kcpindex(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum)
-		{
-			int32_t lserverid = nnodeid::nodeid(aservertid, atcount);
-			return kcpindex(lserverid, aenum);
-		}
+		i16_port kcp_index(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum);
 
 		//# 发起kcp连接
-		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const;
+		bool kcp_connect(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const;
+
+		static bool kcp_sendpack(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport = 0);
+
+		static bool kcp_sendpack(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport = 0);
 
 		//# 通过udp.kcp发送数据
 		template <typename T>
-		static bool send_kcp(i64_actorid aactorid, T& adata, i16_port auport = 0);
+		static bool kcp_send(i64_actorid aactorid, T& adata, i16_port auport = 0);
 
 		template <typename T>
-		static bool send_kcp(const std::set<i64_actorid>& aactorids, T& adata, i16_port auport = 0);
-
-		static bool sendpack_kcp(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport = 0);
-
-		static bool sendpack_kcp(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport = 0);
-#pragma endregion 
+		static bool kcp_send(const std::set<i64_actorid>& aactorids, T& adata, i16_port auport = 0);
+#pragma endregion
 
 #pragma region send_client
 		static i64_actorid actorclient_guid();
