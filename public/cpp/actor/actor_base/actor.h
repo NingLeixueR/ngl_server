@@ -140,9 +140,6 @@ namespace ngl
 		// # 设置actor的状态
 		void set_activity_stat(actor_stat astat) final;
 
-		// # 等待ready
-		void wait_ready(const nguid& aguid)const;
-
 		// # 释放actor消息列表
 		void release() final;
 
@@ -169,24 +166,11 @@ namespace ngl
 		// ############# [广播] ############# 
 		
 		// # 关闭此actor
-		bool handle(const message<np_actor_close>&)
-		{
-			erase_actor();
-			return true;
-		}
+		bool handle(const message<np_actor_close>&);
 
 		// # 脚本语言处理消息
 		template <typename TMESSAGE>
-		bool handle_script(const message<TMESSAGE>& adata)
-		{
-			const TMESSAGE& ldata = *adata.get_data();
-			return nscript_handle(ldata);
-		}
-
-		static i64_actorid tab2actor(ENUM_ACTOR atype, int32_t atabid)
-		{
-			return nguid::make(atype, nconfig::area(), atabid);
-		}
+		bool handle_script(const message<TMESSAGE>& adata);
 	};
 
 	template <typename TDerived>
@@ -194,5 +178,12 @@ namespace ngl
 	void cregister_actor_handle<TDerived>::func(int32_t aready/*enum_ready*/)
 	{
 		nrfun<TDerived>::instance().template rfun<actor, T>((Tfun<actor, T>) & actor::handle_script<T>, aready);
+	}
+
+	template <typename TMESSAGE>
+	bool actor::handle_script(const message<TMESSAGE>& adata)
+	{
+		const TMESSAGE& ldata = *adata.get_data();
+		return nscript_handle(ldata);
 	}
 }//namespace ngl

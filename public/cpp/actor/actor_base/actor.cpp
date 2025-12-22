@@ -172,11 +172,9 @@ namespace ngl
 		return true;
 	}
 
-	void actor::wait_ready(const nguid& aguid)const
+	bool actor::handle(const message<np_actor_close>&)
 	{
-		while (!actor_manage::instance().ready(aguid))
-		{
-			sleep::seconds(1);
-		}
+		erase_actor();
+		return true;
 	}
 }//namespace ngl
