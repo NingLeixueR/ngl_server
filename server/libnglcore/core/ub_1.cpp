@@ -23,7 +23,6 @@
 #include "manage_curl.cpp"
 #include "handle_pram.cpp"
 #include "time_wheel.cpp"
-#include "nserialize.cpp"
 #include "nscript_pb.cpp"
 #include "manage_csv.cpp"
 #include "events_map.cpp"

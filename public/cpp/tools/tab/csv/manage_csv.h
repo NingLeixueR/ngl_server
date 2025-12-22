@@ -108,7 +108,7 @@ namespace ngl
 
 		static std::string path()
 		{
-			std::string lcsvname = std::format("./{}/{}.csv", csvbase::get_path(), tools::type_name<T>());
+			static std::string lcsvname = std::format("./{}/{}.csv", csvbase::get_path(), tools::type_name<T>());
 			return lcsvname;
 		}
 
@@ -148,7 +148,7 @@ namespace ngl
 			if (lload.exchange(false))
 			{
 				using TAB = typename TTAB::type_tab;
-				csvbase* lp = athis;
+				auto lp = (csvbase*)athis;
 				allcsv::add(tools::type_name<TAB>().c_str(), lp);
 				lp->load();
 				lp->reload();
