@@ -53,8 +53,10 @@ namespace ngl
 
 		static void nregister();
 
+		// # 获取所有客户端
 		void get_allclient(std::map<i32_sessionid, i64_actorid>& amap);
 
+		// # 获取指定区服的所有客户端
 		void get_allclientbyarea(std::map<i32_sessionid, i64_actorid>& amap, i16_area aarea);
 
 		bool timer_handle(const message<np_timerparm>& adata);
@@ -68,12 +70,10 @@ namespace ngl
 			std::map<i32_sessionid, i64_actorid> lmap;
 			if (aparm->m_data.m_area[0] == nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
 			{
-				// 获取所有客户端
 				get_allclient(lmap);
 			}
 			else if (aparm->m_data.m_area[0] != nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
 			{
-				// 获取指定区服上的所有客户端
 				get_allclientbyarea(lmap, aparm->m_data.m_area[0]);
 			}
 			else
@@ -116,7 +116,6 @@ namespace ngl
 			}
 			else if (aparm->m_data.m_area[0] != nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
 			{
-				// 获取指定区服上的所有客户端
 				nets::serkcp(pbnet::KCP_GATEWAY, nconfig::m_tcount)->sendpackbyarea(aparm->m_data.m_area[0], lsendpack);
 			}
 			else

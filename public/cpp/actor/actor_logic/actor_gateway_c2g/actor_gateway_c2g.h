@@ -76,11 +76,11 @@ namespace ngl
 			}
 			if (info == nullptr)
 			{
+				log_error()->print("actor_gateway_c2g fail info == nullptr");
 				return false;
 			}
 
-			i64_actorid lactorid = nguid::make(ACTOR_ROLE, info->m_area, info->m_dataid);
-			nets::send_server<forward, T>(info->m_gameid, lpram->m_data.m_data, lactorid, lpack->m_head.get_request_actor());
+			nets::send_server<forward, T>(info->m_gameid, lpram->m_data.m_data, nguid::make(ACTOR_ROLE, info->m_area, info->m_dataid), lpack->m_head.get_request_actor());
 			return true;
 		}
 

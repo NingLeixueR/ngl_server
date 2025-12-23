@@ -95,7 +95,7 @@ namespace ngl
 
 	bool actor_gm::sendtophp(i32_sessionid aidentifier, const ngl::np_gm_response& adata)
 	{
-		::ngl::log_error()->print("gm2php [{}]", adata.m_json);
+		log_error()->print("gm2php [{}]", adata.m_json);
 		actor::send(aidentifier, adata, nguid::make(), nguid::make());
 		return true;
 	}

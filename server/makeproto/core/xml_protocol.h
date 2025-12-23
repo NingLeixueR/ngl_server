@@ -1489,7 +1489,7 @@ namespace ngl
                                 size_t lpos = lnr.find("}//namespace ngl");
                                 if (lpos != std::string::npos)
                                 {
-                                    lhactorfile.m_cppendnr += "}//namespace ngl\n";
+                                    lhactorfile.m_cppendnr += "}//namespace ngl";
                                     continue;
                                 }
                                 else
@@ -1623,7 +1623,6 @@ namespace ngl
 
                 if (!lcontent.empty() && !lset2.empty() && actorname != "actor_robot" && actorname != "actor_role")
                 {
-
                     {
                         std::string lfindstr = std::format("actor::register_timer<{0}>(&{0}::timer_handle);", actorname);
                         size_t lpos = lcontent.find(lfindstr);
