@@ -187,14 +187,11 @@ namespace ngl
 			return true;
 		}
 		auto lparm = adata.get_data();
-
-		
 		if (const tab_servers* tab = ttab_servers::instance().tab(); tab == nullptr)
 		{
 			tools::no_core_dump();
 			return true;
 		}
-
 		for (const nactornode& node : lparm->m_vec)
 		{
 			if (nconfig::m_nodeid != node.m_serverid && server_session::sessionid(node.m_serverid) == -1)
@@ -203,7 +200,6 @@ namespace ngl
 				activ_connect(node.m_serverid);
 			}
 		}
-
 		return true;
 	}
 
