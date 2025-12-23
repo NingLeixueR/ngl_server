@@ -124,7 +124,7 @@ namespace ngl
 					}
 					if (ltabalways->m_type == EActivityAlways::EActivityAlwaysWeek)
 					{
-						int32_t lbeg = (int32_t)localtime::getweekday(lnow,ltabalways->m_wbday==7?0: ltabalways->m_wbday, ltabalways->m_wbhour, ltabalways->m_wbminute, ltabalways->m_wbsecond);
+						int32_t lbeg = (int32_t)localtime::getweekday(lnow, ltabalways->m_wbday == 7 ? 0 : ltabalways->m_wbday, ltabalways->m_wbhour, ltabalways->m_wbminute, ltabalways->m_wbsecond);
 						int32_t lend = (int32_t)localtime::getweekday(lnow, ltabalways->m_weday == 7 ? 0 : ltabalways->m_weday, ltabalways->m_wehour, ltabalways->m_weminute, ltabalways->m_wesecond);
 						start_activity(activityid, lbeg, lend - lbeg);
 						continue;
@@ -161,7 +161,7 @@ namespace ngl
 					else if (ltabalways->m_type == EActivityAlways::EActivityAlwaysFixed)
 					{
 						int32_t lbeg = (int32_t)localtime::getsecond2time(lnow, ltabalways->m_fbhour, ltabalways->m_fbminute, ltabalways->m_fbsecond);
-						int32_t lend = (int32_t)localtime::getsecond2time(lnow+ ltabalways->m_fixedday* localtime::DAY_SECOND, ltabalways->m_fbhour, ltabalways->m_fbminute, ltabalways->m_fbsecond);
+						int32_t lend = (int32_t)localtime::getsecond2time(lnow + ltabalways->m_fixedday * localtime::DAY_SECOND, ltabalways->m_fbhour, ltabalways->m_fbminute, ltabalways->m_fbsecond);
 						start_activity(lactoractivityid, lbeg, lend - lbeg);
 						continue;
 					}
