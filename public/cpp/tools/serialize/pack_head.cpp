@@ -41,10 +41,7 @@ namespace ngl
 		lserialize.basetype(&aactor, sizeof(aactor));
 	}
 
-	void pack_head::set_actor(
-		i64_actorid aactor, /* aenum == ACTOR_NONE 此值无效 */
-		i64_actorid arequestactorid
-	)
+	void pack_head::set_actor(i64_actorid aactor, i64_actorid arequestactorid)
 	{
 		head_set_actor(m_data, aactor, arequestactorid);
 	}

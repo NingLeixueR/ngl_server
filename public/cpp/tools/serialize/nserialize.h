@@ -134,9 +134,7 @@ namespace ngl
 		struct serialize_format
 		{
 			static bool push(serialize_push* aserialize, const T& adata);
-
 			static bool pop(serialize_pop* aserialize, T& adata);
-
 			static void bytes(serialize_byte* aserialize, const T& adata);
 		};
 

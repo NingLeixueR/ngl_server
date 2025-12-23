@@ -167,7 +167,6 @@ namespace ngl
 			}
 			return false;
 		}
-
 	};
 }
 
@@ -186,12 +185,6 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool handle_pram::send(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid)
-	{
-		return nets::send(asession, adata, aactorid.id(), arequestactorid.id());
-	}
-
-	template <typename T>
 	bool actor_base::send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
 		return nets::send_server<T>(aserverid, adata, aactorid, arequestactorid);
@@ -201,6 +194,12 @@ namespace ngl
 	bool actor_base::send_server(const std::set<i32_serverid>& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
 		return nets::send_server<T>(aserverids, adata, aactorid, arequestactorid);
+	}
+
+	template <typename T>
+	bool handle_pram::send(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid)
+	{
+		return nets::send(asession, adata, aactorid.id(), arequestactorid.id());
 	}
 
 	template <typename T>
