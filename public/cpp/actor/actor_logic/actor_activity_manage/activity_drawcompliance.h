@@ -14,6 +14,7 @@
 #pragma once
 
 #include "ttab_activity_drawcompliance.h"
+#include "actor_activity_manage.h"
 #include "activity.h"
 
 namespace ngl
@@ -94,10 +95,7 @@ namespace ngl
 					if (itorreward == itor->second.mutable_mreward()->end())
 					{
 						// 发送
-						std::string lsrc = std::format(
-							"activity_drawcompliance role=[{}] mail=[{}] drop=[{}]", 
-							aroleid, _data.m_mailid, _data.m_dropid
-						);
+						std::string lsrc = std::format("activity_drawcompliance role=[{}] mail=[{}] drop=[{}]", aroleid, _data.m_mailid, _data.m_dropid);
 						if (actor_activity_manage::get_drop().use(_data.m_dropid, 1, aroleid, lsrc, nullptr, _data.m_mailid))
 						{
 							// 记录已领取
