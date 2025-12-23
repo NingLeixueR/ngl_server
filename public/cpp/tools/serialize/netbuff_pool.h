@@ -25,13 +25,13 @@
 
 namespace ngl
 {
-	template <int InitBytes, int Count>
+	template <int TINITBYTES, int TCOUNT>
 	class netbuff
 	{
-		std::array<std::list<char*>, Count> m_pool;
-		std::array<int32_t, Count>			m_bytes;
-		const std::array<int32_t, Count>	m_counts;
-		std::shared_mutex					m_mutex;
+		std::array<std::list<char*>, TCOUNT> m_pool;
+		std::array<int32_t, TCOUNT>			 m_bytes;
+		const std::array<int32_t, TCOUNT>	 m_counts;
+		std::shared_mutex					 m_mutex;
 
 		enum
 		{
@@ -41,7 +41,7 @@ namespace ngl
 		char* nmalloc(int32_t aindex, int32_t abytes = 0)
 		{
 			int32_t lbytes = 0;
-			if (aindex >= Count || aindex < 0)
+			if (aindex >= TCOUNT || aindex < 0)
 			{
 				lbytes = abytes + enum_int32char;
 			}
@@ -73,11 +73,11 @@ namespace ngl
 			char* lbuff = abuff - enum_int32char;
 			if (*lbuff != 'k')
 			{
-				log_error()->print("netbuff<{},{}>::nfree != k", InitBytes, Count);
+				log_error()->print("netbuff<{},{}>::nfree != k", TINITBYTES, TCOUNT);
 				return;
 			}
 			int lindex = *(int*)(abuff - sizeof(int));
-			if (lindex >= 0 && lindex < Count)
+			if (lindex >= 0 && lindex < TCOUNT)
 			{
 				if (abool)
 				{
@@ -95,11 +95,11 @@ namespace ngl
 			}
 		}
 	public:
-		netbuff(const std::array<int32_t, Count>& acounts):
+		netbuff(const std::array<int32_t, TCOUNT>& acounts):
 			m_counts(acounts)
 		{
-			m_bytes[0] = InitBytes;
-			for (int32_t i = 0; i < Count; ++i)
+			m_bytes[0] = TINITBYTES;
+			for (int32_t i = 0; i < TCOUNT; ++i)
 			{
 				if (i != 0)
 				{
@@ -155,7 +155,7 @@ namespace ngl
 		void time_free()
 		{
 			monopoly_shared_lock(m_mutex);
-			for (int32_t i = 0; i < Count; ++i)
+			for (int32_t i = 0; i < TCOUNT; ++i)
 			{
 				int32_t lcount = m_counts[i] * 2;
 				std::list<char*>& ls = m_pool[i];
