@@ -61,8 +61,7 @@ namespace ngl
 
 		// ÉèÖÃtimer_handle¶¨Ê±Æ÷
 		// flush
-		
-		int32_t lflushtime = m_logarr.begin()->second->m_config.flush_time() / 1000;
+		int32_t lflushtime = m_logarr.begin()->second->m_config.flush_time() / localtime::MILLISECOND;
 		np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, lflushtime) == false)
 		{

@@ -32,9 +32,7 @@ namespace ngl
 		keyvaluedb& operator=(const keyvaluedb&) = delete;
 
 	public:
-		keyvaluedb()
-		{
-		}
+		keyvaluedb() = default;
 
 		void related_actorid() final
 		{
@@ -51,17 +49,17 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool add_keyvalue(nguid aid, const T& adata)
+		bool keyvalue_add(nguid aid, const T& adata)
 		{
 			pbdb::db_keyvalue ldata;
 			ldata.set_mid(aid);
 			ldata.set_mvalue(tools::lexical_cast<std::string>(adata));
-			update_keyvalue(&ldata);
+			keyvalue_update(&ldata);
 			return true;
 		}
 
 		// 没有就添加
-		void update_keyvalue(const pbdb::db_keyvalue* adata)
+		void keyvalue_update(const pbdb::db_keyvalue* adata)
 		{
 			data_modified<pbdb::db_keyvalue>& lpdata = get(adata->mid());
 			*lpdata.get() = *adata;
@@ -76,7 +74,7 @@ namespace ngl
 		{
 			for (const pbdb::db_keyvalue& item : m_vecinfo)
 			{
-				update_keyvalue(&item);
+				keyvalue_update(&item);
 			}
 		}
 	};
