@@ -128,6 +128,11 @@ namespace ngl
 		dprotocol(nscript_data_nsp<T>, data)
 	};
 
+	struct kcpport
+	{
+		std::map<pbnet::ENUM_KCP, i16_port> m_data;
+	};
+
 	class actor_base
 	{
 		actor_base() = delete;
@@ -139,40 +144,25 @@ namespace ngl
 		bool										m_isload = false;				// 数据是否加载完成
 		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;					// dbclient组件
 
-		//#################################################################################
-		// 系统广播
-		//#################################################################################
 		//# 间隔一段时间发起的全员(所有actor)广播
 		//# 可以在这个广播里推送一些需要处理的任务,例如 保存数据
-		//# 推送全员广播的 单位(毫秒)
-		static int									m_broadcast;
-		//# 推送广播的定时器id
-		static int									m_broadcasttimer;
-		//# 是否接收广播消息
-		bool										m_isbroadcast = false;
-		//################################################################################
-
-		//# "ready"组件实例
-		nready										m_ready;
-
-		//# 对脚本语言的支持
-		void*										m_script = nullptr;
+		static int									m_broadcast;					// 推送全员广播的 单位(毫秒)
+		static int									m_broadcasttimer;				// 推送广播的定时器id
+		bool										m_isbroadcast = false;			// 是否接收广播消息
+				
+		nready										m_ready;						// "ready"组件实例
+		void*										m_script = nullptr;				// 对脚本语言的支持
 		enscript									m_enscript = enscript_none;		// 脚本支持
 
-		struct kcpport
-		{
-			std::map<pbnet::ENUM_KCP, i16_port> m_data;
-		};
-		std::map<i32_serverid, kcpport> m_kcpindex;
+		std::map<i32_serverid, kcpport>				m_kcpindex;
 	public:
 		explicit actor_base(const actorparmbase& aparm);
 
 		//# 获取"ready"组件实例
-		nready&			ready();
+		nready& ready();
 
 		//# 获取actor_manage_dbclient实例
-		using ptr_manage_dbc = std::unique_ptr<actor_manage_dbclient>;
-		ptr_manage_dbc& get_actor_manage_dbclient();
+		std::unique_ptr<actor_manage_dbclient>& get_actor_manage_dbclient();
 
 		//# 设置db_component组件
 		void set_db_component(ndb_component* acomponent);
@@ -306,7 +296,7 @@ namespace ngl
 		//# 给指定连接发送数据
 		template <typename T>
 		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
-
+#pragma region send_server
 		//# 发送数据到指定服务器
 		template <typename T>
 		static bool send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
@@ -317,6 +307,7 @@ namespace ngl
 
 		//# 发送pack到指定服务器
 		static bool send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
+#pragma endregion
 
 #pragma region kcp
 		void kcp_setindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex);

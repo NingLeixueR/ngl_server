@@ -34,11 +34,11 @@ namespace ngl
 		actor_manage& operator=(const actor_manage&) = delete;
 
 		
-		std::list<nthread*>		m_workthreads;			// 工作线程
-		bool					m_suspend = false;		// 是否挂起
-		std::list<nthread*>		m_suspendthreads;		// 挂起的工作线程
-		std::jthread			m_thread;				// 管理线程
-		i32_threadsize			m_threadnum = -1;		// 工作线程数量
+		std::list<nthread*>			m_workthreads;		// 工作线程
+		bool						m_suspend = false;	// 是否挂起
+		std::list<nthread*>			m_suspendthreads;	// 挂起的工作线程
+		std::jthread				m_thread;			// 管理线程
+		i32_threadsize				m_threadnum = -1;	// 工作线程数量
 		std::map<nguid, ptractor>	m_actorbyid;		// 索引actor
 		std::map<nguid, ptractor>	m_actorbroadcast;	// 支持广播的actor
 		std::list<ptractor>			m_actorlist;		// 有任务的actor列表
