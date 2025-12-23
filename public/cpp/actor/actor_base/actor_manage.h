@@ -33,40 +33,18 @@ namespace ngl
 		actor_manage(const actor_manage&) = delete;
 		actor_manage& operator=(const actor_manage&) = delete;
 
-		//// ---- 线程相关
-		// # 工作线程
-		std::list<nthread*>	m_workthreads;
-
-		// # 是否挂起
-		bool m_suspend = false;	
-
-		// # 挂起的工作线程
-		std::list<nthread*>	m_suspendthreads;
-
-		// # 管理线程
-		std::jthread m_thread;	
-
-		// # 工作线程数量
-		i32_threadsize m_threadnum = -1;	
-
-		// # 索引actor
-		std::map<nguid, ptractor> m_actorbyid;
-
-		// # 支持广播的actor
-		std::map<nguid, ptractor> m_actorbroadcast;
-
-		// # 按类型索引actor
-		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;
-
-		// # 有任务的actor列表
-		std::list<ptractor>	m_actorlist;
-
-		// # 包含哪些actortype
-		std::set<i16_actortype>	m_actortype;
-
-		// # 删除actor后需要执行的操作
-		// (延迟操作:删除的瞬间actor正是运行状态,等待其回归后进行删除)
-		std::map<nguid, std::function<void()>> m_delactorfun;
+		
+		std::list<nthread*>		m_workthreads;			// 工作线程
+		bool					m_suspend = false;		// 是否挂起
+		std::list<nthread*>		m_suspendthreads;		// 挂起的工作线程
+		std::jthread			m_thread;				// 管理线程
+		i32_threadsize			m_threadnum = -1;		// 工作线程数量
+		std::map<nguid, ptractor>	m_actorbyid;		// 索引actor
+		std::map<nguid, ptractor>	m_actorbroadcast;	// 支持广播的actor
+		std::list<ptractor>			m_actorlist;		// 有任务的actor列表
+		std::set<i16_actortype>		m_actortype;		// 包含哪些actortype
+		std::map<nguid, std::function<void()>>			m_delactorfun;	// 删除actor后需要执行的操作// (延迟操作:删除的瞬间actor正是运行状态,等待其回归后进行删除)
+		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;	// 按类型索引actor
 
 		ngl_lockinit;
 
@@ -185,7 +163,6 @@ namespace ngl
 
 namespace ngl
 {
-	//# 向所有类型的actor发送数据
 	template <typename T, bool IS_SEND/* = true*/>
 	void actor_base::send_actor(ENUM_ACTOR atype, const std::shared_ptr<T>& adata)
 	{
@@ -194,7 +171,6 @@ namespace ngl
 		actor_manage::instance().push_task_type(atype, lpram);
 	}
 
-	//# 发送数据到指定的actor
 	template <typename T, bool IS_SEND/* = true*/>
 	void actor_base::send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
 	{
@@ -202,7 +178,6 @@ namespace ngl
 		actor_manage::instance().push_task_id(aguid, lpram);
 	}
 
-	//# 发送数据到指定的actor
 	template <typename T, bool IS_SEND/* = true*/>
 	void actor_base::send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
 	{
