@@ -46,28 +46,28 @@ namespace ngl
 					pro.m_istoutf8 = false;
 				};
 
-			handle_cmd::add("add_notice") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("notice_add") = [this](int id, ngl::njson_read& aos)
 				{
-					gcmd<bool> pro(id, "add_notice", false);
+					gcmd<bool> pro(id, "notice_add", false);
 					gm_notice recv;
 					if (!njson::read(aos, "data", recv))
 					{
 						return;
 					}
-					m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
+					m_notice.notice_add(recv.m_notice, recv.m_starttime, recv.m_finishtime);
 					pro.m_data = true;
 				};
 
-			handle_cmd::add("del_notice") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("notice_del") = [this](int id, ngl::njson_read& aos)
 				{
-					gcmd<bool> pro(id, "del_notice", false);
+					gcmd<bool> pro(id, "notice_del", false);
 					int64_t lid = 0;
 					if (!njson::read(aos, "data", lid))
 					{
 						return;
 					}
 					pro.m_data = true;
-					m_notice.del_notice(lid);
+					m_notice.notice_del(lid);
 				};
 		}
 		if (handle_cmd::function(loperator, (int32_t)adata.get_data()->identifier(), lojson) == false)
@@ -86,7 +86,7 @@ namespace ngl
 	bool actor_notice::handle(const message<np_actor_addnotice>& adata)
 	{
 		auto& recv = *adata.get_data();
-		m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
+		m_notice.notice_add(recv.m_notice, recv.m_starttime, recv.m_finishtime);
 		return true;
 	}
 }//namespace ngl

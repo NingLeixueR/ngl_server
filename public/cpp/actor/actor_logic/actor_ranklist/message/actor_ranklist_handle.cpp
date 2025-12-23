@@ -42,7 +42,7 @@ namespace ngl
 						return true;
 					}
 					pbnet::PROBUFF_NET_RANKLIST_RESPONSE prorank;
-					if (m_ranklist.get_ranklist(nguid::make(), (pbdb::eranklist)lrank.m_type, lrank.m_page, prorank))
+					if (m_ranklist.ranklist_get(nguid::make(), (pbdb::eranklist)lrank.m_type, lrank.m_page, prorank))
 					{
 						tools::proto2json(prorank, pro.m_data);
 					}
@@ -59,17 +59,17 @@ namespace ngl
 	bool actor_ranklist::handle(const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata)
 	{
 		auto lrecv = adata.get_data()->data();
-		m_ranklist.sync_ranklist(adata.get_data()->identifier(), lrecv->mtype(), lrecv->mactivityid(), lrecv->mpage());
+		m_ranklist.ranklist_sync(adata.get_data()->identifier(), lrecv->mtype(), lrecv->mactivityid(), lrecv->mpage());
 		return true;
 	}
 	bool actor_ranklist::handle(const message<np_activityrank_operator>& adata)
 	{
 		auto lrecv = adata.get_data();
 		int32_t lrankid = lrecv->m_rankid;
-		m_ranklist.remove_rank(lrankid);
+		m_ranklist.rank_remove(lrankid);
 		if (lrecv->m_iscreate)
 		{
-			m_ranklist.add_rank(lrankid);			
+			m_ranklist.rank_add(lrankid);			
 		}
 		return true;
 	}
@@ -78,7 +78,7 @@ namespace ngl
 		auto lrecv = adata.get_data();
 		auto pro = std::make_shared<np_get_rank_response>();
 		pro->m_rankid = lrecv->m_rankid;
-		m_ranklist.get_rank(lrecv->m_rankid, pro->m_rolerank);
+		m_ranklist.rank_get(lrecv->m_rankid, pro->m_rolerank);
 		return true;
 	}
 }//namespace ngl

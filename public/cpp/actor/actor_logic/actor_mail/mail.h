@@ -53,13 +53,7 @@ namespace ngl
 			return itor->second;
 		}
 
-		bool addmail(
-			i64_actorid aroleid
-			, int atid
-			, const std::map<int32_t, int32_t>& aitem
-			, const std::string& acontent
-			, const std::string& aparm
-		)
+		bool addmail(i64_actorid aroleid, int atid, const std::map<int32_t, int32_t>& aitem, const std::string& acontent, const std::string& aparm)
 		{
 			if (atid != -1)
 			{

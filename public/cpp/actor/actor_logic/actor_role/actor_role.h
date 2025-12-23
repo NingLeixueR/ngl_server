@@ -37,22 +37,21 @@
 #include "net.h"
 #include "db.h"
 
-
 namespace ngl
 {
 	enum ecross
 	{
-		ecross_ordinary = 1,			// 本服转发
-		ecross_cross_ordinary = 2,		// 跨服转发
-		ecross_cross_example = 3,		// 例子转发
-		ecross_none = 4,				// 错误转发
+		ecross_ordinary			= 1,		// 本服转发
+		ecross_cross_ordinary	= 2,		// 跨服转发
+		ecross_cross_example	= 3,		// 例子转发
+		ecross_none				= 4,		// 错误转发
 	};
 
 	struct prorechange
 	{
 		std::string m_orderid;
-		int32_t m_rechargeid = 0;
-		int64_t m_roleid = 0;
+		int32_t		m_rechargeid = 0;
+		int64_t		m_roleid = 0;
 
 		dprotocol(prorechange, m_orderid, m_rechargeid, m_roleid)
 	};
@@ -61,15 +60,15 @@ namespace ngl
 		public actor
 	{
 	public:
-		remakes		 m_remakes;
-		roleinfo	 m_info;
-		bag			 m_bag;
-		task		 m_task;
-		rolekv		 m_rolekv;
-		attribute	 m_attribute;
-		i32_serverid m_gatewayid;
+		remakes				m_remakes;
+		roleinfo			m_info;
+		bag					m_bag;
+		task				m_task;
+		rolekv				m_rolekv;
+		attribute			m_attribute;
+		i32_serverid		m_gatewayid;
+		drop<actor_role>	m_drop;
 		std::pair<pbexample::EPLAY_TYPE, i64_actorid> m_example;
-		drop<actor_role> m_drop;
 	public:
 		actor_role(const actor_role&) = delete;
 		actor_role& operator=(const actor_role&) = delete;
@@ -150,12 +149,12 @@ namespace ngl
 			{
 				return ecross_none;
 			}
-			return adata.mcross() == pbexample::ECROSS_CROSS_ORDINARY ? ecross_cross_ordinary : ecross_ordinary;
+			return adata.mcross() == static_cast<int>(pbexample::ECROSS_CROSS_ORDINARY) ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
 		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE& adata)
 		{
-			return adata.mcross() == pbexample::ECROSS_CROSS_ORDINARY ? ecross_cross_ordinary : ecross_ordinary;
+			return adata.mcross() == static_cast<int>(pbexample::ECROSS_CROSS_ORDINARY) ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
 		//# 例子小游戏匹配的转发类型

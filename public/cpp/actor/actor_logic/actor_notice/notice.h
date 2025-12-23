@@ -67,7 +67,7 @@ namespace ngl
 			m_removetimer = (int32_t)twheel::wheel().addtimer(lparm);
 		}
 
-		void add_notice(const std::string& anotice, int32_t abeg, int32_t aend)
+		void notice_add(const std::string& anotice, int32_t abeg, int32_t aend)
 		{
 			pbdb::db_notice lnotice;
 			lnotice.set_mid(++m_maxid);
@@ -84,7 +84,7 @@ namespace ngl
 			actor::send_client(pro);
 		}
 
-		void del_notice(int64_t aid)
+		void notice_del(int64_t aid)
 		{
 			erase(aid);
 		}
