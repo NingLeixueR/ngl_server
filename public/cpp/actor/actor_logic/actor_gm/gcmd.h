@@ -27,7 +27,7 @@ namespace ngl
 		gcmd& operator=(const gcmd&) = delete;
 		int			id = 0;
 		std::string m_operator;
-		actor*		m_actor;
+		actor*		m_actor = nullptr;
 	public:
 		T			m_data;
 		bool		m_istoutf8 = true;
@@ -54,7 +54,7 @@ namespace ngl
 			Try
 			{
 				ngl::njson_write lwrite;
-			std::string lservername = tools::server_name();
+				std::string lservername = tools::server_name();
 				njson::write(lwrite
 					, "operator", m_operator
 					, "data", m_data

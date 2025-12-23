@@ -21,13 +21,13 @@ namespace ngl
 {
 	class ukcp
 	{
-		asio_kcp m_kcp;
-		bpool m_pool;
+		asio_kcp	m_kcp;
+		bpool		m_pool;
 
 		ukcp(i16_port aprot);
 	public:
-		static const int32_t m_conv = 1;
-		static std::string m_localuip;
+		static const int32_t	m_conv = 1;
+		static std::string		m_localuip;
 
 		static ukcp* create(i16_port aprot)
 		{
@@ -53,11 +53,6 @@ namespace ngl
 		bool send_server(std::shared_ptr<pack>& apack)
 		{
 			return m_kcp.send_server(apack);
-		}
-
-		bool sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack)
-		{
-			return m_kcp.sendpackbyarea(aarea, apack);
 		}
 
 		bool send_server(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack)
@@ -92,6 +87,11 @@ namespace ngl
 		{
 			std::set<i64_actorid> lactors = { aactor };
 			return send_server(lactors, apack);
+		}
+
+		bool sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack)
+		{
+			return m_kcp.sendpackbyarea(aarea, apack);
 		}
 
 		template <typename T>
@@ -138,18 +138,8 @@ namespace ngl
 #pragma endregion 
 
 		// ## 发起连接
-		void connect(std::string& akcpsess
-			, i64_actorid aactoridserver
-			, i64_actorid aactoridclient
-			, const std::string& aip, i16_port aport
-			, const std::function<void(i32_session)>& afun
-		);
-		void connect(std::string& akcpsess
-			, i64_actorid aactoridserver
-			, i64_actorid aactoridclient
-			, const asio_udp_endpoint& aendpoint
-			, const std::function<void(i32_session)>& afun
-		);
+		void connect(std::string& akcpsess, i64_actorid aactoridserver, i64_actorid aactoridclient, const std::string& aip, i16_port aport, const std::function<void(i32_session)>& afun);
+		void connect(std::string& akcpsess, i64_actorid aactoridserver, i64_actorid aactoridclient, const asio_udp_endpoint& aendpoint, const std::function<void(i32_session)>& afun);
 
 		// ## 查找session对应的actorid
 		i64_actorid find_actoridserver(i32_session asession);
@@ -157,14 +147,13 @@ namespace ngl
 		bool find_actorid(i32_session asession, i64_actorid& aactoridserver, i64_actorid& aactoridclient);
 
 		// ## 生成kcp-session以验证连接
-		static bool create_session(i64_actorid aactoridclient, i64_actorid aactoridserver, std::string& asession);
+		static bool session_create(i64_actorid aactoridclient, i64_actorid aactoridserver, std::string& asession);
 
 		// ## 检查kcp-session以验证连接
-		static bool check_session(i64_actorid aactoridclient, i64_actorid aactoridserver, const std::string& asession);
+		static bool session_check(i64_actorid aactoridclient, i64_actorid aactoridserver, const std::string& asession);
 
 		// ## 重置连接
 		void reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient);
-
 		void reset_add(const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient);
 	};
 }// namespace ngl

@@ -35,9 +35,11 @@ namespace ngl
 			m_info.remove_actorid(nguid::make(ACTOR_NONE, larea, lroleid));
 		}
 
-		auto pro = std::make_shared<np_actor_gatewayinfo_updata>();
-		pro->m_delactorid.push_back(nguid::make(ACTOR_NONE, larea, lroleid));
-		update_gateway_info(pro);
+		{
+			auto pro = std::make_shared<np_actor_gatewayinfo_updata>();
+			pro->m_delactorid.push_back(nguid::make(ACTOR_NONE, larea, lroleid));
+			update_gateway_info(pro);
+		}
 
 		{
 			auto pro = std::make_shared<np_actor_disconnect_close>();
@@ -59,24 +61,24 @@ namespace ngl
 		auto lparm = adata.get_data();
 		nguid lguid(lparm->m_roleid);
 
-		if (const auto linfo = m_info.get(lguid.area(), lguid.actordataid()); linfo != nullptr)
+		const auto linfo = m_info.get(lguid.area(), lguid.actordataid());
+		if (linfo != nullptr)
 		{
 			return true;
 		}
 		gateway_socket ltemp
 		{
-				.m_session = lparm->m_session,
-				.m_area = lguid.area(),
-				.m_accountid = lparm->m_accountid,
-				.m_dataid = lguid.actordataid(),
-				.m_gameid = lparm->m_gameid,
-				.m_gatewayid = lparm->m_gatewayid,
-				.m_socket = 0,
+			.m_session = lparm->m_session,
+			.m_area = lguid.area(),
+			.m_accountid = lparm->m_accountid,
+			.m_dataid = lguid.actordataid(),
+			.m_gameid = lparm->m_gameid,
+			.m_gatewayid = lparm->m_gatewayid,
+			.m_socket = 0,
 		};
 		m_info.updata(ltemp);
 
-		update_gateway_info(
-			std::make_shared<np_actor_gatewayinfo_updata>(
+		update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(
 				np_actor_gatewayinfo_updata
 				{ 
 					.m_add = {ltemp} 
@@ -84,7 +86,7 @@ namespace ngl
 			)
 		);
 
-		// ## 通知actor_server [actorid]->[gateway server id]
+		// 通知actor_server [actorid]->[gateway server id]
 		sync_actorserver_gatewayid(lguid, false);
 		return true;
 	}
@@ -118,8 +120,7 @@ namespace ngl
 		if (lpram->m_toserverid != 0)
 		{
 			linfo->m_gameid = lpram->m_toserverid;
-			update_gateway_info(
-				std::make_shared<np_actor_gatewayinfo_updata>(
+			update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(
 					np_actor_gatewayinfo_updata
 					{ 
 						.m_add = {*linfo} 
@@ -159,8 +160,7 @@ namespace ngl
 			session_close(linfo);
 		}
 
-		update_gateway_info(
-			std::make_shared<np_actor_gatewayinfo_updata>(
+		update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(
 				np_actor_gatewayinfo_updata
 				{ 
 					.m_delsocket = {lpram->m_sessionid} 
@@ -182,7 +182,7 @@ namespace ngl
 		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 		if (linfo == nullptr || linfo->m_session != lpram->msession())
 		{
-			//tools::no_core_dump();
+			log_error()->print("# GateWay Login Fail");
 			return true;
 		}
 		
@@ -195,11 +195,13 @@ namespace ngl
 			if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
 			{
 				update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata
-					{
-						.m_add = { *linfo },
-						.m_delsocket = { loldsocket },
-						.m_delactorid = { nguid::make(ACTOR_ROLE,lguid.area(), lguid.actordataid()) },
-					}));
+						{
+							.m_add = { *linfo },
+							.m_delsocket = { loldsocket },
+							.m_delactorid = { nguid::make(ACTOR_ROLE,lguid.area(), lguid.actordataid()) },
+						}
+					)
+				);
 			}
 			// 断线重连或者其他设备顶号
 			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid());
@@ -210,8 +212,7 @@ namespace ngl
 
 		if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
 		{
-			update_gateway_info(
-				std::make_shared<np_actor_gatewayinfo_updata>(
+			update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(
 					np_actor_gatewayinfo_updata
 					{ 
 						.m_add = {*linfo} 
@@ -233,7 +234,7 @@ namespace ngl
 		auto lpack = adata.get_pack();
 
 		std::string lkcpsession;
-		if (ukcp::create_session(lpram->mactoridserver(), lpram->mactoridclient(), lkcpsession) == false)
+		if (ukcp::session_create(lpram->mactoridserver(), lpram->mactoridclient(), lkcpsession) == false)
 		{
 			return true;
 		}

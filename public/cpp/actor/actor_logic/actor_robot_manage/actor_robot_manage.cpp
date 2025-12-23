@@ -218,8 +218,7 @@ namespace ngl
 			return false;
 		}
 
-		lpukcp->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
-			, [this, &lprobot, lserverid, akcpenum, aseractorid](char* buff, int len)
+		lpukcp->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp"), [this, &lprobot, lserverid, akcpenum, aseractorid](char* buff, int len)
 			{
 				log_error()->print("Local GetIp Finish : {}", buff);
 				ukcp::m_localuip = buff;

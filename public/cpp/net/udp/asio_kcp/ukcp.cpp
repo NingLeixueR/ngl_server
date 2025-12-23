@@ -60,18 +60,18 @@ namespace ngl
 	}
 
 	// 生成kcp-session以验证连接
-	bool ukcp::create_session(i64_actorid aactoridclient, i64_actorid aactoridserver, std::string& asession)
+	bool ukcp::session_create(i64_actorid aactoridclient, i64_actorid aactoridserver, std::string& asession)
 	{
 		std::string lkcpsession = std::format("{}&{}&{}", sysconfig::kcpsession(), aactoridclient, aactoridserver);
 		asession = tools::md5(lkcpsession);
-		log_error_net()->print("ukcp::create_session({}:{})", lkcpsession, asession);
+		log_error_net()->print("ukcp::session_create({}:{})", lkcpsession, asession);
 		return true;
 	}
 
-	bool ukcp::check_session(i64_actorid aactoridclient, i64_actorid aactoridserver, const std::string& asession)
+	bool ukcp::session_check(i64_actorid aactoridclient, i64_actorid aactoridserver, const std::string& asession)
 	{
 		std::string lsession;
-		if (create_session(aactoridclient, aactoridserver, lsession) == false)
+		if (session_create(aactoridclient, aactoridserver, lsession) == false)
 		{
 			return false;
 		}

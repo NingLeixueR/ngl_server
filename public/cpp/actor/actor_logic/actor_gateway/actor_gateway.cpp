@@ -117,8 +117,8 @@ namespace ngl
 
 		wheel_parm lparm
 		{
-			.m_ms = sysconfig::sessionwait() * 1000,
-			.m_intervalms = [](int64_t) {return sysconfig::sessionwait() * 1000; } ,
+			.m_ms = sysconfig::sessionwait() * localtime::MILLISECOND,
+			.m_intervalms = [](int64_t) {return sysconfig::sessionwait() * localtime::MILLISECOND; } ,
 			.m_count = 1,
 			.m_fun = [this, lroleid, larea](const wheel_node* anode)
 			{

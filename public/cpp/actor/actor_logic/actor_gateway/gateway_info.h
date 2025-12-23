@@ -25,10 +25,8 @@ namespace ngl
 		gateway_info(const gateway_info&) = delete;
 		gateway_info& operator=(const gateway_info&) = delete;
 
-		// key:area  value.key:roleid
-		std::map<i16_area, std::map<i32_actordataid, gateway_socket>> m_info;
-		// key:socket
-		std::map<i32_socket, gateway_socket*> m_sockinfo;
+		std::map<i16_area, std::map<i32_actordataid, gateway_socket>>	m_info;		// key:area  value.key:roleid
+		std::map<i32_socket, gateway_socket*>							m_sockinfo;	// key:socket
 	public:
 		gateway_info() {}
 

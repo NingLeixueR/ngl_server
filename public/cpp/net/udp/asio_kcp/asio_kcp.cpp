@@ -98,7 +98,7 @@ namespace ngl
 				{
 					return;
 				}
-				if (ukcp::check_session(lactoridserver, lactoridclient, lsession) == false)
+				if (ukcp::session_check(lactoridserver, lactoridclient, lsession) == false)
 				{
 					return;
 				}
