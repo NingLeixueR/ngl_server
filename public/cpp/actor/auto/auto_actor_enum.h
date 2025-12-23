@@ -12,7 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-12-20 11:02:44
+// 创建时间 // 创建时间 25-12-23 11:25:09
 #pragma once
 
 #include "nactortype.h"

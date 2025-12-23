@@ -12,7 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-12-20 11:02:57
+// 创建时间 // 创建时间 25-12-23 11:25:29
 #pragma once
 
 #include "csv.h"
@@ -51,8 +51,6 @@ enum EPH
 	EPH_ACTOR_ID,	// ACTOR_ID
 	EPH_REQUEST_ACTOR_TYPEAREA,	// Request ACTOR_TYPE_AREA
 	EPH_REQUEST_ACTOR_ID,	// Request ACTOR_ID
-	EPH_CUSTOM1,	// 自定义1
-	EPH_CUSTOM2,	// 自定义2
 	EPH_SUM,	
 };
 enum NODE_TYPE
