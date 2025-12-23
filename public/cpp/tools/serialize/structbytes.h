@@ -14,6 +14,7 @@
 #pragma once
 
 #include "nserialize.h"
+#include "tprotocol.h"
 #include "type.h"
 #include "pack.h"
 #include "nlog.h"
