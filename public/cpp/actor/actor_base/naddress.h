@@ -58,39 +58,39 @@ namespace ngl
 		static bool set_node(const nactornode& anode);
 
 		//# 添加actor
-		static void add_actor_address(i32_serverid aserverid, i64_actorid adataid);
+		static void actor_address_add(i32_serverid aserverid, i64_actorid adataid);
 
 		//# 添加一组actor
-		static void add_actor_address(i32_serverid aserverid, const std::vector<i64_actorid>& avec);
+		static void actor_address_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec);
 
 		//# 删除actor
-		static void del_actor_address(i64_actorid adataid);
+		static void actor_address_del(i64_actorid adataid);
 
 		//# 删除一组actor
-		static void del_actor_address(const std::vector<i64_actorid>& avec);
+		static void actor_address_del(const std::vector<i64_actorid>& avec);
 
 		//# 设置session
 		static void set_session(i32_serverid aserverid, i32_sessionid asession);
 
 		//# 获取session
-		static i32_sessionid get_session(i32_serverid aserverid);
+		static i32_sessionid sessionid(i32_serverid aserverid);
 
 		//# 获取server id
-		static i32_serverid get_server(const nguid& aguid);
+		static i32_serverid serverid(const nguid& aguid);
 
 		//# 获取ENUM_ACTOR 对应的服务器
-		static void get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& aservers);
+		static void serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& aservers);
 #pragma endregion
 
 #pragma region gateway
-		//# [ACTOR_ID(ACTOR_ROLE的actor)] -> [GATEWAY_SERVER_ID]
-		static i32_serverid gatewayid(const nguid& aguid);
-
 		//# 将actor_role.actorid与gatewayid关联
-		static void add_gatewayid(const nguid& aguid, i32_serverid aserverid);
+		static void gatewayid_add(const nguid& aguid, i32_serverid aserverid);
 
 		//# 解除actor_role.actorid与gatewayid的关联
-		static void remove_gatewayid(const nguid& aguid);
+		static void gatewayid_del(const nguid& aguid);
+
+		//# [ACTOR_ID(ACTOR_ROLE的actor)] -> [GATEWAY_SERVER_ID]
+		static i32_serverid gatewayid(const nguid& aguid);
 
 		//# 获取一组actor_role.actorid与gatewayid的关联
 		static void gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset);

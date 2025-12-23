@@ -400,7 +400,7 @@ namespace ngl
 		}
 
 		// 获取的是服务器的tid  没有结合tcount
-		bool get_server(NODE_TYPE atype, i16_area aarea, std::set<i32_serverid>& aset)
+		bool serverid(NODE_TYPE atype, i16_area aarea, std::set<i32_serverid>& aset)
 		{
 			return foreach_server(atype, aarea, [&aset](const tab_servers* iserver)
 				{
@@ -411,7 +411,7 @@ namespace ngl
 		const tab_servers* find_first(NODE_TYPE atype, i16_area aarea, const std::function<bool(const tab_servers*)>& afun)
 		{
 			std::set<i32_serverid> lset;
-			get_server(atype, aarea, lset);
+			serverid(atype, aarea, lset);
 			for (i32_serverid serverid : lset)
 			{
 				const tab_servers* ltab = tab(serverid);

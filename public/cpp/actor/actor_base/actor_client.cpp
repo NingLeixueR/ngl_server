@@ -95,7 +95,7 @@ namespace ngl
 		i64_actorid	lactorid = id_guid();
 		i64_actorid lactorserve = actor_server::actorid();
 		set_node(lserverid, adata.get_data()->m_session);
-		naddress::add_actor_address(lserverid, lactorserve);
+		naddress::actor_address_add(lserverid, lactorserve);
 
 		//×¢²á½áµã
 		np_actornode_register lpram
@@ -269,11 +269,11 @@ namespace ngl
 	bool actor_client::handle(const message<np_actornode_update>& adata)
 	{
 		auto lparm = adata.get_data();
-		naddress::add_actor_address(lparm->m_id, lparm->m_add);
-		naddress::del_actor_address(lparm->m_del);
+		naddress::actor_address_add(lparm->m_id, lparm->m_add);
+		naddress::actor_address_del(lparm->m_del);
 		for (const auto& lpair : lparm->m_rolegateway)
 		{
-			naddress::add_gatewayid(lpair.first, lpair.second);
+			naddress::gatewayid_add(lpair.first, lpair.second);
 		}		
 		return true;
 	}
@@ -353,11 +353,11 @@ namespace ngl
 		const auto lparm = adata.get_data();
 		if (lparm->m_isremove)
 		{
-			naddress::remove_gatewayid(lparm->m_actorid);
+			naddress::gatewayid_del(lparm->m_actorid);
 		}
 		else
 		{
-			naddress::add_gatewayid(lparm->m_actorid, lparm->m_gatewayid);
+			naddress::gatewayid_add(lparm->m_actorid, lparm->m_gatewayid);
 		}
 		return true;
 	}

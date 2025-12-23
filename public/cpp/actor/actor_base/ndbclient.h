@@ -213,8 +213,16 @@ namespace ngl
 			e_default_tcount = 1,		// 默认tcount
 		};
 		
-		tab_dbload* m_tab = nullptr;
-		nmodified<TDBTAB> m_modified;
+		tab_dbload*									m_tab = nullptr;							// 加载"表配置数据加载"
+		nmodified<TDBTAB>							m_modified;									// 记录哪些数据被修改
+		nguid										m_id = nguid::make();						// 数据id(m_id == nguid::make() 加载全部数据)
+		std::map<nguid, data_modified<TDBTAB>>		m_data;										// 数据
+		data_modified<TDBTAB>*						m_dbdata = nullptr;							// m_id !=nguid::make() 此值有效
+		bool										m_load = false;								// 是否加载完成			
+		actor_manage_dbclient*						m_manage_dbclient = nullptr;				// 操作封装
+		actor_base*									m_actor = nullptr;							// 宿主actor
+		std::vector<int64_t>						m_dellist;									// 删除列表
+		std::string									m_name = tools::type_name<type_ndbclient>();// 主要调试需要知道TACTOR的名字
 	public:
 		// # 向actor_client设置连接后事件
 		// # 当与db服务器发生连接时触发加载数据事件
@@ -262,15 +270,6 @@ namespace ngl
 			nets::send_server(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
 			log_error()->print("ndbclient loaddb [{}] [{}]", m_name, aid);
 		}
-
-		nguid										m_id = nguid::make();
-		std::map<nguid, data_modified<TDBTAB>>		m_data;
-		data_modified<TDBTAB>*						m_dbdata = nullptr;
-		bool										m_load = false;
-		actor_manage_dbclient*						m_manage_dbclient = nullptr;
-		actor_base*									m_actor = nullptr;
-		std::vector<int64_t>						m_dellist;									// 删除列表
-		std::string									m_name = tools::type_name<type_ndbclient>();// 主要调试需要知道TACTOR的名字
 	public:
 		ndbclient():
 			ndbclient_base(DBTYPE)

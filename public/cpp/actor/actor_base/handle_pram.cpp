@@ -26,9 +26,9 @@ namespace ngl
 		m_node(anode)
 	{}
 
-	i32_serverid handle_pram::get_server(i64_actorid aactorid)
+	i32_serverid handle_pram::serverid(i64_actorid aactorid)
 	{
-		return naddress::get_server(aactorid);
+		return naddress::serverid(aactorid);
 	}
 
 	i32_serverid handle_pram::gatewayid(i64_actorid aactorid)
@@ -36,9 +36,9 @@ namespace ngl
 		return naddress::gatewayid(aactorid);
 	}
 
-	void handle_pram::get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec)
+	void handle_pram::serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec)
 	{
-		naddress::get_serverlist(atype, avec);
+		naddress::serveridlist(atype, avec);
 	}
 
 	bool handle_pram::is_actoridnone(const nguid& aguid)
