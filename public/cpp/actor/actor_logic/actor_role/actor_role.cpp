@@ -36,7 +36,7 @@ namespace ngl
 					.m_manage_dbclient = true
 				},
 				.m_weight = 0x7fffffff,
-				.m_timeout = 10000,
+				.m_timeout = 1 * localtime::MILLISECOND,
 				.m_broadcast = true,
 			})
 		, m_gatewayid(((np_actorswitch_process_role*)(adata))->m_gatewayid)
@@ -118,21 +118,15 @@ namespace ngl
 		if (atype == pbdb::ENUM_DB_ALL)
 		{
 			std::set<i32_fieldnumber> lfieldset;
-			tdb_brief::nsp_cwrite<actor_role>::instance_writepart(
-				this
-				, { }
-				, pb_field::field_number<pbdb::db_brief>(lfieldset, "mbase")
-				, { }
-				, { id_guid() }
-			);
-			tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).set_changedatafun(
-				[this, astat](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
+			tdb_brief::nsp_cwrite<actor_role>::instance_writepart(this, {}, pb_field::field_number<pbdb::db_brief>(lfieldset, "mbase"), {}, { id_guid() });
+			tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).set_changedatafun([this, astat](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 				{
 					if (afirstsynchronize && astat == enum_dbstat_success)
 					{
 						login_finish();
 					}
-				});
+				}
+			);
 			m_drop.init(this, {});
 		}
 		
@@ -200,9 +194,7 @@ namespace ngl
 		ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
 		ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
 		ngl::manage_curl::set_url(lhttp, aurl);
-
 		ngl::manage_curl::set_param(lhttp, aparm);
-
 		ngl::manage_curl::set_callback(lhttp, acall);
 		ngl::manage_curl::send(lhttp);
 	}
@@ -368,9 +360,7 @@ namespace ngl
 			std::string lurl = std::format("{}/pay/pay_update.php", sysconfig::gmurl());
 			ngl::manage_curl::set_url(lhttp, lurl);
 
-			std::string lparm = std::format(
-				"orderid={}&gm={}&roleid={}&stat={}",aorderid, (agm ? 1 : 0), id_guid(), lstat
-			);
+			std::string lparm = std::format("orderid={}&gm={}&roleid={}&stat={}",aorderid, (agm ? 1 : 0), id_guid(), lstat);
 
 			ngl::manage_curl::set_param(lhttp, lparm.c_str());
 			ngl::manage_curl::send(lhttp);
