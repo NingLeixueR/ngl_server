@@ -156,10 +156,10 @@ namespace ngl
 		{
 			for (i16_area aarea : *lareas)
 			{
-				ttab_servers::instance().get_server(GATEWAY, aarea, lgatewayids);
+				ttab_servers::instance().serverid(GATEWAY, aarea, lgatewayids);
 			}
 		}
-		ttab_servers::instance().get_server(GATEWAY, tab_self_area, lgatewayids);
+		ttab_servers::instance().serverid(GATEWAY, tab_self_area, lgatewayids);
 
 		for (i32_serverid ltabid : lgatewayids)
 		{

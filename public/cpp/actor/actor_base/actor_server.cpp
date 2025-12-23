@@ -134,7 +134,7 @@ namespace ngl
 		log_error()->print("actor_server np_actornode_register [{}]", lserverid);
 
 		naddress::set_session(lserverid, lpack->m_id);
-		naddress::add_actor_address(lserverid, lrecv->m_add);
+		naddress::actor_address_add(lserverid, lrecv->m_add);
 
 		server_session::add(lserverid, lpack->m_id);
 
@@ -149,8 +149,8 @@ namespace ngl
 		auto lpack = adata.get_pack();
 		
 		const i32_serverid lserverid = lrecv->m_data.m_id;
-		naddress::add_actor_address(lserverid, lrecv->m_data.m_add);
-		naddress::del_actor_address(lrecv->m_data.m_del);
+		naddress::actor_address_add(lserverid, lrecv->m_data.m_add);
+		naddress::actor_address_del(lrecv->m_data.m_del);
 		// # 分发给其他结点
 		std::set<i32_sessionid> lsession;
 		naddress::foreach([lserverid, &lsession](const actor_node_session& anode)->bool
@@ -202,11 +202,11 @@ namespace ngl
 		auto lpack = adata.get_pack();
 		if (lrecv->m_isremove)
 		{
-			naddress::remove_gatewayid(lrecv->m_actorid);
+			naddress::gatewayid_del(lrecv->m_actorid);
 		}
 		else
 		{
-			naddress::add_gatewayid(lrecv->m_actorid, lrecv->m_gatewayid);
+			naddress::gatewayid_add(lrecv->m_actorid, lrecv->m_gatewayid);
 		}
 		std::set<i32_sessionid> lsessionvec;
 		naddress::foreach([&lsessionvec, lpack](const actor_node_session& anode)

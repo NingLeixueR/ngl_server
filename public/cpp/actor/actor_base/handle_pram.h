@@ -66,13 +66,13 @@ namespace ngl
 		bool					m_issend		= true;				// 是否会发送给其他进程
 
 		//# 根据[连接]获取[id]
-		static i32_serverid		get_server(i64_actorid aactorid);
+		static i32_serverid		serverid(i64_actorid aactorid);
 
 		//# 根据[actorid]获取[gatewayid]
 		static i32_serverid		gatewayid(i64_actorid aactorid);
 
 		//# 根据[服务器类型]获取[服务器列表]
-		static void				get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
+		static void				serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
 
 		//# 是否是无效的actor guid
 		static bool				is_actoridnone(const nguid& aguid);
@@ -186,13 +186,13 @@ namespace ngl
 		std::set<i64_actorid>& lmassactors = adata.m_massactors;
 		if (lactorid != nguid::make() && lmassactors.empty())
 		{
-			i32_serverid lserverid = handle_pram::get_server(lactorid);
+			i32_serverid lserverid = handle_pram::serverid(lactorid);
 			if (lserverid == -1)
 			{
 				if (adata.m_forwardtype && handle_pram::is_actoridnone(lactorid))
 				{//# 转发给所有类型为nguid::type(aactorid)的actor
 					std::set<i32_serverid> lset;
-					handle_pram::get_serverlist(lactorid.type(), lset);
+					handle_pram::serveridlist(lactorid.type(), lset);
 					for (i32_serverid ltempserverid : lset)
 					{
 						handle_pram_send<T>::send_server(ltempserverid, adata);
@@ -212,7 +212,7 @@ namespace ngl
 			std::map<i32_serverid, std::set<i64_actorid>> lserveractors;
 			for (i64_actorid actorid : lmassactors)
 			{
-				i32_serverid lserverid = handle_pram::get_server(actorid);
+				i32_serverid lserverid = handle_pram::serverid(actorid);
 				if (lserverid != -1 && lserverid != nconfig::m_nodeid)
 				{
 					lserveractors[lserverid].insert(actorid);
@@ -243,13 +243,13 @@ namespace ngl
 		{
 			nguid lactorid = adata.m_actor;
 			nguid lrequestactor = adata.m_requestactor;
-			i32_serverid lserverid = handle_pram::get_server(lactorid);
+			i32_serverid lserverid = handle_pram::serverid(lactorid);
 			if (lserverid == -1)
 			{
 				if (adata.m_forwardtype && handle_pram::is_actoridnone(lactorid))
 				{//# 转发给所有类型为nguid::type(aactorid)的actor
 					std::set<i32_serverid> lset;
-					handle_pram::get_serverlist(lactorid.type(), lset);
+					handle_pram::serveridlist(lactorid.type(), lset);
 					for (i32_serverid ltempserverid : lset)
 					{
 						handle_pram_send<pack>::send_server(ltempserverid, adata);

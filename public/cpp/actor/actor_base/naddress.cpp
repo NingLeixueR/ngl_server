@@ -49,13 +49,13 @@ namespace ngl
 	i32_sessionid naddress::sessionbyrole(i16_area aarea, i32_actordataid aroleid)
 	{
 		i64_actorid lactorrole = nguid::make(ACTOR_ROLE, aarea, aroleid);
-		i32_serverid lserverid = get_server(lactorrole);
+		i32_serverid lserverid = serverid(lactorrole);
 		if (lserverid == -1)
 		{
 			tools::no_core_dump();
 			return -1;
 		}
-		return get_session(lserverid);
+		return sessionid(lserverid);
 	}
 
 	bool naddress::forward(handle_pram& apram)
@@ -67,7 +67,7 @@ namespace ngl
 		return true;
 	}
 
-	void naddress::add_actor_address(i32_serverid aserverid, i64_actorid adataid)
+	void naddress::actor_address_add(i32_serverid aserverid, i64_actorid adataid)
 	{
 		nguid lguid(adataid);
 		m_actorserver[lguid] = aserverid;
@@ -77,18 +77,18 @@ namespace ngl
 #endif		
 	}
 
-	void naddress::add_actor_address(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
+	void naddress::actor_address_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
 	{
 		for (const i64_actorid item : avec)
 		{
-			add_actor_address(aserverid, item);
+			actor_address_add(aserverid, item);
 #ifdef _DEBUG
 			print_address("ADD", aserverid, item);
 #endif
 		}
 	}
 
-	void naddress::del_actor_address(i64_actorid adataid)
+	void naddress::actor_address_del(i64_actorid adataid)
 	{
 		nguid lguid(adataid);
 #ifdef _DEBUG
@@ -101,11 +101,11 @@ namespace ngl
 		m_actorserver.erase(lguid);
 	}
 
-	void naddress::del_actor_address(const std::vector<i64_actorid>& avec)
+	void naddress::actor_address_del(const std::vector<i64_actorid>& avec)
 	{
 		for (const i64_actorid item : avec)
 		{
-			del_actor_address(item);
+			actor_address_del(item);
 		}
 	}
 
@@ -120,36 +120,36 @@ namespace ngl
 		lpsession->m_session = asession;
 	}
 
-	i32_sessionid naddress::get_session(i32_serverid aserverid)
+	i32_sessionid naddress::sessionid(i32_serverid aserverid)
 	{
 		actor_node_session* lpsession = tools::findmap(m_session, aserverid);
 		if (lpsession == nullptr)
 		{
-			log_error()->print("get_session(serverid:{}) fail", aserverid);
+			log_error()->print("sessionid(serverid:{}) fail", aserverid);
 			return -1;
 		}
 		return lpsession->m_session;
 	}
 
-	i32_serverid naddress::get_server(const nguid& aguid)
+	i32_serverid naddress::serverid(const nguid& aguid)
 	{
 		i32_serverid* lpserverid = tools::findmap(m_actorserver, aguid);
 		if (lpserverid == nullptr)
 		{
-			log_error()->print("get_session(nguid:{}) fail", aguid);
+			log_error()->print("sessionid(nguid:{}) fail", aguid);
 			return -1;
 		}
 		return *lpserverid;
 	}
 
-	void naddress::get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& aservers)
+	void naddress::serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& aservers)
 	{
 		std::set<nguid>* lguids = tools::findmap(m_actortypeserver, (i16_actortype)atype);
 		if (lguids != nullptr)
 		{
 			for (const nguid& aguid : *lguids)
 			{
-				aservers.insert(get_server(aguid));
+				aservers.insert(serverid(aguid));
 			}
 		}
 	}
@@ -182,12 +182,12 @@ namespace ngl
 		return *lpserverid;
 	}
 
-	void naddress::add_gatewayid(const nguid& aguid, i32_serverid aserverid)
+	void naddress::gatewayid_add(const nguid& aguid, i32_serverid aserverid)
 	{
 		m_rolegateway[aguid] = aserverid;
 	}
 
-	void naddress::remove_gatewayid(const nguid& aguid)
+	void naddress::gatewayid_del(const nguid& aguid)
 	{
 		m_rolegateway.erase(aguid);
 	}
