@@ -13,6 +13,7 @@
 */
 #pragma once
 
+#include "ndefine.h"
 #include "tools.h"
 #include "type.h"
 #include <iostream>
