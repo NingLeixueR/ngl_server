@@ -30,8 +30,8 @@ namespace ngl
 {
 	struct pair_account
 	{
-		i32_serverid	m_gameserverid;
-		i32_serverid	m_gatewayserverid;
+		i32_serverid	m_gameserverid = 0;
+		i32_serverid	m_gatewayserverid = 0;
 		std::string		m_session;
 	};
 	struct server_info

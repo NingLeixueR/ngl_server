@@ -98,6 +98,10 @@ namespace ngl
 	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DEL>>& adata)
 	{
 		auto lparm = adata.get_data();
+		if (lparm == nullptr)
+		{
+			return true;
+		}
 		const pbnet::PROBUFF_NET_MAIL_DEL* lpdata = lparm->data();
 		if (lpdata == nullptr)
 		{
@@ -111,6 +115,10 @@ namespace ngl
 	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata)
 	{
 		auto lparm = adata.get_data();
+		if (lparm == nullptr)
+		{
+			return true;
+		}
 		const pbnet::PROBUFF_NET_MAIL_DRAW* lpdata = lparm->data();
 		if (lpdata == nullptr)
 		{
@@ -124,6 +132,10 @@ namespace ngl
 	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata)
 	{
 		auto lparm = adata.get_data();
+		if (lparm == nullptr)
+		{
+			return true;
+		}
 		const pbnet::PROBUFF_NET_MAIL_LIST* lpdata = lparm->data();
 		if (lpdata == nullptr)
 		{
@@ -141,6 +153,10 @@ namespace ngl
 	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata)
 	{
 		auto lparm = adata.get_data();
+		if (lparm == nullptr)
+		{
+			return true;
+		}
 		const pbnet::PROBUFF_NET_MAIL_READ* lpdata = lparm->data();
 		if (lpdata == nullptr)
 		{
@@ -158,13 +174,7 @@ namespace ngl
 		std::map<int32_t, int32_t> litems;
 		if (instance().get_drop().droplist(lparm->m_dropid, 1, litems) == false)
 		{
-			ngl::log_error()->print(
-				"role:{} mailid:{} drop:{} parm:{} fail!!!"
-				, nguid(lparm->m_roleid)
-				, lparm->m_tid
-				, lparm->m_dropid
-				, lparm->m_parm
-			);
+			ngl::log_error()->print("role:{} mailid:{} drop:{} parm:{} fail!!!", nguid(lparm->m_roleid), lparm->m_tid, lparm->m_dropid, lparm->m_parm);
 			return false;
 		}
 

@@ -82,11 +82,10 @@ namespace ngl
 	{
 		using setitor = std::set<rank_item*, operator_value<ETYPE>>::iterator;
 		std::set<rank_item*, operator_value<ETYPE>> m_rankdata;
-		int64_t m_time = 0; // 更新时间
-		std::vector<setitor> m_page;
-		int64_t m_pagetime = 0; // m_page更新时间
-
-		std::map<i64_actorid, int32_t> m_rolerank;// key:roleid value:排名
+		int64_t							m_time = 0;			// 更新时间
+		std::vector<setitor>			m_page;				// 页面索引
+		int64_t							m_pagetime = 0;		// m_page更新时间
+		std::map<i64_actorid, int32_t>	m_rolerank;			// key:roleid value:排名
 
 		const tab_ranklist* tab()
 		{

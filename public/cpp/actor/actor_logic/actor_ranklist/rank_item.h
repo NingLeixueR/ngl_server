@@ -25,21 +25,12 @@ namespace ngl
 	};
 	struct rank_item
 	{
-		i64_actorid m_actorid = nguid::make();					// actor id
-		std::map<pbdb::eranklist, rank_pair> m_data;			// 属性值/刷新时间
-
-		rank_item() :
-			m_actorid(0)
-		{}
+		i64_actorid								m_actorid = nguid::make();		// actor id
+		std::map<pbdb::eranklist, rank_pair>	m_data;							// 属性值/刷新时间
 
 		const pbdb::db_brief* get()const;
 
-		bool init(
-			const pbdb::db_brief& abrief
-			, data_modified<pbdb::db_ranklist>* aranklist
-			, pbdb::eranklist atype
-			, const std::function<int64_t(const pbdb::db_brief&)>& avalfun
-		)
+		bool init(const pbdb::db_brief& abrief, data_modified<pbdb::db_ranklist>* aranklist, pbdb::eranklist atype, const std::function<int64_t(const pbdb::db_brief&)>& avalfun)
 		{
 			m_data[atype].m_value = avalfun(abrief);
 
@@ -81,9 +72,7 @@ namespace ngl
 		template <int ACTIVITYID>
 		int64_t activitylv(const pbdb::db_brief& abrief)
 		{
-			auto itor = abrief.mactivityvalues().mactivity_rolelv().find(
-				pbdb::eranklist::activity_lv + ACTIVITYID
-			);
+			auto itor = abrief.mactivityvalues().mactivity_rolelv().find(pbdb::eranklist::activity_lv + ACTIVITYID);
 			if (itor == abrief.mactivityvalues().mactivity_rolelv().end())
 			{
 				return -1;
@@ -94,9 +83,7 @@ namespace ngl
 		template <int ACTIVITYID>
 		int64_t activitygold(const pbdb::db_brief& abrief)
 		{
-			auto itor = abrief.mactivityvalues().mactivity_rolegold().find(
-				pbdb::eranklist::activity_gold + ACTIVITYID
-			);
+			auto itor = abrief.mactivityvalues().mactivity_rolegold().find(pbdb::eranklist::activity_gold + ACTIVITYID);
 			if (itor == abrief.mactivityvalues().mactivity_rolegold().end())
 			{
 				return -1;
@@ -167,7 +154,7 @@ namespace ngl
 				|| atype == pbdb::eranklist::gold
 				|| atype == pbdb::eranklist::activity_lv + 1
 				|| atype == pbdb::eranklist::activity_gold + 1
-				)
+			)
 			{//值越大排名越高
 				return ltype;
 			}

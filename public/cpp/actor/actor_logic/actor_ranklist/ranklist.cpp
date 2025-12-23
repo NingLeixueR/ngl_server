@@ -98,10 +98,7 @@ namespace ngl
 
 
 		std::set<i32_fieldnumber> lfieldset;
-		tdb_brief::nsp_cread<actor_ranklist>::instance_readall(
-			(actor_ranklist*)get_actor()
-			, pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mbase", "mactivityvalues")
-		);
+		tdb_brief::nsp_cread<actor_ranklist>::instance_readall((actor_ranklist*)get_actor(), pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mbase", "mactivityvalues"));
 
 		tdb_brief::nsp_cread<actor_ranklist>::instance(get_actor()->id_guid()).set_changedatafun(
 			[this](int64_t aid, const pbdb::db_brief& abrief, bool afirstsynchronize)
@@ -112,7 +109,7 @@ namespace ngl
 		);
 	}
 
-	bool ranklist::get_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage, pbnet::PROBUFF_NET_RANKLIST_RESPONSE& apro)
+	bool ranklist::ranklist_get(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage, pbnet::PROBUFF_NET_RANKLIST_RESPONSE& apro)
 	{
 		apro.set_mtype(atype);
 		apro.set_mpage(apage);
@@ -137,18 +134,18 @@ namespace ngl
 		return true;
 	}
 
-	void ranklist::sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t aactivityid, int32_t apage)
+	void ranklist::ranklist_sync(i64_actorid aroleid, pbdb::eranklist atype, int32_t aactivityid, int32_t apage)
 	{
 		pbnet::PROBUFF_NET_RANKLIST_RESPONSE pro;
 		i64_actorid lbriefroleid = nguid::make_type(aroleid, ACTOR_BRIEF);
-		if (!get_ranklist(lbriefroleid, atype, apage, pro))
+		if (!ranklist_get(lbriefroleid, atype, apage, pro))
 		{
 			return;
 		}
 		actor::send_client(aroleid, pro);
 	}
 
-	void ranklist::get_rank(int32_t arankid, std::vector<int64_t>& arolerank)
+	void ranklist::rank_get(int32_t arankid, std::vector<int64_t>& arolerank)
 	{
 		if (m_ranks.contains((pbdb::eranklist)arankid))
 		{
@@ -159,7 +156,7 @@ namespace ngl
 		}
 	}
 
-	void ranklist::remove_rank(int32_t arankid)
+	void ranklist::rank_remove(int32_t arankid)
 	{
 		auto itor = m_ranks.find((pbdb::eranklist)arankid);
 		if (itor == m_ranks.end())
@@ -170,7 +167,7 @@ namespace ngl
 		erase(arankid);
 	}
 
-	void ranklist::add_rank(int32_t arankid)
+	void ranklist::rank_add(int32_t arankid)
 	{
 		std::unique_ptr<rankset_base> ltemp = make_rank::make((pbdb::eranklist)arankid);
 		if (ltemp == nullptr)
