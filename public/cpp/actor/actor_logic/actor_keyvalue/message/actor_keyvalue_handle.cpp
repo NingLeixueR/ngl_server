@@ -41,7 +41,7 @@ namespace ngl
 						return;
 					}
 
-					m_keyvaluedb.add_keyvalue(pbdb::db_keyvalue::open_server, ltime);
+					m_keyvaluedb.keyvalue_add(pbdb::db_keyvalue::open_server, ltime);
 					pro.m_data = true;
 				};
 
