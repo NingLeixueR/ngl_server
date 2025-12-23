@@ -705,6 +705,10 @@ bool start_robot(int argc, char** argv)
 				while (true)
 				{
 					lvec = get_lines();
+					if (lvec.empty())
+					{
+						continue;
+					}
 					if (lvec[0] == "test" || lvec[0] == "TEST")
 					{
 						lms.clear();
