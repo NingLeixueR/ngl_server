@@ -24,7 +24,7 @@ namespace ngl
 
 	const char* protocol::name(i32_protocolnum aprotocolnum/*–≠“È∫≈*/)
 	{
-		const char* lname = em<eprotocol_tar>::get_name((eprotocol_tar)(aprotocolnum));
+		const char* lname = em<eprotocol_tar>::name((eprotocol_tar)(aprotocolnum));
 		return lname != nullptr ? lname : "none";
 	}
 

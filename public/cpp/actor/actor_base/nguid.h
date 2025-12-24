@@ -92,7 +92,7 @@ namespace ngl
 		{
 			nguid lguid(aactorid);
 			i16_actortype ltype = lguid.type();
-			return em<ENUM_ACTOR>::get_name((ENUM_ACTOR)ltype);
+			return em<ENUM_ACTOR>::name((ENUM_ACTOR)ltype);
 		}
 
 		//# 根据类型、区服、数据id创建一个i64_actorid
@@ -338,7 +338,7 @@ struct std::formatter<ngl::nguid>
 
 	auto format(const ngl::nguid& aval, std::format_context& ctx)const
 	{
-		const char* lanme = ngl::em<ngl::ENUM_ACTOR>::get_name(aval.type());
+		const char* lanme = ngl::em<ngl::ENUM_ACTOR>::name(aval.type());
 		if (lanme == nullptr)
 		{
 			return std::format_to(ctx.out(), "guid<type:{} area:{} id:{}>", (int)aval.type(), aval.area(), aval.actordataid());

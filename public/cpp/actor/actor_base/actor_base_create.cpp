@@ -59,7 +59,7 @@ namespace ngl
 			break;
 			default:
 			{
-				ngl::log_error()->print("actor_base::create({},{})", em<ENUM_ACTOR>::get_name(atype), aid);
+				ngl::log_error()->print("actor_base::create({},{})", em<ENUM_ACTOR>::name(atype), aid);
 				return nullptr;
 			}
 		}
