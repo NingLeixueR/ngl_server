@@ -17,12 +17,6 @@
 
 namespace ngl
 {
-
-    enum
-    {
-        epb_mid = 1, // 必须为 proto 结构的主键
-    };
-
     void pb_field::copy(
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
@@ -111,7 +105,6 @@ namespace ngl
             copyfield(src, dst, src_refl, dst_refl, dst_field);
         }
     }
-
 
     void pb_field::copyfield(
         const google::protobuf::Message& src

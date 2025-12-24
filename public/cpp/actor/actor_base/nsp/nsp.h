@@ -88,7 +88,7 @@ namespace ngl
 			if (afieldtype == epb_field_read && afield.empty())
 			{//当[awritefieldnumbers]为空,则认为其读全部字段
 				std::set<i32_fieldnumber> lreadfield;
-				pb_field::all_field_number<T>(lreadfield);
+				pb_field::field_numbers<T>(lreadfield);
 				for (i32_fieldnumber field : lreadfield)
 				{
 					add_field(atype, field, afieldtype);
@@ -113,7 +113,7 @@ namespace ngl
 			std::set<i32_fieldnumber> lreadfield;
 			if (areadfield.empty())
 			{//当[awritefieldnumbers]为空,则认为其读全部字段
-				pb_field::all_field_number<T>(lreadfield);
+				pb_field::field_numbers<T>(lreadfield);
 			}
 
 			for (i32_fieldnumber field : awritefield)
