@@ -880,6 +880,17 @@ namespace ngl
 
 		//删除重复多余的ach
 		static void erase_repeat(std::string& astrbuff, const char ach);
+
+		// 比较是否相等
+		template <typename ETYPE>
+		static bool equal(ETYPE avalue1, ETYPE avalue2)
+		{
+			if (avalue1 == avalue2)
+			{
+				return true;
+			}
+			return false;
+		}
 	};
 
 	template <typename T>

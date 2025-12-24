@@ -380,7 +380,7 @@ namespace ngl
 		for (const auto& apair : m_actorbytype)
 		{
 			msg_actor_stat::msg_actor ltemp;
-			ltemp.m_actor_name = em<ENUM_ACTOR>::get_name(apair.first);
+			ltemp.m_actor_name = em<ENUM_ACTOR>::name(apair.first);
 			for (const auto& aguidprt : apair.second)
 			{
 				ltemp.m_actor[nguid::area(aguidprt.first)].push_back(nguid::actordataid(aguidprt.first));

@@ -117,7 +117,7 @@ namespace ngl
 		if (aparm.m_enscript != enscript_none)
 		{
 			m_enscript = aparm.m_enscript;
-			const char* lactorname = em<ENUM_ACTOR>::get_name(type());
+			const char* lactorname = em<ENUM_ACTOR>::name(type());
 			m_script = nscript_manage::malloc(m_enscript, lactorname, std::format("{}.lua", lactorname).c_str());
 			if (m_script != nullptr)
 			{

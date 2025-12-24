@@ -151,7 +151,7 @@ namespace ngl
 			Throw("not create path {}", lpath);
 		}
 
-		lpath = std::format("{}/{}", lpath, em<ELOG_TYPE>::get_tolower_name(m_config.m_type));
+		lpath = std::format("{}/{}", lpath, em<ELOG_TYPE>::tolower_name(m_config.m_type));
 		if (create_directories(lpath) == false)
 		{
 			Throw("not create path {}", lpath);

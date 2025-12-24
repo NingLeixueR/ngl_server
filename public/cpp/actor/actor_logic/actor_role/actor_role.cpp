@@ -201,7 +201,7 @@ namespace ngl
 
 	void actor_role::loginpay()
 	{
-		requestgm("http://127.0.0.1:800/pay/pay_login.php", std::format("roleid={}", id_guid()), [this](int, http_parm& ahttp)
+		requestgm(std::format("{}/pay/pay_login.php", sysconfig::gmurl()).c_str(), std::format("roleid={}", id_guid()), [this](int, http_parm& ahttp)
 			{
 				if (ahttp.m_recvdata.empty())
 				{
@@ -238,7 +238,7 @@ namespace ngl
 					ngl::manage_curl::param(lquestparm, "orderid", lorderid.c_str());
 					ngl::manage_curl::param(lquestparm, "rechargeid", lrechargeid);
 					ngl::manage_curl::param(lquestparm, "roleid", lroleid);
-					requestgm("http://127.0.0.1:800/pay/pay_login_stat.php", lquestparm, [this](int32_t, http_parm& ahttp)
+					requestgm((std::format("{}/pay/pay_login_stat.php", sysconfig::gmurl())).c_str(), lquestparm, [this](int32_t, http_parm& ahttp)
 						{
 							log_error()->print("actor_role::loginpay curl callback [{}]", ahttp.m_recvdata);
 
@@ -318,9 +318,7 @@ namespace ngl
 	void actor_role::createorder(std::string& aorder, int32_t arechargeid)
 	{
 		static std::atomic<int32_t> billnoindex = 0;
-		aorder = std::format("{:05d}{:010d}{:010d}{:010d}{:02d}",
-			area(), id(), arechargeid, localtime::gettime(), billnoindex.fetch_add(1)
-		);
+		aorder = std::format("{:05d}{:010d}{:010d}{:010d}{:02d}",area(), id(), arechargeid, localtime::gettime(), billnoindex.fetch_add(1));
 	}
 
 	int32_t actor_role::rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting)

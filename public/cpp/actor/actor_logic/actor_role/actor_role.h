@@ -149,12 +149,12 @@ namespace ngl
 			{
 				return ecross_none;
 			}
-			return adata.mcross() == static_cast<int>(pbexample::ECROSS_CROSS_ORDINARY) ? ecross_cross_ordinary : ecross_ordinary;
+			return tools::equal(adata.mcross(), pbexample::ECROSS_CROSS_ORDINARY) ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
 		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE& adata)
 		{
-			return adata.mcross() == static_cast<int>(pbexample::ECROSS_CROSS_ORDINARY) ? ecross_cross_ordinary : ecross_ordinary;
+			return tools::equal(adata.mcross(), pbexample::ECROSS_CROSS_ORDINARY) ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
 		//# 例子小游戏匹配的转发类型
