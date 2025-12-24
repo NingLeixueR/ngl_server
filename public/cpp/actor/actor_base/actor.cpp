@@ -1,3 +1,4 @@
+// clang-format off
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
@@ -11,6 +12,7 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// clang-format on
 #include "actor_manage.h"
 #include "ndbclient.h"
 #include "actor.h"
