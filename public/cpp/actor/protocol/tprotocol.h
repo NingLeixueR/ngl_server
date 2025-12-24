@@ -176,7 +176,7 @@ namespace ngl
 			return itor->second;
 		}
 
-		static info* getbyname(const char* aname)
+		static info* get(const char* aname)
 		{
 			auto itor = m_nameprotocol.find(aname);
 			if (itor == m_nameprotocol.end())
@@ -205,7 +205,7 @@ namespace ngl
 		}
 
 		// # 根据协议号获取协议名称
-		static const char* protocol_name(i32_protocolnum aprotocolnum)
+		static const char* name(i32_protocolnum aprotocolnum)
 		{
 			info* linfo = get(aprotocolnum);
 			if (linfo == nullptr)
@@ -216,7 +216,7 @@ namespace ngl
 		}
 
 		// # 获取当前进程已注册的所有协议
-		static void get_allprotocol(std::map<i32_protocolnum, std::string>& amap)
+		static void allprotocol(std::map<i32_protocolnum, std::string>& amap)
 		{
 			for (const auto& apair : m_keyval)
 			{

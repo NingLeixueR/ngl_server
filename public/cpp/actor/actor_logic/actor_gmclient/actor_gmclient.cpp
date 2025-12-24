@@ -64,9 +64,9 @@ namespace ngl
 		}
 	}
 
-	void actor_gmclient::get_allprotocol(protocols& apro)
+	void actor_gmclient::allprotocol(protocols& apro)
 	{
-		tprotocol::get_allprotocol(apro.m_data);
+		tprotocol::allprotocol(apro.m_data);
 	}
 
 	void actor_gmclient::nregister()
