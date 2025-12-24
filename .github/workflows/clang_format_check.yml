@@ -14,6 +14,4 @@ jobs:
 
       - name: Check code style
         run: |
-          #find ./public/cpp \( -path "*/third_party" -o -path "*/pb" \) -prune -o \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) -type f
-          #find ./public/cpp \( -path "*/third_party" -o -path "*/pb" \) -prune -o \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) -type f | xargs clang-format --dry-run --Werror
-          clang-format ./public/cpp/actor/actor_base/actor.cpp
+          find ./public/cpp \( -path "*/third_party" -o -path "*/pb" \) -prune -o \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) -type f | clang-format
