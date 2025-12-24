@@ -98,7 +98,7 @@ namespace ngl
 			return &itor2->second;
 		}
 
-		static const char* get_name(const ENUMT aenum, int anum = 0)
+		static const char* name(const ENUMT aenum, int anum = 0)
 		{
 			const data* ltempdata = get_data(aenum, anum);
 			if (ltempdata == nullptr)
@@ -108,7 +108,7 @@ namespace ngl
 			return ltempdata->m_never.c_str();
 		}
 
-		static const char* get_tolower_name(const ENUMT aenum, int anum = 0)
+		static const char* tolower_name(const ENUMT aenum, int anum = 0)
 		{
 			const data* ltempdata = get_data(aenum, anum);
 			if (ltempdata == nullptr)
@@ -118,7 +118,7 @@ namespace ngl
 			return ltempdata->m_tolower.c_str();
 		}
 
-		static const char* get_toupper_name(const ENUMT aenum, int anum = 0)
+		static const char* toupper_name(const ENUMT aenum, int anum = 0)
 		{
 			const data* ltempdata = get_data(aenum, anum);
 			if (ltempdata == nullptr)
