@@ -26,26 +26,14 @@
 
 namespace ngl
 {
+    enum
+    {
+        epb_mid = 1, // 必须为 proto 结构的主键
+    };
+
     // 工具类：只复制指定字段编号的内容
     class pb_field
     {
-    public:
-        // 拷贝 src 到 dst，但只复制字段编号在 field_numbers 中的字段
-        // field_numbers：需要复制的字段编号列表（如 {1, 3, 5}）
-        static void copy(
-            const google::protobuf::Message& src
-            , google::protobuf::Message* dst
-            , const std::map<i32_fieldnumber, epb_field>& fieldsrc
-            , const std::map<i32_fieldnumber, epb_field>& fielddst
-            , bool amessage /* 是否是消息，消息强制复制mid */
-        );
-
-        static void copy(
-            const google::protobuf::Message& src
-            , google::protobuf::Message* dst
-            , const std::map<i32_fieldnumber, epb_field>& fieldsrc
-            , bool amessage /* 是否是消息，消息强制复制mid */
-        );
     private:
         // 复制单个字段（处理所有类型的字段：基础类型、repeated、消息类型等）
         static void copyfield(
@@ -66,13 +54,32 @@ namespace ngl
         );
 
         // 复制 repeated 字段中的单个元素
-        static void copy_repeated_field(const google::protobuf::Message& src,
-            google::protobuf::Message* dst,
-            const google::protobuf::Reflection* src_refl,
-            const google::protobuf::Reflection* dst_refl,
-            const google::protobuf::FieldDescriptor* field,
-            int index
+        static void copy_repeated_field(
+            const google::protobuf::Message& src
+            , google::protobuf::Message* dst
+            , const google::protobuf::Reflection* src_refl
+            , const google::protobuf::Reflection* dst_refl
+            , const google::protobuf::FieldDescriptor* field
+            , int index
         );
+    public:
+        // 拷贝 src 到 dst，但只复制字段编号在 field_numbers 中的字段
+        // field_numbers：需要复制的字段编号列表（如 {1, 3, 5}）
+        static void copy(
+            const google::protobuf::Message& src
+            , google::protobuf::Message* dst
+            , const std::map<i32_fieldnumber, epb_field>& fieldsrc
+            , const std::map<i32_fieldnumber, epb_field>& fielddst
+            , bool amessage /* 是否是消息，消息强制复制mid */
+        );
+
+        static void copy(
+            const google::protobuf::Message& src
+            , google::protobuf::Message* dst
+            , const std::map<i32_fieldnumber, epb_field>& fieldsrc
+            , bool amessage /* 是否是消息，消息强制复制mid */
+        );
+    
     public:
         template <typename T>
         static std::set<i32_fieldnumber>& field_number(std::set<i32_fieldnumber>& afieldset)
@@ -107,7 +114,7 @@ namespace ngl
         }
     private:
         template <typename T>
-        static void all_field_number(const  std::function<void(i32_fieldnumber, const std::string&)>& afieldfun)
+        static void field_numbers(const  std::function<void(i32_fieldnumber, const std::string&)>& afieldfun)
         {
             const google::protobuf::Descriptor* desc = T::descriptor();
             if (desc == nullptr)
@@ -128,21 +135,23 @@ namespace ngl
         }
     public:
         template <typename T>
-        static void all_field_number(std::map<i32_fieldnumber, std::string>& afieldmap)
+        static void field_numbers(std::map<i32_fieldnumber, std::string>& afieldmap)
         {
-            all_field_number<T>([&afieldmap](i32_fieldnumber afieldnumber, const std::string& afieldname)
+            field_numbers<T>([&afieldmap](i32_fieldnumber afieldnumber, const std::string& afieldname)
                 {
                     afieldmap[afieldnumber] = afieldname;
-                });
+                }
+            );
         }
 
         template <typename T>
-        static void all_field_number(std::set<i32_fieldnumber>& afieldset)
+        static void field_numbers(std::set<i32_fieldnumber>& afieldset)
         {
-            all_field_number<T>([&afieldset](i32_fieldnumber afieldnumber, const std::string& afieldname)
+            field_numbers<T>([&afieldset](i32_fieldnumber afieldnumber, const std::string& afieldname)
                 {
                     afieldset.insert(afieldnumber);
-                });
+                }
+            );
         }
     };
 }
