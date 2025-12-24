@@ -167,7 +167,7 @@ namespace ngl
 			{
 				return false;
 			}
-			if (tools::check_cjson_or(ret->type, cJSON_Object, cJSON_Array))
+			if (tools::bit_or(ret->type, cJSON_Object, cJSON_Array))
 			{
 				adata = ret;
 				return true;
@@ -186,7 +186,7 @@ namespace ngl
 		template <typename TNUMBER>
 		static bool string_number(cJSON* ret, TNUMBER& adata)
 		{
-			if (tools::check_cjson_or(ret->type, cJSON_String))
+			if (tools::bit_or(ret->type, cJSON_String))
 			{
 				try
 				{
@@ -222,22 +222,22 @@ namespace ngl
 
 		static bool read_basic_type(cJSON* ret, bool& adata)
 		{
-			if (tools::check_cjson_or(ret->type, cJSON_True))
+			if (tools::bit_or(ret->type, cJSON_True))
 			{
 				adata = true;
 				return true;
 			}
-			if (tools::check_cjson_or(ret->type, cJSON_False))
+			if (tools::bit_or(ret->type, cJSON_False))
 			{
 				adata = false;
 				return true;
 			}
-			if (tools::check_cjson_or(ret->type, cJSON_Number))
+			if (tools::bit_or(ret->type, cJSON_Number))
 			{
 				adata = ret->valueint != 0;
 				return true;
 			}
-			if (tools::check_cjson_or(ret->type, cJSON_String))
+			if (tools::bit_or(ret->type, cJSON_String))
 			{
 				std::string lvaluestr(ret->valuestring);
 				if (lvaluestr == "false" || lvaluestr == "FALSE" || lvaluestr == "0")
@@ -260,7 +260,7 @@ namespace ngl
 			{
 				return false;
 			}
-			if (tools::check_cjson_and(ret->type, cJSON_String))
+			if (tools::bit_and(ret->type, cJSON_String))
 			{
 				return false;
 			}
@@ -274,7 +274,7 @@ namespace ngl
 			{
 				return false;
 			}
-			if (tools::check_cjson_and(ret->type, cJSON_String))
+			if (tools::bit_and(ret->type, cJSON_String))
 			{
 				return false;
 			}
@@ -290,7 +290,7 @@ namespace ngl
 			{
 				return false;
 			}
-			if (tools::check_cjson_or(ret->type, cJSON_Number, cJSON_String, cJSON_True, cJSON_False))
+			if (tools::bit_or(ret->type, cJSON_Number, cJSON_String, cJSON_True, cJSON_False))
 			{
 				return read_basic_type(ret, adata);
 			}
