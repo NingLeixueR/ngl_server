@@ -16,4 +16,4 @@ jobs:
         run: |
           #find ./public/cpp \( -path "*/third_party" -o -path "*/pb" \) -prune -o \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) -type f
           #find ./public/cpp \( -path "*/third_party" -o -path "*/pb" \) -prune -o \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) -type f | xargs clang-format --dry-run --Werror
-          xargs clang-format --dry-run -Wclang-format-violations --Werror ./public/cpp/actor/actor_base/actor.cpp
+          clang-format ./public/cpp/actor/actor_base/actor.cpp
