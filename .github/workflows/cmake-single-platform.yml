@@ -1,5 +1,6 @@
 name: Clang Format Check
-on: [push, pull_request]  # 推送/拉取请求时触发
+on: #:push, pull_request]  # 推送/拉取请求时触发
+    workflow_dispatch:
 
 jobs:
   clang-format:
