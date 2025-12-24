@@ -13,13 +13,13 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // clang-format on
+
 #include "actor_manage.h"
 #include "ndbclient.h"
 #include "actor.h"
 #include "net.h"
 
-namespace ngl
-{
+namespace ngl{
 	actor::actor(const actorparm& aparm) :
 		actor_base(aparm.m_parm)
 		, m_weight(aparm.m_weight)
