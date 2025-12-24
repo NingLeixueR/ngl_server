@@ -25,15 +25,15 @@ namespace ngl
 		wheel& operator=(const wheel&) = delete;
 
 		std::vector<wheel_node*>	m_slots;
-		wheel*						m_nextround;
-		wheel*						m_lastround;
-		time_wheel*					m_time_wheel;
+		wheel*						m_nextround = nullptr;
+		wheel*						m_lastround = nullptr;
+		time_wheel*					m_time_wheel = nullptr;
 
-		int64_t			m_slot_ms;			 // 每个槽位的毫秒数
-		int32_t			m_slot_count;		 // 槽位的数量
-		int32_t			m_slot_less;		 // 取余用
-		int64_t			m_slot_sum_ms;		 // m_slot_ms * m_slot_count
-		int32_t			m_current_pos;		 // 当前指针
+		int64_t			m_slot_ms = 0;			 // 每个槽位的毫秒数
+		int32_t			m_slot_count = 0;		 // 槽位的数量
+		int32_t			m_slot_less = 0;		 // 取余用
+		int64_t			m_slot_sum_ms = 0;		 // m_slot_ms * m_slot_count
+		int32_t			m_current_pos = 0;		 // 当前指针
 	public:
 		wheel();
 		inline void set(int64_t aslotms, int32_t aslotbit, wheel* anextround, wheel* alastround, time_wheel* atime_wheel);
@@ -58,23 +58,23 @@ namespace ngl
 	struct time_wheel::impl_time_wheel
 	{
 		time_wheel_config	m_config;
-		int64_t				m_server_start_ms;					// 服务器启动的毫秒
-		int64_t				m_current_ms;						// 当前毫秒数
+		int64_t				m_server_start_ms = 0;				// 服务器启动的毫秒
+		int64_t				m_current_ms = 0;					// 当前毫秒数
 		std::vector<wheel*> m_wheel;
-		std::thread*		m_thread;							// 时间轮线程 
+		std::thread*		m_thread = nullptr;					// 时间轮线程 
 		std::shared_mutex	m_mutex;
-		bool				m_isthreadcallback;					// 是否使用 [使用线程自动调用]
+		bool				m_isthreadcallback = false;			// 是否使用 [使用线程自动调用]
 		// ###### 使用线程自动调用 start 
-		std::thread*		m_threadcallback;					// 时间轮工作线程用来执行回调
+		std::thread*		m_threadcallback = nullptr;			// 时间轮工作线程用来执行回调
 		std::shared_mutex	m_mutexcallback;
 		ngl::sem			m_sem;
 		// ###### 使用线程自动调用 finish
-		wheel_node*			m_worldnodehead;
-		wheel_node*			m_worldnodetail;
-		int64_t				m_timerid;							// 定时器自增id
+		wheel_node*			m_worldnodehead = nullptr;
+		wheel_node*			m_worldnodetail = nullptr;
+		int64_t				m_timerid = 1;						// 定时器自增id
 		std::map<int64_t, bool> m_timer;						// 用于快速删除定时器
-		time_wheel*			m_twheel;
-		bool				m_stop;
+		time_wheel*			m_twheel = nullptr;
+		bool				m_stop = false;
 
 		impl_time_wheel(time_wheel* atwheel, const time_wheel_config& aconfig, bool aisthreadcallback):
 			m_twheel(atwheel),
@@ -98,11 +98,7 @@ namespace ngl
 
 			for (int32_t i = 0; i < m_config.m_time_wheel_count; ++i)
 			{
-				m_wheel[i]->set(
-					lms, m_config.m_time_wheel_bit, 
-					(i + 1 < m_config.m_time_wheel_count) ? m_wheel[i + 1] : nullptr,
-					(i == 0) ? nullptr : m_wheel[i - 1], atwheel
-				);
+				m_wheel[i]->set(lms, m_config.m_time_wheel_bit, (i + 1 < m_config.m_time_wheel_count) ? m_wheel[i + 1] : nullptr, (i == 0) ? nullptr : m_wheel[i - 1], atwheel);
 				lms = m_wheel[i]->all_slot_ms();
 			}
 
@@ -348,15 +344,14 @@ namespace ngl
 		int64_t addtimer(const wheel_parm& apram)
 		{
 			bool lbool = true;
-			std::shared_ptr<wheel_node> lpnode(
-				new wheel_node(m_twheel, ++m_timerid, apram),
-				[&lbool](wheel_node* ap) 
+			std::shared_ptr<wheel_node> lpnode(new wheel_node(m_twheel, ++m_timerid, apram),[&lbool](wheel_node* ap) 
 				{
 					if (lbool)
 					{
 						delete ap;
 					}
-				});
+				}
+			);
 			lpnode->m_parm.m_timerstart = getms();
 			lpnode->m_parm.m_ms += (int32_t)(getms() - m_server_start_ms);
 			if (lpnode->m_parm.m_ms < 0)

@@ -208,8 +208,7 @@ int main(int argc, char** argv)
 	std::cout << "当前源码行数：" << lsumline << std::endl;
 
 
-	std::string lhead = R"(// clang-format off
-/*
+	std::string lhead = R"(/*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
 * 项目名称：ngl_server
@@ -222,7 +221,7 @@ int main(int argc, char** argv)
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// clang-format on)";
+)";
 	lhead += "\r\n";
 	for (const std::string& item : lset_head)
 	{

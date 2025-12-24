@@ -24,13 +24,13 @@ namespace ngl
 	public:
 		enum
 		{
-			MILLISECOND					= 1000,
-			MINUTES_SECOND				= 1 * 60,							// 一分钟多少秒
-			MINUTES_MILLISECOND			= MINUTES_SECOND * MILLISECOND,		// 一分钟多少毫秒
+			MILLISECOND			= 1000,
+			MINUTES_SECOND		= 1 * 60,							// 一分钟多少秒
+			MINUTES_MILLISECOND	= MINUTES_SECOND * MILLISECOND,		// 一分钟多少毫秒
 			
-			HOUR_MINUTES				= 1 * 60,							// 一小时多少分钟
-			HOUR_SECOND					= MINUTES_SECOND * HOUR_MINUTES,	// 一小时多少秒
-			HOUR_MILLISECOND			= HOUR_SECOND * MILLISECOND,		// 一小时多少毫秒
+			HOUR_MINUTES		= 1 * 60,							// 一小时多少分钟
+			HOUR_SECOND			= MINUTES_SECOND * HOUR_MINUTES,	// 一小时多少秒
+			HOUR_MILLISECOND	= HOUR_SECOND * MILLISECOND,		// 一小时多少毫秒
 
 			DAY_HOUR			= 24,								// 一天多少小时
 			DAY_MINUTES			= DAY_HOUR * HOUR_MINUTES,			// 一天多少分钟

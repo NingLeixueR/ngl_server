@@ -541,12 +541,7 @@ namespace ngl
 		// 特殊分割:类似"接收邮件列表[邮件地址1:名字1]"
 		// [348634371@qq.com:libo][libo1@youxigu.com:libo1]
 		template <typename TFIRST = std::string, typename TSECOND = std::string>
-		static bool splite_special(
-			const char* astr
-			, const char* akey1
-			, const char* akey2
-			, std::vector<std::pair<TFIRST, TSECOND>>& avec
-		)
+		static bool splite_special(const char* astr, const char* akey1, const char* akey2, std::vector<std::pair<TFIRST, TSECOND>>& avec)
 		{
 			std::string ltemp = astr;
 			ngl::tools::replace_ret(akey1, "", ltemp, ltemp);
@@ -599,12 +594,7 @@ namespace ngl
 		static std::function<std::string(const TKEY&, const TVALUE&)> m_splicingmap;
 
 		template <typename T>
-		static bool splicing(
-			const std::vector<T>& avec
-			, const char* afg
-			, std::string& astr
-			, const std::function<std::string(const T&)> afunction = m_splicing<T>
-		)
+		static bool splicing(const std::vector<T>& avec, const char* afg, std::string& astr, const std::function<std::string(const T&)> afunction = m_splicing<T>)
 		{
 			for (int i = 0; i < avec.size(); ++i)
 			{
@@ -631,9 +621,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool splicing(
-			const std::set<T>& avec, const char* afg, std::string& astr, const std::function<std::string(const T&)> afunction = m_splicing<T>
-		)
+		static bool splicing(const std::set<T>& avec, const char* afg, std::string& astr, const std::function<std::string(const T&)> afunction = m_splicing<T>)
 		{
 			int i = 0;
 			for (auto itor = avec.begin(); i < avec.size(); ++i,++itor)
@@ -648,9 +636,7 @@ namespace ngl
 		}
 
 		template <typename TKEY, typename TVALUE>
-		static bool splicing(
-			const std::map<TKEY, TVALUE>& avec, const char* afg, std::string& astr, const std::function<std::string(const TKEY&, const TVALUE&)> afunction = m_splicingmap<TKEY,TVALUE>
-		)
+		static bool splicing(const std::map<TKEY, TVALUE>& avec, const char* afg, std::string& astr, const std::function<std::string(const TKEY&, const TVALUE&)> afunction = m_splicingmap<TKEY,TVALUE>)
 		{
 			bool lbool = false;
 			for (const auto& item : avec)
@@ -666,9 +652,7 @@ namespace ngl
 		}
 
 		template <typename TKEY, typename TVALUE>
-		static bool splicing(
-			const google::protobuf::Map<TKEY, TVALUE>& avec, const char* afg, std::string& astr,const std::function<std::string(const TKEY&,const TVALUE&)> afunction = m_splicingmap<TKEY, TVALUE>
-		)
+		static bool splicing(const google::protobuf::Map<TKEY, TVALUE>& avec, const char* afg, std::string& astr,const std::function<std::string(const TKEY&,const TVALUE&)> afunction = m_splicingmap<TKEY, TVALUE>)
 		{
 			bool lbool = false;
 			for (const auto& item : avec)
@@ -785,17 +769,7 @@ namespace ngl
 		static void bytexor(char* ap, int32_t aplen, int apos);
 #pragma endregion
 
-		static std::string& type_name_handle(std::string& aname)
-		{
-			ngl::tools::replace("struct ", "", aname, aname);
-			ngl::tools::replace("class ", "", aname, aname);
-			ngl::tools::replace("ngl::", "", aname, aname);
-			ngl::tools::replace("pbdb::", "", aname, aname);
-			ngl::tools::replace("pbnet::", "", aname, aname);
-			ngl::tools::replace("pbexample::", "", aname, aname);
-			ngl::tools::replace(" ", "", aname, aname);
-			return aname;
-		}
+		static std::string& type_name_handle(std::string& aname);
 
 		template <typename T>
 		static std::string& type_name()
@@ -856,26 +830,26 @@ namespace ngl
 		static std::vector<const char*> split_str(char* apbuff, int32_t abuffcount);
 
 		// 检查cjson类型
-		static bool check_cjson_or(int32_t atype, int32_t acjsontype)
+		static bool bit_or(int32_t atype, int32_t acjsontype)
 		{
 			return (atype & acjsontype) != 0;
 		}
 
 		template <typename ...TARGS>
-		static bool check_cjson_or(int32_t atype, int32_t acjsontype, TARGS... args)
+		static bool bit_or(int32_t atype, int32_t acjsontype, TARGS... args)
 		{
-			return check_cjson_or(atype, acjsontype) || check_cjson_or(atype, args...);
+			return bit_or(atype, acjsontype) || bit_or(atype, args...);
 		}
 
-		static bool check_cjson_and(int32_t atype, int32_t acjsontype)
+		static bool bit_and(int32_t atype, int32_t acjsontype)
 		{
 			return (atype & acjsontype) == 0;
 		}
 
 		template <typename ...TARGS>
-		static bool check_cjson_and(int32_t atype, int32_t acjsontype, TARGS... args)
+		static bool bit_and(int32_t atype, int32_t acjsontype, TARGS... args)
 		{
-			return check_cjson_and(atype, acjsontype) && check_cjson_and(atype, args...);
+			return bit_and(atype, acjsontype) && bit_and(atype, args...);
 		}
 
 		//删除重复多余的ach

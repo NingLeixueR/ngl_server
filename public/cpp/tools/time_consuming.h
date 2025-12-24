@@ -18,17 +18,17 @@
 
 namespace ngl
 {
-	class time_consuming
+	class nconsuming
 	{
-		time_consuming() = delete;
-		time_consuming(const time_consuming&) = delete;
-		time_consuming& operator=(const time_consuming&) = delete;
+		nconsuming() = delete;
+		nconsuming(const nconsuming&) = delete;
+		nconsuming& operator=(const nconsuming&) = delete;
 
 		std::string		m_name;
 		int64_t			m_beg;
 	public:
-		time_consuming(const std::string& aname);
-		void consuming_start();
-		void consuming_finish();
+		nconsuming(const std::string& aname);
+		void start();
+		void finish();
 	};
 }//namespace ngl

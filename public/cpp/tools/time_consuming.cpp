@@ -16,18 +16,18 @@
 
 namespace ngl
 {
-	time_consuming::time_consuming(const std::string& aname):
+	nconsuming::nconsuming(const std::string& aname):
 		m_name(aname),
 		m_beg(0)
 	{
 	}
 
-	void time_consuming::consuming_start()
+	void nconsuming::start()
 	{
 		m_beg = time_wheel::getms();
 	}
 
-	void time_consuming::consuming_finish()
+	void nconsuming::finish()
 	{
 		int64_t lconsuming = time_wheel::getms() - m_beg;
 		bool lerror = lconsuming > sysconfig::consumings();

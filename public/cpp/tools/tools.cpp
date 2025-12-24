@@ -1438,3 +1438,18 @@ namespace ngl
 		astrbuff.erase(last, astrbuff.end());
 	}
 }// namespace ngl
+
+namespace ngl
+{
+	std::string& tools::type_name_handle(std::string& aname)
+	{
+		ngl::tools::replace("struct ", "", aname, aname);
+		ngl::tools::replace("class ", "", aname, aname);
+		ngl::tools::replace("ngl::", "", aname, aname);
+		ngl::tools::replace("pbdb::", "", aname, aname);
+		ngl::tools::replace("pbnet::", "", aname, aname);
+		ngl::tools::replace("pbexample::", "", aname, aname);
+		ngl::tools::replace(" ", "", aname, aname);
+		return aname;
+	}
+}//namespace ngl
