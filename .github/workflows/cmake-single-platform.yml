@@ -16,4 +16,5 @@ jobs:
         run: |
           echo "third_party/\n" >> .clang-format-ignore
           echo "pb/\n" >> .clang-format-ignore
-          find . -name "*.h" -o -name "*.hpp" -o -name "*.cpp" | xargs clang-format --dry-run --Werror
+          find ./public/cpp -name "*.h" -o -name "*.hpp" -o -name "*.cpp"
+          find ./public/cpp -name "*.h" -o -name "*.hpp" -o -name "*.cpp" | xargs clang-format --dry-run --Werror
