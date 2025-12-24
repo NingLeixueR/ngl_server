@@ -105,7 +105,7 @@ namespace ngl
 			handle_cmd::add("all_protocol") = [this](njson_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<protocols> lresponse(adata->get_pack()->m_id, "all_protocol", this);
-					actor_gmclient::get_allprotocol(lresponse.m_data);
+					actor_gmclient::allprotocol(lresponse.m_data);
 				};
 			handle_cmd::add("close_actor") = [this](njson_read& aos, const message<ngl::np_gm>* adata)
 				{

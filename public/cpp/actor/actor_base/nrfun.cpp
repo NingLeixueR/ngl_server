@@ -56,7 +56,7 @@ namespace ngl
 			log_error()->print("{}::handle_switch isloadfinish() == {}", aactor->guid(), itor->second.m_ready);
 			return false;
 		}
-		nconsuming lconsuming(std::format("{}-{}-{}", aactor->guid(), apram.m_enum, tprotocol::protocol_name(apram.m_enum)));
+		nconsuming lconsuming(std::format("{}-{}-{}", aactor->guid(), apram.m_enum, tprotocol::name(apram.m_enum)));
 		lconsuming.start();
 		itor->second.m_fun(aactor, athreadid, apram);
 		if (aactor->type() != ACTOR_LOG)

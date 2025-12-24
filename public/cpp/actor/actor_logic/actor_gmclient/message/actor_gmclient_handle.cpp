@@ -27,7 +27,7 @@ namespace ngl
 			handle_cmd::add("all_protocol") = [this](int id, ngl::njson_read& aos)
 				{
 					gcmd<protocols> lpro(id, "all_protocol");
-					get_allprotocol(lpro.m_data);
+					allprotocol(lpro.m_data);
 				};
 
 			handle_cmd::add("server_stat") = [this](int id, ngl::njson_read& aos)

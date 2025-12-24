@@ -64,7 +64,7 @@ namespace ngl
 
 		static void nregister();
 
-		static void get_allprotocol(protocols& apro);
+		static void allprotocol(protocols& apro);
 
 		// # GM²Ù×÷
 		using handle_cmd = cmd<actor_gmclient, std::string, int, ngl::njson_read&>;

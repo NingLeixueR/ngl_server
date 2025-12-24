@@ -43,7 +43,7 @@ extern "C"
 			return 1;
 		}
 		int64_t lactorid = ngl::tools::nguidstr2int64(nguidstr);
-		ngl::tprotocol::info* linfo = ngl::tprotocol::getbyname(lmsgname);
+		ngl::tprotocol::info* linfo = ngl::tprotocol::get(lmsgname);
 		if (linfo == nullptr)
 		{
 			ngl::nlua_stack::stack_push(L, false);
@@ -69,7 +69,7 @@ extern "C"
 			return 1;
 		}
 		int64_t lactorid = ngl::tools::nguidstr2int64(nguidstr);
-		ngl::tprotocol::info* linfo = ngl::tprotocol::getbyname(lmsgname);
+		ngl::tprotocol::info* linfo = ngl::tprotocol::get(lmsgname);
 		if (linfo == nullptr)
 		{
 			ngl::nlua_stack::stack_push(L, false);
