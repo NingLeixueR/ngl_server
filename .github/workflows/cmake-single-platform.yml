@@ -14,4 +14,6 @@ jobs:
 
       - name: Check code style
         run: |
+          echo "third_party/\n" >> .clang-format-ignore
+          echo "pb/\n" >> .clang-format-ignore
           find . -name "*.h" -o -name "*.hpp" -o -name "*.cpp" | xargs clang-format --dry-run --Werror
