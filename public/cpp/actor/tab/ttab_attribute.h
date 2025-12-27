@@ -129,37 +129,5 @@ namespace ngl
 				return avalues;
 			}
 		}
-
-		void add(std::map<EnumAttribute, int64_t>& al, const std::map<EnumAttribute, int64_t>& ar)
-		{
-			for (const auto& [key, value] : ar)
-			{
-				al[key] += value;
-			}
-		}
-
-		void add(std::map<EnumAttribute, float>& al, const std::map<EnumAttribute, float>& ar)
-		{
-			for (const auto& [key, value] : ar)
-			{
-				al[key] += value;
-			}
-		}
-
-		void dec(std::map<EnumAttribute, int64_t>& al, const std::map<EnumAttribute, int64_t>& ar)
-		{
-			for (const auto& [key, value] : ar)
-			{
-				al[key] -= value;
-			}
-		}
-
-		void dec(std::map<EnumAttribute, float>& al, const std::map<EnumAttribute, float>& ar)
-		{
-			for (const auto& [key, value] : ar)
-			{
-				al[key] -= value;
-			}
-		}
 	};
 }//namespace ngl

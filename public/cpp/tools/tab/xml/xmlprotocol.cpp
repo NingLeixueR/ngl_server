@@ -18,11 +18,11 @@ namespace ngl
 {
 	std::map<std::string, int32_t> xmlprotocol::m_protocol;
 
-	void xmlprotocol::read(const std::string& axmlname)
+	void xmlprotocol::read(const char* axml)
 	{
 		tinyxml2::XMLDocument ldoc;
 		tinyxml2::XMLElement* lcon = nullptr;
-		if (!xml::readxml(axmlname.c_str(), ldoc, lcon))
+		if (!xml::readxml(axml, ldoc, lcon))
 		{
 			return;
 		}

@@ -17,6 +17,7 @@
 #include "ttab_attribute.h"
 #include "manage_csv.h"
 #include "events_map.h"
+#include "actor_base.h"
 #include "net.pb.h"
 #include "nlog.h"
 #include "net.h"
@@ -31,147 +32,58 @@ namespace ngl
 {
 	class attribute
 	{
-		// 模块属性(只能模块间发生变化通过updata[EnumModule,attribute_value])
+		// # 模块属性(只能模块间发生变化通过updata[EnumModule,attribute_value])
 		std::map<EnumModule, attribute_value> m_moduledata;
 		bool m_sync = false;
+		int64_t m_unitid = 0;
 
-		attribute_value& root()
-		{
-			return m_moduledata[EnumModule::E_ModuleRoot];
-		}
+		// # 根节点
+		attribute_value& root();
 
-		void add_module(EnumModule aenum)
-		{
-			auto itor = m_moduledata.find(aenum);
-			if (itor == m_moduledata.end())
-			{
-				return;
-			}
-			for (const auto& [key, value] : itor->second.m_crattr)
-			{
-				ttab_attribute::instance().add(m_moduledata[key].m_orattr, value);
-			}
-		}
+		// # 添加模块，并将属性添加到父链
+		void module_add(EnumModule aenum);
 
-		void dec_module(EnumModule aenum)
-		{
-			auto itor = m_moduledata.find(aenum);
-			if (itor == m_moduledata.end())
-			{
-				return;
-			}
-			ttab_attribute::instance().dec(root().m_attr, itor->second.m_fight);
-			for (const auto& [key, value] : itor->second.m_crattr)
-			{
-				ttab_attribute::instance().dec(m_moduledata[key].m_orattr, value);
-				if (key != EnumModule::E_ModuleRoot)
-				{
-					ttab_attribute::instance().dec(root().m_attr, m_moduledata[key].m_fight);
-				}
-			}
-		}
+		// # 移除模块,并将其添加到父链上的属性去除
+		void module_dec(EnumModule aenum);
 
-		bool is_module_root(EnumModule aenum)
-		{
-			return aenum == EnumModule::E_ModuleRoot;
-		}
+		// # 判断EnumModule是否是根节点
+		bool module_is_root(EnumModule aenum);
 
-		bool is_module_null(EnumModule aenum)
-		{
-			return aenum == EnumModule::E_ModuleNull;
-		}
+		// # 判断EnumModule是否为空
+		bool module_is_null(EnumModule aenum);
 
-		void update_module(EnumModule aenum)
-		{
-			auto itor = m_moduledata.find(aenum);
-			if (itor == m_moduledata.end())
-			{
-				return;
-			}
-			itor->second.update();
-			ttab_attribute::instance().add(root().m_attr, itor->second.m_fight);
-			for (const auto& [key, value] : itor->second.m_crattr)
-			{
-				ttab_attribute::instance().add(m_moduledata[key].m_orattr, value);
-				if (is_module_root(key) == false)
-				{
-					m_moduledata[key].update();
-					ttab_attribute::instance().add(root().m_attr, m_moduledata[key].m_fight);
-				}
-			}
-			root().update();
-		}
+		// # 更新模块
+		void module_update(EnumModule aenum);
 	public:
-		attribute() = default;
+		attribute()
+		{
+		}
 		
-		bool sync()
-		{
-			return m_sync;
-		}
+		bool sync();
 
-		void set_sync(bool async)
-		{
-			m_sync = async;
-		}
+		void set_sync(bool async);
 
 		// # 初始化数据 将模块属性输入
-		void init_data(EnumModule aenum, attribute_value& avalue)
-		{
-			m_moduledata[aenum] = avalue;
-			m_moduledata[aenum].m_module = aenum;
-		}
+		void init_data(EnumModule aenum, attribute_value& avalue);
 
 		// # 计算输入的模块属性 生成最终属性与战力
-		void init()
-		{
-			for (EnumModule i = E_ModuleRoot;i < E_ModuleCount;i = (EnumModule)(i + 1))
-			{
-				add_module(i);
-			}
-			for (std::pair<const EnumModule, attribute_value>& lpair : m_moduledata)
-			{
-				if (lpair.first == E_ModuleRoot)
-				{
-					continue;
-				}
-				lpair.second.update();
-				ttab_attribute::instance().add(root().m_attr, lpair.second.m_fight);
-			}
-			root().update();
-		}
+		void init();
 
-		// #### 更新模块属性
-		void updata(EnumModule aenum, attribute_value& avalue)
-		{
-			dec_module(aenum);
-			avalue.m_orattr.swap(m_moduledata[aenum].m_orattr);
-			m_moduledata[aenum] = avalue;
-			m_moduledata[aenum].m_module = aenum;
-			update_module(aenum);
-			m_sync = true;
-		}
+		// # 更新模块属性
+		void updata(EnumModule aenum, attribute_value& avalue);
 
-		// #### 战力
-		int64_t fight()
-		{
-			return root().m_fightscore;
-		}
+		// # 移除属性模块
+		void remove(EnumModule aenum);
 
-		const std::map<EnumAttribute, int64_t>& get_attribute()
-		{
-			return root().m_fight;
-		}
+		// # 战力
+		int64_t fight();
+
+		const std::map<EnumAttribute, int64_t>& get_attribute();
 
 		//EnumModule aenum
-		const std::map<EnumAttribute, int64_t>& get_attribute(EnumModule aenum)
-		{
-			return m_moduledata[aenum].m_fight;
-		}
+		const std::map<EnumAttribute, int64_t>& get_attribute(EnumModule aenum);
 
-		void printf()
-		{
-			root().printf();
-		}
+		void printf();
 
 		template <typename T>
 		void topb(T& apro)
@@ -190,20 +102,22 @@ namespace ngl
 	class dynamic_attribute
 	{
 	private:
-		std::map<EnumAttribute, int64_t> m_dynamic;
-		aoimap* m_map = nullptr;
+		std::map<EnumAttribute, int64_t>	m_base;
+		std::map<EnumAttribute, int64_t>	m_dynamic;
+		std::map<EnumFightStat, bool>		m_stat;
 		int64_t m_unitid = 0;
-		int32_t m_stat = pbnet::eunitstat_normal;	// 状态	 
+		
 	public:
-		dynamic_attribute(aoimap* amap, int64_t aunitid) :
-			m_map(amap),
+		dynamic_attribute(int64_t aunitid) :
 			m_unitid(aunitid)
-		{}
+		{
+		}
 
 		// 根据[模块属性]生成动态属性
-		void init_dynamic(std::map<EnumModule, attribute_value>& amoduledata)
+		void init(const std::map<EnumAttribute, int64_t>& aattribute)
 		{
-			m_dynamic = amoduledata[EnumModule::E_ModuleRoot].get_fight();
+			m_base = aattribute;
+			m_dynamic = m_base;
 		}
 
 		// 是否死亡
@@ -213,7 +127,7 @@ namespace ngl
 		}
 
 		// 修改动态属性
-		void change_attribute(EnumAttribute aattribute, int32_t avalue)
+		void change_attribute(EnumAttribute aattribute, int64_t avalue, bool adynamic)
 		{
 			m_dynamic[aattribute] += avalue;
 			if (is_death())
@@ -224,33 +138,43 @@ namespace ngl
 			}
 		}
 
-		// 无法移动
-		void set_stat(pbnet::eunitstat astat)
+		void set_attribute(EnumAttribute aattribute, int64_t avalue)
 		{
-			m_stat |= (int32_t)astat;
+			m_dynamic[aattribute] = avalue;
+			if (is_death())
+			{
+				np_eevents_map_death lparm;
+				lparm.m_deathunitid = m_unitid;
+				actor_events_map::trigger_event(lparm);
+			}
 		}
 
-		void clear_stat()
+		int64_t get_attribute(EnumAttribute aattribute)
 		{
-			m_stat = pbnet::eunitstat_normal;
+			return m_dynamic[aattribute];
+		}
+
+		bool get_fightstst(EnumFightStat astat)
+		{
+			return m_stat[astat];
 		}
 
 		// 是否可以移动
-		bool ismove()const
+		bool is_move()
 		{
-			return (m_stat & (int32_t)pbnet::eunitstat_nomove) == 0;
+			return get_fightstst(E_FightMove);
 		}
 
 		// 是否可以普通攻击
-		bool isnormalattack()const
+		bool is_normalattack()
 		{
-			return (m_stat & (int32_t)pbnet::eunitstat_nonormalattack) == 0;
+			return get_fightstst(E_FightNormalAttack);
 		}
 
 		// 是否可以释放技能
-		bool isreleaseskill()const
+		bool is_releaseskill()
 		{
-			return (m_stat & (int32_t)pbnet::eunitstat_noreleaseskill) == 0;
+			return get_fightstst(E_FightReleaseSkill);
 		}
 	};
 

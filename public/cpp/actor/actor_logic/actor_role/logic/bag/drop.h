@@ -60,7 +60,7 @@ namespace ngl
 				const pbdb::db_activitytimes* lpactivitytimes = tdb_activitytimes::nsp_cread<TACTOR>::instance(m_actor->id_guid()).getconst(activityid);
 				if (lpactivitytimes != nullptr)
 				{
-					if (lnow >= lpactivitytimes->mbeg() && lnow < lpactivitytimes->mbeg()+ lpactivitytimes->mduration() && lpactivitytimes->mstart())
+					if (lnow >= lpactivitytimes->mbeg() && lnow < lpactivitytimes->mbeg() + lpactivitytimes->mduration() && lpactivitytimes->mstart())
 					{
 						return true;
 					}
@@ -193,14 +193,7 @@ namespace ngl
 			return false;
 		}
 
-		bool use(
-			int aid
-			, int acount
-			, i64_actorid aroleid
-			, const std::string& asrc = ""
-			, std::map<int, int>* amap = nullptr
-			, int32_t amailid = -1
-		)
+		bool use(int aid, int acount, i64_actorid aroleid, const std::string& asrc = "", std::map<int, int>* amap = nullptr, int32_t amailid = -1)
 		{
 			std::string lsrc = std::format("drop<{}>::use({},{},{},{}) src={}", typeid(TACTOR).name(), aid, acount, nguid(aroleid), amailid, asrc);
 			log_error()->print(lsrc);

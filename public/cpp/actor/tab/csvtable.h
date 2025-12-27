@@ -11,8 +11,9 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-12-23 18:31:03
+// 创建时间 // 创建时间 25-12-26 18:41:19
 #pragma once
 
 #include "csv.h"
@@ -82,13 +83,15 @@ enum EnumModule
 {
 	E_ModuleNull = 0,	// 空	
 	E_ModuleRoot = 1,	// 卡牌(链尾)
-	E_ModuleBuff = 2,	// 玩家buff
 	E_ModuleEquip = 3,	// 装备
 	E_ModuleEquipWeapon = 4,	// 装备武器
 	E_ModuleEquipHelmet = 5,	// 装备头盔
 	E_ModuleEquipCloth = 6,	// 装备衣服
 	E_ModuleEquipPants = 7,	// 装备护腿
-	E_ModuleCount = 8,	// 数量 	
+	E_ModuleBuff = 100,	// buff
+	E_ModuleBuffStart = 100,	// 玩家buff(100-200)，最多100
+	E_ModuleBuffFinish = 200,	// 玩家buff(100-200)，最多100
+	E_ModuleCount = 200,	// 数量 	
 };
 enum EnumAttribute
 {
@@ -97,7 +100,16 @@ enum EnumAttribute
 	E_Hp,	// [血量]
 	E_Anger,	// [怒气]
 	E_Speed,	// [速度]
+	E_CooldownAbsolute,	// [冷却缩减:绝对值]
+	E_CooldownProp,	// [冷却缩减:万分比]
 	E_Count,	
+};
+enum EnumFightStat
+{
+	E_FightMove,	// [移动]
+	E_FightNormalAttack,	// [普通攻击]
+	E_FightReleaseSkill,	// [释放技能]
+	E_FightCount,	
 };
 enum EItemSrc
 {

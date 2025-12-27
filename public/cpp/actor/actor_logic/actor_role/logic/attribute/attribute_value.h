@@ -28,156 +28,76 @@ namespace ngl
 {
 	class enum_attr_name
 	{
-		static std::array<std::string, E_Count> m_arr;
 	public:
-		static void init()
-		{
-			m_arr[E_Attack]		= "攻击";
-			m_arr[E_Defense]	= "防御";
-			m_arr[E_Hp]			= "血量";
-			m_arr[E_Anger]		= "怒气";
-			m_arr[E_Speed]		= "速度";
-		}
-
-		static const char* name(EnumAttribute atype)
-		{
-			return m_arr[atype].c_str();
-		}
+		static void init();
+		static std::pair<const char*, const char*> name(EnumAttribute atype);
+		static EnumAttribute type(const char* aname);
+		static EnumAttribute null_type();
 	};
 
-	struct attribute_value
+	class tools_attribute
+	{
+	public:
+		static void add(std::map<EnumAttribute, int64_t>& al, const std::map<EnumAttribute, int64_t>& ar);
+		static void add(std::map<EnumAttribute, float>& al, const std::map<EnumAttribute, float>& ar);
+		static void dec(std::map<EnumAttribute, int64_t>& al, const std::map<EnumAttribute, int64_t>& ar);
+		static void dec(std::map<EnumAttribute, float>& al, const std::map<EnumAttribute, float>& ar);
+
+		static int64_t fight(EnumAttribute atype, double avalues);
+	};
+
+	class attribute_value
 	{
 		friend class attribute;
-	private:
-		// # [absolute] 属性绝对值  
-		std::map<EnumAttribute, int64_t> m_attr;
-		// # 万分比属性[自身提供的]
-		std::map<EnumAttribute, float> m_rattr;
-		// # 万分比属性[别人提供的]
-		std::map<EnumAttribute, float> m_orattr;
+		std::map<EnumAttribute, int64_t>	m_attr;		// [absolute] 属性绝对值  
+		std::map<EnumAttribute, float>		m_rattr;	// 万分比属性[自身提供的]
+		std::map<EnumAttribute, float>		m_orattr;	// 万分比属性[别人提供的]
+		
 		// ## 以下比例属性 是往父链上添加的属性 ##
-		// # key:哪个模块加的比例属性
-		std::map<EnumModule, std::map<EnumAttribute, float>> m_crattr;		// 往父链的[万分比属性]上添加 
-		// # [m_attr+m_rattr] 产生的属性
-		std::map<EnumAttribute, int64_t> m_fight;
-		// # 战力
-		int64_t m_fightscore = 0;
+		std::map<EnumAttribute, int64_t>	m_fight;						// [m_attr+m_rattr] 产生的属性
+		int64_t								m_fightscore = 0;				// 战力
+		EnumModule							m_module = EnumModule::E_ModuleNull;
+		std::map<EnumModule, std::map<EnumAttribute, float>> m_crattr;		// 哪个模块加的比例属性,往父链的[万分比属性]上添加 
+	private:
+		void update(std::map<EnumAttribute, int64_t>& aattr, const std::map<EnumAttribute, float>& amr);
 
-		EnumModule m_module = EnumModule::E_ModuleNull;
+		int64_t fight();
 	public:
 		attribute_value() = default;
-	private:
-		void update(std::map<EnumAttribute, int64_t>& aattr, const std::map<EnumAttribute, float>& amr)
-		{
-			for (const auto& [key, value] : amr)
-			{
-				auto itor = aattr.find(key);
-				if (itor != aattr.end())
-				{
-					itor->second += itor->second * value;
-					if (m_module == EnumModule::E_ModuleRoot)
-					{
-						itor->second = ttab_attribute::instance().uplowlimit(key, itor->second);
-					}
-				}
-			}
-		}
 
-		int64_t fight(EnumAttribute atype, double avalues)
-		{
-			const tab_attribute* tab = ttab_attribute::instance().attr(atype);
-			if (tab == nullptr)
-			{
-				return 0;
-			}
-			return tab->m_fightcoefficient * avalues;
-		}
+		std::map<EnumAttribute, int64_t>& get_fight();
 
-		int64_t fight()
-		{
-			m_fightscore = 0;
-			for (const auto& [key, value] : m_fight)
-			{
-				m_fightscore += fight(key, (double)value);
-			}
-			return m_fightscore;
-		}
-	public:
-		std::map<EnumAttribute, int64_t>& get_fight()
-		{
-			return m_fight;
-		}
-
-		int64_t update()
-		{
-			m_fight.clear();
-			m_fight = m_attr;
-			std::map<EnumAttribute, float> lrattr(m_rattr);
-			ttab_attribute::instance().add(lrattr, m_orattr);
-			update(m_fight, lrattr);
-			return fight();
-		}
+		int64_t update();
 
 		// 打印属性
-		void printf()
-		{
-			log_error()->print("attr # {}", m_fight);
-		}
+		void printf();
 
 		// 清空属性
-		void clear()
-		{
-			m_attr.clear();
-			m_rattr.clear();
-			m_crattr.clear();
-		}
+		void clear();
 
 		// 添加属性
-		void set_attr(EnumAttribute atype, double avalues)
-		{
-			m_attr[atype] = (int64_t)avalues;
-		}
-
-		// 添加比例属性属性
-		void set_rattr(EnumAttribute atype, double avalues)
-		{
-			m_rattr[atype] = (float)avalues;
-		}
-
-		// 给父结点添加属性
-		void set_father_rattr(EnumModule amodule, EnumAttribute atype, double avalues)
-		{
-			m_crattr[amodule][atype] = (float)avalues;
-		}
+		void set_attr(EnumAttribute atype, double avalues);
 
 		// 获取属性
-		double get_attr(EnumAttribute atype)
-		{
-			return (double)m_attr[atype];
-		}
+		double get_attr(EnumAttribute atype);
+
+		// 添加比例属性属性
+		void set_rattr(EnumAttribute atype, double avalues);
 
 		// 获取比例属性属性
-		double get_rattr(EnumAttribute atype)
-		{
-			return m_rattr[atype];
-		}
+		double get_rattr(EnumAttribute atype);
+
+		// 给父结点添加属性
+		void set_father_rattr(EnumModule amodule, EnumAttribute atype, double avalues);
 
 		// 获取父结点添属性
-		double get_father_rattr(EnumModule amodule, EnumAttribute atype)
-		{
-			return m_crattr[amodule][atype];
-		}
+		double get_father_rattr(EnumModule amodule, EnumAttribute atype);
 
-		void topb(pbnet::UnitModule& aunitmodule)
-		{
-			aunitmodule.set_mmtype(m_module);
-			for (std::pair<const EnumAttribute, int64_t>& item : m_fight)
-			{
-				pbnet::UnitAttribute* lptemp = aunitmodule.add_mmodules();
-				lptemp->set_mtype(item.first);
-				lptemp->set_mvalue(item.second);
-			}
-		}
+		// 战力积分
+		int64_t fightscore();
+
+		// 转换为pb结构
+		void topb(pbnet::UnitModule& aunitmodule);
 	};
 }// namespace ngl
 

@@ -1,3 +1,4 @@
+// clang-format off
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
@@ -11,31 +12,18 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// clang-format on
 #pragma once
 
-#include "xmlinfo.h"
-#include "type.h"
-#include "nlog.h"
-
-#include <functional>
-#include <string>
-#include <map>
+#include "attribute.h"
 
 namespace ngl
 {
-	class xmlprotocol
+	class buff
 	{
-		static std::map<std::string, int32_t> m_protocol;
-
-		static void read(const char* axml);
 	public:
-		// # 从xml中加载数据
-		static void load();
 
-		// # 获取协议号
-		static int32_t protocol(const std::string& aname);
-
-		// # makeproto工具调用 所以不需要索引
-		static int32_t free_protocol();
 	};
-}// namespace ngl
+
+
+}//namespace ngl

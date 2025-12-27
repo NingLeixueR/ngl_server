@@ -49,6 +49,18 @@ namespace ngl
 
 		//# 协议处理
 		bool handle_switch(actor_base* aactor, i32_threadid athreadid, handle_pram& apram);
+
+		template <typename T>
+		bool handle_switch(actor_base* aactor, std::shared_ptr<T>& aparm)
+		{
+			auto itor = m_fun.find(tprotocol::protocol<T>());
+			if (itor == m_fun.end())
+			{
+				return false;
+			}
+			handle_pram lpram = handle_pram::create<T, false>(nguid::make(), nguid::make(), aparm);
+			itor->second.m_fun(aactor, -1, lpram);
+		}
 	};
 
 	template <typename T>

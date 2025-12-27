@@ -585,4 +585,12 @@ namespace ngl
 		dprotocol(np_activityrank_operator, m_rankid, m_iscreate)
 	};
 
+	struct np_attribute_remove
+	{
+		int32_t m_fightid = 0;
+		int64_t m_unitid = nguid::make();
+		EnumModule m_module = E_ModuleNull;
+
+		dprotocol(np_attribute_remove, m_fightid, m_unitid, m_module)
+	};
 }//namespace ngl

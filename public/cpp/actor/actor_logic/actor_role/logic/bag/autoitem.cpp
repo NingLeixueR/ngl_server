@@ -35,4 +35,37 @@ namespace ngl
 	{
 		m_addnostackitems.push_back(aid);
 	}
+
+	bool autoitem::empty()
+	{
+		return m_addstackitems.empty() && m_addnostackitems.empty() && m_delstackitems.empty() && m_delnostackitems.empty();
+	}
+
+	void autoitem::clear()
+	{
+		m_addstackitems.clear();
+		m_addnostackitems.clear();
+		m_delstackitems.clear();
+		m_delnostackitems.clear();
+	}
+
+	const std::map<int32_t, int32_t>& autoitem::delstackitems()
+	{
+		return m_delstackitems;
+	}
+
+	const std::list<int32_t>& autoitem::delnostackitems()
+	{
+		return m_delnostackitems;
+	}
+
+	const std::map<int32_t, int32_t>& autoitem::addstackitems()
+	{
+		return m_addstackitems;
+	}
+
+	const std::list<int32_t>& autoitem::addnostackitems()
+	{
+		return m_addnostackitems;
+	}
 }// namespace ngl

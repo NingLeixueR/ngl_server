@@ -152,6 +152,18 @@ namespace ngl
 		// # 由线程主动调用消费消息
 		void actor_handle(i32_threadid athreadid) final;
 
+		template <typename T>
+		bool ahandle(const std::shared_ptr<T>& aparm)
+		{
+			nrfunbase* lprfun = m_actorfun;
+			if (lprfun == nullptr)
+			{
+				tools::no_core_dump();
+				return false;
+			}
+			return lprfun->handle_switch(this, aparm);
+		}
+
 		bool ahandle(i32_threadid athreadid, handle_pram& aparm);
 
 		// ############# [广播] ############# 
