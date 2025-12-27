@@ -11,22 +11,15 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "grid.h"
+
+#pragma once
 
 namespace ngl
 {
-	bool grid::enter(unit* aunit)
+	class cooldown
 	{
-		return m_unitlist.insert(aunit->id()).second;
-	}
+	public:
 
-	void grid::leave(unit* aunit)
-	{
-		m_unitlist.erase(aunit->id());
-	}
+	};
 
-	std::set<i64_actorid>* grid::get_unitlist()
-	{
-		return &m_unitlist;
-	}
 }//namespace ngl

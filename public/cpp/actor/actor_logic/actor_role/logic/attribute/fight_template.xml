@@ -1,0 +1,18 @@
+<con>
+	<base
+		name = "技能名称"
+		describe = "技能描述"
+		cooldown = "冷却时间"
+		consume = "消耗"
+	/>
+	<fight>
+		<step>
+			<lv
+				start = "开始时间(单位:毫秒)"
+				finish = "结束时间(单位:毫秒)"
+				bufflv1 = "buff1,buff2,buff3"
+				bufflv2 = "buff1,buff2,buff3"
+			>
+		<step>
+	</fight>
+</con>

@@ -27,7 +27,7 @@ namespace ngl
 	{
 		std::map<int, pbdb::item*> m_stackitems;				// key tid 可堆叠的物品
 		std::map<int, pbdb::item*> m_nostackitems;				// key id  不可堆叠的物品
-		std::unique_ptr<autoitem> m_autoitem;
+		std::unique_ptr<autoitem>  m_autoitem;
 	public:
 		bag();
 

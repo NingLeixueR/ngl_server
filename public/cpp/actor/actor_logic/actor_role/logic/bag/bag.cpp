@@ -218,39 +218,36 @@ namespace ngl
 
 	void bag::sync_client()
 	{
-		if (m_autoitem->m_addstackitems.empty()
-			&& m_autoitem->m_addnostackitems.empty()
-			&& m_autoitem->m_delstackitems.empty()
-			&& m_autoitem->m_delnostackitems.empty()
-			)
+		if (m_autoitem->empty())
 		{
 			return;
 		}
 		pbnet::PROBUFF_NET_BAG_UPDATE pro;
 		auto ladditems = pro.mutable_madditems();
-		for (const auto& [_id, _count] : m_autoitem->m_addstackitems)
+		for (const auto& [_id, _count] : m_autoitem->addstackitems())
 		{
 			auto ladditem = ladditems->Add();
 			ladditem->set_mid(_id);
 			ladditem->set_mcount(_count);
 		}
 		auto laddnostackitems = pro.mutable_maddnostackitems();
-		for (int32_t itemid : m_autoitem->m_addnostackitems)
+		for (int32_t itemid : m_autoitem->addnostackitems())
 		{
 			laddnostackitems->Add(itemid);
 		}
 		auto ldelitems = pro.mutable_mdelitems();
-		for (const auto& [_id, _count] : m_autoitem->m_delstackitems)
+		for (const auto& [_id, _count] : m_autoitem->delstackitems())
 		{
 			auto ldelitem = ldelitems->Add();
 			ldelitem->set_mid(_id);
 			ldelitem->set_mcount(_count);
 		}
 		auto ldelnostackitems = pro.mutable_mdelnostackitems();
-		for (int32_t itemid : m_autoitem->m_delnostackitems)
+		for (int32_t itemid : m_autoitem->delnostackitems())
 		{
 			ldelnostackitems->Add(itemid);
 		}
 		nactor()->send_client(get_actor()->id_guid(), pro);
+		m_autoitem->clear();
 	}
 }// namespace ngl

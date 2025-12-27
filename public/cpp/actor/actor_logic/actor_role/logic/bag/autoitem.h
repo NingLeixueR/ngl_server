@@ -23,7 +23,7 @@ namespace ngl
 {
 	class actor_role;
 	
-	struct autoitem
+	class autoitem
 	{
 		std::map<int32_t, int32_t>	m_delstackitems;
 		std::list<int32_t>			m_delnostackitems;
@@ -32,7 +32,19 @@ namespace ngl
 	public:
 		void add(int32_t atid, int32_t acount);
 		void add(int32_t aid);
+		
 		void del(int32_t aid, int32_t acount);
 		void del(int32_t aid);
+
+		const std::map<int32_t, int32_t>& delstackitems();
+		const std::list<int32_t>& delnostackitems();
+
+		const std::map<int32_t, int32_t>& addstackitems();
+		const std::list<int32_t>& addnostackitems();
+		
+		bool empty();
+		
+		void clear();
+
 	};
 }// namespace ngl
