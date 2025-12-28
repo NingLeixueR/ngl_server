@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-12-26 18:41:30
+// 创建时间 25-12-28 20:12:51
 #include "pb_field.cpp"
 #include "session_endpoint.cpp"
 #include "attribute_value.cpp"
@@ -7,6 +7,7 @@
 #include "session_manage.cpp"
 #include "server_session.cpp"
 #include "activitytimedb.cpp"
+#include "xml_serialize.cpp"
 #include "serialize_lua.cpp"
 #include "operator_file.cpp"
 #include "nprotocol_g2c.cpp"

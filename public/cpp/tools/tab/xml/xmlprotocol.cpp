@@ -27,10 +27,10 @@ namespace ngl
 			return;
 		}
 
-		std::function<void(tinyxml2::XMLElement*)> lfun = [](tinyxml2::XMLElement* apt)
+		std::function<bool(tinyxml2::XMLElement*)> lfun = [](tinyxml2::XMLElement* apt)
 			{
 				xmlinfo ltemp;
-				xmlnode::read_config(apt, ltemp);
+				xmlnode::read_config_xmlattr(apt, ltemp);
 
 				std::string lname;
 				int32_t lnumber = 0;
@@ -45,6 +45,7 @@ namespace ngl
 					lmap[std::format("np_actor_forward<{0},forward_c2g<{0}>>", lname)] = lnumber;
 				}
 				ltemp.plog();
+				return true;
 			};
 		xml::foreach(lcon, "config", lfun);
 	}

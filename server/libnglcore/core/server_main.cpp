@@ -1,5 +1,6 @@
 #include "server_main.h"
 #include "init_server.h"
+#include "xml_serialize.h"
 
 #define DEF_COUNT (2000)
 
@@ -770,6 +771,10 @@ std::string g_nodename = "node";
 
 int ngl_main(int argc, char** argv)
 {
+
+	ngl::skill_template ltemp;
+	ltemp.xml_pop();
+
 	if (argc <= 3)
 	{
 		std::cout << "²ÎÊý´íÎó:EXE name areaid tab_servers::tcount" << std::endl;

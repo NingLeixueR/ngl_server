@@ -26,12 +26,22 @@ namespace ngl
 		{
 			std::string m_name;			// 技能名称
 			std::string m_describe;		// 技能描述
-			int32_t		m_cooldown;		// 冷却时间(毫秒)
-			struct lv
+			struct cooldown
 			{
-				std::map<EnumAttribute, int32_t> m_consume; // 释放技能消耗属性值
+				struct lv
+				{
+					int32_t m_value;
+				};
 			};
-			
+			std::map<int32_t, cooldown::lv>	m_cooldown;		// 冷却时间(毫秒)
+			struct consume
+			{
+				struct lv
+				{
+					std::map<EnumAttribute, int32_t> m_value;
+				};
+			};
+			std::map<int32_t, consume::lv> m_consume;  // 释放技能消耗属性值
 		};
 
 		struct setp
@@ -78,12 +88,7 @@ namespace ngl
 
 
 		// # 检查是否可以释放技能
-		virtual bool release_check()
-		{
-			// 获取冷却时间
-			m_data.m_base.m_cooldown;
-
-		}
+		virtual bool release_check();
 	
 		// # 释放技能
 		virtual bool release();

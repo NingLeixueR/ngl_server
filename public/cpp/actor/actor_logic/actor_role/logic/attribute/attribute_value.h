@@ -111,6 +111,7 @@ struct std::formatter<ngl::EnumAttribute>
 
 	auto format(const ngl::EnumAttribute aval, std::format_context& ctx)const
 	{
-		return std::format_to(ctx.out(), "{}", ngl::enum_attr_name::name(aval));
+		auto lpair = ngl::enum_attr_name::name(aval);
+		return std::format_to(ctx.out(), "{}:{}", lpair.first, lpair.second);
 	}
 };
