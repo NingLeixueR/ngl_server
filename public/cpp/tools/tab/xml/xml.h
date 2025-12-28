@@ -29,7 +29,13 @@ namespace ngl
 	public:
 		static bool readxml(const char* aname, tinyxml2::XMLDocument& axml, tinyxml2::XMLElement*& acon);
 
+		static bool writexml(const char* aname, tinyxml2::XMLDocument& axml);
+
 		static tinyxml2::XMLElement* get_child(tinyxml2::XMLElement* aele, const char* astr);
+
+		static tinyxml2::XMLElement* set_child(tinyxml2::XMLElement* aele, const char* astr);
+
+		static tinyxml2::XMLElement* set_child(tinyxml2::XMLDocument& axml, const char* astr);
 
 		template <typename T>
 		static bool get(tinyxml2::XMLElement* aele, const char* akey, T& aval)
@@ -49,6 +55,37 @@ namespace ngl
 		}
 
 		template <typename T>
+		static bool get(tinyxml2::XMLElement* aele, T& aval)
+		{
+			const char* val = aele->GetText();
+			if (!val)
+			{
+				return false;
+			}
+			aval = tools::lexical_cast<T>(val);
+			return true;
+		}
+
+		template <typename T>
+		static bool set(tinyxml2::XMLElement* aele, const char* akey, T& aval)
+		{
+			tinyxml2::XMLElement* valElement = set_child(aele, akey);
+			if (!valElement)
+			{
+				return false;
+			}
+			valElement->SetText(tools::lexical_cast<std::string>(aval).c_str());
+			return true;
+		}
+
+		template <typename T>
+		static bool set(tinyxml2::XMLElement* aele, T& aval)
+		{
+			aele->SetText(tools::lexical_cast<std::string>(aval).c_str());
+			return true;
+		}
+
+		template <typename T>
 		static bool get_xmlattr(tinyxml2::XMLElement* aele, const char* akey, T& aval)
 		{
 			if (aele == nullptr)
@@ -64,11 +101,11 @@ namespace ngl
 			return true;
 		}
 
-		static void foreach(tinyxml2::XMLElement* aele, const char* akey, const std::function<void(tinyxml2::XMLElement*)>& afun);
+		static bool foreach(tinyxml2::XMLElement* aele, const char* akey, const std::function<bool(tinyxml2::XMLElement*)>& afun);
 
-		static void foreach(tinyxml2::XMLElement* aele, const std::function<void(tinyxml2::XMLElement*)>& afun);
+		static bool foreach(tinyxml2::XMLElement* aele, const std::function<bool(tinyxml2::XMLElement*)>& afun);
 
-		static void foreach_xmlattr(tinyxml2::XMLElement* aele, const std::function<void(const char*, const char*)>& afun);
+		static bool foreach_xmlattr(tinyxml2::XMLElement* aele, const std::function<bool(const char*, const char*)>& afun);
 	};
 
 	class xmlnode
@@ -99,9 +136,11 @@ namespace ngl
 
 		static void load(const std::string& axmlpath, const std::string& aname);
 
-		static void read_config(tinyxml2::XMLElement* apt, xmlinfo& anfo);
+		static void read_config_xmlattr(tinyxml2::XMLElement* apt, xmlinfo& anfo);
 
-		static void read_config(const char* akey, std::map<i32_serverid, xmlinfo>& anfo);
+		static void read_config_xmlattr(const char* akey, std::map<i32_serverid, xmlinfo>& anfo);
+
+		static void read_config(tinyxml2::XMLElement* apt, xmlinfo& anfo);
 
 		static bool read_public_config(xmlinfo& anfo);
 

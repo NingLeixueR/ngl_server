@@ -1,18 +1,56 @@
 <con>
-	<base
-		name = "技能名称"
-		describe = "技能描述"
-		cooldown = "冷却时间"
-		consume = "消耗"
-	/>
+	<m_name>技能名称</m_name>
+	<m_describe>技能名称</m_describe>
+	<m_cooldown>
+		<key>1</key>
+		<value>3000</value>
+	</m_cooldown>
+	<m_cooldown>
+		<key>2</key>
+		<value>2000</value>
+	</m_cooldown>
+	<m_cooldown>
+		<key>3</key>
+		<value>1000</value>
+	</m_cooldown>
+	<m_consume>
+		<key>1</key>
+		<value>
+			<key>1</key>
+			<value>1000</value>
+		</value>
+		<value>
+			<key>2</key>
+			<value>2000</value>
+		</value>	
+	</m_consume>
+	<m_consume>
+		<key>3</key>
+		<value>
+			<key>1</key>
+			<value>1000</value>
+		</value>
+		<value>
+			<key>2</key>
+			<value>2000</value>
+		</value>	
+	</m_consume>	
 	<fight>
 		<step>
 			<lv
+				level = "1"
 				start = "开始时间(单位:毫秒)"
 				finish = "结束时间(单位:毫秒)"
 				bufflv1 = "buff1,buff2,buff3"
 				bufflv2 = "buff1,buff2,buff3"
-			>
+			/>
+			<lv
+				level = "3"
+				start = "开始时间(单位:毫秒)"
+				finish = "结束时间(单位:毫秒)"
+				bufflv1 = "buff1,buff2,buff3"
+				bufflv2 = "buff1,buff2,buff3"
+			/>
 		<step>
 	</fight>
 </con>

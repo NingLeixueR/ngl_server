@@ -1,14 +1,14 @@
-/*
+ï»¿/*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "ttab_servers.h"
@@ -34,6 +34,11 @@ namespace ngl
 		return acon != nullptr;
 	}
 
+	bool xml::writexml(const char* aname, tinyxml2::XMLDocument& axml)
+	{
+		return axml.SaveFile(aname) == tinyxml2::XML_SUCCESS;
+	}
+
 	tinyxml2::XMLElement* xml::get_child(tinyxml2::XMLElement* aele, const char* astr)
 	{
 		std::vector<std::string> lvec;
@@ -53,38 +58,60 @@ namespace ngl
 		return valElement;
 	}
 
-	void xml::foreach(tinyxml2::XMLElement* aele, const char* akey, const std::function<void(tinyxml2::XMLElement*)>& afun)
+	tinyxml2::XMLElement* xml::set_child(tinyxml2::XMLElement* aele, const char* astr)
+	{
+		return aele->InsertNewChildElement(astr);
+	}
+
+	tinyxml2::XMLElement* xml::set_child(tinyxml2::XMLDocument& axml, const char* astr)
+	{
+		return axml.NewElement(astr);
+	}
+
+	bool xml::foreach(tinyxml2::XMLElement* aele, const char* akey, const std::function<bool(tinyxml2::XMLElement*)>& afun)
 	{
 		for (tinyxml2::XMLNode* child = aele->FirstChildElement(); child; child = child->NextSiblingElement())
 		{
 			tinyxml2::XMLElement* lxele = child->ToElement();
 			if (lxele != nullptr && std::string(lxele->Name()) == akey)
 			{
-				afun(lxele);
+				if (!afun(lxele))
+				{
+					return false;
+				}
 			}
 		}
+		return true;
 	}
 
-	void xml::foreach(tinyxml2::XMLElement* aele, const std::function<void(tinyxml2::XMLElement*)>& afun)
+	bool xml::foreach(tinyxml2::XMLElement* aele, const std::function<bool(tinyxml2::XMLElement*)>& afun)
 	{
 		for (tinyxml2::XMLNode* child = aele->FirstChildElement(); child; child = child->NextSiblingElement())
 		{
 			tinyxml2::XMLElement* lxele = child->ToElement();
 			if (lxele != nullptr)
 			{
-				afun(lxele);
+				if (!afun(lxele))
+				{
+					return false;
+				}
 			}
 		}
+		return true;
 	}
 
-	void xml::foreach_xmlattr(tinyxml2::XMLElement* aele, const std::function<void(const char*, const char*)>& afun)
+	bool xml::foreach_xmlattr(tinyxml2::XMLElement* aele, const std::function<bool(const char*, const char*)>& afun)
 	{
 		for (const tinyxml2::XMLAttribute* attribute = aele->FirstAttribute(); attribute; attribute = attribute->Next())
 		{
 			const char* lkey = attribute->Name();
 			const char* lval = attribute->Value();
-			afun(lkey, lval);
+			if (!afun(lkey, lval))
+			{
+				return false;
+			}
 		}
+		return true;
 	}
 
 	tinyxml2::XMLDocument	xmlnode::m_doc;
@@ -174,19 +201,20 @@ namespace ngl
 		log_error()->print("finish xmlnode read [{}]", lxmlname);
 	}
 
-	void xmlnode::read_config(tinyxml2::XMLElement* apt, xmlinfo& anfo)
+	void xmlnode::read_config_xmlattr(tinyxml2::XMLElement* apt, xmlinfo& anfo)
 	{
-		xml::foreach_xmlattr(apt, [&anfo](const char* akey, const char* aval)->void
+		xml::foreach_xmlattr(apt, [&anfo](const char* akey, const char* aval)->bool
 			{
 				anfo.data()[akey] = aval;
+				return true;
 			});
 	}
-	void xmlnode::read_config(const char* akey, std::map<i32_serverid, xmlinfo>& anfo)
+	void xmlnode::read_config_xmlattr(const char* akey, std::map<i32_serverid, xmlinfo>& anfo)
 	{
-		std::function<void(tinyxml2::XMLElement*)> lfun = [&anfo](tinyxml2::XMLElement* apt)
+		std::function<bool(tinyxml2::XMLElement*)> lfun = [&anfo](tinyxml2::XMLElement* apt)
 			{
 				xmlinfo ltemp;
-				xmlnode::read_config(apt, ltemp);
+				xmlnode::read_config_xmlattr(apt, ltemp);
 
 				i32_serverid lid = 0;
 				if (ltemp.find("id", lid))
@@ -195,16 +223,27 @@ namespace ngl
 				}
 
 				ltemp.plog();
+				return true;
 			};
 		tinyxml2::XMLElement* lchild = xml::get_child(m_con, akey);
 		xml::foreach(lchild, "config", lfun);
 	}
-	
+
+	void xmlnode::read_config(tinyxml2::XMLElement* apt, xmlinfo& anfo)
+	{
+		xml::foreach(apt, [&anfo](tinyxml2::XMLElement* apt)->bool
+			{
+				anfo.data()[apt->Name()] = apt->GetText();
+				return true;
+			});
+	}
+
 	bool xmlnode::read_public_config(xmlinfo& anfo)
 	{
-		std::function<void(const char*, const char*)> lfun = [&anfo](const char* akey, const char* aval)
+		std::function<bool(const char*, const char*)> lfun = [&anfo](const char* akey, const char* aval)
 			{
 				anfo.data()[akey] = aval;
+				return true;
 			};
 		tinyxml2::XMLElement* lchild = xml::get_child(m_con, "public.config");
 		if (lchild == nullptr)
