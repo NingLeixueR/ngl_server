@@ -14,65 +14,95 @@
 #pragma once
 
 #include "xml_serialize.h"
+#include "csvtable.h"
+#include "xmlinfo.h"
+#include "tools.h"
+#include "type.h"
+#include "nlog.h"
 
 namespace ngl
 {
 	class xmlnode
 	{
+		xarg_db				m_db;
+		xarg_db				m_crossdb;
+		xarg_info			m_publicinfo;
+		xarg_mail			m_mail;
+		xarg_telnet			m_telnet;
+
+		std::string	m_nodename;
+		NODE_TYPE	m_nodetype;
+		i32_serverid m_nodeid;		// server id
+		int16_t		m_tid;			// 对应tab_servers表中的id
+		int16_t		m_tcount;		// 实例id
+
+		xmlnode() {}
 	public:
-		static tinyxml2::XMLDocument m_doc;
-		static tinyxml2::XMLElement* m_con;
-		static dbserver_info		 m_db;
-		static dbserver_info		 m_crossdb;
-		static xmlinfo				 m_publicinfo;
-		static std::string			 m_nodename;
-		static NODE_TYPE			 m_nodetype;
-		static i32_id				 m_nodeid;		// server id
-		static int16_t				 m_tid;			// 对应tab_servers表中的id
-		static int16_t				 m_tcount;		// 实例id
-		static mail_info			 m_mail;
-		static telnet_info			 m_telnet;
+		static xmlnode& instance()
+		{
+			static xmlnode ltemp;
+			return ltemp;
+		}
 
-		static void init();
 
-		static NODE_TYPE node_type();
+		xmlserialize(xmlnode, false, m_db, m_crossdb, m_publicinfo, m_mail, m_telnet)
 
-		static i16_area area();
+		void init();
 
-		static void set_server(const char* aservertypename);
+		NODE_TYPE node_type();
 
-		static void set_nodeid(int atid, int atcount);
+		i16_area area();
 
-		static void load(const std::string& axmlpath, const std::string& aname);
+		void set_server(const char* aservertypename);
 
-		static void read_config_xmlattr(tinyxml2::XMLElement* apt, xmlinfo& anfo);
+		void set_nodeid(int atid, int atcount);
 
-		static void read_config_xmlattr(const char* akey, std::map<i32_serverid, xmlinfo>& anfo);
+		void load(const std::string& axmlpath, const std::string& aname);
 
-		static void read_config(tinyxml2::XMLElement* apt, xmlinfo& anfo);
+		xarg_info* get_publicconfig();
 
-		static bool read_public_config(xmlinfo& anfo);
+		int16_t tcount()
+		{
+			return m_tcount;
+		}
 
-		static bool read_db_arg(const char* aname, dbarg& m_dbarg);
+		int16_t	tid()
+		{
+			return m_tid;
+		}
 
-		static bool read_mail_arg(const char* aname, mailarg& amailarg);
+		i32_serverid nodeid()
+		{
+			return m_nodeid;
+		}
 
-		static bool read_telnet_arg(const char* aname, telnetarg& amailarg);
+		NODE_TYPE nodetype()
+		{
+			return m_nodetype;
+		}
 
-		static void loaddb();
+		xarg_db& db()
+		{
+			return m_db;
+		}
 
-		static void loadcrossdb();
+		xarg_db& crossdb()
+		{
+			return m_crossdb;
+		}
 
-		static void loadmail();
+		xarg_mail& mail()
+		{
+			return m_mail;
+		}
 
-		static void loadtelnet();
-
-		static void loadpublic();
-
-		static xmlinfo* get_publicconfig();
+		xarg_telnet& telnet()
+		{
+			return m_telnet;
+		}
 	};
 }//namespace ngl
-#define nconfig ngl::xmlnode
+#define nconfig ngl::xmlnode::instance()
 
 
 namespace ngl

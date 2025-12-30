@@ -27,7 +27,7 @@ namespace ngl
 		}
 		bool sendtogmclient(NODE_TYPE atype, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
-			const tab_servers* tab = ttab_servers::instance().tab(atype, nconfig::area());
+			const tab_servers* tab = ttab_servers::instance().tab(atype, nconfig.area());
 			if (tab == nullptr)
 			{
 				return false;

@@ -50,9 +50,9 @@ void init_DB_ROLE(const char* aname, int beg)
 void init_DB_ROLE()
 {
 	std::cout << "#########init_DB_ROLE()#############" << std::endl;
-	std::string lstr = std::format("{}_zone{}_", "libo", nconfig::area());
+	std::string lstr = std::format("{}_zone{}_", "libo", nconfig.area());
 	init_DB_ROLE(lstr.c_str(), (0 * DEF_COUNT) + 1);
-	lstr = std::format("{}_zone{}_", "wac", nconfig::area());
+	lstr = std::format("{}_zone{}_", "wac", nconfig.area());
 	init_DB_ROLE(lstr.c_str(), (1 * DEF_COUNT) + 1);
 }
 
@@ -283,7 +283,7 @@ bool start_db(int argc, char** argv)
 {
 	ngl::log_error()->print("[{}] start", "DB");
 
-	if (!init_server(nconfig::m_nodeid))
+	if (!init_server(nconfig.nodeid()))
 	{
 		return false;
 	}
@@ -293,10 +293,10 @@ bool start_db(int argc, char** argv)
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
 		int32_t llogtype = ngl::ELOG_DEFAULT;
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
-	ngl::db_pool::instance().init(nconfig::m_db.m_dbarg);
+	ngl::db_pool::instance().init(nconfig.db());
 	ngl::tdb::tdb_init(false);
 	ngl::db_manage::init();
 
@@ -329,7 +329,7 @@ bool start_db(int argc, char** argv)
 bool start_crossdb()
 {
 	ngl::log_error()->print("[{}] start", "CROSSDB");
-	if (!init_server(nconfig::m_nodeid))
+	if (!init_server(nconfig.nodeid()))
 	{
 		return false;
 	}
@@ -338,10 +338,10 @@ bool start_crossdb()
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
 		int32_t llogtype = ngl::ELOG_DEFAULT;
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
-	ngl::db_pool::instance().init(nconfig::m_crossdb.m_dbarg);
+	ngl::db_pool::instance().init(nconfig.crossdb());
 	ngl::tdb::tcrossdb_init(false);
 
 	ngl::actor_gmclient::instance();
@@ -354,7 +354,7 @@ bool start_world()
 {
 	ngl::log_error()->print("[{}] start", "WORLD");
 
-	if (!init_server(nconfig::m_nodeid))
+	if (!init_server(nconfig.nodeid()))
 	{
 		return false;
 	}
@@ -364,7 +364,7 @@ bool start_world()
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
 		int32_t llogtype = ngl::ELOG_DEFAULT;
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
 	ngl::actor_events_logic::instance();
@@ -392,7 +392,7 @@ bool start_login()
 {
 	ngl::log_error()->print("[{}] start", "LOGIN");
 
-	if (!init_server(nconfig::m_nodeid))
+	if (!init_server(nconfig.nodeid()))
 	{
 		return false;
 	}
@@ -402,7 +402,7 @@ bool start_login()
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
 		int32_t llogtype = ngl::ELOG_DEFAULT;
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
 	ngl::actor_login::instance();
@@ -416,7 +416,7 @@ bool start_gateway()
 {
 	ngl::log_error()->print("[{}] start", "GATEWAY");
 
-	if (!init_server(nconfig::m_nodeid, { pbnet::KCP_GATEWAY }))
+	if (!init_server(nconfig.nodeid(), { pbnet::KCP_GATEWAY }))
 	{
 		return false;
 	}
@@ -426,7 +426,7 @@ bool start_gateway()
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
 		int32_t llogtype = ngl::ELOG_DEFAULT;
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
 	ngl::actor_gateway::instance();
@@ -443,7 +443,7 @@ bool start_log()
 {
 	ngl::log_error()->print("[{}] start", "LOG");
 
-	if (!init_server(nconfig::m_nodeid))
+	if (!init_server(nconfig.nodeid()))
 	{
 		return false;
 	}
@@ -456,7 +456,7 @@ bool start_log()
 	}
 
 	int32_t llogtype = ngl::ELOG_DEFAULT | ngl::ELOG_BI;
-	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
+	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	ngl::actor_gmclient::instance();
 
 	ngl::actor_client::instance().actor_server_register();
@@ -467,7 +467,7 @@ bool start_actor()
 {
 	ngl::log_error()->print("[{}] start", "ACTORSERVER");
 
-	if (!init_server(nconfig::m_nodeid))
+	if (!init_server(nconfig.nodeid()))
 	{
 		return false;
 	}
@@ -477,7 +477,7 @@ bool start_actor()
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
 		int32_t llogtype = ngl::ELOG_DEFAULT;
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
 	ngl::actor_gmclient::instance();
@@ -489,7 +489,7 @@ bool start_game()
 {
 	ngl::log_error()->print("[{}] start", "GAME");
 
-	if (!init_server(nconfig::m_nodeid, { pbnet::KCP_ROLE }))
+	if (!init_server(nconfig.nodeid(), { pbnet::KCP_ROLE }))
 	{
 		return false;
 	}
@@ -499,7 +499,7 @@ bool start_game()
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
 		int32_t llogtype = ngl::ELOG_DEFAULT;
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
 	ngl::actor_role_manage::instance();
@@ -515,7 +515,7 @@ bool start_cross()
 {
 	ngl::log_error()->print("[{}] start", "CROSS");
 
-	if (!init_server(nconfig::m_nodeid))
+	if (!init_server(nconfig.nodeid()))
 	{
 		return false;
 	}
@@ -525,7 +525,7 @@ bool start_cross()
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
 		int32_t llogtype = ngl::ELOG_DEFAULT;
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
 	ngl::actor_chat::instance();
@@ -539,7 +539,7 @@ bool start_cross()
 bool start_pushserverconfig()
 {
 	// 将服务器配置上传lbgmsys
-	ngl::xmlinfo* lpublicxml = ngl::xmlnode::get_publicconfig();
+	ngl::xarg_info* lpublicxml = nconfig.get_publicconfig();
 	std::string lgmurl;
 	if (!lpublicxml->find("gmurl", lgmurl))
 	{
@@ -605,7 +605,7 @@ bool start_csvserver()
 {
 	ngl::log_error()->print("[{}] start", "RELOADCSV");
 
-	if (!init_server(nconfig::m_nodeid))
+	if (!init_server(nconfig.nodeid()))
 	{
 		return false;
 	}
@@ -615,7 +615,7 @@ bool start_csvserver()
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
 		int32_t llogtype = ngl::ELOG_DEFAULT;
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
 	ngl::actor_csvserver::instance();
@@ -643,7 +643,7 @@ bool start_robot(int argc, char** argv)
 {
 	ngl::log_error()->print("[{}] start", "ROBOT");
 
-	if (!init_server(nconfig::m_nodeid))
+	if (!init_server(nconfig.nodeid()))
 	{
 		return false;
 	}
@@ -653,7 +653,7 @@ bool start_robot(int argc, char** argv)
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
 		int32_t llogtype = ngl::ELOG_DEFAULT;
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig::m_nodeid, (void*)&llogtype);
+		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
 	ngl::actor_gmclient::instance();
@@ -804,12 +804,12 @@ int ngl_main(int argc, char** argv)
 	}
 
 	// # 初始化关联枚举NODE_TYPE与字符串
-	nconfig::init();
+	nconfig.init();
 
-	nconfig::set_server(argv[1]);
+	nconfig.set_server(argv[1]);
 
 	// # 加载xml配置
-	nconfig::load("./config", std::format("{}_{}", lname, ltcount));
+	nconfig.load("./config", std::format("{}_{}", lname, ltcount));
 
 	// # 加载csv配置
 	ngl::csvbase::set_path("./csv", lname);
@@ -819,7 +819,7 @@ int ngl_main(int argc, char** argv)
 	{
 		return 0;
 	}
-	nconfig::set_nodeid(tab->m_id, ltcount);
+	nconfig.set_nodeid(tab->m_id, ltcount);
 
 	if (larea < 0)
 	{
@@ -835,7 +835,7 @@ int ngl_main(int argc, char** argv)
 	SetConsoleTitle(g_nodename.c_str());
 #endif
 	
-	switch (nconfig::node_type())
+	switch (nconfig.node_type())
 	{
 	case ngl::DB:
 		start_db(argc, argv);
@@ -890,12 +890,13 @@ std::function<void()> dump_logic()
 	return [ltitle]()
 		{
 			std::cout << "dump_logic()" << std::endl;
+			
 			ngl::manage_curl::parameter lparm
 			{
-				.m_smtp = ngl::xmlnode::m_mail.m_mailarg.m_smtp,
-				.m_email = ngl::xmlnode::m_mail.m_mailarg.m_email,
-				.m_password = ngl::xmlnode::m_mail.m_mailarg.m_password,
-				.m_name = ngl::xmlnode::m_mail.m_mailarg.m_name,
+				.m_smtp = nconfig.mail().m_smtp,
+				.m_email = nconfig.mail().m_email,
+				.m_password = nconfig.mail().m_password,
+				.m_name = nconfig.mail().m_name,
 				.m_title = ltitle,
 				.m_content = "code dump",
 			};

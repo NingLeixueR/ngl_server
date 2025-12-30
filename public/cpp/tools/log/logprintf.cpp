@@ -142,7 +142,7 @@ namespace ngl
 		const tab_servers* ltabserver = ttab_servers::instance().tab();
 		if (ltabserver == nullptr)
 		{
-			Throw("ttab_servers::instance().tab() fail {}", nconfig::m_tid);
+			Throw("ttab_servers::instance().tab() fail {}", nconfig.tid());
 		}
 
 		lpath = std::format("{}/{}", lpath, ltabserver->m_name);

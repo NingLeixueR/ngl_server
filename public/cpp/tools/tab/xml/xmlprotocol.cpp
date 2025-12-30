@@ -32,27 +32,28 @@ namespace ngl
 			return;
 		}
 
-		std::function<bool(tinyxml2::XMLElement*)> lfun = [](tinyxml2::XMLElement* apt)
-			{
-				xmlinfo ltemp;
-				xmlnode::read_config_xmlattr(apt, ltemp);
+		struct xarg_infos
+		{
+			std::list<xarg_info> config;
 
-				std::string lname;
-				int32_t lnumber = 0;
-				std::map<std::string, int32_t>& lmap = xmlprotocol::m_protocol;
-				if (ltemp.find("name", lname) && ltemp.find("number", lnumber))
-				{
-					lmap[tools::type_name_handle(lname)] = lnumber;
-					lmap[std::format("np_actormodule_forward<{}>", lname)] = lnumber;
-					lmap[std::format("np_actor_forward<{},forward_g2c<forward>>", lname)] = lnumber;
-					lmap[std::format("np_actor_forward<{0},forward_g2c<{0}>>", lname)] = lnumber;
-					lmap[std::format("np_actor_forward<{},forward_c2g<forward>>", lname)] = lnumber;
-					lmap[std::format("np_actor_forward<{0},forward_c2g<{0}>>", lname)] = lnumber;
-				}
-				ltemp.plog();
-				return true;
-			};
-		xml::foreach(lcon, "config", lfun);
+			xmlserialize(con, false, config)
+		};
+		xarg_infos ltemps;
+		for (auto& item : ltemps.config)
+		{
+			std::string lname;
+			int32_t lnumber = 0;
+			std::map<std::string, int32_t>& lmap = xmlprotocol::m_protocol;
+			if (item.find("name", lname) && item.find("number", lnumber))
+			{
+				lmap[tools::type_name_handle(lname)] = lnumber;
+				lmap[std::format("np_actormodule_forward<{}>", lname)] = lnumber;
+				lmap[std::format("np_actor_forward<{},forward_g2c<forward>>", lname)] = lnumber;
+				lmap[std::format("np_actor_forward<{0},forward_g2c<{0}>>", lname)] = lnumber;
+				lmap[std::format("np_actor_forward<{},forward_c2g<forward>>", lname)] = lnumber;
+				lmap[std::format("np_actor_forward<{0},forward_c2g<{0}>>", lname)] = lnumber;
+			}
+		}
 	}
 
 	void xmlprotocol::load()

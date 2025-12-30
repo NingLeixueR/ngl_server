@@ -23,7 +23,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_LOG, 
 					.m_area = tab_self_area,
-					.m_id = nconfig::m_tid
+					.m_id = nconfig.tid()
 				},
 				.m_weight = 0x7fffffff
 			})
@@ -34,12 +34,12 @@ namespace ngl
 			{
 				logfile::config lconfig
 				{
-					.m_id = nconfig::m_nodeid,
+					.m_id = nconfig.nodeid(),
 					.m_dir = "log",
 					.m_type = (ELOG_TYPE)i,
 					.m_flush_time = 10,
 				};
-				nconfig::get_publicconfig()->find("log_flushtime", lconfig.m_flush_time);
+				nconfig.get_publicconfig()->find("log_flushtime", lconfig.m_flush_time);
 				m_logarr[(ELOG_TYPE)i] = logfile::create_make(lconfig);
 			}
 		}

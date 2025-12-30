@@ -222,7 +222,7 @@ namespace ngl
 		}
 
 		pbnet::PROBUFF_NET_ROLE_LOGIN lprampro = *lpram;
-		lprampro.set_mgatewayid(nconfig::m_nodeid);
+		lprampro.set_mgatewayid(nconfig.nodeid());
 		lprampro.set_marea(linfo->m_area);
 		nets::send_server(linfo->m_gameid, lprampro, nguid::moreactor(), id_guid());
 		return true;

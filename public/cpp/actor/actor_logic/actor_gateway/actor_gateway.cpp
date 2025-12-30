@@ -27,7 +27,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_GATEWAY,
 					.m_area = tab_self_area,
-					.m_id	= nconfig::m_tcount,
+					.m_id	= nconfig.tcount(),
 					.m_manage_dbclient = false
 				},
 				.m_weight = 0x7fffffff
@@ -87,7 +87,7 @@ namespace ngl
 		{
 			.m_isremove = aisremove,
 			.m_actorid = nguid::make(ACTOR_ROLE, aguid.area(), aguid.actordataid()),
-			.m_gatewayid = nconfig::m_nodeid,
+			.m_gatewayid = nconfig.nodeid(),
 		};
 
 		for (int32_t tid : ttab_servers::instance().tab()->m_actorserver)

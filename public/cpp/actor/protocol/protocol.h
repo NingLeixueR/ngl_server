@@ -92,7 +92,7 @@ namespace ngl
 
 				actor_manage& lmanages = actor_manage::instance();
 
-				if (nconfig::node_type() == ROBOT && apack->m_head.get_actor() == nguid::make())
+				if (nconfig.node_type() == ROBOT && apack->m_head.get_actor() == nguid::make())
 				{
 					lmanages.push_task_type(atype, lpram);
 					return true;
@@ -142,7 +142,7 @@ namespace ngl
 			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 				{
 					auto ldatapack = std::static_pointer_cast<np_actor_forward<T, forward_c2g<forward>>>(aptrpram);
-					nguid lguid(atype, tab_self_area, nconfig::m_tcount);
+					nguid lguid(atype, tab_self_area, nconfig.tcount());
 					nguid lrequestguid(apack->m_head.get_request_actor());
 					handle_pram lpram = handle_pram::create<T, forward>(lguid, lrequestguid, ldatapack);
 					lpram.m_pack = apack;
@@ -172,7 +172,7 @@ namespace ngl
 			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 				{
 					auto ldatapack = std::static_pointer_cast<np_actor_forward<T, forward_g2c<forward>>>(aptrpram);
-					nguid lguid(atype, tab_self_area, nconfig::m_tcount);
+					nguid lguid(atype, tab_self_area, nconfig.tcount());
 					nguid lrequestguid(apack->m_head.get_request_actor());
 					handle_pram lpram = handle_pram::create<np_actor_forward<T, forward_g2c<forward>>>(lguid, lrequestguid, ldatapack);
 					lpram.m_pack = apack;

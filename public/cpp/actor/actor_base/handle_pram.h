@@ -213,7 +213,7 @@ namespace ngl
 			for (i64_actorid actorid : lmassactors)
 			{
 				i32_serverid lserverid = handle_pram::serverid(actorid);
-				if (lserverid != -1 && lserverid != nconfig::m_nodeid)
+				if (lserverid != -1 && lserverid != nconfig.nodeid())
 				{
 					lserveractors[lserverid].insert(actorid);
 				}

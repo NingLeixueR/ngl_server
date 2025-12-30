@@ -30,7 +30,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_ACTIVITY_MANAGE,
 					.m_area = tab_self_area,
-					//.m_id = nconfig::m_tid,
+					//.m_id = nconfig.tid(),
 					.m_manage_dbclient = true,
 				},
 				.m_weight = 0x7fffffff,

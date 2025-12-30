@@ -327,7 +327,7 @@ namespace ngl
 
 	bool actor_base::kcp_connect(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const
 	{
-		if (nconfig::node_type() != ROBOT)
+		if (nconfig.node_type() != ROBOT)
 		{//不允许服务器主动进行kcp连接
 			return false;
 		}

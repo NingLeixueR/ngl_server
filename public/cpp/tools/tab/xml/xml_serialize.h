@@ -13,14 +13,7 @@
 */
 #pragma once
 
-#include "csvtable.h"
 #include "tinyxml2.h"
-#include "xmlinfo.h"
-#include "ndefine.h"
-#include "tools.h"
-#include "type.h"
-#include "nlog.h"
-#include "xml.h"
 
 #include <functional>
 #include <algorithm>

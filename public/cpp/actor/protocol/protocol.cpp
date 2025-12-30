@@ -79,7 +79,7 @@ namespace ngl
 			}
 			else 
 			{
-				if (nconfig::node_type() != ROBOT)
+				if (nconfig.node_type() != ROBOT)
 				{
 					return;
 				}
@@ -89,7 +89,7 @@ namespace ngl
 				}
 			}
 		}
-		// (lactortype == nguid::none<ENUM_ACTOR>() && nconfig::node_type() == ROBOT) || lactortype == nguid::none<ENUM_ACTOR>()
+		// (lactortype == nguid::none<ENUM_ACTOR>() && nconfig.node_type() == ROBOT) || lactortype == nguid::none<ENUM_ACTOR>()
 		for (std::pair<const ENUM_ACTOR, protocol::fun_run>& item : lpfun->m_runfun)
 		{
 			item.second(apack, lptrpram);
@@ -105,11 +105,11 @@ namespace ngl
 		static bool login(int asocket, const std::string_view& auser, const std::string& apassworld)
 		{
 			monopoly_shared_lock(m_mutex);
-			if (auser != xmlnode::m_telnet.m_telnetarg.m_account)
+			if (auser != nconfig.telnet().m_account)
 			{
 				return false;
 			}
-			if (ngl::tools::md5(apassworld) != xmlnode::m_telnet.m_telnetarg.m_passworld)
+			if (ngl::tools::md5(apassworld) != nconfig.telnet().m_passworld)
 			{
 				return false;
 			}

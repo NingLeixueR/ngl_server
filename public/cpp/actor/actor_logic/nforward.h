@@ -29,12 +29,12 @@ namespace ngl
 		template <typename ...ARG>
 		static void register_c2g()
 		{
-			if (ngl::GATEWAY == xmlnode::m_nodetype)
+			if (ngl::GATEWAY == nconfig.nodetype())
 			{
 				actor_gateway_c2g::register_forward_c2g<actor_gateway_c2g>:: template func<ARG...>();
 				return;
 			}
-			if (ngl::GAME == xmlnode::m_nodetype)
+			if (ngl::GAME == nconfig.nodetype())
 			{
 				actor::register_handle<actor_role>:: template func <ARG...>(e_ready_all);
 				return;
@@ -47,12 +47,12 @@ namespace ngl
 		template <ENUM_ACTOR ACTOR, typename ...ARG>
 		static void register_c2g_2()
 		{
-			if (ngl::GATEWAY == xmlnode::m_nodetype)
+			if (ngl::GATEWAY == nconfig.nodetype())
 			{
 				actor_gateway_c2g::register_forward_c2g<actor_gateway_c2g>::template func<ARG...>();
 				return;
 			}
-			if (ngl::GAME == xmlnode::m_nodetype)
+			if (ngl::GAME == nconfig.nodetype())
 			{
 				actor::register_secondary_forward_c2g<actor_role, ACTOR>:: template func <ARG...>();
 				return;
@@ -62,12 +62,12 @@ namespace ngl
 		template <typename ...ARG>
 		static void register_g2c()
 		{
-			if (ngl::GATEWAY == xmlnode::m_nodetype)
+			if (ngl::GATEWAY == nconfig.nodetype())
 			{
 				actor_gateway_g2c::register_forward_g2c<actor_gateway_g2c>::template func<ARG...>();
 				return;
 			}
-			if (ngl::ROBOT == xmlnode::m_nodetype)
+			if (ngl::ROBOT == nconfig.nodetype())
 			{
 				actor::register_handle<actor_robot>:: template func <ARG...>(e_ready_null);
 				return;

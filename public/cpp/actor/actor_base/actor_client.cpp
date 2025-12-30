@@ -29,7 +29,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_CLIENT,
 					.m_area = tab_self_area,
-					.m_id	= nconfig::m_nodeid,
+					.m_id	= nconfig.nodeid(),
 				},
 				.m_weight	= 0x7fffffff
 			})
@@ -42,7 +42,7 @@ namespace ngl
 
 	i64_actorid actor_client::actorid()
 	{
-		return nguid::make(ACTOR_CLIENT, tab_self_area, nconfig::m_nodeid);
+		return nguid::make(ACTOR_CLIENT, tab_self_area, nconfig.nodeid());
 	}
 
 	void actor_client::nregister()
@@ -104,7 +104,7 @@ namespace ngl
 			{
 				.m_name = std::format("node<id:{},type:{},name:{},tcount:{},area:{}>", tab->m_id, em<NODE_TYPE>::name(tab->m_type), tab->m_name, tab->m_tcount, tab->m_area),
 				.m_nodetype = tab->m_type,
-				.m_serverid = nconfig::m_nodeid,
+				.m_serverid = nconfig.nodeid(),
 			}
 		};
 		actor_manage::instance().get_type(lpram.m_node.m_actortype);
@@ -125,7 +125,7 @@ namespace ngl
 
 	void actor_client::actor_server_register(i32_serverid aactorserver)
 	{
-		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+		if (nconfig.node_type() == NODE_TYPE::ROBOT)
 		{
 			return;
 		}
@@ -148,7 +148,7 @@ namespace ngl
 	{
 		// # 需要尝试连接ActorServer结点 并向其注册自己
 		NODE_TYPE ltype = ttab_servers::instance().node_type();
-		if (nconfig::m_nodetype != ltype || ltype == ngl::ACTORSERVER || ltype == ngl::ROBOT)
+		if (nconfig.node_type() != ltype || ltype == ngl::ACTORSERVER || ltype == ngl::ROBOT)
 		{
 			tools::no_core_dump();
 			return true;
@@ -163,7 +163,7 @@ namespace ngl
 
 	bool isactiv_connect(i32_serverid aserverid)
 	{
-		return nconfig::m_nodeid > aserverid;
+		return nconfig.nodeid() > aserverid;
 	}
 
 	void actor_client::activ_connect(i32_serverid aserverid)
@@ -174,7 +174,7 @@ namespace ngl
 				{
 					set_node(aserverid, asession);
 					np_actorclient_node_connect pro;
-					pro.m_id = nconfig::m_nodeid;
+					pro.m_id = nconfig.nodeid();
 					nets::send(asession, pro, nguid::moreactor(), id_guid());
 				}, false, true);
 		}
@@ -182,7 +182,7 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_actornode_register_response>& adata)
 	{
-		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+		if (nconfig.node_type() == NODE_TYPE::ROBOT)
 		{
 			return true;
 		}
@@ -194,7 +194,7 @@ namespace ngl
 		}
 		for (const nactornode& node : lparm->m_vec)
 		{
-			if (nconfig::m_nodeid != node.m_serverid && server_session::sessionid(node.m_serverid) == -1)
+			if (nconfig.nodeid() != node.m_serverid && server_session::sessionid(node.m_serverid) == -1)
 			{
 				// # 比较id(较大的主动连接较小的)
 				activ_connect(node.m_serverid);
@@ -219,7 +219,7 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_actorclient_node_connect>& adata)
 	{
-		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+		if (nconfig.node_type() == NODE_TYPE::ROBOT)
 		{
 			return true;
 		}
@@ -228,13 +228,13 @@ namespace ngl
 
 		i32_serverid lserverid = lparm->m_id;
 
-		if (lserverid == nconfig::m_nodeid)
+		if (lserverid == nconfig.nodeid())
 		{
 			tools::no_core_dump();
 			return true;
 		}
 
-		node_update(this, nconfig::m_nodeid, lpack->m_id);
+		node_update(this, nconfig.nodeid(), lpack->m_id);
 
 		server_session::add(lserverid, lpack->m_id);
 
@@ -245,7 +245,7 @@ namespace ngl
 		if (isactiv_connect(lserverid) == false)
 		{
 			np_actorclient_node_connect pro;
-			pro.m_id = nconfig::m_nodeid;
+			pro.m_id = nconfig.nodeid();
 			nets::send(lpack->m_id, pro, nguid::moreactor(), id_guid());
 		}
 
@@ -255,7 +255,7 @@ namespace ngl
 		// 当前结点类型如果是登陆服务器，且连接的结点为[GAME/GATEWAY]
 		NODE_TYPE lservertype = ttab_servers::instance().node_type(nnodeid::tid(lserverid));
 		log_error()->print("np_actorclient_node_connect [{}:{}]", nnodeid::tid(lserverid), nnodeid::tcount(lserverid));
-		if (xmlnode::node_type() == ngl::LOGIN && (lservertype == ngl::GAME || lservertype == ngl::GATEWAY))
+		if (nconfig.nodetype() == ngl::LOGIN && (lservertype == ngl::GAME || lservertype == ngl::GATEWAY))
 		{
 			auto pro = std::make_shared<np_actorserver_connect>();
 			pro->m_serverid = lserverid;
@@ -287,7 +287,7 @@ namespace ngl
 		message lmessage(lthreadid, adata.get_shared_pack(), (np_actornode_update*)&lparm->m_mass);
 		handle(lmessage);
 
-		if (nconfig::m_nodetype != NODE_TYPE::ROBOT)
+		if (nconfig.node_type() != NODE_TYPE::ROBOT)
 		{
 			auto pro = std::make_shared<np_actornode_update_server>();
 			pro->m_data = lparm->m_mass;
@@ -329,7 +329,7 @@ namespace ngl
 	
 	bool actor_client::handle(const message<np_actornode_connect_task>& adata)
 	{
-		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+		if (nconfig.node_type() == NODE_TYPE::ROBOT)
 		{
 			return true;
 		}
@@ -346,7 +346,7 @@ namespace ngl
 	
 	bool actor_client::handle(const message<np_actor_gatewayid_updata>& adata)
 	{
-		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+		if (nconfig.node_type() == NODE_TYPE::ROBOT)
 		{
 			return true;
 		}

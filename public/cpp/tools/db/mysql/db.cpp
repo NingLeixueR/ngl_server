@@ -23,7 +23,7 @@ namespace ngl
 	{
 	}
 
-	bool db::connectdb(const dbarg& arg)
+	bool db::connectdb(const xarg_db& arg)
 	{
 		if (m_connectdb)
 		{
