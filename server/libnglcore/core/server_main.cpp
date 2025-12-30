@@ -773,7 +773,12 @@ int ngl_main(int argc, char** argv)
 {
 
 	ngl::skill_template ltemp;
-	ltemp.xml_pop();
+	ltemp.xml_pop("1.xml");
+
+	if (!ltemp.xml_push("2.xml"))
+	{
+		std::cout << "error" << std::endl;
+	}
 
 	if (argc <= 3)
 	{

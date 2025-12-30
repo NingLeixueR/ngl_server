@@ -1,0 +1,38 @@
+#include "xml_serialize.h"
+
+// ATTR  = <test ATTR></test>
+// TEXT  = <test>TEXT</test>
+
+struct dbarg
+{
+	uint16_t	m_port = 0;			// Type[ATTR]
+	std::string m_ip;				// Type[ATTR]
+	std::string m_account;			// Type[ATTR]
+	std::string m_passworld;		// Type[ATTR]
+	std::string m_dbname;			// Type[ATTR]
+};
+
+struct mailarg
+{
+	std::string m_smtp;		// Type[TEXT]	
+	std::string m_email;	// Type[TEXT]
+	std::string m_password; // Type[TEXT]
+	std::string m_name;		// Type[TEXT]
+	std::vector<std::pair<std::string, std::string>> m_recvs;// Type[TEXT] key:mail value:name
+	std::string m_title;	// Type[TEXT]
+	std::string m_content;	// Type[TEXT]
+};
+
+struct telnetarg
+{
+	std::string m_account;		// Type[TEXT]	
+	std::string m_passworld;	// Type[TEXT]	
+};
+
+class xmlinfo
+{
+	std::map<std::string, std::string> m_data;
+};
+
+
+

@@ -23,20 +23,22 @@
 
 namespace ngl
 {
-	bool xml::readxml(const char* aname, tinyxml2::XMLDocument& axml, tinyxml2::XMLElement*& acon)
+	bool xml::readxml(const char* aname, tinyxml2::XMLDocument& axml)
 	{
 		if (axml.LoadFile(aname) != tinyxml2::XML_SUCCESS)
 		{
 			std::cout << "Failed to load XML file[" << aname << "]." << std::endl;
 			return false;
 		}
-		acon = axml.FirstChildElement("con");
-		return acon != nullptr;
+		//acon = axml.FirstChildElement("con");
+		//return acon != nullptr;
+		return true;
 	}
 
 	bool xml::writexml(const char* aname, tinyxml2::XMLDocument& axml)
 	{
-		return axml.SaveFile(aname) == tinyxml2::XML_SUCCESS;
+		tinyxml2::XMLError lerror = axml.SaveFile(aname);
+		return lerror == tinyxml2::XML_SUCCESS;
 	}
 
 	tinyxml2::XMLElement* xml::get_child(tinyxml2::XMLElement* aele, const char* astr)
@@ -58,6 +60,11 @@ namespace ngl
 		return valElement;
 	}
 
+	tinyxml2::XMLElement* xml::get_child(tinyxml2::XMLDocument& axml, const char* astr)
+	{
+		return axml.FirstChildElement(astr);
+	}
+
 	tinyxml2::XMLElement* xml::set_child(tinyxml2::XMLElement* aele, const char* astr)
 	{
 		return aele->InsertNewChildElement(astr);
@@ -65,7 +72,9 @@ namespace ngl
 
 	tinyxml2::XMLElement* xml::set_child(tinyxml2::XMLDocument& axml, const char* astr)
 	{
-		return axml.NewElement(astr);
+		tinyxml2::XMLElement* lelement = axml.NewElement(astr);
+		axml.LinkEndChild(lelement);
+		return lelement;
 	}
 
 	bool xml::foreach(tinyxml2::XMLElement* aele, const char* akey, const std::function<bool(tinyxml2::XMLElement*)>& afun)
@@ -112,6 +121,13 @@ namespace ngl
 			}
 		}
 		return true;
+	}
+
+	const char* xml::str(tinyxml2::XMLDocument& axml)
+	{
+		tinyxml2::XMLPrinter printer;
+		axml.Print(&printer);
+		return printer.CStr();
 	}
 
 	tinyxml2::XMLDocument	xmlnode::m_doc;
@@ -187,7 +203,13 @@ namespace ngl
 
 		log_error()->print("begin xmlnode read [{}]", lxmlname);
 
-		if (!xml::readxml(lxmlname.c_str(), m_doc, m_con))
+		if (!xml::readxml(lxmlname.c_str(), m_doc))
+		{
+			return;
+		}
+
+		m_con = xml::get_child(m_doc, "con");
+		if (m_con == nullptr)
 		{
 			return;
 		}

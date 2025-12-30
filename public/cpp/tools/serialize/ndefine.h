@@ -134,8 +134,7 @@ public:
 	template <typename T>
 	bool fun(int32_t apos, T& adata)
 	{
-		dosth(m_parts[apos], adata);
-		return true;
+		return dosth(m_parts[apos], adata);
 	}
 
 	template <typename T, typename ...ARG>
@@ -287,7 +286,6 @@ inline void json_write(ngl::njson_write& ijsn, const char* akey)		\
 #define def_nlua_function2(...)				\
 	def_nlua_push2(__VA_ARGS__)				\
 	def_nlua_pop2(__VA_ARGS__)
-
 
 #define dprotocol(NAME, ...)				\
 	def_parmname							\

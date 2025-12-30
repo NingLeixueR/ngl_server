@@ -21,8 +21,13 @@ namespace ngl
 	void xmlprotocol::read(const char* axml)
 	{
 		tinyxml2::XMLDocument ldoc;
-		tinyxml2::XMLElement* lcon = nullptr;
-		if (!xml::readxml(axml, ldoc, lcon))
+		if (!xml::readxml(axml, ldoc))
+		{
+			return;
+		}
+
+		tinyxml2::XMLElement* lcon = xml::get_child(ldoc, "con");
+		if (lcon == nullptr)
 		{
 			return;
 		}

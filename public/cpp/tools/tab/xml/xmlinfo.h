@@ -13,45 +13,63 @@
 */
 #pragma once
 
+#include "xml_serialize.h"
+#include "tools.h"
+#include "type.h"
+
 #include <string>
 #include <map>
 #include <set>
 
-#include "tools.h"
-#include "type.h"
-
 namespace ngl
 {
-	struct dbarg
+	struct xarg_db
 	{
 		uint32_t	m_port = 0;
 		std::string m_ip;
 		std::string m_account;
 		std::string m_passworld;
 		std::string m_dbname;
+
+		xmlserialize(xarg_db, true, m_port, m_ip, m_account, m_passworld, m_dbname)
 	};
 
-	struct mailarg
+	struct mail_name
+	{
+		std::string m_mail;
+		std::string m_name;
+
+		xmlserialize(mail_name, false, m_mail, m_name)
+	};
+
+	struct xarg_mail
 	{
 		std::string m_smtp;
 		std::string m_email;
 		std::string m_password;
 		std::string m_name;
-		std::vector<std::pair<std::string, std::string>> m_recvs;// key:mail value:name
+		std::vector<mail_name> m_recvs;
 		std::string m_title;
 		std::string m_content;
+
+		xmlserialize(xarg_mail, false, m_smtp, m_email, m_password, m_name, m_recvs, m_title, m_content)
 	};
 
-	struct telnetarg
+	struct xarg_telnet
 	{
 		std::string m_account;
 		std::string m_passworld;
+
+		xmlserialize(xarg_telnet, false, m_account, m_passworld)
 	};
 
-	class xmlinfo
+	class xarg_info
 	{
 		std::map<std::string, std::string> m_data;
 	public:
+		xmlserialize(xarg_info, false, m_data)
+
+
 		void plog();
 
 		std::map<std::string, std::string>& data()
@@ -80,20 +98,5 @@ namespace ngl
 
 		//# ±È¿˙À˘”–key/value
 		void foreach(const std::function<void(const std::pair<const std::string, std::string>&)>& afun);
-	};
-
-	struct dbserver_info
-	{
-		dbarg m_dbarg;
-	};	
-
-	struct mail_info
-	{
-		mailarg m_mailarg;
-	};
-
-	struct telnet_info
-	{
-		telnetarg m_telnetarg;
 	};
 }// namespace ngl
