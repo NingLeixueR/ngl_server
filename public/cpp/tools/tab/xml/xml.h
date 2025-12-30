@@ -13,101 +13,10 @@
 */
 #pragma once
 
-#include "tinyxml2.h"
-#include "csvtable.h"
-#include "xmlinfo.h"
-#include "tools.h"
-#include "type.h"
-#include "nlog.h"
-
-#include <functional>
+#include "xml_serialize.h"
 
 namespace ngl
 {
-	class xml
-	{
-	public:
-		static bool readxml(const char* aname, tinyxml2::XMLDocument& axml, tinyxml2::XMLElement*& acon);
-
-		static bool writexml(const char* aname, tinyxml2::XMLDocument& axml);
-
-		static tinyxml2::XMLElement* get_child(tinyxml2::XMLElement* aele, const char* astr);
-
-		static tinyxml2::XMLElement* set_child(tinyxml2::XMLElement* aele, const char* astr);
-
-		static tinyxml2::XMLElement* set_child(tinyxml2::XMLDocument& axml, const char* astr);
-
-		template <typename T>
-		static bool get(tinyxml2::XMLElement* aele, const char* akey, T& aval)
-		{
-			tinyxml2::XMLElement* valElement = aele->FirstChildElement(akey);
-			if (!valElement)
-			{
-				return false;
-			}
-			const char* val = valElement->GetText();
-			if (!val)
-			{
-				return false;
-			}
-			aval = tools::lexical_cast<T>(val);
-			return true;
-		}
-
-		template <typename T>
-		static bool get(tinyxml2::XMLElement* aele, T& aval)
-		{
-			const char* val = aele->GetText();
-			if (!val)
-			{
-				return false;
-			}
-			aval = tools::lexical_cast<T>(val);
-			return true;
-		}
-
-		template <typename T>
-		static bool set(tinyxml2::XMLElement* aele, const char* akey, T& aval)
-		{
-			tinyxml2::XMLElement* valElement = set_child(aele, akey);
-			if (!valElement)
-			{
-				return false;
-			}
-			valElement->SetText(tools::lexical_cast<std::string>(aval).c_str());
-			return true;
-		}
-
-		template <typename T>
-		static bool set(tinyxml2::XMLElement* aele, T& aval)
-		{
-			aele->SetText(tools::lexical_cast<std::string>(aval).c_str());
-			return true;
-		}
-
-		template <typename T>
-		static bool get_xmlattr(tinyxml2::XMLElement* aele, const char* akey, T& aval)
-		{
-			if (aele == nullptr)
-			{
-				return false;
-			}
-			const char* val = aele->Attribute(akey);
-			if (!val) 
-			{
-				return false;
-			}
-			aval = tools::lexical_cast<T>(val);
-			return true;
-		}
-
-		static bool foreach(tinyxml2::XMLElement* aele, const char* akey, const std::function<bool(tinyxml2::XMLElement*)>& afun);
-
-		static bool foreach(tinyxml2::XMLElement* aele, const std::function<bool(tinyxml2::XMLElement*)>& afun);
-
-		static bool foreach_xmlattr(tinyxml2::XMLElement* aele, const std::function<bool(const char*, const char*)>& afun);
-	};
-
 	class xmlnode
 	{
 	public:
@@ -164,3 +73,75 @@ namespace ngl
 	};
 }//namespace ngl
 #define nconfig ngl::xmlnode
+
+
+namespace ngl
+{
+	template <typename T>
+	bool xml::get(tinyxml2::XMLElement* aele, const char* akey, T& aval)
+	{
+		tinyxml2::XMLElement* valElement = aele;
+		if (akey != nullptr)
+		{
+			valElement = aele->FirstChildElement(akey);
+			if (!valElement)
+			{
+				return false;
+			}
+		}
+		const char* val = valElement->GetText();
+		if (!val)
+		{
+			return false;
+		}
+		aval = tools::lexical_cast<T>(val);
+		return true;
+	}
+
+	template <typename T>
+	bool xml::get(tinyxml2::XMLElement* aele, T& aval)
+	{
+		return get(aele, nullptr, aval);
+	}
+
+	template <typename T>
+	bool xml::set(tinyxml2::XMLElement* aele, const char* akey, const T& aval)
+	{
+		tinyxml2::XMLElement* valElement = aele;
+		if (akey != nullptr)
+		{
+			valElement = set_child(aele, akey);
+			if (!valElement)
+			{
+				return false;
+			}
+		}
+		valElement->SetText(tools::lexical_cast<std::string>(aval).c_str());
+		return true;
+	}
+
+	template <typename T>
+	bool xml::set(tinyxml2::XMLElement* aele, const T& aval)
+	{
+		return set(aele, nullptr, aval);
+	}
+
+	template <typename T>
+	bool xml::get_xmlattr(tinyxml2::XMLElement* aele, const char* akey, T& aval)
+	{
+		const char* val = aele->Attribute(akey);
+		if (!val)
+		{
+			return false;
+		}
+		aval = tools::lexical_cast<T>(val);
+		return true;
+	}
+
+	template <typename T>
+	bool xml::set_xmlattr(tinyxml2::XMLElement* aele, const char* akey, const T& aval)
+	{
+		aele->SetAttribute(akey, tools::lexical_cast<std::string>(aval).c_str());
+		return true;
+	}
+}//namespace ngl
