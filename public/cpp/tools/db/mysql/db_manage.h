@@ -29,7 +29,7 @@ namespace ngl
 	public:
 		static void init()
 		{
-			if (nconfig::get_publicconfig()->find("dbprotobinary", m_dbprotobinary) == false)
+			if (nconfig.get_publicconfig()->find("dbprotobinary", m_dbprotobinary) == false)
 			{
 				std::cout << "db xml config dbprotobinary falile" << std::endl;
 				tools::no_core_dump();
@@ -145,7 +145,7 @@ namespace ngl
 			{
 				if (lareastr.empty())
 				{
-					const std::set<i16_area>* lareaset = ttab_servers::instance().get_area(nconfig::area());
+					const std::set<i16_area>* lareaset = ttab_servers::instance().get_area(nconfig.area());
 					// # 删除小于0的元素
 					//auto it = lareaset.lower_bound(0);
 					//lareaset.erase(lareaset.begin(), it);

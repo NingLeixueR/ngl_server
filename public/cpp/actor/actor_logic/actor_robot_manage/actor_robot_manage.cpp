@@ -23,7 +23,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_ROBOT_MANAGE,
 					.m_area = tab_self_area,
-					.m_id = nconfig::m_tid,
+					.m_id = nconfig.tid(),
 					.m_manage_dbclient = false
 				},
 				.m_weight = 0x7fffffff,
@@ -117,7 +117,7 @@ namespace ngl
 	{
 		auto ldata = std::make_shared<np_robot_pram>();
 		ldata->m_parm.swap(aparm);
-		i64_actorid lid = ngl::nguid::make(ACTOR_ROBOT_MANAGE, tab_self_area, nconfig::m_tid);
+		i64_actorid lid = ngl::nguid::make(ACTOR_ROBOT_MANAGE, tab_self_area, nconfig.tid());
 		handle_pram lparm = ngl::handle_pram::create<np_robot_pram, false, false>(lid, nguid::moreactor(), ldata);
 		actor_manage::instance().push_task_id(lid, lparm);
 		return true;
@@ -189,7 +189,7 @@ namespace ngl
 		}
 
 		net_works lpstructserver;
-		if (!ttab_servers::instance().get_nworks(tabserver->m_type, nconfig::area(), ENET_TCP, atcount, lpstructserver))
+		if (!ttab_servers::instance().get_nworks(tabserver->m_type, nconfig.area(), ENET_TCP, atcount, lpstructserver))
 		{
 			return false;
 		}

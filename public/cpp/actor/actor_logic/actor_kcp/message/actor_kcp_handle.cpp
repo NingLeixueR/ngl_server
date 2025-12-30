@@ -25,7 +25,7 @@ namespace ngl
 			log_error()->print("np_actor_kcp fail actor:{}",nguid(lpram->m_actoridserver));
 			return true;
 		}
-		ukcp* lukcp = nets::serkcp(lpram->m_kcpnum, nconfig::m_tcount);
+		ukcp* lukcp = nets::serkcp(lpram->m_kcpnum, nconfig.tcount());
 		if (lukcp == nullptr)
 		{
 			tools::no_core_dump();
@@ -35,7 +35,7 @@ namespace ngl
 
 		if (lpack == nullptr)
 		{
-			actor::send_actor(nguid::make(ACTOR_GATEWAY, nconfig::area(), nconfig::m_tcount), id_guid(), lpram);
+			actor::send_actor(nguid::make(ACTOR_GATEWAY, nconfig.area(), nconfig.tcount()), id_guid(), lpram);
 		}
 		else
 		{

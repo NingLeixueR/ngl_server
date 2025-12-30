@@ -27,7 +27,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_ROLE_MANAGE,
 					.m_area = tab_self_area,
-					.m_id = nconfig::m_tcount
+					.m_id = nconfig.tcount()
 				},
 				.m_weight = 0x7fffffff,
 			})
@@ -41,7 +41,7 @@ namespace ngl
 
 	i64_actorid actor_role_manage::actorid()
 	{
-		return nguid::make(actor_type(), nguid::none_area(), nconfig::m_tcount);
+		return nguid::make(actor_type(), nguid::none_area(), nconfig.tcount());
 	}
 
 	void actor_role_manage::init()

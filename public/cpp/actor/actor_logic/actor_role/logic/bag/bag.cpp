@@ -70,7 +70,7 @@ namespace ngl
 	void bag::print_bi(int32_t aitemid, int32_t atid, int32_t acount, bool aisadd /*= true*/)
 	{
 		bi_item ltempbi;
-		ltempbi.m_serverid = nconfig::m_nodeid;
+		ltempbi.m_serverid = nconfig.nodeid();
 		ltempbi.m_itemid = aitemid;
 		ltempbi.m_tid = atid;
 		ltempbi.m_count = acount;

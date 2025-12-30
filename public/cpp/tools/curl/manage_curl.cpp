@@ -330,10 +330,10 @@ namespace ngl
 	{
 		ngl::manage_curl::parameter lparm
 		{
-			.m_smtp = xmlnode::m_mail.m_mailarg.m_smtp,
-			.m_email = xmlnode::m_mail.m_mailarg.m_email,
-			.m_password = xmlnode::m_mail.m_mailarg.m_password,
-			.m_name = xmlnode::m_mail.m_mailarg.m_name,
+			.m_smtp = nconfig.mail().m_smtp,
+			.m_email = nconfig.mail().m_email,
+			.m_password = nconfig.mail().m_password,
+			.m_name = nconfig.mail().m_name,
 			.m_title = atitle,
 			.m_content = acontent,
 			.m_recvs = amailvec

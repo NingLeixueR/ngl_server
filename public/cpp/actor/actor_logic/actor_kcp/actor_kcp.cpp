@@ -24,7 +24,7 @@ namespace ngl
 			{
 				.m_type = ACTOR_KCP,
 				.m_area = tab_self_area,
-				.m_id = nconfig::m_nodeid,
+				.m_id = nconfig.nodeid(),
 			},
 			.m_weight = 0x7fffffff
 		})

@@ -19,7 +19,7 @@ namespace ngl
 	void nsp_regload::init(i64_actorid aactorid)
 	{
 		std::set<i16_area> lareaset;
-		ttab_servers::instance().get_arealist_nonrepet(nconfig::m_tid, lareaset);
+		ttab_servers::instance().get_arealist_nonrepet(nconfig.tid(), lareaset);
 		auto ltype = (ENUM_ACTOR)nguid::type(aactorid);
 		for (i16_area area : lareaset)
 		{

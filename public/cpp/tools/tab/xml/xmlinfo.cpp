@@ -21,12 +21,12 @@
 
 namespace ngl
 {
-	void xmlinfo::plog()
+	void xarg_info::plog()
 	{
 		log_error()->print("xmlinfo:{}", m_data);
 	}
 	
-	bool xmlinfo::find(const char* akey, bool& adata)
+	bool xarg_info::find(const char* akey, bool& adata)
 	{
 		std::string* lp = tools::findmap<std::string, std::string>(m_data, akey);
 		if (lp == nullptr)
@@ -37,7 +37,7 @@ namespace ngl
 		return true;
 	}
 
-	bool xmlinfo::find(const char* akey, std::string& adata)
+	bool xarg_info::find(const char* akey, std::string& adata)
 	{
 		std::string* lp = tools::findmap<std::string, std::string>(m_data, akey);
 		if (lp == nullptr)
@@ -48,7 +48,7 @@ namespace ngl
 		return true;
 	}
 
-	void xmlinfo::foreach(const std::function<void(const std::pair<const std::string, std::string>&)>& afun)
+	void xarg_info::foreach(const std::function<void(const std::pair<const std::string, std::string>&)>& afun)
 	{
 		for (const auto& item : m_data)
 		{

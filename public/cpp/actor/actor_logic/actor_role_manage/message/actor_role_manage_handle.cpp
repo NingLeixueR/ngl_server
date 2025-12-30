@@ -90,7 +90,7 @@ namespace ngl
 		{
 			.m_gatewayid = recv->mgatewayid(),
 		};
-		actor_create::switch_process(recv->mroleid(), 0, nconfig::m_nodeid, pro);
+		actor_create::switch_process(recv->mroleid(), 0, nconfig.nodeid(), pro);
 		return true;
 	}
 }//namespace ngl

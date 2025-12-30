@@ -456,7 +456,7 @@ namespace ngl
 				auto pro = std::make_shared<np_logitem>();
 				pro->m_loglevel = m_level;
 				pro->m_type = m_logtype;
-				pro->m_serverid = nconfig::m_nodeid;
+				pro->m_serverid = nconfig.nodeid();
 				pro->m_time = ltime;
 				pro->m_src.swap(m_src);
 				pro->m_data.swap(ldata);

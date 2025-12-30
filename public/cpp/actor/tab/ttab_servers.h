@@ -161,7 +161,7 @@ namespace ngl
 
 		const tab_servers* tab()
 		{
-			return tab(nconfig::m_tid);
+			return tab(nconfig.tid());
 		}
 
 		const tab_servers* tab(const std::string& aname, int area)
@@ -264,7 +264,7 @@ namespace ngl
 
 		bool get_nworks(ENET_PROTOCOL atype, net_works& anetwork)
 		{
-			return get_nworks(atype, nconfig::m_tcount, anetwork);
+			return get_nworks(atype, nconfig.tcount(), anetwork);
 		}
 
 		bool get_nworks(const std::string& aname, int area, int32_t atcount, ENET_PROTOCOL atype, net_works& anetwork)
@@ -323,7 +323,7 @@ namespace ngl
 	public:
 		bool connect(i32_serverid aserverid, net_works& anetwork)
 		{
-			return connect(nconfig::m_nodeid, aserverid, anetwork);
+			return connect(nconfig.nodeid(), aserverid, anetwork);
 		}
 
 		NODE_TYPE node_type(int32_t atid)
@@ -339,7 +339,7 @@ namespace ngl
 
 		NODE_TYPE node_type()
 		{
-			return node_type(nconfig::m_tid);
+			return node_type(nconfig.tid());
 		}
 
 		// 便利所有服务器

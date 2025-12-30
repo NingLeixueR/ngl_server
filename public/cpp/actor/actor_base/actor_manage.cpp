@@ -90,7 +90,7 @@ namespace ngl
 				{
 					.m_mass = np_actornode_update
 					{
-						.m_id = nconfig::m_nodeid,
+						.m_id = nconfig.nodeid(),
 						.m_add = {guid},
 					},
 					.m_fun = afun
@@ -119,7 +119,7 @@ namespace ngl
 			{
 				.m_mass = np_actornode_update
 				{
-					.m_id = nconfig::m_nodeid,
+					.m_id = nconfig.nodeid(),
 					.m_del = {aguid}
 				}
 			}
@@ -391,7 +391,7 @@ namespace ngl
 
 	nguid actor_manage::nodetypebyguid()
 	{
-		return xmlnode::m_nodetype == ACTORSERVER ? actor_server::actorid() : actor_client::actorid();
+		return nconfig.nodetype() == ACTORSERVER ? actor_server::actorid() : actor_client::actorid();
 	}
 
 	nguid actor_manage::get_clientguid()

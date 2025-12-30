@@ -25,7 +25,7 @@ namespace ngl
 	bool asio_kcp::function_econnect(ptr_se& apstruct, bool aconnect)
 	{
 		i32_sessionid session = apstruct->m_session;
-		xmlinfo const* linfo = nconfig::get_publicconfig();
+		xarg_info const* linfo = nconfig.get_publicconfig();
 		if (linfo == nullptr)
 		{
 			return false;
@@ -123,7 +123,7 @@ namespace ngl
 				apstruct->m_isconnect = true;
 				apstruct->m_pingtm = (int)localtime::gettime();
 				// 除了robot 其他服务器均不允许定时ping 
-				if (nconfig::m_nodetype == ngl::ROBOT)
+				if (nconfig.node_type() == ngl::ROBOT)
 				{
 					// 定时发送cmd:ping
 					ap->function_econnect(apstruct, false);
@@ -202,7 +202,7 @@ namespace ngl
 		memcpy(lpack->m_buff, abuff, len);
 		
 		i64_actorid lactorid;
-		if (nconfig::node_type() != ROBOT)
+		if (nconfig.node_type() != ROBOT)
 		{
 			lpack->m_head.set_actor(apstruct->m_actoridserver, apstruct->m_actoridclient);
 		}

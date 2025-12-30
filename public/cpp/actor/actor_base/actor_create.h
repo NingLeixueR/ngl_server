@@ -94,12 +94,12 @@ namespace ngl
 		bool handle(const message<np_actorswitch_process<T>>& adata)
 		{
 			auto lparm = adata.get_data();
-			if (lparm->m_toserverid == nconfig::m_nodeid)
+			if (lparm->m_toserverid == nconfig.nodeid())
 			{
 				nguid lguid(lparm->m_actor);
 				actor_base::create(lguid.type(), lguid.area(), lguid.actordataid(), (void*)&lparm->m_pram);
 			}
-			else if (lparm->m_serverid == nconfig::m_nodeid)
+			else if (lparm->m_serverid == nconfig.nodeid())
 			{
 				actor_manage::instance().erase_actor(lparm->m_actor, [lparm]()
 					{

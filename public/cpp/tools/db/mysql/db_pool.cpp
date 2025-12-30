@@ -17,7 +17,7 @@
 
 namespace ngl
 {
-	void db_pool::init(const dbarg& adbarg)
+	void db_pool::init(const xarg_db& adbarg)
 	{
 		if (!m_vec.empty())
 		{

@@ -201,7 +201,7 @@ namespace ngl
 		}
 
 		net_works lpstructserver;
-		if (!ttab_servers::instance().get_nworks(tabserver->m_type, nconfig::area(), ENET_TCP, ltcount, lpstructserver))
+		if (!ttab_servers::instance().get_nworks(tabserver->m_type, nconfig.area(), ENET_TCP, ltcount, lpstructserver))
 		{
 			return false;
 		}

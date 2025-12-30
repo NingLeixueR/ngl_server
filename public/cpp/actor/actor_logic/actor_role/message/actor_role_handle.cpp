@@ -462,7 +462,7 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata)
 	{
-		const tab_servers* tab = ttab_servers::instance().tab("game", nconfig::area());
+		const tab_servers* tab = ttab_servers::instance().tab("game", nconfig.area());
 		if (tab == nullptr)
 		{
 			return false;
@@ -478,7 +478,7 @@ namespace ngl
 		np_actorswitch_process_role pro;
 		pro.m_create = false;
 		pro.m_gatewayid = m_gatewayid;
-		actor_create::switch_process(id_guid(), nconfig::m_nodeid, lserverid, pro);
+		actor_create::switch_process(id_guid(), nconfig.nodeid(), lserverid, pro);
 		return true;
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata)

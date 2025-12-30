@@ -92,7 +92,7 @@ namespace ngl
 
 	ukcp* nets::serkcp(pbnet::ENUM_KCP anum, int16_t atcount)
 	{
-		auto itor = m_kcpnet.find(kcp_port(nconfig::m_tid, atcount, anum));
+		auto itor = m_kcpnet.find(kcp_port(nconfig.tid(), atcount, anum));
 		if (itor == m_kcpnet.end())
 		{
 			return nullptr;
@@ -109,7 +109,7 @@ namespace ngl
 	{
 		if (m_kcpindex == 0)
 		{
-			m_kcpindex = nconfig::m_tid * enets_robot_tid + nconfig::m_tcount * enets_robot_tcount;
+			m_kcpindex = nconfig.tid() * enets_robot_tid + nconfig.tcount() * enets_robot_tcount;
 		}
 		++m_kcpindex;
 		m_kcpnet[m_kcpindex] = ukcp::create(m_kcpindex);
@@ -118,7 +118,7 @@ namespace ngl
 
 	i16_port nets::create_kcp(pbnet::ENUM_KCP aenum)
 	{
-		i16_port luport = kcp_port(nconfig::m_tid, nconfig::m_tcount, aenum);
+		i16_port luport = kcp_port(nconfig.tid(), nconfig.tcount(), aenum);
 		if (!m_kcpnet.contains(luport))
 		{
 			m_kcpnet[luport] = ukcp::create(luport);
@@ -149,7 +149,7 @@ namespace ngl
 			}
 			lfirst[item.m_type] = true;
 			net_works lnwork;
-			if (!ttab_servers::instance().get_nworks(item.m_type, nconfig::m_tcount, lnwork))
+			if (!ttab_servers::instance().get_nworks(item.m_type, nconfig.tcount(), lnwork))
 			{
 				return true;
 			}
@@ -214,7 +214,7 @@ namespace ngl
 		{
 			return false;
 		}
-		if (nconfig::m_nodetype == ROBOT)
+		if (nconfig.node_type() == ROBOT)
 		{
 			apair = std::make_tuple(lnets.m_type, lnets.m_ip, lnets.m_port);
 		}

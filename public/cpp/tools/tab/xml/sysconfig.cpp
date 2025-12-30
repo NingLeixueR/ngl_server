@@ -46,7 +46,7 @@ namespace ngl
 
 	void sysconfig::init()
 	{
-		ngl::xmlinfo* lpublicxml = ngl::xmlnode::get_publicconfig();
+		ngl::xarg_info* lpublicxml = nconfig.get_publicconfig();
 		lpublicxml->find("logflushtime", m_logflushtime);
 		lpublicxml->find("logline", m_logline);
 		{

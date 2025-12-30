@@ -33,12 +33,12 @@ namespace ngl
 
 		bool	m_connectdb;
 		MYSQL*	m_mysql;
-		dbarg	m_arg;
+		xarg_db	m_arg;
 	public:
 		db();
 
 		// # 连接数据库
-		bool connectdb(const dbarg& arg);
+		bool connectdb(const xarg_db& arg);
 
 		// # 关闭数据库
 		void closedb();
