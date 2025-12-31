@@ -33,7 +33,7 @@ namespace ngl
 		std::string	m_nodename;
 		NODE_TYPE	m_nodetype;
 		i32_serverid m_nodeid = 0;							// server id
-		int16_t		m_tid = nguid::none_actordataid();		// 对应tab_servers表中的id
+		int16_t		m_tid = 0;								// 对应tab_servers表中的id
 		int16_t		m_tcount = 0;							// 实例id
 
 		xmlnode() {}

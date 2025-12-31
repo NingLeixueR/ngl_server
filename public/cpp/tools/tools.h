@@ -865,6 +865,33 @@ namespace ngl
 			}
 			return false;
 		}
+
+
+		static bool less_member()
+		{
+			return false;
+		}
+
+		template <typename T>
+		static int32_t less_member_(const T& lhs, const T& rhs)
+		{
+			if (lhs != rhs)
+			{
+				return lhs < rhs?1:-1;
+			}
+			return 0;
+		}
+
+		template <typename T, typename... TARGS>
+		static bool less_member(const T& lhs, const T& rhs, const TARGS&... members)
+		{
+			int32_t lva = less_member(lhs, rhs);
+			if (lva != 0)
+			{
+				return lva < 0;
+			}
+			return less_member(members...);
+		}
 	};
 
 	template <typename T>

@@ -18,6 +18,22 @@
 
 namespace ngl
 {
+	bool skill::set_lv(int32_t askilllv)
+	{
+		if (askilllv <= 0)
+		{
+			log_error()->print("skill::set_lv({}) fail", askilllv);
+			return false;
+		}
+		m_lv = askilllv;
+		return true;
+	}
+
+	int32_t skill::lv()
+	{
+		return m_lv;
+	}
+
 	int32_t skill::cooldown()
 	{
 		auto itor = m_template.m_cooldown.find(m_lv);
@@ -36,9 +52,6 @@ namespace ngl
 		{
 			return false;
 		}
-
-		// 获取冷却时间
-		
 
 		// 冷却缩减 万分比
 		int32_t lcoolabsolute = ldynamic.get_attribute(E_CooldownAbsolute);
