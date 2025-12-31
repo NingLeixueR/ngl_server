@@ -123,7 +123,7 @@ namespace ngl
 				apstruct->m_isconnect = true;
 				apstruct->m_pingtm = (int)localtime::gettime();
 				// 除了robot 其他服务器均不允许定时ping 
-				if (nconfig.node_type() == ngl::ROBOT)
+				if (nconfig.nodetype() == ngl::ROBOT)
 				{
 					// 定时发送cmd:ping
 					ap->function_econnect(apstruct, false);
@@ -202,7 +202,7 @@ namespace ngl
 		memcpy(lpack->m_buff, abuff, len);
 		
 		i64_actorid lactorid;
-		if (nconfig.node_type() != ROBOT)
+		if (nconfig.nodetype() != ROBOT)
 		{
 			lpack->m_head.set_actor(apstruct->m_actoridserver, apstruct->m_actoridclient);
 		}

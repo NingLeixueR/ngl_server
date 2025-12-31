@@ -79,7 +79,7 @@ namespace ngl
 			}
 			else 
 			{
-				if (nconfig.node_type() != ROBOT)
+				if (nconfig.nodetype() != ROBOT)
 				{
 					return;
 				}
@@ -89,7 +89,7 @@ namespace ngl
 				}
 			}
 		}
-		// (lactortype == nguid::none<ENUM_ACTOR>() && nconfig.node_type() == ROBOT) || lactortype == nguid::none<ENUM_ACTOR>()
+		// (lactortype == nguid::none<ENUM_ACTOR>() && nconfig.nodetype() == ROBOT) || lactortype == nguid::none<ENUM_ACTOR>()
 		for (std::pair<const ENUM_ACTOR, protocol::fun_run>& item : lpfun->m_runfun)
 		{
 			item.second(apack, lptrpram);

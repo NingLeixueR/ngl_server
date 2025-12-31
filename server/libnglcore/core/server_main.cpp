@@ -835,7 +835,7 @@ int ngl_main(int argc, char** argv)
 	SetConsoleTitle(g_nodename.c_str());
 #endif
 	
-	switch (nconfig.node_type())
+	switch (nconfig.nodetype())
 	{
 	case ngl::DB:
 		start_db(argc, argv);

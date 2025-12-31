@@ -125,7 +125,7 @@ namespace ngl
 
 	void actor_client::actor_server_register(i32_serverid aactorserver)
 	{
-		if (nconfig.node_type() == NODE_TYPE::ROBOT)
+		if (nconfig.nodetype() == NODE_TYPE::ROBOT)
 		{
 			return;
 		}
@@ -147,8 +147,8 @@ namespace ngl
 	bool actor_client::handle(const message<np_actor_server_register>& adata)
 	{
 		// # 需要尝试连接ActorServer结点 并向其注册自己
-		NODE_TYPE ltype = ttab_servers::instance().node_type();
-		if (nconfig.node_type() != ltype || ltype == ngl::ACTORSERVER || ltype == ngl::ROBOT)
+		NODE_TYPE ltype = ttab_servers::instance().nodetype();
+		if (nconfig.nodetype() != ltype || ltype == ngl::ACTORSERVER || ltype == ngl::ROBOT)
 		{
 			tools::no_core_dump();
 			return true;
@@ -182,7 +182,7 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_actornode_register_response>& adata)
 	{
-		if (nconfig.node_type() == NODE_TYPE::ROBOT)
+		if (nconfig.nodetype() == NODE_TYPE::ROBOT)
 		{
 			return true;
 		}
@@ -219,7 +219,7 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_actorclient_node_connect>& adata)
 	{
-		if (nconfig.node_type() == NODE_TYPE::ROBOT)
+		if (nconfig.nodetype() == NODE_TYPE::ROBOT)
 		{
 			return true;
 		}
@@ -287,7 +287,7 @@ namespace ngl
 		message lmessage(lthreadid, adata.get_shared_pack(), (np_actornode_update*)&lparm->m_mass);
 		handle(lmessage);
 
-		if (nconfig.node_type() != NODE_TYPE::ROBOT)
+		if (nconfig.nodetype() != NODE_TYPE::ROBOT)
 		{
 			auto pro = std::make_shared<np_actornode_update_server>();
 			pro->m_data = lparm->m_mass;
@@ -329,7 +329,7 @@ namespace ngl
 	
 	bool actor_client::handle(const message<np_actornode_connect_task>& adata)
 	{
-		if (nconfig.node_type() == NODE_TYPE::ROBOT)
+		if (nconfig.nodetype() == NODE_TYPE::ROBOT)
 		{
 			return true;
 		}
@@ -346,7 +346,7 @@ namespace ngl
 	
 	bool actor_client::handle(const message<np_actor_gatewayid_updata>& adata)
 	{
-		if (nconfig.node_type() == NODE_TYPE::ROBOT)
+		if (nconfig.nodetype() == NODE_TYPE::ROBOT)
 		{
 			return true;
 		}
