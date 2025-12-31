@@ -70,7 +70,7 @@ namespace ngl
 				{
 					continue;
 				}
-				if (nconfig.node_type() != ROBOT)
+				if (nconfig.nodetype() != ROBOT)
 				{
 					pack_head::head_set_actor((int32_t*)apack->m_buff, lactoridclient, lactoridserver);
 				}

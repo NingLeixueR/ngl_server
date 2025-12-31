@@ -128,7 +128,7 @@ namespace ngl
 		{
 			return false;
 		}
-		if (aislanip == false && nconfig.node_type() != ROBOT && alen >= net_config_recv_buff_maxbyte)
+		if (aislanip == false && nconfig.nodetype() != ROBOT && alen >= net_config_recv_buff_maxbyte)
 		{
 			m_data.erase(aid);
 			log_error()->print("sockect recv {} len >= SOCKECT_MAX_BUFF_SIZE({})", apack->m_head, (int)net_config_recv_buff_maxbyte);

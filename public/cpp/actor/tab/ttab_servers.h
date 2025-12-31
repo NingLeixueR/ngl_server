@@ -337,7 +337,7 @@ namespace ngl
 			return ltab->m_type;
 		}
 
-		NODE_TYPE node_type()
+		NODE_TYPE nodetype()
 		{
 			return node_type(nconfig.tid());
 		}

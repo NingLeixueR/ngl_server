@@ -92,7 +92,7 @@ namespace ngl
 
 				actor_manage& lmanages = actor_manage::instance();
 
-				if (nconfig.node_type() == ROBOT && apack->m_head.get_actor() == nguid::make())
+				if (nconfig.nodetype() == ROBOT && apack->m_head.get_actor() == nguid::make())
 				{
 					lmanages.push_task_type(atype, lpram);
 					return true;

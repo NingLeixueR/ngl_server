@@ -49,8 +49,6 @@ namespace ngl
 
 		void init();
 
-		NODE_TYPE node_type();
-
 		i16_area area();
 
 		void set_server(const char* aservertypename);

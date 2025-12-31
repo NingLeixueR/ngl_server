@@ -214,7 +214,7 @@ namespace ngl
 		{
 			return false;
 		}
-		if (nconfig.node_type() == ROBOT)
+		if (nconfig.nodetype() == ROBOT)
 		{
 			apair = std::make_tuple(lnets.m_type, lnets.m_ip, lnets.m_port);
 		}
