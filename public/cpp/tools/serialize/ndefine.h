@@ -66,22 +66,36 @@
 #define def_rcsv(...) return ngl::rcsv::readcsv(apair __VA_OPT__(,) ##__VA_ARGS__);
 #endif
 
-#define def_parmname																\
-	static std::vector<const char*>& parms(const char* astr = nullptr)				\
-	{																				\
-		static std::vector<const char*> tempvec;									\
-		if(astr == nullptr)															\
-		{																			\
-			return tempvec;															\
-		}																			\
-		static std::string tempstr(astr);											\
-		static std::atomic lregister = true;										\
-		if (lregister.exchange(false) && !tempstr.empty())							\
-		{																			\
-			tempvec = tools::split_str(&tempstr[0], (int32_t)tempstr.size());		\
-		}																			\
-		return tempvec;																\
-	}
+
+
+#define def_parmname_(isDEL)													\
+static std::vector<const char*>& parms(const char* astr = nullptr)				\
+{																				\
+	static std::vector<const char*> tempvec;									\
+	if (astr == nullptr)														\
+	{																			\
+		return tempvec;															\
+	}																			\
+	static std::string tempstr(astr);											\
+	static std::atomic lregister = true;										\
+	if (lregister.exchange(false) && !tempstr.empty())							\
+	{																			\
+		tempvec = ngl::tools::split_str(&tempstr[0], (int32_t)tempstr.size());	\
+		if constexpr (isDEL)													\
+		{																		\
+			for (const char*& item : tempvec)									\
+			{																	\
+				if (memcmp("m_", item, 2) == 0)									\
+				{																\
+					item = &(item[2]);											\
+				}																\
+			}																	\
+		}																		\
+	}																			\
+	return tempvec;																\
+}
+	
+#define def_parmname	def_parmname_(false)
 
 #include "njson.h"
 

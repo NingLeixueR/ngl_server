@@ -24,17 +24,17 @@ namespace ngl
 {
 	class xmlnode
 	{
-		xarg_db				m_db;
-		xarg_db				m_crossdb;
-		xarg_info			m_publicinfo;
-		xarg_mail			m_mail;
-		xarg_telnet			m_telnet;
+		xarg_db		m_db;
+		xarg_db		m_crossdb;
+		xarg_info	m_public;
+		xarg_mail	m_mail;
+		xarg_telnet	m_telnet;
 
 		std::string	m_nodename;
 		NODE_TYPE	m_nodetype;
-		i32_serverid m_nodeid;		// server id
-		int16_t		m_tid;			// 对应tab_servers表中的id
-		int16_t		m_tcount;		// 实例id
+		i32_serverid m_nodeid = 0;							// server id
+		int16_t		m_tid = nguid::none_actordataid();		// 对应tab_servers表中的id
+		int16_t		m_tcount = 0;							// 实例id
 
 		xmlnode() {}
 	public:
@@ -45,7 +45,7 @@ namespace ngl
 		}
 
 
-		xmlserialize(xmlnode, false, m_db, m_crossdb, m_publicinfo, m_mail, m_telnet)
+		xmlserialize(xmlnode, false, m_db, m_crossdb, m_public, m_mail, m_telnet)
 
 		void init();
 
@@ -57,51 +57,28 @@ namespace ngl
 
 		void load(const std::string& axmlpath, const std::string& aname);
 
-		xarg_info* get_publicconfig();
+		xarg_info* publicconfig();
 
-		int16_t tcount()
-		{
-			return m_tcount;
-		}
+		int16_t tcount();
 
-		int16_t	tid()
-		{
-			return m_tid;
-		}
+		int16_t	tid();
 
-		i32_serverid nodeid()
-		{
-			return m_nodeid;
-		}
+		i32_serverid nodeid();
 
-		NODE_TYPE nodetype()
-		{
-			return m_nodetype;
-		}
+		NODE_TYPE nodetype();
 
-		xarg_db& db()
-		{
-			return m_db;
-		}
+		xarg_db& db();
 
-		xarg_db& crossdb()
-		{
-			return m_crossdb;
-		}
+		xarg_db& crossdb();
 
-		xarg_mail& mail()
-		{
-			return m_mail;
-		}
+		xarg_mail& mail();
 
-		xarg_telnet& telnet()
-		{
-			return m_telnet;
-		}
+		xarg_telnet& telnet();
 	};
+
+	void test_xml();
 }//namespace ngl
 #define nconfig ngl::xmlnode::instance()
-
 
 namespace ngl
 {

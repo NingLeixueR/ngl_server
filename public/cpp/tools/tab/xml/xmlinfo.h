@@ -25,13 +25,13 @@ namespace ngl
 {
 	struct xarg_db
 	{
-		uint32_t	m_port = 0;
 		std::string m_ip;
+		uint32_t	m_port = 0;
 		std::string m_account;
 		std::string m_passworld;
 		std::string m_dbname;
 
-		xmlserialize(xarg_db, true, m_port, m_ip, m_account, m_passworld, m_dbname)
+		xmlserialize(xarg_db, true, m_ip, m_port, m_account, m_passworld, m_dbname)
 	};
 
 	struct mail_name
@@ -49,18 +49,16 @@ namespace ngl
 		std::string m_password;
 		std::string m_name;
 		std::vector<mail_name> m_recvs;
-		std::string m_title;
-		std::string m_content;
 
-		xmlserialize(xarg_mail, false, m_smtp, m_email, m_password, m_name, m_recvs, m_title, m_content)
+		xmlserialize(xarg_mail, false, m_smtp, m_email, m_password, m_name, m_recvs)
 	};
 
 	struct xarg_telnet
 	{
 		std::string m_account;
-		std::string m_passworld;
+		std::string m_password;
 
-		xmlserialize(xarg_telnet, false, m_account, m_passworld)
+		xmlserialize(xarg_telnet, false, m_account, m_password)
 	};
 
 	class xarg_info

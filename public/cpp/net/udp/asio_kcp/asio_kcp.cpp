@@ -25,7 +25,7 @@ namespace ngl
 	bool asio_kcp::function_econnect(ptr_se& apstruct, bool aconnect)
 	{
 		i32_sessionid session = apstruct->m_session;
-		xarg_info const* linfo = nconfig.get_publicconfig();
+		xarg_info const* linfo = nconfig.publicconfig();
 		if (linfo == nullptr)
 		{
 			return false;

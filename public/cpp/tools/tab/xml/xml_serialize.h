@@ -748,7 +748,7 @@ public:
 #endif
 
 #define xmlserialize(XMLNAME, ATTR, ...)	\
-	def_parmname							\
+	def_parmname_(true)						\
 	def_xmlfunction(XMLNAME)				\
 	def_xml(ATTR, __VA_ARGS__)				\
 	
