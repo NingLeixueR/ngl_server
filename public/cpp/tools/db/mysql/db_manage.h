@@ -29,7 +29,7 @@ namespace ngl
 	public:
 		static void init()
 		{
-			if (nconfig.get_publicconfig()->find("dbprotobinary", m_dbprotobinary) == false)
+			if (nconfig.publicconfig()->find("dbprotobinary", m_dbprotobinary) == false)
 			{
 				std::cout << "db xml config dbprotobinary falile" << std::endl;
 				tools::no_core_dump();

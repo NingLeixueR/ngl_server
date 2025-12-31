@@ -539,7 +539,7 @@ bool start_cross()
 bool start_pushserverconfig()
 {
 	// 将服务器配置上传lbgmsys
-	ngl::xarg_info* lpublicxml = nconfig.get_publicconfig();
+	ngl::xarg_info* lpublicxml = nconfig.publicconfig();
 	std::string lgmurl;
 	if (!lpublicxml->find("gmurl", lgmurl))
 	{
@@ -780,6 +780,7 @@ int ngl_main(int argc, char** argv)
 		std::cout << "error" << std::endl;
 	}
 
+	
 	if (argc <= 3)
 	{
 		std::cout << "参数错误:EXE name areaid tab_servers::tcount" << std::endl;

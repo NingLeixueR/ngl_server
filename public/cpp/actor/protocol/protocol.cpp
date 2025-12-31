@@ -109,7 +109,7 @@ namespace ngl
 			{
 				return false;
 			}
-			if (ngl::tools::md5(apassworld) != nconfig.telnet().m_passworld)
+			if (ngl::tools::md5(apassworld) != nconfig.telnet().m_password)
 			{
 				return false;
 			}
