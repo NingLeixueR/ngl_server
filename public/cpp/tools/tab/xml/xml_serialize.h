@@ -446,7 +446,7 @@ namespace ngl
 				return xml::foreach(aele, akey, [&adata](tinyxml2::XMLElement* apt)
 					{
 						T ltemp;
-						if (!xml_serialize<T>::pop(apt, nullptr, ltemp))
+						if (!xml_serialize<ATTR, T>::pop(apt, nullptr, ltemp))
 						{
 							return false;
 						}
@@ -750,37 +750,4 @@ public:
 #define xmlserialize(XMLNAME, ATTR, ...)	\
 	def_parmname_(true)						\
 	def_xmlfunction(XMLNAME)				\
-	def_xml(ATTR, __VA_ARGS__)				\
-	
-
-namespace ngl
-{
-	struct skill_template
-	{
-		std::string m_name;			// 技能名称
-		std::string m_describe;		// 技能描述
-		std::map<int32_t, int32_t>	m_cooldown;		// 冷却时间(毫秒)
-		struct consume
-		{
-			std::map<ngl::EnumAttribute, int32_t> m_data;
-
-			xmlserialize(consume, false, m_data)
-		};
-		std::map<int32_t, consume> m_consume;  // 释放技能消耗属性值
-		std::vector<int64_t> m_t1;
-		struct t2
-		{
-			std::string m_name;			// 技能名称
-			std::string m_describe;		// 技能描述
-			std::map<int32_t, int32_t>	m_cooldown;		// 冷却时间(毫秒)
-
-			xmlserialize(t2, false, m_name, m_describe, m_cooldown)
-		};
-		std::list<t2> m_t2;
-		std::map<int32_t, t2> m_t3;
-		t2 m_t4;
-
-		xmlserialize(skill_template, false, m_name, m_describe, m_cooldown, m_consume, m_t1, m_t2, m_t3, m_t4)
-	};
-
-}
+	def_xml(ATTR, __VA_ARGS__)
