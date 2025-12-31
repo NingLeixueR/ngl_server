@@ -20,39 +20,38 @@ namespace ngl
 
 	void xmlprotocol::read(const char* axml)
 	{
-		tinyxml2::XMLDocument ldoc;
-		if (!xml::readxml(axml, ldoc))
-		{
-			return;
-		}
-
-		tinyxml2::XMLElement* lcon = xml::get_child(ldoc, "con");
-		if (lcon == nullptr)
-		{
-			return;
-		}
-
 		struct xarg_infos
 		{
-			std::list<xarg_info> config;
+			struct info
+			{
+				int32_t m_client = 0;
+				std::string m_name;
+				int32_t m_number = 0;
 
-			xmlserialize(con, false, config)
+				xmlserialize(config, true, m_client, m_name, m_number)
+			};
+			std::vector<info> m_config;
+
+			xmlserialize(con, false, m_config)
 		};
 		xarg_infos ltemps;
-		for (auto& item : ltemps.config)
+		if (!ltemps.xml_pop(axml))
 		{
-			std::string lname;
-			int32_t lnumber = 0;
+			tools::no_core_dump();
+			return;
+		}
+
+		for (auto& item : ltemps.m_config)
+		{
+			std::string& lname = item.m_name;
+			int32_t lnumber = item.m_number;
 			std::map<std::string, int32_t>& lmap = xmlprotocol::m_protocol;
-			if (item.find("name", lname) && item.find("number", lnumber))
-			{
-				lmap[tools::type_name_handle(lname)] = lnumber;
-				lmap[std::format("np_actormodule_forward<{}>", lname)] = lnumber;
-				lmap[std::format("np_actor_forward<{},forward_g2c<forward>>", lname)] = lnumber;
-				lmap[std::format("np_actor_forward<{0},forward_g2c<{0}>>", lname)] = lnumber;
-				lmap[std::format("np_actor_forward<{},forward_c2g<forward>>", lname)] = lnumber;
-				lmap[std::format("np_actor_forward<{0},forward_c2g<{0}>>", lname)] = lnumber;
-			}
+			lmap[tools::type_name_handle(lname)] = lnumber;
+			lmap[std::format("np_actormodule_forward<{}>", lname)] = lnumber;
+			lmap[std::format("np_actor_forward<{},forward_g2c<forward>>", lname)] = lnumber;
+			lmap[std::format("np_actor_forward<{0},forward_g2c<{0}>>", lname)] = lnumber;
+			lmap[std::format("np_actor_forward<{},forward_c2g<forward>>", lname)] = lnumber;
+			lmap[std::format("np_actor_forward<{0},forward_c2g<{0}>>", lname)] = lnumber;
 		}
 	}
 
