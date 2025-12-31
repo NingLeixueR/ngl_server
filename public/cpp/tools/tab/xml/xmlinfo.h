@@ -67,9 +67,6 @@ namespace ngl
 	public:
 		xmlserialize(xarg_info, false, m_data)
 
-
-		void plog();
-
 		std::map<std::string, std::string>& data()
 		{
 			return m_data;

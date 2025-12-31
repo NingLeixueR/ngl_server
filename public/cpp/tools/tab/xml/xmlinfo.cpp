@@ -21,11 +21,6 @@
 
 namespace ngl
 {
-	void xarg_info::plog()
-	{
-		log_error()->print("xmlinfo:{}", m_data);
-	}
-	
 	bool xarg_info::find(const char* akey, bool& adata)
 	{
 		std::string* lp = tools::findmap<std::string, std::string>(m_data, akey);

@@ -121,6 +121,4 @@ namespace ngl
 		axml.Print(&printer);
 		return printer.CStr();
 	}
-
-
 }//namespace ngl
