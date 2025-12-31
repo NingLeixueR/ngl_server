@@ -19,6 +19,24 @@
 
 namespace ngl
 {
+	enum ebuff_template_
+	{
+
+	};
+	struct buff_template
+	{
+		std::string					m_name;			// buff名称
+		std::string					m_describe;		// buff描述
+		int32_t						m_maxlv;		// 最大等级
+
+		struct setp
+		{
+			// 类型
+			
+		}
+
+	};
+
 	class buff
 	{
 	public:

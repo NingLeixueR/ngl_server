@@ -15,6 +15,7 @@
 #pragma once
 
 #include "attribute.h"
+#include "tools.h"
 
 namespace ngl
 {
@@ -22,25 +23,43 @@ namespace ngl
 	{
 		std::string					m_name;			// 技能名称
 		std::string					m_describe;		// 技能描述
+		int32_t						m_maxlv;		// 最大等级
 		std::map<int32_t, int32_t>	m_cooldown;		// 冷却时间(毫秒) key:lv value:ms
-		
-		struct consume
+				
+		struct consume_attr
 		{
 			std::map<ngl::EnumAttribute, int32_t> m_data;
 
 			xmlserialize(consume, false, m_data)
 		};
-		std::map<int32_t, consume> m_consume;  // 释放技能消耗属性值
+		std::map<int32_t, consume_attr> m_consumeattr;  // key:lv 释放技能消耗属性值
+
+		struct consume_item
+		{
+			std::map<int32_t, int32_t> m_data;	// key:itemid value:itemcount
+		};
+		std::map<int32_t, consume_item> m_consumeitem;  // key:lv 释放技能消耗物品道具
 
 		struct setp
 		{
 			struct lv
 			{
-				int32_t m_start;				// 开始时间:相对于技能开始时间的毫秒
-				int32_t m_finish;				// 结束时间:相对于技能开始时间的毫秒
-				std::set<int32_t> m_buffids;	// 附加buff
+				int32_t m_release;				// 释放时刻:相对于技能开始时间的毫秒
+				struct buff
+				{
+					int32_t m_id;
+					int32_t m_lv;
 
-				xmlserialize(lv, false, m_start, m_finish, m_buffids)
+					bool operator<(const buff& r)const
+					{
+						return tools::less_member(m_id, r.m_id, m_lv, r.m_lv);
+					}
+
+					xmlserialize(buff, true, m_id, m_lv)
+				};
+				std::set<buff> m_buffids;	// 附加buff
+
+				xmlserialize(lv, false, m_release, m_buffids)
 			};
 			std::map<int32_t, lv> m_lvs;
 
@@ -48,7 +67,7 @@ namespace ngl
 		};
 		std::vector<setp> m_setp;
 
-		xmlserialize(skill_template, false, m_name, m_describe, m_cooldown, m_consume, m_setp)
+		xmlserialize(skill_template, false, m_name, m_describe, m_maxlv, m_cooldown, m_consumeattr, m_consumeitem, m_setp)
 	};
 
 
@@ -63,22 +82,13 @@ namespace ngl
 	public:
 		static std::shared_ptr<skill> create(int32_t askillid, int32_t askilllv);
 
-		bool set_lv(int32_t askilllv)
-		{
-			if (askilllv <= 0)
-			{
-				log_error()->print("skill::set_lv({}) fail", askilllv);
-			}
-			m_lv = askilllv;
-		}
+		bool set_lv(int32_t askilllv);
 
-		int32_t get_lv()
-		{
-			return m_lv;
-		}
+		// # 技能等级
+		int32_t lv();
 
+		// # 技能冷却时间
 		int32_t cooldown();
-
 
 		// # 检查是否可以释放技能
 		virtual bool release_check();

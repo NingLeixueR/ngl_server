@@ -21,6 +21,8 @@
 #include "nlog.h"
 #include "xml.h"
 
+#include "skill.h"
+
 namespace ngl
 {
 	void xmlnode::init()
@@ -178,34 +180,96 @@ namespace ngl
 		ngl::skill_template lskill;
 		lskill.m_name = "技能名称";
 		lskill.m_describe = "技能描述";
+		lskill.m_maxlv = 3;
 		lskill.m_cooldown[1] = 3000;
 		lskill.m_cooldown[2] = 2000;
 		lskill.m_cooldown[3] = 1000;
 
-		lskill.m_consume[1].m_data[ngl::E_Attack] = 100;
-		lskill.m_consume[1].m_data[ngl::E_Defense] = 200;
-		lskill.m_consume[1].m_data[ngl::E_Hp] = 300;
+		lskill.m_consumeattr[1].m_data[ngl::E_Attack] = 100;
+		lskill.m_consumeattr[2].m_data[ngl::E_Defense] = 200;
+		lskill.m_consumeattr[3].m_data[ngl::E_Hp] = 300;
+
+		lskill.m_consumeitem[1].m_data[1] = 3;
+		lskill.m_consumeitem[2].m_data[2] = 4;
+		lskill.m_consumeitem[3].m_data[3] = 5;
 
 		lskill.m_setp.push_back(
 			ngl::skill_template::setp
 			{
 				.m_lvs =
 				{
-					{ 1, ngl::skill_template::setp::lv{.m_start = 0, .m_finish = 1000, .m_buffids = {1,2,3}} },
-					{ 2, ngl::skill_template::setp::lv{.m_start = 0, .m_finish = 900, .m_buffids = {1,2,4}} },
-					{ 3, ngl::skill_template::setp::lv{.m_start = 0, .m_finish = 800, .m_buffids = {1,3,4}} },
-				}
-			}
-		);
-
-		lskill.m_setp.push_back(
-			ngl::skill_template::setp
-			{
-				.m_lvs =
-				{
-					{ 1, ngl::skill_template::setp::lv{.m_start = 1000, .m_finish = 2000, .m_buffids = {1}} },
-					{ 2, ngl::skill_template::setp::lv{.m_start = 900, .m_finish = 1800, .m_buffids = {4}} },
-					{ 3, ngl::skill_template::setp::lv{.m_start = 800, .m_finish = 1600, .m_buffids = {1,4}} },
+					{ 1, 
+						ngl::skill_template::setp::lv
+						{
+							.m_release = 1000,
+							.m_buffids = 
+							{
+								ngl::skill_template::setp::lv::buff
+								{
+									.m_id = 1,
+									.m_lv = 1,
+								},
+								ngl::skill_template::setp::lv::buff
+								{
+									.m_id = 2,
+									.m_lv = 1,
+								},
+								ngl::skill_template::setp::lv::buff
+								{
+									.m_id = 3,
+									.m_lv = 1,
+								},
+							}
+						} 
+					},
+					{ 2,
+						ngl::skill_template::setp::lv
+						{
+							.m_release = 900,
+							.m_buffids =
+							{
+								ngl::skill_template::setp::lv::buff
+								{
+									.m_id = 1,
+									.m_lv = 2,
+								},
+								ngl::skill_template::setp::lv::buff
+								{
+									.m_id = 2,
+									.m_lv = 2,
+								},
+								ngl::skill_template::setp::lv::buff
+								{
+									.m_id = 3,
+									.m_lv = 2,
+								},
+							}
+						}
+					},
+					{ 3,
+						ngl::skill_template::setp::lv
+						{
+							.m_release = 800,
+							.m_buffids =
+							{
+								ngl::skill_template::setp::lv::buff
+								{
+									.m_id = 1,
+									.m_lv = 3,
+								},
+								ngl::skill_template::setp::lv::buff
+								{
+									.m_id = 2,
+									.m_lv = 3,
+								},
+								ngl::skill_template::setp::lv::buff
+								{
+									.m_id = 3,
+									.m_lv = 3,
+								},
+							}
+						}
+					},
 				}
 			}
 		);
