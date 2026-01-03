@@ -679,13 +679,13 @@ public:
 	}
 
 	template <typename T>
-	bool push(int32_t apos, T& adata)
+	bool push(int32_t apos, const T& adata)
 	{
 		return fun_push(m_parts[apos], adata);
 	}
 
 	template <typename T, typename ...ARG>
-	bool push(int32_t apos, T& adata, ARG&... args)
+	bool push(int32_t apos, const T& adata, const ARG&... args)
 	{
 		if constexpr (sizeof...(ARG) >= 1)
 		{
