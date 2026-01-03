@@ -24,7 +24,7 @@ namespace ngl
 	};
 	bool actor_notice::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::njson_read lojson(adata.get_data()->data()->m_json.c_str());
+		ngl::njread lojson(adata.get_data()->data()->m_json.c_str());
 
 		std::string loperator;
 		if (!njson::read(lojson, "operator", loperator))
@@ -34,7 +34,7 @@ namespace ngl
 
 		if (handle_cmd::empty())
 		{
-			handle_cmd::add("get_notice") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("get_notice") = [this](int id, ngl::njread& aos)
 				{// ·µ»Ø {"notice":gm_notice[]}
 					gcmd<std::vector<std::string>> pro(id, "get_notice");
 					for (const auto& [_guid, _data] : m_notice.data())
@@ -46,7 +46,7 @@ namespace ngl
 					pro.m_istoutf8 = false;
 				};
 
-			handle_cmd::add("notice_add") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("notice_add") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<bool> pro(id, "notice_add", false);
 					gm_notice recv;
@@ -58,7 +58,7 @@ namespace ngl
 					pro.m_data = true;
 				};
 
-			handle_cmd::add("notice_del") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("notice_del") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<bool> pro(id, "notice_del", false);
 					int64_t lid = 0;

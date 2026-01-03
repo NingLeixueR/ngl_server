@@ -16,7 +16,7 @@ namespace ngl
 {
 	bool actor_keyvalue::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::njson_read lojson(adata.get_data()->data()->m_json.c_str());
+		ngl::njread lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
 		if (!njson::read(lojson, "operator", loperator))
 		{
@@ -24,7 +24,7 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::add("set_openserver") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("set_openserver") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<bool> pro(id, "set_openserver", false);
 					int32_t ltime;
@@ -45,7 +45,7 @@ namespace ngl
 					pro.m_data = true;
 				};
 
-			handle_cmd::add("get_openserver") = [this](int id, const ngl::njson_read& aos)
+			handle_cmd::add("get_openserver") = [this](int id, const ngl::njread& aos)
 				{
 					gcmd<std::string> pro(id, "get_openserver");
 					int32_t lopentime = 0;

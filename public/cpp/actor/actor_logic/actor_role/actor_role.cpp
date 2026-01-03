@@ -210,7 +210,7 @@ namespace ngl
 				log_error()->print("actor_role::loginpay curl callback [{}]", ahttp.m_recvdata);
 				try
 				{
-					njson_read ltempjson(ahttp.m_recvdata.c_str());
+					njread ltempjson(ahttp.m_recvdata.c_str());
 					if (ltempjson.check() == false)
 					{
 						log_error()->print("actor_role::loginpay curl callback fail");
@@ -244,7 +244,7 @@ namespace ngl
 
 							try
 							{
-								njson_read ltempjson(ahttp.m_recvdata.c_str());
+								njread ltempjson(ahttp.m_recvdata.c_str());
 								if (ltempjson.check() == false)
 								{
 									log_error()->print("actor_role::loginpay curl callback fail");

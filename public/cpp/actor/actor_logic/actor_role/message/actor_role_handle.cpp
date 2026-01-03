@@ -26,7 +26,7 @@ namespace ngl
 {
 	bool actor_role::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::njson_read lojson(adata.get_data()->data()->m_json.c_str());
+		ngl::njread lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
 		if (!njson::read(lojson, "operator", loperator))
 		{
@@ -35,7 +35,7 @@ namespace ngl
 
 		if (handle_gm::empty())
 		{
-			handle_gm::add("pay") = [this](int id, ngl::njson_read& aos)
+			handle_gm::add("pay") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<int32_t> pro(id, "pay");
 					struct pay
@@ -52,7 +52,7 @@ namespace ngl
 					pro.m_data = rechange(lpay.m_orderid, lpay.m_rechargeid, false, true);
 				};
 
-			handle_gm::add("gmrechange") = [this](int id, ngl::njson_read& aos)
+			handle_gm::add("gmrechange") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<int32_t> pro(id, "gmrechange");
 					int32_t lrechargeid;
@@ -65,7 +65,7 @@ namespace ngl
 					pro.m_data = rechange(lorder, lrechargeid, true, true);
 				};
 
-			handle_gm::add("rechange") = [this](int id, ngl::njson_read& aos)
+			handle_gm::add("rechange") = [this](int id, ngl::njread& aos)
 				{//actor_role::loginpay() callback
 					gcmd<int32_t> pro(id, "rechange");
 					prorechange lrechange;
@@ -78,7 +78,7 @@ namespace ngl
 				};
 
 			// ½ûÑÔ lduration=0½â·â
-			handle_gm::add("bantalk") = [this](int id, ngl::njson_read& aos)
+			handle_gm::add("bantalk") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<bool> pro(id, "bantalk", false);
 					int32_t lduration;

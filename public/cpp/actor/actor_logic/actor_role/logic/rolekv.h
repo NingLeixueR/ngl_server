@@ -91,14 +91,14 @@ namespace ngl
 			{
 				return false;
 			}
-			njson_read ljread(ltemp.c_str());
+			njread ljread(ltemp.c_str());
 			return njson::read(ljread, arg...);
 		}
 
 		template <typename ...ARG>
 		bool set_json_value(const char* akey, ARG&... arg)
 		{
-			njson_write lwrite;
+			njwrite lwrite;
 			njson::write(arg...);
 			std::string lstr = lwrite.get();
 			set_value(akey, lstr);

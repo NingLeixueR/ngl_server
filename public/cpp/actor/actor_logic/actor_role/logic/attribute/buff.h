@@ -32,8 +32,8 @@ namespace ngl
 		struct setp
 		{
 			// ¿‡–Õ
-			
-		}
+
+		};
 
 	};
 

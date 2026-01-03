@@ -60,7 +60,7 @@ namespace ngl
 		virtual void handle_after(handle_pram&);
 
 		//# gmÇëÇó
-		using handle_gm = cmd<actor_role, std::string, int, ngl::njson_read&>;
+		using handle_gm = cmd<actor_role, std::string, int, ngl::njread&>;
 
 		bool timer_handle(const message<np_timerparm>& adata);
 

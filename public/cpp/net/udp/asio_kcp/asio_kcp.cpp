@@ -89,7 +89,7 @@ namespace ngl
 			{
 				apstruct->m_isconnect = true;
 				apstruct->m_pingtm = (int)localtime::gettime();
-				njson_read ltempjson(ajson.c_str());
+				njread ltempjson(ajson.c_str());
 
 				i64_actorid lactoridclient;
 				i64_actorid lactoridserver;
@@ -468,7 +468,7 @@ namespace ngl
 	{
 		// #### 发起连接
 		ptr_se lpstruct = m_session.add(aconv, aendpoint, aactoridserver, aactoridclient);
-		njson_write ltempjson;
+		njwrite ltempjson;
 		njson::write(ltempjson, "actoridserver", aactoridserver, "actoridclient", aactoridclient, "session", akcpsess);
 		ltempjson.set_nonformatstr(true);
 		std::string lparm = ltempjson.get();
