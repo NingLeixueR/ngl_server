@@ -25,17 +25,17 @@
 
 namespace ngl
 {
-	class njson_read
+	class njread
 	{
 		cJSON* m_json;
 		bool  m_free;
 	public:
-		njson_read(const char* astr) :
+		njread(const char* astr) :
 			m_json(cJSON_Parse(astr))
 			, m_free(true)
 		{}
 
-		njson_read() :
+		njread() :
 			m_json(nullptr)
 			, m_free(false)
 		{}
@@ -60,7 +60,7 @@ namespace ngl
 			return m_json;
 		}
 
-		~njson_read()
+		~njread()
 		{
 			if (m_json != nullptr && m_free)
 			{
@@ -69,7 +69,7 @@ namespace ngl
 		}
 	};
 
-	class njson_write
+	class njwrite
 	{
 		cJSON* m_json;
 		const char* m_nonformatstr;
@@ -77,7 +77,7 @@ namespace ngl
 		bool m_isnonformatstr;
 		bool m_free;
 	public:
-		njson_write() :
+		njwrite() :
 			m_json(cJSON_CreateObject())
 			, m_nonformatstr(nullptr)
 			, m_str(nullptr)
@@ -85,7 +85,7 @@ namespace ngl
 			, m_free(true)
 		{}
 
-		~njson_write()
+		~njwrite()
 		{
 			free_nonformatstr();
 			free_str();
@@ -150,17 +150,17 @@ namespace ngl
 	template <typename T>
 	struct json_format
 	{
-		static bool read(njson_read& ajson, const char* akey, T& adata);
+		static bool read(njread& ajson, const char* akey, T& adata);
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(T&)>& afun);
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(T&)>& afun);
 
-		static void write(njson_write& ajson, const char* akey, T& adata);
+		static void write(njwrite& ajson, const char* akey, T& adata);
 	};
 
 	template <>
 	struct json_format<cJSON*>
 	{
-		static bool read(njson_read& ajson, const char* akey, cJSON*& adata)
+		static bool read(njread& ajson, const char* akey, cJSON*& adata)
 		{
 			cJSON* ret = cJSON_GetObjectItem(ajson.json(), akey);
 			if (nullptr == ret)
@@ -175,7 +175,7 @@ namespace ngl
 			return false;
 		}
 
-		static void write(njson_write& ajson, const char* akey, cJSON* adata)
+		static void write(njwrite& ajson, const char* akey, cJSON* adata)
 		{
 			cJSON_AddItemToObject(ajson.json(), akey, adata);
 		}
@@ -283,7 +283,7 @@ namespace ngl
 		}
 
 		template <typename TNUMBER>
-		static bool read_basic_type(njson_read& ajson, const char* akey, TNUMBER& adata)
+		static bool read_basic_type(njread& ajson, const char* akey, TNUMBER& adata)
 		{
 			cJSON* ret = cJSON_GetObjectItem(ajson.json(), akey);
 			if (nullptr == ret)
@@ -298,7 +298,7 @@ namespace ngl
 		}
 
 		template <typename TNUMBER>
-		static bool read_basic_array(njson_read& ajson, const char* akey, const std::function<void(TNUMBER&)>& afun)
+		static bool read_basic_array(njread& ajson, const char* akey, const std::function<void(TNUMBER&)>& afun)
 		{
 			cJSON* ltemp = nullptr;
 			if (!json_format<cJSON*>::read(ajson, akey, ltemp))
@@ -318,7 +318,7 @@ namespace ngl
 
 		// 不可显示调用write_array<...>(...) 应该write_array(...)
 		template <typename T>
-		static void write_array(njson_write& ajson, const char* akey, const std::function<T*()>& afun)
+		static void write_array(njwrite& ajson, const char* akey, const std::function<T*()>& afun)
 		{
 			if constexpr (std::is_enum<T>::value)
 			{
@@ -334,7 +334,7 @@ namespace ngl
 				cJSON* larray = cJSON_CreateArray();
 				for (T* ltempitor = afun(); ltempitor != nullptr; ltempitor = afun())
 				{
-					njson_write ltemp;
+					njwrite ltemp;
 					ltempitor->json_write(ltemp);
 					cJSON_AddItemToArray(larray, ltemp.nofree());
 				}
@@ -342,19 +342,19 @@ namespace ngl
 			}
 		}
 
-		static void write_array_item(njson_write& ajson, const char* akey, std::vector<int32_t>& avec)
+		static void write_array_item(njwrite& ajson, const char* akey, std::vector<int32_t>& avec)
 		{
 			cJSON* larray = cJSON_CreateIntArray(avec.data(), (int32_t)avec.size());
 			json_format<cJSON*>::write(ajson, akey, larray);
 		}
 
-		static void write_array_item(njson_write& ajson, const char* akey, std::vector<const char*>& avec)
+		static void write_array_item(njwrite& ajson, const char* akey, std::vector<const char*>& avec)
 		{
 			cJSON* larray = cJSON_CreateStringArray(avec.data(), (int32_t)avec.size());
 			json_format<cJSON*>::write(ajson, akey, larray);
 		}
 
-		static void write_array(njson_write& ajson, const char* akey, const std::function<int32_t* ()>& afun)
+		static void write_array(njwrite& ajson, const char* akey, const std::function<int32_t* ()>& afun)
 		{
 			std::vector<int32_t> lvec;
 			for (auto ltempitor = afun(); ltempitor != nullptr; ltempitor = afun())
@@ -364,7 +364,7 @@ namespace ngl
 			write_array_item(ajson, akey, lvec);
 		}
 
-		static void write_array(njson_write& ajson, const char* akey, const std::function<std::string* ()>& afun)
+		static void write_array(njwrite& ajson, const char* akey, const std::function<std::string* ()>& afun)
 		{
 			std::vector<const char*> lvec;
 			for (auto ltempitor = afun(); ltempitor != nullptr; ltempitor = afun())
@@ -374,7 +374,7 @@ namespace ngl
 			write_array_item(ajson, akey, lvec);
 		}
 
-		static void write_array(njson_write& ajson, const char* akey, const std::function<int8_t* ()>& afun)
+		static void write_array(njwrite& ajson, const char* akey, const std::function<int8_t* ()>& afun)
 		{
 			std::vector<int32_t> lvec;
 			for (auto ltempitor = afun(); ltempitor != nullptr; ltempitor = afun())
@@ -384,7 +384,7 @@ namespace ngl
 			write_array_item(ajson, akey, lvec);
 		}
 
-		static void write_array(njson_write& ajson, const char* akey, const std::function<int16_t* ()>& afun)
+		static void write_array(njwrite& ajson, const char* akey, const std::function<int16_t* ()>& afun)
 		{
 			std::vector<int32_t> lvec;
 			for (auto ltempitor = afun(); ltempitor != nullptr; ltempitor = afun())
@@ -394,7 +394,7 @@ namespace ngl
 			write_array_item(ajson, akey, lvec);
 		}
 
-		static void write_array(njson_write& ajson, const char* akey, const std::function<int64_t* ()>& afun)
+		static void write_array(njwrite& ajson, const char* akey, const std::function<int64_t* ()>& afun)
 		{
 			std::vector<std::string> lvec1;
 			std::vector<const char*> lvec2;
@@ -406,7 +406,7 @@ namespace ngl
 			write_array_item(ajson, akey, lvec2);
 		}
 
-		static void write_array(njson_write& ajson, const char* akey, const std::function<uint8_t* ()>& afun)
+		static void write_array(njwrite& ajson, const char* akey, const std::function<uint8_t* ()>& afun)
 		{
 			std::vector<int32_t> lvec;
 			for (auto ltempitor = afun(); ltempitor != nullptr; ltempitor = afun())
@@ -416,7 +416,7 @@ namespace ngl
 			write_array_item(ajson, akey, lvec);
 		}
 
-		static void write_array(njson_write& ajson, const char* akey, const std::function<uint16_t* ()>& afun)
+		static void write_array(njwrite& ajson, const char* akey, const std::function<uint16_t* ()>& afun)
 		{
 			std::vector<int32_t> lvec;
 			for (auto ltempitor = afun(); ltempitor != nullptr; ltempitor = afun())
@@ -426,7 +426,7 @@ namespace ngl
 			write_array_item(ajson, akey, lvec);
 		}
 
-		static void write_array(njson_write& ajson, const char* akey, const std::function<uint32_t* ()>& afun)
+		static void write_array(njwrite& ajson, const char* akey, const std::function<uint32_t* ()>& afun)
 		{
 			std::vector<int32_t> lvec;
 			for (auto ltempitor = afun(); ltempitor != nullptr; ltempitor = afun())
@@ -436,7 +436,7 @@ namespace ngl
 			write_array_item(ajson, akey, lvec);
 		}
 
-		static void write_array(njson_write& ajson, const char* akey, const std::function<uint64_t* ()>& afun)
+		static void write_array(njwrite& ajson, const char* akey, const std::function<uint64_t* ()>& afun)
 		{
 			std::vector<std::string> lvec1;
 			std::vector<const char*> lvec2;
@@ -452,17 +452,17 @@ namespace ngl
 	template <>
 	struct json_format<char*>
 	{
-		static bool read(njson_read& ajson, const char* akey, const char*& adata)
+		static bool read(njread& ajson, const char* akey, const char*& adata)
 		{
 			return tools_json::read_basic_type(ajson, akey, adata);
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(const char*&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(const char*&)>& afun)
 		{
 			return tools_json::read_basic_array(ajson, akey, afun);
 		}
 
-		static void write(njson_write& ajson, const char* akey, const char* adata)
+		static void write(njwrite& ajson, const char* akey, const char* adata)
 		{
 			cJSON_AddItemToObject(ajson.json(), akey, cJSON_CreateString(adata));
 		}
@@ -471,17 +471,17 @@ namespace ngl
 	template <>
 	struct json_format<std::string>
 	{
-		static bool read(njson_read& ajson, const char* akey, std::string& adata)
+		static bool read(njread& ajson, const char* akey, std::string& adata)
 		{
 			return tools_json::read_basic_type(ajson, akey, adata);
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(std::string&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(std::string&)>& afun)
 		{
 			return tools_json::read_basic_array(ajson, akey, afun);
 		}
 
-		static void write(njson_write& ajson, const char* akey, std::string& adata)
+		static void write(njwrite& ajson, const char* akey, std::string& adata)
 		{
 			json_format<char*>::write(ajson, akey, adata.c_str());
 		}
@@ -490,17 +490,17 @@ namespace ngl
 	template <>
 	struct json_format<int8_t>
 	{
-		static bool read(njson_read& ajson, const char* akey, int8_t& adata)
+		static bool read(njread& ajson, const char* akey, int8_t& adata)
 		{
 			return tools_json::read_basic_type(ajson, akey, adata);
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(int8_t&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(int8_t&)>& afun)
 		{
 			return tools_json::read_basic_array(ajson, akey, afun);
 		}
 
-		static void write(njson_write& ajson, const char* akey, const int8_t adata)
+		static void write(njwrite& ajson, const char* akey, const int8_t adata)
 		{
 			cJSON_AddNumberToObject(ajson.json(), akey, adata);
 		}
@@ -509,17 +509,17 @@ namespace ngl
 	template <>
 	struct json_format<int16_t>
 	{
-		static bool read(njson_read& ajson, const char* akey, int16_t& adata)
+		static bool read(njread& ajson, const char* akey, int16_t& adata)
 		{
 			return tools_json::read_basic_type(ajson, akey, adata);
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(int16_t&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(int16_t&)>& afun)
 		{
 			return tools_json::read_basic_array(ajson, akey, afun);
 		}
 
-		static void write(njson_write& ajson, const char* akey, const int16_t adata)
+		static void write(njwrite& ajson, const char* akey, const int16_t adata)
 		{
 			cJSON_AddNumberToObject(ajson.json(), akey, adata);
 		}
@@ -528,17 +528,17 @@ namespace ngl
 	template <>
 	struct json_format<int32_t>
 	{
-		static bool read(njson_read& ajson, const char* akey, int32_t& adata)
+		static bool read(njread& ajson, const char* akey, int32_t& adata)
 		{
 			return tools_json::read_basic_type(ajson, akey, adata);
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(int32_t&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(int32_t&)>& afun)
 		{
 			return tools_json::read_basic_array(ajson, akey, afun);
 		}
 
-		static void write(njson_write& ajson, const char* akey, const int32_t adata)
+		static void write(njwrite& ajson, const char* akey, const int32_t adata)
 		{
 			cJSON_AddNumberToObject(ajson.json(), akey, adata);
 		}
@@ -547,17 +547,17 @@ namespace ngl
 	template <>
 	struct json_format<int64_t>
 	{
-		static bool read(njson_read& ajson, const char* akey, int64_t& adata)
+		static bool read(njread& ajson, const char* akey, int64_t& adata)
 		{
 			return tools_json::read_basic_type(ajson, akey, adata);
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(int64_t&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(int64_t&)>& afun)
 		{
 			return tools_json::read_basic_array(ajson, akey, afun);
 		}
 
-		static void write(njson_write& ajson, const char* akey, const int64_t adata)
+		static void write(njwrite& ajson, const char* akey, const int64_t adata)
 		{
 			std::string lvalue = tools::lexical_cast<std::string>(adata);
 			json_format<std::string>::write(ajson, akey, lvalue);
@@ -567,17 +567,17 @@ namespace ngl
 	template <>
 	struct json_format<uint8_t>
 	{
-		static bool read(njson_read& ajson, const char* akey, uint8_t& adata)
+		static bool read(njread& ajson, const char* akey, uint8_t& adata)
 		{
 			return tools_json::read_basic_type(ajson, akey, adata);
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(uint8_t&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(uint8_t&)>& afun)
 		{
 			return tools_json::read_basic_array(ajson, akey, afun);
 		}
 
-		static void write(njson_write& ajson, const char* akey, const uint8_t adata)
+		static void write(njwrite& ajson, const char* akey, const uint8_t adata)
 		{
 			cJSON_AddNumberToObject(ajson.json(), akey, adata);
 		}
@@ -586,17 +586,17 @@ namespace ngl
 	template <>
 	struct json_format<uint16_t>
 	{
-		static bool read(njson_read& ajson, const char* akey, uint16_t& adata)
+		static bool read(njread& ajson, const char* akey, uint16_t& adata)
 		{
 			return tools_json::read_basic_type(ajson, akey, adata);
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(uint16_t&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(uint16_t&)>& afun)
 		{
 			return tools_json::read_basic_array(ajson, akey, afun);
 		}
 
-		static void write(njson_write& ajson, const char* akey, const uint16_t adata)
+		static void write(njwrite& ajson, const char* akey, const uint16_t adata)
 		{
 			cJSON_AddNumberToObject(ajson.json(), akey, adata);
 		}
@@ -605,17 +605,17 @@ namespace ngl
 	template <>
 	struct json_format<uint32_t>
 	{
-		static bool read(njson_read& ajson, const char* akey, uint32_t& adata)
+		static bool read(njread& ajson, const char* akey, uint32_t& adata)
 		{
 			return tools_json::read_basic_type(ajson, akey, adata);
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(uint32_t&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(uint32_t&)>& afun)
 		{
 			return tools_json::read_basic_array(ajson, akey, afun);
 		}
 
-		static void write(njson_write& ajson, const char* akey, const uint32_t adata)
+		static void write(njwrite& ajson, const char* akey, const uint32_t adata)
 		{
 			cJSON_AddNumberToObject(ajson.json(), akey, adata);
 		}
@@ -624,17 +624,17 @@ namespace ngl
 	template <>
 	struct json_format<uint64_t>
 	{
-		static bool read(njson_read& ajson, const char* akey, uint64_t& adata)
+		static bool read(njread& ajson, const char* akey, uint64_t& adata)
 		{
 			return tools_json::read_basic_type(ajson, akey, adata);
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(uint64_t&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(uint64_t&)>& afun)
 		{
 			return tools_json::read_basic_array(ajson, akey, afun);
 		}
 
-		static void write(njson_write& ajson, const char* akey, const uint64_t adata)
+		static void write(njwrite& ajson, const char* akey, const uint64_t adata)
 		{
 			std::string lvalue = tools::lexical_cast<std::string>(adata);
 			json_format<std::string>::write(ajson, akey, lvalue);
@@ -644,17 +644,17 @@ namespace ngl
 	template <>
 	struct json_format<float>
 	{
-		static bool read(njson_read& ajson, const char* akey, float& adata)
+		static bool read(njread& ajson, const char* akey, float& adata)
 		{
 			return tools_json::read_basic_type(ajson, akey, adata);
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(float&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(float&)>& afun)
 		{
 			return tools_json::read_basic_array(ajson, akey, afun);
 		}
 
-		static void write(njson_write& ajson, const char* akey, const float adata)
+		static void write(njwrite& ajson, const char* akey, const float adata)
 		{
 			cJSON_AddNumberToObject(ajson.json(), akey, adata);
 		}
@@ -663,17 +663,17 @@ namespace ngl
 	template <>
 	struct json_format<double>
 	{
-		static bool read(njson_read& ajson, const char* akey, double& adata)
+		static bool read(njread& ajson, const char* akey, double& adata)
 		{
 			return tools_json::read_basic_type(ajson, akey, adata);
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(double&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(double&)>& afun)
 		{
 			return tools_json::read_basic_array(ajson, akey, afun);
 		}
 
-		static void write(njson_write& ajson, const char* akey, const double adata)
+		static void write(njwrite& ajson, const char* akey, const double adata)
 		{
 			cJSON_AddNumberToObject(ajson.json(), akey, adata);
 		}
@@ -682,17 +682,17 @@ namespace ngl
 	template <>
 	struct json_format<bool>
 	{
-		static bool read(njson_read& ajson, const char* akey, bool& adata)
+		static bool read(njread& ajson, const char* akey, bool& adata)
 		{
 			return tools_json::read_basic_type(ajson, akey, adata);
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(bool&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(bool&)>& afun)
 		{
 			return tools_json::read_basic_array(ajson, akey, afun);
 		}
 
-		static void write(njson_write& ajson, const char* akey, const bool adata)
+		static void write(njwrite& ajson, const char* akey, const bool adata)
 		{
 			cJSON_AddItemToObject(ajson.json(), akey, adata ? cJSON_CreateTrue() : cJSON_CreateFalse());
 		}
@@ -701,7 +701,7 @@ namespace ngl
 	template <typename T>
 	struct json_format<std::vector<T>>
 	{
-		static bool read(njson_read& ajson, const char* akey, std::vector<T>& adata)
+		static bool read(njread& ajson, const char* akey, std::vector<T>& adata)
 		{
 			return json_format<T>::read_array(ajson, akey, [&adata](T& aval)
 				{
@@ -709,7 +709,7 @@ namespace ngl
 				});
 		}
 
-		static void write(njson_write& ajson, const char* akey, std::vector<T>& adata)
+		static void write(njwrite& ajson, const char* akey, std::vector<T>& adata)
 		{
 			int32_t lindex = 0;
 			std::function<T* ()> lfun = [&lindex, &adata]()->T*
@@ -727,7 +727,7 @@ namespace ngl
 	template <typename T>
 	struct json_format<std::set<T>>
 	{
-		static bool read(njson_read& ajson, const char* akey, std::set<T>& adata)
+		static bool read(njread& ajson, const char* akey, std::set<T>& adata)
 		{
 			return json_format<T>::read_array(ajson, akey, [&adata](T& aval)
 				{
@@ -735,12 +735,12 @@ namespace ngl
 				});
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(std::vector<T>&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(std::vector<T>&)>& afun)
 		{
 			return false;
 		}
 
-		static void write(njson_write& ajson, const char* akey, std::set<T>& adata)
+		static void write(njwrite& ajson, const char* akey, std::set<T>& adata)
 		{
 			auto itor = adata.begin();
 			tools_json::write_array(ajson, akey, [&itor, &adata]()->T*
@@ -759,14 +759,14 @@ namespace ngl
 	template <typename TKEY, typename TVAL>
 	struct json_format<std::map<TKEY, TVAL>>
 	{
-		static bool read(njson_read& ajson, const char* akey, std::map<TKEY, TVAL>& adata)
+		static bool read(njread& ajson, const char* akey, std::map<TKEY, TVAL>& adata)
 		{
 			cJSON* lcjson = nullptr;
 			if (!json_format<cJSON*>::read(ajson, akey, lcjson))
 			{
 				return false;
 			}
-			njson_read ljson;
+			njread ljson;
 			ljson.set(lcjson);
 			for (cJSON* child = lcjson->child; child != nullptr; child = child->next)
 			{
@@ -779,14 +779,14 @@ namespace ngl
 			return true;
 		}
 
-		static bool read_array(njson_read& ajson, const char* akey, const std::function<void(std::map<TKEY, TVAL>&)>& afun)
+		static bool read_array(njread& ajson, const char* akey, const std::function<void(std::map<TKEY, TVAL>&)>& afun)
 		{
 			return false;
 		}
 
-		static void write(njson_write& ajson, const char* akey, std::map<TKEY, TVAL>& adata)
+		static void write(njwrite& ajson, const char* akey, std::map<TKEY, TVAL>& adata)
 		{
-			njson_write ltemp;
+			njwrite ltemp;
 			for (std::pair<const TKEY, TVAL>& item : adata)
 			{
 				json_format<TVAL>::write(ltemp, tools::lexical_cast<std::string>(item.first).c_str(), item.second);
@@ -796,7 +796,7 @@ namespace ngl
 	};
 
 	template <typename T>
-	bool json_format<T>::read(njson_read& ajson, const char* akey, T& adata)
+	bool json_format<T>::read(njread& ajson, const char* akey, T& adata)
 	{
 		if constexpr (std::is_enum<T>::value)
 		{
@@ -815,7 +815,7 @@ namespace ngl
 			{
 				return false;
 			}
-			njson_read ltemp;
+			njread ltemp;
 			if (!ltemp.set(ljson))
 			{
 				return false;
@@ -825,7 +825,7 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool json_format<T>::read_array(njson_read& ajson, const char* akey, const std::function<void(T&)>& afun)
+	bool json_format<T>::read_array(njread& ajson, const char* akey, const std::function<void(T&)>& afun)
 	{
 		cJSON* ltemp = nullptr;
 		if (!json_format<cJSON*>::read(ajson, akey, ltemp))
@@ -836,7 +836,7 @@ namespace ngl
 		for (int i = 0; i < lsize; ++i)
 		{
 			cJSON* ret = cJSON_GetArrayItem(ltemp, i);
-			njson_read ltemp;
+			njread ltemp;
 			if (!ltemp.set(ret))
 			{
 				return false;
@@ -851,7 +851,7 @@ namespace ngl
 	}
 
 	template <typename T>
-	void json_format<T>::write(njson_write& ajson, const char* akey, T& adata)
+	void json_format<T>::write(njwrite& ajson, const char* akey, T& adata)
 	{
 		if constexpr (std::is_enum<T>::value)
 		{
@@ -869,22 +869,21 @@ namespace ngl
 		}
 	}
 
-
 	struct njson
 	{
-		static bool read(njson_read& ajson)
+		static bool read(njread& ajson)
 		{
 			return true;
 		}
 
 		template <typename T>
-		static bool read(njson_read& ajson, const char* akey, T& adata)
+		static bool read(njread& ajson, const char* akey, T& adata)
 		{
 			return json_format<T>::read(ajson, akey, adata);
 		}
 
 		template <typename T, typename ...TARGS>
-		static bool read(njson_read& ajson, const char* akey, T& adata, TARGS&... aargs)
+		static bool read(njread& ajson, const char* akey, T& adata, TARGS&... aargs)
 		{
 			if (!read(ajson, akey, adata))
 			{
@@ -893,29 +892,28 @@ namespace ngl
 			return read(ajson, aargs...);
 		}
 
-		static void write(njson_write& ajson)
+		static void write(njwrite& ajson)
 		{
 		}
 
 		template <typename T>
-		static void write(njson_write& ajson, const char* akey, T& adata)
+		static void write(njwrite& ajson, const char* akey, T& adata)
 		{
 			json_format<T>::write(ajson, akey, adata);
 		}
 
-		static void write(njson_write& ajson, const char* akey, njson_write& adata)
+		static void write(njwrite& ajson, const char* akey, njwrite& adata)
 		{
 			json_format<cJSON*>::write(ajson, akey, adata.nofree());
 		}
 
 		template <typename T, typename ...TARGS>
-		static void write(njson_write& ajson, const char* akey, T& adata, TARGS&... aargs)
+		static void write(njwrite& ajson, const char* akey, T& adata, TARGS&... aargs)
 		{
 			write(ajson, akey, adata);
 			write(ajson, aargs...);
 		}
 	};
-
 }//namespace ngl
 
 namespace ngl
@@ -923,14 +921,14 @@ namespace ngl
 	template <typename T>
 	bool tools::json2custom(const std::string& json, T& adata)
 	{
-		njson_read ljread(json);
+		njread ljread(json);
 		return adata.json_read(ljread);
 	}
 
 	template <typename T>
 	bool tools::custom2json(T& adata, std::string& json)
 	{
-		njson_write ljwrite;
+		njwrite ljwrite;
 		njson::write(ljwrite, tools::type_name<T>().c_str(), adata);
 
 		json = ljwrite.get();

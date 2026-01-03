@@ -16,7 +16,7 @@ namespace ngl
 {
 	bool actor_mail::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::njson_read lojson(adata.get_data()->data()->m_json.c_str());
+		ngl::njread lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
 		if (!njson::read(lojson, "operator", loperator))
 		{
@@ -24,7 +24,7 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::add("get_mails") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("get_mails") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<std::string> pro(id, "get_mails");
 					int64_t roleid = 0;
@@ -38,7 +38,7 @@ namespace ngl
 					pro.m_istoutf8 = false;
 				};
 
-			handle_cmd::add("add_mail") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("add_mail") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<bool> pro(id, "add_mail", false);
 					struct gm_mailitem
@@ -71,7 +71,7 @@ namespace ngl
 					pro.m_data = true;
 				};
 
-			handle_cmd::add("del_mail") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("del_mail") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<bool> pro(id, "del_mail", false);
 					struct gm_deletemail

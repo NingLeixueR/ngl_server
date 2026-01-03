@@ -53,7 +53,7 @@ namespace ngl
 		{
 			Try
 			{
-				ngl::njson_write lwrite;
+				ngl::njwrite lwrite;
 				std::string lservername = tools::server_name();
 				njson::write(lwrite
 					, "operator", m_operator

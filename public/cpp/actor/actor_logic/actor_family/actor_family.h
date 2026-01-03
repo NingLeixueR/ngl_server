@@ -74,7 +74,7 @@ namespace ngl
 		}
 		
 		// # GM²Ù×÷
-		using handle_cmd = cmd<actor_mail, std::string, int, ngl::njson_read&>;
+		using handle_cmd = cmd<actor_mail, std::string, int, ngl::njread&>;
 
 		bool timer_handle(const message<np_timerparm>& adata);
 

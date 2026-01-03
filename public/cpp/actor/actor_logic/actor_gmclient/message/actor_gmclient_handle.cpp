@@ -16,7 +16,7 @@ namespace ngl
 {
 	bool actor_gmclient::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::njson_read lojson(adata.get_data()->data()->m_json.c_str());
+		ngl::njread lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
 		if (!njson::read(lojson, "operator", loperator))
 		{
@@ -24,19 +24,19 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::add("all_protocol") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("all_protocol") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<protocols> lpro(id, "all_protocol");
 					allprotocol(lpro.m_data);
 				};
 
-			handle_cmd::add("server_stat") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("server_stat") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<msg_actor_stat> lpro(id, "server_stat");
 					actor_manage::instance().get_actor_stat(lpro.m_data);
 				};
 
-			handle_cmd::add("set_time") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("set_time") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<std::string> lpro(id, "set_time");
 					struct operator_set_time
@@ -52,7 +52,7 @@ namespace ngl
 					}
 				};
 
-			handle_cmd::add("get_time") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("get_time") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<std::string> lpro(id, "get_time", localtime::time2str("%Y-%m-%d %H:%M:%S"));
 				};

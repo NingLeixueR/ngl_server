@@ -252,7 +252,7 @@ namespace ngl
 			std::vector<noticeitem> m_notices;
 			dprotocol(notices, m_notices)
 		};
-		njson_write ljson;
+		njwrite ljson;
 		notices lnotices;
 		char lbuffstart[1024] = { 0 };
 		char lbufffinish[1024] = { 0 };

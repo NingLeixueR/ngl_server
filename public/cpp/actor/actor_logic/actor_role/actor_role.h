@@ -248,7 +248,7 @@ namespace ngl
 		//# CMD协议
 		using handle_cmd = cmd<actor_role, std::string, const std::shared_ptr<pack>&, actor_role*, const char*>;
 		//# GM协议
-		using handle_gm = cmd<actor_role, std::string, int, ngl::njson_read&>;
+		using handle_gm = cmd<actor_role, std::string, int, ngl::njread&>;
 
 		//# 定时器
 		bool timer_handle(const message<np_timerparm>& adata);

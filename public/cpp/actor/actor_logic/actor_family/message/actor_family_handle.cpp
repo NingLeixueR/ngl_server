@@ -16,7 +16,7 @@ namespace ngl
 {
 	bool actor_family::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::njson_read lojson(adata.get_data()->data()->m_json.c_str());
+		ngl::njread lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
 		if (!njson::read(lojson, "operator", loperator))
 		{
@@ -24,7 +24,7 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::add("change_familyname") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("change_familyname") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<bool> pro(id, "change_familyname", false);
 					struct gm_changename
@@ -42,7 +42,7 @@ namespace ngl
 					m_family.change_familyname(-1, recv.m_familid, recv.m_familname);
 				};
 
-			handle_cmd::add("get_family") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("get_family") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<std::string> pro(id, "get_family");
 					int64_t familid = 0;

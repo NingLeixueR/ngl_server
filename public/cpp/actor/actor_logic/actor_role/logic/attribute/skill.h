@@ -97,8 +97,5 @@ namespace ngl
 	
 		// # ÊÍ·Å¼¼ÄÜ
 		virtual bool release();
-
-
 	};
-
 }//namespace ngl

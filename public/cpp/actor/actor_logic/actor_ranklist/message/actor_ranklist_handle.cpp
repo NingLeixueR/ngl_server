@@ -17,7 +17,7 @@ namespace ngl
 {
 	bool actor_ranklist::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::njson_read lojson(adata.get_data()->data()->m_json.c_str());
+		ngl::njread lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
 		if (!njson::read(lojson, "operator", loperator))
 		{
@@ -25,7 +25,7 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::add("ranklist") = [this](int id, ngl::njson_read& aos)
+			handle_cmd::add("ranklist") = [this](int id, ngl::njread& aos)
 				{
 					gcmd<std::string> pro(id, "ranklist");
 					struct json_rank
