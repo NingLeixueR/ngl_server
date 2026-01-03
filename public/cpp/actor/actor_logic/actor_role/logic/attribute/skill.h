@@ -30,13 +30,15 @@ namespace ngl
 		{
 			std::map<ngl::EnumAttribute, int32_t> m_data;
 
-			xmlserialize(consume, false, m_data)
+			xmlserialize(consume_attr, false, m_data)
 		};
 		std::map<int32_t, consume_attr> m_consumeattr;  // key:lv 释放技能消耗属性值
 
 		struct consume_item
 		{
 			std::map<int32_t, int32_t> m_data;	// key:itemid value:itemcount
+
+			xmlserialize(consume_item, false, m_data)
 		};
 		std::map<int32_t, consume_item> m_consumeitem;  // key:lv 释放技能消耗物品道具
 
