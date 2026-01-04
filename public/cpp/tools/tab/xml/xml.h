@@ -44,7 +44,7 @@ namespace ngl
 			return ltemp;
 		}
 
-		xmlserialize(xmlnode, false, m_db, m_crossdb, m_public, m_mail, m_telnet)
+		dxmlserialize(xmlnode, false, m_db, m_crossdb, m_public, m_mail, m_telnet)
 
 		void init();
 
