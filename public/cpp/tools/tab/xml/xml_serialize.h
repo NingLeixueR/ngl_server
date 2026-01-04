@@ -718,7 +718,7 @@ public:
 	}
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
-#define def_xml(ATTR, ...)												\
+#define def_xmlspecial(ATTR, ...)										\
 	inline bool xml_pop(tinyxml2::XMLElement* aele)						\
 	{																	\
 		help_xml<ATTR> ltemp(parms(#__VA_ARGS__));						\
@@ -747,7 +747,31 @@ public:
 	}
 #endif
 
-#define xmlserialize(XMLNAME, ATTR, ...)	\
+
+#if defined(WIN32)||defined(WINCE)||defined(WIN64)
+#define def_xml(ATTR, ...)												\
+	inline bool xml_pop(tinyxml2::XMLElement* aele)						\
+	{																	\
+		return ngl::xserialize<ATTR>::pop(aele, ##__VA_ARGS__);			\
+	}																	\
+	inline bool xml_push(tinyxml2::XMLElement* aele)const				\
+	{																	\
+		return ngl::xserialize<ATTR>::push(aele, ##__VA_ARGS__);		\
+	}
+#else
+#define def_xml(ATTR, ...)																	\
+	inline bool xml_pop(tinyxml2::XMLElement* aele)											\
+	{																						\
+		return ngl::xserialize<ATTR>::pop(aele __VA_OPT__(,) ##__VA_ARGS__);				\
+	}																						\
+	inline bool xml_push(tinyxml2::XMLElement* aele)const									\
+	{																						\
+		return ngl::xserialize<ATTR>::push(aele __VA_OPT__(,) ##__VA_ARGS__);				\
+	}
+#endif
+
+
+#define dxmlserialize(XMLNAME, ATTR, ...)	\
 	def_parmname_(true)						\
 	def_xmlfunction(XMLNAME)				\
-	def_xml(ATTR, __VA_ARGS__)
+	def_xmlspecial(ATTR, __VA_ARGS__)
