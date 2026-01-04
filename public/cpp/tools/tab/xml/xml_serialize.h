@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <ranges>
 #include <vector>
+#include <string>
 #include <list>
 #include <set>
 #include <map>
@@ -631,7 +632,7 @@ template <bool ATTR>
 class help_xml
 {
 	const std::vector<const char*>& m_parts;
-	void* m_xml = nullptr;
+	tinyxml2::XMLElement* m_xml = nullptr;
 
 	template <typename T>
 	bool fun_pop(const char* astr, T& adata)
@@ -645,14 +646,10 @@ class help_xml
 		return ngl::xserialize<ATTR>::push((tinyxml2::XMLElement*)m_xml, astr, adata);
 	}
 public:
-	help_xml(const std::vector<const char*>& aparts) :
+	help_xml(const std::vector<const char*>& aparts, tinyxml2::XMLElement* axml) :
 		m_parts(aparts)
+		, m_xml(axml)
 	{}
-
-	void set_xml(tinyxml2::XMLElement* axml)
-	{
-		m_xml = axml;
-	}
 
 	bool fun(int32_t apos)
 	{
@@ -721,28 +718,24 @@ public:
 #define def_xmlspecial(ATTR, ...)										\
 	inline bool xml_pop(tinyxml2::XMLElement* aele)						\
 	{																	\
-		help_xml<ATTR> ltemp(parms(#__VA_ARGS__));						\
-		ltemp.set_xml(aele);											\
+		help_xml<ATTR> ltemp(parms(#__VA_ARGS__), aele);				\
 		return ltemp.pop(0, __VA_ARGS__);								\
 	}																	\
 	inline bool xml_push(tinyxml2::XMLElement* aele)const				\
 	{																	\
-		help_xml<ATTR> ltemp(parms(#__VA_ARGS__));						\
-		ltemp.set_xml(aele);											\
+		help_xml<ATTR> ltemp(parms(#__VA_ARGS__), aele);				\
 		return ltemp.push(0, __VA_ARGS__);								\
 	}
 #else
 #define def_xml(ATTR, ...)												\
 	inline bool xml_pop(tinyxml2::XMLElement* aele)						\
 	{																	\
-		help_xml<ATTR> ltemp(parms(#__VA_ARGS__));						\
-		ltemp.set_xml(aele);											\
+		help_xml<ATTR> ltemp(parms(#__VA_ARGS__), aele);				\
 		return ltemp.pop(0 __VA_OPT__(,) ##__VA_ARGS__);				\
 	}																	\
 	inline bool xml_push(tinyxml2::XMLElement* aele)const				\
 	{																	\
-		help_xml<ATTR> ltemp(parms(#__VA_ARGS__));						\
-		ltemp.set_xml(aele);											\
+		help_xml<ATTR> ltemp(parms(#__VA_ARGS__), aele);				\
 		return ltemp.push(0 __VA_OPT__(,) ##__VA_ARGS__);				\
 	}
 #endif

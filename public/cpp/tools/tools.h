@@ -373,7 +373,7 @@ namespace ngl
 		static bool json2custom(const std::string& json, T& adata);
 
 		template <typename T>
-		static bool custom2json(T& adata, std::string& json);
+		static bool custom2json(const T& adata, std::string& json);
 
 		template <typename TKEY, typename TVAL>
 		static void copy(const std::map<TKEY, TVAL>& asource, google::protobuf::Map<TKEY, TVAL>& atarget)
@@ -783,6 +783,12 @@ namespace ngl
 			return lname;
 		}
 
+		template <typename T>
+		static std::string& type_name(const T*)
+		{
+			return type_name<T>();
+		}
+
 		static std::string md5(const std::string& text);
 
 		static std::string sh1(std::string_view text);
@@ -830,26 +836,9 @@ namespace ngl
 		static std::vector<const char*> split_str(char* apbuff, int32_t abuffcount);
 
 		// 检查cjson类型
-		static bool bit_or(int32_t atype, int32_t acjsontype)
+		static bool bit(int32_t atype, int32_t acjsontype)
 		{
 			return (atype & acjsontype) != 0;
-		}
-
-		template <typename ...TARGS>
-		static bool bit_or(int32_t atype, int32_t acjsontype, TARGS... args)
-		{
-			return bit_or(atype, acjsontype) || bit_or(atype, args...);
-		}
-
-		static bool bit_and(int32_t atype, int32_t acjsontype)
-		{
-			return (atype & acjsontype) == 0;
-		}
-
-		template <typename ...TARGS>
-		static bool bit_and(int32_t atype, int32_t acjsontype, TARGS... args)
-		{
-			return bit_and(atype, acjsontype) && bit_and(atype, args...);
 		}
 
 		//删除重复多余的ach

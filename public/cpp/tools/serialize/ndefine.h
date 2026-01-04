@@ -107,148 +107,149 @@ enum
 class help_json
 {
 	const std::vector<const char*>& m_parts;
-	void* m_json = nullptr;
+	cJSON* m_json = nullptr;
 
 	template <typename T>
-	bool fun_read(const char* astr, T& adata)
+	bool fun_pop(const char* astr, T& adata)
 	{
-		return ngl::njson::read(*(ngl::njread*)m_json, astr, adata);
+		return ngl::njson::pop(m_json, astr, adata);
 	}
 
 	template <typename T>
-	bool fun_write(const char* astr, T& adata)
+	bool fun_push(const char* astr, T& adata)
 	{
-		ngl::njson::write(*(ngl::njwrite*)m_json, astr, adata);
+		ngl::njson::push(m_json, astr, adata);
 		return true;
 	}
 public:
-	help_json(const std::vector<const char*>& aparts) :
+	help_json(const std::vector<const char*>& aparts, cJSON* ajson) :
 		m_parts(aparts)
+		, m_json(ajson)
 	{}
 
-	void set_json(ngl::njwrite& awjson)
-	{
-		m_json = &awjson;
-	}
-
-	void set_json(ngl::njread& arjson)
-	{
-		m_json = &arjson;
-	}
-
-	bool read(int32_t apos)
+	bool pop(int32_t apos)
 	{
 		return true;
 	}
 
 	template <typename T>
-	bool read(int32_t apos, T& adata)
+	bool pop(int32_t apos, T& adata)
 	{
-		return fun_read(m_parts[apos], adata);
+		return fun_pop(m_parts[apos], adata);
 	}
 
 	template <typename T, typename ...ARG>
-	bool read(int32_t apos, T& adata, ARG&... args)
+	bool pop(int32_t apos, T& adata, ARG&... args)
 	{
 		if constexpr (sizeof...(ARG) >= 1)
 		{
-			return read(apos, adata) && read(++apos, args...);
+			return pop(apos, adata) && pop(++apos, args...);
 		}
 		else
 		{
-			return read(apos, adata);
+			return pop(apos, adata);
 		}
 	}
 
-	bool write(int32_t apos)
+	bool push(int32_t apos)
 	{
 		return true;
 	}
 
 	template <typename T>
-	bool write(int32_t apos, T& adata)
+	bool push(int32_t apos, const T& adata)
 	{
-		return fun_write(m_parts[apos], adata);
+		return fun_push(m_parts[apos], adata);
 	}
 
 	template <typename T, typename ...ARG>
-	bool write(int32_t apos, T& adata, ARG&... args)
+	bool push(int32_t apos, T& adata, ARG&... args)
 	{
 		if constexpr (sizeof...(ARG) >= 1)
 		{
-			return write(apos, adata) && write(++apos, args...);
+			return push(apos, adata) && push(++apos, args...);
 		}
 		else
 		{
-			return write(apos, adata);
+			return push(apos, adata);
 		}
 	}
 };
 
-#define def_jsonfunction_read_parm(...)									\
-		inline bool json_read(ngl::njread& ijsn, const char* akey)		\
-		{																\
-			ngl::njread ltemp;											\
-			if (!ngl::njson::read(ijsn, akey, ltemp.json()))			\
-			{															\
-				return false;											\
-			}															\
-			return json_read(ltemp);									\
-		}																\
-		inline bool json_read(ngl::njread& ijsn) 						\
-		{																\
-			return ngl::njson::read(__VA_ARGS__);						\
-		}
 
-
-#define def_jsonfunction_write_parm(...)										\
-		inline void json_write(ngl::njwrite& ijsn, const char* akey)const		\
-		{																		\
-			ngl::njwrite ltemp;													\
-			json_write(ltemp);													\
-			ngl::njson::write(ijsn, akey, ltemp.nofree());						\
-		}																		\
-		inline void json_write(ngl::njwrite& ijsn)const							\
-		{																		\
-			ngl::njson::write(ijsn, __VA_ARGS__);								\
-		}
-
+#define def_jsonfunction_parm_function												\
+bool json_pop(const char* ajson, const char* akey)									\
+{																					\
+	ngl::ncjson ltemp(ajson);														\
+	if (akey != nullptr)															\
+	{																				\
+		cJSON* ret = cJSON_GetObjectItem(ltemp.json(), akey);						\
+		if (nullptr == ret)															\
+		{																			\
+			return false;															\
+		}																			\
+		return json_pop(ret);														\
+	}																				\
+	return json_pop(ltemp.json());													\
+}																					\
+void json_push(std::string& ajson, const char* akey) const							\
+{																					\
+	ngl::ncjson ltemp;																\
+	json_push(ltemp.json(), akey);													\
+	ajson = ltemp.nonformatstr();													\
+}
 
 // 特殊情况使用
-#define def_jsonfunction_parm(...)									\
-	def_jsonfunction_read_parm(__VA_ARGS__)							\
-	def_jsonfunction_write_parm(__VA_ARGS__)
+#define def_jsonfunction_parm(...)													\
+bool json_pop(cJSON* ajson)															\
+{																					\
+	return ngl::njson::pop(ajson, ##__VA_ARGS__);									\
+}																					\
+void json_push(cJSON* ajson, const char* akey) const								\
+{																					\
+	if (akey != nullptr)															\
+	{																				\
+		ngl::ncjson ltemp;															\
+		cJSON* ret = cJSON_GetObjectItem(ltemp.json(), akey);						\
+		if (nullptr == ret)															\
+		{																			\
+			return;																	\
+		}																			\
+		ngl::njson::push(ret, ##__VA_ARGS__);										\
+	}																				\
+	else																			\
+	{																				\
+		ngl::njson::push(ajson, ##__VA_ARGS__);										\
+	}																				\
+}																					\
+def_jsonfunction_parm_function														
 
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
-#define def_jsonfunction(...)											\
-	inline void json_write(ngl::njwrite& ijsn, const char* akey)		\
-	{																	\
-		ngl::njwrite ltemp;												\
-		json_write(ltemp);												\
-		ngl::njson::write(ijsn, akey, ltemp.nofree());					\
-	}																	\
-	inline void json_write(ngl::njwrite& ijsn)							\
-	{																	\
-		help_json ltemp(parms(#__VA_ARGS__));							\
-		ltemp.set_json(ijsn);											\
-		ltemp.write(0, __VA_ARGS__);									\
-	}																	\
-	inline bool json_read(ngl::njread& ijsn, const char* akey)			\
-	{																	\
-		ngl::njread ltemp;												\
-		if (!ngl::njson::read(ijsn, akey, ltemp.json()))				\
-		{																\
-			return false;												\
-		}																\
-		return json_read(ltemp);										\
-	}																	\
-	inline bool json_read(ngl::njread& ijsn) 							\
-	{																	\
-		help_json ltemp(parms(#__VA_ARGS__));							\
-		ltemp.set_json(ijsn);											\
-		return ltemp.read(0, __VA_ARGS__);								\
-	}
+#define def_jsonfunction(...)														\
+bool json_pop(cJSON* ajson)															\
+{																					\
+	help_json ltemp(parms(#__VA_ARGS__), ajson);									\
+	return ltemp.pop(0, ##__VA_ARGS__);												\
+}																					\
+void json_push(cJSON* ajson, const char* akey) const								\
+{																					\
+	if (akey != nullptr)															\
+	{																				\
+		ngl::ncjson ltemp;															\
+		cJSON* ret = cJSON_GetObjectItem(ltemp.json(), akey);						\
+		if (nullptr == ret)															\
+		{																			\
+			return;																	\
+		}																			\
+		ngl::njson::push(ret, ##__VA_ARGS__);										\
+	}																				\
+	else																			\
+	{																				\
+		ngl::njson::push(ajson, ##__VA_ARGS__);										\
+	}																				\
+}																					\
+def_jsonfunction_parm_function
 #else
 #define def_jsonfunction(...)											\
 inline void json_write(ngl::njson_write& ijsn, const char* akey)		\
