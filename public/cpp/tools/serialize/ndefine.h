@@ -320,3 +320,9 @@ inline void json_write(ngl::njson_write& ijsn, const char* akey)		\
 	def_jsonfunction(__VA_ARGS__)			\
 	def_protocol(NAME, __VA_ARGS__)			\
 	def_nlua_function(__VA_ARGS__)
+
+
+namespace ngl
+{
+	void test_json();
+}

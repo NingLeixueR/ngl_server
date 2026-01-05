@@ -771,6 +771,8 @@ std::string g_nodename = "node";
 
 int ngl_main(int argc, char** argv)
 {
+	ngl::test_json();
+
 	if (argc <= 3)
 	{
 		std::cout << "²ÎÊý´íÎó:EXE name areaid tab_servers::tcount" << std::endl;
