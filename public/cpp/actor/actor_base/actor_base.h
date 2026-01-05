@@ -494,10 +494,9 @@ namespace ngl
 		}
 		else
 		{
-			njwrite ljson;
-			njson::write(ljson, "message", *adata.get_data());
-			std::string lstr = ljson.get();
-			log_error()->print("{}", lstr);
+			ncjson ltemp;
+			njson::push(ltemp.json(), "message", *adata.get_data());
+			log_error()->print("{}", ltemp.str());
 		}
 	}
 

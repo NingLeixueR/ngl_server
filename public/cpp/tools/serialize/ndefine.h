@@ -196,7 +196,7 @@ void json_push(std::string& ajson, const char* akey) const							\
 {																					\
 	ngl::ncjson ltemp;																\
 	json_push(ltemp.json(), akey);													\
-	ajson = ltemp.nonformatstr();													\
+	ajson = ltemp.str();															\
 }
 
 // 特殊情况使用
@@ -210,12 +210,8 @@ void json_push(cJSON* ajson, const char* akey) const								\
 	if (akey != nullptr)															\
 	{																				\
 		ngl::ncjson ltemp;															\
-		cJSON* ret = cJSON_GetObjectItem(ltemp.json(), akey);						\
-		if (nullptr == ret)															\
-		{																			\
-			return;																	\
-		}																			\
-		ngl::njson::push(ret, ##__VA_ARGS__);										\
+		ngl::njson::push(ltemp.json(), ##__VA_ARGS__);								\
+		ngl::njson::push(ajson, akey, ltemp);										\
 	}																				\
 	else																			\
 	{																				\
@@ -236,17 +232,15 @@ void json_push(cJSON* ajson, const char* akey) const								\
 {																					\
 	if (akey != nullptr)															\
 	{																				\
-		ngl::ncjson ltemp;															\
-		cJSON* ret = cJSON_GetObjectItem(ltemp.json(), akey);						\
-		if (nullptr == ret)															\
-		{																			\
-			return;																	\
-		}																			\
-		ngl::njson::push(ret, ##__VA_ARGS__);										\
+		ngl::ncjson ltempjson;														\
+		help_json ltemp(parms(#__VA_ARGS__), ltempjson.json());						\
+		ltemp.push(0, ##__VA_ARGS__);												\
+		ngl::njson::push(ajson, akey, ltempjson);									\
 	}																				\
 	else																			\
 	{																				\
-		ngl::njson::push(ajson, ##__VA_ARGS__);										\
+		help_json ltemp(parms(#__VA_ARGS__), ajson);								\
+		ltemp.push(0, ##__VA_ARGS__);												\
 	}																				\
 }																					\
 def_jsonfunction_parm_function
@@ -267,7 +261,7 @@ inline void json_write(ngl::njson_write& ijsn, const char* akey)		\
 	inline bool json_read(ngl::njson_read& ijsn, const char* akey)		\
 	{																	\
 		ngl::njson_read ltemp;											\
-		if (!ngl::njson::read(ijsn, akey, ltemp.json()))				\
+		if (!ngl::njson::pop(ijsn, akey, ltemp.json()))				\
 		{																\
 			return false;												\
 		}																\

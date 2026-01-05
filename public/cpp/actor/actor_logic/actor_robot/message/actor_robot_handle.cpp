@@ -252,7 +252,7 @@ namespace ngl
 			std::vector<noticeitem> m_notices;
 			dprotocol(notices, m_notices)
 		};
-		njwrite ljson;
+		ncjson ljson;
 		notices lnotices;
 		char lbuffstart[1024] = { 0 };
 		char lbufffinish[1024] = { 0 };
@@ -270,14 +270,11 @@ namespace ngl
 				}
 				);
 		}
-		njson::write(ljson, tools::type_name<notices>().c_str(), lnotices);
-		std::string lstr = ljson.get();
+		njson::push(ljson.json(), tools::type_name<notices>().c_str(), lnotices);
+		std::string lstr = ljson.str();
 		std::string lstrasscii;
 		ngl::tools::to_asscii(lstr, lstrasscii);
-		log_error()->print(
-			"[{}:{}] {}",
-			area(), m_data.mbrief().mbase().mname(), lstrasscii
-		);
+		log_error()->print("[{}:{}] {}",area(), m_data.mbrief().mbase().mname(), lstrasscii);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata)

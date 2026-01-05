@@ -89,12 +89,12 @@ namespace ngl
 			{
 				apstruct->m_isconnect = true;
 				apstruct->m_pingtm = (int)localtime::gettime();
-				njread ltempjson(ajson.c_str());
+				ncjson ltempjson(ajson.c_str());
 
 				i64_actorid lactoridclient;
 				i64_actorid lactoridserver;
 				std::string lsession;
-				if (!njson::read(ltempjson, "actoridclient", lactoridclient, "actoridserver", lactoridserver, "session", lsession))
+				if (!njson::pop(ltempjson.json(), "actoridclient", lactoridclient, "actoridserver", lactoridserver, "session", lsession))
 				{
 					return;
 				}
@@ -468,11 +468,10 @@ namespace ngl
 	{
 		// #### 发起连接
 		ptr_se lpstruct = m_session.add(aconv, aendpoint, aactoridserver, aactoridclient);
-		njwrite ltempjson;
-		njson::write(ltempjson, "actoridserver", aactoridserver, "actoridclient", aactoridclient, "session", akcpsess);
+		ncjson ltempjson;
+		njson::push(ltempjson.json(), "actoridserver", aactoridserver, "actoridclient", aactoridclient, "session", akcpsess);
 		ltempjson.set_nonformatstr(true);
-		std::string lparm = ltempjson.get();
-		udp_cmd::sendcmd(this, lpstruct->m_session, udp_cmd::ecmd_connect, lparm);
+		udp_cmd::sendcmd(this, lpstruct->m_session, udp_cmd::ecmd_connect, ltempjson.str());
 		m_connectfun = afun;
 	}
 
