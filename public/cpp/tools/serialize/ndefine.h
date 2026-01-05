@@ -176,8 +176,7 @@ public:
 	}
 };
 
-
-#define def_jsonfunction_parm_function												\
+#define def_jsonfunction_function													\
 bool json_pop(const char* ajson, const char* akey)									\
 {																					\
 	ngl::ncjson ltemp(ajson);														\
@@ -200,7 +199,8 @@ void json_push(std::string& ajson, const char* akey) const							\
 }
 
 // 特殊情况使用
-#define def_jsonfunction_parm(...)													\
+#if defined(WIN32)||defined(WINCE)||defined(WIN64)
+#define def_jsonfunction_special_parm(...)											\
 bool json_pop(cJSON* ajson)															\
 {																					\
 	return ngl::njson::pop(ajson, ##__VA_ARGS__);									\
@@ -218,7 +218,30 @@ void json_push(cJSON* ajson, const char* akey) const								\
 		ngl::njson::push(ajson, ##__VA_ARGS__);										\
 	}																				\
 }																					\
-def_jsonfunction_parm_function														
+def_jsonfunction_function	
+#else
+#define def_jsonfunction_special_parm(...)											\
+bool json_pop(cJSON* ajson)															\
+{																					\
+	return ngl::njson::pop(ajson __VA_OPT__(,) ##__VA_ARGS__);						\
+}																					\
+void json_push(cJSON* ajson, const char* akey) const								\
+{																					\
+	if (akey != nullptr)															\
+	{																				\
+		ngl::ncjson ltemp;															\
+		ngl::njson::push(ltemp.json() __VA_OPT__(,) ##__VA_ARGS__);					\
+		ngl::njson::push(ajson, akey, ltemp);										\
+	}																				\
+	else																			\
+	{																				\
+		ngl::njson::push(ajson __VA_OPT__(,) ##__VA_ARGS__);						\
+	}																				\
+}																					\
+def_jsonfunction_function	
+#endif
+
+													
 
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
@@ -243,7 +266,7 @@ void json_push(cJSON* ajson, const char* akey) const								\
 		ltemp.push(0, ##__VA_ARGS__);												\
 	}																				\
 }																					\
-def_jsonfunction_parm_function
+def_jsonfunction_function
 #else
 #define def_jsonfunction(...)														\
 bool json_pop(cJSON* ajson)															\
@@ -269,52 +292,64 @@ void json_push(cJSON* ajson, const char* akey) const								\
 def_jsonfunction_parm_function
 #endif
 
-#define def_nlua_push(...)													\
+#define def_nlua_function(...)												\
 	void nlua_push(lua_State* aL, const char* aname = nullptr)const			\
 	{																		\
 		help_nlua<false> ltemp(aL, aname, parms(#__VA_ARGS__));				\
 		ltemp.push(__VA_ARGS__);											\
-	}
-
-#define def_nlua_pop(...)													\
+	}																		\
 	bool nlua_pop(lua_State* aL, const char* aname = nullptr)				\
 	{																		\
 		help_nlua<true> ltemp(aL, aname, parms(#__VA_ARGS__));				\
 		return ltemp.pop(__VA_ARGS__);										\
 	}
 
-
-#define def_nlua_function(...)			\
-	def_nlua_push(__VA_ARGS__)			\
-	def_nlua_pop(__VA_ARGS__)
-
-#define def_nlua_push2(...)													\
-	void nlua_push(lua_State* aL, const char* aname = nullptr)const			\
-	{																		\
-		ngl::nlua_table::table_start_push(aL, aname);						\
-		ngl::nlua_table::table_push(aL, __VA_ARGS__);						\
-		ngl::nlua_table::table_finish_push(aL, aname);						\
+#if defined(WIN32)||defined(WINCE)||defined(WIN64)
+#define def_nlua_tab_function(...)														\
+	void nlua_push(lua_State* aL, const char* aname = nullptr)const						\
+	{																					\
+		ngl::nlua_table::table_start_push(aL, aname);									\
+		ngl::nlua_table::table_push(aL, ##__VA_ARGS__);									\
+		ngl::nlua_table::table_finish_push(aL, aname);									\
+	}																					\
+	bool nlua_pop(lua_State* aL, const char* aname = nullptr)							\
+	{																					\
+		ngl::nlua_table::table_start_pop(aL, aname);									\
+		bool lret = ngl::nlua_table::table_pop(aL, ##__VA_ARGS__);						\
+		ngl::nlua_table::table_finish_pop(aL, aname);									\
+		return lret;																	\
 	}
-
-#define def_nlua_pop2(...)													\
-	bool nlua_pop(lua_State* aL, const char* aname = nullptr)				\
-	{																		\
-		ngl::nlua_table::table_start_pop(aL, aname);						\
-		bool lret = ngl::nlua_table::table_pop(aL, __VA_ARGS__);			\
-		ngl::nlua_table::table_finish_pop(aL, aname);						\
-		return lret;														\
+#else
+#define def_nlua_tab_function(...)														\
+	void nlua_push(lua_State* aL, const char* aname = nullptr)const						\
+	{																					\
+		ngl::nlua_table::table_start_push(aL, aname);									\
+		ngl::nlua_table::table_push(aL __VA_OPT__(,) ##__VA_ARGS__);					\
+		ngl::nlua_table::table_finish_push(aL, aname);									\
+	}																					\
+	bool nlua_pop(lua_State* aL, const char* aname = nullptr)							\
+	{																					\
+		ngl::nlua_table::table_start_pop(aL, aname);									\
+		bool lret = ngl::nlua_table::table_pop(aL __VA_OPT__(,) ##__VA_ARGS__);			\
+		ngl::nlua_table::table_finish_pop(aL, aname);									\
+		return lret;																	\
 	}
+#endif
 
-#define def_nlua_function2(...)				\
-	def_nlua_push2(__VA_ARGS__)				\
-	def_nlua_pop2(__VA_ARGS__)
 
-#define dprotocol(NAME, ...)				\
-	def_parmname							\
-	def_jsonfunction(__VA_ARGS__)			\
-	def_protocol(NAME, __VA_ARGS__)			\
+#if defined(WIN32)||defined(WINCE)||defined(WIN64)
+#define dprotocol(NAME, ...)								\
+	def_parmname											\
+	def_jsonfunction(__VA_ARGS__)							\
+	def_protocol(NAME, ##__VA_ARGS__)						\
 	def_nlua_function(__VA_ARGS__)
-
+#else
+#define dprotocol(NAME, ...)								\
+	def_parmname											\
+	def_jsonfunction(__VA_ARGS__)							\
+	def_protocol(NAME __VA_OPT__(,) ##__VA_ARGS__)			\
+	def_nlua_function(__VA_ARGS__)
+#endif
 
 namespace ngl
 {
