@@ -763,8 +763,14 @@ public:
 	}
 #endif
 
-
-#define dxmlserialize(XMLNAME, ATTR, ...)	\
-	def_parmname_(true)						\
-	def_xmlfunction(XMLNAME)				\
-	def_xmlspecial(ATTR, __VA_ARGS__)
+#if defined(WIN32)||defined(WINCE)||defined(WIN64)
+#define dxmlserialize(XMLNAME, ATTR, ...)				\
+	def_parmname_(true)									\
+	def_xmlfunction(XMLNAME)							\
+	def_xmlspecial(ATTR, ##__VA_ARGS__)
+#else
+#define dxmlserialize(XMLNAME, ATTR, ...)				\
+	def_parmname_(true)									\
+	def_xmlfunction(XMLNAME)							\
+	def_xmlspecial(ATTR __VA_OPT__(,) ##__VA_ARGS__)
+#endif
