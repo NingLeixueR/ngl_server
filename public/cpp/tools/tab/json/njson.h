@@ -1671,6 +1671,7 @@ namespace ngl
 				return adata.json_pop(ljson);
 			}
 		}
+		return true;
 	}
 
 	template <typename T>

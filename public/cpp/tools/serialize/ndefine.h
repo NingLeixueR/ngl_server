@@ -245,34 +245,28 @@ void json_push(cJSON* ajson, const char* akey) const								\
 }																					\
 def_jsonfunction_parm_function
 #else
-#define def_jsonfunction(...)											\
-inline void json_write(ngl::njson_write& ijsn, const char* akey)		\
-	{																	\
-		ngl::njson_write ltemp;											\
-		json_write(ltemp);												\
-		ngl::njson::write(ijsn, akey, ltemp.nofree());					\
-	}																	\
-	inline void json_write(ngl::njson_write& ijsn)						\
-	{																	\
-		help_json ltemp(parms(#__VA_ARGS__));							\
-		ltemp.set_json(ijsn);											\
-		ltemp.write(0 __VA_OPT__(,) ##__VA_ARGS__);						\
-	}																	\
-	inline bool json_read(ngl::njson_read& ijsn, const char* akey)		\
-	{																	\
-		ngl::njson_read ltemp;											\
-		if (!ngl::njson::pop(ijsn, akey, ltemp.json()))				\
-		{																\
-			return false;												\
-		}																\
-		return json_read(ltemp);										\
-	}																	\
-	inline bool json_read(ngl::njson_read& ijsn) 						\
-	{																	\
-		help_json ltemp(parms(#__VA_ARGS__));							\
-		ltemp.set_json(ijsn);											\
-		return ltemp.read(0 __VA_OPT__(,) ##__VA_ARGS__);				\
-	}
+#define def_jsonfunction(...)														\
+bool json_pop(cJSON* ajson)															\
+{																					\
+	help_json ltemp(parms(#__VA_ARGS__), ajson);									\
+	return ltemp.pop(0 __VA_OPT__(,) ##__VA_ARGS__);								\
+}																					\
+void json_push(cJSON* ajson, const char* akey) const								\
+{																					\
+	if (akey != nullptr)															\
+	{																				\
+		ngl::ncjson ltempjson;														\
+		help_json ltemp(parms(#__VA_ARGS__), ltempjson.json());						\
+		ltemp.push(0 __VA_OPT__(,) ##__VA_ARGS__);									\
+		ngl::njson::push(ajson, akey, ltempjson);									\
+	}																				\
+	else																			\
+	{																				\
+		help_json ltemp(parms(#__VA_ARGS__), ajson);								\
+		ltemp.push(0 __VA_OPT__(,) ##__VA_ARGS__);									\
+	}																				\
+}																					\
+def_jsonfunction_parm_function
 #endif
 
 #define def_nlua_push(...)													\
