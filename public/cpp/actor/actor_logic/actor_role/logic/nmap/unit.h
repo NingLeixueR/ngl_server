@@ -27,13 +27,13 @@ namespace ngl
 
 	class unit
 	{
-		int32_t					m_fightid = -1;
 		eunit					m_type = eunit_null;
-		int32_t					m_id = nguid::none_actordataid();
-		i16_area				m_area = nguid::none_area();
+		i64_actorid				m_id = nguid::make();
 		attribute				m_attribute;
 		dynamic_attribute		m_dynamic;
 		
+
+
 	public:
 		void init(attribute aattribute)
 		{
@@ -41,23 +41,20 @@ namespace ngl
 			m_dynamic.init(m_attribute.get_attribute());
 		}
 
-		bool set_fightid(int32_t afightid);
-		int32_t get_fightid();
-
 		bool set_type(eunit atype);
-		eunit get_type();
+		eunit type();
 
 		attribute& get_attribute();
 
 		bool set_id(int32_t aid);
-		int32_t get_id();
-
-		bool set_area(i16_area aarea);
-		i16_area get_area();
-
-		// # 只有玩家的战斗单位才有[i64_actorid]
-		i64_actorid id_guid();
+		int32_t id();
 
 		dynamic_attribute& dynamic();
 	};
+
+	class unit_role: public unit
+	{};
+
+	class unit_monster : public unit
+	{};
 }// namespace ngl
