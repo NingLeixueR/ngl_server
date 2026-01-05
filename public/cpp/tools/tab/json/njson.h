@@ -29,7 +29,7 @@ namespace ngl
 	template <typename T>
 	struct json_format
 	{
-		static bool pop(cJSON* ajson, T& adata);
+		static bool pop(cJSON* ajson, const char* akey, T& adata);
 
 		static void push(cJSON* ajson, const char* akey, const T& adata);
 		static void push(cJSON* ajson, const T& adata);
@@ -38,24 +38,29 @@ namespace ngl
 	template <>
 	struct json_format<int64_t>
 	{
-		static bool pop(cJSON* ajson, int64_t& adata)
+		static bool pop(cJSON* ajson, const char* akey, int64_t& adata)
 		{
-			if (tools::bit(ajson->type, cJSON_Number))
+			cJSON* ljson = ajson;
+			if (akey != nullptr)
 			{
-				adata = (int64_t)ajson->valueint;
+				ljson = cJSON_GetObjectItem(ajson, akey);
+			}
+			if (tools::bit(ljson->type, cJSON_Number))
+			{
+				adata = (int64_t)ljson->valueint;
 				return true;
 			}
-			if (tools::bit(ajson->type, cJSON_String))
+			if (tools::bit(ljson->type, cJSON_String))
 			{
-				adata = tools::lexical_cast<int64_t>(ajson->valuestring);
+				adata = tools::lexical_cast<int64_t>(ljson->valuestring);
 				return true;
 			}
-			if (tools::bit(ajson->type, cJSON_True))
+			if (tools::bit(ljson->type, cJSON_True))
 			{
 				adata = 1;
 				return true;
 			}
-			if (tools::bit(ajson->type, cJSON_False))
+			if (tools::bit(ljson->type, cJSON_False))
 			{
 				adata = 0;
 				return true;
@@ -80,10 +85,10 @@ namespace ngl
 	template <>
 	struct json_format<uint64_t>
 	{
-		static bool pop(cJSON* ajson, uint64_t& adata)
+		static bool pop(cJSON* ajson, const char* akey, uint64_t& adata)
 		{
 			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
+			if (!json_format<int64_t>::pop(ajson, akey, lvalue))
 			{
 				return false;
 			}
@@ -108,10 +113,10 @@ namespace ngl
 	template <>
 	struct json_format<int32_t>
 	{
-		static bool pop(cJSON* ajson, int32_t adata)
+		static bool pop(cJSON* ajson, const char* akey, int32_t adata)
 		{
 			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
+			if (!json_format<int64_t>::pop(ajson, akey, lvalue))
 			{
 				return false;
 			}
@@ -136,10 +141,10 @@ namespace ngl
 	template <>
 	struct json_format<uint32_t>
 	{
-		static bool pop(cJSON* ajson, uint32_t& adata)
+		static bool pop(cJSON* ajson, const char* akey, uint32_t& adata)
 		{
 			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
+			if (!json_format<int64_t>::pop(ajson, akey, lvalue))
 			{
 				return false;
 			}
@@ -160,10 +165,10 @@ namespace ngl
 	template <>
 	struct json_format<int16_t>
 	{
-		static bool pop(cJSON* ajson, int16_t& adata)
+		static bool pop(cJSON* ajson, const char* akey, int16_t& adata)
 		{
 			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
+			if (!json_format<int64_t>::pop(ajson, akey, lvalue))
 			{
 				return false;
 			}
@@ -184,10 +189,10 @@ namespace ngl
 	template <>
 	struct json_format<uint16_t>
 	{
-		static bool pop(cJSON* ajson, uint16_t& adata)
+		static bool pop(cJSON* ajson, const char* akey, uint16_t& adata)
 		{
 			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
+			if (!json_format<int64_t>::pop(ajson, akey, lvalue))
 			{
 				return false;
 			}
@@ -208,10 +213,10 @@ namespace ngl
 	template <>
 	struct json_format<int8_t>
 	{
-		static bool pop(cJSON* ajson, int8_t& adata)
+		static bool pop(cJSON* ajson, const char* akey, int8_t& adata)
 		{
 			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
+			if (!json_format<int64_t>::pop(ajson, akey, lvalue))
 			{
 				return false;
 			}
@@ -232,10 +237,10 @@ namespace ngl
 	template <>
 	struct json_format<uint8_t>
 	{
-		static bool pop(cJSON* ajson, uint8_t& adata)
+		static bool pop(cJSON* ajson, const char* akey, uint8_t& adata)
 		{
 			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
+			if (!json_format<int64_t>::pop(ajson, akey, lvalue))
 			{
 				return false;
 			}
@@ -256,13 +261,18 @@ namespace ngl
 	template <>
 	struct json_format<const char*>
 	{
-		static bool pop(cJSON* ajson, const char*& adata)
+		static bool pop(cJSON* ajson, const char* akey, const char*& adata)
 		{
-			if (!tools::bit(ajson->type, cJSON_String))
+			cJSON* ljson = ajson;
+			if (akey != nullptr)
+			{
+				ljson = cJSON_GetObjectItem(ajson, akey);
+			}
+			if (!tools::bit(ljson->type, cJSON_String))
 			{
 				return false;
 			}
-			adata = ajson->valuestring;
+			adata = ljson->valuestring;
 			return true;
 		}
 
@@ -279,13 +289,18 @@ namespace ngl
 	template <>
 	struct json_format<std::string>
 	{
-		static bool pop(cJSON* ajson, std::string& adata)
+		static bool pop(cJSON* ajson, const char* akey, std::string& adata)
 		{
-			if (!tools::bit(ajson->type, cJSON_String))
+			cJSON* ljson = ajson;
+			if (akey != nullptr)
+			{
+				ljson = cJSON_GetObjectItem(ajson, akey);
+			}
+			if (!tools::bit(ljson->type, cJSON_String))
 			{
 				return false;
 			}
-			adata = ajson->valuestring;
+			adata = ljson->valuestring;
 			return true;
 		}
 
@@ -302,24 +317,29 @@ namespace ngl
 	template <>
 	struct json_format<double>
 	{
-		static bool pop(cJSON* ajson, double& adata)
+		static bool pop(cJSON* ajson, const char* akey, double& adata)
 		{
-			if (tools::bit(ajson->type, cJSON_Number))
+			cJSON* ljson = ajson;
+			if (akey != nullptr)
 			{
-				adata = (float)ajson->valuedouble;
+				ljson = cJSON_GetObjectItem(ajson, akey);
+			}
+			if (tools::bit(ljson->type, cJSON_Number))
+			{
+				adata = (float)ljson->valuedouble;
 				return true;
 			}
-			if (tools::bit(ajson->type, cJSON_String))
+			if (tools::bit(ljson->type, cJSON_String))
 			{
-				adata = tools::lexical_cast<double>(ajson->valuestring);
+				adata = tools::lexical_cast<double>(ljson->valuestring);
 				return true;
 			}
-			if (tools::bit(ajson->type, cJSON_True))
+			if (tools::bit(ljson->type, cJSON_True))
 			{
 				adata = 1.0f;
 				return true;
 			}
-			if (tools::bit(ajson->type, cJSON_True))
+			if (tools::bit(ljson->type, cJSON_True))
 			{
 				adata = 1.0f;
 				return true;
@@ -340,10 +360,10 @@ namespace ngl
 	template <>
 	struct json_format<float>
 	{
-		static bool pop(cJSON* ajson, float& adata)
+		static bool pop(cJSON* ajson, const char* akey, float& adata)
 		{
 			double lvalue = 0.0f;
-			if (!json_format<double>::pop(ajson, lvalue))
+			if (!json_format<double>::pop(ajson, akey, lvalue))
 			{
 				return false;
 			}
@@ -364,11 +384,16 @@ namespace ngl
 	template <>
 	struct json_format<bool>
 	{
-		static bool pop(cJSON* ajson, bool& adata)
+		static bool pop(cJSON* ajson, const char* akey, bool& adata)
 		{
-			if (tools::bit(ajson->type, cJSON_String))
+			cJSON* ljson = ajson;
+			if (akey != nullptr)
 			{
-				std::string lvalue = ajson->valuestring;
+				ljson = cJSON_GetObjectItem(ajson, akey);
+			}
+			if (tools::bit(ljson->type, cJSON_String))
+			{
+				std::string lvalue = ljson->valuestring;
 				tools::transform_toupper(lvalue);
 				if (lvalue == "TRUE")
 				{
@@ -382,12 +407,12 @@ namespace ngl
 				}
 				return false;
 			}
-			if (tools::bit(ajson->type, cJSON_True))
+			if (tools::bit(ljson->type, cJSON_True))
 			{
 				adata = true;
 				return true;
 			}
-			if (tools::bit(ajson->type, cJSON_True))
+			if (tools::bit(ljson->type, cJSON_True))
 			{
 				adata = false;
 				return true;
@@ -408,22 +433,27 @@ namespace ngl
 	template <typename T>
 	struct json_format<std::vector<T>>
 	{
-		static bool pop(cJSON* ajson, std::vector<T>& adata)
+		static bool pop(cJSON* ajson, const char* akey, std::vector<T>& adata)
 		{
-			if (!tools::bit(ajson->type, cJSON_Object) && !tools::bit(ajson->type, cJSON_Array))
+			cJSON* ljson = ajson;
+			if (akey != nullptr)
+			{
+				ljson = cJSON_GetObjectItem(ajson, akey);
+			}
+			if (!tools::bit(ljson->type, cJSON_Object) && !tools::bit(ljson->type, cJSON_Array))
 			{
 				return false;
 			}
-			int lsize = cJSON_GetArraySize(ajson);
+			int lsize = cJSON_GetArraySize(ljson);
 			for (int i = 0; i < lsize; ++i)
 			{
-				cJSON* item = cJSON_GetArrayItem(ajson, i);
+				cJSON* item = cJSON_GetArrayItem(ljson, i);
 				if (item == nullptr)
 				{
 					return false;
 				}
 				T ltemp = T();
-				if (!json_format<T>::pop(item, ltemp))
+				if (!json_format<T>::pop(item, nullptr, ltemp))
 				{
 					return false;
 				}
@@ -459,22 +489,27 @@ namespace ngl
 	template <typename T>
 	struct json_format<std::list<T>>
 	{
-		static bool pop(cJSON* ajson, std::list<T>& adata)
+		static bool pop(cJSON* ajson, const char* akey, std::list<T>& adata)
 		{
-			if (!tools::bit(ajson->type, cJSON_Object) && !tools::bit(ajson->type, cJSON_Array))
+			cJSON* ljson = ajson;
+			if (akey != nullptr)
+			{
+				ljson = cJSON_GetObjectItem(ajson, akey);
+			}
+			if (!tools::bit(ljson->type, cJSON_Object) && !tools::bit(ljson->type, cJSON_Array))
 			{
 				return false;
 			}
-			int lsize = cJSON_GetArraySize(ajson);
+			int lsize = cJSON_GetArraySize(ljson);
 			for (int i = 0; i < lsize; ++i)
 			{
-				cJSON* item = cJSON_GetArrayItem(ajson, i);
+				cJSON* item = cJSON_GetArrayItem(ljson, i);
 				if (item == nullptr)
 				{
 					return false;
 				}
 				T ltemp = T();
-				if (!json_format<T>::pop(item, ltemp))
+				if (!json_format<T>::pop(item, nullptr, ltemp))
 				{
 					return false;
 				}
@@ -510,22 +545,27 @@ namespace ngl
 	template <typename T>
 	struct json_format<std::set<T>>
 	{
-		static bool pop(cJSON* ajson, std::set<T>& adata)
+		static bool pop(cJSON* ajson, const char* akey, std::set<T>& adata)
 		{
-			if (!tools::bit(ajson->type, cJSON_Object) && !tools::bit(ajson->type, cJSON_Array))
+			cJSON* ljson = ajson;
+			if (akey != nullptr)
+			{
+				ljson = cJSON_GetObjectItem(ajson, akey);
+			}
+			if (!tools::bit(ljson->type, cJSON_Object) && !tools::bit(ljson->type, cJSON_Array))
 			{
 				return false;
 			}
-			int lsize = cJSON_GetArraySize(ajson);
+			int lsize = cJSON_GetArraySize(ljson);
 			for (int i = 0; i < lsize; ++i)
 			{
-				cJSON* item = cJSON_GetArrayItem(ajson, i);
+				cJSON* item = cJSON_GetArrayItem(ljson, i);
 				if (item == nullptr)
 				{
 					return false;
 				}
 				T ltemp = T();
-				if (!json_format<T>::pop(item, ltemp))
+				if (!json_format<T>::pop(item, nullptr, ltemp))
 				{
 					return false;
 				}
@@ -561,16 +601,21 @@ namespace ngl
 	template <typename TKEY, typename TVALUE>
 	struct json_format<std::map<TKEY, TVALUE>>
 	{
-		static bool pop(cJSON* ajson, std::map<TKEY, TVALUE>& adata)
+		static bool pop(cJSON* ajson, const char* akey, std::map<TKEY, TVALUE>& adata)
 		{
-			if (!tools::bit(ajson->type, cJSON_Object) && !tools::bit(ajson->type, cJSON_Array))
+			cJSON* ljson = ajson;
+			if (akey != nullptr)
+			{
+				ljson = cJSON_GetObjectItem(ajson, akey);
+			}
+			if (!tools::bit(ljson->type, cJSON_Object) && !tools::bit(ljson->type, cJSON_Array))
 			{
 				return false;
 			}
-			int lsize = cJSON_GetArraySize(ajson);
+			int lsize = cJSON_GetArraySize(ljson);
 			for (int i = 0; i < lsize; ++i)
 			{
-				cJSON* item = cJSON_GetArrayItem(ajson, i);
+				cJSON* item = cJSON_GetArrayItem(ljson, i);
 				if (item == nullptr)
 				{
 					return false;
@@ -609,6 +654,7 @@ namespace ngl
 		}
 	};
 
+	class ncjson;
 
 	struct njson
 	{
@@ -620,12 +666,7 @@ namespace ngl
 		template <typename T>
 		static bool pop(cJSON* ajson, const char* akey, T& adata)
 		{
-			cJSON* ljson = cJSON_GetObjectItem(ajson, akey);
-			if (ljson == nullptr)
-			{
-				return false;
-			}
-			return json_format<T>::pop(ljson, adata);
+			return json_format<T>::pop(ajson, akey, adata);
 		}
 
 		template <typename T, typename ...TARGS>
@@ -647,6 +688,8 @@ namespace ngl
 		{
 			json_format<T>::push(ajson, akey, adata);
 		}
+
+		static void push(cJSON* ajson, const char* akey, const ncjson& adata);
 
 		template <typename T, typename ...TARGS>
 		static void push(cJSON* ajson, const char* akey, const T& adata, const TARGS&... aargs)
@@ -689,16 +732,16 @@ namespace ngl
 	////////		}
 	////////	}
 	////////};
-	////////class njread
+	////////class ncjson
 	////////{
 	////////	cJSON* m_json;
 	////////	bool  m_free;
 	////////public:
-	////////	njread(const char* astr) :
+	////////	ncjson(const char* astr) :
 	////////		m_json(cJSON_Parse(astr))
 	////////		, m_free(true)
 	////////	{}
-	////////	njread() :
+	////////	ncjson() :
 	////////		m_json(nullptr)
 	////////		, m_free(false)
 	////////	{}
@@ -719,7 +762,7 @@ namespace ngl
 	////////	{
 	////////		return m_json;
 	////////	}
-	////////	~njread()
+	////////	~ncjson()
 	////////	{
 	////////		if (m_json != nullptr && m_free)
 	////////		{
@@ -800,14 +843,14 @@ namespace ngl
 	////////template <typename T>
 	////////struct json_format
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, T& adata);
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(T&)>& afun);
+	////////	static bool read(ncjson& ajson, const char* akey, T& adata);
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(T&)>& afun);
 	////////	static void write(njwrite& ajson, const char* akey, T& adata);
 	////////};
 	////////template <>
 	////////struct json_format<cJSON*>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, cJSON*& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, cJSON*& adata)
 	////////	{
 	////////		cJSON* ret = cJSON_GetObjectItem(ajson.json(), akey);
 	////////		if (nullptr == ret)
@@ -921,7 +964,7 @@ namespace ngl
 	////////		return true;
 	////////	}
 	////////	template <typename TNUMBER>
-	////////	static bool read_basic_type(njread& ajson, const char* akey, TNUMBER& adata)
+	////////	static bool read_basic_type(ncjson& ajson, const char* akey, TNUMBER& adata)
 	////////	{
 	////////		cJSON* ret = cJSON_GetObjectItem(ajson.json(), akey);
 	////////		if (nullptr == ret)
@@ -935,7 +978,7 @@ namespace ngl
 	////////		return false;
 	////////	}
 	////////	template <typename TNUMBER>
-	////////	static bool read_basic_array(njread& ajson, const char* akey, const std::function<void(TNUMBER&)>& afun)
+	////////	static bool read_basic_array(ncjson& ajson, const char* akey, const std::function<void(TNUMBER&)>& afun)
 	////////	{
 	////////		cJSON* ltemp = nullptr;
 	////////		if (!json_format<cJSON*>::read(ajson, akey, ltemp))
@@ -1076,11 +1119,11 @@ namespace ngl
 	////////template <>
 	////////struct json_format<char*>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, const char*& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, const char*& adata)
 	////////	{
 	////////		return tools_json::read_basic_type(ajson, akey, adata);
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(const char*&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(const char*&)>& afun)
 	////////	{
 	////////		return tools_json::read_basic_array(ajson, akey, afun);
 	////////	}
@@ -1092,11 +1135,11 @@ namespace ngl
 	////////template <>
 	////////struct json_format<std::string>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, std::string& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, std::string& adata)
 	////////	{
 	////////		return tools_json::read_basic_type(ajson, akey, adata);
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(std::string&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(std::string&)>& afun)
 	////////	{
 	////////		return tools_json::read_basic_array(ajson, akey, afun);
 	////////	}
@@ -1108,11 +1151,11 @@ namespace ngl
 	////////template <>
 	////////struct json_format<int8_t>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, int8_t& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, int8_t& adata)
 	////////	{
 	////////		return tools_json::read_basic_type(ajson, akey, adata);
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(int8_t&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(int8_t&)>& afun)
 	////////	{
 	////////		return tools_json::read_basic_array(ajson, akey, afun);
 	////////	}
@@ -1124,11 +1167,11 @@ namespace ngl
 	////////template <>
 	////////struct json_format<int16_t>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, int16_t& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, int16_t& adata)
 	////////	{
 	////////		return tools_json::read_basic_type(ajson, akey, adata);
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(int16_t&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(int16_t&)>& afun)
 	////////	{
 	////////		return tools_json::read_basic_array(ajson, akey, afun);
 	////////	}
@@ -1140,11 +1183,11 @@ namespace ngl
 	////////template <>
 	////////struct json_format<int32_t>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, int32_t& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, int32_t& adata)
 	////////	{
 	////////		return tools_json::read_basic_type(ajson, akey, adata);
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(int32_t&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(int32_t&)>& afun)
 	////////	{
 	////////		return tools_json::read_basic_array(ajson, akey, afun);
 	////////	}
@@ -1156,11 +1199,11 @@ namespace ngl
 	////////template <>
 	////////struct json_format<int64_t>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, int64_t& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, int64_t& adata)
 	////////	{
 	////////		return tools_json::read_basic_type(ajson, akey, adata);
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(int64_t&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(int64_t&)>& afun)
 	////////	{
 	////////		return tools_json::read_basic_array(ajson, akey, afun);
 	////////	}
@@ -1173,11 +1216,11 @@ namespace ngl
 	////////template <>
 	////////struct json_format<uint8_t>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, uint8_t& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, uint8_t& adata)
 	////////	{
 	////////		return tools_json::read_basic_type(ajson, akey, adata);
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(uint8_t&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(uint8_t&)>& afun)
 	////////	{
 	////////		return tools_json::read_basic_array(ajson, akey, afun);
 	////////	}
@@ -1189,11 +1232,11 @@ namespace ngl
 	////////template <>
 	////////struct json_format<uint16_t>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, uint16_t& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, uint16_t& adata)
 	////////	{
 	////////		return tools_json::read_basic_type(ajson, akey, adata);
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(uint16_t&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(uint16_t&)>& afun)
 	////////	{
 	////////		return tools_json::read_basic_array(ajson, akey, afun);
 	////////	}
@@ -1205,11 +1248,11 @@ namespace ngl
 	////////template <>
 	////////struct json_format<uint32_t>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, uint32_t& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, uint32_t& adata)
 	////////	{
 	////////		return tools_json::read_basic_type(ajson, akey, adata);
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(uint32_t&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(uint32_t&)>& afun)
 	////////	{
 	////////		return tools_json::read_basic_array(ajson, akey, afun);
 	////////	}
@@ -1221,11 +1264,11 @@ namespace ngl
 	////////template <>
 	////////struct json_format<uint64_t>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, uint64_t& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, uint64_t& adata)
 	////////	{
 	////////		return tools_json::read_basic_type(ajson, akey, adata);
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(uint64_t&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(uint64_t&)>& afun)
 	////////	{
 	////////		return tools_json::read_basic_array(ajson, akey, afun);
 	////////	}
@@ -1238,11 +1281,11 @@ namespace ngl
 	////////template <>
 	////////struct json_format<float>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, float& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, float& adata)
 	////////	{
 	////////		return tools_json::read_basic_type(ajson, akey, adata);
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(float&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(float&)>& afun)
 	////////	{
 	////////		return tools_json::read_basic_array(ajson, akey, afun);
 	////////	}
@@ -1254,11 +1297,11 @@ namespace ngl
 	////////template <>
 	////////struct json_format<double>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, double& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, double& adata)
 	////////	{
 	////////		return tools_json::read_basic_type(ajson, akey, adata);
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(double&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(double&)>& afun)
 	////////	{
 	////////		return tools_json::read_basic_array(ajson, akey, afun);
 	////////	}
@@ -1270,11 +1313,11 @@ namespace ngl
 	////////template <>
 	////////struct json_format<bool>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, bool& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, bool& adata)
 	////////	{
 	////////		return tools_json::read_basic_type(ajson, akey, adata);
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(bool&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(bool&)>& afun)
 	////////	{
 	////////		return tools_json::read_basic_array(ajson, akey, afun);
 	////////	}
@@ -1286,7 +1329,7 @@ namespace ngl
 	////////template <typename T>
 	////////struct json_format<std::vector<T>>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, std::vector<T>& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, std::vector<T>& adata)
 	////////	{
 	////////		return json_format<T>::read_array(ajson, akey, [&adata](T& aval)
 	////////			{
@@ -1310,14 +1353,14 @@ namespace ngl
 	////////template <typename T>
 	////////struct json_format<std::set<T>>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, std::set<T>& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, std::set<T>& adata)
 	////////	{
 	////////		return json_format<T>::read_array(ajson, akey, [&adata](T& aval)
 	////////			{
 	////////				adata.insert(aval);
 	////////			});
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(std::vector<T>&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(std::vector<T>&)>& afun)
 	////////	{
 	////////		return false;
 	////////	}
@@ -1339,14 +1382,14 @@ namespace ngl
 	////////template <typename TKEY, typename TVAL>
 	////////struct json_format<std::map<TKEY, TVAL>>
 	////////{
-	////////	static bool read(njread& ajson, const char* akey, std::map<TKEY, TVAL>& adata)
+	////////	static bool read(ncjson& ajson, const char* akey, std::map<TKEY, TVAL>& adata)
 	////////	{
 	////////		cJSON* lcjson = nullptr;
 	////////		if (!json_format<cJSON*>::read(ajson, akey, lcjson))
 	////////		{
 	////////			return false;
 	////////		}
-	////////		njread ljson;
+	////////		ncjson ljson;
 	////////		ljson.set(lcjson);
 	////////		for (cJSON* child = lcjson->child; child != nullptr; child = child->next)
 	////////		{
@@ -1358,7 +1401,7 @@ namespace ngl
 	////////		}
 	////////		return true;
 	////////	}
-	////////	static bool read_array(njread& ajson, const char* akey, const std::function<void(std::map<TKEY, TVAL>&)>& afun)
+	////////	static bool read_array(ncjson& ajson, const char* akey, const std::function<void(std::map<TKEY, TVAL>&)>& afun)
 	////////	{
 	////////		return false;
 	////////	}
@@ -1373,7 +1416,7 @@ namespace ngl
 	////////	}
 	////////};
 	////////template <typename T>
-	////////bool json_format<T>::read(njread& ajson, const char* akey, T& adata)
+	////////bool json_format<T>::read(ncjson& ajson, const char* akey, T& adata)
 	////////{
 	////////	if constexpr (std::is_enum<T>::value)
 	////////	{
@@ -1392,7 +1435,7 @@ namespace ngl
 	////////		{
 	////////			return false;
 	////////		}
-	////////		njread ltemp;
+	////////		ncjson ltemp;
 	////////		if (!ltemp.set(ljson))
 	////////		{
 	////////			return false;
@@ -1401,7 +1444,7 @@ namespace ngl
 	////////	}		
 	////////}
 	////////template <typename T>
-	////////bool json_format<T>::read_array(njread& ajson, const char* akey, const std::function<void(T&)>& afun)
+	////////bool json_format<T>::read_array(ncjson& ajson, const char* akey, const std::function<void(T&)>& afun)
 	////////{
 	////////	cJSON* ltemp = nullptr;
 	////////	if (!json_format<cJSON*>::read(ajson, akey, ltemp))
@@ -1412,7 +1455,7 @@ namespace ngl
 	////////	for (int i = 0; i < lsize; ++i)
 	////////	{
 	////////		cJSON* ret = cJSON_GetArrayItem(ltemp, i);
-	////////		njread ltemp;
+	////////		ncjson ltemp;
 	////////		if (!ltemp.set(ret))
 	////////		{
 	////////			return false;
@@ -1445,17 +1488,17 @@ namespace ngl
 	////////}
 	///////*struct njson
 	//////{
-	//////	static bool read(njread& ajson)
+	//////	static bool read(ncjson& ajson)
 	//////	{
 	//////		return true;
 	//////	}
 	//////	template <typename T>
-	//////	static bool read(njread& ajson, const char* akey, T& adata)
+	//////	static bool read(ncjson& ajson, const char* akey, T& adata)
 	//////	{
 	//////		return json_format<T>::read(ajson, akey, adata);
 	//////	}
 	//////	template <typename T, typename ...TARGS>
-	//////	static bool read(njread& ajson, const char* akey, T& adata, TARGS&... aargs)
+	//////	static bool read(ncjson& ajson, const char* akey, T& adata, TARGS&... aargs)
 	//////	{
 	//////		if (!read(ajson, akey, adata))
 	//////		{
@@ -1484,50 +1527,6 @@ namespace ngl
 	//////};*/
 }//namespace ngl
 
-
-namespace ngl
-{
-	template <typename T>
-	bool json_format<T>::pop(cJSON* ajson, T& adata)
-	{
-		if constexpr (std::is_enum<T>::value)
-		{
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
-			{
-				return false;
-			}
-			adata = (T)lvalue;
-		}
-		else
-		{
-			return adata.json_pop(ajson);
-		}
-	}
-
-	template <typename T>
-	void json_format<T>::push(cJSON* ajson, const char* akey, const T& adata)
-	{
-		if constexpr (std::is_enum<T>::value)
-		{
-			cJSON_AddNumberToObject(ajson, akey, (int32_t)adata);
-		}
-		else
-		{
-			adata.json_push(ajson, akey);
-		}
-	}
-
-	template <typename T>
-	void json_format<T>::push(cJSON* ajson, const T& adata)
-	{
-		if constexpr (!std::is_enum<T>::value)
-		{
-			adata.json_push(ajson, nullptr);
-		}
-	}
-}//namespace ngl
-
 namespace ngl
 {
 	class ncjson
@@ -1535,6 +1534,8 @@ namespace ngl
 		cJSON* m_json = nullptr;
 		const char* m_str = nullptr;
 		const char* m_nonformatstr = nullptr;
+		bool m_isfree = true;
+		bool m_isnonformatstr = true;
 
 		void free_str()
 		{
@@ -1562,27 +1563,49 @@ namespace ngl
 			m_json(cJSON_CreateObject())
 		{}
 
+		ncjson(cJSON* ajson) :
+			m_json(ajson)
+		{}
+
+		bool check()
+		{
+			return m_json != nullptr;
+		}
+
 		cJSON* json()
 		{
 			return m_json;
 		}
 
-		const char* str()
+		cJSON* nofree()
 		{
-			free_str();
-			m_str = cJSON_Print(m_json);
-			return m_str;
+			m_isfree = false;
+			return m_json;
 		}
 
-		const char* nonformatstr()
+		void set_nonformatstr(bool anonformatstr)
 		{
-			m_nonformatstr = cJSON_PrintUnformatted(m_json);
-			return m_nonformatstr;
+			m_isnonformatstr = anonformatstr;
+		}
+
+		const char* str()
+		{
+			if (m_isnonformatstr)
+			{
+				free_nonformatstr();
+				m_nonformatstr = cJSON_PrintUnformatted(m_json);
+			}
+			else
+			{
+				free_str();
+				m_str = cJSON_Print(m_json);
+			}
+			return m_str;
 		}
 
 		~ncjson()
 		{
-			if (m_json != nullptr)
+			if (m_json != nullptr && m_isfree)
 			{
 				cJSON_Delete(m_json);
 			}
@@ -1605,5 +1628,65 @@ namespace ngl
 		json_format<T>::push(ltemp.json(), tools::type_name<T>().c_str(), adata);
 		json = ltemp.str();
 		return true;
+	}
+}//namespace ngl
+
+namespace ngl
+{
+	template <typename T>
+	bool json_format<T>::pop(cJSON* ajson, const char* akey, T& adata)
+	{
+		if constexpr (std::is_enum<T>::value)
+		{
+			int64_t lvalue = 0;
+			if (!json_format<int64_t>::pop(ajson, akey, lvalue))
+			{
+				return false;
+			}
+			adata = (T)lvalue;
+		}
+		else
+		{
+			cJSON* ljson = ajson;
+			if (akey != nullptr)
+			{
+				ljson = cJSON_GetObjectItem(ajson, akey);
+			}
+			return adata.json_pop(ljson);
+		}
+	}
+
+	template <typename T>
+	void json_format<T>::push(cJSON* ajson, const char* akey, const T& adata)
+	{
+		if constexpr (std::is_enum<T>::value)
+		{
+			cJSON_AddNumberToObject(ajson, akey, (int32_t)adata);
+		}
+		else
+		{
+			if constexpr (is_protobuf_message<T>::value)
+			{
+				std::string ljson;
+				if (akey != nullptr && tools::proto2json(adata, ljson))
+				{
+					ncjson lnctemp(ljson.c_str());
+					njson::push(ajson, akey, lnctemp);
+				}
+			}
+			else
+			{
+				adata.json_push(ajson, akey);
+			}
+		}
+	}
+
+	template <typename T>
+	void json_format<T>::push(cJSON* ajson, const T& adata)
+	{
+		if constexpr (!std::is_enum<T>::value)
+		{
+			adata.json_push(ajson, nullptr);
+		}
 	}
 }//namespace ngl

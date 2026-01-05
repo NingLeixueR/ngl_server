@@ -26,16 +26,16 @@ namespace ngl
 {
 	bool actor_role::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::njread lojson(adata.get_data()->data()->m_json.c_str());
+		ncjson lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (!njson::read(lojson, "operator", loperator))
+		if (!njson::pop(lojson.json(), "operator", loperator))
 		{
 			return true;
 		}
 
 		if (handle_gm::empty())
 		{
-			handle_gm::add("pay") = [this](int id, ngl::njread& aos)
+			handle_gm::add("pay") = [this](int id, ncjson& aos)
 				{
 					gcmd<int32_t> pro(id, "pay");
 					struct pay
@@ -45,18 +45,18 @@ namespace ngl
 						dprotocol(pay, m_orderid, m_rechargeid)
 					};
 					pay lpay;
-					if (!njson::read(aos, "data", lpay))
+					if (!njson::pop(aos.json(), "data", lpay))
 					{
 						return;
 					}
 					pro.m_data = rechange(lpay.m_orderid, lpay.m_rechargeid, false, true);
 				};
 
-			handle_gm::add("gmrechange") = [this](int id, ngl::njread& aos)
+			handle_gm::add("gmrechange") = [this](int id, ncjson& aos)
 				{
 					gcmd<int32_t> pro(id, "gmrechange");
 					int32_t lrechargeid;
-					if (!njson::read(aos, "data", lrechargeid))
+					if (!njson::pop(aos.json(), "data", lrechargeid))
 					{
 						return;
 					}
@@ -65,11 +65,11 @@ namespace ngl
 					pro.m_data = rechange(lorder, lrechargeid, true, true);
 				};
 
-			handle_gm::add("rechange") = [this](int id, ngl::njread& aos)
+			handle_gm::add("rechange") = [this](int id, ncjson& aos)
 				{//actor_role::loginpay() callback
 					gcmd<int32_t> pro(id, "rechange");
 					prorechange lrechange;
-					if (!njson::read(aos, "data", lrechange))
+					if (!njson::pop(aos.json(), "data", lrechange))
 					{
 						return;
 					}
@@ -78,11 +78,11 @@ namespace ngl
 				};
 
 			// ½ûÑÔ lduration=0½â·â
-			handle_gm::add("bantalk") = [this](int id, ngl::njread& aos)
+			handle_gm::add("bantalk") = [this](int id, ncjson& aos)
 				{
 					gcmd<bool> pro(id, "bantalk", false);
 					int32_t lduration;
-					if (!njson::read(aos, "data", lduration))
+					if (!njson::pop(aos.json(), "data", lduration))
 					{
 						return;
 					}

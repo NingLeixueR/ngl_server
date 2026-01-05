@@ -12,30 +12,13 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-#include "ndefine.h"
+#include "njson.h"
+
 
 namespace ngl
 {
-	struct bbbbb
+	void njson::push(cJSON* ajson, const char* akey, const ncjson& adata)
 	{
-		int32_t m_1;
-		bool m_2;
-		std::vector<int32_t> m_3;
-
-		//def_jsonfunction_parm("m_1", m_1, "m_2", m_2, "m_3", m_3)
-		def_parmname
-		def_jsonfunction(m_1, m_2, m_3)
-	};
-
-	struct abcccc
-	{
-		int32_t m_1;
-		bool m_2;
-		std::vector<int32_t> m_3;
-		std::vector<bbbbb> m_4;
-
-		def_jsonfunction_parm("m_1", m_1, "m_2", m_2, "m_3", m_3, "m_4", m_4)
-
-	};
-
-}
+		cJSON_AddItemToObject(ajson, akey, ((ncjson*)(&adata))->nofree());
+	}
+}//namespace ngl

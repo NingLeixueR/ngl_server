@@ -69,7 +69,7 @@ namespace ngl
 		
 		static bool sendtophp(i32_sessionid aidentifier, const ngl::np_gm_response& adata);
 
-		using handle_cmd = cmd<actor_gm, std::string, ngl::njread&, const message<ngl::np_gm>*>;
+		using handle_cmd = cmd<actor_gm, std::string, ncjson&, const message<ngl::np_gm>*>;
 
 		bool timer_handle(const message<np_timerparm>& adata);
 

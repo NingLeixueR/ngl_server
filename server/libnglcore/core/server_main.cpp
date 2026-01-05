@@ -569,21 +569,21 @@ bool start_pushserverconfig()
 			//  ENET_TCP = 0,
 			//	ENET_WS = 1,
 			//	ENET_KCP = 2,
-			ngl::njwrite lwrite;
+			ngl::ncjson lwrite;
 			std::array<std::string, ngl::ENET_COUNT> lparm = { "tcp","ws","kcp" };
 			for (ngl::net_works& item : aserver->m_net)
 			{
-				ngl::njwrite lwritetemp;
-				ngl::njson::write(lwritetemp
+				ngl::ncjson lwritetemp;
+				ngl::njson::push(lwritetemp.json()
 					, "ip", item.m_ip
 					, "nip", item.m_nip
 					, "port", item.m_port
 				);
-				ngl::njson::write(lwrite, lparm[item.m_type].c_str(), lwritetemp.nofree());
+				ngl::njson::push(lwrite.json(), lparm[item.m_type].c_str(), lwritetemp);
 			}
 
 			lwrite.set_nonformatstr(true);
-			std::string lnet = lwrite.get();
+			std::string lnet = lwrite.str();
 
 			lstream << "&net=" << lnet;
 

@@ -16,19 +16,19 @@ namespace ngl
 {
 	bool actor_mail::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::njread lojson(adata.get_data()->data()->m_json.c_str());
+		ncjson lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (!njson::read(lojson, "operator", loperator))
+		if (!njson::pop(lojson.json(), "operator", loperator))
 		{
 			return true;
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::add("get_mails") = [this](int id, ngl::njread& aos)
+			handle_cmd::add("get_mails") = [this](int id, ncjson& aos)
 				{
 					gcmd<std::string> pro(id, "get_mails");
 					int64_t roleid = 0;
-					if (!njson::read(aos, "data", roleid))
+					if (!njson::pop(aos.json(), "data", roleid))
 					{
 						return;
 					}
@@ -38,7 +38,7 @@ namespace ngl
 					pro.m_istoutf8 = false;
 				};
 
-			handle_cmd::add("add_mail") = [this](int id, ngl::njread& aos)
+			handle_cmd::add("add_mail") = [this](int id, ncjson& aos)
 				{
 					gcmd<bool> pro(id, "add_mail", false);
 					struct gm_mailitem
@@ -55,7 +55,7 @@ namespace ngl
 						dprotocol(gm_mail, m_roleid, m_content, m_items)
 					};
 					gm_mail recv;
-					if (!njson::read(aos, "data", recv))
+					if (!njson::pop(aos.json(), "data", recv))
 					{
 						return;
 					}
@@ -71,7 +71,7 @@ namespace ngl
 					pro.m_data = true;
 				};
 
-			handle_cmd::add("del_mail") = [this](int id, ngl::njread& aos)
+			handle_cmd::add("del_mail") = [this](int id, ncjson& aos)
 				{
 					gcmd<bool> pro(id, "del_mail", false);
 					struct gm_deletemail
@@ -81,7 +81,7 @@ namespace ngl
 						dprotocol(gm_deletemail, m_roleid, m_mailid)
 					};
 					gm_deletemail ldelmail;
-					if (!njson::read(aos, "data", ldelmail))
+					if (!njson::pop(aos.json(), "data", ldelmail))
 					{
 						return;
 					}

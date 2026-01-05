@@ -38,6 +38,6 @@ namespace ngl
 
 		static void register_fun(ecmd anum, const ecmd_callback& afun);
 
-		static bool sendcmd(asio_kcp* akcp, i32_sessionid asession, ecmd acmd, const std::string& ajson);
+		static bool sendcmd(asio_kcp* akcp, i32_sessionid asession, ecmd acmd, const char* ajson);
 	};
 }//namespace ngl

@@ -68,7 +68,7 @@ namespace ngl
 		// # 发送邮件,根据掉落id，允许任意位置调用
 		static bool sendmail(i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm);
 
-		using handle_cmd = cmd<actor_mail, std::string, int, ngl::njread&>;
+		using handle_cmd = cmd<actor_mail, std::string, int, ncjson&>;
 
 		bool timer_handle(const message<np_timerparm>& adata);
 

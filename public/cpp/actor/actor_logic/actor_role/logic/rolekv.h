@@ -77,7 +77,7 @@ namespace ngl
 		bool value(const char* akey, double& adata);
 
 		template <typename T>
-		void set_value(const char* akey, T& adata)
+		void set_value(const char* akey, const T& adata)
 		{
 			data_modified_return_get(lpdbrolekeyvalue, get(get_actor()->id_guid()));
 			(*lpdbrolekeyvalue->mutable_mdata())[akey] = std::format("{}", adata);
@@ -91,16 +91,16 @@ namespace ngl
 			{
 				return false;
 			}
-			njread ljread(ltemp.c_str());
-			return njson::read(ljread, arg...);
+			ncjson ljread(ltemp.c_str());
+			return njson::pop(ljread, arg...);
 		}
 
 		template <typename ...ARG>
 		bool set_json_value(const char* akey, ARG&... arg)
 		{
-			njwrite lwrite;
-			njson::write(arg...);
-			std::string lstr = lwrite.get();
+			ncjson lwrite;
+			njson::write(lwrite.json(), arg...);
+			std::string lstr = lwrite.str();
 			set_value(akey, lstr);
 		}
 	};

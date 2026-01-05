@@ -17,15 +17,15 @@ namespace ngl
 {
 	bool actor_ranklist::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::njread lojson(adata.get_data()->data()->m_json.c_str());
+		ncjson lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (!njson::read(lojson, "operator", loperator))
+		if (!njson::pop(lojson.json(), "operator", loperator))
 		{
 			return true;
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::add("ranklist") = [this](int id, ngl::njread& aos)
+			handle_cmd::add("ranklist") = [this](int id, ncjson& aos)
 				{
 					gcmd<std::string> pro(id, "ranklist");
 					struct json_rank
@@ -37,7 +37,7 @@ namespace ngl
 						dprotocol(json_rank, m_type, m_page)
 					};
 					json_rank lrank;
-					if (!njson::read(aos, "data", lrank))
+					if (!njson::pop(aos.json(), "data", lrank))
 					{
 						return true;
 					}

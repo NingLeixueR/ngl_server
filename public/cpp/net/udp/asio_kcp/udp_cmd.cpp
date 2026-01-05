@@ -49,9 +49,9 @@ namespace ngl
 		handle_cmd::add(anum) = afun;
 	}
 
-	bool udp_cmd::sendcmd(asio_kcp* akcp, i32_sessionid asession, udp_cmd::ecmd acmd, const std::string& ajson)
+	bool udp_cmd::sendcmd(asio_kcp* akcp, i32_sessionid asession, udp_cmd::ecmd acmd, const char* ajson)
 	{
-		std::string lbuff = std::format("ecmd*{}*{}", (int)acmd, ajson.c_str());
+		std::string lbuff = std::format("ecmd*{}*{}", (int)acmd, ajson);
 		if (lbuff.empty())
 		{
 			log_error()->print("udp_cmd::sendcmd fail [{}][{}]", (int)acmd, ajson);
