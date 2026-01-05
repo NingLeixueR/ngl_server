@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 26-01-05 15:11:34
+// 创建时间 26-01-05 18:40:19
 #include "pb_field.cpp"
 #include "session_endpoint.cpp"
 #include "attribute_value.cpp"
@@ -77,6 +77,7 @@
 #include "nrfun.cpp"
 #include "njson.cpp"
 #include "nguid.cpp"
+#include "grids.cpp"
 #include "cJSON.cpp"
 #include "actor.cpp"
 #include "unit.cpp"
@@ -86,12 +87,15 @@
 #include "nlog.cpp"
 #include "mail.cpp"
 #include "itme.cpp"
+#include "grid.cpp"
 #include "buff.cpp"
 #include "xml.cpp"
 #include "nsp.cpp"
 #include "net.cpp"
+#include "map.cpp"
 #include "csv.cpp"
 #include "bag.cpp"
+#include "aoi.cpp"
 #include "db.cpp"
 #include "actor_example_guess_number_handle.cpp"
 #include "actor_activity_manage_handle.cpp"
