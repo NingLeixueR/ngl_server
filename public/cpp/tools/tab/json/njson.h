@@ -459,6 +459,7 @@ namespace ngl
 				}
 				adata.push_back(ltemp);
 			}
+			return true;
 		}
 
 		static void push(cJSON* ajson, const std::vector<T>& adata)
@@ -515,6 +516,7 @@ namespace ngl
 				}
 				adata.push_back(ltemp);
 			}
+			return true;
 		}
 
 		static void push(cJSON* ajson, const std::list<T>& adata)
@@ -571,6 +573,7 @@ namespace ngl
 				}
 				adata.insert(ltemp);
 			}
+			return true;
 		}
 
 		static void push(cJSON* ajson, const std::set<T>& adata)
@@ -1594,13 +1597,14 @@ namespace ngl
 			{
 				free_nonformatstr();
 				m_nonformatstr = cJSON_PrintUnformatted(m_json);
+				return m_nonformatstr;
 			}
 			else
 			{
 				free_str();
 				m_str = cJSON_Print(m_json);
+				return m_str;
 			}
-			return m_str;
 		}
 
 		~ncjson()
@@ -1647,12 +1651,25 @@ namespace ngl
 		}
 		else
 		{
-			cJSON* ljson = ajson;
-			if (akey != nullptr)
+			if constexpr (is_protobuf_message<T>::value)
 			{
-				ljson = cJSON_GetObjectItem(ajson, akey);
+				cJSON* ljson = cJSON_GetObjectItem(ajson, akey);
+				ncjson lncjson(ljson);
+				lncjson.nofree();
+				if (!tools::json2proto(lncjson.str(), adata))
+				{
+					return false;
+				}
 			}
-			return adata.json_pop(ljson);
+			else
+			{
+				cJSON* ljson = ajson;
+				if (akey != nullptr)
+				{
+					ljson = cJSON_GetObjectItem(ajson, akey);
+				}
+				return adata.json_pop(ljson);
+			}
 		}
 	}
 
@@ -1684,9 +1701,6 @@ namespace ngl
 	template <typename T>
 	void json_format<T>::push(cJSON* ajson, const T& adata)
 	{
-		if constexpr (!std::is_enum<T>::value)
-		{
-			adata.json_push(ajson, nullptr);
-		}
+		push(ajson, nullptr, adata);
 	}
 }//namespace ngl
