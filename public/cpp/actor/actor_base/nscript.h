@@ -45,7 +45,7 @@ namespace ngl
 	{
 		i64_actorid m_nguid = nguid::make();
 
-		def_nlua_function2("m_nguid", m_nguid)
+		def_nlua_tab_function("m_nguid", m_nguid)
 	};
 
 	template <enscript ESCRIPT>
@@ -223,8 +223,7 @@ namespace ngl
 				m_data(adata)
 			{}
 
-			def_nlua_push2(tools::type_name<T>().c_str(), m_data);
-			def_nlua_pop2(tools::type_name<T>().c_str(), m_data);
+			def_nlua_tab_function(tools::type_name<T>().c_str(), m_data)
 		};
 
 		template <typename T>

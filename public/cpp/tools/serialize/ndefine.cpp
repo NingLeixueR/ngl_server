@@ -25,7 +25,7 @@ namespace ngl
 		pbdb::db_family m_4;
 		std::list<pbdb::db_family> m_5;
 
-		//def_jsonfunction_parm("m_1", m_1, "m_2", m_2, "m_3", m_3)
+		//def_jsonfunction_special_parm("m_1", m_1, "m_2", m_2, "m_3", m_3)
 		def_parmname
 		def_jsonfunction(m_1, m_2, m_3, m_4, m_5)
 	};
@@ -37,7 +37,7 @@ namespace ngl
 		std::vector<int32_t> m_3;
 		std::vector<bbbbb> m_4;
 
-		def_jsonfunction_parm("m_1", m_1, "m_2", m_2, "m_3", m_3, "m_4", m_4)
+		def_jsonfunction_special_parm("m_1", m_1, "m_2", m_2, "m_3", m_3, "m_4", m_4)
 
 	};
 
