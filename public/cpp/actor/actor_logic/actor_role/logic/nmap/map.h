@@ -23,8 +23,8 @@ namespace ngl
 		grids											m_grids;		// 视野格子
 		obstacles										m_obstacles;	// 寻路格子(单位小格子)
 		int												m_tabid;		// 地图表格配置数据
-		std::set<i64_actorid, unit_role*>				m_roleunit;
-		std::set<i64_actorid, unit_monster*>			m_monster;
+		std::map<i64_actorid, unit_role*>				m_roleunit;
+		std::map<i64_actorid, unit_monster*>			m_monster;
 	public:
 		aoimap();
 
