@@ -241,9 +241,7 @@ void json_push(cJSON* ajson, const char* akey) const								\
 def_jsonfunction_function	
 #endif
 
-													
-
-
+	
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
 #define def_jsonfunction(...)														\
 bool json_pop(cJSON* ajson)															\
@@ -289,7 +287,7 @@ void json_push(cJSON* ajson, const char* akey) const								\
 		ltemp.push(0 __VA_OPT__(,) ##__VA_ARGS__);									\
 	}																				\
 }																					\
-def_jsonfunction_parm_function
+def_jsonfunction_function
 #endif
 
 #define def_nlua_function(...)												\
