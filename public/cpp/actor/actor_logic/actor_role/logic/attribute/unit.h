@@ -15,25 +15,17 @@
 
 #include "attribute.h"
 #include "net.pb.h"
+#include "db.pb.h"
 
 namespace ngl
 {
-	enum eunit
-	{
-		eunit_null = 0,
-		eunit_role = 1,
-		eunit_monster = 2,
-	};
-
 	class unit
 	{
-		eunit					m_type = eunit_null;
+		pbdb::EUNIT				m_type = pbdb::EUNIT::EUNIT_FAIL;
 		i64_actorid				m_id = nguid::make();
 		attribute				m_attribute;
 		dynamic_attribute		m_dynamic;
-		
-
-
+		pbdb::POSITION			m_position;
 	public:
 		void init(attribute aattribute)
 		{
@@ -41,8 +33,8 @@ namespace ngl
 			m_dynamic.init(m_attribute.get_attribute());
 		}
 
-		bool set_type(eunit atype);
-		eunit type();
+		bool set_type(pbdb::EUNIT atype);
+		pbdb::EUNIT type();
 
 		attribute& get_attribute();
 
@@ -50,6 +42,19 @@ namespace ngl
 		int32_t id();
 
 		dynamic_attribute& dynamic();
+
+		void set_x(int32_t ax);
+		void set_y(int32_t ay);
+		int32_t x();
+		int32_t y();
+		pbdb::POSITION& position();
+		bool is_position_invalid();
+
+		void set_angle(int32_t aangle);
+		int32_t angle();
+
+		void set_speed(int32_t aspeed);
+		int32_t speed();
 	};
 
 	class unit_role: public unit

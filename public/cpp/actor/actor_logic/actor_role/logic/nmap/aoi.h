@@ -80,9 +80,9 @@ namespace ngl
 		static float distance(float ax1, float ay1, float ax2, float ay2);
 
 		// 计算两点间距离
-		static float distance(const pbnet::VECTOR2& apos1, const pbnet::VECTOR2& apos2);
+		static float distance(const pbdb::VECTOR2& apos1, const pbdb::VECTOR2& apos2);
 
 		// 计算两点间距离
-		static float distance(const pbnet::VECTOR3& apos1, const pbnet::VECTOR3& apos2);
+		static float distance(const pbdb::VECTOR3& apos1, const pbdb::VECTOR3& apos2);
 	};
 }// namespace ngl

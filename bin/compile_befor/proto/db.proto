@@ -288,3 +288,60 @@ message db_testlua
 	}
 	map<int32,luadata>		mdatas			= 3; 
 }
+
+///////////////////////////////////////////////////////////////
+//// ################ [aoi地图相关 Start] ################ ////
+//// ##################################################### ////
+
+enum EUNIT
+{
+	EUNIT_FAIL		= 0;		// 错误类型
+	EUNIT_ROLE		= 1;		// 玩家单位
+	EUNIT_MONSTER	= 2;		// 怪物单位
+	EUNIT_REGION	= 3;		// 区域单位
+};
+
+message VECTOR2
+{
+	optional int32 mx = 1;
+	optional int32 my = 2;
+};
+
+message VECTOR3
+{
+	optional int32 mx = 1;
+	optional int32 my = 2;
+	optional int32 mz = 3;
+};
+
+message POSITION
+{
+	optional int32 mmapid		= 1;			// 地图id
+	optional VECTOR2 mposition	= 2;
+	optional int32 mangle		= 3;			// 方向角度[0-360]
+	optional int32 mspeed		= 4;			// 速度[米/秒]
+};
+
+message ATTRIBUTE
+{
+	 optional int32 mtype				= 1;	// EnumAttribute
+	 optional int64 mvalue				= 2;	// 属性值
+};
+
+message UNIT_MODULE
+{
+	optional int32 mmtype			= 1;		// EnumModule
+	repeated ATTRIBUTE mmodules		= 2;
+};
+
+message UNIT
+{
+	optional EUNIT mtype				= 1;
+	optional int64 mid					= 2;
+	optional POSITION mposition			= 3;
+	repeated UNIT_MODULE mmodules		= 4;
+};
+
+//// ###################################################### ///
+//// ################ [aoi地图相关 Finish] ################ ///
+///////////////////////////////////////////////////////////////

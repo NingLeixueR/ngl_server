@@ -551,63 +551,16 @@ message PROBUFF_NET_ROLESTAT//G2C [actor_robot]
 //// ################ [aoi地图相关 Start] ################ ////
 //// ##################################################### ////
 
-enum EUNIT
-{
-	EUNIT_ROLE		= 0;		// 玩家单位
-	EUNIT_MONSTER	= 1;		// 怪物单位
-	EUNIT_REGION	= 2;		// 区域单位
-};
-
-message VECTOR2
-{
-	optional int32 mx = 1;
-	optional int32 my = 2;
-};
-
-message VECTOR3
-{
-	optional int32 mx = 1;
-	optional int32 my = 2;
-	optional int32 mz = 3;
-};
-
-message POSITION
-{
-	optional VECTOR2 mposition	= 1;
-	optional int32 mangle		= 2;			// 方向角度[0-360]
-	optional int32 mspeed		= 3;			// 速度[米/秒]
-};
-
-message ATTRIBUTE
-{
-	 optional int32 mtype				= 1;	// EnumAttribute
-	 optional int64 mvalue				= 2;	// 属性值
-};
-
-message UNIT_MODULE
-{
-	optional int32 mmtype			= 1;		// EnumModule
-	repeated ATTRIBUTE mmodules		= 2;
-};
-
-message UNIT
-{
-	optional eunit mtype				= 1;
-	optional int64 mid					= 2;
-	optional POSITION mposition			= 3;
-	repeated UNIT_MODULE mmodules		= 4;
-};
-
 // 同步属性值
 message PROBUFF_NET_SYNC_ATTRIBUTE//G2C [actor_robot]
 {
-	repeated UNIT_MODULE mmodules		= 1;
+	repeated pbdb.UNIT_MODULE mmodules		= 1;
 };
 
 // 同步玩家信息
 message PROBUFF_NET_SYNC_UNIT//G2C [actor_robot]
 {
-	repeated UNIT munits				= 1;
+	repeated pbdb.UNIT munits				= 1;
 };
 
 // 进入视野
@@ -620,13 +573,13 @@ message PROBUFF_NET_ENTER_LEAVE_VIEW//G2C [actor_robot]
 // 同步位置方向信息
 message PROBUFF_NET_SYNC_POSITION//G2C [actor_robot]
 {
-	map<int64,POSITION> mposition = 1;
+	map<int64,pbdb.POSITION> mposition = 1;
 };
 
 // 修改方向,速度
 message PROBUFF_NET_CHANGE_ANGLE//C2G [actor_role]
 {
-	optional POSITION mposition		= 1;
+	optional pbdb.POSITION mposition		= 1;
 };
 
 //// ###################################################### ///

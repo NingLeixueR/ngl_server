@@ -16,12 +16,9 @@
 
 #include "net.pb.h"
 
-#include "tools.h"
 #include "operator_file.h"
-#include "xmlprotocol.h"
 #include "xml_protocol.h"
-
-
+#include "tools.h"
 
 
 int main(int argc, char** argv) 

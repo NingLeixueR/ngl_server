@@ -191,12 +191,12 @@ namespace ngl
 		return m_fightscore;
 	}
 
-	void attribute_value::topb(pbnet::UnitModule& aunitmodule)
+	void attribute_value::topb(pbdb::UNIT_MODULE& aunitmodule)
 	{
 		aunitmodule.set_mmtype(m_module);
 		for (std::pair<const EnumAttribute, int64_t>& item : m_fight)
 		{
-			pbnet::UnitAttribute* lptemp = aunitmodule.add_mmodules();
+			pbdb::ATTRIBUTE* lptemp = aunitmodule.add_mmodules();
 			lptemp->set_mtype(item.first);
 			lptemp->set_mvalue(item.second);
 		}

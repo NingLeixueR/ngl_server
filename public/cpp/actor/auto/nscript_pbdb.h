@@ -1,19 +1,5 @@
-/*
-* Copyright (c) [2020-2025] NingLeixueR
-* 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
-* 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
-* 
-* 许可详情参见项目根目录下的 LICENSE 文件：
-* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
-*/
-
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-12-23 11:25:38】
+ // 创建时间【2026-01-06 15:34:59】
 
 #pragma once
 #include "ndefine.h"
@@ -23,6 +9,272 @@
 
 namespace ngl
 {
+   template <>
+   struct serialize_lua<pbdb::ATTRIBUTE>
+   {
+       static void stack_push(lua_State* L, const pbdb::ATTRIBUTE& adata)
+       {
+            ngl::nlua_table::table_push(L, "mtype", adata.mtype(),"mvalue", adata.mvalue());
+       }
+       static bool stack_pop(lua_State* L, pbdb::ATTRIBUTE& adata, bool apop = true)
+       {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
+           int32_t lmtype;
+           int64_t lmvalue;
+           if(!ngl::nlua_table::table_pop(L, "mtype", lmtype, "mvalue", lmvalue))
+           {
+               return false;
+           }
+           adata.set_mtype(lmtype);
+           adata.set_mvalue(lmvalue);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
+           return true;
+       }
+       static void table_push(lua_State * L, const char* aname, const pbdb::ATTRIBUTE& adata)
+       {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
+       }
+       static bool table_pop(lua_State * L, const char* aname, pbdb::ATTRIBUTE& adata)
+       {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
+       }
+   };
+   template <>
+   struct serialize_lua<pbdb::POSITION>
+   {
+       static void stack_push(lua_State* L, const pbdb::POSITION& adata)
+       {
+            ngl::nlua_table::table_push(L, "mmapid", adata.mmapid(),"mposition", adata.mposition(),"mangle", adata.mangle(),"mspeed", adata.mspeed());
+       }
+       static bool stack_pop(lua_State* L, pbdb::POSITION& adata, bool apop = true)
+       {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
+           int32_t lmmapid;
+           int32_t lmangle;
+           int32_t lmspeed;
+           if(!ngl::nlua_table::table_pop(L, "mmapid", lmmapid, "mposition",  *adata.mutable_mposition(), "mangle", lmangle, "mspeed", lmspeed))
+           {
+               return false;
+           }
+           adata.set_mmapid(lmmapid);
+           adata.set_mangle(lmangle);
+           adata.set_mspeed(lmspeed);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
+           return true;
+       }
+       static void table_push(lua_State * L, const char* aname, const pbdb::POSITION& adata)
+       {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
+       }
+       static bool table_pop(lua_State * L, const char* aname, pbdb::POSITION& adata)
+       {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
+       }
+   };
+   template <>
+   struct serialize_lua<pbdb::UNIT>
+   {
+       static void stack_push(lua_State* L, const pbdb::UNIT& adata)
+       {
+            ngl::nlua_table::table_push(L, "mtype", adata.mtype(),"mid", adata.mid(),"mposition", adata.mposition(),"mmodules", adata.mmodules());
+       }
+       static bool stack_pop(lua_State* L, pbdb::UNIT& adata, bool apop = true)
+       {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
+           pbdb::EUNIT lmtype;
+           int64_t lmid;
+           if(!ngl::nlua_table::table_pop(L, "mtype", lmtype, "mid", lmid, "mposition",  *adata.mutable_mposition(), "mmodules",  *adata.mutable_mmodules()))
+           {
+               return false;
+           }
+           adata.set_mtype(lmtype);
+           adata.set_mid(lmid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
+           return true;
+       }
+       static void table_push(lua_State * L, const char* aname, const pbdb::UNIT& adata)
+       {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
+       }
+       static bool table_pop(lua_State * L, const char* aname, pbdb::UNIT& adata)
+       {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
+       }
+   };
+   template <>
+   struct serialize_lua<pbdb::UNIT_MODULE>
+   {
+       static void stack_push(lua_State* L, const pbdb::UNIT_MODULE& adata)
+       {
+            ngl::nlua_table::table_push(L, "mmtype", adata.mmtype(),"mmodules", adata.mmodules());
+       }
+       static bool stack_pop(lua_State* L, pbdb::UNIT_MODULE& adata, bool apop = true)
+       {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
+           int32_t lmmtype;
+           if(!ngl::nlua_table::table_pop(L, "mmtype", lmmtype, "mmodules",  *adata.mutable_mmodules()))
+           {
+               return false;
+           }
+           adata.set_mmtype(lmmtype);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
+           return true;
+       }
+       static void table_push(lua_State * L, const char* aname, const pbdb::UNIT_MODULE& adata)
+       {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
+       }
+       static bool table_pop(lua_State * L, const char* aname, pbdb::UNIT_MODULE& adata)
+       {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
+       }
+   };
+   template <>
+   struct serialize_lua<pbdb::VECTOR2>
+   {
+       static void stack_push(lua_State* L, const pbdb::VECTOR2& adata)
+       {
+            ngl::nlua_table::table_push(L, "mx", adata.mx(),"my", adata.my());
+       }
+       static bool stack_pop(lua_State* L, pbdb::VECTOR2& adata, bool apop = true)
+       {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
+           int32_t lmx;
+           int32_t lmy;
+           if(!ngl::nlua_table::table_pop(L, "mx", lmx, "my", lmy))
+           {
+               return false;
+           }
+           adata.set_mx(lmx);
+           adata.set_my(lmy);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
+           return true;
+       }
+       static void table_push(lua_State * L, const char* aname, const pbdb::VECTOR2& adata)
+       {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
+       }
+       static bool table_pop(lua_State * L, const char* aname, pbdb::VECTOR2& adata)
+       {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
+       }
+   };
+   template <>
+   struct serialize_lua<pbdb::VECTOR3>
+   {
+       static void stack_push(lua_State* L, const pbdb::VECTOR3& adata)
+       {
+            ngl::nlua_table::table_push(L, "mx", adata.mx(),"my", adata.my(),"mz", adata.mz());
+       }
+       static bool stack_pop(lua_State* L, pbdb::VECTOR3& adata, bool apop = true)
+       {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
+           int32_t lmx;
+           int32_t lmy;
+           int32_t lmz;
+           if(!ngl::nlua_table::table_pop(L, "mx", lmx, "my", lmy, "mz", lmz))
+           {
+               return false;
+           }
+           adata.set_mx(lmx);
+           adata.set_my(lmy);
+           adata.set_mz(lmz);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
+           return true;
+       }
+       static void table_push(lua_State * L, const char* aname, const pbdb::VECTOR3& adata)
+       {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
+       }
+       static bool table_pop(lua_State * L, const char* aname, pbdb::VECTOR3& adata)
+       {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
+       }
+   };
    template <>
    struct serialize_lua<pbdb::activity_drawcompliance>
    {

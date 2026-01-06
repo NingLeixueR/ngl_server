@@ -97,7 +97,7 @@ namespace ngl
 		int64_t fightscore();
 
 		// 转换为pb结构
-		void topb(pbnet::UnitModule& aunitmodule);
+		void topb(pbdb::UNIT_MODULE& aunitmodule);
 	};
 }// namespace ngl
 
