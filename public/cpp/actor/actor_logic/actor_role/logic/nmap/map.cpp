@@ -45,11 +45,6 @@ namespace ngl
 		{
 			return lpunit;
 		}
-		lpunit = find_region(aid);
-		if (lpunit != nullptr)
-		{
-			return lpunit;
-		}
 		return nullptr;
 	}
 
@@ -68,7 +63,7 @@ namespace ngl
 		return true;
 	}
 
-	bool aoimap::copy_unit(unit* aunit, pbnet::UNIT* aUNIT)
+	bool aoimap::copy_unit(unit* aunit, pbdb::UNIT* aUNIT)
 	{
 		if (aunit == nullptr)
 		{
@@ -81,7 +76,7 @@ namespace ngl
 		return true;
 	}
 
-	bool aoimap::get_unit(i64_actorid aid, pbnet::UNIT* aunit)
+	bool aoimap::get_unit(i64_actorid aid, pbdb::UNIT* aunit)
 	{
 		unit* lpunit = find_unit(aid);
 		return copy_unit(lpunit, aunit);
@@ -93,9 +88,7 @@ namespace ngl
 
 		if (find_unit(aunit->id()) != nullptr)
 		{
-			log_error()->print("aoi_map::enter(tid={},id={}) enter find_unit() != nullptr"
-				, m_tabid, aunit->id()
-			);
+			log_error()->print("aoi_map::enter(tid={},id={}) enter find_unit() != nullptr", m_tabid, aunit->id());
 			return false;
 		}
 
@@ -118,8 +111,8 @@ namespace ngl
 				grid* lpgrid = m_grids.get_grid(id);
 				if (lpgrid != nullptr)
 				{
-					std::set<i64_actorid>* lpset = lpgrid->get_unitlist();
-					for (i64_actorid item : *lpset)
+					const std::set<i64_actorid> lpset = lpgrid->get_unitlist();
+					for (i64_actorid item : lpset)
 					{
 						lview.insert(item);
 					}
@@ -146,8 +139,8 @@ namespace ngl
 				grid* lpgrid = m_grids.get_grid(id);
 				if (lpgrid != nullptr)
 				{
-					std::set<i64_actorid>* lpset = lpgrid->get_unitlist();
-					for (i64_actorid item : *lpset)
+					const std::set<i64_actorid>& lpset = lpgrid->get_unitlist();
+					for (i64_actorid item : lpset)
 					{
 						lview.insert(item);
 					}
@@ -173,7 +166,7 @@ namespace ngl
 	void aoimap::leave(unit* aunit)
 	{
 		int lgrid = m_grids.id(aunit->x(), aunit->y());
-		m_grids.leave(aunit, lgrid);
+		m_grids.leave(aunit->id(), lgrid);
 
 		pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW pro;
 		pro.add_munits(aunit->id());
@@ -186,8 +179,8 @@ namespace ngl
 			grid* lpgrid = m_grids.get_grid(id);
 			if (lpgrid != nullptr)
 			{
-				std::set<i64_actorid>* lpset = lpgrid->get_unitlist();
-				actor::send_client(*lpset, pro);
+				const std::set<i64_actorid>& lpset = lpgrid->get_unitlist();
+				actor::send_client(lpset, pro);
 			}
 		}
 	}
@@ -204,8 +197,8 @@ namespace ngl
 			grid* lpgrid = m_grids.get_grid(id);
 			if (lpgrid != nullptr)
 			{
-				std::set<i64_actorid>* lpset = lpgrid->get_unitlist();
-				actor::send_client(*lpset, pro);
+				const std::set<i64_actorid>& lpset = lpgrid->get_unitlist();
+				actor::send_client(lpset, pro);
 			}
 		}
 	}
@@ -231,9 +224,9 @@ namespace ngl
 	}
 
 	// 改变方向
-	void aoimap::change_angle(i64_actorid aroleid, int32_t aangle)
+	void aoimap::change_angle(i64_actorid aunitid, int32_t aangle)
 	{
-		unit* lpunit = find_unit(aroleid);
+		unit* lpunit = find_unit(aunitid);
 		if (lpunit == nullptr)
 		{
 			return;
@@ -242,9 +235,9 @@ namespace ngl
 	}
 
 	// 改变速度
-	void aoimap::change_speed(i64_actorid aroleid, int32_t aspeed)
+	void aoimap::change_speed(i64_actorid aunitid, int32_t aspeed)
 	{
-		unit* lpunit = find_unit(aroleid);
+		unit* lpunit = find_unit(aunitid);
 		if (lpunit == nullptr)
 		{
 			return;
@@ -252,15 +245,15 @@ namespace ngl
 		lpunit->set_speed(aspeed);
 	}
 
-	void aoimap::change(pbnet::UNIT_POSITION& aposition)
+	void aoimap::change(i64_actorid aunitid, pbdb::POSITION& aposition)
 	{
-		change_angle(aposition.mid(), aposition.mangle());
-		change_speed(aposition.mid(), aposition.mspeed());
+		change_angle(aunitid, aposition.mangle());
+		change_speed(aunitid, aposition.mspeed());
 	}
 
-	void aoimap::update(int64_t ams)
+	/*void aoimap::update(int64_t ams)
 	{
-		pbnet::VECTOR2 lpos;
+		pbdb::VECTOR2 lpos;
 		for (auto itor = m_roleunit.begin();
 			itor != m_roleunit.end(); ++itor)
 		{
@@ -280,5 +273,5 @@ namespace ngl
 			itor->second->update(ams, lpos);
 			move(itor->second, lpos.mx(), lpos.my());
 		}
-	}
+	}*/
 }// namespace ngl

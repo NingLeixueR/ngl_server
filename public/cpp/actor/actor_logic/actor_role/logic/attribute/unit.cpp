@@ -16,9 +16,9 @@
 
 namespace ngl
 {
-	bool unit::set_type(eunit atype)
+	bool unit::set_type(pbdb::EUNIT atype)
 	{
-		if (m_type != eunit_null)
+		if (m_type != pbdb::EUNIT::EUNIT_FAIL)
 		{
 			log_error()->print("unit::set_type fail [{}:{}]", (int32_t)m_type, (int32_t)atype);
 			return false;
@@ -27,7 +27,7 @@ namespace ngl
 		return true;
 	}
 
-	eunit unit::type()
+	pbdb::EUNIT unit::type()
 	{
 		return m_type;
 	}
@@ -56,5 +56,67 @@ namespace ngl
 	dynamic_attribute& unit::dynamic()
 	{
 		return m_dynamic;
+	}
+
+	void unit::set_x(int32_t ax)
+	{
+		m_position.mutable_mposition()->set_mx(ax);
+	}
+
+	void unit::set_y(int32_t ay)
+	{
+		m_position.mutable_mposition()->set_my(ay);
+	}
+
+	int32_t unit::x()
+	{
+		return m_position.mposition().mx();
+	}
+
+	int32_t unit::y()
+	{
+		return m_position.mposition().my();
+	}
+
+	pbdb::POSITION& unit::position()
+	{
+		return m_position;
+	}
+
+	bool unit::is_position_invalid()
+	{
+		if (m_position.mmapid() <= 0)
+		{
+			return true;
+		}
+		if (x() <= 0)
+		{
+			return true;
+		}
+		if (y() <= 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	void unit::set_angle(int32_t aangle)
+	{
+		m_position.set_mangle(aangle);
+	}
+
+	int32_t unit::angle()
+	{
+		return m_position.mangle();
+	}
+
+	void unit::set_speed(int32_t aspeed)
+	{
+		m_position.set_mspeed(aspeed);
+	}
+
+	int32_t unit::speed()
+	{
+		return m_position.mspeed();
 	}
 }// namespace ngl

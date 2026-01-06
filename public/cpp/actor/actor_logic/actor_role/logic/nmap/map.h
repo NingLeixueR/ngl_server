@@ -40,11 +40,11 @@ namespace ngl
 		// # 初始化
 		bool init(int32_t atid);
 
-		// # 拷贝 unit => pbnet::UNIT
-		bool copy_unit(unit* aunit, pbnet::UNIT* aUNIT);
+		// # 拷贝 unit => pbdb::UNIT
+		bool copy_unit(unit* aunit, pbdb::UNIT* aUNIT);
 
 		// # 根据unit id获取pbnet::UNIT
-		bool get_unit(i64_actorid aid, pbnet::UNIT* aunit);
+		bool get_unit(i64_actorid aid, pbdb::UNIT* aunit);
 
 		virtual bool enter(unit* aunit, int32_t ax, int32_t ay);
 
@@ -55,13 +55,13 @@ namespace ngl
 		bool move(unit* aunit, int32_t ax, int32_t ay);
 
 		// 改变方向
-		void change_angle(i64_actorid aroleid, int32_t aangle);
+		void change_angle(i64_actorid aunitid, int32_t aangle);
 
 		// 改变速度
-		void change_speed(i64_actorid aroleid, int32_t aspeed);
+		void change_speed(i64_actorid aunitid, int32_t aspeed);
 		
-		void change(pbnet::UNIT_POSITION& aposition);
+		void change(i64_actorid aunitid, pbdb::POSITION& aposition);
 
-		void update(int64_t ams);
+		//void update(int64_t ams);
 	};
 }// namespace ngl

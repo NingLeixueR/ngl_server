@@ -1,7 +1,9 @@
 #pragma once
 
+#include "xml_serialize.h"
 #include "operator_file.h"
 #include "xmlprotocol.h"
+#include "localtime.h"
 #include "net.pb.h"
 #include "tools.h"
 

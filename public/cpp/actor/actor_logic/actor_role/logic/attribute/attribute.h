@@ -90,7 +90,7 @@ namespace ngl
 		{
 			for (std::pair<const EnumModule, attribute_value>& item : m_moduledata)
 			{
-				pbnet::UnitModule* lpmodule = apro.add_mmodules();
+				pbdb::UNIT_MODULE* lpmodule = apro.add_mmodules();
 				item.second.topb(*lpmodule);
 			}
 		}

@@ -627,6 +627,7 @@ namespace ngl
 	}
 }//namespace ngl
 
+#include "ndefine.h"
 
 template <bool ATTR>
 class help_xml

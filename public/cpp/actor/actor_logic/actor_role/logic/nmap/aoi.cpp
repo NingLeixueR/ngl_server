@@ -133,12 +133,12 @@ namespace ngl
 		return std::sqrt(lx * lx + ly * ly);
 	}
 
-	float aoi::distance(const pbnet::VECTOR2& apos1, const pbnet::VECTOR2& apos2)
+	float aoi::distance(const pbdb::VECTOR2& apos1, const pbdb::VECTOR2& apos2)
 	{
 		return distance((float)apos1.mx(), (float)apos1.my(), (float)apos2.mx(), (float)apos2.my());
 	}
 
-	float aoi::distance(const pbnet::VECTOR3& apos1, const pbnet::VECTOR3& apos2)
+	float aoi::distance(const pbdb::VECTOR3& apos1, const pbdb::VECTOR3& apos2)
 	{
 		return distance((float)apos1.mx(), (float)apos1.my(), (float)apos2.mx(), (float)apos2.my());
 	}

@@ -51,7 +51,7 @@ struct TableStruct_db_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[44]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[50]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -59,6 +59,24 @@ struct TableStruct_db_2eproto {
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_db_2eproto;
 namespace pbdb {
+class ATTRIBUTE;
+class ATTRIBUTEDefaultTypeInternal;
+extern ATTRIBUTEDefaultTypeInternal _ATTRIBUTE_default_instance_;
+class POSITION;
+class POSITIONDefaultTypeInternal;
+extern POSITIONDefaultTypeInternal _POSITION_default_instance_;
+class UNIT;
+class UNITDefaultTypeInternal;
+extern UNITDefaultTypeInternal _UNIT_default_instance_;
+class UNIT_MODULE;
+class UNIT_MODULEDefaultTypeInternal;
+extern UNIT_MODULEDefaultTypeInternal _UNIT_MODULE_default_instance_;
+class VECTOR2;
+class VECTOR2DefaultTypeInternal;
+extern VECTOR2DefaultTypeInternal _VECTOR2_default_instance_;
+class VECTOR3;
+class VECTOR3DefaultTypeInternal;
+extern VECTOR3DefaultTypeInternal _VECTOR3_default_instance_;
 class activity_drawcompliance;
 class activity_drawcomplianceDefaultTypeInternal;
 extern activity_drawcomplianceDefaultTypeInternal _activity_drawcompliance_default_instance_;
@@ -193,6 +211,12 @@ class rankitemDefaultTypeInternal;
 extern rankitemDefaultTypeInternal _rankitem_default_instance_;
 }  // namespace pbdb
 PROTOBUF_NAMESPACE_OPEN
+template<> ::pbdb::ATTRIBUTE* Arena::CreateMaybeMessage<::pbdb::ATTRIBUTE>(Arena*);
+template<> ::pbdb::POSITION* Arena::CreateMaybeMessage<::pbdb::POSITION>(Arena*);
+template<> ::pbdb::UNIT* Arena::CreateMaybeMessage<::pbdb::UNIT>(Arena*);
+template<> ::pbdb::UNIT_MODULE* Arena::CreateMaybeMessage<::pbdb::UNIT_MODULE>(Arena*);
+template<> ::pbdb::VECTOR2* Arena::CreateMaybeMessage<::pbdb::VECTOR2>(Arena*);
+template<> ::pbdb::VECTOR3* Arena::CreateMaybeMessage<::pbdb::VECTOR3>(Arena*);
 template<> ::pbdb::activity_drawcompliance* Arena::CreateMaybeMessage<::pbdb::activity_drawcompliance>(Arena*);
 template<> ::pbdb::activity_drawcompliance_MrewardEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::activity_drawcompliance_MrewardEntry_DoNotUse>(Arena*);
 template<> ::pbdb::activity_task* Arena::CreateMaybeMessage<::pbdb::activity_task>(Arena*);
@@ -364,6 +388,33 @@ inline bool eranklist_Parse(
     const std::string& name, eranklist* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eranklist>(
     eranklist_descriptor(), name, value);
+}
+enum EUNIT : int {
+  EUNIT_FAIL = 0,
+  EUNIT_ROLE = 1,
+  EUNIT_MONSTER = 2,
+  EUNIT_REGION = 3,
+  EUNIT_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  EUNIT_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool EUNIT_IsValid(int value);
+constexpr EUNIT EUNIT_MIN = EUNIT_FAIL;
+constexpr EUNIT EUNIT_MAX = EUNIT_REGION;
+constexpr int EUNIT_ARRAYSIZE = EUNIT_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* EUNIT_descriptor();
+template<typename T>
+inline const std::string& EUNIT_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, EUNIT>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function EUNIT_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    EUNIT_descriptor(), enum_t_value);
+}
+inline bool EUNIT_Parse(
+    const std::string& name, EUNIT* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<EUNIT>(
+    EUNIT_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -6555,6 +6606,1043 @@ class db_testlua PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::int64 mid_;
   friend struct ::TableStruct_db_2eproto;
 };
+// -------------------------------------------------------------------
+
+class VECTOR2 PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.VECTOR2) */ {
+ public:
+  inline VECTOR2() : VECTOR2(nullptr) {};
+  virtual ~VECTOR2();
+
+  VECTOR2(const VECTOR2& from);
+  VECTOR2(VECTOR2&& from) noexcept
+    : VECTOR2() {
+    *this = ::std::move(from);
+  }
+
+  inline VECTOR2& operator=(const VECTOR2& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline VECTOR2& operator=(VECTOR2&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const VECTOR2& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const VECTOR2* internal_default_instance() {
+    return reinterpret_cast<const VECTOR2*>(
+               &_VECTOR2_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    44;
+
+  friend void swap(VECTOR2& a, VECTOR2& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(VECTOR2* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(VECTOR2* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline VECTOR2* New() const final {
+    return CreateMaybeMessage<VECTOR2>(nullptr);
+  }
+
+  VECTOR2* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<VECTOR2>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const VECTOR2& from);
+  void MergeFrom(const VECTOR2& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(VECTOR2* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbdb.VECTOR2";
+  }
+  protected:
+  explicit VECTOR2(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMxFieldNumber = 1,
+    kMyFieldNumber = 2,
+  };
+  // int32 mx = 1;
+  bool has_mx() const;
+  private:
+  bool _internal_has_mx() const;
+  public:
+  void clear_mx();
+  ::PROTOBUF_NAMESPACE_ID::int32 mx() const;
+  void set_mx(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_mx() const;
+  void _internal_set_mx(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 my = 2;
+  bool has_my() const;
+  private:
+  bool _internal_has_my() const;
+  public:
+  void clear_my();
+  ::PROTOBUF_NAMESPACE_ID::int32 my() const;
+  void set_my(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_my() const;
+  void _internal_set_my(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbdb.VECTOR2)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::int32 mx_;
+  ::PROTOBUF_NAMESPACE_ID::int32 my_;
+  friend struct ::TableStruct_db_2eproto;
+};
+// -------------------------------------------------------------------
+
+class VECTOR3 PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.VECTOR3) */ {
+ public:
+  inline VECTOR3() : VECTOR3(nullptr) {};
+  virtual ~VECTOR3();
+
+  VECTOR3(const VECTOR3& from);
+  VECTOR3(VECTOR3&& from) noexcept
+    : VECTOR3() {
+    *this = ::std::move(from);
+  }
+
+  inline VECTOR3& operator=(const VECTOR3& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline VECTOR3& operator=(VECTOR3&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const VECTOR3& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const VECTOR3* internal_default_instance() {
+    return reinterpret_cast<const VECTOR3*>(
+               &_VECTOR3_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    45;
+
+  friend void swap(VECTOR3& a, VECTOR3& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(VECTOR3* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(VECTOR3* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline VECTOR3* New() const final {
+    return CreateMaybeMessage<VECTOR3>(nullptr);
+  }
+
+  VECTOR3* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<VECTOR3>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const VECTOR3& from);
+  void MergeFrom(const VECTOR3& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(VECTOR3* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbdb.VECTOR3";
+  }
+  protected:
+  explicit VECTOR3(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMxFieldNumber = 1,
+    kMyFieldNumber = 2,
+    kMzFieldNumber = 3,
+  };
+  // int32 mx = 1;
+  bool has_mx() const;
+  private:
+  bool _internal_has_mx() const;
+  public:
+  void clear_mx();
+  ::PROTOBUF_NAMESPACE_ID::int32 mx() const;
+  void set_mx(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_mx() const;
+  void _internal_set_mx(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 my = 2;
+  bool has_my() const;
+  private:
+  bool _internal_has_my() const;
+  public:
+  void clear_my();
+  ::PROTOBUF_NAMESPACE_ID::int32 my() const;
+  void set_my(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_my() const;
+  void _internal_set_my(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 mz = 3;
+  bool has_mz() const;
+  private:
+  bool _internal_has_mz() const;
+  public:
+  void clear_mz();
+  ::PROTOBUF_NAMESPACE_ID::int32 mz() const;
+  void set_mz(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_mz() const;
+  void _internal_set_mz(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbdb.VECTOR3)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::int32 mx_;
+  ::PROTOBUF_NAMESPACE_ID::int32 my_;
+  ::PROTOBUF_NAMESPACE_ID::int32 mz_;
+  friend struct ::TableStruct_db_2eproto;
+};
+// -------------------------------------------------------------------
+
+class POSITION PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.POSITION) */ {
+ public:
+  inline POSITION() : POSITION(nullptr) {};
+  virtual ~POSITION();
+
+  POSITION(const POSITION& from);
+  POSITION(POSITION&& from) noexcept
+    : POSITION() {
+    *this = ::std::move(from);
+  }
+
+  inline POSITION& operator=(const POSITION& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline POSITION& operator=(POSITION&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const POSITION& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const POSITION* internal_default_instance() {
+    return reinterpret_cast<const POSITION*>(
+               &_POSITION_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    46;
+
+  friend void swap(POSITION& a, POSITION& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(POSITION* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(POSITION* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline POSITION* New() const final {
+    return CreateMaybeMessage<POSITION>(nullptr);
+  }
+
+  POSITION* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<POSITION>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const POSITION& from);
+  void MergeFrom(const POSITION& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(POSITION* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbdb.POSITION";
+  }
+  protected:
+  explicit POSITION(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMpositionFieldNumber = 2,
+    kMmapidFieldNumber = 1,
+    kMangleFieldNumber = 3,
+    kMspeedFieldNumber = 4,
+  };
+  // .pbdb.VECTOR2 mposition = 2;
+  bool has_mposition() const;
+  private:
+  bool _internal_has_mposition() const;
+  public:
+  void clear_mposition();
+  const ::pbdb::VECTOR2& mposition() const;
+  ::pbdb::VECTOR2* release_mposition();
+  ::pbdb::VECTOR2* mutable_mposition();
+  void set_allocated_mposition(::pbdb::VECTOR2* mposition);
+  private:
+  const ::pbdb::VECTOR2& _internal_mposition() const;
+  ::pbdb::VECTOR2* _internal_mutable_mposition();
+  public:
+  void unsafe_arena_set_allocated_mposition(
+      ::pbdb::VECTOR2* mposition);
+  ::pbdb::VECTOR2* unsafe_arena_release_mposition();
+
+  // int32 mmapid = 1;
+  bool has_mmapid() const;
+  private:
+  bool _internal_has_mmapid() const;
+  public:
+  void clear_mmapid();
+  ::PROTOBUF_NAMESPACE_ID::int32 mmapid() const;
+  void set_mmapid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_mmapid() const;
+  void _internal_set_mmapid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 mangle = 3;
+  bool has_mangle() const;
+  private:
+  bool _internal_has_mangle() const;
+  public:
+  void clear_mangle();
+  ::PROTOBUF_NAMESPACE_ID::int32 mangle() const;
+  void set_mangle(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_mangle() const;
+  void _internal_set_mangle(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 mspeed = 4;
+  bool has_mspeed() const;
+  private:
+  bool _internal_has_mspeed() const;
+  public:
+  void clear_mspeed();
+  ::PROTOBUF_NAMESPACE_ID::int32 mspeed() const;
+  void set_mspeed(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_mspeed() const;
+  void _internal_set_mspeed(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbdb.POSITION)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::pbdb::VECTOR2* mposition_;
+  ::PROTOBUF_NAMESPACE_ID::int32 mmapid_;
+  ::PROTOBUF_NAMESPACE_ID::int32 mangle_;
+  ::PROTOBUF_NAMESPACE_ID::int32 mspeed_;
+  friend struct ::TableStruct_db_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ATTRIBUTE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.ATTRIBUTE) */ {
+ public:
+  inline ATTRIBUTE() : ATTRIBUTE(nullptr) {};
+  virtual ~ATTRIBUTE();
+
+  ATTRIBUTE(const ATTRIBUTE& from);
+  ATTRIBUTE(ATTRIBUTE&& from) noexcept
+    : ATTRIBUTE() {
+    *this = ::std::move(from);
+  }
+
+  inline ATTRIBUTE& operator=(const ATTRIBUTE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ATTRIBUTE& operator=(ATTRIBUTE&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const ATTRIBUTE& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ATTRIBUTE* internal_default_instance() {
+    return reinterpret_cast<const ATTRIBUTE*>(
+               &_ATTRIBUTE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    47;
+
+  friend void swap(ATTRIBUTE& a, ATTRIBUTE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ATTRIBUTE* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ATTRIBUTE* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ATTRIBUTE* New() const final {
+    return CreateMaybeMessage<ATTRIBUTE>(nullptr);
+  }
+
+  ATTRIBUTE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ATTRIBUTE>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const ATTRIBUTE& from);
+  void MergeFrom(const ATTRIBUTE& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ATTRIBUTE* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbdb.ATTRIBUTE";
+  }
+  protected:
+  explicit ATTRIBUTE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMvalueFieldNumber = 2,
+    kMtypeFieldNumber = 1,
+  };
+  // int64 mvalue = 2;
+  bool has_mvalue() const;
+  private:
+  bool _internal_has_mvalue() const;
+  public:
+  void clear_mvalue();
+  ::PROTOBUF_NAMESPACE_ID::int64 mvalue() const;
+  void set_mvalue(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_mvalue() const;
+  void _internal_set_mvalue(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // int32 mtype = 1;
+  bool has_mtype() const;
+  private:
+  bool _internal_has_mtype() const;
+  public:
+  void clear_mtype();
+  ::PROTOBUF_NAMESPACE_ID::int32 mtype() const;
+  void set_mtype(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_mtype() const;
+  void _internal_set_mtype(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbdb.ATTRIBUTE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::int64 mvalue_;
+  ::PROTOBUF_NAMESPACE_ID::int32 mtype_;
+  friend struct ::TableStruct_db_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UNIT_MODULE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.UNIT_MODULE) */ {
+ public:
+  inline UNIT_MODULE() : UNIT_MODULE(nullptr) {};
+  virtual ~UNIT_MODULE();
+
+  UNIT_MODULE(const UNIT_MODULE& from);
+  UNIT_MODULE(UNIT_MODULE&& from) noexcept
+    : UNIT_MODULE() {
+    *this = ::std::move(from);
+  }
+
+  inline UNIT_MODULE& operator=(const UNIT_MODULE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UNIT_MODULE& operator=(UNIT_MODULE&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const UNIT_MODULE& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const UNIT_MODULE* internal_default_instance() {
+    return reinterpret_cast<const UNIT_MODULE*>(
+               &_UNIT_MODULE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    48;
+
+  friend void swap(UNIT_MODULE& a, UNIT_MODULE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(UNIT_MODULE* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UNIT_MODULE* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UNIT_MODULE* New() const final {
+    return CreateMaybeMessage<UNIT_MODULE>(nullptr);
+  }
+
+  UNIT_MODULE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<UNIT_MODULE>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const UNIT_MODULE& from);
+  void MergeFrom(const UNIT_MODULE& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UNIT_MODULE* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbdb.UNIT_MODULE";
+  }
+  protected:
+  explicit UNIT_MODULE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMmodulesFieldNumber = 2,
+    kMmtypeFieldNumber = 1,
+  };
+  // repeated .pbdb.ATTRIBUTE mmodules = 2;
+  int mmodules_size() const;
+  private:
+  int _internal_mmodules_size() const;
+  public:
+  void clear_mmodules();
+  ::pbdb::ATTRIBUTE* mutable_mmodules(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::ATTRIBUTE >*
+      mutable_mmodules();
+  private:
+  const ::pbdb::ATTRIBUTE& _internal_mmodules(int index) const;
+  ::pbdb::ATTRIBUTE* _internal_add_mmodules();
+  public:
+  const ::pbdb::ATTRIBUTE& mmodules(int index) const;
+  ::pbdb::ATTRIBUTE* add_mmodules();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::ATTRIBUTE >&
+      mmodules() const;
+
+  // int32 mmtype = 1;
+  bool has_mmtype() const;
+  private:
+  bool _internal_has_mmtype() const;
+  public:
+  void clear_mmtype();
+  ::PROTOBUF_NAMESPACE_ID::int32 mmtype() const;
+  void set_mmtype(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_mmtype() const;
+  void _internal_set_mmtype(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbdb.UNIT_MODULE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::ATTRIBUTE > mmodules_;
+  ::PROTOBUF_NAMESPACE_ID::int32 mmtype_;
+  friend struct ::TableStruct_db_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UNIT PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.UNIT) */ {
+ public:
+  inline UNIT() : UNIT(nullptr) {};
+  virtual ~UNIT();
+
+  UNIT(const UNIT& from);
+  UNIT(UNIT&& from) noexcept
+    : UNIT() {
+    *this = ::std::move(from);
+  }
+
+  inline UNIT& operator=(const UNIT& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UNIT& operator=(UNIT&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const UNIT& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const UNIT* internal_default_instance() {
+    return reinterpret_cast<const UNIT*>(
+               &_UNIT_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    49;
+
+  friend void swap(UNIT& a, UNIT& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(UNIT* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UNIT* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UNIT* New() const final {
+    return CreateMaybeMessage<UNIT>(nullptr);
+  }
+
+  UNIT* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<UNIT>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const UNIT& from);
+  void MergeFrom(const UNIT& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UNIT* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbdb.UNIT";
+  }
+  protected:
+  explicit UNIT(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMmodulesFieldNumber = 4,
+    kMpositionFieldNumber = 3,
+    kMidFieldNumber = 2,
+    kMtypeFieldNumber = 1,
+  };
+  // repeated .pbdb.UNIT_MODULE mmodules = 4;
+  int mmodules_size() const;
+  private:
+  int _internal_mmodules_size() const;
+  public:
+  void clear_mmodules();
+  ::pbdb::UNIT_MODULE* mutable_mmodules(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::UNIT_MODULE >*
+      mutable_mmodules();
+  private:
+  const ::pbdb::UNIT_MODULE& _internal_mmodules(int index) const;
+  ::pbdb::UNIT_MODULE* _internal_add_mmodules();
+  public:
+  const ::pbdb::UNIT_MODULE& mmodules(int index) const;
+  ::pbdb::UNIT_MODULE* add_mmodules();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::UNIT_MODULE >&
+      mmodules() const;
+
+  // .pbdb.POSITION mposition = 3;
+  bool has_mposition() const;
+  private:
+  bool _internal_has_mposition() const;
+  public:
+  void clear_mposition();
+  const ::pbdb::POSITION& mposition() const;
+  ::pbdb::POSITION* release_mposition();
+  ::pbdb::POSITION* mutable_mposition();
+  void set_allocated_mposition(::pbdb::POSITION* mposition);
+  private:
+  const ::pbdb::POSITION& _internal_mposition() const;
+  ::pbdb::POSITION* _internal_mutable_mposition();
+  public:
+  void unsafe_arena_set_allocated_mposition(
+      ::pbdb::POSITION* mposition);
+  ::pbdb::POSITION* unsafe_arena_release_mposition();
+
+  // int64 mid = 2;
+  bool has_mid() const;
+  private:
+  bool _internal_has_mid() const;
+  public:
+  void clear_mid();
+  ::PROTOBUF_NAMESPACE_ID::int64 mid() const;
+  void set_mid(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_mid() const;
+  void _internal_set_mid(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // .pbdb.EUNIT mtype = 1;
+  bool has_mtype() const;
+  private:
+  bool _internal_has_mtype() const;
+  public:
+  void clear_mtype();
+  ::pbdb::EUNIT mtype() const;
+  void set_mtype(::pbdb::EUNIT value);
+  private:
+  ::pbdb::EUNIT _internal_mtype() const;
+  void _internal_set_mtype(::pbdb::EUNIT value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbdb.UNIT)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::UNIT_MODULE > mmodules_;
+  ::pbdb::POSITION* mposition_;
+  ::PROTOBUF_NAMESPACE_ID::int64 mid_;
+  int mtype_;
+  friend struct ::TableStruct_db_2eproto;
+};
 // ===================================================================
 
 
@@ -10478,9 +11566,655 @@ db_testlua::mutable_mdatas() {
   return _internal_mutable_mdatas();
 }
 
+// -------------------------------------------------------------------
+
+// VECTOR2
+
+// int32 mx = 1;
+inline bool VECTOR2::_internal_has_mx() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool VECTOR2::has_mx() const {
+  return _internal_has_mx();
+}
+inline void VECTOR2::clear_mx() {
+  mx_ = 0;
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 VECTOR2::_internal_mx() const {
+  return mx_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 VECTOR2::mx() const {
+  // @@protoc_insertion_point(field_get:pbdb.VECTOR2.mx)
+  return _internal_mx();
+}
+inline void VECTOR2::_internal_set_mx(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000001u;
+  mx_ = value;
+}
+inline void VECTOR2::set_mx(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_mx(value);
+  // @@protoc_insertion_point(field_set:pbdb.VECTOR2.mx)
+}
+
+// int32 my = 2;
+inline bool VECTOR2::_internal_has_my() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool VECTOR2::has_my() const {
+  return _internal_has_my();
+}
+inline void VECTOR2::clear_my() {
+  my_ = 0;
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 VECTOR2::_internal_my() const {
+  return my_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 VECTOR2::my() const {
+  // @@protoc_insertion_point(field_get:pbdb.VECTOR2.my)
+  return _internal_my();
+}
+inline void VECTOR2::_internal_set_my(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000002u;
+  my_ = value;
+}
+inline void VECTOR2::set_my(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_my(value);
+  // @@protoc_insertion_point(field_set:pbdb.VECTOR2.my)
+}
+
+// -------------------------------------------------------------------
+
+// VECTOR3
+
+// int32 mx = 1;
+inline bool VECTOR3::_internal_has_mx() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool VECTOR3::has_mx() const {
+  return _internal_has_mx();
+}
+inline void VECTOR3::clear_mx() {
+  mx_ = 0;
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 VECTOR3::_internal_mx() const {
+  return mx_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 VECTOR3::mx() const {
+  // @@protoc_insertion_point(field_get:pbdb.VECTOR3.mx)
+  return _internal_mx();
+}
+inline void VECTOR3::_internal_set_mx(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000001u;
+  mx_ = value;
+}
+inline void VECTOR3::set_mx(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_mx(value);
+  // @@protoc_insertion_point(field_set:pbdb.VECTOR3.mx)
+}
+
+// int32 my = 2;
+inline bool VECTOR3::_internal_has_my() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool VECTOR3::has_my() const {
+  return _internal_has_my();
+}
+inline void VECTOR3::clear_my() {
+  my_ = 0;
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 VECTOR3::_internal_my() const {
+  return my_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 VECTOR3::my() const {
+  // @@protoc_insertion_point(field_get:pbdb.VECTOR3.my)
+  return _internal_my();
+}
+inline void VECTOR3::_internal_set_my(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000002u;
+  my_ = value;
+}
+inline void VECTOR3::set_my(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_my(value);
+  // @@protoc_insertion_point(field_set:pbdb.VECTOR3.my)
+}
+
+// int32 mz = 3;
+inline bool VECTOR3::_internal_has_mz() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool VECTOR3::has_mz() const {
+  return _internal_has_mz();
+}
+inline void VECTOR3::clear_mz() {
+  mz_ = 0;
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 VECTOR3::_internal_mz() const {
+  return mz_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 VECTOR3::mz() const {
+  // @@protoc_insertion_point(field_get:pbdb.VECTOR3.mz)
+  return _internal_mz();
+}
+inline void VECTOR3::_internal_set_mz(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000004u;
+  mz_ = value;
+}
+inline void VECTOR3::set_mz(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_mz(value);
+  // @@protoc_insertion_point(field_set:pbdb.VECTOR3.mz)
+}
+
+// -------------------------------------------------------------------
+
+// POSITION
+
+// int32 mmapid = 1;
+inline bool POSITION::_internal_has_mmapid() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool POSITION::has_mmapid() const {
+  return _internal_has_mmapid();
+}
+inline void POSITION::clear_mmapid() {
+  mmapid_ = 0;
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 POSITION::_internal_mmapid() const {
+  return mmapid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 POSITION::mmapid() const {
+  // @@protoc_insertion_point(field_get:pbdb.POSITION.mmapid)
+  return _internal_mmapid();
+}
+inline void POSITION::_internal_set_mmapid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000002u;
+  mmapid_ = value;
+}
+inline void POSITION::set_mmapid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_mmapid(value);
+  // @@protoc_insertion_point(field_set:pbdb.POSITION.mmapid)
+}
+
+// .pbdb.VECTOR2 mposition = 2;
+inline bool POSITION::_internal_has_mposition() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || mposition_ != nullptr);
+  return value;
+}
+inline bool POSITION::has_mposition() const {
+  return _internal_has_mposition();
+}
+inline void POSITION::clear_mposition() {
+  if (GetArena() == nullptr && mposition_ != nullptr) {
+    delete mposition_;
+  }
+  mposition_ = nullptr;
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const ::pbdb::VECTOR2& POSITION::_internal_mposition() const {
+  const ::pbdb::VECTOR2* p = mposition_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::pbdb::VECTOR2*>(
+      &::pbdb::_VECTOR2_default_instance_);
+}
+inline const ::pbdb::VECTOR2& POSITION::mposition() const {
+  // @@protoc_insertion_point(field_get:pbdb.POSITION.mposition)
+  return _internal_mposition();
+}
+inline void POSITION::unsafe_arena_set_allocated_mposition(
+    ::pbdb::VECTOR2* mposition) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(mposition_);
+  }
+  mposition_ = mposition;
+  if (mposition) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbdb.POSITION.mposition)
+}
+inline ::pbdb::VECTOR2* POSITION::release_mposition() {
+  auto temp = unsafe_arena_release_mposition();
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::pbdb::VECTOR2* POSITION::unsafe_arena_release_mposition() {
+  // @@protoc_insertion_point(field_release:pbdb.POSITION.mposition)
+  _has_bits_[0] &= ~0x00000001u;
+  ::pbdb::VECTOR2* temp = mposition_;
+  mposition_ = nullptr;
+  return temp;
+}
+inline ::pbdb::VECTOR2* POSITION::_internal_mutable_mposition() {
+  _has_bits_[0] |= 0x00000001u;
+  if (mposition_ == nullptr) {
+    auto* p = CreateMaybeMessage<::pbdb::VECTOR2>(GetArena());
+    mposition_ = p;
+  }
+  return mposition_;
+}
+inline ::pbdb::VECTOR2* POSITION::mutable_mposition() {
+  // @@protoc_insertion_point(field_mutable:pbdb.POSITION.mposition)
+  return _internal_mutable_mposition();
+}
+inline void POSITION::set_allocated_mposition(::pbdb::VECTOR2* mposition) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete mposition_;
+  }
+  if (mposition) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(mposition);
+    if (message_arena != submessage_arena) {
+      mposition = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, mposition, submessage_arena);
+    }
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  mposition_ = mposition;
+  // @@protoc_insertion_point(field_set_allocated:pbdb.POSITION.mposition)
+}
+
+// int32 mangle = 3;
+inline bool POSITION::_internal_has_mangle() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool POSITION::has_mangle() const {
+  return _internal_has_mangle();
+}
+inline void POSITION::clear_mangle() {
+  mangle_ = 0;
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 POSITION::_internal_mangle() const {
+  return mangle_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 POSITION::mangle() const {
+  // @@protoc_insertion_point(field_get:pbdb.POSITION.mangle)
+  return _internal_mangle();
+}
+inline void POSITION::_internal_set_mangle(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000004u;
+  mangle_ = value;
+}
+inline void POSITION::set_mangle(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_mangle(value);
+  // @@protoc_insertion_point(field_set:pbdb.POSITION.mangle)
+}
+
+// int32 mspeed = 4;
+inline bool POSITION::_internal_has_mspeed() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline bool POSITION::has_mspeed() const {
+  return _internal_has_mspeed();
+}
+inline void POSITION::clear_mspeed() {
+  mspeed_ = 0;
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 POSITION::_internal_mspeed() const {
+  return mspeed_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 POSITION::mspeed() const {
+  // @@protoc_insertion_point(field_get:pbdb.POSITION.mspeed)
+  return _internal_mspeed();
+}
+inline void POSITION::_internal_set_mspeed(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000008u;
+  mspeed_ = value;
+}
+inline void POSITION::set_mspeed(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_mspeed(value);
+  // @@protoc_insertion_point(field_set:pbdb.POSITION.mspeed)
+}
+
+// -------------------------------------------------------------------
+
+// ATTRIBUTE
+
+// int32 mtype = 1;
+inline bool ATTRIBUTE::_internal_has_mtype() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool ATTRIBUTE::has_mtype() const {
+  return _internal_has_mtype();
+}
+inline void ATTRIBUTE::clear_mtype() {
+  mtype_ = 0;
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ATTRIBUTE::_internal_mtype() const {
+  return mtype_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ATTRIBUTE::mtype() const {
+  // @@protoc_insertion_point(field_get:pbdb.ATTRIBUTE.mtype)
+  return _internal_mtype();
+}
+inline void ATTRIBUTE::_internal_set_mtype(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000002u;
+  mtype_ = value;
+}
+inline void ATTRIBUTE::set_mtype(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_mtype(value);
+  // @@protoc_insertion_point(field_set:pbdb.ATTRIBUTE.mtype)
+}
+
+// int64 mvalue = 2;
+inline bool ATTRIBUTE::_internal_has_mvalue() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool ATTRIBUTE::has_mvalue() const {
+  return _internal_has_mvalue();
+}
+inline void ATTRIBUTE::clear_mvalue() {
+  mvalue_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 ATTRIBUTE::_internal_mvalue() const {
+  return mvalue_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 ATTRIBUTE::mvalue() const {
+  // @@protoc_insertion_point(field_get:pbdb.ATTRIBUTE.mvalue)
+  return _internal_mvalue();
+}
+inline void ATTRIBUTE::_internal_set_mvalue(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000001u;
+  mvalue_ = value;
+}
+inline void ATTRIBUTE::set_mvalue(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_mvalue(value);
+  // @@protoc_insertion_point(field_set:pbdb.ATTRIBUTE.mvalue)
+}
+
+// -------------------------------------------------------------------
+
+// UNIT_MODULE
+
+// int32 mmtype = 1;
+inline bool UNIT_MODULE::_internal_has_mmtype() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool UNIT_MODULE::has_mmtype() const {
+  return _internal_has_mmtype();
+}
+inline void UNIT_MODULE::clear_mmtype() {
+  mmtype_ = 0;
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 UNIT_MODULE::_internal_mmtype() const {
+  return mmtype_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 UNIT_MODULE::mmtype() const {
+  // @@protoc_insertion_point(field_get:pbdb.UNIT_MODULE.mmtype)
+  return _internal_mmtype();
+}
+inline void UNIT_MODULE::_internal_set_mmtype(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000001u;
+  mmtype_ = value;
+}
+inline void UNIT_MODULE::set_mmtype(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_mmtype(value);
+  // @@protoc_insertion_point(field_set:pbdb.UNIT_MODULE.mmtype)
+}
+
+// repeated .pbdb.ATTRIBUTE mmodules = 2;
+inline int UNIT_MODULE::_internal_mmodules_size() const {
+  return mmodules_.size();
+}
+inline int UNIT_MODULE::mmodules_size() const {
+  return _internal_mmodules_size();
+}
+inline void UNIT_MODULE::clear_mmodules() {
+  mmodules_.Clear();
+}
+inline ::pbdb::ATTRIBUTE* UNIT_MODULE::mutable_mmodules(int index) {
+  // @@protoc_insertion_point(field_mutable:pbdb.UNIT_MODULE.mmodules)
+  return mmodules_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::ATTRIBUTE >*
+UNIT_MODULE::mutable_mmodules() {
+  // @@protoc_insertion_point(field_mutable_list:pbdb.UNIT_MODULE.mmodules)
+  return &mmodules_;
+}
+inline const ::pbdb::ATTRIBUTE& UNIT_MODULE::_internal_mmodules(int index) const {
+  return mmodules_.Get(index);
+}
+inline const ::pbdb::ATTRIBUTE& UNIT_MODULE::mmodules(int index) const {
+  // @@protoc_insertion_point(field_get:pbdb.UNIT_MODULE.mmodules)
+  return _internal_mmodules(index);
+}
+inline ::pbdb::ATTRIBUTE* UNIT_MODULE::_internal_add_mmodules() {
+  return mmodules_.Add();
+}
+inline ::pbdb::ATTRIBUTE* UNIT_MODULE::add_mmodules() {
+  // @@protoc_insertion_point(field_add:pbdb.UNIT_MODULE.mmodules)
+  return _internal_add_mmodules();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::ATTRIBUTE >&
+UNIT_MODULE::mmodules() const {
+  // @@protoc_insertion_point(field_list:pbdb.UNIT_MODULE.mmodules)
+  return mmodules_;
+}
+
+// -------------------------------------------------------------------
+
+// UNIT
+
+// .pbdb.EUNIT mtype = 1;
+inline bool UNIT::_internal_has_mtype() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool UNIT::has_mtype() const {
+  return _internal_has_mtype();
+}
+inline void UNIT::clear_mtype() {
+  mtype_ = 0;
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline ::pbdb::EUNIT UNIT::_internal_mtype() const {
+  return static_cast< ::pbdb::EUNIT >(mtype_);
+}
+inline ::pbdb::EUNIT UNIT::mtype() const {
+  // @@protoc_insertion_point(field_get:pbdb.UNIT.mtype)
+  return _internal_mtype();
+}
+inline void UNIT::_internal_set_mtype(::pbdb::EUNIT value) {
+  _has_bits_[0] |= 0x00000004u;
+  mtype_ = value;
+}
+inline void UNIT::set_mtype(::pbdb::EUNIT value) {
+  _internal_set_mtype(value);
+  // @@protoc_insertion_point(field_set:pbdb.UNIT.mtype)
+}
+
+// int64 mid = 2;
+inline bool UNIT::_internal_has_mid() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool UNIT::has_mid() const {
+  return _internal_has_mid();
+}
+inline void UNIT::clear_mid() {
+  mid_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 UNIT::_internal_mid() const {
+  return mid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 UNIT::mid() const {
+  // @@protoc_insertion_point(field_get:pbdb.UNIT.mid)
+  return _internal_mid();
+}
+inline void UNIT::_internal_set_mid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000002u;
+  mid_ = value;
+}
+inline void UNIT::set_mid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_mid(value);
+  // @@protoc_insertion_point(field_set:pbdb.UNIT.mid)
+}
+
+// .pbdb.POSITION mposition = 3;
+inline bool UNIT::_internal_has_mposition() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || mposition_ != nullptr);
+  return value;
+}
+inline bool UNIT::has_mposition() const {
+  return _internal_has_mposition();
+}
+inline void UNIT::clear_mposition() {
+  if (GetArena() == nullptr && mposition_ != nullptr) {
+    delete mposition_;
+  }
+  mposition_ = nullptr;
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const ::pbdb::POSITION& UNIT::_internal_mposition() const {
+  const ::pbdb::POSITION* p = mposition_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::pbdb::POSITION*>(
+      &::pbdb::_POSITION_default_instance_);
+}
+inline const ::pbdb::POSITION& UNIT::mposition() const {
+  // @@protoc_insertion_point(field_get:pbdb.UNIT.mposition)
+  return _internal_mposition();
+}
+inline void UNIT::unsafe_arena_set_allocated_mposition(
+    ::pbdb::POSITION* mposition) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(mposition_);
+  }
+  mposition_ = mposition;
+  if (mposition) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbdb.UNIT.mposition)
+}
+inline ::pbdb::POSITION* UNIT::release_mposition() {
+  auto temp = unsafe_arena_release_mposition();
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::pbdb::POSITION* UNIT::unsafe_arena_release_mposition() {
+  // @@protoc_insertion_point(field_release:pbdb.UNIT.mposition)
+  _has_bits_[0] &= ~0x00000001u;
+  ::pbdb::POSITION* temp = mposition_;
+  mposition_ = nullptr;
+  return temp;
+}
+inline ::pbdb::POSITION* UNIT::_internal_mutable_mposition() {
+  _has_bits_[0] |= 0x00000001u;
+  if (mposition_ == nullptr) {
+    auto* p = CreateMaybeMessage<::pbdb::POSITION>(GetArena());
+    mposition_ = p;
+  }
+  return mposition_;
+}
+inline ::pbdb::POSITION* UNIT::mutable_mposition() {
+  // @@protoc_insertion_point(field_mutable:pbdb.UNIT.mposition)
+  return _internal_mutable_mposition();
+}
+inline void UNIT::set_allocated_mposition(::pbdb::POSITION* mposition) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete mposition_;
+  }
+  if (mposition) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(mposition);
+    if (message_arena != submessage_arena) {
+      mposition = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, mposition, submessage_arena);
+    }
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  mposition_ = mposition;
+  // @@protoc_insertion_point(field_set_allocated:pbdb.UNIT.mposition)
+}
+
+// repeated .pbdb.UNIT_MODULE mmodules = 4;
+inline int UNIT::_internal_mmodules_size() const {
+  return mmodules_.size();
+}
+inline int UNIT::mmodules_size() const {
+  return _internal_mmodules_size();
+}
+inline void UNIT::clear_mmodules() {
+  mmodules_.Clear();
+}
+inline ::pbdb::UNIT_MODULE* UNIT::mutable_mmodules(int index) {
+  // @@protoc_insertion_point(field_mutable:pbdb.UNIT.mmodules)
+  return mmodules_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::UNIT_MODULE >*
+UNIT::mutable_mmodules() {
+  // @@protoc_insertion_point(field_mutable_list:pbdb.UNIT.mmodules)
+  return &mmodules_;
+}
+inline const ::pbdb::UNIT_MODULE& UNIT::_internal_mmodules(int index) const {
+  return mmodules_.Get(index);
+}
+inline const ::pbdb::UNIT_MODULE& UNIT::mmodules(int index) const {
+  // @@protoc_insertion_point(field_get:pbdb.UNIT.mmodules)
+  return _internal_mmodules(index);
+}
+inline ::pbdb::UNIT_MODULE* UNIT::_internal_add_mmodules() {
+  return mmodules_.Add();
+}
+inline ::pbdb::UNIT_MODULE* UNIT::add_mmodules() {
+  // @@protoc_insertion_point(field_add:pbdb.UNIT.mmodules)
+  return _internal_add_mmodules();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::UNIT_MODULE >&
+UNIT::mmodules() const {
+  // @@protoc_insertion_point(field_list:pbdb.UNIT.mmodules)
+  return mmodules_;
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -10593,6 +12327,11 @@ template <> struct is_proto_enum< ::pbdb::eranklist> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::pbdb::eranklist>() {
   return ::pbdb::eranklist_descriptor();
+}
+template <> struct is_proto_enum< ::pbdb::EUNIT> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::pbdb::EUNIT>() {
+  return ::pbdb::EUNIT_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

@@ -77,10 +77,10 @@ namespace ngl
 			m_grid.resize(grid_count());
 		}
 
-		void set_obstacles(std::vector<obstacles_data>& aobstacles)
+		void set_obstacles(const std::vector<obstacles_data>& aobstacles)
 		{
 			int lindex = 0;
-			for (obstacles_data& item : aobstacles)
+			for (const obstacles_data& item : aobstacles)
 			{
 				//eobstacles
 				for (int32_t eitem : item.m_data)
