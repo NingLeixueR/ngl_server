@@ -62,6 +62,6 @@ namespace ngl
 		
 		void change(i64_actorid aunitid, pbdb::POSITION& aposition);
 
-		//void update(int64_t ams);
+		void update(int64_t ams);
 	};
 }// namespace ngl

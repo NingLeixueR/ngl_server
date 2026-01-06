@@ -96,6 +96,9 @@ namespace ngl
 		virtual bool release_check();
 	
 		// # ÊÍ·Å¼¼ÄÜ
-		virtual bool release();
+		virtual bool release()
+		{
+			return true;
+		}
 	};
 }//namespace ngl

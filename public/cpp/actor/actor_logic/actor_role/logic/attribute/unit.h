@@ -55,6 +55,8 @@ namespace ngl
 
 		void set_speed(int32_t aspeed);
 		int32_t speed();
+
+		void update(int64_t ams);
 	};
 
 	class unit_role: public unit

@@ -119,4 +119,9 @@ namespace ngl
 	{
 		return m_position.mspeed();
 	}
+
+	void unit::update(int64_t ams)
+	{
+
+	}
 }// namespace ngl
