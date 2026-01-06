@@ -71,7 +71,6 @@ namespace ngl
 		}
 		aUNIT->set_mid(aunit->id());
 		aUNIT->set_mtype(aunit->type());
-		//pbnet::VECTOR2*;
 		*aUNIT->mutable_mposition() = aunit->position();
 		return true;
 	}
@@ -251,27 +250,18 @@ namespace ngl
 		change_speed(aunitid, aposition.mspeed());
 	}
 
-	/*void aoimap::update(int64_t ams)
+	void aoimap::update(int64_t ams)
 	{
 		pbdb::VECTOR2 lpos;
-		for (auto itor = m_roleunit.begin();
-			itor != m_roleunit.end(); ++itor)
+		for (std::pair<const i64_actorid, unit_role*>& item : m_roleunit)
 		{
-			itor->second->update(ams, lpos);
-			move(itor->second, lpos.mx(), lpos.my());
+			move(item.second, lpos.mx(), lpos.my());
+			item.second->update(ams);
 		}
-		for (auto itor = m_monster.begin();
-			itor != m_monster.end(); ++itor)
+		for (std::pair<const i64_actorid, unit_monster*>& item : m_monster)
 		{
-			itor->second->update(ams, lpos);
-			move(itor->second, lpos.mx(), lpos.my());
+			move(item.second, lpos.mx(), lpos.my());
+			item.second->update(ams);
 		}
-
-		for (auto itor = m_region.begin();
-			itor != m_region.end(); ++itor)
-		{
-			itor->second->update(ams, lpos);
-			move(itor->second, lpos.mx(), lpos.my());
-		}
-	}*/
+	}
 }// namespace ngl
