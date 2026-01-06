@@ -44,7 +44,7 @@ namespace ngl
 		bool copy_unit(unit* aunit, pbdb::UNIT* aUNIT);
 
 		// # 根据unit id获取pbnet::UNIT
-		bool get_unit(i64_actorid aid, pbdb::UNIT* aunit);
+		bool copy_unit(i64_actorid aid, pbdb::UNIT* aunit);
 
 		virtual bool enter(unit* aunit, int32_t ax, int32_t ay);
 

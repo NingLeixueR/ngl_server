@@ -76,7 +76,7 @@ namespace ngl
 		return true;
 	}
 
-	bool aoimap::get_unit(i64_actorid aid, pbdb::UNIT* aunit)
+	bool aoimap::copy_unit(i64_actorid aid, pbdb::UNIT* aunit)
 	{
 		unit* lpunit = find_unit(aid);
 		return copy_unit(lpunit, aunit);
