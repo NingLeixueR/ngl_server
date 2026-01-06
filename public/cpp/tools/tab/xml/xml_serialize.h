@@ -728,7 +728,7 @@ public:
 		return ltemp.push(0, __VA_ARGS__);								\
 	}
 #else
-#define def_xml(ATTR, ...)												\
+#define def_xmlspecial(ATTR, ...)										\
 	inline bool xml_pop(tinyxml2::XMLElement* aele)						\
 	{																	\
 		help_xml<ATTR> ltemp(parms(#__VA_ARGS__), aele);				\
