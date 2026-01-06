@@ -90,7 +90,7 @@ namespace ngl
 		time_t lloginutc = 0;
 		time_t lnow = localtime::gettime();
 		bool isloginutc = false;
-		if (m_rolekv.value("loginutc", lloginutc))
+		if (m_rolekv.get_value("base", "loginutc", lloginutc))
 		{
 			if (localtime::issameday(lnow, lloginutc) == false)
 			{
@@ -101,9 +101,10 @@ namespace ngl
 		{
 			isloginutc = true;
 		}
+
 		if (isloginutc)
 		{
-			m_rolekv.set_value("loginutc", lnow);
+			m_rolekv.set_value("base", "loginutc", lnow);
 			static_task::update_change(this, ETaskRoleLogin, 1);
 		}
 	}

@@ -54,54 +54,46 @@ namespace ngl
 			return true;
 		}
 
-	private:
-		template <typename T>
-		bool number_value(const char* akey, T& adata)
+		const char* get_value(const char* akey)
 		{
-			std::string ltemp;
-			if (value(akey, ltemp) == false)
-			{
-				return false;
-			}
-			adata = tools::lexical_cast<T>(ltemp);
-			return true;
+			data_modified_return_get(lpdbrolekeyvalue, get(get_actor()->id_guid()), nullptr);
+			return (*lpdbrolekeyvalue->mutable_mdata())[akey].c_str();
 		}
-	public:
-		bool value(const char* akey, int8_t& adata);
-		bool value(const char* akey, uint8_t& adata);
-		bool value(const char* akey, int32_t& adata);
-		bool value(const char* akey, uint32_t& adata);
-		bool value(const char* akey, int64_t& adata);
-		bool value(const char* akey, uint64_t& adata);
-		bool value(const char* akey, float& adata);
-		bool value(const char* akey, double& adata);
 
-		template <typename T>
-		void set_value(const char* akey, const T& adata)
+		void set_value(const char* akey, const char* adata)
 		{
 			data_modified_return_get(lpdbrolekeyvalue, get(get_actor()->id_guid()));
-			(*lpdbrolekeyvalue->mutable_mdata())[akey] = std::format("{}", adata);
+			(*lpdbrolekeyvalue->mutable_mdata())[akey] = adata;
 		}
-
+	public:
 		template <typename ...ARG>
-		bool json_value(const char* akey, ARG&... arg)
+		bool get_value(const char* akey, ARG&... arg)
 		{
-			std::string ltemp;
-			if (value(akey, ltemp) == false)
+			const char* lvalue = get_value(akey);
+			if (lvalue == nullptr)
 			{
 				return false;
 			}
-			ncjson ljread(ltemp.c_str());
-			return njson::pop(ljread, arg...);
+			ncjson ljread(lvalue);
+			return njson::pop(ljread.json(), arg...);
 		}
 
 		template <typename ...ARG>
-		bool set_json_value(const char* akey, ARG&... arg)
+		void set_value(const char* akey, const ARG&... arg)
 		{
-			ncjson lwrite;
-			njson::write(lwrite.json(), arg...);
-			std::string lstr = lwrite.str();
-			set_value(akey, lstr);
+			const char* lvalue = get_value(akey);
+			if (lvalue == nullptr)
+			{
+				ncjson lwrite;
+				njson::push(lwrite.json(), arg...);
+				set_value(akey, lwrite.str());
+			}
+			else
+			{
+				ncjson lwrite(lvalue);
+				njson::push(lwrite.json(), arg...);
+				set_value(akey, lwrite.str());
+			}
 		}
 	};
 }//namespace ngl
