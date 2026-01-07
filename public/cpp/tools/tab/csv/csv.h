@@ -296,25 +296,20 @@ namespace ngl
 		{
 		}
 	private:
-	public:
 		template <typename T>
-		static bool readcsv(csvpair& apair, T& adata)
+		static bool read(csvpair& apair, T& adata)
 		{
-			if (apair.m_data.empty())
-			{
-				return false;
-			}
-			return csv_read<T>::read(apair, adata);
+			return !apair.m_data.empty() && csv_read<T>::read(apair, adata);
 		}
-
-		template <typename T, typename ...ARG>
-		static bool readcsv(csvpair& apair, T& adata, ARG& ...arg)
+	public:
+		template <typename ...ARG>
+		static bool readcsv(csvpair& apair, ARG& ...args)
 		{
 			if (apair.m_data.empty())
 			{
 				return false;
 			}
-			return readcsv(apair, adata) && readcsv(apair, arg...);
+			return (read(apair, args) && ...);
 		}
 
 		template <typename T>
