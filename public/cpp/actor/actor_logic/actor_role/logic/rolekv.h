@@ -81,19 +81,9 @@ namespace ngl
 		template <typename ...ARG>
 		void set_value(const char* akey, const ARG&... arg)
 		{
-			const char* lvalue = get_value(akey);
-			if (lvalue == nullptr)
-			{
-				ncjson lwrite;
-				njson::push(lwrite.json(), arg...);
-				set_value(akey, lwrite.str());
-			}
-			else
-			{
-				ncjson lwrite(lvalue);
-				njson::push(lwrite.json(), arg...);
-				set_value(akey, lwrite.str());
-			}
+			ncjson lwrite(get_value(akey));
+			njson::push(lwrite.json(), arg...);
+			set_value(akey, lwrite.str());
 		}
 	};
 }//namespace ngl
