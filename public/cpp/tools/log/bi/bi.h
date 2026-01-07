@@ -19,35 +19,6 @@
 
 namespace ngl
 {
-	///*class bi
-	//{
-	//	template <typename T>
-	//	static void add(std::string& astr, const T& avalue)
-	//	{
-	//		if (!astr.empty())
-	//		{
-	//			astr += '|';
-	//		}
-	//		astr += tools::lexical_cast<std::string>(avalue);
-	//	}
-
-	//	template <typename T, typename ...ARGS>
-	//	static void add(std::string& astr, const T& avalue, const ARGS&... args)
-	//	{
-	//		add(astr, avalue);
-	//		add(astr, args...);
-	//	}
-
-	//public:
-	//	template <typename T, typename ...ARGS>
-	//	static std::string push(const T& avalue, const ARGS&... args)
-	//	{
-	//		std::string lstr;
-	//		add(lstr, args...);
-	//		return lstr;
-	//	}
-	//};*/
-
     class bi
     {
         template <typename T>
@@ -55,7 +26,7 @@ namespace ngl
         {
             if (!astr.empty())
             {
-				astr += '|'; // 非空时先加分隔符
+				astr += '|';
             }
 			astr += tools::lexical_cast<std::string>(value);
         }
