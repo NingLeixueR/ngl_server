@@ -30,41 +30,11 @@ namespace ngl
 		rolekv() = default;
 		~rolekv() = default;
 
-		// # 可以缓存，防止多次解析vales
-		virtual void initdata()
-		{
-			log_error()->print("[db_rolekeyvalue load finish] {}", data());
-		}
+		virtual void initdata();
 
-		bool value(const char* akey, std::string& adata)
-		{			
-			data_modified<pbdb::db_rolekeyvalue>& ltemp = get(get_actor()->id_guid());
-			const pbdb::db_rolekeyvalue* lpdata = ltemp.getconst();
-			if (lpdata == nullptr)
-			{
-				return false;
-			}
-			auto& lmap = lpdata->mdata();
-			auto itor = lmap.find(akey);
-			if (itor == lmap.end())
-			{
-				return false;
-			}
-			adata = itor->second;
-			return true;
-		}
+		const char* get_value(const char* akey);
 
-		const char* get_value(const char* akey)
-		{
-			data_modified_return_get(lpdbrolekeyvalue, get(get_actor()->id_guid()), nullptr);
-			return (*lpdbrolekeyvalue->mutable_mdata())[akey].c_str();
-		}
-
-		void set_value(const char* akey, const char* adata)
-		{
-			data_modified_return_get(lpdbrolekeyvalue, get(get_actor()->id_guid()));
-			(*lpdbrolekeyvalue->mutable_mdata())[akey] = adata;
-		}
+		void set_value(const char* akey, const char* adata);
 	public:
 		template <typename ...ARG>
 		bool get_value(const char* akey, ARG&... arg)
