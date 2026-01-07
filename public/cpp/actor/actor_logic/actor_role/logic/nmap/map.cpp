@@ -222,7 +222,6 @@ namespace ngl
 		return true;
 	}
 
-	// 改变方向
 	void aoimap::change_angle(i64_actorid aunitid, int32_t aangle)
 	{
 		unit* lpunit = find_unit(aunitid);
@@ -233,7 +232,6 @@ namespace ngl
 		lpunit->set_angle(aangle);
 	}
 
-	// 改变速度
 	void aoimap::change_speed(i64_actorid aunitid, int32_t aspeed)
 	{
 		unit* lpunit = find_unit(aunitid);

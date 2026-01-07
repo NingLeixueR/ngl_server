@@ -21,28 +21,40 @@ namespace ngl
 {
 	class unit
 	{
-		pbdb::EUNIT				m_type = pbdb::EUNIT::EUNIT_FAIL;
-		i64_actorid				m_id = nguid::make();
-		attribute				m_attribute;
-		dynamic_attribute		m_dynamic;
-		pbdb::POSITION			m_position;
+		unit() = delete;
+
+		pbdb::EUNIT					m_type = pbdb::EUNIT::EUNIT_FAIL;
+		i64_actorid					m_id = nguid::make();
+		attribute					m_attribute;
+		dynamic_attribute			m_dynamic;
+		pbdb::POSITION				m_position;
 	public:
+		unit(i64_actorid aunitid, pbdb::EUNIT atype) :
+			m_type(atype),
+			m_dynamic(aunitid)
+		{}
+
 		void init(attribute aattribute)
 		{
 			m_attribute.get_attribute();
 			m_dynamic.init(m_attribute.get_attribute());
 		}
 
+		// # [设置/获取]unit类型
 		bool set_type(pbdb::EUNIT atype);
 		pbdb::EUNIT type();
 
+		// # 获取unit属性
 		attribute& get_attribute();
 
+		// # [设置/获取]unit id
 		bool set_id(int32_t aid);
 		int32_t id();
 
+		// # 获取unit动态属性
 		dynamic_attribute& dynamic();
 
+		// # [设置/获取]unit position
 		void set_x(int32_t ax);
 		void set_y(int32_t ay);
 		int32_t x();
@@ -50,9 +62,11 @@ namespace ngl
 		pbdb::POSITION& position();
 		bool is_position_invalid();
 
+		// # [设置/获取]unit 方向
 		void set_angle(int32_t aangle);
 		int32_t angle();
 
+		// # [设置/获取]unit 速度
 		void set_speed(int32_t aspeed);
 		int32_t speed();
 
@@ -60,8 +74,18 @@ namespace ngl
 	};
 
 	class unit_role: public unit
-	{};
+	{
+	public:
+		unit_role(i64_actorid aunitid) :
+			unit(aunitid, pbdb::EUNIT::EUNIT_ROLE)
+		{}
+	};
 
 	class unit_monster : public unit
-	{};
+	{
+	public:
+		unit_monster(i64_actorid aunitid):
+			unit(aunitid, pbdb::EUNIT::EUNIT_MONSTER)
+		{}
+	};
 }// namespace ngl
