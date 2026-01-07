@@ -82,14 +82,16 @@ namespace ngl
 		int32_t			m_cooldownutc;		// 技能释放时间utc
 		unit*			m_unit;				// 战斗单位
 	public:
-		static std::shared_ptr<skill> create(int32_t askillid, int32_t askilllv);
+		static std::shared_ptr<skill> create(int32_t askillid, int32_t askilllv)
+		{
+			return nullptr;
+		}
 
+		// # [设置/获取]技能等级
 		bool set_lv(int32_t askilllv);
-
-		// # 技能等级
 		int32_t lv();
 
-		// # 技能冷却时间
+		// # 获取技能冷却时间
 		int32_t cooldown();
 
 		// # 检查是否可以释放技能

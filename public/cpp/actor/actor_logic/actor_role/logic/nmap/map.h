@@ -23,8 +23,8 @@ namespace ngl
 		grids											m_grids;		// 视野格子
 		obstacles										m_obstacles;	// 寻路格子(单位小格子)
 		int												m_tabid;		// 地图表格配置数据
-		std::map<i64_actorid, unit_role*>				m_roleunit;
-		std::map<i64_actorid, unit_monster*>			m_monster;
+		std::map<i64_actorid, unit_role*>				m_roleunit;		// 玩家单位
+		std::map<i64_actorid, unit_monster*>			m_monster;		// 怪物单位
 	public:
 		aoimap();
 
@@ -46,20 +46,25 @@ namespace ngl
 		// # 根据unit id获取pbnet::UNIT
 		bool copy_unit(i64_actorid aid, pbdb::UNIT* aunit);
 
+		// # 进入地图
 		virtual bool enter(unit* aunit, int32_t ax, int32_t ay);
 
+		// # 离开地图
 		virtual void leave(unit* aunit);
 
+		// # 同步位置信息
 		void sync_position(unit* aunit, int32_t agridid);
 
+		// # 移动
 		bool move(unit* aunit, int32_t ax, int32_t ay);
 
-		// 改变方向
+		// # 改变方向
 		void change_angle(i64_actorid aunitid, int32_t aangle);
 
-		// 改变速度
+		// # 改变速度
 		void change_speed(i64_actorid aunitid, int32_t aspeed);
 		
+		// # 改变position
 		void change(i64_actorid aunitid, pbdb::POSITION& aposition);
 
 		void update(int64_t ams);
