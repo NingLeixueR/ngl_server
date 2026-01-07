@@ -802,10 +802,31 @@ namespace ngl
 				m_nonformatstr = nullptr;
 			}
 		}
+
+		bool is_invalid(const char* avalue)
+		{
+			if (avalue == nullptr)
+			{
+				return false;
+			}
+			if (std::string(avalue) == "")
+			{
+				return false;
+			}
+			return true;
+		}
 	public:
-		ncjson(const std::string& ajson) :
-			m_json(cJSON_Parse(ajson.c_str()))
-		{}
+		ncjson(const char* ajson)
+		{
+			if (is_invalid(ajson))
+			{
+				m_json = cJSON_Parse(ajson);
+			}
+			else
+			{
+				m_json = cJSON_CreateObject();
+			}			
+		}
 
 		ncjson() :
 			m_json(cJSON_CreateObject())
