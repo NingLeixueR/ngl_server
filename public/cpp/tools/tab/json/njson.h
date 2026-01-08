@@ -737,7 +737,7 @@ namespace ngl
 		{
 			return true;
 		}
-
+		
 		template <typename T>
 		static bool pop(cJSON* ajson, const char* akey, T& adata)
 		{
@@ -747,11 +747,7 @@ namespace ngl
 		template <typename T, typename ...TARGS>
 		static bool pop(cJSON* ajson, const char* akey, T& adata, TARGS&... aargs)
 		{
-			if (!pop(ajson, akey, adata))
-			{
-				return false;
-			}
-			return pop(ajson, aargs...);
+			return pop(ajson, akey, adata) && pop(ajson, aargs...);
 		}
 
 		static void push(cJSON* ajson)
