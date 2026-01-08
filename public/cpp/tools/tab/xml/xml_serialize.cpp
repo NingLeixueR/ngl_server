@@ -22,8 +22,6 @@ namespace ngl
 			std::cout << "Failed to load XML file[" << aname << "]." << std::endl;
 			return false;
 		}
-		//acon = axml.FirstChildElement("con");
-		//return acon != nullptr;
 		return true;
 	}
 
