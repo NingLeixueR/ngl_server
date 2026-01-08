@@ -203,13 +203,3 @@ namespace ngl
 		return nscript_handle(ldata);
 	}
 }//namespace ngl
-
-
-namespace ngl
-{
-	template <typename TDerived, typename T>
-	void actor::reg_actor(int32_t aready/*nready::enum_ready*/, T afun)
-	{
-		nrfun<TDerived>::instance().template rfun<TDerived, T>(afun, aready);
-	}
-}//namespace ngl
