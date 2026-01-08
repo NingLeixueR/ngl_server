@@ -733,11 +733,6 @@ namespace ngl
 
 	struct njson
 	{
-		static bool pop(cJSON* ajson)
-		{
-			return true;
-		}
-		
 		template <typename T>
 		static bool pop(cJSON* ajson, const char* akey, T& adata)
 		{
@@ -748,10 +743,6 @@ namespace ngl
 		static bool pop(cJSON* ajson, const char* akey, T& adata, TARGS&... aargs)
 		{
 			return pop(ajson, akey, adata) && pop(ajson, aargs...);
-		}
-
-		static void push(cJSON* ajson)
-		{
 		}
 
 		template <typename T>
@@ -765,8 +756,7 @@ namespace ngl
 		template <typename T, typename ...TARGS>
 		static void push(cJSON* ajson, const char* akey, const T& adata, const TARGS&... aargs)
 		{
-			push(ajson, akey, adata);
-			push(ajson, aargs...);
+			return push(ajson, akey, adata), push(ajson, aargs...);			
 		}
 	};
 }//namespace ngl
