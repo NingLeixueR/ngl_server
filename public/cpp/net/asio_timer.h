@@ -27,9 +27,6 @@ namespace ngl
 
 		static time_wheel m_wheel;
 	public:
-		static time_wheel& wheel()
-		{
-			return m_wheel;
-		}
+		static time_wheel& wheel();
 	};
 }// namespace ngl

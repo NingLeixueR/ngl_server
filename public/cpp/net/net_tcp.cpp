@@ -84,7 +84,8 @@ namespace ngl
 		m_server->set_close(asession, [this, aip, aport, afun, asession]()
 			{
 				connect(aip, aport, afun);
-			});
+			}
+		);
 	}
 
 	bool net_tcp::send_pack(i32_sessionid asession, std::shared_ptr<pack>& lpack)

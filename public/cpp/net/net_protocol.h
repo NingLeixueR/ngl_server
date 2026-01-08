@@ -185,4 +185,4 @@ namespace ngl
 		}
 		netbuff_pool::instance().free((char*)lforward.m_buff);
 	}
-}
+}//namespace ngl
