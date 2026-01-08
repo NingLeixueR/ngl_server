@@ -89,12 +89,7 @@ namespace ngl
 		void start(const std::shared_ptr<service_tcp>& aservice);
 	public:
 		// # 发起连接
-		service_tcp* connect(
-			const str_ip& aip							// ip
-			, i16_port aport							// 端口
-			, const tcp_connectcallback& afun			// 连接回调
-			, int acount = 5							// 连接失败自动重连次数
-		);
+		service_tcp* connect(const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount = 5);
 
 		// # 发送pack
 		bool send(i32_sessionid asessionid, std::shared_ptr<pack>& apack);

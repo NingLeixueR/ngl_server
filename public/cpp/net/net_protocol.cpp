@@ -83,7 +83,8 @@ namespace ngl
 				{
 					set_close(asession, aip, aport, afun);
 				}
-			});
+			}
+		);
 		if (lsem != nullptr)
 		{
 			lsem->wait();

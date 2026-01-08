@@ -24,4 +24,9 @@ namespace ngl
 			.m_time_wheel_count = 4
 		}
 	);
+
+	time_wheel& asio_timer::wheel()
+	{
+		return m_wheel;
+	}
 }// namespace ngl
