@@ -56,7 +56,7 @@ namespace ngl
 
 		void load(const std::string& axmlpath, const std::string& aname);
 
-		xarg_info* publicconfig();
+		xarg_info* info();
 
 		int16_t tcount();
 

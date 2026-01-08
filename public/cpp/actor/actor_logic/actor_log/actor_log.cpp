@@ -39,7 +39,7 @@ namespace ngl
 					.m_type = (ELOG_TYPE)i,
 					.m_flush_time = 10,
 				};
-				nconfig.publicconfig()->find("log_flushtime", lconfig.m_flush_time);
+				nconfig.info()->find("log_flushtime", lconfig.m_flush_time);
 				m_logarr[(ELOG_TYPE)i] = logfile::create_make(lconfig);
 			}
 		}

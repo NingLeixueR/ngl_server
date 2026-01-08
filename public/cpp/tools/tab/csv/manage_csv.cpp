@@ -17,6 +17,20 @@
 
 namespace ngl
 {
+	void csvbase::set_path(const std::string& apath, const std::string& aname)
+	{
+		m_path = std::format("{}/{}", apath, aname);
+		if (tools::directories_exists(m_path) == false)
+		{
+			m_path = apath;
+		}
+	}
+
+	std::string& csvbase::path()
+	{
+		return m_path;
+	}
+
 	std::string csvbase::m_path;
 
 	std::map<std::string, reload_csv::trefun> reload_csv::m_fun;

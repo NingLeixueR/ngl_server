@@ -31,8 +31,7 @@ namespace ngl
 		csvbase(const csvbase&) = delete;
 		csvbase& operator=(const csvbase&) = delete;
 	public:
-		csvbase()
-		{}
+		csvbase(){}
 		virtual const std::string&	verify()const	= 0;
 		virtual const char*			csvname()		= 0;
 		virtual void				load()			= 0;
@@ -41,19 +40,9 @@ namespace ngl
 
 		static std::string m_path;
 
-		static void set_path(const std::string& apath, const std::string& aname)
-		{
-			m_path = std::format("{}/{}", apath, aname);
-			if (tools::directories_exists(m_path) == false)
-			{
-				m_path = apath;
-			}
-		}
-
-		static std::string& get_path()
-		{
-			return m_path;
-		}
+		// # [获取/设置] csv文件路径
+		static std::string& path();
+		static void set_path(const std::string& apath, const std::string& aname);
 	};
 
 	template <typename T>
@@ -108,7 +97,7 @@ namespace ngl
 
 		static std::string path()
 		{
-			static std::string lcsvname = std::format("./{}/{}.csv", csvbase::get_path(), tools::type_name<T>());
+			static std::string lcsvname = std::format("./{}/{}.csv", csvbase::path(), tools::type_name<T>());
 			return lcsvname;
 		}
 
