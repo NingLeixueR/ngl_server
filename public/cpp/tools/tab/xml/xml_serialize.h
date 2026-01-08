@@ -76,9 +76,10 @@ namespace ngl
 	};
 
 	template <bool ATTR>
-	struct xml_serialize<ATTR, int8_t>
+	struct xbtype
 	{
-		static bool push(tinyxml2::XMLElement* aele, const char* akey, int8_t adata)
+		template <typename T>
+		static bool push(tinyxml2::XMLElement* aele, const char* akey, T adata)
 		{
 			if constexpr (ATTR)
 			{
@@ -89,7 +90,9 @@ namespace ngl
 				return xml::set(aele, akey, adata);
 			}
 		}
-		static bool pop(tinyxml2::XMLElement* aele, const char* akey, int8_t& adata)
+
+		template <typename T>
+		static bool pop(tinyxml2::XMLElement* aele, const char* akey, T& adata)
 		{
 			if constexpr (ATTR)
 			{
@@ -99,6 +102,19 @@ namespace ngl
 			{
 				return xml::get(aele, akey, adata);
 			}
+		}
+	};
+
+	template <bool ATTR>
+	struct xml_serialize<ATTR, int8_t>
+	{
+		static bool push(tinyxml2::XMLElement* aele, const char* akey, int8_t adata)
+		{
+			return xbtype<ATTR>::push(aele, akey, adata);
+		}
+		static bool pop(tinyxml2::XMLElement* aele, const char* akey, int8_t& adata)
+		{
+			return xbtype<ATTR>::pop(aele, akey, adata);
 		}
 	};
 
@@ -107,25 +123,11 @@ namespace ngl
 	{
 		static bool push(tinyxml2::XMLElement* aele, const char* akey, int16_t adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::set_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::set(aele, akey, adata);
-			}
+			return xbtype<ATTR>::push(aele, akey, adata);
 		}
 		static bool pop(tinyxml2::XMLElement* aele, const char* akey, int16_t& adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::get_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::get(aele, akey, adata);
-			}
+			return xbtype<ATTR>::pop(aele, akey, adata);
 		}
 	};
 
@@ -134,25 +136,11 @@ namespace ngl
 	{
 		static bool push(tinyxml2::XMLElement* aele, const char* akey, int32_t adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::set_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::set(aele, akey, adata);
-			}
+			return xbtype<ATTR>::push(aele, akey, adata);
 		}
 		static bool pop(tinyxml2::XMLElement* aele, const char* akey, int32_t& adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::get_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::get(aele, akey, adata);
-			}
+			return xbtype<ATTR>::pop(aele, akey, adata);
 		}
 	};
 
@@ -161,25 +149,11 @@ namespace ngl
 	{
 		static bool push(tinyxml2::XMLElement* aele, const char* akey, int64_t adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::set_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::set(aele, akey, adata);
-			}
+			return xbtype<ATTR>::push(aele, akey, adata);
 		}
 		static bool pop(tinyxml2::XMLElement* aele, const char* akey, int64_t& adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::get_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::get(aele, akey, adata);
-			}
+			return xbtype<ATTR>::pop(aele, akey, adata);
 		}
 	};
 
@@ -188,25 +162,11 @@ namespace ngl
 	{
 		static bool push(tinyxml2::XMLElement* aele, const char* akey, uint8_t adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::set_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::set(aele, akey, adata);
-			}
+			return xbtype<ATTR>::push(aele, akey, adata);
 		}
 		static bool pop(tinyxml2::XMLElement* aele, const char* akey, uint8_t& adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::get_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::get(aele, akey, adata);
-			}
+			return xbtype<ATTR>::pop(aele, akey, adata);
 		}
 	};
 
@@ -215,25 +175,11 @@ namespace ngl
 	{
 		static bool push(tinyxml2::XMLElement* aele, const char* akey, uint16_t adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::set_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::set(aele, akey, adata);
-			}
+			return xbtype<ATTR>::push(aele, akey, adata);
 		}
 		static bool pop(tinyxml2::XMLElement* aele, const char* akey, uint16_t& adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::get_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::get(aele, akey, adata);
-			}
+			return xbtype<ATTR>::pop(aele, akey, adata);
 		}
 	};
 
@@ -242,25 +188,11 @@ namespace ngl
 	{
 		static bool push(tinyxml2::XMLElement* aele, const char* akey, uint32_t adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::set_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::set(aele, akey, adata);
-			}
+			return xbtype<ATTR>::push(aele, akey, adata);
 		}
 		static bool pop(tinyxml2::XMLElement* aele, const char* akey, uint32_t& adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::get_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::get(aele, akey, adata);
-			}
+			return xbtype<ATTR>::pop(aele, akey, adata);
 		}
 	};
 
@@ -269,25 +201,11 @@ namespace ngl
 	{
 		static bool push(tinyxml2::XMLElement* aele, const char* akey, uint64_t adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::set_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::set(aele, akey, adata);
-			}
+			return xbtype<ATTR>::push(aele, akey, adata);
 		}
 		static bool pop(tinyxml2::XMLElement* aele, const char* akey, uint64_t& adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::get_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::get(aele, akey, adata);
-			}
+			return xbtype<ATTR>::pop(aele, akey, adata);
 		}
 	};
 
@@ -296,25 +214,11 @@ namespace ngl
 	{
 		static bool push(tinyxml2::XMLElement* aele, const char* akey, const std::string& adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::set_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::set(aele, akey, adata);
-			}
+			return xbtype<ATTR>::push(aele, akey, adata);
 		}
 		static bool pop(tinyxml2::XMLElement* aele, const char* akey, std::string& adata)
 		{
-			if constexpr (ATTR)
-			{
-				return xml::get_xmlattr(aele, akey, adata);
-			}
-			else
-			{
-				return xml::get(aele, akey, adata);
-			}
+			return xbtype<ATTR>::pop(aele, akey, adata);
 		}
 	};
 
@@ -357,7 +261,8 @@ namespace ngl
 						}
 						adata.push_back(ltemp);
 						return true;
-					});
+					}
+				);
 			}
 			else
 			{
@@ -376,11 +281,7 @@ namespace ngl
 				for (const auto& item : adata)
 				{
 					tinyxml2::XMLElement* lpele = xml::set_child(aele, akey);
-					if (lpele == nullptr)
-					{
-						return false;
-					}
-					if (!xml_serialize<ATTR, T>::push(lpele, nullptr, item))
+					if (lpele == nullptr || !xml_serialize<ATTR, T>::push(lpele, nullptr, item))
 					{
 						return false;
 					}
@@ -405,7 +306,8 @@ namespace ngl
 						}
 						adata.push_back(ltemp);
 						return true;
-					});
+					}
+				);
 			}
 			else
 			{
@@ -453,7 +355,8 @@ namespace ngl
 						}
 						adata.insert(ltemp);
 						return true;
-					});
+					}
+				);
 			}
 			else
 			{
@@ -487,10 +390,7 @@ namespace ngl
 				}
 				return true;
 			}
-			else
-			{
-				return false;
-			}
+			return false;
 		}
 		static bool pop(tinyxml2::XMLElement* aele, const char* akey, std::map<TKEY, TVALUE>& adata)
 		{
@@ -510,12 +410,10 @@ namespace ngl
 							return true;
 						}
 						return false;
-					});
+					}
+				);
 			}
-			else
-			{
-				return false;
-			}
+			return false;
 		}
 	};
 
