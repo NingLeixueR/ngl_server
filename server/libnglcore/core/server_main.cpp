@@ -539,7 +539,7 @@ bool start_cross()
 bool start_pushserverconfig()
 {
 	// 将服务器配置上传lbgmsys
-	ngl::xarg_info* lpublicxml = nconfig.publicconfig();
+	ngl::xarg_info* lpublicxml = nconfig.info();
 	std::string lgmurl;
 	if (!lpublicxml->find("gmurl", lgmurl))
 	{

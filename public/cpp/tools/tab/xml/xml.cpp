@@ -84,7 +84,7 @@ namespace ngl
 		log_error()->print("finish xmlnode read [{}]", lxmlname);
 	}
 
-	xarg_info* xmlnode::publicconfig()
+	xarg_info* xmlnode::info()
 	{
 		return &m_public;
 	}
@@ -132,7 +132,7 @@ namespace ngl
 	void testxml()
 	{
 		ngl::xmlnode& ltempxml = ngl::xmlnode::instance();
-		auto& lmap = ltempxml.publicconfig()->data();
+		auto& lmap = ltempxml.info()->data();
 		lmap["varint"] = "false";
 		lmap["isxor"] = "true";
 		lmap["sessionewait"] = "1";
