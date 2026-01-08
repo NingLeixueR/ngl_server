@@ -75,7 +75,7 @@ namespace ngl
 		xarg_telnet& telnet();
 	};
 
-	void test_xml();
+	void testxml();
 }//namespace ngl
 #define nconfig ngl::xmlnode::instance()
 
