@@ -96,39 +96,43 @@ namespace ngl
 			nrfun<TDerived>::instance().template rfun<TDerived, T>(afun, aready);
 		}
 
-		// # 注册actor成员函数(可以是非handle)
 		template <typename TDerived, typename T>
-		static void register_actor(int32_t aready/*nready::enum_ready*/, T afun)
+		static void reg_actor(int32_t aready/*nready::enum_ready*/, T afun)
 		{
 			nrfun<TDerived>::instance().template rfun<TDerived, T>(afun, aready);
 		}
 
-		template <typename TDerived, typename T, typename ...ARG>
-		static void register_actor(int32_t aready/*nready::enum_ready*/, T afun, ARG... argfun)
+		// # 注册actor成员函数(可以是非handle)
+		template <typename TDerived, typename ...ARG>
+		static void register_actor(int32_t aready/*nready::enum_ready*/, ARG... argfun)
 		{
-			register_actor<TDerived, T>(aready, afun);
-			register_actor<TDerived, ARG...>(aready, argfun...);
+			(reg_actor<TDerived>(aready, argfun), ...);
 		}
 
-		//# 与register_actor类似 只不过不注册网络层
+		// # 与register_actor类似 只不过不注册网络层
 		template <typename TDerived, typename T>
 		static void register_actornonet(enum_ready aready, const Tfun<TDerived, T> afun)
 		{
 			nrfun<TDerived>::instance().template rfun_nonet<TDerived, T>(afun, aready);
 		}
 
+		// # 注册actor handle函数
 		template <typename TDerived>
 		using register_handle = template_arg<register_actor_handle<TDerived>, int32_t>;
 		
+		// # 注册actor脚本处理函数
 		template <typename TDerived>
 		using register_script_handle = template_arg<cregister_actor_handle<TDerived>, int32_t>;
 
+		// # actor_gateway_c2g 注册转发
 		template <typename TDerived>
 		using register_forward_c2g = template_arg<c2g_forward_handle<TDerived>>;
 		
+		// # register_forward_g2c 注册转发
 		template <typename TDerived>
 		using register_forward_g2c = template_arg<g2c_forward_handle<TDerived>>;
 
+		// # actor_role 注册二次转发
 		template <typename TDerived, ENUM_ACTOR ACTOR>
 		using register_secondary_forward_c2g = template_arg<c2g_secondary_forward_handle<TDerived, ACTOR>>;
 
@@ -197,5 +201,15 @@ namespace ngl
 	{
 		const TMESSAGE& ldata = *adata.get_data();
 		return nscript_handle(ldata);
+	}
+}//namespace ngl
+
+
+namespace ngl
+{
+	template <typename TDerived, typename T>
+	void actor::reg_actor(int32_t aready/*nready::enum_ready*/, T afun)
+	{
+		nrfun<TDerived>::instance().template rfun<TDerived, T>(afun, aready);
 	}
 }//namespace ngl
