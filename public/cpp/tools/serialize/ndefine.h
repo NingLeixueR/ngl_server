@@ -135,17 +135,10 @@ public:
 		return fun_pop(m_parts[m_pos++], adata);
 	}
 
-	template <typename TX, typename ...ARG>
-	bool pop(TX& adata, ARG&... args)
+	template <typename ...ARG>
+	bool pop(ARG&... args)
 	{
-		if constexpr (sizeof...(ARG) >= 1)
-		{
-			return pop(adata) && pop(args...);
-		}
-		else
-		{
-			return pop(m_pos, adata);
-		}
+		return (pop(args) && ...);
 	}
 
 	bool push()
@@ -159,17 +152,10 @@ public:
 		return fun_push(m_parts[m_pos++], adata);
 	}
 
-	template <typename TX, typename ...ARG>
-	bool push(TX& adata, ARG&... args)
+	template <typename ...ARG>
+	bool push(ARG&... args)
 	{
-		if constexpr (sizeof...(ARG) >= 1)
-		{
-			return push(adata) && push(args...);
-		}
-		else
-		{
-			return push(adata);
-		}
+		return (push(args) && ...);
 	}
 };
 
