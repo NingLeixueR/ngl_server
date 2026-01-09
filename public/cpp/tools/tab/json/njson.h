@@ -35,6 +35,10 @@ namespace ngl
 		static void push(cJSON* ajson, const T& adata);
 	};
 
+	class ncjson;
+	template <>
+	struct json_format<ncjson>;
+
 	template <>
 	struct json_format<int64_t>
 	{
@@ -751,8 +755,6 @@ namespace ngl
 			json_format<T>::push(ajson, akey, adata);
 		}
 
-		static void push(cJSON* ajson, const char* akey, const ncjson& adata);
-
 		template <typename T, typename ...TARGS>
 		static void push(cJSON* ajson, const char* akey, const T& adata, const TARGS&... aargs)
 		{
@@ -977,3 +979,27 @@ namespace ngl
 		push(ajson, nullptr, adata);
 	}
 }//namespace ngl
+
+namespace ngl
+{
+	template <>
+	struct json_format<ncjson>
+	{
+		static bool pop(cJSON* ajson, const char* akey, ncjson& adata)
+		{
+			return false;
+		}
+
+		static cJSON* create(const ncjson& adata)
+		{
+			return nullptr;
+		}
+		static void push(cJSON* ajson, const char* akey, const ncjson& adata)
+		{
+			cJSON_AddItemToObject(ajson, akey, ((ncjson*)(&adata))->nofree());
+		}
+		static void push(cJSON* ajson, const ncjson& adata)
+		{
+		}
+	};
+}
