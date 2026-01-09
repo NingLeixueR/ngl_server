@@ -103,6 +103,7 @@ class nhelp
 {
 	const std::vector<const char*>& m_parts;
 	T* m_hp = nullptr;
+	int m_pos = 0;
 
 
 	template <typename TX>
@@ -123,51 +124,51 @@ public:
 		, m_hp(ahp)
 	{}
 
-	bool pop(int32_t apos)
+	bool pop()
 	{
 		return true;
 	}
 
 	template <typename TX>
-	bool pop(int32_t apos, TX& adata)
+	bool pop(TX& adata)
 	{
-		return fun_pop(m_parts[apos], adata);
+		return fun_pop(m_parts[m_pos++], adata);
 	}
 
 	template <typename TX, typename ...ARG>
-	bool pop(int32_t apos, TX& adata, ARG&... args)
+	bool pop(TX& adata, ARG&... args)
 	{
 		if constexpr (sizeof...(ARG) >= 1)
 		{
-			return pop(apos, adata) && pop(++apos, args...);
+			return pop(adata) && pop(args...);
 		}
 		else
 		{
-			return pop(apos, adata);
+			return pop(m_pos, adata);
 		}
 	}
 
-	bool push(int32_t apos)
+	bool push()
 	{
 		return true;
 	}
 
 	template <typename TX>
-	bool push(int32_t apos, const TX& adata)
+	bool push(const TX& adata)
 	{
-		return fun_push(m_parts[apos], adata);
+		return fun_push(m_parts[m_pos++], adata);
 	}
 
 	template <typename TX, typename ...ARG>
-	bool push(int32_t apos, TX& adata, ARG&... args)
+	bool push(TX& adata, ARG&... args)
 	{
 		if constexpr (sizeof...(ARG) >= 1)
 		{
-			return push(apos, adata) && push(++apos, args...);
+			return push(adata) && push(args...);
 		}
 		else
 		{
-			return push(apos, adata);
+			return push(adata);
 		}
 	}
 };
@@ -237,13 +238,11 @@ void json_push(cJSON* ajson, const char* akey) const								\
 def_jsonfunction_function	
 #endif
 
-	
-#if defined(WIN32)||defined(WINCE)||defined(WIN64)
 #define def_jsonfunction(...)														\
 bool json_pop(cJSON* ajson)															\
 {																					\
 	nhelp<cJSON,ngl::njson> ltemp(parms(#__VA_ARGS__), ajson);						\
-	return ltemp.pop(0, ##__VA_ARGS__);												\
+	return ltemp.pop(__VA_ARGS__);													\
 }																					\
 void json_push(cJSON* ajson, const char* akey) const								\
 {																					\
@@ -251,40 +250,16 @@ void json_push(cJSON* ajson, const char* akey) const								\
 	{																				\
 		ngl::ncjson ltempjson;														\
 		nhelp<cJSON,ngl::njson> ltemp(parms(#__VA_ARGS__), ltempjson.json());		\
-		ltemp.push(0, ##__VA_ARGS__);												\
+		ltemp.push(__VA_ARGS__);													\
 		ngl::njson::push(ajson, akey, ltempjson);									\
 	}																				\
 	else																			\
 	{																				\
 		nhelp<cJSON,ngl::njson> ltemp(parms(#__VA_ARGS__), ajson);					\
-		ltemp.push(0, ##__VA_ARGS__);												\
+		ltemp.push(__VA_ARGS__);													\
 	}																				\
 }																					\
 def_jsonfunction_function
-#else
-#define def_jsonfunction(...)														\
-bool json_pop(cJSON* ajson)															\
-{																					\
-	nhelp<cJSON,ngl::njson> ltemp(parms(#__VA_ARGS__), ajson);									\
-	return ltemp.pop(0 __VA_OPT__(,) ##__VA_ARGS__);								\
-}																					\
-void json_push(cJSON* ajson, const char* akey) const								\
-{																					\
-	if (akey != nullptr)															\
-	{																				\
-		ngl::ncjson ltempjson;														\
-		nhelp<cJSON,ngl::njson> ltemp(parms(#__VA_ARGS__), ltempjson.json());		\
-		ltemp.push(0 __VA_OPT__(,) ##__VA_ARGS__);									\
-		ngl::njson::push(ajson, akey, ltempjson);									\
-	}																				\
-	else																			\
-	{																				\
-		nhelp<cJSON,ngl::njson> ltemp(parms(#__VA_ARGS__), ajson);					\
-		ltemp.push(0 __VA_OPT__(,) ##__VA_ARGS__);									\
-	}																				\
-}																					\
-def_jsonfunction_function
-#endif
 
 #define def_nlua_function(...)												\
 	void nlua_push(lua_State* aL, const char* aname = nullptr)const			\
