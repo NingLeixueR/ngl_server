@@ -128,14 +128,14 @@ public:
 		return true;
 	}
 
-	template <typename T>
+	template <typename TX>
 	bool pop(int32_t apos, T& adata)
 	{
 		return fun_pop(m_parts[apos], adata);
 	}
 
-	template <typename T, typename ...ARG>
-	bool pop(int32_t apos, T& adata, ARG&... args)
+	template <typename TX, typename ...ARG>
+	bool pop(int32_t apos, TX& adata, ARG&... args)
 	{
 		if constexpr (sizeof...(ARG) >= 1)
 		{
@@ -152,14 +152,14 @@ public:
 		return true;
 	}
 
-	template <typename T>
-	bool push(int32_t apos, const T& adata)
+	template <typename TX>
+	bool push(int32_t apos, const TX& adata)
 	{
 		return fun_push(m_parts[apos], adata);
 	}
 
-	template <typename T, typename ...ARG>
-	bool push(int32_t apos, T& adata, ARG&... args)
+	template <typename TX, typename ...ARG>
+	bool push(int32_t apos, TX& adata, ARG&... args)
 	{
 		if constexpr (sizeof...(ARG) >= 1)
 		{
