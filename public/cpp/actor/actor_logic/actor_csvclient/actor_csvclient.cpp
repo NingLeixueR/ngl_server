@@ -83,9 +83,4 @@ namespace ngl
 		send_actor(actor_csvserver::actorid(), id_guid(), pro);
 		return true;
 	}
-
-	bool actor_csvclient::handle(const message<np_arg_null>&)
-	{
-		return true;
-	}
 }//namespace ngl

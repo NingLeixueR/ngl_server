@@ -417,11 +417,6 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_role::handle(const message<np_arg_null>&)
-	{
-		return true;
-	}
-
 	void actor_role::create_init(const std::string& aname)
 	{
 		pbdb::db_brief* lpbrief = tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).add(id_guid());

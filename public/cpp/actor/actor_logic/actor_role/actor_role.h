@@ -256,7 +256,6 @@ namespace ngl
 		//# 角色创建初始化
 		void create_init(const std::string& aname);
 
-		bool handle(const message<np_arg_null>&);
 		bool handle(const message<mforward<np_gm>>& adata);
 		bool handle(const message<mforward<np_operator_task>>& adata);
 		bool handle(const message<np_actor_disconnect_close>& adata);

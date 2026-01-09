@@ -1046,8 +1046,6 @@ namespace ngl
 		static void nregister();
 
         bool timer_handle(const message<np_timerparm>& adata);
-
-        bool handle(const message<np_arg_null>&);
 	}};
 }}//namespace ngl)", ltolower);
         lfileH.write(lnrh);
@@ -1129,11 +1127,6 @@ namespace ngl
     {{
         return true;
     }}
-
-    bool {0}::handle(const message<np_arg_null>&)
-	{{
-		return true;
-	}}
 }}// namespace ngl)", ltolower, aenum);
         lfileCPP.write(lnrcpp);
     }
@@ -1361,8 +1354,7 @@ namespace ngl
 
                         size_t lpos = lnr.find("handle(const message<");
                         size_t lpos2 = lnr.find("timer_handle(const message<");
-                        size_t lpos3 = lnr.find("handle(const message<np_arg_null");
-                        if (lpos != std::string::npos && lpos2 == std::string::npos && lpos3 == std::string::npos)
+                        if (lpos != std::string::npos && lpos2 == std::string::npos)
                         {
                             llastnr = "";
                            // *lpnr += std::format("{}\n", lnr);

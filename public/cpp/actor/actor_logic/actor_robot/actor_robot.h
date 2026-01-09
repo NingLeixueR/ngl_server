@@ -124,7 +124,6 @@ namespace ngl
 
 		void ukcp_connect(pbnet::ENUM_KCP akcpenum);
 
-		bool handle(const message<np_arg_null>&);
 		bool handle(const message<np_thruput_test>& adata);
 		bool handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB>& adata);
 		bool handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR>& adata);

@@ -92,7 +92,6 @@ namespace ngl
 		tprotocol::tp_customs_script::template func <
 			/*100000001*/np_gm
 			/*100000003*/, np_gm_response
-			/*100000005*/, np_arg_null
 		>();
 
 		// Õ¼ÓÃ110000000->120000000

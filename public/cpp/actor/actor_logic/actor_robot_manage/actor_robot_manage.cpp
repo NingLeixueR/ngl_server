@@ -241,9 +241,4 @@ namespace ngl
 	{
 		return true;
 	}
-
-	bool actor_robot_manage::handle(const message<np_arg_null>&)
-	{
-		return true;
-	}
 }//namespace ngl

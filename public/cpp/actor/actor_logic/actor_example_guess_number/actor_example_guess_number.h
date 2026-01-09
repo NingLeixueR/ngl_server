@@ -82,7 +82,6 @@ namespace ngl
 
 		bool timer_handle(const message<np_timerparm>& adata);
 
-		bool handle(const message<np_arg_null>&);
 		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>>& adata);
 		bool handle(const message<np_example_entergame_ready>& adata);
 	};

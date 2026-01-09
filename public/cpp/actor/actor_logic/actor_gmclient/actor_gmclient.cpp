@@ -84,9 +84,4 @@ namespace ngl
 	{
 		return true;
 	}
-
-	bool actor_gmclient::handle(const message<np_arg_null>&)
-	{
-		return true;
-	}
 }//namespace ngl
