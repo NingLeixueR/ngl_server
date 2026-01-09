@@ -17,8 +17,4 @@
 
 namespace ngl
 {
-	void njson::push(cJSON* ajson, const char* akey, const ncjson& adata)
-	{
-		cJSON_AddItemToObject(ajson, akey, ((ncjson*)(&adata))->nofree());
-	}
 }//namespace ngl
