@@ -129,7 +129,7 @@ public:
 	}
 
 	template <typename TX>
-	bool pop(int32_t apos, T& adata)
+	bool pop(int32_t apos, TX& adata)
 	{
 		return fun_pop(m_parts[apos], adata);
 	}
