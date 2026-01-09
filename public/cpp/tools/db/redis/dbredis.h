@@ -23,13 +23,6 @@
 
 namespace ngl
 {
-	struct redis_arg
-	{
-		str_ip		m_ip;
-		i16_port	m_port = 0;
-		std::string m_passworld;
-	};
-
 	class redis_cmd
 	{
 	public:
@@ -100,8 +93,6 @@ namespace ngl
 	class redis
 	{
 		redisContext*	m_rc = nullptr;
-		redis_arg		m_arg;
-		redis();
 
 		template <typename T>
 		bool get(const std::string& aname, int akey, T& adata)
@@ -128,7 +119,7 @@ namespace ngl
 			return true;
 		}
 	public:
-		redis(const redis_arg& arg);
+		redis();
 
 		template <typename T>
 		bool get(int akey, T& adata)

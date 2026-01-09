@@ -29,6 +29,7 @@ namespace ngl
 		xarg_info	m_public;
 		xarg_mail	m_mail;
 		xarg_telnet	m_telnet;
+		xarg_redis	m_redis;
 
 		std::string	m_nodename;
 		NODE_TYPE	m_nodetype;
@@ -73,6 +74,8 @@ namespace ngl
 		xarg_mail& mail();
 
 		xarg_telnet& telnet();
+
+		xarg_redis&	redis();
 	};
 
 	void testxml();
