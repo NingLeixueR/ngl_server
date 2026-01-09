@@ -94,4 +94,13 @@ namespace ngl
 		//# ±éÀúËùÓĞkey/value
 		void foreach(const std::function<void(const std::pair<const std::string, std::string>&)>& afun);
 	};
+
+	struct xarg_redis
+	{
+		str_ip		m_ip;
+		i16_port	m_port = 0;
+		std::string m_passworld;
+
+		dxmlserialize(redis, true, m_ip, m_port, m_passworld)
+	};
 }// namespace ngl

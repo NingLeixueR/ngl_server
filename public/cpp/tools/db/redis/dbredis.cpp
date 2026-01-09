@@ -14,6 +14,7 @@
 #include "nprotocol.h"
 #include "dbredis.h"
 #include "nguid.h"
+#include "xml.h"
 
 namespace ngl
 {
@@ -52,18 +53,17 @@ namespace ngl
 		return false;
 	}
 
-	redis::redis(const redis_arg& arg) :
-		m_arg(arg),
+	redis::redis() :
 		m_rc(nullptr)
 	{
-		m_rc = redisConnect(arg.m_ip.c_str(), arg.m_port);
+		m_rc = redisConnect(nconfig.redis().m_ip.c_str(), nconfig.redis().m_port);
 		if (m_rc->err)
 		{
 			log_error()->print("[ERROR] Redis[{}] ", m_rc->err);
 			tools::no_core_dump();
 			return;
 		}
-		if (!redis_cmd::cmd(m_rc, "AUTH %s", arg.m_passworld.c_str()))
+		if (!redis_cmd::cmd(m_rc, "AUTH %s", nconfig.redis().m_passworld.c_str()))
 		{
 			tools::no_core_dump();
 			return;
@@ -77,11 +77,7 @@ namespace ngl
 {
 	void test_hiredis()
 	{
-		ngl::redis_arg larg;
-		larg.m_ip = "127.0.0.1";
-		larg.m_port = 6379;
-		larg.m_passworld = "123456";
-		ngl::redis lredis(larg);
+		ngl::redis lredis;
 
 		for (int i = 1; i < 10; ++i)
 		{

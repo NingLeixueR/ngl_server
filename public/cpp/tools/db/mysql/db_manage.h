@@ -117,7 +117,8 @@ namespace ngl
 			db_data<T>::foreach([adb](T& adata)
 				{
 					db_manage::save(adb, adata);
-				});
+				}
+			);
 		}
 
 		template <typename T>

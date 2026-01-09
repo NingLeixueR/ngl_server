@@ -178,5 +178,3 @@ namespace ngl
 	template <typename T>
 	std::set<int64_t> db_data<T>::m_idindex;
 }// namespace ngl
-
-

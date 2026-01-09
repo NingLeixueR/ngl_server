@@ -48,7 +48,8 @@ namespace ngl
 					.m_count		= 0x7fffffff,
 					.m_pram			= nullptr,
 					.m_fun			= std::bind_front(&db_cache::execute, this),
-				});
+				}
+			);
 		}
 
 		inline void push(i64_actorid aid)

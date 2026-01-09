@@ -129,6 +129,11 @@ namespace ngl
 		return m_telnet;
 	}
 
+	xarg_redis& xmlnode::redis()
+	{
+		return m_redis;
+	}
+
 	void testxml()
 	{
 		ngl::xmlnode& ltempxml = ngl::xmlnode::instance();
