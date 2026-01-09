@@ -527,73 +527,6 @@ namespace ngl
 
 #include "ndefine.h"
 
-template <bool ATTR>
-class help_xml
-{
-	const std::vector<const char*>& m_parts;
-	tinyxml2::XMLElement* m_xml = nullptr;
-
-	template <typename T>
-	bool fun_pop(const char* astr, T& adata)
-	{
-		return ngl::xserialize<ATTR>::pop((tinyxml2::XMLElement*)m_xml, astr, adata);
-	}
-
-	template <typename T>
-	bool fun_push(const char* astr, const T& adata)
-	{
-		return ngl::xserialize<ATTR>::push((tinyxml2::XMLElement*)m_xml, astr, adata);
-	}
-public:
-	help_xml(const std::vector<const char*>& aparts, tinyxml2::XMLElement* axml) :
-		m_parts(aparts)
-		, m_xml(axml)
-	{}
-
-	bool fun(int32_t apos)
-	{
-		return true;
-	}
-
-	template <typename T>
-	bool pop(int32_t apos, T& adata)
-	{
-		return fun_pop(m_parts[apos], adata);
-	}
-
-	template <typename T, typename ...ARG>
-	bool pop(int32_t apos, T& adata, ARG&... args)
-	{
-		if constexpr (sizeof...(ARG) >= 1)
-		{
-			return pop(apos, adata) && pop(++apos, args...);
-		}
-		else
-		{
-			return pop(apos, adata);
-		}
-	}
-
-	template <typename T>
-	bool push(int32_t apos, const T& adata)
-	{
-		return fun_push(m_parts[apos], adata);
-	}
-
-	template <typename T, typename ...ARG>
-	bool push(int32_t apos, const T& adata, const ARG&... args)
-	{
-		if constexpr (sizeof...(ARG) >= 1)
-		{
-			return push(apos, adata) && push(++apos, args...);
-		}
-		else
-		{
-			return push(apos, adata);
-		}
-	}
-};
-
 #define def_xmlfunction(XMLNAME)														\
 	inline bool xml_pop(const char* axml)												\
 	{																					\
@@ -613,29 +546,31 @@ public:
 		return xml::writexml(axml, ldocument);											\
 	}
 
+
+
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
-#define def_xmlspecial(ATTR, ...)										\
-	inline bool xml_pop(tinyxml2::XMLElement* aele)						\
-	{																	\
-		help_xml<ATTR> ltemp(parms(#__VA_ARGS__), aele);				\
-		return ltemp.pop(0, __VA_ARGS__);								\
-	}																	\
-	inline bool xml_push(tinyxml2::XMLElement* aele)const				\
-	{																	\
-		help_xml<ATTR> ltemp(parms(#__VA_ARGS__), aele);				\
-		return ltemp.push(0, __VA_ARGS__);								\
+#define def_xmlspecial(ATTR, ...)																			\
+	inline bool xml_pop(tinyxml2::XMLElement* aele)															\
+	{																										\
+		nhelp<tinyxml2::XMLElement, ngl::xserialize<ATTR>> ltemp(parms(#__VA_ARGS__), aele);				\
+		return ltemp.pop(0, __VA_ARGS__);																	\
+	}																										\
+	inline bool xml_push(tinyxml2::XMLElement* aele)const													\
+	{																										\
+		nhelp<tinyxml2::XMLElement, ngl::xserialize<ATTR>> ltemp(parms(#__VA_ARGS__), aele);				\
+		return ltemp.push(0, __VA_ARGS__);																	\
 	}
 #else
-#define def_xmlspecial(ATTR, ...)										\
-	inline bool xml_pop(tinyxml2::XMLElement* aele)						\
-	{																	\
-		help_xml<ATTR> ltemp(parms(#__VA_ARGS__), aele);				\
-		return ltemp.pop(0 __VA_OPT__(,) ##__VA_ARGS__);				\
-	}																	\
-	inline bool xml_push(tinyxml2::XMLElement* aele)const				\
-	{																	\
-		help_xml<ATTR> ltemp(parms(#__VA_ARGS__), aele);				\
-		return ltemp.push(0 __VA_OPT__(,) ##__VA_ARGS__);				\
+#define def_xmlspecial(ATTR, ...)																			\
+	inline bool xml_pop(tinyxml2::XMLElement* aele)															\
+	{																										\
+		nhelp<tinyxml2::XMLElement, ngl::xserialize<ATTR>> ltemp(parms(#__VA_ARGS__), aele);				\
+		return ltemp.pop(0 __VA_OPT__(,) ##__VA_ARGS__);													\
+	}																										\
+	inline bool xml_push(tinyxml2::XMLElement* aele)const													\
+	{																										\
+		nhelp<tinyxml2::XMLElement, ngl::xserialize<ATTR>> ltemp(parms(#__VA_ARGS__), aele);				\
+		return ltemp.push(0 __VA_OPT__(,) ##__VA_ARGS__);													\
 	}
 #endif
 
