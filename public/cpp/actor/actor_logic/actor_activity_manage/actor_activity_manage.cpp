@@ -86,7 +86,7 @@ namespace ngl
 
 		m_drop.init(this, {});
 
-		actor_events_logic::tfun::func(actorid(), eevents_logic_rolelogin, eevents_logic_rolelevelchange, eevents_logic_rolegoldchange);
+		actor_events_logic::event_func(actorid(), eevents_logic_rolelogin, eevents_logic_rolelevelchange, eevents_logic_rolegoldchange);
 
 		// 加载初始化活动
 		int32_t lnow = (int32_t)localtime::gettime();
