@@ -99,11 +99,6 @@ static std::vector<const char*>& parms(const char* astr = nullptr)				\
 
 #include "njson.h"
 
-enum
-{
-	ESPLIT_STR = 32,
-};
-
 class help_json
 {
 	const std::vector<const char*>& m_parts;
