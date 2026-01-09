@@ -25,48 +25,12 @@ namespace ngl
 		TF需要实现static func<T>(TARG...)
 	*/
 	template <typename TF, typename ...TARG>
-	class template_arg
+	struct template_arg
 	{
-		template_arg() = delete;
-		template_arg(const template_arg&) = delete;
-		template_arg& operator=(const template_arg&) = delete;
-
-	public:
 		template <typename ...ARG>
 		static void func(TARG... args)
 		{
 			(TF::template func<ARG>(args...), ...);
-		}
-	};
-
-	template <typename TF>
-	class template_arg_event
-	{
-		template_arg_event() = delete;
-		template_arg_event(const template_arg_event&) = delete;
-		template_arg_event& operator=(const template_arg_event&) = delete;
-
-		template <typename TE>
-		static void func2(i64_actorid aactorid, TE atype)
-		{
-			TF::func(aactorid, atype);
-		}
-	public:
-		static void func()
-		{
-		}
-
-		template <typename TE>
-		static void func(i64_actorid aactorid, TE atype)
-		{
-			func2(aactorid, atype);
-		}
-
-		template <typename TE, typename ...ARG>
-		static void func(i64_actorid aactorid, TE atype, ARG... args2)
-		{
-			func(aactorid, atype);
-			func(aactorid, args2...);
 		}
 	};
 }//namespace ngl

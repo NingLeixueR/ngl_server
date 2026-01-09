@@ -79,10 +79,9 @@ namespace ngl
 
 		struct np_event_register
 		{
-			//std::map<E_EVENTS, std::set<i64_actorid>> m_vecpair;
-			E_EVENTS m_event;
+			std::vector<E_EVENTS> m_events;
 			i64_actorid m_actorid;
-			dprotocol(np_event_register, m_event, m_actorid)
+			dprotocol(np_event_register, m_events, m_actorid)
 		};
 
 		static void nregister()
@@ -120,33 +119,27 @@ namespace ngl
 			return nguid::make((ENUM_ACTOR)(ACTOR_EVENTS + id_index()), tab_self_area, id_index());
 		}
 
-		// # actor注册关注的event
-		struct register_actor_event
+		template <typename ...ARGS>
+		static void event_funcs(np_event_register& apro, ARGS... atypes)
 		{
-			static void func(i64_actorid aactorid, E_EVENTS atype)
-			{
-				auto pro = std::make_shared<np_event_register>();
-				pro->m_event = atype;
-				pro->m_actorid = aactorid;
-				actor::send_actor(actorid(), aactorid, pro);
-			}
-		};
-		using tfun = template_arg_event<register_actor_event>;
+			(apro.m_events.push_back(atypes), ...);
+		}
 
-		struct nullacctor
+		template <typename ...ARGS>
+		static void event_func(i64_actorid aactorid, ARGS... atypes)
 		{
-			template <typename TPARM>
-			bool handle(const message<TPARM>& adata)
-			{
-				actor::send_actor(actorid(), nguid::make(), adata.get_shared_data());
-				return true;
-			}
-		};
-		static nullacctor m_nullacctor;
+			auto pro = std::make_shared<np_event_register>();
+			pro->m_actorid = aactorid;
+
+			event_funcs(*pro, atypes...);
+
+			actor::send_actor(actorid(), aactorid, pro);
+		}
 
 		// # 触发事件
-		template <typename TPARM, typename TACTOR = nullacctor>
-		static bool trigger_event(const TPARM& apram, TACTOR* aactor = &m_nullacctor)
+		struct tnactor {};
+		template <typename TPARM, typename TACTOR = tnactor>
+		static bool trigger_event(const TPARM& apram, TACTOR* aactor = nullptr)
 		{
 			ngl::log_error()->print("trigger_event {}:E_EVENTS:{}", typeid(TPARM).name(), (int32_t)(apram.m_type));
 			if (check_parm<TPARM>(apram.m_type) == false)
@@ -155,21 +148,31 @@ namespace ngl
 				return false;
 			}
 			auto lparm = std::make_shared<TPARM>(apram);
-			message<TPARM> lmessage(1, nullptr, lparm);
-			aactor->handle(lmessage);
-			return true;
+
+			if constexpr (std::is_same<TACTOR, tnactor>::value)
+			{
+				if (aactor == nullptr)
+				{
+					actor::send_actor(actorid(), nguid::make(), lparm);
+					return true;
+				}
+				return false;
+			}
+			else
+			{
+				message<TPARM> lmessage(1, nullptr, lparm);
+				aactor->handle(lmessage);
+				return true;
+			}
 		}
 
 		bool handle(const message<np_event_register>& adata)
 		{
 			const np_event_register& pro = *adata.get_data();
-			ngl::log_error()->print(
-				"np_event_register {}:E_EVENTS:{} actor:{}"
-				, typeid(E_EVENTS).name()
-				, (int32_t)(pro.m_event)
-				, nguid(pro.m_actorid)
-			);
-			m_eventmember[pro.m_event].insert(pro.m_actorid);
+			for (auto ltype : pro.m_events)
+			{
+				m_eventmember[ltype].insert(pro.m_actorid);
+			}
 			return true;
 		}
 	};
@@ -179,7 +182,4 @@ namespace ngl
 
 	template <ENUM_EVENTS ETYPE, typename E_EVENTS, int E_EVENTS_COUNT>
 	std::map<E_EVENTS, std::set<i64_actorid>> actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>::m_eventmember;
-
-	template <ENUM_EVENTS ETYPE, typename E_EVENTS, int E_EVENTS_COUNT>
-	actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>::nullacctor actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>::m_nullacctor;
 }//namespace ngl

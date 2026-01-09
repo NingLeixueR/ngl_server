@@ -72,11 +72,7 @@ namespace ngl
 			log_error()->print("actor_friends::loaddb_finish [{}:{}]", (int32_t)atype, (int32_t)astat);
 			return;
 		}
-		actor_events_logic::tfun::func<>(
-			actorid()
-			, eevents_logic_rolelogin
-			, eevents_logic_roleoffline
-		);
+		actor_events_logic::event_func(actorid(), eevents_logic_rolelogin, eevents_logic_roleoffline);
 	}
 
 	void actor_friends::nregister()
