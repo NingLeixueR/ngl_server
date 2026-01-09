@@ -96,9 +96,4 @@ namespace ngl
 	{
 		return true;
 	}
-
-	bool actor_testlua::handle(const message<np_arg_null>&)
-	{
-		return true;
-	}
 }// namespace ngl

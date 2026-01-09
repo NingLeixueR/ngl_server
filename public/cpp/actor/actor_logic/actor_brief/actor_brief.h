@@ -59,6 +59,5 @@ namespace ngl
 		static void nregister();
 
 		bool timer_handle(const message<np_timerparm>& adata);
-		bool handle(const message<np_arg_null>& );
 	};
 }//namespace ngl

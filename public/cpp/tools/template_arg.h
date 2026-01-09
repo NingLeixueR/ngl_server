@@ -24,11 +24,6 @@ namespace ngl
 		辅助缺省参数: template_arg<TF,TARG...>
 		TF需要实现static func<T>(TARG...)
 	*/
-	struct np_arg_null
-	{
-		dprotocol(np_arg_null)
-	};
-
 	template <typename TF, typename ...TARG>
 	class template_arg
 	{
@@ -36,28 +31,11 @@ namespace ngl
 		template_arg(const template_arg&) = delete;
 		template_arg& operator=(const template_arg&) = delete;
 
-		template <typename T>
-		static void func2(TARG... args)
-		{
-			TF::template func<T>(args...);
-		}
 	public:
-		template <typename T = np_arg_null, typename ...ARG>
+		template <typename ...ARG>
 		static void func(TARG... args)
 		{
-			if constexpr (std::is_same<T, np_arg_null>())
-			{
-				return;
-			}
-			func2<T>(args...);
-			if constexpr (sizeof...(ARG) > 1)
-			{
-				func<ARG...>(args...);
-			}
-			if constexpr (sizeof...(ARG) == 1)
-			{
-				func2<ARG...>(args...);
-			}
+			(TF::template func<ARG>(args...), ...);
 		}
 	};
 

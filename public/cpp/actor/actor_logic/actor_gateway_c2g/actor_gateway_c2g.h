@@ -54,8 +54,6 @@ namespace ngl
 
 		bool timer_handle(const message<np_timerparm>& adata);
 
-		bool handle(const message<np_arg_null>&);
-
 		template <typename T>
 		bool handle(const message<np_actor_forward<T, forward_c2g<forward>>>& adata)
 		{

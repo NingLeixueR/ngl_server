@@ -106,9 +106,4 @@ namespace ngl
 	{
 		return true;
 	}
-
-	bool actor_gateway_g2c::handle(const message<np_arg_null>&)
-	{
-		return true;
-	}
 }//namespace ngl

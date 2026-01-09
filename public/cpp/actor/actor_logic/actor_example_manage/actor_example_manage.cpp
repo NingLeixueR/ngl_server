@@ -115,11 +115,6 @@ namespace ngl
 		>(e_ready_all);
 	}
 
-	bool actor_example_manage::handle(const message<np_arg_null>&)
-	{
-		return true;
-	}
-
 	bool actor_example_manage::timer_handle(const message<np_timerparm>& adata)
 	{
 		int32_t lnow = (int32_t)localtime::gettime();

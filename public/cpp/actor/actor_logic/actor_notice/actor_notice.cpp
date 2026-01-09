@@ -93,9 +93,4 @@ namespace ngl
 	{
 		return true;
 	}
-
-	bool actor_notice::handle(const message<np_arg_null>&)
-	{
-		return true;
-	}
 }//namespace ngl

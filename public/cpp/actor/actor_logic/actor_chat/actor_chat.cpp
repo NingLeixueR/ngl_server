@@ -106,9 +106,4 @@ namespace ngl
 		m_update_chatitem.clear();
 		return true;
 	}
-
-	bool actor_chat::handle(const message<np_arg_null>&)
-	{
-		return true;
-	}
 }// namespace ngl

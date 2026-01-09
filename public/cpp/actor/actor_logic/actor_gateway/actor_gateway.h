@@ -62,8 +62,6 @@ namespace ngl
 
 		bool timer_handle(const message<np_timerparm>& adata);
 
-		bool handle(const message<np_arg_null>&);
-
 		bool handle(const message<np_gateway_close_session>& adata);
 
 		// # actor_login通知gateway玩家已经登录(并纪录session及对应的game服务器)
