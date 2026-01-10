@@ -70,8 +70,8 @@ namespace ngl
 		actor::register_timer<actor_gm>(&actor_gm::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle<actor_gm>::func<
-			ngl::np_gm
+		register_handle<actor_gm
+			, ngl::np_gm
 			, mforward<ngl::np_gm_response>
 		>(e_ready_all);
 	}

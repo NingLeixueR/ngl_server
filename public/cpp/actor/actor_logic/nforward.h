@@ -31,12 +31,12 @@ namespace ngl
 		{
 			if (ngl::GATEWAY == nconfig.nodetype())
 			{
-				actor_gateway_c2g::register_forward_c2g<actor_gateway_c2g>:: template func<ARG...>();
+				actor::register_forward_c2g<actor_gateway_c2g, ARG...>();
 				return;
 			}
 			if (ngl::GAME == nconfig.nodetype())
 			{
-				actor::register_handle<actor_role>:: template func <ARG...>(e_ready_all);
+				actor::register_handle<actor_role, ARG...>(e_ready_all);
 				return;
 			}
 		}
@@ -49,12 +49,12 @@ namespace ngl
 		{
 			if (ngl::GATEWAY == nconfig.nodetype())
 			{
-				actor_gateway_c2g::register_forward_c2g<actor_gateway_c2g>::template func<ARG...>();
+				actor::register_forward_c2g<actor_gateway_c2g, ARG...>();
 				return;
 			}
 			if (ngl::GAME == nconfig.nodetype())
 			{
-				actor::register_secondary_forward_c2g<actor_role, ACTOR>:: template func <ARG...>();
+				actor::register_secondary_forward_c2g<actor_role, ACTOR, ARG...>();
 				return;
 			}
 		}
@@ -64,12 +64,12 @@ namespace ngl
 		{
 			if (ngl::GATEWAY == nconfig.nodetype())
 			{
-				actor_gateway_g2c::register_forward_g2c<actor_gateway_g2c>::template func<ARG...>();
+				actor::register_forward_g2c<actor_gateway_g2c, ARG...>();
 				return;
 			}
 			if (ngl::ROBOT == nconfig.nodetype())
 			{
-				actor::register_handle<actor_robot>:: template func <ARG...>(e_ready_null);
+				actor::register_handle<actor_robot, ARG...>(e_ready_null);
 				return;
 			}
 		}

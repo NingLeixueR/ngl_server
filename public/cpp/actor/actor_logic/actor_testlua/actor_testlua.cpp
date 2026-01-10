@@ -84,11 +84,11 @@ namespace ngl
 		// ¶¨Ê±Æ÷
 		actor::register_timer<actor_testlua>(&actor_testlua::timer_handle);
 
-		register_script_handle<actor_testlua>::func<
-			np_testlua
+		register_script_handle<actor_testlua
+			, np_testlua
 		>(e_ready_all);
-		register_script_handle<actor_testlua>::func<
-			mforward<pbnet::PROBUFF_NET_TESTLUA>
+		register_script_handle<actor_testlua
+			, mforward<pbnet::PROBUFF_NET_TESTLUA>
 		>(e_ready_all);
 	}
 

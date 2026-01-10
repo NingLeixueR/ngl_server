@@ -107,10 +107,10 @@ namespace ngl
 		actor::register_timer<actor_example_manage>(&actor_example_manage::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle<actor_example_manage>::func<
-			np_create_example,
-			np_example_equit,
-			np_login_request_info
+		register_handle<actor_example_manage
+			, np_create_example
+			, np_example_equit
+			, np_login_request_info
 			, mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>
 		>(e_ready_all);
 	}

@@ -79,8 +79,8 @@ namespace ngl
 		actor::register_timer<actor_ranklist>(&actor_ranklist::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle<actor_ranklist>::func<
-			mforward<np_gm>
+		register_handle<actor_ranklist
+			, mforward<np_gm>
 			, np_activityrank_operator
 			, np_get_rank
 			, mforward<pbnet::PROBUFF_NET_RANKLIST>

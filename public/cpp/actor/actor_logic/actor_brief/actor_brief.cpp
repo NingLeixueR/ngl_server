@@ -76,8 +76,7 @@ namespace ngl
 		actor::register_timer<actor_brief>(&actor_brief::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle<actor_brief>::func<
-		>(e_ready_all);
+		register_handle<actor_activity_manage>(e_ready_all);
 	}
 	
 	bool actor_brief::timer_handle(const message<np_timerparm>& adata)

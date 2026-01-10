@@ -84,8 +84,8 @@ namespace ngl
 		actor::register_timer<actor_family>(&actor_family::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle<actor_family>::func<
-			mforward<np_gm>
+		register_handle<actor_family
+			, mforward<np_gm>
 			, np_eevents_logic_rolelogin
 			, np_eevents_logic_roleoffline
 			, mforward<pbnet::PROBUFF_NET_FAMIL_CREATE>

@@ -37,8 +37,8 @@ namespace ngl
 
 	void actor_create::nregister()
 	{
-		register_handle<actor_create>::func<
-			np_actorswitch_process<np_actorswitch_process_role>
+		register_handle<actor_create
+			, np_actorswitch_process<np_actorswitch_process_role>
 		>(e_ready_all);
 	}
 }//namespace ngl

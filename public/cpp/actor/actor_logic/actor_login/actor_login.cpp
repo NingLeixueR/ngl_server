@@ -79,11 +79,11 @@ namespace ngl
 		actor::register_timer<actor_login>(&actor_login::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle<actor_login>::func<
-			np_actorserver_connect
+		register_handle<actor_login
+			, np_actorserver_connect
 		>(e_ready_null);
-		register_handle<actor_login>::func<
-			np_actor_disconnect_close
+		register_handle<actor_login
+			, np_actor_disconnect_close
 			, pbnet::PROBUFF_NET_ACOUNT_LOGIN
 		>(e_ready_all);
 	}

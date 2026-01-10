@@ -71,8 +71,8 @@ namespace ngl
 		actor::register_timer<actor_kcp>(&actor_kcp::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle<actor_kcp>::func<
-			np_actor_kcp
+		register_handle<actor_kcp
+			, np_actor_kcp
 		>(e_ready_all);
 	}
 

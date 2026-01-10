@@ -99,8 +99,8 @@ namespace ngl
 		actor::register_timer<actor_log>(&actor_log::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle<actor_log>::func<
-			np_logitem
+		register_handle<actor_log
+			, np_logitem
 		>(e_ready_all);
 	}
 	

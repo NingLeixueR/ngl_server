@@ -65,8 +65,8 @@ namespace ngl
 	{
 		actor::register_timer<actor_robot>(&actor_robot::timer_handle);
 
-		register_handle<actor_robot>::func<
-			np_thruput_test
+		register_handle<actor_robot
+			, np_thruput_test
 			, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE
 		>(e_ready_all);
 

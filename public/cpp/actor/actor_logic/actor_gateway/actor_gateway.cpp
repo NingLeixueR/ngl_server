@@ -70,8 +70,8 @@ namespace ngl
 	{
 		actor::register_timer<actor_gateway>(&actor_gateway::timer_handle);
 
-		register_handle<actor_gateway>::func<
-			np_actorrole_login
+		register_handle<actor_gateway
+			, np_actorrole_login
 			, np_gateway_close_session
 			, np_actorswitch_process<np_actorswitch_process_role>
 			, np_actor_session_close

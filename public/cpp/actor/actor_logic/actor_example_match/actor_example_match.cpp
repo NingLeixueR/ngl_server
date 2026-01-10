@@ -78,8 +78,8 @@ namespace ngl
 		actor::register_timer<actor_example_match>(&actor_example_match::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle<actor_example_match>::func<
-			np_login_request_info
+		register_handle<actor_example_match
+			, np_login_request_info
 			, mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>
 			, mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>
 			, mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>

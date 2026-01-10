@@ -79,8 +79,8 @@ namespace ngl
 		// ¶¨Ê±Æ÷
 		actor::register_timer<actor_testlua2>(&actor_testlua2::timer_handle);
 
-		register_script_handle<actor_testlua2>::func<
-			np_testlua
+		register_script_handle<actor_testlua2
+			, np_testlua
 		>(e_ready_all);
 	}
 

@@ -67,8 +67,8 @@ namespace ngl
 		actor::register_timer<actor_csvserver>(&actor_csvserver::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle<actor_csvserver>::func<
-			np_actor_csv_verify_version
+		register_handle<actor_csvserver
+			, np_actor_csv_verify_version
 		>(e_ready_all);
 	}
 

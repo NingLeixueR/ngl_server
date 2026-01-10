@@ -68,8 +68,8 @@ namespace ngl
 	{
 		actor::register_timer<actor_gateway_c2g>(&actor_gateway_c2g::timer_handle);
 
-		register_handle<actor_gateway_c2g>::func<
-			np_actor_gatewayinfo_updata
+		register_handle<actor_gateway_c2g
+			, np_actor_gatewayinfo_updata
 		>(e_ready_all);
 
 		nforward::c2g();

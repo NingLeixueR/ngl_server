@@ -44,8 +44,8 @@ namespace ngl
 				naddress::forward(apram);
 			});
 
-		register_handle<actor_server>::func<
-			np_actornode_register
+		register_handle<actor_server
+			, np_actornode_register
 			, np_actornode_update_server
 			, np_actornode_update_mass
 			, np_actor_gatewayid_updata

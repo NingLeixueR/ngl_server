@@ -86,9 +86,9 @@ namespace ngl
 
 		static void nregister()
 		{
-			register_handle<tactor_events>::template func<
-				tactor_events::np_event_register
-			>(false);
+			register_handle<tactor_events
+				, tactor_events::np_event_register
+			> (e_ready_all);
 		}
 
 		// # 按照类型触发

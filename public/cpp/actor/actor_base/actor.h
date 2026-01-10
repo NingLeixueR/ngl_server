@@ -117,24 +117,39 @@ namespace ngl
 		}
 
 		// # 注册actor handle函数
-		template <typename TDerived>
-		using register_handle = template_arg<register_actor_handle<TDerived>, int32_t>;
-		
-		// # 注册actor脚本处理函数
-		template <typename TDerived>
-		using register_script_handle = template_arg<cregister_actor_handle<TDerived>, int32_t>;
+		template <typename TDerived, typename ...ARG>
+		static void register_handle(enum_ready aready)
+		{
+			(nrfun<TDerived>::instance().template rfun<TDerived, ARG>((Tfun<TDerived, ARG>) & TDerived::handle, aready), ...);
+		}
+
+		// # 注册actor handle函数
+		template <typename TDerived, typename ...ARG>
+		static void register_script_handle(enum_ready aready)
+		{
+			(nrfun<TDerived>::instance().template rfun<actor, ARG>((Tfun<actor, ARG>) & actor::handle_script<ARG>, aready), ...);
+		}
 
 		// # actor_gateway_c2g 注册转发
-		template <typename TDerived>
-		using register_forward_c2g = template_arg<c2g_forward_handle<TDerived>>;
+		template <typename TDerived, typename ...ARG>
+		static void register_forward_c2g()
+		{
+			(nrfun<TDerived>::instance().template rfun_c2g<ARG>((Tfun<TDerived, np_actor_forward<ARG, forward_c2g<forward>>>) & TDerived::handle), ...);
+		}
 		
 		// # register_forward_g2c 注册转发
-		template <typename TDerived>
-		using register_forward_g2c = template_arg<g2c_forward_handle<TDerived>>;
+		template <typename TDerived, typename ...ARG>
+		static void register_forward_g2c()
+		{
+			(nrfun<TDerived>::instance().template rfun_g2c<ARG>((Tfun<TDerived, np_actor_forward<ARG, forward_g2c<forward>>>) & TDerived::handle), ...);
+		}
 
 		// # actor_role 注册二次转发
-		template <typename TDerived, ENUM_ACTOR ACTOR>
-		using register_secondary_forward_c2g = template_arg<c2g_secondary_forward_handle<TDerived, ACTOR>>;
+		template <typename TDerived, ENUM_ACTOR ACTOR, typename ...ARG>
+		static void register_secondary_forward_c2g()
+		{
+			(nrfun<TDerived>::instance().template rfun<TDerived, ARG>((Tfun<TDerived, ARG>) & TDerived::template handle_forward<ACTOR, ARG>, e_ready_all), ...);
+		}
 
 		explicit actor(const actorparm& aparm);
 
@@ -188,13 +203,6 @@ namespace ngl
 		template <typename TMESSAGE>
 		bool handle_script(const message<TMESSAGE>& adata);
 	};
-
-	template <typename TDerived>
-	template <typename T>
-	void cregister_actor_handle<TDerived>::func(int32_t aready/*enum_ready*/)
-	{
-		nrfun<TDerived>::instance().template rfun<actor, T>((Tfun<actor, T>) & actor::handle_script<T>, aready);
-	}
 
 	template <typename TMESSAGE>
 	bool actor::handle_script(const message<TMESSAGE>& adata)
