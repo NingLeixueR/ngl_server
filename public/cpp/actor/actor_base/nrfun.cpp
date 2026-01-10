@@ -11,7 +11,7 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "time_consuming.h"
+#include "nconsuming.h"
 #include "sysconfig.h"
 #include "nrfun.h"
 

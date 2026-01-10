@@ -1,9 +1,8 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 26-01-06 11:46:22
+// 创建时间 26-01-10 12:44:55
 #include "pb_field.cpp"
 #include "session_endpoint.cpp"
 #include "attribute_value.cpp"
-#include "time_consuming.cpp"
 #include "session_manage.cpp"
 #include "server_session.cpp"
 #include "activitytimedb.cpp"
@@ -28,6 +27,7 @@
 #include "handle_pram.cpp"
 #include "time_wheel.cpp"
 #include "nscript_pb.cpp"
+#include "nconsuming.cpp"
 #include "manage_csv.cpp"
 #include "events_map.cpp"
 #include "asio_timer.cpp"
