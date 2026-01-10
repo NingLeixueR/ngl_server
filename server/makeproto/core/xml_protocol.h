@@ -1115,11 +1115,11 @@ namespace ngl
 		actor::register_timer<{0}, false>(&{0}::timer_handle);
 
         // 绑定自定义np_消息
-		register_handle<{0}>::func<
-		>(false);
+        register_handle<{0}
+		>(e_ready_all);
         
         // 绑定脚本消息
-        register_script_handle<{0}>::func<
+        register_script_handle<{0}
 		>(false);
 	}}
 
@@ -1552,8 +1552,8 @@ namespace ngl
                 {
                     ngl::readfile lreadfile(lactorfile);
                     std::string lnr;
-                    std::string lfindstr1 = std::format("register_handle<{}>::func<", actorname);
-                    std::string lfindstr2 = std::format("register_script_handle<{}>::func<", actorname);
+                    std::string lfindstr1 = std::format("register_handle<{}", actorname);
+                    std::string lfindstr2 = std::format("register_script_handle<{}", actorname);
                     bool lboool1 = false;
                     bool lboool2 = false;
                     while (lreadfile.readline(lnr))

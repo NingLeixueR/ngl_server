@@ -71,8 +71,8 @@ namespace ngl
 		actor::register_timer<actor_robot_manage>(&actor_robot_manage::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle<actor_robot_manage>::func<
-			np_robot_pram
+		register_handle<actor_robot_manage
+			, np_robot_pram
 			, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
 			, pbnet::PROBUFF_NET_ROLE_NOT_CREATE
 		>(e_ready_all);

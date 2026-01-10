@@ -249,8 +249,8 @@ namespace ngl
 
 		static void nregister()
 		{
-			register_handle<tactor_db>::template func<
-				np_actordb_load<TDBTAB_TYPE, TDBTAB>
+			register_handle<tactor_db
+				, np_actordb_load<TDBTAB_TYPE, TDBTAB>
 				, np_actordb_delete<TDBTAB_TYPE, TDBTAB>
 				, np_actordb_save<TDBTAB_TYPE, TDBTAB>
 				, np_actortime_db_cache<TDBTAB>

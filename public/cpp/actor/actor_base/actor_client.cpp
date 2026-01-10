@@ -55,8 +55,8 @@ namespace ngl
 			});
 
 		//# зЂВса­вщ
-		register_handle<actor_client>::func<
-			np_actornode_register_response
+		register_handle<actor_client
+			, np_actornode_register_response
 			, np_actorclient_node_connect
 			, np_actornode_connect_task
 			, np_actor_gatewayid_updata

@@ -171,8 +171,8 @@ namespace ngl
 	{
 		actor::register_timer<actor_role>(&actor_role::timer_handle);
 
-		register_handle<actor_role>::func<
-			np_actor_disconnect_close
+		register_handle<actor_role
+			, np_actor_disconnect_close
 			, mforward<np_gm>
 			, mforward<np_operator_task>
 			, np_example_actorid

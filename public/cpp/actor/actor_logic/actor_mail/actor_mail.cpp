@@ -79,8 +79,8 @@ namespace ngl
 		actor::register_timer<actor_mail>(&actor_mail::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle<actor_mail>::func<
-			np_actor_addmail
+		register_handle<actor_mail
+			, np_actor_addmail
 			, mforward<np_gm>
 			, mforward<pbnet::PROBUFF_NET_MAIL_LIST>
 			, mforward<pbnet::PROBUFF_NET_MAIL_READ>

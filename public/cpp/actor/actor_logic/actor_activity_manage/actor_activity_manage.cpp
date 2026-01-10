@@ -198,8 +198,8 @@ namespace ngl
 		actor::register_timer<actor_activity_manage>(&actor_activity_manage::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle<actor_activity_manage>::func<
-			mforward<np_operator_task_response>
+		register_handle<actor_activity_manage
+			, mforward<np_operator_task_response>
 			, np_eevents_logic_rolelogin
 			, np_eevents_logic_rolevaluechange
 			, np_get_rank_response
