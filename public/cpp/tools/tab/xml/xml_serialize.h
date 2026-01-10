@@ -420,7 +420,7 @@ namespace ngl
 	template <bool ATTR>
 	struct xserialize
 	{
-		static bool pop(tinyxml2::XMLElement* aele)
+		/*static bool pop(tinyxml2::XMLElement* aele)
 		{
 			return true;
 		}
@@ -435,9 +435,16 @@ namespace ngl
 		static bool pop(tinyxml2::XMLElement* aele, const char* akey, T& adata, TARGS&... aargs)
 		{
 			return pop(aele, akey, adata) && pop(aele, aargs...);
+		}*/
+
+		template <typename ...TARGS>
+		static bool pop(tinyxml2::XMLElement* aele, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
+		{
+			int32_t lpos = 0;
+			return (xml_serialize<ATTR, TARGS>::pop(aele, akeys[akeys++], aargs) && ...);
 		}
 
-		static bool push(tinyxml2::XMLElement* aele)
+		/*static bool push(tinyxml2::XMLElement* aele)
 		{
 			return true;
 		}
@@ -452,6 +459,12 @@ namespace ngl
 		static bool push(tinyxml2::XMLElement* aele, const char* akey, const T& adata, const TARGS&... aargs)
 		{
 			return push(aele, akey, adata) && push(aele, aargs...);
+		}*/
+		template <typename ...TARGS>
+		static bool push(tinyxml2::XMLElement* aele, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
+		{
+			int32_t lpos = 0;
+			return (xml_serialize<ATTR, TARGS>::push(aele, akeys[akeys++], aargs) && ...);
 		}
 	};
 }//namespace ngl

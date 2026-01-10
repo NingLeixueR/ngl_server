@@ -27,7 +27,7 @@ namespace ngl
 		ncjson lojson(adata.get_data()->data()->m_json.c_str());
 
 		std::string loperator;
-		if (!njson::pop(lojson.json(), "operator", loperator))
+		if (!njson::pop(lojson.json(), { "operator" }, loperator))
 		{
 			return true;
 		}
@@ -50,7 +50,7 @@ namespace ngl
 				{
 					gcmd<bool> pro(id, "notice_add", false);
 					gm_notice recv;
-					if (!njson::pop(aos.json(), "data", recv))
+					if (!njson::pop(aos.json(), { "data" }, recv))
 					{
 						return;
 					}
@@ -62,7 +62,7 @@ namespace ngl
 				{
 					gcmd<bool> pro(id, "notice_del", false);
 					int64_t lid = 0;
-					if (!njson::pop(aos.json(), "data", lid))
+					if (!njson::pop(aos.json(), { "data" }, lid))
 					{
 						return;
 					}

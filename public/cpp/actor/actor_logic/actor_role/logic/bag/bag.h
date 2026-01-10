@@ -20,7 +20,7 @@
 
 namespace ngl
 {
-	struct autoitem;
+	class autoitem;
 
 	class bag :
 		public tdb_bag::db_modular

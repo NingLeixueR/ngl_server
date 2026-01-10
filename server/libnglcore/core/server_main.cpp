@@ -575,11 +575,9 @@ bool start_pushserverconfig()
 			{
 				ngl::ncjson lwritetemp;
 				ngl::njson::push(lwritetemp.json()
-					, "ip", item.m_ip
-					, "nip", item.m_nip
-					, "port", item.m_port
+					, { "ip","nip","port" }, item.m_ip, item.m_nip, item.m_port
 				);
-				ngl::njson::push(lwrite.json(), lparm[item.m_type].c_str(), lwritetemp);
+				ngl::njson::push(lwrite.json(), { lparm[item.m_type].c_str() }, lwritetemp);
 			}
 
 			lwrite.set_nonformatstr(true);

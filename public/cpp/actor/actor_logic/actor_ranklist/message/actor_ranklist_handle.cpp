@@ -19,7 +19,7 @@ namespace ngl
 	{
 		ncjson lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (!njson::pop(lojson.json(), "operator", loperator))
+		if (!njson::pop(lojson.json(), { "operator" }, loperator))
 		{
 			return true;
 		}
@@ -37,7 +37,7 @@ namespace ngl
 						dprotocol(json_rank, m_type, m_page)
 					};
 					json_rank lrank;
-					if (!njson::pop(aos.json(), "data", lrank))
+					if (!njson::pop(aos.json(), { "data" }, lrank))
 					{
 						return true;
 					}

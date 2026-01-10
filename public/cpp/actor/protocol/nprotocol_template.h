@@ -314,7 +314,7 @@ namespace ngl
 			m_actorids.insert(aactorid);
 		}
 
-		def_jsonfunction_special_parm("m_actorids", m_actorids, "m_data", *m_data)
+		def_jsonfunction_special_parm({ "m_actorids","m_data" }, m_actorids, * m_data)
 		def_protocol(np_mass_actor, m_actorids, *m_data)
 		def_nlua_tab_function("m_actorids", m_actorids, "m_data", *m_data)
 	};

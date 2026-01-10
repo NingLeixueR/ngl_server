@@ -90,7 +90,7 @@ namespace ngl
 		time_t lloginutc = 0;
 		time_t lnow = localtime::gettime();
 		bool isloginutc = false;
-		if (m_rolekv.get_value("base", "loginutc", lloginutc))
+		if (m_rolekv.get_value("base", { "loginutc" }, lloginutc))
 		{
 			if (localtime::issameday(lnow, lloginutc) == false)
 			{
@@ -104,7 +104,7 @@ namespace ngl
 
 		if (isloginutc)
 		{
-			m_rolekv.set_value("base", "loginutc", lnow);
+			m_rolekv.set_value("base", { "loginutc" }, lnow);
 			static_task::update_change(this, ETaskRoleLogin, 1);
 		}
 	}
@@ -218,17 +218,17 @@ namespace ngl
 						return;
 					}
 					std::string lorderid;
-					if (!njson::pop(ltempjson.json(), "orderid", lorderid))
+					if (!njson::pop(ltempjson.json(), { "orderid" }, lorderid))
 					{
 						return;
 					}
 					int32_t lrechargeid = -1;
-					if (!njson::pop(ltempjson.json(), "rechargeid", lrechargeid))
+					if (!njson::pop(ltempjson.json(), { "rechargeid" }, lrechargeid))
 					{
 						return;
 					}
 					int64_t lroleid = -1;
-					if (!njson::pop(ltempjson.json(), "roleid", lroleid))
+					if (!njson::pop(ltempjson.json(), { "roleid" }, lroleid))
 					{
 						return;
 					}
@@ -252,7 +252,7 @@ namespace ngl
 									return;
 								}
 								int32_t lstat = -1;
-								if (!njson::pop(ltempjson.json(), "orderid", lstat))
+								if (!njson::pop(ltempjson.json(), { "orderid" }, lstat))
 								{
 									return;
 								}
@@ -261,12 +261,12 @@ namespace ngl
 									return;
 								}
 								int32_t lrechargeid = -1;
-								if (!njson::pop(ltempjson.json(), "rechargeid", lrechargeid))
+								if (!njson::pop(ltempjson.json(), { "rechargeid" }, lrechargeid))
 								{
 									return;
 								}
 								std::string lorderid;
-								if (!njson::pop(ltempjson.json(), "orderid", lorderid))
+								if (!njson::pop(ltempjson.json(), { "orderid" }, lorderid))
 								{
 									return;
 								}

@@ -18,7 +18,7 @@ namespace ngl
 	{
 		ncjson lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (!njson::pop(lojson.json(), "operator", loperator))
+		if (!njson::pop(lojson.json(), { "operator" }, loperator))
 		{
 			return true;
 		}
@@ -28,7 +28,7 @@ namespace ngl
 				{
 					gcmd<bool> pro(id, "set_openserver", false);
 					int32_t ltime;
-					if (!njson::pop(aos.json(), "data", ltime))
+					if (!njson::pop(aos.json(), { "data" }, ltime))
 					{
 						return;
 					}

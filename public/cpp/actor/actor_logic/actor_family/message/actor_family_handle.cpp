@@ -18,7 +18,7 @@ namespace ngl
 	{
 		ncjson lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (!njson::pop(lojson.json(), "operator", loperator))
+		if (!njson::pop(lojson.json(), { "operator" }, loperator))
 		{
 			return true;
 		}
@@ -34,7 +34,7 @@ namespace ngl
 						dprotocol(gm_changename, m_familid, m_familname)
 					};
 					gm_changename recv;
-					if (!njson::pop(aos.json(), "data", recv))
+					if (!njson::pop(aos.json(), { "data" }, recv))
 					{
 						return;
 					}
@@ -46,7 +46,7 @@ namespace ngl
 				{
 					gcmd<std::string> pro(id, "get_family");
 					int64_t familid = 0;
-					if (!njson::pop(aos.json(), "data", familid))
+					if (!njson::pop(aos.json(), { "data" }, familid))
 					{
 						return;
 					}

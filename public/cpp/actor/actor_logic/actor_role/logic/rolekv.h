@@ -37,7 +37,7 @@ namespace ngl
 		void set_value(const char* akey, const char* adata);
 	public:
 		template <typename ...ARG>
-		bool get_value(const char* akey, ARG&... arg)
+		bool get_value(const char* akey, const std::vector<const char*>& akeys, ARG&... arg)
 		{
 			const char* lvalue = get_value(akey);
 			if (lvalue == nullptr)
@@ -45,14 +45,14 @@ namespace ngl
 				return false;
 			}
 			ncjson ljread(lvalue);
-			return njson::pop(ljread.json(), arg...);
+			return njson::pop(ljread.json(), akeys, arg...);
 		}
 
 		template <typename ...ARG>
-		void set_value(const char* akey, const ARG&... arg)
+		void set_value(const char* akey, const std::vector<const char*>& akeys, const ARG&... arg)
 		{
 			ncjson lwrite(get_value(akey));
-			njson::push(lwrite.json(), arg...);
+			njson::push(lwrite.json(), akeys, arg...);
 			set_value(akey, lwrite.str());
 		}
 	};

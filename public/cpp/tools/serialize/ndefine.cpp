@@ -25,8 +25,7 @@ namespace ngl
 		pbdb::db_family m_4;
 		std::list<pbdb::db_family> m_5;
 
-		//def_jsonfunction_special_parm("m_1", m_1, "m_2", m_2, "m_3", m_3)
-		def_parmname
+		def_parmname(m_1, m_2, m_3, m_4, m_5)
 		def_jsonfunction(m_1, m_2, m_3, m_4, m_5)
 	};
 
@@ -37,7 +36,7 @@ namespace ngl
 		std::vector<int32_t> m_3;
 		std::vector<bbbbb> m_4;
 
-		def_jsonfunction_special_parm("m_1", m_1, "m_2", m_2, "m_3", m_3, "m_4", m_4)
+		def_jsonfunction_special_parm({"m_1","m_2","m_3","m_4"}, m_1,  m_2,  m_3,  m_4)
 
 	};
 
@@ -70,12 +69,12 @@ namespace ngl
 		}
 
 		ncjson lncjson;
-		njson::push(lncjson.json(), "abcccc", ltemp1);
+		njson::push(lncjson.json(), { "abcccc" }, ltemp1);
 		std::string ltempstr = lncjson.str();
 		std::cout << ltempstr << std::endl;
 
 		abcccc ltemp2;
-		njson::pop(lncjson.json(), "abcccc", ltemp2);
+		njson::pop(lncjson.json(), { "abcccc" }, ltemp2);
 	}
 
 }
