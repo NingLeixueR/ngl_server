@@ -22,7 +22,7 @@ namespace ngl
         , google::protobuf::Message* dst
         , const std::map<i32_fieldnumber, epb_field>& fieldsrc
         , const std::map<i32_fieldnumber, epb_field>& fielddst
-        , bool amessage /* 是否是消息，消息强制复制mid */
+        , bool amessage
     )
     {
         const google::protobuf::Descriptor* desc = src.GetDescriptor();
