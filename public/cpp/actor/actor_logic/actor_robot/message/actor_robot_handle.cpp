@@ -270,7 +270,7 @@ namespace ngl
 				}
 				);
 		}
-		njson::push(ljson.json(), tools::type_name<notices>().c_str(), lnotices);
+		njson::push(ljson.json(), { tools::type_name<notices>().c_str() }, lnotices);
 		std::string lstr = ljson.str();
 		std::string lstrasscii;
 		ngl::tools::to_asscii(lstr, lstrasscii);

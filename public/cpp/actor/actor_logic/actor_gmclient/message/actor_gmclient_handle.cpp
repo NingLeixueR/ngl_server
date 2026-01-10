@@ -18,7 +18,7 @@ namespace ngl
 	{
 		ncjson lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (!njson::pop(lojson.json(), "operator", loperator))
+		if (!njson::pop(lojson.json(), { "operator" }, loperator))
 		{
 			return true;
 		}
@@ -45,7 +45,7 @@ namespace ngl
 						dprotocol(operator_set_time, m_time)
 					};
 					operator_set_time ltime;
-					if (njson::pop(aos.json(), "data", ltime))
+					if (njson::pop(aos.json(), { "data" }, ltime))
 					{
 						bool lbool = localtime::settime(ltime.m_time);
 						lpro.m_data = std::format("set time {} # {}", localtime::time2str("%Y-%m-%d %H:%M:%S"), lbool ? "success" : "fail");

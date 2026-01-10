@@ -318,7 +318,7 @@ namespace ngl
 			ncjson lojson(parm.data()->m_json.c_str());
 
 			std::string loperator;
-			if (!njson::pop(lojson.json(), "operator", loperator))
+			if (!njson::pop(lojson.json(), { "operator" }, loperator))
 			{
 				return true;
 			}
@@ -329,7 +329,7 @@ namespace ngl
 					{
 						gcmd<std::string> pro(id, "query");
 						int64_t lid = 0;
-						if (!njson::pop(aos.json(), "data", lid))
+						if (!njson::pop(aos.json(), { "data" }, lid))
 						{
 							return;
 						}
@@ -362,7 +362,7 @@ namespace ngl
 					{
 						gcmd<std::vector<std::string>> pro(id, "queryall");
 						query_page lpage;
-						if (!njson::pop(aos.json(), "data", lpage))
+						if (!njson::pop(aos.json(), { "data" }, lpage))
 						{
 							return;
 						}
@@ -384,7 +384,7 @@ namespace ngl
 					{
 						gcmd<bool> pro(id, "change", false);
 						std::string ljson;
-						if (!njson::pop(aos.json(), "data", ljson))
+						if (!njson::pop(aos.json(), { "data" }, ljson))
 						{
 							return;
 						}

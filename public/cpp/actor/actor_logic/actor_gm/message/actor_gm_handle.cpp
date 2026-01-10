@@ -53,7 +53,7 @@ namespace ngl
 				dprotocol(servertype, servertype)
 			};
 			servertype lservertype;
-			if (njson::pop(aos.json(), "data", lservertype))
+			if (njson::pop(aos.json(), { "data" }, lservertype))
 			{
 				bool lret = false;
 				for (int i = 0; i < lservertype.servertype.size(); ++i)
@@ -91,7 +91,7 @@ namespace ngl
 				{
 					gcmd<std::string> lresponse(adata->get_pack()->m_id, "guid", this);
 					gm_guid lguid;
-					if (njson::pop(aos.json(), "data", lguid))
+					if (njson::pop(aos.json(), { "data" }, lguid))
 					{
 						ENUM_ACTOR ltype;
 						ltype = em<ENUM_ACTOR>::get_enum(lguid.actor_name.c_str());
@@ -111,7 +111,7 @@ namespace ngl
 				{
 					gcmd<bool> lresponse(adata->get_pack()->m_id, "close_actor", false, this);
 					gm_guid lguid;
-					if (!njson::pop(aos.json(), "data", lguid))
+					if (!njson::pop(aos.json(), { "data" }, lguid))
 					{
 						ENUM_ACTOR ltype;
 						ltype = em<ENUM_ACTOR>::get_enum(lguid.actor_name.c_str());
@@ -139,7 +139,7 @@ namespace ngl
 						dprotocol(operator_set_time, time)
 					};
 					operator_set_time ltime;
-					if (njson::pop(aos.json(), "data", ltime))
+					if (njson::pop(aos.json(), { "data" }, ltime))
 					{
 						localtime::settime(ltime.time);
 						lresponse.m_data = true;
@@ -158,13 +158,13 @@ namespace ngl
 
 		std::string lactorname;
 		i64_actorid lactorid = -1;
-		if (njson::pop(lreadjson.json(), "actor_name", lactorname))
+		if (njson::pop(lreadjson.json(), { "actor_name" }, lactorname))
 		{
 			// ### µ¥Àý
 			if (lactorname == "ACTOR_GM")
 			{
 				std::string loperator;
-				if (!njson::pop(lreadjson.json(), "operator", loperator))
+				if (!njson::pop(lreadjson.json(), { "operator" }, loperator))
 				{
 					return true;
 				}
@@ -186,7 +186,7 @@ namespace ngl
 				if (lactorname == "ACTOR_DB")
 				{
 					int32_t ltype = 0;
-					if (!njson::pop(lreadjson.json(), "db", ltype))
+					if (!njson::pop(lreadjson.json(), { "db" }, ltype))
 					{
 						return true;
 					}
@@ -200,7 +200,7 @@ namespace ngl
 			sendbytype(ltype, adata.get_pack(), *adata.get_data());
 			return true;
 		}
-		else if (njson::pop(lreadjson.json(), "actor_id", lactorid))
+		else if (njson::pop(lreadjson.json(), { "actor_id" }, lactorid))
 		{// ### ·Çµ¥Àý
 			sendbyactorid(lactorid, adata.get_pack(), *adata.get_data());
 			return true;

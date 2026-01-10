@@ -28,7 +28,7 @@ namespace ngl
 	{
 		ncjson lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (!njson::pop(lojson.json(), "operator", loperator))
+		if (!njson::pop(lojson.json(), { "operator" }, loperator))
 		{
 			return true;
 		}
@@ -45,7 +45,7 @@ namespace ngl
 						dprotocol(pay, m_orderid, m_rechargeid)
 					};
 					pay lpay;
-					if (!njson::pop(aos.json(), "data", lpay))
+					if (!njson::pop(aos.json(), { "data" }, lpay))
 					{
 						return;
 					}
@@ -56,7 +56,7 @@ namespace ngl
 				{
 					gcmd<int32_t> pro(id, "gmrechange");
 					int32_t lrechargeid;
-					if (!njson::pop(aos.json(), "data", lrechargeid))
+					if (!njson::pop(aos.json(), { "data" }, lrechargeid))
 					{
 						return;
 					}
@@ -69,7 +69,7 @@ namespace ngl
 				{//actor_role::loginpay() callback
 					gcmd<int32_t> pro(id, "rechange");
 					prorechange lrechange;
-					if (!njson::pop(aos.json(), "data", lrechange))
+					if (!njson::pop(aos.json(), { "data" }, lrechange))
 					{
 						return;
 					}
@@ -82,7 +82,7 @@ namespace ngl
 				{
 					gcmd<bool> pro(id, "bantalk", false);
 					int32_t lduration;
-					if (!njson::pop(aos.json(), "data", lduration))
+					if (!njson::pop(aos.json(), { "data" }, lduration))
 					{
 						return;
 					}

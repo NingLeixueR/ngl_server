@@ -18,7 +18,7 @@ namespace ngl
 	{
 		ncjson lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (!njson::pop(lojson.json(), "operator", loperator))
+		if (!njson::pop(lojson.json(), { "operator" }, loperator))
 		{
 			return true;
 		}
@@ -28,7 +28,7 @@ namespace ngl
 				{
 					gcmd<std::string> pro(id, "get_mails");
 					int64_t roleid = 0;
-					if (!njson::pop(aos.json(), "data", roleid))
+					if (!njson::pop(aos.json(), { "data" }, roleid))
 					{
 						return;
 					}
@@ -55,7 +55,7 @@ namespace ngl
 						dprotocol(gm_mail, m_roleid, m_content, m_items)
 					};
 					gm_mail recv;
-					if (!njson::pop(aos.json(), "data", recv))
+					if (!njson::pop(aos.json(), { "data" }, recv))
 					{
 						return;
 					}
@@ -81,7 +81,7 @@ namespace ngl
 						dprotocol(gm_deletemail, m_roleid, m_mailid)
 					};
 					gm_deletemail ldelmail;
-					if (!njson::pop(aos.json(), "data", ldelmail))
+					if (!njson::pop(aos.json(), { "data" }, ldelmail))
 					{
 						return;
 					}

@@ -688,59 +688,22 @@ namespace ngl
 
 		struct nserialize
 		{
-			// # push
-			static bool push(serialize_push* aserialize)
+			template <typename ...ARGS>
+			static bool push(serialize_push* aserialize, const ARGS&... aargs)
 			{
-				return true;
+				return (serialize_format<ARGS>::push(aserialize, aargs) && ...);
 			}
 
-			template <typename T>
-			static bool push(serialize_push* aserialize, const T& adata)
+			template <typename ...ARGS>
+			static bool pop(serialize_pop* aserialize, ARGS&... aargs)
 			{
-				return serialize_format<T>::push(aserialize, adata);
+				return (serialize_format<ARGS>::pop(aserialize, aargs) && ...);
 			}
 
-			template <typename T, typename ...ARGS>
-			static bool push(serialize_push* aserialize, const T& adata, const ARGS&... aargs)
+			template <typename ...ARGS>
+			static void bytes(serialize_byte* aserialize, const ARGS&... aargs)
 			{
-				return push(aserialize, adata) && push(aserialize, aargs...);
-			}
-
-			// # pop
-			static bool pop(serialize_pop* aserialize)
-			{
-				return true;
-			}
-
-			template <typename T>
-			static bool pop(serialize_pop* aserialize, T& adata)
-			{
-				return serialize_format<T>::pop(aserialize, adata);
-			}
-
-			template <typename T, typename ...ARGS>
-			static bool pop(serialize_pop* aserialize, T& adata, ARGS&... aargs)
-			{
-				return pop(aserialize, adata) && pop(aserialize, aargs...);
-			}
-
-			// # bytes
-			static void bytes(serialize_byte* aserialize)
-			{
-
-			}
-
-			template <typename T>
-			static void bytes(serialize_byte* aserialize, const T& adata)
-			{
-				serialize_format<T>::bytes(aserialize, adata);
-			}
-
-			template <typename T, typename ...ARGS>
-			static void bytes(serialize_byte* aserialize, const T& adata, const ARGS&... aargs)
-			{
-				bytes(aserialize, adata);
-				bytes(aserialize, aargs...);
+				(serialize_format<ARGS>::bytes(aserialize, aargs), ...);
 			}
 		};
 

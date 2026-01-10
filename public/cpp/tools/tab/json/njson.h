@@ -737,28 +737,19 @@ namespace ngl
 
 	struct njson
 	{
-		template <typename T>
-		static bool pop(cJSON* ajson, const char* akey, T& adata)
+		template <typename ...TARGS>
+		static bool pop(cJSON* ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
-			return json_format<T>::pop(ajson, akey, adata);
+			int32_t lpos = 0;
+			return (json_format<TARGS>::pop(ajson, akeys[lpos++], aargs) && ...);
 		}
 
-		template <typename T, typename ...TARGS>
-		static bool pop(cJSON* ajson, const char* akey, T& adata, TARGS&... aargs)
+		template <typename ...TARGS>
+		static void push(cJSON* ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
 		{
-			return pop(ajson, akey, adata) && pop(ajson, aargs...);
-		}
-
-		template <typename T>
-		static void push(cJSON* ajson, const char* akey, const T& adata)
-		{
-			json_format<T>::push(ajson, akey, adata);
-		}
-
-		template <typename T, typename ...TARGS>
-		static void push(cJSON* ajson, const char* akey, const T& adata, const TARGS&... aargs)
-		{
-			return push(ajson, akey, adata), push(ajson, aargs...);			
+			int32_t lpos = 0;
+			(json_format<TARGS>::push(ajson, akeys[lpos++], aargs), ...);
+			return;
 		}
 	};
 }//namespace ngl
@@ -963,7 +954,7 @@ namespace ngl
 				if (akey != nullptr && tools::proto2json(adata, ljson))
 				{
 					ncjson lnctemp(ljson.c_str());
-					njson::push(ajson, akey, lnctemp);
+					njson::push(ajson, { akey }, lnctemp);
 				}
 			}
 			else

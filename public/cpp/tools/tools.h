@@ -835,6 +835,13 @@ namespace ngl
 
 		static std::vector<const char*> split_str(char* apbuff, int32_t abuffcount);
 
+		template <int32_t N>
+		static void split_str(char* apbuff, int32_t abuffcount, std::array<const char*, N>& aarrays)
+		{
+			std::vector<const char*> lvec = split_str(apbuff, abuffcount);
+			std::copy(lvec.begin(), lvec.end(), aarrays.begin());
+			return;
+		}
 		// ºÏ≤Ècjson¿‡–Õ
 		static bool bit(int32_t atype, int32_t acjsontype)
 		{
