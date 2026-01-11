@@ -15,7 +15,6 @@
 #include "xmlinfo.h"
 #include "tools.h"
 #include "nlog.h"
-#include "nlog.h"
 
 #include <string>
 
