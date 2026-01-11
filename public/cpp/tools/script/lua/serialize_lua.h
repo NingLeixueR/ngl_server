@@ -1160,15 +1160,15 @@ namespace ngl
 
 }//namespace ngl
 
-template <bool POP>
+template <bool POP, int32_t COUNT>
 class help_nlua
 {
-	std::vector<const char*>& m_vec;
+	std::array<const char*, COUNT>& m_vec;
 	int32_t m_pos = 0;
 	lua_State* L = nullptr;
 	const char* m_name = nullptr;
 public:
-	help_nlua(lua_State* aL, const char* aname, std::vector<const char*>& avec) :
+	help_nlua(lua_State* aL, const char* aname, std::array<const char*, COUNT>& avec) :
 		m_vec(avec),
 		L(aL),
 		m_name(aname)
@@ -1197,46 +1197,23 @@ public:
 		}
 	}
 
-	void push()
+	template <typename ...TARGS>
+	void push(const TARGS&... args)
 	{
-	}
-
-	template <typename T>
-	void push(const T& adata)
-	{
-		ngl::nlua_table::table_push(L, m_vec[m_pos++], adata);
-	}
-
-	template <typename T, typename ...TARGS>
-	void push(const T& adata, const TARGS&... args)
-	{
-		push(adata);
-		push(args...);
-	}
-
-	bool pop()
-	{
-		return true;
-	}
-
-	template <typename T>
-	bool pop(T& adata)
-	{
-		if(ngl::nlua_table::table_isnil(L))
+		if constexpr (!POP)
 		{
-			return true;
-		}
-		return ngl::nlua_table::table_pop(L, m_vec[m_pos--], adata);
+			(ngl::nlua_table::table_push(L, m_vec[m_pos++], args), ...);
+		}		
 	}
 
-	template <typename T, typename ...TARGS>
-	bool pop(T& adata, TARGS&... args)
+	template <typename ...TARGS>
+	bool pop(TARGS&... args)
 	{
-		if (ngl::nlua_table::table_isnil(L))
+		if constexpr (POP)
 		{
-			return true;
+			return ((ngl::nlua_table::table_isnil(L) ? true : ngl::nlua_table::table_pop(L, m_vec[m_pos--], args)) && ...);
 		}
-		return pop(args...) && pop(adata);
+		return false;
 	}
 };
 

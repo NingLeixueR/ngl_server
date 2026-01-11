@@ -240,16 +240,16 @@ void json_push(cJSON* ajson, const char* akey) const								\
 }																					\
 def_jsonfunction_function
 
-#define def_nlua_function(...)												\
-	void nlua_push(lua_State* aL, const char* aname = nullptr)const			\
-	{																		\
-		help_nlua<false> ltemp(aL, aname, parms());							\
-		ltemp.push(__VA_ARGS__);											\
-	}																		\
-	bool nlua_pop(lua_State* aL, const char* aname = nullptr)				\
-	{																		\
-		help_nlua<true> ltemp(aL, aname, parms(#__VA_ARGS__));				\
-		return ltemp.pop(__VA_ARGS__);										\
+#define def_nlua_function(...)															\
+	void nlua_push(lua_State* aL, const char* aname = nullptr)const						\
+	{																					\
+		help_nlua<false,NUMARGS(__VA_ARGS__)> ltemp(aL, aname, parms());				\
+		ltemp.push(__VA_ARGS__);														\
+	}																					\
+	bool nlua_pop(lua_State* aL, const char* aname = nullptr)							\
+	{																					\
+		help_nlua<true,NUMARGS(__VA_ARGS__)> ltemp(aL, aname, parms());					\
+		return ltemp.pop(__VA_ARGS__);													\
 	}
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)

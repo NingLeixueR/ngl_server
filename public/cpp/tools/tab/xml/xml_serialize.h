@@ -79,7 +79,7 @@ namespace ngl
 	struct xbtype
 	{
 		template <typename T>
-		static bool push(tinyxml2::XMLElement* aele, const char* akey, T adata)
+		static bool push(tinyxml2::XMLElement* aele, const char* akey, const T& adata)
 		{
 			if constexpr (ATTR)
 			{
@@ -420,51 +420,18 @@ namespace ngl
 	template <bool ATTR>
 	struct xserialize
 	{
-		/*static bool pop(tinyxml2::XMLElement* aele)
-		{
-			return true;
-		}
-
-		template <typename T>
-		static bool pop(tinyxml2::XMLElement* aele, const char* akey, T& adata)
-		{
-			return xml_serialize<ATTR, T>::pop(aele, akey, adata);
-		}
-
-		template <typename T, typename ...TARGS>
-		static bool pop(tinyxml2::XMLElement* aele, const char* akey, T& adata, TARGS&... aargs)
-		{
-			return pop(aele, akey, adata) && pop(aele, aargs...);
-		}*/
-
 		template <typename ...TARGS>
 		static bool pop(tinyxml2::XMLElement* aele, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
 			int32_t lpos = 0;
-			return (xml_serialize<ATTR, TARGS>::pop(aele, akeys[akeys++], aargs) && ...);
+			return (xml_serialize<ATTR, TARGS>::pop(aele, akeys[lpos++], aargs) && ...);
 		}
 
-		/*static bool push(tinyxml2::XMLElement* aele)
-		{
-			return true;
-		}
-
-		template <typename T>
-		static bool push(tinyxml2::XMLElement* aele, const char* akey, const T& adata)
-		{
-			return xml_serialize<ATTR, T>::push(aele, akey, adata);
-		}
-
-		template <typename T, typename ...TARGS>
-		static bool push(tinyxml2::XMLElement* aele, const char* akey, const T& adata, const TARGS&... aargs)
-		{
-			return push(aele, akey, adata) && push(aele, aargs...);
-		}*/
 		template <typename ...TARGS>
 		static bool push(tinyxml2::XMLElement* aele, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
 		{
 			int32_t lpos = 0;
-			return (xml_serialize<ATTR, TARGS>::push(aele, akeys[akeys++], aargs) && ...);
+			return (xml_serialize<ATTR, TARGS>::push(aele, akeys[lpos++], aargs) && ...);
 		}
 	};
 }//namespace ngl
@@ -562,13 +529,11 @@ namespace ngl
 #define def_xmlspecial(ATTR, ...)																			\
 	inline bool xml_pop(tinyxml2::XMLElement* aele)															\
 	{																										\
-		nhelp<tinyxml2::XMLElement, ngl::xserialize<ATTR>> ltemp(parms(#__VA_ARGS__), aele);				\
-		return ltemp.pop( __VA_ARGS__);																		\
+		return xserialize<ATTR>::pop(aele, parms(), ##__VA_ARGS__);											\
 	}																										\
 	inline bool xml_push(tinyxml2::XMLElement* aele)const													\
 	{																										\
-		nhelp<tinyxml2::XMLElement, ngl::xserialize<ATTR>> ltemp(parms(#__VA_ARGS__), aele);				\
-		return ltemp.push(__VA_ARGS__);																		\
+		return xserialize<ATTR>::push(aele, parms(), ##__VA_ARGS__);											\
 	}
 
 
@@ -576,11 +541,11 @@ namespace ngl
 #define def_xml(ATTR, ...)												\
 	inline bool xml_pop(tinyxml2::XMLElement* aele)						\
 	{																	\
-		return ngl::xserialize<ATTR>::pop(aele, ##__VA_ARGS__);			\
+		return ngl::xserialize<ATTR>::pop(aele, parms(), ##__VA_ARGS__);\
 	}																	\
 	inline bool xml_push(tinyxml2::XMLElement* aele)const				\
 	{																	\
-		return ngl::xserialize<ATTR>::push(aele, ##__VA_ARGS__);		\
+		return ngl::xserialize<ATTR>::push(aele, parms(),##__VA_ARGS__);\
 	}
 #else
 #define def_xml(ATTR, ...)																	\
@@ -596,12 +561,12 @@ namespace ngl
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
 #define dxmlserialize(XMLNAME, ATTR, ...)				\
-	def_parmname_(true)									\
+	def_parmname_(true, ##__VA_ARGS__)					\
 	def_xmlfunction(XMLNAME)							\
 	def_xmlspecial(ATTR, ##__VA_ARGS__)
 #else
 #define dxmlserialize(XMLNAME, ATTR, ...)				\
-	def_parmname_(true)									\
+	def_parmname_(true __VA_OPT__(,) ##__VA_ARGS__)		\
 	def_xmlfunction(XMLNAME)							\
 	def_xmlspecial(ATTR __VA_OPT__(,) ##__VA_ARGS__)
 #endif
