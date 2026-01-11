@@ -94,67 +94,6 @@ static std::array<const char*, NUMARGS(__VA_ARGS__)>& parms()					\
 	
 #define def_parmname(...)	def_parmname_(false, __VA_ARGS__)
 
-////template <typename T, typename NTP>
-////class nhelp
-////{
-////	const std::vector<const char*>& m_parts;
-////	T* m_hp = nullptr;
-////	int m_pos = 0;
-////
-////
-////	template <typename TX>
-////	bool fun_pop(const char* astr, TX& adata)
-////	{
-////		return NTP::pop(m_hp, astr, adata);
-////	}
-////
-////	template <typename TX>
-////	bool fun_push(const char* astr, const TX& adata)
-////	{
-////		NTP::push(m_hp, astr, adata);
-////		return true;
-////	}
-////public:
-////	nhelp(const std::vector<const char*>& aparts, T* ahp) :
-////		m_parts(aparts)
-////		, m_hp(ahp)
-////	{}
-////
-////	bool pop()
-////	{
-////		return true;
-////	}
-////
-////	template <typename TX>
-////	bool pop(TX& adata)
-////	{
-////		return fun_pop(m_parts[m_pos++], adata);
-////	}
-////
-////	template <typename ...ARG>
-////	bool pop(ARG&... args)
-////	{
-////		return (pop(args) && ...);
-////	}
-////
-////	bool push()
-////	{
-////		return true;
-////	}
-////
-////	template <typename TX>
-////	bool push(const TX& adata)
-////	{
-////		return fun_push(m_parts[m_pos++], adata);
-////	}
-////
-////	template <typename ...ARG>
-////	bool push(ARG&... args)
-////	{
-////		return (push(args) && ...);
-////	}
-////};
-
 #define def_jsonfunction_function													\
 bool json_pop(const char* ajson, const char* akey)									\
 {																					\
@@ -240,31 +179,20 @@ void json_push(cJSON* ajson, const char* akey) const								\
 }																					\
 def_jsonfunction_function
 
-#define def_nlua_function(...)															\
-	void nlua_push(lua_State* aL, const char* aname = nullptr)const						\
-	{																					\
-		help_nlua<false,NUMARGS(__VA_ARGS__)> ltemp(aL, aname, parms());				\
-		ltemp.push(__VA_ARGS__);														\
-	}																					\
-	bool nlua_pop(lua_State* aL, const char* aname = nullptr)							\
-	{																					\
-		help_nlua<true,NUMARGS(__VA_ARGS__)> ltemp(aL, aname, parms());					\
-		return ltemp.pop(__VA_ARGS__);													\
-	}
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
-#define def_nlua_tab_function(...)														\
+#define def_nlua_function(...)														\
 	void nlua_push(lua_State* aL, const char* aname = nullptr)const						\
 	{																					\
 		ngl::nlua_table::table_start_push(aL, aname);									\
-		ngl::nlua_table::table_push(aL, ##__VA_ARGS__);									\
+		ngl::nlua_table::table_push(aL, aname, ##__VA_ARGS__);							\
 		ngl::nlua_table::table_finish_push(aL, aname);									\
 	}																					\
 	bool nlua_pop(lua_State* aL, const char* aname = nullptr)							\
 	{																					\
-		ngl::nlua_table::table_start_pop(aL, aname);									\
-		bool lret = ngl::nlua_table::table_pop(aL, ##__VA_ARGS__);						\
-		ngl::nlua_table::table_finish_pop(aL, aname);									\
+		ngl::nlua_table::table_start_push(aL, aname);									\
+		bool lret = ngl::nlua_table::table_push(aL, aname, ##__VA_ARGS__);				\
+		ngl::nlua_table::table_finish_push(aL, aname);									\
 		return lret;																	\
 	}
 #else
@@ -272,14 +200,14 @@ def_jsonfunction_function
 	void nlua_push(lua_State* aL, const char* aname = nullptr)const						\
 	{																					\
 		ngl::nlua_table::table_start_push(aL, aname);									\
-		ngl::nlua_table::table_push(aL __VA_OPT__(,) ##__VA_ARGS__);					\
+		ngl::nlua_table::table_push(aL, aname __VA_OPT__(,) ##__VA_ARGS__);				\
 		ngl::nlua_table::table_finish_push(aL, aname);									\
 	}																					\
 	bool nlua_pop(lua_State* aL, const char* aname = nullptr)							\
 	{																					\
-		ngl::nlua_table::table_start_pop(aL, aname);									\
-		bool lret = ngl::nlua_table::table_pop(aL __VA_OPT__(,) ##__VA_ARGS__);			\
-		ngl::nlua_table::table_finish_pop(aL, aname);									\
+		ngl::nlua_table::table_start_push(aL, aname);									\
+		bool lret = ngl::nlua_table::table_push(aL, aname __VA_OPT__(,) ##__VA_ARGS__);	\
+		ngl::nlua_table::table_finish_push(aL, aname);									\
 		return lret;																	\
 	}
 #endif
