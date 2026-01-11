@@ -37,7 +37,7 @@ namespace ngl
 		void set_value(const char* akey, const char* adata);
 	public:
 		template <typename ...ARG>
-		bool get_value(const char* akey, const std::vector<const char*>& akeys, ARG&... arg)
+		bool get_value(const char* akey, const std::array<const char*, sizeof...(ARG)>& akeys, ARG&... arg)
 		{
 			const char* lvalue = get_value(akey);
 			if (lvalue == nullptr)
@@ -49,7 +49,7 @@ namespace ngl
 		}
 
 		template <typename ...ARG>
-		void set_value(const char* akey, const std::vector<const char*>& akeys, const ARG&... arg)
+		void set_value(const char* akey, const std::array<const char*, sizeof...(ARG)>& akeys, const ARG&... arg)
 		{
 			ncjson lwrite(get_value(akey));
 			njson::push(lwrite.json(), akeys, arg...);
