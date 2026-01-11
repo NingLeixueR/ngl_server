@@ -1554,13 +1554,16 @@ namespace ngl
                     std::string lnr;
                     std::string lfindstr1 = std::format("register_handle<{}", actorname);
                     std::string lfindstr2 = std::format("register_script_handle<{}", actorname);
+                    std::string lfindstr11 = std::format("register_handle< {}", actorname);
+                    std::string lfindstr21 = std::format("register_script_handle< {}", actorname);
                     bool lboool1 = false;
                     bool lboool2 = false;
                     while (lreadfile.readline(lnr))
                     {
                         {
-                            size_t lpos = lnr.find(lfindstr1);
-                            if (lpos != std::string::npos)
+                            size_t lpos1 = lnr.find(lfindstr1);
+                            size_t lpos11 = lnr.find(lfindstr11);
+                            if (lpos1 != std::string::npos || lpos1 != std::string::npos)
                             {
                                 lboool1 = true;
                                 continue;
@@ -1579,8 +1582,9 @@ namespace ngl
                             }
                         }
                         {
-                            size_t lpos = lnr.find(lfindstr2);
-                            if (lpos != std::string::npos)
+                            size_t lpos1 = lnr.find(lfindstr2);
+                            size_t lpos11 = lnr.find(lfindstr21);
+                            if (lpos1 != std::string::npos || lpos11 != std::string::npos)
                             {
                                 lboool2 = true;
                                 continue;
