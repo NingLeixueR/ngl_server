@@ -28,7 +28,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbexample::PLAYER& adata)
        {
-            ngl::nlua_table::table_push(L, "mplayers", adata.mplayers(),"misconfirm", adata.misconfirm());
+           ngl::nlua_table::table_push(L, nullptr, { "mplayers", "misconfirm" }, adata.mplayers(), adata.misconfirm());
        }
        static bool stack_pop(lua_State* L, pbexample::PLAYER& adata, bool apop = true)
        {

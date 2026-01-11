@@ -981,87 +981,35 @@ namespace ngl
 		}
 	};
 
-	struct nlua_tableinfo
-	{
-		lua_State* L = nullptr;
-		const char* m_name = nullptr;
-	};
-
 	class nlua_table
 	{
 	public:
-		template <typename T>
-		static void table_push(lua_State* L, const char* aname, const T& adata)
-		{
-			serialize_lua<T>::table_push(L, aname, adata);
-		}
-
-		template <typename T, typename ...TARGS>
-		static void table_push(lua_State* L, const char* aname, const T& adata, const TARGS&... args)
-		{
-			serialize_lua<T>::table_push(L, aname, adata);
-			table_push(L, args...);
-		}
-
-		static void table_push(nlua_tableinfo& ainfo)
-		{
-		}
-
 		template <typename ...TARGS>
-		static void table_push(nlua_tableinfo& ainfo, const TARGS&... args)
-		{
-			lua_newtable(ainfo.L);
-			table_push(ainfo.L, args...);
-			if (ainfo.m_name != nullptr)
-			{
-				lua_setfield(ainfo.L, -2, ainfo.m_name);
-			}
-		}
-
-		static bool table_start_push(lua_State* L, const char* aname)
+		static void table_push(lua_State* L, const char* aname, const std::array<const char*, sizeof ...(TARGS)>& akeys, const TARGS&... args)
 		{
 			lua_newtable(L);
-			return true;
-		}
-
-		static bool table_finish_push(lua_State* L, const char* aname)
-		{
+			int32_t lpos = 0;
+			(serialize_lua<TARGS>::table_push(L, akeys[lpos++], args), ...);
+			table_push(L, args...);
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
 			}
-			return true;
-		}
-
-		template <typename T>
-		static bool table_pop(lua_State* L, const char* aname, T& adata)
-		{
-			return serialize_lua<T>::table_pop(L, aname, adata);
-		}
-
-		template <typename T, typename ...TARGS>
-		static bool table_pop(lua_State* L, const char* aname, T& adata, TARGS&... args)
-		{
-			return table_pop(L, args...) && serialize_lua<T>::table_pop(L, aname, adata);
-		}
-
-		static bool table_pop(nlua_tableinfo& ainfo)
-		{
-			return true;
 		}
 
 		template <typename ...TARGS>
-		static bool table_pop(nlua_tableinfo& ainfo, TARGS&... args)
+		static bool table_pop(lua_State* L, const char* aname, const std::array<const char*, sizeof ...(TARGS)>& akeys, TARGS&... args)
 		{
-			if (ainfo.m_name != nullptr)
+			if (aname != nullptr)
 			{
-				lua_getfield(ainfo.L, -1, ainfo.m_name);
+				lua_getfield(L, -1, aname);
 			}
-			if (table_isnil(ainfo.L))
+			if (table_isnil(L))
 			{
 				return true;
 			}
-			return table_pop(ainfo.L, args...);
+			int32_t lpos = sizeof ...(TARGS) - 1;
+			return (serialize_lua<TARGS>::table_pop(L, akeys[lpos--], args), ...);
 		}
 
 		static bool table_isnil(lua_State* L)
@@ -1159,63 +1107,6 @@ namespace ngl
 	}
 
 }//namespace ngl
-
-template <bool POP, int32_t COUNT>
-class help_nlua
-{
-	std::array<const char*, COUNT>& m_vec;
-	int32_t m_pos = 0;
-	lua_State* L = nullptr;
-	const char* m_name = nullptr;
-public:
-	help_nlua(lua_State* aL, const char* aname, std::array<const char*, COUNT>& avec) :
-		m_vec(avec),
-		L(aL),
-		m_name(aname)
-	{
-		if constexpr (POP)
-		{
-			ngl::nlua_table::table_start_pop(L, m_name);
-			m_pos = (int32_t)m_vec.size() - 1;
-		}
-		else
-		{
-			ngl::nlua_table::table_start_push(L, m_name);
-			m_pos = 0;
-		}
-	}
-
-	~help_nlua()
-	{
-		if constexpr (POP)
-		{
-			ngl::nlua_table::table_finish_pop(L, m_name);
-		}
-		else
-		{
-			ngl::nlua_table::table_finish_push(L, m_name);
-		}
-	}
-
-	template <typename ...TARGS>
-	void push(const TARGS&... args)
-	{
-		if constexpr (!POP)
-		{
-			(ngl::nlua_table::table_push(L, m_vec[m_pos++], args), ...);
-		}		
-	}
-
-	template <typename ...TARGS>
-	bool pop(TARGS&... args)
-	{
-		if constexpr (POP)
-		{
-			return ((ngl::nlua_table::table_isnil(L) ? true : ngl::nlua_table::table_pop(L, m_vec[m_pos--], args)) && ...);
-		}
-		return false;
-	}
-};
 
 #include "nscript_pbexample.h"
 #include "nscript_pbnet.h"
