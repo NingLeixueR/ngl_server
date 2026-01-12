@@ -109,11 +109,12 @@ public:
         m_stream << "   template <>" << std::endl;
         m_stream << "   struct serialize_lua<" << lmesname << ">" << std::endl;
         m_stream << "   {" << std::endl;
-        m_stream << "       static void stack_push(lua_State* L, const " << lmesname << "& adata)" << std::endl;
+        m_stream << "       static void stack_push(lua_State* L, const " << lmesname << "& adata, const char* aname = nullptr)" << std::endl;
         m_stream << "       {" << std::endl;
         if (messageDescriptor->field_count() > 0)
         {
-            m_stream << "            ngl::nlua_table::table_push(L, ";
+            m_stream << "            ngl::nlua_table::table_push(L, aname"<< std::endl;
+            m_stream << "               , {";
             std::cout << "name: " << messageDescriptor->name() << std::endl;
             for (int i = 0; i < messageDescriptor->field_count(); ++i)
             {
@@ -121,8 +122,19 @@ public:
                 if (i != 0)
                 {
                     m_stream << ",";
+                }               
+                m_stream << std::format("\"{}\"", field->name());
+            }
+            m_stream << "}" << std::endl;
+            m_stream << ", ";
+            for (int i = 0; i < messageDescriptor->field_count(); ++i)
+            {
+                const google::protobuf::FieldDescriptor* field = messageDescriptor->field(i);
+                if (i != 0)
+                {
+                    m_stream << ",";
                 }
-                m_stream << "\""<< field->name() <<"\", " << "adata." << field->name() << "()";
+                m_stream << "adata." << field->name() << "()";
             }
             m_stream << ");" << std::endl;
         }
@@ -133,10 +145,15 @@ public:
         m_stream << "       {" << std::endl;
         if (messageDescriptor->field_count() > 0)
         {
-            m_stream << "           if (ngl::nlua_table::table_isnil(L))" << std::endl;
-            m_stream << "           {" << std::endl;
-            m_stream << "               return true;" << std::endl;
-            m_stream << "           }" << std::endl;
+            /*if (lua_isnil(L, -1))
+            {
+                return true;
+            }*/
+            m_stream << R"(if (lua_isnil(L, -1))
+        {
+            return true;
+        })";
+            m_stream << std::endl;
             for (int i = 0; i < messageDescriptor->field_count(); ++i)
             {
                 const google::protobuf::FieldDescriptor* field = messageDescriptor->field(i);
@@ -154,7 +171,7 @@ public:
                     m_stream << "           " << ltypename << " l" << field->name() << ";" << std::endl;
                 }
             }
-            m_stream << "           if(!ngl::nlua_table::table_pop(L, ";
+            m_stream << "           if(!ngl::nlua_table::table_pop(L, aname, ";
             for (int i = 0; i < messageDescriptor->field_count(); ++i)
             {
                 const google::protobuf::FieldDescriptor* field = messageDescriptor->field(i);
@@ -162,8 +179,15 @@ public:
                 {
                     m_stream << ", ";
                 }
-                m_stream << "\"" << field->name() << "\"" << ", ";
-
+                m_stream << std::format("\"{}\"", field->name());
+            }
+            for (int i = 0; i < messageDescriptor->field_count(); ++i)
+            {
+                const google::protobuf::FieldDescriptor* field = messageDescriptor->field(i);
+                if (i != 0)
+                {
+                    m_stream << ", ";
+                }
                 if (field->type() == google::protobuf::FieldDescriptor::TYPE_MESSAGE ||
                     field->type() == google::protobuf::FieldDescriptor::TYPE_GROUP ||
                     field->is_repeated()
@@ -227,20 +251,11 @@ public:
 
         m_stream << "       static void table_push(lua_State * L, const char* aname, const " << lmesname << "& adata)" << std::endl;
         m_stream << "       {" << std::endl;
-        m_stream << "           ngl::nlua_table::table_start_push(L, aname);" << std::endl;
-        m_stream << "           stack_push(L, adata);" << std::endl;
-        m_stream << "           ngl::nlua_table::table_finish_push(L, aname);" << std::endl;
+        m_stream << "           stack_push(L, adata, aname);" << std::endl;
         m_stream << "       }" << std::endl;
         m_stream << "       static bool table_pop(lua_State * L, const char* aname, " << lmesname << "& adata)" << std::endl;
         m_stream << "       {" << std::endl;
-       
-        m_stream << "           ngl::nlua_table::table_start_pop(L, aname);" << std::endl;
-        m_stream << "           if (!stack_pop(L, adata, false))" << std::endl;
-        m_stream << "           {" << std::endl;
-        m_stream << "               return false;" << std::endl;
-        m_stream << "           }" << std::endl;
-        m_stream << "           ngl::nlua_table::table_finish_pop(L, aname);" << std::endl;
-        m_stream << "           return true;" << std::endl;
+        m_stream << "           return stack_pop(L, adata, false, aname);" << std::endl;
         m_stream << "       }" << std::endl;
 
 

@@ -124,7 +124,7 @@ namespace ngl
 		using BASE_TYPE = T;
 
 		def_protocol(np_actormodule_forward<T>, m_identifier, *m_data)
-		def_nlua_tab_function("m_identifier", m_identifier, "m_data", *m_data)
+		def_nlua_special_function({ "m_identifier", "m_data" }, m_identifier, *m_data)
 
 		np_actormodule_forward(int64_t aidentifier, const std::shared_ptr<T>& adata) :
 			m_identifier(aidentifier),
@@ -314,9 +314,9 @@ namespace ngl
 			m_actorids.insert(aactorid);
 		}
 
-		def_jsonfunction_special_parm({ "m_actorids","m_data" }, m_actorids, * m_data)
+		def_jsonfunction_special_parm({ "m_actorids","m_data" }, m_actorids, *m_data)
 		def_protocol(np_mass_actor, m_actorids, *m_data)
-		def_nlua_tab_function("m_actorids", m_actorids, "m_data", *m_data)
+		def_nlua_special_function({ "m_actorids", "m_data" }, m_actorids, *m_data)
 	};
 
 
