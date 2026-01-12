@@ -526,16 +526,6 @@ namespace ngl
 		return xml::writexml(axml, ldocument);											\
 	}
 
-#define def_xmlspecial(ATTR, ...)														\
-	inline bool xml_pop(tinyxml2::XMLElement* aele)										\
-	{																					\
-		return xserialize<ATTR>::pop(aele, parms() SAFE_MACRO(__VA_ARGS__));			\
-	}																					\
-	inline bool xml_push(tinyxml2::XMLElement* aele)const								\
-	{																					\
-		return xserialize<ATTR>::push(aele, parms() SAFE_MACRO(__VA_ARGS__));			\
-	}
-
 #define def_xml(ATTR, ...)															\
 	inline bool xml_pop(tinyxml2::XMLElement* aele)									\
 	{																				\
@@ -549,4 +539,4 @@ namespace ngl
 #define dxmlserialize(XMLNAME, ATTR, ...)				\
 	def_parmname_(true, __VA_ARGS__)					\
 	def_xmlfunction(XMLNAME)							\
-	def_xmlspecial(ATTR, __VA_ARGS__)
+	def_xml(ATTR, __VA_ARGS__)
