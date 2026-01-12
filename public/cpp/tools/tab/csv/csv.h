@@ -285,7 +285,7 @@ namespace ngl
 
 	class rcsv
 	{
-	public:
+	private:
 		std::string m_data;
 		int m_pos;
 	public:
@@ -295,21 +295,11 @@ namespace ngl
 			m_pos(0)
 		{
 		}
-	private:
-		template <typename T>
-		static bool read(csvpair& apair, T& adata)
-		{
-			return !apair.m_data.empty() && csv_read<T>::read(apair, adata);
-		}
-	public:
+
 		template <typename ...ARG>
 		static bool readcsv(csvpair& apair, ARG& ...args)
 		{
-			if (apair.m_data.empty())
-			{
-				return false;
-			}
-			return (read(apair, args) && ...);
+			return ((!apair.m_data.empty() && csv_read<ARG>::read(apair, args)) && ...);
 		}
 
 		template <typename T>
