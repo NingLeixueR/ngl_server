@@ -106,7 +106,7 @@ namespace ngl
 			if (m_type == enum_null())
 			{
 				log_error()->print("type_enum<{}, {}>::type() == enum_null()", tools::type_name<T>(), tools::type_name<ENUMT>());
-				Throw("type_enum<{}, {}>::type() == enum_null()", tools::type_name<T>(), tools::type_name<ENUMT>());
+				tools::no_core_dump();
 			}
 			return m_type;
 		}
