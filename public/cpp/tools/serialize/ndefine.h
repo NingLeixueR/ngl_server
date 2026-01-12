@@ -180,38 +180,25 @@ void json_push(cJSON* ajson, const char* akey) const								\
 def_jsonfunction_function
 
 
-#if defined(WIN32)||defined(WINCE)||defined(WIN64)
-#define def_nlua_function(...)														\
+#define def_nlua_function(...)															\
 	void nlua_push(lua_State* aL, const char* aname = nullptr)const						\
 	{																					\
-		ngl::nlua_table::table_start_push(aL, aname);									\
-		ngl::nlua_table::table_push(aL, aname, ##__VA_ARGS__);							\
-		ngl::nlua_table::table_finish_push(aL, aname);									\
+		ngl::nlua_table::table_push(aL, aname, parms(), ##__VA_ARGS__);					\
 	}																					\
 	bool nlua_pop(lua_State* aL, const char* aname = nullptr)							\
 	{																					\
-		ngl::nlua_table::table_start_push(aL, aname);									\
-		bool lret = ngl::nlua_table::table_push(aL, aname, ##__VA_ARGS__);				\
-		ngl::nlua_table::table_finish_push(aL, aname);									\
-		return lret;																	\
+		return ngl::nlua_table::table_pop(aL, aname, parms(), ##__VA_ARGS__);			\
 	}
-#else
-#define def_nlua_tab_function(...)														\
-	void nlua_push(lua_State* aL, const char* aname = nullptr)const						\
-	{																					\
-		ngl::nlua_table::table_start_push(aL, aname);									\
-		ngl::nlua_table::table_push(aL, aname __VA_OPT__(,) ##__VA_ARGS__);				\
-		ngl::nlua_table::table_finish_push(aL, aname);									\
-	}																					\
-	bool nlua_pop(lua_State* aL, const char* aname = nullptr)							\
-	{																					\
-		ngl::nlua_table::table_start_push(aL, aname);									\
-		bool lret = ngl::nlua_table::table_push(aL, aname __VA_OPT__(,) ##__VA_ARGS__);	\
-		ngl::nlua_table::table_finish_push(aL, aname);									\
-		return lret;																	\
-	}
-#endif
 
+#define def_nlua_special_function(KEYS,...)												\
+	void nlua_push(lua_State* aL, const char* aname = nullptr)const						\
+	{																					\
+		ngl::nlua_table::table_push(aL, aname, KEYS, ##__VA_ARGS__);					\
+	}																					\
+	bool nlua_pop(lua_State* aL, const char* aname = nullptr)							\
+	{																					\
+		return ngl::nlua_table::table_pop(aL, aname, KEYS, ##__VA_ARGS__);				\
+	}
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
 #define dprotocol(NAME, ...)								\

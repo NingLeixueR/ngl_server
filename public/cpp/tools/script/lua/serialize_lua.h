@@ -990,7 +990,6 @@ namespace ngl
 			lua_newtable(L);
 			int32_t lpos = 0;
 			(serialize_lua<TARGS>::table_push(L, akeys[lpos++], args), ...);
-			table_push(L, args...);
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
@@ -1004,35 +1003,12 @@ namespace ngl
 			{
 				lua_getfield(L, -1, aname);
 			}
-			if (table_isnil(L))
-			{
-				return true;
-			}
-			int32_t lpos = sizeof ...(TARGS) - 1;
-			return (serialize_lua<TARGS>::table_pop(L, akeys[lpos--], args), ...);
-		}
-
-		static bool table_isnil(lua_State* L)
-		{
 			if (lua_isnil(L, -1))
 			{
 				return true;
 			}
-			return false;
-		}
-
-		static bool table_start_pop(lua_State* L, const char* aname)
-		{
-			if (aname != nullptr)
-			{
-				lua_getfield(L, -1, aname);
-			}
-			return true;
-		}
-
-		static bool table_finish_pop(lua_State* L, const char* aname)
-		{
-			return true;
+			int32_t lpos = sizeof ...(TARGS) - 1;
+			return (serialize_lua<TARGS>::table_pop(L, akeys[lpos--], args) && ...);
 		}
 	};
 
