@@ -165,12 +165,12 @@ namespace ngl
 				if (!init_protobufs<TRC>())
 				{
 					std::cout << tools::type_name<T>() << std::endl;
-					Throw("init_protobufs<TRC>() == false");
+					tools::no_core_dump();
 				}
 				itor = m_keyval.find(lcode);
 				if (itor == m_keyval.end())
 				{
-					Throw("itor == m_keyval.end()");
+					tools::no_core_dump();
 				}
 			}
 			return itor->second;
