@@ -113,8 +113,7 @@ public:
         m_stream << "       {" << std::endl;
         if (messageDescriptor->field_count() > 0)
         {
-            m_stream << "            ngl::nlua_table::table_push(L, aname"<< std::endl;
-            m_stream << "               , {";
+            m_stream << "            ngl::nlua_table::table_push(L, aname, {";
             std::cout << "name: " << messageDescriptor->name() << std::endl;
             for (int i = 0; i < messageDescriptor->field_count(); ++i)
             {
@@ -125,8 +124,7 @@ public:
                 }               
                 m_stream << std::format("\"{}\"", field->name());
             }
-            m_stream << "}" << std::endl;
-            m_stream << ", ";
+            m_stream << "} , ";
             for (int i = 0; i < messageDescriptor->field_count(); ++i)
             {
                 const google::protobuf::FieldDescriptor* field = messageDescriptor->field(i);
@@ -136,23 +134,20 @@ public:
                 }
                 m_stream << "adata." << field->name() << "()";
             }
-            m_stream << ");" << std::endl;
+            m_stream << std::endl;
+            m_stream << "               );" << std::endl;
         }
 
         m_stream << "       }" << std::endl;
 
-        m_stream << "       static bool stack_pop(lua_State* L, " << lmesname << "& adata, bool apop = true)" << std::endl;
+        m_stream << "       static bool stack_pop(lua_State* L, " << lmesname << "& adata, bool apop = true, const char* aname = nullptr)" << std::endl;
         m_stream << "       {" << std::endl;
         if (messageDescriptor->field_count() > 0)
         {
-            /*if (lua_isnil(L, -1))
+            m_stream << R"(         if (lua_isnil(L, -1))
             {
-                return true;
-            }*/
-            m_stream << R"(if (lua_isnil(L, -1))
-        {
             return true;
-        })";
+            })";
             m_stream << std::endl;
             for (int i = 0; i < messageDescriptor->field_count(); ++i)
             {
@@ -171,7 +166,7 @@ public:
                     m_stream << "           " << ltypename << " l" << field->name() << ";" << std::endl;
                 }
             }
-            m_stream << "           if(!ngl::nlua_table::table_pop(L, aname, ";
+            m_stream << "           if(!ngl::nlua_table::table_pop(L, aname, { ";
             for (int i = 0; i < messageDescriptor->field_count(); ++i)
             {
                 const google::protobuf::FieldDescriptor* field = messageDescriptor->field(i);
@@ -181,6 +176,7 @@ public:
                 }
                 m_stream << std::format("\"{}\"", field->name());
             }
+            m_stream << "}, ";
             for (int i = 0; i < messageDescriptor->field_count(); ++i)
             {
                 const google::protobuf::FieldDescriptor* field = messageDescriptor->field(i);
@@ -293,6 +289,9 @@ public:
         m_stream << "#include \"net.pb.h\"" << std::endl;
         m_stream << "#include \"db.pb.h\"" << std::endl;
         m_stream << std::endl;
+        m_stream << "#include <array>" << std::endl;
+        m_stream << std::endl;
+
         m_stream << "namespace ngl" << std::endl;
         m_stream << "{" << std::endl;
         int messageCount = fileDescriptor->message_type_count();
