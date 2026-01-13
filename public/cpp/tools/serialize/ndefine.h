@@ -36,24 +36,24 @@
 
 #define NUMARGS(...)  std::tuple_size<decltype(std::make_tuple(__VA_ARGS__))>::value
 
-#define def_parmname(...)														\
-static std::array<const char*, NUMARGS(__VA_ARGS__)>& parms()					\
-{																				\
-	static std::array<const char*, NUMARGS(__VA_ARGS__)> tempvec;				\
-	static std::string tempstr(#__VA_ARGS__);									\
-	static std::atomic lregister = true;										\
-	if (lregister.exchange(false) && !tempstr.empty())							\
-	{																			\
-		ngl::tools::split_str(&tempstr[0], (int32_t)tempstr.size(), tempvec);	\
-		for (const char*& item : tempvec)										\
-		{																		\
-			if (memcmp("m_", item, 2) == 0)										\
-			{																	\
-				item = &(item[2]);												\
-			}																	\
-		}																		\
-	}																			\
-	return tempvec;																\
+#define def_parmname(...)																			\
+static std::array<const char*, NUMARGS(__VA_ARGS__)>& parms()										\
+{																									\
+	static std::array<const char*, NUMARGS(__VA_ARGS__)> tempvec;									\
+	static std::string tempstr(#__VA_ARGS__);														\
+	static std::atomic lregister = true;															\
+	if (lregister.exchange(false) && !tempstr.empty())												\
+	{																								\
+		ngl::tools::split_str<NUMARGS(__VA_ARGS__)>(&tempstr[0], (int32_t)tempstr.size(), tempvec);	\
+		for (const char*& item : tempvec)															\
+		{																							\
+			if (memcmp("m_", item, 2) == 0)															\
+			{																						\
+				item = &(item[2]);																	\
+			}																						\
+		}																							\
+	}																								\
+	return tempvec;																					\
 }
 
 #define def_jsonfunction_function													\
