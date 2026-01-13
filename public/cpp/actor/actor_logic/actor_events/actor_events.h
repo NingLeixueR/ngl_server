@@ -120,18 +120,12 @@ namespace ngl
 		}
 
 		template <typename ...ARGS>
-		static void event_funcs(np_event_register& apro, ARGS... atypes)
-		{
-			(apro.m_events.push_back(atypes), ...);
-		}
-
-		template <typename ...ARGS>
 		static void event_func(i64_actorid aactorid, ARGS... atypes)
 		{
 			auto pro = std::make_shared<np_event_register>();
 			pro->m_actorid = aactorid;
 
-			event_funcs(*pro, atypes...);
+			(pro->m_events.push_back(atypes), ...);
 
 			actor::send_actor(actorid(), aactorid, pro);
 		}
