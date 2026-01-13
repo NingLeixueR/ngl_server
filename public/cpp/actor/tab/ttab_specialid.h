@@ -51,12 +51,6 @@ namespace ngl
 		{
 			std::cout << "[ttab_specialid] reload" << std::endl;
 #define de_pram(NAME) #NAME,m_##NAME
-
-			class nkeyvlaue
-			{
-			public:
-			};
-
 			for (const auto& pair : m_tablecsv)
 			{
 				bool lread = read_value(

@@ -36,7 +36,7 @@
 
 #define NUMARGS(...)  std::tuple_size<decltype(std::make_tuple(__VA_ARGS__))>::value
 
-#define def_parmname(...)																			\
+#define def_parmname_(ISMG,...)																		\
 static std::array<const char*, NUMARGS(__VA_ARGS__)>& parms()										\
 {																									\
 	static std::array<const char*, NUMARGS(__VA_ARGS__)> tempvec;									\
@@ -45,16 +45,21 @@ static std::array<const char*, NUMARGS(__VA_ARGS__)>& parms()										\
 	if (lregister.exchange(false) && !tempstr.empty())												\
 	{																								\
 		ngl::tools::split_str<NUMARGS(__VA_ARGS__)>(&tempstr[0], (int32_t)tempstr.size(), tempvec);	\
-		for (const char*& item : tempvec)															\
+		if constexpr(ISMG)																			\
 		{																							\
-			if (memcmp("m_", item, 2) == 0)															\
+			for (const char*& item : tempvec)														\
 			{																						\
-				item = &(item[2]);																	\
+				if (memcmp("m_", item, 2) == 0)														\
+				{																					\
+					item = &(item[2]);																\
+				}																					\
 			}																						\
 		}																							\
 	}																								\
 	return tempvec;																					\
 }
+
+#define def_parmname(...)	def_parmname_(false __VA_OPT__(, )__VA_ARGS__)
 
 #define def_jsonfunction_function													\
 bool json_pop(const char* ajson, const char* akey)									\
@@ -144,8 +149,3 @@ def_jsonfunction_function
 	def_jsonfunction(__VA_ARGS__)							\
 	def_protocol(NAME __VA_OPT__(, )__VA_ARGS__)			\
 	def_nlua_function(__VA_ARGS__)
-
-namespace ngl
-{
-	void test_json();
-}

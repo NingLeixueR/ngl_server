@@ -522,7 +522,7 @@ namespace ngl
 		template <typename ...ARGS>
 		static bool splite(int32_t aindex, std::vector<std::string>& avec, ARGS&... args)
 		{
-			return (splite<ARGS>(aindex, avec, args) && ...);
+			return (splite<ARGS>(aindex++, avec, args) && ...);
 		}
 	public:
 
