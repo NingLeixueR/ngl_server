@@ -70,7 +70,6 @@ namespace ngl
 		static void add_package_path(lua_State* L, const char* apath);
 	};
 
-
 	template <typename T>
 	struct serialize_lua
 	{
@@ -1008,7 +1007,7 @@ namespace ngl
 				return true;
 			}
 			int32_t lpos = sizeof ...(TARGS) - 1;
-			return (serialize_lua<TARGS>::table_pop(L, akeys[lpos--], args) && ...);
+			return true && (serialize_lua<TARGS>::table_pop(L, akeys[lpos--], args) && ...);
 		}
 	};
 
