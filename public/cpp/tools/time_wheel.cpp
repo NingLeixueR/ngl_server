@@ -520,7 +520,8 @@ namespace ngl
 				if (lpnode->m_parm.m_intervalms != nullptr)
 				{
 					int lintervalms = lpnode->m_parm.m_intervalms(m_time_wheel->m_impl_time_wheel()->m_current_ms);
-					if (lintervalms > 0 && --lpnode->m_parm.m_count > 0)//¿½±´
+					--lpnode->m_parm.m_count;
+					if (lintervalms > 0 && lpnode->m_parm.m_count > 0)//¿½±´
 					{
 						wheel_node* lpnewnode = new wheel_node(*lpnode);
 						m_time_wheel->m_impl_time_wheel()->push(lpnewnode);
