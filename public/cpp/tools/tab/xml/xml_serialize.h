@@ -526,21 +526,6 @@ namespace ngl
 		return xml::writexml(axml, ldocument);											\
 	}
 
-#if defined(WIN32)||defined(WINCE)||defined(WIN64)
-#define def_xml(ATTR, ...)																\
-	inline bool xml_pop(tinyxml2::XMLElement* aele)										\
-	{																					\
-		return ngl::xserialize<ATTR>::pop(aele, parms(),##__VA_ARGS__);					\
-	}																					\
-	inline bool xml_push(tinyxml2::XMLElement* aele)const								\
-	{																					\
-		return ngl::xserialize<ATTR>::push(aele, parms(),##__VA_ARGS__);				\
-	}
-#define dxmlserialize(XMLNAME, ATTR, ...)												\
-	def_parmname(__VA_ARGS__)															\
-	def_xmlfunction(XMLNAME)															\
-	def_xml(ATTR, ##__VA_ARGS__)
-#else
 #define def_xml(ATTR, ...)																\
 	inline bool xml_pop(tinyxml2::XMLElement* aele)										\
 	{																					\
@@ -553,6 +538,5 @@ namespace ngl
 #define dxmlserialize(XMLNAME, ATTR, ...)												\
 	def_parmname(__VA_ARGS__)															\
 	def_xmlfunction(XMLNAME)															\
-	def_xml(ATTR __VA_OPT__(, )__VA_ARGS__)
-#endif
+	def_xml(ATTR, ##__VA_ARGS__)
 
