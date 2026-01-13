@@ -113,7 +113,7 @@ namespace ngl
 		return true;
 	}
 
-	const char* xml::str(tinyxml2::XMLDocument& axml)
+	std::string xml::str(tinyxml2::XMLDocument& axml)
 	{
 		tinyxml2::XMLPrinter printer;
 		axml.Print(&printer);
