@@ -492,15 +492,6 @@ namespace ngl
 
 		static bool splite(const char* abuff, const char* afg, std::vector<std::string>& avec);
 
-		template <typename ...ARGS>
-		static bool splite(const char* abuff, const char* afg, ARGS&... args)
-		{
-			std::vector<std::string> lvec;
-			splite(abuff, afg, lvec);
-			return splite(0, lvec, args...);
-		}
-
-	private:
 		template <typename T>
 		static bool splite(int32_t aindex, std::vector<std::string>& avec, T& adata)
 		{
@@ -520,11 +511,13 @@ namespace ngl
 		}
 
 		template <typename ...ARGS>
-		static bool splite(int32_t aindex, std::vector<std::string>& avec, ARGS&... args)
+		static bool splite(const char* abuff, const char* afg, ARGS&... args)
 		{
-			return (splite<ARGS>(aindex++, avec, args) && ...);
+			std::vector<std::string> lvec;
+			splite(abuff, afg, lvec);
+			int32_t lpos = 0;
+			return (splite<ARGS>(lpos++, lvec, args) && ...);
 		}
-	public:
 
 		// 特殊分割:类似"接收邮件列表[邮件地址1:名字1]"
 		// [348634371@qq.com:libo][libo1@youxigu.com:libo1]
