@@ -538,5 +538,5 @@ namespace ngl
 #define dxmlserialize(XMLNAME, ATTR, ...)												\
 	def_parmname(__VA_ARGS__)															\
 	def_xmlfunction(XMLNAME)															\
-	def_xml(ATTR, ##__VA_ARGS__)
+	def_xml(ATTR __VA_OPT__(, )__VA_ARGS__)
 
