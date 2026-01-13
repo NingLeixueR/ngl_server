@@ -22,7 +22,7 @@ namespace ngl
 {
 	class task_check
 	{
-		static std::array<task_check*, ETaskCount> m_data;
+		static std::array<std::unique_ptr<task_check>, ETaskCount> m_data;
 	public:
 		// 检查条件是否满足
 		static bool check(actor_role* arole, const task_condition& atab)
@@ -84,11 +84,11 @@ namespace ngl
 		}
 	};
 
-	std::array<task_check*, ETaskCount> task_check::m_data =
+	std::array<std::unique_ptr<task_check>, ETaskCount> task_check::m_data =
 	{
-		(task_check*)new taskcheck_rolelv(),
-		(task_check*)new taskcheck_rolevip(),
-		(task_check*)new taskcheck_taskid()
+		std::make_unique<taskcheck_rolelv>(),
+		std::make_unique<taskcheck_rolevip>(),
+		std::make_unique<taskcheck_taskid>(),
 	};
 
 	bool static_task::check_condition(actor_role* arole, const std::vector<task_condition>& acondition)
