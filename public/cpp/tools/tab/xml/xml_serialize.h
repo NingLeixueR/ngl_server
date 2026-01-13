@@ -59,7 +59,7 @@ namespace ngl
 		template <typename T>
 		static bool set_xmlattr(tinyxml2::XMLElement* aele, const char* akey, const T& aval);
 
-		static const char* str(tinyxml2::XMLDocument& axml);
+		static std::string str(tinyxml2::XMLDocument& axml);
 
 		static bool foreach(tinyxml2::XMLElement* aele, const char* akey, const std::function<bool(tinyxml2::XMLElement*)>& afun);
 
