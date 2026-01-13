@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 26-01-12 15:40:33
+// 创建时间 26-01-13 10:27:49
 #include "pb_field.cpp"
 #include "session_endpoint.cpp"
 #include "attribute_value.cpp"
@@ -62,7 +62,6 @@
 #include "nthread.cpp"
 #include "nscript.cpp"
 #include "net_tcp.cpp"
-#include "ndefine.cpp"
 #include "dbredis.cpp"
 #include "db_pool.cpp"
 #include "consume.cpp"
