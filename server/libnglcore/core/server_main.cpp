@@ -765,8 +765,6 @@ bool start_robot(int argc, char** argv)
 	return true;
 }
 
-#include "bi_item.h"
-
 std::string g_nodename = "node";
 
 int ngl_main(int argc, char** argv)
