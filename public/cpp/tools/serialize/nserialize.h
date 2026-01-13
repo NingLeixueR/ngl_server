@@ -32,7 +32,6 @@
 #include <set>
 #include <map>
 
-
 namespace ngl
 {
 	namespace ser
@@ -473,7 +472,6 @@ namespace ngl
 			}
 		};
 
-
 		template <typename T>
 		struct serialize_format<std::vector<T>>
 		{
@@ -691,13 +689,13 @@ namespace ngl
 			template <typename ...ARGS>
 			static bool push(serialize_push* aserialize, const ARGS&... aargs)
 			{
-				return (serialize_format<ARGS>::push(aserialize, aargs) && ...);
+				return true && (serialize_format<ARGS>::push(aserialize, aargs) && ...);
 			}
 
 			template <typename ...ARGS>
 			static bool pop(serialize_pop* aserialize, ARGS&... aargs)
 			{
-				return (serialize_format<ARGS>::pop(aserialize, aargs) && ...);
+				return true && (serialize_format<ARGS>::pop(aserialize, aargs) && ...);
 			}
 
 			template <typename ...ARGS>

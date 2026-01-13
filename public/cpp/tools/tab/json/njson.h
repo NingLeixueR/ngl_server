@@ -741,7 +741,7 @@ namespace ngl
 		static bool pop(cJSON* ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
 			int32_t lpos = 0;
-			return (json_format<TARGS>::pop(ajson, akeys[lpos++], aargs) && ...);
+			return true && (json_format<TARGS>::pop(ajson, akeys[lpos++], aargs) && ...);
 		}
 
 		template <typename ...TARGS>
