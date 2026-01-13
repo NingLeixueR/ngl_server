@@ -939,44 +939,16 @@ namespace ngl
 	class nlua_stack
 	{
 	public:
-		static void stack_push(lua_State* L)
+		template <typename ...TARGS>
+		static void stack_push(lua_State* L, const TARGS&... aargs)
 		{
-		}
-
-		template <typename T>
-		static void stack_push(lua_State* L, const T& adata)
-		{
-			serialize_lua<T>::stack_push(L, adata);
-		}
-
-		template <typename T, typename ...TARGS>
-		static void stack_push(lua_State* L, const T& adata, const TARGS&... aargs)
-		{
-			serialize_lua<T>::stack_push(L, adata);
-			stack_push(L, aargs...);
-		}
-
-		static bool stack_pop(lua_State* L)
-		{
-			return true;
-		}
-
-		template <typename T>
-		static bool stack_pop(lua_State* L, T& adata)
-		{
-			return serialize_lua<T>::stack_pop(L, adata);
-		}
-
-		template <typename T, typename ...TARGS>
-		static bool stack_pop(lua_State* L, T& adata, TARGS&... aargs)
-		{
-			return  stack_pop(L, aargs...) && serialize_lua<T>::stack_pop(L, adata);
+			(serialize_lua<TARGS>::stack_push(L, aargs), ...);
 		}
 
 		template <typename ...TARGS>
 		static bool stack_pop(lua_State* L, TARGS&... aargs)
 		{
-			return stack_pop(L, aargs...);
+			return (... && serialize_lua<TARGS>::stack_pop(L, aargs));
 		}
 	};
 

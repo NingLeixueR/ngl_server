@@ -519,22 +519,10 @@ namespace ngl
 			return true;
 		}
 
-		template <typename T, typename ...ARGS>
-		static bool splite(int32_t aindex, std::vector<std::string>& avec, T& adata, ARGS&... args)
+		template <typename ...ARGS>
+		static bool splite(int32_t aindex, std::vector<std::string>& avec, ARGS&... args)
 		{
-			if (aindex >= avec.size())
-			{
-				return false;
-			}
-			try
-			{
-				adata = tools::lexical_cast<T>(avec[aindex].c_str());
-			}
-			catch (...)
-			{
-				return false;
-			}
-			return splite(++aindex, avec, args...);
+			return (splite<ARGS>(aindex, avec, args) && ...);
 		}
 	public:
 
@@ -682,13 +670,6 @@ namespace ngl
 			return true;
 		}
 
-		template <typename ...ARGS>
-		static bool splicing(const char* afg, std::string& astr, ARGS... args)
-		{
-			return splicing(0, afg, astr, args...);
-		}
-
-	private:
 		template <typename T>
 		static bool splicing(int32_t aindex, const char* afg, std::string& astr, T& adata)
 		{
@@ -707,24 +688,12 @@ namespace ngl
 			return true;
 		}
 
-		template <typename T, typename ...ARGS>
-		static bool splicing(int32_t aindex, const char* afg, std::string& astr, T& adata, ARGS&... args)
+		template <typename ...ARGS>
+		static bool splicing(const char* afg, std::string& astr, ARGS&... args)
 		{
-			try
-			{
-				if (aindex != 0)
-				{
-					astr += afg;
-				}
-				astr += tools::lexical_cast<std::string>(adata);
-			}
-			catch (...)
-			{
-				return false;
-			}
-			return splicing(++aindex, afg, astr, args...);
+			int32_t lpos = 0;
+			return (splicing<ARGS>(lpos++, afg, astr, args), ...);
 		}
-	public:
 #pragma endregion
 
 #pragma region url
@@ -869,7 +838,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static int32_t less_member_(const T& lhs, const T& rhs)
+		static int32_t less_member(const T& lhs, const T& rhs)
 		{
 			if (lhs != rhs)
 			{
