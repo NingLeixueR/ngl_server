@@ -40,6 +40,7 @@ namespace ngl
 				LOG_SCRIPT("lua_getglobal get failure[{}.{}]", m_scriptpath, m_function);
 				lua_pop(L, 1);
 			}
+			m_callcount = sizeof...(TARGS);
 			nlua_stack::stack_push(L, args...);
 			return true;
 		}
@@ -47,6 +48,7 @@ namespace ngl
 		template <typename ...TARGS>
 		bool set_return(TARGS&... args)
 		{
+			m_returncount = sizeof...(TARGS);
 			m_returnfunction = [this, &args...]()->bool
 				{
 					return nlua_stack::stack_pop(L, args...);
