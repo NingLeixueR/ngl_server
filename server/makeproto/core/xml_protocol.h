@@ -553,8 +553,7 @@ namespace ngl
         m_stream << "   template <typename PB, typename ...ARG>" << std::endl;
         m_stream << "   void help_role_tprotocol_forward_pb(const PB* apb, const ARG*... arg)" << std::endl;
         m_stream << "   {" << std::endl;
-        m_stream << "       help_role_tprotocol_forward_pb<PB>(apb);" << std::endl;
-        m_stream << "       help_role_tprotocol_forward_pb<ARG...>(arg...);" << std::endl;
+        m_stream << "      (help_role_tprotocol_forward_pb<ARG>(arg), ...);" << std::endl;
         m_stream << "   }" << std::endl;
         m_stream << "   void tprotocol_forward_pb()" << std::endl;
         m_stream << "   {" << std::endl;

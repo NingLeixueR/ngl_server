@@ -52,25 +52,24 @@ namespace ngl
 			std::cout << "[ttab_specialid] reload" << std::endl;
 #define de_pram(NAME) #NAME,m_##NAME
 
+			class nkeyvlaue
+			{
+			public:
+			};
+
 			for (const auto& pair : m_tablecsv)
 			{
 				bool lread = read_value(
 					pair.second
-					, de_pram(rolemaxlv)
-					, de_pram(rolemaxvip)
-					, de_pram(createfamilconsume)
-					, de_pram(familsignexp)
-					, de_pram(familsigndrop)
-					, de_pram(familapplylistcount)
-					, de_pram(friendsapplylistcount)
-					, de_pram(familjoininterval)
-					, de_pram(friendscount)
-					, de_pram(ranklistmaxcount)
-					, de_pram(example_room_maxtime)
-					, de_pram(example_room_readytime)
+					, { 
+						"rolemaxlv", "rolemaxvip", "createfamilconsume", "familsignexp", "familsigndrop", "familapplylistcount", "friendsapplylistcount",
+						"familjoininterval", "friendscount", "ranklistmaxcount", "example_room_maxtime", "example_room_readytime"
+					}
+					, m_rolemaxlv, m_rolemaxvip, m_createfamilconsume, m_familsignexp, m_familsigndrop, m_familapplylistcount, m_friendsapplylistcount
+					, m_familjoininterval, m_friendscount, m_ranklistmaxcount, m_example_room_maxtime, m_example_room_readytime
 				);
 				std::string lexample_totalnumber;
-				if (lread == false && read_value(pair.second, "example_totalnumber", lexample_totalnumber))
+				if (lread == false && read_value(pair.second, { "example_totalnumber" }, lexample_totalnumber))
 				{
 					if (tools::splite_special(lexample_totalnumber.c_str(), "\\[", "]", m_example_totalnumber) == false)
 					{
@@ -126,7 +125,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		inline bool read_value(const tab_specialid& atab, const char* akey, T& adata)
+		inline bool rvalue(const tab_specialid& atab, const char* akey, T& adata)
 		{
 			if (atab.m_name == akey)
 			{
@@ -136,14 +135,11 @@ namespace ngl
 			return false;
 		}
 
-		template <typename T, typename ...ARG>
-		inline bool read_value(const tab_specialid& atab, const char* akey, T& adata, ARG&... adatas)
+		template <typename ...ARG>
+		inline bool read_value(const tab_specialid& atab, const std::array<const char*, sizeof...(ARG)>& akeys, ARG&... adatas)
 		{
-			if (read_value(atab, akey, adata))
-			{
-				return true;
-			}
-			return read_value(atab, adatas...);
+			int32_t lpos = 0;
+			return (rvalue<ARG>(atab, akeys[lpos++], adatas), ...);
 		}
 	};
 }//namespace ngl

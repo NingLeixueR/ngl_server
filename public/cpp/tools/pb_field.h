@@ -107,10 +107,9 @@ namespace ngl
         }
 
         template <typename T, typename ...TARGS>
-        static std::set<i32_fieldnumber>& field_number(std::set<i32_fieldnumber>& afieldset, const char* afieldname, TARGS... args)
+        static std::set<i32_fieldnumber>& field_number(std::set<i32_fieldnumber>& afieldset, TARGS... args)
         {
-            field_number<T>(afieldset, afieldname);
-            return field_number<T>(afieldset, args...);
+            return (field_number<T>(afieldset, args), ...);
         }
     private:
         template <typename T>

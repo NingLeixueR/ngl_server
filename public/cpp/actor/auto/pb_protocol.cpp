@@ -37,11 +37,10 @@ namespace ngl
            , np_actormodule_forward<PB>
        >(lprotocolnum, 0);
    }
-   template <typename PB, typename ...ARG>
-   void help_role_tprotocol_forward_pb(const PB* apb, const ARG*... arg)
+   template <typename ...ARG>
+   void help_role_tprotocol_forward_pb(const ARG*... arg)
    {
-       help_role_tprotocol_forward_pb<PB>(apb);
-       help_role_tprotocol_forward_pb<ARG...>(arg...);
+       (help_role_tprotocol_forward_pb<ARG>(arg), ...);
    }
    void tprotocol_forward_pb()
    {
