@@ -399,7 +399,7 @@ public:
                 || messageDescriptor->name().find("PROBUFF_EXAMPLE_") != std::string::npos
                 )
             {
-                m_stream_pb << std::format("            null<{}::{}>,", lnamespace, messageDescriptor->name()) << std::endl;
+                m_stream_pb << std::format("            {}::{},", lnamespace, messageDescriptor->name()) << std::endl;
             }
         }
         return m_stream_pb.str();
@@ -539,7 +539,7 @@ namespace ngl
         m_stream << "namespace ngl" << std::endl;
         m_stream << "{" << std::endl;
         m_stream << "   template <typename PB>" << std::endl;
-        m_stream << "   void help_role_tprotocol_forward_pb(const PB* apb)" << std::endl;
+        m_stream << "   void hrole_forward_pb()" << std::endl;
         m_stream << "   {" << std::endl;
         m_stream << "       int32_t lprotocolnum = tprotocol::protocol<PB>();" << std::endl;
         m_stream << "       tprotocol::tp_customs::template func<" << std::endl;
@@ -550,14 +550,14 @@ namespace ngl
         m_stream << "           , np_actormodule_forward<PB>" << std::endl;
         m_stream << "       >(lprotocolnum, 0);" << std::endl;
         m_stream << "   }" << std::endl;
-        m_stream << "   template <typename PB, typename ...ARG>" << std::endl;
-        m_stream << "   void help_role_tprotocol_forward_pb(const PB* apb, const ARG*... arg)" << std::endl;
+        m_stream << "   template <typename ...ARG>" << std::endl;
+        m_stream << "   void help_role_forward_pb()" << std::endl;
         m_stream << "   {" << std::endl;
-        m_stream << "      (help_role_tprotocol_forward_pb<ARG>(arg), ...);" << std::endl;
+        m_stream << "      (hrole_forward_pb<ARG>(), ...);" << std::endl;
         m_stream << "   }" << std::endl;
         m_stream << "   void tprotocol_forward_pb()" << std::endl;
         m_stream << "   {" << std::endl;
-        m_stream << "        help_role_tprotocol_forward_pb(" << std::endl;
+        m_stream << "        help_role_forward_pb<" << std::endl;
         std::string ltemp = astr;
         if (!ltemp.empty())
         {
@@ -571,7 +571,7 @@ namespace ngl
             }
         }
         m_stream << ltemp << std::endl;
-        m_stream << "        );" << std::endl;
+        m_stream << "        >();" << std::endl;
         m_stream << "   }" << std::endl;
         m_stream << "}//namespace ngl" << std::endl;
 
