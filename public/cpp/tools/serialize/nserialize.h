@@ -704,8 +704,6 @@ namespace ngl
 				(serialize_format<ARGS>::bytes(aserialize, aargs), ...);
 			}
 		};
-
-		extern void test_serialize();
 	}// namespace ser
 }// namespace ngl
 
