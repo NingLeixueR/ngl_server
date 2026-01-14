@@ -767,14 +767,10 @@ bool start_robot(int argc, char** argv)
 
 std::string g_nodename = "node";
 
+#include "xml.h"
+
 int ngl_main(int argc, char** argv)
 {
-	if (argc <= 3)
-	{
-		std::cout << "²ÎÊý´íÎó:EXE name areaid tab_servers::tcount" << std::endl;
-		return 0;
-	}
-
 	// # Ãû³Æ
 	std::string lname = argv[1];
 
