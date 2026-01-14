@@ -35,8 +35,7 @@ namespace ngl
         static std::string push(const Args&... args)
         {
 			std::string result;
-			(add(result, args), ...);
-			return result;
+			return (add(result, args), ... , result);
         }
     };
 }//namespace ngl

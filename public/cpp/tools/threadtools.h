@@ -24,7 +24,7 @@
 
 namespace ngl
 {
-	using thread			= std::thread;
+	using thread = std::thread;
 
 	// # ĞÅºÅÁ¿
 	class sem

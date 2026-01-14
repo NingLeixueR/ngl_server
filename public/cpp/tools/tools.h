@@ -368,7 +368,6 @@ namespace ngl
 			return status.ok();
 		}
 
-		//EPROTOCOL_TYPE_CUSTOM
 		template <typename T>
 		static bool json2custom(const std::string& json, T& adata);
 
@@ -685,7 +684,7 @@ namespace ngl
 		static bool splicing(const char* afg, std::string& astr, ARGS&... args)
 		{
 			int32_t lpos = 0;
-			return (splicing<ARGS>(lpos++, afg, astr, args), ...);
+			return (splicing<ARGS>(lpos++, afg, astr, args) && ...);
 		}
 #pragma endregion
 

@@ -767,10 +767,14 @@ bool start_robot(int argc, char** argv)
 
 std::string g_nodename = "node";
 
-#include "xml.h"
+namespace ngl
+{
+	extern void server_test();
+}
 
 int ngl_main(int argc, char** argv)
 {
+	ngl::server_test();
 	// # Ãû³Æ
 	std::string lname = argv[1];
 
