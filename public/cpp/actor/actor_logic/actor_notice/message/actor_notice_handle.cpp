@@ -16,10 +16,10 @@ namespace ngl
 {
 	struct gm_notice
 	{
-		int64_t		m_id;// 公告id
+		int64_t		m_id = 0;// 公告id
 		std::string	m_notice;
-		int32_t		m_starttime;// 开始时间
-		int32_t		m_finishtime;// 结束时间
+		int32_t		m_starttime = 0;// 开始时间
+		int32_t		m_finishtime = 0;// 结束时间
 		dprotocol(gm_notice, m_id, m_notice, m_starttime, m_finishtime)
 	};
 	bool actor_notice::handle(const message<mforward<np_gm>>& adata)
