@@ -18,7 +18,7 @@
 #include "njson.h"
 #include "lua.hpp"
 
-#define def_protocol(_Name, ...)												\
+#define def_protocol(...)														\
 	bool push_format(ngl::ser::serialize_push* aser)const						\
 	{																			\
 		return ngl::ser::nserialize::push(aser __VA_OPT__(, )__VA_ARGS__);		\
@@ -147,5 +147,5 @@ def_jsonfunction_function
 #define dprotocol(NAME, ...)								\
 	def_parmname(__VA_ARGS__)								\
 	def_jsonfunction(__VA_ARGS__)							\
-	def_protocol(NAME __VA_OPT__(, )__VA_ARGS__)			\
+	def_protocol(__VA_ARGS__)								\
 	def_nlua_function(__VA_ARGS__)
