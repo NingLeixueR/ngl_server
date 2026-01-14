@@ -27,7 +27,7 @@ namespace ngl
 			handle_cmd::add("set_openserver") = [this](int id, ncjson& aos)
 				{
 					gcmd<bool> pro(id, "set_openserver", false);
-					int32_t ltime;
+					int32_t ltime = 0;
 					if (!njson::pop(aos.json(), { "data" }, ltime))
 					{
 						return;

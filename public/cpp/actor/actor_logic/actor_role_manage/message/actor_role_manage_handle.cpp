@@ -38,27 +38,27 @@ namespace ngl
 						int32_t m_stat = 0;
 						dprotocol(banrole, m_roleid, m_stat)
 					};
-					banrole m_banrole;
-					if (!njson::pop(aos.json(), { "data" }, m_banrole))
+					banrole lbanrole;
+					if (!njson::pop(aos.json(), { "data" }, lbanrole))
 					{
 						return;
 					}
 
-					if (m_banrole.m_stat == 1)
+					if (lbanrole.m_stat == 1)
 					{
-						m_roleban.insert(m_banrole.m_roleid);
+						m_roleban.insert(lbanrole.m_roleid);
 					}
 					else
 					{
-						m_roleban.erase(m_banrole.m_roleid);
+						m_roleban.erase(lbanrole.m_roleid);
 					}
 
-					std::string lbanrole;
-					tools::splicing(m_roleban, "*", lbanrole);
+					std::string lbanrolestr;
+					tools::splicing(m_roleban, "*", lbanrolestr);
 
 					pbdb::db_keyvalue* lpdata = tdb_keyvalue::nsp_cwrite<actor_role_manage>::instance(id_guid()).add(pbdb::db_keyvalue_ekv_account_ban);
 					lpdata->set_mid(pbdb::db_keyvalue_ekv_account_ban);
-					lpdata->set_mvalue(lbanrole);
+					lpdata->set_mvalue(lbanrolestr);
 					tdb_keyvalue::nsp_cwrite<actor_role_manage>::instance(id_guid()).change();
 					pro.m_data = true;
 				};
