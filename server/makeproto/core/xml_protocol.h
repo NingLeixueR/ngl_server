@@ -354,12 +354,18 @@ public:
                 )
             {
                 int32_t lnumber = (lprotocol == -1 ? ngl::xmlprotocol::free_protocol() : lprotocol);
-                m_stream << "\t<config client = \"1\" name=\"class "
-                    << lnamespace << "::" << messageDescriptor->name()
-                    << "\" number=\"" << lnumber << "\"/>" << std::endl;
-                m_stream << "\t<config client = \"1\" name=\""
-                    << lnamespace << "::" << messageDescriptor->name()
-                    << "\" number=\"" << lnumber << "\"/>" << std::endl;
+
+               //m_stream << std::format("\t<config client = \"1\" name=\"class {}::{}\" number=\"{}\"/>"
+               //     , lnamespace
+               //     , messageDescriptor->name()
+               //     , lnumber
+               // ) << std::endl;
+
+                m_stream << std::format("\t<config client = \"1\" name=\"{}::{}\" number=\"{}\"/>"
+                    , lnamespace
+                    , messageDescriptor->name()
+                    , lnumber
+                ) << std::endl;
             }
 
         }
