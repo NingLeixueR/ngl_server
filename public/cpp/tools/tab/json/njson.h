@@ -740,15 +740,15 @@ namespace ngl
 		template <typename ...TARGS>
 		static bool pop(cJSON* ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
-			int32_t lpos = 0;
-			return true && (json_format<TARGS>::pop(ajson, akeys[lpos++], aargs) && ...);
+			int32_t lpos = -1;
+			return true && ((++lpos, json_format<TARGS>::pop(ajson, akeys[lpos], aargs)) && ...);
 		}
 
 		template <typename ...TARGS>
 		static void push(cJSON* ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
 		{
-			int32_t lpos = 0;
-			(json_format<TARGS>::push(ajson, akeys[lpos++], aargs), ...);
+			int32_t lpos = -1;
+			((++lpos, json_format<TARGS>::push(ajson, akeys[lpos], aargs)), ...);
 			return;
 		}
 	};
