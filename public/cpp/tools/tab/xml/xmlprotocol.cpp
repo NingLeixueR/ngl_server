@@ -20,21 +20,7 @@ namespace ngl
 
 	void xmlprotocol::read(const char* axml)
 	{
-		struct xarg_infos
-		{
-			struct info
-			{
-				int32_t m_client = 0;
-				std::string m_name;
-				int32_t m_number = 0;
-
-				dxmlserialize(config, true, m_client, m_name, m_number)
-			};
-			std::vector<info> m_config;
-
-			dxmlserialize(con, false, m_config)
-		};
-		xarg_infos ltemps;
+		xarg_protocols ltemps;
 		if (!ltemps.xml_pop(axml))
 		{
 			tools::no_core_dump();
