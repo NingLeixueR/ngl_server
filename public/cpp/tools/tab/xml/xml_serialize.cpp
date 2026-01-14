@@ -117,6 +117,6 @@ namespace ngl
 	{
 		tinyxml2::XMLPrinter printer;
 		axml.Print(&printer);
-		return printer.CStr();
+		return std::string(printer.CStr());
 	}
 }//namespace ngl
