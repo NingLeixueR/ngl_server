@@ -78,8 +78,8 @@ namespace ngl
 			struct gm_guid
 			{
 				std::string actor_name;
-				int16_t area;
-				int32_t dataid;
+				int16_t area = 0;
+				int32_t dataid = 0;
 				dprotocol(gm_guid, actor_name, area, dataid)
 			};
 			handle_cmd::add("server_stat") = [this](ncjson& aos, const message<ngl::np_gm>* adata)

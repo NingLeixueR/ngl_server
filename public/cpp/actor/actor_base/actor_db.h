@@ -353,8 +353,8 @@ namespace ngl
 
 				struct query_page
 				{
-					int32_t m_everypagecount;
-					int32_t m_page;
+					int32_t m_everypagecount = 0;
+					int32_t m_page = 0;
 
 					dprotocol(query_page, m_everypagecount, m_page)
 				};

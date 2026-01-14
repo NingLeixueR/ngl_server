@@ -41,7 +41,7 @@ namespace ngl
 					struct pay
 					{
 						std::string m_orderid;
-						int32_t m_rechargeid;
+						int32_t m_rechargeid = 0;
 						dprotocol(pay, m_orderid, m_rechargeid)
 					};
 					pay lpay;
@@ -55,7 +55,7 @@ namespace ngl
 			handle_gm::add("gmrechange") = [this](int id, ncjson& aos)
 				{
 					gcmd<int32_t> pro(id, "gmrechange");
-					int32_t lrechargeid;
+					int32_t lrechargeid = 0;
 					if (!njson::pop(aos.json(), { "data" }, lrechargeid))
 					{
 						return;
@@ -81,7 +81,7 @@ namespace ngl
 			handle_gm::add("bantalk") = [this](int id, ncjson& aos)
 				{
 					gcmd<bool> pro(id, "bantalk", false);
-					int32_t lduration;
+					int32_t lduration = 0;
 					if (!njson::pop(aos.json(), { "data" }, lduration))
 					{
 						return;

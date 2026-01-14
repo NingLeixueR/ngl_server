@@ -91,8 +91,8 @@ namespace ngl
 				apstruct->m_pingtm = (int)localtime::gettime();
 				ncjson ltempjson(ajson.c_str());
 
-				i64_actorid lactoridclient;
-				i64_actorid lactoridserver;
+				i64_actorid lactoridclient = nguid::make();
+				i64_actorid lactoridserver = nguid::make();
 				std::string lsession;
 				if (!njson::pop(ltempjson.json(), { "actoridclient","actoridserver","session" }, lactoridclient, lactoridserver, lsession))
 				{
