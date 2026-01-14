@@ -77,8 +77,6 @@ namespace ngl
 
 		xarg_redis&	redis();
 	};
-
-	void testxml();
 }//namespace ngl
 #define nconfig ngl::xmlnode::instance()
 
