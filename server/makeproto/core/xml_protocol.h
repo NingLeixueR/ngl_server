@@ -2,10 +2,12 @@
 
 #include "xml_serialize.h"
 #include "operator_file.h"
+#include "xml_serialize.h"
 #include "xmlprotocol.h"
 #include "localtime.h"
 #include "net.pb.h"
 #include "tools.h"
+#include "xml.h"
 
 #include <google/protobuf/compiler/importer.h>
 #include <google/protobuf/dynamic_message.h>
@@ -323,8 +325,6 @@ public:
 
     static void xml_fun(const google::protobuf::FileDescriptor* fileDescriptor, int32_t& aprotocol, const std::string& axml)
     {
-        ngl::writefile lfile("./config/" + axml + "_protocol.xml");
-
         std::string lnamespace;
         if (axml == "net")
         {
@@ -339,9 +339,8 @@ public:
             lnamespace = "GM";
         }
 
-        std::stringstream m_stream;
-        m_stream << "<?xml version = \"1.0\" encoding = \"utf-8\"?>" << std::endl;
-        m_stream << "<con>" << std::endl;
+        ngl::xarg_protocols lxarg;
+
         int messageCount = fileDescriptor->message_type_count();
         for (int i = 0; i < messageCount; ++i)
         {
@@ -353,24 +352,18 @@ public:
                 || messageDescriptor->name().find("PROBUFF_EXAMPLE_") != std::string::npos
                 )
             {
-                int32_t lnumber = (lprotocol == -1 ? ngl::xmlprotocol::free_protocol() : lprotocol);
-
-               //m_stream << std::format("\t<config client = \"1\" name=\"class {}::{}\" number=\"{}\"/>"
-               //     , lnamespace
-               //     , messageDescriptor->name()
-               //     , lnumber
-               // ) << std::endl;
-
-                m_stream << std::format("\t<config client = \"1\" name=\"{}::{}\" number=\"{}\"/>"
-                    , lnamespace
-                    , messageDescriptor->name()
-                    , lnumber
-                ) << std::endl;
+                lxarg.m_config.push_back(
+                    ngl::xarg_protocols::info
+                    {
+                        .m_client = 1,
+                        .m_name = std::format("{}::{}", lnamespace, messageDescriptor->name()),
+                        .m_number = (lprotocol == -1 ? ngl::xmlprotocol::free_protocol() : lprotocol)
+                    }
+                );
             }
 
         }
-        m_stream << "</con>" << std::endl;
-        lfile.write(m_stream.str());
+        lxarg.xml_push(std::string("./config/" + axml + "_protocol.xml").c_str());
     }
     
     static std::string register_fun(const google::protobuf::FileDescriptor* fileDescriptor, int32_t& aprotocol, const std::string& axml)

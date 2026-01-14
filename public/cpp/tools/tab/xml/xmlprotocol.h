@@ -23,6 +23,21 @@
 
 namespace ngl
 {
+	struct xarg_protocols
+	{
+		struct info
+		{
+			int32_t m_client = 0;
+			std::string m_name;
+			int32_t m_number = 0;
+
+			dxmlserialize(config, true, m_client, m_name, m_number)
+		};
+		std::vector<info> m_config;
+
+		dxmlserialize(con, false, m_config)
+	};
+
 	class xmlprotocol
 	{
 		static std::map<std::string, int32_t> m_protocol;
