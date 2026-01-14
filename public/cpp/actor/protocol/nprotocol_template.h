@@ -42,7 +42,7 @@ namespace ngl
 	{
 		nguid m_id = -1;
 
-		def_protocol(np_actordb_load, m_id)
+		def_protocol(m_id)
 	};
 
 	enum enum_dbstat
@@ -66,7 +66,7 @@ namespace ngl
 			return m_data;
 		}
 
-		def_protocol(actor_db_load_response<T>, m_id, m_data, m_stat, m_over)
+		def_protocol(m_id, m_data, m_stat, m_over)
 	};
 
 	// [db client -> db server]
@@ -86,7 +86,7 @@ namespace ngl
 			return m_data.empty();
 		}
 
-		def_protocol(actor_db_save<T>, m_data)
+		def_protocol(m_data)
 	};
 
 	// É¾³ýÊý¾Ý
@@ -123,7 +123,7 @@ namespace ngl
 	public:
 		using BASE_TYPE = T;
 
-		def_protocol(np_actormodule_forward<T>, m_identifier, *m_data)
+		def_protocol(m_identifier, *m_data)
 		def_nlua_special_function({ "m_identifier", "m_data" }, m_identifier, *m_data)
 
 		np_actormodule_forward(int64_t aidentifier, const std::shared_ptr<T>& adata) :
@@ -315,7 +315,7 @@ namespace ngl
 		}
 
 		def_jsonfunction_special_parm({ "m_actorids","m_data" }, m_actorids, *m_data)
-		def_protocol(np_mass_actor, m_actorids, *m_data)
+		def_protocol(m_actorids, *m_data)
 		def_nlua_special_function({ "m_actorids", "m_data" }, m_actorids, *m_data)
 	};
 
