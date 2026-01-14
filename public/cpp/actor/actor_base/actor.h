@@ -174,13 +174,12 @@ namespace ngl
 		template <typename T>
 		bool ahandle(const std::shared_ptr<T>& aparm)
 		{
-			nrfunbase* lprfun = m_actorfun;
-			if (lprfun == nullptr)
+			if (m_actorfun == nullptr)
 			{
 				tools::no_core_dump();
 				return false;
 			}
-			return lprfun->handle_switch(this, aparm);
+			return m_actorfun->handle_switch(this, aparm);
 		}
 
 		bool ahandle(i32_threadid athreadid, handle_pram& aparm);
