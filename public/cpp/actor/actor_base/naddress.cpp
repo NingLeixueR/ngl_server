@@ -159,7 +159,8 @@ namespace ngl
 		std::ranges::find_if(m_session, [&afun](const auto& apair)->bool
 			{
 				return afun(apair.second) == false;
-			});
+			}
+		);
 	}
 
 	void naddress::ergodic(const ergodic_callbackfun& afun)
@@ -199,7 +200,8 @@ namespace ngl
 			const i32_serverid* lserverid = tools::findmap(m_rolegateway, aguid);
 			if (lserverid == nullptr)
 			{
-				return;
+				log_error()->print("naddress::gatewayid [{}] fail", aguid);
+				continue;
 			}
 			aserverset.insert(*lserverid);
 		}

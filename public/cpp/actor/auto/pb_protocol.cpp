@@ -29,7 +29,7 @@ namespace ngl
    void hrole_forward_pb()
    {
        int32_t lprotocolnum = tprotocol::protocol<PB>();
-       tprotocol::tp_customs::template func<
+       tprotocol::tp_customs<
            ngl::np_actor_forward<PB, forward_g2c<PB>>
            , ngl::np_actor_forward<PB, forward_c2g<PB>>
            , ngl::np_actor_forward<PB, forward_g2c<forward>>

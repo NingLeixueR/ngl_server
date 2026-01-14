@@ -176,7 +176,8 @@ namespace ngl
 					np_actorclient_node_connect pro;
 					pro.m_id = nconfig.nodeid();
 					nets::send(asession, pro, nguid::moreactor(), id_guid());
-				}, false, true);
+				}, false, true
+			);
 		}
 	}
 

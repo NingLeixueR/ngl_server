@@ -105,7 +105,8 @@ namespace ngl
 					{
 						auto pro = std::make_shared<np_actorswitch_process<T>>(*lparm);
 						actor_create::switch_process_send<T>(pro);
-					});
+					}
+				);
 			}
 			return true;
 		}
