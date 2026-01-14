@@ -514,8 +514,8 @@ namespace ngl
 		{
 			std::vector<std::string> lvec;
 			splite(abuff, afg, lvec);
-			int32_t lpos = 0;
-			return (splite<ARGS>(lpos++, lvec, args) && ...);
+			int32_t lpos = -1;
+			return ((++lpos, splite<ARGS>(lpos, lvec, args)) && ...);
 		}
 
 		// 特殊分割:类似"接收邮件列表[邮件地址1:名字1]"
