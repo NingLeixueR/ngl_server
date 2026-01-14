@@ -89,7 +89,6 @@ namespace ngl
 				}
 			}
 		}
-		// (lactortype == nguid::none<ENUM_ACTOR>() && nconfig.nodetype() == ROBOT) || lactortype == nguid::none<ENUM_ACTOR>()
 		for (std::pair<const ENUM_ACTOR, protocol::fun_run>& item : lpfun->m_runfun)
 		{
 			item.second(apack, lptrpram);

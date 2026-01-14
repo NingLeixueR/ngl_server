@@ -64,7 +64,8 @@ namespace ngl
 				m_copylist.foreach([this](T& adata)
 					{
 						m_fun(adata);
-					});
+					}
+				);
 				m_copylist.clear();
 				m_list.push_front(m_copylist);
 			}

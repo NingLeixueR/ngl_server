@@ -137,24 +137,28 @@ namespace ngl
 		if (create_directories(lpath) == false)
 		{
 			tools::no_core_dump();
+			return;
 		}
 
 		const tab_servers* ltabserver = ttab_servers::instance().tab();
 		if (ltabserver == nullptr)
 		{
 			tools::no_core_dump();
+			return;
 		}
 
 		lpath = std::format("{}/{}", lpath, ltabserver->m_name);
 		if (create_directories(lpath) == false)
 		{
 			tools::no_core_dump();
+			return;
 		}
 
 		lpath = std::format("{}/{}", lpath, em<ELOG_TYPE>::tolower_name(m_config.m_type));
 		if (create_directories(lpath) == false)
 		{
 			tools::no_core_dump();
+			return;
 		}
 
 		std::string ltimestr = tools::time2str((int)localtime::gettime(), "%Y-%m-%d");
@@ -162,6 +166,7 @@ namespace ngl
 		if (create_directories(lpath) == false)
 		{
 			tools::no_core_dump();
+			return;
 		}
 
 		std::cout << "log dir:[" << lpath << "]" << std::endl;
