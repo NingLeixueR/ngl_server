@@ -31,7 +31,7 @@ namespace ngl
 		tprotocol::set_customs_index(200000000);
 		// 新增内部协议需要补充
 		// 注册T与"np_mass_actor<T>"
-		tprotocol::tp_customs_script::template func <
+		tprotocol::tp_customs_script<
 			/*200000002*/np_timerparm
 			/*200000004*/, np_robot_pram
 			/*200000006*/, np_actor_server_register
@@ -75,7 +75,7 @@ namespace ngl
 			/*200000082*/, np_attribute_remove
 		>();
 		tprotocol::set_customs_index(210000000);
-		tprotocol::tp_customs_script::template func<
+		tprotocol::tp_customs_script<
 			/*210000002*/mforward<np_timerparm>
 			/*210000004*/, mforward<np_robot_pram>
 			/*210000006*/, mforward<np_actor_server_register>

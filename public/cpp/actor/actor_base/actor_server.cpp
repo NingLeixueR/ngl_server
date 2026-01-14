@@ -66,7 +66,6 @@ namespace ngl
 			});
 		if (!lsessionvec.empty())
 		{
-
 			{
 				np_actornode_register_response pro;
 				pro.m_vec.push_back(anode);
@@ -93,7 +92,8 @@ namespace ngl
 					lpram.m_vec.push_back(anode.m_node);
 				}
 				return true;
-			});
+			}
+		);
 		nets::send(apack->m_id, lpram, nguid::moreactor(), id_guid());
 
 		std::map<i32_serverid, np_actornode_update> lmapprotocol;
@@ -116,7 +116,8 @@ namespace ngl
 					}
 				}
 				return true;
-			});
+			}
+		);
 		for (const auto& [_, pro]: lmapprotocol)
 		{
 			nets::send(apack->m_id, pro, nguid::moreactor(), id_guid());

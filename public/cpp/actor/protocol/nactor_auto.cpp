@@ -38,7 +38,7 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename TDB>
 	void init_customs_db()
 	{
-		tprotocol::tp_customs::template func<
+		tprotocol::tp_customs<
 			np_actordb_load<DBTYPE, TDB>
 			, np_actordb_load_response<DBTYPE, TDB>
 			, np_actordb_save<DBTYPE, TDB>
@@ -89,7 +89,7 @@ namespace ngl
 
 		tprotocol::set_customs_index(100000000);
 		// 会注册T与np_mass_actor<T>
-		tprotocol::tp_customs_script::template func <
+		tprotocol::tp_customs_script<
 			/*100000001*/np_gm
 			/*100000003*/, np_gm_response
 		>();
@@ -98,7 +98,7 @@ namespace ngl
 		reister_channel_db();
 		
 		tprotocol::set_customs_index(120000000);
-		tprotocol::tp_customs_script::template func <
+		tprotocol::tp_customs_script<
 			/*120000001*/ mforward<np_gm>
 			/*120000003*/, mforward<np_gm_response>
 			/*120000005*/, np_actorswitch_process<np_actorswitch_process_role>
@@ -107,14 +107,14 @@ namespace ngl
 
 		// ### 事件相关协议 start ### //
 		tprotocol::set_customs_index(130000000);
-		tprotocol::tp_customs_script::template func <
+		tprotocol::tp_customs_script<
 			/*130000001*/ actor_events_logic::np_event_register
 			/*130000003*/, actor_events_map::np_event_register
 		>();
 
 		//# actor_events_logic
 		tprotocol::set_customs_index(130010000);
-		tprotocol::tp_customs_script::template func <
+		tprotocol::tp_customs_script<
 			/*130010001*/ np_eevents_logic_rolelogin
 			/*130010003*/, np_eevents_logic_roleoffline
 			/*130010005*/, np_eevents_logic_rolevaluechange
@@ -122,7 +122,7 @@ namespace ngl
 
 		//# actor_events_map
 		tprotocol::set_customs_index(130020000);
-		tprotocol::tp_customs_script::template func <
+		tprotocol::tp_customs_script<
 			/*130020001*/ np_eevents_map_leaveview
 			/*130020003*/, np_eevents_map_enterview
 		>();

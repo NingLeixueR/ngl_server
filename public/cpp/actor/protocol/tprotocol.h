@@ -135,8 +135,17 @@ namespace ngl
 			return true;
 		}
 
-		using tp_customs = template_arg<tcustoms<false>, int32_t, int8_t>;
-		using tp_customs_script = template_arg<tcustoms<true>>;
+		template <typename ...ARGS>
+		static void tp_customs(int32_t aprotocolnum = -1, int8_t ahigh = 0)
+		{
+			(tcustoms<false>::func<ARGS>(aprotocolnum, ahigh), ...);
+		}
+
+		template <typename ...ARGS>
+		static void tp_customs_script(int32_t aprotocolnum = -1, int8_t ahigh = 0)
+		{
+			(tcustoms<true>::func<ARGS>(aprotocolnum, ahigh), ...);
+		}
 
 		template <typename T>
 		static bool init_protobufs()

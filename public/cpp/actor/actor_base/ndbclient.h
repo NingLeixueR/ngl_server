@@ -349,7 +349,9 @@ namespace ngl
 			static std::atomic lregister = true;
 			if (lregister.exchange(false))
 			{
-				nrfun<TACTOR>::instance().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(&actor_base::template handle<DBTYPE, TDBTAB, TACTOR>, e_ready_null);
+				nrfun<TACTOR>::instance().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(
+					&actor_base::template handle<DBTYPE, TDBTAB, TACTOR>, e_ready_null
+				);
 			}
 			init_load();
 		}
