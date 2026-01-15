@@ -749,7 +749,7 @@ namespace ngl
 		template <typename ...TARGS>
 		static bool pop(cJSON* ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
-			return [&]<std::size_t... Idx>(std::index_sequence<Idx...>)
+			return [&] <std::size_t... Idx>(std::index_sequence<Idx...>)
 			{
 				return (json_format<TARGS>::pop(ajson, akeys[Idx], aargs) && ...);
 			}(std::index_sequence_for<TARGS...>{});
