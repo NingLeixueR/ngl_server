@@ -88,7 +88,15 @@ namespace ngl
 
 		void log(int aerror)
 		{
-			log_info()->print("error[{}]url[{}]param[{}]mode[{}]type[{}]data[{}]"
+			log_info()->print(
+				"**********************[http_parm]***********************\n"
+				"error:[{}]\n"
+				"url:[{}]\n"
+				"param[{}]\n"
+				"mode[{}]\n"
+				"type[{}]\n"
+				"data[{}]\n"
+				"********************************************************"
 				, aerror, m_url, m_param
 				, (m_mode == ENUM_MODE_HTTP ? "http" : "https")
 				, (m_type == ENUM_TYPE_POST ? "post" : "get")
