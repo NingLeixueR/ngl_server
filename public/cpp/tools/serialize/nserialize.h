@@ -688,14 +688,14 @@ namespace ngl
 		{
 			template <typename ...ARGS>
 			static bool push(serialize_push* aserialize, const ARGS&... aargs)
-			{
-				return true && (serialize_format<ARGS>::push(aserialize, aargs) && ...);
+			{//c++17 折叠表达式：强制规定sizeof...(TARGS) == 0 返回值为true
+				return (serialize_format<ARGS>::push(aserialize, aargs) && ...);
 			}
 
 			template <typename ...ARGS>
 			static bool pop(serialize_pop* aserialize, ARGS&... aargs)
-			{
-				return true && (serialize_format<ARGS>::pop(aserialize, aargs) && ...);
+			{//c++17 折叠表达式：强制规定sizeof...(TARGS) == 0 返回值为true
+				return (serialize_format<ARGS>::pop(aserialize, aargs) && ...);
 			}
 
 			template <typename ...ARGS>

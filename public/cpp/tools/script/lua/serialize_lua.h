@@ -969,7 +969,7 @@ namespace ngl
 
 		template <typename ...TARGS>
 		static bool table_pop(lua_State* L, const char* aname, const std::array<const char*, sizeof ...(TARGS)>& akeys, TARGS&... args)
-		{
+		{//c++17 折叠表达式：强制规定sizeof...(TARGS) == 0 返回值为true
 			if (aname != nullptr)
 			{
 				lua_getfield(L, -1, aname);

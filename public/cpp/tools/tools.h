@@ -511,7 +511,7 @@ namespace ngl
 
 		template <typename ...ARGS>
 		static bool splite(const char* abuff, const char* afg, ARGS&... args)
-		{
+		{//c++17 折叠表达式：强制规定sizeof...(TARGS) == 0 返回值为true
 			std::vector<std::string> lvec;
 			splite(abuff, afg, lvec);
 			int32_t lpos = 0;
@@ -679,21 +679,12 @@ namespace ngl
 			}
 			return true;
 		}
-
-		struct pos
-		{
-			int32_t m_pos = -1;
-			int32_t add()
-			{
-				return ++m_pos;
-			}
-		};
-
+		
 		template <typename ...ARGS>
 		static bool splicing(const char* afg, std::string& astr, ARGS&... args)
-		{
-			pos lpos;
-			return ((splicing<ARGS>(lpos.add(), afg, astr, args)) && ...);
+		{//c++17 折叠表达式：强制规定sizeof...(TARGS) == 0 返回值为true
+			int32_t lpos = 0;
+			return ((splicing<ARGS>(lpos++, afg, astr, args)) && ...);
 		}
 #pragma endregion
 
