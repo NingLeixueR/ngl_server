@@ -514,8 +514,8 @@ namespace ngl
 		{
 			std::vector<std::string> lvec;
 			splite(abuff, afg, lvec);
-			int32_t lpos = -1;
-			return ((++lpos, splite<ARGS>(lpos, lvec, args)) && ...);
+			int32_t lpos = 0;
+			return (splite<ARGS>(lpos++, lvec, args) && ...);
 		}
 
 		// 特殊分割:类似"接收邮件列表[邮件地址1:名字1]"
@@ -680,11 +680,20 @@ namespace ngl
 			return true;
 		}
 
+		struct pos
+		{
+			int32_t m_pos = -1;
+			int32_t add()
+			{
+				return ++m_pos;
+			}
+		};
+
 		template <typename ...ARGS>
 		static bool splicing(const char* afg, std::string& astr, ARGS&... args)
 		{
-			int32_t lpos = 0;
-			return (splicing<ARGS>(lpos++, afg, astr, args) && ...);
+			pos lpos;
+			return ((splicing<ARGS>(lpos.add(), afg, astr, args)) && ...);
 		}
 #pragma endregion
 
