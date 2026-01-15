@@ -379,7 +379,7 @@ namespace ngl
 		ngl_lock_s;
 		for (const auto& apair : m_actorbytype)
 		{
-			msg_actor_stat::msg_actor ltemp;
+			msg_actor ltemp;
 			ltemp.m_actor_name = em<ENUM_ACTOR>::name(apair.first);
 			for (const auto& aguidprt : apair.second)
 			{
