@@ -423,15 +423,19 @@ namespace ngl
 		template <typename ...TARGS>
 		static bool pop(tinyxml2::XMLElement* aele, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{//c++17 折叠表达式：强制规定sizeof...(TARGS) == 0 返回值为true
-			int32_t lpos = 0;
-			return (xml_serialize<ATTR, TARGS>::pop(aele, akeys[lpos++], aargs) && ...);
+			return [&] <std::size_t... Idx>(std::index_sequence<Idx...>)
+			{
+				return (xml_serialize<ATTR, TARGS>::pop(aele, akeys[Idx], aargs) && ...);
+			}(std::index_sequence_for<TARGS...>{});
 		}
 
 		template <typename ...TARGS>
 		static bool push(tinyxml2::XMLElement* aele, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
 		{//c++17 折叠表达式：强制规定sizeof...(TARGS) == 0 返回值为true
-			int32_t lpos = 0;
-			return (xml_serialize<ATTR, TARGS>::push(aele, akeys[lpos++], aargs) && ...);
+			return[&] <std::size_t... Idx>(std::index_sequence<Idx...>)
+			{
+				return (xml_serialize<ATTR, TARGS>::push(aele, akeys[Idx], aargs) && ...);
+			}(std::index_sequence_for<TARGS...>{});
 		}
 	};
 }//namespace ngl

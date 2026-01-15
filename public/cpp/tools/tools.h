@@ -514,8 +514,12 @@ namespace ngl
 		{//c++17 折叠表达式：强制规定sizeof...(TARGS) == 0 返回值为true
 			std::vector<std::string> lvec;
 			splite(abuff, afg, lvec);
-			int32_t lpos = 0;
-			return (splite<ARGS>(lpos++, lvec, args) && ...);
+
+			return[&] <std::size_t... Idx>(std::index_sequence<Idx...>)
+			{
+				return (splite<ARGS>(Idx, lvec, args) && ...);
+			}(std::index_sequence_for<ARGS...>{});
+			
 		}
 
 		// 特殊分割:类似"接收邮件列表[邮件地址1:名字1]"
@@ -683,8 +687,10 @@ namespace ngl
 		template <typename ...ARGS>
 		static bool splicing(const char* afg, std::string& astr, ARGS&... args)
 		{//c++17 折叠表达式：强制规定sizeof...(TARGS) == 0 返回值为true
-			int32_t lpos = 0;
-			return ((splicing<ARGS>(lpos++, afg, astr, args)) && ...);
+			return[&] <std::size_t... Idx>(std::index_sequence<Idx...>)
+			{
+				return ((splicing<ARGS>(Idx, afg, astr, args)) && ...);
+			}(std::index_sequence_for<ARGS...>{});
 		}
 #pragma endregion
 
