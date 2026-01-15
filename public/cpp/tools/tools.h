@@ -823,6 +823,12 @@ namespace ngl
 			return false;
 		}
 
+
+		static int32_t less_member()
+		{
+			return 0;
+		}
+
 		template <typename T>
 		static int32_t less_member(const T& lhs, const T& rhs)
 		{
