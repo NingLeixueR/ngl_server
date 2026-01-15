@@ -47,6 +47,20 @@ namespace ngl
 			);
 			ltemp.xml_push("19890519.xml");
 		}
+
+
+		struct test_xml
+		{
+			dxmlserialize(co, false)
+		};
+		{
+			ngl::xarg_protocols ltemp;
+			ltemp.xml_push("1.xml");
+		}
+		{
+			ngl::xarg_protocols ltemp;
+			ltemp.xml_pop("1.xml");
+		}
 	}
 
 }
