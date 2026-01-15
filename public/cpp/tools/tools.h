@@ -823,12 +823,6 @@ namespace ngl
 			return false;
 		}
 
-
-		static bool less_member()
-		{
-			return false;
-		}
-
 		template <typename T>
 		static int32_t less_member(const T& lhs, const T& rhs)
 		{
@@ -840,12 +834,12 @@ namespace ngl
 		}
 
 		template <typename T, typename... TARGS>
-		static bool less_member(const T& lhs, const T& rhs, const TARGS&... members)
+		static int32_t less_member(const T& lhs, const T& rhs, const TARGS&... members)
 		{
 			int32_t lva = less_member(lhs, rhs);
 			if (lva != 0)
 			{
-				return lva < 0;
+				return lva;
 			}
 			return less_member(members...);
 		}
