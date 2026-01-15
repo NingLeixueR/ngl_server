@@ -52,7 +52,7 @@ namespace ngl
 					int32_t m_id;
 					int32_t m_lv;
 
-					bool operator<(const buff& r)const
+					auto operator<=>(const buff& r)const
 					{
 						return tools::less_member(m_id, r.m_id, m_lv, r.m_lv);
 					}
