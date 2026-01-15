@@ -40,7 +40,7 @@ namespace ngl
 		virtual void load()		= 0;
 		virtual void savedb()	= 0;
 		virtual void deldb()	= 0;
-		virtual void create(const nguid& aid) = 0;
+		virtual bool create(const nguid& aid) = 0;
 		virtual void init(actor_manage_dbclient* amdb, actor_base* aactor, const nguid& aid) = 0;
 		virtual void clear_modified() = 0;
 		virtual void nscript_push_data() = 0;
@@ -276,12 +276,20 @@ namespace ngl
 		{
 		}
 
-		void create(const nguid& aid) final
+		bool create(const nguid& aid) final
 		{
+			if (aid == nguid::make())
+			{
+				return false;
+			}
+			if (m_data.contains(aid))
+			{
+				return false;
+			}
 			m_dbdata = &m_data[aid];
 			m_dbdata->init(&m_modified);
 			m_dbdata->get()->set_mid(aid);
-			m_id = aid;
+			return true;
 		}
 
 		void set_id(const nguid& aid)

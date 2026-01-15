@@ -67,6 +67,8 @@ namespace ngl
 		//# 创建数据
 		void				create();
 
+		void				create(const nguid& aid);
+
 		//# 获取m_dbclient
 		ndbclient_base*		dbclientbase();
 
@@ -179,13 +181,13 @@ namespace ngl
 		}
 
 		// # 创建数据
-		inline void create()
+		/*inline void create(const nguid& aid)
 		{
 			m_id = m_actor->id_guid();
 			m_data.set_id(m_id);
 			m_data.set_actor(m_actor);
 			m_data.add(m_id, TDATA());
-		}
+		}*/
 
 		// # 清空数据
 		inline void clear()

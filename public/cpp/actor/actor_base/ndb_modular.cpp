@@ -77,6 +77,11 @@ namespace ngl
 		m_dbclient->create(m_id);
 	}
 
+	void ndb_component::create(const nguid& aid)
+	{
+		m_dbclient->create(aid);
+	}
+
 	ndbclient_base* ndb_component::dbclientbase()
 	{
 		return m_dbclient;
