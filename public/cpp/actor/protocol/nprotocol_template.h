@@ -470,23 +470,18 @@ namespace ngl
 
 		dprotocol(np_testlua, m_name, m_data)
 	};
+	struct msg_actor
+	{
+		std::string m_actor_name;
+		std::map<i16_area, std::vector<i32_actordataid>> m_actor;
+
+		dprotocol(msg_actor, m_actor_name, m_actor)
+	};
 
 	// # 获取actor stat 数据
 	struct msg_actor_stat
 	{
-		struct msg_actor
-		{
-			msg_actor(msg_actor&&) noexcept = default;
-			msg_actor& operator=(msg_actor&&) noexcept = default;
-			msg_actor() = default;
-			msg_actor(const msg_actor&) = default;
-			msg_actor& operator=(msg_actor&) = default;
-
-			std::string m_actor_name;
-			std::map<i16_area, std::vector<i32_actordataid>> m_actor;
-
-			dprotocol(msg_actor, m_actor_name, m_actor)
-		};
+		
 		std::vector<msg_actor> m_vec;
 
 		dprotocol(msg_actor_stat, m_vec)
