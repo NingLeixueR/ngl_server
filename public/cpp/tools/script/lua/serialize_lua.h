@@ -959,8 +959,12 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, const std::array<const char*, sizeof ...(TARGS)>& akeys, const TARGS&... args)
 		{
 			lua_newtable(L);
-			int32_t lpos = 0;
-			(serialize_lua<TARGS>::table_push(L, akeys[lpos++], args), ...);
+
+			[&] <std::size_t... Idx>(std::index_sequence<Idx...>)
+			{
+				(serialize_lua<TARGS>::table_push(L, akeys[Idx], args), ...);
+			}(std::index_sequence_for<TARGS...>{});
+			
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
@@ -978,8 +982,11 @@ namespace ngl
 			{
 				return true;
 			}
-			int32_t lpos = sizeof ...(TARGS) - 1;
-			return (serialize_lua<TARGS>::table_pop(L, akeys[lpos--], args) && ...);
+
+			return [&] <std::size_t... Idx>(std::index_sequence<Idx...>)
+			{
+				return (serialize_lua<TARGS>::table_pop(L, akeys[sizeof ...(TARGS) - Idx - 1], args) && ...);
+			}(std::index_sequence_for<TARGS...>{});
 		}
 	};
 
