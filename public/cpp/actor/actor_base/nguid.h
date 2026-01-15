@@ -284,44 +284,20 @@ namespace ngl
 			return (T)(-1);
 		}
 
-		inline bool operator<(int64_t ar)const
+		inline auto operator<=>(const nguid& r)const
 		{
-			return m_id < ar;
-		}
-
-		inline bool operator<(const nguid& r)const
-		{
-			return m_id < r.m_id;
-		}
-
-		inline bool operator==(int64_t ar)const
-		{
-			return m_id == ar;
-		}
-
-		inline bool operator==(const nguid& r)const
-		{
-			return m_id == r.m_id;
-		}
-
-		inline bool operator!=(int64_t ar)const
-		{
-			return m_id != ar;
-		}
-
-		inline bool operator!=(const nguid& r)const
-		{
-			return m_id != r.m_id;
-		}
-
-		inline bool operator>(int64_t ar)const
-		{
-			return m_id > ar;
-		}
-
-		inline bool operator>(const nguid& r)const
-		{
-			return m_id > r.m_id;
+			if (m_id < r.m_id)
+			{
+				return -1;
+			}
+			else if (m_id > r.m_id)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
 		}
 
 		dprotocol(nguid, m_id)
