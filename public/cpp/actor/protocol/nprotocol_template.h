@@ -476,6 +476,12 @@ namespace ngl
 	{
 		struct msg_actor
 		{
+			msg_actor(msg_actor&&) noexcept = default;
+			msg_actor& operator=(msg_actor&&) noexcept = default;
+			msg_actor() = default;
+			msg_actor(const msg_actor&) = default;
+			msg_actor& operator=(msg_actor&) = default;
+
 			std::string m_actor_name;
 			std::map<i16_area, std::vector<i32_actordataid>> m_actor;
 
