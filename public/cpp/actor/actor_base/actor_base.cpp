@@ -108,11 +108,13 @@ namespace ngl
 			m_dbclient->set_loadfinish_function([this](pbdb::ENUM_DB atype, enum_dbstat astat)
 				{
 					loaddb_finish(atype, astat);
-				});
+				}
+			);
 			ready().set_ready(e_ready_db, [this]() 
 				{
 					return m_dbclient == nullptr || m_dbclient->isloadfinish();
-				});
+				}
+			);
 		}
 		if (aparm.m_enscript != enscript_none)
 		{
@@ -180,8 +182,6 @@ namespace ngl
 		}
 		m_dbclient->add(adbclient, aid);
 	}
-
-	actor_base::~actor_base(){}
 
 	void actor_base::erase_actor(const nguid& aguid)
 	{

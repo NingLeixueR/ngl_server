@@ -180,12 +180,12 @@ namespace ngl
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 		bool handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata);
 
-		virtual ~actor_base();
+		virtual ~actor_base() = default;
 
 		//# 初始化
 		//# 一般actor对象会在其重载虚函数
 		//# 让dbclient与actor对象进行绑定
-		virtual void init() {}
+		virtual void init() {/* 不强制子类实现的虚函数,如果不实现则使用基类空方法*/ }
 
 		//# 获取actor状态
 		virtual actor_stat get_activity_stat() = 0;
@@ -203,16 +203,16 @@ namespace ngl
 		virtual void push(handle_pram& apram) = 0;
 
 		//# 执行handle之后调用
-		virtual void handle_after(handle_pram&) {}
+		virtual void handle_after(handle_pram&) {/* 不强制子类实现的虚函数,如果不实现则使用基类空方法*/ }
 
 		//# 派生actor重载此函数会在数据加载完成后调用
-		virtual void loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat) {}
+		virtual void loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat) {/* 不强制子类实现的虚函数,如果不实现则使用基类空方法*/ }
 
 		//# 删除actor时候会被调用
 		virtual void release() = 0;
 
 		//# 移除actor前一刻调用
-		virtual void erase_actor_before() {}
+		virtual void erase_actor_before() {/* 不强制子类实现的虚函数,如果不实现则使用基类空方法*/ }
 
 		//# 保存dbclient
 		virtual void save();
