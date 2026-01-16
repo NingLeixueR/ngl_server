@@ -32,7 +32,7 @@ namespace ngl
 	using basio_iptcpsocket		= asio::ip::tcp::socket;
 	using basio_iptcpendpoint	= asio::ip::tcp::endpoint;
 	using basio_ipaddress		= asio::ip::address;
-	using tuple_ioservice		= std::tuple<basio_ioservice*, basio_ioservicework*, std::thread*>;
+	using tuple_ioservice		= std::tuple<std::shared_ptr<basio_ioservice>, std::shared_ptr<basio_ioservicework>, std::shared_ptr<std::thread>>;
 
 	struct serviceio_info
 	{
@@ -52,11 +52,14 @@ namespace ngl
 	class service_io
 	{
 		service_io() = delete;
+
+		std::unique_ptr<char[]> m_buff1 = nullptr;
+		std::unique_ptr<char[]> m_buff2 = nullptr;
+		char* m_pbuff1 = nullptr;
+		char* m_pbuff2 = nullptr;
 	public:
 		i32_threadid			m_threadid = 0;
 		i32_sessionid			m_sessionid = 0;
-		char*					m_buff1 = nullptr;
-		char*					m_buff2 = nullptr;
 		bool					m_is_lanip = false;
 		bool					m_issend = false;	// 是否发送状态
 		std::list<node_pack>	m_list;				// 发送队列(因为asio异步操作,不能在没有执行完成再次调用)
@@ -65,6 +68,8 @@ namespace ngl
 
 		service_io(serviceio_info& amsi, i32_session asessionid);
 		virtual ~service_io();
+
+		char* swap_buff();
 	};
 
 	class service_tcp : public service_io
