@@ -32,9 +32,8 @@ namespace ngl
 		briefdb& operator=(const briefdb&) = delete;
 
 	public:
-		briefdb()
-		{
-		}
+		briefdb() = default;
+		virtual briefdb() = default;
 
 		void related_actorid() final
 		{
