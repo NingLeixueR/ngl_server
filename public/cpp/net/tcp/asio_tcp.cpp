@@ -389,9 +389,8 @@ namespace ngl
 
 	void  asio_tcp::start(const std::shared_ptr<service_tcp>& aservice)
 	{
-		std::swap(aservice->m_buff1, aservice->m_buff2);
-		char* lbuff = aservice->m_buff1;
-		aservice->m_socket.async_read_some(asio::buffer(aservice->m_buff1, m_service_io_.m_buffmaxsize)
+		char* lbuff = aservice->swap_buff();
+		aservice->m_socket.async_read_some(asio::buffer(lbuff, m_service_io_.m_buffmaxsize)
 			, [this, lbuff, aservice](const std::error_code& error, size_t bytes_transferred)
 			{
 				if (!error)

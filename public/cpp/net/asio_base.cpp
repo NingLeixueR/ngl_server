@@ -18,12 +18,12 @@ namespace ngl
 {
 	basio_ioservice* serviceio_info::get_ioservice(i32_threadid athreadid)
 	{
-		return std::get<0>(m_ioservices[athreadid]);
+		return std::get<0>(m_ioservices[athreadid]).get();
 	}
 
 	basio_ioservicework* serviceio_info::get_ioservice_work(i32_threadid athreadid)
 	{
-		return std::get<1>(m_ioservices[athreadid]);
+		return std::get<1>(m_ioservices[athreadid]).get();
 	}
 
 	serviceio_info::serviceio_info(i32_threadid athread, int32_t abuffmaxsize) :
@@ -33,37 +33,43 @@ namespace ngl
 	{
 		for (int32_t i = 0; i < m_recvthreadsize + 1; ++i)
 		{
-			basio_ioservice* lpioservice = new basio_ioservice();
-			basio_ioservicework* lpwork = new basio_ioservicework(*lpioservice);
-			m_ioservices.push_back(std::make_tuple(lpioservice, lpwork, new std::thread([lpioservice]() {lpioservice->run(); })));
+			auto lpioservice = std::make_shared<basio_ioservice>();
+			auto lpwork = std::make_shared<basio_ioservicework>(*lpioservice);
+			m_ioservices.push_back(
+				std::make_tuple(lpioservice, lpwork, std::make_shared<std::thread>([lpioservice]() {lpioservice->run(); }))
+			);
 		}
 	}
 
 	serviceio_info::~serviceio_info()
 	{
-		for (int32_t i = 0; i < m_ioservices.size(); ++i)
-		{
-			delete std::get<2>(m_ioservices[i]);
-			delete std::get<1>(m_ioservices[i]);
-			delete std::get<0>(m_ioservices[i]);
-		}
 	}
 
 	service_io::service_io(serviceio_info& amsi, i32_session asessionid) :
-		m_threadid(amsi.m_next_index++ % amsi.m_recvthreadsize),
-		m_ioservice(*(amsi.get_ioservice(m_threadid))),
-		m_buff1(new char[amsi.m_buffmaxsize]),
-		m_buff2(new char[amsi.m_buffmaxsize]),
-		m_sessionid(asessionid),
-		m_is_lanip(false),
-		m_issend(false)
+		m_threadid(amsi.m_next_index++ % amsi.m_recvthreadsize)
+		, m_ioservice(*(amsi.get_ioservice(m_threadid)))
+		, m_buff1(std::make_unique<char[]>(amsi.m_buffmaxsize))
+		, m_buff2(std::make_unique<char[]>(amsi.m_buffmaxsize))
+		, m_pbuff1(m_buff1.get())
+		, m_pbuff2(m_buff2.get())
+		, m_sessionid(asessionid)
+		, m_is_lanip(false)
+		, m_issend(false)
 	{
 	}
 
 	service_io::~service_io()
 	{
-		delete[]m_buff1;
-		delete[]m_buff2;
+	}
+
+	char* service_io::buff()
+	{
+		return m_pbuff1;
+	}
+
+	void service_io::swap_buff()
+	{
+		std::swap(m_pbuff1, m_pbuff2);
 	}
 
 	service_tcp::service_tcp(serviceio_info& amsi, i32_session asessionid) :
