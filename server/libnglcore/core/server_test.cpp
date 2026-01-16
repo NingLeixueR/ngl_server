@@ -66,6 +66,6 @@ namespace ngl
 			bool lbool = ltemp.xml_pop("1.xml");
 		}
 
-		test_hiredis();
+		//test_hiredis();
 	}
 }

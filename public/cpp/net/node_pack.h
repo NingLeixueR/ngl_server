@@ -39,8 +39,7 @@ namespace ngl
 			m_sessionid(asessionid)
 		{}
 
-		~node_pack()
-		{}
+		~node_pack() = default;
 
 		inline bool is_pack()
 		{
