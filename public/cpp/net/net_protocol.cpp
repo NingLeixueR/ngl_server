@@ -38,8 +38,8 @@ namespace ngl
 		if (m_outernet == false)
 		{// # 不允许外网访问
 			if (aislanip == false)
-			{
-				return false;//连接不是内网
+			{//连接不是内网
+				return false;
 			}
 		}
 		return true;

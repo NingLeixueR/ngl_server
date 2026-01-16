@@ -50,18 +50,18 @@ namespace ngl
 
 		static bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection);
 
-		// 服务器只监听一个端口
+		// # 服务器只监听一个端口
 		static bool check_serverkcp();
 
-		// robot 创建随机端口
+		// # robot 创建随机端口
 		static i16_port create_kcp();
 
-		// server 创建指定端口
+		// # server 创建指定端口
 		static i16_port create_kcp(pbnet::ENUM_KCP aenum);
 
 		static i16_port kcp_port(int32_t atid, int16_t atcount, pbnet::ENUM_KCP aenum);
 
-		// 获取实例 
+		// # 获取实例 
 		static ukcp* kcp(i16_port auport);
 		static ukcp* serkcp(pbnet::ENUM_KCP aenum, int16_t atcount);
 

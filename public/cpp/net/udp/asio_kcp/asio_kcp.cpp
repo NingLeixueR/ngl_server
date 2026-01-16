@@ -16,7 +16,7 @@
 #include "protocol.h"
 #include "cmd.h"
 
-//#define USE_WHEEL_TIMER
+#define USE_WHEEL_TIMER
 
 namespace ngl
 {
@@ -428,7 +428,8 @@ namespace ngl
 				{
 					log_error()->print("asio_kcp::sendbuff error [{}]", ec.message());
 				}
-			});
+			}
+		);
 		return 0;
 	}
 
@@ -441,7 +442,8 @@ namespace ngl
 				{
 					log_error()->print("asio_kcp::sendbuff error [{}]", ec.message());
 				}
-			});
+			}
+		);
 		return 0;
 	}
 
