@@ -34,7 +34,7 @@ namespace ngl
 			redisReply* lreply = cmd(arc, "GET %s:%d", atab, akey);
 			if (lreply != nullptr)
 			{
-				ngl::ser::serialize_pop lserialize((const char*)lreply->str, lreply->len);
+				ngl::ser::serialize_pop lserialize((const char*)lreply->str, (int32_t)lreply->len);
 				bool lsuccess =  ngl::ser::nserialize::pop(&lserialize, adata);
 				freeReplyObject(lreply);
 				return lsuccess;
