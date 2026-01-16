@@ -55,9 +55,7 @@ namespace ngl
 		// # ¸üĞÂÄ£¿é
 		void module_update(EnumModule aenum);
 	public:
-		attribute()
-		{
-		}
+		attribute() = default;
 		
 		bool sync();
 
@@ -108,7 +106,7 @@ namespace ngl
 		int64_t m_unitid = 0;
 		
 	public:
-		dynamic_attribute(int64_t aunitid) :
+		explicit dynamic_attribute(int64_t aunitid) :
 			m_unitid(aunitid)
 		{
 		}

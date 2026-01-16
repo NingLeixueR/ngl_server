@@ -43,10 +43,6 @@ namespace ngl
 	{
 	}
 
-	actor_role::~actor_role()
-	{
-	}
-
 	ENUM_ACTOR actor_role::actor_type()
 	{
 		return ACTOR_ROLE;
