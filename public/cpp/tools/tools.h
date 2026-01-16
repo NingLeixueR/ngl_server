@@ -511,7 +511,7 @@ namespace ngl
 
 		template <typename ...ARGS>
 		static bool splite(const char* abuff, const char* afg, ARGS&... args)
-		{//c++17 折叠表达式：强制规定sizeof...(TARGS) == 0 返回值为true
+		{
 			std::vector<std::string> lvec;
 			splite(abuff, afg, lvec);
 
@@ -686,7 +686,7 @@ namespace ngl
 		
 		template <typename ...ARGS>
 		static bool splicing(const char* afg, std::string& astr, ARGS&... args)
-		{//c++17 折叠表达式：强制规定sizeof...(TARGS) == 0 返回值为true
+		{
 			return [&] <std::size_t... Idx>(std::index_sequence<Idx...>)
 			{
 				return ((splicing<ARGS>(Idx, afg, astr, args)) && ...);
