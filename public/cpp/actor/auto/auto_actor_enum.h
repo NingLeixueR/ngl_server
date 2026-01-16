@@ -1,19 +1,5 @@
-/*
-* Copyright (c) [2020-2025] NingLeixueR
-* 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
-* 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
-* 
-* 许可详情参见项目根目录下的 LICENSE 文件：
-* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
-*/
-
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 26-01-14 16:01:51
+// 创建时间 // 创建时间 26-01-16 18:54:31
 #pragma once
 
 #include "nactortype.h"
@@ -77,41 +63,37 @@ namespace ngl
 	void auto_actor_enum()
 	{
 		autoactor::func<
-			actor_role, 
-			actor_robot
-		>({ ACTOR_ROLE,ACTOR_ROBOT });
-		/*_auto_actor(
-			dautoactor(actor_role, ACTOR_ROLE)
-			, dautoactor(actor_robot, ACTOR_ROBOT)
-			, dautoactor(actor_log, ACTOR_LOG)
-			, dautoactor(actor_example_guess_number, ACTOR_EXAMPLE_GUESS_NUMBER)
-			, dautoactor(actor_server, ACTOR_SERVER)
-			, dautoactor(actor_client, ACTOR_CLIENT)
-			, dautoactor(actor_login, ACTOR_LOGIN)
-			, dautoactor(actor_gateway, ACTOR_GATEWAY)
-			, dautoactor(actor_gateway_c2g, ACTOR_GATEWAY_C2G)
-			, dautoactor(actor_gateway_g2c, ACTOR_GATEWAY_G2C)
-			, dautoactor(actor_create, ACTOR_CREATE)
-			, dautoactor(actor_role_manage, ACTOR_ROLE_MANAGE)
-			, dautoactor(actor_kcp, ACTOR_KCP)
-			, dautoactor(actor_robot_manage, ACTOR_ROBOT_MANAGE)
-			, dautoactor(actor_csvserver, ACTOR_CSVSERVER)
-			, dautoactor(actor_csvclient, ACTOR_CSVCLIENT)
-			, dautoactor(actor_notice, ACTOR_NOTICE)
-			, dautoactor(actor_gm, ACTOR_GM)
-			, dautoactor(actor_gmclient, ACTOR_GMCLIENT)
-			, dautoactor(actor_mail, ACTOR_MAIL)
-			, dautoactor(actor_chat, ACTOR_CHAT)
-			, dautoactor(actor_ranklist, ACTOR_RANKLIST)
-			, dautoactor(actor_activity_manage, ACTOR_ACTIVITY_MANAGE)
-			, dautoactor(actor_brief, ACTOR_BRIEF)
-			, dautoactor(actor_keyvalue, ACTOR_KEYVALUE)
-			, dautoactor(actor_family, ACTOR_FAMILY)
-			, dautoactor(actor_friends, ACTOR_FRIENDS)
-			, dautoactor(actor_example_match, ACTOR_EXAMPLE_MATCH)
-			, dautoactor(actor_example_manage, ACTOR_EXAMPLE_MANAGE)
-			, dautoactor(actor_testlua, ACTOR_TESTLUA)
-			, dautoactor(actor_testlua2, ACTOR_TESTLUA2)
-		);*/
+			actor_role
+			, actor_robot
+			, actor_log
+			, actor_example_guess_number
+			, actor_server
+			, actor_client
+			, actor_login
+			, actor_gateway
+			, actor_gateway_c2g
+			, actor_gateway_g2c
+			, actor_create
+			, actor_role_manage
+			, actor_kcp
+			, actor_robot_manage
+			, actor_csvserver
+			, actor_csvclient
+			, actor_notice
+			, actor_gm
+			, actor_gmclient
+			, actor_mail
+			, actor_chat
+			, actor_ranklist
+			, actor_activity_manage
+			, actor_brief
+			, actor_keyvalue
+			, actor_family
+			, actor_friends
+			, actor_example_match
+			, actor_example_manage
+			, actor_testlua
+			, actor_testlua2
+		>({ACTOR_ROLE, ACTOR_ROBOT, ACTOR_LOG, ACTOR_EXAMPLE_GUESS_NUMBER, ACTOR_SERVER, ACTOR_CLIENT, ACTOR_LOGIN, ACTOR_GATEWAY, ACTOR_GATEWAY_C2G, ACTOR_GATEWAY_G2C, ACTOR_CREATE, ACTOR_ROLE_MANAGE, ACTOR_KCP, ACTOR_ROBOT_MANAGE, ACTOR_CSVSERVER, ACTOR_CSVCLIENT, ACTOR_NOTICE, ACTOR_GM, ACTOR_GMCLIENT, ACTOR_MAIL, ACTOR_CHAT, ACTOR_RANKLIST, ACTOR_ACTIVITY_MANAGE, ACTOR_BRIEF, ACTOR_KEYVALUE, ACTOR_FAMILY, ACTOR_FRIENDS, ACTOR_EXAMPLE_MATCH, ACTOR_EXAMPLE_MANAGE, ACTOR_TESTLUA, ACTOR_TESTLUA2});
 	}
 }//namespace ngl
