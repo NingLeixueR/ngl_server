@@ -77,9 +77,8 @@ namespace ngl
 	void auto_actor()
 	{
 		auto_actor_enum();
-		_auto_actor(
-			em_events_null(actor_events_logic)
-			, em_events_null(actor_events_map)
+		autoactor::func<actor_events_logic, actor_events_map>(
+			{ em_events_null(actor_events_logic), em_events_null(actor_events_map) }
 		);
 	}
 
