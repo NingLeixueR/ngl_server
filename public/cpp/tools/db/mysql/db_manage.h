@@ -147,9 +147,6 @@ namespace ngl
 				if (lareastr.empty())
 				{
 					const std::set<i16_area>* lareaset = ttab_servers::instance().get_area(nconfig.area());
-					// # 删除小于0的元素
-					//auto it = lareaset.lower_bound(0);
-					//lareaset.erase(lareaset.begin(), it);
 					if (lareaset == nullptr || lareaset->empty())
 					{
 						lareastr = " 1 = 1 ";
