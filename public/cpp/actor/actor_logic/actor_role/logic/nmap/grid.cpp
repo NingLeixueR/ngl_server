@@ -37,6 +37,6 @@ namespace ngl
 
 	int32_t grid::count()
 	{
-		return m_unitlist.size();
+		return (int32_t)m_unitlist.size();
 	}
 }//namespace ngl
