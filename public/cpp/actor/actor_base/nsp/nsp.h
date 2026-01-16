@@ -328,9 +328,8 @@ namespace ngl
 		template <typename TRECV>
 		static void print(const char* aname, const TDerived* aactor, const TRECV* arecv)
 		{
-			TRECV* lrecv = (TRECV*)arecv;
 			std::string lcustomstr;
-			tools::custom2json(*lrecv, lcustomstr);
+			tools::custom2json(*arecv, lcustomstr);
 			log_error()->print("{}::handle<{}>( actor({}) : {} )", aname, tools::type_name<TRECV>(), nguid(aactor->id_guid()), lcustomstr);
 		}
 
