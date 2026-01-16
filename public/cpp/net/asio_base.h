@@ -69,7 +69,8 @@ namespace ngl
 		service_io(serviceio_info& amsi, i32_session asessionid);
 		virtual ~service_io();
 
-		char* swap_buff();
+		// # 有两个buff指针交替使用
+		char* buff();
 	};
 
 	class service_tcp : public service_io

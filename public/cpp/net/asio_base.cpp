@@ -64,12 +64,8 @@ namespace ngl
 
 	char* service_io::buff()
 	{
-		return m_pbuff1;
-	}
-
-	void service_io::swap_buff()
-	{
 		std::swap(m_pbuff1, m_pbuff2);
+		return m_pbuff1;
 	}
 
 	service_tcp::service_tcp(serviceio_info& amsi, i32_session asessionid) :
