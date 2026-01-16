@@ -28,7 +28,7 @@ namespace ngl
 		std::map<i16_area, std::map<i32_actordataid, gateway_socket>>	m_info;		// key:area  value.key:roleid
 		std::map<i32_socket, gateway_socket*>							m_sockinfo;	// key:socket
 	public:
-		gateway_info() {}
+		gateway_info() = default;
 
 		void updata(const gateway_socket& ainfo);
 
