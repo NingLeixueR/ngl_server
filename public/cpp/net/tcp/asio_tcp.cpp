@@ -389,7 +389,7 @@ namespace ngl
 
 	void  asio_tcp::start(const std::shared_ptr<service_tcp>& aservice)
 	{
-		char* lbuff = aservice->swap_buff();
+		char* lbuff = aservice->buff();
 		aservice->m_socket.async_read_some(asio::buffer(lbuff, m_service_io_.m_buffmaxsize)
 			, [this, lbuff, aservice](const std::error_code& error, size_t bytes_transferred)
 			{
