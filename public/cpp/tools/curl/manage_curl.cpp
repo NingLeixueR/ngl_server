@@ -132,9 +132,9 @@ namespace ngl
 		ahttp->m_url = aurl; 
 	}
 
-	void manage_curl::set_param(std::shared_ptr<http_parm>& ahttp, const std::string& astrparam)
+	void manage_curl::set_param(std::shared_ptr<http_parm>& ahttp, const std::string& aparam)
 	{ 
-		ahttp->m_param = astrparam;
+		ahttp->m_param = aparam;
 	}
 
 	void manage_curl::set_headers(std::shared_ptr<http_parm>& ahttp, std::vector<std::string>& aheaders)
@@ -145,29 +145,6 @@ namespace ngl
 	void manage_curl::set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback)
 	{ 
 		ahttp->m_callback = aback; 
-	}
-
-	void manage_curl::param(std::string& astrparam, const char* akey, const std::string& aval)
-	{
-		param(astrparam, akey, aval.c_str());
-	}
-
-	void manage_curl::param(std::string& astrparam, const char* akey, const char* aval)
-	{
-		if (astrparam.empty() == false)
-		{
-			astrparam += '&';
-		}
-		astrparam += std::format("{}={}", akey, aval);
-	}
-
-	void manage_curl::param(std::string& astrparam, const char* akey, int64_t aval)
-	{
-		if (astrparam.empty() == false)
-		{
-			astrparam += '&';
-		}
-		astrparam += std::format("{}={}", akey, aval);
 	}
 
 	std::shared_ptr<http_parm> manage_curl::make_http()
@@ -381,62 +358,6 @@ namespace ngl
 
 	void test_kkkk()
 	{
-		auto lhttp = ngl::manage_curl::make_http();
-		ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTPS);
-		ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
-		ngl::manage_curl::set_url(lhttp, "https://xxxxxxxxxxx");
-
-		std::string lparm;
-		std::string toCheck = "日本人sb3";
-		std::string toCheck2;
-		ngl::tools::to_utf8(toCheck, toCheck2);
-
-		std::vector<uint32_t> utf32_str;
-		utf8::utf8to32(toCheck2.begin(), toCheck2.end(), std::back_inserter(utf32_str));
-
-		ngl::manage_curl::param(lparm, "toCheck", toCheck2.c_str());
-		ngl::manage_curl::param(lparm, "app", "xxx");
-		ngl::manage_curl::param(lparm, "byPinyin", "false");
-
-		std::string lstrmd5 = "yyyy";
-		lstrmd5 += toCheck2;
-
-		std::string lmd5str = ngl::tools::md5(lstrmd5);
-		ngl::manage_curl::param(lparm, "sig", lmd5str.c_str());
-
-		ngl::manage_curl::set_param(lhttp, lparm);
-
-		ngl::manage_curl::set_callback(lhttp, [&utf32_str](int anum, ngl::http_parm& aparm)
-			{
-				//{"3:4":{"app":"[]","level":2,"startPos":3,"endPos":4,"maskWord":"sb"},"0:1":{"app":"[]","level":2,"startPos":0,"endPos":1,"maskWord":"日本"}}
-				std::cout << aparm.m_recvdata;
-				cJSON* json = cJSON_Parse(aparm.m_recvdata.c_str());
-				if (json == nullptr) 
-				{
-					printf("解析JSON失败!\n");
-					return;
-				}
-
-				cJSON* item = nullptr;
-				cJSON_ArrayForEach(item, json)
-				{
-					// 打印键
-					printf("Key: %s\n", item->string);  // item->string 是键名
-					int beg = 0;
-					int end = 0;
-					ngl::tools::splite(item->string, ":", beg, end);
-					for (int i = beg; i <= end; ++i)
-					{
-						utf32_str[i] = '*';
-					}
-				}
-				std::string result_utf8;
-				utf8::utf32to8(utf32_str.begin(), utf32_str.end(), std::back_inserter(result_utf8));
-				std::string result_utf82;
-				ngl::tools::to_asscii(result_utf8, result_utf82);
-
-				std::cout << std::endl << result_utf82;
-			});
-		ngl::manage_curl::send(lhttp);
+		
 	}
 }//namespace ngl

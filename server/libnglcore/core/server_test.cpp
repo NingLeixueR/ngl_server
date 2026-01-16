@@ -1,5 +1,9 @@
-#include "bi_item.h"
 #include "xmlprotocol.h"
+#include "manage_curl.h"
+#include "bi_item.h"
+#include "dbredis.h"
+
+#include <utf8.h> 
 
 namespace ngl
 {
@@ -51,51 +55,7 @@ namespace ngl
 
 		struct test_xml
 		{
-			static std::array<const char*, std::tuple_size<decltype(std::make_tuple())>::value>& parms() 
-			{
-				static std::array<const char*, std::tuple_size<decltype(std::make_tuple())>::value> tempvec; 
-				static std::string tempstr(""); static std::atomic lregister = true; 
-				if (lregister.exchange(false) && !tempstr.empty()) 
-				{
-					ngl::tools::split_str<std::tuple_size<decltype(std::make_tuple())>::value>(&tempstr[0], (int32_t)tempstr.size(), tempvec); 
-					if constexpr (true) 
-					{
-						for (const char*& item : tempvec) 
-						{
-							if (memcmp("m_", item, 2) == 0) 
-							{
-								item = &(item[2]);
-							}
-						}
-					}
-				}
-				return tempvec;
-			} 
-			inline bool xml_pop(const char* axml) 
-			{
-				tinyxml2::XMLDocument ldocument; 
-				ngl::xml::readxml(axml, ldocument); 
-				tinyxml2::XMLElement* lelement = ngl::xml::get_child(ldocument, "co"); 
-				return xml_pop(lelement);
-			} 
-			inline bool xml_push(const char* axml)const 
-			{
-				tinyxml2::XMLDocument ldocument; 
-				tinyxml2::XMLElement* lelement = xml::set_child(ldocument, "co"); 
-				if (!xml_push(lelement)) 
-				{
-					return false;
-				} 
-				return xml::writexml(axml, ldocument);
-			} 
-			inline bool xml_pop(tinyxml2::XMLElement* aele) 
-			{
-				return ngl::xserialize<false>::pop(aele, parms());
-			} 
-			inline bool xml_push(tinyxml2::XMLElement* aele)const 
-			{
-				return ngl::xserialize<false>::push(aele, parms());
-			}
+			dxmlserialize(test_xml, false)
 		};
 		{
 			test_xml ltemp;
@@ -105,6 +65,7 @@ namespace ngl
 			test_xml ltemp;
 			bool lbool = ltemp.xml_pop("1.xml");
 		}
-	}
 
+		test_hiredis();
+	}
 }

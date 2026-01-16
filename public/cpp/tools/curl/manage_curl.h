@@ -140,7 +140,7 @@ namespace ngl
 		static void set_url(std::shared_ptr<http_parm>& ahttp, const char* aurl);
 
 		// # 设置访问参数(parm xx=xx&xx=xx&xx=xx)
-		static void set_param(std::shared_ptr<http_parm>& ahttp, const std::string& astrparam);
+		static void set_param(std::shared_ptr<http_parm>& ahttp, const std::string& aparam);
 
 		// # 设置http头 
 		static void set_headers(std::shared_ptr<http_parm>& ahttp, std::vector<std::string>& aheaders);
@@ -149,9 +149,24 @@ namespace ngl
 		static void set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback);
 
 		// # 辅助设置http访问参数
-		static void param(std::string& astrparam, const char* akey, const std::string& aval);
-		static void param(std::string& astrparam, const char* akey, const char* aval);
-		static void param(std::string& astrparam, const char* akey, int64_t aval);
+		template <typename T>
+		static void param(std::string& aparam, const char* akey, const T& aval)
+		{
+			if (aparam.empty() == false)
+			{
+				aparam += '&';
+			}
+			aparam += std::format("{}={}", akey, aval);
+		}
+
+		template <typename ...TARGS>
+		static void param(std::string& aparam, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
+		{
+			return [&] <std::size_t... Idx>(std::index_sequence<Idx...>)
+			{
+				(param(aparam, akeys[Idx], aargs), ...);
+			}(std::index_sequence_for<TARGS...>{});
+		}
 		
 		// # 发送
 		static void send(std::shared_ptr<http_parm>& adata);
