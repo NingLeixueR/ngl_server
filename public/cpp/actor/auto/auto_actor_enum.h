@@ -18,24 +18,28 @@
 
 #include "nactortype.h"
 
-#define em_events_null(NAME) null<NAME>,(ENUM_ACTOR)(ACTOR_EVENTS+ NAME::id_index()), #NAME
-#define dautoactor(NAME, DEF) null<NAME>, em_pram(DEF)
+#define em_events_null(NAME) (ENUM_ACTOR)(ACTOR_EVENTS+ NAME::id_index())
 
 namespace ngl
 {
-	template <typename TACTOR>
-	void _auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname)
+	struct autoactor
 	{
-		em<ENUM_ACTOR>::set(aenum, aname);
-		nactor_type<TACTOR>::inits(aenum);
-	}
+		template <typename TACTOR>
+		static void func(ENUM_ACTOR ENUM)
+		{
+			em<ENUM_ACTOR>::set(ENUM, tools::type_name<TACTOR>().c_str());
+			nactor_type<TACTOR>::inits(ENUM);
+		}
 
-	template <typename TACTOR, typename ...ARG>
-	void _auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname, const ARG&... arg)
-	{
-		_auto_actor<TACTOR>(aactor, aenum, aname);
-		_auto_actor(arg...);
-	}
+		template <typename ...ARG>
+		static void func(const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs)
+		{
+			return[&] <std::size_t... Idx>(std::index_sequence<Idx...>)
+			{
+				(func<ARG>(aENUMs[Idx]), ...);
+			}(std::index_sequence_for<ARG...>{});
+		}
+	};	
 }//namespace ngl
 #include "actor_role.h"
 #include "actor_robot.h"
@@ -72,7 +76,11 @@ namespace ngl
 {
 	void auto_actor_enum()
 	{
-		_auto_actor(
+		autoactor::func<
+			actor_role, 
+			actor_robot
+		>({ ACTOR_ROLE,ACTOR_ROBOT });
+		/*_auto_actor(
 			dautoactor(actor_role, ACTOR_ROLE)
 			, dautoactor(actor_robot, ACTOR_ROBOT)
 			, dautoactor(actor_log, ACTOR_LOG)
@@ -104,6 +112,6 @@ namespace ngl
 			, dautoactor(actor_example_manage, ACTOR_EXAMPLE_MANAGE)
 			, dautoactor(actor_testlua, ACTOR_TESTLUA)
 			, dautoactor(actor_testlua2, ACTOR_TESTLUA2)
-		);
+		);*/
 	}
 }//namespace ngl

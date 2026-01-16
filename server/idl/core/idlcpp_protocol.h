@@ -340,24 +340,28 @@ namespace ngl
 
 #include "nactortype.h"
 
-#define em_events_null(NAME) null<NAME>,(ENUM_ACTOR)(ACTOR_EVENTS+ NAME::id_index()), #NAME
-#define dautoactor(NAME, DEF) null<NAME>, em_pram(DEF)
+#define em_events_null(NAME) (ENUM_ACTOR)(ACTOR_EVENTS+ NAME::id_index())
 
 namespace ngl
 {
-	template <typename TACTOR>
-	void _auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname)
+	struct autoactor
 	{
-		em<ENUM_ACTOR>::set(aenum, aname);
-		nactor_type<TACTOR>::inits(aenum);
-	}
+		template <typename TACTOR>
+		static void func(ENUM_ACTOR ENUM)
+		{
+			em<ENUM_ACTOR>::set(ENUM, tools::type_name<TACTOR>().c_str());
+			nactor_type<TACTOR>::inits(ENUM);
+		}
 
-	template <typename TACTOR, typename ...ARG>
-	void _auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname, const ARG&... arg)
-	{
-		_auto_actor<TACTOR>(aactor, aenum, aname);
-		_auto_actor(arg...);
-	}
+		template <typename ...ARG>
+		static void func(const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs)
+		{
+			return[&] <std::size_t... Idx>(std::index_sequence<Idx...>)
+			{
+				(func<ARG>(aENUMs[Idx]), ...);
+			}(std::index_sequence_for<ARG...>{});
+		}
+	};	
 }//namespace ngl
 )";
 		std::map<std::string, idl_file>& lmap = idl::instance().data();
@@ -393,7 +397,7 @@ namespace ngl
 {
 	void auto_actor_enum()
 	{
-		_auto_actor(
+		_auto_actor<
 )";
 		bool isdouhao = false;
 		for (std::pair<const std::string, idl_file>& item : lmap)
@@ -422,21 +426,57 @@ namespace ngl
 						std::cout << lname << std::endl;
 						if (isdouhao)
 						{
-							m_stream << "			, dautoactor(" << lname << ", " << item3.m_type << ")" << std::endl;
+							m_stream << "			, " << lname << std::endl;
 						}
 						else
 						{
-							m_stream << "			dautoactor(" << lname << ", " << item3.m_type << ")" << std::endl;
+							m_stream << "			" << lname << std::endl;
 							isdouhao = true;
 						}
 					}
 				}
 			}
 		}
-
-		m_stream << R"(		);
-	}
-}//namespace ngl)";
+		m_stream << "		>({" << std::endl;
+		isdouhao = false;
+		for (std::pair<const std::string, idl_file>& item : lmap)
+		{
+			for (const auto& item2 : item.second.m_enum)
+			{
+				if (item2.name == "ENUM_ACTOR")
+				{
+					for (const auto& item3 : item2.dataVec)
+					{
+						if (
+							item3.m_type == "ACTOR_NONE" ||
+							item3.m_type == "ACTOR_EVENTS" ||
+							item3.m_type == "ACTOR_EVENTS_MAX_COUNT" ||
+							item3.m_type == "ACTOR_DB" ||
+							item3.m_type == "ACTOR_SIGNLE_FINISH" ||
+							item3.m_type == "ACTOR_COUNT" ||
+							item3.m_type == "ACTOR_SIGNLE_START" ||
+							item3.m_type == "+"
+							)
+						{
+							continue;
+						}
+						std::string lname = item3.m_type;
+						std::transform(lname.begin(), lname.end(), lname.begin(), [](unsigned char c) { return std::tolower(c); });
+						std::cout << lname << std::endl;
+						if (isdouhao)
+						{
+							m_stream << ", " << item3.m_type;
+						}
+						else
+						{
+							m_stream << item3.m_type;
+							isdouhao = true;
+						}
+					}
+				}
+			}
+		}
+		m_stream << "}\n	}\n}//namespace ngl" << std::endl;
 		lfile.write(m_stream.str());
 	}
 
