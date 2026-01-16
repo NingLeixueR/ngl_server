@@ -39,7 +39,7 @@ namespace ngl
 		};
 		etype m_type;
 
-		log_timerparm(etype atype) :
+		explicit log_timerparm(etype atype) :
 			m_type(atype)
 		{}
 	};
@@ -53,7 +53,7 @@ namespace ngl
 
 		std::map<ELOG_TYPE, std::shared_ptr<logfile>> m_logarr;
 	public:
-		actor_log(int32_t atype);
+		explicit actor_log(int32_t atype);
 
 		virtual ~actor_log() = default;
 

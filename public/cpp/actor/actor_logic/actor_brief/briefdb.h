@@ -33,7 +33,7 @@ namespace ngl
 
 	public:
 		briefdb() = default;
-		virtual briefdb() = default;
+		virtual ~briefdb() = default;
 
 		void related_actorid() final
 		{
