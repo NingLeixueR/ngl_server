@@ -397,7 +397,7 @@ namespace ngl
 {
 	void auto_actor_enum()
 	{
-		_auto_actor<
+		autoactor::func<
 )";
 		bool isdouhao = false;
 		for (std::pair<const std::string, idl_file>& item : lmap)
@@ -437,7 +437,7 @@ namespace ngl
 				}
 			}
 		}
-		m_stream << "		>({" << std::endl;
+		m_stream << "		>({";
 		isdouhao = false;
 		for (std::pair<const std::string, idl_file>& item : lmap)
 		{
@@ -476,7 +476,7 @@ namespace ngl
 				}
 			}
 		}
-		m_stream << "}\n	}\n}//namespace ngl" << std::endl;
+		m_stream << "});\n	}\n}//namespace ngl" << std::endl;
 		lfile.write(m_stream.str());
 	}
 
