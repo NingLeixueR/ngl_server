@@ -97,14 +97,14 @@ namespace ngl
 
 		if (m_isregister.exchange(false))
 		{
-			// 更新数据
-			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<TDerived, np_channel_data<T>>();
-			// 检查是否向nsp服务器注册
-			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<TDerived, np_channel_check<T>>();
-			// 处理注册回复
-			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<TDerived, np_channel_register_reply<T>>();
-			// 接收结点信息
-			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<TDerived, np_channel_dataid_sync<T>>();
+			
+			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<
+				TDerived
+				, np_channel_data<T>				// 更新数据
+				, np_channel_check<T>				// 检查是否向nsp服务器注册
+				, np_channel_register_reply<T>		// 处理注册回复
+				, np_channel_dataid_sync<T>			// 接收结点信息
+			>();
 		}
 		i64_actorid lactorid = m_actor->id_guid();
 		m_regload.foreach_nspser([lactorid](i16_area aarea, i64_actorid aactorid)

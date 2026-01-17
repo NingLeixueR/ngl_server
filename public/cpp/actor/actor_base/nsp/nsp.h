@@ -244,10 +244,10 @@ namespace ngl
 			m_instance.erase(aactorid);
 		}
 
-		template <typename TDerived, typename TMESSAGE>
+		template <typename TDerived, typename ...TMESSAGES>
 		static void register_handle()
 		{
-			actor::register_actor_s<TDerived, TMESSAGE>(e_ready_db, [](TDerived* aacotor, const message<TMESSAGE>& adata)
+			(actor::register_actor_s<TDerived, TMESSAGES>(e_ready_db, [](TDerived* aacotor, const message<TMESSAGES>& adata)
 				{
 					T* lpclass = nclient(aacotor->id_guid(), true);
 					if (lpclass != nullptr)
@@ -255,7 +255,7 @@ namespace ngl
 						lpclass->handle(aacotor, adata);
 					}
 				} 
-			);
+			), ...);
 		}
 	};
 
