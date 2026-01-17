@@ -14,26 +14,39 @@
 
 namespace ngl
 {
-	template <typename T>
-	void _reister_channel_db()
+	struct reg_channel_db
 	{
-		tprotocol::tp_customs<
-			np_channel_data<T>
-			, np_channel_register<T>
-			, np_channel_register_reply<T>
-			, np_channel_exit<T>
-			, np_channel_dataid_sync<T>
-		>(-1, 1);
+		template <typename T>
+		static void func()
+		{
+			tprotocol::tp_customs<
+				np_channel_data<T>
+				, np_channel_register<T>
+				, np_channel_register_reply<T>
+				, np_channel_exit<T>
+				, np_channel_dataid_sync<T>
+			>(-1, 1);
 
-		tprotocol::tp_customs<
-			np_channel_check<T>
-		>(-1, 0);
-	}
+			tprotocol::tp_customs<
+				np_channel_check<T>
+			>(-1, 0);
+		}
 
-	void reister_channel_db()
+		template <typename ...TAGS>
+		static void funcs()
+		{
+			(func<TAGS>(), ...);
+		}
+	};
+
+	void register_channel_db()
 	{
 		tprotocol::set_customs_index(110000000);
-		_reister_channel_db<pbdb::dbcross_test>();
+		reg_channel_db::funcs<
+			pbdb::dbcross_test
+			, pbdb::db_account
+		>();
+		/*_reister_channel_db<pbdb::dbcross_test>();
 		_reister_channel_db<pbdb::db_account>();
 		_reister_channel_db<pbdb::db_activity>();
 		_reister_channel_db<pbdb::db_activitytimes>();
@@ -49,6 +62,6 @@ namespace ngl
 		_reister_channel_db<pbdb::db_role>();
 		_reister_channel_db<pbdb::db_rolekeyvalue>();
 		_reister_channel_db<pbdb::db_task>();
-		_reister_channel_db<pbdb::db_testlua>();
+		_reister_channel_db<pbdb::db_testlua>();*/
 	}
 }//namespace ngl

@@ -811,27 +811,39 @@ namespace ngl
 
         m_stream3 << R"(namespace ngl
 {
-	template <typename T>
-	void _reister_channel_db()
+	struct reg_channel_db
 	{
-		tprotocol::tp_customs<
-			np_channel_data<T>
-			, np_channel_register<T>
-			, np_channel_register_reply<T>
-			, np_channel_exit<T>
-			, np_channel_dataid_sync<T>
-		>(-1, 1);
+		template <typename T>
+		static void func()
+		{
+			tprotocol::tp_customs<
+				np_channel_data<T>
+				, np_channel_register<T>
+				, np_channel_register_reply<T>
+				, np_channel_exit<T>
+				, np_channel_dataid_sync<T>
+			>(-1, 1);
 
-		tprotocol::tp_customs<
-			np_channel_check<T>
-		>(-1, 0);
-	}
+			tprotocol::tp_customs<
+				np_channel_check<T>
+			>(-1, 0);
+		}
 
-	void reister_channel_db()
-	{)" << std::endl;
+		template <typename ...TAGS>
+		static void funcs()
+		{
+			(func<TAGS>(), ...);
+		}
+	};
+
+	void register_channel_db()
+	{
+        reg_channel_db::funcs<
+)" << std::endl;
 
         int lindex333 = 110000000;
         m_stream3 << std::format("\t\ttprotocol::set_customs_index({});", lindex333) << std::endl;
+        bool lbools = false;
         for (const auto& item : lmap)
         {
             if (item.second.enumname == "ENUM_DB_COUNT" || item.second.enumname == "ENUM_DB_FAIL")
@@ -844,7 +856,15 @@ namespace ngl
             ngl::tools::transform_tolower(enumname);
            
             //m_stream3 << std::format("\t\ttprotocol::set_customs_index({});", lindex333) << std::endl;
-            m_stream3 << std::format("\t\t_reister_channel_db<{}>();", enumname) << std::endl;
+            //m_stream3 << std::format("\t\treg_channel_db::func<", enumname) << std::endl;
+            m_stream3 << "        ";
+            if (lbools)
+            {
+                m_stream3 << ",";
+            }
+            m_stream3 << enumname << std::endl;
+            lbools = true;
+
             lindex333 += 10;
         }
         m_stream3 << "\t}" << std::endl;

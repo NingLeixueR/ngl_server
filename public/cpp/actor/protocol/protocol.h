@@ -73,8 +73,8 @@ namespace ngl
 			{
 				Try
 				{
-					T* lp = new T();
-					std::shared_ptr<void> ltemp(lp);
+					auto lp = std::make_shared<T>();
+					std::shared_ptr<void> ltemp = std::static_pointer_cast<void>(lp);
 					if (structbytes<T>::tostruct(apack, *lp))
 					{
 						return ltemp;
@@ -130,8 +130,8 @@ namespace ngl
 				{
 					Try
 					{
-						auto lp = new np_actor_forward<T, forward_c2g<forward>>();
-						std::shared_ptr<void> ltemp(lp);
+						auto lp = std::make_shared<np_actor_forward<T, forward_c2g<forward>>>();
+						std::shared_ptr<void> ltemp = std::static_pointer_cast<void>(lp);
 						if (structbytes<np_actor_forward<T, forward_c2g<forward>>>::tostruct(apack, *lp, true))
 						{
 							return ltemp;
@@ -160,8 +160,8 @@ namespace ngl
 				{
 					Try
 					{
-						auto lp = new  np_actor_forward<T, forward_g2c<forward>>();
-						std::shared_ptr<void> ltemp(lp);
+						auto lp = std::make_shared<np_actor_forward<T, forward_g2c<forward>>>();
+						std::shared_ptr<void> ltemp = std::static_pointer_cast<void>(lp);
 						if (structbytes<np_actor_forward<T, forward_g2c<forward>>>::tostruct(apack, *lp, true))
 						{
 							return ltemp;
@@ -190,7 +190,7 @@ namespace ngl
 				{
 					Try
 					{
-						np_mass_actor<T>* lp = new np_mass_actor<T>();
+						auto lp = std::make_shared<np_mass_actor<T>>();
 						std::shared_ptr<void> ltemp(lp);
 						if (structbytes<np_mass_actor<T>>::tostruct(apack, *lp))
 						{

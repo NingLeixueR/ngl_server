@@ -94,7 +94,7 @@ namespace ngl
 		>();
 
 		// Õ¼ÓÃ110000000->120000000
-		reister_channel_db();
+		register_channel_db();
 		
 		tprotocol::set_customs_index(120000000);
 		tprotocol::tp_customs_script<
