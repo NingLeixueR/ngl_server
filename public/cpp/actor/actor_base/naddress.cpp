@@ -82,9 +82,6 @@ namespace ngl
 		for (const i64_actorid item : avec)
 		{
 			actor_address_add(aserverid, item);
-#ifdef _DEBUG
-			print_address("ADD", aserverid, item);
-#endif
 		}
 	}
 

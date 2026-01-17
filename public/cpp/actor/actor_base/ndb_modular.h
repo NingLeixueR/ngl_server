@@ -180,15 +180,6 @@ namespace ngl
 			return (TACTOR*)get_actor();
 		}
 
-		// # 创建数据
-		/*inline void create(const nguid& aid)
-		{
-			m_id = m_actor->id_guid();
-			m_data.set_id(m_id);
-			m_data.set_actor(m_actor);
-			m_data.add(m_id, TDATA());
-		}*/
-
 		// # 清空数据
 		inline void clear()
 		{

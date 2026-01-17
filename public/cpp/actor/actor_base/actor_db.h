@@ -115,7 +115,7 @@ namespace ngl
 		// # 加载表中的指定数据
 		static void load(i32_threadid athreadid, int64_t aid)
 		{
-			if (aid == -1)
+			if (aid == nguid::make())
 			{
 				return;
 			}
@@ -261,8 +261,7 @@ namespace ngl
 		// # 同步:加载数据
 		bool handle(const message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
-			std::string lname = tools::type_name<TDBTAB>();
-			log_error()->print("load: np_actordb_load<{}> id:{}", lname, adata.get_data()->m_id);
+			log_error()->print("load: np_actordb_load<{}> id:{}", tools::type_name<TDBTAB>(), adata.get_data()->m_id);
 			ndbtab<TDBTAB_TYPE, TDBTAB>::load(adata.thread(), adata.get_pack(), *adata.get_data());
 			return true;
 		}
@@ -277,6 +276,7 @@ namespace ngl
 		// # 异步:删除数据
 		bool handle(const message<np_actordb_delete<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
+			log_error()->print("load: np_actordb_delete<{}> id:{}", tools::type_name<TDBTAB>(), adata.get_data()->m_data);
 			ndbtab<TDBTAB_TYPE, TDBTAB>::del(adata.thread(), adata.get_data()->m_data);
 			return true;
 		}
