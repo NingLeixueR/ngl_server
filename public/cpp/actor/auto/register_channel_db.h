@@ -43,24 +43,24 @@ namespace ngl
 	{
 
 		tprotocol::set_customs_index(110000000);
-	reg_channel_db::funcs<
-          pbdb::dbcross_test
-          ,pbdb::db_account
-          ,pbdb::db_activity
-          ,pbdb::db_activitytimes
-          ,pbdb::db_bag
-          ,pbdb::db_brief
-          ,pbdb::db_family
-          ,pbdb::db_familyer
-          ,pbdb::db_friends
-          ,pbdb::db_keyvalue
-          ,pbdb::db_mail
-          ,pbdb::db_notice
-          ,pbdb::db_ranklist
-          ,pbdb::db_role
-          ,pbdb::db_rolekeyvalue
-          ,pbdb::db_task
-          ,pbdb::db_testlua
+		reg_channel_db::funcs<
+			pbdb::dbcross_test
+			,pbdb::db_account
+			,pbdb::db_activity
+			,pbdb::db_activitytimes
+			,pbdb::db_bag
+			,pbdb::db_brief
+			,pbdb::db_family
+			,pbdb::db_familyer
+			,pbdb::db_friends
+			,pbdb::db_keyvalue
+			,pbdb::db_mail
+			,pbdb::db_notice
+			,pbdb::db_ranklist
+			,pbdb::db_role
+			,pbdb::db_rolekeyvalue
+			,pbdb::db_task
+			,pbdb::db_testlua
 		>();
 	}
 }//namespace ngl

@@ -842,7 +842,7 @@ namespace ngl
 
         int lindex333 = 110000000;
         m_stream3 << std::format("\t\ttprotocol::set_customs_index({});", lindex333) << std::endl;
-        m_stream3 << "	reg_channel_db::funcs<" << std::endl;
+        m_stream3 << "\t\treg_channel_db::funcs<" << std::endl;
         bool lbools = false;
         for (const auto& item : lmap)
         {
@@ -857,7 +857,7 @@ namespace ngl
            
             //m_stream3 << std::format("\t\ttprotocol::set_customs_index({});", lindex333) << std::endl;
             //m_stream3 << std::format("\t\treg_channel_db::func<", enumname) << std::endl;
-            m_stream3 << "          ";
+            m_stream3 << "\t\t\t";
             if (lbools)
             {
                 m_stream3 << ",";
