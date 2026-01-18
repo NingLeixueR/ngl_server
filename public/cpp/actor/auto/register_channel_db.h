@@ -41,27 +41,26 @@ namespace ngl
 
 	void register_channel_db()
 	{
+
 		tprotocol::set_customs_index(110000000);
-		reg_channel_db::funcs<
-			pbdb::dbcross_test
-			, pbdb::db_account
+	reg_channel_db::funcs<
+          pbdb::dbcross_test
+          ,pbdb::db_account
+          ,pbdb::db_activity
+          ,pbdb::db_activitytimes
+          ,pbdb::db_bag
+          ,pbdb::db_brief
+          ,pbdb::db_family
+          ,pbdb::db_familyer
+          ,pbdb::db_friends
+          ,pbdb::db_keyvalue
+          ,pbdb::db_mail
+          ,pbdb::db_notice
+          ,pbdb::db_ranklist
+          ,pbdb::db_role
+          ,pbdb::db_rolekeyvalue
+          ,pbdb::db_task
+          ,pbdb::db_testlua
 		>();
-		/*_reister_channel_db<pbdb::dbcross_test>();
-		_reister_channel_db<pbdb::db_account>();
-		_reister_channel_db<pbdb::db_activity>();
-		_reister_channel_db<pbdb::db_activitytimes>();
-		_reister_channel_db<pbdb::db_bag>();
-		_reister_channel_db<pbdb::db_brief>();
-		_reister_channel_db<pbdb::db_family>();
-		_reister_channel_db<pbdb::db_familyer>();
-		_reister_channel_db<pbdb::db_friends>();
-		_reister_channel_db<pbdb::db_keyvalue>();
-		_reister_channel_db<pbdb::db_mail>();
-		_reister_channel_db<pbdb::db_notice>();
-		_reister_channel_db<pbdb::db_ranklist>();
-		_reister_channel_db<pbdb::db_role>();
-		_reister_channel_db<pbdb::db_rolekeyvalue>();
-		_reister_channel_db<pbdb::db_task>();
-		_reister_channel_db<pbdb::db_testlua>();*/
 	}
 }//namespace ngl
