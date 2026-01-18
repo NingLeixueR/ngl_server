@@ -11,7 +11,7 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "reister_channel_db.h"
+#include "register_channel_db.h"
 #include "auto_actor_enum.h"
 #include "nprotocol_auto.h"
 #include "events_logic.h"
