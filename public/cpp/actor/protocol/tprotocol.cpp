@@ -19,7 +19,9 @@
 
 namespace ngl
 {
-	std::map<size_t, tprotocol::info> tprotocol::m_keyval;
+	std::map<size_t, std::map<std::string, int32_t>> nhash::m_kv;
+
+	std::map<nhashcode, tprotocol::info> tprotocol::m_keyval;
 	std::map<i32_protocolnum, tprotocol::info*> tprotocol::m_protocol;
 	std::map<std::string, tprotocol::info*> tprotocol::m_nameprotocol;
 	int32_t tprotocol::m_customs = 200000000;

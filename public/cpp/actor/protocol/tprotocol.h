@@ -30,6 +30,56 @@ namespace ngl
 		enscript_count,			// 支持的脚本数据
 	};
 
+	struct nhashcode
+	{
+		size_t m_hashcode = 0;
+		int32_t m_index = 0;
+
+		nhashcode(size_t ahashcode, int32_t aindex) :
+			m_hashcode(ahashcode),
+			m_index(aindex)
+		{}
+
+		auto operator<=>(const nhashcode& ar)const
+		{
+			if (m_hashcode == ar.m_hashcode)
+			{
+				if (m_index == ar.m_index)
+				{
+					return 0;
+				}
+				else
+				{
+					return m_hashcode > ar.m_hashcode ? 1 : -1;
+				}
+			}
+			else
+			{
+				return m_hashcode > ar.m_hashcode? 1:-1;
+			}
+		}
+	};
+
+	class nhash
+	{
+		static std::map<size_t, std::map<std::string, int32_t>> m_kv;
+	public:
+		template <typename T>
+		static nhashcode code()
+		{
+			static size_t lcode = typeid(T).hash_code();
+			std::map<std::string, int32_t>& lmap = m_kv[lcode];
+			auto itor = lmap.find(tools::type_name<T>());
+			if (itor != lmap.end())
+			{
+				return nhashcode(lcode, itor->second);
+			}
+			int32_t& lindex = lmap[tools::type_name<T>()];
+			lindex = lmap.size() + 1;
+			return nhashcode(lcode, lindex);
+		}
+	};
+
 	class tprotocol
 	{
 		tprotocol() = delete;
@@ -73,19 +123,12 @@ namespace ngl
 			}
 		};
 	private:
-		static std::map<size_t, info>				m_keyval;
+		static std::map<nhashcode, info>			m_keyval;
 		static std::map<i32_protocolnum, info*>		m_protocol;
 		static std::map<std::string, info*>			m_nameprotocol;
 		// pbnet/pbexample		[1			-  100000000];
 		// custom				[200000001	-  300000000];
 		static int32_t								m_customs/* = 200000000*/;
-
-		template <typename T>
-		static size_t hash_code()
-		{
-			static size_t lcode = typeid(T).hash_code();
-			return lcode;
-		}
 
 		//CUSTOM
 		template <bool SCRIPT>
@@ -94,7 +137,7 @@ namespace ngl
 			template <typename T>
 			static info* funcx_s(int32_t aprotocolnum = -1, int8_t ahigh = 0)
 			{
-				size_t lcode = hash_code<T>();
+				nhashcode lcode = nhash::code<T>();
 				if (m_keyval.contains(lcode))
 				{
 					return nullptr;
@@ -156,7 +199,7 @@ namespace ngl
 			{
 				return false;
 			}
-			info& linfo = m_keyval[hash_code<T>()];
+			info& linfo = m_keyval[nhash::code<T>()];
 			linfo.m_name = lname;
 			linfo.m_protocol = lprotocol;
 			m_protocol[linfo.m_protocol] = &linfo;
@@ -167,7 +210,7 @@ namespace ngl
 		static info& get()
 		{
 			using TRC = std::remove_const<T>::type;
-			size_t lcode = hash_code<T>();
+			nhashcode lcode = nhash::code<T>();
 			auto itor = m_keyval.find(lcode);
 			if (itor == m_keyval.end())
 			{
