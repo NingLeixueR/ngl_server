@@ -42,21 +42,7 @@ namespace ngl
 
 		auto operator<=>(const nhashcode& ar)const
 		{
-			if (m_hashcode == ar.m_hashcode)
-			{
-				if (m_index == ar.m_index)
-				{
-					return 0;
-				}
-				else
-				{
-					return m_hashcode > ar.m_hashcode ? 1 : -1;
-				}
-			}
-			else
-			{
-				return m_hashcode > ar.m_hashcode? 1:-1;
-			}
+			return tools::less_member(m_hashcode, ar.m_hashcode, m_index, ar.m_index);
 		}
 	};
 

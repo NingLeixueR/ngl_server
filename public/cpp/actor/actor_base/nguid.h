@@ -286,18 +286,7 @@ namespace ngl
 
 		inline auto operator<=>(const nguid& r)const
 		{
-			if (m_id < r.m_id)
-			{
-				return -1;
-			}
-			else if (m_id > r.m_id)
-			{
-				return 1;
-			}
-			else
-			{
-				return 0;
-			}
+			return m_id <=> r.m_id;
 		}
 
 		dprotocol(nguid, m_id)

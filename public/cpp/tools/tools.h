@@ -836,22 +836,17 @@ namespace ngl
 		}
 
 		template <typename T>
-		static int32_t less_member(const T& lhs, const T& rhs)
+		static auto less_member(const T& lhs, const T& rhs)
 		{
-			if (lhs != rhs)
-			{
-				return lhs < rhs?1:-1;
-			}
-			return 0;
+			return lhs <=> rhs;
 		}
 
 		template <typename T, typename... TARGS>
-		static int32_t less_member(const T& lhs, const T& rhs, const TARGS&... members)
+		static auto less_member(const T& lhs, const T& rhs, const TARGS&... members)
 		{
-			int32_t lva = less_member(lhs, rhs);
-			if (lva != 0)
+			if (lhs != rhs)
 			{
-				return lva;
+				return less_member(lhs, rhs);
 			}
 			return less_member(members...);
 		}
