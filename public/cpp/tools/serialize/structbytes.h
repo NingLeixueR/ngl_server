@@ -25,17 +25,12 @@ namespace ngl
 {
 	class encryption_bytexor
 	{
-		static std::set<i32_protocolnum> m_protocolnum;
-
-		static void check_init()
-		{
-			m_protocolnum.insert(tprotocol::protocol<np_gm>());
-			m_protocolnum.insert(tprotocol::protocol<np_gm_response>());
-		}
 	public:
 		static bool check_xor(int aprotocolnum)
 		{
-			if (m_protocolnum.contains(aprotocolnum))
+			static i32_protocolnum lprotocol1 = tprotocol::protocol<np_gm>();
+			static i32_protocolnum lprotocol2 = tprotocol::protocol<np_gm_response>();
+			if (aprotocolnum == lprotocol1 || aprotocolnum == lprotocol2)
 			{
 				return false;
 			}

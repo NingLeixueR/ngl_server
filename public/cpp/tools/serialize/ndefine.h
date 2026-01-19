@@ -32,7 +32,7 @@
 		ngl::ser::nserialize::bytes(aser __VA_OPT__(, )__VA_ARGS__);			\
 	}
 
-#define def_rcsv(...) return ngl::rcsv::readcsv(apair,##__VA_ARGS__);
+#define def_rcsv(...) return ngl::rcsv::readcsv(apair __VA_OPT__(, )__VA_ARGS__);
 
 #define NUMARGS(...)  std::tuple_size<decltype(std::make_tuple(__VA_ARGS__))>::value
 
