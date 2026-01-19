@@ -425,7 +425,7 @@ public:
         }
         std::stringstream m_stream;
         int messageCount = fileDescriptor->message_type_count();
-        bool lfirst = true;
+        static bool lfirst = true;
         for (int i = 0; i < messageCount; ++i)
         {
             const google::protobuf::Descriptor* messageDescriptor = fileDescriptor->message_type(i);
@@ -436,7 +436,7 @@ public:
                 || messageDescriptor->name().find("PROBUFF_EXAMPLE_") != std::string::npos
                 )
             {
-                m_stream << "            ";
+                m_stream << "               ";
                 if (!lfirst)
                 {
                     m_stream << ", ";
@@ -487,7 +487,6 @@ namespace ngl
 		}
 	};
 
-	
 	std::shared_ptr<pack> actor_base::jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
 		using type_j2pfun = std::function<void(const std::string&, const std::string&, std::shared_ptr<ngl::pack>&, i64_actorid, i64_actorid)>;
@@ -498,11 +497,11 @@ namespace ngl
             {
                 ((lmap[tools::type_name<TARG>()] = std::bind_front(&j2p<TARG>::fun)), ...);
             };
-            fun.operator()<
-)" << std::endl;
+            fun.operator()<)" << std::endl;
 
 
         m_stream << astr;
+        m_stream << "            >();" << std::endl;
 
         m_stream << R"(         }
 		auto lpfun = tools::findmap(lmap, apbname);
