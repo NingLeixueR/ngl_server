@@ -40,16 +40,28 @@ namespace ngl
 	{
 		static bool pop(cJSON* ajson, const char* akey, T*& adata)
 		{
+			if (adata == nullptr)
+			{
+				return false;
+			}
 			return json_format<T>::pop(ajson, akey, *adata);
 		}
 
 		static void push(cJSON* ajson, const char* akey, const T*& adata)
 		{
+			if (adata == nullptr)
+			{
+				return false;
+			}
 			return json_format<T>::push(ajson, akey, *adata);
 		}
 
 		static void push(cJSON* ajson, const T*& adata)
 		{
+			if (adata == nullptr)
+			{
+				return false;
+			}
 			return json_format<T>::push(ajson, *adata);
 		}
 	};
