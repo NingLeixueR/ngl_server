@@ -15,7 +15,6 @@
 
 #include "actor_manage.h"
 #include "actor_create.h"
-#include "manage_curl.h"
 #include "ndb_modular.h"
 #include "manage_csv.h"
 #include "ndbclient.h"
@@ -26,6 +25,7 @@
 #include "db_data.h"
 #include "ntimer.h"
 #include "notice.h"
+#include "ncurl.h"
 #include "net.h"
 #include "db.h"
 

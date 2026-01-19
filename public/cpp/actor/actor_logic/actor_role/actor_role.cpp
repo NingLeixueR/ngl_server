@@ -14,11 +14,11 @@
 #include "ttab_specialid.h"
 #include "ttab_recharge.h"
 #include "actor_events.h"
-#include "manage_curl.h"
 #include "actor_role.h"
 #include "nregister.h"
 #include "nforward.h"
 #include "net.pb.h"
+#include "ncurl.h"
 #include "drop.h"
 #include "gcmd.h"
 
