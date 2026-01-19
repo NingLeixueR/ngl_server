@@ -26,9 +26,9 @@ struct Data
 	int m_index = 0;
 	std::string m_load;
 
-	bool operator<=>(const Data& ar)const
+	auto operator<=>(const Data& ar)const
 	{
-		return m_index < ar.m_index;
+		return m_index <=> ar.m_index;
 	}
 };
 
