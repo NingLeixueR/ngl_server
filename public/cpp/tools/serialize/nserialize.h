@@ -91,7 +91,8 @@ namespace ngl
 			}
 		};
 
-		class serialize_push : public serialize<char*>
+		class serialize_push : 
+			public serialize<char*>
 		{
 		public:
 			serialize_push(char* abuff, int32_t alen) :
@@ -110,7 +111,8 @@ namespace ngl
 			}
 		};
 
-		class serialize_pop : public serialize<const char*>
+		class serialize_pop : 
+			public serialize<const char*>
 		{
 		public:
 			serialize_pop(const char* abuff, int32_t alen) :
@@ -132,74 +134,74 @@ namespace ngl
 		template <typename T>
 		struct serialize_format
 		{
-			static bool push(serialize_push* aserialize, const T& adata);
-			static bool pop(serialize_pop* aserialize, T& adata);
-			static void bytes(serialize_byte* aserialize, const T& adata);
+			static bool push(serialize_push* aser, const T& adata);
+			static bool pop(serialize_pop* aser, T& adata);
+			static void bytes(serialize_byte* aser, const T& adata);
 		};
 
 		template <typename T>
 		struct serialize_format<T*>
 		{
-			static bool push(serialize_push* aserialize, const T* adata)
+			static bool push(serialize_push* aser, const T* adata)
 			{
 				if (adata == nullptr)
 				{
 					return false;
 				}
-				return serialize_format<T>::push(aserialize, *adata);
+				return serialize_format<T>::push(aser, *adata);
 			}
 
-			static bool pop(serialize_pop* aserialize, T* adata)
+			static bool pop(serialize_pop* aser, T* adata)
 			{
 				if (adata == nullptr)
 				{
 					return false;
 				}
-				return serialize_format<T>::pop(aserialize, *adata);
+				return serialize_format<T>::pop(aser, *adata);
 			}
 
-			static void bytes(serialize_byte* aserialize, const T* adata)
+			static void bytes(serialize_byte* aser, const T* adata)
 			{
 				if (adata == nullptr)
 				{
 					return;
 				}
-				serialize_format<T>::bytes(aserialize, *adata);
+				serialize_format<T>::bytes(aser, *adata);
 			}
 		};
 
 		template <>
 		struct serialize_format<int8_t>
 		{
-			static bool push(serialize_push* aserialize, const int8_t adata)
+			static bool push(serialize_push* aser, const int8_t adata)
 			{
-				return aserialize->basetype((void*)&adata, sizeof(adata));
+				return aser->basetype((void*)&adata, sizeof(adata));
 			}
 
-			static bool pop(serialize_pop* aserialize, int8_t& adata)
+			static bool pop(serialize_pop* aser, int8_t& adata)
 			{
-				return aserialize->basetype((void*)&adata, sizeof(adata));
+				return aser->basetype((void*)&adata, sizeof(adata));
 			}
 
-			static void bytes(serialize_byte* aserialize, const int8_t adata)
+			static void bytes(serialize_byte* aser, const int8_t adata)
 			{
-				aserialize->move_pos(sizeof(adata));
+				aser->move_pos(sizeof(adata));
 			}
 		};
 
 		template <>
 		struct serialize_format<int16_t>
 		{
-			static bool push(serialize_push* aserialize, const int16_t adata)
+			static bool push(serialize_push* aser, const int16_t adata)
 			{
 				tools::parm<int16_t> lparm(adata);
 				lparm.m_value = tools::transformlittle(lparm);
-				return aserialize->basetype((void*)&adata, sizeof(adata));
+				return aser->basetype((void*)&adata, sizeof(adata));
 			}
 
-			static bool pop(serialize_pop* aserialize, int16_t& adata)
+			static bool pop(serialize_pop* aser, int16_t& adata)
 			{
-				if (!aserialize->basetype((void*)&adata, sizeof(adata)))
+				if (!aser->basetype((void*)&adata, sizeof(adata)))
 				{
 					return false;
 				}
@@ -208,25 +210,25 @@ namespace ngl
 				return true;
 			}
 
-			static void bytes(serialize_byte* aserialize, const int16_t adata)
+			static void bytes(serialize_byte* aser, const int16_t adata)
 			{
-				aserialize->move_pos(sizeof(adata));
+				aser->move_pos(sizeof(adata));
 			}
 		};
 
 		template <>
 		struct serialize_format<int32_t>
 		{
-			static bool push(serialize_push* aserialize, const int32_t adata)
+			static bool push(serialize_push* aser, const int32_t adata)
 			{
 				tools::parm<int32_t> lparm(adata);
 				lparm.m_value = tools::transformlittle(lparm);
-				return aserialize->basetype((void*)&adata, sizeof(adata));
+				return aser->basetype((void*)&adata, sizeof(adata));
 			}
 
-			static bool pop(serialize_pop* aserialize, int32_t& adata)
+			static bool pop(serialize_pop* aser, int32_t& adata)
 			{
-				if (!aserialize->basetype((void*)&adata, sizeof(adata)))
+				if (!aser->basetype((void*)&adata, sizeof(adata)))
 				{
 					return false;
 				}
@@ -235,25 +237,25 @@ namespace ngl
 				return true;
 			}
 
-			static void bytes(serialize_byte* aserialize, const int32_t adata)
+			static void bytes(serialize_byte* aser, const int32_t adata)
 			{
-				aserialize->move_pos(sizeof(adata));
+				aser->move_pos(sizeof(adata));
 			}
 		};
 
 		template <>
 		struct serialize_format<int64_t>
 		{
-			static bool push(serialize_push* aserialize, const int64_t adata)
+			static bool push(serialize_push* aser, const int64_t adata)
 			{
 				tools::parm<int64_t> lparm(adata);
 				lparm.m_value = tools::transformlittle(lparm);
-				return aserialize->basetype((void*)&adata, sizeof(adata));
+				return aser->basetype((void*)&adata, sizeof(adata));
 			}
 
-			static bool pop(serialize_pop* aserialize, int64_t& adata)
+			static bool pop(serialize_pop* aser, int64_t& adata)
 			{
-				if (!aserialize->basetype((void*)&adata, sizeof(adata)))
+				if (!aser->basetype((void*)&adata, sizeof(adata)))
 				{
 					return false;
 				}
@@ -262,24 +264,24 @@ namespace ngl
 				return true;
 			}
 
-			static void bytes(serialize_byte* aserialize, const int64_t adata)
+			static void bytes(serialize_byte* aser, const int64_t adata)
 			{
-				aserialize->move_pos(sizeof(adata));
+				aser->move_pos(sizeof(adata));
 			}
 		};
 
 		template <>
 		struct serialize_format<uint8_t>
 		{
-			static bool push(serialize_push* aserialize, const uint8_t adata)
+			static bool push(serialize_push* aser, const uint8_t adata)
 			{
-				return serialize_format<int8_t>::push(aserialize, (int8_t)adata);
+				return serialize_format<int8_t>::push(aser, (int8_t)adata);
 			}
 
-			static bool pop(serialize_pop* aserialize, uint8_t& adata)
+			static bool pop(serialize_pop* aser, uint8_t& adata)
 			{
 				int8_t lvalue = 0;
-				if (serialize_format<int8_t>::pop(aserialize, lvalue))
+				if (serialize_format<int8_t>::pop(aser, lvalue))
 				{
 					adata = (uint8_t)lvalue;
 					return true;
@@ -287,24 +289,24 @@ namespace ngl
 				return false;
 			}
 
-			static void bytes(serialize_byte* aserialize, const uint8_t adata)
+			static void bytes(serialize_byte* aser, const uint8_t adata)
 			{
-				serialize_format<int8_t>::bytes(aserialize, adata);
+				serialize_format<int8_t>::bytes(aser, adata);
 			}
 		};
 
 		template <>
 		struct serialize_format<uint16_t>
 		{
-			static bool push(serialize_push* aserialize, const uint16_t adata)
+			static bool push(serialize_push* aser, const uint16_t adata)
 			{
-				return serialize_format<int16_t>::push(aserialize, (int16_t)adata);
+				return serialize_format<int16_t>::push(aser, (int16_t)adata);
 			}
 
-			static bool pop(serialize_pop* aserialize, uint16_t& adata)
+			static bool pop(serialize_pop* aser, uint16_t& adata)
 			{
 				int16_t lvalue = 0;
-				if (serialize_format<int16_t>::pop(aserialize, lvalue))
+				if (serialize_format<int16_t>::pop(aser, lvalue))
 				{
 					adata = (uint16_t)lvalue;
 					return true;
@@ -312,24 +314,24 @@ namespace ngl
 				return false;
 			}
 
-			static void bytes(serialize_byte* aserialize, const uint16_t adata)
+			static void bytes(serialize_byte* aser, const uint16_t adata)
 			{
-				serialize_format<int16_t>::bytes(aserialize, adata);
+				serialize_format<int16_t>::bytes(aser, adata);
 			}
 		};
 
 		template <>
 		struct serialize_format<uint32_t>
 		{
-			static bool push(serialize_push* aserialize, const uint32_t adata)
+			static bool push(serialize_push* aser, const uint32_t adata)
 			{
-				return serialize_format<uint32_t>::push(aserialize, adata);
+				return serialize_format<uint32_t>::push(aser, adata);
 			}
 
-			static bool pop(serialize_pop* aserialize, uint32_t& adata)
+			static bool pop(serialize_pop* aser, uint32_t& adata)
 			{
 				int32_t lvalue = 0;
-				if (serialize_format<int32_t>::pop(aserialize, lvalue))
+				if (serialize_format<int32_t>::pop(aser, lvalue))
 				{
 					adata = lvalue;
 					return true;
@@ -337,24 +339,24 @@ namespace ngl
 				return false;
 			}
 
-			static void bytes(serialize_byte* aserialize, const uint32_t adata)
+			static void bytes(serialize_byte* aser, const uint32_t adata)
 			{
-				serialize_format<int32_t>::bytes(aserialize, (int32_t)adata);
+				serialize_format<int32_t>::bytes(aser, (int32_t)adata);
 			}
 		};
 
 		template <>
 		struct serialize_format<uint64_t>
 		{
-			static bool push(serialize_push* aserialize, const uint64_t adata)
+			static bool push(serialize_push* aser, const uint64_t adata)
 			{
-				return serialize_format<int64_t>::push(aserialize, adata);
+				return serialize_format<int64_t>::push(aser, adata);
 			}
 
-			static bool pop(serialize_pop* aserialize, uint64_t& adata)
+			static bool pop(serialize_pop* aser, uint64_t& adata)
 			{
 				int64_t lvalue = 0;
-				if (serialize_format<int64_t>::pop(aserialize, lvalue))
+				if (serialize_format<int64_t>::pop(aser, lvalue))
 				{
 					adata = (uint64_t)lvalue;
 					return true;
@@ -362,25 +364,25 @@ namespace ngl
 				return false;
 			}
 
-			static void bytes(serialize_byte* aserialize, const uint64_t adata)
+			static void bytes(serialize_byte* aser, const uint64_t adata)
 			{
-				serialize_format<int64_t>::bytes(aserialize, (int64_t)adata);
+				serialize_format<int64_t>::bytes(aser, (int64_t)adata);
 			}
 		};
 
 		template <>
 		struct serialize_format<bool>
 		{
-			static bool push(serialize_push* aserialize, const bool adata)
+			static bool push(serialize_push* aser, const bool adata)
 			{
 				int8_t lvalue = adata ? 1 : 0;
-				return serialize_format<int8_t>::push(aserialize, lvalue);
+				return serialize_format<int8_t>::push(aser, lvalue);
 			}
 
-			static bool pop(serialize_pop* aserialize, bool& adata)
+			static bool pop(serialize_pop* aser, bool& adata)
 			{
 				int8_t lvalue = 0;
-				if (serialize_format<int8_t>::pop(aserialize, lvalue))
+				if (serialize_format<int8_t>::pop(aser, lvalue))
 				{
 					adata = lvalue == 0 ? false : true;
 					return true;
@@ -388,47 +390,47 @@ namespace ngl
 				return false;
 			}
 
-			static void bytes(serialize_byte* aserialize, const bool adata)
+			static void bytes(serialize_byte* aser, const bool adata)
 			{
-				serialize_format<int8_t>::bytes(aserialize, adata ? 1 : 0);
+				serialize_format<int8_t>::bytes(aser, adata ? 1 : 0);
 			}
 		};
 
 		template <>
 		struct serialize_format<float>
 		{
-			static bool push(serialize_push* aserialize, const float adata)
+			static bool push(serialize_push* aser, const float adata)
 			{
-				return aserialize->basetype((void*)&adata, sizeof(adata));
+				return aser->basetype((void*)&adata, sizeof(adata));
 			}
 
-			static bool pop(serialize_pop* aserialize, float& adata)
+			static bool pop(serialize_pop* aser, float& adata)
 			{
-				return aserialize->basetype((void*)&adata, sizeof(adata));
+				return aser->basetype((void*)&adata, sizeof(adata));
 			}
 
-			static void bytes(serialize_byte* aserialize, const float adata)
+			static void bytes(serialize_byte* aser, const float adata)
 			{
-				aserialize->move_pos(sizeof(adata));
+				aser->move_pos(sizeof(adata));
 			}
 		};
 
 		template <>
 		struct serialize_format<double>
 		{
-			static bool push(serialize_push* aserialize, const double adata)
+			static bool push(serialize_push* aser, const double adata)
 			{
-				return aserialize->basetype((void*)&adata, sizeof(adata));
+				return aser->basetype((void*)&adata, sizeof(adata));
 			}
 
-			static bool pop(serialize_pop* aserialize, double& adata)
+			static bool pop(serialize_pop* aser, double& adata)
 			{
-				return aserialize->basetype((void*)&adata, sizeof(adata));
+				return aser->basetype((void*)&adata, sizeof(adata));
 			}
 
-			static void bytes(serialize_byte* aserialize, const double adata)
+			static void bytes(serialize_byte* aser, const double adata)
 			{
-				aserialize->move_pos(sizeof(adata));
+				aser->move_pos(sizeof(adata));
 			}
 		};
 
@@ -439,20 +441,20 @@ namespace ngl
 			{
 				eserialize_format_bytes = 102400,
 			};
-			static bool push(serialize_push* aserialize, const std::string& adata)
+			static bool push(serialize_push* aser, const std::string& adata)
 			{
 				int32_t lsize = (int32_t)adata.size();
-				if (!serialize_format<int32_t>::push(aserialize, lsize))
+				if (!serialize_format<int32_t>::push(aser, lsize))
 				{
 					return false;
 				}
-				return aserialize->basetype((void*)adata.c_str(), lsize);
+				return aser->basetype((void*)adata.c_str(), lsize);
 			}
 
-			static bool pop(serialize_pop* aserialize, std::string& adata)
+			static bool pop(serialize_pop* aser, std::string& adata)
 			{
 				int32_t lsize = 0;
-				if (!serialize_format<int32_t>::pop(aserialize, lsize))
+				if (!serialize_format<int32_t>::pop(aser, lsize))
 				{
 					return false;
 				}
@@ -461,30 +463,29 @@ namespace ngl
 					return false;
 				}
 				adata.resize(lsize);
-				return aserialize->basetype((void*)adata.data(), lsize);
+				return aser->basetype((void*)adata.data(), lsize);
 			}
 
-			static void bytes(serialize_byte* aserialize, const std::string& adata)
+			static void bytes(serialize_byte* aser, const std::string& adata)
 			{
 				int32_t lsize = (int32_t)adata.size();
-				serialize_format<int32_t>::bytes(aserialize, lsize);
-				aserialize->move_pos(lsize);
+				serialize_format<int32_t>::bytes(aser, lsize);
+				aser->move_pos(lsize);
 			}
 		};
 
 		template <typename T>
 		struct serialize_format<std::vector<T>>
 		{
-			static bool push(serialize_push* aserialize, const std::vector<T>& adata)
+			static bool push(serialize_push* aser, const std::vector<T>& adata)
 			{
-				int32_t lsize = (int32_t)adata.size();
-				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				if (!serialize_format<int32_t>::push(aser, (int32_t)adata.size()))
 				{
 					return false;
 				}
-				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				for (const auto& item : adata)
 				{
-					if (!serialize_format<T>::push(aserialize, *itor))
+					if (!serialize_format<T>::push(aser, item))
 					{
 						return false;
 					}
@@ -492,10 +493,10 @@ namespace ngl
 				return true;
 			}
 
-			static bool pop(serialize_pop* aserialize, std::vector<T>& adata)
+			static bool pop(serialize_pop* aser, std::vector<T>& adata)
 			{
 				int32_t lsize = 0;
-				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				if (!serialize_format<int32_t>::pop(aser, lsize))
 				{
 					return false;
 				}
@@ -505,7 +506,7 @@ namespace ngl
 				}
 				for (int32_t i = 0; i < lsize; ++i)
 				{
-					if (!serialize_format<T>::pop(aserialize, adata[i]))
+					if (!serialize_format<T>::pop(aser, adata[i]))
 					{
 						return false;
 					}
@@ -513,13 +514,12 @@ namespace ngl
 				return true;
 			}
 
-			static void bytes(serialize_byte* aserialize, const std::vector<T>& adata)
+			static void bytes(serialize_byte* aser, const std::vector<T>& adata)
 			{
-				int32_t lsize = (int32_t)adata.size();
-				serialize_format<int32_t>::bytes(aserialize, lsize);
-				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				serialize_format<int32_t>::bytes(aser, (int32_t)adata.size());
+				for (const auto& item : adata)
 				{
-					serialize_format<T>::bytes(aserialize, *itor);
+					serialize_format<T>::bytes(aser, item);
 				}
 			}
 		};
@@ -527,16 +527,15 @@ namespace ngl
 		template <typename T>
 		struct serialize_format<std::set<T>>
 		{
-			static bool push(serialize_push* aserialize, const std::set<T>& adata)
+			static bool push(serialize_push* aser, const std::set<T>& adata)
 			{
-				int32_t lsize = (int32_t)adata.size();
-				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				if (!serialize_format<int32_t>::push(aser, (int32_t)adata.size()))
 				{
 					return false;
 				}
-				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				for (const auto& item : adata)
 				{
-					if (!serialize_format<T>::push(aserialize, *itor))
+					if (!serialize_format<T>::push(aser, item))
 					{
 						return false;
 					}
@@ -544,17 +543,17 @@ namespace ngl
 				return true;
 			}
 
-			static bool pop(serialize_pop* aserialize, std::set<T>& adata)
+			static bool pop(serialize_pop* aser, std::set<T>& adata)
 			{
 				int32_t lsize = 0;
-				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				if (!serialize_format<int32_t>::pop(aser, lsize))
 				{
 					return false;
 				}
 				for (int32_t i = 0; i < lsize; ++i)
 				{
 					T ltemp;
-					if (!serialize_format<T>::pop(aserialize, ltemp))
+					if (!serialize_format<T>::pop(aser, ltemp))
 					{
 						return false;
 					}
@@ -563,13 +562,12 @@ namespace ngl
 				return true;
 			}
 
-			static void bytes(serialize_byte* aserialize, const std::set<T>& adata)
+			static void bytes(serialize_byte* aser, const std::set<T>& adata)
 			{
-				int32_t lsize = (int32_t)adata.size();
-				serialize_format<int32_t>::bytes(aserialize, lsize);
-				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				serialize_format<int32_t>::bytes(aser, (int32_t)adata.size());
+				for (const auto& item : adata)
 				{
-					serialize_format<T>::bytes(aserialize, *itor);
+					serialize_format<T>::bytes(aser, item);
 				}
 			}
 		};
@@ -577,16 +575,15 @@ namespace ngl
 		template <typename T>
 		struct serialize_format<std::list<T>>
 		{
-			static bool push(serialize_push* aserialize, const std::list<T>& adata)
+			static bool push(serialize_push* aser, const std::list<T>& adata)
 			{
-				int32_t lsize = adata.size();
-				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				if (!serialize_format<int32_t>::push(aser, (int32_t)adata.size()))
 				{
 					return false;
 				}
-				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				for (const auto& item : adata)
 				{
-					if (!serialize_format<T>::push(aserialize, *itor))
+					if (!serialize_format<T>::push(aser, item))
 					{
 						return false;
 					}
@@ -594,17 +591,17 @@ namespace ngl
 				return true;
 			}
 
-			static bool pop(serialize_pop* aserialize, std::list<T>& adata)
+			static bool pop(serialize_pop* aser, std::list<T>& adata)
 			{
 				int32_t lsize = 0;
-				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				if (!serialize_format<int32_t>::pop(aser, lsize))
 				{
 					return false;
 				}
 				for (int32_t i = 0; i < lsize; ++i)
 				{
 					T ltemp;
-					if (!serialize_format<T>::pop(aserialize, ltemp))
+					if (!serialize_format<T>::pop(aser, ltemp))
 					{
 						return false;
 					}
@@ -613,13 +610,13 @@ namespace ngl
 				return true;
 			}
 
-			static void bytes(serialize_byte* aserialize, const std::list<T>& adata)
+			static void bytes(serialize_byte* aser, const std::list<T>& adata)
 			{
 				int32_t lsize = adata.size();
-				serialize_format<int32_t>::bytes(aserialize, lsize);
-				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				serialize_format<int32_t>::bytes(aser, lsize);
+				for (const auto& item : adata)
 				{
-					serialize_format<T>::bytes(aserialize, *itor);
+					serialize_format<T>::bytes(aser, item);
 				}
 			}
 		};
@@ -627,20 +624,19 @@ namespace ngl
 		template <typename TKEY, typename TVAL>
 		struct serialize_format<std::map<TKEY, TVAL>>
 		{
-			static bool push(serialize_push* aserialize, const std::map<TKEY, TVAL>& adata)
+			static bool push(serialize_push* aser, const std::map<TKEY, TVAL>& adata)
 			{
-				int32_t lsize = (int32_t)adata.size();
-				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				if (!serialize_format<int32_t>::push(aser, (int32_t)adata.size()))
 				{
 					return false;
 				}
-				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				for (const auto& [key, value] : adata)
 				{
-					if (!serialize_format<TKEY>::push(aserialize, itor->first))
+					if (!serialize_format<TKEY>::push(aser, key))
 					{
 						return false;
 					}
-					if (!serialize_format<TVAL>::push(aserialize, itor->second))
+					if (!serialize_format<TVAL>::push(aser, value))
 					{
 						return false;
 					}
@@ -648,38 +644,40 @@ namespace ngl
 				return true;
 			}
 
-			static bool pop(serialize_pop* aserialize, std::map<TKEY, TVAL>& adata)
+			static bool pop(serialize_pop* aser, std::map<TKEY, TVAL>& adata)
 			{
 				int32_t lsize = 0;
-				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				if (!serialize_format<int32_t>::pop(aser, lsize))
 				{
 					return false;
 				}
 				for (int32_t i = 0; i < lsize; ++i)
 				{
-					TKEY ltempkey;
-					if (!serialize_format<TKEY>::pop(aserialize, ltempkey))
+					std::pair<TKEY, TVAL> lpair;
+					if (!serialize_format<TKEY>::pop(aser, lpair.first))
 					{
 						return false;
 					}
-					TVAL ltempvalue;
-					if (!serialize_format<TVAL>::pop(aserialize, ltempvalue))
+					if (!serialize_format<TVAL>::pop(aser, lpair.second))
 					{
 						return false;
 					}
-					adata.insert(std::make_pair(ltempkey, ltempvalue));
+				 	const auto& [_, success] = adata.insert(lpair);
+					if (!success)
+					{
+						std::cout << "serialize map repeat key" << std::endl;
+					}
 				}
 				return true;
 			}
 
-			static void bytes(serialize_byte* aserialize, const std::map<TKEY, TVAL>& adata)
+			static void bytes(serialize_byte* aser, const std::map<TKEY, TVAL>& adata)
 			{
-				int32_t lsize = (int32_t)adata.size();
-				serialize_format<int32_t>::bytes(aserialize, lsize);
-				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				serialize_format<int32_t>::bytes(aser, (int32_t)adata.size());
+				for (const auto& [key, value] : adata)
 				{
-					serialize_format<TKEY>::bytes(aserialize, itor->first);
-					serialize_format<TVAL>::bytes(aserialize, itor->second);
+					serialize_format<TKEY>::bytes(aser, key);
+					serialize_format<TVAL>::bytes(aser, value);
 				}
 			}
 		};
@@ -687,69 +685,68 @@ namespace ngl
 		struct nserialize
 		{
 			template <typename ...ARGS>
-			static bool push(serialize_push* aserialize, const ARGS&... aargs)
-			{//c++17 折叠表达式：强制规定sizeof...(TARGS) == 0 返回值为true
-				return (serialize_format<ARGS>::push(aserialize, aargs) && ...);
-			}
-
-			template <typename ...ARGS>
-			static bool pop(serialize_pop* aserialize, ARGS&... aargs)
-			{//c++17 折叠表达式：强制规定sizeof...(TARGS) == 0 返回值为true
-				return (serialize_format<ARGS>::pop(aserialize, aargs) && ...);
-			}
-
-			template <typename ...ARGS>
-			static void bytes(serialize_byte* aserialize, const ARGS&... aargs)
+			static bool push(serialize_push* aser, const ARGS&... aargs)
 			{
-				(serialize_format<ARGS>::bytes(aserialize, aargs), ...);
+				return (serialize_format<ARGS>::push(aser, aargs) && ...);
+			}
+
+			template <typename ...ARGS>
+			static bool pop(serialize_pop* aser, ARGS&... aargs)
+			{
+				return (serialize_format<ARGS>::pop(aser, aargs) && ...);
+			}
+
+			template <typename ...ARGS>
+			static void bytes(serialize_byte* aser, const ARGS&... aargs)
+			{
+				(serialize_format<ARGS>::bytes(aser, aargs), ...);
 			}
 		};
 	}// namespace ser
 }// namespace ngl
-
 
 namespace ngl
 {
 	namespace ser
 	{
 		template <typename T>
-		bool serialize_format<T>::push(serialize_push* aserialize, const T& adata)
+		bool serialize_format<T>::push(serialize_push* aser, const T& adata)
 		{
 			if constexpr (std::is_enum<T>::value)
 			{
-				return serialize_format<int32_t>::push(aserialize, (int32_t)adata);
+				return serialize_format<int32_t>::push(aser, (int32_t)adata);
 			}
 			else if constexpr (is_protobuf_message<T>::value)
 			{
 				int32_t lbytes = adata.ByteSize();
-				if (!serialize_format<int32_t>::push(aserialize, lbytes))
+				if (!serialize_format<int32_t>::push(aser, lbytes))
 				{
 					return false;
 				}
-				if (lbytes > (aserialize->len() - aserialize->pos()))
+				if (lbytes > (aser->len() - aser->pos()))
 				{
 					return false;
 				}
-				if (!adata.SerializeToArray(&aserialize->buff()[aserialize->pos()], lbytes))
+				if (!adata.SerializeToArray(&aser->buff()[aser->pos()], lbytes))
 				{
 					return false;
 				}
-				aserialize->move_pos(lbytes);
+				aser->move_pos(lbytes);
 				return true;
 			}
 			else
 			{
-				return adata.push_format(aserialize);
+				return adata.push_format(aser);
 			}
 		}
 
 		template <typename T>
-		bool serialize_format<T>::pop(serialize_pop* aserialize, T& adata)
+		bool serialize_format<T>::pop(serialize_pop* aser, T& adata)
 		{
 			if constexpr (std::is_enum<T>::value)
 			{
 				int32_t lvalues = 0;
-				if (!serialize_format<int32_t>::pop(aserialize, lvalues))
+				if (!serialize_format<int32_t>::pop(aser, lvalues))
 				{
 					return false;
 				}
@@ -759,44 +756,43 @@ namespace ngl
 			else if constexpr (is_protobuf_message<T>::value)
 			{
 				int32_t lbytes = 0;
-				if (!serialize_format<int32_t>::pop(aserialize, lbytes))
+				if (!serialize_format<int32_t>::pop(aser, lbytes))
 				{
 					return false;
 				}
-				if (lbytes > (aserialize->len() - aserialize->pos()))
+				if (lbytes > (aser->len() - aser->pos()))
 				{
 					return false;
 				}
-				if (!adata.ParseFromArray(&aserialize->buff()[aserialize->pos()], lbytes))
+				if (!adata.ParseFromArray(&aser->buff()[aser->pos()], lbytes))
 				{
 					return false;
 				}
-				aserialize->move_pos(lbytes);
+				aser->move_pos(lbytes);
 				return true;
 			}
 			else
 			{
-				return adata.pop_format(aserialize);
+				return adata.pop_format(aser);
 			}
 		}
 
 		template <typename T>
-		void serialize_format<T>::bytes(serialize_byte* aserialize, const T& adata)
+		void serialize_format<T>::bytes(serialize_byte* aser, const T& adata)
 		{
 			if constexpr (std::is_enum<T>::value)
 			{
-				int32_t lvalue = (int32_t)adata;
-				serialize_format<int32_t>::bytes(aserialize, lvalue);
+				serialize_format<int32_t>::bytes(aser, (int32_t)adata);
 			}
 			else if constexpr (is_protobuf_message<T>::value)
 			{
 				int32_t lvalue = (int32_t)adata.ByteSize();
-				serialize_format<int32_t>::bytes(aserialize, lvalue);
-				aserialize->move_pos(lvalue);
+				serialize_format<int32_t>::bytes(aser, lvalue);
+				aser->move_pos(lvalue);
 			}
 			else
 			{
-				adata.bytes_format(aserialize);
+				adata.bytes_format(aser);
 			}
 		}
 	}//namespce ser

@@ -80,10 +80,18 @@ namespace ngl
 	{
 		static bool push(tinyxml2::XMLElement* aele, const char* akey, const T*& adata)
 		{
+			if (adata == nullptr)
+			{
+				return false;
+			}
 			return xml_serialize<ATTR, T>::push(aele, akey, *adata);
 		}
 		static bool pop(tinyxml2::XMLElement* aele, const char* akey, T*& adata)
 		{
+			if (adata == nullptr)
+			{
+				return false;
+			}
 			return xml_serialize<ATTR, T>::pop(aele, akey, *adata);
 		}
 	};

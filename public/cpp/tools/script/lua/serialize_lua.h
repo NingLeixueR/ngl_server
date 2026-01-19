@@ -87,22 +87,38 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, const T* adata)
 		{
+			if (adata == nullptr)
+			{
+				return;
+			}
 			serialize_lua<T>::stack_push(L, *adata);
 		}
 
 		static bool stack_pop(lua_State* L, T* adata, bool apop = true)
 		{
-			serialize_lua<T>::stack_pop(L, *adata, apop);
+			if (adata == nullptr)
+			{
+				return false;
+			}
+			return serialize_lua<T>::stack_pop(L, *adata, apop);
 		}
 
 		static void table_push(lua_State* L, const char* aname, const T* adata)
 		{
+			if (adata == nullptr)
+			{
+				return;
+			}
 			serialize_lua<T>::table_push(L, aname, *adata);
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, T* adata)
 		{
-			serialize_lua<T>::table_pop(L, aname, *adata);
+			if (adata == nullptr)
+			{
+				return false;
+			}
+			return serialize_lua<T>::table_pop(L, aname, *adata);
 		}
 	};
 
