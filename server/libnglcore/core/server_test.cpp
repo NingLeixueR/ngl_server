@@ -1,7 +1,7 @@
 #include "xmlprotocol.h"
-#include "manage_curl.h"
 #include "bi_item.h"
 #include "dbredis.h"
+#include "ncurl.h"
 
 #include <utf8.h> 
 
