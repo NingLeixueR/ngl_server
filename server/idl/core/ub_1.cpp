@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 26-01-18 16:11:01
+// 创建时间 26-01-19 10:16:12
 #include "pb_field.cpp"
 #include "session_endpoint.cpp"
 #include "attribute_value.cpp"
