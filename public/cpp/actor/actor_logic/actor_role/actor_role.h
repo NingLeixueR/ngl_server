@@ -192,6 +192,28 @@ namespace ngl
 			return nguid::none_actordataid();
 		}
 
+		template <typename T>
+		nguid forward_guid(ENUM_ACTOR aactor, ecross atype, nguid& aguid, const T& adata)
+		{
+			if (atype == ecross_ordinary)
+			{
+				aguid = nguid::make(aactor, tab_self_area, forward_dataid(adata));
+			}
+			else if (atype == ecross_cross_ordinary)
+			{
+				aguid = nguid::make(aactor, tab_self_cros_area, forward_dataid(adata));
+			}
+			else if (atype == ecross_cross_example)
+			{
+				aguid = m_example.second;
+			}
+			else
+			{
+				return false;
+			}
+			return true;
+		}
+
 		template <ENUM_ACTOR ACTOR, typename T>
 		bool handle_forward(const message<T>& adata)
 		{
@@ -206,22 +228,12 @@ namespace ngl
 			}
 			std::shared_ptr<mforward<T>> pro(nullptr);
 			pro = std::make_shared<mforward<T>>(id_guid(), *lparm);
-			i64_actorid lguid;
-			switch (forward_type(*lparm))
+			nguid lguid;
+			if (forward_guid<T>(ACTOR, forward_type(*lparm), lguid, *lparm))
 			{
-			case ecross_ordinary:
-				lguid = nguid::make(ACTOR, tab_self_area, forward_dataid(*lparm));
-				break;
-			case ecross_cross_ordinary:
-				lguid = nguid::make(ACTOR, tab_self_cros_area, forward_dataid(*lparm));
-				break; 
-			case ecross_cross_example:
-				lguid = m_example.second;
-				break;
-			default:
-				return true;
+				actor::send_actor(lguid, id_guid(), pro);
 			}
-			actor::send_actor(lguid, id_guid(), pro);
+
 			return true;
 		}
 #pragma endregion
