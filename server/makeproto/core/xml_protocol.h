@@ -425,6 +425,7 @@ public:
         }
         std::stringstream m_stream;
         int messageCount = fileDescriptor->message_type_count();
+        bool lfirst = true;
         for (int i = 0; i < messageCount; ++i)
         {
             const google::protobuf::Descriptor* messageDescriptor = fileDescriptor->message_type(i);
@@ -435,7 +436,13 @@ public:
                 || messageDescriptor->name().find("PROBUFF_EXAMPLE_") != std::string::npos
                 )
             {
-                m_stream << std::format("            mkdef_map({}::{});", lnamespace, messageDescriptor->name()) << std::endl;
+                m_stream << "            ";
+                if (!lfirst)
+                {
+                    m_stream << ", ";
+                }
+                lfirst = false;
+                m_stream << std::format("{}::{}", lnamespace, messageDescriptor->name()) << std::endl;
             }
         }
         return m_stream.str();
@@ -487,7 +494,12 @@ namespace ngl
 		static std::map<std::string, type_j2pfun> lmap;
 		if (lmap.empty())
 		{
-            #define mkdef_map(NAME) lmap[#NAME] = std::bind_front(&j2p<NAME>::fun))" << std::endl;
+            auto fun = [&]<typename ...TARG>()
+            {
+                ((lmap[tools::type_name<TARG>()] = std::bind_front(&j2p<TARG>::fun)), ...);
+            };
+            fun.operator()<
+)" << std::endl;
 
 
         m_stream << astr;
