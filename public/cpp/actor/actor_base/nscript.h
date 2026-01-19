@@ -15,7 +15,6 @@
 
 #include "luafunction.h"
 #include "actor_base.h"
-#include "test_lua.h"
 #include "ndefine.h"
 
 extern "C"

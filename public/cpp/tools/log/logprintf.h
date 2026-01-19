@@ -47,7 +47,7 @@ namespace ngl
 			i32_actordataid m_id;					// nlogactor
 			std::string		m_dir;					// 文件夹
 			ELOG_TYPE		m_type = ELOG_DEFAULT;	// 日志类型
-			int32_t			m_flush_time = 0;	// 写入文件的间隔
+			int32_t			m_flush_time = 0;		// 写入文件的间隔
 
 			int32_t flush_time()
 			{
@@ -55,24 +55,31 @@ namespace ngl
 			}
 		};
 		std::ofstream	m_stream;
-		config			m_config;
-		int				m_count = 0;
-		int				m_fcount = 0;
+		config			m_config;		// 日志配置
+		int				m_count = 0;	// 数量
+		int				m_fcount = 0;	// 刷新数量
 
 		logfile(const config& aconfig);
 
-		bool check_count()const;
+		// # 刷新数量
+		bool flush_count()const;
 
+		// # 关闭文件流
 		void close_fstream();
 
+		// # 创建目录
 		bool create_directories(const std::string& apath);
 
+		// # 创建
 		void create();
 
+		// # 打印日志
 		virtual void printf(const np_logitem* alog) = 0;
 
+		// # 刷新到文件
 		void flush();
 
+		// # 创建日志实例
 		static std::shared_ptr<logfile> create_make(const config& aconfig);
 	};
 }// namespace ngl

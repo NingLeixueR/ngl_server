@@ -75,6 +75,19 @@ namespace ngl
 		static bool pop(tinyxml2::XMLElement* aele, const char* akey, T& adata);
 	};
 
+	template <bool ATTR, typename T>
+	struct xml_serialize<ATTR, T*>
+	{
+		static bool push(tinyxml2::XMLElement* aele, const char* akey, const T*& adata)
+		{
+			return xml_serialize<ATTR, T>::push(aele, akey, *adata);
+		}
+		static bool pop(tinyxml2::XMLElement* aele, const char* akey, T*& adata)
+		{
+			return xml_serialize<ATTR, T>::pop(aele, akey, *adata);
+		}
+	};
+
 	template <bool ATTR>
 	struct xbtype
 	{

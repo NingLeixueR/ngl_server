@@ -35,8 +35,8 @@ namespace ngl
 			std::string m_toupper;		// 转换为大写
 			std::string m_never;		// 不改变大小写
 		};
-		static std::map<int, std::map<ENUMT, data>> m_datae2n;
-		static std::map<int, std::map<std::string, ENUMT>> m_datan2e;
+		static std::map<int, std::map<ENUMT, data>>			m_datae2n;
+		static std::map<int, std::map<std::string, ENUMT>>	m_datan2e;
 
 		static void rename(std::string& astr)
 		{

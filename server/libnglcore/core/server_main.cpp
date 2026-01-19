@@ -554,10 +554,10 @@ bool start_pushserverconfig()
 
 	ngl::ttab_servers::instance().foreach_server([&lpushserver](ngl::tab_servers* aserver)
 		{
-			auto lhttp = ngl::manage_curl::make_http();
-			ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
-			ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
-			ngl::manage_curl::set_url(lhttp, lpushserver);
+			auto lhttp = ngl::ncurl::make_http();
+			ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
+			ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_GET);
+			ngl::ncurl::set_url(lhttp, lpushserver);
 
 			std::stringstream lstream;
 			lstream
@@ -588,13 +588,13 @@ bool start_pushserverconfig()
 			std::cout << lnet << std::endl;
 
 			std::string lstr = lstream.str();
-			ngl::manage_curl::set_param(lhttp, lstr);
+			ngl::ncurl::set_param(lhttp, lstr);
 
-			ngl::manage_curl::set_callback(lhttp, [lstr](int, ngl::http_parm& ahttp)
+			ngl::ncurl::set_callback(lhttp, [lstr](int, ngl::http_parm& ahttp)
 				{
 					ngl::log_error()->print("[{}]->[{}]", lstr, ahttp.m_recvdata);
 				});
-			ngl::manage_curl::send(lhttp);
+			ngl::ncurl::send(lhttp);
 		});
 	return true;
 }
@@ -880,7 +880,7 @@ std::function<void()> dump_logic()
 		{
 			std::cout << "dump_logic()" << std::endl;
 			
-			ngl::manage_curl::parameter lparm
+			ngl::ncurl::parameter lparm
 			{
 				.m_smtp = nconfig.mail().m_smtp,
 				.m_email = nconfig.mail().m_email,
@@ -890,6 +890,6 @@ std::function<void()> dump_logic()
 				.m_content = "code dump",
 			};
 			lparm.m_recvs.emplace_back(std::make_pair("348634371@qq.com", "¿Ó≤©QQ"));
-			ngl::manage_curl::sendemail(lparm);
+			ngl::ncurl::sendemail(lparm);
 		};
 }

@@ -35,6 +35,25 @@ namespace ngl
 		static void push(cJSON* ajson, const T& adata);
 	};
 
+	template <typename T>
+	struct json_format<T*>
+	{
+		static bool pop(cJSON* ajson, const char* akey, T*& adata)
+		{
+			return json_format<T>::pop(ajson, akey, *adata);
+		}
+
+		static void push(cJSON* ajson, const char* akey, const T*& adata)
+		{
+			return json_format<T>::push(ajson, akey, *adata);
+		}
+
+		static void push(cJSON* ajson, const T*& adata)
+		{
+			return json_format<T>::push(ajson, *adata);
+		}
+	};
+
 	class ncjson;
 	template <>
 	struct json_format<ncjson>;
