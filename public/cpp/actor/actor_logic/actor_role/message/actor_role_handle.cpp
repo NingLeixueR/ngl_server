@@ -14,12 +14,12 @@
 #include "ttab_specialid.h"
 #include "actor_testlua.h"
 #include "actor_events.h"
-#include "manage_curl.h"
 #include "actor_role.h"
 #include "nregister.h"
 #include "ttab_task.h"
 #include "nforward.h"
 #include "net.pb.h"
+#include "ncurl.h"
 #include "drop.h"
 #include "gcmd.h"
 namespace ngl
