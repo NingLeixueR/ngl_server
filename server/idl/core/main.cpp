@@ -19,7 +19,6 @@ int main(int argc, char* argv[])
 		idlcppprotocol::instance()._ttab();
 
 		idl::instance().data().clear();
-		idl::instance().analysis("../compile_befor/idl/xmltable.idl");
 
 	}
 	else if (argv[1] == std::string("protocol"))
