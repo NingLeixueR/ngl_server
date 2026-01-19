@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 26-01-19 10:16:02
+// 创建时间 26-01-19 15:41:23
 #include "pb_field.cpp"
 #include "session_endpoint.cpp"
 #include "attribute_value.cpp"
@@ -22,7 +22,6 @@
 #include "structbytes.cpp"
 #include "pb_protocol.cpp"
 #include "ndb_modular.cpp"
-#include "manage_curl.cpp"
 #include "manage_buff.cpp"
 #include "handle_pram.cpp"
 #include "time_wheel.cpp"
@@ -76,6 +75,7 @@
 #include "nrfun.cpp"
 #include "njson.cpp"
 #include "nguid.cpp"
+#include "ncurl.cpp"
 #include "grids.cpp"
 #include "cJSON.cpp"
 #include "actor.cpp"
