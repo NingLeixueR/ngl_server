@@ -105,21 +105,21 @@ namespace ngl
 		}
 	};
 
-	class manage_curl
+	class ncurl
 	{
-		manage_curl(const manage_curl&) = delete;
-		manage_curl& operator=(const manage_curl&) = delete;
+		ncurl(const ncurl&) = delete;
+		ncurl& operator=(const ncurl&) = delete;
 
 		std::unique_ptr<std::thread>			m_thread;
 		worklist<std::shared_ptr<http_parm>>	m_list;
 
-		manage_curl();
+		ncurl();
 
-		~manage_curl();
+		~ncurl();
 
-		static manage_curl& instance()
+		static ncurl& instance()
 		{
-			static manage_curl temp;
+			static ncurl temp;
 			return temp;
 		}
 

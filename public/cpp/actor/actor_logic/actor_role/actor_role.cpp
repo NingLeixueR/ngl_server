@@ -187,13 +187,13 @@ namespace ngl
 
 	void actor_role::requestgm(const char* aurl, const std::string& aparm, const std::function<void(int, http_parm&)>& acall)
 	{
-		auto lhttp = ngl::manage_curl::make_http();
-		ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
-		ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
-		ngl::manage_curl::set_url(lhttp, aurl);
-		ngl::manage_curl::set_param(lhttp, aparm);
-		ngl::manage_curl::set_callback(lhttp, acall);
-		ngl::manage_curl::send(lhttp);
+		auto lhttp = ngl::ncurl::make_http();
+		ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
+		ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_GET);
+		ngl::ncurl::set_url(lhttp, aurl);
+		ngl::ncurl::set_param(lhttp, aparm);
+		ngl::ncurl::set_callback(lhttp, acall);
+		ngl::ncurl::send(lhttp);
 	}
 
 	void actor_role::loginpay()
@@ -229,12 +229,12 @@ namespace ngl
 						return;
 					}
 
-					auto lpayhttp = ngl::manage_curl::make_http();
+					auto lpayhttp = ngl::ncurl::make_http();
 
 					std::string lquestparm;
-					ngl::manage_curl::param(lquestparm, "orderid", lorderid.c_str());
-					ngl::manage_curl::param(lquestparm, "rechargeid", lrechargeid);
-					ngl::manage_curl::param(lquestparm, "roleid", lroleid);
+					ngl::ncurl::param(lquestparm, "orderid", lorderid.c_str());
+					ngl::ncurl::param(lquestparm, "rechargeid", lrechargeid);
+					ngl::ncurl::param(lquestparm, "roleid", lroleid);
 					requestgm((std::format("{}/pay/pay_login_stat.php", sysconfig::gmurl())).c_str(), lquestparm, [this](int32_t, http_parm& ahttp)
 						{
 							log_error()->print("actor_role::loginpay curl callback [{}]", ahttp.m_recvdata);
@@ -349,16 +349,16 @@ namespace ngl
 		
 		if (areporting && lstat == 0)
 		{
-			auto lhttp = ngl::manage_curl::make_http();
-			ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
-			ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
+			auto lhttp = ngl::ncurl::make_http();
+			ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
+			ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_GET);
 			std::string lurl = std::format("{}/pay/pay_update.php", sysconfig::gmurl());
-			ngl::manage_curl::set_url(lhttp, lurl);
+			ngl::ncurl::set_url(lhttp, lurl);
 
 			std::string lparm = std::format("orderid={}&gm={}&roleid={}&stat={}",aorderid, (agm ? 1 : 0), id_guid(), lstat);
 
-			ngl::manage_curl::set_param(lhttp, lparm.c_str());
-			ngl::manage_curl::send(lhttp);
+			ngl::ncurl::set_param(lhttp, lparm.c_str());
+			ngl::ncurl::send(lhttp);
 		}
 
 		if (lgold > 0 || lstat == 0)

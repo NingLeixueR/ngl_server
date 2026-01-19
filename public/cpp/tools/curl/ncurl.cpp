@@ -20,7 +20,7 @@
 
 namespace ngl
 {
-	manage_curl::manage_curl() :
+	ncurl::ncurl() :
 		m_thread(nullptr),
 		m_list([this](std::shared_ptr<http_parm>& item)
 			{
@@ -28,16 +28,16 @@ namespace ngl
 			})
 	{}
 
-	manage_curl::~manage_curl()
+	ncurl::~ncurl()
 	{
 	}
 
-	void manage_curl::send(std::shared_ptr<http_parm>& adata)
+	void ncurl::send(std::shared_ptr<http_parm>& adata)
 	{
 		instance().m_list.push_back(adata);
 	}
 
-	void manage_curl::work(http_parm& ahttp)
+	void ncurl::work(http_parm& ahttp)
 	{
 		CURLcode lretvalue = visit(ahttp);
 		if (CURLE_OK != lretvalue)
@@ -51,7 +51,7 @@ namespace ngl
 		}
 	}
 
-	CURLcode manage_curl::visit(http_parm& ahttp)
+	CURLcode ncurl::visit(http_parm& ahttp)
 	{
 		if (ahttp.m_type == ENUM_TYPE_POST)
 		{
@@ -71,7 +71,7 @@ namespace ngl
 			}
 			curl_easy_setopt(ahttp.m_curl, CURLOPT_URL, ahttp.m_url.c_str());
 		}
-		curl_easy_setopt(ahttp.m_curl, CURLOPT_WRITEFUNCTION, &manage_curl::callback_write);
+		curl_easy_setopt(ahttp.m_curl, CURLOPT_WRITEFUNCTION, &ncurl::callback_write);
 		curl_easy_setopt(ahttp.m_curl, CURLOPT_WRITEDATA, &ahttp.m_recvdata);
 
 		if (ahttp.m_mode == ENUM_MODE_HTTPS)
@@ -101,7 +101,7 @@ namespace ngl
 		return curl_easy_perform(ahttp.m_curl);
 	}
 
-	size_t manage_curl::callback_write(void* buffer, size_t size, size_t nmemb, std::string* lpVoid)
+	size_t ncurl::callback_write(void* buffer, size_t size, size_t nmemb, std::string* lpVoid)
 	{
 		if (buffer == nullptr)
 		{
@@ -112,42 +112,42 @@ namespace ngl
 		return nmemb;
 	}
 
-	void manage_curl::set_mode(std::shared_ptr<http_parm>& ahttp, ENUM_MODE aval)
+	void ncurl::set_mode(std::shared_ptr<http_parm>& ahttp, ENUM_MODE aval)
 	{ 
 		ahttp->m_mode = aval; 
 	}
 
-	void manage_curl::set_type(std::shared_ptr<http_parm>& ahttp, ENUM_TYPE aval)
+	void ncurl::set_type(std::shared_ptr<http_parm>& ahttp, ENUM_TYPE aval)
 	{ 
 		ahttp->m_type = aval; 
 	}
 
-	void manage_curl::set_url(std::shared_ptr<http_parm>& ahttp, const std::string& aurl)
+	void ncurl::set_url(std::shared_ptr<http_parm>& ahttp, const std::string& aurl)
 	{ 
 		ahttp->m_url = aurl; 
 	}
 
-	void manage_curl::set_url(std::shared_ptr<http_parm>& ahttp, const char* aurl)
+	void ncurl::set_url(std::shared_ptr<http_parm>& ahttp, const char* aurl)
 	{ 
 		ahttp->m_url = aurl; 
 	}
 
-	void manage_curl::set_param(std::shared_ptr<http_parm>& ahttp, const std::string& aparam)
+	void ncurl::set_param(std::shared_ptr<http_parm>& ahttp, const std::string& aparam)
 	{ 
 		ahttp->m_param = aparam;
 	}
 
-	void manage_curl::set_headers(std::shared_ptr<http_parm>& ahttp, std::vector<std::string>& aheaders)
+	void ncurl::set_headers(std::shared_ptr<http_parm>& ahttp, std::vector<std::string>& aheaders)
 	{ 
 		ahttp->headers(aheaders); 
 	}
 
-	void manage_curl::set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback)
+	void ncurl::set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback)
 	{ 
 		ahttp->m_callback = aback; 
 	}
 
-	std::shared_ptr<http_parm> manage_curl::make_http()
+	std::shared_ptr<http_parm> ncurl::make_http()
 	{
 		return std::make_shared<http_parm>();
 	}
@@ -162,14 +162,14 @@ namespace ngl
 			static email_sender ltemp;
 			return ltemp;
 		}
-		void send(const manage_curl::parameter& aparm);
+		void send(const ncurl::parameter& aparm);
 
 	private:
 		static size_t callback(void* ptr, size_t size, size_t nmemb, void* userp);
-		void sendmail(const manage_curl::parameter& aparm);
+		void sendmail(const ncurl::parameter& aparm);
 		void run();
 
-		std::list<manage_curl::parameter>	m_list; 
+		std::list<ncurl::parameter>	m_list; 
 		int32_t								m_index = 0;
 	};
 
@@ -198,7 +198,7 @@ namespace ngl
 		return to_copy;
 	}
 
-	void email_sender::sendmail(const manage_curl::parameter& aparm)
+	void email_sender::sendmail(const ncurl::parameter& aparm)
 	{
 		m_index = 0;
 		CURL* curl;
@@ -274,7 +274,7 @@ namespace ngl
 
 	void email_sender::run()
 	{
-		std::list<manage_curl::parameter> templist;
+		std::list<ncurl::parameter> templist;
 		while (true)
 		{
 			email_sender_helper::m_sem.wait();
@@ -282,7 +282,7 @@ namespace ngl
 				monopoly_shared_lock(email_sender_helper::m_mutex);
 				m_list.swap(templist);
 			}
-			for (manage_curl::parameter& item : templist)
+			for (ncurl::parameter& item : templist)
 			{
 				sendmail(item);
 			}
@@ -290,7 +290,7 @@ namespace ngl
 		}
 	}
 
-	void email_sender::send(const manage_curl::parameter& aparm)
+	void email_sender::send(const ncurl::parameter& aparm)
 	{
 		monopoly_shared_lock(email_sender_helper::m_mutex);
 		m_list.push_back(aparm);
@@ -298,14 +298,14 @@ namespace ngl
 		return;
 	}
 
-	void manage_curl::sendemail(const parameter& aparm)
+	void ncurl::sendemail(const parameter& aparm)
 	{
 		ngl::email_sender::instance().send(aparm);
 	}
 
 	void test_mail(const char* atitle, const char* acontent, const std::vector<std::pair<std::string, std::string>>& amailvec/* = {}*/)
 	{
-		ngl::manage_curl::parameter lparm
+		ngl::ncurl::parameter lparm
 		{
 			.m_smtp = nconfig.mail().m_smtp,
 			.m_email = nconfig.mail().m_email,
@@ -320,15 +320,15 @@ namespace ngl
 			lparm.m_recvs.emplace_back(std::make_pair("libo1@youxigu.com", "¿Ó≤©"));
 			lparm.m_recvs.emplace_back(std::make_pair("348634371@qq.com", "¿Ó≤©QQ"));
 		}
-		manage_curl::sendemail(lparm);
+		ncurl::sendemail(lparm);
 	}
 
 	void test_manage_curl()
 	{
-		auto lhttp = ngl::manage_curl::make_http();
-		ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTPS);
-		ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_POST);
-		ngl::manage_curl::set_url(lhttp, "xxx");
+		auto lhttp = ngl::ncurl::make_http();
+		ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTPS);
+		ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_POST);
+		ngl::ncurl::set_url(lhttp, "xxx");
 
 		std::string lparm;
 		std::stringstream lstream;
@@ -337,19 +337,19 @@ namespace ngl
 			<< "token=" << "pU3T0Cq0mac3yUfLEf0jTFygIN8kGq8B"
 			<< "yWpx3hWQHFhSnTCj#311#6KuRKuaAjLJ5sYRy";
 
-		ngl::manage_curl::param(lparm, "appid", 311);
-		ngl::manage_curl::param(lparm, "userID", 7709523);
-		ngl::manage_curl::param(lparm, "token", "pU3T0Cq0mac3yUfLEf0jTFygIN8kGq8B");
-		ngl::manage_curl::param(lparm, "sign", tools::md5(lstream.str()).c_str());
-		ngl::manage_curl::set_param(lhttp, lparm);
+		ngl::ncurl::param(lparm, "appid", 311);
+		ngl::ncurl::param(lparm, "userID", 7709523);
+		ngl::ncurl::param(lparm, "token", "pU3T0Cq0mac3yUfLEf0jTFygIN8kGq8B");
+		ngl::ncurl::param(lparm, "sign", tools::md5(lstream.str()).c_str());
+		ngl::ncurl::set_param(lhttp, lparm);
 		bool lbool = true;
 
-		ngl::manage_curl::set_callback(lhttp, [&lbool](int anum, ngl::http_parm& aparm)
+		ngl::ncurl::set_callback(lhttp, [&lbool](int anum, ngl::http_parm& aparm)
 			{
 				log_error()->print("curl callback [{}]", aparm.m_recvdata);
 				lbool = false;
 			});
-		ngl::manage_curl::send(lhttp);
+		ngl::ncurl::send(lhttp);
 		while (lbool)
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(3000));
