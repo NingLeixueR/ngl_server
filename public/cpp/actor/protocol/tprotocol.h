@@ -126,16 +126,14 @@ namespace ngl
 		static std::map<nhashcode, info>			m_keyval;
 		static std::map<i32_protocolnum, info*>		m_protocol;
 		static std::map<std::string, info*>			m_nameprotocol;
-		// pbnet/pbexample		[1			-  100000000];
-		// custom				[200000001	-  300000000];
 		static int32_t								m_customs/* = 200000000*/;
 
 		//CUSTOM
 		template <bool SCRIPT>
-		struct tcustoms
+		class tcustoms
 		{
 			template <typename T>
-			static info* funcx_s(int32_t aprotocolnum = -1, int8_t ahigh = 0)
+			static info* func_base(int32_t aprotocolnum = -1, int8_t ahigh = 0)
 			{
 				nhashcode lcode = nhash::code<T>();
 				if (m_keyval.contains(lcode))
@@ -146,22 +144,20 @@ namespace ngl
 				linfo.m_name = tools::type_name<T>();
 				linfo.m_protocol = (aprotocolnum == -1) ? ++m_customs : aprotocolnum;
 				linfo.m_highvalue = ahigh;
-
 				m_protocol[linfo.m_protocol] = &linfo;
 				m_nameprotocol[linfo.m_name] = &linfo;
-
-				//log_error()->print("{}-{}", linfo.m_protocol, linfo.m_name);
+				log_error()->print("{}-{}", linfo.m_protocol, linfo.m_name);
 				return &linfo;
 			}
 
 			template <typename T>
 			static info* funcx(int32_t aprotocolnum = -1, int8_t ahigh = 0)
 			{
-				info* lpinfo = funcx_s<T>(aprotocolnum, ahigh);
-				funcx_s<np_mass_actor<T>>(-1);
+				info* lpinfo = func_base<T>(aprotocolnum, ahigh);
+				func_base<np_mass_actor<T>>(-1);
 				return lpinfo;
 			}
-
+		public:
 			template <typename T>
 			static info* func(int32_t aprotocolnum = -1, int8_t ahigh = 0);
 		};
@@ -199,33 +195,35 @@ namespace ngl
 			{
 				return false;
 			}
-			info& linfo = m_keyval[nhash::code<T>()];
-			linfo.m_name = lname;
-			linfo.m_protocol = lprotocol;
-			m_protocol[linfo.m_protocol] = &linfo;
+			tprotocol::info* lpinfo = tools::findmap(m_keyval, nhash::code<T>());
+			if (lpinfo != nullptr)
+			{
+				tools::no_core_dump();
+				return false;
+			}
+			lpinfo->m_name = lname;
+			lpinfo->m_protocol = lprotocol;
+			m_protocol[lpinfo->m_protocol] = lpinfo;
 			return true;
 		}
 
 		template <typename T>
-		static info& get()
+		static info* get()
 		{
 			using TRC = std::remove_const<T>::type;
 			nhashcode lcode = nhash::code<T>();
-			auto itor = m_keyval.find(lcode);
-			if (itor == m_keyval.end())
+			tprotocol::info* lpinfo = tools::findmap(m_keyval, lcode);
+			if (lpinfo == nullptr)
 			{
 				if (!init_protobufs<TRC>())
 				{
 					std::cout << tools::type_name<T>() << std::endl;
 					tools::no_core_dump();
+					return nullptr;
 				}
-				itor = m_keyval.find(lcode);
-				if (itor == m_keyval.end())
-				{
-					tools::no_core_dump();
-				}
+				lpinfo = tools::findmap(m_keyval, lcode);
 			}
-			return itor->second;
+			return lpinfo;
 		}
 
 		static info* get(const char* aname)
@@ -242,8 +240,13 @@ namespace ngl
 		template <typename T>
 		static i32_protocolnum protocol()
 		{
-			info& linfo = get<T>();
-			return linfo.m_protocol;
+			info* lpinfo = get<T>();
+			if (lpinfo == nullptr)
+			{
+				tools::no_core_dump();
+				return -1;
+			}
+			return lpinfo->m_protocol;
 		}
 
 		static info* get(i32_protocolnum aprotocolnum)
