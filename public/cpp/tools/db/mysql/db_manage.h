@@ -126,8 +126,7 @@ namespace ngl
 		{
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(lbuff,1024,
-				"DELETE FROM %s WHERE id='%lld';",
-				tools::type_name<T>().c_str(), aid
+				"DELETE FROM %s WHERE id='%lld';", tools::type_name<T>().c_str(), aid
 			);
 			if (llen <= 0)
 			{
@@ -167,8 +166,7 @@ namespace ngl
 			// # 从数据库中加载
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(lbuff,1024,
-				"SELECT id,data FROM %s WHERE id = '%lld' AND (%s);",
-				tools::type_name<T>().c_str(), aid, where_area()
+				"SELECT id,data FROM %s WHERE id = '%lld' AND (%s);", tools::type_name<T>().c_str(), aid, where_area()
 			);
 			if (llen <= 0)
 			{
@@ -198,8 +196,7 @@ namespace ngl
 			// # 从数据库中加载
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
-				lbuff, 1024, "SELECT id,data FROM %s WHERE %s;",
-				tools::type_name<T>().c_str(), where_area()
+				lbuff, 1024, "SELECT id,data FROM %s WHERE %s;", tools::type_name<T>().c_str(), where_area()
 			);
 			if (llen <= 0)
 			{
@@ -227,8 +224,7 @@ namespace ngl
 			// # 从数据库中加载
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
-				lbuff, 1024, "SELECT id FROM %s WHERE %s;",
-				tools::type_name<T>().c_str(), where_area()
+				lbuff, 1024, "SELECT id FROM %s WHERE %s;", tools::type_name<T>().c_str(), where_area()
 			);
 			if (llen <= 0)
 			{
