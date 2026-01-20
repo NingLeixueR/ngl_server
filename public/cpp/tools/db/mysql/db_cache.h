@@ -34,9 +34,7 @@ namespace ngl
 		callback				m_fun;
 		std::shared_mutex		m_mutex;
 	public:
-		inline db_cache() 
-		{
-		}
+		db_cache() = default;
 
 		inline void set_cachefun(const callback& afun, int32_t aintervalms)
 		{
