@@ -17,9 +17,15 @@
 
 namespace ngl
 {
+	db_pool& db_pool::instance()
+	{
+		static db_pool ltemp;
+		return ltemp;
+	}
+
 	void db_pool::init(const xarg_db& adbarg)
 	{
-		if (!m_vec.empty())
+		if (!m_dbs.empty())
 		{
 			tools::no_core_dump();
 			return;
@@ -30,11 +36,11 @@ namespace ngl
 			tools::no_core_dump();
 			return;
 		}
-		m_vec.resize(tab->m_threadnum);
+		m_dbs.resize(tab->m_threadnum);
 		for (int i = 0; i < tab->m_threadnum; ++i)
 		{
-			m_vec[i] = new db();
-			if (!m_vec[i]->connectdb(adbarg))
+			m_dbs[i] = std::make_shared<db>();
+			if (!m_dbs[i]->connectdb(adbarg))
 			{
 				tools::no_core_dump();
 				continue;
@@ -45,11 +51,11 @@ namespace ngl
 
 	db* db_pool::get(int32_t aindex)
 	{
-		if (aindex >= m_vec.size() && aindex < 0)
+		if (aindex >= m_dbs.size() && aindex < 0)
 		{
 			tools::no_core_dump();
 			return nullptr;
 		}
-		return m_vec[aindex];
+		return m_dbs[aindex].get();
 	}
 }// namespace ngl
