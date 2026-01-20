@@ -132,7 +132,7 @@ namespace ngl
 				linfo.m_highvalue = ahigh;
 				m_protocol[linfo.m_protocol] = &linfo;
 				m_nameprotocol[linfo.m_name] = &linfo;
-				log_error()->print("{}-{}", linfo.m_protocol, linfo.m_name);
+				//log_error()->print("{}-{}", linfo.m_protocol, linfo.m_name);
 				return &linfo;
 			}
 
@@ -181,15 +181,10 @@ namespace ngl
 			{
 				return false;
 			}
-			tprotocol::info* lpinfo = tools::findmap(m_keyval, nhash::code<T>());
-			if (lpinfo != nullptr)
-			{
-				tools::no_core_dump();
-				return false;
-			}
-			lpinfo->m_name = lname;
-			lpinfo->m_protocol = lprotocol;
-			m_protocol[lpinfo->m_protocol] = lpinfo;
+			info& linfo = m_keyval[nhash::code<T>()];
+			linfo.m_name = lname;
+			linfo.m_protocol = lprotocol;
+			m_protocol[linfo.m_protocol] = &linfo;
 			return true;
 		}
 
