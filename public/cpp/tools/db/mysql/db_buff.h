@@ -21,25 +21,39 @@
 
 namespace ngl
 {
-	struct dbuff
+	class dbuff
 	{
 		dbuff(const dbuff&) = delete;
 		dbuff& operator=(const dbuff&) = delete;
 		dbuff() = delete;
 
-		char* m_buff;
-		int32_t m_buffsize;
-		int32_t m_pos;
+		std::unique_ptr<char[]> m_buff = nullptr;
+		int32_t m_buffsize = 0;
+		int32_t m_pos = 0;
+
+	public:
 
 		dbuff(int32_t abuffsize):
-			m_buff(new char[abuffsize]),
+			m_buff(std::make_unique<char[]>(abuffsize)),
 			m_buffsize(abuffsize),
 			m_pos(0)
 		{}
 
-		~dbuff()
+		~dbuff() = default;
+
+		char* buff()
 		{
-			delete []m_buff;
+			return m_buff.get();
+		}
+
+		int32_t buffsize()
+		{
+			return m_buffsize;
+		}
+
+		int32_t& pos()
+		{
+			return m_pos;
 		}
 	};
 
@@ -64,27 +78,27 @@ namespace ngl
 		{
 			if (m_mallocbuff != nullptr)
 			{
-				return m_mallocbuff->m_buff;
+				return m_mallocbuff->buff();
 			}
-			return m_buff->m_buff;
+			return m_buff->buff();
 		}
 
 		inline int32_t buffsize()
 		{
 			if (m_mallocbuff != nullptr)
 			{
-				return m_mallocbuff->m_buffsize;
+				return m_mallocbuff->buffsize();
 			}
-			return m_buff->m_buffsize;
+			return m_buff->buffsize();
 		}
 
 		inline int32_t pos()
 		{
 			if (m_mallocbuff != nullptr)
 			{
-				return m_mallocbuff->m_pos;
+				return m_mallocbuff->pos();
 			}
-			return m_buff->m_pos;
+			return m_buff->pos();
 		}
 
 		inline void reset()
@@ -93,16 +107,16 @@ namespace ngl
 			{
 				m_mallocbuff = nullptr;
 			}
-			m_buff->m_pos = 0;
+			m_buff->pos() = 0;
 		}
 
 		template <typename T>
 		inline bool do_binary(T& adata, dbuff* abuff)
 		{
-			ngl::ser::serialize_push lserialize(abuff->m_buff, abuff->m_buffsize);
+			ngl::ser::serialize_push lserialize(abuff->buff(), abuff->buffsize());
 			if (ngl::ser::nserialize::push(&lserialize, adata))
 			{
-				abuff->m_pos = lserialize.pos();
+				abuff->pos() = lserialize.pos();
 				return true;
 			}
 			return false;
@@ -147,16 +161,16 @@ namespace ngl
 				{
 					tools::custom2json(adata, ltemp);
 				}
-				if (ltemp.size() > m_buff->m_buffsize)
+				if (ltemp.size() > m_buff->buffsize())
 				{
 					m_mallocbuff = std::make_shared<dbuff>(ltemp.size() + 1);
-					memcpy(m_mallocbuff->m_buff, ltemp.c_str(), ltemp.size() + 1);
-					m_mallocbuff->m_pos = (int32_t)ltemp.size() + 1;
+					memcpy(m_mallocbuff->buff(), ltemp.c_str(), ltemp.size() + 1);
+					m_mallocbuff->pos() = (int32_t)ltemp.size() + 1;
 				}
 				else
 				{
-					memcpy(m_buff->m_buff, ltemp.c_str(), ltemp.size() + 1);
-					m_buff->m_pos = (int32_t)ltemp.size() + 1;
+					memcpy(m_buff->buff(), ltemp.c_str(), ltemp.size() + 1);
+					m_buff->pos() = (int32_t)ltemp.size() + 1;
 				}
 			}
 			return;
