@@ -105,13 +105,23 @@ namespace ngl
 		}
 	};
 
+	struct mail_param
+	{
+		std::string m_smtp;
+		std::string m_email;
+		std::string m_password;
+		std::string m_name;
+		std::string m_title;
+		std::string m_content;
+		std::vector<std::pair<std::string, std::string>> m_recvs;// key:mail value:name
+	};
+
 	class ncurl
 	{
 		ncurl(const ncurl&) = delete;
 		ncurl& operator=(const ncurl&) = delete;
 
-		std::unique_ptr<std::thread>			m_thread;
-		nwork<http_parm>						m_works;
+		nwork<http_parm> m_works;
 
 		ncurl();
 
@@ -173,17 +183,9 @@ namespace ngl
 
 		static std::shared_ptr<http_parm> make_http();
 
-		struct parameter
-		{
-			std::string m_smtp;
-			std::string m_email;
-			std::string m_password;
-			std::string m_name;
-			std::string m_title;
-			std::string m_content;
-			std::vector<std::pair<std::string, std::string>> m_recvs;// key:mail value:name
-		};
-		static void sendemail(const parameter& aparm);
+		static std::shared_ptr<mail_param> make_mail();
+
+		static void sendemail(std::shared_ptr<mail_param>& aparm);
 	};
 
 	void test_manage_curl();

@@ -27,14 +27,14 @@ namespace ngl
 
 		std::list<std::shared_ptr<T>>	m_list;
 		std::list<std::shared_ptr<T>>	m_copylist;
-		std::thread						m_thread;
+		std::jthread					m_thread;
 		std::function<void(T&)>			m_fun = nullptr;
 		std::shared_mutex				m_mutex;
 		ngl::sem						m_sem;
 	public:
 		nwork(const std::function<void(T&)>& afun) :
 			m_fun(afun),
-			m_thread([this] { run(); })
+			m_thread(std::bind_front(&nwork::run, this))
 		{
 		}
 
@@ -61,7 +61,7 @@ namespace ngl
 		}
 
 		template <typename ...ARGS>
-		std::shared_ptr<T> make_shared(ARGS&... args)
+		static std::shared_ptr<T> make_shared(ARGS&... args)
 		{
 			return std::make_shared<T>(args...);
 		}
