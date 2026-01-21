@@ -776,7 +776,6 @@ std::function<void()> dump_logic();
 
 int ngl_main(int argc, char** argv)
 {
-	ngl::tools::no_core_dump();
 	ngl::server_test();
 	// # Ãû³Æ
 	std::string lname = argv[1];
