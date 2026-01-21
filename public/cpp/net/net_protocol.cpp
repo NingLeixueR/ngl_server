@@ -71,7 +71,11 @@ namespace ngl
 
 	bool net_protocol::connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection /*断线是否重连*/)
 	{
-		std::shared_ptr<ngl::sem> lsem(await ? new ngl::sem() : nullptr);
+		std::shared_ptr<ngl::sem> lsem = nullptr;
+		if (await)
+		{
+			lsem = std::make_shared<ngl::sem>();
+		}
 		connect(aip, aport, [this, afun, aip, aport, areconnection, lsem](i32_sessionid asession)
 			{
 				afun(asession);
