@@ -15,7 +15,7 @@
 
 #include "threadtools.h"
 #include "nprotocol.h"
-#include "worklist.h"
+#include "nwork.h"
 #include "nlog.h"
 #include "impl.h"
 
@@ -111,11 +111,11 @@ namespace ngl
 		ncurl& operator=(const ncurl&) = delete;
 
 		std::unique_ptr<std::thread>			m_thread;
-		worklist<std::shared_ptr<http_parm>>	m_list;
+		nwork<http_parm>						m_works;
 
 		ncurl();
 
-		~ncurl();
+		~ncurl() = default;
 
 		static ncurl& instance()
 		{

@@ -19,20 +19,20 @@
 namespace ngl
 {
 	template <typename T>
-	class worklist
+	class nwork
 	{
-		worklist() = delete;
-		worklist(const worklist&) = delete;
-		worklist& operator=(const worklist&) = delete;
+		nwork() = delete;
+		nwork(const nwork&) = delete;
+		nwork& operator=(const nwork&) = delete;
 
-		ngl_lockinit;
-
-		slist_production<T>			m_list;
-		slist_consumption<T>		m_copylist;
-		std::thread					m_thread;
-		std::function<void(T&)>		m_fun = nullptr;
+		std::list<std::shared_ptr<T>>	m_list;
+		std::list<std::shared_ptr<T>>	m_copylist;
+		std::thread						m_thread;
+		std::function<void(T&)>			m_fun = nullptr;
+		std::shared_mutex				m_mutex;
+		ngl::sem						m_sem;
 	public:
-		worklist(const std::function<void(T&)>& afun) :
+		nwork(const std::function<void(T&)>& afun) :
 			m_fun(afun),
 			m_thread([this] { run(); })
 		{
@@ -40,12 +40,8 @@ namespace ngl
 
 		void run()
 		{
-#ifndef OPEN_SEM
-			auto lfun = [this]() {return !m_list.empty(); };
-#endif//OPEN_SEM
 			while (true)
 			{
-#ifdef OPEN_SEM
 				m_sem.wait();
 				{
 					monopoly_shared_lock(m_mutex);
@@ -55,32 +51,22 @@ namespace ngl
 					}
 					m_list.swap(m_copylist);
 				}
-#else
-				{
-					cv_lock(m_cv, m_mutex, lfun)
-					m_list.swap(m_copylist);
-				}
-#endif//OPEN_SEM 
-				m_copylist.foreach([this](T& adata)
+				std::ranges::for_each(m_copylist, [&](std::shared_ptr<T>& adata)
 					{
-						m_fun(adata);
+						m_fun(*adata);
 					}
 				);
 				m_copylist.clear();
-				m_list.push_front(m_copylist);
 			}
 		}
 
-		inline void push_back(T&& anode)
+		template <typename ...ARGS>
+		std::shared_ptr<T> make_shared(ARGS&... args)
 		{
-			{
-				monopoly_shared_lock(m_mutex);
-				m_list.push_back(anode);
-			}
-			ngl_post;
+			return std::make_shared<T>(args...);
 		}
 
-		inline void push_back(T& anode)
+		inline void push_back(std::shared_ptr<T>& anode)
 		{
 			{
 				monopoly_shared_lock(m_mutex);
