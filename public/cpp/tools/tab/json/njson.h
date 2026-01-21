@@ -51,7 +51,7 @@ namespace ngl
 		{
 			if (adata == nullptr)
 			{
-				return false;
+				return;
 			}
 			return json_format<T>::push(ajson, akey, *adata);
 		}
@@ -60,7 +60,7 @@ namespace ngl
 		{
 			if (adata == nullptr)
 			{
-				return false;
+				return;
 			}
 			return json_format<T>::push(ajson, *adata);
 		}
