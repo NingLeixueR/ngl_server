@@ -21,7 +21,6 @@
 namespace ngl
 {
 	ncurl::ncurl() :
-		m_thread(nullptr),
 		m_works(std::bind_front(&ncurl::work, this))
 	{}
 
@@ -142,176 +141,141 @@ namespace ngl
 
 	std::shared_ptr<http_parm> ncurl::make_http()
 	{
-		return std::make_shared<http_parm>();
+		return nwork<http_parm>::make_shared();
+	}
+
+	std::shared_ptr<mail_param> ncurl::make_mail()
+	{
+		return nwork<mail_param>::make_shared();
 	}
 
 	class email_sender
 	{
-		email_sender();
 		~email_sender() = default;
-	public:
+
+		nwork<mail_param> m_works;
+		int32_t m_index = 0;
+
+		email_sender() :
+			m_works(std::bind_front(&email_sender::work, this))
+		{}
+
 		static email_sender& instance()
 		{
 			static email_sender ltemp;
 			return ltemp;
 		}
-		void send(const ncurl::parameter& aparm);
-
+	public:
+		static void send(std::shared_ptr<mail_param>& aparm)
+		{
+			instance().m_works.push_back(aparm);
+		}
 	private:
-		static size_t callback(void* ptr, size_t size, size_t nmemb, void* userp);
-		void sendmail(const ncurl::parameter& aparm);
-		void run();
-
-		std::list<ncurl::parameter>	m_list; 
-		int32_t								m_index = 0;
-	};
-
-	struct email_sender_helper
-	{
-		static std::jthread				m_thread;
-		static std::shared_mutex		m_mutex;
-		static ngl::sem					m_sem;
-	};
-
-	std::jthread		email_sender_helper::m_thread;
-	std::shared_mutex	email_sender_helper::m_mutex;
-	ngl::sem			email_sender_helper::m_sem;
-
-	email_sender::email_sender()
-	{
-		email_sender_helper::m_thread = std::jthread(std::bind_front(&email_sender::run, this));
-	}
-
-	size_t email_sender::callback(void* ptr, size_t size, size_t nmemb, void* userp)
-	{
-		std::string data((const char*)userp);
-		size_t to_copy = std::min(data.size() - email_sender::instance().m_index, size * nmemb);
-		memcpy(ptr, data.c_str() + email_sender::instance().m_index, to_copy);
-		email_sender::instance().m_index += (int32_t)to_copy;
-		return to_copy;
-	}
-
-	void email_sender::sendmail(const ncurl::parameter& aparm)
-	{
-		m_index = 0;
-		CURL* curl;
-		CURLcode res;
-
-		// 初始化libcurl
-		curl = curl_easy_init();
-
-		if (curl)
+		static size_t callback(void* ptr, size_t size, size_t nmemb, void* userp)
 		{
-			curl_slist* recipients = nullptr;
+			std::string data((const char*)userp);
+			size_t to_copy = std::min(data.size() - email_sender::instance().m_index, size * nmemb);
+			memcpy(ptr, data.c_str() + email_sender::instance().m_index, to_copy);
+			email_sender::instance().m_index += (int32_t)to_copy;
+			return to_copy;
+		}
+		
+		void work(mail_param& aparm)
+		{
+			CURL* curl;
+			CURLcode res;
+			m_index = 0;
 
-			// 设置SMTP服务器、发件人和收件人
-			curl_easy_setopt(curl, CURLOPT_URL, aparm.m_smtp.c_str());
-			curl_easy_setopt(curl, CURLOPT_MAIL_FROM, aparm.m_email.c_str());
-			// 设置SMTP认证信息
-			curl_easy_setopt(curl, CURLOPT_USERNAME, aparm.m_email.c_str());
-			curl_easy_setopt(curl, CURLOPT_PASSWORD, aparm.m_password.c_str());
+			// 初始化libcurl
+			curl = curl_easy_init();
 
-			curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
-			//是否打开调试信息
-			curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L);
-			curl_easy_setopt(curl, CURLOPT_TIMEOUT, 60L);
-			curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30L);
-
-			// 设置收件人
-			for (const auto& [ mailarr, name ] : aparm.m_recvs)
+			if (curl)
 			{
-				recipients = curl_slist_append(recipients, std::format("<{}>", mailarr).c_str());
-			}
-			curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
+				curl_slist* recipients = nullptr;
 
-			curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+				// 设置SMTP服务器、发件人和收件人
+				curl_easy_setopt(curl, CURLOPT_URL, aparm.m_smtp.c_str());
+				curl_easy_setopt(curl, CURLOPT_MAIL_FROM, aparm.m_email.c_str());
+				// 设置SMTP认证信息
+				curl_easy_setopt(curl, CURLOPT_USERNAME, aparm.m_email.c_str());
+				curl_easy_setopt(curl, CURLOPT_PASSWORD, aparm.m_password.c_str());
 
-			std::string payload = std::format("From: {}<{}>\r\n", aparm.m_name, aparm.m_email);
-			payload += "To: ";
-			for (int i = 0; i < aparm.m_recvs.size(); ++i)
-			{
-				if (i != 0)
+				curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
+				//是否打开调试信息
+				curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L);
+				curl_easy_setopt(curl, CURLOPT_TIMEOUT, 60L);
+				curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30L);
+
+				// 设置收件人
+				for (const auto& [mailarr, name] : aparm.m_recvs)
 				{
-					payload += ",";
+					recipients = curl_slist_append(recipients, std::format("<{}>", mailarr).c_str());
 				}
-				payload += std::format("{}<{}>", aparm.m_recvs[i].second, aparm.m_recvs[i].first);
+				curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
+
+				curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+
+				std::string payload = std::format("From: {}<{}>\r\n", aparm.m_name, aparm.m_email);
+				payload += "To: ";
+				for (int i = 0; i < aparm.m_recvs.size(); ++i)
+				{
+					if (i != 0)
+					{
+						payload += ",";
+					}
+					payload += std::format("{}<{}>", aparm.m_recvs[i].second, aparm.m_recvs[i].first);
+				}
+				payload += "\r\n";
+				payload += std::format("Subject: {}\r\n", aparm.m_title);
+				payload += "\r\n"; // 空行表示header部分结束
+				payload += std::format("{}\r\n", aparm.m_content); // 邮件内容
+
+				curl_easy_setopt(curl, CURLOPT_READDATA, payload.c_str());
+
+				curl_easy_setopt(curl, CURLOPT_READFUNCTION, &email_sender::callback); // 设置读取数据的回调函数
+
+				curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, nullptr);
+				// 发送邮件
+				res = curl_easy_perform(curl);
+
+				// 检查结果
+				if (res != CURLE_OK)
+				{
+					std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+				}
+				else
+				{
+					std::cout << "email send successfully!" << std::endl;
+				}
+
+				// 清理
+				curl_slist_free_all(recipients);
+				curl_easy_cleanup(curl);
 			}
-			payload += "\r\n";
-			payload += std::format("Subject: {}\r\n", aparm.m_title);
-			payload += "\r\n"; // 空行表示header部分结束
-			payload += std::format("{}\r\n", aparm.m_content); // 邮件内容
-						
-			curl_easy_setopt(curl, CURLOPT_READDATA, payload.c_str());
-
-			curl_easy_setopt(curl, CURLOPT_READFUNCTION, &email_sender::callback); // 设置读取数据的回调函数
-
-			curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, nullptr);
-			// 发送邮件
-			res = curl_easy_perform(curl);
-
-			// 检查结果
-			if (res != CURLE_OK)
-			{
-				std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
-			}
-			else
-			{
-				std::cout << "email send successfully!" << std::endl;
-			}
-
-			// 清理
-			curl_slist_free_all(recipients);
-			curl_easy_cleanup(curl);
 		}
-	}
+	};
 
-	void email_sender::run()
+	void ncurl::sendemail(std::shared_ptr<mail_param>& aparm)
 	{
-		std::list<ncurl::parameter> templist;
-		while (true)
-		{
-			email_sender_helper::m_sem.wait();
-			{
-				monopoly_shared_lock(email_sender_helper::m_mutex);
-				m_list.swap(templist);
-			}
-			for (ncurl::parameter& item : templist)
-			{
-				sendmail(item);
-			}
-			templist.clear();
-		}
-	}
-
-	void email_sender::send(const ncurl::parameter& aparm)
-	{
-		monopoly_shared_lock(email_sender_helper::m_mutex);
-		m_list.push_back(aparm);
-		email_sender_helper::m_sem.post();
-		return;
-	}
-
-	void ncurl::sendemail(const parameter& aparm)
-	{
-		ngl::email_sender::instance().send(aparm);
+		email_sender::send(aparm);
 	}
 
 	void test_mail(const char* atitle, const char* acontent, const std::vector<std::pair<std::string, std::string>>& amailvec/* = {}*/)
 	{
-		ngl::ncurl::parameter lparm
-		{
-			.m_smtp = nconfig.mail().m_smtp,
-			.m_email = nconfig.mail().m_email,
-			.m_password = nconfig.mail().m_password,
-			.m_name = nconfig.mail().m_name,
-			.m_title = atitle,
-			.m_content = acontent,
-			.m_recvs = amailvec
-		};
+		auto lparm = ncurl::make_mail();
+
+		lparm->m_smtp = nconfig.mail().m_smtp;
+		lparm->m_email = nconfig.mail().m_email;
+		lparm->m_password = nconfig.mail().m_password;
+		lparm->m_name = nconfig.mail().m_name;
+		lparm->m_title = atitle;
+		lparm->m_content = acontent;
+		lparm->m_recvs = amailvec;
+
 		if (amailvec.empty())
 		{
-			lparm.m_recvs.emplace_back(std::make_pair("libo1@youxigu.com", "李博"));
-			lparm.m_recvs.emplace_back(std::make_pair("348634371@qq.com", "李博QQ"));
+			lparm->m_recvs.emplace_back(std::make_pair("libo1@youxigu.com", "李博"));
+			lparm->m_recvs.emplace_back(std::make_pair("348634371@qq.com", "李博QQ"));
 		}
 		ncurl::sendemail(lparm);
 	}
@@ -347,10 +311,5 @@ namespace ngl
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 		}
-	}
-
-	void test_kkkk()
-	{
-		
 	}
 }//namespace ngl

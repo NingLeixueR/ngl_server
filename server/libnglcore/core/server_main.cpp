@@ -880,16 +880,14 @@ std::function<void()> dump_logic()
 		{
 			std::cout << "dump_logic()" << std::endl;
 			
-			ngl::ncurl::parameter lparm
-			{
-				.m_smtp = nconfig.mail().m_smtp,
-				.m_email = nconfig.mail().m_email,
-				.m_password = nconfig.mail().m_password,
-				.m_name = nconfig.mail().m_name,
-				.m_title = ltitle,
-				.m_content = "code dump",
-			};
-			lparm.m_recvs.emplace_back(std::make_pair("348634371@qq.com", "¿Ó≤©QQ"));
+			auto lparm = ngl::ncurl::make_mail();
+			lparm->m_smtp = nconfig.mail().m_smtp;
+			lparm->m_email = nconfig.mail().m_email;
+			lparm->m_password = nconfig.mail().m_password;
+			lparm->m_name = nconfig.mail().m_name;
+			lparm->m_title = ltitle;
+			lparm->m_content = "code dump";
+			lparm->m_recvs.emplace_back(std::make_pair("348634371@qq.com", "¿Ó≤©QQ"));
 			ngl::ncurl::sendemail(lparm);
 		};
 }
