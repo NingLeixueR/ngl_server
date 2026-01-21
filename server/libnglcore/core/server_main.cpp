@@ -772,8 +772,11 @@ namespace ngl
 	extern void server_test();
 }
 
+std::function<void()> dump_logic();
+
 int ngl_main(int argc, char** argv)
 {
+	ngl::tools::no_core_dump();
 	ngl::server_test();
 	// # Ãû³Æ
 	std::string lname = argv[1];
@@ -880,7 +883,7 @@ std::function<void()> dump_logic()
 		{
 			std::cout << "dump_logic()" << std::endl;
 			
-			auto lparm = ngl::ncurl::make_mail();
+			std::shared_ptr<ngl::mail_param> lparm = ngl::ncurl::make_mail();
 			lparm->m_smtp = nconfig.mail().m_smtp;
 			lparm->m_email = nconfig.mail().m_email;
 			lparm->m_password = nconfig.mail().m_password;
@@ -888,6 +891,8 @@ std::function<void()> dump_logic()
 			lparm->m_title = ltitle;
 			lparm->m_content = "code dump";
 			lparm->m_recvs.emplace_back(std::make_pair("348634371@qq.com", "Àî²©QQ"));
+			lparm->set_wait();
 			ngl::ncurl::sendemail(lparm);
+
 		};
 }

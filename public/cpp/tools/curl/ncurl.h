@@ -107,6 +107,9 @@ namespace ngl
 
 	struct mail_param
 	{
+	private:
+		std::shared_ptr<ngl::sem> m_sem = nullptr;								
+	public:
 		std::string m_smtp;
 		std::string m_email;
 		std::string m_password;
@@ -114,6 +117,27 @@ namespace ngl
 		std::string m_title;
 		std::string m_content;
 		std::vector<std::pair<std::string, std::string>> m_recvs;// key:mail value:name
+
+		void wait()
+		{
+			if (m_sem != nullptr)
+			{
+				m_sem->wait();
+			}
+		}
+
+		void set_wait()
+		{
+			m_sem = std::make_shared<ngl::sem>();
+		}
+		
+		void post()
+		{
+			if (m_sem != nullptr)
+			{
+				m_sem->post();
+			}
+		}
 	};
 
 	class ncurl
