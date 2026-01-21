@@ -22,19 +22,12 @@ namespace ngl
 {
 	ncurl::ncurl() :
 		m_thread(nullptr),
-		m_list([this](std::shared_ptr<http_parm>& item)
-			{
-				work(*item);
-			})
+		m_works(std::bind_front(&ncurl::work, this))
 	{}
-
-	ncurl::~ncurl()
-	{
-	}
 
 	void ncurl::send(std::shared_ptr<http_parm>& adata)
 	{
-		instance().m_list.push_back(adata);
+		instance().m_works.push_back(adata);
 	}
 
 	void ncurl::work(http_parm& ahttp)
