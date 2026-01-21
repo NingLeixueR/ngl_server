@@ -23,9 +23,8 @@
 
 namespace ngl
 {
-	class redis_cmd
+	struct redis_cmd
 	{
-	public:
 		static redisReply* cmd(redisContext* arc, const char* format, ...);
 
 		template <typename T>
@@ -92,39 +91,14 @@ namespace ngl
 
 	class redis
 	{
-		redisContext*	m_rc = nullptr;
-
-		template <typename T>
-		bool get(const std::string& aname, int akey, T& adata)
-		{
-			return redis_cmd::get(m_rc, aname.c_str(), akey, adata);
-		}
-
-		template <typename T>
-		bool set(const std::string& aname, int akey, T& adata)
-		{
-			return redis_cmd::set(m_rc, aname.c_str(), akey, adata);
-		}
-
-		template <typename T>
-		bool set(const std::string& aname, std::map<int, T>& adata)
-		{
-			for (auto itor = adata.begin(); itor != adata.end(); ++itor)
-			{
-				if (set(aname, itor->first, itor->second) == false)
-				{
-					return false;
-				}
-			}
-			return true;
-		}
+		redisContext*		m_rc = nullptr;
 	public:
-		redis();
+		redis(const xarg_redis& aarg);
 
 		template <typename T>
 		bool get(int akey, T& adata)
 		{
-			return get(tools::type_name<T>(), akey, adata);
+			return redis_cmd::set(m_rc, tools::type_name<T>().c_str(), akey, adata);
 		}
 
 		template <typename T>
@@ -136,13 +110,20 @@ namespace ngl
 		template <typename T>
 		bool set(int akey, const T& adata)
 		{
-			return set(tools::type_name<T>(), akey, adata);
+			return redis_cmd::set(m_rc, tools::type_name<T>().c_str(), akey, adata);
 		}
 
 		template <typename T>
-		bool set(std::map<int, T>& adata)
+		bool set(const std::map<int, T>& adata)
 		{
-			return set(tools::type_name<T>(), adata);
+			for (const auto& [key, value] : adata)
+			{
+				if (!set(key, value))
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 
 		template <typename T>

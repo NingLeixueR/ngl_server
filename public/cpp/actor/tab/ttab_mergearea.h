@@ -13,17 +13,17 @@
 */
 #pragma once
 
-#include "manage_csv.h"
 #include "tools.h"
 #include "nguid.h"
 #include "nlog.h"
 #include "type.h"
+#include "ncsv.h"
 #include "xml.h"
 
 namespace ngl
 {
-	class ttab_mergearea :
-		public manage_csv<tab_mergearea>
+	struct ttab_mergearea :
+		public csv<tab_mergearea>
 	{
 		ttab_mergearea(const ttab_mergearea&) = delete;
 		ttab_mergearea& operator=(const ttab_mergearea&) = delete;
@@ -32,11 +32,6 @@ namespace ngl
 		std::map<i16_area, i16_area> m_merge1;
 		// key: 合服区服id value: 哪些区服在此区服
 		std::map<i16_area, std::set<i16_area>> m_merge2;
-
-		ttab_mergearea()
-		{
-			allcsv::loadcsv(this);
-		}
 
 		void reload()final
 		{
@@ -47,64 +42,48 @@ namespace ngl
 			// 4->10, 8->10
 			// {{1,2},{2,4},{3,4},{4,10},{5,6},{6,8},{7,8},{8,10},{9.10}}
 			// {10,{1,2,3,4,5,6,7,8,9,10}}
-			for (std::pair<const int, tab_mergearea>& pair : m_tablecsv)
-			{
-				i16_area larea = (i16_area)pair.second.m_id;
-				i16_area lmergeid = (i16_area)pair.second.m_mergeid;
 
-				std::set<i16_area>* lpset = tools::findmap(m_merge2, larea);
-				if (lpset == nullptr)
+			foreach([&](tab_mergearea& atab)
 				{
-					m_merge1[larea] = lmergeid;
-					m_merge2[lmergeid].insert(larea);
-				}
-				else
-				{
-					m_merge2[lmergeid].insert(lpset->begin(), lpset->end());
-					m_merge2[lmergeid].insert(larea);
-					m_merge1[larea] = lmergeid;
-					if (larea != lmergeid)
+					i16_area larea = (i16_area)atab.m_id;
+					i16_area lmergeid = (i16_area)atab.m_mergeid;
+
+					std::set<i16_area>* lpset = tools::findmap(m_merge2, larea);
+					if (lpset == nullptr)
 					{
-						m_merge2.erase(larea);
-					}					
-				}				
-			}
+						m_merge1[larea] = lmergeid;
+						m_merge2[lmergeid].insert(larea);
+					}
+					else
+					{
+						m_merge2[lmergeid].insert(lpset->begin(), lpset->end());
+						m_merge2[lmergeid].insert(larea);
+						m_merge1[larea] = lmergeid;
+						if (larea != lmergeid)
+						{
+							m_merge2.erase(larea);
+						}
+					}
+				}
+			);
 		}
-
 	public:
 		using type_tab = tab_mergearea;
 
+		ttab_mergearea() = default;
+
 		static ttab_mergearea& instance()
 		{
-			static ttab_mergearea ltemp;
-			return ltemp;
+			static std::atomic lload = true;
+			if (lload.exchange(false))
+			{
+				ncsv::loadcsv<ttab_mergearea>();
+			}
+			return *ncsv::get<ttab_mergearea>();
 		}
 
-		const std::map<int, tab_mergearea>* tablecsv()
-		{
-			ttab_mergearea* ttab = allcsv::get<ttab_mergearea>();
-			if (ttab == nullptr)
-			{
-				tools::no_core_dump();
-				return nullptr;
-			}
-			return &ttab->m_tablecsv;
-		}
-
-		const tab_mergearea* tab(int32_t aid)
-		{
-			auto lpmap = tablecsv();
-			if (lpmap == nullptr)
-			{
-				return nullptr;
-			}
-			auto itor = lpmap->find(aid);
-			if (itor == lpmap->end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
+		// # std::map<int, tab_mergearea>& tabs()
+		// # tab_mergearea* tab(int aid)
 
 		// 哪些区服在此区服
 		std::set<i16_area>* mergelist(i16_area aarea)
@@ -126,7 +105,7 @@ namespace ngl
 			return *ret;
 		}
 
-		void foreach(const std::function<void(i16_area, std::set<i16_area>&)>& afun)
+		void for_each(const std::function<void(i16_area, std::set<i16_area>&)>& afun)
 		{
 			for (std::pair<const i16_area, std::set<i16_area>>& item : m_merge2)
 			{

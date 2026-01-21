@@ -501,22 +501,17 @@ namespace ngl
 						ngl::writefile lfile(std::format("../../public/cpp/actor/template_tab/t{}.h", struc.name));
 						std::string lcsvpp = std::format(R"(#pragma once
 
-#include "manage_csv.h"
+#include "ncsv.h"
 #include "type.h"
 #include "xml.h"
 
 namespace ngl
 {{
 	class t{0} :
-		public manage_csv<{0}>
+		public csv<{0}>
 	{{
 		t{0}(const t{0}&) = delete;
 		t{0}& operator=(const t{0}&) = delete;
-
-		t{0}()
-		{{
-			allcsv::loadcsv(this);
-		}}
 
 		void reload()final
 		{{
@@ -526,37 +521,21 @@ namespace ngl
 	public:
 		using type_tab = {0};
 
+		t{0}() = default;
+
 		static t{0}& instance()
 		{{
-			static t{0} ltemp;
-			return ltemp;
+			static std::atomic lload = true;
+			if (lload.exchange(false))
+			{
+				ncsv::loadcsv<t{0}>();
+			}	
+			return *ncsv::get<t{0}>();
 		}}
 
-		const std::map<int, {0}>* tablecsv()
-		{{
-			t{0}* ttab = allcsv::get<t{0}>();
-			if(ttab == nullptr)
-			{{
-				tools::no_core_dump();
-				return nullptr; 
-			}}
-			return &ttab->m_tablecsv;
-		}}
-
-		const {0}* tab(int32_t aid)
-		{{
-			auto lpmap = tablecsv();
-			if (lpmap == nullptr)
-			{{
-				return nullptr;
-			}}
-			auto itor = lpmap->find(aid);
-			if (itor == lpmap->end())
-			{{
-				return nullptr;
-			}}
-			return &itor->second;
-		}}
+		// # std::map<int, {0}>& tabs()
+		// # {0}* tab(int aid)
+		
 	}};
 }}//namespace ngl)", struc.name);
 						lfile.write(lcsvpp.c_str());

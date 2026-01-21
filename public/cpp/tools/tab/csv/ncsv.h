@@ -17,6 +17,7 @@
 #include "threadtools.h"
 #include "enum2name.h"
 #include "csvtable.h"
+#include "nhash.h"
 #include "tools.h"
 #include "csv.h"
 
@@ -26,19 +27,24 @@
 
 namespace ngl
 {
-	class csvbase
+	class csv_base
 	{
-		csvbase(const csvbase&) = delete;
-		csvbase& operator=(const csvbase&) = delete;
-	public:
-		csvbase(){}
-		virtual const std::string&	verify()const	= 0;
-		virtual const char*			csvname()		= 0;
-		virtual void				load()			= 0;
-		virtual void*				get(int aid)	= 0;
-		virtual void				reload()		= 0;
+		csv_base(const csv_base&) = delete;
+		csv_base& operator=(const csv_base&) = delete;
 
 		static std::string m_path;
+	public:
+		csv_base() = default;
+		// # 用于校验csv内容是否有变化
+		virtual const std::string& verify()const = 0;
+		// # csv名称
+		virtual const char* csvname() = 0;
+		// # 加载csv文件
+		virtual void load() = 0;
+		// # 根据csv id获取csv
+		virtual void* find(int aid) = 0;
+		// # 重新加载csv文件
+		virtual void reload() = 0;
 
 		// # [获取/设置] csv文件路径
 		static std::string& path();
@@ -46,44 +52,37 @@ namespace ngl
 	};
 
 	template <typename T>
-	struct manage_csv : 
-		public csvbase
+	struct csv : 
+		public csv_base
 	{
-		manage_csv(const manage_csv&) = delete;
-		manage_csv& operator=(const manage_csv&) = delete;
+		csv(const csv&) = delete;
+		csv& operator=(const csv&) = delete;
 
 		using type_tab = T;
 
-	protected:
-		std::map<int, T>	m_tablecsv;
+		std::map<int, T>	m_csv;
 		std::string			m_verify;		// 内容的md5值
 
-		virtual void* get(int aid)
-		{
-			auto itor = m_tablecsv.find(aid);
-			if (itor == m_tablecsv.end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
-
-		T* find(int aid)
-		{
-			auto itor = m_tablecsv.find(aid);
-			if (itor == m_tablecsv.end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
-
 	public:
+		virtual void* find(int aid)
+		{
+			return tools::findmap(m_csv, aid);
+		}
+
+		T* tab(int aid)
+		{
+			return tools::findmap(m_csv, aid);
+		}
+
+		std::map<int, T>& tabs()
+		{
+			return m_csv;
+		}
+
 		virtual void reload()
 		{}
 
-		manage_csv()
-		{}
+		csv() = default;
 
 		virtual const std::string& verify()const
 		{
@@ -97,7 +96,7 @@ namespace ngl
 
 		static std::string path()
 		{
-			static std::string lcsvname = std::format("./{}/{}.csv", csvbase::path(), tools::type_name<T>());
+			static std::string lcsvname = std::format("./{}/{}.csv", csv_base::path(), tools::type_name<T>());
 			return lcsvname;
 		}
 
@@ -105,15 +104,30 @@ namespace ngl
 
 		void foreach(const std::function<void(T&)>& afun)
 		{
-			for (std::pair<const int, T>& item : m_tablecsv)
-			{
-				afun(item.second);
-			}
+			std::ranges::for_each(m_csv, [&afun](std::pair<const int, T>& apair)
+				{
+					afun(apair.second);
+				}
+			);
 		}
 
-		static int32_t hash_code()
+		T* find_if(const std::function<bool(T&)>& afun)
 		{
-			return typeid(manage_csv<T>).hash_code();
+			auto itor = std::ranges::find_if(m_csv, [&afun](std::pair<const int, T>& apair)
+				{
+					return afun(apair.second);
+				});
+			if (itor == m_csv.end())
+			{
+				return nullptr;
+			}
+			return &itor->second;
+		}
+
+		static nhashcode hash_code()
+		{
+			static nhashcode ltemp = nhash::code<T>();
+			return ltemp;
 		}
 
 		static const char* name()
@@ -122,50 +136,44 @@ namespace ngl
 		}
 	};
 
-	class allcsv
+	class ncsv
 	{
-		static std::map<std::string, csvbase*> m_data; // key: TAB::name()
+		static std::map<std::string, std::shared_ptr<csv_base>> m_csv; // key: TAB::name()
 	public:
-		static void add(const char* akey, csvbase* ap);
+		static void add(const char* akey, std::shared_ptr<csv_base>& ap);
 
-		static csvbase* get_csvbase(const std::string& akey);
+		static csv_base* get_csvbase(const std::string& akey);
 
 		template <typename TTAB>
-		static void loadcsv(TTAB* athis)
+		static void loadcsv()
 		{
-			static std::atomic lload = true;
-			if (lload.exchange(false))
-			{
-				using TAB = typename TTAB::type_tab;
-				auto lp = (csvbase*)athis;
-				allcsv::add(tools::type_name<TAB>().c_str(), lp);
-				lp->load();
-				lp->reload();
-			}
+			std::shared_ptr<csv_base> ltemp = std::make_shared<TTAB>();
+			add(tools::type_name<TTAB>().c_str(), ltemp);
+			ltemp->load();
+			ltemp->reload();
 		}
 
 		template <typename TTAB>
 		static TTAB* get()
 		{
-			std::string lname = TTAB::name();
-			csvbase** lp = tools::findmap(m_data, lname);
+			auto lp = tools::findmap(m_csv, tools::type_name<TTAB>());
 			if (lp == nullptr)
 			{
 				tools::no_core_dump();
 				return nullptr;
 			}
-			return (TTAB*)*lp;
+			return (TTAB*)(lp->get());
 		}
 
 		template <typename TAB>
 		static TAB* tab(const int32_t aid)
 		{
-			csvbase* lp = get<manage_csv<TAB>>();
+			csv_base* lp = get<csv<TAB>>();
 			if (lp == nullptr)
 			{
 				return nullptr;
 			}
-			void* lptab = lp->get(aid);
+			void* lptab = lp->tab(aid);
 			if (lptab == nullptr)
 			{
 				return nullptr;
@@ -175,7 +183,7 @@ namespace ngl
 
 		static void foreach_verify(std::map<std::string, std::string>& averify);
 
-		static std::map<std::string, csvbase*>& all();
+		static std::map<std::string, std::shared_ptr<csv_base>>& all();
 	};
 
 	class reload_csv
@@ -194,7 +202,7 @@ namespace ngl
 			trefun& ltemp = m_fun[tools::type_name<T>()];
 			ltemp.m_save = [](const std::string& acsvcontent)
 			{
-				std::string lcsvname = manage_csv<T>::path();
+				std::string lcsvname = csv<T>::path();
 				tools::file_remove(lcsvname);
 				writefile lrf(lcsvname);
 				lrf.write(acsvcontent);
@@ -202,7 +210,7 @@ namespace ngl
 
 			ltemp.m_reload = []()
 			{
-				csvbase* lpcsv = allcsv::get_csvbase(tools::type_name<T>());
+				csv_base* lpcsv = ncsv::get_csvbase(tools::type_name<T>());
 				if (lpcsv == nullptr)
 				{
 					return;
@@ -213,7 +221,7 @@ namespace ngl
 
 			ltemp.m_readfile = [](std::string& acsvcontent)
 			{
-				std::string lcsvname = manage_csv<T>::path();
+				std::string lcsvname = csv<T>::path();
 				readfile lfile(lcsvname);
 				lfile.read(acsvcontent);
 			};
@@ -225,16 +233,16 @@ namespace ngl
 	};
 
 	template <typename T>
-	void manage_csv<T>::load()
+	void csv<T>::load()
 	{
 		reload_csv::register_csv<T>();
-		m_tablecsv.clear();
+		m_csv.clear();
 		{//加载xxx.csv
 			std::string lcsvname = path();
 			ngl::rcsv lrcsv;
 			if (lrcsv.read(lcsvname, m_verify))
 			{
-				lrcsv.readcsv(m_tablecsv);
+				lrcsv.readcsv(m_csv);
 			}			
 		}
 	}

@@ -13,61 +13,38 @@
 */
 #pragma once
 
-#include "manage_csv.h"
+#include "ncsv.h"
 #include "type.h"
 #include "xml.h"
 
 namespace ngl
 {
-	class ttab_chat :
-		public manage_csv<tab_chat>
+	struct ttab_chat :
+		public csv<tab_chat>
 	{
 		ttab_chat(const ttab_chat&) = delete;
 		ttab_chat& operator=(const ttab_chat&) = delete;
-
-		ttab_chat()
-		{
-			allcsv::loadcsv(this);
-		}
 
 		void reload()final
 		{
 			std::cout << "[ttab_chat] reload" << std::endl;
 		}
-
 	public:
 		using type_tab = tab_chat;
 
+		ttab_chat() = default;
+
 		static ttab_chat& instance()
 		{
-			static ttab_chat ltemp;
-			return ltemp;
+			static std::atomic lload = true;
+			if (lload.exchange(false))
+			{
+				ncsv::loadcsv<ttab_chat>();
+			}
+			return *ncsv::get<ttab_chat>();
 		}
 
-		const std::map<int, tab_chat>* tablecsv()
-		{
-			ttab_chat* ttab = allcsv::get<ttab_chat>();
-			if (ttab == nullptr)
-			{
-				tools::no_core_dump();
-				return nullptr;
-			}
-			return &ttab->m_tablecsv;
-		}
-
-		const tab_chat* tab(int32_t aid)
-		{
-			auto lpmap = tablecsv();
-			if (lpmap == nullptr)
-			{
-				return nullptr;
-			}
-			auto itor = lpmap->find(aid);
-			if (itor == lpmap->end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
+		// # std::map<int, tab_chat>& tabs()
+		// # tab_chat* tab(int aid)
 	};
 }//namespace ngl

@@ -13,61 +13,38 @@
 */
 #pragma once
 
-#include "manage_csv.h"
+#include "ncsv.h"
 #include "type.h"
 #include "xml.h"
 
 namespace ngl
 {
-	class ttab_activity_drawcompliance :
-		public manage_csv<tab_activity_drawcompliance>
+	struct ttab_activity_drawcompliance :
+		public csv<tab_activity_drawcompliance>
 	{
 		ttab_activity_drawcompliance(const ttab_activity_drawcompliance&) = delete;
 		ttab_activity_drawcompliance& operator=(const ttab_activity_drawcompliance&) = delete;
-
-		ttab_activity_drawcompliance()
-		{
-			allcsv::loadcsv(this);
-		}
 
 		void reload()final
 		{
 			std::cout << "[ttab_activity_drawcompliance] reload" << std::endl;
 		}
-
 	public:
 		using type_tab = tab_activity_drawcompliance;
 
+		ttab_activity_drawcompliance() = default;
+
 		static ttab_activity_drawcompliance& instance()
 		{
-			static ttab_activity_drawcompliance ltemp;
-			return ltemp;
+			static std::atomic lload = true;
+			if (lload.exchange(false))
+			{
+				ncsv::loadcsv<ttab_activity_drawcompliance>();
+			}
+			return *ncsv::get<ttab_activity_drawcompliance>();
 		}
 
-		const std::map<int, tab_activity_drawcompliance>* tablecsv()
-		{
-			ttab_activity_drawcompliance* ttab = allcsv::get<ttab_activity_drawcompliance>();
-			if (ttab == nullptr)
-			{
-				tools::no_core_dump();
-				return nullptr;
-			}
-			return &ttab->m_tablecsv;
-		}
-
-		const tab_activity_drawcompliance* tab(int32_t aid)
-		{
-			auto lpmap = tablecsv();
-			if (lpmap == nullptr)
-			{
-				return nullptr;
-			}
-			auto itor = lpmap->find(aid);
-			if (itor == lpmap->end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
+		// # std::map<int, tab_activity_drawcompliance>& tabs()
+		// # tab_activity_drawcompliance* tab(int aid)
 	};
 }//namespace ngl

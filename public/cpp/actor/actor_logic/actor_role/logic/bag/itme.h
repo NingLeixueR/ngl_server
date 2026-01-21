@@ -13,8 +13,9 @@
 */
 #pragma once
 
-#include "manage_csv.h"
+#include "ttab_item.h"
 #include "db.pb.h"
+#include "ncsv.h"
 
 namespace ngl
 {
@@ -33,7 +34,7 @@ namespace ngl
 	public:
 		static bool create(actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
 		{
-			tab_item* tab = allcsv::tab<tab_item>(atid);
+			auto tab = ttab_item::instance().tab(atid);
 			if (tab == nullptr)
 			{
 				return false;

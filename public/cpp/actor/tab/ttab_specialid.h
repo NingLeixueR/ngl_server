@@ -13,18 +13,48 @@
 */
 #pragma once
 
-#include "manage_csv.h"
+#include "ncsv.h"
 #include "type.h"
 #include "xml.h"
 
 namespace ngl
 {
-	class ttab_specialid :
-		public manage_csv<tab_specialid>
+	struct ttab_specialid :
+		public csv<tab_specialid>
 	{
 		ttab_specialid(const ttab_specialid&) = delete;
 		ttab_specialid& operator=(const ttab_specialid&) = delete;
 
+		void reload()final
+		{
+			std::cout << "[ttab_specialid] reload" << std::endl;
+			std::cout << "[ttab_specialid] reload" << std::endl;
+			foreach([&](tab_specialid& atab)
+				{
+					bool lread = read_value(
+						atab
+						, {
+							"rolemaxlv", "rolemaxvip", "createfamilconsume", "familsignexp", "familsigndrop", "familapplylistcount", "friendsapplylistcount",
+							"familjoininterval", "friendscount", "ranklistmaxcount", "example_room_maxtime", "example_room_readytime"
+						}
+						, m_rolemaxlv, m_rolemaxvip, m_createfamilconsume, m_familsignexp, m_familsigndrop, m_familapplylistcount, m_friendsapplylistcount
+						, m_familjoininterval, m_friendscount, m_ranklistmaxcount, m_example_room_maxtime, m_example_room_readytime
+					);
+					std::string lexample_totalnumber;
+					if (lread == false && read_value(atab, { "example_totalnumber" }, lexample_totalnumber))
+					{
+						if (tools::splite_special(lexample_totalnumber.c_str(), "\\[", "]", m_example_totalnumber) == false)
+						{
+							return;
+						}
+					}
+				}
+			);
+		}
+	public:
+		using type_tab = tab_specialid;
+
+		ttab_specialid() = default;
 	public:
 		i32_rolelv	m_rolemaxlv = 0;			// 玩家最大等级
 		i32_rolevip	m_rolemaxvip = 0;			// 玩家最大vip等级
@@ -41,72 +71,18 @@ namespace ngl
 		std::map<int32_t, int32_t>	m_example_totalnumber;	// 例子游戏的匹配人数
 		int32_t						m_example_room_readytime = 0; // 例子游戏的等待玩家确认的最大时间
 
-	private:
-		ttab_specialid()
-		{
-			allcsv::loadcsv(this);
-		}
-
-		void reload()final
-		{
-			std::cout << "[ttab_specialid] reload" << std::endl;
-#define de_pram(NAME) #NAME,m_##NAME
-			for (const auto& pair : m_tablecsv)
-			{
-				bool lread = read_value(
-					pair.second
-					, { 
-						"rolemaxlv", "rolemaxvip", "createfamilconsume", "familsignexp", "familsigndrop", "familapplylistcount", "friendsapplylistcount",
-						"familjoininterval", "friendscount", "ranklistmaxcount", "example_room_maxtime", "example_room_readytime"
-					}
-					, m_rolemaxlv, m_rolemaxvip, m_createfamilconsume, m_familsignexp, m_familsigndrop, m_familapplylistcount, m_friendsapplylistcount
-					, m_familjoininterval, m_friendscount, m_ranklistmaxcount, m_example_room_maxtime, m_example_room_readytime
-				);
-				std::string lexample_totalnumber;
-				if (lread == false && read_value(pair.second, { "example_totalnumber" }, lexample_totalnumber))
-				{
-					if (tools::splite_special(lexample_totalnumber.c_str(), "\\[", "]", m_example_totalnumber) == false)
-					{
-						return;
-					}
-				}
-			}
-		}
-
-	public:
-		using type_tab = tab_specialid;
-
 		static ttab_specialid& instance()
 		{
-			static ttab_specialid ltemp;
-			return ltemp;
+			static std::atomic lload = true;
+			if (lload.exchange(false))
+			{
+				ncsv::loadcsv<ttab_specialid>();
+			}
+			return *ncsv::get<ttab_specialid>();
 		}
 
-		const std::map<int, tab_specialid>* tablecsv()
-		{
-			ttab_specialid* ttab = allcsv::get<ttab_specialid>();
-			if (ttab == nullptr)
-			{
-				tools::no_core_dump();
-				return nullptr;
-			}
-			return &ttab->m_tablecsv;
-		}
-
-		const tab_specialid* tab(int32_t aid)
-		{
-			auto lpmap = tablecsv();
-			if (lpmap == nullptr)
-			{
-				return nullptr;
-			}
-			auto itor = lpmap->find(aid);
-			if (itor == lpmap->end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
+		// # std::map<int, tab_specialid>& tabs()
+		// # tab_specialid* tab(int aid)
 
 		void tovalue(int32_t& apvalue, const char* astr)
 		{

@@ -462,7 +462,7 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata)
 	{
-		const tab_servers* tab = ttab_servers::instance().tab("game", nconfig.area());
+		const tab_servers* tab = ttab_servers::instance().const_tab("game", nconfig.area());
 		if (tab == nullptr)
 		{
 			return false;

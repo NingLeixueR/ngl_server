@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "manage_csv.h"
+#include "ncsv.h"
 #include "type.h"
 #include "nlog.h"
 #include "xml.h"
@@ -21,66 +21,42 @@
 
 namespace ngl
 {
-	class ttab_random :
-		public manage_csv<tab_random>
+	struct ttab_random :
+		public csv<tab_random>
 	{
 		ttab_random(const ttab_random&) = delete;
 		ttab_random& operator=(const ttab_random&) = delete;
-
-		ttab_random()
-		{
-			allcsv::loadcsv(this);
-		}
 
 		void reload()final
 		{
 			std::cout << "[ttab_random] reload" << std::endl;
 			// ## 检查所有子掉落是否循环引用
-			for (std::pair<const int, tab_random>& ipair : m_tablecsv)
-			{
-				tab_random& tab = ipair.second;
-				std::set<int32_t> lset;
-				if (is_loop(tab.m_id, lset));
+			foreach([&](tab_random& atab)
 				{
-					tools::no_core_dump();
-				}
-			}
+					std::set<int32_t> lset;
+					if (is_loop(atab.m_id, lset));
+					{
+						tools::no_core_dump();
+					}
+				});
 		}
-
 	public:
 		using type_tab = tab_random;
 
+		ttab_random() = default;
+
 		static ttab_random& instance()
 		{
-			static ttab_random ltemp;
-			return ltemp;
+			static std::atomic lload = true;
+			if (lload.exchange(false))
+			{
+				ncsv::loadcsv<ttab_random>();
+			}
+			return *ncsv::get<ttab_random>();
 		}
 
-		const std::map<int, tab_random>* tablecsv()
-		{
-			ttab_random* ttab = allcsv::get<ttab_random>();
-			if (ttab == nullptr)
-			{
-				tools::no_core_dump();
-				return nullptr;
-			}
-			return &ttab->m_tablecsv;
-		}
-
-		const tab_random* tab(int32_t aid)
-		{
-			auto lpmap = tablecsv();
-			if (lpmap == nullptr)
-			{
-				return nullptr;
-			}
-			auto itor = lpmap->find(aid);
-			if (itor == lpmap->end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
+		// # std::map<int, tab_random>& tabs()
+		// # tab_random* tab(int aid)
 
 		bool is_loop(int32_t aid, std::set<int32_t>& aset)
 		{

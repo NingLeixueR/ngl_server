@@ -71,7 +71,7 @@ bool init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {})
 	ngl::sysconfig::init();
 
 	// # 启动网络监听
-	const ngl::tab_servers* tab = ngl::ttab_servers::instance().tab();
+	const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab();
 	ngl::nets::init(tab->m_threadnum, tab->m_outernet, akcp);
 
 	// # 初始化actor管理模块

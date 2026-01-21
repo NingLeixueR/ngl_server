@@ -13,14 +13,14 @@
 */
 #pragma once
 
-#include "manage_csv.h"
+#include "ncsv.h"
 #include "type.h"
 #include "xml.h"
 
 namespace ngl
 {
-	class ttab_activity_toprank :
-		public manage_csv<tab_activity_toprank>
+	struct ttab_activity_toprank :
+		public csv<tab_activity_toprank>
 	{
 		ttab_activity_toprank(const ttab_activity_toprank&) = delete;
 		ttab_activity_toprank& operator=(const ttab_activity_toprank&) = delete;
@@ -28,54 +28,32 @@ namespace ngl
 		// key:activityid //value.key:rank 
 		std::map<int32_t, std::map<int32_t, const tab_activity_toprank*>> m_activityrank;
 
-		ttab_activity_toprank()
-		{
-			allcsv::loadcsv(this);
-		}
-
 		void reload()final
 		{
 			std::cout << "[ttab_activity_toprank] reload" << std::endl;
-			for (std::pair<const int, tab_activity_toprank>& pair : m_tablecsv)
-			{
-				m_activityrank[pair.second.m_activityid][pair.second.m_rank] = &pair.second;
-			}
+			foreach([&](tab_activity_toprank& atab)
+				{
+					m_activityrank[atab.m_activityid][atab.m_rank] = &atab;
+				}
+			);
 		}
-
 	public:
 		using type_tab = tab_activity_toprank;
 
+		ttab_activity_toprank() = default;
+
 		static ttab_activity_toprank& instance()
 		{
-			static ttab_activity_toprank ltemp;
-			return ltemp;
+			static std::atomic lload = true;
+			if (lload.exchange(false))
+			{
+				ncsv::loadcsv<ttab_activity_toprank>();
+			}
+			return *ncsv::get<ttab_activity_toprank>();
 		}
 
-		const std::map<int, tab_activity_toprank>* tablecsv()
-		{
-			ttab_activity_toprank* ttab = allcsv::get<ttab_activity_toprank>();
-			if (ttab == nullptr)
-			{
-				tools::no_core_dump();
-				return nullptr;
-			}
-			return &ttab->m_tablecsv;
-		}
-
-		const tab_activity_toprank* tab(int32_t aid)
-		{
-			auto lpmap = tablecsv();
-			if (lpmap == nullptr)
-			{
-				return nullptr;
-			}
-			auto itor = lpmap->find(aid);
-			if (itor == lpmap->end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
+		// # std::map<int, tab_activity_toprank>& tabs()
+		// # tab_activity_toprank* tab(int aid)
 
 		bool rankreward(int32_t aactivityid, int32_t arank, int32_t& amailid, int32_t& areward)
 		{

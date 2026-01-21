@@ -27,12 +27,12 @@ namespace ngl
 		}
 		bool sendtogmclient(NODE_TYPE atype, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
-			const tab_servers* tab = ttab_servers::instance().tab(atype, nconfig.area());
+			const tab_servers* tab = ttab_servers::instance().const_tab(atype, nconfig.area());
 			if (tab == nullptr)
 			{
 				return false;
 			}
-			if (ttab_servers::instance().tab()->m_id != tab->m_id)
+			if (ttab_servers::instance().const_tab()->m_id != tab->m_id)
 			{
 				int32_t lcount = sysconfig::node_count(atype);
 				for (int i = 1;i <= lcount;++i)

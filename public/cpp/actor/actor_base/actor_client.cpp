@@ -85,7 +85,7 @@ namespace ngl
 	bool actor_client::handle(const message<np_connect_actor_server>& adata)
 	{
 		int32_t lserverid = adata.get_data()->m_serverid;
-		const tab_servers* tab = ttab_servers::instance().tab();
+		const tab_servers* tab = ttab_servers::instance().const_tab();
 		if (tab == nullptr || ttab_servers::instance().tab(nnodeid::tid(lserverid)) == nullptr)
 		{
 			tools::no_core_dump();
@@ -153,7 +153,7 @@ namespace ngl
 			tools::no_core_dump();
 			return true;
 		}
-		const tab_servers* tab = ttab_servers::instance().tab();
+		const tab_servers* tab = ttab_servers::instance().const_tab();
 		for (int32_t id : tab->m_actorserver)
 		{
 			actor_server_register(nnodeid::nodeid(id, 1));
@@ -188,7 +188,7 @@ namespace ngl
 			return true;
 		}
 		auto lparm = adata.get_data();
-		if (const tab_servers* tab = ttab_servers::instance().tab(); tab == nullptr)
+		if (const tab_servers* tab = ttab_servers::instance().const_tab(); tab == nullptr)
 		{
 			tools::no_core_dump();
 			return true;

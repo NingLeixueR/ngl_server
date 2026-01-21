@@ -13,14 +13,14 @@
 */
 #pragma once
 
-#include "manage_csv.h"
+#include "ncsv.h"
 #include "type.h"
 #include "xml.h"
 
 namespace ngl
 {
-	class ttab_familylv :
-		public manage_csv<tab_familylv>
+	struct ttab_familylv :
+		public csv<tab_familylv>
 	{
 		ttab_familylv(const ttab_familylv&) = delete;
 		ttab_familylv& operator=(const ttab_familylv&) = delete;
@@ -28,62 +28,36 @@ namespace ngl
 		std::map<int32_t, int32_t> m_failylvexp;		// key:lv value:exp
 		std::map<int32_t, int32_t> m_failyrolecount;	// key:lv value:rolecount
 
-		ttab_familylv()
-		{
-			allcsv::loadcsv(this);
-		}
-
 		void reload()final
 		{
 			std::cout << "[ttab_familylv] reload" << std::endl;
 			m_failylvexp.clear();
 			m_failyrolecount.clear();
-			auto ltabmap = tablecsv();
-			if (ltabmap == nullptr)
-			{
-				tools::no_core_dump();
-				return;
-			}
-			for (const auto& apair : *ltabmap)
-			{
-				m_failylvexp[apair.first] = apair.second.m_exp;
-				m_failyrolecount[apair.first] = apair.second.m_maxmembers;
-			}
+
+			foreach([&](tab_familylv& atab)
+				{
+					m_failylvexp[atab.m_id] = atab.m_exp;
+					m_failyrolecount[atab.m_id] = atab.m_maxmembers;
+				}
+			);
 		}
 	public:
 		using type_tab = tab_familylv;
 
+		ttab_familylv() = default;
+
 		static ttab_familylv& instance()
 		{
-			static ttab_familylv ltemp;
-			return ltemp;
+			static std::atomic lload = true;
+			if (lload.exchange(false))
+			{
+				ncsv::loadcsv<ttab_familylv>();
+			}
+			return *ncsv::get<ttab_familylv>();
 		}
 
-		const std::map<int, tab_familylv>* tablecsv()
-		{
-			ttab_familylv* ttab = allcsv::get<ttab_familylv>();
-			if (ttab == nullptr)
-			{
-				tools::no_core_dump();
-				return nullptr;
-			}
-			return &ttab->m_tablecsv;
-		}
-
-		const tab_familylv* tab(int32_t aid)
-		{
-			auto lpmap = tablecsv();
-			if (lpmap == nullptr)
-			{
-				return nullptr;
-			}
-			auto itor = lpmap->find(aid);
-			if (itor == lpmap->end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
+		// # std::map<int, tab_familylv>& tabs()
+		// # tab_familylv* tab(int aid)
 
 		// 根据lv获取其需要的经验
 		int32_t* failylvexp(int32_t alv)

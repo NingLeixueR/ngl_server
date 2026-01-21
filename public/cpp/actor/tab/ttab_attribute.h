@@ -13,65 +13,41 @@
 */
 #pragma once
 
-#include "manage_csv.h"
+#include "ncsv.h"
 #include "type.h"
 #include "xml.h"
 
 namespace ngl
 {
 	struct ttab_attribute :
-		public manage_csv<tab_attribute>
+		public csv<tab_attribute>
 	{
 		ttab_attribute(const ttab_attribute&) = delete;
 		ttab_attribute& operator=(const ttab_attribute&) = delete;
 
 		std::map<int32_t, std::tuple<int32_t, int32_t>> m_uplowlimit;
 
-		ttab_attribute()
-		{
-			allcsv::loadcsv(this);
-		}
-
 		void reload()final
 		{
 			std::cout << "[ttab_attribute] reload" << std::endl;
-			init_uplowlimit();
 		}
-
 	public:
 		using type_tab = tab_attribute;
 
+		ttab_attribute() = default;
+
 		static ttab_attribute& instance()
 		{
-			static ttab_attribute ltemp;
-			return ltemp;
+			static std::atomic lload = true;
+			if (lload.exchange(false))
+			{
+				ncsv::loadcsv<ttab_attribute>();
+			}
+			return *ncsv::get<ttab_attribute>();
 		}
 
-		const std::map<int, tab_attribute>* tablecsv()
-		{
-			ttab_attribute* ttab = allcsv::get<ttab_attribute>();
-			if (ttab == nullptr)
-			{
-				tools::no_core_dump();
-				return nullptr;
-			}
-			return &ttab->m_tablecsv;
-		}
-
-		const tab_attribute* tab(int32_t aid)
-		{
-			auto lpmap = tablecsv();
-			if (lpmap == nullptr)
-			{
-				return nullptr;
-			}
-			auto itor = lpmap->find(aid);
-			if (itor == lpmap->end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
+		// # std::map<int, tab_attribute>& tabs()
+		// # tab_attribute* tab(int aid)
 
 		const tab_attribute* attr(EnumAttribute atype)
 		{
@@ -90,19 +66,14 @@ namespace ngl
 
 		void init_uplowlimit()
 		{
-			auto ltabmap = tablecsv();
-			if (ltabmap == nullptr)
-			{
-				tools::no_core_dump();
-				return;
-			}
-			for (const auto& [key, value] : *ltabmap)
-			{
-				if (key < EnumAttribute::E_Count)
+			foreach([&](tab_attribute& atab)
 				{
-					m_uplowlimit[key] = std::make_tuple(value.m_uplimit, value.m_lowlimit);
+					if (atab.m_id < EnumAttribute::E_Count)
+					{
+						m_uplowlimit[atab.m_id] = std::make_tuple(atab.m_uplimit, atab.m_lowlimit);
+					}
 				}
-			}
+			);
 		}
 
 		int32_t uplowlimit(EnumAttribute atype, int32_t avalues)

@@ -30,7 +30,7 @@ namespace ngl
 			tools::no_core_dump();
 			return;
 		}
-		const tab_servers* tab = ttab_servers::instance().tab();
+		const tab_servers* tab = ttab_servers::instance().const_tab();
 		if (tab == nullptr)
 		{
 			tools::no_core_dump();

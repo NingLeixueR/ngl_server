@@ -103,92 +103,82 @@ namespace ngl
 			start_activity(lpair.first, lbeg, lduration);
 		}
 
-		auto ltabmap = ttab_activity::instance().tablecsv();
-		if (ltabmap == nullptr)
-		{
-			tools::no_core_dump();
-			return;
-		}
-		for (const auto& [activityid, tab] : *ltabmap)
-		{
-			i64_actorid lactoractivityid = nguid::make(ACTOR_ACTIVITY_MANAGE, nguid::none_area(), activityid);
-			if (!m_activitys.contains(lactoractivityid))
+		ttab_activity::instance().foreach([&](tab_activity& atab)
 			{
-				if (tab.m_open == EActivityOpen::EActivityOpenAlways)
-				{//ttab_activityalways
-					const tab_activityalways* ltabalways = ttab_activityalways::instance().tab(activityid);
-					if (ltabalways == nullptr)
-					{
-						start_activity(lactoractivityid, lnow, -1);
-						continue;
-					}
-					if (ltabalways->m_type == EActivityAlways::EActivityAlwaysWeek)
-					{
-						int32_t lbeg = (int32_t)localtime::getweekday(lnow, ltabalways->m_wbday == 7 ? 0 : ltabalways->m_wbday, ltabalways->m_wbhour, ltabalways->m_wbminute, ltabalways->m_wbsecond);
-						int32_t lend = (int32_t)localtime::getweekday(lnow, ltabalways->m_weday == 7 ? 0 : ltabalways->m_weday, ltabalways->m_wehour, ltabalways->m_weminute, ltabalways->m_wesecond);
-						start_activity(activityid, lbeg, lend - lbeg);
-						continue;
-					}
-					else if (ltabalways->m_type == EActivityAlways::EActivityAlwaysMonth)
-					{
-						std::pair<bool, time_t> lbeg = localtime::getmothday(lnow, ltabalways->m_mbday, ltabalways->m_mbhour, ltabalways->m_mbminute, ltabalways->m_mbsecond);
-						if (lbeg.second)
+				i64_actorid lactoractivityid = nguid::make(ACTOR_ACTIVITY_MANAGE, nguid::none_area(), atab.m_id);
+				if (!m_activitys.contains(lactoractivityid))
+				{
+					if (atab.m_open == EActivityOpen::EActivityOpenAlways)
+					{//ttab_activityalways
+						const tab_activityalways* ltabalways = ttab_activityalways::instance().tab(atab.m_id);
+						if (ltabalways == nullptr)
 						{
-							continue;
+							start_activity(lactoractivityid, lnow, -1);
+							return;
 						}
-						std::pair<bool, time_t> lend;
-						int32_t lmeday = ltabalways->m_meday;
-						auto lfun = [&lmeday,&lend, lnow, ltabalways]()
+						if (ltabalways->m_type == EActivityAlways::EActivityAlwaysWeek)
 						{
-								do
+							int32_t lbeg = (int32_t)localtime::getweekday(lnow, ltabalways->m_wbday == 7 ? 0 : ltabalways->m_wbday, ltabalways->m_wbhour, ltabalways->m_wbminute, ltabalways->m_wbsecond);
+							int32_t lend = (int32_t)localtime::getweekday(lnow, ltabalways->m_weday == 7 ? 0 : ltabalways->m_weday, ltabalways->m_wehour, ltabalways->m_weminute, ltabalways->m_wesecond);
+							start_activity(atab.m_id, lbeg, lend - lbeg);
+							return;
+						}
+						else if (ltabalways->m_type == EActivityAlways::EActivityAlwaysMonth)
+						{
+							std::pair<bool, time_t> lbeg = localtime::getmothday(lnow, ltabalways->m_mbday, ltabalways->m_mbhour, ltabalways->m_mbminute, ltabalways->m_mbsecond);
+							if (lbeg.second)
+							{
+								return;
+							}
+							std::pair<bool, time_t> lend;
+							int32_t lmeday = ltabalways->m_meday;
+							auto lfun = [&lmeday, &lend, lnow, ltabalways]()
 								{
-									if (lmeday <= 0)
+									do
 									{
-										return false;
-									}
-									lend = localtime::getmothday(lnow, lmeday, ltabalways->m_mehour, ltabalways->m_meminute, ltabalways->m_mesecond);
-									--lmeday;
-								} while (!lend.first);
-								return true;
-						};
-						if (!lfun())
-						{
-							continue;
+										if (lmeday <= 0)
+										{
+											return false;
+										}
+										lend = localtime::getmothday(lnow, lmeday, ltabalways->m_mehour, ltabalways->m_meminute, ltabalways->m_mesecond);
+										--lmeday;
+									} while (!lend.first);
+									return true;
+								};
+							if (!lfun())
+							{
+								return;
+							}
+							start_activity(lactoractivityid, (int32_t)lbeg.second, (int32_t)(lend.second - lbeg.second));
+							return;
 						}
-						start_activity(lactoractivityid, (int32_t)lbeg.second, (int32_t)(lend.second - lbeg.second));
-						continue;
-					}
-					else if (ltabalways->m_type == EActivityAlways::EActivityAlwaysFixed)
-					{
-						int32_t lbeg = (int32_t)localtime::getsecond2time(lnow, ltabalways->m_fbhour, ltabalways->m_fbminute, ltabalways->m_fbsecond);
-						int32_t lend = (int32_t)localtime::getsecond2time(lnow + ltabalways->m_fixedday * localtime::DAY_SECOND, ltabalways->m_fbhour, ltabalways->m_fbminute, ltabalways->m_fbsecond);
-						start_activity(lactoractivityid, lbeg, lend - lbeg);
-						continue;
+						else if (ltabalways->m_type == EActivityAlways::EActivityAlwaysFixed)
+						{
+							int32_t lbeg = (int32_t)localtime::getsecond2time(lnow, ltabalways->m_fbhour, ltabalways->m_fbminute, ltabalways->m_fbsecond);
+							int32_t lend = (int32_t)localtime::getsecond2time(lnow + ltabalways->m_fixedday * localtime::DAY_SECOND, ltabalways->m_fbhour, ltabalways->m_fbminute, ltabalways->m_fbsecond);
+							start_activity(lactoractivityid, lbeg, lend - lbeg);
+							return;
+						}
 					}
 				}
 			}
-		}
+		);
 
 		const pbdb::db_keyvalue* lkeyvalue = tdb_keyvalue::nsp_cread<actor_activity_manage>::instance(id_guid()).getconst(pbdb::db_keyvalue::open_server);
 		if (lkeyvalue != nullptr)
 		{
 			int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->mvalue());
-			auto ltabmap = ttab_activityopenserver::instance().tablecsv();
-			if (ltabmap == nullptr)
-			{
-				tools::no_core_dump();
-				return;
-			}
-			for (const auto& [activityid, tab] : *ltabmap)
-			{
-				if (!m_activitys.contains(activityid))
+			ttab_activityopenserver::instance().foreach([&](tab_activityopenserver& atab)
 				{
-					//lopenserver
-					int32_t lbeg = (tab.m_openday - 1) * localtime::DAY_SECOND + tab.m_openhour * localtime::HOUR_SECOND + tab.m_openminute * localtime::MINUTES_SECOND + tab.m_opensecond;
-					int32_t lend = (tab.m_closeday - 1) * localtime::DAY_SECOND + tab.m_closehour * localtime::HOUR_SECOND + tab.m_closeminute * localtime::MINUTES_SECOND + tab.m_closesecond;
-					start_activity(activityid, lbeg, lend - lbeg);
+					if (!m_activitys.contains(atab.m_id))
+					{
+						//lopenserver
+						int32_t lbeg = (atab.m_openday - 1) * localtime::DAY_SECOND + atab.m_openhour * localtime::HOUR_SECOND + atab.m_openminute * localtime::MINUTES_SECOND + atab.m_opensecond;
+						int32_t lend = (atab.m_closeday - 1) * localtime::DAY_SECOND + atab.m_closehour * localtime::HOUR_SECOND + atab.m_closeminute * localtime::MINUTES_SECOND + atab.m_closesecond;
+						start_activity(atab.m_id, lbeg, lend - lbeg);
+					}
 				}
-			}
+			);
 		}		
 	}
 

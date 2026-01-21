@@ -20,7 +20,7 @@ namespace ngl
 		auto lparm = adata.get_data();
 		auto lpack = adata.get_pack();
 		np_actor_reloadcsv pro;
-		const auto& lversion = allcsv::all();
+		const auto& lversion = ncsv::all();
 		for (const auto& apair : lversion)
 		{
 			auto itor = lparm->m_verify.find(apair.first);

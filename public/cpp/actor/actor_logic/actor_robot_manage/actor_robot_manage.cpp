@@ -89,7 +89,7 @@ namespace ngl
 		pro.set_marea(tab_self_area);
 		pro.set_maccount(aaccount);
 		pro.set_mpassword(apasswold);
-		const tab_servers* tab = ttab_servers::instance().tab();
+		const tab_servers* tab = ttab_servers::instance().const_tab();
 		if (tab == nullptr)
 		{
 			tools::no_core_dump();
