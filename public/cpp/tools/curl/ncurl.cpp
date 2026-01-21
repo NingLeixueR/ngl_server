@@ -238,6 +238,8 @@ namespace ngl
 				// 发送邮件
 				res = curl_easy_perform(curl);
 
+				aparm.post();
+
 				// 检查结果
 				if (res != CURLE_OK)
 				{
@@ -258,6 +260,7 @@ namespace ngl
 	void ncurl::sendemail(std::shared_ptr<mail_param>& aparm)
 	{
 		email_sender::send(aparm);
+		aparm->wait();
 	}
 
 	void test_mail(const char* atitle, const char* acontent, const std::vector<std::pair<std::string, std::string>>& amailvec/* = {}*/)
