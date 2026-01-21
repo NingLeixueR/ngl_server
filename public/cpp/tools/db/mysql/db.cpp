@@ -17,12 +17,6 @@
 
 namespace ngl
 {
-	db::db() :
-		m_connectdb(false),
-		m_mysql(nullptr)
-	{
-	}
-
 	bool db::connectdb(const xarg_db& arg)
 	{
 		if (m_connectdb)

@@ -60,7 +60,7 @@ namespace ngl
 
 	bool nets::check_serverkcp()
 	{
-		const tab_servers* tab = ttab_servers::instance().tab();
+		const tab_servers* tab = ttab_servers::instance().const_tab();
 		if (tab == nullptr)
 		{
 			return false;
@@ -134,7 +134,7 @@ namespace ngl
 			return false;
 		}
 
-		const tab_servers* tab = ttab_servers::instance().tab();
+		const tab_servers* tab = ttab_servers::instance().const_tab();
 		if (tab == nullptr)
 		{
 			return false;

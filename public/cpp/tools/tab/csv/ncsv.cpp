@@ -11,13 +11,13 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "manage_csv.h"
 #include "csvtable.h"
+#include "ncsv.h"
 #include "drop.h"
 
 namespace ngl
 {
-	void csvbase::set_path(const std::string& apath, const std::string& aname)
+	void csv_base::set_path(const std::string& apath, const std::string& aname)
 	{
 		m_path = std::format("{}/{}", apath, aname);
 		if (tools::directories_exists(m_path) == false)
@@ -26,12 +26,12 @@ namespace ngl
 		}
 	}
 
-	std::string& csvbase::path()
+	std::string& csv_base::path()
 	{
 		return m_path;
 	}
 
-	std::string csvbase::m_path;
+	std::string csv_base::m_path;
 
 	std::map<std::string, reload_csv::trefun> reload_csv::m_fun;
 
@@ -80,38 +80,37 @@ namespace ngl
 		return true;
 	}
 
-	std::map<std::string, csvbase*> allcsv::m_data; // key: TAB::name()
+	std::map<std::string, std::shared_ptr<csv_base>> ncsv::m_csv; // key: TAB::name()
 
-	void allcsv::add(const char* akey, csvbase* ap)
+	void ncsv::add(const char* akey, std::shared_ptr<csv_base>& ap)
 	{
-		if (m_data[akey] != nullptr)
+		if (m_csv[akey] != nullptr)
 		{
-			delete m_data[akey];
-			m_data[akey] = nullptr;
+			m_csv.erase(akey);
 		}
-		m_data[akey] = ap;
+		m_csv[akey] = ap;
 	}
 
-	csvbase* allcsv::get_csvbase(const std::string& akey)
+	csv_base* ncsv::get_csvbase(const std::string& akey)
 	{
-		csvbase** lp = tools::findmap(m_data, akey);
+		std::shared_ptr<csv_base>* lp = tools::findmap(m_csv, akey);
 		if (lp == nullptr)
 		{
 			return nullptr;
 		}
-		return *lp;
+		return lp->get();
 	}
 
-	void allcsv::foreach_verify(std::map<std::string, std::string>& averify)
+	void ncsv::foreach_verify(std::map<std::string, std::string>& averify)
 	{
-		for (const auto& [key, value] : m_data)
+		for (const auto& [key, value] : m_csv)
 		{
 			averify.insert(std::make_pair(key, value->verify()));
 		}
 	}
 
-	std::map<std::string, csvbase*>& allcsv::all()
+	std::map<std::string, std::shared_ptr<csv_base>>& ncsv::all()
 	{
-		return m_data;
+		return m_csv;
 	}
 }// namespace ngl

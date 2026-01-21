@@ -13,61 +13,38 @@
 */
 #pragma once
 
-#include "manage_csv.h"
+#include "ncsv.h"
 #include "type.h"
 #include "xml.h"
 
 namespace ngl
 {
-	class ttab_synthesis :
-		public manage_csv<tab_synthesis>
+	struct ttab_synthesis :
+		public csv<tab_synthesis>
 	{
 		ttab_synthesis(const ttab_synthesis&) = delete;
 		ttab_synthesis& operator=(const ttab_synthesis&) = delete;
-
-		ttab_synthesis()
-		{
-			allcsv::loadcsv(this);
-		}
 
 		void reload()final
 		{
 			std::cout << "[ttab_synthesis] reload" << std::endl;
 		}
-
 	public:
 		using type_tab = tab_synthesis;
 
+		ttab_synthesis() = default;
+
 		static ttab_synthesis& instance()
 		{
-			static ttab_synthesis ltemp;
-			return ltemp;
+			static std::atomic lload = true;
+			if (lload.exchange(false))
+			{
+				ncsv::loadcsv<ttab_synthesis>();
+			}
+			return *ncsv::get<ttab_synthesis>();
 		}
 
-		const std::map<int, tab_synthesis>* tablecsv()
-		{
-			ttab_synthesis* ttab = allcsv::get<ttab_synthesis>();
-			if (ttab == nullptr)
-			{
-				tools::no_core_dump();
-				return nullptr;
-			}
-			return &ttab->m_tablecsv;
-		}
-
-		const tab_synthesis* tab(int32_t aid)
-		{
-			auto lpmap = tablecsv();
-			if (lpmap == nullptr)
-			{
-				return nullptr;
-			}
-			auto itor = lpmap->find(aid);
-			if (itor == lpmap->end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
+		// # std::map<int, tab_synthesis>& tabs()
+		// # tab_synthesis* tab(int aid)
 	};
 }//namespace ngl

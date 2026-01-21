@@ -14,7 +14,7 @@
 #pragma once
 
 #include "ttab_attribute.h"
-#include "manage_csv.h"
+#include "ncsv.h"
 #include "nlog.h"
 #include "net.h"
 

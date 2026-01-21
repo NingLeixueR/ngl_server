@@ -16,7 +16,7 @@
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "ndb_modular.h"
-#include "manage_csv.h"
+#include "ncsv.h"
 #include "nprotocol.h"
 #include "db_manage.h"
 #include "ndbclient.h"

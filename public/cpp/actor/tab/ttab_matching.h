@@ -13,61 +13,38 @@
 */
 #pragma once
 
-#include "manage_csv.h"
+#include "ncsv.h"
 #include "type.h"
 #include "xml.h"
 
 namespace ngl
 {
-	class ttab_matching :
-		public manage_csv<tab_matching>
+	struct ttab_matching :
+		public csv<tab_matching>
 	{
 		ttab_matching(const ttab_matching&) = delete;
 		ttab_matching& operator=(const ttab_matching&) = delete;
-
-		ttab_matching()
-		{
-			allcsv::loadcsv(this);
-		}
 
 		void reload()final
 		{
 			std::cout << "[ttab_matching] reload" << std::endl;
 		}
-
 	public:
 		using type_tab = tab_matching;
 
+		ttab_matching() = default;
+
 		static ttab_matching& instance()
 		{
-			static ttab_matching ltemp;
-			return ltemp;
+			static std::atomic lload = true;
+			if (lload.exchange(false))
+			{
+				ncsv::loadcsv<ttab_matching>();
+			}
+			return *ncsv::get<ttab_matching>();
 		}
 
-		const std::map<int, tab_matching>* tablecsv()
-		{
-			ttab_matching* ttab = allcsv::get<ttab_matching>();
-			if (ttab == nullptr)
-			{
-				tools::no_core_dump();
-				return nullptr;
-			}
-			return &ttab->m_tablecsv;
-		}
-
-		const tab_matching* tab(int32_t aid)
-		{
-			auto lpmap = tablecsv();
-			if (lpmap == nullptr)
-			{
-				return nullptr;
-			}
-			auto itor = lpmap->find(aid);
-			if (itor == lpmap->end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
+		// # std::map<int, tab_matching>& tabs()
+		// # tab_matching* tab(int aid)
 	};
 }//namespace ngl

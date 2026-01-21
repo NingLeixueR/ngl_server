@@ -322,7 +322,7 @@ namespace ngl
 	{
 		int32_t lstat = 0;
 		int32_t lgold = 0;
-		tab_recharge* tab = allcsv::tab<tab_recharge>(arechargeid);
+		tab_recharge* tab = ttab_recharge::instance().tab(arechargeid);
 		std::map<int, int> litems;
 		if (tab != nullptr)
 		{

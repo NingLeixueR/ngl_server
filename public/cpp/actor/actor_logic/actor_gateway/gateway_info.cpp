@@ -73,23 +73,25 @@ namespace ngl
 	void gateway_info::remove_actorid(i64_actorid aactorid)
 	{
 		i32_actordataid lactordataid = nguid::actordataid(aactorid);
-		i32_actordataid larea = nguid::area(aactorid);
-		auto itor_area = m_info.find(larea);
-		if (itor_area == m_info.end())
+		i16_area larea = nguid::area(aactorid);
+
+		auto lpmap = tools::findmap(m_info, larea);
+		if (lpmap == nullptr)
 		{
 			return;
 		}
-		auto itor_actordataid = itor_area->second.find(lactordataid);
-		if (itor_actordataid == itor_area->second.end())
+		gateway_socket* lgateway = tools::findmap(*lpmap, lactordataid);
+		if (lgateway == nullptr)
 		{
 			return;
 		}
-		i32_socket lsocket = itor_actordataid->second.m_socket;
+
+		i32_socket lsocket = lgateway->m_socket;
 		if (lsocket != 0)
 		{
 			m_sockinfo.erase(lsocket);
 		}
-		itor_area->second.erase(itor_actordataid);
+		lpmap->erase(lactordataid);
 	}
 
 	gateway_socket* gateway_info::get(i16_area aarea, i32_actordataid aroleid)

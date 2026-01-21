@@ -11,6 +11,7 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+#include "ttab_synthesis.h"
 #include "actor_role.h"
 #include "synthesis.h"
 #include "consume.h"
@@ -20,7 +21,7 @@ namespace ngl
 {
 	bool synthesis::use(actor_role* arole, int32_t aid)
 	{
-		tab_synthesis* tab = allcsv::tab<tab_synthesis>(aid);
+		tab_synthesis* tab = ttab_synthesis::instance().tab(aid);
 		if (tab == nullptr)
 		{
 			return false;

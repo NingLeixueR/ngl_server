@@ -72,29 +72,24 @@ namespace ngl
 				itor = lmap->insert({ aroleid, ltemp }).first;
 			}
 
-			auto ltabmap = ttab_activity_drawcompliance::instance().tablecsv();
-			if (ltabmap == nullptr)
-			{
-				tools::no_core_dump();
-				return;
-			}
-			for (const auto& [_id, _data] : *ltabmap)
-			{
-				if (itor->second.mcount() > _id)
+			ttab_activity_drawcompliance::instance().foreach([&](tab_activity_drawcompliance& atab)
 				{
-					auto itorreward = itor->second.mutable_mreward()->find(_id);
-					if (itorreward == itor->second.mutable_mreward()->end())
+					if (itor->second.mcount() > atab.m_id)
 					{
-						// 发送
-						std::string lsrc = std::format("activity_drawcompliance role=[{}] mail=[{}] drop=[{}]", aroleid, _data.m_mailid, _data.m_dropid);
-						if (actor_activity_manage::get_drop().use(_data.m_dropid, 1, aroleid, lsrc, nullptr, _data.m_mailid))
+						auto itorreward = itor->second.mutable_mreward()->find(atab.m_id);
+						if (itorreward == itor->second.mutable_mreward()->end())
 						{
-							// 记录已领取
-							itor->second.mutable_mreward()->insert({ _id, true });
+							// 发送
+							std::string lsrc = std::format("activity_drawcompliance role=[{}] mail=[{}] drop=[{}]", aroleid, atab.m_mailid, atab.m_dropid);
+							if (actor_activity_manage::get_drop().use(atab.m_dropid, 1, aroleid, lsrc, nullptr, atab.m_mailid))
+							{
+								// 记录已领取
+								itor->second.mutable_mreward()->insert({ atab.m_id, true });
+							}
 						}
 					}
 				}
-			}
+			);
 		}
 	};
 }//namespace ngl

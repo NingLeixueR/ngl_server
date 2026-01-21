@@ -159,7 +159,7 @@ void init_DB_NOTICE()
 	for (int i = 1; i < 10; ++i)
 	{
 		pbdb::db_notice ltemp;
-		ltemp.set_mid((ngl::ttab_servers::instance().tab()->m_area * 100) + i);
+		ltemp.set_mid((ngl::ttab_servers::instance().const_tab()->m_area * 100) + i);
 		if (ngl::tools::to_utf8(lvec[i], lvec[i]) == false)
 			continue;
 		ltemp.set_mnotice(lvec[i]);
@@ -658,7 +658,7 @@ bool start_robot(int argc, char** argv)
 
 	ngl::actor_robot_manage::instance();
 
-	ngl::i32_serverid llogin = ngl::nnodeid::nodeid(ngl::ttab_servers::instance().tab()->m_login, 1);
+	ngl::i32_serverid llogin = ngl::nnodeid::nodeid(ngl::ttab_servers::instance().const_tab()->m_login, 1);
 	ngl::actor_robot_manage::instance().connect(llogin, [](int asession)
 		{
 			std::cout << "连接Login服务器成功" << std::endl;
@@ -801,9 +801,9 @@ int ngl_main(int argc, char** argv)
 	nconfig.load("./config", std::format("{}_{}", lname, ltcount));
 
 	// # 加载csv配置
-	ngl::csvbase::set_path("./csv", lname);
+	ngl::csv_base::set_path("./csv", lname);
 
-	const ngl::tab_servers* tab = ngl::ttab_servers::instance().tab(argv[1], larea);
+	const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab(argv[1], larea);
 	if (tab == nullptr)
 	{
 		return 0;

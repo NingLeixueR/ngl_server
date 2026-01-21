@@ -14,8 +14,9 @@
 #pragma once
 
 #include "nactor_auto.h"
-#include "manage_csv.h"
+#include "ttab_mail.h"
 #include "localtime.h"
+#include "ncsv.h"
 
 #include <string>
 #include <map>
@@ -57,7 +58,7 @@ namespace ngl
 		{
 			if (atid != -1)
 			{
-				tab_mail* tab = allcsv::tab<tab_mail>(atid);
+				tab_mail* tab = ttab_mail::instance().tab(atid);
 				if (tab == nullptr)
 				{
 					log_error()->print("addmail tab id[{}] not find!!!", atid);

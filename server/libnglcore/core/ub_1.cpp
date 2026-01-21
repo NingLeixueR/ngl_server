@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 26-01-19 18:41:39
+// 创建时间 26-01-20 15:27:05
 #include "pb_field.cpp"
 #include "session_endpoint.cpp"
 #include "attribute_value.cpp"
@@ -26,7 +26,7 @@
 #include "time_wheel.cpp"
 #include "nscript_pb.cpp"
 #include "nconsuming.cpp"
-#include "manage_csv.cpp"
+#include "ncsv.cpp"
 #include "events_map.cpp"
 #include "asio_timer.cpp"
 #include "activitydb.cpp"
@@ -73,6 +73,7 @@
 #include "skill.cpp"
 #include "nrfun.cpp"
 #include "njson.cpp"
+#include "nhash.cpp"
 #include "nguid.cpp"
 #include "ncurl.cpp"
 #include "grids.cpp"

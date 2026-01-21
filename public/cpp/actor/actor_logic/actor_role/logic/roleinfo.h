@@ -14,9 +14,9 @@
 #pragma once
 
 #include "nactor_auto.h"
-#include "manage_csv.h"
 #include "net.pb.h"
 #include "db.pb.h"
+#include "ncsv.h"
 
 namespace ngl
 {

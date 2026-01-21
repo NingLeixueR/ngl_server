@@ -90,7 +90,7 @@ namespace ngl
 
 	bool actor_gm::checklocalbytype(NODE_TYPE atype)
 	{
-		return ttab_servers::instance().tab()->m_type == atype;
+		return ttab_servers::instance().const_tab()->m_type == atype;
 	}
 
 	bool actor_gm::sendtophp(i32_sessionid aidentifier, const ngl::np_gm_response& adata)

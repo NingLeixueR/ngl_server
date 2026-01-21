@@ -1294,7 +1294,7 @@ namespace ngl
 
 	const std::string& tools::server_name()
 	{
-		const tab_servers* tab = ttab_servers::instance().tab();
+		const tab_servers* tab = ttab_servers::instance().const_tab();
 		if (tab == nullptr)
 		{
 			tools::no_core_dump();

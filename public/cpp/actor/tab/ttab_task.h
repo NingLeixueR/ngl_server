@@ -14,7 +14,7 @@
 #pragma once
 
 #include "ttab_specialid.h"
-#include "manage_csv.h"
+#include "ncsv.h"
 #include "type.h"
 #include "xml.h"
 
@@ -24,8 +24,8 @@ namespace ngl
 	using i32_rolelv = int32_t;
 	using i32_rolevip = int32_t;
 
-	class ttab_task :
-		public manage_csv<tab_task>
+	struct ttab_task :
+		public csv<tab_task>
 	{
 		ttab_task(const ttab_task&) = delete;
 		ttab_task& operator=(const ttab_task&) = delete;
@@ -36,11 +36,6 @@ namespace ngl
 		std::map<ETask, int32_t> m_maxval;
 		std::map<ETask, std::map<int32_t, receive_complete>> m_map;
 
-		ttab_task()
-		{
-			allcsv::loadcsv(this);
-		}
-
 		void reload()final
 		{
 			std::cout << "[ttab_task] reload" << std::endl;
@@ -49,54 +44,36 @@ namespace ngl
 			m_maxval.insert({ ETaskRoleVip, ttab_specialid::instance().m_rolemaxvip });
 			m_maxval.insert({ ETaskTaskId, -1 });
 
-			for (std::pair<const int, tab_task>& pair : m_tablecsv)
-			{
-				tab_task& ltask = pair.second;
-				for (task_condition& item : ltask.m_taskreceive)
+			foreach([&](tab_task& atab)
 				{
-					set_data(ltask.m_id, item, m_map[item.m_type], true);
+					for (task_condition& item : atab.m_taskreceive)
+					{
+						set_data(atab.m_id, item, m_map[item.m_type], true);
+					}
+					for (task_condition& item : atab.m_taskcomplete)
+					{
+						set_data(atab.m_id, item, m_map[item.m_type], false);
+					}
 				}
-				for (task_condition& item : ltask.m_taskcomplete)
-				{
-					set_data(ltask.m_id, item, m_map[item.m_type], false);
-				}
-			}
+			);
 		}
-
 	public:
 		using type_tab = tab_task;
 
+		ttab_task() = default;
+
 		static ttab_task& instance()
 		{
-			static ttab_task ltemp;
-			return ltemp;
+			static std::atomic lload = true;
+			if (lload.exchange(false))
+			{
+				ncsv::loadcsv<ttab_task>();
+			}
+			return *ncsv::get<ttab_task>();
 		}
 
-		const std::map<int, tab_task>* tablecsv()
-		{
-			ttab_task* ttab = allcsv::get<ttab_task>();
-			if (ttab == nullptr)
-			{
-				tools::no_core_dump();
-				return nullptr;
-			}
-			return &ttab->m_tablecsv;
-		}
-
-		const tab_task* tab(int32_t aid)
-		{
-			auto lpmap = tablecsv();
-			if (lpmap == nullptr)
-			{
-				return nullptr;
-			}
-			auto itor = lpmap->find(aid);
-			if (itor == lpmap->end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
+		// # std::map<int, tab_task>& tabs()
+		// # tab_task* tab(int aid)
 
 		void set_data(int ataskid, task_condition& aitem, std::map<int32_t, receive_complete>& arc, bool areceive)
 		{
@@ -224,7 +201,7 @@ namespace ngl
 			if (table->m_type == ETaskTypeRepeat || table->m_type == ETaskTypeDaily)
 			{
 				int32_t lmaxcount = tools::lexical_cast<int32_t>(table->m_typeparm);
-				
+
 				data_modified_return_getconst(lptaskconst, rd->m_task.get(), false);
 				const auto& lcomplete = lptaskconst->mcompleteddatas();
 				auto itor = lcomplete.find(ataskid);

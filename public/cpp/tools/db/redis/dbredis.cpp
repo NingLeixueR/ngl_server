@@ -53,17 +53,17 @@ namespace ngl
 		return false;
 	}
 
-	redis::redis() :
+	redis::redis(const xarg_redis& aarg) :
 		m_rc(nullptr)
 	{
-		m_rc = redisConnect(nconfig.redis().m_ip.c_str(), nconfig.redis().m_port);
+		m_rc = redisConnect(aarg.m_ip.c_str(), aarg.m_port);
 		if (m_rc->err)
 		{
 			log_error()->print("[ERROR] Redis[{}] ", m_rc->err);
 			tools::no_core_dump();
 			return;
 		}
-		if (!redis_cmd::cmd(m_rc, "AUTH %s", nconfig.redis().m_passworld.c_str()))
+		if (!redis_cmd::cmd(m_rc, "AUTH %s", aarg.m_passworld.c_str()))
 		{
 			tools::no_core_dump();
 			return;
@@ -77,7 +77,7 @@ namespace ngl
 {
 	void test_hiredis()
 	{
-		ngl::redis lredis;
+		ngl::redis lredis(nconfig.redis());
 
 		for (int i = 1; i < 10; ++i)
 		{

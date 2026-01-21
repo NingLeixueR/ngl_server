@@ -18,6 +18,7 @@
 #include "net.pb.h"
 #include "lua.hpp"
 #include "tools.h"
+#include "nhash.h"
 
 #include <map>
 
@@ -28,42 +29,6 @@ namespace ngl
 		enscript_none = -1,		// 错误
 		enscript_lua = 0,		// lua
 		enscript_count,			// 支持的脚本数据
-	};
-
-	struct nhashcode
-	{
-		size_t m_hashcode = 0;
-		int32_t m_index = 0;
-
-		nhashcode(size_t ahashcode, int32_t aindex) :
-			m_hashcode(ahashcode),
-			m_index(aindex)
-		{}
-
-		auto operator<=>(const nhashcode& ar)const
-		{
-			return tools::less_member(m_hashcode, ar.m_hashcode, m_index, ar.m_index);
-		}
-	};
-
-	class nhash
-	{
-		static std::map<size_t, std::map<std::string, int32_t>> m_kv;
-	public:
-		template <typename T>
-		static nhashcode code()
-		{
-			static size_t lcode = typeid(T).hash_code();
-			std::map<std::string, int32_t>& lmap = m_kv[lcode];
-			auto itor = lmap.find(tools::type_name<T>());
-			if (itor != lmap.end())
-			{
-				return nhashcode(lcode, itor->second);
-			}
-			int32_t lindex = lmap.size() + 1;
-			lmap[tools::type_name<T>()] = lindex;
-			return nhashcode(lcode, lindex);
-		}
 	};
 
 	class tprotocol

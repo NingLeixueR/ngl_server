@@ -11,15 +11,16 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "manage_csv.h"
+#include "ttab_consume.h"
 #include "consume.h"
+#include "ncsv.h"
 #include "bag.h"
 
 namespace ngl
 {
 	bool consume::get(int atid, int acount, std::map<int32_t, int32_t>& amap)
 	{
-		tab_consume* tab = allcsv::tab<tab_consume>(atid);
+		tab_consume* tab = ttab_consume::instance().tab(atid);
 		if (tab == nullptr)
 		{
 			return false;

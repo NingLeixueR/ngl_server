@@ -90,7 +90,7 @@ namespace ngl
 			.m_gatewayid = nconfig.nodeid(),
 		};
 
-		for (int32_t tid : ttab_servers::instance().tab()->m_actorserver)
+		for (int32_t tid : ttab_servers::instance().const_tab()->m_actorserver)
 		{
 			i64_actorid lactorserve = actor_server::actorid();
 			actor::send_server(nnodeid::nodeid(tid, 1), pro, lactorserve, nguid::make());

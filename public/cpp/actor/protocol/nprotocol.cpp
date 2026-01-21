@@ -23,7 +23,7 @@ namespace ngl
 		if (aisnet)
 		{
 			// # ACTOR_TYPE # ELOG_TYPE
-			actor::send_actor(actor_log::actorid(ttab_servers::instance().tab()->m_log), nguid::make(), pro);
+			actor::send_actor(actor_log::actorid(ttab_servers::instance().const_tab()->m_log), nguid::make(), pro);
 		}
 		else
 		{

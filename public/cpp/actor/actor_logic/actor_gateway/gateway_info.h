@@ -51,8 +51,10 @@ namespace ngl
 		// # 根据actorid获取gatewayid
 		int64_t gatewayid(i64_actorid aid);
 
+		// # 遍历所有socket
 		void foreach(const std::function<void(gateway_socket*)>& afun);
 
+		// # 数据更新
 		void updata(const np_actor_gatewayinfo_updata& adata);
 	};
 }//namespace ngl

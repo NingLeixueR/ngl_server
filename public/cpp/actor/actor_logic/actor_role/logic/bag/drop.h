@@ -14,7 +14,8 @@
 #pragma once
 
 #include "nactor_auto.h"
-#include "manage_csv.h"
+#include "ttab_random.h"
+#include "ncsv.h"
 #include "tools.h"
 #include "nlog.h"
 
@@ -71,8 +72,7 @@ namespace ngl
 
 		bool weight(int aid, std::map<int, int>& amap)
 		{
-			const tab_random* ltab = allcsv::tab<tab_random>(aid);
-
+			auto ltab = ttab_random::instance().tab(aid);
 			if (ltab == nullptr)
 			{
 				tools::no_core_dump();

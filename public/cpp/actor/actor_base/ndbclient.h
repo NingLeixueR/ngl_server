@@ -228,7 +228,7 @@ namespace ngl
 		// # 当与db服务器发生连接时触发加载数据事件
 		void load() final
 		{
-			const tab_servers* tab = ttab_servers::instance().tab();
+			const tab_servers* tab = ttab_servers::instance().const_tab();
 			if (tab == nullptr)
 			{
 				tools::no_core_dump();
@@ -251,7 +251,7 @@ namespace ngl
 		// # db结点的id
 		i32_actordataid dbnodeid()
 		{
-			const tab_servers* tab = ttab_servers::instance().tab();
+			const tab_servers* tab = ttab_servers::instance().const_tab();
 			return nnodeid::nodeid(tab->m_db, e_default_tcount);
 		}
 

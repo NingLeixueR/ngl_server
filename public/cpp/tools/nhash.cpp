@@ -11,16 +11,10 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "tprotocol.h"
-#include "nprotocol.h"
-#include "ntimer.h"
-#include "net.pb.h"
-#include "actor.h"
+
+#include "nhash.h"
 
 namespace ngl
 {
-	std::map<nhashcode, tprotocol::info> tprotocol::m_keyval;
-	std::map<i32_protocolnum, tprotocol::info*> tprotocol::m_protocol;
-	std::map<std::string, tprotocol::info*> tprotocol::m_nameprotocol;
-	int32_t tprotocol::m_customs = 200000000;
+	std::map<int64_t, std::map<std::string, int32_t>> nhash::m_kv;
 }//namespace ngl

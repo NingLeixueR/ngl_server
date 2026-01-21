@@ -31,11 +31,11 @@ namespace ngl
 		db(const db&) = delete;
 		db& operator=(const db&) = delete;
 
-		bool	m_connectdb;
-		MYSQL*	m_mysql;
+		bool	m_connectdb = false;
+		MYSQL*	m_mysql = nullptr;
 		xarg_db	m_arg;
 	public:
-		db();
+		db() = default;
 
 		// # 连接数据库
 		bool connectdb(const xarg_db& arg);

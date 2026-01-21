@@ -32,7 +32,7 @@ namespace ngl
 		for (auto itor = lpmap.begin(); itor != lpmap.end(); ++itor)
 		{
 			int32_t tid = itor->second.mtid();
-			tab_item* tab = ngl::allcsv::tab<tab_item>(tid);
+			tab_item* tab = ttab_item::instance().tab(tid);
 			if (tab == nullptr)
 			{
 				continue;
@@ -88,7 +88,7 @@ namespace ngl
 		{
 			return false;
 		}
-		tab_item* tab = ngl::allcsv::tab<tab_item>(atid);
+		tab_item* tab = ttab_item::instance().tab(atid);
 		if (tab == nullptr)
 		{
 			return false;
@@ -185,7 +185,7 @@ namespace ngl
 			return false;
 		}
 		int32_t tid = itor->second->mtid();
-		tab_item* tab = ngl::allcsv::tab<tab_item>(itor->second->mtid());
+		tab_item* tab = ttab_item::instance().tab(itor->second->mtid());
 		if (tab == nullptr)
 		{
 			return false;

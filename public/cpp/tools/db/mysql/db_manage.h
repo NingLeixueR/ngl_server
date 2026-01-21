@@ -78,7 +78,7 @@ namespace ngl
 			i16_area larea = nguid::area(adata->mid());
 			if (larea == 0)
 			{
-				larea = ttab_servers::instance().tab()->m_area;
+				larea = ttab_servers::instance().const_tab()->m_area;
 			}
 
 			// # INSERT INTO %s  (id,data)VALUES(%lld,'%s')  ON DUPLICATE KEY UPDATE %s
