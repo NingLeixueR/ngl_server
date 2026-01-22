@@ -59,7 +59,7 @@ namespace ngl
 	public:
 		explicit asio_kcp(i16_port port);
 
-		~asio_kcp();
+		~asio_kcp() = default;
 	private:
 		bool function_econnect(ptr_se& apstruct, bool aconnect);
 
