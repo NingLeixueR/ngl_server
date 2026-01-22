@@ -122,22 +122,14 @@ namespace ngl
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
 		static handle_pram create(const nguid& aid, const nguid& arid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
 		{
-			handle_pram lpram
-			{
-				.m_enum = tprotocol::protocol<T>(),
-				.m_data = adata,
-				.m_actor = aid,
-				.m_requestactor = arid,
-				.m_issend = IS_SEND,
-				.m_failfun = afailfun
-			};
-			//lpram.m_enum = tprotocol::protocol<T>();
-			//lpram.m_data = adata;
-			//lpram.m_actor = aid;
-			//lpram.m_requestactor = arid;
-			//lpram.m_issend = IS_SEND;
+			handle_pram lpram;
+			lpram.m_enum = tprotocol::protocol<T>();
+			lpram.m_data = adata;
+			lpram.m_actor = aid;
+			lpram.m_requestactor = arid;
+			lpram.m_issend = IS_SEND;
 			make_forwardfun<T, IS_FORWARDFUN&& IS_SEND>(lpram);
-			//lpram.m_failfun = afailfun;
+			lpram.m_failfun = afailfun;
 			return lpram;
 		}
 
