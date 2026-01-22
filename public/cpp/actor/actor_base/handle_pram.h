@@ -185,23 +185,28 @@ namespace ngl
 		}
 
 		template <typename Y>
-		static bool sendbytype(nguid& aactorid, handle_pram& adata)
+		static bool send(nguid& aactorid, handle_pram& adata)
 		{
-			if (adata.m_forwardtype && handle_pram::is_actoridnone(aactorid))
-			{//# 转发给所有类型为nguid::type(aactorid)的actor
-				std::set<i32_serverid> lset;
-				handle_pram::serveridlist(aactorid.type(), lset);
-				for (i32_serverid serverid : lset)
-				{
-					handle_pram_send<Y>::send_server(serverid, adata);
-				}
-				return true;
-			}
-			if (adata.m_failfun != nullptr)
+			i32_serverid lserverid = handle_pram::serverid(lactorid);
+			if (lserverid == -1)
 			{
-				adata.m_failfun();
+				if (adata.m_forwardtype && handle_pram::is_actoridnone(aactorid))
+				{//# 转发给所有类型为nguid::type(aactorid)的actor
+					std::set<i32_serverid> lset;
+					handle_pram::serveridlist(aactorid.type(), lset);
+					for (i32_serverid serverid : lset)
+					{
+						handle_pram_send<Y>::send_server(serverid, adata);
+					}
+					return true;
+				}
+				if (adata.m_failfun != nullptr)
+				{
+					adata.m_failfun();
+				}
+				return false;
 			}
-			return false;
+			return handle_pram_send<T>::send_server(lserverid, adata);			
 		}
 	};
 
@@ -213,12 +218,7 @@ namespace ngl
 		std::set<i64_actorid>& lmassactors = adata.m_massactors;
 		if (lactorid != nguid::make() && lmassactors.empty())
 		{
-			i32_serverid lserverid = handle_pram::serverid(lactorid);
-			if (lserverid == -1)
-			{
-				return handle_pram::sendbytype<T>(lactorid, adata);
-			}
-			return handle_pram_send<T>::send_server(lserverid, adata);
+			return handle_pram::send<T>(lactorid, adata);
 		}
 		else if (lactorid == nguid::make() && !lmassactors.empty())
 		{
@@ -255,12 +255,7 @@ namespace ngl
 		{
 			nguid lactorid = adata.m_actor;
 			nguid lrequestactor = adata.m_requestactor;
-			i32_serverid lserverid = handle_pram::serverid(lactorid);
-			if (lserverid == -1)
-			{
-				return handle_pram::sendbytype<pack>(lactorid, adata);
-			}
-			return handle_pram_send<pack>::send_server(lserverid, adata);
+			return handle_pram::send<pack>(lactorid, adata);
 		}
 	};
 
