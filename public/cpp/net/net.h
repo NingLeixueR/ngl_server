@@ -173,13 +173,13 @@ namespace ngl
 namespace ngl
 {
 	template <typename T>
-	bool handle_pram_send<T>::send_server(i32_serverid aserverid, const handle_pram& adata)
+	bool handle_send<T>::send_server(i32_serverid aserverid, const handle_pram& adata)
 	{
 		return nets::send_server<T>(aserverid, *(T*)adata.m_data.get(), adata.m_actor, adata.m_requestactor);
 	}
 
 	template <typename T>
-	bool handle_pram_send<T>::send_server(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const T& adata)
+	bool handle_send<T>::send_server(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const T& adata)
 	{
 		return nets::send_server<T>(aserverid, adata, aactorid, arequestactorid);
 	}
