@@ -151,11 +151,13 @@ namespace ngl
 			m_file.seekg(0, std::ios::end);
 			size_t lsize = m_file.tellg();
 			m_file.seekg(0, std::ios::beg);
-			char* lp = new char[lsize + 1];
-			memset(lp, 0x0, lsize + 1);
-			std::unique_ptr<char[]> lbuff(lp);
-			m_file.read(lbuff.get(), lsize);
-			aneirong.assign(lbuff.get());
+			if (lsize == 0) 
+			{
+				aneirong.clear();
+				return;
+			}
+			aneirong.resize(lsize);
+			m_file.read(aneirong.data(), lsize);
 		}
 	}
 
