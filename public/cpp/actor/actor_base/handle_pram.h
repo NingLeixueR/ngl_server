@@ -206,7 +206,7 @@ namespace ngl
 				}
 				return false;
 			}
-			return handle_pram_send<T>::send_server(lserverid, adata);			
+			return handle_pram_send<Y>::send_server(lserverid, adata);
 		}
 	};
 
