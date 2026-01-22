@@ -55,6 +55,7 @@ namespace ngl
 		std::function<void(char*, int)>		m_wait = nullptr;
 		asio_udp_endpoint					m_waitendpoint;
 		i16_port							m_port = 0;
+		std::jthread						m_thread;
 	public:
 		explicit asio_kcp(i16_port port);
 

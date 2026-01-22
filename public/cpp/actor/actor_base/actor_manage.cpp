@@ -19,10 +19,6 @@
 
 namespace ngl
 {
-	actor_manage::~actor_manage()
-	{
-	}
-
 	actor_manage::actor_manage():
 		m_thread(&actor_manage::run, this)
 	{
