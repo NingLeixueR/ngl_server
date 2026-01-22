@@ -187,7 +187,7 @@ namespace ngl
 		template <typename Y>
 		static bool send(nguid& aactorid, handle_pram& adata)
 		{
-			i32_serverid lserverid = handle_pram::serverid(lactorid);
+			i32_serverid lserverid = handle_pram::serverid(aactorid);
 			if (lserverid == -1)
 			{
 				if (adata.m_forwardtype && handle_pram::is_actoridnone(aactorid))
