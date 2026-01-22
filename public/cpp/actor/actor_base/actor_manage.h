@@ -48,7 +48,7 @@ namespace ngl
 		ngl_lockinit;
 
 		actor_manage();
-		~actor_manage();
+		~actor_manage() = default;
 
 		// # nosafe_开头的函数代表"内部操作未加锁"，不允许类外调用
 		// # 根据guid获取actor实例

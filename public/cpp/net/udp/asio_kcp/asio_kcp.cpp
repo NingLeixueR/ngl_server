@@ -167,17 +167,13 @@ namespace ngl
 		, m_port(port)
 		, m_socket(m_context, asio_udp_endpoint(asio_udp::v4(), port))
 		, m_session(this)
+		, m_thread([this](){m_context.run();})
 	{
-
 		function_ecmd_connect();
 		function_ecmd_connect_ret();
 		function_ecmd_ping();
 		function_ecmd_close();
 
-		new thread([this]()
-			{
-				m_context.run();
-			});
 		start();
 	}
 
