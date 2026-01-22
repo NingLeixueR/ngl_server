@@ -168,7 +168,7 @@ namespace ngl
 		template <typename TAB>
 		static TAB* tab(const int32_t aid)
 		{
-			csv_base* lp = get<csv<TAB>>();
+			csv<TAB>* lp = get<csv<TAB>>();
 			if (lp == nullptr)
 			{
 				return nullptr;
