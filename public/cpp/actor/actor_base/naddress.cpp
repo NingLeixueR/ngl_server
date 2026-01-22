@@ -26,7 +26,7 @@ namespace ngl
 
 	bool naddress::set_node(const nactornode& anode)
 	{
-		actor_node_session* lpsession = tools::findmap(m_session, anode.m_serverid);
+		nnode_session* lpsession = tools::findmap(m_session, anode.m_serverid);
 		if (lpsession != nullptr)
 		{
 			lpsession->m_node = anode;
@@ -108,7 +108,7 @@ namespace ngl
 
 	void naddress::set_session(i32_serverid aserverid, i32_sessionid asession)
 	{
-		actor_node_session* lpsession = tools::findmap(m_session, aserverid);
+		nnode_session* lpsession = tools::findmap(m_session, aserverid);
 		if (lpsession == nullptr)
 		{
 			log_error()->print("set_session(serverid:{},sessionid:{}) fail", aserverid, asession);
@@ -119,7 +119,7 @@ namespace ngl
 
 	i32_sessionid naddress::sessionid(i32_serverid aserverid)
 	{
-		actor_node_session* lpsession = tools::findmap(m_session, aserverid);
+		nnode_session* lpsession = tools::findmap(m_session, aserverid);
 		if (lpsession == nullptr)
 		{
 			log_error()->print("sessionid(serverid:{}) fail", aserverid);

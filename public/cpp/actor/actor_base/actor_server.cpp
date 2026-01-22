@@ -56,7 +56,7 @@ namespace ngl
 	{
 		// 同步其他结点
 		std::set<i32_sessionid> lsessionvec;
-		naddress::foreach([&lsessionvec, apack](const actor_node_session& asnode)
+		naddress::foreach([&lsessionvec, apack](const nnode_session& asnode)
 			{
 				if (apack->m_id != asnode.m_session)
 				{
@@ -85,7 +85,7 @@ namespace ngl
 	void actor_server::reply_actornode_register(const pack* apack, i32_serverid aserverid)
 	{
 		np_actornode_register_response lpram;
-		naddress::foreach([&lpram, apack](const actor_node_session& anode)
+		naddress::foreach([&lpram, apack](const nnode_session& anode)
 			{
 				if (apack->m_id != anode.m_session)
 				{
@@ -154,7 +154,7 @@ namespace ngl
 		naddress::actor_address_del(lrecv->m_data.m_del);
 		// # 分发给其他结点
 		std::set<i32_sessionid> lsession;
-		naddress::foreach([lserverid, &lsession](const actor_node_session& anode)->bool
+		naddress::foreach([lserverid, &lsession](const nnode_session& anode)->bool
 			{
 				if (anode.m_node.m_serverid != lserverid)
 				{
@@ -210,7 +210,7 @@ namespace ngl
 			naddress::gatewayid_add(lrecv->m_actorid, lrecv->m_gatewayid);
 		}
 		std::set<i32_sessionid> lsessionvec;
-		naddress::foreach([&lsessionvec, lpack](const actor_node_session& anode)
+		naddress::foreach([&lsessionvec, lpack](const nnode_session& anode)
 			{
 				if (lpack->m_id != anode.m_session)
 				{
