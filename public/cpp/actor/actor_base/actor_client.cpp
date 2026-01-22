@@ -36,10 +36,6 @@ namespace ngl
 	{
 	}
 
-	actor_client::~actor_client()
-	{
-	}
-
 	i64_actorid actor_client::actorid()
 	{
 		return nguid::make(ACTOR_CLIENT, tab_self_area, nconfig.nodeid());

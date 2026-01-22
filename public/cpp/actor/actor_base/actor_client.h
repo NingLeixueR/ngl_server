@@ -38,7 +38,7 @@ namespace ngl
 		std::set<i32_serverid>				m_connectserverid;		// 已连接的服务器id
 
 		actor_client();
-		virtual ~actor_client();
+		virtual ~actor_client() = default;
 	public:
 		friend class actor_instance<actor_client>;
 		static actor_client& instance() 

@@ -41,10 +41,6 @@ namespace ngl
 		}
 	}
 
-	serviceio_info::~serviceio_info()
-	{
-	}
-
 	service_io::service_io(serviceio_info& amsi, i32_session asessionid) :
 		m_threadid(amsi.m_next_index++ % amsi.m_recvthreadsize)
 		, m_ioservice(*(amsi.get_ioservice(m_threadid)))
@@ -58,10 +54,6 @@ namespace ngl
 	{
 	}
 
-	service_io::~service_io()
-	{
-	}
-
 	char* service_io::buff()
 	{
 		std::swap(m_pbuff1, m_pbuff2);
@@ -71,10 +63,6 @@ namespace ngl
 	service_tcp::service_tcp(serviceio_info& amsi, i32_session asessionid) :
 		service_io(amsi, asessionid),
 		m_socket(m_ioservice)
-	{
-	}
-
-	service_tcp::~service_tcp()
 	{
 	}
 }// namespace ngl
