@@ -33,7 +33,6 @@ namespace ngl
 		actor_manage(const actor_manage&) = delete;
 		actor_manage& operator=(const actor_manage&) = delete;
 
-		
 		std::list<nthread*>			m_workthreads;		// 工作线程
 		bool						m_suspend = false;	// 是否挂起
 		std::list<nthread*>			m_suspendthreads;	// 挂起的工作线程
