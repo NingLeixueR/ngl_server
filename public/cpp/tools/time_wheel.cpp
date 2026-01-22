@@ -552,10 +552,6 @@ namespace ngl
 		m_impl_time_wheel.make_unique(this, aconfig, aisthreadcallback);
 	}
 
-	time_wheel::~time_wheel()
-	{
-	}
-
 	int	time_wheel::count() 
 	{ 
 		monopoly_shared_lock(m_impl_time_wheel()->m_mutex);

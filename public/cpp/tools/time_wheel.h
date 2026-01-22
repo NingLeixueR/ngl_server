@@ -105,7 +105,7 @@ namespace ngl
 	public:
 		static int64_t getms();
 		time_wheel(const time_wheel_config& aconfig = time_wheel_config(), bool aisthreadcallback = true);
-		~time_wheel();
+		~time_wheel() = default;
 
 		// # 获取现存定时器数量
 		int	count();

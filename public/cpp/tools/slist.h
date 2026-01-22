@@ -53,9 +53,7 @@ namespace ngl
 			expand(asize);
 		}
 
-		~lsnode()
-		{
-		}
+		~lsnode() = default;
 
 		// # 队列是否为空
 		inline bool empty()const

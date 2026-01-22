@@ -46,7 +46,7 @@ namespace ngl
 		basio_ioservice* get_ioservice(i32_threadid athreadid);
 		basio_ioservicework* get_ioservice_work(i32_threadid athreadid);
 		serviceio_info(i32_threadid athread, int32_t abuffmaxsize);
-		~serviceio_info();
+		~serviceio_info() = default;
 	};
 
 	class service_io
@@ -67,7 +67,7 @@ namespace ngl
 		basio_ioservice&		m_ioservice;
 
 		service_io(serviceio_info& amsi, i32_session asessionid);
-		virtual ~service_io();
+		virtual ~service_io() =default;
 
 		// # 有两个buff指针交替使用
 		char* buff();
@@ -80,6 +80,6 @@ namespace ngl
 		basio_iptcpsocket m_socket;
 
 		service_tcp(serviceio_info& amsi, i32_session asessionid);
-		virtual ~service_tcp();
+		virtual ~service_tcp() = default;
 	};
 }// namespace ngl
