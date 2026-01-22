@@ -56,18 +56,19 @@ namespace ngl
 		handle_pram(const handle_pram&) = default;
 		handle_pram& operator=(handle_pram&) = default;
 
-		i32_protocolnum			m_enum			= -1;						// 协议号
-		std::shared_ptr<void>	m_data			= nullptr;					// 协议结构
-		std::shared_ptr<pack>	m_pack			= nullptr;					// 如果是网络消息会携带pack信息
-		nguid					m_actor			= nguid::make();			// 发送给哪个actor
-		nguid					m_requestactor	= nguid::make();			// 哪个actor发送的
-		std::set<i64_actorid>   m_massactors;								// 群发列表
+		i32_protocolnum			m_enum			= -1;				// 协议号
+		std::shared_ptr<void>	m_data			= nullptr;			// 协议结构
+		std::shared_ptr<pack>	m_pack			= nullptr;			// 如果是网络消息会携带pack信息
+		nguid					m_actor			= nguid::make();	// 发送给哪个actor
+		nguid					m_requestactor	= nguid::make();	// 哪个actor发送的
+		std::set<i64_actorid>   m_massactors;						// 群发列表
 
 		using forwardtype = std::function<void(handle_pram&)>;
+		using callfail = std::function<void()>;
 
 		forwardtype				m_forwardfun	= nullptr;			// 转发函数
 		bool					m_forwardtype	= false;			// 转发给所有类型
-		std::function<void()>	m_failfun		= nullptr;			// 如何actor_client都找不到目标actor则调用
+		callfail				m_failfun		= nullptr;			// 如何actor_client都找不到目标actor则调用
 		bool					m_issend		= true;				// 是否会发送给其他进程
 
 		//# 根据[连接]获取[id]
@@ -118,7 +119,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
-		static handle_pram create(const nguid& aid, const nguid& arid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
+		static handle_pram create(const nguid& aid, const nguid& arid, const std::shared_ptr<T>& adata, const callfail& afailfun = nullptr)
 		{
 			handle_pram lpram;
 			lpram.m_enum = tprotocol::protocol<T>();
@@ -132,7 +133,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true>
-		static handle_pram create(const std::set<i64_actorid>& aids, const nguid& arid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
+		static handle_pram create(const std::set<i64_actorid>& aids, const nguid& arid, const std::shared_ptr<T>& adata, const callfail& afailfun = nullptr)
 		{
 			handle_pram lpram;
 			lpram.m_enum = tprotocol::protocol<T>();
@@ -150,7 +151,7 @@ namespace ngl
 
 		//Y:forward或者T
 		template <typename T, typename Y>
-		static handle_pram create(const nguid& aid, const nguid& arid, const nforward_g2c<T, Y>& adata, const std::function<void()>& afailfun = nullptr)
+		static handle_pram create(const nguid& aid, const nguid& arid, const nforward_g2c<T, Y>& adata, const callfail& afailfun = nullptr)
 		{
 			handle_pram lpram;
 			lpram.m_enum = tprotocol::protocol<T>();
@@ -166,7 +167,7 @@ namespace ngl
 		using nforward_c2g = std::shared_ptr<np_actor_forward<T, forward_c2g<Y>>>;
 
 		template <typename T, typename Y>
-		static handle_pram create(const nguid& aid, const nguid& arid, const nforward_c2g<T, Y>& adata, const std::function<void()>& afailfun = nullptr)
+		static handle_pram create(const nguid& aid, const nguid& arid, const nforward_c2g<T, Y>& adata, const callfail& afailfun = nullptr)
 		{
 			handle_pram lpram;
 			lpram.m_enum = tprotocol::protocol<T>();
