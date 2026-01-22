@@ -24,9 +24,9 @@ namespace ngl
 		nets(const nets&) = delete;
 		nets& operator=(const nets&) = delete;
 
-		static std::array<net_protocol*, ENET_COUNT>	m_net;
-		static std::map<int16_t, ukcp*>					m_kcpnet;
-		static int16_t									m_kcpindex;
+		static std::array<std::shared_ptr<net_protocol>, ENET_COUNT> m_net;
+		static std::map<int16_t, ukcp*> m_kcpnet;
+		static int16_t m_kcpindex;
 	public:
 		enum
 		{

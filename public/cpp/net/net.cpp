@@ -19,7 +19,7 @@
 
 namespace ngl
 {
-	std::array<net_protocol*, ENET_COUNT> nets::m_net;
+	std::array<std::shared_ptr<net_protocol>, ENET_COUNT> nets::m_net;
 	std::map<int16_t, ukcp*> nets::m_kcpnet;
 	int16_t nets::m_kcpindex = 0;
 
@@ -29,7 +29,7 @@ namespace ngl
 		{
 			if (m_net[i] != nullptr)
 			{
-				return m_net[i];
+				return m_net[i].get();
 			}
 		}
 		return nullptr;
@@ -52,7 +52,7 @@ namespace ngl
 		{
 			if (m_net.size() > atype)
 			{
-				return m_net[atype];
+				return m_net[atype].get();
 			}
 		}
 		return nullptr;
@@ -159,7 +159,7 @@ namespace ngl
 				auto& lserver = m_net[item.m_type];
 				if (item.m_type == ENET_TCP)
 				{
-					lserver = new net_tcp(ENET_TCP);
+					lserver = std::make_shared<net_tcp>(ENET_TCP);
 				}
 				lserver->init(lnwork.m_port, asocketthreadnum, aouternet);
 			}
@@ -214,14 +214,7 @@ namespace ngl
 		{
 			return false;
 		}
-		if (nconfig.nodetype() == ROBOT)
-		{
-			apair = std::make_tuple(lnets.m_type, lnets.m_ip, lnets.m_port);
-		}
-		else
-		{
-			apair = std::make_tuple(lnets.m_type, lnets.m_nip, lnets.m_port);
-		}
+		apair = std::make_tuple(lnets.m_type, nconfig.nodetype() == ROBOT ? lnets.m_ip : lnets.m_nip, lnets.m_port);
 		return true;
 	}
 
@@ -239,7 +232,7 @@ namespace ngl
 			return false;
 		}
 		
-		net_protocol* lserver = m_net[std::get<0>(lpair)];
+		auto lserver = m_net[std::get<0>(lpair)];
 		if (lserver == nullptr)
 		{
 			return false;
@@ -252,7 +245,8 @@ namespace ngl
 				{
 					afun(asession);
 				}
-			}, await, areconnection);
+			}, await, areconnection
+		);
 	}
 
 	bool handle_pram::send_pack(i32_serverid aserverid, std::shared_ptr<pack>& apack)
@@ -262,7 +256,12 @@ namespace ngl
 		{
 			return false;
 		}
-		return nets::net(lsession)->send_pack(lsession, apack);
+		auto lnet = nets::net(lsession);
+		if (lnet == nullptr)
+		{
+			return false;
+		}
+		return lnet->send_pack(lsession, apack);		
 	}
 
 	bool handle_pram::send_pack(i32_serverid aserverid, std::shared_ptr<void>& apack)
@@ -272,6 +271,11 @@ namespace ngl
 		{
 			return false;
 		}
-		return nets::net(lsession)->send_pack(lsession, apack);
+		auto lnet = nets::net(lsession);
+		if (lnet == nullptr)
+		{
+			return false;
+		}
+		return lnet->send_pack(lsession, apack);
 	}
 }//namespace ngl
