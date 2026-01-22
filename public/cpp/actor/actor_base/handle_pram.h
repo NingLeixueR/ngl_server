@@ -183,6 +183,26 @@ namespace ngl
 			make_forwardfun<pack, true>(lpram);
 			return lpram;
 		}
+
+		template <typename Y>
+		static bool sendbytype(nguid& aactorid, handle_pram& adata)
+		{
+			if (adata.m_forwardtype && handle_pram::is_actoridnone(aactorid))
+			{//# 转发给所有类型为nguid::type(aactorid)的actor
+				std::set<i32_serverid> lset;
+				handle_pram::serveridlist(aactorid.type(), lset);
+				for (i32_serverid serverid : lset)
+				{
+					handle_pram_send<Y>::send_server(serverid, adata);
+				}
+				return true;
+			}
+			if (adata.m_failfun != nullptr)
+			{
+				adata.m_failfun();
+			}
+			return false;
+		}
 	};
 
 	template <typename T>
@@ -196,21 +216,7 @@ namespace ngl
 			i32_serverid lserverid = handle_pram::serverid(lactorid);
 			if (lserverid == -1)
 			{
-				if (adata.m_forwardtype && handle_pram::is_actoridnone(lactorid))
-				{//# 转发给所有类型为nguid::type(aactorid)的actor
-					std::set<i32_serverid> lset;
-					handle_pram::serveridlist(lactorid.type(), lset);
-					for (i32_serverid ltempserverid : lset)
-					{
-						handle_pram_send<T>::send_server(ltempserverid, adata);
-					}
-					return true;
-				}
-				if (adata.m_failfun != nullptr)
-				{
-					adata.m_failfun();
-				}
-				return false;
+				return handle_pram::sendbytype<T>(lactorid, adata);
 			}
 			return handle_pram_send<T>::send_server(lserverid, adata);
 		}
@@ -226,12 +232,11 @@ namespace ngl
 				}
 			}
 			std::shared_ptr<T> ldata = std::static_pointer_cast<T>(adata.m_data);
-			for (const auto& item1 : lserveractors)
+			for (auto& [_serverid, _actorids] : lserveractors)
 			{
 				np_mass_actor<T> pro(ldata);
-				i32_serverid lserverid = item1.first;
-				pro.m_actorids = item1.second;
-				handle_pram_send<np_mass_actor<T>>::send_server(lserverid, nguid::make(), lrequestactor, pro);
+				pro.m_actorids.swap(_actorids);
+				handle_pram_send<np_mass_actor<T>>::send_server(_serverid, nguid::make(), lrequestactor, pro);
 			}
 		}
 		return false;
@@ -253,21 +258,7 @@ namespace ngl
 			i32_serverid lserverid = handle_pram::serverid(lactorid);
 			if (lserverid == -1)
 			{
-				if (adata.m_forwardtype && handle_pram::is_actoridnone(lactorid))
-				{//# 转发给所有类型为nguid::type(aactorid)的actor
-					std::set<i32_serverid> lset;
-					handle_pram::serveridlist(lactorid.type(), lset);
-					for (i32_serverid ltempserverid : lset)
-					{
-						handle_pram_send<pack>::send_server(ltempserverid, adata);
-					}
-					return true;
-				}
-				if (adata.m_failfun != nullptr)
-				{
-					adata.m_failfun();
-				}
-				return false;
+				return handle_pram::sendbytype<pack>(lactorid, adata);
 			}
 			return handle_pram_send<pack>::send_server(lserverid, adata);
 		}
