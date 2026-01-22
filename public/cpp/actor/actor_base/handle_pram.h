@@ -26,14 +26,14 @@ namespace ngl
 	class actor_base;
 	using ptractor = std::shared_ptr<actor_base>;
 
-	struct actor_node_session
+	struct nnode_session
 	{
 		i32_sessionid	m_session = -1;	// 服务器session
 		nactornode		m_node;		    // 服务器基本信息
 
-		actor_node_session() = default;
-		actor_node_session(i32_sessionid asession, const nactornode& anode);
-		explicit actor_node_session(const nactornode& anode);
+		nnode_session() = default;
+		nnode_session(i32_sessionid asession, const nactornode& anode);
+		explicit nnode_session(const nactornode& anode);
 	};
 
 	struct handle_pram;
@@ -145,9 +145,12 @@ namespace ngl
 			return lpram;
 		}
 
+		template <typename T, typename Y>
+		using nforward_g2c = std::shared_ptr<np_actor_forward<T, forward_g2c<Y>>>;
+
 		//Y:forward或者T
 		template <typename T, typename Y>
-		static handle_pram create(const nguid& aid, const nguid& arid, const std::shared_ptr<np_actor_forward<T, forward_g2c<Y>>>& adata, const std::function<void()>& afailfun = nullptr)
+		static handle_pram create(const nguid& aid, const nguid& arid, const nforward_g2c<T, Y>& adata, const std::function<void()>& afailfun = nullptr)
 		{
 			handle_pram lpram;
 			lpram.m_enum = tprotocol::protocol<T>();
@@ -160,7 +163,10 @@ namespace ngl
 		}
 
 		template <typename T, typename Y>
-		static handle_pram create(const nguid& aid, const nguid& arid, const std::shared_ptr<np_actor_forward<T, forward_c2g<Y>>>& adata, const std::function<void()>& afailfun = nullptr)
+		using nforward_c2g = std::shared_ptr<np_actor_forward<T, forward_c2g<Y>>>;
+
+		template <typename T, typename Y>
+		static handle_pram create(const nguid& aid, const nguid& arid, const nforward_c2g<T, Y>& adata, const std::function<void()>& afailfun = nullptr)
 		{
 			handle_pram lpram;
 			lpram.m_enum = tprotocol::protocol<T>();

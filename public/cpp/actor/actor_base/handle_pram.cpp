@@ -17,12 +17,12 @@
 
 namespace ngl
 {
-	actor_node_session::actor_node_session(i32_sessionid asession, const nactornode& anode) :
+	nnode_session::nnode_session(i32_sessionid asession, const nactornode& anode) :
 		m_session(asession),
 		m_node(anode)
 	{}
 
-	actor_node_session::actor_node_session(const nactornode& anode) :
+	nnode_session::nnode_session(const nactornode& anode) :
 		m_node(anode)
 	{}
 

@@ -36,13 +36,13 @@ namespace ngl
 		//# [ACTOR_TYPE]  -> set<ACTOR_TYPE + EARE_ID + DATA_ID>
 		using map_typeguid			= std::map<i16_actortype, std::set<nguid>>;
 		//# [SERVER_ID] -> [SESSION_ID]
-		using map_servernode		= std::map<i32_serverid, actor_node_session>;
+		using map_servernode		= std::map<i32_serverid, nnode_session>;
 		//# [ACTOR_ID] -> [GATEWAY_SERVER_ID]
 		using map_rolegateway		= std::map<nguid, i32_serverid>;
 		//# [ergodic]回调
 		using ergodic_callbackfun	= std::function<bool(const map_guidserver&, const map_servernode&, const map_rolegateway&)>;
 		//# [foreach]回调
-		using foreach_callbackfun	= std::function<bool(const actor_node_session&)>;
+		using foreach_callbackfun	= std::function<bool(const nnode_session&)>;
 
 		static naddress::map_guidserver		m_actorserver;
 		static naddress::map_typeguid		m_actortypeserver;
@@ -95,7 +95,7 @@ namespace ngl
 		//# 获取一组actor_role.actorid与gatewayid的关联
 		static void gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset);
 #pragma endregion
-		//# 遍历[std::function<bool(const actor_node_session&)>] 
+		//# 遍历[std::function<bool(const nnode_session&)>] 
 		//# 如果返回值为false
 		//# 则终止遍历
 		static void foreach(const foreach_callbackfun& afun);
