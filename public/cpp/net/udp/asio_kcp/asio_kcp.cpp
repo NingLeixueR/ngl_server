@@ -177,8 +177,6 @@ namespace ngl
 		start();
 	}
 
-	asio_kcp::~asio_kcp() {}
-
 	bool asio_kcp::sempack(const ptr_se& apstruct, const char* abuff, int abufflen)
 	{
 		// 获取包头
