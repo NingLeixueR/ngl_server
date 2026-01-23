@@ -22,7 +22,7 @@
 #include "ngroup.h"
 #include "nguid.h"
 #include "type.h"
-//#include "ukcp.h"
+#include "ukcp.h"
 
 #include <memory>
 #include <vector>
@@ -310,28 +310,28 @@ namespace ngl
 #pragma endregion
 
 #pragma region kcp
-		////void kcp_setindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex);
+		void kcp_setindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex);
 
-		////i16_port kcp_index(i32_serverid aserverid, pbnet::ENUM_KCP aenum);
+		i16_port kcp_index(i32_serverid aserverid, pbnet::ENUM_KCP aenum);
 
-		////i16_port kcp_index(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum);
+		i16_port kcp_index(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum);
 
-		//////# 发起kcp连接
-		////bool kcp_connect(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const;
+		//# 发起kcp连接
+		bool kcp_connect(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const;
 
-		//////# 通过udp.kcp发送pack给指定actor
-		////static bool kcp_sendpack(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport = 0);
+		//# 通过udp.kcp发送pack给指定actor
+		static bool kcp_sendpack(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport = 0);
 
-		//////# 通过udp.kcp发送pack给一组actor
-		////static bool kcp_sendpack(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport = 0);
+		//# 通过udp.kcp发送pack给一组actor
+		static bool kcp_sendpack(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport = 0);
 
-		//////# 通过udp.kcp发送数据给指定actor
-		////template <typename T>
-		////static bool kcp_send(i64_actorid aactorid, T& adata, i16_port auport = 0);
+		//# 通过udp.kcp发送数据给指定actor
+		template <typename T>
+		static bool kcp_send(i64_actorid aactorid, T& adata, i16_port auport = 0);
 
-		//////# 通过udp.kcp发送数据给一组actor
-		////template <typename T>
-		////static bool kcp_send(const std::set<i64_actorid>& aactorids, T& adata, i16_port auport = 0);
+		//# 通过udp.kcp发送数据给一组actor
+		template <typename T>
+		static bool kcp_send(const std::set<i64_actorid>& aactorids, T& adata, i16_port auport = 0);
 #pragma endregion
 
 #pragma region send_client
