@@ -14,6 +14,7 @@
 #include "sysconfig.h"
 #include "asio_kcp.h"
 #include "protocol.h"
+#include "ukcp.h"
 #include "cmd.h"
 
 #define USE_WHEEL_TIMER
@@ -112,7 +113,8 @@ namespace ngl
 				{
 					udp_cmd::sendcmd(ap, apstruct->m_session, udp_cmd::ecmd_connect_ret, "{}");
 				}
-			});
+			}
+		);
 	}
 
 	//## udp_cmd::ecmd_connect_ret
@@ -129,7 +131,8 @@ namespace ngl
 					ap->function_econnect(apstruct, false);
 				}
 				ap->m_connectfun(apstruct->m_session);
-			});
+			}
+		);
 	}
 
 	//## udp_cmd::ecmd_ping
@@ -138,7 +141,8 @@ namespace ngl
 		udp_cmd::register_fun(udp_cmd::ecmd_ping, [](asio_kcp* ap, ptr_se& apstruct, const std::string&)
 			{
 				apstruct->m_pingtm = (int)localtime::gettime();
-			});
+			}
+		);
 	}
 
 	//## udp_cmd::ecmd_close
@@ -159,7 +163,8 @@ namespace ngl
 					}
 				};
 				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
-			});
+			}
+		);
 	}
 
 	asio_kcp::asio_kcp(i16_port port)

@@ -15,6 +15,7 @@
 #include "actor_robot.h"
 #include "nregister.h"
 #include "nforward.h"
+#include "nkcp.h"
 namespace ngl
 {
 	bool actor_robot::handle(const message<np_thruput_test>& adata)
@@ -206,11 +207,11 @@ namespace ngl
 			return false;
 		}
 		
-		std::string lkcpsession = lpram->mkcpsession();	
-		//return kcp_connect(kcp_index(lpram->mserverid(), lpram->m_kcpnum())
-		//	, lpstructserver.m_ip, nets::kcp_port(ltid, ltcount, lpram->m_kcpnum())
-		//	, lpram->mactoridserver(), lkcpsession
-		//);
+		std::string lkcpsession = lpram->mkcpsession();			
+		return kcp_connect(kcp_index(lpram->mserverid(), lpram->m_kcpnum())
+			, lpstructserver.m_ip, nkcp::instance().kcp_port(ltid, ltcount, lpram->m_kcpnum())
+			, lpram->mactoridserver(), lkcpsession
+		);
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
 	{
