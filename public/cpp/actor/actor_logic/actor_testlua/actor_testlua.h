@@ -25,7 +25,7 @@
 #include "ntimer.h"
 #include "drop.h"
 #include "nlog.h"
-#include "net.h"
+#include "ntcp.h"
 #include "db.h"
 
 namespace ngl

@@ -101,7 +101,7 @@ namespace ngl
 		pro.set_mactoridserver(lpram->m_actoridserver);
 		pro.set_mactoridclient(lpram->m_actoridclient);
 		
-		nets::send(lpram->m_sessionid, pro, lpram->m_actoridclient, nguid::make());
+		ntcp::instance().send(lpram->m_sessionid, pro, lpram->m_actoridclient, nguid::make());
 		return true;
 	}
 
@@ -189,7 +189,7 @@ namespace ngl
 		if (lpack->m_id != linfo->m_socket && linfo->m_socket > 0)
 		{
 			i32_socket loldsocket = linfo->m_socket;
-			nets::net(linfo->m_socket)->close_net(linfo->m_socket);
+			ntcp::instance().close_net(linfo->m_socket);
 			m_info.remove_socket(linfo->m_socket);
 			linfo->m_socket = 0;
 			if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
@@ -206,7 +206,7 @@ namespace ngl
 			// 断线重连或者其他设备顶号
 			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid());
 			pbnet::PROBUFF_NET_ROLE_SYNC ltemp;
-			nets::send_server(linfo->m_gameid, ltemp, lroleactor, nguid::make());
+			ntcp::instance().send_server(linfo->m_gameid, ltemp, lroleactor, nguid::make());
 			return true;
 		}
 
@@ -224,7 +224,7 @@ namespace ngl
 		pbnet::PROBUFF_NET_ROLE_LOGIN lprampro = *lpram;
 		lprampro.set_mgatewayid(nconfig.nodeid());
 		lprampro.set_marea(linfo->m_area);
-		nets::send_server(linfo->m_gameid, lprampro, nguid::moreactor(), id_guid());
+		ntcp::instance().send_server(linfo->m_gameid, lprampro, nguid::moreactor(), id_guid());
 		return true;
 	}
 
@@ -234,7 +234,7 @@ namespace ngl
 		auto lpack = adata.get_pack();
 
 		std::string lkcpsession;
-		if (ukcp::session_create(lpram->mactoridserver(), lpram->mactoridclient(), lkcpsession) == false)
+		//if (ukcp::session_create(lpram->mactoridserver(), lpram->mactoridclient(), lkcpsession) == false)
 		{
 			return true;
 		}

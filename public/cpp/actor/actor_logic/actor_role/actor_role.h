@@ -32,9 +32,9 @@
 #include "ncurl.h"
 #include "drop.h"
 #include "task.h"
+#include "ntcp.h"
 #include "cmd.h"
 #include "bag.h"
-#include "net.h"
 #include "db.h"
 
 namespace ngl

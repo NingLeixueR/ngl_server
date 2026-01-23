@@ -15,13 +15,6 @@
 
 #include "gateway_info.h"
 #include "actor_manage.h"
-#include "actor_role.h"
-#include "ndbclient.h"
-#include "db_manage.h"
-#include "db_pool.h"
-#include "db_data.h"
-#include "net.h"
-#include "db.h"
 
 namespace ngl
 {

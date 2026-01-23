@@ -21,7 +21,7 @@
 #include "db_pool.h"
 #include "net.pb.h"
 #include "db.pb.h"
-#include "net.h"
+#include "ntcp.h"
 #include "db.h"
 
 #include <format>

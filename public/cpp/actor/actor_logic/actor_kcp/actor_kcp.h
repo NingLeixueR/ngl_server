@@ -19,8 +19,8 @@
 #include "db_manage.h"
 #include "db_data.h"
 #include "db_pool.h"
+#include "ntcp.h"
 #include "db.h"
-#include "net.h"
 
 namespace ngl
 {

@@ -24,7 +24,7 @@
 #include "notice.h"
 #include "ntimer.h"
 #include "gcmd.h"
-#include "net.h"
+#include "ntcp.h"
 #include "db.h"
 
 namespace ngl

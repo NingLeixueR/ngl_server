@@ -26,7 +26,7 @@
 #include "notice.h"
 #include "ncurl.h"
 #include "ncsv.h"
-#include "net.h"
+#include "ntcp.h"
 #include "db.h"
 
 namespace ngl

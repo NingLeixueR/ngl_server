@@ -15,7 +15,7 @@
 #include "nactortype.h"
 #include "naddress.h"
 #include "nguid.h"
-#include "net.h"
+#include "ntcp.h"
 
 namespace ngl
 {

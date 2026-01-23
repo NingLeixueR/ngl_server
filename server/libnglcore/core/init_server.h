@@ -70,9 +70,25 @@ bool init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {})
 	// # sysconfig¹ØÁªxmlÅäÖÃ
 	ngl::sysconfig::init();
 
-	// # Æô¶¯ÍøÂç¼àÌı
 	const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab();
-	ngl::nets::init(tab->m_threadnum, tab->m_outernet, akcp);
+	if (tab == nullptr)
+	{
+		ngl::tools::no_core_dump();
+		return false;
+	}
+
+	// # Æô¶¯ÍøÂç¼àÌı
+	{//TCP
+		ngl::net_works lnwork;
+		if (!ngl::ttab_servers::instance().get_nworks(ngl::ENET_PROTOCOL::ENET_TCP, nconfig.tcount(), lnwork))
+		{
+			ngl::tools::no_core_dump();
+			return false;
+		}
+		ngl::ntcp::instance().init(lnwork.m_port, tab->m_threadnum, tab->m_outernet);
+	}
+
+	
 
 	// # ³õÊ¼»¯actor¹ÜÀíÄ£¿é
 	ngl::actor_manage::instance().init(tab->m_actorthreadnum);

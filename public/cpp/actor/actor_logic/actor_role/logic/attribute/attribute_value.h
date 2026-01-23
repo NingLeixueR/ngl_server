@@ -16,7 +16,7 @@
 #include "ttab_attribute.h"
 #include "ncsv.h"
 #include "nlog.h"
-#include "net.h"
+#include "ntcp.h"
 
 #include <functional>
 #include <vector>
