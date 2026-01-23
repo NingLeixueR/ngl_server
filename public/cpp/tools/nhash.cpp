@@ -16,5 +16,6 @@
 
 namespace ngl
 {
-	std::map<int64_t, std::map<std::string, int32_t>> nhash::m_kv;
+	std::map<int64_t, std::map<std::string, int32_t>> nhash::m_hash;
+	std::shared_mutex nhash::m_mutex;
 }//namespace ngl

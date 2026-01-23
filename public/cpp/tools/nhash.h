@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "threadtools.h"
 #include "tools.h"
 
 #include <map>
@@ -38,20 +39,25 @@ namespace ngl
 
 	class nhash
 	{
-		static std::map<int64_t, std::map<std::string, int32_t>> m_kv;
+		static std::map<int64_t, std::map<std::string, int32_t>> m_hash;
+		static std::shared_mutex m_mutex;
 	public:
 		template <typename T>
 		static nhashcode code()
 		{
 			static int64_t lcode = typeid(T).hash_code();
-			std::map<std::string, int32_t>& lmap = m_kv[lcode];
-			auto itor = lmap.find(tools::type_name<T>());
-			if (itor != lmap.end())
+			int32_t lindex = 0;
 			{
-				return nhashcode(lcode, itor->second);
+				monopoly_shared_lock(m_mutex);
+				std::map<std::string, int32_t>& lmap = m_hash[lcode];
+				auto itor = lmap.find(tools::type_name<T>());
+				if (itor != lmap.end())
+				{
+					return nhashcode(lcode, itor->second);
+				}
+				int32_t lindex = lmap.size() + 1;
+				lmap[tools::type_name<T>()] = lindex;
 			}
-			int32_t lindex = lmap.size() + 1;
-			lmap[tools::type_name<T>()] = lindex;
 			return nhashcode(lcode, lindex);
 		}
 	};
