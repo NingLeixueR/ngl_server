@@ -15,12 +15,6 @@
 
 #include "actor_manage.h"
 #include "gateway_info.h"
-#include "ndbclient.h"
-#include "db_manage.h"
-#include "db_pool.h"
-#include "db_data.h"
-#include "net.h"
-#include "db.h"
 
 namespace ngl
 {
@@ -78,7 +72,7 @@ namespace ngl
 				return false;
 			}
 
-			nets::send_server<forward, T>(info->m_gameid, lpram->m_data.m_data, nguid::make(ACTOR_ROLE, info->m_area, info->m_dataid), lpack->m_head.get_request_actor());
+			ntcp::instance().send_server<forward, T>(info->m_gameid, lpram->m_data.m_data, nguid::make(ACTOR_ROLE, info->m_area, info->m_dataid), lpack->m_head.get_request_actor());
 			return true;
 		}
 

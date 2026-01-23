@@ -17,8 +17,8 @@
 #include "actor_log.h"
 #include "ndbclient.h"
 #include "ngroup.h"
+#include "ntcp.h"
 #include "xml.h"
-#include "net.h"
 
 namespace ngl
 {
@@ -249,12 +249,12 @@ namespace ngl
 		{
 			return false;
 		}
-		return nets::send_pack(lsession, apack);
+		return ntcp::instance().send_pack(lsession, apack);
 	}
 
 	bool actor_base::send_pack(i32_sessionid asession, std::shared_ptr<pack>& apack)
 	{
-		return nets::send_pack(asession, apack);
+		return ntcp::instance().send_pack(asession, apack);
 	}
 
 	void actor_base::send_actor(const nguid& aguid, const std::shared_ptr<pack>& adata)
@@ -299,63 +299,63 @@ namespace ngl
 		m_isbroadcast = aisbroadcast;
 	}
 
-	void actor_base::kcp_setindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex)
-	{
-		m_kcpindex[aserverid].m_data[aenum] = akcpindex;
-	}
+	//void actor_base::kcp_setindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex)
+	//{
+	//	m_kcpindex[aserverid].m_data[aenum] = akcpindex;
+	//}
 
-	i16_port actor_base::kcp_index(i32_serverid aserverid, pbnet::ENUM_KCP aenum)
-	{
-		auto itor = m_kcpindex.find(aserverid);
-		if (itor == m_kcpindex.end())
-		{
-			return -1;
-		}
-		auto itor2 = itor->second.m_data.find(aenum);
-		if (itor2 == itor->second.m_data.end())
-		{
-			return -1;
-		}
-		return itor2->second;
-	}
+	//i16_port actor_base::kcp_index(i32_serverid aserverid, pbnet::ENUM_KCP aenum)
+	//{
+	//	auto itor = m_kcpindex.find(aserverid);
+	//	if (itor == m_kcpindex.end())
+	//	{
+	//		return -1;
+	//	}
+	//	auto itor2 = itor->second.m_data.find(aenum);
+	//	if (itor2 == itor->second.m_data.end())
+	//	{
+	//		return -1;
+	//	}
+	//	return itor2->second;
+	//}
 
-	i16_port actor_base::kcp_index(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum)
-	{
-		int32_t lserverid = nnodeid::nodeid(aservertid, atcount);
-		return kcp_index(lserverid, aenum);
-	}
+	//i16_port actor_base::kcp_index(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum)
+	//{
+	//	int32_t lserverid = nnodeid::nodeid(aservertid, atcount);
+	//	return kcp_index(lserverid, aenum);
+	//}
 
-	bool actor_base::kcp_connect(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const
-	{
-		if (nconfig.nodetype() != ROBOT)
-		{//不允许服务器主动进行kcp连接
-			return false;
-		}
-		nets::kcp(anum)->connect(akcpsession, aactoridserver, id_guid(), aip, aprot, [this](i32_session asession)
-			{
-				log_error()->print("kcp {} m_kcpsession = {}", (nguid)id_guid(), asession);
-			}
-		);
-		return true;
-	}
+	//bool actor_base::kcp_connect(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const
+	//{
+	//	if (nconfig.nodetype() != ROBOT)
+	//	{//不允许服务器主动进行kcp连接
+	//		return false;
+	//	}
+	//	/*nets::kcp(anum)->connect(akcpsession, aactoridserver, id_guid(), aip, aprot, [this](i32_session asession)
+	//		{
+	//			log_error()->print("kcp {} m_kcpsession = {}", (nguid)id_guid(), asession);
+	//		}
+	//	);*/
+	//	return true;
+	//}
 
-	bool actor_base::kcp_sendpack(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
-	{
-		ukcp* lpukcp = nets::kcp(auport);
-		if (lpukcp == nullptr)
-		{
-			return false;
-		}
-		return lpukcp->send_server(aactorid, adata);
-	}
+	//bool actor_base::kcp_sendpack(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
+	//{
+	//	//ukcp* lpukcp = nets::kcp(auport);
+	//	//if (lpukcp == nullptr)
+	//	{
+	//		return false;
+	//	}
+	//	//return lpukcp->send_server(aactorid, adata);
+	//}
 
-	bool actor_base::kcp_sendpack(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
-	{
-		ukcp* lpukcp = nets::kcp(auport);
-		if (lpukcp == nullptr)
-		{
-			return false;
-		}
-		return lpukcp->send_server(aactorids, adata);
-	}
+	//bool actor_base::kcp_sendpack(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
+	//{
+	//	//ukcp* lpukcp = nets::kcp(auport);
+	//	//if (lpukcp == nullptr)
+	//	//{
+	//		return false;
+	//	//}
+	//	//return lpukcp->send_server(aactorids, adata);
+	//}
 }//namespace ngl

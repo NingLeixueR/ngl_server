@@ -207,10 +207,10 @@ namespace ngl
 		}
 		
 		std::string lkcpsession = lpram->mkcpsession();	
-		return kcp_connect(kcp_index(lpram->mserverid(), lpram->m_kcpnum())
-			, lpstructserver.m_ip, nets::kcp_port(ltid, ltcount, lpram->m_kcpnum())
-			, lpram->mactoridserver(), lkcpsession
-		);
+		//return kcp_connect(kcp_index(lpram->mserverid(), lpram->m_kcpnum())
+		//	, lpstructserver.m_ip, nets::kcp_port(ltid, ltcount, lpram->m_kcpnum())
+		//	, lpram->mactoridserver(), lkcpsession
+		//);
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
 	{

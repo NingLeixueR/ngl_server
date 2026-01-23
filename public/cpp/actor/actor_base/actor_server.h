@@ -15,7 +15,7 @@
 
 #include "actor_manage.h"
 #include "naddress.h"
-#include "net.h"
+#include "ntcp.h"
 
 namespace ngl
 {

@@ -118,10 +118,6 @@ namespace ngl
 
 	void net_protocol::mores(i32_sessionid asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack)
 	{
-		if (nets::session2type(asession) != (ENET_PROTOCOL)m_protocol)
-		{
-			return;
-		}
 		apack->set_actor(aactorid, arequestactorid);
 		send_pack(asession, apack);
 	}
@@ -141,6 +137,6 @@ namespace ngl
 		{
 			mores(item, aactorid, arequestactorid, apack);
 		}
-		return  true;
+		return true;
 	}
 }// namespace ngl

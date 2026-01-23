@@ -21,7 +21,7 @@
 #include "db_data.h"
 #include "ntimer.h"
 #include "net.pb.h"
-#include "net.h"
+#include "ntcp.h"
 #include "db.h"
 
 namespace ngl

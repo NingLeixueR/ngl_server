@@ -17,7 +17,7 @@
 #include "actor_manage.h"
 #include "nregister.h"
 #include "naddress.h"
-#include "net.h"
+#include "ntcp.h"
 
 namespace ngl
 {
@@ -115,7 +115,7 @@ namespace ngl
 			}
 			return true;
 		});
-		nets::send(adata.get_data()->m_session, lpram, lactorserve, lactorid);
+		ntcp::instance().send(adata.get_data()->m_session, lpram, lactorserve, lactorid);
 		return true;
 	}
 
@@ -125,7 +125,7 @@ namespace ngl
 		{
 			return;
 		}
-		nets::connect(aactorserver, [this, aactorserver](int asession)
+		ntcp::instance().connect(aactorserver, [this, aactorserver](int asession)
 			{
 				auto pro = std::make_shared<np_connect_actor_server>();
 				pro->m_serverid = aactorserver;
@@ -166,12 +166,12 @@ namespace ngl
 	{
 		if (isactiv_connect(aserverid))
 		{
-			nets::connect(aserverid, [this, aserverid](i32_session asession)
+			ntcp::instance().connect(aserverid, [this, aserverid](i32_session asession)
 				{
 					set_node(aserverid, asession);
 					np_actorclient_node_connect pro;
 					pro.m_id = nconfig.nodeid();
-					nets::send(asession, pro, nguid::moreactor(), id_guid());
+					ntcp::instance().send(asession, pro, nguid::moreactor(), id_guid());
 				}, false, true
 			);
 		}
@@ -211,7 +211,7 @@ namespace ngl
 				lpro.m_add.push_back(item.first);
 			}
 		}
-		nets::send(asession, lpro, nguid::moreactor(), aclient->id_guid());
+		ntcp::instance().send(asession, lpro, nguid::moreactor(), aclient->id_guid());
 	}
 
 	bool actor_client::handle(const message<np_actorclient_node_connect>& adata)
@@ -243,7 +243,7 @@ namespace ngl
 		{
 			np_actorclient_node_connect pro;
 			pro.m_id = nconfig.nodeid();
-			nets::send(lpack->m_id, pro, nguid::moreactor(), id_guid());
+			ntcp::instance().send(lpack->m_id, pro, nguid::moreactor(), id_guid());
 		}
 
 		set_connect_fnish(lparm->m_id);

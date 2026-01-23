@@ -65,7 +65,7 @@ namespace ngl
 		template <typename T>
 		void send(_robot* arobot, T& adata)
 		{
-			nets::send(arobot->m_session, adata, nguid::moreactor(), arobot->m_actor_roleid);
+			ntcp::instance().send(arobot->m_session, adata, nguid::moreactor(), arobot->m_actor_roleid);
 		}
 
 		bool getdata(_robot* arobot);

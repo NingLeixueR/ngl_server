@@ -25,7 +25,7 @@
 #include "drop.h"
 #include "nlog.h"
 #include "mail.h"
-#include "net.h"
+#include "ntcp.h"
 #include "db.h"
 
 namespace ngl

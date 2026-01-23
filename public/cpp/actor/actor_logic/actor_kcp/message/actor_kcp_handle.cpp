@@ -12,7 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "actor_kcp.h"
-#include "ukcp.h"
+//#include "ukcp.h"
 namespace ngl
 {
 	bool actor_kcp::handle(const message<np_actor_kcp>& adata)
@@ -20,7 +20,7 @@ namespace ngl
 		auto lpram = adata.get_shared_data();
 		auto lpack = adata.get_pack();
 		
-		if (lpram->m_actoridserver != nguid::make() && !actor_manage::instance().is_have_actor(lpram->m_actoridserver))
+	/*	if (lpram->m_actoridserver != nguid::make() && !actor_manage::instance().is_have_actor(lpram->m_actoridserver))
 		{
 			log_error()->print("np_actor_kcp fail actor:{}",nguid(lpram->m_actoridserver));
 			return true;
@@ -41,7 +41,7 @@ namespace ngl
 		{
 			nets::send(lpack->m_id, *lpram, nguid::make(), nguid::make());
 		}
-		lpram->m_serverid;
+		lpram->m_serverid;*/
 		return true;
 	}
 }//namespace ngl

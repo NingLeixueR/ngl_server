@@ -20,7 +20,7 @@
 #include "ndbclient.h"
 #include "db_data.h"
 #include "db_pool.h"
-#include "net.h"
+#include "ntcp.h"
 #include "db.h"
 
 namespace ngl
@@ -96,25 +96,25 @@ namespace ngl
 					lmap.insert(std::make_pair(info->m_socket, lactorid));
 				}
 			}
-			nets::send<forward, T>(lmap, aparm->m_data.m_data, apack->m_head.get_request_actor());
+			ntcp::instance().send<forward, T>(lmap, aparm->m_data.m_data, apack->m_head.get_request_actor());
 			return true;
 		}
 
 		template <typename T>
 		bool handle_kcp(const np_actor_forward<T, forward_g2c<forward>>* aparm, const pack* apack)
 		{
-			std::shared_ptr<pack> lsendpack = ngl::net_pack<T>::npack(&nets::net_first()->get_pool(), aparm->m_data.m_data, apack->m_head.get_request_actor(), 0);
+			std::shared_ptr<pack> lsendpack = ngl::net_pack<T>::npack(&ntcp::instance().pool(), aparm->m_data.m_data, apack->m_head.get_request_actor(), 0);
 			if (lsendpack == nullptr)
 			{
 				return true;
 			}
 			if (aparm->m_data.m_area[0] == nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
 			{
-				nets::serkcp(pbnet::KCP_GATEWAY, nconfig.tcount())->send_server(lsendpack);
+				///nets::serkcp(pbnet::KCP_GATEWAY, nconfig.tcount())->send_server(lsendpack);
 			}
 			else if (aparm->m_data.m_area[0] != nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
 			{
-				nets::serkcp(pbnet::KCP_GATEWAY, nconfig.tcount())->sendpackbyarea(aparm->m_data.m_area[0], lsendpack);
+				///nets::serkcp(pbnet::KCP_GATEWAY, nconfig.tcount())->sendpackbyarea(aparm->m_data.m_area[0], lsendpack);
 			}
 			else
 			{
@@ -133,7 +133,7 @@ namespace ngl
 					i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea, ldataid);
 					lids.insert(lactorid);
 				}
-				nets::serkcp(pbnet::KCP_GATEWAY, nconfig.tcount())->send_server(lids, lsendpack);
+				//nets::serkcp(pbnet::KCP_GATEWAY, nconfig.tcount())->send_server(lids, lsendpack);
 			}
 			return true;
 		}

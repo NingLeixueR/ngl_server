@@ -23,8 +23,8 @@
 #include "db_data.h"
 #include "db_pool.h"
 #include "gcmd.h"
+#include "ntcp.h"
 #include "cmd.h"
-#include "net.h"
 #include "db.h"
 
 namespace ngl
@@ -100,7 +100,7 @@ namespace ngl
 					pro.m_data.insert(std::make_pair(lguid, atab));
 					if (aindex % lsendmaxcount == 0)
 					{
-						nets::send(apack->m_id, pro, lrequestactor, nguid::make());
+						ntcp::instance().send(apack->m_id, pro, lrequestactor, nguid::make());
 						pro = np_actordb_load_response<TDBTAB_TYPE, TDBTAB>();
 						pro.m_stat = enum_dbstat_success;
 						pro.m_over = false;
@@ -108,7 +108,7 @@ namespace ngl
 				}
 			);
 			pro.m_over = true;
-			nets::send(apack->m_id, pro, lrequestactor, nguid::make());
+			ntcp::instance().send(apack->m_id, pro, lrequestactor, nguid::make());
 			log_info()->print("loadall[{}]", tools::type_name<TDBTAB>());
 		}
 
@@ -166,7 +166,7 @@ namespace ngl
 				}
 
 				i64_actorid lrequestactor = apack->m_head.get_request_actor();
-				nets::send(apack->m_id, pro, lrequestactor, nguid::make());
+				ntcp::instance().send(apack->m_id, pro, lrequestactor, nguid::make());
 
 				log_error()->print("load finish {}:{}", tools::type_name<np_actordb_load<TDBTAB_TYPE, TDBTAB>>(), nguid(lrequestactor));
 			}

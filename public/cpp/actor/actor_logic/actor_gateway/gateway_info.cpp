@@ -12,7 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "gateway_info.h"
-#include "net.h"
+#include "ntcp.h"
 
 namespace ngl
 {
@@ -23,7 +23,7 @@ namespace ngl
 		{
 			if (lpgsocket->m_socket > 0 && lpgsocket->m_socket != ainfo.m_socket)
 			{
-				nets::net(lpgsocket->m_socket)->close(lpgsocket->m_socket);
+				ntcp::instance().close(lpgsocket->m_socket);
 				remove_socket(lpgsocket->m_socket);
 			}
 		}

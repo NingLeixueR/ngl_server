@@ -24,7 +24,7 @@
 #include "nlog.h"
 #include "type.h"
 #include "pack.h"
-#include "net.h"
+#include "ntcp.h"
 
 #include <functional>
 #include <map>

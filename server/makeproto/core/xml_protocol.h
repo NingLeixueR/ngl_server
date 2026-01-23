@@ -1059,7 +1059,7 @@ namespace ngl
 #include "ntimer.h"
 #include "notice.h"
 #include "net.pb.h"
-#include "net.h"
+#include "ntcp.h"
 #include "db.h"
 
 namespace ngl

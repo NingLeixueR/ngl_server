@@ -13,6 +13,7 @@
 */
 #pragma once
 
+#include "server_session.h"
 #include "tprotocol.h"
 #include "nprotocol.h"
 #include "nguid.h"
@@ -253,7 +254,7 @@ namespace ngl
 	public:
 		static bool send_server(i32_serverid aserverid, handle_pram& adata)
 		{
-			return handle_pram::send_pack(aserverid, adata.m_data);
+			return handle_pram::send_pack(server_session::sessionid(aserverid), adata.m_data);
 		}
 
 		static bool send(handle_pram& adata)
