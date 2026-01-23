@@ -55,7 +55,7 @@ namespace ngl
 				{
 					return nhashcode(lcode, itor->second);
 				}
-				int32_t lindex = lmap.size() + 1;
+				lindex = lmap.size() + 1;
 				lmap[tools::type_name<T>()] = lindex;
 			}
 			return nhashcode(lcode, lindex);
