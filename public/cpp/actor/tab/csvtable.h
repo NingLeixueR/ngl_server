@@ -13,7 +13,7 @@
 */
 
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 26-01-20 15:26:46
+// 创建时间 // 创建时间 26-01-23 09:37:53
 #pragma once
 
 #include "csv.h"
@@ -233,19 +233,19 @@ struct tab_servers
 	int32_t                          m_db                            ; // [index:9][load:y] 连接的db进程id
 	int32_t                          m_reloadcsv                     ; // [index:10][load:y] 连接的reloadcsv进程id
 	int32_t                          m_login                         ; // [index:11][load:y] 连接的login进程id
-	int32_t                          m_log                           ; // [index:13][load:y] 连接的log进程id
 	int16_t                          m_crossarea                     ; // [index:12][load:y] 跨服区服
+	int32_t                          m_log                           ; // [index:13][load:y] 连接的log进程id
 	std::vector<int32_t>             m_actorserver                   ; // [index:13][load:y] 连接的actorserver进程id(跨服需要填写多个actorserver)
 	std::vector<net_works>           m_net                           ; // [index:14][load:y] 服务器网络相关(net_works:m_type(0tcp1ws2kcp),m_ip,m_nip,m_port)
 	/*********************************/
 	tab_servers();
 	// 序列化反序列化相关
-	dprotocol(tab_servers, m_id, m_name, m_area, m_type, m_tcount, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_log, m_crossarea, m_actorserver, m_net)
+	dprotocol(tab_servers, m_id, m_name, m_area, m_type, m_tcount, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_log, m_actorserver, m_net)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_area,m_type,m_tcount,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_log,m_crossarea,m_actorserver,m_net);
+		def_rcsv(m_id,m_name,lm_remarks,m_area,m_type,m_tcount,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_log,m_actorserver,m_net);
 	}
 };
 struct tab_dbload
@@ -443,20 +443,20 @@ struct tab_random
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
 //	std::string                      m_remarks                       ; // [index:2][load:n] 备注
+	std::vector<trandom>             m_randomdatas                   ; // [index:3][load:y] trandom(id*min*max*weight)
 	bool                             m_exclusive                     ; // [index:4][load:y] 排他性多次掉落时使用（true不会掉落出已掉落物品 false会掉落出已掉落物品）
 	int32_t                          m_count                         ; // [index:5][load:y] 随机数量
-	std::vector<trandom>             m_randomdatas                   ; // [index:3][load:y] trandom(id*min*max*weight)
 	std::set<int32_t>                m_activityids                   ; // [index:6][load:y] 只有活动开启才会触发此掉落
 	std::vector<int32_t>             m_childrandomids                ; // [index:7][load:y] 子随机
 	/*********************************/
 	tab_random();
 	// 序列化反序列化相关
-	dprotocol(tab_random, m_id, m_name, m_exclusive, m_count, m_randomdatas, m_activityids, m_childrandomids)
+	dprotocol(tab_random, m_id, m_name, m_randomdatas, m_exclusive, m_count, m_activityids, m_childrandomids)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_exclusive,m_count,m_randomdatas,m_activityids,m_childrandomids);
+		def_rcsv(m_id,m_name,lm_remarks,m_randomdatas,m_exclusive,m_count,m_activityids,m_childrandomids);
 	}
 };
 struct tconsume
@@ -767,20 +767,20 @@ struct tab_task
 //	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	ETaskType                        m_type                          ; // [index:3][load:y] 任务类型(0:主线任务1:支线任务2:每日任务3:可重复完成的任务)
 	std::string                      m_typeparm                      ; // [index:4][load:y] (m_type=2||=3 : 可完成次数)
+	std::vector<task_condition>      m_taskreceive                   ; // [index:5][load:y] 接收此任务的前提(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
+	std::vector<task_condition>      m_taskcomplete                  ; // [index:6][load:y] 完成此任务的条件(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
 	int32_t                          m_dropid                        ; // [index:7][load:y] 任务奖励
 	bool                             m_autoreceive                   ; // [index:8][load:y] 是否自动领取
 	int32_t                          m_mailid                        ; // [index:9][load:y] 自动领取后是否发送邮件的邮件id(自动领取的邮件id:m_autoreceive == true,当m_autoreceive为ture可以为-1)
-	std::vector<task_condition>      m_taskreceive                   ; // [index:5][load:y] 接收此任务的前提(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
-	std::vector<task_condition>      m_taskcomplete                  ; // [index:6][load:y] 完成此任务的条件(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
 	/*********************************/
 	tab_task();
 	// 序列化反序列化相关
-	dprotocol(tab_task, m_id, m_name, m_type, m_typeparm, m_dropid, m_autoreceive, m_mailid, m_taskreceive, m_taskcomplete)
+	dprotocol(tab_task, m_id, m_name, m_type, m_typeparm, m_taskreceive, m_taskcomplete, m_dropid, m_autoreceive, m_mailid)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_type,m_typeparm,m_dropid,m_autoreceive,m_mailid,m_taskreceive,m_taskcomplete);
+		def_rcsv(m_id,m_name,lm_remarks,m_type,m_typeparm,m_taskreceive,m_taskcomplete,m_dropid,m_autoreceive,m_mailid);
 	}
 };
 struct obstacles_data
@@ -893,17 +893,17 @@ struct tab_recharge
 	int32_t                          m_dropid                        ; // [index:7][load:y] 掉落
 	int32_t                          m_vipexp                        ; // [index:8][load:y] 充值该档位赠送的vip经验
 	int32_t                          m_count                         ; // [index:9][load:y] 是否限制充值次数
-	int32_t                          m_mailid                        ; // [index:11][load:y] 邮件id
 	std::vector<int32_t>             m_activityid                    ; // [index:10][load:y] 必须指定活动开启时才能充值这一档
+	int32_t                          m_mailid                        ; // [index:11][load:y] 邮件id
 	/*********************************/
 	tab_recharge();
 	// 序列化反序列化相关
-	dprotocol(tab_recharge, m_id, m_name, m_price, m_gold, m_bonus, m_firstbonus, m_dropid, m_vipexp, m_count, m_mailid, m_activityid)
+	dprotocol(tab_recharge, m_id, m_name, m_price, m_gold, m_bonus, m_firstbonus, m_dropid, m_vipexp, m_count, m_activityid, m_mailid)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_price,m_gold,m_bonus,m_firstbonus,m_dropid,m_vipexp,m_count,m_mailid,m_activityid);
+		def_rcsv(m_id,m_name,lm_remarks,m_price,m_gold,m_bonus,m_firstbonus,m_dropid,m_vipexp,m_count,m_activityid,m_mailid);
 	}
 };
 struct tab_familylv
