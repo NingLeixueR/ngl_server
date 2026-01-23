@@ -13,7 +13,7 @@
 */
 
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2026-01-20 15:26:56】
+ // 创建时间【2026-01-23 09:38:01】
 #include "actor_base.h"
 #include "tools.h"
 #include "pack.h"
@@ -144,7 +144,6 @@ namespace ngl
                , pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER
                , pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR
                , pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB
-
             >();
          }
 		auto lpfun = tools::findmap(lmap, apbname);

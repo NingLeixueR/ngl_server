@@ -83,5 +83,6 @@ namespace ngl
 		register_c2g_2< ACTOR_TESTLUA
 			, pbnet::PROBUFF_NET_TESTLUA
 		>();
+
 	}
 }// namespace ngl
