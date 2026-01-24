@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "actor_base.h"
 #include "asio_kcp.h"
 #include "ukcp.h"
 
@@ -71,4 +72,4 @@ namespace ngl
 		}
 		return lpukcp->send(aactorids, adata);
 	}
-}
+}//namespace ngl
