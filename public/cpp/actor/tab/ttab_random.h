@@ -34,7 +34,7 @@ namespace ngl
 			foreach([&](tab_random& atab)
 				{
 					std::set<int32_t> lset;
-					if (is_loop(atab.m_id, lset));
+					if (is_loop(atab.m_id, lset))
 					{
 						tools::no_core_dump();
 					}
