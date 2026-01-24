@@ -76,4 +76,3 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_KCPSESSION>& adata);
 	};
 }//namespace ngl
-

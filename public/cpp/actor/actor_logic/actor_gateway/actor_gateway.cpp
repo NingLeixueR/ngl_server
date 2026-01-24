@@ -126,7 +126,8 @@ namespace ngl
 					{
 						.m_roleid = lroleid,
 						.m_area = larea,
-					});
+					}
+				);
 				actor::send_actor(id_guid(), nguid::make(), pro);
 			}
 		};
