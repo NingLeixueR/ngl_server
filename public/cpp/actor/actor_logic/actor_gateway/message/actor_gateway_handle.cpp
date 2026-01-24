@@ -143,7 +143,8 @@ namespace ngl
 					{
 						lvec.push_back(agetway);
 					}
-				});
+				}
+			);
 			for (gateway_socket* asocket : lvec)
 			{
 				gateway_socket* linfo = m_info.get(asocket->m_area, asocket->m_dataid);
@@ -234,7 +235,7 @@ namespace ngl
 		auto lpack = adata.get_pack();
 
 		std::string lkcpsession;
-		//if (ukcp::session_create(lpram->mactoridserver(), lpram->mactoridclient(), lkcpsession) == false)
+		if (ukcp::session_create(lpram->mactoridserver(), lpram->mactoridclient(), lkcpsession) == false)
 		{
 			return true;
 		}
