@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 26-01-23 09:38:15
+// 创建时间 26-01-24 13:59:20
 #include "pb_field.cpp"
 #include "session_endpoint.cpp"
 #include "attribute_value.cpp"
@@ -14,7 +14,6 @@
 #include "fight_example.cpp"
 #include "activity_rank.cpp"
 #include "pbname_match.cpp"
-#include "net_protocol.cpp"
 #include "manage_skill.cpp"
 #include "gateway_info.cpp"
 #include "events_logic.cpp"
@@ -58,7 +57,6 @@
 #include "remakes.cpp"
 #include "nthread.cpp"
 #include "nscript.cpp"
-#include "net_tcp.cpp"
 #include "dbredis.cpp"
 #include "db_pool.cpp"
 #include "consume.cpp"
@@ -82,7 +80,9 @@
 #include "ukcp.cpp"
 #include "task.cpp"
 #include "pack.cpp"
+#include "ntcp.cpp"
 #include "nlog.cpp"
+#include "nkcp.cpp"
 #include "ncsv.cpp"
 #include "mail.cpp"
 #include "itme.cpp"
@@ -90,7 +90,6 @@
 #include "buff.cpp"
 #include "xml.cpp"
 #include "nsp.cpp"
-#include "net.cpp"
 #include "map.cpp"
 #include "csv.cpp"
 #include "bag.cpp"
