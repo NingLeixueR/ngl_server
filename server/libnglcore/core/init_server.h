@@ -42,7 +42,7 @@
 #include "ncurl.h"
 #include "db.pb.h"
 #include "nlog.h"
-#include "nlog.h"
+#include "nkcp.h"
 #include "csv.h"
 #include "xml.h"
 
@@ -88,7 +88,15 @@ bool init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {})
 		ngl::ntcp::instance().init(lnwork.m_port, tab->m_threadnum, tab->m_outernet);
 	}
 
-	
+	{//KCP
+		if (!akcp.empty())
+		{
+			for (pbnet::ENUM_KCP kcptype : akcp)
+			{
+				ngl::nkcp::instance().create_kcp(kcptype);
+			}
+		}
+	}
 
 	// # 初始化actor管理模块
 	ngl::actor_manage::instance().init(tab->m_actorthreadnum);
