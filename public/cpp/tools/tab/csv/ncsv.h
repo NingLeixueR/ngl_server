@@ -116,7 +116,8 @@ namespace ngl
 			auto itor = std::ranges::find_if(m_csv, [&afun](std::pair<const int, T>& apair)
 				{
 					return afun(apair.second);
-				});
+				}
+			);
 			if (itor == m_csv.end())
 			{
 				return nullptr;
