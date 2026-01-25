@@ -209,7 +209,7 @@ namespace ngl
 				aserialize->move_pos(adata.m_bufflen);
 			}
 		};
-	}
+	}//namespace ser
 
 	template <typename T>
 	struct forward_c2g
@@ -237,7 +237,7 @@ namespace ngl
 				ngl::ser::nserialize::bytes(aserialize, adata.m_data);
 			}
 		};
-	}
+	}//namespace ser
 
 	template <typename T>
 	struct forward_g2c
@@ -268,7 +268,7 @@ namespace ngl
 				ngl::ser::nserialize::bytes(aserialize, adata.m_area, adata.m_uid, adata.m_protocol, adata.m_data);
 			}
 		};
-	}
+	}//namespace ser
 
 	template <typename T, typename Y>
 	struct np_actor_forward
@@ -412,9 +412,6 @@ namespace ngl
 		DPROTOCOL(np_channel_dataid_sync, m_msg, m_actorid, m_read, m_all, m_readpart, m_writepart, m_field)
 	};
 
-
-
-
 	template <typename TDATA>
 	struct np_channel_exit
 	{
@@ -448,7 +445,6 @@ namespace ngl
 		DPROTOCOL(np_channel_check, m_msg, m_timer, m_area)
 	};
 
-
 	struct np_gm
 	{
 		std::string m_json;
@@ -470,6 +466,7 @@ namespace ngl
 
 		DPROTOCOL(np_testlua, m_name, m_data)
 	};
+
 	struct msg_actor
 	{
 		std::string m_actor_name;
