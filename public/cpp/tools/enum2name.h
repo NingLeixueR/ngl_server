@@ -70,32 +70,32 @@ namespace ngl
 		{
 			std::string str(aname);
 			rename(str);
-			auto itor1 = m_datan2e.find(anum);
-			if (itor1 == m_datan2e.end())
+			auto lpmap = tools::findmap(m_datan2e, anum);
+			if (lpmap == nullptr)
 			{
 				return enum_null();
 			}
-			auto itor2 = itor1->second.find(str);
-			if (itor2 == itor1->second.end())
+			auto lpenum = tools::findmap(*lpmap, str);
+			if (lpenum == nullptr)
 			{
 				return enum_null();
 			}
-			return itor2->second;
+			return *lpenum;
 		}
 
 		static const data* get_data(const ENUMT aenum, int anum = 0)
 		{
-			auto itor1 = m_datae2n.find(anum);
-			if (itor1 == m_datae2n.end())
+			auto lpmap = tools::findmap(m_datae2n, anum);
+			if (lpmap == nullptr)
 			{
 				return nullptr;
 			}
-			auto itor2 = itor1->second.find(aenum);
-			if (itor2 == itor1->second.end())
+			auto lpdata = tools::findmap(*lpmap, aenum);
+			if (lpdata == nullptr)
 			{
 				return nullptr;
 			}
-			return &itor2->second;
+			return lpdata;
 		}
 
 		static const char* name(const ENUMT aenum, int anum = 0)
