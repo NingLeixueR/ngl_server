@@ -246,12 +246,12 @@ namespace ngl
 			std::string m_notice;		// 内容
 			std::string m_starttime;	// 开始时间
 			std::string m_finishtime;	// 结束时间
-			dprotocol(noticeitem, m_id, m_notice, m_starttime, m_finishtime)
+			DPROTOCOL(noticeitem, m_id, m_notice, m_starttime, m_finishtime)
 		};
 		struct notices
 		{
 			std::vector<noticeitem> m_notices;
-			dprotocol(notices, m_notices)
+			DPROTOCOL(notices, m_notices)
 		};
 		ncjson ljson;
 		notices lnotices;

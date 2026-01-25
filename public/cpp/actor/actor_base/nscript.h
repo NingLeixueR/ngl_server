@@ -44,7 +44,7 @@ namespace ngl
 	{
 		i64_actorid m_nguid = nguid::make();
 
-		def_nlua_special_function({ "m_nguid" }, m_nguid)
+		DEF_NLUA_SPECIAL_FUNCTION({ "m_nguid" }, m_nguid)
 	};
 
 	template <enscript ESCRIPT>
@@ -222,7 +222,7 @@ namespace ngl
 				m_data(adata)
 			{}
 
-			def_nlua_special_function({ tools::type_name<T>().c_str() }, m_data)
+			DEF_NLUA_SPECIAL_FUNCTION({ tools::type_name<T>().c_str() }, m_data)
 		};
 
 		template <typename T>

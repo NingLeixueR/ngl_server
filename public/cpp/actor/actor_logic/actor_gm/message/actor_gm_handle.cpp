@@ -50,7 +50,7 @@ namespace ngl
 			struct servertype
 			{
 				std::vector<int32_t> servertype;
-				dprotocol(servertype, servertype)
+				DPROTOCOL(servertype, servertype)
 			};
 			servertype lservertype;
 			if (njson::pop(aos.json(), { "data" }, lservertype))
@@ -80,7 +80,7 @@ namespace ngl
 				std::string actor_name;
 				int16_t area = 0;
 				int32_t dataid = 0;
-				dprotocol(gm_guid, actor_name, area, dataid)
+				DPROTOCOL(gm_guid, actor_name, area, dataid)
 			};
 			handle_cmd::add("server_stat") = [this](ncjson& aos, const message<ngl::np_gm>* adata)
 				{
@@ -136,7 +136,7 @@ namespace ngl
 					struct operator_set_time
 					{
 						int32_t time = 0;
-						dprotocol(operator_set_time, time)
+						DPROTOCOL(operator_set_time, time)
 					};
 					operator_set_time ltime;
 					if (njson::pop(aos.json(), { "data" }, ltime))

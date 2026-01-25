@@ -34,7 +34,7 @@ namespace ngl
 						int32_t m_page = 0;
 						int32_t m_everynum = 0;
 
-						dprotocol(json_rank, m_type, m_page)
+						DPROTOCOL(json_rank, m_type, m_page)
 					};
 					json_rank lrank;
 					if (!njson::pop(aos.json(), { "data" }, lrank))

@@ -42,7 +42,7 @@ namespace ngl
 	{
 		nguid m_id = -1;
 
-		def_protocol(m_id)
+		DEF_PROTOCOL(m_id)
 	};
 
 	enum enum_dbstat
@@ -66,7 +66,7 @@ namespace ngl
 			return m_data;
 		}
 
-		def_protocol(m_id, m_data, m_stat, m_over)
+		DEF_PROTOCOL(m_id, m_data, m_stat, m_over)
 	};
 
 	// [db client -> db server]
@@ -86,7 +86,7 @@ namespace ngl
 			return m_data.empty();
 		}
 
-		def_protocol(m_data)
+		DEF_PROTOCOL(m_data)
 	};
 
 	// 删除数据
@@ -95,7 +95,7 @@ namespace ngl
 	{
 		std::vector<int64_t> m_data;
 
-		dprotocol(actor_db_delete<T>, m_data)
+		DPROTOCOL(actor_db_delete<T>, m_data)
 	};
 
 	// 保存数据缓存列表
@@ -110,7 +110,7 @@ namespace ngl
 		enum_cache_list			m_type;
 		std::set<i64_actorid>	m_ls;
 
-		dprotocol(actor_time_db_cache<T>, m_ls)
+		DPROTOCOL(actor_time_db_cache<T>, m_ls)
 	};
 
 	// 模块间转发
@@ -123,8 +123,8 @@ namespace ngl
 	public:
 		using BASE_TYPE = T;
 
-		def_protocol(m_identifier, *m_data)
-		def_nlua_special_function({ "m_identifier", "m_data" }, m_identifier, *m_data)
+		DEF_PROTOCOL(m_identifier, *m_data)
+		DEF_NLUA_SPECIAL_FUNCTION({ "m_identifier", "m_data" }, m_identifier, *m_data)
 
 		np_actormodule_forward(int64_t aidentifier, const std::shared_ptr<T>& adata) :
 			m_identifier(aidentifier),
@@ -275,7 +275,7 @@ namespace ngl
 	{
 		Y m_data;
 
-		dprotocol(np_actor_forward, m_data)
+		DPROTOCOL(np_actor_forward, m_data)
 	};
 	
 	// 群发数据给其他actor
@@ -314,9 +314,9 @@ namespace ngl
 			m_actorids.insert(aactorid);
 		}
 
-		def_jsonfunction_special_parm({ "m_actorids","m_data" }, m_actorids, *m_data)
-		def_protocol(m_actorids, *m_data)
-		def_nlua_special_function({ "m_actorids", "m_data" }, m_actorids, *m_data)
+		DEF_JSONFUNCTION_SPECIAL({ "m_actorids","m_data" }, m_actorids, *m_data)
+		DEF_PROTOCOL(m_actorids, *m_data)
+		DEF_NLUA_SPECIAL_FUNCTION({ "m_actorids", "m_data" }, m_actorids, *m_data)
 	};
 
 
@@ -330,7 +330,7 @@ namespace ngl
 		i32_serverid	m_toserverid = 0;
 		T				m_pram;
 
-		dprotocol(np_actorswitch_process, m_actor, m_serverid, m_toserverid, m_pram);
+		DPROTOCOL(np_actorswitch_process, m_actor, m_serverid, m_toserverid, m_pram);
 	};
 
 	enum epb_field
@@ -356,7 +356,7 @@ namespace ngl
 
 		std::map<i32_fieldnumber, epb_field> m_field;			// 可修改/可读哪些字段编号
 
-		dprotocol(np_channel_register, m_msg, m_actorid, m_read, m_all, m_writeids, m_readids, m_field)
+		DPROTOCOL(np_channel_register, m_msg, m_actorid, m_read, m_all, m_writeids, m_readids, m_field)
 	};
 
 
@@ -367,7 +367,7 @@ namespace ngl
 		std::set<i64_actorid> m_readids;
 		std::set<i64_actorid> m_writeids;
 
-		dprotocol(nsp_care, m_read, m_all, m_readids, m_writeids)
+		DPROTOCOL(nsp_care, m_read, m_all, m_readids, m_writeids)
 	};
 
 	template <typename TDATA>
@@ -385,7 +385,7 @@ namespace ngl
 		// 结点可修改哪些字段编号
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>> m_node_fieldnumbers;
 
-		dprotocol(np_channel_register_reply, m_msg, m_actorid, m_nodereadalls, m_nodewritealls, m_care, m_node_fieldnumbers)
+		DPROTOCOL(np_channel_register_reply, m_msg, m_actorid, m_nodereadalls, m_nodewritealls, m_care, m_node_fieldnumbers)
 	};
 
 	template <typename TDATA>
@@ -409,7 +409,7 @@ namespace ngl
 
 		std::map<i32_fieldnumber, epb_field> m_field;			// 可修改/可读哪些字段编号
 
-		dprotocol(np_channel_dataid_sync, m_msg, m_actorid, m_read, m_all, m_readpart, m_writepart, m_field)
+		DPROTOCOL(np_channel_dataid_sync, m_msg, m_actorid, m_read, m_all, m_readpart, m_writepart, m_field)
 	};
 
 
@@ -421,7 +421,7 @@ namespace ngl
 		using T = TDATA;
 		std::string				m_msg;							// 调试查看信息
 		i64_actorid				m_actorid;
-		dprotocol(np_channel_exit, m_msg, m_actorid)
+		DPROTOCOL(np_channel_exit, m_msg, m_actorid)
 	};
 
 	template <typename TDATA>
@@ -435,7 +435,7 @@ namespace ngl
 		std::map<int64_t, TDATA> m_data;					// 1、数据同步2、数据修改3、数据增加
 		std::vector<int64_t> m_deldata;						// 数据被删除
 
-		dprotocol(np_channel_data<TDATA>, m_msg, m_actorid, m_firstsynchronize, m_recvfinish, m_data, m_deldata)
+		DPROTOCOL(np_channel_data<TDATA>, m_msg, m_actorid, m_firstsynchronize, m_recvfinish, m_data, m_deldata)
 	};
 
 	template <typename TDATA>
@@ -445,7 +445,7 @@ namespace ngl
 		std::string m_msg;									// 调试查看信息
 		int64_t m_timer;
 		i16_area m_area;
-		dprotocol(np_channel_check, m_msg, m_timer, m_area)
+		DPROTOCOL(np_channel_check, m_msg, m_timer, m_area)
 	};
 
 
@@ -453,14 +453,14 @@ namespace ngl
 	{
 		std::string m_json;
 
-		dprotocol(np_gm, m_json)
+		DPROTOCOL(np_gm, m_json)
 	};
 
 	struct np_gm_response
 	{
 		std::string m_json;
 
-		dprotocol(np_gm_response, m_json)
+		DPROTOCOL(np_gm_response, m_json)
 	};
 
 	struct np_testlua
@@ -468,14 +468,14 @@ namespace ngl
 		std::string m_name;
 		std::map<int, std::string> m_data;
 
-		dprotocol(np_testlua, m_name, m_data)
+		DPROTOCOL(np_testlua, m_name, m_data)
 	};
 	struct msg_actor
 	{
 		std::string m_actor_name;
 		std::map<i16_area, std::vector<i32_actordataid>> m_actor;
 
-		dprotocol(msg_actor, m_actor_name, m_actor)
+		DPROTOCOL(msg_actor, m_actor_name, m_actor)
 	};
 
 	// # 获取actor stat 数据
@@ -484,6 +484,6 @@ namespace ngl
 		
 		std::vector<msg_actor> m_vec;
 
-		dprotocol(msg_actor_stat, m_vec)
+		DPROTOCOL(msg_actor_stat, m_vec)
 	};
 }//namespace ngl

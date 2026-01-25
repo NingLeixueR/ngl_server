@@ -104,7 +104,7 @@ namespace ngl
 			data(adata)
 		{}
 
-		dprotocol(nscript_data_csv<T>, data)
+		DPROTOCOL(nscript_data_csv<T>, data)
 	};
 
 	template <typename T>
@@ -113,7 +113,7 @@ namespace ngl
 		using TDATA = T;
 		std::map<int64_t, T*> data;
 
-		dprotocol(nscript_data_db<T>, data)
+		DPROTOCOL(nscript_data_db<T>, data)
 	};
 
 	template <typename T>
@@ -125,7 +125,7 @@ namespace ngl
 			data(adata)
 		{}
 
-		dprotocol(nscript_data_nsp<T>, data)
+		DPROTOCOL(nscript_data_nsp<T>, data)
 	};
 
 	struct kcpport

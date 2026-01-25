@@ -31,7 +31,7 @@ namespace ngl
 					{
 						int64_t m_familid = 0;
 						std::string m_familname;
-						dprotocol(gm_changename, m_familid, m_familname)
+						DPROTOCOL(gm_changename, m_familid, m_familname)
 					};
 					gm_changename recv;
 					if (!njson::pop(aos.json(), { "data" }, recv))

@@ -289,7 +289,7 @@ namespace ngl
 			return m_id <=> r.m_id;
 		}
 
-		dprotocol(nguid, m_id)
+		DPROTOCOL(nguid, m_id)
 	};
 }//namespace ngl
 
