@@ -42,7 +42,7 @@ namespace ngl
 					struct operator_set_time
 					{
 						int32_t m_time = 0;
-						dprotocol(operator_set_time, m_time)
+						DPROTOCOL(operator_set_time, m_time)
 					};
 					operator_set_time ltime;
 					if (njson::pop(aos.json(), { "data" }, ltime))

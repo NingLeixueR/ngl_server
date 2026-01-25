@@ -81,7 +81,7 @@ namespace ngl
 		{
 			std::vector<E_EVENTS> m_events;
 			i64_actorid m_actorid;
-			dprotocol(np_event_register, m_events, m_actorid)
+			DPROTOCOL(np_event_register, m_events, m_actorid)
 		};
 
 		static void nregister()

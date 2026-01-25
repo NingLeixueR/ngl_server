@@ -53,7 +53,7 @@ namespace ngl
 		int32_t		m_rechargeid = 0;
 		int64_t		m_roleid = 0;
 
-		dprotocol(prorechange, m_orderid, m_rechargeid, m_roleid)
+		DPROTOCOL(prorechange, m_orderid, m_rechargeid, m_roleid)
 	};
 
 	class actor_role : 

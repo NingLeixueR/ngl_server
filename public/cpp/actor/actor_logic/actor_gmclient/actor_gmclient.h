@@ -35,7 +35,7 @@ namespace ngl
 	{
 		std::map<i32_protocolnum, std::string> m_data;
 
-		dprotocol(protocols, m_data)
+		DPROTOCOL(protocols, m_data)
 	};
 
 	class actor_gmclient : 

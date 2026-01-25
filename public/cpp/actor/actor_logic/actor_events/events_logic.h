@@ -49,7 +49,7 @@ namespace ngl
 		{}
 
 		i64_actorid m_actorid;
-		dprotocol(np_eevents_logic_rolelogin, m_type, m_actorid)
+		DPROTOCOL(np_eevents_logic_rolelogin, m_type, m_actorid)
 	};
 
 	class np_eevents_logic_roleoffline :
@@ -62,7 +62,7 @@ namespace ngl
 		{}
 
 		i64_actorid m_actorid;
-		dprotocol(np_eevents_logic_roleoffline, m_type, m_actorid)
+		DPROTOCOL(np_eevents_logic_roleoffline, m_type, m_actorid)
 	};
 
 	class np_eevents_logic_rolevaluechange :
@@ -86,7 +86,7 @@ namespace ngl
 		i64_actorid m_actorid;
 		int32_t m_beforevalue;
 		int32_t m_nowvalue;
-		dprotocol(np_eevents_logic_rolevaluechange, m_type, m_actorid, m_beforevalue, m_nowvalue)
+		DPROTOCOL(np_eevents_logic_rolevaluechange, m_type, m_actorid, m_beforevalue, m_nowvalue)
 	};
 
 	using actor_events_logic = actor_events<ENUM_EVENTS_LOGIC, eevents_logic, eevents_logic_count>;

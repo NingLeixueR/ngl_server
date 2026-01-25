@@ -36,7 +36,7 @@ namespace ngl
 					{
 						int64_t m_roleid = 0;
 						int32_t m_stat = 0;
-						dprotocol(banrole, m_roleid, m_stat)
+						DPROTOCOL(banrole, m_roleid, m_stat)
 					};
 					banrole lbanrole;
 					if (!njson::pop(aos.json(), { "data" }, lbanrole))

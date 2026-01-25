@@ -561,7 +561,7 @@ namespace ngl
 		return ngl::xserialize<ATTR>::push(aele, parms() __VA_OPT__(, )__VA_ARGS__);	\
 	}
 #define dxmlserialize(XMLNAME, ATTR, ...)												\
-	def_parmname_(true, __VA_ARGS__)													\
+	DEF_PARMNAME_(true, __VA_ARGS__)													\
 	def_xmlfunction(XMLNAME)															\
 	def_xml(ATTR __VA_OPT__(, )__VA_ARGS__)
 

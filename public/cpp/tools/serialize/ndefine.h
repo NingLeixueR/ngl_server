@@ -18,7 +18,7 @@
 #include "njson.h"
 #include "lua.hpp"
 
-#define def_protocol(...)														\
+#define DEF_PROTOCOL(...)														\
 	bool push_format(ngl::ser::serialize_push* aser)const						\
 	{																			\
 		return ngl::ser::nserialize::push(aser __VA_OPT__(, )__VA_ARGS__);		\
@@ -32,11 +32,11 @@
 		ngl::ser::nserialize::bytes(aser __VA_OPT__(, )__VA_ARGS__);			\
 	}
 
-#define def_rcsv(...) return ngl::rcsv::readcsv(apair __VA_OPT__(, )__VA_ARGS__);
+#define DEF_RCSV(...) return ngl::rcsv::readcsv(apair __VA_OPT__(, )__VA_ARGS__);
 
 #define NUMARGS(...)  std::tuple_size<decltype(std::make_tuple(__VA_ARGS__))>::value
 
-#define def_parmname_(ISMG,...)																		\
+#define DEF_PARMNAME_(ISMG,...)																		\
 static std::array<const char*, NUMARGS(__VA_ARGS__)>& parms()										\
 {																									\
 	static std::array<const char*, NUMARGS(__VA_ARGS__)> tempvec;									\
@@ -59,9 +59,9 @@ static std::array<const char*, NUMARGS(__VA_ARGS__)>& parms()										\
 	return tempvec;																					\
 }
 
-#define def_parmname(...)	def_parmname_(false __VA_OPT__(, )__VA_ARGS__)
+#define DEF_PARMNAME(...)	DEF_PARMNAME_(false __VA_OPT__(, )__VA_ARGS__)
 
-#define def_jsonfunction_function													\
+#define DEF_JSON_FUNCTION															\
 bool json_pop(const char* ajson, const char* akey)									\
 {																					\
 	ngl::ncjson ltemp(ajson);														\
@@ -84,7 +84,7 @@ void json_push(std::string& ajson, const char* akey) const							\
 }
 
 // 特殊情况使用
-#define def_jsonfunction_special_parm(...)											\
+#define DEF_JSONFUNCTION_SPECIAL(...)											\
 bool json_pop(cJSON* ajson)															\
 {																					\
 	return ngl::njson::pop(ajson __VA_OPT__(, )__VA_ARGS__);						\
@@ -102,9 +102,9 @@ void json_push(cJSON* ajson, const char* akey) const								\
 		ngl::njson::push(ajson __VA_OPT__(, )__VA_ARGS__);							\
 	}																				\
 }																					\
-def_jsonfunction_function
+DEF_JSON_FUNCTION
 
-#define def_jsonfunction(...)														\
+#define DEF_JSONFUNCTION(...)														\
 bool json_pop(cJSON* ajson)															\
 {																					\
 	return ngl::njson::pop(ajson, parms() __VA_OPT__(, )__VA_ARGS__);				\
@@ -122,9 +122,9 @@ void json_push(cJSON* ajson, const char* akey) const								\
 		ngl::njson::push(ajson, parms() __VA_OPT__(, )__VA_ARGS__);					\
 	}																				\
 }																					\
-def_jsonfunction_function
+DEF_JSON_FUNCTION
 
-#define def_nlua_function(...)															\
+#define DEF_NLUA_FUNCTION(...)															\
 	void nlua_push(lua_State* aL, const char* aname = nullptr)const						\
 	{																					\
 		ngl::nlua_table::table_push(aL, aname, parms() __VA_OPT__(, )__VA_ARGS__);		\
@@ -134,7 +134,7 @@ def_jsonfunction_function
 		return ngl::nlua_table::table_pop(aL, aname, parms() __VA_OPT__(, )__VA_ARGS__);\
 	}
 
-#define def_nlua_special_function(KEYS,...)												\
+#define DEF_NLUA_SPECIAL_FUNCTION(KEYS,...)												\
 	void nlua_push(lua_State* aL, const char* aname = nullptr)const						\
 	{																					\
 		ngl::nlua_table::table_push(aL, aname, KEYS __VA_OPT__(, )__VA_ARGS__);			\
@@ -144,8 +144,8 @@ def_jsonfunction_function
 		return ngl::nlua_table::table_pop(aL, aname, KEYS __VA_OPT__(, )__VA_ARGS__);	\
 	}
 
-#define dprotocol(NAME, ...)								\
-	def_parmname(__VA_ARGS__)								\
-	def_jsonfunction(__VA_ARGS__)							\
-	def_protocol(__VA_ARGS__)								\
-	def_nlua_function(__VA_ARGS__)
+#define DPROTOCOL(NAME, ...)								\
+	DEF_PARMNAME(__VA_ARGS__)								\
+	DEF_JSONFUNCTION(__VA_ARGS__)							\
+	DEF_PROTOCOL(__VA_ARGS__)								\
+	DEF_NLUA_FUNCTION(__VA_ARGS__)

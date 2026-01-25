@@ -211,11 +211,11 @@ struct net_works
 	/*********************************/
 	net_works();
 	// 序列化反序列化相关
-	dprotocol(net_works, m_type, m_ip, m_nip, m_port)
+	DPROTOCOL(net_works, m_type, m_ip, m_nip, m_port)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv(m_type,m_ip,m_nip,m_port);
+		DEF_RCSV(m_type,m_ip,m_nip,m_port);
 	}
 };
 struct tab_servers
@@ -240,12 +240,12 @@ struct tab_servers
 	/*********************************/
 	tab_servers();
 	// 序列化反序列化相关
-	dprotocol(tab_servers, m_id, m_name, m_area, m_type, m_tcount, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_log, m_actorserver, m_net)
+	DPROTOCOL(tab_servers, m_id, m_name, m_area, m_type, m_tcount, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_log, m_actorserver, m_net)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_area,m_type,m_tcount,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_log,m_actorserver,m_net);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_area,m_type,m_tcount,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_log,m_actorserver,m_net);
 	}
 };
 struct tab_dbload
@@ -261,12 +261,12 @@ struct tab_dbload
 	/*********************************/
 	tab_dbload();
 	// 序列化反序列化相关
-	dprotocol(tab_dbload, m_id, m_name, m_isloadall, m_network, m_sendmaxcount, m_dbcacheintervalms)
+	DPROTOCOL(tab_dbload, m_id, m_name, m_isloadall, m_network, m_sendmaxcount, m_dbcacheintervalms)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_isloadall,m_network,m_sendmaxcount,m_dbcacheintervalms);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_isloadall,m_network,m_sendmaxcount,m_dbcacheintervalms);
 	}
 };
 struct tab_errormessage
@@ -279,12 +279,12 @@ struct tab_errormessage
 	/*********************************/
 	tab_errormessage();
 	// 序列化反序列化相关
-	dprotocol(tab_errormessage, m_id, m_name, m_message)
+	DPROTOCOL(tab_errormessage, m_id, m_name, m_message)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_message);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_message);
 	}
 };
 struct tab_specialid
@@ -297,12 +297,12 @@ struct tab_specialid
 	/*********************************/
 	tab_specialid();
 	// 序列化反序列化相关
-	dprotocol(tab_specialid, m_id, m_name, m_value)
+	DPROTOCOL(tab_specialid, m_id, m_name, m_value)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_value);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_value);
 	}
 };
 struct tab_attribute
@@ -318,12 +318,12 @@ struct tab_attribute
 	/*********************************/
 	tab_attribute();
 	// 序列化反序列化相关
-	dprotocol(tab_attribute, m_id, m_name, m_fightcoefficient, m_initvalue, m_uplimit, m_lowlimit)
+	DPROTOCOL(tab_attribute, m_id, m_name, m_fightcoefficient, m_initvalue, m_uplimit, m_lowlimit)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_fightcoefficient,m_initvalue,m_uplimit,m_lowlimit);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_fightcoefficient,m_initvalue,m_uplimit,m_lowlimit);
 	}
 };
 struct tab_item
@@ -339,12 +339,12 @@ struct tab_item
 	/*********************************/
 	tab_item();
 	// 序列化反序列化相关
-	dprotocol(tab_item, m_id, m_name, m_ranks, m_type, m_quality, m_isstack)
+	DPROTOCOL(tab_item, m_id, m_name, m_ranks, m_type, m_quality, m_isstack)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_ranks,m_type,m_quality,m_isstack);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_ranks,m_type,m_quality,m_isstack);
 	}
 };
 struct attributevalue
@@ -356,11 +356,11 @@ struct attributevalue
 	/*********************************/
 	attributevalue();
 	// 序列化反序列化相关
-	dprotocol(attributevalue, m_id, m_isratio, m_value)
+	DPROTOCOL(attributevalue, m_id, m_isratio, m_value)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv(m_id,m_isratio,m_value);
+		DEF_RCSV(m_id,m_isratio,m_value);
 	}
 };
 struct tab_equip
@@ -374,12 +374,12 @@ struct tab_equip
 	/*********************************/
 	tab_equip();
 	// 序列化反序列化相关
-	dprotocol(tab_equip, m_id, m_name, m_position, m_attributevalues)
+	DPROTOCOL(tab_equip, m_id, m_name, m_position, m_attributevalues)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_position,m_attributevalues);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_position,m_attributevalues);
 	}
 };
 struct tab_equiplv
@@ -393,12 +393,12 @@ struct tab_equiplv
 	/*********************************/
 	tab_equiplv();
 	// 序列化反序列化相关
-	dprotocol(tab_equiplv, m_id, m_name, m_consume, m_attributevalues)
+	DPROTOCOL(tab_equiplv, m_id, m_name, m_consume, m_attributevalues)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_consume,m_attributevalues);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_consume,m_attributevalues);
 	}
 };
 struct tab_card
@@ -412,12 +412,12 @@ struct tab_card
 	/*********************************/
 	tab_card();
 	// 序列化反序列化相关
-	dprotocol(tab_card, m_id, m_name, m_quality, m_attributevalues)
+	DPROTOCOL(tab_card, m_id, m_name, m_quality, m_attributevalues)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_quality,m_attributevalues);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_quality,m_attributevalues);
 	}
 };
 struct trandom
@@ -430,11 +430,11 @@ struct trandom
 	/*********************************/
 	trandom();
 	// 序列化反序列化相关
-	dprotocol(trandom, m_id, m_min, m_max, m_weight)
+	DPROTOCOL(trandom, m_id, m_min, m_max, m_weight)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv(m_id,m_min,m_max,m_weight);
+		DEF_RCSV(m_id,m_min,m_max,m_weight);
 	}
 };
 struct tab_random
@@ -451,12 +451,12 @@ struct tab_random
 	/*********************************/
 	tab_random();
 	// 序列化反序列化相关
-	dprotocol(tab_random, m_id, m_name, m_randomdatas, m_exclusive, m_count, m_activityids, m_childrandomids)
+	DPROTOCOL(tab_random, m_id, m_name, m_randomdatas, m_exclusive, m_count, m_activityids, m_childrandomids)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_randomdatas,m_exclusive,m_count,m_activityids,m_childrandomids);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_randomdatas,m_exclusive,m_count,m_activityids,m_childrandomids);
 	}
 };
 struct tconsume
@@ -467,11 +467,11 @@ struct tconsume
 	/*********************************/
 	tconsume();
 	// 序列化反序列化相关
-	dprotocol(tconsume, m_tid, m_count)
+	DPROTOCOL(tconsume, m_tid, m_count)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv(m_tid,m_count);
+		DEF_RCSV(m_tid,m_count);
 	}
 };
 struct tab_consume
@@ -484,12 +484,12 @@ struct tab_consume
 	/*********************************/
 	tab_consume();
 	// 序列化反序列化相关
-	dprotocol(tab_consume, m_id, m_name, m_consumeitems)
+	DPROTOCOL(tab_consume, m_id, m_name, m_consumeitems)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_consumeitems);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_consumeitems);
 	}
 };
 struct tab_synthesis
@@ -503,12 +503,12 @@ struct tab_synthesis
 	/*********************************/
 	tab_synthesis();
 	// 序列化反序列化相关
-	dprotocol(tab_synthesis, m_id, m_name, m_consume, m_generate)
+	DPROTOCOL(tab_synthesis, m_id, m_name, m_consume, m_generate)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_consume,m_generate);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_consume,m_generate);
 	}
 };
 struct tweek
@@ -521,11 +521,11 @@ struct tweek
 	/*********************************/
 	tweek();
 	// 序列化反序列化相关
-	dprotocol(tweek, m_weekstart, m_opentime, m_weekfinish, m_closetime)
+	DPROTOCOL(tweek, m_weekstart, m_opentime, m_weekfinish, m_closetime)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv(m_weekstart,m_opentime,m_weekfinish,m_closetime);
+		DEF_RCSV(m_weekstart,m_opentime,m_weekfinish,m_closetime);
 	}
 };
 struct tserveropen
@@ -538,11 +538,11 @@ struct tserveropen
 	/*********************************/
 	tserveropen();
 	// 序列化反序列化相关
-	dprotocol(tserveropen, m_beg, m_opentime, m_end, m_closetime)
+	DPROTOCOL(tserveropen, m_beg, m_opentime, m_end, m_closetime)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv(m_beg,m_opentime,m_end,m_closetime);
+		DEF_RCSV(m_beg,m_opentime,m_end,m_closetime);
 	}
 };
 struct tregularslot
@@ -553,11 +553,11 @@ struct tregularslot
 	/*********************************/
 	tregularslot();
 	// 序列化反序列化相关
-	dprotocol(tregularslot, m_opentime, m_closetime)
+	DPROTOCOL(tregularslot, m_opentime, m_closetime)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv(m_opentime,m_closetime);
+		DEF_RCSV(m_opentime,m_closetime);
 	}
 };
 struct tab_mail
@@ -572,12 +572,12 @@ struct tab_mail
 	/*********************************/
 	tab_mail();
 	// 序列化反序列化相关
-	dprotocol(tab_mail, m_id, m_name, m_title, m_author, m_content)
+	DPROTOCOL(tab_mail, m_id, m_name, m_title, m_author, m_content)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_title,m_author,m_content);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_title,m_author,m_content);
 	}
 };
 struct tab_chat
@@ -591,12 +591,12 @@ struct tab_chat
 	/*********************************/
 	tab_chat();
 	// 序列化反序列化相关
-	dprotocol(tab_chat, m_id, m_name, m_time, m_count)
+	DPROTOCOL(tab_chat, m_id, m_name, m_time, m_count)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_time,m_count);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_time,m_count);
 	}
 };
 struct activity_task
@@ -608,11 +608,11 @@ struct activity_task
 	/*********************************/
 	activity_task();
 	// 序列化反序列化相关
-	dprotocol(activity_task, m_begday, m_endday, m_taskids)
+	DPROTOCOL(activity_task, m_begday, m_endday, m_taskids)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv(m_begday,m_endday,m_taskids);
+		DEF_RCSV(m_begday,m_endday,m_taskids);
 	}
 };
 struct tab_activity
@@ -629,12 +629,12 @@ struct tab_activity
 	/*********************************/
 	tab_activity();
 	// 序列化反序列化相关
-	dprotocol(tab_activity, m_id, m_name, m_type, m_open, m_task, m_taskday, m_ranktype)
+	DPROTOCOL(tab_activity, m_id, m_name, m_type, m_open, m_task, m_taskday, m_ranktype)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_type,m_open,m_task,m_taskday,m_ranktype);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_type,m_open,m_task,m_taskday,m_ranktype);
 	}
 };
 struct tab_activityopenserver
@@ -654,12 +654,12 @@ struct tab_activityopenserver
 	/*********************************/
 	tab_activityopenserver();
 	// 序列化反序列化相关
-	dprotocol(tab_activityopenserver, m_id, m_name, m_openday, m_openhour, m_openminute, m_opensecond, m_closeday, m_closehour, m_closeminute, m_closesecond)
+	DPROTOCOL(tab_activityopenserver, m_id, m_name, m_openday, m_openhour, m_openminute, m_opensecond, m_closeday, m_closehour, m_closeminute, m_closesecond)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_openday,m_openhour,m_openminute,m_opensecond,m_closeday,m_closehour,m_closeminute,m_closesecond);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_openday,m_openhour,m_openminute,m_opensecond,m_closeday,m_closehour,m_closeminute,m_closesecond);
 	}
 };
 struct tab_activityalways
@@ -695,12 +695,12 @@ struct tab_activityalways
 	/*********************************/
 	tab_activityalways();
 	// 序列化反序列化相关
-	dprotocol(tab_activityalways, m_id, m_name, m_type, m_wbday, m_wbhour, m_wbminute, m_wbsecond, m_weday, m_wehour, m_weminute, m_wesecond, m_mbday, m_mbhour, m_mbminute, m_mbsecond, m_meday, m_mehour, m_meminute, m_mesecond, m_fixedday, m_fbhour, m_fbminute, m_fbsecond, m_fehour, m_feminute, m_fesecond)
+	DPROTOCOL(tab_activityalways, m_id, m_name, m_type, m_wbday, m_wbhour, m_wbminute, m_wbsecond, m_weday, m_wehour, m_weminute, m_wesecond, m_mbday, m_mbhour, m_mbminute, m_mbsecond, m_meday, m_mehour, m_meminute, m_mesecond, m_fixedday, m_fbhour, m_fbminute, m_fbsecond, m_fehour, m_feminute, m_fesecond)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_type,m_wbday,m_wbhour,m_wbminute,m_wbsecond,m_weday,m_wehour,m_weminute,m_wesecond,m_mbday,m_mbhour,m_mbminute,m_mbsecond,m_meday,m_mehour,m_meminute,m_mesecond,m_fixedday,m_fbhour,m_fbminute,m_fbsecond,m_fehour,m_feminute,m_fesecond);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_type,m_wbday,m_wbhour,m_wbminute,m_wbsecond,m_weday,m_wehour,m_weminute,m_wesecond,m_mbday,m_mbhour,m_mbminute,m_mbsecond,m_meday,m_mehour,m_meminute,m_mesecond,m_fixedday,m_fbhour,m_fbminute,m_fbsecond,m_fehour,m_feminute,m_fesecond);
 	}
 };
 struct tab_activity_drawcompliance
@@ -714,12 +714,12 @@ struct tab_activity_drawcompliance
 	/*********************************/
 	tab_activity_drawcompliance();
 	// 序列化反序列化相关
-	dprotocol(tab_activity_drawcompliance, m_id, m_name, m_dropid, m_mailid)
+	DPROTOCOL(tab_activity_drawcompliance, m_id, m_name, m_dropid, m_mailid)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_dropid,m_mailid);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_dropid,m_mailid);
 	}
 };
 struct tab_activity_toprank
@@ -735,12 +735,12 @@ struct tab_activity_toprank
 	/*********************************/
 	tab_activity_toprank();
 	// 序列化反序列化相关
-	dprotocol(tab_activity_toprank, m_id, m_name, m_activityid, m_rank, m_dropid, m_mailid)
+	DPROTOCOL(tab_activity_toprank, m_id, m_name, m_activityid, m_rank, m_dropid, m_mailid)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_activityid,m_rank,m_dropid,m_mailid);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_activityid,m_rank,m_dropid,m_mailid);
 	}
 };
 struct task_condition
@@ -752,11 +752,11 @@ struct task_condition
 	/*********************************/
 	task_condition();
 	// 序列化反序列化相关
-	dprotocol(task_condition, m_type, m_condition, m_parmint)
+	DPROTOCOL(task_condition, m_type, m_condition, m_parmint)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv(m_type,m_condition,m_parmint);
+		DEF_RCSV(m_type,m_condition,m_parmint);
 	}
 };
 struct tab_task
@@ -775,12 +775,12 @@ struct tab_task
 	/*********************************/
 	tab_task();
 	// 序列化反序列化相关
-	dprotocol(tab_task, m_id, m_name, m_type, m_typeparm, m_taskreceive, m_taskcomplete, m_dropid, m_autoreceive, m_mailid)
+	DPROTOCOL(tab_task, m_id, m_name, m_type, m_typeparm, m_taskreceive, m_taskcomplete, m_dropid, m_autoreceive, m_mailid)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_type,m_typeparm,m_taskreceive,m_taskcomplete,m_dropid,m_autoreceive,m_mailid);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_type,m_typeparm,m_taskreceive,m_taskcomplete,m_dropid,m_autoreceive,m_mailid);
 	}
 };
 struct obstacles_data
@@ -790,11 +790,11 @@ struct obstacles_data
 	/*********************************/
 	obstacles_data();
 	// 序列化反序列化相关
-	dprotocol(obstacles_data, m_data)
+	DPROTOCOL(obstacles_data, m_data)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv(m_data);
+		DEF_RCSV(m_data);
 	}
 };
 struct tab_map
@@ -813,12 +813,12 @@ struct tab_map
 	/*********************************/
 	tab_map();
 	// 序列化反序列化相关
-	dprotocol(tab_map, m_id, m_name, m_w, m_l, m_nx, m_ny, m_obstaclenx, m_obstacleny, m_obstacles)
+	DPROTOCOL(tab_map, m_id, m_name, m_w, m_l, m_nx, m_ny, m_obstaclenx, m_obstacleny, m_obstacles)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_w,m_l,m_nx,m_ny,m_obstaclenx,m_obstacleny,m_obstacles);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_w,m_l,m_nx,m_ny,m_obstaclenx,m_obstacleny,m_obstacles);
 	}
 };
 struct tab_matching
@@ -834,12 +834,12 @@ struct tab_matching
 	/*********************************/
 	tab_matching();
 	// 序列化反序列化相关
-	dprotocol(tab_matching, m_id, m_name, m_count, m_time, m_iswaitconfirm, m_waitconfirmtime)
+	DPROTOCOL(tab_matching, m_id, m_name, m_count, m_time, m_iswaitconfirm, m_waitconfirmtime)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_count,m_time,m_iswaitconfirm,m_waitconfirmtime);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_count,m_time,m_iswaitconfirm,m_waitconfirmtime);
 	}
 };
 struct Vector2
@@ -850,11 +850,11 @@ struct Vector2
 	/*********************************/
 	Vector2();
 	// 序列化反序列化相关
-	dprotocol(Vector2, m_x, m_y)
+	DPROTOCOL(Vector2, m_x, m_y)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
-		def_rcsv(m_x,m_y);
+		DEF_RCSV(m_x,m_y);
 	}
 };
 struct tab_plays
@@ -872,12 +872,12 @@ struct tab_plays
 	/*********************************/
 	tab_plays();
 	// 序列化反序列化相关
-	dprotocol(tab_plays, m_id, m_name, m_type, m_mapid, m_preparation_tm, m_play_tm, m_settlement_tm, m_birthpoint)
+	DPROTOCOL(tab_plays, m_id, m_name, m_type, m_mapid, m_preparation_tm, m_play_tm, m_settlement_tm, m_birthpoint)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_type,m_mapid,m_preparation_tm,m_play_tm,m_settlement_tm,m_birthpoint);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_type,m_mapid,m_preparation_tm,m_play_tm,m_settlement_tm,m_birthpoint);
 	}
 };
 struct tab_recharge
@@ -898,12 +898,12 @@ struct tab_recharge
 	/*********************************/
 	tab_recharge();
 	// 序列化反序列化相关
-	dprotocol(tab_recharge, m_id, m_name, m_price, m_gold, m_bonus, m_firstbonus, m_dropid, m_vipexp, m_count, m_activityid, m_mailid)
+	DPROTOCOL(tab_recharge, m_id, m_name, m_price, m_gold, m_bonus, m_firstbonus, m_dropid, m_vipexp, m_count, m_activityid, m_mailid)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_price,m_gold,m_bonus,m_firstbonus,m_dropid,m_vipexp,m_count,m_activityid,m_mailid);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_price,m_gold,m_bonus,m_firstbonus,m_dropid,m_vipexp,m_count,m_activityid,m_mailid);
 	}
 };
 struct tab_familylv
@@ -917,12 +917,12 @@ struct tab_familylv
 	/*********************************/
 	tab_familylv();
 	// 序列化反序列化相关
-	dprotocol(tab_familylv, m_id, m_name, m_exp, m_maxmembers)
+	DPROTOCOL(tab_familylv, m_id, m_name, m_exp, m_maxmembers)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_exp,m_maxmembers);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_exp,m_maxmembers);
 	}
 };
 struct tab_mergearea
@@ -935,12 +935,12 @@ struct tab_mergearea
 	/*********************************/
 	tab_mergearea();
 	// 序列化反序列化相关
-	dprotocol(tab_mergearea, m_id, m_name, m_mergeid)
+	DPROTOCOL(tab_mergearea, m_id, m_name, m_mergeid)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_mergeid);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_mergeid);
 	}
 };
 struct tab_ranklist
@@ -956,12 +956,12 @@ struct tab_ranklist
 	/*********************************/
 	tab_ranklist();
 	// 序列化反序列化相关
-	dprotocol(tab_ranklist, m_id, m_name, m_maxitem, m_showitem, m_everypagecount, m_minvalue)
+	DPROTOCOL(tab_ranklist, m_id, m_name, m_maxitem, m_showitem, m_everypagecount, m_minvalue)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv(m_id,m_name,lm_remarks,m_maxitem,m_showitem,m_everypagecount,m_minvalue);
+		DEF_RCSV(m_id,m_name,lm_remarks,m_maxitem,m_showitem,m_everypagecount,m_minvalue);
 	}
 };
 }//namespace ngl

@@ -356,7 +356,7 @@ namespace ngl
 					int32_t m_everypagecount = 0;
 					int32_t m_page = 0;
 
-					dprotocol(query_page, m_everypagecount, m_page)
+					DPROTOCOL(query_page, m_everypagecount, m_page)
 				};
 				handle_cmd::add("queryall") = [](int athread, int id, ncjson& aos)
 					{

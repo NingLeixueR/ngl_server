@@ -42,7 +42,7 @@ namespace ngl
 					{
 						std::string m_orderid;
 						int32_t m_rechargeid = 0;
-						dprotocol(pay, m_orderid, m_rechargeid)
+						DPROTOCOL(pay, m_orderid, m_rechargeid)
 					};
 					pay lpay;
 					if (!njson::pop(aos.json(), { "data" }, lpay))

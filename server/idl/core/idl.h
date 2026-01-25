@@ -206,7 +206,7 @@ public:
 	void _h_serialize(std::stringstream& astream, StructVec& astruct)
 	{
 		astream << "	// 序列化反序列化相关" << std::endl;
-		astream << "	dprotocol("<< astruct.name;
+		astream << "	DPROTOCOL("<< astruct.name;
 		for (Data item_ : astruct.dataVec)
 		{
 			if (item_.m_load == "n")
@@ -293,7 +293,7 @@ public:
 					) << std::endl;
 				}
 			}
-			lstream << "		def_rcsv(";
+			lstream << "		DEF_RCSV(";
 			for (int i = 0, index = 0; i < item.dataVec.size(); ++i)
 			{
 				if (index != 0)
