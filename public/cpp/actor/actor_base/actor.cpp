@@ -111,61 +111,57 @@ namespace ngl
 
 	void actor::actor_handle(i32_threadid athreadid)
 	{
+		std::list<handle_pram> locallist;
 		{
 			monopoly_shared_lock(m_mutex);
 			m_hightlist.swap(m_localhightlist);
-			m_list.swap(m_locallist);		
+			m_list.swap(locallist);
 		}
 
 		if (!m_localhightlist.empty())
 		{
-			for (auto itor = m_localhightlist.rbegin(); itor != m_localhightlist.rend(); ++itor)
+			for (auto& [_hight, _list] : m_localhightlist)
 			{
-				for (auto itor2 = itor->second.begin(); itor2 != itor->second.end(); ++itor2)
+				for (auto& _harm : _list)
 				{
-					ahandle(athreadid, *itor2);
+					ahandle(athreadid, _harm);
 				}
 			}
 			m_localhightlist.clear();
 		}
 		
-		auto llistcount = (int32_t)m_locallist.size();
+		auto llistcount = (int32_t)locallist.size();
 		if (m_weight < llistcount || llistcount >= 0x7F)
 		{
-			log_error()->print("actor::actor_handle({}) {}:[weight:{}/count:{}]", athreadid, nguid(id_guid()), m_weight, m_locallist.size());
+			log_error()->print("actor::actor_handle({}) {}:[weight:{}/count:{}]", athreadid, nguid(id_guid()), m_weight, locallist.size());
 		}
 		time_t lbeg = localtime::gettimems();
 		int32_t lcount = 0;
 		int32_t lweight = m_weight;
-		while (--lweight >= 0 && !m_locallist.empty())
+		while (--lweight >= 0 && !locallist.empty())
 		{
 			if (m_release == false && localtime::gettimems() - lbeg > m_timeout)
 			{
 				break;
 			}
-			handle_pram& lparm = m_locallist.front();
-			ahandle(athreadid, lparm);
-			m_locallist.pop_front();
+			ahandle(athreadid, locallist.front());
+			locallist.pop_front();
 			++lcount;
 		}
-		if (!m_locallist.empty())
+		if (!locallist.empty())
 		{
 			monopoly_shared_lock(m_mutex);
-#ifdef STL_MESSAGELIST
-			m_list.insert(m_list.begin(), m_locallist.begin(), m_locallist.end());
-#else
-			m_list.push_front(m_locallist);
-#endif
+			m_list.insert(m_list.begin(), locallist.begin(), locallist.end());
 		}
 	}
 
 	bool actor::handle(const message<np_actor_broadcast>& adata)
 	{
 		// # 保存数据
-		if (get_actor_manage_dbclient() != nullptr)
+		if (manage_dbclient() != nullptr)
 		{
-			get_actor_manage_dbclient()->save();
-			get_actor_manage_dbclient()->del();
+			manage_dbclient()->save();
+			manage_dbclient()->del();
 		}
 		// # actor派生类自定义处理逻辑
 		broadcast();

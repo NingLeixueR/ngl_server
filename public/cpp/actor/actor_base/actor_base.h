@@ -135,10 +135,6 @@ namespace ngl
 
 	class actor_base
 	{
-		actor_base() = delete;
-		actor_base(const actor_base&) = delete;
-		actor_base& operator=(const actor_base&) = delete;
-	private:
 		nguid										m_guid = nguid::make();			// actor guid
 		std::unique_ptr<actor_manage_dbclient>		m_dbclient = nullptr;			// dbclient组件管理
 		bool										m_isload = false;				// 数据是否加载完成
@@ -162,7 +158,7 @@ namespace ngl
 		nready& ready();
 
 		//# 获取actor_manage_dbclient实例
-		std::unique_ptr<actor_manage_dbclient>& get_actor_manage_dbclient();
+		std::unique_ptr<actor_manage_dbclient>& manage_dbclient();
 
 		//# 设置db_component组件
 		void set_db_component(ndb_component* acomponent);

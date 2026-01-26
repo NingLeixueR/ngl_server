@@ -208,7 +208,7 @@ namespace ngl
 		m_dbclient->save();
 	}
 
-	std::unique_ptr<actor_manage_dbclient>& actor_base::get_actor_manage_dbclient()
+	std::unique_ptr<actor_manage_dbclient>& actor_base::manage_dbclient()
 	{
 		return m_dbclient;
 	}
