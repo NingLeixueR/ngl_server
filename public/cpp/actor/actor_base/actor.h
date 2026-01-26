@@ -129,7 +129,7 @@ namespace ngl
 		explicit actor(const actorparm& aparm);
 
 		// # 获取actor的状态
-		actor_stat get_activity_stat() final;
+		actor_stat activity_stat() final;
 
 		// # 设置actor的状态
 		void set_activity_stat(actor_stat astat) final;

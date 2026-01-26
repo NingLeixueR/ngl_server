@@ -300,7 +300,7 @@ namespace ngl
 		// # 设置持有此数据的actor
 		void set_actor(actor_base* aactor)
 		{
-			m_manage_dbclient = aactor->get_actor_manage_dbclient();
+			m_manage_dbclient = aactor->manage_dbclient();
 			m_actor = aactor;
 		}
 
@@ -660,7 +660,7 @@ namespace ngl
 		template <pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
 		ndbclient<ENUM, TDATA, TACTOR>* data(bool aloadfinish)
 		{
-			ndbclient_base** lp = ngl::tools::findmap<pbdb::ENUM_DB, ndbclient_base*>(aloadfinish? m_dbclientmap : m_typedbclientmap, ENUM);
+			ndbclient_base** lp = ngl::tools::findmap(aloadfinish? m_dbclientmap : m_typedbclientmap, ENUM);
 			if (lp == nullptr)
 			{
 				return nullptr;
@@ -702,7 +702,7 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 	bool actor_base::handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
 	{
-		const std::unique_ptr<actor_manage_dbclient>& mdbclient = get_actor_manage_dbclient();
+		const std::unique_ptr<actor_manage_dbclient>& mdbclient = manage_dbclient();
 		if (mdbclient == nullptr)
 		{
 			tools::no_core_dump();

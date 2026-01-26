@@ -307,36 +307,15 @@ namespace ngl
 	public:
 #pragma region map
 		// map²Ù×÷·â×°
-		template <typename TE, typename T>
-		static const T* findmap(const std::map<TE, T>& amap, const TE& aid)
+		template <typename TMAP, typename TKEY>
+		static typename TMAP::value_type::second_type* findmap(TMAP& amap, const TKEY& akey)
 		{
-			auto itor = amap.find(aid);
+			auto itor = amap.find(akey);
 			return itor == amap.end() ? nullptr : &itor->second;
 		}
 
-		template <typename TE, typename T>
-		static T* findmap(std::map<TE, T>& amap, const TE& aid)
-		{
-			auto itor = amap.find(aid);
-			return itor == amap.end() ? nullptr : &itor->second;
-		}
-
-		template <typename TE, typename T>
-		static T* findmap(std::unordered_map<TE, T>& amap, const TE& aid)
-		{
-			auto itor = amap.find(aid);
-			return itor == amap.end() ? nullptr : &itor->second;
-		}
-
-		template <typename TE, typename T>
-		static T* insertmap(std::map<TE, T>& amap, const TE& akey, const T& avalue)
-		{
-			auto lpair = amap.try_emplace(akey, avalue);
-			return lpair.second ? &(lpair.first->second) : nullptr;
-		}
-
-		template <typename TE, typename T>
-		static T* insertmap(std::unordered_map<TE, T>& amap, const TE& akey, const T& avalue)
+		template <typename TMAP, typename TKEY>
+		static typename TMAP::value_type::second* insertmap(TMAP& amap, const TKEY& akey, const typename TMAP::value_type::second& avalue)
 		{
 			auto lpair = amap.try_emplace(akey, avalue);
 			return lpair.second ? &(lpair.first->second) : nullptr;

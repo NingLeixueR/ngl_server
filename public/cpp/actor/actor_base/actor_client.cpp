@@ -105,16 +105,18 @@ namespace ngl
 		};
 		actor_manage::instance().get_type(lpram.m_node.m_actortype);
 
-		naddress::ergodic([&lpram](const naddress::map_guidserver& aactorserver, const naddress::map_servernode&, const naddress::map_rolegateway&){
-			for (const auto& item : aactorserver)
+		naddress::ergodic([&lpram](const naddress::map_guidserver& aactorserver, const naddress::map_servernode&, const naddress::map_rolegateway&)
 			{
-				if (lpram.m_node.m_serverid == item.second)
+				for (auto& [_guid, _serverid] : aactorserver)
 				{
-					lpram.m_add.push_back(item.first);
+					if (lpram.m_node.m_serverid == _serverid)
+					{
+						lpram.m_add.push_back(_guid);
+					}
 				}
+				return true;
 			}
-			return true;
-		});
+		);
 		ntcp::instance().send(adata.get_data()->m_session, lpram, lactorserve, lactorid);
 		return true;
 	}
@@ -189,7 +191,7 @@ namespace ngl
 			tools::no_core_dump();
 			return true;
 		}
-		for (const nactornode& node : lparm->m_vec)
+		for (auto& node : lparm->m_vec)
 		{
 			if (nconfig.nodeid() != node.m_serverid && server_session::sessionid(node.m_serverid) == -1)
 			{
@@ -204,11 +206,11 @@ namespace ngl
 	{
 		np_actornode_update lpro;
 		lpro.m_id = alocalserverid;
-		for (const std::pair<const nguid, i32_serverid>& item : naddress::get_actorserver_map())
+		for(auto& [_guid, _serverid]: naddress::get_actorserver_map())
 		{
-			if (alocalserverid == item.second)
+			if (alocalserverid == _serverid)
 			{
-				lpro.m_add.push_back(item.first);
+				lpro.m_add.push_back(_guid);
 			}
 		}
 		ntcp::instance().send(asession, lpro, nguid::moreactor(), aclient->id_guid());
@@ -268,9 +270,9 @@ namespace ngl
 		auto lparm = adata.get_data();
 		naddress::actor_address_add(lparm->m_id, lparm->m_add);
 		naddress::actor_address_del(lparm->m_del);
-		for (const auto& lpair : lparm->m_rolegateway)
+		for (auto& [_guid, _serverid] : lparm->m_rolegateway)
 		{
-			naddress::gatewayid_add(lpair.first, lpair.second);
+			naddress::gatewayid_add(_guid, _serverid);
 		}		
 		return true;
 	}

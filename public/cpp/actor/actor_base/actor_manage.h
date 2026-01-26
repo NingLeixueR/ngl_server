@@ -152,7 +152,8 @@ namespace ngl
 					lptemp->set_activity_stat(actor_stat_free);
 					lptemp->init();
 					lptemp->init_db_component(false);
-				});
+				}
+			);
 			ltemp.template init_rfun<T>();
 			T::nregister();
 		}
@@ -249,6 +250,7 @@ namespace ngl
 		ttab_servers::instance().foreach_server(GATEWAY, aarea, [&pro](const tab_servers* atab)
 			{
 				send_server(atab->m_id, *pro, nguid::make(), nguid::make());
-			});
+			}
+		);
 	}
 }//namespace ngl

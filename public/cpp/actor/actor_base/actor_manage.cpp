@@ -45,7 +45,7 @@ namespace ngl
 
 	void actor_manage::nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram)
 	{
-		actor_stat lstat = lpactor->get_activity_stat();
+		actor_stat lstat = lpactor->activity_stat();
 		if (lstat == actor_stat_close || lstat == actor_stat_init)
 		{
 			std::cout << std::format("actor_mange push task actor:{} stat:{} fail", lpactor->guid(), (int32_t)lstat) << std::endl;
@@ -139,7 +139,7 @@ namespace ngl
 			m_actorbytype[aguid.type()].erase(aguid);
 			m_actorbroadcast.erase(aguid);
 
-			if (lpactor->get_activity_stat() == actor_stat_list)
+			if (lpactor->activity_stat() == actor_stat_list)
 			{
 				auto litorfind = std::find_if(m_actorlist.begin(), m_actorlist.end(), [&aguid](const ptractor& ap)->bool
 					{
@@ -153,7 +153,7 @@ namespace ngl
 				lpactor->set_activity_stat(actor_stat_close);
 				isrunfun = true;
 			}
-			else if (lpactor->get_activity_stat() == actor_stat_free)
+			else if (lpactor->activity_stat() == actor_stat_free)
 			{
 				isrunfun = true;
 			}
@@ -267,7 +267,7 @@ namespace ngl
 	{
 		ngl_lock_s;
 		ptractor lpptractor = nosafe_get_actorbyid(aguid, apram);
-		if (lpptractor == nullptr || lpptractor->get_activity_stat() == actor_stat_close)
+		if (lpptractor == nullptr || lpptractor->activity_stat() == actor_stat_close)
 		{
 			std::cout << "push_task_id fail !!!" << std::endl;
 			return;
@@ -283,7 +283,7 @@ namespace ngl
 		for (i64_actorid actorid : asetguid)
 		{
 			ptractor lpptractor = nosafe_get_actorbyid(actorid, apram);
-			if (lpptractor == nullptr || lpptractor->get_activity_stat() == actor_stat_close)
+			if (lpptractor == nullptr || lpptractor->activity_stat() == actor_stat_close)
 			{
 				continue;
 			}
@@ -305,11 +305,11 @@ namespace ngl
 	{
 		ngl_lock_s;
 		// 1.先发给本机上的atype
-		for (const auto& [key, value] : m_actorbytype[atype])
+		for (auto& [_guid, _actor] : m_actorbytype[atype])
 		{
-			if (value->get_activity_stat() != actor_stat_close)
+			if (_actor->activity_stat() != actor_stat_close)
 			{
-				nosafe_push_task_id(value, apram);
+				nosafe_push_task_id(_actor, apram);
 			}
 		}
 		if (apram.m_issend)
@@ -329,11 +329,11 @@ namespace ngl
 	void actor_manage::broadcast_task(handle_pram& apram)
 	{
 		ngl_lock_s;
-		for (const auto& [key, value] : m_actorbroadcast)
+		for (auto& [_guid, _actor] : m_actorbroadcast)
 		{
-			if (value->isbroadcast())
+			if (_actor->isbroadcast())
 			{
-				nosafe_push_task_id(value, apram);
+				nosafe_push_task_id(_actor, apram);
 			}
 		}
 		ngl_post;
@@ -373,13 +373,13 @@ namespace ngl
 	void actor_manage::get_actor_stat(msg_actor_stat& adata)
 	{
 		ngl_lock_s;
-		for (const auto& apair : m_actorbytype)
+		for (auto& [_type, _map] : m_actorbytype)
 		{
 			msg_actor ltemp;
-			ltemp.m_actor_name = em<ENUM_ACTOR>::name(apair.first);
-			for (const auto& aguidprt : apair.second)
+			ltemp.m_actor_name = em<ENUM_ACTOR>::name(_type);
+			for (auto& [_guid, _actor] : _map)
 			{
-				ltemp.m_actor[nguid::area(aguidprt.first)].push_back(nguid::actordataid(aguidprt.first));
+				ltemp.m_actor[nguid::area(_guid)].push_back(nguid::actordataid(_guid));
 			}
 			adata.m_vec.push_back(ltemp);
 		}

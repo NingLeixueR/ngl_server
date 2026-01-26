@@ -184,7 +184,7 @@ namespace ngl
 		virtual void init() {/* 不强制子类实现的虚函数,如果不实现则使用基类空方法*/ }
 
 		//# 获取actor状态
-		virtual actor_stat get_activity_stat() = 0;
+		virtual actor_stat activity_stat() = 0;
 
 		//# 设置actor状态
 		virtual void set_activity_stat(actor_stat astat) = 0;

@@ -28,47 +28,33 @@ namespace ngl
 		{
 			return nullptr;
 		}
-		std::shared_ptr<actor_base> lpactor_base = nullptr;
-		auto linitfun = []<typename TActorDerived, typename ...ARG>(ENUM_ACTOR actortype, std::shared_ptr<actor_base>& apactor, ARG&... arg)
+		auto linitfun = []<typename TActorDerived, typename ...ARG>(ENUM_ACTOR actortype, ARG&... arg)->std::shared_ptr<actor_base>
 		{
-			std::make_shared<TActorDerived>(arg...)->template init_rfun<TActorDerived>();
+			std::shared_ptr<actor_base> pactor = std::make_shared<TActorDerived>(arg...);
+			std::static_pointer_cast<TActorDerived>(pactor)->template init_rfun<TActorDerived>();
 			actor_base::first_nregister<TActorDerived>(actortype);
+			actor_manage::instance().add_actor(pactor, [pactor]()
+				{
+					pactor->set_activity_stat(actor_stat_free);
+					pactor->init();
+					pactor->init_db_component(false);
+				}
+			);
+			return pactor;
 		};
 		switch (atype)
 		{
 			case ACTOR_ROLE:
-			{
-				linitfun.operator()<actor_role>(ACTOR_ROLE, lpactor_base, tab_self_area, aid, aparm);
-			}
-			break;
+				return linitfun.operator()<actor_role>(ACTOR_ROLE, tab_self_area, aid, aparm);
 			case ACTOR_ROBOT:
-			{
-				linitfun.operator()<actor_robot>(ACTOR_ROBOT, lpactor_base, tab_self_area, aid, aparm);
-			}
-			break;
+				return linitfun.operator()<actor_robot>(ACTOR_ROBOT, tab_self_area, aid, aparm);
 			case ACTOR_LOG:
-			{
-				linitfun.operator()<actor_log>(ACTOR_LOG, lpactor_base, *(int32_t*)aparm);
-			}
-			break;
+				return linitfun.operator()<actor_log>(ACTOR_LOG, *(int32_t*)aparm);
 			case ACTOR_EXAMPLE_GUESS_NUMBER:
-			{
-				linitfun.operator()<actor_example_guess_number>(ACTOR_EXAMPLE_GUESS_NUMBER, lpactor_base, *(const std::map<int32_t, i64_actorid>*)aparm, aid);
-			}
-			break;
-			default:
-			{
-				ngl::log_error()->print("actor_base::create({},{})", em<ENUM_ACTOR>::name(atype), aid);
-				return nullptr;
-			}
+				return linitfun.operator()<actor_example_guess_number>(ACTOR_EXAMPLE_GUESS_NUMBER, *(const std::map<int32_t, i64_actorid>*)aparm, aid);
 		}
-		actor_manage::instance().add_actor(lpactor_base, [lpactor_base]() 
-			{
-				lpactor_base->set_activity_stat(actor_stat_free);
-				lpactor_base->init();
-				lpactor_base->init_db_component(false);
-			}
-		);
-		return lpactor_base;
+		
+		ngl::log_error()->print("actor_base::create fail ({},{})", em<ENUM_ACTOR>::name(atype), aid);
+		return nullptr;
 	}
 }//namespace ngl
