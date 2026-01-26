@@ -40,34 +40,15 @@ namespace ngl
 	class actor : 
 		public actor_base
 	{
-		actor() = delete;
-		actor(const actor&) = delete;
-		actor& operator=(const actor&) = delete;
-
-	public:
-#define STL_MESSAGELIST
-#ifdef STL_MESSAGELIST
-		template <typename T>
-		using tls = std::deque<T>;
-		template <typename T>
-		using trunls = std::deque<T>;
-#else
-		template <typename T>
-		using tls = slist_production<T>;
-		template <typename T>
-		using trunls = slist_consumption<T>;
-#endif//STL_MESSAGELIST
-	private:
-		tls<handle_pram>					m_list;							// 待处理消息列表
-		std::map<int32_t, tls<handle_pram>>	m_hightlist;					// 待处理消息列表(高特权)			
-		trunls<handle_pram>					m_locallist;					// 正在处理消息列表
-		std::map<int32_t, tls<handle_pram>>	m_localhightlist;				// 正在处理消息列表(高特权)	
-		actor_stat							m_stat = actor_stat_init;		// actor状态
-		std::shared_mutex					m_mutex;						// 锁:[m_list:待处理消息列表]
-		int32_t								m_weight = 0;					// 权重
-		int32_t								m_timeout = 0;					// 超时:(当actor处理消息超过此时间)
-		bool								m_release = false;				// 释放将忽略权重和超时
-		nrfunbase*							m_actorfun = nullptr;			// 注册可处理函数
+		std::list<handle_pram>						m_list;							// 待处理消息列表
+		std::map<int32_t, std::list<handle_pram>>	m_hightlist;					// 待处理消息列表(高特权)
+		std::map<int32_t, std::list<handle_pram>>	m_localhightlist;				// 正在处理消息列表(高特权)	
+		actor_stat									m_stat = actor_stat_init;		// actor状态
+		std::shared_mutex							m_mutex;						// 锁:[m_list:待处理消息列表]
+		int32_t										m_weight = 0;					// 权重
+		int32_t										m_timeout = 0;					// 超时:(当actor处理消息超过此时间)
+		bool										m_release = false;				// 释放将忽略权重和超时
+		nrfunbase*									m_actorfun = nullptr;			// 注册可处理函数
 	public:
 		template <typename TDerived>
 		void init_rfun()

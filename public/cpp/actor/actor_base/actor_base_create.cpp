@@ -31,8 +31,7 @@ namespace ngl
 		std::shared_ptr<actor_base> lpactor_base = nullptr;
 		auto linitfun = []<typename TActorDerived, typename ...ARG>(ENUM_ACTOR actortype, std::shared_ptr<actor_base>& apactor, ARG&... arg)
 		{
-			apactor = std::make_shared<TActorDerived>(arg...);
-			((TActorDerived*)(apactor.get()))->template init_rfun<TActorDerived>();
+			std::make_shared<TActorDerived>(arg...)->template init_rfun<TActorDerived>();
 			actor_base::first_nregister<TActorDerived>(actortype);
 		};
 		switch (atype)
@@ -68,7 +67,8 @@ namespace ngl
 				lpactor_base->set_activity_stat(actor_stat_free);
 				lpactor_base->init();
 				lpactor_base->init_db_component(false);
-			});
+			}
+		);
 		return lpactor_base;
 	}
 }//namespace ngl
