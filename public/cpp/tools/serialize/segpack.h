@@ -23,18 +23,17 @@
 
 namespace ngl
 {
-	struct segpack_rate_interval
-	{
-		int m_resetutc = 0;		// 上次重置的utc
-		int m_ratecount = 0;	// 收到数据包的数量
-
-		segpack_rate_interval();
-		void reset();
-	};
-
 	class segpack_rate
 	{
-		std::map<i32_socket, segpack_rate_interval> m_data;
+		struct interval
+		{
+			int m_resetutc = 0;		// 上次重置的utc
+			int m_ratecount = 0;	// 收到数据包的数量
+
+			interval();
+			void reset();
+		};
+		std::map<i32_socket, interval> m_data;
 	public:
 		bool add(i32_socket aid);
 	};
@@ -60,7 +59,7 @@ namespace ngl
 			e_error,		// 出错
 		};
 
-		segpack();
+		segpack() = default;
 
 		bool push(i32_socket aid, const char* ap, int alen, bool aislanip);
 

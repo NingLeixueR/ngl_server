@@ -124,10 +124,22 @@ struct std::formatter<ngl::pack_head>
 			});
 		ngl::nguid lactor(*(int64_t*)&val.m_data[ngl::EPH_ACTOR_TYPEAREA]);
 		ngl::nguid lrequestactor(*(int64_t*)&val.m_data[ngl::EPH_REQUEST_ACTOR_TYPEAREA]);
-		std::format_to(out, "HEAD[MASK:{},BYTES:{},TIME:{},PROTOCOLNUM:{},ACTOR:{},REQUEST_ACTOR:{}]", 
-			ss, val.m_data[ngl::EPH_BYTES],
-			ngl::localtime::time2str(val.m_data[ngl::EPH_TIME], "%y/%m/%d %H:%M:%S"),
-			val.m_data[ngl::EPH_PROTOCOLNUM], lactor, lrequestactor
+		std::format_to(out
+			, R"(
+HEAD[
+	mask:{}
+	bytes:{}
+	time:{}
+	protocol:{}
+	actor:{}
+	request_actor:{}
+])"
+			/*mask*/			, ss
+			/*bytes*/			, val.m_data[ngl::EPH_BYTES]
+			/*time*/			, ngl::localtime::time2str(val.m_data[ngl::EPH_TIME], "%y/%m/%d %H:%M:%S")
+			/*protocol*/		, val.m_data[ngl::EPH_PROTOCOLNUM]
+			/*actor*/			, lactor
+			/*request_actor*/	, lrequestactor
 		);
 		return out;
 	}

@@ -18,11 +18,11 @@
 
 namespace ngl
 {
-	segpack_rate_interval::segpack_rate_interval()
-		:m_resetutc((int)localtime::gettime()), m_ratecount(0)
+	segpack_rate::interval::interval() :
+		m_resetutc((int)localtime::gettime()), m_ratecount(0)
 	{}
 
-	void segpack_rate_interval::reset()
+	void segpack_rate::interval::reset()
 	{
 		m_resetutc = (int)localtime::gettime();
 		m_ratecount = 0;
@@ -34,7 +34,7 @@ namespace ngl
 		auto itor = m_data.find(aid);
 		if (itor == m_data.end())
 		{
-			m_data.insert(std::make_pair(aid, segpack_rate_interval()));
+			m_data.insert(std::make_pair(aid, interval()));
 			return true;
 		}
 		if (itor->second.m_resetutc == 0)
@@ -58,10 +58,6 @@ namespace ngl
 	bool segpack_heartbeat::is_heartbeat(i32_protocolnum aprotocolnum)
 	{		
 		return tprotocol::protocol<pbnet::PROBUFF_NET_HEARTBEAT>() == aprotocolnum;
-	}
-
-	segpack::segpack()
-	{
 	}
 
 	void segpack::close(i32_socket aid)
