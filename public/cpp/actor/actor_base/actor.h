@@ -96,17 +96,11 @@ namespace ngl
 			nrfun<TDerived>::instance().template rfun<TDerived, T>(afun, aready);
 		}
 
-		template <typename TDerived, typename T>
-		static void reg_actor(int32_t aready/*nready::enum_ready*/, T afun)
-		{
-			nrfun<TDerived>::instance().template rfun<TDerived, T>(afun, aready);
-		}
-
 		// # 注册actor成员函数(可以是非handle)
 		template <typename TDerived, typename ...ARG>
-		static void register_actor(int32_t aready/*nready::enum_ready*/, ARG... argfun)
+		static void register_actor(int32_t aready, ARG... afun)
 		{
-			(reg_actor<TDerived>(aready, argfun), ...);
+			(nrfun<TDerived>::instance().template rfun<TDerived, ARG>(afun, aready), ...);
 		}
 
 		// # 与register_actor类似 只不过不注册网络层
