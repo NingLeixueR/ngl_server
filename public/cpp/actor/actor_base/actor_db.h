@@ -197,10 +197,9 @@ namespace ngl
 		// # Êý¾Ý±£´æ
 		static void save(i32_threadid athreadid, const pack*, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata)
 		{
-			const std::map<nguid, TDBTAB>& lmap = adata.m_data;
-			for (const std::pair<const nguid, TDBTAB>& item : lmap)
+			for (auto& [_guid, _tdb] : adata.m_data)
 			{
-				save(athreadid, item.second);
+				save(athreadid, _tdb);
 			}
 		}
 	};
@@ -377,7 +376,8 @@ namespace ngl
 							{
 								db_manage::serialize<TDBTAB>(ldb, false, aitem);
 								pro.m_data.push_back(ldb->m_malloc.buff());
-							});
+							}
+						);
 					};
 
 				handle_cmd::add("change") = [](int athread, int id, ncjson& aos)

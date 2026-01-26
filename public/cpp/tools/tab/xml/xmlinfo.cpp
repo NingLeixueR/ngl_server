@@ -22,7 +22,7 @@ namespace ngl
 {
 	bool xarg_info::find(const char* akey, bool& adata)
 	{
-		std::string* lp = tools::findmap<std::string, std::string>(m_data, akey);
+		std::string* lp = tools::findmap(m_data, akey);
 		if (lp == nullptr)
 		{
 			return false;
@@ -33,7 +33,7 @@ namespace ngl
 
 	bool xarg_info::find(const char* akey, std::string& adata)
 	{
-		std::string* lp = tools::findmap<std::string, std::string>(m_data, akey);
+		std::string* lp = tools::findmap(m_data, akey);
 		if (lp == nullptr)
 		{
 			return false;

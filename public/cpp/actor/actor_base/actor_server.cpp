@@ -42,7 +42,8 @@ namespace ngl
 			[](int, handle_pram& apram)
 			{
 				naddress::forward(apram);
-			});
+			}
+		);
 
 		register_handle<actor_server
 			, np_actornode_register
@@ -63,7 +64,8 @@ namespace ngl
 					lsessionvec.insert(asnode.m_session);
 				}
 				return true;
-			});
+			}
+		);
 		if (!lsessionvec.empty())
 		{
 			{
@@ -99,17 +101,15 @@ namespace ngl
 		std::map<i32_serverid, np_actornode_update> lmapprotocol;
 		naddress::ergodic([aserverid, &lmapprotocol](const naddress::map_guidserver& amap, const naddress::map_servernode&, const naddress::map_rolegateway& arolegateway)
 			{
-				for (const auto& ipair : amap)
+				for (auto& [_guid, _serverid] : amap)
 				{
-					const nguid& lguid = ipair.first;
-					i32_serverid lserverid = ipair.second;
-					if (aserverid == lserverid)
+					if (aserverid == _serverid)
 					{
 						continue;
 					}
-					np_actornode_update& pro = lmapprotocol[lserverid];
-					pro.m_id = lserverid;
-					pro.m_add.push_back(lguid.id());
+					np_actornode_update& pro = lmapprotocol[_serverid];
+					pro.m_id = _serverid;
+					pro.m_add.push_back(_guid.id());
 					if (pro.m_rolegateway.empty())
 					{
 						pro.m_rolegateway = arolegateway;

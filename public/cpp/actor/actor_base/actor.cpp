@@ -58,7 +58,7 @@ namespace ngl
 		return m_list.empty() && m_hightlist.empty();
 	}
 
-	actor_stat actor::get_activity_stat()
+	actor_stat actor::activity_stat()
 	{
 		monopoly_shared_lock(m_mutex);
 		return m_stat;

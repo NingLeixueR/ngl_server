@@ -111,11 +111,11 @@ namespace ngl
 		//# 查找指定数据
 		inline data_modified<TDATA>* find(const std::function<bool(const data_modified<TDATA>&)>& afun)
 		{
-			for (const auto& apair : data())
+			for(auto& [_guid, _datamodified] : data())
 			{
-				if (afun(apair.second))
+				if (afun(_datamodified))
 				{
-					return &get(apair.first);
+					return &get(_guid);
 				}
 			}
 			return nullptr;

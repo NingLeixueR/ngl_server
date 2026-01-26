@@ -79,9 +79,9 @@ namespace ngl
 
 	void naddress::actor_address_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
 	{
-		for (const i64_actorid item : avec)
+		for (auto actorid : avec)
 		{
-			actor_address_add(aserverid, item);
+			actor_address_add(aserverid, actorid);
 		}
 	}
 

@@ -76,7 +76,7 @@ namespace ngl
 		template <typename TVALUE>
 		bool find(const char* akey, TVALUE& adata)
 		{
-			std::string* lp = tools::findmap<std::string, std::string>(m_data, akey);
+			std::string* lp = tools::findmap(m_data, akey);
 			if (lp == nullptr)
 			{
 				return false;
