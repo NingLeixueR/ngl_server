@@ -976,10 +976,8 @@ namespace ngl
 		{
 			lua_newtable(L);
 
-			[&] <std::size_t... Idx>(std::index_sequence<Idx...>)
-			{
-				(serialize_lua<TARGS>::table_push(L, akeys[Idx], args), ...);
-			}(std::index_sequence_for<TARGS...>{});
+			int32_t lindex = 0;
+			(serialize_lua<TARGS>::table_push(L, akeys[lindex++], args), ...);
 			
 			if (aname != nullptr)
 			{
@@ -999,10 +997,8 @@ namespace ngl
 				return true;
 			}
 
-			return [&] <std::size_t... Idx>(std::index_sequence<Idx...>)
-			{
-				return (serialize_lua<TARGS>::table_pop(L, akeys[sizeof ...(TARGS) - Idx - 1], args) && ...);
-			}(std::index_sequence_for<TARGS...>{});
+			int32_t lindex = sizeof ...(TARGS) - 1;
+			return (serialize_lua<TARGS>::table_pop(L, akeys[lindex--], args) && ...);
 		}
 	};
 

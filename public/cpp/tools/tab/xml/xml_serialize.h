@@ -444,19 +444,15 @@ namespace ngl
 		template <typename ...TARGS>
 		static bool pop(tinyxml2::XMLElement* aele, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
-			return [&] <std::size_t... Idx>(std::index_sequence<Idx...>)
-			{
-				return (xml_serialize<ATTR, TARGS>::pop(aele, akeys[Idx], aargs) && ...);
-			}(std::index_sequence_for<TARGS...>{});
+			int32_t lindex = 0;
+			return (xml_serialize<ATTR, TARGS>::pop(aele, akeys[lindex++], aargs) && ...);
 		}
 
 		template <typename ...TARGS>
 		static bool push(tinyxml2::XMLElement* aele, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
 		{
-			return [&] <std::size_t... Idx>(std::index_sequence<Idx...>)
-			{
-				return (xml_serialize<ATTR, TARGS>::push(aele, akeys[Idx], aargs) && ...);
-			}(std::index_sequence_for<TARGS...>{});
+			int32_t lindex = 0;
+			return (xml_serialize<ATTR, TARGS>::push(aele, akeys[lindex++], aargs) && ...);
 		}
 	};
 }//namespace ngl

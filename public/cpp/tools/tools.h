@@ -494,11 +494,8 @@ namespace ngl
 			std::vector<std::string> lvec;
 			splite(abuff, afg, lvec);
 
-			return [&] <std::size_t... Idx>(std::index_sequence<Idx...>)
-			{
-				return (splite<ARGS>(Idx, lvec, args) && ...);
-			}(std::index_sequence_for<ARGS...>{});
-			
+			int32_t lindex = 0;
+			return (splite<ARGS>(lindex++, lvec, args) && ...);			
 		}
 
 		// 特殊分割:类似"接收邮件列表[邮件地址1:名字1]"
@@ -666,10 +663,8 @@ namespace ngl
 		template <typename ...ARGS>
 		static bool splicing(const char* afg, std::string& astr, ARGS&... args)
 		{
-			return [&] <std::size_t... Idx>(std::index_sequence<Idx...>)
-			{
-				return ((splicing<ARGS>(Idx, afg, astr, args)) && ...);
-			}(std::index_sequence_for<ARGS...>{});
+			int32_t lindex = 0;
+			return ((splicing<ARGS>(lindex++, afg, astr, args)) && ...);
 		}
 #pragma endregion
 
