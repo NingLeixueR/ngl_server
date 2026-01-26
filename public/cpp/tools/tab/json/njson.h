@@ -766,34 +766,20 @@ namespace ngl
 
 	class ncjson;
 
-	template <typename ...TARGS>
-	struct index
-	{
-		enum
-		{
-			eindex = sizeof...(TARGS)
-		};
-	};
-
 	struct njson
 	{
 		template <typename ...TARGS>
 		static bool pop(cJSON* ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
-			return [&] <std::size_t... Idx>(std::index_sequence<Idx...>)
-			{
-				return (json_format<TARGS>::pop(ajson, akeys[Idx], aargs) && ...);
-			}(std::index_sequence_for<TARGS...>{});
+			int32_t lindex = 0;
+			return (json_format<TARGS>::pop(ajson, akeys[lindex++], aargs) && ...);
 		}
 
 		template <typename ...TARGS>
 		static void push(cJSON* ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
 		{
-			[&] <std::size_t... Idx>(std::index_sequence<Idx...>)
-			{
-				(json_format<TARGS>::push(ajson, akeys[Idx], aargs), ...);
-			}(std::index_sequence_for<TARGS...>{});
-			return;
+			int32_t lindex = 0;
+			(json_format<TARGS>::push(ajson, akeys[lindex++], aargs), ...);
 		}
 	};
 }//namespace ngl

@@ -196,10 +196,8 @@ namespace ngl
 		template <typename ...TARGS>
 		static void param(std::string& aparam, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
-			return [&] <std::size_t... Idx>(std::index_sequence<Idx...>)
-			{
-				(param(aparam, akeys[Idx], aargs), ...);
-			}(std::index_sequence_for<TARGS...>{});
+			int32_t lindex = 0;
+			(param(aparam, akeys[lindex++], aargs), ...);
 		}
 		
 		// # ·¢ËÍ

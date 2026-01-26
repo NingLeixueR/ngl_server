@@ -34,10 +34,8 @@ namespace ngl
 		template <typename ...ARG>
 		static void func(const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs)
 		{
-			return[&] <std::size_t... Idx>(std::index_sequence<Idx...>)
-			{
-				(func<ARG>(aENUMs[Idx]), ...);
-			}(std::index_sequence_for<ARG...>{});
+			int32_t lindex = 0;
+			(func<ARG>(aENUMs[lindex++]), ...);
 		}
 	};	
 }//namespace ngl

@@ -35,19 +35,25 @@ namespace ngl
 		static std::string m_path;
 	public:
 		csv_base() = default;
+
 		// # 用于校验csv内容是否有变化
 		virtual const std::string& verify()const = 0;
+
 		// # csv名称
 		virtual const char* csvname() = 0;
+
 		// # 加载csv文件
 		virtual void load() = 0;
+
 		// # 根据csv id获取csv
 		virtual void* find(int aid) = 0;
+
 		// # 重新加载csv文件
 		virtual void reload() = 0;
 
 		// # [获取/设置] csv文件路径
 		static std::string& path();
+
 		static void set_path(const std::string& apath, const std::string& aname);
 	};
 
