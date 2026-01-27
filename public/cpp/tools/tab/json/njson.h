@@ -799,13 +799,13 @@ namespace ngl
 
 	class njson
 	{
-		template <typename ...TARGS, int32_t ...INDEX>
+		template <std::size_t... INDEX, typename ...TARGS>
 		static bool pop(cJSON* ajson, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
 			return (json_format<TARGS>::pop(ajson, akeys[INDEX], aargs) && ...);
 		}
 
-		template <typename ...TARGS, int32_t ...INDEX>
+		template <std::size_t... INDEX, typename ...TARGS>
 		static void push(cJSON* ajson, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
 		{
 			(json_format<TARGS>::push(ajson, akeys[INDEX], aargs), ...);
@@ -815,6 +815,7 @@ namespace ngl
 		template <typename ...TARGS>
 		static bool pop(cJSON* ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
+			
 			return pop(ajson, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, aargs...);
 		}
 
