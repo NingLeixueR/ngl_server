@@ -24,20 +24,22 @@ namespace ngl
 {
 	class autoactor
 	{
-		template <typename TACTOR>
-		static void func(ENUM_ACTOR ENUM)
-		{
-			em<ENUM_ACTOR>::set(ENUM, tools::type_name<TACTOR>().c_str());
-			nactor_type<TACTOR>::inits(ENUM);
-		}
+		
 
 		template <typename ...ARG>
 		struct func
 		{
+			template <typename TACTOR>
+			static void f(ENUM_ACTOR ENUM)
+			{
+				em<ENUM_ACTOR>::set(ENUM, tools::type_name<TACTOR>().c_str());
+				nactor_type<TACTOR>::inits(ENUM);
+			}
+
 			template <std::size_t... INDEX>
 			static void f(std::index_sequence<INDEX...>, const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs)
 			{
-				(func<ARG>(aENUMs[INDEX]), ...);
+				(f<ARG>(aENUMs[INDEX]), ...);
 			}
 		};
 		
