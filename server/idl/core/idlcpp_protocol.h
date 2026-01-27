@@ -354,7 +354,7 @@ namespace ngl
 		}
 
 		template <typename ...ARG, int32_t... INDEX>
-		static void func(const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs, std::index_sequence<INDEX...>, std::index_sequence<INDEX...>)
+		static void func(std::index_sequence<INDEX...>,const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs)
 		{
 			(func<ARG>(aENUMs[INDEX]), ...);
 		}
@@ -363,7 +363,7 @@ namespace ngl
 		template <typename ...ARG>
 		static void func(const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs)
 		{
-			func<ARG...>(aENUMs, std::make_index_sequence<sizeof...(ARG)>{});
+			func<ARG...>(std::make_index_sequence<sizeof...(ARG)>{}, aENUMs);
 		}
 	};	
 }//namespace ngl

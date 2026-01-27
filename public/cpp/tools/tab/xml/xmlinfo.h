@@ -31,7 +31,7 @@ namespace ngl
 		std::string m_passworld;
 		std::string m_dbname;
 
-		dxmlserialize(xarg_db, true, m_ip, m_port, m_account, m_passworld, m_dbname)
+		DXMLSERIALIZE(xarg_db, true, m_ip, m_port, m_account, m_passworld, m_dbname)
 	};
 
 	struct mail_name
@@ -39,7 +39,7 @@ namespace ngl
 		std::string m_mail;
 		std::string m_name;
 
-		dxmlserialize(mail_name, false, m_mail, m_name)
+		DXMLSERIALIZE(mail_name, false, m_mail, m_name)
 	};
 
 	struct xarg_mail
@@ -50,7 +50,7 @@ namespace ngl
 		std::string m_name;
 		std::vector<mail_name> m_recvs;
 
-		dxmlserialize(xarg_mail, false, m_smtp, m_email, m_password, m_name, m_recvs)
+		DXMLSERIALIZE(xarg_mail, false, m_smtp, m_email, m_password, m_name, m_recvs)
 	};
 
 	struct xarg_telnet
@@ -58,14 +58,14 @@ namespace ngl
 		std::string m_account;
 		std::string m_password;
 
-		dxmlserialize(xarg_telnet, false, m_account, m_password)
+		DXMLSERIALIZE(xarg_telnet, false, m_account, m_password)
 	};
 
 	class xarg_info
 	{
 		std::map<std::string, std::string> m_data;
 	public:
-		dxmlserialize(xarg_info, false, m_data)
+		DXMLSERIALIZE(xarg_info, false, m_data)
 
 		std::map<std::string, std::string>& data()
 		{
@@ -101,6 +101,6 @@ namespace ngl
 		i16_port	m_port = 0;
 		std::string m_passworld;
 
-		dxmlserialize(redis, true, m_ip, m_port, m_passworld)
+		DXMLSERIALIZE(redis, true, m_ip, m_port, m_passworld)
 	};
 }// namespace ngl

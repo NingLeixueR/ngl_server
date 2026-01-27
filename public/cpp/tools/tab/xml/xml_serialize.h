@@ -540,7 +540,7 @@ namespace ngl
 
 #include "ndefine.h"
 
-#define def_xmlfunction(XMLNAME)														\
+#define DEF_XMLFUNCTION(XMLNAME)														\
 	inline bool xml_pop(const char* axml)												\
 	{																					\
 		tinyxml2::XMLDocument ldocument;												\
@@ -559,7 +559,7 @@ namespace ngl
 		return xml::writexml(axml, ldocument);											\
 	}
 
-#define def_xml(ATTR, ...)																\
+#define DEF_XML(ATTR, ...)																\
 	inline bool xml_pop(tinyxml2::XMLElement* aele)										\
 	{																					\
 		return ngl::xserialize<ATTR>::pop(aele, parms() __VA_OPT__(, )__VA_ARGS__);		\
@@ -569,8 +569,8 @@ namespace ngl
 		return ngl::xserialize<ATTR>::push(aele, parms() __VA_OPT__(, )__VA_ARGS__);	\
 	}
 
-#define dxmlserialize(XMLNAME, ATTR, ...)												\
+#define DXMLSERIALIZE(XMLNAME, ATTR, ...)												\
 	DEF_PARMNAME_(true, __VA_ARGS__)													\
-	def_xmlfunction(XMLNAME)															\
-	def_xml(ATTR __VA_OPT__(, )__VA_ARGS__)
+	DEF_XMLFUNCTION(XMLNAME)															\
+	DEF_XML(ATTR __VA_OPT__(, )__VA_ARGS__)
 

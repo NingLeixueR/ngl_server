@@ -55,7 +55,7 @@ namespace ngl
 
 		struct test_xml
 		{
-			dxmlserialize(test_xml, false)
+			DXMLSERIALIZE(test_xml, false)
 		};
 		{
 			test_xml ltemp;
