@@ -219,10 +219,9 @@ namespace ngl
 		// # 获取当前进程已注册的所有协议
 		static void allprotocol(std::map<i32_protocolnum, std::string>& amap)
 		{
-			for (const auto& apair : m_keyval)
+			for (auto& [_key, _value] : m_keyval)
 			{
-				const info& litem = apair.second;
-				amap[litem.m_protocol] = litem.m_name;
+				amap[_value.m_protocol] = _value.m_name;
 			}
 		}
 	};

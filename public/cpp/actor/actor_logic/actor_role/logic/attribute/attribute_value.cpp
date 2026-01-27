@@ -60,33 +60,33 @@ namespace ngl
 {
 	void tools_attribute::add(std::map<EnumAttribute, int64_t>& al, const std::map<EnumAttribute, int64_t>& ar)
 	{
-		for (const auto& [key, value] : ar)
+		for (auto [_eattr, _value] : ar)
 		{
-			al[key] += value;
+			al[_eattr] += _value;
 		}
 	}
 
 	void tools_attribute::add(std::map<EnumAttribute, float>& al, const std::map<EnumAttribute, float>& ar)
 	{
-		for (const auto& [key, value] : ar)
+		for (auto [_eattr, _value] : ar)
 		{
-			al[key] += value;
+			al[_eattr] += _value;
 		}
 	}
 
 	void tools_attribute::dec(std::map<EnumAttribute, int64_t>& al, const std::map<EnumAttribute, int64_t>& ar)
 	{
-		for (const auto& [key, value] : ar)
+		for (auto [_eattr, _value] : ar)
 		{
-			al[key] -= value;
+			al[_eattr] -= _value;
 		}
 	}
 
 	void tools_attribute::dec(std::map<EnumAttribute, float>& al, const std::map<EnumAttribute, float>& ar)
 	{
-		for (const auto& [key, value] : ar)
+		for (auto [_eattr, _value] : ar)
 		{
-			al[key] -= value;
+			al[_eattr] -= _value;
 		}
 	}
 
@@ -105,15 +105,15 @@ namespace ngl
 {
 	void attribute_value::update(std::map<EnumAttribute, int64_t>& aattr, const std::map<EnumAttribute, float>& amr)
 	{
-		for (const auto& [key, value] : amr)
+		for (auto [_eattr, _value] : amr)
 		{
-			auto itor = aattr.find(key);
+			auto itor = aattr.find(_eattr);
 			if (itor != aattr.end())
 			{
-				itor->second += itor->second * value;
+				itor->second += itor->second * _value;
 				if (m_module == EnumModule::E_ModuleRoot)
 				{
-					itor->second = ttab_attribute::instance().uplowlimit(key, itor->second);
+					itor->second = ttab_attribute::instance().uplowlimit(_eattr, itor->second);
 				}
 			}
 		}
@@ -122,9 +122,9 @@ namespace ngl
 	int64_t attribute_value::fight()
 	{
 		m_fightscore = 0;
-		for (const auto& [key, value] : m_fight)
+		for (auto [_eattr, _value] : m_fight)
 		{
-			m_fightscore += tools_attribute::fight(key, (double)value);
+			m_fightscore += tools_attribute::fight(_eattr, (double)_value);
 		}
 		return m_fightscore;
 	}

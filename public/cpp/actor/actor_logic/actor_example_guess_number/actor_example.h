@@ -58,9 +58,9 @@ namespace ngl
 			m_playertype(aplayertype)
 		{
 			m_rolesds.reserve(aroleids.size());
-			for (const auto& apair : aroleids)
+			for (auto& [_, _actorid] : aroleids)
 			{
-				m_rolesds.push_back(apair.second);
+				m_rolesds.push_back(_actorid);
 			}
 		}
 

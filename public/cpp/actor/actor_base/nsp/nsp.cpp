@@ -122,7 +122,7 @@ namespace ngl
 		if (m_node_fieldnumbers.contains(atype))
 		{
 			std::map<i32_fieldnumber, epb_field>& lmap = m_node_fieldnumbers[atype];
-			for (const auto& [_fieldnumber, _fieldtype] : anode_fieldnumbers)
+			for (auto& [_fieldnumber, _fieldtype] : anode_fieldnumbers)
 			{
 				auto itor = lmap.find(_fieldnumber);
 				if (itor != lmap.end())
@@ -147,7 +147,7 @@ namespace ngl
 	void operator_field::set_field(const std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& anode_fieldnumbers)
 	{
 		// 合并前进行检测, 出现重复且不一致的字段,直接异常处理
-		std::ranges::for_each(anode_fieldnumbers, [this](const auto& apair)
+		std::ranges::for_each(anode_fieldnumbers, [this](auto& apair)
 			{
 				set_field(apair.first, apair.second);
 			});

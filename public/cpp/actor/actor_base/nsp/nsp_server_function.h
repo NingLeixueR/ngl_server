@@ -52,7 +52,7 @@ namespace ngl
 		pro->m_actorid = m_dbmodule->get_actor()->id_guid();
 		pro->m_nodereadalls = m_nodereadalls;
 		pro->m_nodewritealls = m_nodewritealls;
-		for (const auto& [_nodeid, _care] : m_care)
+		for (auto& [_nodeid, _care] : m_care)
 		{
 			if (aactorid == _nodeid)
 			{
@@ -236,7 +236,7 @@ namespace ngl
 		care_data& lcare = m_care[lactorid];
 
 		i16_actortype ltype = nguid::type(lactorid);
-		for (const auto& [ _dataid, _data] : recv->m_data)
+		for (auto& [ _dataid, _data] : recv->m_data)
 		{
 			if (!lcare.is_write(_dataid))
 			{

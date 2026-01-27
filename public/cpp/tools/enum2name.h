@@ -130,11 +130,11 @@ namespace ngl
 		
 		static void print()
 		{
-			for (const auto& item : m_datae2n)
+			for (auto& [_num, _map] : m_datae2n)
 			{
-				for (const auto& ipair : item.second)
+				for (auto& [_enum, _data] : _map)
 				{
-					std::cout << std::format("{}:{}", (int)ipair.first, ipair.secod.m_never) << std::endl;
+					std::cout << std::format("{}:{}", (int)_enum, _data.m_never) << std::endl;
 				}
 			}
 		}

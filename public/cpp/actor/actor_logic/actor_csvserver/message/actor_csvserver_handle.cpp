@@ -21,14 +21,14 @@ namespace ngl
 		auto lpack = adata.get_pack();
 		np_actor_reloadcsv pro;
 		const auto& lversion = ncsv::all();
-		for (const auto& apair : lversion)
+		for (auto& [_key, _csv] : lversion)
 		{
-			auto itor = lparm->m_verify.find(apair.first);
-			if (itor != lparm->m_verify.end() && itor->second != apair.second->verify())
+			auto itor = lparm->m_verify.find(_key);
+			if (itor != lparm->m_verify.end() && itor->second != _csv->verify())
 			{
 				continue;
 			}
-			reload_csv::readcsv(apair.first, pro.m_csvcontent[apair.first]);
+			reload_csv::readcsv(_key, pro.m_csvcontent[_key]);
 		}
 		if (pro.m_csvcontent.empty() == false)
 		{

@@ -102,9 +102,9 @@ namespace ngl
 		//# ±éÀúdata
 		inline void foreach(const std::function<void(const data_modified<TDATA>&)>& afun)
 		{
-			for (const auto& apair : data())
+			for (auto& [_guid, _datamodified] : data())
 			{
-				afun(apair.second);
+				afun(_datamodified);
 			}
 		}
 

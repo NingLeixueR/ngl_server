@@ -60,11 +60,11 @@ namespace ngl
 			playinfo& lplayinfo = m_info[lprecv->m_type][lpactor->id_guid()];
 			lplayinfo.m_createexample = (int32_t)localtime::gettime();
 			lplayinfo.m_actorexampleid = lpactor->id_guid();
-			for (const auto& lpair : lprecv->m_roleids)
+			for (auto& [_, actorid] : lprecv->m_roleids)
 			{
-				lplayinfo.m_roles.insert(lpair.second);
-				std::get<0>(m_playerexample[lpair.second]) = lprecv->m_type;
-				std::get<1>(m_playerexample[lpair.second]) = lpactor->id_guid();
+				lplayinfo.m_roles.insert(actorid);
+				std::get<0>(m_playerexample[actorid]) = lprecv->m_type;
+				std::get<1>(m_playerexample[actorid]) = lpactor->id_guid();
 			}
 
 			pbexample::PROBUFF_EXAMPLE_PLAY_CREATE pro;
@@ -75,9 +75,9 @@ namespace ngl
 		}
 		else
 		{
-			for (const auto& lpair : lprecv->m_roleids)
+			for (auto& [_, actorid] : lprecv->m_roleids)
 			{
-				actor_example_match::send_error(pbexample::EERROR_CODE_CREATEGAME_FAIL, nullptr, 0, lpair.second);
+				actor_example_match::send_error(pbexample::EERROR_CODE_CREATEGAME_FAIL, nullptr, 0, actorid);
 			}
 		}
 		return true;

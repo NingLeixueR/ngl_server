@@ -37,7 +37,7 @@ namespace ngl
 			handle_cmd::add("get_notice") = [this](int id, ncjson& aos)
 				{// ·µ»Ø {"notice":gm_notice[]}
 					gcmd<std::vector<std::string>> pro(id, "get_notice");
-					for (const auto& [_guid, _data] : m_notice.data())
+					for (auto& [_guid, _data] : m_notice.data())
 					{
 						pro.m_data.resize(pro.m_data.size() + 1);
 						data_modified_continue_getconst(lpdbnoticeconst, _data);

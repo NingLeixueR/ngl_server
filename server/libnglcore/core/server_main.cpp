@@ -246,7 +246,7 @@ void init_DB_FRIENDS()
 		}
 	}
 
-	for (const auto& apair : lmap)
+	for (auto& apair : lmap)
 	{
 		ngl::ndbtab<pbdb::ENUM_DB_FRIENDS, pbdb::db_friends>::save(0, apair.second);
 	}
@@ -273,7 +273,7 @@ void init_DB_TESTLUA()
 		}
 	}
 
-	for (const auto& apair : lmap)
+	for (auto& apair : lmap)
 	{
 		ngl::ndbtab<pbdb::ENUM_DB_TESTLUA, pbdb::db_testlua>::save(0, apair.second);
 	}

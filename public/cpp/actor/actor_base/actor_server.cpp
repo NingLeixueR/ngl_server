@@ -118,9 +118,9 @@ namespace ngl
 				return true;
 			}
 		);
-		for (const auto& [_, pro]: lmapprotocol)
+		for (const auto& [_serverid, _pro]: lmapprotocol)
 		{
-			ntcp::instance().send(apack->m_id, pro, nguid::moreactor(), id_guid());
+			ntcp::instance().send(apack->m_id, _pro, nguid::moreactor(), id_guid());
 		}
 	}
 

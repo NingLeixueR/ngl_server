@@ -131,7 +131,7 @@ namespace ngl
 
 	bool bag::add_item(const std::map<int32_t, int32_t>& amap)
 	{
-		for (const auto& [_tid, _count] : amap)
+		for (auto [_tid, _count] : amap)
 		{
 			add_item(_tid, _count);
 		}
@@ -224,7 +224,7 @@ namespace ngl
 		}
 		pbnet::PROBUFF_NET_BAG_UPDATE pro;
 		auto ladditems = pro.mutable_madditems();
-		for (const auto& [_id, _count] : m_autoitem->addstackitems())
+		for (auto [_id, _count] : m_autoitem->addstackitems())
 		{
 			auto ladditem = ladditems->Add();
 			ladditem->set_mid(_id);
@@ -236,7 +236,7 @@ namespace ngl
 			laddnostackitems->Add(itemid);
 		}
 		auto ldelitems = pro.mutable_mdelitems();
-		for (const auto& [_id, _count] : m_autoitem->delstackitems())
+		for (auto [_id, _count] : m_autoitem->delstackitems())
 		{
 			auto ldelitem = ldelitems->Add();
 			ldelitem->set_mid(_id);

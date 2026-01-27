@@ -93,7 +93,7 @@ namespace ngl
 		pro.set_mtotalnumber(aroom->m_totalnumber);
 		pro.set_mroomcreate(aroom->m_roomcreate);
 		pro.set_mroomready(aroom->m_roomready);
-		for (const auto& [id, info] : aroom->m_players)
+		for (auto& [id, info] : aroom->m_players)
 		{
 			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_example_match>::instance(id_guid()).getconst(id);
 			if (lpbrief != nullptr)
@@ -164,7 +164,7 @@ namespace ngl
 
 	room* actor_example_match::find_room(int32_t aroomid)
 	{
-		for (const auto& [type, rindex] : m_roomindex)
+		for (auto& [type, rindex] : m_roomindex)
 		{
 			if (rindex.m_roomlist.contains(aroomid))
 			{

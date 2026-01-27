@@ -226,9 +226,9 @@ namespace ngl
 		if (afamilyid == -1)
 		{
 			apro.set_mfamilid(afamilyid);
-			for (const auto& lpair : data())
+			for (auto& [_guid, _modified] : data())
 			{
-				data_modified_continue_getconst(lpfamilyconst, lpair.second);
+				data_modified_continue_getconst(lpfamilyconst, _modified);
 				*apro.add_mfamily() = *lpfamilyconst;
 			}
 			return true;
