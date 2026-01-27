@@ -22,7 +22,7 @@
 
 namespace ngl
 {
-	struct autoactor
+	class autoactor
 	{
 		template <typename TACTOR>
 		static void func(ENUM_ACTOR ENUM)
@@ -31,11 +31,17 @@ namespace ngl
 			nactor_type<TACTOR>::inits(ENUM);
 		}
 
+		template <typename ...ARG, int32_t... INDEX>
+		static void func(std::index_sequence<INDEX...>,const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs)
+		{
+			(func<ARG>(aENUMs[INDEX]), ...);
+		}
+
+	public:
 		template <typename ...ARG>
 		static void func(const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs)
 		{
-			int32_t lindex = 0;
-			(func<ARG>(aENUMs[lindex++]), ...);
+			func<ARG...>(std::make_index_sequence<sizeof...(ARG)>{}, aENUMs);
 		}
 	};	
 }//namespace ngl

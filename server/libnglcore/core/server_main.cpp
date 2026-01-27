@@ -574,9 +574,7 @@ bool start_pushserverconfig()
 			for (ngl::net_works& item : aserver->m_net)
 			{
 				ngl::ncjson lwritetemp;
-				ngl::njson::push(lwritetemp.json()
-					, { "ip","nip","port" }, item.m_ip, item.m_nip, item.m_port
-				);
+				ngl::njson::push(lwritetemp.json(), { "ip","nip","port" }, item.m_ip, item.m_nip, item.m_port);
 				ngl::njson::push(lwrite.json(), { lparm[item.m_type].c_str() }, lwritetemp);
 			}
 

@@ -439,20 +439,32 @@ namespace ngl
 	};
 
 	template <bool ATTR>
-	struct xserialize
+	class xserialize
 	{
+		template <typename ...TARGS, int32_t... INDEX>
+		static bool pop(tinyxml2::XMLElement* aele, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
+		{
+			return (xml_serialize<ATTR, TARGS>::pop(aele, akeys[INDEX], aargs) && ...);
+		}
+
+		template <typename ...TARGS, int32_t... INDEX>
+		static bool push(tinyxml2::XMLElement* aele, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
+		{
+			return (xml_serialize<ATTR, TARGS>::push(aele, akeys[INDEX], aargs) && ...);
+		}
+
+	public:
+
 		template <typename ...TARGS>
 		static bool pop(tinyxml2::XMLElement* aele, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
-			int32_t lindex = 0;
-			return (xml_serialize<ATTR, TARGS>::pop(aele, akeys[lindex++], aargs) && ...);
+			return pop(aele, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, aargs...);
 		}
 
 		template <typename ...TARGS>
 		static bool push(tinyxml2::XMLElement* aele, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
 		{
-			int32_t lindex = 0;
-			return (xml_serialize<ATTR, TARGS>::push(aele, akeys[lindex++], aargs) && ...);
+			return push(aele, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, aargs...);
 		}
 	};
 }//namespace ngl
