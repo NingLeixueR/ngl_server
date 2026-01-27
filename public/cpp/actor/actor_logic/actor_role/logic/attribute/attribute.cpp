@@ -27,9 +27,9 @@ namespace ngl
 		{
 			return;
 		}
-		for (const auto& [key, value] : itor->second.m_crattr)
+		for (auto& [_enum, _map] : itor->second.m_crattr)
 		{
-			tools_attribute::add(m_moduledata[key].m_orattr, value);
+			tools_attribute::add(m_moduledata[_enum].m_orattr, _map);
 		}
 	}
 
@@ -41,12 +41,12 @@ namespace ngl
 			return;
 		}
 		tools_attribute::dec(root().m_attr, itor->second.m_fight);
-		for (const auto& [key, value] : itor->second.m_crattr)
+		for (auto& [_enum, _map] : itor->second.m_crattr)
 		{
-			tools_attribute::dec(m_moduledata[key].m_orattr, value);
-			if (key != EnumModule::E_ModuleRoot)
+			tools_attribute::dec(m_moduledata[_enum].m_orattr, _map);
+			if (_enum != EnumModule::E_ModuleRoot)
 			{
-				tools_attribute::dec(root().m_attr, m_moduledata[key].m_fight);
+				tools_attribute::dec(root().m_attr, m_moduledata[_enum].m_fight);
 			}
 		}
 	}
@@ -70,13 +70,13 @@ namespace ngl
 		}
 		itor->second.update();
 		tools_attribute::add(root().m_attr, itor->second.m_fight);
-		for (const auto& [key, value] : itor->second.m_crattr)
+		for (auto& [_enum, _map] : itor->second.m_crattr)
 		{
-			tools_attribute::add(m_moduledata[key].m_orattr, value);
-			if (module_is_root(key) == false)
+			tools_attribute::add(m_moduledata[_enum].m_orattr, _map);
+			if (module_is_root(_enum) == false)
 			{
-				m_moduledata[key].update();
-				tools_attribute::add(root().m_attr, m_moduledata[key].m_fight);
+				m_moduledata[_enum].update();
+				tools_attribute::add(root().m_attr, m_moduledata[_enum].m_fight);
 			}
 		}
 		root().update();

@@ -179,7 +179,7 @@ namespace ngl
 
 					auto lmap = naddress::get_actorserver_map();
 					std::string lstr;
-					for (const auto& [lguid, serverid] : lmap)
+					for (auto [lguid, serverid] : lmap)
 					{
 						if (lguid.type() == ltype)
 						{

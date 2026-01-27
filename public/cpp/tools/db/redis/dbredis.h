@@ -116,7 +116,7 @@ namespace ngl
 		template <typename T>
 		bool set(const std::map<int, T>& adata)
 		{
-			for (const auto& [key, value] : adata)
+			for (auto& [key, value] : adata)
 			{
 				if (!set(key, value))
 				{

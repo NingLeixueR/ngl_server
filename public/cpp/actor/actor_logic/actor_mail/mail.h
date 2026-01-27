@@ -75,7 +75,7 @@ namespace ngl
 			lmail.set_mread(false);
 			lmail.set_mprams(aparm);
 			lmail.set_mcontent(acontent);
-			for (const auto& [itemid, count] : aitem)
+			for (auto& [itemid, count] : aitem)
 			{
 				pbdb::mailitem* lpmailitem = lmail.add_mitems();
 				lpmailitem->set_mitemtid(itemid);
@@ -133,7 +133,7 @@ namespace ngl
 			{
 				return;
 			}
-			for (const auto& [_id, _mail] : *lpdbmail->mutable_mmail())
+			for (auto& [_id, _mail] : *lpdbmail->mutable_mmail())
 			{
 				if (_id != -1 && acheck(_mail))
 				{
@@ -221,7 +221,7 @@ namespace ngl
 			{
 				return false;
 			}
-			for (const auto& [_mailid, _mails] : *lpdbmail->mutable_mmail())
+			for (auto& [_mailid, _mails] : *lpdbmail->mutable_mmail())
 			{
 				apro.mutable_mmail()->insert({ _mailid, _mails });
 			}

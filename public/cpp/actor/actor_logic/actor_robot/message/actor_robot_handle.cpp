@@ -79,10 +79,10 @@ namespace ngl
 		if (lrecv->mtype() == pbnet::ENUM_GET_CHAT_LIST)
 		{
 			char lbuff[1024] = { 0 };
-			for (const auto& item : lrecv->mchatlist())
+			for (auto& chatitem : lrecv->mchatlist())
 			{
-				ngl::localtime::time2str(lbuff, 1024, item.mutc(), "%y/%m/%d %H:%M:%S");
-				log_error()->print("[{}:{}:{}] {}", nguid::area(item.mroleid()), item.mrolename(), lbuff, item.mcontent());
+				ngl::localtime::time2str(lbuff, 1024, chatitem.mutc(), "%y/%m/%d %H:%M:%S");
+				log_error()->print("[{}:{}:{}] {}", nguid::area(chatitem.mroleid()), chatitem.mrolename(), lbuff, chatitem.mcontent());
 			}
 		}
 		else if (lrecv->mtype() == pbnet::ENUM_CHAT_SPEAK)
@@ -92,10 +92,10 @@ namespace ngl
 		else if (lrecv->mtype() == pbnet::ENUM_UPDATA_SPEAK)
 		{
 			char lbuff[1024] = { 0 };
-			for (const auto& item : lrecv->mchatlist())
+			for (auto& chatitem : lrecv->mchatlist())
 			{
-				ngl::localtime::time2str(lbuff, 1024, item.mutc(), "%y/%m/%d %H:%M:%S");
-				log_error()->print("[{}:{}:{}] {}", nguid::area(item.mroleid()), item.mrolename(), lbuff, item.mcontent());
+				ngl::localtime::time2str(lbuff, 1024, chatitem.mutc(), "%y/%m/%d %H:%M:%S");
+				log_error()->print("[{}:{}:{}] {}", nguid::area(chatitem.mroleid()), chatitem.mrolename(), lbuff, chatitem.mcontent());
 			}
 		}
 		return true;
@@ -257,15 +257,15 @@ namespace ngl
 		notices lnotices;
 		char lbuffstart[1024] = { 0 };
 		char lbufffinish[1024] = { 0 };
-		for (const auto& item : adata.get_data()->mnotices())
+		for (auto& notices : adata.get_data()->mnotices())
 		{
-			ngl::localtime::time2str(lbuffstart, 1024, item.mstarttime(), "%Y/%m/%d %H:%M:%S");
-			ngl::localtime::time2str(lbufffinish, 1024, item.mfinishtime(), "%Y/%m/%d %H:%M:%S");
+			ngl::localtime::time2str(lbuffstart, 1024, notices.mstarttime(), "%Y/%m/%d %H:%M:%S");
+			ngl::localtime::time2str(lbufffinish, 1024, notices.mfinishtime(), "%Y/%m/%d %H:%M:%S");
 			lnotices.m_notices.push_back(
 				noticeitem
 				{
-					.m_id = item.mid(),
-					.m_notice = item.mnotice(),
+					.m_id = notices.mid(),
+					.m_notice = notices.mnotice(),
 					.m_starttime = lbuffstart,
 					.m_finishtime = lbufffinish,
 				}

@@ -212,7 +212,7 @@ namespace ngl
 				int32_t lcount = 0;
 				if (table->m_type == ETaskTypeDaily)
 				{
-					for (const auto& item : itor->second.mhistory())
+					for (auto& item : itor->second.mhistory())
 					{
 						item.mfinshutc();
 						if (localtime::issameday(item.mfinshutc()))

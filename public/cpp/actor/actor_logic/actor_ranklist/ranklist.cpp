@@ -37,7 +37,7 @@ namespace ngl
 		litem.m_actorid = abrief.mid();
 		std::map<pbdb::eranklist, bool> lupdatearr;
 		bool lupdate = false;
-		for (const auto& [_ranktype, _] : m_ranks)
+		for (auto& [_ranktype, _] : m_ranks)
 		{
 			lupdatearr[_ranktype] = update_value(_ranktype, litem, abrief, afirstsynchronize);
 			lupdate = lupdate || lupdatearr[_ranktype];
@@ -45,7 +45,7 @@ namespace ngl
 		if (lupdate)
 		{
 			rank_item& ldata = m_maprankitem[abrief.mid()];
-			for (const auto& [_ranktype, _] : m_ranks)
+			for (auto& [_ranktype, _] : m_ranks)
 			{
 				if (lupdatearr[_ranktype])
 				{
@@ -53,7 +53,7 @@ namespace ngl
 				}
 			}
 			ldata = litem;
-			for (const auto& [_ranktype, _] : m_ranks)
+			for (auto& [_ranktype, _] : m_ranks)
 			{
 				if (lupdatearr[_ranktype])
 				{
@@ -76,7 +76,7 @@ namespace ngl
 			lpair.m_value = ritem.second.mvalue();
 		}
 
-		for (const auto& [_ranktype, _rank] : m_ranks)
+		for (auto& [_ranktype, _rank] : m_ranks)
 		{
 			rankset_base& lrank = *_rank.get();
 			lrank.insert(&ltempitem);
@@ -86,13 +86,9 @@ namespace ngl
 	void ranklist::initdata()
 	{
 		log_error()->print("actor_ranklist###loaddb_finish {}", data());
-		for (const auto& item : data())
+		for (auto& [_guid, _modified] : data())
 		{
-			const pbdb::db_ranklist* lpdbranklist = item.second.getconst();
-			if (lpdbranklist == nullptr)
-			{
-				continue;
-			}
+			data_modified_continue_getconst(lpdbranklist, _modified);
 			add_data(*lpdbranklist);
 		}
 

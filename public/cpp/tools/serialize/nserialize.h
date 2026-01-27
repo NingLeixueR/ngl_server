@@ -483,7 +483,7 @@ namespace ngl
 				{
 					return false;
 				}
-				for (const auto& item : adata)
+				for (auto& item : adata)
 				{
 					if (!serialize_format<T>::push(aser, item))
 					{
@@ -517,7 +517,7 @@ namespace ngl
 			static void bytes(serialize_byte* aser, const std::vector<T>& adata)
 			{
 				serialize_format<int32_t>::bytes(aser, (int32_t)adata.size());
-				for (const auto& item : adata)
+				for (auto& item : adata)
 				{
 					serialize_format<T>::bytes(aser, item);
 				}
@@ -533,7 +533,7 @@ namespace ngl
 				{
 					return false;
 				}
-				for (const auto& item : adata)
+				for (auto& item : adata)
 				{
 					if (!serialize_format<T>::push(aser, item))
 					{
@@ -565,7 +565,7 @@ namespace ngl
 			static void bytes(serialize_byte* aser, const std::set<T>& adata)
 			{
 				serialize_format<int32_t>::bytes(aser, (int32_t)adata.size());
-				for (const auto& item : adata)
+				for (auto& item : adata)
 				{
 					serialize_format<T>::bytes(aser, item);
 				}
@@ -581,7 +581,7 @@ namespace ngl
 				{
 					return false;
 				}
-				for (const auto& item : adata)
+				for (auto& item : adata)
 				{
 					if (!serialize_format<T>::push(aser, item))
 					{
@@ -614,7 +614,7 @@ namespace ngl
 			{
 				int32_t lsize = adata.size();
 				serialize_format<int32_t>::bytes(aser, lsize);
-				for (const auto& item : adata)
+				for (auto& item : adata)
 				{
 					serialize_format<T>::bytes(aser, item);
 				}
@@ -630,13 +630,13 @@ namespace ngl
 				{
 					return false;
 				}
-				for (const auto& [key, value] : adata)
+				for (auto& [_key, _value] : adata)
 				{
-					if (!serialize_format<TKEY>::push(aser, key))
+					if (!serialize_format<TKEY>::push(aser, _key))
 					{
 						return false;
 					}
-					if (!serialize_format<TVAL>::push(aser, value))
+					if (!serialize_format<TVAL>::push(aser, _value))
 					{
 						return false;
 					}
@@ -674,10 +674,10 @@ namespace ngl
 			static void bytes(serialize_byte* aser, const std::map<TKEY, TVAL>& adata)
 			{
 				serialize_format<int32_t>::bytes(aser, (int32_t)adata.size());
-				for (const auto& [key, value] : adata)
+				for (auto& [_key, _value] : adata)
 				{
-					serialize_format<TKEY>::bytes(aser, key);
-					serialize_format<TVAL>::bytes(aser, value);
+					serialize_format<TKEY>::bytes(aser, _key);
+					serialize_format<TVAL>::bytes(aser, _value);
 				}
 			}
 		};

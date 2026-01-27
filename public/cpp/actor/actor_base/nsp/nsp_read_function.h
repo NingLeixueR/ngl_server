@@ -165,19 +165,19 @@ namespace ngl
 		bool lfirstsynchronize = recv->m_firstsynchronize;
 		i16_actortype ltypesource = nguid::type(recv->m_actorid);
 		i16_actortype ltypetarget = nguid::type(m_actor->id_guid());
-		for (const auto& apair : recv->m_data)
+		for (auto& [_guid, _tdb] : recv->m_data)
 		{
-			if (m_care.is_care(apair.first))
+			if (m_care.is_care(_guid))
 			{
 				if (lfirstsynchronize)
 				{
-					m_operator_field.field_copy(ltypetarget, apair.second, m_data[apair.first], true);
+					m_operator_field.field_copy(ltypetarget, _tdb, m_data[_guid], true);
 				}
 				else
 				{
-					m_operator_field.field_copy(ltypesource, ltypetarget, apair.second, m_data[apair.first], true);
+					m_operator_field.field_copy(ltypesource, ltypetarget, _tdb, m_data[_guid], true);
 				}
-				m_call.changedatafun(apair.first, m_data[apair.first], lfirstsynchronize);
+				m_call.changedatafun(_guid, m_data[_guid], lfirstsynchronize);
 			}
 		}
 
@@ -215,11 +215,11 @@ namespace ngl
 			if (m_actor->nscript_using())
 			{
 				std::map<i64_actorid, T> ldata;
-				for (const auto& apair : recv->m_data)
+				for (auto& [_guid, _tdb] : recv->m_data)
 				{
-					if (m_care.is_care(apair.first))
+					if (m_care.is_care(_guid))
 					{
-						ldata[apair.first] = m_data[apair.first];
+						ldata[_guid] = m_data[_guid];
 					}
 				}
 				if (!ldata.empty())
@@ -275,7 +275,7 @@ namespace ngl
 		m_regload.set_register(nguid::area(recv->m_actorid));
 		m_operator_field.set_field(recv->m_node_fieldnumbers);
 
-		std::ranges::for_each(recv->m_care, [this](const auto& apair)
+		std::ranges::for_each(recv->m_care, [this](auto& apair)
 			{
 				m_exit.insert(apair.first);
 			});

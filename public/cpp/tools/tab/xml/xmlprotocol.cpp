@@ -63,7 +63,7 @@ namespace ngl
 		static std::set<int32_t> lset;
 		if (lset.empty())
 		{
-			for (const auto& [key, value] : m_protocol)
+			for (auto& [key, value] : m_protocol)
 			{
 				lset.insert(value);
 			}

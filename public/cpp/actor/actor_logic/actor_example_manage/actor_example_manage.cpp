@@ -76,9 +76,9 @@ namespace ngl
 			lresponse.set_mcross(across);
 			lresponse.set_mtype(atype);
 			lresponse.set_mexampleactorid(applayinfo->m_actorexampleid);
-			for (const auto& item : applayinfo->m_role_enter_example)
+			for (auto& [_actorid, _] : applayinfo->m_role_enter_example)
 			{
-				lresponse.add_mplayers(item.first);
+				lresponse.add_mplayers(_actorid);
 			}
 			send_client(applayinfo->m_roles, lresponse);
 		}

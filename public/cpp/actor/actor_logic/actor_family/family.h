@@ -84,26 +84,27 @@ namespace ngl
 		void initdata()final
 		{
 			log_error()->print("{}", data());
-			for (const auto& lpair : data())
+			//td::map<nguid, data_modified<TDATA>>
+			for (auto& [_guid, _modified] : data())
 			{
-				const pbdb::db_family* lpdbfamilyconst = lpair.second.getconst();
+				const pbdb::db_family* lpdbfamilyconst = _modified.getconst();
 				if (lpdbfamilyconst == nullptr)
 				{
 					continue;
 				}
-				m_maxid = std::max(m_maxid, (int32_t)lpair.first.id());
+				m_maxid = std::max(m_maxid, (int32_t)_guid.id());
 				
 				std::string lmember;
 				for (i64_actorid roleid : lpdbfamilyconst->mmember())
 				{
-					m_rolefamily[roleid] = lpair.first;
+					m_rolefamily[roleid] = _guid;
 				}
 
 				m_familyname.insert(lpdbfamilyconst->mname());
 
 				for (i64_actorid roleid : lpdbfamilyconst->mapplylist())
 				{
-					m_applylist[roleid].insert(lpair.first);
+					m_applylist[roleid].insert(_guid);
 				}
 			}
 		}

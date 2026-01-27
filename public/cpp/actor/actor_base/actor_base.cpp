@@ -220,9 +220,9 @@ namespace ngl
 
 	void actor_base::db_component_init_data()
 	{
-		for (const auto& [_, ldbcomponent] : m_dbcomponent)
+		for (auto& [_, _dbcomponent] : m_dbcomponent)
 		{
-			ldbcomponent->init_data();
+			_dbcomponent->init_data();
 		}
 	}
 
@@ -230,15 +230,15 @@ namespace ngl
 	{
 		log_error()->print("[{}] init_db_component [{}]", (nguid)id_guid(), acreate?"true":"false");
 
-		for (const auto& [key, value] : m_dbcomponent)
+		for (auto& [_, _dbcomponent] : m_dbcomponent)
 		{
 			if (acreate)
 			{
-				value->create();
+				_dbcomponent->create();
 			}
 			else
 			{
-				value->init();
+				_dbcomponent->init();
 			}
 		}
 	}

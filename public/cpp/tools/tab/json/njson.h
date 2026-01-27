@@ -778,11 +778,11 @@ namespace ngl
 
 		static void push(cJSON* ajson, const std::map<TKEY, TVALUE>& adata)
 		{
-			for (const auto& item : adata)
+			for (auto& [_key, _value] : adata)
 			{
 				cJSON* ljson = cJSON_CreateObject();
-				json_format<TKEY>::push(ljson, "key", item.first);
-				json_format<TVALUE>::push(ljson, "value", item.second);
+				json_format<TKEY>::push(ljson, "key", _key);
+				json_format<TVALUE>::push(ljson, "value", _value);
 				cJSON_AddItemToArray(ajson, ljson);
 			}
 		}

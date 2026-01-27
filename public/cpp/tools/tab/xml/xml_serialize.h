@@ -250,7 +250,7 @@ namespace ngl
 		{
 			if constexpr (!ATTR)
 			{
-				for (const auto& item : adata)
+				for (auto& item : adata)
 				{
 					tinyxml2::XMLElement* lpele = xml::set_child(aele, akey);
 					if (lpele == nullptr)
@@ -299,7 +299,7 @@ namespace ngl
 		{
 			if constexpr (!ATTR)
 			{
-				for (const auto& item : adata)
+				for (auto& item : adata)
 				{
 					tinyxml2::XMLElement* lpele = xml::set_child(aele, akey);
 					if (lpele == nullptr || !xml_serialize<ATTR, T>::push(lpele, nullptr, item))
@@ -344,7 +344,7 @@ namespace ngl
 		{
 			if constexpr (!ATTR)
 			{
-				for (const auto& item : adata)
+				for (auto& item : adata)
 				{
 					tinyxml2::XMLElement* lpele = xml::set_child(aele, akey);
 					if (lpele == nullptr)
@@ -393,7 +393,7 @@ namespace ngl
 		{
 			if constexpr (!ATTR)
 			{
-				for (const auto& item : adata)
+				for (auto& item : adata)
 				{
 					tinyxml2::XMLElement* lpele = xml::set_child(aele, akey);
 					if (lpele == nullptr)

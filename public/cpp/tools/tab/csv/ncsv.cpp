@@ -103,7 +103,7 @@ namespace ngl
 
 	void ncsv::foreach_verify(std::map<std::string, std::string>& averify)
 	{
-		for (const auto& [key, value] : m_csv)
+		for (auto& [key, value] : m_csv)
 		{
 			averify.insert(std::make_pair(key, value->verify()));
 		}

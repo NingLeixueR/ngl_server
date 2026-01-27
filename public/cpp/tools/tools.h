@@ -446,7 +446,7 @@ namespace ngl
 			{
 				return false;
 			}
-			for (const auto& item : lvec)
+			for (auto& item : lvec)
 			{
 				avec.push_back(tools::lexical_cast<T>(item.c_str()));
 			}
@@ -461,7 +461,7 @@ namespace ngl
 			{
 				return false;
 			}
-			for (const auto& item : lvec)
+			for (auto& item : lvec)
 			{
 				aset.insert(tools::lexical_cast<T>(item.c_str()));
 			}
@@ -511,7 +511,7 @@ namespace ngl
 				return false;
 			}
 			std::vector<std::pair<std::string, std::string>> lmailvec;
-			for (const auto& item : lvec)
+			for (auto& item : lvec)
 			{
 				std::pair<TFIRST, TSECOND> lpair;
 				if (ngl::tools::splite(item.c_str(), ":", lpair.first, lpair.second) == false)
@@ -533,7 +533,7 @@ namespace ngl
 			{
 				return false;
 			}
-			for (const auto& item : lvec)
+			for (auto& item : lvec)
 			{
 				std::pair<TFIRST, TSECOND> lpair;
 				if (ngl::tools::splite(item.c_str(), ":", lpair.first, lpair.second) == false)
@@ -599,7 +599,7 @@ namespace ngl
 		static bool splicing(const std::map<TKEY, TVALUE>& avec, const char* afg, std::string& astr, const std::function<std::string(const TKEY&, const TVALUE&)> afunction = m_splicingmap<TKEY,TVALUE>)
 		{
 			bool lbool = false;
-			for (const auto& item : avec)
+			for (auto& item : avec)
 			{
 				if (lbool)
 				{
@@ -615,7 +615,7 @@ namespace ngl
 		static bool splicing(const google::protobuf::Map<TKEY, TVALUE>& avec, const char* afg, std::string& astr,const std::function<std::string(const TKEY&,const TVALUE&)> afunction = m_splicingmap<TKEY, TVALUE>)
 		{
 			bool lbool = false;
-			for (const auto& item : avec)
+			for (auto& item : avec)
 			{
 				if (lbool)
 				{

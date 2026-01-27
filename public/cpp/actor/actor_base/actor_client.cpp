@@ -318,7 +318,7 @@ namespace ngl
 			{
 				continue;
 			}
-			for (const auto& fun : itor->second)
+			for (auto& fun : itor->second)
 			{
 				fun();
 			}

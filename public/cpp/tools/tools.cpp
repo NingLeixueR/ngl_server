@@ -1355,7 +1355,7 @@ namespace ngl
 
 	void tools::dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration/* = false*/)
 	{
-		for (const auto& entry : std::filesystem::directory_iterator(apath))
+		for (auto& entry : std::filesystem::directory_iterator(apath))
 		{
 			if (entry.is_regular_file())
 			{

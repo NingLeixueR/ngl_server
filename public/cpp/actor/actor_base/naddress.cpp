@@ -153,7 +153,7 @@ namespace ngl
 
 	void naddress::foreach(const foreach_callbackfun& afun)
 	{
-		std::ranges::find_if(m_session, [&afun](const auto& apair)->bool
+		std::ranges::find_if(m_session, [&afun](auto& apair)->bool
 			{
 				return afun(apair.second) == false;
 			}
@@ -192,7 +192,7 @@ namespace ngl
 
 	void naddress::gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
 	{
-		for (const auto& aguid : aactorset)
+		for (auto& aguid : aactorset)
 		{
 			const i32_serverid* lserverid = tools::findmap(m_rolegateway, aguid);
 			if (lserverid == nullptr)

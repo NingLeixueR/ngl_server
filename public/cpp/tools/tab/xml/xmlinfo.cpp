@@ -44,7 +44,7 @@ namespace ngl
 
 	void xarg_info::foreach(const std::function<void(const std::pair<const std::string, std::string>&)>& afun)
 	{
-		for (const auto& item : m_data)
+		for (auto& item : m_data)
 		{
 			afun(item);
 		}

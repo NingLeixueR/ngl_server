@@ -395,14 +395,14 @@ namespace ngl
 			std::map<int64_t, TDBTAB> ldata;
 			if (m_actor->nscript_data_checkout<TDBTAB>(ldata))
 			{
-				for (const auto& item : ldata)
+				for (auto& [_actorid, _tdb] : ldata)
 				{
-					lpdata = tools::findmap(m_data, nguid(item.first));
+					lpdata = tools::findmap(m_data, nguid(_actorid));
 					if (lpdata == nullptr)
 					{
 						continue;
 					}
-					*lpdata->get(true, false) = item.second;
+					*lpdata->get(true, false) = _tdb;
 				}
 			}
 
@@ -528,10 +528,10 @@ namespace ngl
 	public:
 		bool loadfinish(const std::map<nguid, TDBTAB>& adata, enum_dbstat astat, bool aloadfinish)
 		{
-			for (const std::pair<const nguid, TDBTAB>& lpair : adata)
+			for (auto& [_guid, _tdb] : adata)
 			{
-				data_modified<TDBTAB>& ldata = m_data[lpair.first];
-				ldata.set(m_actor, lpair.second);
+				data_modified<TDBTAB>& ldata = m_data[_guid];
+				ldata.set(m_actor, _tdb);
 				ldata.init(&m_modified);
 			}
 
@@ -558,9 +558,9 @@ namespace ngl
 
 		void clear_modified() final
 		{
-			for(std::pair<const nguid, data_modified<TDBTAB>>& lpair : m_data)
+			for(auto& [_guid, _data] : m_data)
 			{
-				lpair.second.clear_modified();
+				_data.clear_modified();
 			}
 		}
 	};
@@ -575,9 +575,9 @@ namespace ngl
 
 		void foreach_function(const std::function<void(ndbclient_base*)>& afun)
 		{
-			for (std::pair<const pbdb::ENUM_DB, ndbclient_base*>& lpair : m_dbclientmap)
+			for (auto& [_enumdb, _npdbclient] : m_dbclientmap)
 			{
-				afun(lpair.second);
+				afun(_npdbclient);
 			}
 		}
 	public:
@@ -636,9 +636,9 @@ namespace ngl
 			m_actor->db_component_init_data();
 
 			// 1、将数据修改为[裁剪修改]
-			for (std::pair<const pbdb::ENUM_DB, ndbclient_base*>& lpair : m_dbclientmap)
+			for (auto& [_enumdb, _npdbclient] : m_dbclientmap)
 			{
-				lpair.second->clear_modified();
+				_npdbclient->clear_modified();
 			}
 
 			// 2、数据压倒脚本中

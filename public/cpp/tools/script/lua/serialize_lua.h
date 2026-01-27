@@ -663,9 +663,9 @@ namespace ngl
 				{
 					return false;
 				}
-				for (const auto& item : lmap)
+				for (auto& [_key, _value] : lmap)
 				{
-					adata.push_back(item.second);
+					adata.push_back(_value);
 				}
 			}
 			
@@ -715,9 +715,9 @@ namespace ngl
 				{
 					return false;
 				}
-				for (const auto& item : lmap)
+				for (auto& [_key, _value] : lmap)
 				{
-					adata.insert(item.second);
+					adata.insert(_value);
 				}
 			}
 			
@@ -763,10 +763,10 @@ namespace ngl
 		static void stack_push(lua_State* L, const std::map<KEY, VAL>& adata)
 		{
 			lua_newtable(L);
-			for (const auto& item : adata)
+			for (auto& [_key, _value] : adata)
 			{
-				serialize_lua<VAL>::table_push(L, nullptr, item.second);
-				serialize_lua_table_key<KEY>::key(L, item.first);
+				serialize_lua<VAL>::table_push(L, nullptr, _value);
+				serialize_lua_table_key<KEY>::key(L, _key);
 			}
 		}
 
@@ -808,10 +808,10 @@ namespace ngl
 		static void stack_push(lua_State* L, const google::protobuf::Map<KEY, VAL>& adata)
 		{
 			lua_newtable(L);
-			for (const auto& item : adata)
+			for (auto& [_key, _value] : adata)
 			{
-				serialize_lua<VAL>::table_push(L, nullptr, item.second);
-				serialize_lua_table_key<KEY>::key(L, item.first);
+				serialize_lua<VAL>::table_push(L, nullptr, _value);
+				serialize_lua_table_key<KEY>::key(L, _key);
 			}
 		}
 
@@ -875,9 +875,9 @@ namespace ngl
 				{
 					return false;
 				}
-				for (const auto& item : lmap)
+				for (auto& [_key, _value] : lmap)
 				{
-					*adata.Add() = item.second;
+					*adata.Add() = _value;
 				}
 			}
 			
@@ -929,9 +929,9 @@ namespace ngl
 				{
 					return false;
 				}
-				for (const auto& item : lmap)
+				for (auto& [_key, _value] : lmap)
 				{
-					*adata.Add() = item.second;
+					*adata.Add() = _value;
 				}
 			}
 			

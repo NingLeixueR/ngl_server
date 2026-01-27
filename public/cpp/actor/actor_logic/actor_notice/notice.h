@@ -39,13 +39,9 @@ namespace ngl
 			log_error()->print("actor_notice###loaddb_finish {}", data());
 			m_maxid = 0;
 
-			for (const auto& lpair : data())
+			for (auto& [_guid, _modified] : data())
 			{
-				const pbdb::db_notice* lpdata = lpair.second.getconst();
-				if (lpdata == nullptr)
-				{
-					continue;
-				}
+				data_modified_continue_getconst(lpdata, _modified);
 				m_maxid = std::max(m_maxid, lpdata->mid());
 			}
 

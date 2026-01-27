@@ -381,9 +381,9 @@ namespace ngl
 	{
 		data_modified_return_getconst(lpdinfoconst, m_info.get(), false);
 		int lcount = 0;
-		for (const auto& item : lpdinfoconst->mrecharge())
+		for (auto& recharge : lpdinfoconst->mrecharge())
 		{
-			if (item.mrechargeid() == arechargeid)
+			if (recharge.mrechargeid() == arechargeid)
 			{
 				return false;
 			}

@@ -93,7 +93,7 @@ namespace ngl
 		pro.set_mstat(true);
 		pro.set_mtype(pbnet::ENUM_UPDATA_SPEAK);
 
-		for (const auto& [_channelid, _update] : m_update_chatitem)
+		for (auto& [_channelid, _update] : m_update_chatitem)
 		{
 			pro.set_mchannelid(_channelid);
 			pro.clear_mchatlist();
