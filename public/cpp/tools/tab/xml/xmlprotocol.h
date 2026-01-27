@@ -31,11 +31,11 @@ namespace ngl
 			std::string m_name;
 			int32_t m_number = 0;
 
-			dxmlserialize(config, true, m_client, m_name, m_number)
+			DXMLSERIALIZE(config, true, m_client, m_name, m_number)
 		};
 		std::vector<info> m_config;
 
-		dxmlserialize(con, false, m_config)
+		DXMLSERIALIZE(con, false, m_config)
 	};
 
 	class xmlprotocol

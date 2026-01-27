@@ -30,7 +30,7 @@ namespace ngl
 		{
 			std::map<ngl::EnumAttribute, int32_t> m_data;
 
-			dxmlserialize(consume_attr, false, m_data)
+			DXMLSERIALIZE(consume_attr, false, m_data)
 		};
 		std::map<int32_t, consume_attr> m_consumeattr;  // key:lv 释放技能消耗属性值
 
@@ -38,7 +38,7 @@ namespace ngl
 		{
 			std::map<int32_t, int32_t> m_data;	// key:itemid value:itemcount
 
-			dxmlserialize(consume_item, false, m_data)
+			DXMLSERIALIZE(consume_item, false, m_data)
 		};
 		std::map<int32_t, consume_item> m_consumeitem;  // key:lv 释放技能消耗物品道具
 
@@ -57,19 +57,19 @@ namespace ngl
 						return tools::less_member(m_id, r.m_id, m_lv, r.m_lv);
 					}
 
-					dxmlserialize(buff, true, m_id, m_lv)
+					DXMLSERIALIZE(buff, true, m_id, m_lv)
 				};
 				std::set<buff> m_buffids;	// 附加buff
 
-				dxmlserialize(lv, false, m_release, m_buffids)
+				DXMLSERIALIZE(lv, false, m_release, m_buffids)
 			};
 			std::map<int32_t, lv> m_lvs;
 
-			dxmlserialize(setp, false, m_lvs)
+			DXMLSERIALIZE(setp, false, m_lvs)
 		};
 		std::vector<setp> m_setp;
 
-		dxmlserialize(skill_template, false, m_name, m_describe, m_maxlv, m_cooldown, m_consumeattr, m_consumeitem, m_setp)
+		DXMLSERIALIZE(skill_template, false, m_name, m_describe, m_maxlv, m_cooldown, m_consumeattr, m_consumeitem, m_setp)
 	};
 
 
