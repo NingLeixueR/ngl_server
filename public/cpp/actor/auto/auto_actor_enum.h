@@ -24,10 +24,8 @@ namespace ngl
 {
 	class autoactor
 	{
-		
-
 		template <typename ...ARG>
-		struct func
+		struct funcx
 		{
 			template <typename TACTOR>
 			static void f(ENUM_ACTOR ENUM)
@@ -42,13 +40,11 @@ namespace ngl
 				(f<ARG>(aENUMs[INDEX]), ...);
 			}
 		};
-		
-
 	public:
 		template <typename ...ARG>
 		static void func(const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs)
 		{
-			func<ARG...>::f(std::make_index_sequence<sizeof...(ARG)>{}, aENUMs);
+			funcx<ARG...>::f(std::make_index_sequence<sizeof...(ARG)>{}, aENUMs);
 		}
 	};	
 }//namespace ngl
