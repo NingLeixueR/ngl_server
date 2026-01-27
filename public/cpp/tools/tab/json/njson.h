@@ -66,6 +66,37 @@ namespace ngl
 		}
 	};
 
+	template <typename T>
+	struct json_format<std::shared_ptr<T>>
+	{
+		static bool pop(cJSON* ajson, const char* akey, std::shared_ptr<T>& adata)
+		{
+			if (adata == nullptr)
+			{
+				return false;
+			}
+			return json_format<T>::pop(ajson, akey, *adata);
+		}
+
+		static void push(cJSON* ajson, const char* akey, const std::shared_ptr<T>& adata)
+		{
+			if (adata == nullptr)
+			{
+				return;
+			}
+			return json_format<T>::push(ajson, akey, *adata);
+		}
+
+		static void push(cJSON* ajson, const std::shared_ptr<T>& adata)
+		{
+			if (adata == nullptr)
+			{
+				return;
+			}
+			return json_format<T>::push(ajson, *adata);
+		}
+	};
+
 	class ncjson;
 	template <>
 	struct json_format<ncjson>;
@@ -766,20 +797,31 @@ namespace ngl
 
 	class ncjson;
 
-	struct njson
+	class njson
 	{
+		template <typename ...TARGS, int32_t ...INDEX>
+		static bool pop(cJSON* ajson, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
+		{
+			return (json_format<TARGS>::pop(ajson, akeys[INDEX], aargs) && ...);
+		}
+
+		template <typename ...TARGS, int32_t ...INDEX>
+		static void push(cJSON* ajson, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
+		{
+			(json_format<TARGS>::push(ajson, akeys[INDEX], aargs), ...);
+		}
+
+	public:
 		template <typename ...TARGS>
 		static bool pop(cJSON* ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
-			int32_t lindex = 0;
-			return (json_format<TARGS>::pop(ajson, akeys[lindex++], aargs) && ...);
+			return pop(ajson, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, aargs...);
 		}
 
 		template <typename ...TARGS>
 		static void push(cJSON* ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
 		{
-			int32_t lindex = 0;
-			(json_format<TARGS>::push(ajson, akeys[lindex++], aargs), ...);
+			push(ajson, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, aargs...);
 		}
 	};
 }//namespace ngl

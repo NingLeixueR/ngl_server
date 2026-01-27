@@ -193,11 +193,16 @@ namespace ngl
 			aparam += std::format("{}={}", akey, aval);
 		}
 
+		template <typename ...TARGS, int32_t... INDEX>
+		static void param(std::string& aparam, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
+		{
+			(param(aparam, akeys[INDEX], aargs), ...);
+		}
+
 		template <typename ...TARGS>
 		static void param(std::string& aparam, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
-			int32_t lindex = 0;
-			(param(aparam, akeys[lindex++], aargs), ...);
+			param(aparam, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, aargs...);
 		}
 		
 		// # ·¢ËÍ

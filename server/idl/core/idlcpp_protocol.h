@@ -344,7 +344,7 @@ namespace ngl
 
 namespace ngl
 {
-	struct autoactor
+	class autoactor
 	{
 		template <typename TACTOR>
 		static void func(ENUM_ACTOR ENUM)
@@ -353,11 +353,17 @@ namespace ngl
 			nactor_type<TACTOR>::inits(ENUM);
 		}
 
+		template <typename ...ARG, int32_t... INDEX>
+		static void func(const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs, std::index_sequence<INDEX...>, std::index_sequence<INDEX...>)
+		{
+			(func<ARG>(aENUMs[INDEX]), ...);
+		}
+
+	public:
 		template <typename ...ARG>
 		static void func(const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs)
 		{
-			int32_t lindex = 0;
-			(func<ARG>(aENUMs[lindex++]), ...);
+			func<ARG...>(aENUMs, std::make_index_sequence<sizeof...(ARG)>{});
 		}
 	};	
 }//namespace ngl

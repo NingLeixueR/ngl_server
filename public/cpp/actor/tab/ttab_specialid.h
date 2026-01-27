@@ -105,11 +105,16 @@ namespace ngl
 			return false;
 		}
 
+		template <typename ...ARG, int32_t... INDEX>
+		inline bool read_value(const tab_specialid& atab, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(ARG)>& akeys, ARG&... adatas)
+		{
+			return (rvalue<ARG>(atab, akeys[INDEX], adatas), ...);
+		}
+
 		template <typename ...ARG>
 		inline bool read_value(const tab_specialid& atab, const std::array<const char*, sizeof...(ARG)>& akeys, ARG&... adatas)
 		{
-			int32_t lpos = 0;
-			return (rvalue<ARG>(atab, akeys[lpos++], adatas), ...);
+			return read_value(atab, std::make_index_sequence<sizeof...(ARG)>{}, akeys, adatas...);
 		}
 	};
 }//namespace ngl
