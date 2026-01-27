@@ -441,13 +441,13 @@ namespace ngl
 	template <bool ATTR>
 	class xserialize
 	{
-		template <typename ...TARGS, int32_t... INDEX>
+		template <std::size_t... INDEX, typename ...TARGS>
 		static bool pop(tinyxml2::XMLElement* aele, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
 			return (xml_serialize<ATTR, TARGS>::pop(aele, akeys[INDEX], aargs) && ...);
 		}
 
-		template <typename ...TARGS, int32_t... INDEX>
+		template <std::size_t... INDEX, typename ...TARGS>
 		static bool push(tinyxml2::XMLElement* aele, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
 		{
 			return (xml_serialize<ATTR, TARGS>::push(aele, akeys[INDEX], aargs) && ...);

@@ -970,13 +970,13 @@ namespace ngl
 
 	class nlua_table
 	{
-		template <typename ...TARGS, int32_t ...INDEX>
+		template <std::size_t... INDEX, typename ...TARGS>
 		static void push(lua_State* L, const char* aname, std::index_sequence<INDEX...>, const std::array<const char*, sizeof ...(TARGS)>& akeys, const TARGS&... args)
 		{
 			(serialize_lua<TARGS>::table_push(L, akeys[INDEX], args), ...);
 		}
 
-		template <typename ...TARGS, int32_t ...INDEX>
+		template <std::size_t... INDEX, typename ...TARGS>
 		static bool pop(lua_State* L, const char* aname, std::index_sequence<INDEX...>, const std::array<const char*, sizeof ...(TARGS)>& akeys, TARGS&... args)
 		{
 			

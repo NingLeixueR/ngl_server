@@ -105,7 +105,7 @@ namespace ngl
 			return false;
 		}
 
-		template <typename ...ARG, int32_t... INDEX>
+		template <std::size_t... INDEX, typename ...ARG>
 		inline bool read_value(const tab_specialid& atab, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(ARG)>& akeys, ARG&... adatas)
 		{
 			return (rvalue<ARG>(atab, akeys[INDEX], adatas), ...);
