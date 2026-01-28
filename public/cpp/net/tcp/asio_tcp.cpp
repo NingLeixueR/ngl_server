@@ -352,7 +352,7 @@ namespace ngl
 			}
 			start(aservice);
 		}
-		accept(true);
+		accept(aisv4);
 	}
 
 	void asio_tcp::accept(bool aisv4)
