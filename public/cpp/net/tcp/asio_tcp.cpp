@@ -239,23 +239,13 @@ namespace ngl
 		}
 
 		// 通知逻辑层session断开连接
+		log_error()->print("asio_tcp close sessionid [{}]", sessionid);
 		std::shared_ptr<service_tcp> lpservice = nullptr;
 		std::function<void()> lclosefun = nullptr;
 		{
 			monopoly_shared_lock(m_maplock);
-			auto itor = m_data.find(sessionid);
-			if (itor != m_data.end())
-			{
-				lpservice = itor->second;
-				m_data.erase(itor);
-			}
-			log_error()->print("asio_tcp close sessionid [{}]", sessionid);
-
-
-			if (auto fun = m_close.extract(sessionid); fun)
-			{
-				lclosefun = std::move(fun.mapped());
-			}
+			tools::erasemap(m_data, sessionid, lpservice);
+			tools::erasemap(m_close, sessionid, lclosefun);
 		}
 
 		if (lpservice != nullptr)
@@ -318,12 +308,7 @@ namespace ngl
 		std::shared_ptr<service_tcp> lpservice = nullptr;
 		{
 			monopoly_shared_lock(m_maplock);
-			auto itor = m_data.find(sessionid);
-			if (itor != m_data.end())
-			{
-				lpservice = itor->second;
-				m_data.erase(itor);
-			}
+			tools::erasemap(m_data, sessionid, lpservice);
 			m_close.erase(sessionid);
 		}
 		if (lpservice != nullptr)
