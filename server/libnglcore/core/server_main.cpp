@@ -822,7 +822,7 @@ int ngl_main(int argc, char** argv)
 
 #ifdef WIN32
 	// # 设置控制台窗口名称
-	SetConsoleTitle(g_nodename.c_str());
+	SetConsoleTitle(nconfig.servername().c_str());
 #endif
 	
 	switch (nconfig.nodetype())
