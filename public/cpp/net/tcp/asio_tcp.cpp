@@ -338,12 +338,15 @@ namespace ngl
 		}
 		else
 		{
+			const auto& lremote_endpoint = aservice->m_socket.remote_endpoint();
+			std::string lip = lremote_endpoint.address().to_string();
+			i16_port lport = lremote_endpoint.port();
 			{
 				monopoly_shared_lock(m_ipportlock);
-				std::pair<str_ip, i16_port>& lipport = m_ipport[aservice->m_sessionid];
-				lipport.first = aservice->m_socket.remote_endpoint().address().to_string();
-				lipport.second = aservice->m_socket.remote_endpoint().port();
-				aservice->m_is_lanip = tools::is_lanip(lipport.first);
+				auto lpair = tools::findmap(m_ipport, aservice->m_sessionid);
+				lpair->first = lip;
+				lpair->second = lport;
+				aservice->m_is_lanip = tools::is_lanip(lip);
 			}
 			start(aservice);
 		}
