@@ -24,12 +24,12 @@ namespace ngl
 		m_closefun(aclosefun),
 		m_sendfinishfun(asendfinishfun),
 		m_port(aport),
-		m_service_io_(athread, 10240),
+		m_service_ios(athread, 10240),
 		m_sessionid(0),
 		m_acceptor_v4(nullptr),
 		m_acceptor_v6(nullptr)
 	{
-		asio::io_service& lioservice = *m_service_io_.get_ioservice(m_service_io_.m_recvthreadsize);
+		asio::io_service& lioservice = *m_service_ios.get_ioservice(m_service_ios.m_recvthreadsize);
 		m_acceptor_v4 = std::make_shared<asio::ip::tcp::acceptor>(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port));
 		m_acceptor_v6 = std::make_shared<asio::ip::tcp::acceptor>(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v6(), m_port));
 		m_acceptor_v4->set_option(asio::socket_base::reuse_address(true));
@@ -43,7 +43,7 @@ namespace ngl
 		m_closefun(aclosefun),
 		m_sendfinishfun(asendfinishfun),
 		m_port(-1),
-		m_service_io_(athread + 1, 10240),
+		m_service_ios(athread + 1, 10240),
 		m_sessionid(0),
 		m_acceptor_v4(nullptr),
 		m_acceptor_v6(nullptr)
@@ -55,8 +55,13 @@ namespace ngl
 		std::shared_ptr<service_tcp> lservice = nullptr;
 		{
 			monopoly_shared_lock(m_maplock);
-			lservice = std::make_shared<service_tcp>(m_service_io_, ++m_sessionid);
-			m_data[lservice->m_sessionid] = lservice;
+			lservice = std::make_shared<service_tcp>(m_service_ios, ++m_sessionid);
+			auto [_, success] = m_data.insert(std::make_pair(lservice->m_sessionid, lservice));
+			if (!success)
+			{
+				tools::send_mail("session id repeat")();
+				return nullptr;
+			}
 		}
 		lservice->m_socket.async_connect(basio_iptcpendpoint(basio_ipaddress::from_string(aip), aport), 
 			[this, lservice, aip, aport, afun, acount](const std::error_code& ec)
@@ -246,12 +251,11 @@ namespace ngl
 			}
 			log_error()->print("asio_tcp close sessionid [{}]", sessionid);
 
-			auto lclosefunitor = m_sessionclose.find(sessionid);
-			if (lclosefunitor != m_sessionclose.end())
+
+			if (auto fun = m_close.extract(sessionid); fun)
 			{
-				lclosefun = lclosefunitor->second;
+				lclosefun = std::move(fun.mapped());
 			}
-			m_sessionclose.erase(sessionid);
 		}
 
 		if (lpservice != nullptr)
@@ -320,7 +324,7 @@ namespace ngl
 				lpservice = itor->second;
 				m_data.erase(itor);
 			}
-			m_sessionclose.erase(sessionid);
+			m_close.erase(sessionid);
 		}
 		if (lpservice != nullptr)
 		{
@@ -366,7 +370,7 @@ namespace ngl
 		std::shared_ptr<service_tcp> lservice = nullptr;
 		{
 			monopoly_shared_lock(m_maplock);
-			lservice = std::make_shared<service_tcp>(m_service_io_, ++m_sessionid);
+			lservice = std::make_shared<service_tcp>(m_service_ios, ++m_sessionid);
 			auto [_, success] = m_data.insert(std::make_pair(lservice->m_sessionid, lservice));
 			if (!success)
 			{
@@ -395,7 +399,7 @@ namespace ngl
 	void  asio_tcp::start(const std::shared_ptr<service_tcp>& aservice)
 	{
 		char* lbuff = aservice->buff();
-		aservice->m_socket.async_read_some(asio::buffer(lbuff, m_service_io_.m_buffmaxsize)
+		aservice->m_socket.async_read_some(asio::buffer(lbuff, m_service_ios.m_buffmaxsize)
 			, [this, lbuff, aservice](const std::error_code& error, size_t bytes_transferred)
 			{
 				if (!error)
@@ -422,6 +426,6 @@ namespace ngl
 	void asio_tcp::set_close(i32_sessionid asession, const std::function<void()>& afun)
 	{
 		monopoly_shared_lock(m_maplock);
-		m_sessionclose[asession] = afun;
+		m_close[asession] = afun;
 	}
 }// namespace ngl
