@@ -763,8 +763,6 @@ bool start_robot(int argc, char** argv)
 	return true;
 }
 
-std::string g_nodename = "node";
-
 namespace ngl
 {
 	extern void server_test();
@@ -774,6 +772,8 @@ std::function<void()> dump_logic();
 
 int ngl_main(int argc, char** argv)
 {
+
+
 	ngl::server_test();
 	// # Ãû³Æ
 	std::string lname = argv[1];
@@ -873,10 +873,9 @@ int ngl_main(int argc, char** argv)
 	return 0;
 }
 
-std::function<void()> dump_logic()
+std::function<void()> dump_logic(std::string& atitle)
 {
-	std::string ltitle = std::format("{}", g_nodename);
-	return [ltitle]()
+	return [&atitle]()
 		{
 			std::cout << "dump_logic()" << std::endl;
 			
@@ -885,11 +884,10 @@ std::function<void()> dump_logic()
 			lparm->m_email = nconfig.mail().m_email;
 			lparm->m_password = nconfig.mail().m_password;
 			lparm->m_name = nconfig.mail().m_name;
-			lparm->m_title = ltitle;
+			lparm->m_title = atitle;
 			lparm->m_content = "code dump";
 			lparm->m_recvs.emplace_back(std::make_pair("348634371@qq.com", "Àî²©QQ"));
 			lparm->set_wait();
 			ngl::ncurl::sendemail(lparm);
-
 		};
 }

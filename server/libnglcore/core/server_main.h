@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <string>
 
 // 跨平台导出/导入宏
 #ifdef _WIN32
@@ -15,4 +16,4 @@
 
 NGL_EXPORT int ngl_main(int argc, char** argv);
 
-NGL_EXPORT std::function<void()> dump_logic();
+NGL_EXPORT std::function<void()> dump_logic(std::string& atitle);
