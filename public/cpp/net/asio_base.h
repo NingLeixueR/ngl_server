@@ -33,6 +33,7 @@ namespace ngl
 	using basio_iptcpendpoint	= asio::ip::tcp::endpoint;
 	using basio_ipaddress		= asio::ip::address;
 	using tuple_ioservice		= std::tuple<std::shared_ptr<basio_ioservice>, std::shared_ptr<basio_ioservicework>, std::shared_ptr<std::thread>>;
+	using basio_tcpacceptor		= asio::ip::tcp::acceptor;
 
 	struct serviceio_info
 	{

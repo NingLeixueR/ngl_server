@@ -31,23 +31,27 @@ namespace ngl
 		asio_tcp(const asio_tcp&) = delete;
 		asio_tcp& operator=(const asio_tcp&) = delete;
 
-		std::shared_ptr<asio::ip::tcp::acceptor>	m_acceptor_v4 = nullptr;
-		std::shared_ptr<asio::ip::tcp::acceptor>	m_acceptor_v6 = nullptr;
-		i16_port					m_port			= 0;
-		tcp_callback				m_fun			= nullptr;
-		tcp_closecallback			m_closefun		= nullptr;
-		tcp_sendfinishcallback		m_sendfinishfun = nullptr;
-		i32_sessionid				m_sessionid		= 0;
-		std::shared_mutex			m_maplock;
-		serviceio_info				m_service_io_;
-		std::shared_mutex			m_ipportlock;
-		std::unordered_map<i32_sessionid, std::shared_ptr<service_tcp>> m_data;
-		std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>	m_ipport;
-		std::unordered_map<i32_sessionid, std::function<void()>>		m_sessionclose;
+		using map_service_tcp = std::unordered_map<i32_sessionid, std::shared_ptr<service_tcp>>;
+		using map_ipport = std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>;
+		using map_close = std::unordered_map<i32_sessionid, std::function<void()>>;
+
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4	= nullptr;		// 用于支持ipv4
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6	= nullptr;		// 用于支持ipv6
+		i16_port							m_port			= 0;			// 监听的端口
+		tcp_callback						m_fun			= nullptr;		// 接收数据的回调
+		tcp_closecallback					m_closefun		= nullptr;		// 关闭连接的回调
+		tcp_sendfinishcallback				m_sendfinishfun = nullptr;		// 发送失败的回调
+		i32_sessionid						m_sessionid		= 0;			// 自增的session id	
+		std::shared_mutex					m_maplock;						// 用于锁定"m_data,m_sessionid"
+		serviceio_info						m_service_ios;					// asio支持
+		std::shared_mutex					m_ipportlock;					// 用于锁定"m_ipport"
+		map_service_tcp						m_data;
+		map_ipport							m_ipport;
+		map_close							m_close;
 	public:
 		friend class service_tcp;
 
-		// # 服务器
+		// # 服务器 server(会监听端口,建立连接)
 		asio_tcp(
 			i16_port aport									// 监听端口
 			, i32_threadsize athread							// 线程数
@@ -56,7 +60,7 @@ namespace ngl
 			, const tcp_sendfinishcallback& asendfinishfun		// 发送失败的回调
 		);
 
-		// # 客户端
+		// # 客户端 client(本地不会监听端口)
 		asio_tcp(
 			i32_threadsize athread							// 线程数
 			, const tcp_callback& acallfun						// 回调
