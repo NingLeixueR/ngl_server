@@ -68,7 +68,7 @@ namespace ngl
 		}
 		
 		const pair_account* lppair_account = nullptr;
-		data_modified_return_getconst(lpdbaccount, *lpaccount, false);
+		MODIFIED_RETURN_CONST(lpdbaccount, *lpaccount, false);
 		auto itor = m_actorbyserver.find(lpdbaccount->mid());
 		if (itor == m_actorbyserver.end())
 		{

@@ -23,13 +23,13 @@ namespace ngl
 
 	const char* rolekv::get_value(const char* akey)
 	{
-		data_modified_return_get(lpdbrolekeyvalue, get(get_actor()->id_guid()), nullptr);
+		MODIFIED_RETUAN(lpdbrolekeyvalue, get(get_actor()->id_guid()), nullptr);
 		return (*lpdbrolekeyvalue->mutable_mdata())[akey].c_str();
 	}
 
 	void rolekv::set_value(const char* akey, const char* adata)
 	{
-		data_modified_return_get(lpdbrolekeyvalue, get(get_actor()->id_guid()));
+		MODIFIED_RETUAN(lpdbrolekeyvalue, get(get_actor()->id_guid()));
 		(*lpdbrolekeyvalue->mutable_mdata())[akey] = adata;
 	}
 }//namespace ngl

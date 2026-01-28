@@ -46,7 +46,7 @@ namespace ngl
 		*ldbfamily.mutable_mmember()->Add() = aroleid;
 
 		data_modified<pbdb::db_familyer>& lpmodifiedfamilyer = nactor()->m_familyer.get(aroleid);
-		data_modified_return_get(lpfamilyer, lpmodifiedfamilyer, 4);
+		MODIFIED_RETUAN(lpfamilyer, lpmodifiedfamilyer, 4);
 		lpfamilyer->set_mid(aroleid);
 		lpfamilyer->set_mlastsignutc(0);
 		lpfamilyer->set_mjoinutc(lnow);
@@ -76,7 +76,7 @@ namespace ngl
 			return 3;
 		}
 		ngl::data_modified<pbdb::db_family>& lpmodifiedfamily = get(afamilyid);
-		data_modified_return_getconst(lpfamilyconst, lpmodifiedfamily, 4);
+		MODIFIED_RETURN_CONST(lpfamilyconst, lpmodifiedfamily, 4);
 
 		int32_t* lmaxcount = ttab_familylv::instance().failylvmaxcount(lpfamilyconst->mlv());
 		if (lmaxcount == nullptr)
@@ -87,7 +87,7 @@ namespace ngl
 		{
 			return 6;
 		}
-		data_modified_return_get(lpfamily, lpmodifiedfamily, 7);
+		MODIFIED_RETUAN(lpfamily, lpmodifiedfamily, 7);
 		*lpfamily->mutable_mapplylist()->Add() = aroleid;
 		lset.insert(afamilyid);
 		return 0;
@@ -98,7 +98,7 @@ namespace ngl
 		std::set<int64_t>& lset = m_applylist[aroleid];
 		lset.erase(afamilyid);
 		ngl::data_modified<pbdb::db_family>& lpmodifiedfamily = get(afamilyid);
-		data_modified_return_get(lpfamily, lpmodifiedfamily, 1);
+		MODIFIED_RETUAN(lpfamily, lpmodifiedfamily, 1);
 		auto& applylist = *lpfamily->mutable_mapplylist();
 		auto it = std::ranges::find(applylist, aroleid);
 		if (it == applylist.end())
@@ -130,7 +130,7 @@ namespace ngl
 		if (aratify)
 		{
 			ngl::data_modified<pbdb::db_family>& lpmodifiedfamily = get(lfamilyid);
-			data_modified_return_get(lpfamily, lpmodifiedfamily, 3);
+			MODIFIED_RETUAN(lpfamily, lpmodifiedfamily, 3);
 			lpfamily->mutable_mmember()->Add(ajoinroleid);
 			for (int64_t item : lset)
 			{
@@ -166,20 +166,20 @@ namespace ngl
 		{
 			return 3;
 		}
-		data_modified_return_getconst(lpfamilyconst, *lpmodifiedfamily, 4);
+		MODIFIED_RETURN_CONST(lpfamilyconst, *lpmodifiedfamily, 4);
 		if (lpfamilyconst->mleader() != aroleid)
 		{
 			return 5;
 		}
-		data_modified_return_get(lpfamily, *lpmodifiedfamily, 6);
+		MODIFIED_RETUAN(lpfamily, *lpmodifiedfamily, 6);
 		lpfamily->set_mleader(acederoleid);
 
 		data_modified<pbdb::db_familyer>& lpmodifiedfamilyer = nactor()->m_familyer.get(aroleid);
-		data_modified_return_get(lpfamilyer, lpmodifiedfamilyer, 7);
+		MODIFIED_RETUAN(lpfamilyer, lpmodifiedfamilyer, 7);
 		lpfamilyer->set_mposition(pbdb::db_familyer_eposition_ordinary);
 
 		data_modified<pbdb::db_familyer>& lpmodifiedcedefamilyer = nactor()->m_familyer.get(acederoleid);
-		data_modified_return_get(lpcedefamilyer, lpmodifiedcedefamilyer, 8);
+		MODIFIED_RETUAN(lpcedefamilyer, lpmodifiedcedefamilyer, 8);
 		lpcedefamilyer->set_mposition(pbdb::db_familyer_eposition_leader);
 
 		return 0;
@@ -197,7 +197,7 @@ namespace ngl
 			return 2;
 		}
 		data_modified<pbdb::db_familyer>& lpmodifiedfamilyer = nactor()->m_familyer.get(aroleid);
-		data_modified_return_get(lpfamilyer, lpmodifiedfamilyer, 4);
+		MODIFIED_RETUAN(lpfamilyer, lpmodifiedfamilyer, 4);
 		if (lpfamilyer->mposition() == pbdb::db_familyer_eposition_leader)
 		{
 			return 5;
@@ -208,7 +208,7 @@ namespace ngl
 		{
 			return 6;
 		}
-		data_modified_return_get(lpfamily, *lpmodifiedfamily, 7);
+		MODIFIED_RETUAN(lpfamily, *lpmodifiedfamily, 7);
 		auto& lmember = *lpfamily->mutable_mmember();
 		auto itor = std::ranges::find(lmember, aroleid);
 		if (itor == lmember.end())
@@ -228,7 +228,7 @@ namespace ngl
 			apro.set_mfamilid(afamilyid);
 			for (auto& [_guid, _modified] : data())
 			{
-				data_modified_continue_getconst(lpfamilyconst, _modified);
+				MODIFIED_CONTINUE_CONST(lpfamilyconst, _modified);
 				*apro.add_mfamily() = *lpfamilyconst;
 			}
 			return true;
@@ -241,7 +241,7 @@ namespace ngl
 				return false;
 			}
 			apro.set_mfamilid(afamilyid);
-			data_modified_return_getconst(lpfamilyconst, *lpmodifiedfamily, false);
+			MODIFIED_RETURN_CONST(lpfamilyconst, *lpmodifiedfamily, false);
 			*apro.add_mfamily() = *lpfamilyconst;
 			return true;
 		}
@@ -275,7 +275,7 @@ namespace ngl
 			actor::send_client(aroleid, pro);
 			return;
 		}
-		data_modified_return_getconst(lpfamilyconst, *lpmodifiedfamily);
+		MODIFIED_RETURN_CONST(lpfamilyconst, *lpmodifiedfamily);
 		*pro.mutable_minfo() = *lpfamilyconst;
 		for (int64_t aroleid : lpfamilyconst->mmember())
 		{
@@ -297,13 +297,13 @@ namespace ngl
 		}
 		if (aroleid != -1)
 		{
-			data_modified_return_getconst(lpfamilyconst, *lpmodifiedfamily, 2);
+			MODIFIED_RETURN_CONST(lpfamilyconst, *lpmodifiedfamily, 2);
 			if (lpfamilyconst->mleader() != aroleid)
 			{
 				return 3;
 			}
 		}
-		data_modified_return_get(lpfamily, *lpmodifiedfamily, 4);
+		MODIFIED_RETUAN(lpfamily, *lpmodifiedfamily, 4);
 		lpfamily->set_mname(afamilyname.c_str());
 		if (aroleid != -1)
 		{
@@ -334,7 +334,7 @@ namespace ngl
 		}
 
 		auto lnow = (int32_t)localtime::gettime();
-		data_modified_return_get(lpfamilyer, lpmodifiedfamilyer, 4);
+		MODIFIED_RETUAN(lpfamilyer, lpmodifiedfamilyer, 4);
 		if (localtime::getspandays(lnow, lpfamilyer->mlastsignutc()) == 0)
 		{
 			return 4;
@@ -343,14 +343,14 @@ namespace ngl
 		lpfamilyer->set_mlastsignutc((int32_t)localtime::gettime());
 
 		// 给军团增加经验
-		data_modified_return_getconst(lpfamilyconst, *lpmodifiedfamily, 5);
+		MODIFIED_RETURN_CONST(lpfamilyconst, *lpmodifiedfamily, 5);
 		int32_t* lpexp = ttab_familylv::instance().failylvexp(lpfamilyconst->mlv());
 		if (lpexp == nullptr)
 		{
 			return 5;
 		}
 		int32_t lexp = lpfamilyconst->mexp() + ttab_specialid::instance().m_familsignexp;
-		data_modified_return_get(lpfamily, *lpmodifiedfamily, 7);
+		MODIFIED_RETUAN(lpfamily, *lpmodifiedfamily, 7);
 		if (*lpexp <= lexp)
 		{
 			lexp -= *lpexp;
@@ -378,7 +378,7 @@ namespace ngl
 		{
 			return false;
 		}
-		data_modified_return_getconst(lpfamilyconst, *lpmodifiedfamily, false);
+		MODIFIED_RETURN_CONST(lpfamilyconst, *lpmodifiedfamily, false);
 		for (const int64_t afamilyer : lpfamilyconst->mmember())
 		{
 			if (afamilyer == aroleid)

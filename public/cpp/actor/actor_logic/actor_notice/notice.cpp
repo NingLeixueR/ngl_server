@@ -24,7 +24,7 @@ namespace ngl
 		{
 			for (auto& [_guid, _modified] : data())
 			{
-				data_modified_continue_getconst(lpdbnotice, _modified);
+				MODIFIED_CONTINUE_CONST(lpdbnotice, _modified);
 				*pro.add_mnotices() = *lpdbnotice;
 			}
 			return true;
@@ -34,7 +34,7 @@ namespace ngl
 		{
 			return false;
 		}
-		data_modified_return_getconst(lpdbnotice, *lpdb_notice, false);
+		MODIFIED_RETURN_CONST(lpdbnotice, *lpdb_notice, false);
 		*pro.add_mnotices() = *lpdbnotice;
 		return true;
 	}
@@ -44,7 +44,7 @@ namespace ngl
 		int32_t lnow = (int32_t)localtime::gettime();
 		for (auto& [_guid, _modified] : data())
 		{
-			data_modified_continue_getconst(lpnotice, _modified);
+			MODIFIED_CONTINUE_CONST(lpnotice, _modified);
 			if (lpnotice->mfinishtime() != -1)
 			{
 				continue;

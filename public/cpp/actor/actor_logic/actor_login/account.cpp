@@ -32,7 +32,7 @@ namespace ngl
 		auto& lmapdata = foreach_data();
 		for (auto itor = lmapdata.begin();itor!= lmapdata.end();++itor)
 		{
-			data_modified_return_get(lpdbaccount, itor->second);
+			MODIFIED_RETUAN(lpdbaccount, itor->second);
 			i16_area larea = lpdbaccount->marea();
 			const std::string& laccount = lpdbaccount->maccount();
 			m_areaofaccount[larea].m_data[laccount] = &itor->second;
