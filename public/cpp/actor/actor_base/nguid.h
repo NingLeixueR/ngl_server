@@ -45,11 +45,11 @@ namespace ngl
 			m_value1[1] = none_actordataid();
 		}
 
-		explicit nguid(int64_t aid) :
+		inline nguid(i64_actorid aid) :
 			m_id(aid)
 		{}
 
-		explicit nguid(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid) :
+		inline nguid(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid) :
 			m_id(0)
 		{
 			m_value2[0] = atype;
