@@ -52,9 +52,11 @@ namespace ngl
 				return linitfun.operator()<actor_log>(ACTOR_LOG, *(int32_t*)aparm);
 			case ACTOR_EXAMPLE_GUESS_NUMBER:
 				return linitfun.operator()<actor_example_guess_number>(ACTOR_EXAMPLE_GUESS_NUMBER, *(const std::map<int32_t, i64_actorid>*)aparm, aid);
+			default:
+			{
+				ngl::log_error()->print("actor_base::create fail ({},{})", em<ENUM_ACTOR>::name(atype), aid);
+				return nullptr;
+			}
 		}
-		
-		ngl::log_error()->print("actor_base::create fail ({},{})", em<ENUM_ACTOR>::name(atype), aid);
-		return nullptr;
 	}
 }//namespace ngl
