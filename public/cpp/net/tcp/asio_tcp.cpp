@@ -86,12 +86,15 @@ namespace ngl
 					}
 					return;
 				}
+
+				const auto& lremote_endpoint = lservice->m_socket.remote_endpoint();
+				std::string lip = lremote_endpoint.address().to_string();
+				i16_port lport = lremote_endpoint.port();
+				bool llanip = tools::is_lanip(lip);
 				{
 					monopoly_shared_lock(m_ipportlock);
-					std::pair<str_ip, i16_port>& lipport = m_ipport[lservice->m_sessionid];
-					lipport.first = lservice->m_socket.remote_endpoint().address().to_string();
-					lipport.second = lservice->m_socket.remote_endpoint().port();
-					lservice->m_is_lanip = tools::is_lanip(lipport.first);
+					m_ipport[lservice->m_sessionid] = std::make_pair(lip, lport);
+					lservice->m_is_lanip = llanip;
 				}
 				start(lservice);
 				afun(lservice->m_sessionid);
@@ -341,12 +344,11 @@ namespace ngl
 			const auto& lremote_endpoint = aservice->m_socket.remote_endpoint();
 			std::string lip = lremote_endpoint.address().to_string();
 			i16_port lport = lremote_endpoint.port();
+			bool llanip = tools::is_lanip(lip);
 			{
 				monopoly_shared_lock(m_ipportlock);
-				auto lpair = tools::findmap(m_ipport, aservice->m_sessionid);
-				lpair->first = lip;
-				lpair->second = lport;
-				aservice->m_is_lanip = tools::is_lanip(lip);
+				m_ipport[aservice->m_sessionid] = std::make_pair(lip, lport);
+				aservice->m_is_lanip = llanip;
 			}
 			start(aservice);
 		}
