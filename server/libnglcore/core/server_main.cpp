@@ -810,13 +810,14 @@ int ngl_main(int argc, char** argv)
 	}
 	nconfig.set_nodeid(tab->m_id, ltcount);
 
+	
 	if (larea < 0)
 	{
-		g_nodename = std::format("node_{}__{}_{}", lname, -larea, ltcount);
+		nconfig.set_servername(std::string(std::format("node_{}__{}_{}", lname, -larea, ltcount)));
 	}
 	else
 	{
-		g_nodename = std::format("node_{}_{}_{}", lname, tab->m_area, ltcount);
+		nconfig.set_servername(std::string(std::format("node_{}_{}_{}", lname, tab->m_area, ltcount)));
 	}
 
 #ifdef WIN32
@@ -878,13 +879,12 @@ std::function<void()> dump_logic(std::string& atitle)
 	return [&atitle]()
 		{
 			std::cout << "dump_logic()" << std::endl;
-			
 			std::shared_ptr<ngl::mail_param> lparm = ngl::ncurl::make_mail();
 			lparm->m_smtp = nconfig.mail().m_smtp;
 			lparm->m_email = nconfig.mail().m_email;
 			lparm->m_password = nconfig.mail().m_password;
-			lparm->m_name = nconfig.mail().m_name;
-			lparm->m_title = atitle;
+			lparm->m_name = nconfig.mail().m_name;	
+			lparm->m_title = nconfig.servername();
 			lparm->m_content = "code dump";
 			lparm->m_recvs.emplace_back(std::make_pair("348634371@qq.com", "Àî²©QQ"));
 			lparm->set_wait();
