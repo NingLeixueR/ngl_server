@@ -874,7 +874,7 @@ int ngl_main(int argc, char** argv)
 	return 0;
 }
 
-std::function<void()> dump_logic(std::string& acontent)
+std::function<void()> dump_logic(const std::string& acontent)
 {
 	return ngl::tools::send_mail(acontent);
 }
