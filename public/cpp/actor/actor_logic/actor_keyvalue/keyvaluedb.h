@@ -43,7 +43,7 @@ namespace ngl
 		bool keyvalue(nguid aid, T& adata)
 		{
 			data_modified<pbdb::db_keyvalue>& ldata = get(aid);
-			data_modified_return_getconst(lpdkeyvalue, ldata, false);
+			MODIFIED_RETURN_CONST(lpdkeyvalue, ldata, false);
 			adata = tools::lexical_cast<T>(lpdkeyvalue->mvalue());
 			return true;
 		}

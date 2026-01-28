@@ -88,7 +88,7 @@ namespace ngl
 		log_error()->print("actor_ranklist###loaddb_finish {}", data());
 		for (auto& [_guid, _modified] : data())
 		{
-			data_modified_continue_getconst(lpdbranklist, _modified);
+			MODIFIED_CONTINUE_CONST(lpdbranklist, _modified);
 			add_data(*lpdbranklist);
 		}
 

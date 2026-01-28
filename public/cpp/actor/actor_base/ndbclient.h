@@ -718,56 +718,56 @@ namespace ngl
 	}
 }//namespace ngl
 
-#define data_modified_return_get(NAME, DATA, ...)			\
+#define MODIFIED_RETUAN(NAME, DATA, ...)					\
 	auto NAME = (DATA).get();								\
 	if(NAME == nullptr)										\
 	{														\
 		return __VA_ARGS__;									\
 	}
 
-#define data_modified_return_getconst(NAME, DATA, ...)		\
+#define MODIFIED_RETURN_CONST(NAME, DATA, ...)				\
 	auto NAME = (DATA).getconst();							\
 	if(NAME == nullptr)										\
 	{														\
 		return __VA_ARGS__;									\
 	}
 
-#define data_modified_break_get(NAME, DATA)					\
+#define MODIFIED_BREAK(NAME, DATA)							\
 	auto NAME = (DATA).get();								\
 	if(NAME == nullptr)										\
 	{														\
 		break;												\
 	}
 
-#define data_modified_break_getconst(NAME, DATA)			\
+#define MODIFIED_CONST(NAME, DATA)							\
 	auto NAME = (DATA).getconst();							\
 	if(NAME == nullptr)										\
 	{														\
 		break;												\
 	}
 
-#define data_modified_continue_get(NAME, DATA)				\
+#define MODIFIED_CONTINUE(NAME, DATA)						\
 	auto NAME = (DATA).get();								\
 	if(NAME == nullptr)										\
 	{														\
 		continue;											\
 	}
 
-#define data_modified_continue_getconst(NAME, DATA)			\
+#define MODIFIED_CONTINUE_CONST(NAME, DATA)					\
 	auto NAME = (DATA).getconst();							\
 	if(NAME == nullptr)										\
 	{														\
 		continue;											\
 	}
 
-#define data_modified_dump_get(NAME, DATA)					\
+#define MODIFIED_DUMP(NAME, DATA)							\
 	auto NAME = (DATA).get();								\
 	if(NAME == nullptr)										\
 	{														\
 		ngl::tools::tools::no_core_dump();					\
 	}
 
-#define data_modified_dump_getconst(NAME, DATA)				\
+#define MODIFIED_DUMP_CONST(NAME, DATA)						\
 	auto NAME = (DATA).getconst();							\
 	if(NAME == nullptr)										\
 	{														\

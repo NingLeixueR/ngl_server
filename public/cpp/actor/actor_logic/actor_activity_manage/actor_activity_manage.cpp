@@ -98,7 +98,7 @@ namespace ngl
 			{
 				continue;
 			}
-			data_modified_continue_getconst(lpactivitytimesconst, _modified);
+			MODIFIED_CONTINUE_CONST(lpactivitytimesconst, _modified);
 			int32_t lbeg = lpactivitytimesconst->mbeg();
 			int32_t lduration = lpactivitytimesconst->mduration();
 			start_activity(_guid, lbeg, lduration);

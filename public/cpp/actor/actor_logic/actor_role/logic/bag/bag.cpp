@@ -26,7 +26,7 @@ namespace ngl
 	void bag::initdata()
 	{
 		data_modified<pbdb::db_bag>& lbag = get();
-		data_modified_return_getconst(lpdbbag, lbag);
+		MODIFIED_RETURN_CONST(lpdbbag, lbag);
 		auto lpmap = lpdbbag->mitems();
 		
 		for (auto itor = lpmap.begin(); itor != lpmap.end(); ++itor)
@@ -51,7 +51,7 @@ namespace ngl
 	pbdb::item* bag::add(pbdb::item& aitem)
 	{
 		data_modified<pbdb::db_bag>& ldb_bag = get();
-		data_modified_return_get(lpdbbag, ldb_bag, nullptr);
+		MODIFIED_RETUAN(lpdbbag, ldb_bag, nullptr);
 		int32_t lindexid = lpdbbag->mmaxid();
 		aitem.set_mid(++lindexid);
 		
@@ -166,7 +166,7 @@ namespace ngl
 		int32_t litemid = itor->second->mid();
 		if (acount == 0)
 		{
-			data_modified_return_get(lpdbbag, get(), false);
+			MODIFIED_RETUAN(lpdbbag, get(), false);
 			lpdbbag->mutable_mitems()->erase(itor->second->mid());
 			m_stackitems.erase(itor);
 			return true;

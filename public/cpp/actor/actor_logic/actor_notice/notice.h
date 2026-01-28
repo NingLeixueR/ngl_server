@@ -41,7 +41,7 @@ namespace ngl
 
 			for (auto& [_guid, _modified] : data())
 			{
-				data_modified_continue_getconst(lpdata, _modified);
+				MODIFIED_CONTINUE_CONST(lpdata, _modified);
 				m_maxid = std::max(m_maxid, lpdata->mid());
 			}
 

@@ -298,9 +298,9 @@ namespace ngl
 	void actor_role::sync_data_client()
 	{
 		pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE pro;
-		data_modified_return_getconst(lpdinfo, m_info.get());
-		data_modified_return_getconst(lpdbag, m_bag.get());
-		data_modified_return_getconst(lpdtask, m_task.get());
+		MODIFIED_RETURN_CONST(lpdinfo, m_info.get());
+		MODIFIED_RETURN_CONST(lpdbag, m_bag.get());
+		MODIFIED_RETURN_CONST(lpdtask, m_task.get());
 		*pro.mutable_mrole()	= *lpdinfo;
 		*pro.mutable_mbag()	= *lpdbag;
 		*pro.mutable_mtask()	= *lpdtask;
@@ -379,7 +379,7 @@ namespace ngl
 
 	bool actor_role::is_first_recharge(int32_t arechargeid)
 	{
-		data_modified_return_getconst(lpdinfoconst, m_info.get(), false);
+		MODIFIED_RETURN_CONST(lpdinfoconst, m_info.get(), false);
 		int lcount = 0;
 		for (auto& recharge : lpdinfoconst->mrecharge())
 		{
