@@ -768,8 +768,6 @@ namespace ngl
 	extern void server_test();
 }
 
-std::function<void()> dump_logic();
-
 int ngl_main(int argc, char** argv)
 {
 
