@@ -258,9 +258,7 @@ namespace ngl
 		{
 			auto pro = std::make_shared<np_actorserver_connect>();
 			pro->m_serverid = lserverid;
-			nguid lguid = nguid::make_self(ACTOR_LOGIN);
-			handle_pram lparm = handle_pram::create(lguid, guid(), pro);
-			actor_manage::instance().push_task_id(lguid, lparm);
+			actor::send_actor(nguid::make_self(ACTOR_LOGIN), guid(), pro);
 		}
 		return true;
 	}
