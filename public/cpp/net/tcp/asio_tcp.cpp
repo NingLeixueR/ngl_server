@@ -361,13 +361,18 @@ namespace ngl
 		accept(true);
 	}
 
-	void  asio_tcp::accept(bool aisv4)
+	void asio_tcp::accept(bool aisv4)
 	{
 		std::shared_ptr<service_tcp> lservice = nullptr;
 		{
 			monopoly_shared_lock(m_maplock);
 			lservice = std::make_shared<service_tcp>(m_service_io_, ++m_sessionid);
-			m_data[lservice->m_sessionid] = lservice;
+			auto [_, success] = m_data.insert(std::make_pair(lservice->m_sessionid, lservice));
+			if (!success)
+			{
+				tools::send_mail("session id repeat")();
+				return;
+			}
 		}
 		if (aisv4)
 		{
