@@ -16,4 +16,4 @@
 
 NGL_EXPORT int ngl_main(int argc, char** argv);
 
-NGL_EXPORT std::function<void()> dump_logic(std::string& atitle);
+NGL_EXPORT std::function<void()> dump_logic(const std::string& atitle);

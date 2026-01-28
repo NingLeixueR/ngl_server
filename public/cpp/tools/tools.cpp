@@ -19,6 +19,7 @@
 #include "varint.h"
 #include "tools.h"
 #include "nguid.h"
+#include "ncurl.h"
 #include "sha1.h"
 
 #include <filesystem>
@@ -1390,6 +1391,39 @@ namespace ngl
 		{
 			*(int*)(nullptr) = 19890519;
 		}
+	}
+
+	// 防止邮件被频繁发送,每隔10分钟发送一封相同内容的邮件
+	std::map<std::string, int32_t> g_mailmap;
+	std::shared_mutex g_maillock;
+	int32_t g_mailinterval = localtime::MINUTES_SECOND * 10;
+
+	std::function<void()> tools::send_mail(const std::string& acontent)
+	{
+		return [acontent]()
+			{
+				int32_t lnow = (int32_t)localtime::gettime();
+				{
+					monopoly_shared_lock(g_maillock);
+					if (g_mailmap[acontent] - lnow > g_mailinterval)
+					{
+						return;
+					}
+					g_mailmap[acontent] = lnow;
+				}				
+
+				std::cout << "dump_logic()" << std::endl;
+				std::shared_ptr<ngl::mail_param> lparm = ngl::ncurl::make_mail();
+				lparm->m_smtp = nconfig.mail().m_smtp;
+				lparm->m_email = nconfig.mail().m_email;
+				lparm->m_password = nconfig.mail().m_password;
+				lparm->m_name = nconfig.mail().m_name;
+				lparm->m_title = nconfig.servername();
+				lparm->m_content = acontent;
+				lparm->m_recvs.emplace_back(std::make_pair("348634371@qq.com", "李博QQ"));
+				lparm->set_wait();
+				ngl::ncurl::sendemail(lparm);
+			};
 	}
 
 	int64_t tools::nguidstr2int64(const char* anguidstr)
