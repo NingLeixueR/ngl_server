@@ -30,9 +30,10 @@ namespace ngl
 		for (auto& item : ltemps.m_config)
 		{
 			std::string& lname = item.m_name;
+			tools::type_name_handle(lname);
 			int32_t lnumber = item.m_number;
 			std::map<std::string, int32_t>& lmap = xmlprotocol::m_protocol;
-			lmap[tools::type_name_handle(lname)] = lnumber;
+			lmap[lname] = lnumber;
 			lmap[std::format("np_actormodule_forward<{}>", lname)] = lnumber;
 			lmap[std::format("np_actor_forward<{},forward_g2c<forward>>", lname)] = lnumber;
 			lmap[std::format("np_actor_forward<{0},forward_g2c<{0}>>", lname)] = lnumber;
