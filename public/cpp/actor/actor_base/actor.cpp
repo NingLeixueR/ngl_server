@@ -155,7 +155,7 @@ namespace ngl
 		}
 	}
 
-	bool actor::handle(const message<np_actor_broadcast>& adata)
+	bool actor::handle_broadcast(const message<np_actor_broadcast>& adata)
 	{
 		// # ±£´æÊý¾Ý
 		if (manage_dbclient() != nullptr)
@@ -168,7 +168,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor::handle(const message<np_actor_close>&)
+	bool actor::handle_close(const message<np_actor_close>&)
 	{
 		erase_actor();
 		return true;

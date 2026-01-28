@@ -358,7 +358,7 @@ namespace ngl
 			if (lregister.exchange(false))
 			{
 				nrfun<TACTOR>::instance().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(
-					&actor_base::template handle<DBTYPE, TDBTAB, TACTOR>, e_ready_null
+					&actor_base::template handle_db<DBTYPE, TDBTAB, TACTOR>, e_ready_null
 				);
 			}
 			init_load();
@@ -700,7 +700,7 @@ namespace ngl
 namespace ngl
 {
 	template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
-	bool actor_base::handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
+	bool actor_base::handle_db(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
 	{
 		const std::unique_ptr<actor_manage_dbclient>& mdbclient = manage_dbclient();
 		if (mdbclient == nullptr)
