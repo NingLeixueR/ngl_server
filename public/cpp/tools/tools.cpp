@@ -233,6 +233,7 @@ namespace ngl
             return true;
 #else
             uuid_t uuid;
+			memset(&uuid, 0, sizeof(uuid));
             uuid_generate(uuid);
 
             char str[37];
