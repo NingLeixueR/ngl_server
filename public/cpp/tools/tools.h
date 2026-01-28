@@ -488,14 +488,18 @@ namespace ngl
 			return true;
 		}
 
-		template <typename ...ARGS>
-		static bool splite(const char* abuff, const char* afg, ARGS&... args)
+		template <std::size_t... INDEX, typename ...ARGS>
+		static bool splite(std::index_sequence<INDEX...>, const char* abuff, const char* afg, ARGS&... args)
 		{
 			std::vector<std::string> lvec;
 			splite(abuff, afg, lvec);
+			return (splite<ARGS>(INDEX, lvec, args) && ...);
+		}
 
-			int32_t lindex = 0;
-			return (splite<ARGS>(lindex++, lvec, args) && ...);			
+		template <typename ...ARGS>
+		static bool splite(const char* abuff, const char* afg, ARGS&... args)
+		{
+			return 	splite(std::make_index_sequence<sizeof...(ARGS)>{}, abuff, afg, args...);
 		}
 
 		// 特殊分割:类似"接收邮件列表[邮件地址1:名字1]"
@@ -660,11 +664,16 @@ namespace ngl
 			return true;
 		}
 		
+		template <std::size_t... INDEX, typename ...ARGS>
+		static bool splicing(std::index_sequence<INDEX...>, const char* afg, std::string& astr, ARGS&... args)
+		{
+			return ((splicing<ARGS>(INDEX, afg, astr, args)) && ...);
+		}
+
 		template <typename ...ARGS>
 		static bool splicing(const char* afg, std::string& astr, ARGS&... args)
 		{
-			int32_t lindex = 0;
-			return ((splicing<ARGS>(lindex++, afg, astr, args)) && ...);
+			return splicing(std::make_index_sequence<sizeof...(ARGS)>{}, afg, astr, args...);
 		}
 #pragma endregion
 
