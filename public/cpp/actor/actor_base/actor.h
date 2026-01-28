@@ -57,10 +57,10 @@ namespace ngl
 			if (isbroadcast())
 			{
 				// # 注册广播处理函数
-				register_actornonet<TDerived, np_actor_broadcast>(e_ready_all, (Tfun<actor, np_actor_broadcast>) & actor::handle);
+				register_actornonet<TDerived, np_actor_broadcast>(e_ready_all, (Tfun<actor, np_actor_broadcast>) & actor::handle_broadcast);
 			}
 			// # 注册actor close处理函数
-			register_actornonet<TDerived, np_actor_close>(e_ready_all, (Tfun<actor, np_actor_close>) & actor::handle);
+			register_actornonet<TDerived, np_actor_close>(e_ready_all, (Tfun<actor, np_actor_close>) & actor::handle_close);
 		}
 
 		// # 注册定时器
@@ -167,11 +167,11 @@ namespace ngl
 		// # 重载此方法实现actor_base::m_broadcast毫秒触发事件
 		virtual void broadcast() {}
 		// # 广播处理函数
-		bool handle(const message<np_actor_broadcast>& adata);
+		bool handle_broadcast(const message<np_actor_broadcast>& adata);
 		// ############# [广播] ############# 
 		
 		// # 关闭此actor
-		bool handle(const message<np_actor_close>&);
+		bool handle_close(const message<np_actor_close>&);
 
 		// # 脚本语言处理消息
 		template <typename TMESSAGE>

@@ -174,7 +174,7 @@ namespace ngl
 
 		//# 向actor_db发送数据请求后的返回
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
-		bool handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata);
+		bool handle_db(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata);
 
 		virtual ~actor_base() = default;
 
