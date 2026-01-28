@@ -33,9 +33,11 @@ namespace ngl
 
 		std::string	m_nodename;
 		NODE_TYPE	m_nodetype;
-		i32_serverid m_nodeid = 0;							// server id
-		int16_t		m_tid = 0;								// 对应tab_servers表中的id
-		int16_t		m_tcount = 0;							// 实例id
+		i32_serverid m_nodeid = 0;		// server id
+		int16_t		m_tid = 0;			// 对应tab_servers表中的id
+		int16_t		m_tcount = 0;		// 实例id
+
+		std::string m_servername;			// 程序名称
 
 		xmlnode() {}
 	public:
@@ -54,6 +56,10 @@ namespace ngl
 		void set_server(const char* aservertypename);
 
 		void set_nodeid(int atid, int atcount);
+
+		void set_servername(const std::string& asername);
+
+		std::string& servername();
 
 		void load(const std::string& axmlpath, const std::string& aname);
 

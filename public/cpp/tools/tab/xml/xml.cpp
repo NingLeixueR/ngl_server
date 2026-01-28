@@ -70,6 +70,16 @@ namespace ngl
 		m_tcount = nnodeid::tcount(m_nodeid);
 	}
 
+	void xmlnode::set_servername(const std::string& asername)
+	{
+		m_servername = asername;
+	}
+
+	std::string& xmlnode::servername()
+	{
+		return m_servername;
+	}
+
 	void xmlnode::load(const std::string& axmlpath, const std::string& aname)
 	{
 		std::string lxmlname = std::format("{}/config/config_{}.xml", axmlpath, aname);
