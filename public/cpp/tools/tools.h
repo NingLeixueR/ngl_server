@@ -320,6 +320,17 @@ namespace ngl
 			auto lpair = amap.try_emplace(akey, avalue);
 			return lpair.second ? &(lpair.first->second) : nullptr;
 		}
+
+		template <typename TMAP, typename TKEY>
+		static bool erasemap(TMAP& amap, const TKEY& akey, typename TMAP::value_type::second_type& adata)
+		{
+			if (auto node = amap.extract(akey); node)
+			{
+				adata = std::move(node.mapped());
+				return true;
+			}
+			return false;
+		}
 #pragma endregion 
 
 		// 是否是内网地址
