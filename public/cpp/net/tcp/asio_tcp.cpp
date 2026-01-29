@@ -24,7 +24,7 @@ namespace ngl
 		m_closefun(aclosefun),
 		m_sendfinishfun(asendfinishfun),
 		m_port(aport),
-		m_service_ios(athread, 10240),
+		m_service_ios(athread, etcp_buffmaxsize),
 		m_sessionid(0),
 		m_acceptor_v4(nullptr),
 		m_acceptor_v6(nullptr)
@@ -43,7 +43,7 @@ namespace ngl
 		m_closefun(aclosefun),
 		m_sendfinishfun(asendfinishfun),
 		m_port(-1),
-		m_service_ios(athread + 1, 10240),
+		m_service_ios(athread + 1, etcp_buffmaxsize),
 		m_sessionid(0),
 		m_acceptor_v4(nullptr),
 		m_acceptor_v6(nullptr)
@@ -74,8 +74,8 @@ namespace ngl
 						// 加入定时队列
 						wheel_parm lparm
 						{
-							.m_ms = 1 * localtime::MILLISECOND,
-							.m_intervalms = [](int64_t) {return 1 * localtime::MILLISECOND; } ,
+							.m_ms = etcp_connect_interval * localtime::MILLISECOND,
+							.m_intervalms = [](int64_t) {return etcp_connect_interval * localtime::MILLISECOND; } ,
 							.m_count = 1,
 							.m_fun = [this, aip, aport, afun, acount](const wheel_node* anode)
 							{
