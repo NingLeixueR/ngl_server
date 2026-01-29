@@ -23,6 +23,29 @@
 
 namespace ngl
 {
+	template <typename F>
+	class scope_guard 
+	{
+		scope_guard() = delete;
+		scope_guard(const scope_guard&) = delete;
+		scope_guard(const scope_guard&&) = delete;
+
+		F m_fun;
+	public:
+		template <typename Func>
+		explicit scope_guard(Func&& fun) noexcept(std::is_nothrow_constructible_v<F, Func&&>)
+			: m_fun(std::forward<Func>(fun)) 
+		{}
+
+		~scope_guard() noexcept(std::is_nothrow_invocable_v<F>) 
+		{
+			m_fun();
+		}
+	};
+
+	template <typename Func>
+	scope_guard(Func&&) -> scope_guard<std::decay_t<Func>>;
+
 	class db_manage
 	{ 
 		static bool m_dbprotobinary;
@@ -67,6 +90,7 @@ namespace ngl
 		template <typename T>
 		static void save(db* adb, T* adata)
 		{
+			scope_guard lfree([adb]()noexcept { adb->m_malloc.reset(); });
 			serialize<T>(adb, m_dbprotobinary, *adata);
 
 			MYSQL_BIND lbind[1];
@@ -95,7 +119,6 @@ namespace ngl
 				return;
 			}
 			adb->stmt_query(lbuff, llen, lbind);
-			adb->m_malloc.reset();
 			log_error()->print("{}", lbuff);
 		}
 
@@ -173,8 +196,7 @@ namespace ngl
 				return false;
 			}
 			log_error()->print("{}", lbuff);
-			return adb->select(lbuff, llen,
-				[adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
+			return adb->select(lbuff, llen, [adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
 					T ldata;
 					bool lunserialize = db_manage::unserialize<T>(

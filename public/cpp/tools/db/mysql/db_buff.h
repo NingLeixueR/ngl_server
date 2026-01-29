@@ -100,7 +100,7 @@ namespace ngl
 			return m_buff->pos();
 		}
 
-		inline void reset()
+		inline void reset()noexcept
 		{
 			if (m_mallocbuff != nullptr)
 			{
@@ -122,28 +122,19 @@ namespace ngl
 		}
 
 		template <typename T>
-		inline bool do_binary(T& adata)
-		{
-			if (do_binary(adata, m_buff.get()))
-			{
-				return true;
-			}
-			ngl::ser::serialize_byte lbyte;
-			ngl::ser::nserialize::bytes(&lbyte, adata);
-			m_mallocbuff = std::make_shared<dbuff>(lbyte.pos());
-			if (do_binary(adata, m_mallocbuff.get()))
-			{
-				return true;
-			}
-			return false;
-		}
-
-		template <typename T>
 		inline void serialize(T& adata, bool isbinary)
 		{
 			if(isbinary)
 			{
-				if (!do_binary(adata))
+				if (do_binary(adata, m_buff.get()))
+				{
+					log_error()->print("do_binary fail T=[{}:{}]", tools::type_name<T>(), adata.mid());
+					return;
+				}
+				ngl::ser::serialize_byte lbyte;
+				ngl::ser::nserialize::bytes(&lbyte, adata);
+				m_mallocbuff = std::make_shared<dbuff>(lbyte.pos());
+				if (do_binary(adata, m_mallocbuff.get()))
 				{
 					log_error()->print("do_binary fail T=[{}:{}]", tools::type_name<T>(), adata.mid());
 					return;
