@@ -53,7 +53,11 @@ namespace ngl
 
 	template <typename TDerived, typename TACTOR, typename T>
 	nsp_write<TDerived, TACTOR, T>& nsp_write<TDerived, TACTOR, T>::instance_writepart(
-		TDerived* aactor, const std::set<i32_fieldnumber>& areadfieldnumbers, const std::set<i32_fieldnumber>& awritefieldnumbers, const std::set<i64_actorid>& areadids, const std::set<i64_actorid>& awriteids
+		TDerived* aactor
+		, const std::set<i32_fieldnumber>& areadfieldnumbers
+		, const std::set<i32_fieldnumber>& awritefieldnumbers
+		, const std::set<i64_actorid>& areadids
+		, const std::set<i64_actorid>& awriteids
 	)
 	{
 		auto lpwrite = std::make_shared<nsp_write<TDerived, TACTOR, T>>();
@@ -96,7 +100,8 @@ namespace ngl
 		m_regload.foreach_nspser([this](i16_area aarea, i64_actorid aactorid)
 			{
 				m_exit.insert(aactorid);
-			});
+			}
+		);
 
 		if (m_isregister.exchange(false))
 		{
@@ -131,7 +136,8 @@ namespace ngl
 					}
 				};
 				twheel::wheel().addtimer(lparm);
-			});
+			}
+		);
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
@@ -165,20 +171,20 @@ namespace ngl
 	template <typename TDerived, typename TACTOR, typename T>
 	T* nsp_write<TDerived, TACTOR, T>::get(i64_dataid adataid)
 	{
-		auto itor = m_data.find(to_actorid(adataid));
-		if (itor == m_data.end())
+		auto lpdata = tools::findmap(m_data, to_actorid(adataid));
+		if (lpdata == nullptr)
 		{
 			return nullptr;
 		}
 		m_changeids.insert(to_actorid(adataid));
-		return &itor->second;
+		return lpdata;
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
 	const T* nsp_write<TDerived, TACTOR, T>::getconst(i64_dataid adataid)
 	{
-		auto itor = m_data.find(to_actorid(adataid));
-		if (itor == m_data.end())
+		auto lpdata = tools::findmap(m_data, to_actorid(adataid));
+		if (lpdata == nullptr)
 		{
 			return nullptr;
 		}
@@ -201,12 +207,21 @@ namespace ngl
 				auto pro = std::make_shared<np_channel_data<T>>();
 				pro->m_actorid = m_actor->id_guid();
 				std::set<i64_nodeid> lnodes;
-				std::ranges::for_each(m_nodereadalls, [&lnodes](i64_nodeid aid) { lnodes.insert(aid); });
-				std::ranges::for_each(m_nodewritealls, [&lnodes](i64_nodeid aid) { lnodes.insert(aid); });
+				std::ranges::for_each(m_nodereadalls, [&lnodes](i64_nodeid aid) 
+					{ 
+						lnodes.insert(aid); 
+					}
+				);
+				std::ranges::for_each(m_nodewritealls, [&lnodes](i64_nodeid aid) 
+					{ 
+						lnodes.insert(aid);
+					}
+				);
 				m_regload.foreach_nspser([&lnodes](i16_area, i64_actorid aactorid)
 					{
 						lnodes.insert(aactorid);
-					});
+					}
+				);
 				pro->m_firstsynchronize = false;
 				pro->m_recvfinish = true;
 				for (i64_dataid dataid : m_changeids)
@@ -291,7 +306,8 @@ namespace ngl
 			m_regload.foreach_nspser([&lnodes](i16_area, i64_actorid aactorid)
 				{
 					lnodes.insert(aactorid);
-				});
+				}
+			);
 			actor::send_actor(lnodes, nguid::make(), pro);
 		}
 
