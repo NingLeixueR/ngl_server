@@ -75,7 +75,7 @@ namespace ngl
 		static std::map<nhashcode, info>			m_keyval;
 		static std::map<i32_protocolnum, info*>		m_protocol;
 		static std::map<std::string, info*>			m_nameprotocol;
-		static int32_t								m_customs/* = 200000000*/;
+		static int32_t								m_customs;
 
 		//CUSTOM
 		template <bool SCRIPT>
@@ -172,12 +172,12 @@ namespace ngl
 
 		static info* get(const char* aname)
 		{
-			auto itor = m_nameprotocol.find(aname);
-			if (itor == m_nameprotocol.end())
+			auto lpinfo = tools::findmap(m_nameprotocol, aname);
+			if (lpinfo == nullptr)
 			{
 				return nullptr;
 			}
-			return itor->second;
+			return *lpinfo;
 		}
 
 		// # 根据协议获取协议号
