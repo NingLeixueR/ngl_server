@@ -188,7 +188,7 @@ namespace ngl
 		{
 			return nullptr;
 		}
-		return &itor->second;
+		return lpdata;
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
