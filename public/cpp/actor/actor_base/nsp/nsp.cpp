@@ -73,23 +73,23 @@ namespace ngl
 
 	bool nsp_regload::is_loadfinish(i16_area aarea)const
 	{
-		auto itor = m_loadfinish.find(aarea);
-		if (itor == m_loadfinish.end())
+		auto lpbool = tools::findmap(m_loadfinish, aarea);
+		if (lpbool == nullptr)
 		{
 			return false;
 		}
-		return itor->second;
+		return *lpbool;
 	}
 
 	i64_actorid nsp_regload::nspserid(i16_area aarea)const
 	{
-		auto itor = m_nspserver.find(aarea);
-		if (itor == m_nspserver.end())
+		auto lpserid = tools::findmap(m_nspserver, aarea);
+		if (lpserid == nullptr)
 		{
 			tools::no_core_dump();
 			return nguid::make();
 		}
-		return itor->second;
+		return *lpserid;
 	}
 
 	bool nsp_regload::is_loadfinish()const
@@ -124,17 +124,17 @@ namespace ngl
 			std::map<i32_fieldnumber, epb_field>& lmap = m_node_fieldnumbers[atype];
 			for (auto& [_fieldnumber, _fieldtype] : anode_fieldnumbers)
 			{
-				auto itor = lmap.find(_fieldnumber);
-				if (itor != lmap.end())
+			 	auto lpfield = tools::findmap(lmap, _fieldnumber);
+				if (lpfield == nullptr)
 				{
-					if (itor->second != _fieldtype)
-					{
-						tools::no_core_dump();
-					}
+					lmap.insert(std::make_pair(_fieldnumber, _fieldtype));
 				}
 				else
 				{
-					lmap.insert(std::make_pair(_fieldnumber, _fieldtype));
+					if (*lpfield != _fieldtype)
+					{
+						tools::no_core_dump();
+					}
 				}
 			}
 		}
@@ -150,15 +150,16 @@ namespace ngl
 		std::ranges::for_each(anode_fieldnumbers, [this](auto& apair)
 			{
 				set_field(apair.first, apair.second);
-			});
+			}
+		);
 	}
 
 	void operator_field::nspser_add_field(std::map<i32_fieldnumber, epb_field>& afieldmap, i32_fieldnumber afieldnumber, epb_field afieldtype)
 	{
 		if (!afieldmap.empty() && afieldmap.contains(afieldnumber))
 		{
-			auto itor = afieldmap.find(afieldnumber);
-			if (itor != afieldmap.end() && itor->second == afieldtype)
+			auto lpfield = tools::findmap(afieldmap, afieldnumber);
+			if (lpfield != nullptr && *lpfield == afieldtype)
 			{
 				tools::no_core_dump();
 			}
@@ -170,8 +171,8 @@ namespace ngl
 	{
 		if (!afieldmap.empty() && afieldmap.contains(afieldnumber))
 		{
-			auto itor = afieldmap.find(afieldnumber);
-			if (itor != afieldmap.end() && itor->second == epb_field_write)
+			auto lpfield = tools::findmap(afieldmap, afieldnumber);
+			if (lpfield != nullptr && *lpfield == epb_field_write)
 			{
 				return;
 			}

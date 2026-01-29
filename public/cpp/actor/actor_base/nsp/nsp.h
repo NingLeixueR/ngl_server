@@ -115,7 +115,6 @@ namespace ngl
 			{//当[awritefieldnumbers]为空,则认为其读全部字段
 				pb_field::field_numbers<T>(lreadfield);
 			}
-
 			for (i32_fieldnumber field : awritefield)
 			{
 				add_field(atype, field, epb_field_write);
