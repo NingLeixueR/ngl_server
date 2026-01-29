@@ -172,23 +172,17 @@ namespace ngl
 	T* nsp_write<TDerived, TACTOR, T>::get(i64_dataid adataid)
 	{
 		auto lpdata = tools::findmap(m_data, to_actorid(adataid));
-		if (lpdata == nullptr)
+		if (lpdata != nullptr)
 		{
-			return nullptr;
-		}
-		m_changeids.insert(to_actorid(adataid));
+			m_changeids.insert(to_actorid(adataid));
+		}		
 		return lpdata;
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
 	const T* nsp_write<TDerived, TACTOR, T>::getconst(i64_dataid adataid)
 	{
-		auto lpdata = tools::findmap(m_data, to_actorid(adataid));
-		if (lpdata == nullptr)
-		{
-			return nullptr;
-		}
-		return lpdata;
+		return tools::findmap(m_data, to_actorid(adataid));
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
@@ -329,7 +323,6 @@ namespace ngl
 		bool lfirstsynchronize = recv->m_firstsynchronize;
 		i16_actortype ltypesource = nguid::type(recv->m_actorid);
 		i16_actortype ltypetarget = nguid::type(m_actor->id_guid());
-		//std::map<int64_t, TDATA>
 		for (auto& [_guid, _tdata] : recv->m_data)
 		{
 			if (m_care.is_care(_guid))
