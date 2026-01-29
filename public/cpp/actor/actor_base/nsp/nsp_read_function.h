@@ -52,7 +52,8 @@ namespace ngl
 		std::ranges::for_each(aids, [&lids](i64_actorid areadid)
 			{
 				lids.insert(nsp_write<TDerived, TACTOR, T>::to_actorid(areadid));
-			});
+			}
+		);
 		lpread->m_care.init(lids);
 
 		lpread->m_operator_field.template add_field<T>(nguid::type(aactor->id_guid()), epb_field_read, afieldnumbers);
@@ -93,7 +94,8 @@ namespace ngl
 		m_regload.foreach_nspser([this](i16_area aarea, i64_actorid aactorid)
 			{
 				m_exit.insert(aactorid);
-			});
+			}
+		);
 
 		if (m_isregister.exchange(false))
 		{
@@ -125,18 +127,14 @@ namespace ngl
 					}
 				};
 				twheel::wheel().addtimer(lparm);
-			});
+			}
+		);
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
 	const T* nsp_read<TDerived, TACTOR, T>::getconst(i64_dataid adataid)
 	{
-		auto itor = m_data.find(to_actorid(adataid));
-		if (itor == m_data.end())
-		{
-			return nullptr;
-		}
-		return &itor->second;
+		return tools::findmap(m_data, to_actorid(adataid));
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
@@ -277,7 +275,8 @@ namespace ngl
 		std::ranges::for_each(recv->m_care, [this](auto& apair)
 			{
 				m_exit.insert(apair.first);
-			});
+			}
+		);
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
