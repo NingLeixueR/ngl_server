@@ -308,14 +308,14 @@ namespace ngl
 #pragma region map
 		// map²Ù×÷·â×°
 		template <typename TMAP, typename TKEY>
-		static typename TMAP::value_type::second_type* findmap(TMAP& amap, const TKEY& akey)
+		static auto findmap(TMAP& amap, const TKEY& akey)
 		{
 			auto itor = amap.find(akey);
 			return itor == amap.end() ? nullptr : &itor->second;
 		}
 
 		template <typename TMAP, typename TKEY>
-		static typename TMAP::value_type::second* insertmap(TMAP& amap, const TKEY& akey, const typename TMAP::value_type::second& avalue)
+		static auto insertmap(TMAP& amap, const TKEY& akey, const typename TMAP::value_type::second& avalue)
 		{
 			auto lpair = amap.try_emplace(akey, avalue);
 			return lpair.second ? &(lpair.first->second) : nullptr;
