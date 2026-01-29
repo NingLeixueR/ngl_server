@@ -97,7 +97,6 @@ namespace ngl
 
 		if (m_isregister.exchange(false))
 		{
-			
 			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<
 				TDerived
 				, np_channel_data<T>				// 更新数据

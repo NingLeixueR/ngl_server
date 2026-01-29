@@ -55,7 +55,9 @@ namespace ngl
 		static nsp_read<TDerived, TACTOR, T>& instance_readall(TDerived* aactor, const std::set<i32_fieldnumber>& afieldnumbers);
 
 		// # [读部分数据]首充获取单例-需创建并初始化
-		static nsp_read<TDerived, TACTOR, T>& instance_readpart(TDerived* aactor, const std::set<i32_fieldnumber>& afieldnumbers, const std::set<i64_actorid>& aids);
+		static nsp_read<TDerived, TACTOR, T>& instance_readpart(
+			TDerived* aactor, const std::set<i32_fieldnumber>& afieldnumbers, const std::set<i64_actorid>& aids
+		);
 
 		// # 替换数据guid的[actor_type]
 		static i64_actorid to_actorid(i64_actorid adataid);
