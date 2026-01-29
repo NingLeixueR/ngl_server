@@ -52,25 +52,23 @@ namespace ngl
 			std::array<func, enscript_count> m_toactor;
 
 			template <enscript SCRIPT>
-			const func& toactor()
+			const func* toactor()
 			{
 				if constexpr (SCRIPT < enscript_count && SCRIPT > 0)
 				{
-					return m_toactor[SCRIPT];
+					return &m_toactor[SCRIPT];
 				}
-				static const func ltemp = nullptr;
-				return ltemp;
+				return nullptr;
 			}
 
 			template <enscript SCRIPT>
-			const funclientc& toclient()
+			const funclientc* toclient()
 			{
 				if constexpr (SCRIPT < enscript_count && SCRIPT > 0)
 				{
-					return m_toclient[SCRIPT];
+					return &m_toclient[SCRIPT];
 				}
-				static const funclientc ltemp = nullptr;
-				return ltemp;
+				return nullptr;
 			}
 		};
 	private:
