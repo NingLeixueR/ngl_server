@@ -32,15 +32,14 @@ namespace ngl
 {
 	class ntcp
 	{
-		std::shared_ptr<asio_tcp>				m_server = nullptr;
-		std::vector<std::shared_ptr<segpack>>	m_segpackvec;
-
-		i16_port				m_port = 0;											// 服务器监听端口号
-		i32_threadsize			m_socketthreadnum = 0;								// socket 接收数据线程数
-		bool					m_outernet = false;									// 是否允许外网连接
-		bpool					m_pool;												// 发送池
-		std::shared_mutex		m_mutex;											// 互斥量
-		std::list<pack>			m_packlist;											// 发送队列
+		std::shared_ptr<asio_tcp>				m_server = nullptr;			// asio
+		std::vector<std::shared_ptr<segpack>>	m_segpackvec;				// 分包
+		i16_port								m_port = 0;					// 服务器监听端口号
+		i32_threadsize							m_socketthreadnum = 0;		// socket 接收数据线程数
+		bool									m_outernet = false;			// 是否允许外网连接
+		bpool									m_pool;						// 发送池
+		std::shared_mutex						m_mutex;					// 互斥量
+		std::list<pack>							m_packlist;					// 发送队列
 	private:
 		bool socket_recv(service_io* ap, const char* abuff, int32_t abufflen);
 	public:
@@ -50,10 +49,7 @@ namespace ngl
 			return ltemp;
 		}
 
-		bpool& pool()
-		{
-			return m_pool;
-		}
+		bpool& pool();
 
 		// # 监听端口 线程数量
 		bool init(i16_port aport, i32_threadsize asocketthreadnum, bool	aouternet);
@@ -80,7 +76,8 @@ namespace ngl
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection);
 
 		bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection);
-
+		
+		// # 发送消息
 		bool send_msg(i32_sessionid asession, const std::string& amsg);
 
 		// # 发送消息
@@ -94,72 +91,20 @@ namespace ngl
 
 		// # 发送消息
 		template <typename Y, typename T = Y>
-		bool send(i32_sessionid asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
-			if (lpack == nullptr)
-			{
-				return false;
-			}
-			if (send_pack(asession, lpack) == false)
-			{
-				return false;
-			}
-			return true;
-		}
+		bool send(i32_sessionid asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		template <typename Y, typename T = Y>
-		bool send(const std::map<i32_sessionid, i64_actorid>& asession, const Y& adata, i64_actorid aactorid)
-		{
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, 0);
-			if (lpack == nullptr)
-			{
-				return false;
-			}
-			return send(asession, aactorid, lpack);
-		}
+		bool send(const std::map<i32_sessionid, i64_actorid>& asession, const Y& adata, i64_actorid aactorid);
 
 		template <typename Y, typename T = Y>
-		bool send(const std::set<i32_sessionid>& asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, 0);
-			if (lpack == nullptr)
-			{
-				return false;
-			}
-			return send(asession, aactorid, arequestactorid, lpack);
-		}
+		bool send(const std::set<i32_sessionid>& asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		// # 向服务器发送消息
 		template <typename Y, typename T = Y>
-		bool send_server(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			i32_sessionid lsession = server_session::sessionid(aserverid);
-			if (lsession == -1)
-			{
-				return false;
-			}
-			return send<Y, T>(lsession, adata, aactorid, arequestactorid);
-		}
+		bool send_server(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		template <typename Y, typename T = Y>
-		bool send_server(const std::set<i32_serverid>& aserverids, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			std::set<i32_session> lsessions;
-			for (i32_serverid iserverid : aserverids)
-			{
-				i32_session lsession = server_session::sessionid(iserverid);
-				if (lsession != -1)
-				{
-					lsessions.insert(lsession);
-				}
-			}
-			if (!lsessions.empty())
-			{
-				return send<Y, T>(lsessions, adata, aactorid, arequestactorid);
-			}
-			return false;
-		}
+		bool send_server(const std::set<i32_serverid>& aserverids, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		// # 给一组sesion发送消息
 		bool send(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack);
@@ -167,49 +112,128 @@ namespace ngl
 
 		// # 向客户端发送消息
 		template <typename T>
-		bool send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata)
-		{
-			std::vector<std::pair<i32_actordataid, i16_area>> lvecs = { {auid, aarea} };
-			return send_client(lvecs, agateway, adata);
-		}
+		bool send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata);
 
 		// # 向客户端发送消息
 		template <typename T>
-		void send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
-		{
-			np_actor_forward<T, forward_g2c<forward>> pro;
-			for (int i = 0; i < avec.size(); ++i)
-			{
-				pro.m_data.m_uid.push_back(avec[i].first);
-				pro.m_data.m_area.push_back(avec[i].second);
-			}
-
-			forward& lforward = pro.m_data.m_data;
-
-			ngl::ser::serialize_byte lserializebyte;
-			ngl::ser::nserialize::bytes(&lserializebyte, adata);
-
-			lforward.m_bufflen = lserializebyte.pos();
-			lforward.m_buff = netbuff_pool::instance().malloc_private(lforward.m_bufflen);
-
-			ngl::ser::serialize_push lserializepush(lforward.m_buff, lforward.m_bufflen);
-			if (ngl::ser::nserialize::push(&lserializepush, adata))
-			{
-				if (agateway != 0)
-				{
-					i32_session lsession = server_session::sessionid(agateway);
-					if (lsession > 0)
-					{
-						send(lsession, pro, nguid::make(), nguid::make());
-						netbuff_pool::instance().free((char*)lforward.m_buff);
-						return;
-					}
-				}
-			}
-			netbuff_pool::instance().free((char*)lforward.m_buff);
-		}
+		void send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata);
 	};
 }//namespace ngl
+
+
+namespace ngl
+{
+	template <typename Y, typename T/* = Y*/>
+	bool ntcp::send(i32_sessionid asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+	{
+		std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
+		if (lpack == nullptr)
+		{
+			return false;
+		}
+		if (send_pack(asession, lpack) == false)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	template <typename Y, typename T/* = Y*/>
+	bool ntcp::send(const std::map<i32_sessionid, i64_actorid>& asession, const Y& adata, i64_actorid aactorid)
+	{
+		std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, 0);
+		if (lpack == nullptr)
+		{
+			return false;
+		}
+		return send(asession, aactorid, lpack);
+	}
+
+	template <typename Y, typename T/* = Y*/>
+	bool ntcp::send(const std::set<i32_sessionid>& asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+	{
+		std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, 0);
+		if (lpack == nullptr)
+		{
+			return false;
+		}
+		return send(asession, aactorid, arequestactorid, lpack);
+	}
+
+	// # 向服务器发送消息
+	template <typename Y, typename T/* = Y*/>
+	bool ntcp::send_server(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+	{
+		i32_sessionid lsession = server_session::sessionid(aserverid);
+		if (lsession == -1)
+		{
+			return false;
+		}
+		return send<Y, T>(lsession, adata, aactorid, arequestactorid);
+	}
+
+	template <typename Y, typename T/* = Y*/>
+	bool ntcp::send_server(const std::set<i32_serverid>& aserverids, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+	{
+		std::set<i32_session> lsessions;
+		for (i32_serverid iserverid : aserverids)
+		{
+			i32_session lsession = server_session::sessionid(iserverid);
+			if (lsession != -1)
+			{
+				lsessions.insert(lsession);
+			}
+		}
+		if (!lsessions.empty())
+		{
+			return send<Y, T>(lsessions, adata, aactorid, arequestactorid);
+		}
+		return false;
+	}
+
+	template <typename T>
+	bool ntcp::send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata)
+	{
+		std::vector<std::pair<i32_actordataid, i16_area>> lvecs = { {auid, aarea} };
+		return send_client(lvecs, agateway, adata);
+	}
+
+	// # 向客户端发送消息
+	template <typename T>
+	void ntcp::send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
+	{
+		np_actor_forward<T, forward_g2c<forward>> pro;
+		for (int i = 0; i < avec.size(); ++i)
+		{
+			pro.m_data.m_uid.push_back(avec[i].first);
+			pro.m_data.m_area.push_back(avec[i].second);
+		}
+
+		forward& lforward = pro.m_data.m_data;
+
+		ngl::ser::serialize_byte lserializebyte;
+		ngl::ser::nserialize::bytes(&lserializebyte, adata);
+
+		lforward.m_bufflen = lserializebyte.pos();
+		lforward.m_buff = netbuff_pool::instance().malloc_private(lforward.m_bufflen);
+
+		ngl::ser::serialize_push lserializepush(lforward.m_buff, lforward.m_bufflen);
+		if (ngl::ser::nserialize::push(&lserializepush, adata))
+		{
+			if (agateway != 0)
+			{
+				i32_session lsession = server_session::sessionid(agateway);
+				if (lsession > 0)
+				{
+					send(lsession, pro, nguid::make(), nguid::make());
+					netbuff_pool::instance().free((char*)lforward.m_buff);
+					return;
+				}
+			}
+		}
+		netbuff_pool::instance().free((char*)lforward.m_buff);
+	}
+}
 
 namespace ngl
 {

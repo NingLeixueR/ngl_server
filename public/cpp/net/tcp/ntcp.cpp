@@ -37,6 +37,11 @@ namespace ngl
 		return m_segpackvec[ap->m_threadid]->push(ap->m_sessionid, abuff, abufflen, ap->m_is_lanip);
 	}
 
+	bpool& ntcp::pool()
+	{
+		return m_pool;
+	}
+
 	bool ntcp::init(i16_port aport, i32_threadsize asocketthreadnum, bool aouternet)
 	{
 		if (asocketthreadnum > net_config_socket_pthread_max_size || asocketthreadnum <= 0)
@@ -213,7 +218,7 @@ namespace ngl
 
 	bool ntcp::send(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack)
 	{
-		for (auto& [_session, actorid] : asession)
+		for (auto [_session, actorid] : asession)
 		{
 			apack->set_actor(actorid, aactorid);
 			send_pack(_session, apack);
