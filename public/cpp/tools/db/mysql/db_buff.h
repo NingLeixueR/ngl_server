@@ -30,7 +30,6 @@ namespace ngl
 		std::unique_ptr<char[]> m_buff = nullptr;
 		int32_t m_buffsize = 0;
 		int32_t m_pos = 0;
-
 	public:
 
 		dbuff(int32_t abuffsize):
@@ -123,7 +122,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		inline bool do_serialize_binary(T& adata)
+		inline bool do_binary(T& adata)
 		{
 			if (do_binary(adata, m_buff.get()))
 			{
@@ -144,9 +143,9 @@ namespace ngl
 		{
 			if(isbinary)
 			{
-				if (!do_serialize_binary(adata))
+				if (!do_binary(adata))
 				{
-					log_error()->print("do_serialize_binary fail T=[{}:{}]", tools::type_name<T>(), adata.mid());
+					log_error()->print("do_binary fail T=[{}:{}]", tools::type_name<T>(), adata.mid());
 					return;
 				}
 			}
