@@ -45,15 +45,21 @@ namespace ngl
 		std::shared_mutex					m_maplock;						// 用于锁定"m_data,m_sessionid"
 		serviceio_info						m_service_ios;					// asio支持
 		std::shared_mutex					m_ipportlock;					// 用于锁定"m_ipport"
-		map_service_tcp						m_data;
-		map_ipport							m_ipport;
-		map_close							m_close;
+		map_service_tcp						m_data;							// key:session id value:连接数据
+		map_ipport							m_ipport;						// key:session id value:ipport
+		map_close							m_close;						// 关闭连接回调
 	public:
+		enum
+		{
+			etcp_buffmaxsize = 20480,	// tcp buff byte
+			etcp_connect_interval = 1,	// 连接间隔,单位秒
+		};
+
 		friend class service_tcp;
 
 		// # 服务器 server(会监听端口,建立连接)
 		asio_tcp(
-			i16_port aport									// 监听端口
+			i16_port aport										// 监听端口
 			, i32_threadsize athread							// 线程数
 			, const tcp_callback& acallfun						// 回调
 			, const tcp_closecallback& aclosefun				// 关闭回调
@@ -62,7 +68,7 @@ namespace ngl
 
 		// # 客户端 client(本地不会监听端口)
 		asio_tcp(
-			i32_threadsize athread							// 线程数
+			i32_threadsize athread								// 线程数
 			, const tcp_callback& acallfun						// 回调
 			, const tcp_closecallback& aclosefun				// 关闭回调
 			, const tcp_sendfinishcallback& asendfinishfun		//发送失败的回调
