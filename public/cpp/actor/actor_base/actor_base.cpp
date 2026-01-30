@@ -307,17 +307,17 @@ namespace ngl
 
 	i16_port actor_base::kcp_index(i32_serverid aserverid, pbnet::ENUM_KCP aenum)
 	{
-		auto itor = m_kcpindex.find(aserverid);
-		if (itor == m_kcpindex.end())
+		auto lkcpport = tools::findmap(m_kcpindex, aserverid);
+		if (lkcpport == nullptr)
 		{
 			return -1;
 		}
-		auto itor2 = itor->second.m_data.find(aenum);
-		if (itor2 == itor->second.m_data.end())
+		auto lpport = tools::findmap(lkcpport->m_data, aenum);
+		if (lpport == nullptr)
 		{
 			return -1;
 		}
-		return itor2->second;
+		return *lpport;
 	}
 
 	i16_port actor_base::kcp_index(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum)
