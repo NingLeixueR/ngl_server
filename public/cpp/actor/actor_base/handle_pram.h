@@ -198,9 +198,9 @@ namespace ngl
 			{
 				if (adata.m_forwardtype && handle_pram::is_actoridnone(aactorid))
 				{//# 转发给所有类型为nguid::type(aactorid)的actor
-					std::set<i32_serverid> lset;
-					handle_pram::serveridlist(aactorid.type(), lset);
-					for (i32_serverid serverid : lset)
+					std::set<i32_serverid> lserverids;
+					handle_pram::serveridlist(aactorid.type(), lserverids);
+					for (i32_serverid serverid : lserverids)
 					{
 						handle_send<Y>::send_server(serverid, adata);
 					}
@@ -228,17 +228,17 @@ namespace ngl
 		}
 		else if (lactorid == nguid::make() && !lmassactors.empty())
 		{
-			std::map<i32_serverid, std::set<i64_actorid>> lserveractors;
+			std::map<i32_serverid, std::set<i64_actorid>> lservers;
 			for (i64_actorid actorid : lmassactors)
 			{
 				i32_serverid lserverid = handle_pram::serverid(actorid);
 				if (lserverid != -1 && lserverid != nconfig.nodeid())
 				{
-					lserveractors[lserverid].insert(actorid);
+					lservers[lserverid].insert(actorid);
 				}
 			}
 			std::shared_ptr<T> ldata = std::static_pointer_cast<T>(adata.m_data);
-			for (auto& [_serverid, _actorids] : lserveractors)
+			for (auto& [_serverid, _actorids] : lservers)
 			{
 				np_mass_actor<T> pro(ldata);
 				pro.m_actorids.swap(_actorids);
@@ -259,9 +259,7 @@ namespace ngl
 
 		static bool send(handle_pram& adata)
 		{
-			nguid lactorid = adata.m_actor;
-			nguid lrequestactor = adata.m_requestactor;
-			return handle_pram::send<pack>(lactorid, adata);
+			return handle_pram::send<pack>(adata.m_actor, adata);
 		}
 	};
 
@@ -270,11 +268,11 @@ namespace ngl
 	{
 		auto ldata = (np_actor_forward<T, forward_g2c<T>>*)adata.m_data.get();
 		std::vector<i32_actordataid>& luid = ldata->m_data.m_uid;
-		std::vector<i16_area>& larea = ldata->m_data.m_area;
+		std::vector<i16_area>& lareas = ldata->m_data.m_area;
 		std::set<i32_serverid> lgateway;
-		for (int i = 0; i < luid.size() && i < larea.size(); ++i)
+		for (int i = 0; i < luid.size() && i < lareas.size(); ++i)
 		{
-			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, larea[i], luid[i]);
+			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lareas[i], luid[i]);
 			i32_serverid lserverid = handle_pram::gatewayid(lroleactor);
 			if (lserverid > 0)
 			{
