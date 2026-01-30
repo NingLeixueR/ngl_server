@@ -65,15 +65,15 @@ namespace ngl
 
 	void set_node(int32_t aserverid, int asession)
 	{
-		const tab_servers* ltab = ttab_servers::instance().tab(nnodeid::tid(aserverid));
-		if (ltab == nullptr)
+		const tab_servers* tab = ttab_servers::instance().tab(nnodeid::tid(aserverid));
+		if (tab == nullptr)
 		{
 			return;
 		}
 		nactornode lnode;
-		lnode.m_name		= ltab->m_name;
+		lnode.m_name		= tab->m_name;
 		lnode.m_serverid	= aserverid;
-		lnode.m_nodetype	= ltab->m_type;
+		lnode.m_nodetype	= tab->m_type;
 		naddress::set_node(lnode);
 		naddress::set_session(aserverid, asession);
 	}
@@ -98,7 +98,10 @@ namespace ngl
 		{
 			.m_node
 			{
-				.m_name = std::format("node<id:{},type:{},name:{},tcount:{},area:{}>", tab->m_id, em<NODE_TYPE>::name(tab->m_type), tab->m_name, tab->m_tcount, tab->m_area),
+				.m_name = std::format(
+					"node<id:{},type:{},name:{},tcount:{},area:{}>"
+					, tab->m_id, em<NODE_TYPE>::name(tab->m_type), tab->m_name, tab->m_tcount, tab->m_area
+				),
 				.m_nodetype = tab->m_type,
 				.m_serverid = nconfig.nodeid(),
 			}
@@ -159,7 +162,7 @@ namespace ngl
 		return true;
 	}
 
-	bool isactiv_connect(i32_serverid aserverid)
+	bool actor_client::isactiv_connect(i32_serverid aserverid)
 	{
 		return nconfig.nodeid() > aserverid;
 	}
@@ -305,14 +308,14 @@ namespace ngl
 
 	void actor_client::connect_fnish()
 	{
-		const std::set<i32_serverid>& lconnectserverid = m_connectserverid;
+		const std::set<i32_serverid>& lserverids = m_connectserverid;
 		if (m_connectfun.empty())
 		{
 			return;
 		}
 		for (auto itor = m_connectfun.begin(); itor != m_connectfun.end(); ++itor)
 		{
-			if (!lconnectserverid.contains(itor->first))
+			if (!lserverids.contains(itor->first))
 			{
 				continue;
 			}
@@ -331,8 +334,8 @@ namespace ngl
 			return true;
 		}
 		auto lparm = adata.get_data();
-		const std::set<i32_serverid>& lconnectserverid = m_connectserverid;
-		if (lconnectserverid.contains(lparm->m_serverid))
+		const std::set<i32_serverid>& lserverids = m_connectserverid;
+		if (lserverids.contains(lparm->m_serverid))
 		{
 			lparm->m_fun();
 			return true;

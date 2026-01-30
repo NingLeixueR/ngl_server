@@ -58,6 +58,9 @@ namespace ngl
 		//# 连接成功后调用
 		void connect_fnish();
 
+		//# 相对于本进程是否需要主动连接
+		bool isactiv_connect(i32_serverid aserverid);
+
 		//# 主动连接
 		void activ_connect(i32_serverid aserverid);
 	public:
