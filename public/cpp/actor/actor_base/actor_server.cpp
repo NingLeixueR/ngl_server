@@ -56,22 +56,22 @@ namespace ngl
 	void actor_server::forward_actornode_register(const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd)
 	{
 		// 同步其他结点
-		std::set<i32_sessionid> lsessionvec;
-		naddress::foreach([&lsessionvec, apack](const nnode_session& asnode)
+		std::set<i32_sessionid> lsessions;
+		naddress::foreach([&lsessions, apack](const nnode_session& asnode)
 			{
 				if (apack->m_id != asnode.m_session)
 				{
-					lsessionvec.insert(asnode.m_session);
+					lsessions.insert(asnode.m_session);
 				}
 				return true;
 			}
 		);
-		if (!lsessionvec.empty())
+		if (!lsessions.empty())
 		{
 			{
 				np_actornode_register_response pro;
 				pro.m_vec.push_back(anode);
-				ntcp::instance().send(lsessionvec, pro, nguid::moreactor(), id_guid());
+				ntcp::instance().send(lsessions, pro, nguid::moreactor(), id_guid());
 			}
 			{
 				np_actornode_update pro
@@ -79,7 +79,7 @@ namespace ngl
 					.m_id = aserverid,
 					.m_add = aadd,
 				};
-				ntcp::instance().send(lsessionvec, pro, nguid::moreactor(), id_guid());
+				ntcp::instance().send(lsessions, pro, nguid::moreactor(), id_guid());
 			}			
 		}
 	}
@@ -98,8 +98,9 @@ namespace ngl
 		);
 		ntcp::instance().send(apack->m_id, lpram, nguid::moreactor(), id_guid());
 
-		std::map<i32_serverid, np_actornode_update> lmapprotocol;
-		naddress::ergodic([aserverid, &lmapprotocol](const naddress::map_guidserver& amap, const naddress::map_servernode&, const naddress::map_rolegateway& arolegateway)
+		std::map<i32_serverid, np_actornode_update> lprotocols;
+		naddress::ergodic(
+			[aserverid, &lprotocols](const naddress::map_guidserver& amap, const naddress::map_servernode&, const naddress::map_rolegateway& arolegateway)
 			{
 				for (auto& [_guid, _serverid] : amap)
 				{
@@ -107,7 +108,7 @@ namespace ngl
 					{
 						continue;
 					}
-					np_actornode_update& pro = lmapprotocol[_serverid];
+					np_actornode_update& pro = lprotocols[_serverid];
 					pro.m_id = _serverid;
 					pro.m_add.push_back(_guid.id());
 					if (pro.m_rolegateway.empty())
@@ -118,7 +119,7 @@ namespace ngl
 				return true;
 			}
 		);
-		for (const auto& [_serverid, _pro]: lmapprotocol)
+		for (const auto& [_serverid, _pro]: lprotocols)
 		{
 			ntcp::instance().send(apack->m_id, _pro, nguid::moreactor(), id_guid());
 		}

@@ -244,8 +244,8 @@ namespace ngl
 	ptractor& actor_manage::nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram)
 	{
 		static ptractor lnull(nullptr);
-		ptractor* lpactorptr = tools::findmap(m_actorbyid, aguid);
-		if (lpactorptr == nullptr)
+		ptractor* lpactor = tools::findmap(m_actorbyid, aguid);
+		if (lpactor == nullptr)
 		{
 			if (!apram.m_issend)
 			{
@@ -254,25 +254,25 @@ namespace ngl
 			// 发给actor_client/actor_server
 			// 如果是actor_server结点需要发送给actor_server
 			nguid lguid = nodetypebyguid();
-			lpactorptr = tools::findmap(m_actorbyid, lguid);
-			if (lpactorptr == nullptr)
+			lpactor = tools::findmap(m_actorbyid, lguid);
+			if (lpactor == nullptr)
 			{
 				return lnull;
 			}
 		}
-		return *lpactorptr;
+		return *lpactor;
 	}
 
 	void actor_manage::push_task_id(const nguid& aguid, handle_pram& apram)
 	{
 		ngl_lock_s;
-		ptractor lpptractor = nosafe_get_actorbyid(aguid, apram);
-		if (lpptractor == nullptr || lpptractor->activity_stat() == actor_stat_close)
+		ptractor lpactor = nosafe_get_actorbyid(aguid, apram);
+		if (lpactor == nullptr || lpactor->activity_stat() == actor_stat_close)
 		{
 			std::cout << "push_task_id fail !!!" << std::endl;
 			return;
 		}
-		nosafe_push_task_id(lpptractor, apram);
+		nosafe_push_task_id(lpactor, apram);
 	}
 
 	void actor_manage::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram)
@@ -282,18 +282,18 @@ namespace ngl
 		ptractor lpclient = nullptr;
 		for (i64_actorid actorid : asetguid)
 		{
-			ptractor lpptractor = nosafe_get_actorbyid(actorid, apram);
-			if (lpptractor == nullptr || lpptractor->activity_stat() == actor_stat_close)
+			ptractor lpactor = nosafe_get_actorbyid(actorid, apram);
+			if (lpactor == nullptr || lpactor->activity_stat() == actor_stat_close)
 			{
 				continue;
 			}
-			if (lpptractor->id_guid() == nodetypebyguid())
+			if (lpactor->id_guid() == nodetypebyguid())
 			{
 				lmass = true;
-				lpclient = lpptractor;
+				lpclient = lpactor;
 				continue;
 			}
-			nosafe_push_task_id(lpptractor, apram);
+			nosafe_push_task_id(lpactor, apram);
 		}
 		if (lmass)
 		{
@@ -316,12 +316,12 @@ namespace ngl
 		{
 			// 2.然后发给actor_client，发给其他服务器
 			nguid lguid = nodetypebyguid();
-			ptractor* lpptractor = tools::findmap(m_actorbyid, lguid);
-			if (lpptractor == nullptr)
+			ptractor* lpactor = tools::findmap(m_actorbyid, lguid);
+			if (lpactor == nullptr)
 			{
 				return;
 			}
-			nosafe_push_task_id(*lpptractor, apram);
+			nosafe_push_task_id(*lpactor, apram);
 		}
 		ngl_post;
 	}
