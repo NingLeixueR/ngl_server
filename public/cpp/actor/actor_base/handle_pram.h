@@ -67,7 +67,7 @@ namespace ngl
 		using forwardtype = std::function<void(handle_pram&)>;
 		using callfail = std::function<void()>;
 
-		forwardtype				m_forwardfun	= nullptr;			// 转发函数
+		forwardtype				m_forward		= nullptr;			// 转发函数
 		bool					m_forwardtype	= false;			// 转发给所有类型
 		callfail				m_failfun		= nullptr;			// 如何actor_client都找不到目标actor则调用
 		bool					m_issend		= true;				// 是否会发送给其他进程
@@ -101,11 +101,7 @@ namespace ngl
 			};
 			if constexpr (IS_SEND)
 			{
-				apram.m_forwardfun = lfun;
-			}
-			else
-			{
-				apram.m_forwardfun = nullptr;
+				apram.m_forward = lfun;
 			}
 		}
 
@@ -116,7 +112,7 @@ namespace ngl
 			{
 				handle_send<T>::send_client(adata);
 			};
-			apram.m_forwardfun = lfun;
+			apram.m_forward = lfun;
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
@@ -269,17 +265,17 @@ namespace ngl
 		auto ldata = (np_actor_forward<T, forward_g2c<T>>*)adata.m_data.get();
 		std::vector<i32_actordataid>& luid = ldata->m_data.m_uid;
 		std::vector<i16_area>& lareas = ldata->m_data.m_area;
-		std::set<i32_serverid> lgateway;
+		std::set<i32_serverid> lgateways;
 		for (int i = 0; i < luid.size() && i < lareas.size(); ++i)
 		{
 			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lareas[i], luid[i]);
 			i32_serverid lserverid = handle_pram::gatewayid(lroleactor);
 			if (lserverid > 0)
 			{
-				lgateway.insert(lserverid);
+				lgateways.insert(lserverid);
 			}
 		}
-		for (i32_serverid lserverid : lgateway)
+		for (i32_serverid lserverid : lgateways)
 		{
 			handle_send<np_actor_forward<T, forward_g2c<T>>>::send_server(lserverid, adata);
 		}

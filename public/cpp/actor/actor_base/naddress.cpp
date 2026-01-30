@@ -60,9 +60,9 @@ namespace ngl
 
 	bool naddress::forward(handle_pram& apram)
 	{
-		if (apram.m_forwardfun != nullptr)
+		if (apram.m_forward != nullptr)
 		{
-			apram.m_forwardfun(apram);
+			apram.m_forward(apram);
 		}
 		return true;
 	}
