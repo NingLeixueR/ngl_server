@@ -43,11 +43,15 @@ namespace ngl
 		int32_t												m_sessionid;
 		std::shared_mutex									m_mutex;
 		asio_kcp*											m_asiokcp;
-	private:
-		ptr_se _find(i32_sessionid asession);
 
+		ptr_se _find(i32_sessionid asession);
 		ptr_se _find(const asio_udp_endpoint& aendpoint);
 	public:
+		enum
+		{
+			ekcp_update_intervalms = 10,		// 调用kcp api update的间隔(单位毫秒)
+		};
+
 		session_manage(asio_kcp* asiokcp);
 
 		ptr_se add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridlocal, i64_actorid aactoridremote);

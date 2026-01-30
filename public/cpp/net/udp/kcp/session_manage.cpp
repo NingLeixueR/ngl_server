@@ -25,7 +25,7 @@ namespace ngl
 	}
 
 	session_manage::session_manage(asio_kcp* asiokcp) :
-		m_sessionid(((int32_t)ENET_KCP << 24)),
+		m_sessionid(0),
 		m_asiokcp(asiokcp)
 	{}
 
@@ -34,14 +34,15 @@ namespace ngl
 		std::string lip = aendpoint.address().to_string();
 		i16_port lport = aendpoint.port();
 		monopoly_shared_lock(m_mutex);
-		auto itor = m_dataofendpoint.find(lip);
-		if (itor != m_dataofendpoint.end())
+		auto lpmap = tools::findmap(m_dataofendpoint, lip);
+		if (lpmap != nullptr)
 		{
-			auto itorport = itor->second.find(lport);
-			if (itorport != itor->second.end())
+			auto lpse =  tools::findmap(*lpmap, lport);
+			if (lpmap == nullptr)
 			{
-				return itorport->second;
+				return nullptr;
 			}
+			return *lpse;
 		}
 		if (aconv <= 0)
 		{
@@ -70,8 +71,8 @@ namespace ngl
 		int64_t lcreatems = time_wheel::getms();
 		wheel_parm lparm
 		{
-			.m_ms = 10,
-			.m_intervalms = [](int64_t) {return 10; } ,
+			.m_ms = ekcp_update_intervalms,
+			.m_intervalms = [](int64_t) {return ekcp_update_intervalms; } ,
 			.m_count = 0x7fffffff,
 			.m_fun = [ltemp,lcreatems](const wheel_node*)
 			{
@@ -126,26 +127,29 @@ namespace ngl
 
 	ptr_se session_manage::_find(i32_sessionid asession)
 	{
-		auto itor = m_dataofsession.find(asession);
-		if (itor == m_dataofsession.end())
+		auto lpse = tools::findmap(m_dataofsession, asession);
+		if (lpse == nullptr)
+		{
 			return nullptr;
-		return itor->second;
+		}
+		return *lpse;
 	}
 
 	ptr_se session_manage::_find(const asio_udp_endpoint& aendpoint)
 	{
 		std::string lip = aendpoint.address().to_string();
 		i16_port lport = aendpoint.port();
-		auto itor = m_dataofendpoint.find(lip);
-		if (itor != m_dataofendpoint.end())
+	 	auto lpmap = tools::findmap(m_dataofendpoint, lip);
+		if (lpmap == nullptr)
 		{
-			auto itorport = itor->second.find(lport);
-			if (itorport != itor->second.end())
-			{
-				return itorport->second;
-			}
+			return nullptr;
 		}
-		return nullptr;
+		auto lpse = tools::findmap(*lpmap, lport);
+		if (lpse == nullptr)
+		{
+			return nullptr;
+		}
+		return *lpse;
 	}
 
 	ptr_se session_manage::find(i32_sessionid asession)
@@ -157,12 +161,12 @@ namespace ngl
 	ptr_se session_manage::findbyactorid(i64_actorid aactorid)
 	{
 		monopoly_shared_lock(m_mutex);
-		auto itor = m_actoridofsession.find(aactorid);
-		if (itor == m_actoridofsession.end())
+		auto lpse = tools::findmap(m_actoridofsession, aactorid);
+		if (lpse == nullptr)
 		{
 			return nullptr;
 		}
-		return _find(itor->second);
+		return _find(*lpse);
 	}
 
 	ptr_se session_manage::find(const asio_udp_endpoint& aendpoint)
@@ -184,9 +188,9 @@ namespace ngl
 
 	void session_manage::foreach(const std::function<void(ptr_se&)>& acall)
 	{
-		for (std::pair<const i32_sessionid, ptr_se>& lpair : m_dataofsession)
+		for (auto& [_session, _se] : m_dataofsession)
 		{
-			acall(lpair.second);
+			acall(_se);
 		}
 	}
 

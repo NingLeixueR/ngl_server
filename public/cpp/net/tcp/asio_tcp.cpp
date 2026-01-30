@@ -19,7 +19,13 @@
 
 namespace ngl
 {
-	asio_tcp::asio_tcp(i16_port aport, i32_threadsize athread, const tcp_callback& acallfun, const tcp_closecallback& aclosefun, const tcp_sendfinishcallback& asendfinishfun) :
+	asio_tcp::asio_tcp(
+		i16_port aport
+		, i32_threadsize athread
+		, const tcp_callback& acallfun
+		, const tcp_closecallback& aclosefun
+		, const tcp_sendfinishcallback& asendfinishfun
+	) :
 		m_fun(acallfun),
 		m_closefun(aclosefun),
 		m_sendfinishfun(asendfinishfun),
@@ -38,7 +44,12 @@ namespace ngl
 		accept(false);
 	}
 
-	asio_tcp::asio_tcp(i32_threadsize athread, const tcp_callback& acallfun, const tcp_closecallback& aclosefun, const tcp_sendfinishcallback& asendfinishfun) :
+	asio_tcp::asio_tcp(
+		i32_threadsize athread
+		, const tcp_callback& acallfun
+		, const tcp_closecallback& aclosefun
+		, const tcp_sendfinishcallback& asendfinishfun
+	) :
 		m_fun(acallfun),
 		m_closefun(aclosefun),
 		m_sendfinishfun(asendfinishfun),
@@ -147,7 +158,13 @@ namespace ngl
 	}
 
 	template <typename TPACK>
-	void asio_tcp::async_send(service_tcp* atcp, const std::shared_ptr<std::list<node_pack>>& alist, std::shared_ptr<TPACK>& apack, char* abuff, int32_t abufflen)
+	void asio_tcp::async_send(
+		service_tcp* atcp
+		, const std::shared_ptr<std::list<node_pack>>& alist
+		, std::shared_ptr<TPACK>& apack
+		, char* abuff
+		, int32_t abufflen
+	)
 	{
 		atcp->m_socket.async_send(asio::buffer(abuff, abufflen), [this, alist, atcp, apack](const std::error_code& ec, std::size_t /*length*/)
 			{

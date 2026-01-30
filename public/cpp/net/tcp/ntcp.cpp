@@ -155,6 +155,11 @@ namespace ngl
 		return true;
 	}
 
+	const std::string& ntcp::ip(const net_works& anets)
+	{
+		return nconfig.nodetype() == ROBOT ? anets.m_ip : anets.m_nip;
+	}
+
 	bool ntcp::connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection)
 	{
 		i32_session lsession = server_session::sessionid(aserverid);
@@ -170,7 +175,7 @@ namespace ngl
 			return false;
 		}
 
-		std::tuple<ENET_PROTOCOL, str_ip, i16_port> lpair = std::make_tuple(lnets.m_type, nconfig.nodetype() == ROBOT ? lnets.m_ip : lnets.m_nip, lnets.m_port);
+		std::tuple<ENET_PROTOCOL, str_ip, i16_port> lpair = std::make_tuple(lnets.m_type, ip(lnets), lnets.m_port);
 
 		log_info()->print("Connect Server {}@{}:{}", aserverid, std::get<1>(lpair), std::get<2>(lpair));
 		return connect(std::get<1>(lpair), std::get<2>(lpair), [aserverid, afun](i32_session asession)

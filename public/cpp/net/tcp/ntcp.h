@@ -66,6 +66,9 @@ namespace ngl
 		// # 设置socket关闭后的断线重连,afun:connect的parm3
 		void set_close(int asession, const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun);
 
+		// # 获取服务器ip
+		const std::string& ip(const net_works& anets);
+
 		// # 连接ip:aport
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun);
 
