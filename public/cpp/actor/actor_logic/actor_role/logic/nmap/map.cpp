@@ -105,7 +105,7 @@ namespace ngl
 		// leave Àë¿ªÊÓÒ°
 		for (int32_t id : lgrids1)
 		{
-			if (lgrids2.find(id) == lgrids2.end())
+			if (lgrids2.contains(id))
 			{
 				grid* lpgrid = m_grids.get_grid(id);
 				if (lpgrid != nullptr)
