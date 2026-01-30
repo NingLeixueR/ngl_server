@@ -233,12 +233,12 @@ namespace ngl
 	ptractor& actor_manage::nosafe_get_actor(const nguid& aguid)
 	{
 		static ptractor lnullptr(nullptr);
-		auto itor = m_actorbyid.find(aguid);
-		if (itor == m_actorbyid.end())
+		auto lpactor = tools::findmap(m_actorbyid, aguid);
+		if (lpactor == nullptr)
 		{
 			return lnullptr;
 		}
-		return itor->second;
+		return *lpactor;
 	}
 
 	ptractor& actor_manage::nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram)
