@@ -140,14 +140,14 @@ namespace ngl
 			return;
 		}
 
-		const tab_servers* ltabserver = ttab_servers::instance().const_tab();
-		if (ltabserver == nullptr)
+		const tab_servers* tab = ttab_servers::instance().const_tab();
+		if (tab == nullptr)
 		{
 			tools::no_core_dump();
 			return;
 		}
 
-		lpath = std::format("{}/{}", lpath, ltabserver->m_name);
+		lpath = std::format("{}/{}", lpath, tab->m_name);
 		if (create_directories(lpath) == false)
 		{
 			tools::no_core_dump();
@@ -199,10 +199,18 @@ namespace ngl
 		}
 		m_stream << 
 			std::format(
-				"[{}][name:{},serverid:{},tcount:{}]{}\n[\n{}\n]\n"
-				, ngl::localtime::time2str(alog->m_time, "%H:%M:%S"
-			)
-			,tab->m_name, tab->m_id, tab->m_tcount, alog->m_src, alog->m_data
+				R"(
+[{}][name:{},serverid:{},tcount:{}]{}
+[
+{}
+]
+)"
+				, ngl::localtime::time2str(alog->m_time, "%H:%M:%S")
+				, tab->m_name
+				, tab->m_id
+				, tab->m_tcount
+				, alog->m_src
+				, alog->m_data
 		);
 		++m_count;
 		if (flush_count())

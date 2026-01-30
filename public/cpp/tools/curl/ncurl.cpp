@@ -308,7 +308,8 @@ namespace ngl
 			{
 				log_error()->print("curl callback [{}]", aparm.m_recvdata);
 				lbool = false;
-			});
+			}
+		);
 		ngl::ncurl::send(lhttp);
 		while (lbool)
 		{
