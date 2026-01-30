@@ -15,7 +15,6 @@
 #include "tools.h"
 #include "nkcp.h"
 
-
 namespace ngl
 {
 	i16_port nkcp::kcp_port(int32_t atid, int16_t atcount, pbnet::ENUM_KCP aenum)

@@ -41,6 +41,7 @@ namespace ngl
 		{
 			e_buff_byte = 1500,
 			e_buffrecv_byte = 10240,
+			e_close_intervalms = 1000,
 		};
 	private:
 		session_manage						m_session;

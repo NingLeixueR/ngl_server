@@ -154,8 +154,8 @@ namespace ngl
 				int lession = apstruct->m_session;
 				wheel_parm lparm
 				{
-					.m_ms = 1000,
-					.m_intervalms = [](int64_t) {return 1000; },
+					.m_ms = e_close_intervalms,
+					.m_intervalms = [](int64_t) {return e_close_intervalms; },
 					.m_count = 0x7fffffff,
 					.m_fun = [ap,lession](const wheel_node*)
 					{
@@ -311,7 +311,8 @@ namespace ngl
 				{
 					log_error()->print("sendu err [{}]", ec.message());
 				}
-			});
+			}
+		);
 		return true;
 	}
 
@@ -337,7 +338,8 @@ namespace ngl
 					};
 					m_kcptimer.addtimer(lparm);
 				}
-			});
+			}
+		);
 		return true;
 	}
 
@@ -359,7 +361,8 @@ namespace ngl
 		m_session.foreach([this, &apack](ptr_se& aptr)
 			{
 				send(aptr->m_endpoint, apack->m_buff, apack->m_len);
-			});
+			}
+		);
 		return true;
 	}
 
@@ -368,7 +371,8 @@ namespace ngl
 		m_session.foreach([this, &apack, aarea](ptr_se& aptr)
 			{
 				send(aptr->m_endpoint, apack->m_buff, apack->m_len);
-			});
+			}
+		);
 		return true;
 	}
 

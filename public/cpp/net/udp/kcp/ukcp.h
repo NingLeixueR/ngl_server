@@ -38,8 +38,11 @@ namespace ngl
 		template <typename T>
 		bool send(const std::set<i64_actorid>& aactors, T& adata)
 		{
-			std::shared_ptr<pack> lpack;
-			lpack = net_pack<T>::npack(&m_pool, adata, 0, 0);
+			auto lpack = net_pack<T>::npack(&m_pool, adata, 0, 0);
+			if (lpack == nullptr)
+			{
+				return false;
+			}
 			return send_server(aactors, lpack);
 		}
 
@@ -55,7 +58,7 @@ namespace ngl
 			return m_kcp.send_server(apack);
 		}
 
-		bool send_server(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack)
+		bool send_server(const std::set<i64_actorid>& aactors, const std::shared_ptr<pack>& apack)
 		{
 			for (i64_actorid lactorcliend : aactors)
 			{
@@ -83,13 +86,13 @@ namespace ngl
 			return true;
 		}
 
-		bool send_server(i64_actorid aactor, std::shared_ptr<pack>& apack)
+		bool send_server(i64_actorid aactor, const std::shared_ptr<pack>& apack)
 		{
 			std::set<i64_actorid> lactors = { aactor };
 			return send_server(lactors, apack);
 		}
 
-		bool sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack)
+		bool sendpackbyarea(i16_area aarea, const std::shared_ptr<pack>& apack)
 		{
 			return m_kcp.sendpackbyarea(aarea, apack);
 		}
@@ -131,15 +134,29 @@ namespace ngl
 				{
 					afun(buff, len);
 					lsem->post();
-				});
+				}
+			);
 			lsem->wait();
 			return true;
 		}
 #pragma endregion 
 
 		// ## 发起连接
-		void connect(std::string& akcpsess, i64_actorid aactoridserver, i64_actorid aactoridclient, const std::string& aip, i16_port aport, const std::function<void(i32_session)>& afun);
-		void connect(std::string& akcpsess, i64_actorid aactoridserver, i64_actorid aactoridclient, const asio_udp_endpoint& aendpoint, const std::function<void(i32_session)>& afun);
+		void connect(
+			std::string& akcpsess
+			, i64_actorid aactoridserver
+			, i64_actorid aactoridclient
+			, const std::string& aip
+			, i16_port aport
+			, const std::function<void(i32_session)>& afun
+		);
+		void connect(
+			std::string& akcpsess
+			, i64_actorid aactoridserver
+			, i64_actorid aactoridclient
+			, const asio_udp_endpoint& aendpoint
+			, const std::function<void(i32_session)>& afun
+		);
 
 		// ## 查找session对应的actorid
 		i64_actorid find_actoridserver(i32_session asession);

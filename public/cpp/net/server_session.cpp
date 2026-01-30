@@ -31,10 +31,10 @@ namespace ngl
 			m_server.insert(std::make_pair(aserverid, asession));
 			m_session.insert(std::make_pair(asession, aserverid));
 		}
-		auto ltab = ttab_servers::instance().tab(nnodeid::tid(aserverid));
-		if (ltab != nullptr)
+		auto tab = ttab_servers::instance().tab(nnodeid::tid(aserverid));
+		if (tab != nullptr)
 		{
-			log_error()->print("server_session::add [{}:{}_{}]", nnodeid::tid(aserverid), ltab->m_name, nnodeid::tcount(aserverid));
+			log_error()->print("server_session::add [{}:{}_{}]", nnodeid::tid(aserverid), tab->m_name, nnodeid::tcount(aserverid));
 		}
 	}
 
@@ -43,14 +43,10 @@ namespace ngl
 		i32_serverid lserverid = 0;
 		{
 			lock_write(m_mutex);
-			auto itor = m_session.find(asession);
-			if (itor == m_session.end())
+			if (tools::erasemap(m_session, asession, lserverid))
 			{
-				return;
+				m_server.erase(lserverid);
 			}
-			lserverid = itor->second;
-			m_server.erase(lserverid);
-			m_session.erase(itor);
 		}
 		auto tab = ttab_servers::instance().tab(nnodeid::tid(lserverid));
 		if (tab != nullptr)
@@ -62,23 +58,23 @@ namespace ngl
 	i32_sessionid server_session::sessionid(i32_serverid aserverid)
 	{
 		lock_read(m_mutex);
-		auto itor = m_server.find(aserverid);
-		if (itor == m_server.end())
+		auto lpsessionid = tools::findmap(m_server, aserverid);
+		if (lpsessionid == nullptr)
 		{
 			return -1;
 		}
-		return itor->second;
+		return *lpsessionid;
 	}
 
 	i32_serverid server_session::serverid(i32_sessionid asessionid)
 	{
 		lock_read(m_mutex);
-		auto itor = m_session.find(asessionid);
-		if (itor == m_session.end())
+		auto lpserverid = tools::findmap(m_session, asessionid);
+		if (lpserverid == nullptr)
 		{
 			return -1;
 		}
-		return itor->second;
+		return *lpserverid;
 	}
 
 	bool server_session::serverinfo(i32_serverid aserverid, str_servername& asername)

@@ -35,7 +35,7 @@ namespace ngl
 			{
 				return false;
 			}
-			handle_cmd::function((ecmd)lnum, ap, apstruct, ljson);
+			handle_cmd::function(static_cast<ecmd>(lnum), ap, apstruct, ljson);
 			return true;
 		}
 		catch (...)
