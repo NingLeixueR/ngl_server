@@ -33,13 +33,19 @@ namespace ngl
 		F m_fun;
 	public:
 		template <typename Func>
-		explicit scope_guard(Func&& fun) noexcept(std::is_nothrow_constructible_v<F, Func&&>)
+		explicit scope_guard(Func&& fun) noexcept
 			: m_fun(std::forward<Func>(fun)) 
 		{}
 
-		~scope_guard() noexcept(std::is_nothrow_invocable_v<F>) 
+		~scope_guard() noexcept
 		{
-			m_fun();
+			try
+			{
+				m_fun();
+			}
+			catch (...)
+			{
+			}
 		}
 	};
 
