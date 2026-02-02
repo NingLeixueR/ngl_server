@@ -1,9 +1,7 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 26-01-27 15:54:48
+// 创建时间 26-02-02 15:01:40
 #include "pb_field.cpp"
-#include "session_endpoint.cpp"
 #include "attribute_value.cpp"
-#include "session_manage.cpp"
 #include "server_session.cpp"
 #include "activitytimedb.cpp"
 #include "xml_serialize.cpp"
@@ -15,12 +13,14 @@
 #include "activity_rank.cpp"
 #include "pbname_match.cpp"
 #include "manage_skill.cpp"
+#include "kcp_endpoint.cpp"
 #include "gateway_info.cpp"
 #include "events_logic.cpp"
 #include "xmlprotocol.cpp"
 #include "pb_protocol.cpp"
 #include "ndb_modular.cpp"
 #include "manage_buff.cpp"
+#include "kcp_session.cpp"
 #include "handle_pram.cpp"
 #include "time_wheel.cpp"
 #include "nscript_pb.cpp"

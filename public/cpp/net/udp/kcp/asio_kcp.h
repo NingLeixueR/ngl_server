@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "session_endpoint.h"
-#include "session_manage.h"
+#include "kcp_endpoint.h"
+#include "kcp_session.h"
 #include "threadtools.h"
 #include "time_wheel.h"
 #include "asio_base.h"

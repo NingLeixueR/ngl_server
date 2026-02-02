@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "session_endpoint.h"
+#include "kcp_endpoint.h"
 #include "threadtools.h"
 #include "time_wheel.h"
 #include "asio_base.h"
@@ -28,7 +28,7 @@
 
 namespace ngl
 {
-	using ptr_se = std::shared_ptr<session_endpoint>;
+	using ptr_se = std::shared_ptr<kcp_endpoint>;
 
 	class kcp_session
 	{

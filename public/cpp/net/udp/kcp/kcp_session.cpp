@@ -11,7 +11,7 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "session_manage.h"
+#include "kcp_session.h"
 #include "asio_kcp.h"
 #include "nguid.h"
 
@@ -19,7 +19,7 @@ namespace ngl
 {
 	int udp_output(const char* buf, int len, ikcpcb* kcp, void* user)
 	{
-		const auto lpstruct = (session_endpoint*)user;
+		const auto lpstruct = (kcp_endpoint*)user;
 		lpstruct->m_asiokcp->sendbuff(lpstruct->m_endpoint, buf, len);
 		return len;
 	}
@@ -48,7 +48,7 @@ namespace ngl
 		{
 			return nullptr;
 		}
-		auto ltemp = std::make_shared<session_endpoint>();
+		auto ltemp = std::make_shared<kcp_endpoint>();
 		m_dataofsession[++m_sessionid] = ltemp;
 		ltemp->m_session = m_sessionid;
 		ltemp->m_endpoint = aendpoint;

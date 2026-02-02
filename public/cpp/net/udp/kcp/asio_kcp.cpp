@@ -107,7 +107,7 @@ namespace ngl
 				apstruct->m_actoridclient = lclient;
 				apstruct->m_actoridserver = lserver;
 
-				log_error()->print("kcp connect : {}@{}", session_endpoint::ip(apstruct.get()), session_endpoint::port(apstruct.get()));
+				log_error()->print("kcp connect : {}@{}", kcp_endpoint::ip(apstruct.get()), kcp_endpoint::port(apstruct.get()));
 
 				if (ap->func_connect(apstruct, true))
 				{

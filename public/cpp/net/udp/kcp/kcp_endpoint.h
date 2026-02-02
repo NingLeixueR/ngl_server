@@ -34,7 +34,7 @@ namespace ngl
 
 	extern time_wheel m_kcptimer;
 
-	struct session_endpoint
+	struct kcp_endpoint
 	{
 		asio_udp_endpoint	m_endpoint;
 		i32_sessionid		m_session = 0;
@@ -51,11 +51,11 @@ namespace ngl
 
 		typedef int (*output)(const char* buf, int len, struct IKCPCB* kcp, void* user);
 
-		~session_endpoint();
+		~kcp_endpoint();
 
-		static std::string ip(session_endpoint* ap);
+		static std::string ip(kcp_endpoint* ap);
 
-		static i16_port port(session_endpoint* ap);
+		static i16_port port(kcp_endpoint* ap);
 
 		void create(int32_t aconv, uint32_t asessionid, void* auser);
 
