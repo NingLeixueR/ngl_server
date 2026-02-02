@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "session_manage.h"
+#include "kcp_session.h"
 #include "cmd.h"
 
 namespace ngl

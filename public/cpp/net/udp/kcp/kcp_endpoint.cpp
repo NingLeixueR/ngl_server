@@ -11,7 +11,7 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "session_endpoint.h"
+#include "kcp_endpoint.h"
 #include "asio_kcp.h"
 
 namespace ngl
@@ -24,28 +24,28 @@ namespace ngl
 		}
 	);
 
-	session_endpoint::~session_endpoint()
+	kcp_endpoint::~kcp_endpoint()
 	{
 		removetimer();
 		release();
 	}
 
-	std::string session_endpoint::ip(session_endpoint* ap)
+	std::string kcp_endpoint::ip(kcp_endpoint* ap)
 	{
 		return ap->m_endpoint.address().to_string();
 	}
 
-	i16_port session_endpoint::port(session_endpoint* ap)
+	i16_port kcp_endpoint::port(kcp_endpoint* ap)
 	{
 		return ap->m_endpoint.port();
 	}
 
-	void session_endpoint::create(int32_t aconv, uint32_t asessionid, void* auser)
+	void kcp_endpoint::create(int32_t aconv, uint32_t asessionid, void* auser)
 	{
 		m_kcp = ikcp_create(aconv, auser);
 	}
 
-	void session_endpoint::removetimer()
+	void kcp_endpoint::removetimer()
 	{
 		if (m_timerid != 0)
 		{
@@ -57,52 +57,52 @@ namespace ngl
 		}
 	}
 
-	int session_endpoint::setmtu(int mtu)
+	int kcp_endpoint::setmtu(int mtu)
 	{
 		return ikcp_setmtu(m_kcp, mtu);
 	}
 
-	void session_endpoint::setoutput(output afun)
+	void kcp_endpoint::setoutput(output afun)
 	{
 		m_kcp->output = afun;
 	}
 
-	int session_endpoint::nodelay(int nodelay, int interval, int resend, int nc)
+	int kcp_endpoint::nodelay(int nodelay, int interval, int resend, int nc)
 	{
 		return ikcp_nodelay(m_kcp, nodelay, interval, resend, nc);
 	}
 
-	int session_endpoint::wndsize(int sndwnd, int rcvwnd)
+	int kcp_endpoint::wndsize(int sndwnd, int rcvwnd)
 	{
 		return ikcp_wndsize(m_kcp, sndwnd, rcvwnd);
 	}
 
-	void session_endpoint::update(uint32_t current)
+	void kcp_endpoint::update(uint32_t current)
 	{
 		ikcp_update(m_kcp, current);
 	}
 
-	int session_endpoint::input(const char* data, long size)
+	int kcp_endpoint::input(const char* data, long size)
 	{
 		return ikcp_input(m_kcp, data, size);
 	}
 
-	int session_endpoint::recv(char* buffer, int len)
+	int kcp_endpoint::recv(char* buffer, int len)
 	{
 		return ikcp_recv(m_kcp, buffer, len);
 	}
 
-	int session_endpoint::send(const char* buffer, int len)
+	int kcp_endpoint::send(const char* buffer, int len)
 	{
 		return ikcp_send(m_kcp, buffer, len);
 	}
 
-	void session_endpoint::flush()
+	void kcp_endpoint::flush()
 	{
 		ikcp_flush(m_kcp);
 	}
 
-	void session_endpoint::release()
+	void kcp_endpoint::release()
 	{
 		return ikcp_release(m_kcp);
 	}
