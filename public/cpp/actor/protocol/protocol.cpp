@@ -34,7 +34,9 @@ namespace ngl
 		log_error()->print("protocol::push msg:{} protocolnum:{} name:{}", amsg, aprotocolnum, name(aprotocolnum));
 	}
 
-	void protocol::register_protocol(int aprotocolnumber, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname)
+	void protocol::register_protocol(
+		int aprotocolnumber, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname
+	)
 	{
 		lock_write(m_mutex);
 		pfun& lprotocol = m_protocolfun[aprotocolnumber];
@@ -46,13 +48,13 @@ namespace ngl
 	protocol::pfun* protocol::find(i32_protocolnum aprotocolnum)
 	{
 		lock_read(m_mutex);
-		auto itor = m_protocolfun.find(aprotocolnum);
-		if (itor == m_protocolfun.end())
+		auto lpfun = tools::findmap(m_protocolfun, aprotocolnum);
+		if (lpfun == nullptr)
 		{
 			print("protocol num none", aprotocolnum);
 			return nullptr;
 		}
-		return &itor->second;
+		return lpfun;
 	}
 
 	void protocol::push(std::shared_ptr<pack>& apack)
@@ -72,10 +74,10 @@ namespace ngl
 		auto lactortype = (ENUM_ACTOR)apack->m_head.get_actortype();
 		if (lactortype != nguid::none<ENUM_ACTOR>())
 		{
-			auto itorrun = lpfun->m_runfun.find(lactortype);
-			if (itorrun != lpfun->m_runfun.end())
+			auto lprun = tools::findmap(lpfun->m_runfun, lactortype);
+			if (lprun != nullptr)
 			{
-				itorrun->second(apack, lptrpram);
+				(*lprun)(apack, lptrpram);
 				return;
 			}
 			else 
