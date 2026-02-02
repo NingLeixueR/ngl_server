@@ -12,7 +12,6 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-
 #include "actor_gateway.h"
 #include "protocol.h"
 #include "nguid.h"

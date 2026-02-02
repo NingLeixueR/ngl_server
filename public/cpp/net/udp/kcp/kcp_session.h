@@ -30,11 +30,11 @@ namespace ngl
 {
 	using ptr_se = std::shared_ptr<session_endpoint>;
 
-	class session_manage
+	class kcp_session
 	{
-		session_manage() = delete;
-		session_manage(const session_manage&) = delete;
-		session_manage& operator=(const session_manage&) = delete;
+		kcp_session() = delete;
+		kcp_session(const kcp_session&) = delete;
+		kcp_session& operator=(const kcp_session&) = delete;
 
 		std::map<i32_sessionid, ptr_se>						m_dataofsession;
 		std::map<i64_actorid, i32_sessionid>				m_actoridofsession;		// client/server对应的sessionid
@@ -44,15 +44,15 @@ namespace ngl
 		std::shared_mutex									m_mutex;
 		asio_kcp*											m_asiokcp;
 
-		ptr_se _find(i32_sessionid asession);
-		ptr_se _find(const asio_udp_endpoint& aendpoint);
+		ptr_se find_info(i32_sessionid asession);
+		ptr_se find_info(const asio_udp_endpoint& aendpoint);
 	public:
 		enum
 		{
 			ekcp_update_intervalms = 10,		// 调用kcp api update的间隔(单位毫秒)
 		};
 
-		session_manage(asio_kcp* asiokcp);
+		kcp_session(asio_kcp* asiokcp);
 
 		ptr_se add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridlocal, i64_actorid aactoridremote);
 

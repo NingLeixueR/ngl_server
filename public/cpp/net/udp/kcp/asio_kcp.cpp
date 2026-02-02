@@ -23,7 +23,7 @@ namespace ngl
 {
 	//## [udp_cmd::ecmd_connect]		调用aconnect为true
 	//## [udp_cmd::ecmd_connect_ret]	调用aconnect为false
-	bool asio_kcp::function_econnect(ptr_se& apstruct, bool aconnect)
+	bool asio_kcp::func_connect(ptr_se& apstruct, bool aconnect)
 	{
 		i32_sessionid session = apstruct->m_session;
 		xarg_info const* linfo = nconfig.info();
@@ -84,7 +84,7 @@ namespace ngl
 	}
 
 	//## udp_cmd::ecmd_connect
-	void asio_kcp::function_ecmd_connect()const
+	void asio_kcp::func_ecmd_connect()const
 	{
 		udp_cmd::register_fun(udp_cmd::ecmd_connect, [](asio_kcp* ap, ptr_se& apstruct, const std::string& ajson)
 			{
@@ -92,24 +92,24 @@ namespace ngl
 				apstruct->m_pingtm = (int)localtime::gettime();
 				ncjson ltempjson(ajson.c_str());
 
-				i64_actorid lactoridclient = nguid::make();
-				i64_actorid lactoridserver = nguid::make();
+				i64_actorid lclient = nguid::make();
+				i64_actorid lserver = nguid::make();
 				std::string lsession;
-				if (!njson::pop(ltempjson.json(), { "actoridclient","actoridserver","session" }, lactoridclient, lactoridserver, lsession))
+				if (!njson::pop(ltempjson.json(), { "actoridclient","actoridserver","session" }, lclient, lserver, lsession))
 				{
 					return;
 				}
-				if (ukcp::session_check(lactoridserver, lactoridclient, lsession) == false)
+				if (ukcp::session_check(lserver, lclient, lsession) == false)
 				{
 					return;
 				}
 				
-				apstruct->m_actoridclient = lactoridclient;
-				apstruct->m_actoridserver = lactoridserver;
+				apstruct->m_actoridclient = lclient;
+				apstruct->m_actoridserver = lserver;
 
 				log_error()->print("kcp connect : {}@{}", session_endpoint::ip(apstruct.get()), session_endpoint::port(apstruct.get()));
 
-				if (ap->function_econnect(apstruct, true))
+				if (ap->func_connect(apstruct, true))
 				{
 					udp_cmd::sendcmd(ap, apstruct->m_session, udp_cmd::ecmd_connect_ret, "{}");
 				}
@@ -118,7 +118,7 @@ namespace ngl
 	}
 
 	//## udp_cmd::ecmd_connect_ret
-	void asio_kcp::function_ecmd_connect_ret()const
+	void asio_kcp::func_ecmd_connect_ret()const
 	{
 		udp_cmd::register_fun(udp_cmd::ecmd_connect_ret, [](asio_kcp* ap, ptr_se& apstruct, const std::string& ajson)
 			{
@@ -128,7 +128,7 @@ namespace ngl
 				if (nconfig.nodetype() == ngl::ROBOT)
 				{
 					// 定时发送cmd:ping
-					ap->function_econnect(apstruct, false);
+					ap->func_connect(apstruct, false);
 				}
 				ap->m_connectfun(apstruct->m_session);
 			}
@@ -136,7 +136,7 @@ namespace ngl
 	}
 
 	//## udp_cmd::ecmd_ping
-	void asio_kcp::asio_kcp::function_ecmd_ping()const
+	void asio_kcp::asio_kcp::func_ecmd_ping()const
 	{
 		udp_cmd::register_fun(udp_cmd::ecmd_ping, [](asio_kcp* ap, ptr_se& apstruct, const std::string&)
 			{
@@ -146,7 +146,7 @@ namespace ngl
 	}
 
 	//## udp_cmd::ecmd_close
-	void asio_kcp::function_ecmd_close()const
+	void asio_kcp::func_ecmd_close()const
 	{
 		udp_cmd::register_fun(udp_cmd::ecmd_close, [](asio_kcp* ap, ptr_se& apstruct, const std::string&)
 			{
@@ -174,10 +174,10 @@ namespace ngl
 		, m_session(this)
 		, m_thread([this](){m_context.run();})
 	{
-		function_ecmd_connect();
-		function_ecmd_connect_ret();
-		function_ecmd_ping();
-		function_ecmd_close();
+		func_ecmd_connect();
+		func_ecmd_connect_ret();
+		func_ecmd_ping();
+		func_ecmd_close();
 
 		start();
 	}
@@ -328,8 +328,8 @@ namespace ngl
 					
 					wheel_parm lparm
 					{
-						.m_ms = 1* localtime::MILLISECOND,
-						.m_intervalms = [](int64_t) {return 1* localtime::MILLISECOND; } ,
+						.m_ms = e_waitrecv_intervalms,
+						.m_intervalms = [](int64_t) {return e_waitrecv_intervalms; } ,
 						.m_count = 1,
 						.m_fun = [this, aendpoint, buf, len, afun](const wheel_node*)
 						{
@@ -390,7 +390,6 @@ namespace ngl
 		{
 			return false;
 		}
-
 		send(lpstruct->m_endpoint, apack->m_buff, apack->m_len);
 		return true;
 	}
@@ -402,7 +401,6 @@ namespace ngl
 		{
 			return false;
 		}
-
 		send(lpstruct->m_endpoint, buf, len);
 		return true;
 	}
