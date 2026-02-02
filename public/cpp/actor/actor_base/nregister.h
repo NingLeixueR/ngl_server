@@ -26,10 +26,7 @@ namespace ngl
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived>& nrfun<TDerived>::rfun(const std::function<void(TTTDerived*, message<T>&)>& afun, int32_t aready /*= e_ready_all*/)
 	{	
-		m_fun[tprotocol::protocol<T>()] = nlogicfun
-		{
-			.m_ready = aready,
-			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
+		register_logic(tprotocol::protocol<T>(), aready, [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				message lmessage(athreadid, apram.m_pack, std::static_pointer_cast<T>(apram.m_data));
 				afun((TTTDerived*)aactor, lmessage);
@@ -38,7 +35,7 @@ namespace ngl
 					((TTTDerived*)aactor)->handle_after(apram);
 				}
 			}
-		};
+		);
 		protocol::registry_actor<T>(nactor_type<TDerived>::type(), tools::type_name<T>().c_str());
 		if constexpr (!is_protobuf_message<T>::value)
 		{
@@ -51,10 +48,7 @@ namespace ngl
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived>& nrfun<TDerived>::rfun_nonet(const Tfun<TTTDerived, T> afun, int32_t aready /*= e_ready_all*/)
 	{
-		m_fun[tprotocol::protocol<T>()] = nlogicfun
-		{
-			.m_ready = aready,
-			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
+		register_logic(tprotocol::protocol<T>(), aready, [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				message lmessage(athreadid, apram.m_pack, std::static_pointer_cast<T>(apram.m_data));
 				(((TTTDerived*)(aactor))->*afun)(lmessage);
@@ -63,7 +57,7 @@ namespace ngl
 					((TTTDerived*)aactor)->handle_after(apram);
 				}
 			}
-		};
+		);
 		return *this;
 	}
 
@@ -89,15 +83,13 @@ namespace ngl
 	nrfun<TDerived>& nrfun<TDerived>::rfun_c2g(const Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>> afun)
 	{
 		using type_forward_c2g = np_actor_forward<T, forward_c2g<forward>>;
-		m_fun[tprotocol::protocol<np_actor_forward<T, forward_c2g<forward>>>()] = nlogicfun
-		{
-			.m_ready = e_ready_null,
-			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
+		register_logic(tprotocol::protocol<np_actor_forward<T, forward_c2g<forward>>>(), e_ready_null
+			, [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				message lmessage(athreadid, apram.m_pack, (type_forward_c2g*)apram.m_data.get());
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
-		};
+		);
 		protocol::registry_actor_c2g<T>(nactor_type<TDerived>::type(), tprotocol::protocol<type_forward_c2g>(), tools::type_name<type_forward_c2g>().c_str());
 		return *this;
 	}
@@ -107,15 +99,13 @@ namespace ngl
 	nrfun<TDerived>& nrfun<TDerived>::rfun_g2c(const Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>> afun)
 	{
 		using type_forward_g2c = np_actor_forward<T, forward_g2c<forward>>;
-		m_fun[tprotocol::protocol<np_actor_forward<T, forward_g2c<forward>>>()] = nlogicfun
-		{
-			.m_ready = e_ready_null,
-			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
+		register_logic(tprotocol::protocol<np_actor_forward<T, forward_g2c<forward>>>(), e_ready_null
+			, [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				message lmessage(athreadid, apram.m_pack, (type_forward_g2c*)apram.m_data.get());
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
-		};
+		);
 		protocol::registry_actor_g2c<T>(nactor_type<TDerived>::type(), tprotocol::protocol<type_forward_g2c>(), tools::type_name<type_forward_g2c>().c_str());
 		return *this;
 	}

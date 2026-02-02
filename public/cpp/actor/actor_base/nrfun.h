@@ -35,9 +35,11 @@ namespace ngl
 	{
 		nrfunbase(const nrfunbase&) = delete;
 		nrfunbase& operator=(const nrfunbase&) = delete;
-	protected:
+
 		std::map<i32_protocolnum, nlogicfun>	m_fun;				// key:协议号 value:处理方法
 		tnotfindfun								m_notfindfun;		// 如果在m_fun没有查找到处理方法,则使用其处理
+	protected:
+		void register_logic(i32_protocolnum aprotocol, int32_t aready, const tlogicfun& afun);
 	public:
 		nrfunbase() = default;
 
