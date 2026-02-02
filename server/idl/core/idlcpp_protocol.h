@@ -346,26 +346,29 @@ namespace ngl
 {
 	class autoactor
 	{
-		template <typename TACTOR>
-		static void func(ENUM_ACTOR ENUM)
+		template <typename ...ARG>
+		struct funcx
 		{
-			em<ENUM_ACTOR>::set(ENUM, tools::type_name<TACTOR>().c_str());
-			nactor_type<TACTOR>::inits(ENUM);
-		}
+			template <typename TACTOR>
+			static void f(ENUM_ACTOR ENUM)
+			{
+				em<ENUM_ACTOR>::set(ENUM, tools::type_name<TACTOR>().c_str());
+				nactor_type<TACTOR>::inits(ENUM);
+			}
 
-		template <typename ...ARG, int32_t... INDEX>
-		static void func(std::index_sequence<INDEX...>,const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs)
-		{
-			(func<ARG>(aENUMs[INDEX]), ...);
-		}
-
+			template <std::size_t... INDEX>
+			static void f(std::index_sequence<INDEX...>, const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs)
+			{
+				(f<ARG>(aENUMs[INDEX]), ...);
+			}
+		};
 	public:
 		template <typename ...ARG>
 		static void func(const std::array<ENUM_ACTOR, sizeof ...(ARG)>& aENUMs)
 		{
-			func<ARG...>(std::make_index_sequence<sizeof...(ARG)>{}, aENUMs);
+			funcx<ARG...>::f(std::make_index_sequence<sizeof...(ARG)>{}, aENUMs);
 		}
-	};	
+	};
 }//namespace ngl
 )";
 		std::map<std::string, idl_file>& lmap = idl::instance().data();
