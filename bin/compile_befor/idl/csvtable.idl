@@ -651,3 +651,12 @@ struct tab_ranklist
 	int32_t m_everypagecount;					// [index:5][load:y] 每页展示结点数量
 	int32_t m_minvalue;							// [index:6][load:y] 最小入榜值
 };
+
+struct tab_filterword
+{
+	int32_t m_id;								// [index:0][load:y] 屏蔽字id
+	string m_name;								// [index:1][load:y] 名字 
+	string m_remarks;							// [index:2][load:n] 备注
+
+	string m_content;							// [index:3][load:y] 屏蔽字串 
+};
