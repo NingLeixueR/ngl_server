@@ -42,7 +42,6 @@ namespace ngl
 	{
 		std::list<handle_pram>						m_list;							// 待处理消息列表
 		std::map<int32_t, std::list<handle_pram>>	m_hightlist;					// 待处理消息列表(高特权)
-		std::map<int32_t, std::list<handle_pram>>	m_localhightlist;				// 正在处理消息列表(高特权)	
 		actor_stat									m_stat = actor_stat_init;		// actor状态
 		std::shared_mutex							m_mutex;						// 锁:[m_list:待处理消息列表]
 		int32_t										m_weight = 0;					// 权重
