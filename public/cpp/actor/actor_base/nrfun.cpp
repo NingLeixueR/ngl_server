@@ -33,8 +33,8 @@ namespace ngl
 
 	bool nrfunbase::handle_switch(actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 	{
-		auto itor = m_fun.find(apram.m_enum);
-		if (itor == m_fun.end())
+		auto lpfun = tools::findmap(m_fun, apram.m_enum);
+		if (lpfun == nullptr)
 		{
 			if (aactor->type() != ACTOR_CLIENT && aactor->type() != ACTOR_SERVER)
 			{
@@ -45,20 +45,19 @@ namespace ngl
 				}
 				else
 				{
-					log_error()->print("{}::handle_switch  m_fun.find({}:{}) == end", aactor->guid(), apram.m_enum, lpinfo->m_name);					
-				}				
+					log_error()->print("{}::handle_switch  m_fun.find({}:{}) == end", aactor->guid(), apram.m_enum, lpinfo->m_name);
+				}
 			}
 			return false;
 		}
-
-		if (itor->second.m_ready != e_ready_null && !aactor->ready().is_ready(itor->second.m_ready))
+		if (lpfun->m_ready != e_ready_null && !aactor->ready().is_ready(lpfun->m_ready))
 		{
-			log_error()->print("{}::handle_switch isloadfinish() == {}", aactor->guid(), itor->second.m_ready);
+			log_error()->print("{}::handle_switch isloadfinish() == {}", aactor->guid(), lpfun->m_ready);
 			return false;
 		}
 		nconsuming lconsuming(std::format("{}-{}-{}", aactor->guid(), apram.m_enum, tprotocol::name(apram.m_enum)));
 		lconsuming.start();
-		itor->second.m_fun(aactor, athreadid, apram);
+		lpfun->m_fun(aactor, athreadid, apram);
 		if (aactor->type() != ACTOR_LOG)
 		{
 			lconsuming.finish();
