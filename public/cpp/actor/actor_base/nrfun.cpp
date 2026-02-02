@@ -65,4 +65,13 @@ namespace ngl
 		}
 		return true;
 	}
+
+	void nrfunbase::register_logic(i32_protocolnum aprotocol, int32_t aready, const tlogicfun& afun)
+	{
+		m_fun[aprotocol] = nlogicfun
+		{
+			.m_ready = aready,
+			.m_fun = afun
+		};
+	}
 }//namespace ngl

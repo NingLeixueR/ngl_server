@@ -56,73 +56,83 @@ namespace ngl
 			if (isbroadcast())
 			{
 				// # 注册广播处理函数
-				register_actornonet<TDerived, np_actor_broadcast>(e_ready_all, (Tfun<actor, np_actor_broadcast>) & actor::handle_broadcast);
+				register_actornonet<TDerived, np_actor_broadcast>(
+					e_ready_all, (Tfun<actor, np_actor_broadcast>) & actor::handle_broadcast
+				);
 			}
 			// # 注册actor close处理函数
-			register_actornonet<TDerived, np_actor_close>(e_ready_all, (Tfun<actor, np_actor_close>) & actor::handle_close);
+			register_actornonet<TDerived, np_actor_close>(
+				e_ready_all, (Tfun<actor, np_actor_close>) & actor::handle_close
+			);
+		}
+
+		template <typename TDerived>
+		static nrfun<TDerived>& nrf()
+		{
+			return nrfun<TDerived>::instance();
 		}
 
 		// # 注册定时器
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, np_timerparm> afun = &TDerived::timer_handle)
 		{
-			nrfun<TDerived>::instance().template rfun_nonet<TDerived, np_timerparm>(afun, e_ready_all);
+			nrf<TDerived>().template rfun_nonet<TDerived, np_timerparm>(afun, e_ready_all);
 		}
 
 		// # 用来注册匿名函数挂载在对应actor上
 		template <typename TDerived, typename T>
 		static void register_actor_s(int32_t aready, const std::function<void(TDerived*, const message<T>&)>& afun)
 		{
-			nrfun<TDerived>::instance().template rfun<TDerived, T>(afun, aready);
+			nrf<TDerived>().template rfun<TDerived, T>(afun, aready);
 		}
 
 		// # 注册actor成员函数(可以是非handle)
 		template <typename TDerived, typename ...ARG>
 		static void register_actor(int32_t aready, ARG... afun)
 		{
-			(nrfun<TDerived>::instance().template rfun<TDerived, ARG>(afun, aready), ...);
+			(nrf<TDerived>().template rfun<TDerived, ARG>(afun, aready), ...);
 		}
 
 		// # 与register_actor类似 只不过不注册网络层
 		template <typename TDerived, typename T>
 		static void register_actornonet(enum_ready aready, const Tfun<TDerived, T> afun)
 		{
-			nrfun<TDerived>::instance().template rfun_nonet<TDerived, T>(afun, aready);
+			nrf<TDerived>().template rfun_nonet<TDerived, T>(afun, aready);
 		}
 
 		// # 注册actor handle函数
 		template <typename TDerived, typename ...ARG>
 		static void register_handle(enum_ready aready)
 		{
-			(nrfun<TDerived>::instance().template rfun<TDerived, ARG>((Tfun<TDerived, ARG>) & TDerived::handle, aready), ...);
+			(nrf<TDerived>().template rfun<TDerived, ARG>((Tfun<TDerived, ARG>) & TDerived::handle, aready), ...);
 		}
 
 		// # 注册actor handle函数
 		template <typename TDerived, typename ...ARG>
 		static void register_script_handle(enum_ready aready)
 		{
-			(nrfun<TDerived>::instance().template rfun<actor, ARG>((Tfun<actor, ARG>) & actor::handle_script<ARG>, aready), ...);
+			(nrf<TDerived>().template rfun<actor, ARG>((Tfun<actor, ARG>) & actor::handle_script<ARG>, aready), ...);
 		}
 
 		// # actor_gateway_c2g 注册转发
 		template <typename TDerived, typename ...ARG>
 		static void register_forward_c2g()
 		{
-			(nrfun<TDerived>::instance().template rfun_c2g<ARG>((Tfun<TDerived, np_actor_forward<ARG, forward_c2g<forward>>>) & TDerived::handle), ...);
+			(nrf<TDerived>().template rfun_c2g<ARG>((Tfun<TDerived, np_actor_forward<ARG, forward_c2g<forward>>>) & TDerived::handle), ...);
 		}
 		
 		// # register_forward_g2c 注册转发
 		template <typename TDerived, typename ...ARG>
 		static void register_forward_g2c()
 		{
-			(nrfun<TDerived>::instance().template rfun_g2c<ARG>((Tfun<TDerived, np_actor_forward<ARG, forward_g2c<forward>>>) & TDerived::handle), ...);
+			(nrf<TDerived>().template rfun_g2c<ARG>((Tfun<TDerived, np_actor_forward<ARG, forward_g2c<forward>>>) & TDerived::handle), ...);
 		}
 
 		// # actor_role 注册二次转发
 		template <typename TDerived, ENUM_ACTOR ACTOR, typename ...ARG>
 		static void register_secondary_forward_c2g()
 		{
-			(nrfun<TDerived>::instance().template rfun<TDerived, ARG>((Tfun<TDerived, ARG>) & TDerived::template handle_forward<ACTOR, ARG>, e_ready_all), ...);
+			(nrf<TDerived>().template rfun<TDerived, ARG>((Tfun<TDerived, ARG>) & TDerived::template handle_forward<ACTOR, ARG>, e_ready_all), ...);
 		}
 
 		explicit actor(const actorparm& aparm);
