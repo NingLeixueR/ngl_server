@@ -72,12 +72,7 @@ namespace ngl
 
 	void actor::push(handle_pram& apram)
 	{
-		int8_t highvalue = 0;
-		const tprotocol::info* lpinfo = tprotocol::get(apram.m_enum);
-		if (lpinfo != nullptr)
-		{
-			highvalue = lpinfo->m_highvalue;
-		}
+		int8_t highvalue = tprotocol::highvalue(apram.m_enum);
 		monopoly_shared_lock(m_mutex);
 		if (highvalue <= 0)
 		{
@@ -112,22 +107,23 @@ namespace ngl
 	void actor::actor_handle(i32_threadid athreadid)
 	{
 		std::list<handle_pram> locallist;
+		std::map<int32_t, std::list<handle_pram>>	localhightlist;
 		{
 			monopoly_shared_lock(m_mutex);
-			m_hightlist.swap(m_localhightlist);
+			m_hightlist.swap(localhightlist);
 			m_list.swap(locallist);
 		}
 
-		if (!m_localhightlist.empty())
+		if (!localhightlist.empty())
 		{
-			for (auto& [_hight, _list] : m_localhightlist)
+			for (auto& [_hight, _list] : localhightlist)
 			{
 				for (auto& _harm : _list)
 				{
 					ahandle(athreadid, _harm);
 				}
 			}
-			m_localhightlist.clear();
+			localhightlist.clear();
 		}
 		
 		auto llistcount = (int32_t)locallist.size();

@@ -193,9 +193,9 @@ namespace ngl
 			return lpinfo->m_protocol;
 		}
 
-		static info* get(i32_protocolnum aprotocolnum)
+		static info* get(i32_protocolnum aprotocol)
 		{
-			info** linfo = tools::findmap(m_protocol, aprotocolnum);
+			info** linfo = tools::findmap(m_protocol, aprotocol);
 			if (linfo == nullptr)
 			{
 				return nullptr;
@@ -204,14 +204,24 @@ namespace ngl
 		}
 
 		// # 根据协议号获取协议名称
-		static const char* name(i32_protocolnum aprotocolnum)
+		static const char* name(i32_protocolnum aprotocol)
 		{
-			info* linfo = get(aprotocolnum);
+			info* linfo = get(aprotocol);
 			if (linfo == nullptr)
 			{
 				return "none";
 			}
 			return linfo->m_name.c_str();
+		}
+
+		static int8_t highvalue(i32_protocolnum aprotocol)
+		{
+			info* linfo = get(aprotocol);
+			if (linfo == nullptr)
+			{
+				return -1;
+			}
+			return linfo->m_highvalue;
 		}
 
 		// # 获取当前进程已注册的所有协议
