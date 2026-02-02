@@ -60,7 +60,9 @@ namespace ngl
 		static void print(const char* amsg, i32_protocolnum aprotocolnum);
 
 		// # 注册网络协议
-		static void register_protocol(int aprotocolnumber, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname);
+		static void register_protocol(
+			int aprotocolnumber, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname
+		);
 
 		// # 解析网络数据包[net pack],交付给上层逻辑 
 		static void push(std::shared_ptr<pack>& apack);
