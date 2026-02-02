@@ -1,4 +1,5 @@
 #include "xmlprotocol.h"
+#include "nfilterword.h"
 #include "bi_item.h"
 #include "dbredis.h"
 #include "ncurl.h"
@@ -67,5 +68,7 @@ namespace ngl
 		}
 
 		//test_hiredis();
+
+		test_nfilterword();
 	}
 }
