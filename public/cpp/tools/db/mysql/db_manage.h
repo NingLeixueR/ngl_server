@@ -33,6 +33,7 @@ namespace ngl
 		F m_fun;
 	public:
 		template <typename Func>
+		requires (!std::same_as<std::remove_cvref_t<Func>, scope_guard<F>>)
 		explicit scope_guard(Func&& fun) noexcept
 			: m_fun(std::forward<Func>(fun)) 
 		{}
