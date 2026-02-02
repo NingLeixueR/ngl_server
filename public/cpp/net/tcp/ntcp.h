@@ -27,7 +27,6 @@
 #include <vector>
 #include <memory>
 
-
 namespace ngl
 {
 	class ntcp
@@ -43,6 +42,8 @@ namespace ngl
 	private:
 		bool socket_recv(service_io* ap, const char* abuff, int32_t abufflen);
 	public:
+		// # 并非强制单例，也可以添加instance1....n
+		// # 扩展单进程中监听端口的数量
 		static ntcp& instance()
 		{
 			static ntcp ltemp;
@@ -54,6 +55,7 @@ namespace ngl
 		// # 监听端口 线程数量
 		bool init(i16_port aport, i32_threadsize asocketthreadnum, bool	aouternet);
 
+		// # 监听端口
 		i16_port port();
 
 		// # 关闭socket连接以及加载的数据
@@ -72,12 +74,14 @@ namespace ngl
 		// # 连接ip:aport
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun);
 
+		// # 尝试连接指定ip/port
 		// # aip/aport		要连接的ip/端口
 		// # afun			连接回调
 		// # await			是否等待连接成功
 		// # areconnection	断线是否重连
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection);
 
+		// # 尝试连接指定服务器
 		bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection);
 		
 		// # 发送消息

@@ -41,10 +41,11 @@ namespace ngl
 		{
 			e_buff_byte = 1500,
 			e_buffrecv_byte = 10240,
-			e_close_intervalms = 1000,
+			e_close_intervalms = 1* localtime::MILLISECOND,
+			e_waitrecv_intervalms = 1* localtime::MILLISECOND,
 		};
 	private:
-		session_manage						m_session;
+		kcp_session						m_session;
 		std::function<void(i32_session)>	m_connectfun = nullptr;
 		bpool								m_pool;
 		asio::io_context					m_context;
@@ -62,15 +63,15 @@ namespace ngl
 
 		~asio_kcp() = default;
 	private:
-		bool function_econnect(ptr_se& apstruct, bool aconnect);
+		bool func_connect(ptr_se& apstruct, bool aconnect);
 
-		void function_ecmd_connect()const;
+		void func_ecmd_connect()const;
 
-		void function_ecmd_connect_ret()const;
+		void func_ecmd_connect_ret()const;
 
-		void function_ecmd_ping()const;
+		void func_ecmd_ping()const;
 
-		void function_ecmd_close()const;
+		void func_ecmd_close()const;
 	public:
 		// # 发送原始udp包
 		bool sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len);

@@ -24,12 +24,12 @@ namespace ngl
 		return len;
 	}
 
-	session_manage::session_manage(asio_kcp* asiokcp) :
+	kcp_session::kcp_session(asio_kcp* asiokcp) :
 		m_sessionid(0),
 		m_asiokcp(asiokcp)
 	{}
 
-	ptr_se session_manage::add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridclient, i64_actorid aactoridserver)
+	ptr_se kcp_session::add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridclient, i64_actorid aactoridserver)
 	{
 		std::string lip = aendpoint.address().to_string();
 		i16_port lport = aendpoint.port();
@@ -83,18 +83,18 @@ namespace ngl
 		return ltemp;
 	}
 
-	ptr_se session_manage::reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridlocal, i64_actorid aactoridremote)
+	ptr_se kcp_session::reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridlocal, i64_actorid aactoridremote)
 	{
 		erase(aendpoint);
 		return add(aconv, aendpoint, aactoridlocal, aactoridremote);
 	}
 
-	void session_manage::erase(const asio_udp_endpoint& aendpoint)
+	void kcp_session::erase(const asio_udp_endpoint& aendpoint)
 	{
 		std::string lip = aendpoint.address().to_string();
 		i16_port lport = aendpoint.port();
 		monopoly_shared_lock(m_mutex);
-		ptr_se lpstruct = _find(aendpoint);
+		ptr_se lpstruct = find_info(aendpoint);
 		if (lpstruct == nullptr)
 		{
 			return;
@@ -108,10 +108,10 @@ namespace ngl
 		m_dataofsession.erase(lpstruct->m_session);
 	}
 
-	void session_manage::erase(i32_sessionid asession)
+	void kcp_session::erase(i32_sessionid asession)
 	{
 		monopoly_shared_lock(m_mutex);
-		ptr_se lpstruct = _find(asession);
+		ptr_se lpstruct = find_info(asession);
 		if (lpstruct == nullptr)
 		{
 			return;
@@ -125,7 +125,7 @@ namespace ngl
 		m_dataofsession.erase(asession);
 	}
 
-	ptr_se session_manage::_find(i32_sessionid asession)
+	ptr_se kcp_session::find_info(i32_sessionid asession)
 	{
 		auto lpse = tools::findmap(m_dataofsession, asession);
 		if (lpse == nullptr)
@@ -135,7 +135,7 @@ namespace ngl
 		return *lpse;
 	}
 
-	ptr_se session_manage::_find(const asio_udp_endpoint& aendpoint)
+	ptr_se kcp_session::find_info(const asio_udp_endpoint& aendpoint)
 	{
 		std::string lip = aendpoint.address().to_string();
 		i16_port lport = aendpoint.port();
@@ -152,13 +152,13 @@ namespace ngl
 		return *lpse;
 	}
 
-	ptr_se session_manage::find(i32_sessionid asession)
+	ptr_se kcp_session::find(i32_sessionid asession)
 	{
 		monopoly_shared_lock(m_mutex);
-		return _find(asession);
+		return find_info(asession);
 	}
 
-	ptr_se session_manage::findbyactorid(i64_actorid aactorid)
+	ptr_se kcp_session::findbyactorid(i64_actorid aactorid)
 	{
 		monopoly_shared_lock(m_mutex);
 		auto lpse = tools::findmap(m_actoridofsession, aactorid);
@@ -166,19 +166,19 @@ namespace ngl
 		{
 			return nullptr;
 		}
-		return _find(*lpse);
+		return find_info(*lpse);
 	}
 
-	ptr_se session_manage::find(const asio_udp_endpoint& aendpoint)
+	ptr_se kcp_session::find(const asio_udp_endpoint& aendpoint)
 	{
 		monopoly_shared_lock(m_mutex);
-		return _find(aendpoint);
+		return find_info(aendpoint);
 	}
 
-	asio_udp_endpoint* session_manage::find_endpoint(i32_sessionid asession)
+	asio_udp_endpoint* kcp_session::find_endpoint(i32_sessionid asession)
 	{
 		monopoly_shared_lock(m_mutex);
-		ptr_se lpstruct = _find(asession);
+		ptr_se lpstruct = find_info(asession);
 		if (lpstruct == nullptr)
 		{
 			return nullptr;
@@ -186,7 +186,7 @@ namespace ngl
 		return &lpstruct->m_endpoint;
 	}
 
-	void session_manage::foreach(const std::function<void(ptr_se&)>& acall)
+	void kcp_session::foreach(const std::function<void(ptr_se&)>& acall)
 	{
 		for (auto& [_session, _se] : m_dataofsession)
 		{
@@ -194,7 +194,7 @@ namespace ngl
 		}
 	}
 
-	void session_manage::foreachbyarea(i16_area aarea, const std::function<void(ptr_se&)>& acall)
+	void kcp_session::foreachbyarea(i16_area aarea, const std::function<void(ptr_se&)>& acall)
 	{
 		for (std::pair<const i64_actorid, i32_sessionid>& lpair : m_actoridofsession)
 		{
