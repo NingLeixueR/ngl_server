@@ -16,7 +16,6 @@
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "ndb_modular.h"
-#include "ncsv.h"
 #include "nprotocol.h"
 #include "db_manage.h"
 #include "ndbclient.h"
@@ -25,6 +24,7 @@
 #include "briefdb.h"
 #include "ntimer.h"
 #include "net.pb.h"
+#include "ncsv.h"
 #include "ntcp.h"
 #include "db.h"
 
