@@ -55,13 +55,13 @@ namespace ngl
 		template <typename T>
 		bool handle_switch(actor_base* aactor, std::shared_ptr<T>& aparm)
 		{
-			auto itor = m_fun.find(tprotocol::protocol<T>());
-			if (itor == m_fun.end())
+			auto lpfun = tools::findmap(m_fun, tprotocol::protocol<T>());
+			if (lpfun == nullptr)
 			{
 				return false;
 			}
 			handle_pram lpram = handle_pram::create<T, false>(nguid::make(), nguid::make(), aparm);
-			itor->second.m_fun(aactor, -1, lpram);
+			lpfun->m_fun(aactor, -1, lpram);
 		}
 	};
 
