@@ -43,70 +43,31 @@ std::ostream& operator<<(std::ostream& os, const std::wstring& u8_str)
 namespace ngl
 {
     void test_nfilterword()
-    {
-        //////utf8
+    {        
         {
-            // 1. 创建过滤器（替换符为*，大小写不敏感）
-            nfilterword<std::u8string>::instance().init();
-
-            // 2. 加载屏蔽字库
-            std::vector<std::u8string> filterWords = {
-                u8"敏感词", u8"脏话", u8"123456", u8"Test" // 测试大小写不敏感
+            nfilterword<std::string>::instance().init();
+            std::vector<std::string> filterWords = {
+                "敏感词", "脏话", "123456", "Test"
             };
             for (auto& wiord : filterWords)
             {
-                nfilterword<std::u8string>::instance().load(wiord);
+                nfilterword<std::string>::instance().load(wiord);
             }
 
-            nfilterword<std::u8string>::instance().build();
+            nfilterword<std::string>::instance().build();
 
-            // 3. 测试过滤不同文本
-            std::vector<std::u8string> testTexts = {
-                u8"敏感词测试",
-                u8"不要说脏话！",
-                u8"密码是123456，注意保密",
-                u8"TEST大小写也会被过滤", // 测试大小写不敏感
-                u8"无屏蔽字的正常文本",
-                u8"嵌套屏蔽字：敏感词123456" // 测试嵌套屏蔽字
+            std::vector<std::string> testTexts = {
+                "敏感词测试",
+                "不要说脏话！",
+                "密码是123456，注意保密",
+                "TEST大小写也会被过滤",
+                "无屏蔽字的正常文本",
+                "嵌套屏蔽字：敏感词123456"
             };
 
-            // 4. 输出过滤结果
-            for (const std::u8string& text : testTexts)
+            for (const std::string& text : testTexts)
             {
-                std::u8string filtered = nfilterword<std::u8string>::instance().filter(text);
-                std::cout << "原文本：" << text << "\n过滤后：" << filtered << std::endl;
-            }
-        }
-        {
-            setlocale(LC_ALL, "zh_CN.UTF-8");
-            // 1. 创建过滤器（替换符为*，大小写不敏感）
-            nfilterword<std::wstring>::instance().init();
-
-            // 2. 加载屏蔽字库
-            std::vector<std::wstring> filterWords = {
-                L"敏感词", L"脏话", L"123456", L"Test" // 测试大小写不敏感
-            };
-            for (auto& wiord : filterWords)
-            {
-                nfilterword<std::wstring>::instance().load(wiord);
-            }
-
-            nfilterword<std::wstring>::instance().build();
-
-            // 3. 测试过滤不同文本
-            std::vector<std::wstring> testTexts = {
-                L"敏感词测试",
-                L"不要说脏话！",
-                L"密码是123456，注意保密",
-                L"TEST大小写也会被过滤", // 测试大小写不敏感
-                L"无屏蔽字的正常文本",
-                L"嵌套屏蔽字：敏感词123456" // 测试嵌套屏蔽字
-            };
-
-            // 4. 输出过滤结果
-            for (const std::wstring& text : testTexts)
-            {
-                auto filtered = nfilterword<std::wstring>::instance().filter(text);
+                auto filtered = nfilterword<std::string>::instance().filter(text);
                 std::cout << "原文本：" << text << "\n过滤后：" << filtered << std::endl;
             }
         }
