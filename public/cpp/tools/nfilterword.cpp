@@ -1,20 +1,20 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* é¡¹ç›®åç§°ï¼šngl_server
-* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
+* ÏîÄ¿Ãû³Æ£ºngl_server
+* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
 * 
-* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
-* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
-* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
+* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
+* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
+* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
 * 
-* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
+* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
 #include "nfilterword.h"
 
-// ========== é‡è½½ operator<<ï¼Œè®© cout æ”¯æŒ std::u8string ==========
+// ========== ÖØÔØ operator<<£¬ÈÃ cout Ö§³Ö std::u8string ==========
 std::ostream& operator<<(std::ostream& os, const std::u8string& u8_str) 
 {
     std::string ltemp;
@@ -26,7 +26,7 @@ std::ostream& operator<<(std::ostream& os, const std::u8string& u8_str)
     ngl::tools::utf82wasscii(ltemp, lws);
     std::string lasscii;
     ngl::tools::wasscii2asscii(lws, lasscii);
-    // è½¬æ¢ä¸º const char* å¹¶è¾“å‡º
+    // ×ª»»Îª const char* ²¢Êä³ö
     os << lasscii;
     return os;
 }
@@ -35,7 +35,7 @@ std::ostream& operator<<(std::ostream& os, const std::wstring& u8_str)
 {
     std::string lasscii;
     ngl::tools::wasscii2asscii(u8_str, lasscii);
-    // è½¬æ¢ä¸º const char* å¹¶è¾“å‡º
+    // ×ª»»Îª const char* ²¢Êä³ö
     os << lasscii;
     return os;
 }
@@ -46,12 +46,12 @@ namespace ngl
     {
         //////utf8
         {
-            // 1. åˆ›å»ºè¿‡æ»¤å™¨ï¼ˆæ›¿æ¢ç¬¦ä¸º*ï¼Œå¤§å°å†™ä¸æ•æ„Ÿï¼‰
+            // 1. ´´½¨¹ıÂËÆ÷£¨Ìæ»»·ûÎª*£¬´óĞ¡Ğ´²»Ãô¸Ğ£©
             nfilterword<std::u8string>::instance().init();
 
-            // 2. åŠ è½½å±è”½å­—åº“
+            // 2. ¼ÓÔØÆÁ±Î×Ö¿â
             std::vector<std::u8string> filterWords = {
-                u8"æ•æ„Ÿè¯", u8"è„è¯", u8"123456", u8"Test" // æµ‹è¯•å¤§å°å†™ä¸æ•æ„Ÿ
+                u8"Ãô¸Ğ´Ê", u8"Ôà»°", u8"123456", u8"Test" // ²âÊÔ´óĞ¡Ğ´²»Ãô¸Ğ
             };
             for (auto& wiord : filterWords)
             {
@@ -60,31 +60,31 @@ namespace ngl
 
             nfilterword<std::u8string>::instance().build();
 
-            // 3. æµ‹è¯•è¿‡æ»¤ä¸åŒæ–‡æœ¬
+            // 3. ²âÊÔ¹ıÂË²»Í¬ÎÄ±¾
             std::vector<std::u8string> testTexts = {
-                u8"æ•æ„Ÿè¯æµ‹è¯•",
-                u8"ä¸è¦è¯´è„è¯ï¼",
-                u8"å¯†ç æ˜¯123456ï¼Œæ³¨æ„ä¿å¯†",
-                u8"TESTå¤§å°å†™ä¹Ÿä¼šè¢«è¿‡æ»¤", // æµ‹è¯•å¤§å°å†™ä¸æ•æ„Ÿ
-                u8"æ— å±è”½å­—çš„æ­£å¸¸æ–‡æœ¬",
-                u8"åµŒå¥—å±è”½å­—ï¼šæ•æ„Ÿè¯123456" // æµ‹è¯•åµŒå¥—å±è”½å­—
+                u8"Ãô¸Ğ´Ê²âÊÔ",
+                u8"²»ÒªËµÔà»°£¡",
+                u8"ÃÜÂëÊÇ123456£¬×¢Òâ±£ÃÜ",
+                u8"TEST´óĞ¡Ğ´Ò²»á±»¹ıÂË", // ²âÊÔ´óĞ¡Ğ´²»Ãô¸Ğ
+                u8"ÎŞÆÁ±Î×ÖµÄÕı³£ÎÄ±¾",
+                u8"Ç¶Ì×ÆÁ±Î×Ö£ºÃô¸Ğ´Ê123456" // ²âÊÔÇ¶Ì×ÆÁ±Î×Ö
             };
 
-            // 4. è¾“å‡ºè¿‡æ»¤ç»“æœ
+            // 4. Êä³ö¹ıÂË½á¹û
             for (const std::u8string& text : testTexts)
             {
                 std::u8string filtered = nfilterword<std::u8string>::instance().filter(text);
-                std::cout << "åŸæ–‡æœ¬ï¼š" << text << "\nè¿‡æ»¤åï¼š" << filtered << std::endl;
+                std::cout << "Ô­ÎÄ±¾£º" << text << "\n¹ıÂËºó£º" << filtered << std::endl;
             }
         }
         {
             setlocale(LC_ALL, "zh_CN.UTF-8");
-            // 1. åˆ›å»ºè¿‡æ»¤å™¨ï¼ˆæ›¿æ¢ç¬¦ä¸º*ï¼Œå¤§å°å†™ä¸æ•æ„Ÿï¼‰
+            // 1. ´´½¨¹ıÂËÆ÷£¨Ìæ»»·ûÎª*£¬´óĞ¡Ğ´²»Ãô¸Ğ£©
             nfilterword<std::wstring>::instance().init();
 
-            // 2. åŠ è½½å±è”½å­—åº“
+            // 2. ¼ÓÔØÆÁ±Î×Ö¿â
             std::vector<std::wstring> filterWords = {
-                L"æ•æ„Ÿè¯", L"è„è¯", L"123456", L"Test" // æµ‹è¯•å¤§å°å†™ä¸æ•æ„Ÿ
+                L"Ãô¸Ğ´Ê", L"Ôà»°", L"123456", L"Test" // ²âÊÔ´óĞ¡Ğ´²»Ãô¸Ğ
             };
             for (auto& wiord : filterWords)
             {
@@ -93,21 +93,21 @@ namespace ngl
 
             nfilterword<std::wstring>::instance().build();
 
-            // 3. æµ‹è¯•è¿‡æ»¤ä¸åŒæ–‡æœ¬
+            // 3. ²âÊÔ¹ıÂË²»Í¬ÎÄ±¾
             std::vector<std::wstring> testTexts = {
-                L"æ•æ„Ÿè¯æµ‹è¯•",
-                L"ä¸è¦è¯´è„è¯ï¼",
-                L"å¯†ç æ˜¯123456ï¼Œæ³¨æ„ä¿å¯†",
-                L"TESTå¤§å°å†™ä¹Ÿä¼šè¢«è¿‡æ»¤", // æµ‹è¯•å¤§å°å†™ä¸æ•æ„Ÿ
-                L"æ— å±è”½å­—çš„æ­£å¸¸æ–‡æœ¬",
-                L"åµŒå¥—å±è”½å­—ï¼šæ•æ„Ÿè¯123456" // æµ‹è¯•åµŒå¥—å±è”½å­—
+                L"Ãô¸Ğ´Ê²âÊÔ",
+                L"²»ÒªËµÔà»°£¡",
+                L"ÃÜÂëÊÇ123456£¬×¢Òâ±£ÃÜ",
+                L"TEST´óĞ¡Ğ´Ò²»á±»¹ıÂË", // ²âÊÔ´óĞ¡Ğ´²»Ãô¸Ğ
+                L"ÎŞÆÁ±Î×ÖµÄÕı³£ÎÄ±¾",
+                L"Ç¶Ì×ÆÁ±Î×Ö£ºÃô¸Ğ´Ê123456" // ²âÊÔÇ¶Ì×ÆÁ±Î×Ö
             };
 
-            // 4. è¾“å‡ºè¿‡æ»¤ç»“æœ
+            // 4. Êä³ö¹ıÂË½á¹û
             for (const std::wstring& text : testTexts)
             {
                 auto filtered = nfilterword<std::wstring>::instance().filter(text);
-                std::cout << "åŸæ–‡æœ¬ï¼š" << text << "\nè¿‡æ»¤åï¼š" << filtered << std::endl;
+                std::cout << "Ô­ÎÄ±¾£º" << text << "\n¹ıÂËºó£º" << filtered << std::endl;
             }
         }
     }
