@@ -13,6 +13,7 @@
 */
 #pragma once
 
+#include "nfilterword.h"
 #include "ncsv.h"
 #include "type.h"
 #include "xml.h"
@@ -25,11 +26,17 @@ namespace ngl
 		ttab_filterword(const ttab_filterword&) = delete;
 		ttab_filterword& operator=(const ttab_filterword&) = delete;
 
-		std::map<std::string,> m_data;
-
 		void reload()final
 		{
 			std::cout << "[ttab_filterword] reload" << std::endl;
+			nfilterword<std::string>::instance().clear();
+			nfilterword<std::string>::instance().init();
+			foreach([](tab_filterword& atab)
+				{
+					nfilterword<std::string>::instance().load(atab.m_content);
+				}
+			);
+			nfilterword<std::string>::instance().build();
 		}
 	public:
 		using type_tab = tab_filterword;
