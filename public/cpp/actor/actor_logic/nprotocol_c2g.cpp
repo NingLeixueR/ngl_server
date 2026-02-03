@@ -12,9 +12,8 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "example.pb.h"
-#include "net.pb.h"
-
 #include "nforward.h"
+#include "net.pb.h"
 
 namespace ngl
 {
