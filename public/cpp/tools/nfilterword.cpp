@@ -14,32 +14,6 @@
 
 #include "nfilterword.h"
 
-// ========== 重载 operator<<，让 cout 支持 std::u8string ==========
-std::ostream& operator<<(std::ostream& os, const std::u8string& u8_str) 
-{
-    std::string ltemp;
-    for (auto item : u8_str)
-    {
-        ltemp += item;
-    }
-    std::wstring lws;
-    ngl::tools::utf82wasscii(ltemp, lws);
-    std::string lasscii;
-    ngl::tools::wasscii2asscii(lws, lasscii);
-    // 转换为 const char* 并输出
-    os << lasscii;
-    return os;
-}
-
-std::ostream& operator<<(std::ostream& os, const std::wstring& u8_str)
-{
-    std::string lasscii;
-    ngl::tools::wasscii2asscii(u8_str, lasscii);
-    // 转换为 const char* 并输出
-    os << lasscii;
-    return os;
-}
-
 namespace ngl
 {
     void test_nfilterword()
@@ -49,6 +23,11 @@ namespace ngl
             std::vector<std::string> filterWords = {
                 "敏感词", "脏话", "123456", "Test"
             };
+            for (auto& item : filterWords)
+            {
+                tools::to_utf8(item, item);
+            }
+            
             for (auto& wiord : filterWords)
             {
                 nfilterword<std::string>::instance().load(wiord);
@@ -64,11 +43,18 @@ namespace ngl
                 "无屏蔽字的正常文本",
                 "嵌套屏蔽字：敏感词123456"
             };
+            for (auto& item : testTexts)
+            {
+                tools::to_utf8(item, item);
+            }
 
-            for (const std::string& text : testTexts)
+            for (std::string& text : testTexts)
             {
                 auto filtered = nfilterword<std::string>::instance().filter(text);
-                std::cout << "原文本：" << text << "\n过滤后：" << filtered << std::endl;
+                tools::to_asscii(filtered, filtered);
+                tools::to_asscii(text, text);
+                std::cout << "sorc:" << text << std::endl;
+                std::cout << "obj:" << filtered << std::endl;
             }
         }
     }
