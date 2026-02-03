@@ -114,7 +114,7 @@ namespace ngl
                 // 遍历当前节点的所有子节点
                 for (auto& pair : m_nodes[p].m_children)
                 {
-                    wchar_t c = pair.first;   // 当前字符
+                    auto c = pair.first;   // 当前字符
                     int u = pair.second;      // 当前子节点索引
                     int fail_p = m_nodes[p].m_fail;  // 父节点的失败指针
 
