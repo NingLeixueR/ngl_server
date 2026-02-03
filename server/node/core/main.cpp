@@ -9,7 +9,6 @@ Dumper lDumper;
 
 int main(int argc, char** argv) 
 {
-
 	if (argc >= 3)
 	{
 		Dumper::m_excname = std::format("node_{}", argv[1]);
