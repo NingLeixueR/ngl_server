@@ -341,6 +341,20 @@ namespace ngl
 		return true;
 	}
 
+	bool tools::to_asscii(const std::string& astr1, std::string& astr2)
+	{
+		std::wstring lwsql;
+		if (ngl::tools::utf82wasscii(astr1, lwsql) == false)
+		{
+			return false;
+		}
+		if (ngl::tools::wasscii2asscii(lwsql, astr2) == false)
+		{
+			return false;
+		}
+		return true;
+	}
+
 	bool tools::to_utf8(const std::string& astr1, std::string& astr2)
 	{
 		std::wstring lwsql;
@@ -355,18 +369,66 @@ namespace ngl
 		return true;
 	}
 
-	bool tools::to_asscii(const std::string& astr1, std::string& astr2)
+	int32_t tools::utf8firstbyte(uint8_t firstbyte)
 	{
-		std::wstring lwsql;
-		if (ngl::tools::utf82wasscii(astr1, lwsql) == false)
+		int nCount = 0;
+		unsigned char mask = 0x80; // ³õÊ¼ÑÚÂë£º10000000
+		if ((firstbyte & mask) == 0)
 		{
-			return false;
+			return 1;
 		}
-		if (ngl::tools::wasscii2asscii(lwsql, astr2) == false)
+		while ((firstbyte & mask) != 0)
 		{
-			return false;
+			nCount++;
+			mask >>= 1;
+			if (nCount > 4)
+			{
+				return 0;
+			}
+		}
+		if (nCount < 2 || nCount > 4)
+		{
+			return 0;
+		}
+		return nCount;
+	}
+
+	bool tools::isutf8(const std::string& astr)
+	{
+		int32_t ltemp = 0;
+		for (int32_t i = 0; i < astr.size();)
+		{
+			ltemp = utf8firstbyte(astr[i]);
+			if (ltemp == 0)
+			{
+				return false;
+			}
+			i += ltemp;
 		}
 		return true;
+	}
+
+	bool tools::isincludeutf8mb4(const std::string& astr)
+	{
+		int nPos = 0;
+		while (true) 
+		{
+			if (nPos >= astr.size()) 
+			{
+				break;
+			}
+			int nCount = utf8firstbyte(astr[nPos]);
+			if (nCount == 0)
+			{//²»ÊÇutf8±àÂë
+				return false;
+			}
+			if (nCount >= 4) 
+			{
+				return true;
+			}
+			nPos += nCount;
+		}
+		return false;
 	}
 
 	void tools::sregex(const std::string& apattern, const std::string& adata, const std::function<void(std::string&)>& afun)

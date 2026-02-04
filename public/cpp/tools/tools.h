@@ -436,6 +436,13 @@ namespace ngl
 
 		static bool to_asscii(const std::string& astr1, std::string& astr2);
 		static bool to_utf8(const std::string& astr1, std::string& astr2);
+
+		static int32_t utf8firstbyte(uint8_t firstbyte);
+		// 是否是utf8编码
+		static bool isutf8(const std::string& astr1);
+		// utf8中是否包含mb4(utf8为mb3)
+		static bool isincludeutf8mb4(const std::string& astr);
+
 #pragma endregion
 
 #pragma region regular
