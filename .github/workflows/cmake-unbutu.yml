@@ -57,10 +57,18 @@ jobs:
        $CC --version
        $CXX --version
     
-    - name: Verify GCC version
+    - name: Verify libpq version
       run: |
-        cd ./third_party
-        sudo apt-get install -y libpq-dev libpqxx-dev
+       cd ./third_party
+       sudo apt-get install -y libpq-dev
+       tar -xzvf libpqxx-8.0.0-rc4.tar.gz
+       cd ./libpqxx-8.0.0-rc4/libpqxx-8.0.0-rc4
+       mkdir build
+       cd build
+       cmake ..
+       make
+       sudo make install
+    
       
     - name: Download Protobuf 3.12.2
       run: |
