@@ -62,7 +62,7 @@ jobs:
        cd ./third_party
        sudo apt-get install -y libpq-dev
        tar -xzvf libpqxx-8.0.0-rc4.tar.gz
-       cd ./libpqxx-8.0.0-rc4/libpqxx-8.0.0-rc4
+       cd ./libpqxx-8.0.0-rc4
        mkdir build
        cd build
        cmake ..
