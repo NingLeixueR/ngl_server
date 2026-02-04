@@ -268,10 +268,10 @@ namespace ngl
 
         enum enfilter
         {
-            enfilter_success,
-            enfilter_emojispecial,
-            enfilter_charcount,
-            enfilter_filter
+            enfilter_success,               // 成功
+            enfilter_emojispecial,          // 失败:存在特殊符号
+            enfilter_charcount,             // 失败:字符个数不符合要求
+            enfilter_filter,                // 失败:存在屏蔽字
         };
 
         // 是否可以用来做名字
