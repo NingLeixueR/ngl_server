@@ -102,7 +102,7 @@ namespace ngl
                 em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_success, "成功");
                 em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_emojispecial, "失败:存在特殊符号");
                 em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_charcount, "失败:字符个数不符合要求");
-                em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_charcount, "失败:存在屏蔽字");
+                em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_filter, "失败:存在屏蔽字");
 
                 for(int i = 0;i< lnames2.size();++i)
                 {
@@ -112,5 +112,4 @@ namespace ngl
             }
         }
     }
-
 }//namespace ngl
