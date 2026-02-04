@@ -231,6 +231,7 @@ namespace ngl
             em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_charcount, "失败:字符个数不符合要求");
             em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_filter, "失败:存在屏蔽字");
         }
+        return em<nfilterword::enfilter>::name(astat);
     }
 
     nfilterword::enfilter nfilterword::check_name(const std::string& astr, int32_t amincount, int32_t amaxcount)
