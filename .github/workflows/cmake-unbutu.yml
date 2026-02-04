@@ -56,7 +56,12 @@ jobs:
        gcc --version
        $CC --version
        $CXX --version
-        
+    
+    - name: Verify GCC version
+      run: |
+        cd ./third_party
+        sudo apt-get install -y libpq-dev libpqxx-dev
+      
     - name: Download Protobuf 3.12.2
       run: |
         cd ./third_party
