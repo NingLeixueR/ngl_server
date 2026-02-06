@@ -13,16 +13,16 @@
 */
 #pragma once
 
+#include "nmysql_manage.h"
 #include "gateway_info.h"
 #include "actor_manage.h"
+#include "nmysql_pool.h"
 #include "actor_role.h"
-#include "db_manage.h"
 #include "ndbclient.h"
 #include "db_data.h"
-#include "db_pool.h"
+#include "nmysql.h"
 #include "ntcp.h"
 #include "nkcp.h"
-#include "db.h"
 
 namespace ngl
 {

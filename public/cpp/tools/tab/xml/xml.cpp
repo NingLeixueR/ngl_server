@@ -126,7 +126,7 @@ namespace ngl
 
 	xarg_db& xmlnode::crossdb()
 	{
-		return m_crossdb;
+		return m_dbcross;
 	}
 
 	xarg_mail& xmlnode::mail()

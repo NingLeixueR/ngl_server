@@ -109,6 +109,5 @@ namespace ngl
         static bool is_emojispecial(const std::u32string& astr);
     };
 
-    // ²âÊÔÊ¾Àı
     void test_nfilterword();
 }//namespace ngl

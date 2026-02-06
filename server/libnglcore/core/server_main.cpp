@@ -296,9 +296,16 @@ bool start_db(int argc, char** argv)
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
-	ngl::db_pool::instance().init(nconfig.db());
+	if (nconfig.db().m_db == ngl::xarg_db::edb_mysql)
+	{
+		ngl::nmysql_pool::instance().init(nconfig.db());
+	}
+	else if (nconfig.db().m_db == ngl::xarg_db::edb_postgresql)
+	{
+		
+	}
 	ngl::tdb::tdb_init(false);
-	ngl::db_manage::init();
+	ngl::nmysql_manage::init();
 
 	ngl::actor_gmclient::instance();
 
@@ -341,7 +348,14 @@ bool start_crossdb()
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
-	ngl::db_pool::instance().init(nconfig.crossdb());
+	if (nconfig.db().m_db == ngl::xarg_db::edb_mysql)
+	{
+		ngl::nmysql_pool::instance().init(nconfig.crossdb());
+	}
+	else if (nconfig.db().m_db == ngl::xarg_db::edb_postgresql)
+	{
+
+	}
 	ngl::tdb::tcrossdb_init(false);
 
 	ngl::actor_gmclient::instance();

@@ -13,19 +13,20 @@
 */
 #pragma once
 
+#include "nmysql_manage.h"
 #include "actor_manage.h"
+#include "scope_guard.h"
+#include "nmysql_pool.h"
 #include "ttab_dbload.h"
 #include "ndbclient.h"
 #include "nregister.h"
 #include "nprotocol.h"
-#include "db_manage.h"
 #include "db_cache.h"
 #include "db_data.h"
-#include "db_pool.h"
+#include "nmysql.h"
 #include "gcmd.h"
 #include "ntcp.h"
 #include "cmd.h"
-#include "db.h"
 
 namespace ngl
 {
@@ -64,11 +65,11 @@ namespace ngl
 
 			if (m_tab->m_isloadall)
 			{// 加载全部数据
-				db_manage::select<TDBTAB>(db_pool::instance().get(0));
+				nmysql_manage::select<TDBTAB>(nmysql_pool::instance().get(0));
 			}
 			else
 			{// 加载全部id 防止内存穿透
-				db_manage::select<TDBTAB>(db_pool::instance().get(0), db_data<TDBTAB>::id_index());
+				nmysql_manage::select<TDBTAB>(nmysql_pool::instance().get(0), db_data<TDBTAB>::id_index());
 			}
 		}
 
@@ -121,7 +122,7 @@ namespace ngl
 			}
 			if (ngl::db_data<TDBTAB>::data_stat(aid) == ngl::db_data<TDBTAB>::edbdata_notload)
 			{
-				db_manage::select<TDBTAB>(db_pool::instance().get(athreadid), aid);
+				nmysql_manage::select<TDBTAB>(nmysql_pool::instance().get(athreadid), aid);
 			}
 		}
 
@@ -292,14 +293,14 @@ namespace ngl
 				{
 					if (ngl::db_data<TDBTAB>::find(id) != nullptr)
 					{
-						db_manage::save<TDBTAB>(db_pool::instance().get(adata.thread()), id);
+						nmysql_manage::save<TDBTAB>(nmysql_pool::instance().get(adata.thread()), id);
 					}
 				}
 				break;
 				case enum_clist_del:
 				{
 					ngl::db_data<TDBTAB>::remove(id);
-					db_manage::del<TDBTAB>(db_pool::instance().get(adata.thread()), id);
+					nmysql_manage::del<TDBTAB>(nmysql_pool::instance().get(adata.thread()), id);
 				}
 				break;
 				default:
@@ -332,22 +333,25 @@ namespace ngl
 						{
 							return;
 						}
-						db* ldb = db_pool::instance().get(athread);
+						nmysql* ldb = nmysql_pool::instance().get(athread);
 						if (ldb == nullptr)
 						{
 							return;
 						}
 						if (ngl::db_data<TDBTAB>::find(lid) == nullptr)
 						{
-							db_manage::select<TDBTAB>(ldb, lid);
+							nmysql_manage::select<TDBTAB>(ldb, lid);
 						}
 						TDBTAB* ldata = ngl::db_data<TDBTAB>::find(lid);
 						if (ldata == nullptr)
 						{
 							return;
 						}
-						db_manage::serialize<TDBTAB>(ldb, false, *ldata);
-						pro.m_data = ldb->m_malloc.buff();
+						if (ldb->m_malloc.serialize(false, *ldata))
+						{
+							pro.m_data = ldb->m_malloc.buff();
+						}
+						
 					};
 
 				struct query_page
@@ -367,15 +371,17 @@ namespace ngl
 						}
 						int32_t lbegindex = lpage.m_everypagecount * (lpage.m_page - 1);
 						int32_t lendindex = lbegindex + lpage.m_everypagecount;
-						db* ldb = db_pool::instance().get(athread);
+						nmysql* ldb = nmysql_pool::instance().get(athread);
 						if (ldb == nullptr)
 						{
 							return;
 						}
 						ngl::db_data<TDBTAB>::foreach_index(lbegindex, lendindex, [&pro, ldb](int32_t aindex, TDBTAB& aitem)
 							{
-								db_manage::serialize<TDBTAB>(ldb, false, aitem);
-								pro.m_data.push_back(ldb->m_malloc.buff());
+								if (ldb->m_malloc.serialize(false, aitem))
+								{
+									pro.m_data.push_back(ldb->m_malloc.buff());
+								}
 							}
 						);
 					};
@@ -388,18 +394,18 @@ namespace ngl
 						{
 							return;
 						}
-						db* ldb = db_pool::instance().get(athread);
+						nmysql* ldb = nmysql_pool::instance().get(athread);
 						if (ldb == nullptr)
 						{
 							return;
 						}
 						TDBTAB ldata;
-						if (!db_manage::unserialize<TDBTAB>(ldb, false, ldata, ljson.c_str(), ljson.size()))
+						if(!ldb->m_malloc.unserialize(false, ldata, ljson.c_str(), ljson.size()))
 						{
 							return;
 						}
 						ngl::db_data<TDBTAB>::set(ldata.mid(), ldata);
-						db_manage::save<TDBTAB>(ldb, ldata.mid());
+						nmysql_manage::save<TDBTAB>(ldb, ldata.mid());
 						pro.m_data = true;
 					};
 			}

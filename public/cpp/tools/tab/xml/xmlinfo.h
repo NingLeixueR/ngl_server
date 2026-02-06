@@ -25,13 +25,19 @@ namespace ngl
 {
 	struct xarg_db
 	{
+		enum edb
+		{
+			edb_mysql = 0,
+			edb_postgresql = 1,
+		};
+		edb			m_db;		// mysql/postgresql
 		std::string m_ip;
 		uint32_t	m_port = 0;
 		std::string m_account;
 		std::string m_passworld;
 		std::string m_dbname;
 
-		DXMLSERIALIZE(xarg_db, true, m_ip, m_port, m_account, m_passworld, m_dbname)
+		DXMLSERIALIZE(xarg_db, true, m_db, m_ip, m_port, m_account, m_passworld, m_dbname)
 	};
 
 	struct mail_name

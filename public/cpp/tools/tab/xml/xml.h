@@ -25,7 +25,7 @@ namespace ngl
 	class xmlnode
 	{
 		xarg_db		m_db;
-		xarg_db		m_crossdb;
+		xarg_db		m_dbcross;
 		xarg_info	m_public;
 		xarg_mail	m_mail;
 		xarg_telnet	m_telnet;
@@ -47,7 +47,7 @@ namespace ngl
 			return ltemp;
 		}
 
-		DXMLSERIALIZE(xmlnode, false, m_db, m_crossdb, m_public, m_mail, m_telnet)
+		DXMLSERIALIZE(xmlnode, false, m_db, m_dbcross,  m_public, m_mail, m_telnet)
 
 		void init();
 
