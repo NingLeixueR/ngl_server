@@ -74,11 +74,8 @@ namespace ngl
 				adb->postgresql(), lbuff, 1, nullptr, param_values, param_lengths, param_formats, 0 
 			);
 			scope_guard lfreeres([res]()noexcept { PQclear(res); });
-			auto lstat = PQresultStatus(res);
-			if (lstat != PGRES_COMMAND_OK)
+			if (PQresultStatus(res) != PGRES_COMMAND_OK)
 			{
-				std::string lmessage;
-				tools::to_asscii(PQerrorMessage(adb->postgresql()), lmessage);
 				log_error()->print("npostgresql::save fail id:{} name:{} error:{}", adata->mid(), tools::type_name<T>(), PQerrorMessage(adb->postgresql()));
 				return false;
 			}
