@@ -296,12 +296,12 @@ bool start_db(int argc, char** argv)
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
-	if (nconfig.db().m_db == ngl::xarg_db::edb_mysql)
+	if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
 	{
 		ngl::nmysql_pool::instance().init(nconfig.db());
 		ngl::nmysql_manage::init();
 	}
-	else if (nconfig.db().m_db == ngl::xarg_db::edb_postgresql)
+	else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
 	{
 		ngl::npostgresql_pool::instance().init(nconfig.db());
 		ngl::npostgresql_manage::init();
@@ -348,14 +348,16 @@ bool start_crossdb()
 		int32_t llogtype = ngl::ELOG_DEFAULT;
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
-
-	if (nconfig.db().m_db == ngl::xarg_db::edb_mysql)
+	
+	if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
 	{
 		ngl::nmysql_pool::instance().init(nconfig.crossdb());
+		ngl::nmysql_manage::init();
 	}
-	else if (nconfig.db().m_db == ngl::xarg_db::edb_postgresql)
+	else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
 	{
-
+		ngl::npostgresql_pool::instance().init(nconfig.crossdb());
+		ngl::npostgresql_manage::init();
 	}
 	ngl::tdb::tcrossdb_init(false);
 

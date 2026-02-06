@@ -126,18 +126,17 @@ namespace ngl
 		{
 			if(isbinary)
 			{
-				if (do_binary(adata, m_buff.get()))
+				if (!do_binary(adata, m_buff.get()))
 				{
 					log_error()->print("do_binary fail T=[{}:{}]", tools::type_name<T>(), adata.mid());
-					return false;
-				}
-				ngl::ser::serialize_byte lbyte;
-				ngl::ser::nserialize::bytes(&lbyte, adata);
-				m_mallocbuff = std::make_shared<dbuff>(lbyte.pos());
-				if (do_binary(adata, m_mallocbuff.get()))
-				{
-					log_error()->print("do_binary fail T=[{}:{}]", tools::type_name<T>(), adata.mid());
-					return false;
+					ngl::ser::serialize_byte lbyte;
+					ngl::ser::nserialize::bytes(&lbyte, adata);
+					m_mallocbuff = std::make_shared<dbuff>(lbyte.pos());
+					if (!do_binary(adata, m_mallocbuff.get()))
+					{
+						log_error()->print("do_binary fail T=[{}:{}]", tools::type_name<T>(), adata.mid());
+						return false;
+					}
 				}
 			}
 			else
