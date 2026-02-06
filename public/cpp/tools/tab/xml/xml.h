@@ -77,6 +77,8 @@ namespace ngl
 
 		xarg_db& crossdb();
 
+		xarg_db::edb dbedb();
+
 		xarg_mail& mail();
 
 		xarg_telnet& telnet();

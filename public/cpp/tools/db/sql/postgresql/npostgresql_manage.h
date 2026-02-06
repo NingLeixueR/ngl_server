@@ -73,7 +73,12 @@ namespace ngl
 			PGresult* res = PQexecParams(
 				adb->postgresql(), lbuff, 1, nullptr, param_values, param_lengths, param_formats, 0 
 			);
-
+			scope_guard lfreeres([res]()noexcept { PQclear(res); });
+			if (PQresultStatus(res) != PGRES_COMMAND_OK) 
+			{
+				log_error()->print("npostgresql::save fail id:{} !!! name:{}", aid, tools::type_name<T>());
+				return false;
+			}
 			return true;
 		}
 

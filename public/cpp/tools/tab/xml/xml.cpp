@@ -129,6 +129,19 @@ namespace ngl
 		return m_dbcross;
 	}
 
+	xarg_db::edb xmlnode::dbedb()
+	{
+		if (NODE_TYPE::CROSSDB == nconfig.nodetype())
+		{
+			return crossdb().m_db;
+		}
+		else if (NODE_TYPE::DB == nconfig.nodetype())
+		{
+			return db().m_db;
+		}
+		return (xarg_db::edb)(-1);
+	}
+
 	xarg_mail& xmlnode::mail()
 	{
 		return m_mail;

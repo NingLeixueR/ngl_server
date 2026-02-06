@@ -33,12 +33,13 @@ namespace ngl
         );
         //const char* conninfo = "host=localhost port=5432 dbname=mydb user=postgres password=123456";
 
-        PGconn* conn = PQconnectdb(lconninfo.c_str());
+        m_postgresql = PQconnectdb(lconninfo.c_str());
 
-        if (PQstatus(conn) != CONNECTION_OK) 
+        if (PQstatus(m_postgresql) != CONNECTION_OK)
         {
-            log_error()->print("[postgresql] err {}", PQerrorMessage(conn));
+            log_error()->print("[postgresql] err {}", PQerrorMessage(m_postgresql));
             closedb();
+            return false;
         }
 
         log_error()->print("postgresql://{}:{}/{} success", arg.m_ip, arg.m_port, arg.m_dbname);
