@@ -14,22 +14,21 @@
 #pragma once
 
 #include "ttab_specialid.h"
+#include "nmysql_manage.h"
 #include "actor_manage.h"
 #include "actor_create.h"
+#include "nmysql_pool.h"
 #include "ndb_modular.h"
 #include "example.pb.h"
 #include "nsp_write.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
-#include "db_manage.h"
 #include "db_data.h"
-#include "db_pool.h"
 #include "net.pb.h"
 #include "ntimer.h"
+#include "nmysql.h"
 #include "ncsv.h"
 #include "ntcp.h"
-#include "db.h"
-
 namespace ngl
 {
 	enum eactor_example_manage

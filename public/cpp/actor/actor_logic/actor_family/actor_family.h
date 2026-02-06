@@ -13,24 +13,24 @@
 */
 #pragma once
 
+#include "nmysql_manage.h"
 #include "events_logic.h"
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "actor_events.h"
+#include "nmysql_pool.h"
 #include "ndb_modular.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
-#include "db_manage.h"
-#include "db_pool.h"
 #include "db_data.h"
 #include "ntimer.h"
 #include "family.h"
+#include "nmysql.h"
 #include "type.h"
 #include "drop.h"
 #include "nlog.h"
 #include "drop.h"
 #include "ntcp.h"
-#include "db.h"
 
 namespace ngl
 {
