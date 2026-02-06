@@ -47,6 +47,12 @@ namespace ngl
 				return false;
 			}
 
+			i16_area larea = nguid::area(adata->mid());
+			if (larea == 0)
+			{
+				larea = ttab_servers::instance().const_tab()->m_area;
+			}
+
 			char lbuff[4096] = { 0 };
 			int llen = snprintf(
 				lbuff, 4096
@@ -150,14 +156,14 @@ namespace ngl
 				return false;
 			}
 			log_error()->print("{}", lbuff);
-			return adb->select(lbuff, [aid](PGresult* result)->bool
+			return adb->select(lbuff, [adb, aid](PGresult* result)->bool
 				{
-					int rows = PQntuples(res);
-					int cols = PQnfields(res);
+					int rows = PQntuples(result);
+					int cols = PQnfields(result);
 					for (int i = 0; i < rows; i++)
 					{
 						T ldata;
-						if (!adb->m_malloc.unserialize(m_dbprotobinary, ldata, PQgetvalue(res, i, 1), PQgetlength(res, i, 1)))
+						if (!adb->m_malloc.unserialize(m_dbprotobinary, ldata, PQgetvalue(result, i, 1), PQgetlength(result, i, 1)))
 						{
 							return false;
 						}
@@ -181,14 +187,14 @@ namespace ngl
 				return false;
 			}
 			log_error()->print("{}", lbuff);
-			return adb->select(lbuff, [](PGresult* result)->bool
+			return adb->select(lbuff, [adb](PGresult* result)->bool
 				{
-					int rows = PQntuples(res);
-					int cols = PQnfields(res);
+					int rows = PQntuples(result);
+					int cols = PQnfields(result);
 					for (int i = 0; i < rows; i++)
 					{
 						T ldata;
-						if (!adb->m_malloc.unserialize(m_dbprotobinary, ldata, PQgetvalue(res, i, 1), PQgetlength(res, i, 1)))
+						if (!adb->m_malloc.unserialize(m_dbprotobinary, ldata, PQgetvalue(result, i, 1), PQgetlength(result, i, 1)))
 						{
 							return false;
 						}
@@ -213,13 +219,13 @@ namespace ngl
 				return false;
 			}
 			log_error()->print("{}", lbuff);
-			return adb->select(lbuff, [aid](PGresult* result)->bool
+			return adb->select(lbuff, [&aidset](PGresult* result)->bool
 				{
-					int rows = PQntuples(res);
-					int cols = PQnfields(res);
+					int rows = PQntuples(result);
+					int cols = PQnfields(result);
 					for (int i = 0; i < rows; i++)
 					{
-						aidset.insert(tools::lexical_cast<int64_t>(PQgetvalue(res, i, 0)));
+						aidset.insert(tools::lexical_cast<int64_t>(PQgetvalue(result, i, 0)));
 					}
 					return true;
 				}

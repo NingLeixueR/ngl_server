@@ -13,6 +13,8 @@
 */
 #pragma once
 
+#include "npostgresql_manage.h"
+#include "npostgresql_pool.h"
 #include "nmysql_manage.h"
 #include "actor_manage.h"
 #include "scope_guard.h"
@@ -65,11 +67,25 @@ namespace ngl
 
 			if (m_tab->m_isloadall)
 			{// 加载全部数据
-				nmysql_manage::select<TDBTAB>(nmysql_pool::instance().get(0));
+				if (nconfig.db().m_db == ngl::xarg_db::edb_mysql)
+				{
+					nmysql_manage::select<TDBTAB>(nmysql_pool::instance().get(0));
+				}
+				else if(nconfig.db().m_db == ngl::xarg_db::edb_postgresql)
+				{
+					npostgresql_manage::select<TDBTAB>(npostgresql_pool::instance().get(0));
+				}
 			}
 			else
 			{// 加载全部id 防止内存穿透
-				nmysql_manage::select<TDBTAB>(nmysql_pool::instance().get(0), db_data<TDBTAB>::id_index());
+				if (nconfig.db().m_db == ngl::xarg_db::edb_mysql)
+				{
+					nmysql_manage::select<TDBTAB>(nmysql_pool::instance().get(0), db_data<TDBTAB>::id_index());
+				}
+				else
+				{
+					npostgresql_manage::select<TDBTAB>(npostgresql_pool::instance().get(0), db_data<TDBTAB>::id_index());
+				}				
 			}
 		}
 

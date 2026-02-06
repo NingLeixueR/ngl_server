@@ -299,13 +299,14 @@ bool start_db(int argc, char** argv)
 	if (nconfig.db().m_db == ngl::xarg_db::edb_mysql)
 	{
 		ngl::nmysql_pool::instance().init(nconfig.db());
+		ngl::nmysql_manage::init();
 	}
 	else if (nconfig.db().m_db == ngl::xarg_db::edb_postgresql)
 	{
-		
+		ngl::npostgresql_pool::instance().init(nconfig.db());
+		ngl::npostgresql_manage::init();
 	}
 	ngl::tdb::tdb_init(false);
-	ngl::nmysql_manage::init();
 
 	ngl::actor_gmclient::instance();
 
