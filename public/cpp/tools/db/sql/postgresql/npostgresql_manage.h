@@ -56,7 +56,7 @@ namespace ngl
 			char lbuff[4096] = { 0 };
 			int llen = snprintf(
 				lbuff, 4096
-				, "INSERT INTO %s (id, area, data) VALUES(%lld, %d, $1)"
+				, "INSERT INTO %s (id, area, data) VALUES(%lld, %d, $1) ON CONFLICT (id) DO UPDATE SET area = EXCLUDED.area, data = EXCLUDED.data"
 				, tools::type_name<T>().c_str(), adata->mid(), larea
 			);
 
@@ -74,9 +74,12 @@ namespace ngl
 				adb->postgresql(), lbuff, 1, nullptr, param_values, param_lengths, param_formats, 0 
 			);
 			scope_guard lfreeres([res]()noexcept { PQclear(res); });
-			if (PQresultStatus(res) != PGRES_COMMAND_OK) 
+			auto lstat = PQresultStatus(res);
+			if (lstat != PGRES_COMMAND_OK)
 			{
-				log_error()->print("npostgresql::save fail id:{} !!! name:{} error:{}", adata->mid(), tools::type_name<T>(), PQerrorMessage(adb->postgresql()));
+				std::string lmessage;
+				tools::to_asscii(PQerrorMessage(adb->postgresql()), lmessage);
+				log_error()->print("npostgresql::save fail id:{} name:{} error:{}", adata->mid(), tools::type_name<T>(), PQerrorMessage(adb->postgresql()));
 				return false;
 			}
 			return true;
