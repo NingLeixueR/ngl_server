@@ -76,7 +76,7 @@ namespace ngl
 			scope_guard lfreeres([res]()noexcept { PQclear(res); });
 			if (PQresultStatus(res) != PGRES_COMMAND_OK) 
 			{
-				log_error()->print("npostgresql::save fail id:{} !!! name:{}", aid, tools::type_name<T>());
+				log_error()->print("npostgresql::save fail id:{} !!! name:{}", adata->mid(), tools::type_name<T>());
 				return false;
 			}
 			return true;
