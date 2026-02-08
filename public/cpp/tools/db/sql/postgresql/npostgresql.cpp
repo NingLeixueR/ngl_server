@@ -66,13 +66,22 @@ namespace ngl
 
     bool npostgresql::select(const char* asql, const npostgresql::callback& aback)
     {
-        PGresult* res = PQexec(m_postgresql, asql);
-        if (PQresultStatus(res) != PGRES_TUPLES_OK) 
+        PGresult* result = PQexecParams(
+            m_postgresql,
+            asql,
+            0,          // 参数个数
+            nullptr,    // 参数类型OID
+            nullptr,    // 参数值
+            nullptr,    // 参数长度
+            nullptr,    // 参数格式
+            1           // 结果格式：1=二进制，0=文本（核心！）
+        );
+        if (PQresultStatus(result) != PGRES_TUPLES_OK)
         {
             log_error()->print("npostgresql::select[{}]", PQerrorMessage(m_postgresql));
-            PQclear(res);
+            PQclear(result);
             return false;
         }
-        return aback(res);
+        return aback(result);
     }
 }//namespace ngl
