@@ -45,7 +45,7 @@ namespace ngl
 			e_waitrecv_intervalms = 1* localtime::MILLISECOND,
 		};
 	private:
-		kcp_session						m_session;
+		kcp_session							m_session;
 		std::function<void(i32_session)>	m_connectfun = nullptr;
 		bpool								m_pool;
 		asio::io_context					m_context;
@@ -58,6 +58,7 @@ namespace ngl
 		asio_udp_endpoint					m_waitendpoint;
 		i16_port							m_port = 0;
 		std::jthread						m_thread;
+		nrate								m_rate;
 	public:
 		explicit asio_kcp(i16_port port);
 

@@ -15,6 +15,7 @@
 
 #include "threadtools.h"
 #include "segpack.h"
+#include "nrate.h"
 #include "type.h"
 #include "pack.h"
 
@@ -23,21 +24,6 @@
 
 namespace ngl
 {
-	class segpack_rate
-	{
-		struct interval
-		{
-			int m_resetutc = 0;		// 上次重置的utc
-			int m_ratecount = 0;	// 收到数据包的数量
-
-			interval();
-			void reset();
-		};
-		std::map<i32_socket, interval> m_data;
-	public:
-		bool add(i32_socket aid);
-	};
-
 	class segpack_heartbeat
 	{
 	public:
@@ -48,7 +34,7 @@ namespace ngl
 	{
 		std::map<i32_socket, std::shared_ptr<pack>> m_data; //残包暂时保管
 		bpool			m_pool;
-		segpack_rate	m_rate;
+		nrate			m_rate;
 		segpack*		m_segpack = nullptr;
 
 	public:

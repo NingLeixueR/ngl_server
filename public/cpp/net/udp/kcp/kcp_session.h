@@ -54,6 +54,8 @@ namespace ngl
 
 		kcp_session(asio_kcp* asiokcp);
 
+		nrate& rate();
+
 		ptr_se add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridlocal, i64_actorid aactoridremote);
 
 		ptr_se reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridlocal, i64_actorid aactoridremote);

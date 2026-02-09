@@ -100,6 +100,10 @@ namespace ngl
 
 	bool asio_kcp::sempack(const ptr_se& apstruct, const char* abuff, int abufflen)
 	{
+		if (!m_rate.add(apstruct->m_session))
+		{
+			return false;
+		}
 		// 获取包头
 		std::shared_ptr<pack> lpack = pack::make_pack(&m_pool, 0);
 		lpack->m_protocol = ENET_KCP;
@@ -131,6 +135,7 @@ namespace ngl
 		{
 			log_error()->print("time[{} < {} + {} ]", localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout());
 		}
+
 		return true;
 	}
 
