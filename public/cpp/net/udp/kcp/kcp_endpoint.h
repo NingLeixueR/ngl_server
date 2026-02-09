@@ -16,6 +16,7 @@
 #include "threadtools.h"
 #include "time_wheel.h"
 #include "asio_base.h"
+#include "nrate.h"
 #include "type.h"
 #include "pack.h"
 #include "nlog.h"

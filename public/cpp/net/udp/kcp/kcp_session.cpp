@@ -29,6 +29,11 @@ namespace ngl
 		m_asiokcp(asiokcp)
 	{}
 
+	nrate& kcp_session::rate()
+	{
+		return m_rate;
+	}
+
 	ptr_se kcp_session::add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridclient, i64_actorid aactoridserver)
 	{
 		std::string lip = aendpoint.address().to_string();

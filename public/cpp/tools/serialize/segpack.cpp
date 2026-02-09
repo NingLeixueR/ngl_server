@@ -18,43 +18,6 @@
 
 namespace ngl
 {
-	segpack_rate::interval::interval() :
-		m_resetutc((int)localtime::gettime()), m_ratecount(0)
-	{}
-
-	void segpack_rate::interval::reset()
-	{
-		m_resetutc = (int)localtime::gettime();
-		m_ratecount = 0;
-	}
-
-	bool segpack_rate::add(i32_socket aid)
-	{
-		int lnow = (int)localtime::gettime();
-		auto itor = m_data.find(aid);
-		if (itor == m_data.end())
-		{
-			m_data.insert(std::make_pair(aid, interval()));
-			return true;
-		}
-		if (itor->second.m_resetutc == 0)
-		{
-			itor->second.reset();
-			return true;
-		}
-		if (lnow >= itor->second.m_resetutc + sysconfig::rate_interval())
-		{
-			itor->second.reset();
-			return true;
-		}
-		++itor->second.m_ratecount;
-		if (sysconfig::rate_count() < itor->second.m_ratecount)
-		{
-			return false;
-		}
-		return true;
-	}
-
 	bool segpack_heartbeat::is_heartbeat(i32_protocolnum aprotocolnum)
 	{		
 		return tprotocol::protocol<pbnet::PROBUFF_NET_HEARTBEAT>() == aprotocolnum;
