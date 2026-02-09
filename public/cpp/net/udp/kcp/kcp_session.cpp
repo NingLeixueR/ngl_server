@@ -29,7 +29,7 @@ namespace ngl
 		m_asiokcp(asiokcp)
 	{}
 
-	ptr_se kcp_session::add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridclient, i64_actorid aactoridserver)
+	ptr_se kcp_session::add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient)
 	{
 		std::string lip = aendpoint.address().to_string();
 		i16_port lport = aendpoint.port();
@@ -91,10 +91,10 @@ namespace ngl
 		return ltemp;
 	}
 
-	ptr_se kcp_session::reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridlocal, i64_actorid aactoridremote)
+	ptr_se kcp_session::reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient)
 	{
 		erase(aendpoint);
-		return add(aconv, aendpoint, aactoridlocal, aactoridremote);
+		return add(aconv, aendpoint, aactoridserver, aactoridclient);
 	}
 
 	void kcp_session::erase(const asio_udp_endpoint& aendpoint)
