@@ -63,13 +63,9 @@ namespace ngl
 
 		~asio_kcp() = default;
 	private:
-		bool func_connect(ptr_se& apstruct, bool aconnect);
-
 		void func_ecmd_connect()const;
 
 		void func_ecmd_connect_ret()const;
-
-		void func_ecmd_ping()const;
 
 		void func_ecmd_close()const;
 	public:

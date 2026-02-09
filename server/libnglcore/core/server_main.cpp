@@ -669,15 +669,14 @@ bool start_robot(int argc, char** argv)
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
 	}
 
-	ngl::actor_gmclient::instance();
-
 	ngl::actor_robot_manage::instance();
 
 	ngl::i32_serverid llogin = ngl::nnodeid::nodeid(ngl::ttab_servers::instance().const_tab()->m_login, 1);
 	ngl::actor_robot_manage::instance().connect(llogin, [](int asession)
 		{
 			std::cout << "连接Login服务器成功" << std::endl;
-		});
+		}
+	);
 	if (argc < 4)
 	{
 		while (1)
@@ -787,8 +786,6 @@ namespace ngl
 
 int ngl_main(int argc, char** argv)
 {
-
-
 	ngl::server_test();
 	// # 名称
 	std::string lname = argv[1];
@@ -798,14 +795,7 @@ int ngl_main(int argc, char** argv)
 
 	// # 区服id下功能进程的序号
 	int32_t ltcount = 0;
-	if (lname != "robot")
-	{
-		ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
-	}
-	else
-	{
-		ltcount = ngl::tools::lexical_cast<int32_t>(argv[5]);
-	}
+	ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
 
 	// # 初始化关联枚举NODE_TYPE与字符串
 	nconfig.init();
