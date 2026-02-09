@@ -446,10 +446,10 @@ namespace ngl
 		m_session.erase(asession);
 	}
 
-	void asio_kcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aactoridlocal, i64_actorid aactoridremote)
+	void asio_kcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient)
 	{
 		ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(aip), aport);
-		m_session.reset_add(aconv, lendpoint, aactoridlocal, aactoridremote);
+		m_session.reset_add(aconv, lendpoint, aactoridserver, aactoridclient);
 	}
 
 	void asio_kcp::close_net(i32_session asession)
