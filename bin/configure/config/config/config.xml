@@ -1,6 +1,9 @@
 <xmlnode>
-    <db ip="127.0.0.1" port="3306" account="root" passworld="123456" dbname="lbtest"/>
-    <crossdb ip="127.0.0.1" port="3306" account="root" passworld="123456" dbname="lbtestcross"/>
+	<!-- db = enum edb{edb_mysql = 0,edb_postgresql = 1,}; -->
+    <db db = "1" ip="localhost" port="5432" account="postgres" passworld="123456" dbname="lbtest"/>
+    <dbcross db = "1" ip="localhost" port="5432" account="postgres" passworld="123456" dbname="lbtestcross"/>
+	<!--<db db = "0" ip="127.0.0.1" port="3306" account="root" passworld="123456" dbname="lbtest"/>-->
+    <!--<dbcross db = "0" ip="127.0.0.1" port="3306" account="root" passworld="123456" dbname="lbtestcross"/>-->
     <public>
         <data key="consumings">100</data>
         <data key="dbprotobinary">true</data>
