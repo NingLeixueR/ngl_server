@@ -74,13 +74,13 @@ namespace ngl
 			pro.set_mtype(pbnet::ENUM_GET_CHAT_LIST);
 			pro.set_mchannelid(recv.mchannelid());
 
-			auto itor_channelid = m_chatitem.find(recv.mchannelid());
-			if (itor_channelid == m_chatitem.end())
+			auto lpchanne = tools::findmap(m_chatitem, recv.mchannelid());
+			if (lpchanne == nullptr)
 			{
 				send_client(adata.get_data()->identifier(), pro);
 				return true;
 			}
-			for (pbnet::chatitem& item : itor_channelid->second)
+			for (pbnet::chatitem& item : *lpchanne)
 			{
 				*pro.add_mchatlist() = item;
 			}

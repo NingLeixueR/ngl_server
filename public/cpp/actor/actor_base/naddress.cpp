@@ -89,10 +89,10 @@ namespace ngl
 	{
 		nguid lguid(adataid);
 #ifdef _DEBUG
-		auto itor = m_actorserver.find(adataid);
-		if (itor != m_actorserver.end())
+		auto lpserverid = tools::findmap(m_actorserver, adataid);
+		if (lpserverid != nullptr)
 		{
-			print_address("DEL", itor->second, itor->first);
+			print_address("DEL", *lpserverid, adataid);
 		}
 #endif
 		m_actorserver.erase(lguid);

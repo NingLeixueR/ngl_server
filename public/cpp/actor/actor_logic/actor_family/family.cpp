@@ -21,7 +21,7 @@ namespace ngl
 {
 	int32_t family::create_family(i64_actorid aroleid, const std::string& aname)
 	{
-		if (m_rolefamily.find(aroleid) != m_rolefamily.end())
+		if (!m_rolefamily.contains(aroleid))
 		{
 			return 1;
 		}
@@ -261,14 +261,14 @@ namespace ngl
 	{
 		pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE pro;
 		pro.set_mstat(0);
-		auto itor = m_rolefamily.find(aroleid);
-		if (itor == m_rolefamily.end())
+		auto lpfamilyid = tools::findmap(m_rolefamily, aroleid);
+		if (lpfamilyid == nullptr)
 		{
 			pro.set_mstat(1);
 			actor::send_client(aroleid, pro);
 			return;
 		}
-		ngl::data_modified<pbdb::db_family>* lpmodifiedfamily = find(itor->second);
+		ngl::data_modified<pbdb::db_family>* lpmodifiedfamily = find(*lpfamilyid);
 		if (lpmodifiedfamily == nullptr)
 		{
 			pro.set_mstat(2);

@@ -119,21 +119,21 @@ namespace ngl
 			{
 				return;
 			}
-			int lsendmaxcount = m_tab->m_sendmaxcount;
-			if (lsendmaxcount <= 0)
+			int lmaxcount = m_tab->m_sendmaxcount;
+			if (lmaxcount <= 0)
 			{
-				lsendmaxcount = esend_max_cout;
+				lmaxcount = esend_max_cout;
 			}
 			i64_actorid lrequestactor = apack->m_head.get_request_actor();
 			np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro;
 			pro.m_id = nguid::make();
 			pro.m_over = false;
 			pro.m_stat = enum_dbstat_success;
-			ngl::db_data<TDBTAB>::foreach_index([lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
+			ngl::db_data<TDBTAB>::foreach_index([lrequestactor, lmaxcount, apack, &pro](int aindex, TDBTAB& atab)
 				{
 					nguid lguid(atab.mid());
 					pro.m_data.insert(std::make_pair(lguid, atab));
-					if (aindex % lsendmaxcount == 0)
+					if (aindex % lmaxcount == 0)
 					{
 						ntcp::instance().send(apack->m_id, pro, lrequestactor, nguid::make());
 						pro = np_actordb_load_response<TDBTAB_TYPE, TDBTAB>();

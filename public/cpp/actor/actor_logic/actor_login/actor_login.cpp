@@ -88,24 +88,19 @@ namespace ngl
 		>(e_ready_all);
 	}
 
-	data_modified<pbdb::db_account>* actor_login::get_account(
-		int area
-		, const std::string& account
-		, const std::string& apassworld
-		, bool& aiscreate
-	)
+	data_modified<pbdb::db_account>* actor_login::get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate)
 	{
 		aiscreate = false;
 		auto& lmap = m_account.accountbyarea(area);
-		auto itor = lmap.find(account);
-		if (itor != lmap.end())
+		auto lpmodified = tools::findmap(lmap, account);
+		if (lpmodified != nullptr)
 		{
-			MODIFIED_RETURN_CONST(lpdaccountconst, *itor->second, nullptr);
+			MODIFIED_RETURN_CONST(lpdaccountconst, **lpmodified, nullptr);
 			if (lpdaccountconst->mpassworld() != apassworld)
 			{
 				return nullptr;
 			}
-			return itor->second;
+			return *lpmodified;
 		}
 		else
 		{
@@ -156,12 +151,12 @@ namespace ngl
 
 	bool actor_login::dec_freeserver(std::map<i32_serverid, server_info>& amap, i32_serverid aserverid)
 	{
-		auto itor = amap.find(aserverid);
-		if (itor == amap.end())
+		auto lpinfo = tools::findmap(amap, aserverid);
+		if (lpinfo == nullptr)
 		{
 			return false;
 		}
-		--itor->second.m_rolesize;
+		--(lpinfo->m_rolesize);
 		return true;
 	}
 

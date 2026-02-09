@@ -41,12 +41,12 @@ namespace ngl
 
 	bool nsp_regload::is_register(i16_area aarea)const
 	{
-		auto itor = m_register.find(aarea);
-		if (itor == m_register.end())
+		auto lpregister = tools::findmap(m_register, aarea);
+		if (lpregister == nullptr)
 		{
 			return false;
 		}
-		return itor->second;
+		return *lpregister;
 	}
 
 	bool nsp_regload::is_register()const

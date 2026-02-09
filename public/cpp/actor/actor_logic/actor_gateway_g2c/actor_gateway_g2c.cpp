@@ -90,12 +90,12 @@ namespace ngl
 	void actor_gateway_g2c::get_allclientbyarea(std::map<i32_sessionid, i64_actorid>& amap, i16_area aarea)
 	{
 		auto& linfo = m_info.info();
-		auto itemitor = linfo.find(aarea);
-		if (itemitor == linfo.end())
+		auto lpmap = tools::findmap(m_info.info(), aarea);
+		if (lpmap == nullptr)
 		{
 			return;
 		}
-		for (auto& [_dataid, _socket] : itemitor->second)
+		for (auto& [_dataid, _socket] : *lpmap)
 		{
 			i64_actorid lactorid = nguid::make(ACTOR_ROBOT, _socket.m_area, _socket.m_dataid);
 			amap.insert(std::make_pair(_socket.m_socket, lactorid));
