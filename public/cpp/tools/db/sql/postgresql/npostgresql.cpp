@@ -64,15 +64,15 @@ namespace ngl
         return true;
     }
 
-    bool npostgresql::select(const char* asql, const npostgresql::callback& aback)
+    bool npostgresql::select(const char* asql, int resultFormat, const npostgresql::callback& aback)
     {
-        PGresult* res = PQexec(m_postgresql, asql);
-        if (PQresultStatus(res) != PGRES_TUPLES_OK) 
+        PGresult* result = PQexecParams(m_postgresql, asql, 0, nullptr, nullptr, nullptr, nullptr, resultFormat);
+        if (PQresultStatus(result) != PGRES_TUPLES_OK)
         {
             log_error()->print("npostgresql::select[{}]", PQerrorMessage(m_postgresql));
-            PQclear(res);
+            PQclear(result);
             return false;
         }
-        return aback(res);
+        return aback(result);
     }
 }//namespace ngl

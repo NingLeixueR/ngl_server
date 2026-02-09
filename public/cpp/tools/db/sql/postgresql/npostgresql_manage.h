@@ -79,6 +79,7 @@ namespace ngl
 				log_error()->print("npostgresql::save fail id:{} name:{} error:{}", adata->mid(), tools::type_name<T>(), PQerrorMessage(adb->postgresql()));
 				return false;
 			}
+			log_error()->print("{}", lbuff);
 			return true;
 		}
 
@@ -110,7 +111,7 @@ namespace ngl
 		{
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(lbuff, 1024,
-				"DELETE FROM %s WHERE id='%lld';", tools::type_name<T>().c_str(), aid
+				"DELETE FROM %s WHERE id=%lld;", tools::type_name<T>().c_str(), aid
 			);
 			if (llen <= 0)
 			{
@@ -154,14 +155,14 @@ namespace ngl
 			// # 从数据库中加载
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(lbuff, 1024,
-				"SELECT id,data FROM %s WHERE id = '%lld' AND (%s);", tools::type_name<T>().c_str(), aid, where_area()
+				"SELECT id,data FROM %s WHERE id = %lld AND (%s);", tools::type_name<T>().c_str(), aid, where_area()
 			);
 			if (llen <= 0)
 			{
 				return false;
 			}
 			log_error()->print("{}", lbuff);
-			return adb->select(lbuff, [adb, aid](PGresult* result)->bool
+			return adb->select(lbuff, 1, [adb, aid](PGresult* result)->bool
 				{
 					int rows = PQntuples(result);
 					int cols = PQnfields(result);
@@ -192,7 +193,7 @@ namespace ngl
 				return false;
 			}
 			log_error()->print("{}", lbuff);
-			return adb->select(lbuff, [adb](PGresult* result)->bool
+			return adb->select(lbuff, 1, [adb](PGresult* result)->bool
 				{
 					int rows = PQntuples(result);
 					int cols = PQnfields(result);
@@ -224,7 +225,7 @@ namespace ngl
 				return false;
 			}
 			log_error()->print("{}", lbuff);
-			return adb->select(lbuff, [&aidset](PGresult* result)->bool
+			return adb->select(lbuff, 0, [&aidset](PGresult* result)->bool
 				{
 					int rows = PQntuples(result);
 					int cols = PQnfields(result);

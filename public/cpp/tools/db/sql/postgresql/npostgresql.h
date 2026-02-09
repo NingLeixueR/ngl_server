@@ -49,7 +49,7 @@ namespace ngl
 
 		// # 在callback中转化数据
 		using callback = std::function<bool(PGresult*)>;
-		bool select(const char* asql, const callback& aback);
+		bool select(const char* asql, int resultFormat, const callback& aback);
 
 		db_buff m_malloc;
 	};
