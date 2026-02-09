@@ -534,11 +534,10 @@ namespace ngl
 				ldata.set(m_actor, _tdb);
 				ldata.init(&m_modified);
 			}
-
-			auto itor = m_data.find(m_id);
-			if (itor != m_data.end())
+			auto lpmodified = tools::findmap(m_data, m_id);
+			if(lpmodified != nullptr)
 			{
-				m_dbdata = &itor->second;
+				m_dbdata = lpmodified;
 			}
 			if (aloadfinish)
 			{

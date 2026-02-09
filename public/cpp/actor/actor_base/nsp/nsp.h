@@ -214,8 +214,8 @@ namespace ngl
 		static T* nclient(i64_actorid aactorid, bool adump)
 		{
 			monopoly_lock(m_mutex);
-			auto itor = m_instance.find(aactorid);
-			if (itor == m_instance.end())
+			auto lpinstance = tools::findmap(m_instance, aactorid);
+			if (lpinstance == nullptr)
 			{
 				if (adump)
 				{
@@ -223,7 +223,7 @@ namespace ngl
 				}
 				return nullptr;
 			}
-			return itor->second.get();
+			return lpinstance->get();
 		}
 
 		static T* init(i64_actorid aactorid, std::shared_ptr<T>& athis)

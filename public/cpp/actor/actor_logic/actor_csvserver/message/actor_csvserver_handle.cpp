@@ -23,8 +23,8 @@ namespace ngl
 		const auto& lversion = ncsv::all();
 		for (auto& [_key, _csv] : lversion)
 		{
-			auto itor = lparm->m_verify.find(_key);
-			if (itor != lparm->m_verify.end() && itor->second != _csv->verify())
+			auto lpverify = tools::findmap(lparm->m_verify, _key);
+			if (lpverify != nullptr && *lpverify != _csv->verify())
 			{
 				continue;
 			}

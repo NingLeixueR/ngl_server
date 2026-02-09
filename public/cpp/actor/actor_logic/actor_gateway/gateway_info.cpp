@@ -61,13 +61,11 @@ namespace ngl
 
 	void gateway_info::remove_socket(i32_socket asocket)
 	{
-		auto itor = m_sockinfo.find(asocket);
-		if (itor == m_sockinfo.end())
+		gateway_socket* lpgateway;
+		if (tools::erasemap(m_sockinfo, asocket, lpgateway))
 		{
-			return;
+			lpgateway->m_socket = 0;
 		}
-		itor->second->m_socket = 0;
-		m_sockinfo.erase(itor);
 	}
 
 	void gateway_info::remove_actorid(i64_actorid aactorid)
@@ -85,58 +83,60 @@ namespace ngl
 		{
 			return;
 		}
-
-		i32_socket lsocket = lgateway->m_socket;
-		if (lsocket != 0)
+		if (lgateway->m_socket != 0)
 		{
-			m_sockinfo.erase(lsocket);
+			m_sockinfo.erase(lgateway->m_socket);
 		}
 		lpmap->erase(lactordataid);
 	}
 
 	gateway_socket* gateway_info::get(i16_area aarea, i32_actordataid aroleid)
 	{
-		auto itor = m_info.find(aarea);
-		if (itor == m_info.end())
+		auto lpmap = tools::findmap(m_info, aarea);
+		if (lpmap == nullptr)
 		{
 			return nullptr;
 		}
-		auto itor2 = itor->second.find(aroleid);
-		if (itor2 == itor->second.end())
+		auto lpsocket = tools::findmap(*lpmap, aroleid);
+		if(lpsocket == nullptr)
 		{
 			return nullptr;
 		}
-		return &itor2->second;
+		return lpsocket;
 	}
 
 	gateway_socket* gateway_info::get(i32_socket asocket)
 	{
-		auto itor = m_sockinfo.find(asocket);
-		if (itor == m_sockinfo.end())
+		auto lpsocket = tools::findmap(m_sockinfo, asocket);
+		if (lpsocket == nullptr)
 		{
 			return nullptr;
 		}
-		return itor->second;
+		return *lpsocket;
 	}
 
 	int64_t gateway_info::gatewayid(i64_actorid aid)
 	{
-		auto itor = m_info.find(ngl::nguid::area(aid));
-		if (itor == m_info.end())
+		auto lpmap = tools::findmap(m_info, ngl::nguid::area(aid));
+		if (lpmap == nullptr)
 		{
 			return -1;
 		}
-		auto itorinfo = itor->second.find(ngl::nguid::actordataid(aid));
-		return itorinfo->second.m_gatewayid;
+		auto lpinfor = tools::findmap(*lpmap, ngl::nguid::actordataid(aid));
+		if (lpinfor == nullptr)
+		{
+			return -1;
+		}
+		return lpinfor->m_gatewayid;
 	}
 
 	void gateway_info::foreach(const std::function<void(gateway_socket*)>& afun)
 	{
-		for (std::pair<const i16_area, std::map<i32_actordataid, gateway_socket>>& item : m_info)
+		for (auto& [_area, _map] : m_info)
 		{
-			for (std::pair<const i32_actordataid, gateway_socket>& itemgateway : item.second)
+			for (auto& [_dataid, _socket] : _map)
 			{
-				afun(&itemgateway.second);
+				afun(&_socket);
 			}
 		}
 	}
