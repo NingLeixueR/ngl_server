@@ -21,75 +21,12 @@
 
 namespace ngl
 {
-	//## [udp_cmd::ecmd_connect]		调用aconnect为true
-	//## [udp_cmd::ecmd_connect_ret]	调用aconnect为false
-	bool asio_kcp::func_connect(ptr_se& apstruct, bool aconnect)
-	{
-		i32_sessionid session = apstruct->m_session;
-		xarg_info const* linfo = nconfig.info();
-		if (linfo == nullptr)
-		{
-			return false;
-		}
-		if (aconnect)
-		{
-#ifdef USE_WHEEL_TIMER 
-
-			wheel_parm lparm
-			{
-				.m_ms = sysconfig::kcpping() * localtime::MILLISECOND,
-				.m_intervalms = [](int64_t) {return sysconfig::kcpping() * localtime::MILLISECOND; } ,
-				.m_count = 0x7fffffff,
-				.m_fun = [session, this](const wheel_node* anode)
-				{
-					ptr_se lpstruct = m_session.find(session);
-					if (lpstruct == nullptr)
-					{
-						m_kcptimer.removetimer(anode->m_timerid);
-						return;
-					}
-					auto lnow = (int32_t)localtime::gettime();
-					if (lnow - lpstruct->m_pingtm > sysconfig::kcppinginterval())
-					{
-						close(lpstruct->m_session);
-						m_kcptimer.removetimer(anode->m_timerid);
-					}
-				}
-			};
-			apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
-#endif//USE_WHEEL_TIMER
-		}
-		else
-		{
-#ifdef USE_WHEEL_TIMER 
-			wheel_parm lparm
-			{
-				.m_ms = sysconfig::kcpping() * localtime::MILLISECOND,
-				.m_intervalms = [](int64_t) {return sysconfig::kcpping() * localtime::MILLISECOND; } ,
-				.m_count = 0x7fffffff,
-				.m_fun = [session, this](const wheel_node* anode)
-				{
-					if (ptr_se lpstruct = m_session.find(session); lpstruct == nullptr)
-					{
-						m_kcptimer.removetimer(anode->m_timerid);
-						return;
-					}
-					udp_cmd::sendcmd(this, session, udp_cmd::ecmd_ping, "");
-				}
-			};
-			apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
-#endif//USE_WHEEL_TIMER
-		}
-		return true;
-	}
-
 	//## udp_cmd::ecmd_connect
 	void asio_kcp::func_ecmd_connect()const
 	{
 		udp_cmd::register_fun(udp_cmd::ecmd_connect, [](asio_kcp* ap, ptr_se& apstruct, const std::string& ajson)
 			{
 				apstruct->m_isconnect = true;
-				apstruct->m_pingtm = (int)localtime::gettime();
 				ncjson ltempjson(ajson.c_str());
 
 				i64_actorid lclient = nguid::make();
@@ -109,10 +46,7 @@ namespace ngl
 
 				log_error()->print("kcp connect : {}@{}", kcp_endpoint::ip(apstruct.get()), kcp_endpoint::port(apstruct.get()));
 
-				if (ap->func_connect(apstruct, true))
-				{
-					udp_cmd::sendcmd(ap, apstruct->m_session, udp_cmd::ecmd_connect_ret, "{}");
-				}
+				udp_cmd::sendcmd(ap, apstruct->m_session, udp_cmd::ecmd_connect_ret, "{}");
 			}
 		);
 	}
@@ -123,24 +57,7 @@ namespace ngl
 		udp_cmd::register_fun(udp_cmd::ecmd_connect_ret, [](asio_kcp* ap, ptr_se& apstruct, const std::string& ajson)
 			{
 				apstruct->m_isconnect = true;
-				apstruct->m_pingtm = (int)localtime::gettime();
-				// 除了robot 其他服务器均不允许定时ping 
-				if (nconfig.nodetype() == ngl::ROBOT)
-				{
-					// 定时发送cmd:ping
-					ap->func_connect(apstruct, false);
-				}
 				ap->m_connectfun(apstruct->m_session);
-			}
-		);
-	}
-
-	//## udp_cmd::ecmd_ping
-	void asio_kcp::asio_kcp::func_ecmd_ping()const
-	{
-		udp_cmd::register_fun(udp_cmd::ecmd_ping, [](asio_kcp* ap, ptr_se& apstruct, const std::string&)
-			{
-				apstruct->m_pingtm = (int)localtime::gettime();
 			}
 		);
 	}
@@ -162,7 +79,7 @@ namespace ngl
 						ap->close(lession);
 					}
 				};
-				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
+				m_kcptimer.addtimer(lparm);
 			}
 		);
 	}
@@ -176,7 +93,6 @@ namespace ngl
 	{
 		func_ecmd_connect();
 		func_ecmd_connect_ret();
-		func_ecmd_ping();
 		func_ecmd_close();
 
 		start();

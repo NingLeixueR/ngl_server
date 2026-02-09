@@ -51,10 +51,6 @@ namespace ngl
 		{
 			m_kcptimer.removetimer(m_timerid);
 		}
-		if (m_pingtimerid != 0)
-		{
-			m_kcptimer.removetimer(m_pingtimerid);
-		}
 	}
 
 	int kcp_endpoint::setmtu(int mtu)

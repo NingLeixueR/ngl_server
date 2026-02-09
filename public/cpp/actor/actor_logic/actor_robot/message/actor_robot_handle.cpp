@@ -269,7 +269,7 @@ namespace ngl
 					.m_starttime = lbuffstart,
 					.m_finishtime = lbufffinish,
 				}
-				);
+			);
 		}
 		njson::push(ljson.json(), { tools::type_name<notices>().c_str() }, lnotices);
 		std::string lstr = ljson.str();

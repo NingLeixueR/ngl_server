@@ -34,15 +34,14 @@ namespace ngl
 		std::string lip = aendpoint.address().to_string();
 		i16_port lport = aendpoint.port();
 		monopoly_shared_lock(m_mutex);
-		auto lpmap = tools::findmap(m_dataofendpoint, lip);
-		if (lpmap != nullptr)
+		i32_sessionid lsessionid = 0;
+		if (tools::erasemap(m_actoridofsession, aactoridclient, lsessionid))
 		{
-			auto lpse =  tools::findmap(*lpmap, lport);
-			if (lpmap == nullptr)
+			ptr_se lpse = nullptr;
+			if (tools::erasemap(m_dataofsession, lsessionid, lpse))
 			{
-				return nullptr;
+				tools::erasemap(m_dataofendpoint[lpse->m_ip], lpse->m_port, lpse);
 			}
-			return *lpse;
 		}
 		if (aconv <= 0)
 		{
@@ -69,17 +68,26 @@ namespace ngl
 		m_dataofendpoint[lip][lport] = ltemp;
 
 		int64_t lcreatems = time_wheel::getms();
+		lsessionid = m_sessionid;
 		wheel_parm lparm
 		{
 			.m_ms = ekcp_update_intervalms,
 			.m_intervalms = [](int64_t) {return ekcp_update_intervalms; } ,
 			.m_count = 0x7fffffff,
-			.m_fun = [ltemp,lcreatems](const wheel_node*)
+			.m_fun = [this, lsessionid,lcreatems](const wheel_node*)
 			{
-				ltemp->update((IUINT32)(time_wheel::getms() - lcreatems));
+				ptr_se* lpse = nullptr;
+				{
+					monopoly_shared_lock(m_mutex);
+					lpse = tools::findmap(m_dataofsession, lsessionid);
+				}
+				if (lpse != nullptr)
+				{
+					(*lpse)->update((IUINT32)(time_wheel::getms() - lcreatems));
+				}								
 			}
 		};
-		m_kcptimer.addtimer(lparm);
+		ltemp->m_timerid = m_kcptimer.addtimer(lparm);
 		return ltemp;
 	}
 

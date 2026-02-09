@@ -42,7 +42,6 @@ namespace ngl
 		{
 			ntcp::instance().send(lpack->m_id, *lpram, nguid::make(), nguid::make());
 		}
-		lpram->m_serverid;
 		return true;
 	}
 }//namespace ngl
