@@ -24,19 +24,26 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
                
-    - name: Set up PostgreSQL 18.1 official repo
+    - name: Add PostgreSQL official APT repository
       run: |
-        # Get Ubuntu codename
-        CODENAME=$(grep "UBUNTU_CODENAME" /etc/os-release | cut -d= -f2)
-        
-        # Add official PostgreSQL APT repo
-        wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
-        echo "deb http://apt.postgresql.org/pub/repos/apt/ ${CODENAME}-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          # Import the official PostgreSQL signing key
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
+            sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
 
-    - name: Install PostgreSQL 18.1 client and libpq-dev
+          # Add the PGDG APT repo for Ubuntu 24.04 (noble)
+          echo "deb http://apt.postgresql.org/pub/repos/apt/ noble-pgdg main" | \
+            sudo tee /etc/apt/sources.list.d/pgdg.list
+
+    - name: Install PostgreSQL 18 client and libpq-dev
       run: |
-        sudo apt update
-        sudo apt install -y postgresql-client-18 libpq-dev=18.1*
+          sudo apt update
+          # Install PostgreSQL 18 client + development headers (libpq-fe.h, etc.)
+          sudo apt install -y postgresql-client-18 libpq-dev=18.1*
+
+    - name: Fix libintl linking issue (required for PG's NLS support)
+      run: |
+          # Create libintl.so as a linker script pointing to libc
+          echo 'INPUT(-lc)' | sudo tee /usr/lib/x86_64-linux-gnu/libintl.so
             
     - name: Download and Install CMake
       run: |
