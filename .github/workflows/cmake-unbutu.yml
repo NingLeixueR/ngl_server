@@ -67,7 +67,9 @@ jobs:
           wget \
           bison \
           flex \
-          libxml2-dev
+          libxml2-dev \
+          gettext \
+          libintl-dev
         cd ./third_party
         tar -zxf postgresql-18.1.tar.gz
         cd postgresql-18.1 && pwd  # 确认进入源码目录
@@ -83,6 +85,7 @@ jobs:
         make -j$(nproc)
         # 安装到指定路径（需要sudo，因为/usr/local是系统目录）
         sudo make install
+    
 
     - name: Download Protobuf 3.12.2
       run: |
