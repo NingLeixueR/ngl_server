@@ -62,7 +62,6 @@ jobs:
         cd ./third_party
         tar -zxf postgresql-18.1.tar.gz
         cd postgresql-18.1 && pwd  # 确认进入源码目录
-        cd postgresql-18.1
           # ./configure参数说明：
           # --prefix：指定安装根目录
           # --with-openssl：启用SSL（可选，建议开启）
