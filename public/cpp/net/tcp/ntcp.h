@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
@@ -32,18 +32,18 @@ namespace ngl
 	class ntcp
 	{
 		std::shared_ptr<asio_tcp>				m_server = nullptr;			// asio
-		std::vector<std::shared_ptr<segpack>>	m_segpackvec;				// ·Ö°ü
-		i16_port								m_port = 0;					// ·şÎñÆ÷¼àÌı¶Ë¿ÚºÅ
-		i32_threadsize							m_socketthreadnum = 0;		// socket ½ÓÊÕÊı¾İÏß³ÌÊı
-		bool									m_outernet = false;			// ÊÇ·ñÔÊĞíÍâÍøÁ¬½Ó
-		bpool									m_pool;						// ·¢ËÍ³Ø
-		std::shared_mutex						m_mutex;					// »¥³âÁ¿
-		std::list<pack>							m_packlist;					// ·¢ËÍ¶ÓÁĞ
+		std::vector<std::shared_ptr<segpack>>	m_segpackvec;				// åˆ†åŒ…
+		i16_port								m_port = 0;					// æœåŠ¡å™¨ç›‘å¬ç«¯å£å·
+		i32_threadsize							m_socketthreadnum = 0;		// socket æ¥æ”¶æ•°æ®çº¿ç¨‹æ•°
+		bool									m_outernet = false;			// æ˜¯å¦å…è®¸å¤–ç½‘è¿æ¥
+		bpool									m_pool;						// å‘é€æ± 
+		std::shared_mutex						m_mutex;					// äº’æ–¥é‡
+		std::list<pack>							m_packlist;					// å‘é€é˜Ÿåˆ—
 	private:
 		bool socket_recv(service_io* ap, const char* abuff, int32_t abufflen);
 	public:
-		// # ²¢·ÇÇ¿ÖÆµ¥Àı£¬Ò²¿ÉÒÔÌí¼Óinstance1....n
-		// # À©Õ¹µ¥½ø³ÌÖĞ¼àÌı¶Ë¿ÚµÄÊıÁ¿
+		// # å¹¶éå¼ºåˆ¶å•ä¾‹ï¼Œä¹Ÿå¯ä»¥æ·»åŠ instance1....n
+		// # æ‰©å±•å•è¿›ç¨‹ä¸­ç›‘å¬ç«¯å£çš„æ•°é‡
 		static ntcp& instance()
 		{
 			static ntcp ltemp;
@@ -52,51 +52,51 @@ namespace ngl
 
 		bpool& pool();
 
-		// # ¼àÌı¶Ë¿Ú Ïß³ÌÊıÁ¿
+		// # ç›‘å¬ç«¯å£ çº¿ç¨‹æ•°é‡
 		bool init(i16_port aport, i32_threadsize asocketthreadnum, bool	aouternet);
 
-		// # ¼àÌı¶Ë¿Ú
+		// # ç›‘å¬ç«¯å£
 		i16_port port();
 
-		// # ¹Ø±ÕsocketÁ¬½ÓÒÔ¼°¼ÓÔØµÄÊı¾İ
-		// # Í¨ÖªÉÏ²ãÓ¦ÓÃ
+		// # å…³é—­socketè¿æ¥ä»¥åŠåŠ è½½çš„æ•°æ®
+		// # é€šçŸ¥ä¸Šå±‚åº”ç”¨
 		void close(i32_sessionid asession);
 
-		// # ¹Ø±Õsession
+		// # å…³é—­session
 		void close_net(i32_sessionid asession);
 
-		// # ÉèÖÃsocket¹Ø±ÕºóµÄ¶ÏÏßÖØÁ¬,afun:connectµÄparm3
+		// # è®¾ç½®socketå…³é—­åçš„æ–­çº¿é‡è¿,afun:connectçš„parm3
 		void set_close(int asession, const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun);
 
-		// # »ñÈ¡·şÎñÆ÷ip
+		// # è·å–æœåŠ¡å™¨ip
 		const std::string& ip(const net_works& anets);
 
-		// # Á¬½Óip:aport
+		// # è¿æ¥ip:aport
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun);
 
-		// # ³¢ÊÔÁ¬½ÓÖ¸¶¨ip/port
-		// # aip/aport		ÒªÁ¬½ÓµÄip/¶Ë¿Ú
-		// # afun			Á¬½Ó»Øµ÷
-		// # await			ÊÇ·ñµÈ´ıÁ¬½Ó³É¹¦
-		// # areconnection	¶ÏÏßÊÇ·ñÖØÁ¬
+		// # å°è¯•è¿æ¥æŒ‡å®šip/port
+		// # aip/aport		è¦è¿æ¥çš„ip/ç«¯å£
+		// # afun			è¿æ¥å›è°ƒ
+		// # await			æ˜¯å¦ç­‰å¾…è¿æ¥æˆåŠŸ
+		// # areconnection	æ–­çº¿æ˜¯å¦é‡è¿
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection);
 
-		// # ³¢ÊÔÁ¬½ÓÖ¸¶¨·şÎñÆ÷
+		// # å°è¯•è¿æ¥æŒ‡å®šæœåŠ¡å™¨
 		bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection);
 		
-		// # ·¢ËÍÏûÏ¢
+		// # å‘é€æ¶ˆæ¯
 		bool send_msg(i32_sessionid asession, const std::string& amsg);
 
-		// # ·¢ËÍÏûÏ¢
+		// # å‘é€æ¶ˆæ¯
 		bool send_pack(i32_sessionid asession, std::shared_ptr<pack>& lpack);
 
-		// # ·¢ËÍÏûÏ¢
+		// # å‘é€æ¶ˆæ¯
 		bool send_pack(i32_sessionid asession, std::shared_ptr<void>& lpack);
 
-		// # ÏòÄ³¸ö·şÎñÆ÷·¢ËÍpack
+		// # å‘æŸä¸ªæœåŠ¡å™¨å‘é€pack
 		bool send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
-		// # ·¢ËÍÏûÏ¢
+		// # å‘é€æ¶ˆæ¯
 		template <typename Y, typename T = Y>
 		bool send(i32_sessionid asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
@@ -106,22 +106,22 @@ namespace ngl
 		template <typename Y, typename T = Y>
 		bool send(const std::set<i32_sessionid>& asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// # Ïò·şÎñÆ÷·¢ËÍÏûÏ¢
+		// # å‘æœåŠ¡å™¨å‘é€æ¶ˆæ¯
 		template <typename Y, typename T = Y>
 		bool send_server(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		template <typename Y, typename T = Y>
 		bool send_server(const std::set<i32_serverid>& aserverids, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// # ¸øÒ»×ésesion·¢ËÍÏûÏ¢
+		// # ç»™ä¸€ç»„sesionå‘é€æ¶ˆæ¯
 		bool send(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack);
 		bool send(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack);
 
-		// # Ïò¿Í»§¶Ë·¢ËÍÏûÏ¢
+		// # å‘å®¢æˆ·ç«¯å‘é€æ¶ˆæ¯
 		template <typename T>
 		bool send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata);
 
-		// # Ïò¿Í»§¶Ë·¢ËÍÏûÏ¢
+		// # å‘å®¢æˆ·ç«¯å‘é€æ¶ˆæ¯
 		template <typename T>
 		void send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata);
 	};
@@ -167,7 +167,7 @@ namespace ngl
 		return send(asession, aactorid, arequestactorid, lpack);
 	}
 
-	// # Ïò·şÎñÆ÷·¢ËÍÏûÏ¢
+	// # å‘æœåŠ¡å™¨å‘é€æ¶ˆæ¯
 	template <typename Y, typename T/* = Y*/>
 	bool ntcp::send_server(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
@@ -205,7 +205,7 @@ namespace ngl
 		return send_client(lvecs, agateway, adata);
 	}
 
-	// # Ïò¿Í»§¶Ë·¢ËÍÏûÏ¢
+	// # å‘å®¢æˆ·ç«¯å‘é€æ¶ˆæ¯
 	template <typename T>
 	void ntcp::send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
 	{

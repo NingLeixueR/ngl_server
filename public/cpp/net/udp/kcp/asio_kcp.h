@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -70,28 +70,28 @@ namespace ngl
 
 		void func_ecmd_close()const;
 	public:
-		// # ·¢ËÍÔ­Ê¼udp°ü
+		// # å‘é€åŸå§‹udpåŒ…
 		bool sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len);
 
-		// # ·¢ËÍÔ­Ê¼udp°ü²¢µÈ´ıÆä·µ»Ø
+		// # å‘é€åŸå§‹udpåŒ…å¹¶ç­‰å¾…å…¶è¿”å›
 		bool sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun);
 
-		// # Í¨¹ıkcp·¢ËÍpack
+		// # é€šè¿‡kcpå‘é€pack
 		bool send_server(i32_sessionid asessionid, const std::shared_ptr<pack>& apack);
 
-		// # Í¨¹ıkcp¸øËùÓĞclient·¢ËÍpack
+		// # é€šè¿‡kcpç»™æ‰€æœ‰clientå‘é€pack
 		bool send_server(const std::shared_ptr<pack>& apack);
 
-		// # Í¨¹ıkcp¸øÖ¸¶¨areaËùÓĞclient·¢ËÍpack
+		// # é€šè¿‡kcpç»™æŒ‡å®šareaæ‰€æœ‰clientå‘é€pack
 		bool sendpackbyarea(i16_area aarea, const std::shared_ptr<pack>& apack);
 
-		// # Í¨¹ıkcp·¢ËÍpack
+		// # é€šè¿‡kcpå‘é€pack
 		bool send_server(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack);
 
-		// # Í¨¹ıkcp·¢ËÍpack
+		// # é€šè¿‡kcpå‘é€pack
 		bool sendpackbyactorid(i64_actorid aactorid, const std::shared_ptr<pack>& apack);
 
-		// # ·¢ÆğÁ¬½Ó
+		// # å‘èµ·è¿æ¥
 		void connect(int32_t aconv
 			, std::string& akcpsess
 			, i64_actorid aactoridserver
@@ -101,7 +101,7 @@ namespace ngl
 			, const std::function<void(i32_session)>& afun
 		);
 
-		// # ·¢ÆğÁ¬½Ó
+		// # å‘èµ·è¿æ¥
 		void connect(int32_t aconv
 			, std::string& akcpsess
 			, i64_actorid aactoridserver
@@ -110,20 +110,20 @@ namespace ngl
 			, const std::function<void(i32_session)>& afun
 		);
 
-		// # ²éÕÒÁ¬½Ó¹ØÁªµÄactor
+		// # æŸ¥æ‰¾è¿æ¥å…³è”çš„actor
 		i64_actorid find_actoridserver(i32_session asession);
 		i64_actorid find_actoridclient(i32_session asession);
 		bool find_actorid(i32_session asession, i64_actorid& aactoridserver, i64_actorid& aactoridclient);
 
-		// # ¸ù¾İactorid»ñÈ¡session
+		// # æ ¹æ®actoridè·å–session
 		i32_session find_session(i64_actorid aactoridclient);
 
-		// # ¹Ø±ÕÁ¬½Ó
+		// # å…³é—­è¿æ¥
 		void close(i32_session asession);
 
 		void close_net(i32_session asession);
 
-		// # ÖØÖÃÁ¬½Ó
+		// # é‡ç½®è¿æ¥
 		void reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient);
 
 		bool sempack(const ptr_se& apstruct, const char* abuff, int abufflen);

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
@@ -22,14 +22,14 @@ namespace ngl
 	bool ntcp::socket_recv(service_io* ap, const char* abuff, int32_t abufflen)
 	{
 		if (abuff == nullptr && abufflen == 0)
-		{// # Á¬½Ó±»Òì³£ÖĞ¶Ï net -> application
+		{// # è¿æ¥è¢«å¼‚å¸¸ä¸­æ–­ net -> application
 			close(ap->m_sessionid);
 			return true;
 		}
 		if (m_outernet == false)
-		{// # ²»ÔÊĞíÍâÍø·ÃÎÊ
+		{// # ä¸å…è®¸å¤–ç½‘è®¿é—®
 			if (ap->m_is_lanip == false)
-			{//Á¬½Ó²»ÊÇÄÚÍø
+			{//è¿æ¥ä¸æ˜¯å†…ç½‘
 				return false;
 			}
 		}
@@ -61,9 +61,9 @@ namespace ngl
 
 		std::function<void(i32_sessionid)> lclose = [this](i32_sessionid asession)
 			{
-				// Èç¹û¶Ï¿ªÁ¬½ÓµÄÊÇdb·şÎñÆ÷ 
-				// ×Ô¶¯¹Ø±Õ´Ë½ø³Ì
-				// ·ÀÖ¹Íæ¼ÒÊı¾İÎŞ·¨±£´æÔì³É»Øµµ
+				// å¦‚æœæ–­å¼€è¿æ¥çš„æ˜¯dbæœåŠ¡å™¨ 
+				// è‡ªåŠ¨å…³é—­æ­¤è¿›ç¨‹
+				// é˜²æ­¢ç©å®¶æ•°æ®æ— æ³•ä¿å­˜é€ æˆå›æ¡£
 				i32_serverid lserverid = server_session::serverid(asession);
 				if (lserverid != -1 && ttab_servers::instance().node_type(nnodeid::tid(lserverid)) == NODE_TYPE::DB)
 				{
@@ -127,7 +127,7 @@ namespace ngl
 		return true;
 	}
 
-	bool ntcp::connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection /*¶ÏÏßÊÇ·ñÖØÁ¬*/)
+	bool ntcp::connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection /*æ–­çº¿æ˜¯å¦é‡è¿*/)
 	{
 		std::shared_ptr<ngl::sem> lsem = nullptr;
 		if (await)

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -35,43 +35,43 @@ namespace ngl
 		using map_ipport = std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>;
 		using map_close = std::unordered_map<i32_sessionid, std::function<void()>>;
 
-		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4	= nullptr;		// ÓÃÓÚÖ§³Öipv4
-		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6	= nullptr;		// ÓÃÓÚÖ§³Öipv6
-		i16_port							m_port			= 0;			// ¼àÌıµÄ¶Ë¿Ú
-		tcp_callback						m_fun			= nullptr;		// ½ÓÊÕÊı¾İµÄ»Øµ÷
-		tcp_closecallback					m_closefun		= nullptr;		// ¹Ø±ÕÁ¬½ÓµÄ»Øµ÷
-		tcp_sendfinishcallback				m_sendfinishfun = nullptr;		// ·¢ËÍÊ§°ÜµÄ»Øµ÷
-		i32_sessionid						m_sessionid		= 0;			// ×ÔÔöµÄsession id	
-		std::shared_mutex					m_maplock;						// ÓÃÓÚËø¶¨"m_data,m_sessionid"
-		serviceio_info						m_service_ios;					// asioÖ§³Ö
-		std::shared_mutex					m_ipportlock;					// ÓÃÓÚËø¶¨"m_ipport"
-		map_service_tcp						m_data;							// key:session id value:Á¬½ÓÊı¾İ
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4	= nullptr;		// ç”¨äºæ”¯æŒipv4
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6	= nullptr;		// ç”¨äºæ”¯æŒipv6
+		i16_port							m_port			= 0;			// ç›‘å¬çš„ç«¯å£
+		tcp_callback						m_fun			= nullptr;		// æ¥æ”¶æ•°æ®çš„å›è°ƒ
+		tcp_closecallback					m_closefun		= nullptr;		// å…³é—­è¿æ¥çš„å›è°ƒ
+		tcp_sendfinishcallback				m_sendfinishfun = nullptr;		// å‘é€å¤±è´¥çš„å›è°ƒ
+		i32_sessionid						m_sessionid		= 0;			// è‡ªå¢çš„session id	
+		std::shared_mutex					m_maplock;						// ç”¨äºé”å®š"m_data,m_sessionid"
+		serviceio_info						m_service_ios;					// asioæ”¯æŒ
+		std::shared_mutex					m_ipportlock;					// ç”¨äºé”å®š"m_ipport"
+		map_service_tcp						m_data;							// key:session id value:è¿æ¥æ•°æ®
 		map_ipport							m_ipport;						// key:session id value:ipport
-		map_close							m_close;						// ¹Ø±ÕÁ¬½Ó»Øµ÷
+		map_close							m_close;						// å…³é—­è¿æ¥å›è°ƒ
 	public:
 		enum
 		{
 			etcp_buffmaxsize = 20480,	// tcp buff byte
-			etcp_connect_interval = 1,	// Á¬½Ó¼ä¸ô,µ¥Î»Ãë
+			etcp_connect_interval = 1,	// è¿æ¥é—´éš”,å•ä½ç§’
 		};
 
 		friend class service_tcp;
 
-		// # ·şÎñÆ÷ server(»á¼àÌı¶Ë¿Ú,½¨Á¢Á¬½Ó)
+		// # æœåŠ¡å™¨ server(ä¼šç›‘å¬ç«¯å£,å»ºç«‹è¿æ¥)
 		asio_tcp(
-			i16_port aport										// ¼àÌı¶Ë¿Ú
-			, i32_threadsize athread							// Ïß³ÌÊı
-			, const tcp_callback& acallfun						// »Øµ÷
-			, const tcp_closecallback& aclosefun				// ¹Ø±Õ»Øµ÷
-			, const tcp_sendfinishcallback& asendfinishfun		// ·¢ËÍÊ§°ÜµÄ»Øµ÷
+			i16_port aport										// ç›‘å¬ç«¯å£
+			, i32_threadsize athread							// çº¿ç¨‹æ•°
+			, const tcp_callback& acallfun						// å›è°ƒ
+			, const tcp_closecallback& aclosefun				// å…³é—­å›è°ƒ
+			, const tcp_sendfinishcallback& asendfinishfun		// å‘é€å¤±è´¥çš„å›è°ƒ
 		);
 
-		// # ¿Í»§¶Ë client(±¾µØ²»»á¼àÌı¶Ë¿Ú)
+		// # å®¢æˆ·ç«¯ client(æœ¬åœ°ä¸ä¼šç›‘å¬ç«¯å£)
 		asio_tcp(
-			i32_threadsize athread								// Ïß³ÌÊı
-			, const tcp_callback& acallfun						// »Øµ÷
-			, const tcp_closecallback& aclosefun				// ¹Ø±Õ»Øµ÷
-			, const tcp_sendfinishcallback& asendfinishfun		//·¢ËÍÊ§°ÜµÄ»Øµ÷
+			i32_threadsize athread								// çº¿ç¨‹æ•°
+			, const tcp_callback& acallfun						// å›è°ƒ
+			, const tcp_closecallback& aclosefun				// å…³é—­å›è°ƒ
+			, const tcp_sendfinishcallback& asendfinishfun		//å‘é€å¤±è´¥çš„å›è°ƒ
 		);
 	private:
 		service_tcp* get_tcp(i32_sessionid asessionid);
@@ -96,24 +96,24 @@ namespace ngl
 
 		void start(const std::shared_ptr<service_tcp>& aservice);
 	public:
-		// # ·¢ÆğÁ¬½Ó
+		// # å‘èµ·è¿æ¥
 		service_tcp* connect(const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount = 5);
 
-		// # ·¢ËÍpack
+		// # å‘é€pack
 		bool send(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
 		bool send(i32_sessionid asessionid, std::shared_ptr<void>& apack);
 
-		// # ¹Ø±ÕÁ¬½Ó(»áÍ¨ÖªÂß¼­²ã)
+		// # å…³é—­è¿æ¥(ä¼šé€šçŸ¥é€»è¾‘å±‚)
 		void close(i32_sessionid sessionid);
 		void close(service_tcp* atcp);
 
-		// # ¹Ø±ÕÁ¬½Ó(²»»áÍ¨ÖªÂß¼­²ã)
+		// # å…³é—­è¿æ¥(ä¸ä¼šé€šçŸ¥é€»è¾‘å±‚)
 		void close_net(i32_sessionid sessionid);
 
-		// # ¸ù¾İsession»ñÈ¡ipÓë¶Ë¿Ú
+		// # æ ¹æ®sessionè·å–ipä¸ç«¯å£
 		bool get_ipport(i32_sessionid assionid, std::pair<str_ip, i16_port>& apair);
 
-		// # ÉèÖÃÁ¬½Ó¹Ø±Õ»Øµ÷
+		// # è®¾ç½®è¿æ¥å…³é—­å›è°ƒ
 		void set_close(i32_sessionid asession, const std::function<void()>& afun);
 	};	
 }// namespace ngl

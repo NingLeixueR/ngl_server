@@ -1,19 +1,19 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ��Ŀ���ƣ�ngl_server
-* ��Ŀ��ַ��https://github.com/NingLeixueR/ngl_server
+* 项目名称：ngl_server
+* 项目地址：https://github.com/NingLeixueR/ngl_server
 * 
-* ���ļ��� ngl_server ��Ŀ��һ���֣���ѭ MIT ��ԴЭ�鷢����
-* �����԰���Э��涨����ʹ�á��޸ĺͷַ�����Ŀ��������ҵ��;��
-* ���豣��ԭʼ��Ȩ������������
+* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
+* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
+* 但需保留原始版权和许可声明。
 * 
-* ��������μ���Ŀ��Ŀ¼�µ� LICENSE �ļ���
+* 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-// ע�⡾IDL ���������ļ�����Ҫ�ֶ��޸ġ�
-// ����ʱ�� // ����ʱ�� 26-02-10 14:38:17
+// 注意【IDL 工具生成文件，不要手动修改】
+// 创建时间 // 创建时间 26-02-10 18:28:55
 #include "csvtable.h"
 namespace ngl{
 net_works::net_works()

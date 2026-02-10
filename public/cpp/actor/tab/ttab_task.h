@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -30,8 +30,8 @@ namespace ngl
 		ttab_task(const ttab_task&) = delete;
 		ttab_task& operator=(const ttab_task&) = delete;
 
-		// first	: ¸ù¾İ¿É½ÓÊÜÌõ¼ş½øĞĞ·ÖÀà 
-		// second	: ¸ù¾İ¿ÉÍê³ÉÌõ¼ş½øĞĞ·ÖÀà 
+		// first	: æ ¹æ®å¯æ¥å—æ¡ä»¶è¿›è¡Œåˆ†ç±» 
+		// second	: æ ¹æ®å¯å®Œæˆæ¡ä»¶è¿›è¡Œåˆ†ç±» 
 		using receive_complete = std::pair<std::set<i32_taskid>, std::set<i32_taskid>>;
 		std::map<ETask, int32_t> m_maxval;
 		std::map<ETask, std::map<int32_t, receive_complete>> m_map;
@@ -117,7 +117,7 @@ namespace ngl
 			}
 		}
 
-		// »ñÈ¡Ìõ¼ş¹ØÁªµÄËùÓĞÈÎÎñ
+		// è·å–æ¡ä»¶å…³è”çš„æ‰€æœ‰ä»»åŠ¡
 		std::set<i32_taskid>* check(ETask atype, int32_t avalues, bool aisreceive)
 		{
 			auto itor = m_map.find(atype);
@@ -151,7 +151,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		// # »ñÈ¡ÈÎÎñ½ÓÈ¡Ìõ¼ş
+		// # è·å–ä»»åŠ¡æ¥å–æ¡ä»¶
 		const std::vector<task_condition>* condition_receive(i32_taskid ataskid)
 		{
 			const tab_task* table = tab(ataskid);
@@ -179,7 +179,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		// # »ñÈ¡ÈÎÎñÍê³ÉÌõ¼ş
+		// # è·å–ä»»åŠ¡å®Œæˆæ¡ä»¶
 		const std::vector<task_condition>* condition_complete(i32_taskid ataskid)
 		{
 			const tab_task* table = tab(ataskid);
@@ -190,7 +190,7 @@ namespace ngl
 			return &table->m_taskcomplete;
 		}
 
-		// # ÈÎÎñÊÇ·ñ¿ÉÖØ¸´Íê³É
+		// # ä»»åŠ¡æ˜¯å¦å¯é‡å¤å®Œæˆ
 		bool repeat(actor_role* rd, i32_taskid ataskid)
 		{
 			const tab_task* table = tab(ataskid);
