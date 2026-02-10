@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -39,9 +39,9 @@ namespace ngl
 		ndbtab(const ndbtab&) = delete;
 		ndbtab& operator=(const ndbtab&) = delete;
 
-		static tab_dbload*		m_tab;				// Êı¾İ¿â¼ÓÔØ²ßÂÔ
-		static db_cache			m_cache_save;		// Êı¾İ±£´æ¶ÓÁĞ
-		static db_cache			m_cache_del;		// Êı¾İÉ¾³ı¶ÓÁĞ
+		static tab_dbload*		m_tab;				// æ•°æ®åº“åŠ è½½ç­–ç•¥
+		static db_cache			m_cache_save;		// æ•°æ®ä¿å­˜é˜Ÿåˆ—
+		static db_cache			m_cache_del;		// æ•°æ®åˆ é™¤é˜Ÿåˆ—
 
 		enum
 		{
@@ -53,7 +53,7 @@ namespace ngl
 		static std::function<void()>						m_selectall;
 		static std::function<void()>						m_selectindex;
 		static std::function<void(i32_threadid, int64_t)>	m_select;
-		// # ³õÊ¼»¯
+		// # åˆå§‹åŒ–
 		static void init()
 		{
 			m_tab = ttab_dbload::instance().get_tabdb<TDBTAB>();
@@ -64,7 +64,7 @@ namespace ngl
 				return;
 			}
 
-			// # ÉèÖÃÊı¾İ±£´æ/Êı¾İÉ¾³ı¶ÓÁĞ
+			// # è®¾ç½®æ•°æ®ä¿å­˜/æ•°æ®åˆ é™¤é˜Ÿåˆ—
 			m_cache_save.set_cachefun(std::bind_front(&cachelist, enum_clist_save), m_tab->m_dbcacheintervalms);
 			m_cache_del.set_cachefun(std::bind_front(&cachelist, enum_clist_del), m_tab->m_dbcacheintervalms);
 
@@ -98,16 +98,16 @@ namespace ngl
 			}
 
 			if (m_tab->m_isloadall)
-			{// ¼ÓÔØÈ«²¿Êı¾İ
+			{// åŠ è½½å…¨éƒ¨æ•°æ®
 				m_selectall();
 			}
 			else
-			{// ¼ÓÔØÈ«²¿id ·ÀÖ¹ÄÚ´æ´©Í¸
+			{// åŠ è½½å…¨éƒ¨id é˜²æ­¢å†…å­˜ç©¿é€
 				m_selectindex();			
 			}
 		}
 
-		// # ¼ÓÔØ±íÖĞµÄËùÓĞÊı¾İ
+		// # åŠ è½½è¡¨ä¸­çš„æ‰€æœ‰æ•°æ®
 		static void load(const pack* apack)
 		{
 			if (!m_tab->m_isloadall)
@@ -147,7 +147,7 @@ namespace ngl
 			log_info()->print("loadall[{}]", tools::type_name<TDBTAB>());
 		}
 
-		// # ¼ÓÔØ±íÖĞµÄÖ¸¶¨Êı¾İ
+		// # åŠ è½½è¡¨ä¸­çš„æŒ‡å®šæ•°æ®
 		static void load(i32_threadid athreadid, int64_t aid)
 		{
 			if (aid == nguid::make())
@@ -160,7 +160,7 @@ namespace ngl
 			}
 		}
 
-		// # ¼ÓÔØÊı¾İ £ºÍ¬²½·½Ê½
+		// # åŠ è½½æ•°æ® ï¼šåŒæ­¥æ–¹å¼
 		static void load(i32_threadid athreadid, const pack* apack, const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if (!m_tab->m_network)
@@ -170,7 +170,7 @@ namespace ngl
 			i64_actorid lid = adata.m_id.id();			
 			if (lid == nguid::none_actordataid())
 			{
-				//¼ÓÔØÈ«²¿Êı¾İ
+				//åŠ è½½å…¨éƒ¨æ•°æ®
 				load(apack);
 			}
 			else
@@ -207,7 +207,7 @@ namespace ngl
 			}
 		}
 
-		// # Òì²½±£´æÊı¾İ  ½«ĞèÒª±£´æµÄÊı¾İÌí¼Óµ½»º´æ±£´æ¶ÓÁĞ
+		// # å¼‚æ­¥ä¿å­˜æ•°æ®  å°†éœ€è¦ä¿å­˜çš„æ•°æ®æ·»åŠ åˆ°ç¼“å­˜ä¿å­˜é˜Ÿåˆ—
 		static void save(i32_threadid, const TDBTAB& adata)
 		{
 			int64_t lid = adata.mid();
@@ -215,21 +215,21 @@ namespace ngl
 			m_cache_save.push(lid);
 		}
 
-		// # Òì²½É¾³ıÊı¾İ  ½«ĞèÒªÉ¾³ıµÄÊı¾İÌí¼Óµ½»º´æ±£´æ¶ÓÁĞ
+		// # å¼‚æ­¥åˆ é™¤æ•°æ®  å°†éœ€è¦åˆ é™¤çš„æ•°æ®æ·»åŠ åˆ°ç¼“å­˜ä¿å­˜é˜Ÿåˆ—
 		static void del(i32_threadid, i64_actorid aid)
 		{
 			ngl::db_data<TDBTAB>::remove(aid);
 			m_cache_del.push(aid);
 		}
 
-		// # Òì²½É¾³ıÒ»×éÊı¾İ
+		// # å¼‚æ­¥åˆ é™¤ä¸€ç»„æ•°æ®
 		static void del(i32_threadid, const std::vector<i64_actorid>& aids)
 		{
 			ngl::db_data<TDBTAB>::remove(aids);
 			m_cache_del.push(aids);
 		}
 
-		// # Êı¾İ±£´æ
+		// # æ•°æ®ä¿å­˜
 		static void save(i32_threadid athreadid, const pack*, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			for (auto& [_guid, _tdb] : adata.m_data)
@@ -336,7 +336,7 @@ namespace ngl
 			>(e_ready_all);
 		}
 
-		// # Í¬²½:¼ÓÔØÊı¾İ
+		// # åŒæ­¥:åŠ è½½æ•°æ®
 		bool handle(const message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			log_error()->print("load: np_actordb_load<{}> id:{}", tools::type_name<TDBTAB>(), adata.get_data()->m_id);
@@ -344,14 +344,14 @@ namespace ngl
 			return true;
 		}
 
-		// # Òì²½:±£´æÊı¾İ
+		// # å¼‚æ­¥:ä¿å­˜æ•°æ®
 		bool handle(const message<np_actordb_save<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			ndbtab<TDBTAB_TYPE, TDBTAB>::save(adata.thread(), adata.get_pack(), *adata.get_data());
 			return true;
 		}
 
-		// # Òì²½:É¾³ıÊı¾İ
+		// # å¼‚æ­¥:åˆ é™¤æ•°æ®
 		bool handle(const message<np_actordb_delete<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			log_error()->print("load: np_actordb_delete<{}> id:{}", tools::type_name<TDBTAB>(), adata.get_data()->m_data);
@@ -359,7 +359,7 @@ namespace ngl
 			return true;
 		}
 
-		// # ACTOR_TIMER_DB_CACHE, db cache list  ±£´æ»º´æÁĞ±í
+		// # ACTOR_TIMER_DB_CACHE, db cache list  ä¿å­˜ç¼“å­˜åˆ—è¡¨
 		bool handle(const message<np_actortime_db_cache<TDBTAB>>& adata)
 		{
 			enum_cache_list ltype = adata.get_data()->m_type;
@@ -387,7 +387,7 @@ namespace ngl
 			return true;
 		}
 
-		// # Ö§³Ögm²Ù×÷
+		// # æ”¯æŒgmæ“ä½œ
 		using handle_cmd = cmd<tactor_db, std::string, int, int, ncjson&>;
 		bool handle(const message<mforward<np_gm>>& adata)
 		{

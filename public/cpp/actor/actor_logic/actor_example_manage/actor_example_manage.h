@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -34,7 +34,7 @@ namespace ngl
 	enum eactor_example_manage
 	{
 		exampleindex_max = pbexample::EPLAY_TYPE_MAX + 1,
-		example_waittime = 30,	// µÈ´ı½øÈëÓÎÏ·µÄ×î´óÃëÊı
+		example_waittime = 30,	// ç­‰å¾…è¿›å…¥æ¸¸æˆçš„æœ€å¤§ç§’æ•°
 	};
 
 	struct playinfo
@@ -42,7 +42,7 @@ namespace ngl
 		i64_actorid m_actorexampleid = nguid::make();
 		pbexample::EPLAY_TYPE m_type = pbexample::EPLAY_NULL;
 		int32_t m_createexample = 0;
-		std::map<i64_actorid, bool> m_role_enter_example; // Íæ¼ÒÊÇ·ñ½øÈëÀı×ÓÓÎÏ·
+		std::map<i64_actorid, bool> m_role_enter_example; // ç©å®¶æ˜¯å¦è¿›å…¥ä¾‹å­æ¸¸æˆ
 		std::set<i64_actorid> m_roles;
 	};
 

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "actor_robot_manage.h"
@@ -85,7 +85,7 @@ namespace ngl
 						});
 				};
 
-			// ½øĞĞkcpÁ¬½Ó
+			// è¿›è¡Œkcpè¿æ¥
 			handle_cmd::add("kcp") = [this](const std::vector<std::string>& avec)
 				{
 					foreach([this, &avec](_robot& arobot)
@@ -99,7 +99,7 @@ namespace ngl
 						});
 				};
 
-			// Ê¹ÓÃkcpÁ¬½Ó·¢ËÍGET_TIMEĞ­Òé
+			// ä½¿ç”¨kcpè¿æ¥å‘é€GET_TIMEåè®®
 			handle_cmd::add("kcp_gettime") = [this](const std::vector<std::string>& avec)
 				{
 					pbnet::PROBUFF_NET_GET_TIME pro;
@@ -130,7 +130,7 @@ namespace ngl
 						});
 				};
 
-			// kcp json ·¢ËÍÏûÏ¢
+			// kcp json å‘é€æ¶ˆæ¯
 			handle_cmd::add("kcp_protocol") = [this](const std::vector<std::string>& avec)
 				{
 					foreach([this, &avec](_robot& arobot)
@@ -164,7 +164,7 @@ namespace ngl
 						});
 				};
 
-			// tcp json ·¢ËÍÏûÏ¢
+			// tcp json å‘é€æ¶ˆæ¯
 			handle_cmd::add("protocol") = [this](const std::vector<std::string>& avec)
 				{
 					foreach([this, &avec](_robot& arobot)
@@ -238,7 +238,7 @@ namespace ngl
 		auto recv = adata.get_data();
 		pbnet::PROBUFF_NET_ROLE_CREATE pro;
 		std::string lname = std::format("role_{}", recv->mroleid());
-		log_error()->print("´´½¨½ÇÉ«[{}]", lname);
+		log_error()->print("åˆ›å»ºè§’è‰²[{}]", lname);
 		pro.set_mname(lname);
 		send(get_robot(recv->mroleid()), pro);
 		return true;

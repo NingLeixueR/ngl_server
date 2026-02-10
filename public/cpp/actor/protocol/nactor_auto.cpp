@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "register_channel_db.h"
@@ -87,13 +87,13 @@ namespace ngl
 		tprotocol_customs_200000000();
 
 		tprotocol::set_customs_index(100000000);
-		// »á×¢²áTÓënp_mass_actor<T>
+		// ä¼šæ³¨å†ŒTä¸np_mass_actor<T>
 		tprotocol::tp_customs_script<
 			/*100000001*/np_gm
 			/*100000003*/, np_gm_response
 		>();
 
-		// Õ¼ÓÃ110000000->120000000
+		// å ç”¨110000000->120000000
 		register_channel_db();
 		
 		tprotocol::set_customs_index(120000000);
@@ -104,7 +104,7 @@ namespace ngl
 			/*120000007*/, np_testlua
 		>();
 
-		// ### ÊÂ¼şÏà¹ØĞ­Òé start ### //
+		// ### äº‹ä»¶ç›¸å…³åè®® start ### //
 		tprotocol::set_customs_index(130000000);
 		tprotocol::tp_customs_script<
 			/*130000001*/ actor_events_logic::np_event_register

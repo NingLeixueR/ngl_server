@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "actor_notice.h"
@@ -16,10 +16,10 @@ namespace ngl
 {
 	struct gm_notice
 	{
-		int64_t		m_id = 0;// ¹«¸æid
+		int64_t		m_id = 0;// å…¬å‘Šid
 		std::string	m_notice;
-		int32_t		m_starttime = 0;// ¿ªÊ¼Ê±¼ä
-		int32_t		m_finishtime = 0;// ½áÊøÊ±¼ä
+		int32_t		m_starttime = 0;// å¼€å§‹æ—¶é—´
+		int32_t		m_finishtime = 0;// ç»“æŸæ—¶é—´
 		DPROTOCOL(gm_notice, m_id, m_notice, m_starttime, m_finishtime)
 	};
 	bool actor_notice::handle(const message<mforward<np_gm>>& adata)
@@ -35,7 +35,7 @@ namespace ngl
 		if (handle_cmd::empty())
 		{
 			handle_cmd::add("get_notice") = [this](int id, ncjson& aos)
-				{// ·µ»Ø {"notice":gm_notice[]}
+				{// è¿”å› {"notice":gm_notice[]}
 					gcmd<std::vector<std::string>> pro(id, "get_notice");
 					for (auto& [_guid, _data] : m_notice.data())
 					{

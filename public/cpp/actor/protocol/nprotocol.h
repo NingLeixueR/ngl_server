@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -21,23 +21,23 @@ namespace ngl
 	enum E_ACTOR_TIMER
 	{
 		ET_NULL,
-		ET_MONTH,			// Ã¿ÔÂ´¥·¢
-		ET_WEEK,			// Ã¿ÖÜ´¥·¢
-		ET_DAY,				// Ã¿ÈÕ´¥·¢		ahourÊ±amin·ÖasecÃë
-		ET_HOUR,			// Ã¿Ğ¡Ê±´¥·¢	amin·ÖasecÃë
-		ET_MIN,				// Ã¿·ÖÖÓ´¥·¢	asecÃë
-		ET_INTERVAL_SEC,	// ¼ä¸ônÃë´¥·¢
+		ET_MONTH,			// æ¯æœˆè§¦å‘
+		ET_WEEK,			// æ¯å‘¨è§¦å‘
+		ET_DAY,				// æ¯æ—¥è§¦å‘		ahouræ—¶aminåˆ†asecç§’
+		ET_HOUR,			// æ¯å°æ—¶è§¦å‘	aminåˆ†asecç§’
+		ET_MIN,				// æ¯åˆ†é’Ÿè§¦å‘	asecç§’
+		ET_INTERVAL_SEC,	// é—´éš”nç§’è§¦å‘
 	};
 
 	struct np_timerparm
 	{
 		int								m_type = 0;
 		int								m_timerid = 0;
-		int64_t							m_ms = 0;					// Ïà¶ÔÓÚµ±Ç°Ê±¼ä ms
-		int								m_count = 1;				// ´¥·¢´ÎÊı
-		std::function<int32_t(int64_t)> m_intervalms = nullptr;		// ´¥·¢¼ä¸ô
-		std::shared_ptr<void>			m_parm = nullptr;			// ×Ô¶¨Òå²ÎÊı
-		int64_t							m_triggerms = 0;			// ´¥·¢Ê±µÄºÁÃë
+		int64_t							m_ms = 0;					// ç›¸å¯¹äºå½“å‰æ—¶é—´ ms
+		int								m_count = 1;				// è§¦å‘æ¬¡æ•°
+		std::function<int32_t(int64_t)> m_intervalms = nullptr;		// è§¦å‘é—´éš”
+		std::shared_ptr<void>			m_parm = nullptr;			// è‡ªå®šä¹‰å‚æ•°
+		int64_t							m_triggerms = 0;			// è§¦å‘æ—¶çš„æ¯«ç§’
 
 		DPROTOCOL(np_timerparm, m_type, m_timerid, m_ms, m_count, m_triggerms)
 	};
@@ -48,7 +48,7 @@ namespace ngl
 		apparm->m_parm = std::static_pointer_cast<void>(aparm);
 	}
 
-	// »úÆ÷ÈË²âÊÔ
+	// æœºå™¨äººæµ‹è¯•
 	struct np_robot_pram
 	{
 		std::vector<std::string> m_parm;
@@ -58,9 +58,9 @@ namespace ngl
 
 	struct nactornode
 	{
-		std::string		m_name;							// ·şÎñÆ÷Ãû³Æ
-		NODE_TYPE		m_nodetype = NODE_TYPE::FAIL;	// ·şÎñÆ÷ÀàĞÍ
-		i32_serverid	m_serverid = -1;				// ·şÎñÆ÷id
+		std::string		m_name;							// æœåŠ¡å™¨åç§°
+		NODE_TYPE		m_nodetype = NODE_TYPE::FAIL;	// æœåŠ¡å™¨ç±»å‹
+		i32_serverid	m_serverid = -1;				// æœåŠ¡å™¨id
 		std::vector<i16_actortype>	m_actortype;		// ENUM_ACTOR_TYPE
 
 		DPROTOCOL(nactornode, m_name, m_serverid, m_actortype)
@@ -80,7 +80,7 @@ namespace ngl
 	};
 
 	// [actor client -> actor server]
-	// ×¢²á½áµã
+	// æ³¨å†Œç»“ç‚¹
 	struct np_actornode_register
 	{
 		nactornode m_node;
@@ -90,7 +90,7 @@ namespace ngl
 	};
 
 	// [actor_client -> actor_server]
-	// [»Ø¸´]×¢²á½áµã
+	// [å›å¤]æ³¨å†Œç»“ç‚¹
 	struct np_actornode_register_response
 	{
 		std::vector<nactornode> m_vec;
@@ -99,7 +99,7 @@ namespace ngl
 	};
 
 	// [actor_client -> actor_client]
-	// ¿Í»§¶Ë¼äÏà»¥Á¬½Ó(actor¿Í»§¶ËÏà»¥Á¬½Ó,id´óµÄ) 
+	// å®¢æˆ·ç«¯é—´ç›¸äº’è¿æ¥(actorå®¢æˆ·ç«¯ç›¸äº’è¿æ¥,idå¤§çš„) 
 	struct np_actorclient_node_connect
 	{
 		i32_serverid m_id = -1;
@@ -108,10 +108,10 @@ namespace ngl
 	};
 
 	// [actor_server -> actor_client]	[actor_client -> actor_server] 
-	// ·şÎñÆ÷Ïò¿Í»§¶ËÍ¬²½½áµãĞÅÏ¢		¿Í»§¶ËÏò·şÎñÆ÷Í¬²½½áµãĞÅÏ¢
+	// æœåŠ¡å™¨å‘å®¢æˆ·ç«¯åŒæ­¥ç»“ç‚¹ä¿¡æ¯		å®¢æˆ·ç«¯å‘æœåŠ¡å™¨åŒæ­¥ç»“ç‚¹ä¿¡æ¯
 	struct np_actornode_update
 	{
-		i32_serverid m_id = -1;				// ·şÎñÆ÷id
+		i32_serverid m_id = -1;				// æœåŠ¡å™¨id
 		std::vector<i64_actorid> m_add;
 		std::vector<i64_actorid> m_del;
 		std::map<nguid, i32_serverid> m_rolegateway;
@@ -126,7 +126,7 @@ namespace ngl
 		DPROTOCOL(np_actornode_update_server, m_data)
 	};
 
-	// Ïòactor¿Í»§¶ËÍ¬²½½áµãĞÅÏ¢(Èº·¢)
+	// å‘actorå®¢æˆ·ç«¯åŒæ­¥ç»“ç‚¹ä¿¡æ¯(ç¾¤å‘)
 	struct np_actornode_update_mass
 	{
 		np_actornode_update m_mass;
@@ -135,8 +135,8 @@ namespace ngl
 		DPROTOCOL(np_actornode_update_mass_client, m_mass)
 	};
 
-	// Á¬½Ó³É¹¦ºóÖ´ĞĞÈÎÎñ
-	// ½«ÈÎÎñÌí¼Óµ½actor_clientÖĞ,µ±Ö¸¶¨ÀàĞÍµÄActorÁ¬½Ó³É¹¦ºóÖ´ĞĞ¸ÃÈÎÎñ
+	// è¿æ¥æˆåŠŸåæ‰§è¡Œä»»åŠ¡
+	// å°†ä»»åŠ¡æ·»åŠ åˆ°actor_clientä¸­,å½“æŒ‡å®šç±»å‹çš„Actorè¿æ¥æˆåŠŸåæ‰§è¡Œè¯¥ä»»åŠ¡
 	struct np_actornode_connect_task
 	{
 		i32_serverid m_serverid;
@@ -147,7 +147,7 @@ namespace ngl
 
 	// [login server -> game server]
 	// [login server -> gateway server]
-	// Í¨Öª·şÎñÆ÷Íæ¼ÒÕËºÅÑéÖ¤Í¨¹ı
+	// é€šçŸ¥æœåŠ¡å™¨ç©å®¶è´¦å·éªŒè¯é€šè¿‡
 	struct np_actorrole_login
 	{
 		std::string		m_session;
@@ -187,7 +187,7 @@ namespace ngl
 		DPROTOCOL(np_actorswitch_process_plays, m_players);
 	};
 
-	// ·şÎñÆ÷»áÍ¨¹ı´ËÏûÏ¢¸æËß¶Ô·½Á¬½Ó³É¹¦ 
+	// æœåŠ¡å™¨ä¼šé€šè¿‡æ­¤æ¶ˆæ¯å‘Šè¯‰å¯¹æ–¹è¿æ¥æˆåŠŸ 
 	struct np_actorserver_connect
 	{
 		i32_serverid m_serverid;
@@ -195,7 +195,7 @@ namespace ngl
 		DPROTOCOL(np_actorserver_connect, m_serverid);
 	};
 
-	// SESSION¶Ï¿ªÁ¬½Ó
+	// SESSIONæ–­å¼€è¿æ¥
 	struct np_actor_session_close
 	{
 		i32_sessionid m_sessionid = 0;
@@ -204,7 +204,7 @@ namespace ngl
 	};
 
 	// [gateway -> game,gateway -> login] 
-	// Íæ¼ÒÓëgateway¶Ï¿ªÁ¬½Ó
+	// ç©å®¶ä¸gatewayæ–­å¼€è¿æ¥
 	struct np_actor_disconnect_close
 	{
 		i64_actorid m_actorid;
@@ -221,14 +221,14 @@ namespace ngl
 		DPROTOCOL(np_actor_gatewayid_updata, m_isremove, m_actorid, m_gatewayid)
 	};
 
-	// ¼ä¸ôÒ»¶ÎÊ±¼ä·¢ÆğµÄÈ«Ô±(ËùÓĞactor)¹ã²¥
-	// ¿ÉÒÔÔÚÕâ¸ö¹ã²¥ÀïÍÆËÍÒ»Ğ©ĞèÒª´¦ÀíµÄÈÎÎñ,ÀıÈç ±£´æÊı¾İ
+	// é—´éš”ä¸€æ®µæ—¶é—´å‘èµ·çš„å…¨å‘˜(æ‰€æœ‰actor)å¹¿æ’­
+	// å¯ä»¥åœ¨è¿™ä¸ªå¹¿æ’­é‡Œæ¨é€ä¸€äº›éœ€è¦å¤„ç†çš„ä»»åŠ¡,ä¾‹å¦‚ ä¿å­˜æ•°æ®
 	struct np_actor_broadcast
 	{
 		DPROTOCOL(np_actor_broadcast)
 	};
 
-	// ÖØĞÂ¼ÓÔØcsv
+	// é‡æ–°åŠ è½½csv
 	struct np_actor_reloadcsv
 	{
 		std::map<std::string, std::string> m_csvcontent;
@@ -236,7 +236,7 @@ namespace ngl
 		DPROTOCOL(np_actor_reloadcsv, m_csvcontent)
 	};
 
-	// ºËÊµcsv°æ±¾
+	// æ ¸å®csvç‰ˆæœ¬
 	struct np_actor_csv_verify_version
 	{
 		std::map<std::string, std::string> m_verify; // key: tab typeid(TAB).hash_code() val:md5
@@ -244,10 +244,10 @@ namespace ngl
 		DPROTOCOL(np_actor_csv_verify_version, m_verify)
 	};
 
-	// ·¢ËÍÎïÆ·¸øactor_role
+	// å‘é€ç‰©å“ç»™actor_role
 	struct np_actor_senditem
 	{
-		std::string					m_src;//ÎïÆ·À´Ô´
+		std::string					m_src;//ç‰©å“æ¥æº
 		std::map<int32_t, int32_t>	m_item;
 
 		DPROTOCOL(np_actor_senditem, m_src, m_item)
@@ -259,7 +259,7 @@ namespace ngl
 		i64_actorid m_roleid = -1;
 		std::string m_rolename;
 		std::string m_content;
-		int			m_utc = -1;				//·¢ÑÔutc
+		int			m_utc = -1;				//å‘è¨€utc
 
 		DPROTOCOL(chat, m_id, m_roleid, m_rolename, m_content, m_utc)
 	};
@@ -277,7 +277,7 @@ namespace ngl
 		DPROTOCOL(gateway_socket, m_session, m_area, m_accountid, m_dataid, m_gameid, m_gatewayid, m_socket)
 	};
 
-	// ¸üĞÂÁ¬½ÓÊı¾İ
+	// æ›´æ–°è¿æ¥æ•°æ®
 	struct np_actor_gatewayinfo_updata
 	{
 		std::vector<gateway_socket>	m_add;
@@ -287,7 +287,7 @@ namespace ngl
 		DPROTOCOL(np_actor_gatewayinfo_updata, m_add, m_delsocket, m_delactorid)
 	};
 
-	// ĞÂÔöÓÊ¼ş
+	// æ–°å¢é‚®ä»¶
 	struct np_actor_addmail
 	{
 		i64_actorid					m_roleid = -1;
@@ -308,7 +308,7 @@ namespace ngl
 		DPROTOCOL(ncalendar_info, m_time, m_calendarid, m_start)
 	};
 
-	// Í¨Öªkcp·şÎñÆ÷´´½¨Á¬½Ó
+	// é€šçŸ¥kcpæœåŠ¡å™¨åˆ›å»ºè¿æ¥
 	struct np_actor_kcp
 	{
 		std::string			m_kcpsession;
@@ -333,17 +333,17 @@ namespace ngl
 		DPROTOCOL(calendar_utc, m_time, m_beg, m_end)
 	};
 
-	// ĞÂÔöÓÊ¼ş
+	// æ–°å¢é‚®ä»¶
 	struct np_actor_addnotice
 	{
-		std::string m_notice;		// ÄÚÈİ
-		int32_t m_starttime = -1;	// ¿ªÊ¼Ê±¼ä
-		int32_t m_finishtime = -1;	// ½áÊøÊ±¼ä
+		std::string m_notice;		// å†…å®¹
+		int32_t m_starttime = -1;	// å¼€å§‹æ—¶é—´
+		int32_t m_finishtime = -1;	// ç»“æŸæ—¶é—´
 
 		DPROTOCOL(np_actor_addnotice, m_notice, m_starttime, m_finishtime)
 	};
 
-	// ¹Ø±ÕÖ¸¶¨actor(²»ÄÜ¹Ø±Õactor_role)
+	// å…³é—­æŒ‡å®šactor(ä¸èƒ½å…³é—­actor_role)
 	struct np_actor_close
 	{
 		DPROTOCOL(np_actor_close)
@@ -355,15 +355,15 @@ namespace ngl
 # define FindSrcPos(STR) STR.rfind("/")
 #endif
 
-	// ÈÕÖ¾·¢ËÍ 
+	// æ—¥å¿—å‘é€ 
 	struct np_logitem
 	{
-		int				m_serverid = -1;			// ·şÎñÆ÷id
-		ELOGLEVEL		m_loglevel;					// ÈÕÖ¾µÈ¼¶
-		ELOG_TYPE		m_type;						// ÈÕÖ¾ÀàĞÍ
-		std::string		m_src;						// ´¥·¢ÈÕÖ¾µÄÎÄ¼şÎ»ÖÃ
-		std::string		m_data;						// ÈÕÖ¾ÄÚÈİ
-		int32_t			m_time = -1;				// ÈÕÖ¾·¢ÉúÊ±¼ä
+		int				m_serverid = -1;			// æœåŠ¡å™¨id
+		ELOGLEVEL		m_loglevel;					// æ—¥å¿—ç­‰çº§
+		ELOG_TYPE		m_type;						// æ—¥å¿—ç±»å‹
+		std::string		m_src;						// è§¦å‘æ—¥å¿—çš„æ–‡ä»¶ä½ç½®
+		std::string		m_data;						// æ—¥å¿—å†…å®¹
+		int32_t			m_time = -1;				// æ—¥å¿—å‘ç”Ÿæ—¶é—´
 
 		DPROTOCOL(logitem, m_serverid, m_loglevel, m_type, m_src, m_data, m_time)
 	};
@@ -371,8 +371,8 @@ namespace ngl
 	struct nactor_logitem
 	{
 	private:
-		/** ÁÙÊ±Êı¾İ **/
-		std::string				m_src;						// ´¥·¢ÈÕÖ¾µÄÎÄ¼şÎ»ÖÃ
+		/** ä¸´æ—¶æ•°æ® **/
+		std::string				m_src;						// è§¦å‘æ—¥å¿—çš„æ–‡ä»¶ä½ç½®
 		ENUM_ACTOR				m_actortype;
 		ELOG_TYPE				m_logtype;
 		std::source_location	m_source;
@@ -380,7 +380,7 @@ namespace ngl
 		std::stringstream		m_stream;
 		ELOGLEVEL				m_level;
 		bool					m_isnet;
-		/** ÁÙÊ±Êı¾İ **/
+		/** ä¸´æ—¶æ•°æ® **/
 		static bool				m_init;
 	public:
 		
@@ -484,7 +484,7 @@ namespace ngl
 			return *this;
 		}
 
-		// ÖØÔØ << ²Ù×÷·ûÒÔÊä³ö std::endl
+		// é‡è½½ << æ“ä½œç¬¦ä»¥è¾“å‡º std::endl
 		nactor_logitem& operator<<(std::ostream& (*manipulator)(std::ostream&))
 		{
 			if (m_init && check_level(m_level))
@@ -495,10 +495,10 @@ namespace ngl
 		}
 	};
 
-	///# Àı×ÓĞ¡ÓÎÏ·
-	// Íæ¼ÒµÇÂ½
-	// 1¡¢»ñÈ¡Æ¥ÅäĞÅÏ¢
-	// 2¡¢Àı×ÓĞ¡ÓÎÏ·ĞÅÏ¢
+	///# ä¾‹å­å°æ¸¸æˆ
+	// ç©å®¶ç™»é™†
+	// 1ã€è·å–åŒ¹é…ä¿¡æ¯
+	// 2ã€ä¾‹å­å°æ¸¸æˆä¿¡æ¯
 	struct np_login_request_info
 	{
 		i64_actorid m_roleid;
@@ -506,7 +506,7 @@ namespace ngl
 	};
 
 	// actor_example_match->actor_example_manage 
-	// ÎªÖ¸¶¨Íæ¼Ò´´½¨Ö¸¶¨Àı×ÓĞ¡ÓÎÏ·
+	// ä¸ºæŒ‡å®šç©å®¶åˆ›å»ºæŒ‡å®šä¾‹å­å°æ¸¸æˆ
 	struct np_create_example
 	{
 		pbexample::EPLAY_TYPE m_type;
@@ -514,13 +514,13 @@ namespace ngl
 		DPROTOCOL(np_create_example, m_type, m_roleids)
 	};
 
-	// actor_example_manage->Àı×ÓĞ¡ÓÎÏ·
+	// actor_example_manage->ä¾‹å­å°æ¸¸æˆ
 	struct np_example_entergame_ready
 	{
 		DPROTOCOL(np_example_entergame_ready)
 	};
 
-	// Àı×ÓĞ¡ÓÎÏ·->actor_role
+	// ä¾‹å­å°æ¸¸æˆ->actor_role
 	struct np_example_actorid
 	{
 		pbexample::EPLAY_TYPE m_type;
@@ -528,7 +528,7 @@ namespace ngl
 		DPROTOCOL(np_example_id, m_type, m_actorexampleid)
 	};
 
-	// Àı×ÓĞ¡ÓÎÏ·->actor_example_manage Àı×ÓĞ¡ÓÎÏ·ÍË³ö
+	// ä¾‹å­å°æ¸¸æˆ->actor_example_manage ä¾‹å­å°æ¸¸æˆé€€å‡º
 	struct np_example_equit
 	{
 		pbexample::EPLAY_TYPE m_type;
@@ -542,7 +542,7 @@ namespace ngl
 		DPROTOCOL(np_thruput_test, m_rounds)
 	};
 
-	// ½ÓÊÕ/ÒÆ³ıÈÎÎñ
+	// æ¥æ”¶/ç§»é™¤ä»»åŠ¡
 	struct np_operator_task
 	{
 		std::string m_msg;
@@ -560,7 +560,7 @@ namespace ngl
 		DPROTOCOL(np_operator_task_response, m_msg, m_isreceive)
 	};
 
-	// À­È¡ÅÅĞĞĞÅÏ¢
+	// æ‹‰å–æ’è¡Œä¿¡æ¯
 	struct np_get_rank
 	{
 		int32_t m_rankid = 0;
@@ -576,7 +576,7 @@ namespace ngl
 		DPROTOCOL(np_get_rank_response, m_rankid, m_rolerank)
 	};
 
-	// Ôö¼ÓÉ¾³ı»î¶¯ÅÅĞĞ°ñ
+	// å¢åŠ åˆ é™¤æ´»åŠ¨æ’è¡Œæ¦œ
 	struct np_activityrank_operator
 	{
 		int32_t m_rankid = 0;

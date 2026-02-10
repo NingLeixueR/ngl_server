@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "actor_example_guess_number.h"
@@ -21,7 +21,7 @@ namespace ngl
 		i64_actorid roleid = adata.get_data()->identifier();
 
 		if (isfinish())
-		{//ÓÎÏ·ÒÑ¾­½áÊø
+		{//æ¸¸æˆå·²ç»ç»“æŸ
 			bomb();
 			return true;
 		}
@@ -38,7 +38,7 @@ namespace ngl
 		}
 
 		if (lnumber == m_bombvalues)
-		{//Õ¨ÁË ÓÎÏ·½áÊø
+		{//ç‚¸äº† æ¸¸æˆç»“æŸ
 			set_finish(roleid);
 			bomb();
 			return true;
@@ -55,7 +55,7 @@ namespace ngl
 
 		int32_t lsize = m_maxnumber - 1 - m_minnumber;
 		if (lsize <= 1)
-		{//ÓÎÏ·½áÊø ÏÂÒ»¸öÈË±»Õ¨
+		{//æ¸¸æˆç»“æŸ ä¸‹ä¸€ä¸ªäººè¢«ç‚¸
 			set_finish(next_guess_role());
 			bomb();
 			return true;

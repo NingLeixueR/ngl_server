@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -41,21 +41,21 @@ namespace ngl
 
 		void print(const std::vector<i64_actorid>& avec)const;
 
-		// # »Ø¸´/×ª·¢[np_actornode_register]ÇëÇó
+		// # å›å¤/è½¬å‘[np_actornode_register]è¯·æ±‚
 		void reply_actornode_register(const pack* apack, i32_serverid aserverid);
 		void forward_actornode_register(const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd);
 
 		// # [actor client -> actor server] register
-		// # ×¢²á½áµã
+		// # æ³¨å†Œç»“ç‚¹
 		bool handle(const message<np_actornode_register>& adata);
 
-		// # ¸üĞÂ½áµãÖĞµÄactor
+		// # æ›´æ–°ç»“ç‚¹ä¸­çš„actor
 		bool handle(const message<np_actornode_update_server>& adata);
 
-		//# Ïòactor¿Í»§¶ËÍ¬²½½áµãĞÅÏ¢(Èº·¢)
+		//# å‘actorå®¢æˆ·ç«¯åŒæ­¥ç»“ç‚¹ä¿¡æ¯(ç¾¤å‘)
 		bool handle(const message<np_actornode_update_mass>& adata);
 
-		// # ¸üĞÂgateway±í actor_role.guididÓëgateway server id¶ÔÓ¦¹ØÏµ
+		// # æ›´æ–°gatewayè¡¨ actor_role.guididä¸gateway server idå¯¹åº”å…³ç³»
 		bool handle(const message<np_actor_gatewayid_updata>& adata);
 	};
 }//namespace ngl

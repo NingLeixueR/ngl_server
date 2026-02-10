@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "protocol.h"
@@ -23,7 +23,7 @@ namespace ngl
 	std::map<i32_protocolnum, protocol::pfun> protocol::m_protocolfun;
 	std::shared_mutex protocol::m_mutex;
 
-	const char* protocol::name(i32_protocolnum aprotocolnum/*Ğ­ÒéºÅ*/)
+	const char* protocol::name(i32_protocolnum aprotocolnum/*åè®®å·*/)
 	{
 		const char* lname = em<eprotocol_tar>::name((eprotocol_tar)(aprotocolnum));
 		return lname != nullptr ? lname : "none";
@@ -150,12 +150,12 @@ namespace ngl
 			{
 				if (telnet_cmd_admin::login(apack->m_id, lvec[1], lvec[2]))
 				{
-					std::string lstr = std::format("{}:µÇÂ½³É¹¦\n", lvec[1]);
+					std::string lstr = std::format("{}:ç™»é™†æˆåŠŸ\n", lvec[1]);
 					ntcp::instance().send_msg(apack->m_id, lstr);
 				}
 				else
 				{
-					std::string lstr = std::format("{}:µÇÂ½Ê§°Ü\n", lvec[1]);
+					std::string lstr = std::format("{}:ç™»é™†å¤±è´¥\n", lvec[1]);
 					ntcp::instance().send_msg(apack->m_id, lstr);
 				}
 			}
@@ -193,16 +193,16 @@ namespace ngl
 
 			handle_cmd::add("/sendmail") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
 				{
-					// ½ÓÊÕÓÊ¼şÁĞ±í[ÓÊ¼şµØÖ·1:Ãû×Ö1]....[ÓÊ¼şµØÖ·n:Ãû×Ön] ÓÊ¼ş±êÌâ ÓÊ¼şÄÚÈİ
+					// æ¥æ”¶é‚®ä»¶åˆ—è¡¨[é‚®ä»¶åœ°å€1:åå­—1]....[é‚®ä»¶åœ°å€n:åå­—n] é‚®ä»¶æ ‡é¢˜ é‚®ä»¶å†…å®¹
 					if (avec.size() < 4)
 					{
-						ntcp::instance().send_msg(pack->m_id, "²ÎÊı´íÎó");
+						ntcp::instance().send_msg(pack->m_id, "å‚æ•°é”™è¯¯");
 						return;
 					}
 					std::vector<std::pair<std::string, std::string>> lmail;
 					if (tools::splite_special(avec[1].c_str(), "\\[", "]", lmail) == false)
 					{
-						ntcp::instance().send_msg(pack->m_id, "²ÎÊı´íÎó");
+						ntcp::instance().send_msg(pack->m_id, "å‚æ•°é”™è¯¯");
 						return;
 					}
 					ngl::test_mail(avec[2].c_str(), avec[3].c_str(), lmail);
@@ -212,31 +212,31 @@ namespace ngl
 				{
 					if (avec.size() < 2)
 					{
-						ntcp::instance().instance().send_msg(pack->m_id, "²ÎÊı´íÎó");
+						ntcp::instance().instance().send_msg(pack->m_id, "å‚æ•°é”™è¯¯");
 						return;
 					}
 					time_t ltime = tools::lexical_cast<time_t>(avec[1]);
 					if (ngl::localtime::issameweek(ngl::localtime::gettime(), ltime))
 					{
-						std::cout << "Í¬Ò»ÖÜ" << std::endl;
-						ntcp::instance().send_msg(pack->m_id, "Í¬Ò»ÖÜ");
+						std::cout << "åŒä¸€å‘¨" << std::endl;
+						ntcp::instance().send_msg(pack->m_id, "åŒä¸€å‘¨");
 						return;
 					}
 					else
 					{
-						std::cout << "·ÇÍ¬Ò»ÖÜ" << std::endl;
-						ntcp::instance().send_msg(pack->m_id, "·ÇÍ¬Ò»ÖÜ");
+						std::cout << "éåŒä¸€å‘¨" << std::endl;
+						ntcp::instance().send_msg(pack->m_id, "éåŒä¸€å‘¨");
 						return;
 					}
 				};
 
-			// ²âÊÔÁ½Ì¨·şÎñÆ÷ÊÇ·ñÁªÍ¨
+			// æµ‹è¯•ä¸¤å°æœåŠ¡å™¨æ˜¯å¦è”é€š
 			// ping serverid
 			handle_cmd::add("/ping") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
 				{
 					if (avec.size() < 2)
 					{
-						ntcp::instance().send_msg(pack->m_id, "²ÎÊı´íÎó");
+						ntcp::instance().send_msg(pack->m_id, "å‚æ•°é”™è¯¯");
 						return;
 					}
 					i32_serverid ltid = tools::lexical_cast<i32_serverid>(avec[1]);
@@ -260,7 +260,7 @@ namespace ngl
 				{
 					if (avec.size() < 2)
 					{
-						ntcp::instance().send_msg(pack->m_id, "²ÎÊı´íÎó");
+						ntcp::instance().send_msg(pack->m_id, "å‚æ•°é”™è¯¯");
 						return;
 					}
 					std::cout << std::format("###{}###",avec[1]) << std::endl;

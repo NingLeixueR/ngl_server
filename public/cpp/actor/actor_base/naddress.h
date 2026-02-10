@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -21,8 +21,8 @@
 
 namespace ngl
 {
-	// # (actor_client/actor_server) ÓÃÀ´¹ÜÀíactorµØÖ·
-	// # Ö»ÔÊĞí(actor_client/actor_server) µ÷ÓÃ
+	// # (actor_client/actor_server) ç”¨æ¥ç®¡ç†actoråœ°å€
+	// # åªå…è®¸(actor_client/actor_server) è°ƒç”¨
 	class naddress
 	{
 		naddress() = delete;
@@ -39,9 +39,9 @@ namespace ngl
 		using map_servernode		= std::map<i32_serverid, nnode_session>;
 		//# [ACTOR_ID] -> [GATEWAY_SERVER_ID]
 		using map_rolegateway		= std::map<nguid, i32_serverid>;
-		//# [ergodic]»Øµ÷
+		//# [ergodic]å›è°ƒ
 		using ergodic_callbackfun	= std::function<bool(const map_guidserver&, const map_servernode&, const map_rolegateway&)>;
-		//# [foreach]»Øµ÷
+		//# [foreach]å›è°ƒ
 		using foreach_callbackfun	= std::function<bool(const nnode_session&)>;
 
 		static naddress::map_guidserver		m_actorserver;
@@ -50,66 +50,66 @@ namespace ngl
 		static naddress::map_rolegateway	m_rolegateway;
 	public:
 #pragma region base
-		//# debug ´òÓ¡
+		//# debug æ‰“å°
 		static void print_address();
 		static void print_address(const char* ainfo, i32_serverid aserverid, const nguid& aguid);
 
-		//# ÉèÖÃ½áµã
+		//# è®¾ç½®ç»“ç‚¹
 		static bool set_node(const nactornode& anode);
 
-		//# Ìí¼Óactor
+		//# æ·»åŠ actor
 		static void actor_address_add(i32_serverid aserverid, i64_actorid adataid);
 
-		//# Ìí¼ÓÒ»×éactor
+		//# æ·»åŠ ä¸€ç»„actor
 		static void actor_address_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec);
 
-		//# É¾³ıactor
+		//# åˆ é™¤actor
 		static void actor_address_del(i64_actorid adataid);
 
-		//# É¾³ıÒ»×éactor
+		//# åˆ é™¤ä¸€ç»„actor
 		static void actor_address_del(const std::vector<i64_actorid>& avec);
 
-		//# ÉèÖÃsession
+		//# è®¾ç½®session
 		static void set_session(i32_serverid aserverid, i32_sessionid asession);
 
-		//# »ñÈ¡session
+		//# è·å–session
 		static i32_sessionid sessionid(i32_serverid aserverid);
 
-		//# »ñÈ¡server id
+		//# è·å–server id
 		static i32_serverid serverid(const nguid& aguid);
 
-		//# »ñÈ¡ENUM_ACTOR ¶ÔÓ¦µÄ·şÎñÆ÷
+		//# è·å–ENUM_ACTOR å¯¹åº”çš„æœåŠ¡å™¨
 		static void serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& aservers);
 #pragma endregion
 
 #pragma region gateway
-		//# ½«actor_role.actoridÓëgatewayid¹ØÁª
+		//# å°†actor_role.actoridä¸gatewayidå…³è”
 		static void gatewayid_add(const nguid& aguid, i32_serverid aserverid);
 
-		//# ½â³ıactor_role.actoridÓëgatewayidµÄ¹ØÁª
+		//# è§£é™¤actor_role.actoridä¸gatewayidçš„å…³è”
 		static void gatewayid_del(const nguid& aguid);
 
-		//# [ACTOR_ID(ACTOR_ROLEµÄactor)] -> [GATEWAY_SERVER_ID]
+		//# [ACTOR_ID(ACTOR_ROLEçš„actor)] -> [GATEWAY_SERVER_ID]
 		static i32_serverid gatewayid(const nguid& aguid);
 
-		//# »ñÈ¡Ò»×éactor_role.actoridÓëgatewayidµÄ¹ØÁª
+		//# è·å–ä¸€ç»„actor_role.actoridä¸gatewayidçš„å…³è”
 		static void gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset);
 #pragma endregion
-		//# ±éÀú[std::function<bool(const nnode_session&)>] 
-		//# Èç¹û·µ»ØÖµÎªfalse
-		//# ÔòÖÕÖ¹±éÀú
+		//# éå†[std::function<bool(const nnode_session&)>] 
+		//# å¦‚æœè¿”å›å€¼ä¸ºfalse
+		//# åˆ™ç»ˆæ­¢éå†
 		static void foreach(const foreach_callbackfun& afun);
 
 		//# [ergodic_callbackfun:std::function<bool(map_guidserver&, map_servernode&)>]
 		static void ergodic(const ergodic_callbackfun& afun);
 
-		//# »ñÈ¡guidÓëserver id¶ÔÓ¦¹ØÏµ
+		//# è·å–guidä¸server idå¯¹åº”å…³ç³»
 		static map_guidserver& get_actorserver_map();
 
-		//# ¸ù¾İareaÓëdataid»ñÈ¡session
+		//# æ ¹æ®areaä¸dataidè·å–session
 		static i32_sessionid sessionbyrole(i16_area aarea, i32_actordataid aroleid);
 
-		//# ×ª·¢
+		//# è½¬å‘
 		static bool forward(handle_pram& apram);
 	};
 }//namespace ngl

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "actor_gateway_c2g.h"
@@ -44,9 +44,9 @@ namespace ngl
 		{
 			auto pro = std::make_shared<np_actor_disconnect_close>();
 			pro->m_actorid = nguid::make(ACTOR_ROLE, larea, lroleid);
-			// # Í¨Öªgame·şÎñÆ÷ Íæ¼ÒÒÑ¾­¶Ï¿ªÁ¬½Ó
+			// # é€šçŸ¥gameæœåŠ¡å™¨ ç©å®¶å·²ç»æ–­å¼€è¿æ¥
 			send_actor(pro->m_actorid, id_guid(), pro);
-			// # Í¨Öªlogin·şÎñÆ÷ Íæ¼ÒÒÑ¾­¶Ï¿ªÁ¬½Ó
+			// # é€šçŸ¥loginæœåŠ¡å™¨ ç©å®¶å·²ç»æ–­å¼€è¿æ¥
 			ttab_servers::instance().foreach_server(LOGIN, tab_self_area, [&pro, this](const tab_servers* atab)
 				{
 					nguid lguid(ACTOR_LOGIN, tab_self_area, atab->m_id);
@@ -57,7 +57,7 @@ namespace ngl
 	}
 
 	bool actor_gateway::handle(const message<np_actorrole_login>& adata)
-	{// login·şÎñÆ÷Í¨ÖªGateWay·şÎñÆ÷ Íæ¼ÒÕËºÅÑéÖ¤³É¹¦
+	{// loginæœåŠ¡å™¨é€šçŸ¥GateWayæœåŠ¡å™¨ ç©å®¶è´¦å·éªŒè¯æˆåŠŸ
 		auto lparm = adata.get_data();
 		nguid lguid(lparm->m_roleid);
 
@@ -86,7 +86,7 @@ namespace ngl
 			)
 		);
 
-		// Í¨Öªactor_server [actorid]->[gateway server id]
+		// é€šçŸ¥actor_server [actorid]->[gateway server id]
 		sync_actorserver_gatewayid(lguid, false);
 		return true;
 	}
@@ -204,7 +204,7 @@ namespace ngl
 					)
 				);
 			}
-			// ¶ÏÏßÖØÁ¬»òÕßÆäËûÉè±¸¶¥ºÅ
+			// æ–­çº¿é‡è¿æˆ–è€…å…¶ä»–è®¾å¤‡é¡¶å·
 			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid());
 			pbnet::PROBUFF_NET_ROLE_SYNC ltemp;
 			ntcp::instance().send_server(linfo->m_gameid, ltemp, lroleactor, nguid::make());
@@ -240,7 +240,7 @@ namespace ngl
 			return true;
 		}
 
-		// ### Í¨Öªkcp·şÎñÆ÷´´½¨Á¬½Ó
+		// ### é€šçŸ¥kcpæœåŠ¡å™¨åˆ›å»ºè¿æ¥
 		auto pro = std::make_shared<np_actor_kcp>();
 		pro->m_kcpsession		= lkcpsession;
 		pro->m_sessionid		= lpack->m_id;

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -36,20 +36,20 @@ namespace ngl
 		nrfunbase(const nrfunbase&) = delete;
 		nrfunbase& operator=(const nrfunbase&) = delete;
 
-		std::map<i32_protocolnum, nlogicfun>	m_fun;				// key:Ğ­ÒéºÅ value:´¦Àí·½·¨
-		tnotfindfun								m_notfindfun;		// Èç¹ûÔÚm_funÃ»ÓĞ²éÕÒµ½´¦Àí·½·¨,ÔòÊ¹ÓÃÆä´¦Àí
+		std::map<i32_protocolnum, nlogicfun>	m_fun;				// key:åè®®å· value:å¤„ç†æ–¹æ³•
+		tnotfindfun								m_notfindfun;		// å¦‚æœåœ¨m_funæ²¡æœ‰æŸ¥æ‰¾åˆ°å¤„ç†æ–¹æ³•,åˆ™ä½¿ç”¨å…¶å¤„ç†
 	protected:
 		void register_logic(i32_protocolnum aprotocol, int32_t aready, const tlogicfun& afun);
 	public:
 		nrfunbase() = default;
 
-		//# ÉèÖÃĞ­Òé´¦ÀíÃ»ÓĞÆ¥ÅäµÄµ÷ÓÃ
+		//# è®¾ç½®åè®®å¤„ç†æ²¡æœ‰åŒ¹é…çš„è°ƒç”¨
 		nrfunbase& set_notfindfun(const tnotfindfun& afun);
 
-		//# Î´Æ¥ÅäµÄĞ­Òéµ÷ÓÃ
+		//# æœªåŒ¹é…çš„åè®®è°ƒç”¨
 		void notfindfun(const actor_base* aactor, i32_threadid athreadid, handle_pram& apram)const;
 
-		//# Ğ­Òé´¦Àí
+		//# åè®®å¤„ç†
 		bool handle_switch(actor_base* aactor, i32_threadid athreadid, handle_pram& apram);
 
 		template <typename T>
@@ -71,10 +71,10 @@ namespace ngl
 	private:
 		message() = delete;
 
-		std::shared_ptr<T>		m_shared_data		= nullptr;	// Êı¾İ
-		T*						m_original_data		= nullptr;	// Êı¾İ
-		std::shared_ptr<pack>	m_pack				= nullptr;	// Èç¹ûÏûÏ¢À´×ÔÍøÂç£¬Õâ¸öÖµ²»Îª¿Õ¼´ÎªÍøÂçÊı¾İ°ü
-		i32_threadid			m_thread			= 0;		// Ïß³Ìid
+		std::shared_ptr<T>		m_shared_data		= nullptr;	// æ•°æ®
+		T*						m_original_data		= nullptr;	// æ•°æ®
+		std::shared_ptr<pack>	m_pack				= nullptr;	// å¦‚æœæ¶ˆæ¯æ¥è‡ªç½‘ç»œï¼Œè¿™ä¸ªå€¼ä¸ä¸ºç©ºå³ä¸ºç½‘ç»œæ•°æ®åŒ…
+		i32_threadid			m_thread			= 0;		// çº¿ç¨‹id
 	public:
 		inline message(i32_threadid athread, const std::shared_ptr<pack>& apack, const std::shared_ptr<T>& adata) :
 			m_thread(athread),
@@ -137,28 +137,28 @@ namespace ngl
 			return ltemp;
 		}
 
-		//# ÔÊĞíÈÎÒâstd::function<void(TTTDerived*, T&)>¹ÒÔØµ½Ö¸¶¨actorÉÏ
+		//# å…è®¸ä»»æ„std::function<void(TTTDerived*, T&)>æŒ‚è½½åˆ°æŒ‡å®šactorä¸Š
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(const std::function<void(TTTDerived*, message<T>&)>& afun, int32_t aready = e_ready_all);
 
 		//# bool aisload = false 
-		//# ÊÇ·ñÔÊĞídbÊı¾İ¼ÓÔØÍê³ÉÖ®Ç°´¦Àí´ËÏûÏ¢
+		//# æ˜¯å¦å…è®¸dbæ•°æ®åŠ è½½å®Œæˆä¹‹å‰å¤„ç†æ­¤æ¶ˆæ¯
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(const Tfun<TTTDerived, T> afun, int32_t aready = e_ready_all);
 
-		//# actor¼äÏûÏ¢´¦Àí
+		//# actoré—´æ¶ˆæ¯å¤„ç†
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, int32_t aready = e_ready_all);
 
-		//# actor¼äÏûÏ¢´¦Àí,²»×¢²áÍøÂç²ã
+		//# actoré—´æ¶ˆæ¯å¤„ç†,ä¸æ³¨å†Œç½‘ç»œå±‚
 		template <typename TTTDerived, typename T>
 		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun, int32_t aready = e_ready_all);
 
-		//# gateway×¢²ác2g½ÓÊÕ×ª·¢Ğ­Òé´¦ÀíĞ­Òé
+		//# gatewayæ³¨å†Œc2gæ¥æ”¶è½¬å‘åè®®å¤„ç†åè®®
 		template <typename T>
 		nrfun& rfun_c2g(const Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>> afun);
 
-		//# gateway×¢²ág2c½ÓÊÕ×ª·¢Ğ­Òé´¦ÀíĞ­Òé
+		//# gatewayæ³¨å†Œg2cæ¥æ”¶è½¬å‘åè®®å¤„ç†åè®®
 		template <typename T>
 		nrfun& rfun_g2c(const Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>> afun);		
 	};

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -40,21 +40,21 @@ namespace ngl
 			m_dynamic.init(m_attribute.get_attribute());
 		}
 
-		// # [ÉèÖÃ/»ñÈ¡]unitÀàĞÍ
+		// # [è®¾ç½®/è·å–]unitç±»å‹
 		bool set_type(pbdb::EUNIT atype);
 		pbdb::EUNIT type();
 
-		// # »ñÈ¡unitÊôĞÔ
+		// # è·å–unitå±æ€§
 		attribute& get_attribute();
 
-		// # [ÉèÖÃ/»ñÈ¡]unit id
+		// # [è®¾ç½®/è·å–]unit id
 		bool set_id(int32_t aid);
 		int32_t id();
 
-		// # »ñÈ¡unit¶¯Ì¬ÊôĞÔ
+		// # è·å–unitåŠ¨æ€å±æ€§
 		dynamic_attribute& dynamic();
 
-		// # [ÉèÖÃ/»ñÈ¡]unit position
+		// # [è®¾ç½®/è·å–]unit position
 		void set_x(int32_t ax);
 		void set_y(int32_t ay);
 		int32_t x();
@@ -62,11 +62,11 @@ namespace ngl
 		pbdb::POSITION& position();
 		bool is_position_invalid();
 
-		// # [ÉèÖÃ/»ñÈ¡]unit ·½Ïò
+		// # [è®¾ç½®/è·å–]unit æ–¹å‘
 		void set_angle(int32_t aangle);
 		int32_t angle();
 
-		// # [ÉèÖÃ/»ñÈ¡]unit ËÙ¶È
+		// # [è®¾ç½®/è·å–]unit é€Ÿåº¦
 		void set_speed(int32_t aspeed);
 		int32_t speed();
 

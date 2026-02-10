@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -42,7 +42,7 @@ namespace ngl
 			log_error()->print("{}", data());
 		}
 
-		// ¼ì²éÊÇ·ñ¿ÉÒÔ´´½¨¾üÍÅ
+		// æ£€æŸ¥æ˜¯å¦å¯ä»¥åˆ›å»ºå†›å›¢
 		bool check_createfamily(i64_actorid aroleid)
 		{
 			data_modified<pbdb::db_familyer>& lpdbfamilyer = get(aroleid);
@@ -69,7 +69,7 @@ namespace ngl
 		int32_t									m_maxid = 0;
 		std::map<int64_t, int64_t>				m_rolefamily;	// key:roleid value:familyid
 		std::map<int64_t, std::set<int64_t>>	m_applylist;	// key:roleid value:std::set<familyid>
-		std::set<std::string>					m_familyname;	// ÓÃÀ´¼ì²é¾üÍÅÃû³ÆÊÇ·ñÖØ¸´
+		std::set<std::string>					m_familyname;	// ç”¨æ¥æ£€æŸ¥å†›å›¢åç§°æ˜¯å¦é‡å¤
 	public:
 		family():
 			m_maxid(0)
@@ -109,31 +109,31 @@ namespace ngl
 			}
 		}
 
-		// # ´´½¨¾üÍÅ
+		// # åˆ›å»ºå†›å›¢
 		int32_t create_family(i64_actorid aroleid, const std::string& aname);
 
-		// # ÉêÇë¼ÓÈë¾üÍÅ
+		// # ç”³è¯·åŠ å…¥å†›å›¢
 		int32_t join_family(i64_actorid aroleid, i64_actorid afamilyid);
 
-		// # ´Ó¾üÍÅ[afamilyid]ÖĞµÄapplylistÖĞÒÆ³ı[aroleid]
+		// # ä»å†›å›¢[afamilyid]ä¸­çš„applylistä¸­ç§»é™¤[aroleid]
 		int32_t erase_applylist(i64_actorid aroleid, i64_actorid afamilyid);
 
-		// # È¡Ïû¼ÓÈë¾üÍÅ
+		// # å–æ¶ˆåŠ å…¥å†›å›¢
 		int32_t cancel_join_family(i64_actorid aroleid, i64_actorid afamilyid);
 
-		// # ¾üÍÅ³¤Í¬Òâ/²»Í¬ÒâÍæ¼Ò¼ÓÈë¾üÍÅ
+		// # å†›å›¢é•¿åŒæ„/ä¸åŒæ„ç©å®¶åŠ å…¥å†›å›¢
 		int32_t ratify_join_family(i64_actorid aroleid, i64_actorid ajoinroleid, bool aratify);
 
-		// # ¾üÍÅ³¤×ªÈÃ¾üÍÅ
+		// # å†›å›¢é•¿è½¬è®©å†›å›¢
 		int32_t cede_family(i64_actorid aroleid, i64_actorid acederoleid);
 
-		// # ÍË³ö¾üÍÅ
+		// # é€€å‡ºå†›å›¢
 		int32_t leave_family(i64_actorid aroleid, i64_actorid afamilyid);
 
-		// # ĞŞ¸Ä¾üÍÅÃû³Æ
+		// # ä¿®æ”¹å†›å›¢åç§°
 		int32_t change_familyname(i64_actorid aroleid, i64_actorid afamilyid, const std::string& afamilyname);
 
-		// # ¾üÍÅÇ©µ½
+		// # å†›å›¢ç­¾åˆ°
 		int32_t sign_family(i64_actorid aroleid, i64_actorid afamilyid);
 
 		bool get_familylist(i64_actorid afamilyid, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& apro);
@@ -142,7 +142,7 @@ namespace ngl
 
 		void sync_family(i64_actorid aroleid);
 
-		// # »ñÈ¡¾üÍÅËùÓĞÈË
+		// # è·å–å†›å›¢æ‰€æœ‰äºº
 		bool get_familyers(i64_actorid aroleid, std::vector<i64_actorid>& afamilyers);
 	};
 }// namespace ngl

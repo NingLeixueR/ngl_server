@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -26,53 +26,53 @@ namespace ngl
 		ndb_component& operator=(const ndb_component&) = delete;
 
 	private:
-		actor_base*				m_actor		= nullptr;							// ËŞÖ÷actor
-		ndbclient_base*			m_dbclient  = nullptr;							// ndbclient»ùÀà
-		i64_actorid				m_id		= 0;								// ËŞÖ÷actor id
-		pbdb::ENUM_DB			m_type		= pbdb::ENUM_DB::ENUM_DB_FAIL;		// Êı¾İÀàĞÍ
+		actor_base*				m_actor		= nullptr;							// å®¿ä¸»actor
+		ndbclient_base*			m_dbclient  = nullptr;							// ndbclientåŸºç±»
+		i64_actorid				m_id		= 0;								// å®¿ä¸»actor id
+		pbdb::ENUM_DB			m_type		= pbdb::ENUM_DB::ENUM_DB_FAIL;		// æ•°æ®ç±»å‹
 
 	protected:
 		explicit ndb_component(pbdb::ENUM_DB aenum);
 
-		//# ÉèÖÃndbclient»ùÀà
+		//# è®¾ç½®ndbclientåŸºç±»
 		void set_dbclient(ndbclient_base* andbclient);
 
-		//# »ñÈ¡ndbclient»ùÀà
+		//# è·å–ndbclientåŸºç±»
 		inline ndbclient_base* get_dbclient();
 	public:
-		//# ÉèÖÃËŞÖ÷actor
+		//# è®¾ç½®å®¿ä¸»actor
 		void				set(actor_base* aactor);
 
-		// # »ñÈ¡actor
+		// # è·å–actor
 		actor_base*			get_actor();
 
-		//# »ñÈ¡ËŞÖ÷actor id
+		//# è·å–å®¿ä¸»actor id
 		i64_actorid			get_actorid()const;
 
-		//# »ñÈ¡Êı¾İÀàĞÍ
+		//# è·å–æ•°æ®ç±»å‹
 		pbdb::ENUM_DB		type()const;
 
-		//# »ñÈ¡ËŞÖ÷actor
+		//# è·å–å®¿ä¸»actor
 		actor_base*			actorbase();
 
-		//# ·şÎñÓÚrelated_actorid,ÓÃÓÚ×Ô¶¨Òåactor id
+		//# æœåŠ¡äºrelated_actorid,ç”¨äºè‡ªå®šä¹‰actor id
 		void				set_actorid(i64_actorid aactorid);
 
-		//# ÉèÖÃm_id¹ØÁªm_actor
+		//# è®¾ç½®m_idå…³è”m_actor
 		virtual void		related_actorid();
 
-		//# ÉèÖÃm_actor¹ØÁªm_dbclient
+		//# è®¾ç½®m_actorå…³è”m_dbclient
 		void				init();
 
-		//# ´´½¨Êı¾İ
+		//# åˆ›å»ºæ•°æ®
 		void				create();
 
 		void				create(const nguid& aid);
 
-		//# »ñÈ¡m_dbclient
+		//# è·å–m_dbclient
 		ndbclient_base*		dbclientbase();
 
-		//# µ±Êı¾İÈ«²¿¼ÓÔØºóµ÷ÓÃ
+		//# å½“æ•°æ®å…¨éƒ¨åŠ è½½åè°ƒç”¨
 		virtual void		init_data();
 	};
 
@@ -99,7 +99,7 @@ namespace ngl
 			return &m_data;
 		}
 
-		//# ±éÀúdata
+		//# éå†data
 		inline void foreach(const std::function<void(const data_modified<TDATA>&)>& afun)
 		{
 			for (auto& [_guid, _datamodified] : data())
@@ -108,7 +108,7 @@ namespace ngl
 			}
 		}
 
-		//# ²éÕÒÖ¸¶¨Êı¾İ
+		//# æŸ¥æ‰¾æŒ‡å®šæ•°æ®
 		inline data_modified<TDATA>* find(const std::function<bool(const data_modified<TDATA>&)>& afun)
 		{
 			for(auto& [_guid, _datamodified] : data())
@@ -121,7 +121,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		//# »ñÈ¡ËùÓĞÊı¾İ
+		//# è·å–æ‰€æœ‰æ•°æ®
 		inline const std::map<nguid, data_modified<TDATA>>& data()
 		{
 			return m_data.get_data();
@@ -132,13 +132,13 @@ namespace ngl
 			return m_data.get_foreach_data();
 		}
 
-		//# »ñÈ¡m_id¶ÔÓ¦µÄÊı¾İ
+		//# è·å–m_idå¯¹åº”çš„æ•°æ®
 		inline data_modified<TDATA>& get()
 		{
 			return get(get_actorid());
 		}
 
-		// # ²éÕÒÖ¸¶¨Êı¾İ
+		// # æŸ¥æ‰¾æŒ‡å®šæ•°æ®
 		inline data_modified<TDATA>* find(nguid aid)
 		{
 			if (!data().contains(aid))
@@ -148,7 +148,7 @@ namespace ngl
 			return &get(aid);
 		}
 
-		// # ÓëfindÀàËÆ(Ö»ÊÇÃ»ÓĞ¾ÍÌí¼Ó)
+		// # ä¸findç±»ä¼¼(åªæ˜¯æ²¡æœ‰å°±æ·»åŠ )
 		inline data_modified<TDATA>& get(nguid aid)
 		{
 			if (aid == nguid::make())
@@ -162,31 +162,31 @@ namespace ngl
 			return *m_data.get_data(aid);
 		}
 
-		// # É¾³ıÖ¸¶¨Êı¾İ
+		// # åˆ é™¤æŒ‡å®šæ•°æ®
 		inline void erase(nguid aid)
 		{
 			get_actor_dbclient()->del(aid, true);
 		}
 
-		// # ·µ»Ø±£»¤Êı¾İ
+		// # è¿”å›ä¿æŠ¤æ•°æ®
 		inline data_modified<TDATA>* db()
 		{ 
 			return m_data.get_dbdata();
 		}
 
-		// # »ñÈ¡ËŞÖ÷actor
+		// # è·å–å®¿ä¸»actor
 		inline TACTOR* nactor()
 		{ 
 			return (TACTOR*)get_actor();
 		}
 
-		// # Çå¿ÕÊı¾İ
+		// # æ¸…ç©ºæ•°æ®
 		inline void clear()
 		{
 			get_actor_dbclient()->clear();
 		}
 
-		// # µ±Êı¾İÈ«²¿¼ÓÔØºóµ÷ÓÃ
+		// # å½“æ•°æ®å…¨éƒ¨åŠ è½½åè°ƒç”¨
 		void init_data() final;
 
 		virtual void initdata() = 0;

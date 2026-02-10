@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "server_session.h"
@@ -43,14 +43,14 @@ namespace ngl
 
 	void actor_client::nregister()
 	{
-		//# ÉèÖÃÎ´ÕÒµ½Ğ­Òé´¦Àíº¯Êı
+		//# è®¾ç½®æœªæ‰¾åˆ°åè®®å¤„ç†å‡½æ•°
 		nrfun<actor_client>::instance().set_notfindfun(
 			[](int, handle_pram& apram) 
 			{
 				naddress::forward(apram);
 			});
 
-		//# ×¢²áĞ­Òé
+		//# æ³¨å†Œåè®®
 		register_handle<actor_client
 			, np_actornode_register_response
 			, np_actorclient_node_connect
@@ -93,7 +93,7 @@ namespace ngl
 		set_node(lserverid, adata.get_data()->m_session);
 		naddress::actor_address_add(lserverid, lactorserve);
 
-		//×¢²á½áµã
+		//æ³¨å†Œç»“ç‚¹
 		np_actornode_register lpram
 		{
 			.m_node
@@ -147,7 +147,7 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_actor_server_register>& adata)
 	{
-		// # ĞèÒª³¢ÊÔÁ¬½ÓActorServer½áµã ²¢ÏòÆä×¢²á×Ô¼º
+		// # éœ€è¦å°è¯•è¿æ¥ActorServerç»“ç‚¹ å¹¶å‘å…¶æ³¨å†Œè‡ªå·±
 		NODE_TYPE ltype = ttab_servers::instance().nodetype();
 		if (nconfig.nodetype() != ltype || ltype == ngl::ACTORSERVER || ltype == ngl::ROBOT)
 		{
@@ -198,7 +198,7 @@ namespace ngl
 		{
 			if (nconfig.nodeid() != node.m_serverid && server_session::sessionid(node.m_serverid) == -1)
 			{
-				// # ±È½Ïid(½Ï´óµÄÖ÷¶¯Á¬½Ó½ÏĞ¡µÄ)
+				// # æ¯”è¾ƒid(è¾ƒå¤§çš„ä¸»åŠ¨è¿æ¥è¾ƒå°çš„)
 				activ_connect(node.m_serverid);
 			}
 		}
@@ -243,7 +243,7 @@ namespace ngl
 		set_node(lserverid, lpack->m_id);
 		naddress::set_session(lserverid, lpack->m_id);
 
-		// Ö÷¶¯Á¬½Ó
+		// ä¸»åŠ¨è¿æ¥
 		if (isactiv_connect(lserverid) == false)
 		{
 			np_actorclient_node_connect pro;
@@ -254,7 +254,7 @@ namespace ngl
 		set_connect_fnish(lparm->m_id);
 		connect_fnish();
 
-		// µ±Ç°½áµãÀàĞÍÈç¹ûÊÇµÇÂ½·şÎñÆ÷£¬ÇÒÁ¬½ÓµÄ½áµãÎª[GAME/GATEWAY]
+		// å½“å‰ç»“ç‚¹ç±»å‹å¦‚æœæ˜¯ç™»é™†æœåŠ¡å™¨ï¼Œä¸”è¿æ¥çš„ç»“ç‚¹ä¸º[GAME/GATEWAY]
 		NODE_TYPE lservertype = ttab_servers::instance().node_type(nnodeid::tid(lserverid));
 		log_error()->print("np_actorclient_node_connect [{}:{}]", nnodeid::tid(lserverid), nnodeid::tcount(lserverid));
 		if (nconfig.nodetype() == ngl::LOGIN && (lservertype == ngl::GAME || lservertype == ngl::GATEWAY))

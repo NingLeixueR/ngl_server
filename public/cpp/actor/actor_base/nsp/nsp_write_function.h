@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -108,11 +108,11 @@ namespace ngl
 			
 			nsp_instance<nsp_write<TDerived, TACTOR, T>>::template register_handle<
 				TDerived
-				, np_channel_data<T>					// ¸üĞÂÊı¾İ
-				, np_channel_check<T>					// ¼ì²éÊÇ·ñÏònsp·şÎñÆ÷×¢²á
-				, np_channel_register_reply<T>			// ´¦Àí×¢²á»Ø¸´
-				, np_channel_dataid_sync<T>				// ½ÓÊÕ½áµãĞÅÏ¢
-				, np_channel_exit<T>					// ½áµãÍË³ö				
+				, np_channel_data<T>					// æ›´æ–°æ•°æ®
+				, np_channel_check<T>					// æ£€æŸ¥æ˜¯å¦å‘nspæœåŠ¡å™¨æ³¨å†Œ
+				, np_channel_register_reply<T>			// å¤„ç†æ³¨å†Œå›å¤
+				, np_channel_dataid_sync<T>				// æ¥æ”¶ç»“ç‚¹ä¿¡æ¯
+				, np_channel_exit<T>					// ç»“ç‚¹é€€å‡º				
 			>();		
 		}
 
@@ -283,7 +283,7 @@ namespace ngl
 	void nsp_write<TDerived, TACTOR, T>::exit()
 	{
 		{
-			// Í¨ÖªÆäËûĞ´½áµã£¬±¾½áµãÍË³ı
+			// é€šçŸ¥å…¶ä»–å†™ç»“ç‚¹ï¼Œæœ¬ç»“ç‚¹é€€é™¤
 			auto pro = std::make_shared<np_channel_dataid_sync<T>>();
 			pro->m_actorid = m_actor->id_guid();
 			pro->m_read = false;
@@ -293,7 +293,7 @@ namespace ngl
 				pro->m_readpart = m_care.readids();
 				pro->m_writepart = m_care.writeids();
 			}
-			// ·¢ËÍ¸øÆäËû½áµã
+			// å‘é€ç»™å…¶ä»–ç»“ç‚¹
 			std::set<i64_nodeid> lnodes;
 			std::ranges::copy(m_othercare | std::views::keys, std::inserter(lnodes, lnodes.begin()));
 			lnodes.insert(m_nodewritealls.begin(), m_nodewritealls.end());

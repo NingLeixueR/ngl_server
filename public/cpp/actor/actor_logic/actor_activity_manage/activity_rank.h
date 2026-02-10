@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -29,11 +29,11 @@ namespace ngl
 			return std::make_shared<activity_rank>(aactivityid, atime, aduration, aactivitydb, aactivitytimedb);
 		}
 	public:
-		//aactivityid		/*»î¶¯id*/
-		//atime				/*¿ªÆôÊ±¼ä*/
-		//aduration			/*³ÖĞøÊ±¼ä*/
-		//aactivitydb		/*»î¶¯Êı¾İ*/
-		//aactivitytimedb	/*»î¶¯Ê±¼äÊı¾İ*/
+		//aactivityid		/*æ´»åŠ¨id*/
+		//atime				/*å¼€å¯æ—¶é—´*/
+		//aduration			/*æŒç»­æ—¶é—´*/
+		//aactivitydb		/*æ´»åŠ¨æ•°æ®*/
+		//aactivitytimedb	/*æ´»åŠ¨æ—¶é—´æ•°æ®*/
 		activity_rank(int32_t aactivityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb) :
 			activity(aactivityid, atime, aduration, aactivitydb, aactivitytimedb)
 		{}
@@ -43,7 +43,7 @@ namespace ngl
 		{}
 
 		virtual void start();
-		// »î¶¯¹Ø±Õ
+		// æ´»åŠ¨å…³é—­
 		virtual void finish();
 
 		void handle(const np_get_rank_response& aresponse);

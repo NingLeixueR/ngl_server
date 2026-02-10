@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼þÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ð­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕÐ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ÐÞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ðè±£ÁôÔ­Ê¼°æÈ¨ºÍÐí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŽŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜Žã€‚
 * 
-* Ðí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼þ£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -39,7 +39,7 @@ namespace ngl
 			return -1;
 		}
 
-		//ET_MONTH,		// Ã¿ÔÂ´¥·¢
+		//ET_MONTH,		// æ¯æœˆè§¦å‘
 		static bool parm_month(np_timerparm& aparm, int amonthday/*1-31*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_monthday(amonthday) && localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
@@ -56,7 +56,7 @@ namespace ngl
 			return false;			
 		}
 
-		// Ã¿ÖÜ´¥·¢ 1-7
+		// æ¯å‘¨è§¦å‘ 1-7
 		static bool parm_week(np_timerparm& aparm, int aweek/*1-7*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_week(aweek) && localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
@@ -75,7 +75,7 @@ namespace ngl
 			return false;
 		}
 
-		// Ã¿ÈÕ´¥·¢  ahourÊ±amin·ÖasecÃë
+		// æ¯æ—¥è§¦å‘  ahouræ—¶aminåˆ†asecç§’
 		static bool parm_day(np_timerparm& aparm, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
@@ -94,7 +94,7 @@ namespace ngl
 			return false;
 		}
 
-		// Ã¿Ð¡Ê±´¥·¢  amin·ÖasecÃë
+		// æ¯å°æ—¶è§¦å‘  aminåˆ†asecç§’
 		static bool parm_hour(np_timerparm& aparm, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_minute(amin) && localtime::check_sec(asec))
@@ -113,7 +113,7 @@ namespace ngl
 			return false;
 		}
 
-		// Ã¿·ÖÖÓ´¥·¢  asecÃë
+		// æ¯åˆ†é’Ÿè§¦å‘  asecç§’
 		static bool parm_min(np_timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_sec(asec))
@@ -132,7 +132,7 @@ namespace ngl
 			return false;
 		}
 
-		// Ã¿nÃë´¥·¢
+		// æ¯nç§’è§¦å‘
 		static bool make_interval(np_timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
 			if (asec >= 0)
@@ -158,7 +158,7 @@ namespace ngl
 		ntimer(const ntimer&) = delete;
 		ntimer& operator=(const ntimer&) = delete;
 	public:
-		// Å×³öÒ»¸ö¶¨Ê±Æ÷
+		// æŠ›å‡ºä¸€ä¸ªå®šæ—¶å™¨
 		static int addtimer(actor_base* actor, const std::shared_ptr<np_timerparm>& aparm);
 	};
 }//namespace ngl

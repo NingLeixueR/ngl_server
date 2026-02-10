@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -28,9 +28,9 @@ namespace ngl
 	struct actorparm
 	{
 		actorparmbase	m_parm;
-		int32_t			m_weight	= 0x7fffffff;	// È¨ÖØ:µ¥´Î»ñÈ¡Ïß³Ìºó´¦ÀíÏûÏ¢µÄÊıÁ¿
-		int32_t			m_timeout	= 0x7fffffff;	// ³¬Ê±:(µ±actor´¦ÀíÏûÏ¢³¬¹ı´ËÊ±¼ä)
-		bool			m_broadcast	= false;		// ÊÇ·ñÖ§³Ö¹ã²¥(Èç¹ûĞèÒª¼ÓÔØdbclient£¬ĞèÒªÖ§³Ö¹ã²¥)
+		int32_t			m_weight	= 0x7fffffff;	// æƒé‡:å•æ¬¡è·å–çº¿ç¨‹åå¤„ç†æ¶ˆæ¯çš„æ•°é‡
+		int32_t			m_timeout	= 0x7fffffff;	// è¶…æ—¶:(å½“actorå¤„ç†æ¶ˆæ¯è¶…è¿‡æ­¤æ—¶é—´)
+		bool			m_broadcast	= false;		// æ˜¯å¦æ”¯æŒå¹¿æ’­(å¦‚æœéœ€è¦åŠ è½½dbclientï¼Œéœ€è¦æ”¯æŒå¹¿æ’­)
 	};
 
 	template <typename T>
@@ -39,14 +39,14 @@ namespace ngl
 	class actor : 
 		public actor_base
 	{
-		std::list<handle_pram>						m_list;							// ´ı´¦ÀíÏûÏ¢ÁĞ±í
-		std::map<int32_t, std::list<handle_pram>>	m_hightlist;					// ´ı´¦ÀíÏûÏ¢ÁĞ±í(¸ßÌØÈ¨)
-		actor_stat									m_stat = actor_stat_init;		// actor×´Ì¬
-		std::shared_mutex							m_mutex;						// Ëø:[m_list:´ı´¦ÀíÏûÏ¢ÁĞ±í]
-		int32_t										m_weight = 0;					// È¨ÖØ
-		int32_t										m_timeout = 0;					// ³¬Ê±:(µ±actor´¦ÀíÏûÏ¢³¬¹ı´ËÊ±¼ä)
-		bool										m_release = false;				// ÊÍ·Å½«ºöÂÔÈ¨ÖØºÍ³¬Ê±
-		nrfunbase*									m_actorfun = nullptr;			// ×¢²á¿É´¦Àíº¯Êı
+		std::list<handle_pram>						m_list;							// å¾…å¤„ç†æ¶ˆæ¯åˆ—è¡¨
+		std::map<int32_t, std::list<handle_pram>>	m_hightlist;					// å¾…å¤„ç†æ¶ˆæ¯åˆ—è¡¨(é«˜ç‰¹æƒ)
+		actor_stat									m_stat = actor_stat_init;		// actorçŠ¶æ€
+		std::shared_mutex							m_mutex;						// é”:[m_list:å¾…å¤„ç†æ¶ˆæ¯åˆ—è¡¨]
+		int32_t										m_weight = 0;					// æƒé‡
+		int32_t										m_timeout = 0;					// è¶…æ—¶:(å½“actorå¤„ç†æ¶ˆæ¯è¶…è¿‡æ­¤æ—¶é—´)
+		bool										m_release = false;				// é‡Šæ”¾å°†å¿½ç•¥æƒé‡å’Œè¶…æ—¶
+		nrfunbase*									m_actorfun = nullptr;			// æ³¨å†Œå¯å¤„ç†å‡½æ•°
 	public:
 		template <typename TDerived>
 		void init_rfun()
@@ -54,12 +54,12 @@ namespace ngl
 			m_actorfun = &nrfun<TDerived>::instance();
 			if (isbroadcast())
 			{
-				// # ×¢²á¹ã²¥´¦Àíº¯Êı
+				// # æ³¨å†Œå¹¿æ’­å¤„ç†å‡½æ•°
 				register_actornonet<TDerived, np_actor_broadcast>(
 					e_ready_all, (Tfun<actor, np_actor_broadcast>) & actor::handle_broadcast
 				);
 			}
-			// # ×¢²áactor close´¦Àíº¯Êı
+			// # æ³¨å†Œactor closeå¤„ç†å‡½æ•°
 			register_actornonet<TDerived, np_actor_close>(
 				e_ready_all, (Tfun<actor, np_actor_close>) & actor::handle_close
 			);
@@ -71,63 +71,63 @@ namespace ngl
 			return nrfun<TDerived>::instance();
 		}
 
-		// # ×¢²á¶¨Ê±Æ÷
+		// # æ³¨å†Œå®šæ—¶å™¨
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, np_timerparm> afun = &TDerived::timer_handle)
 		{
 			nrf<TDerived>().template rfun_nonet<TDerived, np_timerparm>(afun, e_ready_all);
 		}
 
-		// # ÓÃÀ´×¢²áÄäÃûº¯Êı¹ÒÔØÔÚ¶ÔÓ¦actorÉÏ
+		// # ç”¨æ¥æ³¨å†ŒåŒ¿åå‡½æ•°æŒ‚è½½åœ¨å¯¹åº”actorä¸Š
 		template <typename TDerived, typename T>
 		static void register_actor_s(int32_t aready, const std::function<void(TDerived*, const message<T>&)>& afun)
 		{
 			nrf<TDerived>().template rfun<TDerived, T>(afun, aready);
 		}
 
-		// # ×¢²áactor³ÉÔ±º¯Êı(¿ÉÒÔÊÇ·Çhandle)
+		// # æ³¨å†Œactoræˆå‘˜å‡½æ•°(å¯ä»¥æ˜¯éhandle)
 		template <typename TDerived, typename ...ARG>
 		static void register_actor(int32_t aready, ARG... afun)
 		{
 			(nrf<TDerived>().template rfun<TDerived, ARG>(afun, aready), ...);
 		}
 
-		// # Óëregister_actorÀàËÆ Ö»²»¹ı²»×¢²áÍøÂç²ã
+		// # ä¸register_actorç±»ä¼¼ åªä¸è¿‡ä¸æ³¨å†Œç½‘ç»œå±‚
 		template <typename TDerived, typename T>
 		static void register_actornonet(enum_ready aready, const Tfun<TDerived, T> afun)
 		{
 			nrf<TDerived>().template rfun_nonet<TDerived, T>(afun, aready);
 		}
 
-		// # ×¢²áactor handleº¯Êı
+		// # æ³¨å†Œactor handleå‡½æ•°
 		template <typename TDerived, typename ...ARG>
 		static void register_handle(enum_ready aready)
 		{
 			(nrf<TDerived>().template rfun<TDerived, ARG>((Tfun<TDerived, ARG>) & TDerived::handle, aready), ...);
 		}
 
-		// # ×¢²áactor handleº¯Êı
+		// # æ³¨å†Œactor handleå‡½æ•°
 		template <typename TDerived, typename ...ARG>
 		static void register_script_handle(enum_ready aready)
 		{
 			(nrf<TDerived>().template rfun<actor, ARG>((Tfun<actor, ARG>) & actor::handle_script<ARG>, aready), ...);
 		}
 
-		// # actor_gateway_c2g ×¢²á×ª·¢
+		// # actor_gateway_c2g æ³¨å†Œè½¬å‘
 		template <typename TDerived, typename ...ARG>
 		static void register_forward_c2g()
 		{
 			(nrf<TDerived>().template rfun_c2g<ARG>((Tfun<TDerived, np_actor_forward<ARG, forward_c2g<forward>>>) & TDerived::handle), ...);
 		}
 		
-		// # register_forward_g2c ×¢²á×ª·¢
+		// # register_forward_g2c æ³¨å†Œè½¬å‘
 		template <typename TDerived, typename ...ARG>
 		static void register_forward_g2c()
 		{
 			(nrf<TDerived>().template rfun_g2c<ARG>((Tfun<TDerived, np_actor_forward<ARG, forward_g2c<forward>>>) & TDerived::handle), ...);
 		}
 
-		// # actor_role ×¢²á¶ş´Î×ª·¢
+		// # actor_role æ³¨å†ŒäºŒæ¬¡è½¬å‘
 		template <typename TDerived, ENUM_ACTOR ACTOR, typename ...ARG>
 		static void register_secondary_forward_c2g()
 		{
@@ -136,22 +136,22 @@ namespace ngl
 
 		explicit actor(const actorparm& aparm);
 
-		// # »ñÈ¡actorµÄ×´Ì¬
+		// # è·å–actorçš„çŠ¶æ€
 		actor_stat activity_stat() final;
 
-		// # ÉèÖÃactorµÄ×´Ì¬
+		// # è®¾ç½®actorçš„çŠ¶æ€
 		void set_activity_stat(actor_stat astat) final;
 
-		// # ÊÍ·ÅactorÏûÏ¢ÁĞ±í
+		// # é‡Šæ”¾actoræ¶ˆæ¯åˆ—è¡¨
 		void release() final;
 
-		// # ÏûÏ¢ÁĞ±íÊÇ·ñÎª¿Õ
+		// # æ¶ˆæ¯åˆ—è¡¨æ˜¯å¦ä¸ºç©º
 		bool list_empty() final;
 
-		// # ÏòÏûÏ¢ÁĞ±íÖĞÌí¼ÓĞÂµÄÏûÏ¢
+		// # å‘æ¶ˆæ¯åˆ—è¡¨ä¸­æ·»åŠ æ–°çš„æ¶ˆæ¯
 		void push(handle_pram& apram) final;
 
-		// # ÓÉÏß³ÌÖ÷¶¯µ÷ÓÃÏû·ÑÏûÏ¢
+		// # ç”±çº¿ç¨‹ä¸»åŠ¨è°ƒç”¨æ¶ˆè´¹æ¶ˆæ¯
 		void actor_handle(i32_threadid athreadid) final;
 
 		template <typename T>
@@ -167,21 +167,21 @@ namespace ngl
 
 		bool ahandle(i32_threadid athreadid, handle_pram& aparm);
 
-		// ############# [¹ã²¥] ############# 
-		// # ¼ä¸ôÒ»¶ÎÊ±¼ä·¢ÆğµÄ¹ã²¥
-		// # 1¡¢±£´æÊı¾İ 
-		// # 2¡¢µ÷ÓÃbroadcastº¯Êı
-		// # Óëactor_base::start_broadcast() ÏàºôÓ¦
-		// # ÖØÔØ´Ë·½·¨ÊµÏÖactor_base::m_broadcastºÁÃë´¥·¢ÊÂ¼ş
+		// ############# [å¹¿æ’­] ############# 
+		// # é—´éš”ä¸€æ®µæ—¶é—´å‘èµ·çš„å¹¿æ’­
+		// # 1ã€ä¿å­˜æ•°æ® 
+		// # 2ã€è°ƒç”¨broadcastå‡½æ•°
+		// # ä¸actor_base::start_broadcast() ç›¸å‘¼åº”
+		// # é‡è½½æ­¤æ–¹æ³•å®ç°actor_base::m_broadcastæ¯«ç§’è§¦å‘äº‹ä»¶
 		virtual void broadcast() {}
-		// # ¹ã²¥´¦Àíº¯Êı
+		// # å¹¿æ’­å¤„ç†å‡½æ•°
 		bool handle_broadcast(const message<np_actor_broadcast>& adata);
-		// ############# [¹ã²¥] ############# 
+		// ############# [å¹¿æ’­] ############# 
 		
-		// # ¹Ø±Õ´Ëactor
+		// # å…³é—­æ­¤actor
 		bool handle_close(const message<np_actor_close>&);
 
-		// # ½Å±¾ÓïÑÔ´¦ÀíÏûÏ¢
+		// # è„šæœ¬è¯­è¨€å¤„ç†æ¶ˆæ¯
 		template <typename TMESSAGE>
 		bool handle_script(const message<TMESSAGE>& adata);
 	};

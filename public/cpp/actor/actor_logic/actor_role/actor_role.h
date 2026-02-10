@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -41,10 +41,10 @@ namespace ngl
 {
 	enum ecross
 	{
-		ecross_ordinary			= 1,		// ±¾·ş×ª·¢
-		ecross_cross_ordinary	= 2,		// ¿ç·ş×ª·¢
-		ecross_cross_example	= 3,		// Àı×Ó×ª·¢
-		ecross_none				= 4,		// ´íÎó×ª·¢
+		ecross_ordinary			= 1,		// æœ¬æœè½¬å‘
+		ecross_cross_ordinary	= 2,		// è·¨æœè½¬å‘
+		ecross_cross_example	= 3,		// ä¾‹å­è½¬å‘
+		ecross_none				= 4,		// é”™è¯¯è½¬å‘
 	};
 
 	struct prorechange
@@ -91,7 +91,7 @@ namespace ngl
 
 		virtual i32_serverid get_getwayserverid();
 
-		//# Ö´ĞĞhandleÖ®ºóµ÷ÓÃ
+		//# æ‰§è¡Œhandleä¹‹åè°ƒç”¨
 		virtual void handle_after(handle_pram&);
 
 		virtual void erase_actor_before();
@@ -103,21 +103,21 @@ namespace ngl
 			return m_drop;
 		}
 
-		//# ÉèÖÃ¸üĞÂ½ÇÉ«ÊôĞÔ
+		//# è®¾ç½®æ›´æ–°è§’è‰²å±æ€§
 		void update_attribute(EnumModule amodule, attribute_value& avalue);
 
 		void sync_data_client();
 
-#pragma region forward //×ª·¢Ïà¹Ø
+#pragma region forward //è½¬å‘ç›¸å…³
 		
-		//# ÖØÔØforward_typeÀ´Ö¸¶¨×ª·¢ÀàĞÍ
+		//# é‡è½½forward_typeæ¥æŒ‡å®šè½¬å‘ç±»å‹
 		template <typename T>
 		ecross forward_type(const T& adata)
 		{
 			return ecross_ordinary;
 		}
 
-		//# ÁÄÌìµÄ×ª·¢ÀàĞÍ
+		//# èŠå¤©çš„è½¬å‘ç±»å‹
 		ecross forward_type(const pbnet::PROBUFF_NET_CHAT& adata)
 		{
 			if (m_info.bantalk())
@@ -136,13 +136,13 @@ namespace ngl
 			return ecross_none;
 		}
 
-		//# ranklistµÄ×ª·¢ÀàĞÍ
+		//# ranklistçš„è½¬å‘ç±»å‹
 		ecross forward_type(const pbnet::PROBUFF_NET_RANKLIST& adata)
 		{
 			return adata.miscross() ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
-		//# ¼ÓÈëÀı×ÓĞ¡ÓÎÏ·Æ¥ÅäµÄ×ª·¢ÀàĞÍ
+		//# åŠ å…¥ä¾‹å­å°æ¸¸æˆåŒ¹é…çš„è½¬å‘ç±»å‹
 		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN& adata)
 		{
 			if (m_example.second != 0)
@@ -157,7 +157,7 @@ namespace ngl
 			return tools::equal(adata.mcross(), pbexample::ECROSS_CROSS_ORDINARY) ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
-		//# Àı×ÓĞ¡ÓÎÏ·Æ¥ÅäµÄ×ª·¢ÀàĞÍ
+		//# ä¾‹å­å°æ¸¸æˆåŒ¹é…çš„è½¬å‘ç±»å‹
 		ecross example_type()
 		{
 			if (m_example.second == nguid::make())
@@ -175,17 +175,17 @@ namespace ngl
 			return example_type();
 		}
 
-		//# ÖØÔØforward_beforeÀ´Ö¸¶¨×ª·¢Ç°ÊÂ¼ş
+		//# é‡è½½forward_beforeæ¥æŒ‡å®šè½¬å‘å‰äº‹ä»¶
 		template <typename T>
 		bool forward_before(const T& adata)
 		{
 			return true;
 		}
 
-		//# ×ª·¢"´´½¨¾üÍÅ"Ç°
+		//# è½¬å‘"åˆ›å»ºå†›å›¢"å‰
 		bool forward_before(const pbnet::PROBUFF_NET_FAMIL_CREATE& adata);
 
-		//# ÖØÔØdataidÀ´Ö¸¶¨×ª·¢Ä£¿éµÄdataid
+		//# é‡è½½dataidæ¥æŒ‡å®šè½¬å‘æ¨¡å—çš„dataid
 		template <typename T>
 		int32_t forward_dataid(const T& adata)
 		{
@@ -238,34 +238,34 @@ namespace ngl
 		}
 #pragma endregion
 
-		//# ÖØÖÃµÇÂ½Ê±¼ä
+		//# é‡ç½®ç™»é™†æ—¶é—´
 		void reset_logintime();
 
-		//# »ØÏÔ¸ø¿Í»§¶ËÒ»¸ö×Ö·û´®
+		//# å›æ˜¾ç»™å®¢æˆ·ç«¯ä¸€ä¸ªå­—ç¬¦ä¸²
 		void echo_msg(const char* amsg);
 
 		int32_t rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting);
 
-		//# µÇÂ¼ÇëÇóÎ´·¢»õ³äÖµ
+		//# ç™»å½•è¯·æ±‚æœªå‘è´§å……å€¼
 		void loginpay();
 
 		void requestgm(const char* aurl, const std::string& aparm, const std::function<void(int32_t, http_parm&)>& acall);
 
-		//# ÇëÇó´´½¨¶©µ¥
+		//# è¯·æ±‚åˆ›å»ºè®¢å•
 		void createorder(std::string& aorder, int32_t arechargeid);
 
-		//# ÊÇ·ñÊ×´Î³äÖµ
+		//# æ˜¯å¦é¦–æ¬¡å……å€¼
 		bool is_first_recharge(int32_t arechargeid);
 
-		//# CMDĞ­Òé
+		//# CMDåè®®
 		using handle_cmd = cmd<actor_role, std::string, const std::shared_ptr<pack>&, actor_role*, const char*>;
-		//# GMĞ­Òé
+		//# GMåè®®
 		using handle_gm = cmd<actor_role, std::string, int, ncjson&>;
 
-		//# ¶¨Ê±Æ÷
+		//# å®šæ—¶å™¨
 		bool timer_handle(const message<np_timerparm>& adata);
 
-		//# ½ÇÉ«´´½¨³õÊ¼»¯
+		//# è§’è‰²åˆ›å»ºåˆå§‹åŒ–
 		void create_init(const std::string& aname);
 
 		bool handle(const message<mforward<np_gm>>& adata);

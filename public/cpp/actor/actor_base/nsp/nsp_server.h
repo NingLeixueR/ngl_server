@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -25,17 +25,17 @@ namespace ngl
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	class nsp_server
 	{
-		// # ¿É²Ù×÷µÄ"Êı¾İ×Ö¶Î"
+		// # å¯æ“ä½œçš„"æ•°æ®å­—æ®µ"
 		static operator_field						m_operator_field;
-		// # ÄÄĞ©½áµã¹Ø×¢ÄÄĞ©Êı¾İ
+		// # å“ªäº›ç»“ç‚¹å…³æ³¨å“ªäº›æ•°æ®
 		static std::map<i64_actorid, care_data>		m_care;
-		// # ¶ÁÈ«²¿Êı¾İµÄ½áµã
+		// # è¯»å…¨éƒ¨æ•°æ®çš„ç»“ç‚¹
 		static std::set<i64_nodeid>					m_nodereadalls;
-		// # Ğ´È«²¿Êı¾İµÄ½áµã
+		// # å†™å…¨éƒ¨æ•°æ®çš„ç»“ç‚¹
 		static std::set<i64_nodeid>					m_nodewritealls;
-		// # ¶Á²¿·ÖÊı¾İµÄ½áµã
+		// # è¯»éƒ¨åˆ†æ•°æ®çš„ç»“ç‚¹
 		static std::set<i64_nodeid>					m_nodepart;
-		// # Êı¾İ
+		// # æ•°æ®
 		static ndb_modular<ENUMDB, T, TDerived>*	m_dbmodule;
 	public:
 		using tnsp_server = nsp_server<ENUMDB, TDerived, T>;
@@ -45,25 +45,25 @@ namespace ngl
 			esend_maxcount = 100,
 		};
 
-		// # ¶©ÔÄ×¢²á´¦Àí
+		// # è®¢é˜…æ³¨å†Œå¤„ç†
 		static void init(ndb_modular<ENUMDB, T, TDerived>* adbmodule);
 
-		// # ×¢²á»Ø¸´
+		// # æ³¨å†Œå›å¤
 		static void channel_register_reply(i64_actorid aactorid);
 
-		// # ×¢²á»Ø¸´Êı¾İ
+		// # æ³¨å†Œå›å¤æ•°æ®
 		static void channel_channel_data(i64_actorid aactorid, const np_channel_register<T>* recv);
 
-		// # ×¢²áÍ¬²½ÆäËû½áµãĞÅÏ¢
+		// # æ³¨å†ŒåŒæ­¥å…¶ä»–ç»“ç‚¹ä¿¡æ¯
 		static void channel_dataid_sync(i64_actorid aactorid, const np_channel_register<T>* recv);
 
-		// # ½áµã×¢²á
+		// # ç»“ç‚¹æ³¨å†Œ
 		static void handle(TDerived*, const message<np_channel_register<T>>& adata);
 
-		// # ½áµãÍË³ö
+		// # ç»“ç‚¹é€€å‡º
 		static void handle(TDerived*, const message<np_channel_exit<T>>& adata);
 
-		// # ½áµãĞŞ¸ÄÊı¾İ
+		// # ç»“ç‚¹ä¿®æ”¹æ•°æ®
 		static void handle(TDerived*, const message<np_channel_data<T>>& adata);
 	};
 

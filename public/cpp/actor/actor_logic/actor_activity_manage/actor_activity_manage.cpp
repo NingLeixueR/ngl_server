@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "ttab_activityopenserver.h"
@@ -51,7 +51,7 @@ namespace ngl
 
 	void actor_activity_manage::init()
 	{
-		// °ó¶¨DB½á¹¹:DB.set(this);
+		// ç»‘å®šDBç»“æ„:DB.set(this);
 		m_activitydb.set(this);
 		m_activitytimedb.set(this);
 	}
@@ -88,7 +88,7 @@ namespace ngl
 
 		actor_events_logic::event_func(actorid(), eevents_logic_rolelogin, eevents_logic_rolelevelchange, eevents_logic_rolegoldchange);
 
-		// ¼ÓÔØ³õÊ¼»¯»î¶¯
+		// åŠ è½½åˆå§‹åŒ–æ´»åŠ¨
 		int32_t lnow = (int32_t)localtime::gettime();
 		//std::map<nguid, data_modified<TDATA>>&
 		for (auto& [_guid, _modified] : m_activitytimedb.data())
@@ -185,10 +185,10 @@ namespace ngl
 
 	void actor_activity_manage::nregister()
 	{
-		// ¶¨Ê±Æ÷
+		// å®šæ—¶å™¨
 		actor::register_timer<actor_activity_manage>(&actor_activity_manage::timer_handle);
 
-		// °ó¶¨×Ô¶¨Òånp_ÏûÏ¢
+		// ç»‘å®šè‡ªå®šä¹‰np_æ¶ˆæ¯
 		register_handle<actor_activity_manage
 			, mforward<np_operator_task_response>
 			, np_eevents_logic_rolelogin
@@ -227,12 +227,12 @@ namespace ngl
 		}
 		int32_t lnow = (int32_t)localtime::gettime();
 		if (lnow < atime)
-		{//Î´À´Ê±¼ä¶¨Ê±¿ªÆô»î¶¯
+		{//æœªæ¥æ—¶é—´å®šæ—¶å¼€å¯æ´»åŠ¨
 			post_timer(aactivityid, eactivity_start, atime, aduration);
 			return;
 		}
 		if (lnow >= atime + aduration && aduration != -1)
-		{//¹Ø±Õ»î¶¯
+		{//å…³é—­æ´»åŠ¨
 			m_activitys[aactivityid] = activity::make(nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb);
 			m_activitys[aactivityid]->init();
 			m_activitys[aactivityid]->finish();
@@ -240,7 +240,7 @@ namespace ngl
 			return;
 		}
 		if ((lnow >= atime && lnow < atime + aduration) || (lnow >= atime && aduration == -1))
-		{//¿ªÆô»î¶¯
+		{//å¼€å¯æ´»åŠ¨
 			m_activitys[aactivityid] = activity::make(nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb);
 			m_activitys[aactivityid]->start();
 			m_activitys[aactivityid]->init();

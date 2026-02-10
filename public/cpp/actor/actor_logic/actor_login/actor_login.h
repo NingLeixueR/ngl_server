@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -76,28 +76,28 @@ namespace ngl
 
 		static void nregister();
 
-		// # ¸ù¾İÕËºÅÃÜÂë»ñÈ¡pbdb::db_account
+		// # æ ¹æ®è´¦å·å¯†ç è·å–pbdb::db_account
 		data_modified<pbdb::db_account>* get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate);
 
-		// # »ñÈ¡amapÖĞÏà¶Ô¿ÕÏĞµÄ·şÎñÆ÷
+		// # è·å–amapä¸­ç›¸å¯¹ç©ºé—²çš„æœåŠ¡å™¨
 		bool get_freeserver(std::map<i32_serverid, server_info>& amap, std::pair<i32_serverid, int32_t>& apair);
 
-		// # »ñÈ¡game·şÎñÆ÷ÖĞÏà¶Ô¿ÕÏĞµÄ·şÎñÆ÷
+		// # è·å–gameæœåŠ¡å™¨ä¸­ç›¸å¯¹ç©ºé—²çš„æœåŠ¡å™¨
 		bool get_freeserver_game(std::pair<i32_serverid, int32_t>& apair);
 
-		// # »ñÈ¡gateway·şÎñÆ÷ÖĞÏà¶Ô¿ÕÏĞµÄ·şÎñÆ÷
+		// # è·å–gatewayæœåŠ¡å™¨ä¸­ç›¸å¯¹ç©ºé—²çš„æœåŠ¡å™¨
 		bool get_freeserver_gateway(std::pair<int32_t, int32_t>& apair);
 
-		// # ¼õÉÙamapÖĞaserverid¶ÔÓ¦·şÎñÆ÷µÄ³ĞÔØÈËÊı
+		// # å‡å°‘amapä¸­aserveridå¯¹åº”æœåŠ¡å™¨çš„æ‰¿è½½äººæ•°
 		bool dec_freeserver(std::map<i32_serverid, server_info>& amap, i32_serverid aserverid);
 
-		// # ¼õÉÙgame·şÎñÆ÷ÖĞaserverid¶ÔÓ¦·şÎñÆ÷µÄ³ĞÔØÈËÊı
+		// # å‡å°‘gameæœåŠ¡å™¨ä¸­aserveridå¯¹åº”æœåŠ¡å™¨çš„æ‰¿è½½äººæ•°
 		bool dec_freeserver_game(i32_serverid aserverid);
 
-		// # ¼õÉÙgateway·şÎñÆ÷ÖĞaserverid¶ÔÓ¦·şÎñÆ÷µÄ³ĞÔØÈËÊı
+		// # å‡å°‘gatewayæœåŠ¡å™¨ä¸­aserveridå¯¹åº”æœåŠ¡å™¨çš„æ‰¿è½½äººæ•°
 		bool dec_freeserver_gateway(i32_serverid aserverid);
 
-		// # ´òÓ¡¿ÕÏĞ·şÎñÆ÷Êı¾İ
+		// # æ‰“å°ç©ºé—²æœåŠ¡å™¨æ•°æ®
 		void printf_freeserver();
 
 		bool timer_handle(const message<np_timerparm>& adata);

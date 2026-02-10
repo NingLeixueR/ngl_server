@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "attribute_value.h"
@@ -25,13 +25,13 @@ namespace ngl
 		em<EnumAttribute>::set(E_CooldownAbsolute, "cooldownabsolute");
 		em<EnumAttribute>::set(E_CooldownProp, "cooldownprop");
 
-		em<EnumAttribute>::set(E_Attack, "¹¥»÷", 1);
-		em<EnumAttribute>::set(E_Defense, "·ÀÓù", 1);
-		em<EnumAttribute>::set(E_Hp, "ÑªÁ¿", 1);
-		em<EnumAttribute>::set(E_Anger, "Å­Æø", 1);
-		em<EnumAttribute>::set(E_Speed, "ËÙ¶È", 1);
-		em<EnumAttribute>::set(E_CooldownAbsolute, "ÀäÈ´Ëõ¼õ-¾ø¶ÔÖµ", 1);
-		em<EnumAttribute>::set(E_CooldownProp, "ÀäÈ´Ëõ¼õ-Íò·Ö±È", 1);
+		em<EnumAttribute>::set(E_Attack, "æ”»å‡»", 1);
+		em<EnumAttribute>::set(E_Defense, "é˜²å¾¡", 1);
+		em<EnumAttribute>::set(E_Hp, "è¡€é‡", 1);
+		em<EnumAttribute>::set(E_Anger, "æ€’æ°”", 1);
+		em<EnumAttribute>::set(E_Speed, "é€Ÿåº¦", 1);
+		em<EnumAttribute>::set(E_CooldownAbsolute, "å†·å´ç¼©å‡-ç»å¯¹å€¼", 1);
+		em<EnumAttribute>::set(E_CooldownProp, "å†·å´ç¼©å‡-ä¸‡åˆ†æ¯”", 1);
 	}
 
 	std::pair<const char*, const char*> enum_attr_name::name(EnumAttribute atype)

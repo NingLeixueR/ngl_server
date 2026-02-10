@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -20,12 +20,12 @@
 namespace ngl
 {
 	//####################################################################
-	//# Ã¿¸ö½ø³Ì¶¼ĞèÒªÓĞÒ»¸öactor_client»òactor_server
-	//# Í¨³£Ò»¸öÇø·şÖ»ÓĞÒ»¸ö½ø³ÌÖĞ°üº¬actor_server 
-	//# ÆäËûËùÓĞ½ø³Ì¶¼±ØĞë°üº¬actor_client
-	//# actor_client ÓÃÀ´¼ÍÂ¼±£´ænguidÓë·şÎñÆ÷idµÄ¶ÔÓ¦¹ØÏµ£¬
-	//# actor_clientÏàµ±ÓÚactor¿ò¼ÜµÄÂ·ÓÉÆ÷£¬ÎªactorÌá¹©Â·ÓÉ¹¦ÄÜ
-	//# ¶øactor_server¸ºÔğ·Ö·¢¸÷¸öactor_clientÖĞ±¾µØµÄnguid¶ÔÓ¦¹ØÏµ
+	//# æ¯ä¸ªè¿›ç¨‹éƒ½éœ€è¦æœ‰ä¸€ä¸ªactor_clientæˆ–actor_server
+	//# é€šå¸¸ä¸€ä¸ªåŒºæœåªæœ‰ä¸€ä¸ªè¿›ç¨‹ä¸­åŒ…å«actor_server 
+	//# å…¶ä»–æ‰€æœ‰è¿›ç¨‹éƒ½å¿…é¡»åŒ…å«actor_client
+	//# actor_client ç”¨æ¥çºªå½•ä¿å­˜nguidä¸æœåŠ¡å™¨idçš„å¯¹åº”å…³ç³»ï¼Œ
+	//# actor_clientç›¸å½“äºactoræ¡†æ¶çš„è·¯ç”±å™¨ï¼Œä¸ºactoræä¾›è·¯ç”±åŠŸèƒ½
+	//# è€Œactor_serverè´Ÿè´£åˆ†å‘å„ä¸ªactor_clientä¸­æœ¬åœ°çš„nguidå¯¹åº”å…³ç³»
 	//###################################################################
 	class actor_client : 
 		public actor
@@ -34,8 +34,8 @@ namespace ngl
 		actor_client& operator=(const actor_client&) = delete;
 
 		using funclist = std::list<std::function<void()>>;
-		std::map<i32_serverid, funclist>	m_connectfun;			// Á¬½Ó[Ö¸¶¨·şÎñÆ÷]³É¹¦ºóÖ´ĞĞ
-		std::set<i32_serverid>				m_connectserverid;		// ÒÑÁ¬½ÓµÄ·şÎñÆ÷id
+		std::map<i32_serverid, funclist>	m_connectfun;			// è¿æ¥[æŒ‡å®šæœåŠ¡å™¨]æˆåŠŸåæ‰§è¡Œ
+		std::set<i32_serverid>				m_connectserverid;		// å·²è¿æ¥çš„æœåŠ¡å™¨id
 
 		actor_client();
 		virtual ~actor_client() = default;
@@ -46,52 +46,52 @@ namespace ngl
 			return actor_instance<actor_client>::instance(); 
 		}
 		
-		//# ×¢²áĞèÒª´¦ÀíµÄÏûÏ¢
+		//# æ³¨å†Œéœ€è¦å¤„ç†çš„æ¶ˆæ¯
 		static void nregister();
 	private:
-		//# Ö÷¶¯Ïòactor_server×¢²áactor_client
+		//# ä¸»åŠ¨å‘actor_serveræ³¨å†Œactor_client
 		void actor_server_register(i32_serverid aserverid);
 
-		//# ÉèÖÃÁ¬½ÓºóÊ±¼ä ÀıÈçactor_dbclient»á×¢²áÁ¬½ÓºóÊÂ¼ş£¨¼ÓÔØÊı¾İ£©
+		//# è®¾ç½®è¿æ¥åæ—¶é—´ ä¾‹å¦‚actor_dbclientä¼šæ³¨å†Œè¿æ¥åäº‹ä»¶ï¼ˆåŠ è½½æ•°æ®ï¼‰
 		void set_connect_fnish(i32_serverid aserverid);
 
-		//# Á¬½Ó³É¹¦ºóµ÷ÓÃ
+		//# è¿æ¥æˆåŠŸåè°ƒç”¨
 		void connect_fnish();
 
-		//# Ïà¶ÔÓÚ±¾½ø³ÌÊÇ·ñĞèÒªÖ÷¶¯Á¬½Ó
+		//# ç›¸å¯¹äºæœ¬è¿›ç¨‹æ˜¯å¦éœ€è¦ä¸»åŠ¨è¿æ¥
 		bool isactiv_connect(i32_serverid aserverid);
 
-		//# Ö÷¶¯Á¬½Ó
+		//# ä¸»åŠ¨è¿æ¥
 		void activ_connect(i32_serverid aserverid);
 	public:
-		//# Ïòactor_server×¢²á½áµã
+		//# å‘actor_serveræ³¨å†Œç»“ç‚¹
 		void actor_server_register();
 
-		//# actor_clientµÄactorid
+		//# actor_clientçš„actorid
 		static i64_actorid actorid();
 
-		//# netÁ¬½Óactor server³É¹¦
+		//# netè¿æ¥actor serveræˆåŠŸ
 		bool handle(const message<np_connect_actor_server>& adata);
 
-		//# ×¢²á½áµã
+		//# æ³¨å†Œç»“ç‚¹
 		bool handle(const message<np_actor_server_register>& adata);
 
-		//# actor_server»Ø¸´×¢²á½áµã
+		//# actor_serverå›å¤æ³¨å†Œç»“ç‚¹
 		bool handle(const message<np_actornode_register_response>& adata);
 
-		//# actor¿Í»§¶Ë¼äÏà»¥Á¬½Ó
+		//# actorå®¢æˆ·ç«¯é—´ç›¸äº’è¿æ¥
 		bool handle(const message<np_actorclient_node_connect>& adata);
 
-		//# ·şÎñÆ÷Ïòactor¿Í»§¶ËÍ¬²½½áµãĞÅÏ¢
+		//# æœåŠ¡å™¨å‘actorå®¢æˆ·ç«¯åŒæ­¥ç»“ç‚¹ä¿¡æ¯
 		bool handle(const message<np_actornode_update>& adata);
 
-		//# Ïòactor¿Í»§¶ËÍ¬²½½áµãĞÅÏ¢(Èº·¢)
+		//# å‘actorå®¢æˆ·ç«¯åŒæ­¥ç»“ç‚¹ä¿¡æ¯(ç¾¤å‘)
 		bool handle(const message<np_actornode_update_mass>& adata);
 
-		//# Á¬½Ó³É¹¦ºóÖ´ĞĞÈÎÎñ
+		//# è¿æ¥æˆåŠŸåæ‰§è¡Œä»»åŠ¡
 		bool handle(const message<np_actornode_connect_task>& adata);
 
-		//# Í¬²½actor_role¶ÔÓ¦µÄgateway
+		//# åŒæ­¥actor_roleå¯¹åº”çš„gateway
 		bool handle(const message<np_actor_gatewayid_updata>& adata);
 	};
 }//namespace ngl

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "actor_robot_manage.h"
@@ -44,9 +44,9 @@ namespace ngl
 
 	void actor_robot_manage::init()
 	{
-		// °ó¶¨DB½á¹¹:DB.set(this);
+		// ç»‘å®šDBç»“æ„:DB.set(this);
 
-		// ÉèÖÃtimer_handle¶¨Ê±Æ÷
+		// è®¾ç½®timer_handleå®šæ—¶å™¨
 		/*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
@@ -68,10 +68,10 @@ namespace ngl
 
 	void actor_robot_manage::nregister()
 	{
-		// ¶¨Ê±Æ÷
+		// å®šæ—¶å™¨
 		actor::register_timer<actor_robot_manage>(&actor_robot_manage::timer_handle);
 
-		// °ó¶¨×Ô¶¨Òånp_ÏûÏ¢
+		// ç»‘å®šè‡ªå®šä¹‰np_æ¶ˆæ¯
 		register_handle<actor_robot_manage
 			, np_robot_pram
 			, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
@@ -198,7 +198,7 @@ namespace ngl
 		i16_port luport = nkcp::instance().kcp_port(aservertid, atcount, akcpenum);
 		log_error()->print("kcp connect server[{}:{}] {}@{}", aservertid, atcount, lpstructserver.m_ip, luport);
 
-		// »ñÈ¡±¾»úuip
+		// è·å–æœ¬æœºuip
 		ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(lpstructserver.m_ip), luport);
 		i64_actorid robotid = nguid::make_type(arobotid, ACTOR_ROLE);
 		_robot* lprobot = get_robot(robotid);
@@ -223,7 +223,7 @@ namespace ngl
 			{
 				log_error()->print("Local GetIp Finish : {}", buff);
 				ukcp::m_localuip = buff;
-				// »ñÈ¡kcp-session
+				// è·å–kcp-session
 				pbnet::PROBUFF_NET_KCPSESSION pro;
 				pro.set_mserverid(lserverid);
 				pro.set_muip(ukcp::m_localuip);

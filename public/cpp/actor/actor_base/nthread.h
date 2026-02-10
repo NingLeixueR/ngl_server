@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -25,24 +25,24 @@ namespace ngl
 		nthread(const nthread&) = delete;
 		nthread& operator=(const nthread&) = delete;
 
-		i32_threadid		m_id = 0;				// Ïß³Ìid
-		ptractor			m_actor = nullptr;		// ´ËÊ±Õ¼ÓÃÏß³ÌµÄactor
-		bool				m_isactivity = false;	// Ïß³ÌÊÇ·ñ»îÔ¾
-		ngl::thread			m_thread;				// Ïß³Ì
-		std::shared_mutex	m_mutex;				// »¥³âÁ¿
-		ngl::sem			m_sem;					// ĞÅºÅÁ¿
+		i32_threadid		m_id = 0;				// çº¿ç¨‹id
+		ptractor			m_actor = nullptr;		// æ­¤æ—¶å ç”¨çº¿ç¨‹çš„actor
+		bool				m_isactivity = false;	// çº¿ç¨‹æ˜¯å¦æ´»è·ƒ
+		ngl::thread			m_thread;				// çº¿ç¨‹
+		std::shared_mutex	m_mutex;				// äº’æ–¥é‡
+		ngl::sem			m_sem;					// ä¿¡å·é‡
 
 		void run();
 	public:
 		explicit nthread(i32_threadid aid);
 
-		// # ·µ»ØÏß³Ìid
+		// # è¿”å›çº¿ç¨‹id
 		i32_threadid id();
 
-		// # ÊÇ·ñ»îÔ¾
+		// # æ˜¯å¦æ´»è·ƒ
 		bool isactivity();
 
-		// # ÏòÏß³ÌÖĞÌí¼Óactor
+		// # å‘çº¿ç¨‹ä¸­æ·»åŠ actor
 		void push(ptractor aactor);
 	};
 }//namespace ngl

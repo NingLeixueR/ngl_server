@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -49,15 +49,15 @@ namespace ngl
 	class attribute_value
 	{
 		friend class attribute;
-		std::map<EnumAttribute, int64_t>	m_attr;		// [absolute] ÊôĞÔ¾ø¶ÔÖµ  
-		std::map<EnumAttribute, float>		m_rattr;	// Íò·Ö±ÈÊôĞÔ[×ÔÉíÌá¹©µÄ]
-		std::map<EnumAttribute, float>		m_orattr;	// Íò·Ö±ÈÊôĞÔ[±ğÈËÌá¹©µÄ]
+		std::map<EnumAttribute, int64_t>	m_attr;		// [absolute] å±æ€§ç»å¯¹å€¼  
+		std::map<EnumAttribute, float>		m_rattr;	// ä¸‡åˆ†æ¯”å±æ€§[è‡ªèº«æä¾›çš„]
+		std::map<EnumAttribute, float>		m_orattr;	// ä¸‡åˆ†æ¯”å±æ€§[åˆ«äººæä¾›çš„]
 		
-		// ## ÒÔÏÂ±ÈÀıÊôĞÔ ÊÇÍù¸¸Á´ÉÏÌí¼ÓµÄÊôĞÔ ##
-		std::map<EnumAttribute, int64_t>	m_fight;						// [m_attr+m_rattr] ²úÉúµÄÊôĞÔ
-		int64_t								m_fightscore = 0;				// Õ½Á¦
+		// ## ä»¥ä¸‹æ¯”ä¾‹å±æ€§ æ˜¯å¾€çˆ¶é“¾ä¸Šæ·»åŠ çš„å±æ€§ ##
+		std::map<EnumAttribute, int64_t>	m_fight;						// [m_attr+m_rattr] äº§ç”Ÿçš„å±æ€§
+		int64_t								m_fightscore = 0;				// æˆ˜åŠ›
 		EnumModule							m_module = EnumModule::E_ModuleNull;
-		std::map<EnumModule, std::map<EnumAttribute, float>> m_crattr;		// ÄÄ¸öÄ£¿é¼ÓµÄ±ÈÀıÊôĞÔ,Íù¸¸Á´µÄ[Íò·Ö±ÈÊôĞÔ]ÉÏÌí¼Ó 
+		std::map<EnumModule, std::map<EnumAttribute, float>> m_crattr;		// å“ªä¸ªæ¨¡å—åŠ çš„æ¯”ä¾‹å±æ€§,å¾€çˆ¶é“¾çš„[ä¸‡åˆ†æ¯”å±æ€§]ä¸Šæ·»åŠ  
 	private:
 		void update(std::map<EnumAttribute, int64_t>& aattr, const std::map<EnumAttribute, float>& amr);
 
@@ -69,34 +69,34 @@ namespace ngl
 
 		int64_t update();
 
-		// ´òÓ¡ÊôĞÔ
+		// æ‰“å°å±æ€§
 		void printf();
 
-		// Çå¿ÕÊôĞÔ
+		// æ¸…ç©ºå±æ€§
 		void clear();
 
-		// Ìí¼ÓÊôĞÔ
+		// æ·»åŠ å±æ€§
 		void set_attr(EnumAttribute atype, double avalues);
 
-		// »ñÈ¡ÊôĞÔ
+		// è·å–å±æ€§
 		double get_attr(EnumAttribute atype);
 
-		// Ìí¼Ó±ÈÀıÊôĞÔÊôĞÔ
+		// æ·»åŠ æ¯”ä¾‹å±æ€§å±æ€§
 		void set_rattr(EnumAttribute atype, double avalues);
 
-		// »ñÈ¡±ÈÀıÊôĞÔÊôĞÔ
+		// è·å–æ¯”ä¾‹å±æ€§å±æ€§
 		double get_rattr(EnumAttribute atype);
 
-		// ¸ø¸¸½áµãÌí¼ÓÊôĞÔ
+		// ç»™çˆ¶ç»“ç‚¹æ·»åŠ å±æ€§
 		void set_father_rattr(EnumModule amodule, EnumAttribute atype, double avalues);
 
-		// »ñÈ¡¸¸½áµãÌíÊôĞÔ
+		// è·å–çˆ¶ç»“ç‚¹æ·»å±æ€§
 		double get_father_rattr(EnumModule amodule, EnumAttribute atype);
 
-		// Õ½Á¦»ı·Ö
+		// æˆ˜åŠ›ç§¯åˆ†
 		int64_t fightscore();
 
-		// ×ª»»Îªpb½á¹¹
+		// è½¬æ¢ä¸ºpbç»“æ„
 		void topb(pbdb::UNIT_MODULE& aunitmodule);
 	};
 }// namespace ngl

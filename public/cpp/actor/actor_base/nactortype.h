@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼þÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ð­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕÐ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ÐÞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ðè±£ÁôÔ­Ê¼°æÈ¨ºÍÐí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŽŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜Žã€‚
 * 
-* Ðí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼þ£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -26,53 +26,53 @@
 
 namespace ngl
 {
-	// # actor¶ÔÓ¦µÄÃ¶¾ÙÀàÐÍ
+	// # actorå¯¹åº”çš„æžšä¸¾ç±»åž‹
 	enum ENUM_ACTOR
 	{
 		ACTOR_NONE								= -1,
-		//# ·Çµ¥Àý
+		//# éžå•ä¾‹
 		ACTOR_ROLE								= 1,
-		ACTOR_ROBOT								= 2, // »úÆ÷ÈË
-		ACTOR_LOG								= 3, // ÈÕÖ¾
-		ACTOR_EXAMPLE_GUESS_NUMBER				= 4, // Àý×ÓÐ¡ÓÎÏ·:²ÂÊý×Ö-Êý×ÖÕ¨µ¯
+		ACTOR_ROBOT								= 2, // æœºå™¨äºº
+		ACTOR_LOG								= 3, // æ—¥å¿—
+		ACTOR_EXAMPLE_GUESS_NUMBER				= 4, // ä¾‹å­å°æ¸¸æˆ:çŒœæ•°å­—-æ•°å­—ç‚¸å¼¹
 
-		//# µ¥Àý(°üÀ¨È«¾Öµ¥Àý£¬ºÍµ¥½ø³Ìµ¥Àý) 
+		//# å•ä¾‹(åŒ…æ‹¬å…¨å±€å•ä¾‹ï¼Œå’Œå•è¿›ç¨‹å•ä¾‹) 
 		ACTOR_SIGNLE_START						= 20,
-		ACTOR_SERVER							= ACTOR_SIGNLE_START, // µ¥Àý actor address server  ¹ÜÀí·Ö·¢µØÖ·µÄÖÐÐÄ
-		ACTOR_CLIENT							= 21, // µ¥Àý actor address client 
-		ACTOR_LOGIN								= 22, // µÇÂ½
-		ACTOR_GATEWAY							= 23, // Íø¹Ø
-		ACTOR_GATEWAY_C2G						= 24, // Íø¹Ø [Client]->[Game]
-		ACTOR_GATEWAY_G2C						= 25, // Íø¹Ø [Game]->[Client]
-		ACTOR_CREATE							= 26, // ÔÚÖ¸¶¨[Server]ÉÏ´´½¨[Actor]
-		ACTOR_ROLE_MANAGE						= 27, // ¸ºÔð´´½¨actor_role
+		ACTOR_SERVER							= ACTOR_SIGNLE_START, // å•ä¾‹ actor address server  ç®¡ç†åˆ†å‘åœ°å€çš„ä¸­å¿ƒ
+		ACTOR_CLIENT							= 21, // å•ä¾‹ actor address client 
+		ACTOR_LOGIN								= 22, // ç™»é™†
+		ACTOR_GATEWAY							= 23, // ç½‘å…³
+		ACTOR_GATEWAY_C2G						= 24, // ç½‘å…³ [Client]->[Game]
+		ACTOR_GATEWAY_G2C						= 25, // ç½‘å…³ [Game]->[Client]
+		ACTOR_CREATE							= 26, // åœ¨æŒ‡å®š[Server]ä¸Šåˆ›å»º[Actor]
+		ACTOR_ROLE_MANAGE						= 27, // è´Ÿè´£åˆ›å»ºactor_role
 		ACTOR_KCP								= 28, // kcp
-		ACTOR_ROBOT_MANAGE						= 29, // ¹ÜÀírobot
-		ACTOR_CSVSERVER							= 30, // ÈÈ¸ücsv server
-		ACTOR_CSVCLIENT							= 31, // ÈÈ¸ücsv client
-		ACTOR_NOTICE							= 32, // ¹«¸æ
-		ACTOR_GM								= 33, // GM			(world ½ø³Ì )
-		ACTOR_GMCLIENT							= 34, // GM CLIENT	(³ýÁËworld½ø³ÌÃ¿¸ö½ø³Ì¶¼Ó¦¸ÃÓÐ´Ë½ø³Ì)
-		ACTOR_MAIL								= 35, // ÓÊ¼þ
-		ACTOR_CHAT								= 36, // ÁÄÌì
-		ACTOR_RANKLIST							= 37, // ÅÅÐÐ°ñ
-		ACTOR_ACTIVITY_MANAGE					= 38, // »î¶¯¹ÜÀí
-		ACTOR_BRIEF								= 39, // brief¼òÒªÐÅÏ¢
-		ACTOR_KEYVALUE							= 40, // ¹«¹²key/value
-		ACTOR_FAMILY							= 41, // ¾üÍÅ¼Ò×å
-		ACTOR_FRIENDS							= 42, // ºÃÓÑ
-		ACTOR_EVENTS							= 43, // ÊÂ¼þ
-		ACTOR_EVENTS_MAX_COUNT					= ACTOR_EVENTS + 10, // ÊÂ¼þÔ¤Áô10¸ö
-		ACTOR_EXAMPLE_MATCH						= 54, // Àý×ÓÐ¡ÓÎÏ·:Æ¥Åä
-		ACTOR_EXAMPLE_MANAGE					= 55, // ´´½¨¹ÜÀíÀý×ÓÐ¡ÓÎÏ·
-		ACTOR_TESTLUA							= 56, // ²âÊÔlua
-		ACTOR_TESTLUA2							= 57, // ²âÊÔlua2
-		ACTOR_DB								= 1000, // ±ØÐëÊÇ×îºóÒ»¸ö
+		ACTOR_ROBOT_MANAGE						= 29, // ç®¡ç†robot
+		ACTOR_CSVSERVER							= 30, // çƒ­æ›´csv server
+		ACTOR_CSVCLIENT							= 31, // çƒ­æ›´csv client
+		ACTOR_NOTICE							= 32, // å…¬å‘Š
+		ACTOR_GM								= 33, // GM			(world è¿›ç¨‹ )
+		ACTOR_GMCLIENT							= 34, // GM CLIENT	(é™¤äº†worldè¿›ç¨‹æ¯ä¸ªè¿›ç¨‹éƒ½åº”è¯¥æœ‰æ­¤è¿›ç¨‹)
+		ACTOR_MAIL								= 35, // é‚®ä»¶
+		ACTOR_CHAT								= 36, // èŠå¤©
+		ACTOR_RANKLIST							= 37, // æŽ’è¡Œæ¦œ
+		ACTOR_ACTIVITY_MANAGE					= 38, // æ´»åŠ¨ç®¡ç†
+		ACTOR_BRIEF								= 39, // briefç®€è¦ä¿¡æ¯
+		ACTOR_KEYVALUE							= 40, // å…¬å…±key/value
+		ACTOR_FAMILY							= 41, // å†›å›¢å®¶æ—
+		ACTOR_FRIENDS							= 42, // å¥½å‹
+		ACTOR_EVENTS							= 43, // äº‹ä»¶
+		ACTOR_EVENTS_MAX_COUNT					= ACTOR_EVENTS + 10, // äº‹ä»¶é¢„ç•™10ä¸ª
+		ACTOR_EXAMPLE_MATCH						= 54, // ä¾‹å­å°æ¸¸æˆ:åŒ¹é…
+		ACTOR_EXAMPLE_MANAGE					= 55, // åˆ›å»ºç®¡ç†ä¾‹å­å°æ¸¸æˆ
+		ACTOR_TESTLUA							= 56, // æµ‹è¯•lua
+		ACTOR_TESTLUA2							= 57, // æµ‹è¯•lua2
+		ACTOR_DB								= 1000, // å¿…é¡»æ˜¯æœ€åŽä¸€ä¸ª
 		ACTOR_SIGNLE_FINISH						= ACTOR_DB + pbdb::ENUM_DB_COUNT,
 		ACTOR_COUNT								= ACTOR_SIGNLE_FINISH,
 	};
 
-	// # ÅÐ¶ÏENUM_ACTORÃ¶¾ÙÊÇ·ñÎªµ¥Àý
+	// # åˆ¤æ–­ENUM_ACTORæžšä¸¾æ˜¯å¦ä¸ºå•ä¾‹
 	class enum_actor
 	{
 	public:
@@ -118,18 +118,18 @@ namespace ngl
 	template <typename TACTOR>
 	using nactor_type = type_enum<TACTOR, ENUM_ACTOR>;
 
-	// # ¸ù¾Ýpbdb::ENUM_DB»ñÈ¡ENUM_ACTOR
+	// # æ ¹æ®pbdb::ENUM_DBèŽ·å–ENUM_ACTOR
 	ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE);
 
-	// ºêÓëÀàÐÍµÄ°ó¶¨
+	// å®ä¸Žç±»åž‹çš„ç»‘å®š
 	void auto_actor();
 
-	// # ×¢²á×Ô¶¨ÒåÐ­Òé
+	// # æ³¨å†Œè‡ªå®šä¹‰åè®®
 	void tprotocol_customs();
 
-	// # ×¢²á×ª·¢Ð­Òé
+	// # æ³¨å†Œè½¬å‘åè®®
 	void tprotocol_forward_pb();
 
-	// # actor event×¢²á
+	// # actor eventæ³¨å†Œ
 	void event_register();
 }//namespace ngl

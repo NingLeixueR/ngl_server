@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -22,21 +22,21 @@ namespace ngl
 		m_dbmodule = adbmodule;
 		m_operator_field.init(false);
 
-		// # ¶©ÔÄ×¢²á´¦Àí
+		// # è®¢é˜…æ³¨å†Œå¤„ç†
 		actor::register_actor_s<TDerived, np_channel_register<T>>(
 			e_ready_db, [](TDerived* aactor, const message<np_channel_register<T>>& adata)
 			{
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
 			}
 		);
-		// # ¶©ÔÄÊı¾İ±»ĞŞ¸Ä
+		// # è®¢é˜…æ•°æ®è¢«ä¿®æ”¹
 		actor::register_actor_s<TDerived, np_channel_data<T>>(
 			e_ready_db, [](TDerived* aactor, const message<np_channel_data<T>>& adata)
 			{
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
 			}
 		);
-		// # ÍË³ö¶©ÔÄ
+		// # é€€å‡ºè®¢é˜…
 		actor::register_actor_s<TDerived, np_channel_exit<T>>(
 			e_ready_db, [](TDerived* aactor, const message<np_channel_exit<T>>& adata)
 			{

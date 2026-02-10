@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼þÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ð­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕÐ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ÐÞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ðè±£ÁôÔ­Ê¼°æÈ¨ºÍÐí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŽŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜Žã€‚
 * 
-* Ðí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼þ£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -53,19 +53,19 @@ namespace ngl
 
 		activity(EActivity atype);
 
-		// # »ñÈ¡»î¶¯ÀàÐÍ
+		// # èŽ·å–æ´»åŠ¨ç±»åž‹
 		EActivity type()
 		{
 			return m_tab->m_type;
 		}
 
-		// # »ñÈ¡»î¶¯ID
+		// # èŽ·å–æ´»åŠ¨ID
 		int64_t activityid()
 		{
 			return m_actorid;
 		}
 
-		// # »î¶¯ÊÇ·ñ¿ªÆô
+		// # æ´»åŠ¨æ˜¯å¦å¼€å¯
 		virtual bool is_start()
 		{
 			const pbdb::db_activitytimes* lpdata = m_activitytimes->getconst();
@@ -76,7 +76,7 @@ namespace ngl
 			return lpdata->mstart();
 		}
 
-		// # »î¶¯¿ªÆôÊ±¼ä
+		// # æ´»åŠ¨å¼€å¯æ—¶é—´
 		int32_t start_utc()
 		{
 			const pbdb::db_activitytimes* lpdata = m_activitytimes->getconst();
@@ -87,7 +87,7 @@ namespace ngl
 			return lpdata->mbeg();
 		}
 		
-		// # »î¶¯½áÊøÊ±¼ä
+		// # æ´»åŠ¨ç»“æŸæ—¶é—´
 		int32_t finish_utc()
 		{
 			const pbdb::db_activitytimes* lpdata = m_activitytimes->getconst();
@@ -102,25 +102,25 @@ namespace ngl
 			return start_utc() + lpdata->mduration();
 		}
 
-		// # ´Ë¿ÌÊÇ»î¶¯µÚ¼¸Ìì
+		// # æ­¤åˆ»æ˜¯æ´»åŠ¨ç¬¬å‡ å¤©
 		int32_t day()
 		{
 			return (int32_t)localtime::getspandays(localtime::gettime(), start_utc());
 		}
 
-		// # »ñÈ¡»î¶¯±í
+		// # èŽ·å–æ´»åŠ¨è¡¨
 		const tab_activity* tab()
 		{
 			return m_tab;
 		}
 
-		// # ÊÇ·ñÖ§³ÖÅÅÐÐ°ñ
+		// # æ˜¯å¦æ”¯æŒæŽ’è¡Œæ¦œ
 		bool is_rank()
 		{
 			return activityid() >= pbdb::eranklist::activity_lv;
 		}
 	public:
-		// # µ÷ÓÃ:»î¶¯¿ªÆô
+		// # è°ƒç”¨:æ´»åŠ¨å¼€å¯
 		virtual void start() 
 		{
 			const pbdb::db_activitytimes* lpconstdata = m_activitytimes->getconst();
@@ -141,16 +141,16 @@ namespace ngl
 			lpdata->set_mstart(true);
 		}
 
-		// # µ÷ÓÃ:»î¶¯¿ªÆôºóºÍ·þÎñÆ÷ÖØÆô
+		// # è°ƒç”¨:æ´»åŠ¨å¼€å¯åŽå’ŒæœåŠ¡å™¨é‡å¯
 		virtual void init() 
 		{
 			log_error()->print("activity::init() activityid=[{}]", activityid());
 		}
 
-		// # µ÷ÓÃ:Íæ¼ÒµÇÂ½
+		// # è°ƒç”¨:çŽ©å®¶ç™»é™†
 		virtual void rolelogin(i64_actorid aroleid);
 
-		// # µ÷ÓÃ:Íæ¼Ò¿ªÆô»î¶¯³É¹¦
+		// # è°ƒç”¨:çŽ©å®¶å¼€å¯æ´»åŠ¨æˆåŠŸ
 		void recv_task_response(i64_actorid aroleid, int32_t aindex, bool aisreceive)
 		{
 			pbdb::db_activity* lpdata = m_activity->get();
@@ -168,16 +168,16 @@ namespace ngl
 			}
 		}
 
-		// # µ÷ÓÃ:Íæ¼ÒµÈ¼¶·¢Éú±ä»¯
+		// # è°ƒç”¨:çŽ©å®¶ç­‰çº§å‘ç”Ÿå˜åŒ–
 		virtual void rolelevelchange(i64_actorid aroleid, int32_t abeforelevel, int32_t anowlevel);
 
-		// # µ÷ÓÃ:Íæ¼Ò½ð±Ò·¢Éú±ä»¯
+		// # è°ƒç”¨:çŽ©å®¶é‡‘å¸å‘ç”Ÿå˜åŒ–
 		virtual void rolegoldchange(i64_actorid aroleid, int32_t abeforegold, int32_t anowgold);
 
-		// # db_brief.m_activityvalues·¢Éú±ä»¯ºóµ÷ÓÃ
+		// # db_brief.m_activityvalueså‘ç”Ÿå˜åŒ–åŽè°ƒç”¨
 		static void brief_activityvalues(i64_actorid aroleid);
 
-		// # µ÷ÓÃ:»î¶¯¹Ø±Õ
+		// # è°ƒç”¨:æ´»åŠ¨å…³é—­
 		virtual void finish() 
 		{
 			log_error()->print("activity::finish() activityid=[{}]", activityid());

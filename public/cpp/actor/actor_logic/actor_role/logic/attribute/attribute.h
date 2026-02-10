@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once 
@@ -32,27 +32,27 @@ namespace ngl
 {
 	class attribute
 	{
-		// # Ä£¿éÊôĞÔ(Ö»ÄÜÄ£¿é¼ä·¢Éú±ä»¯Í¨¹ıupdata[EnumModule,attribute_value])
+		// # æ¨¡å—å±æ€§(åªèƒ½æ¨¡å—é—´å‘ç”Ÿå˜åŒ–é€šè¿‡updata[EnumModule,attribute_value])
 		std::map<EnumModule, attribute_value> m_moduledata;
 		bool m_sync = false;
 		int64_t m_unitid = 0;
 
-		// # ¸ù½Úµã
+		// # æ ¹èŠ‚ç‚¹
 		attribute_value& root();
 
-		// # Ìí¼ÓÄ£¿é£¬²¢½«ÊôĞÔÌí¼Óµ½¸¸Á´
+		// # æ·»åŠ æ¨¡å—ï¼Œå¹¶å°†å±æ€§æ·»åŠ åˆ°çˆ¶é“¾
 		void module_add(EnumModule aenum);
 
-		// # ÒÆ³ıÄ£¿é,²¢½«ÆäÌí¼Óµ½¸¸Á´ÉÏµÄÊôĞÔÈ¥³ı
+		// # ç§»é™¤æ¨¡å—,å¹¶å°†å…¶æ·»åŠ åˆ°çˆ¶é“¾ä¸Šçš„å±æ€§å»é™¤
 		void module_dec(EnumModule aenum);
 
-		// # ÅĞ¶ÏEnumModuleÊÇ·ñÊÇ¸ù½Úµã
+		// # åˆ¤æ–­EnumModuleæ˜¯å¦æ˜¯æ ¹èŠ‚ç‚¹
 		bool module_is_root(EnumModule aenum);
 
-		// # ÅĞ¶ÏEnumModuleÊÇ·ñÎª¿Õ
+		// # åˆ¤æ–­EnumModuleæ˜¯å¦ä¸ºç©º
 		bool module_is_null(EnumModule aenum);
 
-		// # ¸üĞÂÄ£¿é
+		// # æ›´æ–°æ¨¡å—
 		void module_update(EnumModule aenum);
 	public:
 		attribute() = default;
@@ -61,19 +61,19 @@ namespace ngl
 
 		void set_sync(bool async);
 
-		// # ³õÊ¼»¯Êı¾İ ½«Ä£¿éÊôĞÔÊäÈë
+		// # åˆå§‹åŒ–æ•°æ® å°†æ¨¡å—å±æ€§è¾“å…¥
 		void init_data(EnumModule aenum, attribute_value& avalue);
 
-		// # ¼ÆËãÊäÈëµÄÄ£¿éÊôĞÔ Éú³É×îÖÕÊôĞÔÓëÕ½Á¦
+		// # è®¡ç®—è¾“å…¥çš„æ¨¡å—å±æ€§ ç”Ÿæˆæœ€ç»ˆå±æ€§ä¸æˆ˜åŠ›
 		void init();
 
-		// # ¸üĞÂÄ£¿éÊôĞÔ
+		// # æ›´æ–°æ¨¡å—å±æ€§
 		void updata(EnumModule aenum, attribute_value& avalue);
 
-		// # ÒÆ³ıÊôĞÔÄ£¿é
+		// # ç§»é™¤å±æ€§æ¨¡å—
 		void remove(EnumModule aenum);
 
-		// # Õ½Á¦
+		// # æˆ˜åŠ›
 		int64_t fight();
 
 		const std::map<EnumAttribute, int64_t>& get_attribute();
@@ -96,7 +96,7 @@ namespace ngl
 
 	class aoimap;
 
-	// ¶¯Ì¬ÊôĞÔ,¿ÉÒÔÔÚÕ½¶·ÖĞ¸Ä±äµÄÊôĞÔ
+	// åŠ¨æ€å±æ€§,å¯ä»¥åœ¨æˆ˜æ–—ä¸­æ”¹å˜çš„å±æ€§
 	class dynamic_attribute
 	{
 	private:
@@ -111,20 +111,20 @@ namespace ngl
 		{
 		}
 
-		// ¸ù¾İ[Ä£¿éÊôĞÔ]Éú³É¶¯Ì¬ÊôĞÔ
+		// æ ¹æ®[æ¨¡å—å±æ€§]ç”ŸæˆåŠ¨æ€å±æ€§
 		void init(const std::map<EnumAttribute, int64_t>& aattribute)
 		{
 			m_base = aattribute;
 			m_dynamic = m_base;
 		}
 
-		// ÊÇ·ñËÀÍö
+		// æ˜¯å¦æ­»äº¡
 		bool is_death()
 		{
 			return m_dynamic[E_Hp] <= 0;
 		}
 
-		// ĞŞ¸Ä¶¯Ì¬ÊôĞÔ
+		// ä¿®æ”¹åŠ¨æ€å±æ€§
 		void change_attribute(EnumAttribute aattribute, int64_t avalue, bool adynamic)
 		{
 			m_dynamic[aattribute] += avalue;
@@ -157,19 +157,19 @@ namespace ngl
 			return m_stat[astat];
 		}
 
-		// ÊÇ·ñ¿ÉÒÔÒÆ¶¯
+		// æ˜¯å¦å¯ä»¥ç§»åŠ¨
 		bool is_move()
 		{
 			return get_fightstst(E_FightMove);
 		}
 
-		// ÊÇ·ñ¿ÉÒÔÆÕÍ¨¹¥»÷
+		// æ˜¯å¦å¯ä»¥æ™®é€šæ”»å‡»
 		bool is_normalattack()
 		{
 			return get_fightstst(E_FightNormalAttack);
 		}
 
-		// ÊÇ·ñ¿ÉÒÔÊÍ·Å¼¼ÄÜ
+		// æ˜¯å¦å¯ä»¥é‡Šæ”¾æŠ€èƒ½
 		bool is_releaseskill()
 		{
 			return get_fightstst(E_FightReleaseSkill);
