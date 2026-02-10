@@ -15,6 +15,7 @@
 
 #include "operator_file.h"
 #include "localtime.h"
+#include "tools.h"
 
 bool is_sname(const std::string& astrname, const std::string& akey)
 {
@@ -249,5 +250,23 @@ int main(int argc, char** argv)
 			lwritetxt.write(lneirong);
 		}
 	}
+
+	// 将所有文件转换为utf8格式
+	std::cout << "to utf8..." << std::endl;
+	for (const std::string& item : lset_head)
+	{
+		std::string lneirong;
+		{
+			ngl::readfile lfiletxt(item);
+			lfiletxt.read(lneirong);
+			ngl::tools::to_utf8(lneirong, lneirong);
+		}
+		{
+			ngl::writefile lwritetxt(item);
+			lwritetxt.write(lneirong);
+		}
+		std::cout << item << ":fnish" << std::endl;
+	}
+
 	return 0;
 }
