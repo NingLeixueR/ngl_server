@@ -35,7 +35,7 @@ namespace ngl
 	};
 	class test_thruput
 	{
-		std::vector<thruput*> m_rounds;
+		std::vector<std::shared_ptr<thruput>> m_rounds;
 	public:
 		static test_thruput& instance()
 		{
@@ -55,13 +55,12 @@ namespace ngl
 
 		void add_rounds(int32_t aactorcount, int32_t aeverycount)
 		{
-			m_rounds.push_back(new thruput
-			{
-				.m_count = 0,
-				.m_maxcount = aactorcount * aeverycount,
-				.m_beg = ngl::time_wheel::getms(),
-				.m_end = 0
-			});
+			auto lpthruput = std::make_shared<thruput>();
+			lpthruput->m_count = 0;
+			lpthruput->m_maxcount = aactorcount * aeverycount;
+			lpthruput->m_beg = ngl::time_wheel::getms();
+			lpthruput->m_end = 0;
+			m_rounds.push_back(lpthruput);
 
 			auto pro = std::make_shared<np_thruput_test>();
 			pro->m_rounds = (int32_t)m_rounds.size() - 1;
@@ -81,10 +80,6 @@ namespace ngl
 
 		void release()
 		{
-			for (int32_t i = 0; i < m_rounds.size(); ++i)
-			{
-				delete m_rounds[i];
-			}
 			m_rounds.clear();
 		}
 	};
