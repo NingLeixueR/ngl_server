@@ -26,7 +26,7 @@ namespace ngl
 			return true;
 		}
 		
-		ukcp* lukcp = nkcp::instance().serkcp(lpram->m_kcpnum, nconfig.tcount());
+		auto lukcp = nkcp::instance().serkcp(lpram->m_kcpnum, nconfig.tcount());
 		if (lukcp == nullptr)
 		{
 			tools::no_core_dump();

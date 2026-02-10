@@ -22,7 +22,7 @@ namespace ngl
 {
 	class nkcp
 	{
-		std::map<i16_port, ukcp*> m_kcpnet;
+		std::map<i16_port, std::shared_ptr<ukcp>> m_kcpnet;
 		int16_t m_kcpindex;
 	public:
 		enum
@@ -42,8 +42,8 @@ namespace ngl
 		i16_port kcp_port(int32_t atid, int16_t atcount, pbnet::ENUM_KCP aenum);
 
 		// # 获取实例 
-		ukcp* kcp(i16_port auport);
-		ukcp* serkcp(pbnet::ENUM_KCP aenum, int16_t atcount);
+		std::shared_ptr<ukcp> kcp(i16_port auport);
+		std::shared_ptr<ukcp> serkcp(pbnet::ENUM_KCP aenum, int16_t atcount);
 
 		// # robot 创建随机端口
 		i16_port create_kcp();
@@ -65,7 +65,7 @@ namespace ngl
 	template <typename T>
 	bool actor_base::kcp_send(const std::set<i64_actorid>& aactorids, T& adata, i16_port auport/* = 0*/)
 	{
-		ukcp* lpukcp = nkcp::instance().kcp(auport);
+		auto lpukcp = nkcp::instance().kcp(auport);
 		if (lpukcp == nullptr)
 		{
 			return false;

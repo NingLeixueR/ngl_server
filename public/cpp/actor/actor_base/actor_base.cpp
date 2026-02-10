@@ -342,7 +342,7 @@ namespace ngl
 
 	bool actor_base::kcp_sendpack(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
 	{
-		ukcp* lpukcp = nkcp::instance().kcp(auport);
+		auto lpukcp = nkcp::instance().kcp(auport);
 		if (lpukcp == nullptr)
 		{
 			return false;
@@ -352,7 +352,7 @@ namespace ngl
 
 	bool actor_base::kcp_sendpack(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
 	{
-		ukcp* lpukcp = nkcp::instance().kcp(auport);
+		auto lpukcp = nkcp::instance().kcp(auport);
 		if (lpukcp == nullptr)
 		{
 			return false;

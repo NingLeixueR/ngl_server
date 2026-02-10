@@ -24,14 +24,15 @@ namespace ngl
 		asio_kcp	m_kcp;
 		bpool		m_pool;
 
-		ukcp(i16_port aprot);
 	public:
 		static const int32_t	m_conv = 1;
 		static std::string		m_localuip;
 
-		static ukcp* create(i16_port aprot)
+		ukcp(i16_port aprot);
+
+		static std::shared_ptr<ukcp> create(i16_port aprot)
 		{
-			return new ukcp(aprot);
+			return std::make_shared<ukcp>(aprot);
 		}
 
 #pragma region kcp_send
