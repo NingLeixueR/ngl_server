@@ -1,4 +1,4 @@
-﻿#include <type_traits>
+#include <type_traits>
 #include <filesystem>
 #include <functional>
 #include <algorithm>
@@ -57,19 +57,24 @@ void find(
 		// 跳过third_party目录
 		if (fs::is_directory(*iter))
 		{
-			if (fullPath.find("third_party") != std::string::npos) {
-				continue;
+			if (atxt == ".h")
+			{
+				if (fullPath.find("third_party") != std::string::npos) {
+					continue;
+				}
 			}
+			
 
 			// 修复：安全截取路径（跳过../../，避免越界）
 			std::string relPath;
 			const std::string prefix = "../../";
-			if (fullPath.size() >= prefix.size()) {
-				relPath = fullPath.substr(prefix.size()); // 从prefix长度后截取
-			}
-			else {
+
+			//if (fullPath.size() >= prefix.size()) {
+			//	relPath = fullPath.substr(prefix.size()); // 从prefix长度后截取
+			//}
+			//else {
 				relPath = fullPath; // 长度不足时直接用原路径
-			}
+			//}
 			std::cout << "dir:[" << relPath << "]" << std::endl;
 			adir.insert(relPath);
 
@@ -101,7 +106,9 @@ void find(
 				avec1[mapKey] = lmaxline; // 用[]替代insert，避免重复插入覆盖问题
 
 				// 修复avec2：插入文件的完整路径（核心修复点）
-				avec2.insert(fullPath);
+				if (fullPath.find("third_party") == std::string::npos) {
+					avec2.insert(fullPath);
+				}
 			}
 		}
 	}
@@ -271,6 +278,30 @@ int main(int argc, char** argv)
 			ngl::tools::to_utf8(lneirong, lneirong);
 		}
 		if(!lneirong.empty())
+		{
+			ngl::writefile lwritetxt(item);
+			lwritetxt.write(lneirong);
+		}
+		std::cout << item << ":fnish" << std::endl;
+	}
+
+	lset_head.clear();
+	lvec1.clear();
+	lvec5.clear();
+	lvec3.clear();
+	std::string targetPath = "../../server";
+	find(false, ".cpp", targetPath, ldic, lvec1, lset_head);
+	find(false, ".c", targetPath, ldic, lvec5, lset_head);
+	find(false, ".h", targetPath, ldic, lvec3, lset_head);
+	for (const std::string& item : lset_head)
+	{
+		std::string lneirong;
+		{
+			ngl::readfile lfiletxt(item);
+			lfiletxt.read(lneirong);
+			ngl::tools::to_utf8(lneirong, lneirong);
+		}
+		if (!lneirong.empty())
 		{
 			ngl::writefile lwritetxt(item);
 			lwritetxt.write(lneirong);

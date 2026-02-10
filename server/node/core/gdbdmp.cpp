@@ -2,12 +2,12 @@
 #include "dumper.h"
 
 /**
-* Æ½Ì¨Ïà¹Ø
+* å¹³å°ç›¸å…³
 */
 #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
-#define SYSTEM_WIN // win Æ½Ì¨
+#define SYSTEM_WIN // win å¹³å°
 #else
-#define SYSTEM_LINUX // linux Æ½Ì¨
+#define SYSTEM_LINUX // linux å¹³å°
 #endif
 
 #ifdef SYSTEM_WIN
@@ -30,35 +30,35 @@
 #include <winsock2.h>
 #endif
 
-// µ¥×Ö½Ú
+// å•å­—èŠ‚
 typedef char char_x;
 typedef char byte_x;
 typedef unsigned char ubyte_x;
 
-// µ¥×Ö½Ú - ²¼¶ûĞÍ
+// å•å­—èŠ‚ - å¸ƒå°”å‹
 typedef bool bool_x;
 
-// Á½×Ö½Ú
+// ä¸¤å­—èŠ‚
 typedef short short_x;
 typedef unsigned short ushort_x;
 
-// ËÄ×Ö½Ú
+// å››å­—èŠ‚
 typedef int int_x;
 typedef unsigned int uint_x;
 
-// °Ë×Ö½Ú
+// å…«å­—èŠ‚
 typedef long long long_x;
 typedef unsigned long long ulong_x;
 
-// ¸¡µã
+// æµ®ç‚¹
 typedef float float_x;
 typedef double double_x;
 
-// Îª"BL"Í³Ò»·ç¸ñ
+// ä¸º"BL"ç»Ÿä¸€é£æ ¼
 typedef size_t size_x;
 typedef long_x time_x;
 
-// socketÀàĞÍ
+// socketç±»å‹
 #ifdef SYSTEM_WIN
 typedef SOCKET socket_x;
 #else
@@ -126,7 +126,7 @@ void sighandler(int sig)
 	signal(SIGFPE, SIG_DFL);
 	signal(SIGPIPE, SIG_DFL);
 
-	// µ÷ÓÃÉÏ²ã´¦ÀíÆ÷
+	// è°ƒç”¨ä¸Šå±‚å¤„ç†å™¨
 	auto dumperHandler = Dumper::getDumperHandler();
 	if (dumperHandler != nullptr) {
 		dumperHandler();

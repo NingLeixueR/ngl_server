@@ -18,7 +18,7 @@
 std::function<void()> Dumper::m_callback;
 std::string Dumper::m_excname;
 
-// 1. Éú³É Dump ÎÄ¼şµÄº¯Êı£¨¸´ÓÃÖ®Ç°µÄÊµÏÖ£©
+// 1. ç”Ÿæˆ Dump æ–‡ä»¶çš„å‡½æ•°ï¼ˆå¤ç”¨ä¹‹å‰çš„å®ç°ï¼‰
 void CreateMiniDump(EXCEPTION_POINTERS* pExcepInfo, const TCHAR* dumpPath) {
     HANDLE hFile = CreateFile(dumpPath, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     if (hFile == INVALID_HANDLE_VALUE) return;
@@ -41,7 +41,7 @@ void CreateMiniDump(EXCEPTION_POINTERS* pExcepInfo, const TCHAR* dumpPath) {
     CloseHandle(hFile);
 }
 
-// 2. È«¾ÖÒì³£´¦Àíº¯Êı
+// 2. å…¨å±€å¼‚å¸¸å¤„ç†å‡½æ•°
 LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* pExcepInfo) 
 {
     char szTime[_MAX_PATH];
@@ -49,18 +49,18 @@ LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* pExcepInfo)
     strftime(szTime, _MAX_PATH, ".%Y%m%d-%H%M%S", localtime(&timeNow));
 
     char dumpPath[MAX_PATH];
-    GetModuleFileNameA(NULL, dumpPath, MAX_PATH); // »ñÈ¡ EXE Â·¾¶
-    PathRemoveFileSpecA(dumpPath); // È¥µôÎÄ¼şÃû£¬±£ÁôÄ¿Â¼
-    strcat_s(dumpPath, "\\"); // Æ´½Ó Dump ÎÄ¼şÃû
+    GetModuleFileNameA(NULL, dumpPath, MAX_PATH); // è·å– EXE è·¯å¾„
+    PathRemoveFileSpecA(dumpPath); // å»æ‰æ–‡ä»¶åï¼Œä¿ç•™ç›®å½•
+    strcat_s(dumpPath, "\\"); // æ‹¼æ¥ Dump æ–‡ä»¶å
     strcat_s(dumpPath, Dumper::m_excname.c_str());
     strcat_s(dumpPath, szTime);
-    strcat_s(dumpPath, ".dmp"); // Æ´½Ó Dump ÎÄ¼şÃû
+    strcat_s(dumpPath, ".dmp"); // æ‹¼æ¥ Dump æ–‡ä»¶å
 
     CreateMiniDump(pExcepInfo, dumpPath);
 
     Dumper::getDumperHandler()();
 
-    return EXCEPTION_EXECUTE_HANDLER; // ÔÊĞíÏµÍ³Ä¬ÈÏ´¦Àí£¨Èçµ¯´°£©
+    return EXCEPTION_EXECUTE_HANDLER; // å…è®¸ç³»ç»Ÿé»˜è®¤å¤„ç†ï¼ˆå¦‚å¼¹çª—ï¼‰
 }
 
 void cxerr()

@@ -15,9 +15,9 @@ class idlcppprotocol
 	idlcppprotocol() 
 	{
 		char ltmbuff[1024] = { 0 };
-		ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// ´´½¨Ê±¼ä %y-%m-%d %H:%M:%S");
-		m_tit = "// ×¢Òâ¡¾IDL ¹¤¾ßÉú³ÉÎÄ¼ş£¬²»ÒªÊÖ¶¯ĞŞ¸Ä¡¿\n";
-		m_tit += "// ´´½¨Ê±¼ä ";
+		ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// åˆ›å»ºæ—¶é—´ %y-%m-%d %H:%M:%S");
+		m_tit = "// æ³¨æ„ã€IDL å·¥å…·ç”Ÿæˆæ–‡ä»¶ï¼Œä¸è¦æ‰‹åŠ¨ä¿®æ”¹ã€‘\n";
+		m_tit += "// åˆ›å»ºæ—¶é—´ ";
 		m_tit += ltmbuff;
 		m_tit += "\n";
 	}
@@ -274,8 +274,8 @@ namespace ngl
 	void tprotocol_customs_200000000()
 	{
 		tprotocol::set_customs_index(200000000);
-		// ĞÂÔöÄÚ²¿Ğ­ÒéĞèÒª²¹³ä
-		// ×¢²áTÓë"np_mass_actor<T>"
+		// æ–°å¢å†…éƒ¨åè®®éœ€è¦è¡¥å……
+		// æ³¨å†ŒTä¸"np_mass_actor<T>"
 		tprotocol::tp_customs_script<
 )";
 		int lindex = 200000000;
