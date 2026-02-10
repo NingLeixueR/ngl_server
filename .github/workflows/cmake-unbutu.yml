@@ -23,7 +23,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-                
+               
+    - name: Install libgettextpo-dev
+      run: |
+        sudo apt-get install -y libgettextpo-dev 
+        
     - name: Download and Install CMake
       run: |
         curl -LO https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3-linux-x86_64.tar.gz
