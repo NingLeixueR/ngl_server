@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -24,7 +24,7 @@
 
 namespace ngl
 {
-	// # °üÍ·
+	// # åŒ…å¤´
 	struct pack_head
 	{
 		int32_t m_data[EPH_SUM] = {0};
@@ -32,68 +32,68 @@ namespace ngl
 
 		pack_head();
 
-		// # ÉèÖÃmask
+		// # è®¾ç½®mask
 		static void				head_set_mask(int32_t* abuff);
 		void					set_mask();
 
-		// # ¼ì²émask
+		// # æ£€æŸ¥mask
 		static EPH_HEAD_VAL		head_check_mask(const int32_t* abuff, int awpos);
 		EPH_HEAD_VAL			check_mask()const;
 
-		// # ÉèÖÃ°üÍ·Ê±¼ä
+		// # è®¾ç½®åŒ…å¤´æ—¶é—´
 		static void		head_set_time(int32_t* abuff);
 		void			set_time();
 
-		// # »ñÈ¡°üÍ·Ê±¼ä
+		// # è·å–åŒ…å¤´æ—¶é—´
 		static i32_time head_get_time(const int32_t* abuff);
 		i32_time		get_time()const;
 
-		// # ÉèÖÃactor 
-		// # aactor:·¢ËÍ¸øÄÄ¸öactor /* aenum == ACTOR_NONE ´ËÖµÎŞĞ§ */
-		// # arequestactorid:ÄÄ¸öactor·¢ËÍµÄ
+		// # è®¾ç½®actor 
+		// # aactor:å‘é€ç»™å“ªä¸ªactor /* aenum == ACTOR_NONE æ­¤å€¼æ— æ•ˆ */
+		// # arequestactorid:å“ªä¸ªactorå‘é€çš„
 		static void head_set_actor(int32_t* abuff, i64_actorid aactor, i64_actorid arequestactorid);
 		static void head_set_actor(int32_t* abuff, i64_actorid aactor);
 		void		set_actor(i64_actorid aactor, i64_actorid arequestactorid);
 		void		set_requestactor(i64_actorid arequestactorid);
 
-		// # »ñÈ¡actor
+		// # è·å–actor
 		i64_actorid		get_actor()const;
 		i64_actorid		get_request_actor()const;
 
-		// # »ñÈ¡Òª·¢ËÍ¸øµÄactorµÄtype
+		// # è·å–è¦å‘é€ç»™çš„actorçš„type
 		i16_actortype	get_actortype()const;
 
-		// # »ñÈ¡Ë­·¢ËÍµÄactorµÄtype
+		// # è·å–è°å‘é€çš„actorçš„type
 		i16_actortype	get_request_actortype()const;
 
-		// # »ñÈ¡Òª·¢ËÍ¸øµÄactorµÄarea
+		// # è·å–è¦å‘é€ç»™çš„actorçš„area
 		i16_area		get_actorarea()const;
 
-		// # »ñÈ¡Òª·¢ËÍ¸øµÄactorµÄdataid
+		// # è·å–è¦å‘é€ç»™çš„actorçš„dataid
 		i32_actordataid get_actordataid()const;
 
-		// # ÖØÖÃhead
+		// # é‡ç½®head
 		void			reset();
 
-		// # »ñÈ¡EPH¶ÔÓ¦µÄÖµ
+		// # è·å–EPHå¯¹åº”çš„å€¼
 		int32_t			getvalue(EPH aeph)const;
 
-		// # »ñÈ¡Ğ­Òé×Ö½ÚÊı
+		// # è·å–åè®®å­—èŠ‚æ•°
 		int32_t			get_bytes()const;
 
-		// # »ñÈ¡°üÍ·³¤¶È
+		// # è·å–åŒ…å¤´é•¿åº¦
 		static int32_t	size();
 
-		// # °üÍ·ÊÇ·ñ½ÓÊÕÍê±Ï
+		// # åŒ…å¤´æ˜¯å¦æ¥æ”¶å®Œæ¯•
 		EPH_HEAD_VAL	isready()const;
 
-		// # »ñÈ¡Ğ­ÒéºÅ
+		// # è·å–åè®®å·
 		i32_protocolnum protocolnum()const;
 
-		// # »ñÈ¡Ğ­ÒéºÅ
+		// # è·å–åè®®å·
 		i32_protocolnum get_protocolnumber()const;
 
-		// # ÉèÖÃĞ­ÒéºÅ
+		// # è®¾ç½®åè®®å·
 		void set_protocol(i32_protocolnum aprotocolnum);
 		
 		EPH_HEAD_VAL push(const char*& abuff, int32_t& alen);

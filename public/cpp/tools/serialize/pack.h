@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -37,36 +37,36 @@ namespace ngl
 
 		void free();
 	public:
-		// # ÓÃÀ´Çø·ÖÊÇĞ­ÒéÀàĞÍ
-		ENET_PROTOCOL	m_protocol		= ENET_TCP;		// ÏûÏ¢ÀàĞÍ
+		// # ç”¨æ¥åŒºåˆ†æ˜¯åè®®ç±»å‹
+		ENET_PROTOCOL	m_protocol		= ENET_TCP;		// æ¶ˆæ¯ç±»å‹
 		i32_session		m_id			= 0;			// socket id
-		pack_head		m_head;							// °üÍ·
-		segpack*		m_segpack		= nullptr;		// ²Ğ°üÊ¹ÓÃ
-		bpool*			m_bpool			= nullptr;		// ÓÃÓÚ°üÄÚ´æ·ÖÅä
-		/*[Èç¹û°üÀ´×ÔÍøÂç Start]*/
-		char*			m_buff			= nullptr;		// °üÔ­Ê¼Êı¾İ
-		int32_t			m_len			= 0;			// °üÔ­Ê¼Êı¾İ×Ö½ÚÊı
-		int32_t			m_pos			= 0;			// °üÒÑ¶ÁÈ¡Êı¾İ×Ö½ÚÊı
-		/*[Èç¹û°üÀ´×ÔÍøÂç Finish]*/
+		pack_head		m_head;							// åŒ…å¤´
+		segpack*		m_segpack		= nullptr;		// æ®‹åŒ…ä½¿ç”¨
+		bpool*			m_bpool			= nullptr;		// ç”¨äºåŒ…å†…å­˜åˆ†é…
+		/*[å¦‚æœåŒ…æ¥è‡ªç½‘ç»œ Start]*/
+		char*			m_buff			= nullptr;		// åŒ…åŸå§‹æ•°æ®
+		int32_t			m_len			= 0;			// åŒ…åŸå§‹æ•°æ®å­—èŠ‚æ•°
+		int32_t			m_pos			= 0;			// åŒ…å·²è¯»å–æ•°æ®å­—èŠ‚æ•°
+		/*[å¦‚æœåŒ…æ¥è‡ªç½‘ç»œ Finish]*/
 
 		~pack();
 
-		// # ÉèÖÃÄÚ´æ³Ø
+		// # è®¾ç½®å†…å­˜æ± 
 		void set(bpool& apool);
 		
-		// # ÖØÖÃÊı¾İ°ü
+		// # é‡ç½®æ•°æ®åŒ…
 		void reset();
 
-		// # ÊÇ·ñ½ÓÊÕÍê±Ï
+		// # æ˜¯å¦æ¥æ”¶å®Œæ¯•
 		bool isready();
 
-		// # ÎªÊı¾İ°ü·ÖÅä
+		// # ä¸ºæ•°æ®åŒ…åˆ†é…
 		bool malloc(int32_t alen);
 
-		// # ÔÚÊı¾İ°üÖĞÉèÖÃactor
+		// # åœ¨æ•°æ®åŒ…ä¸­è®¾ç½®actor
 		void set_actor(i64_actorid aactor, i64_actorid arequestactorid);
 
-		// # ·ÖÅä°ü
+		// # åˆ†é…åŒ…
 		static std::shared_ptr<pack> make_pack(bpool* apool, int32_t alen);
 	};
 }// namespace ngl

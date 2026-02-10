@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -32,22 +32,22 @@ namespace ngl
 
 		~readfile();
 
-		// # ÊÇ·ñ³É¹¦´ò¿ªÎÄ¼ş
+		// # æ˜¯å¦æˆåŠŸæ‰“å¼€æ–‡ä»¶
 		bool is_open()const;
 
-		// # »ñÈ¡ÎÄ¼şµÄĞĞÊı
+		// # è·å–æ–‡ä»¶çš„è¡Œæ•°
 		int get_maxline();
 
-		// # Ìø¹ıÇ°anumĞĞ
+		// # è·³è¿‡å‰anumè¡Œ
 		void jumpbegin(int anum, bool aiscsv);
 
-		// # ĞĞ¶ÁÈ¡
+		// # è¡Œè¯»å–
 		bool readline(std::string& aline);
 
-		// # ¶ÁÈ¡µ±Ç°Î»ÖÃÖ®ºóµÄÈ«²¿ÄÚÈİ
+		// # è¯»å–å½“å‰ä½ç½®ä¹‹åçš„å…¨éƒ¨å†…å®¹
 		bool readcurrent(std::string& astr);
 
-		// # ¶ÁÈ¡Õû¸öÎÄ¼şµÄÄÚÈİ
+		// # è¯»å–æ•´ä¸ªæ–‡ä»¶çš„å†…å®¹
 		void read(std::string& aneirong);
 	};
 
@@ -63,7 +63,7 @@ namespace ngl
 
 		~writefile();
 
-		// # ÏòÎÄ¼şĞ´ÈëÄÚÈİ
+		// # å‘æ–‡ä»¶å†™å…¥å†…å®¹
 		void write(const std::string& aneirong);
 	};
 }//namespace ngl

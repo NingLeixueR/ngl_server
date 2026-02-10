@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -33,12 +33,12 @@ namespace ngl
 
 	struct wheel_parm
 	{
-		int64_t									m_timerstart		= 0;		// ¶¨Ê±Æ÷¿ªÆôµÄÊ±¼ä
-		int32_t									m_ms				= 0;		// Ê×´Î´¥·¢µÄºÁÃë
-		std::function<int(int64_t)>				m_intervalms		= nullptr;	// ¼ä¸ô´¥·¢µÄºÁÃë(¸ù¾İ´«µİ½øÈ¥µÄ´¥·¢Ê±¼ä·µ»ØÏÂ´Î´¥·¢µÄ¼ä¸ô)
-		int										m_count				= 0;		// ´¥·¢´ÎÊı
-		void*									m_pram				= nullptr;	// Í¸´«²ÎÊı
-		std::function<void(const wheel_node*)>	m_fun				= nullptr;	// ¶¨Ê±»Øµ÷º¯Êı
+		int64_t									m_timerstart		= 0;		// å®šæ—¶å™¨å¼€å¯çš„æ—¶é—´
+		int32_t									m_ms				= 0;		// é¦–æ¬¡è§¦å‘çš„æ¯«ç§’
+		std::function<int(int64_t)>				m_intervalms		= nullptr;	// é—´éš”è§¦å‘çš„æ¯«ç§’(æ ¹æ®ä¼ é€’è¿›å»çš„è§¦å‘æ—¶é—´è¿”å›ä¸‹æ¬¡è§¦å‘çš„é—´éš”)
+		int										m_count				= 0;		// è§¦å‘æ¬¡æ•°
+		void*									m_pram				= nullptr;	// é€ä¼ å‚æ•°
+		std::function<void(const wheel_node*)>	m_fun				= nullptr;	// å®šæ—¶å›è°ƒå‡½æ•°
 	};
 
 	struct wheel_node
@@ -46,10 +46,10 @@ namespace ngl
 		using timecallback = std::function<void(wheel_node*)>;
 
 		time_wheel*		m_tw = nullptr;
-		int64_t			m_timerid = 0;		// ¶¨Ê±Æ÷id
-		bool&			m_remove;			// ¶¨Ê±Æ÷ÊÇ·ñ±»ÒÆ³ı
-		wheel_node*		m_next = nullptr;	// ÏÂÒ»¸ö½áµã
-		wheel_parm		m_parm;				// ¶¨Ê±Æ÷»Øµ÷²ÎÊı
+		int64_t			m_timerid = 0;		// å®šæ—¶å™¨id
+		bool&			m_remove;			// å®šæ—¶å™¨æ˜¯å¦è¢«ç§»é™¤
+		wheel_node*		m_next = nullptr;	// ä¸‹ä¸€ä¸ªç»“ç‚¹
+		wheel_parm		m_parm;				// å®šæ—¶å™¨å›è°ƒå‚æ•°
 
 		wheel_node(time_wheel* atw, int64_t atimerid, const wheel_parm& aparm);
 
@@ -61,11 +61,11 @@ namespace ngl
 	struct time_wheel_config
 	{
 	public:
-		int32_t m_time_wheel_precision	= 10;	// ¶¨Ê±Æ÷¾«¶È  µ¥Î»ºÁÃë
-		int32_t m_time_wheel_bit		= 8;	// Ê±¼äÂÖµÄ²ÛÊı  2^etime_wheel_bit
+		int32_t m_time_wheel_precision	= 10;	// å®šæ—¶å™¨ç²¾åº¦  å•ä½æ¯«ç§’
+		int32_t m_time_wheel_bit		= 8;	// æ—¶é—´è½®çš„æ§½æ•°  2^etime_wheel_bit
 		int32_t m_time_wheel_count		= 4;
 
-		// # ¶¨Ê±Æ÷´ÓÍ·½¨Á¢¿ªÊ¼Ö§³ÖµÄ×î´óÊ±¼ä
+		// # å®šæ—¶å™¨ä»å¤´å»ºç«‹å¼€å§‹æ”¯æŒçš„æœ€å¤§æ—¶é—´
 		int64_t max_time()
 		{
 			int64_t lsum = 0;
@@ -78,13 +78,13 @@ namespace ngl
 			return lsum;
 		}
 
-		// # ¶¨Ê±Æ÷´ÓÍ·½¨Á¢¿ªÊ¼Ö§³ÖµÄ×î´óÊ±¼ä(Äê)
+		// # å®šæ—¶å™¨ä»å¤´å»ºç«‹å¼€å§‹æ”¯æŒçš„æœ€å¤§æ—¶é—´(å¹´)
 		double year()
 		{
 			return day() / 365.0;
 		}
 
-		// # ¶¨Ê±Æ÷´ÓÍ·½¨Á¢¿ªÊ¼Ö§³ÖµÄ×î´óÊ±¼ä(ÈÕ)
+		// # å®šæ—¶å™¨ä»å¤´å»ºç«‹å¼€å§‹æ”¯æŒçš„æœ€å¤§æ—¶é—´(æ—¥)
 		double day()
 		{
 			double lnum = 24 * 60 * 60 * 1000;
@@ -107,24 +107,24 @@ namespace ngl
 		time_wheel(const time_wheel_config& aconfig = time_wheel_config(), bool aisthreadcallback = true);
 		~time_wheel() = default;
 
-		// # »ñÈ¡ÏÖ´æ¶¨Ê±Æ÷ÊıÁ¿
+		// # è·å–ç°å­˜å®šæ—¶å™¨æ•°é‡
 		int	count();
 
-		// # ÊÇ·ñÃ»ÓĞÕıÔÚÖ´ĞĞµÄ¶¨Ê±Æ÷
+		// # æ˜¯å¦æ²¡æœ‰æ­£åœ¨æ‰§è¡Œçš„å®šæ—¶å™¨
 		bool empty();
 
-		// # »ñÈ¡·şÎñÆ÷Æô¶¯µÄºÁÃëÊı
+		// # è·å–æœåŠ¡å™¨å¯åŠ¨çš„æ¯«ç§’æ•°
 		int64_t server_start_ms();
 
-		// # »ñÈ¡·şÎñÆ÷µ±Ç°µÄºÁÃëÊı
+		// # è·å–æœåŠ¡å™¨å½“å‰çš„æ¯«ç§’æ•°
 		int64_t server_current_ms();
 
-		// # addtimerÌí¼Ó¶¨Ê±Æ÷
-		// # ·µ»ØÖµ¶¨Ê±Æ÷id   ¶¨Ê±Æ÷id´óÓÚ0ÓĞĞ§
+		// # addtimeræ·»åŠ å®šæ—¶å™¨
+		// # è¿”å›å€¼å®šæ—¶å™¨id   å®šæ—¶å™¨idå¤§äº0æœ‰æ•ˆ
 		int64_t addtimer(const wheel_parm& apram);
 
-		// # removetimerÒÆ³ıÖ¸¶¨¶¨Ê±Æ÷
-		// # int atimerid  ¶¨Ê±Æ÷id
+		// # removetimerç§»é™¤æŒ‡å®šå®šæ—¶å™¨
+		// # int atimerid  å®šæ—¶å™¨id
 		void removetimer(int64_t atimerid);
 
 		// # m_isthreadcallback == false

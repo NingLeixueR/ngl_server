@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -36,22 +36,22 @@ namespace ngl
 	public:
 		csv_base() = default;
 
-		// # ÓÃÓÚĞ£ÑécsvÄÚÈİÊÇ·ñÓĞ±ä»¯
+		// # ç”¨äºæ ¡éªŒcsvå†…å®¹æ˜¯å¦æœ‰å˜åŒ–
 		virtual const std::string& verify()const = 0;
 
-		// # csvÃû³Æ
+		// # csvåç§°
 		virtual const char* csvname() = 0;
 
-		// # ¼ÓÔØcsvÎÄ¼ş
+		// # åŠ è½½csvæ–‡ä»¶
 		virtual void load() = 0;
 
-		// # ¸ù¾İcsv id»ñÈ¡csv
+		// # æ ¹æ®csv idè·å–csv
 		virtual void* find(int aid) = 0;
 
-		// # ÖØĞÂ¼ÓÔØcsvÎÄ¼ş
+		// # é‡æ–°åŠ è½½csvæ–‡ä»¶
 		virtual void reload() = 0;
 
-		// # [»ñÈ¡/ÉèÖÃ] csvÎÄ¼şÂ·¾¶
+		// # [è·å–/è®¾ç½®] csvæ–‡ä»¶è·¯å¾„
 		static std::string& path();
 
 		static void set_path(const std::string& apath, const std::string& aname);
@@ -67,7 +67,7 @@ namespace ngl
 		using type_tab = T;
 
 		std::map<int, T>	m_csv;
-		std::string			m_verify;		// ÄÚÈİµÄmd5Öµ
+		std::string			m_verify;		// å†…å®¹çš„md5å€¼
 
 	public:
 		virtual void* find(int aid)
@@ -244,7 +244,7 @@ namespace ngl
 	{
 		reload_csv::register_csv<T>();
 		m_csv.clear();
-		{//¼ÓÔØxxx.csv
+		{//åŠ è½½xxx.csv
 			std::string lcsvname = path();
 			ngl::rcsv lrcsv;
 			if (lrcsv.read(lcsvname, m_verify))

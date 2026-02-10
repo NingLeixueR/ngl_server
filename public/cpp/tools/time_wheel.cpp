@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "threadtools.h"
@@ -29,11 +29,11 @@ namespace ngl
 		wheel*						m_lastround = nullptr;
 		time_wheel*					m_time_wheel = nullptr;
 
-		int64_t			m_slot_ms = 0;			 // Ã¿¸ö²ÛÎ»µÄºÁÃëÊı
-		int32_t			m_slot_count = 0;		 // ²ÛÎ»µÄÊıÁ¿
-		int32_t			m_slot_less = 0;		 // È¡ÓàÓÃ
+		int64_t			m_slot_ms = 0;			 // æ¯ä¸ªæ§½ä½çš„æ¯«ç§’æ•°
+		int32_t			m_slot_count = 0;		 // æ§½ä½çš„æ•°é‡
+		int32_t			m_slot_less = 0;		 // å–ä½™ç”¨
 		int64_t			m_slot_sum_ms = 0;		 // m_slot_ms * m_slot_count
-		int32_t			m_current_pos = 0;		 // µ±Ç°Ö¸Õë
+		int32_t			m_current_pos = 0;		 // å½“å‰æŒ‡é’ˆ
 	public:
 		wheel();
 		inline void set(int64_t aslotms, int32_t aslotbit, wheel* anextround, wheel* alastround, time_wheel* atime_wheel);
@@ -50,7 +50,7 @@ namespace ngl
 
 		inline wheel_node* shift_current_pos(int apos, wheel* awheel);
 
-		// ·µ»ØĞèÒª²åÈëµÄ½Úµã
+		// è¿”å›éœ€è¦æ’å…¥çš„èŠ‚ç‚¹
 		inline wheel_node* shift_current_pos(wheel* awheel);
 	};
 
@@ -58,21 +58,21 @@ namespace ngl
 	struct time_wheel::impl_time_wheel
 	{
 		time_wheel_config						m_config;
-		int64_t									m_server_start_ms = 0;			// ·şÎñÆ÷Æô¶¯µÄºÁÃë
-		int64_t									m_current_ms = 0;				// µ±Ç°ºÁÃëÊı
+		int64_t									m_server_start_ms = 0;			// æœåŠ¡å™¨å¯åŠ¨çš„æ¯«ç§’
+		int64_t									m_current_ms = 0;				// å½“å‰æ¯«ç§’æ•°
 		std::vector<std::shared_ptr<wheel>>		m_wheel;
-		std::unique_ptr<std::thread>			m_thread = nullptr;				// Ê±¼äÂÖÏß³Ì 
+		std::unique_ptr<std::thread>			m_thread = nullptr;				// æ—¶é—´è½®çº¿ç¨‹ 
 		std::shared_mutex						m_mutex;
-		bool									m_isthreadcallback = false;		// ÊÇ·ñÊ¹ÓÃ [Ê¹ÓÃÏß³Ì×Ô¶¯µ÷ÓÃ]
-		// ###### Ê¹ÓÃÏß³Ì×Ô¶¯µ÷ÓÃ start 
-		std::unique_ptr<std::thread>			m_threadcallback = nullptr;		// Ê±¼äÂÖ¹¤×÷Ïß³ÌÓÃÀ´Ö´ĞĞ»Øµ÷
+		bool									m_isthreadcallback = false;		// æ˜¯å¦ä½¿ç”¨ [ä½¿ç”¨çº¿ç¨‹è‡ªåŠ¨è°ƒç”¨]
+		// ###### ä½¿ç”¨çº¿ç¨‹è‡ªåŠ¨è°ƒç”¨ start 
+		std::unique_ptr<std::thread>			m_threadcallback = nullptr;		// æ—¶é—´è½®å·¥ä½œçº¿ç¨‹ç”¨æ¥æ‰§è¡Œå›è°ƒ
 		std::shared_mutex						m_mutexcallback;
 		ngl::sem								m_sem;
-		// ###### Ê¹ÓÃÏß³Ì×Ô¶¯µ÷ÓÃ finish
+		// ###### ä½¿ç”¨çº¿ç¨‹è‡ªåŠ¨è°ƒç”¨ finish
 		wheel_node*								m_worldnodehead = nullptr;
 		wheel_node*								m_worldnodetail = nullptr;
-		int64_t									m_timerid = 1;					// ¶¨Ê±Æ÷×ÔÔöid
-		std::map<int64_t, bool>					m_timer;						// ÓÃÓÚ¿ìËÙÉ¾³ı¶¨Ê±Æ÷
+		int64_t									m_timerid = 1;					// å®šæ—¶å™¨è‡ªå¢id
+		std::map<int64_t, bool>					m_timer;						// ç”¨äºå¿«é€Ÿåˆ é™¤å®šæ—¶å™¨
 		time_wheel*								m_twheel = nullptr;
 		bool									m_stop = false;
 
@@ -159,15 +159,15 @@ namespace ngl
 				lpnode->m_next = nullptr;
 
 				if (lpnode->m_parm.m_ms > lallslot)
-				{//¶¨Ê±Ê±¼ä³¬¹ı¶¨Ê±Æ÷ËùÄÜ´ïµ½µÄ×î´óÊ±¼ä
+				{//å®šæ—¶æ—¶é—´è¶…è¿‡å®šæ—¶å™¨æ‰€èƒ½è¾¾åˆ°çš„æœ€å¤§æ—¶é—´
 					continue;
 				}
 				
 				if (lpnode->m_parm.m_ms < lduration)
-				{// Èç¹û¶¨Ê±Ê±¼äÔÚÒÔÇ° ÄÇÃ´Ö±½ÓÖ´ĞĞ¶¨Ê±ÈÎÎñ
+				{// å¦‚æœå®šæ—¶æ—¶é—´åœ¨ä»¥å‰ é‚£ä¹ˆç›´æ¥æ‰§è¡Œå®šæ—¶ä»»åŠ¡
 					int lintervalms = lpnode->m_parm.m_intervalms(m_current_ms);
 					bool lcopy = lintervalms > 0 && lpnode->m_parm.m_count - 1 > 0;
-					if (lcopy)//¿½±´
+					if (lcopy)//æ‹·è´
 					{
 						wheel_node* lpnewnode = new wheel_node(*lpnode);
 						push(lpnewnode);
@@ -517,7 +517,7 @@ namespace ngl
 				{
 					int lintervalms = lpnode->m_parm.m_intervalms(m_time_wheel->m_impl_time_wheel()->m_current_ms);
 					--lpnode->m_parm.m_count;
-					if (lintervalms > 0 && lpnode->m_parm.m_count > 0)//¿½±´
+					if (lintervalms > 0 && lpnode->m_parm.m_count > 0)//æ‹·è´
 					{
 						wheel_node* lpnewnode = new wheel_node(*lpnode);
 						m_time_wheel->m_impl_time_wheel()->push(lpnewnode);

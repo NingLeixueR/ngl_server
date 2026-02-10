@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "localtime.h"
@@ -25,7 +25,7 @@ namespace ngl
 
 	void segpack::close(i32_socket aid)
 	{
-		//ÓĞ¿ÉÄÜ»º´æ²Ğ°ü
+		//æœ‰å¯èƒ½ç¼“å­˜æ®‹åŒ…
 		erase(aid);
 	}
 
@@ -37,7 +37,7 @@ namespace ngl
 	std::shared_ptr<pack> segpack::remnant_package(i32_socket aid)
 	{
 		std::shared_ptr<pack> lpack = nullptr;
-		// # ²é¿´ÓĞÃ»ÓĞ²Ğ°ü
+		// # æŸ¥çœ‹æœ‰æ²¡æœ‰æ®‹åŒ…
 		auto itor = m_data.find(aid);
 		if (itor != m_data.end())
 		{
@@ -59,8 +59,8 @@ namespace ngl
 		{
 			return edopush::e_error;
 		}
-		// Ö§³ÖtelnetÃüÁî·ÃÎÊ£¬telnet ip port ºó¼ÇµÃ['CTRL+]']
-		// Ö»Ö§³Ö10240¸ö×Ö·ûµÄ½ø³ÌÃüÁî
+		// æ”¯æŒtelnetå‘½ä»¤è®¿é—®ï¼Œtelnet ip port åè®°å¾—['CTRL+]']
+		// åªæ”¯æŒ10240ä¸ªå­—ç¬¦çš„è¿›ç¨‹å‘½ä»¤
 		pack_head& lhead = apack->m_head;
 		if (apack->m_buff == nullptr)
 		{
@@ -102,7 +102,7 @@ namespace ngl
 
 	bool segpack::is_heartbeat(std::shared_ptr<pack>& apack)
 	{
-		//Ö»ÓĞ°üÍ·µÄ°ü,¼ì²âÊÇ·ñÊÇĞÄÌø°ü
+		//åªæœ‰åŒ…å¤´çš„åŒ…,æ£€æµ‹æ˜¯å¦æ˜¯å¿ƒè·³åŒ…
 		if (segpack_heartbeat::is_heartbeat(apack->m_head.get_protocolnumber()))
 		{
 			return true;

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "ttab_servers.h"
@@ -49,7 +49,7 @@ constexpr auto GUID_LEN = 64;
 
 namespace ngl
 { 
-	//AÀàµØÖ·£º10.0.0.0--10.255.255.255
+	//Aç±»åœ°å€ï¼š10.0.0.0--10.255.255.255
 	bool is_a_address(const std::vector<std::string>& lvec)
 	{
 		if (lvec.empty())
@@ -59,7 +59,7 @@ namespace ngl
 		return lvec[0] == "10";
 	}
 
-	//BÀàµØÖ·£º172.16.0.0--172.31.255.255
+	//Bç±»åœ°å€ï¼š172.16.0.0--172.31.255.255
 	bool is_b_address(const std::vector<std::string>& lvec)
 	{
 		if (lvec.size() < 2)
@@ -74,7 +74,7 @@ namespace ngl
 		return lnum >= 16 && lnum <= 31;
 	}
 
-	//CÀàµØÖ·£º192.168.0.0--192.168.255.255
+	//Cç±»åœ°å€ï¼š192.168.0.0--192.168.255.255
 	bool is_c_address(const std::vector<std::string>& lvec)
 	{
 		if (lvec.size() < 2)
@@ -372,7 +372,7 @@ namespace ngl
 	int32_t tools::utf8firstbyte(uint8_t firstbyte)
 	{
 		int nCount = 0;
-		unsigned char mask = 0x80; // ³õÊ¼ÑÚÂë£º10000000
+		unsigned char mask = 0x80; // åˆå§‹æ©ç ï¼š10000000
 		if ((firstbyte & mask) == 0)
 		{
 			return 1;
@@ -419,7 +419,7 @@ namespace ngl
 			}
 			int nCount = utf8firstbyte(astr[nPos]);
 			if (nCount == 0)
-			{//²»ÊÇutf8±àÂë
+			{//ä¸æ˜¯utf8ç¼–ç 
 				return false;
 			}
 			if (nCount >= 4) 
@@ -561,12 +561,12 @@ namespace ngl
 				{
 					std::string hexStr = szToDecode.substr(i + 1, 2);
 					hex = strtol(hexStr.c_str(), 0, 16);
-					//×ÖÄ¸ºÍÊı×Ö[0-9a-zA-Z]¡¢Ò»Ğ©ÌØÊâ·ûºÅ[$-_.+!*'(),] ¡¢ÒÔ¼°Ä³Ğ©±£Áô×Ö[$&+,/:;=?@]
-					//¿ÉÒÔ²»¾­¹ı±àÂëÖ±½ÓÓÃÓÚURL
+					//å­—æ¯å’Œæ•°å­—[0-9a-zA-Z]ã€ä¸€äº›ç‰¹æ®Šç¬¦å·[$-_.+!*'(),] ã€ä»¥åŠæŸäº›ä¿ç•™å­—[$&+,/:;=?@]
+					//å¯ä»¥ä¸ç»è¿‡ç¼–ç ç›´æ¥ç”¨äºURL
 					if (!((hex >= 48 && hex <= 57) ||	//0-9
 						(hex >= 97 && hex <= 122) ||	//a-z
 						(hex >= 65 && hex <= 90) ||	//A-Z
-						//Ò»Ğ©ÌØÊâ·ûºÅ¼°±£Áô×Ö[$-_.+!*'(),]  [$&+,/:;=?@]
+						//ä¸€äº›ç‰¹æ®Šç¬¦å·åŠä¿ç•™å­—[$-_.+!*'(),]  [$&+,/:;=?@]
 						hex == 0x21 || hex == 0x24 || hex == 0x26 || hex == 0x27 || hex == 0x28 || hex == 0x29
 						|| hex == 0x2a || hex == 0x2b || hex == 0x2c || hex == 0x2d || hex == 0x2e || hex == 0x2f
 						|| hex == 0x3A || hex == 0x3B || hex == 0x3D || hex == 0x3f || hex == 0x40 || hex == 0x5f
@@ -671,8 +671,8 @@ namespace ngl
 				{
 					return false;
 				}
-				//0x7F ¼´¡¡0111 1111
-				//~ ±íÊ¾È¡·´  
+				//0x7F å³ã€€0111 1111
+				//~ è¡¨ç¤ºå–å  
 				if ((ln & ~0x7F) == 0)
 				{
 					aparm.m_buf[index] = (uint8_t)(ln & 0x7F);
@@ -680,10 +680,10 @@ namespace ngl
 				}
 				else
 				{
-					//È¡³ö7Î»²¢ÔÚµÚ8Î»¼ÓÉÏ±ê¼Ç1
+					//å–å‡º7ä½å¹¶åœ¨ç¬¬8ä½åŠ ä¸Šæ ‡è®°1
 					aparm.m_buf[index] = (uint8_t)((ln & 0x7F) | 0x80);
 					index++;
-					//ÒÑ¾­´¦ÀíµÄÉáÈ¥
+					//å·²ç»å¤„ç†çš„èˆå»
 					ln = ln >> 7;
 				}
 			}
@@ -712,8 +712,8 @@ namespace ngl
 				{
 					return false;
 				}
-				//0x7F ¼´¡¡0111 1111
-				//~ ±íÊ¾È¡·´  
+				//0x7F å³ã€€0111 1111
+				//~ è¡¨ç¤ºå–å  
 				if ((ln & ~0x7F) == 0)
 				{
 					aparm.m_buf[index] = (uint8_t)(ln & 0x7F);
@@ -721,10 +721,10 @@ namespace ngl
 				}
 				else
 				{
-					//È¡³ö7Î»²¢ÔÚµÚ8Î»¼ÓÉÏ±ê¼Ç1
+					//å–å‡º7ä½å¹¶åœ¨ç¬¬8ä½åŠ ä¸Šæ ‡è®°1
 					aparm.m_buf[index] = (uint8_t)((ln & 0x7F) | 0x80);
 					index++;
-					//ÒÑ¾­´¦ÀíµÄÉáÈ¥
+					//å·²ç»å¤„ç†çš„èˆå»
 					ln = ln >> 7;
 				}
 			}
@@ -763,12 +763,12 @@ namespace ngl
 			for (; i < aparm.m_len; i++)
 			{
 				uint8_t b = aparm.m_buf[i];
-				//0x7F ¼´¡¡0111 1111
-				//È¡³ö7Î»È»ºóÓÒÒÆ£¬ÒòÎªÊÇĞ¡¶Ë´æ´¢
+				//0x7F å³ã€€0111 1111
+				//å–å‡º7ä½ç„¶åå³ç§»ï¼Œå› ä¸ºæ˜¯å°ç«¯å­˜å‚¨
 				uint8_t c = (b & 0x7F);
 				aparm.m_value |= (int64_t)c << (i * 7);
-				// 0x80 ¼´ 1000 0000
-				//µÚ8Î»ÊÇ0 ËµÃ÷ºóÃæÃ»ÓĞ×Ö½ÚÁË
+				// 0x80 å³ 1000 0000
+				//ç¬¬8ä½æ˜¯0 è¯´æ˜åé¢æ²¡æœ‰å­—èŠ‚äº†
 				if ((uint8_t)(b & 0x80) == 0)
 				{
 					break;
@@ -803,11 +803,11 @@ namespace ngl
 			for (; i < aparm.m_len; i++)
 			{
 				uint8_t b = aparm.m_buf[i];
-				//0x7F ¼´¡¡0111 1111
-				//È¡³ö7Î»È»ºóÓÒÒÆ£¬ÒòÎªÊÇĞ¡¶Ë´æ´¢
+				//0x7F å³ã€€0111 1111
+				//å–å‡º7ä½ç„¶åå³ç§»ï¼Œå› ä¸ºæ˜¯å°ç«¯å­˜å‚¨
 				aparm.m_value |= (b & 0x7F) << (i * 7);
-				// 0x80 ¼´ 1000 0000
-				//µÚ8Î»ÊÇ0 ËµÃ÷ºóÃæÃ»ÓĞ×Ö½ÚÁË
+				// 0x80 å³ 1000 0000
+				//ç¬¬8ä½æ˜¯0 è¯´æ˜åé¢æ²¡æœ‰å­—èŠ‚äº†
 				if ((uint8_t)(b & 0x80) == 0)
 				{
 					break;
@@ -1456,7 +1456,7 @@ namespace ngl
 		}
 	}
 
-	// ·ÀÖ¹ÓÊ¼ş±»Æµ·±·¢ËÍ,Ã¿¸ô10·ÖÖÓ·¢ËÍÒ»·âÏàÍ¬ÄÚÈİµÄÓÊ¼ş
+	// é˜²æ­¢é‚®ä»¶è¢«é¢‘ç¹å‘é€,æ¯éš”10åˆ†é’Ÿå‘é€ä¸€å°ç›¸åŒå†…å®¹çš„é‚®ä»¶
 	std::map<std::string, int32_t> g_mailmap;
 	std::shared_mutex g_maillock;
 	int32_t g_mailinterval = localtime::MINUTES_SECOND * 10;
@@ -1483,7 +1483,7 @@ namespace ngl
 				lparm->m_name = nconfig.mail().m_name;
 				lparm->m_title = nconfig.servername();
 				lparm->m_content = acontent;
-				lparm->m_recvs.emplace_back(std::make_pair("348634371@qq.com", "Àî²©QQ"));
+				lparm->m_recvs.emplace_back(std::make_pair("348634371@qq.com", "æåšQQ"));
 				lparm->set_wait();
 				ngl::ncurl::sendemail(lparm);
 			};
