@@ -213,7 +213,7 @@ namespace ngl
 		{
 			return false;
 		}
-		ukcp* lpukcp = nkcp::instance().kcp(lprobot->m_robot->kcp_index(lserverid, akcpenum));
+		auto lpukcp = nkcp::instance().kcp(lprobot->m_robot->kcp_index(lserverid, akcpenum));
 		if (lpukcp == nullptr)
 		{
 			return false;

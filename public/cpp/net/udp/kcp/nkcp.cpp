@@ -22,9 +22,9 @@ namespace ngl
 		return (atid * enets_kcp_tid) + aenum + (atcount * enets_kcp_tcount);
 	}
 
-	ukcp* nkcp::kcp(i16_port auport)
+	std::shared_ptr<ukcp> nkcp::kcp(i16_port auport)
 	{
-		ukcp** lpukcp = tools::findmap(m_kcpnet, auport);
+		auto lpukcp = tools::findmap(m_kcpnet, auport);
 		if (lpukcp == nullptr)
 		{
 			return nullptr;
@@ -32,9 +32,9 @@ namespace ngl
 		return *lpukcp;
 	}
 
-	ukcp* nkcp::serkcp(pbnet::ENUM_KCP anum, int16_t atcount)
+	std::shared_ptr<ukcp> nkcp::serkcp(pbnet::ENUM_KCP anum, int16_t atcount)
 	{
-		ukcp** lpukcp = tools::findmap(m_kcpnet, kcp_port(nconfig.tid(), atcount, anum));
+		auto lpukcp = tools::findmap(m_kcpnet, kcp_port(nconfig.tid(), atcount, anum));
 		if (lpukcp == nullptr)
 		{
 			return nullptr;
