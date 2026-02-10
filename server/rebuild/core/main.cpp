@@ -34,65 +34,74 @@ bool is_sname(const std::string& astrname, const std::string& akey)
 }
 
 void find(
-	bool awz, 
-	const std::string& atxt, 
-	const std::string& targetPath, 
-	std::set<std::string>& adir, 
+	bool awz,
+	const std::string& atxt,
+	const std::string& targetPath,
+	std::set<std::string>& adir,
 	std::map<std::string, int>& avec1,
 	std::set<std::string>& avec2
 )
 {
-	std::filesystem::path myPath(targetPath);
-	std::filesystem::recursive_directory_iterator endIter;
-	for (std::filesystem::recursive_directory_iterator iter(myPath); iter != endIter; iter++)
+	namespace fs = std::filesystem; // 简化命名空间
+	fs::path rootPath(targetPath);
+	// 确保路径是绝对路径（避免相对路径拼接混乱）
+	fs::path absRootPath = fs::absolute(rootPath);
+
+	// 修复：使用普通directory_iterator，避免recursive+递归调用的双重遍历
+	fs::directory_iterator endIter;
+	for (fs::directory_iterator iter(absRootPath); iter != endIter; ++iter)
 	{
-		if (std::filesystem::is_directory(*iter))
+		// 统一转换为带/的字符串路径（兼容Windows/Linux）
+		std::string fullPath = iter->path().generic_string(); // generic_string()自动将\转为/
+
+		// 跳过third_party目录
+		if (fs::is_directory(*iter))
 		{
-			std::string lpath = "";
-			for (char ch : iter->path().string())
-			{
-				lpath += (ch == '\\' ? '/' : ch);
-			}
-			if (lpath.find("third_party") != std::string::npos)
-			{
+			if (fullPath.find("third_party") != std::string::npos) {
 				continue;
 			}
 
-			std::string lpath2 = &lpath.c_str()[sizeof("../../")-1];
-			std::cout << "dir:[" << lpath2 << "]" << std::endl;
-			adir.insert(lpath2);
-			find(awz, atxt, lpath, adir, avec1, avec2);
+			// 修复：安全截取路径（跳过../../，避免越界）
+			std::string relPath;
+			const std::string prefix = "../../";
+			if (fullPath.size() >= prefix.size()) {
+				relPath = fullPath.substr(prefix.size()); // 从prefix长度后截取
+			}
+			else {
+				relPath = fullPath; // 长度不足时直接用原路径
+			}
+			std::cout << "dir:[" << relPath << "]" << std::endl;
+			adir.insert(relPath);
+
+			// 递归处理子目录（此时用普通iterator，递归才合理）
+			find(awz, atxt, fullPath, adir, avec1, avec2);
 		}
 		else
 		{
-			std::cout << "file:[" << iter->path().string() << "]" << std::endl;
-			std::string lpath = iter->path().string();
-			std::string lname;
-			for (auto itor = lpath.begin(); itor != lpath.end(); ++itor)
+			std::cout << "file:[" << fullPath << "]" << std::endl;
+			// 修复：用filesystem直接获取文件名，避免手动遍历
+			std::string fileName = iter->path().filename().generic_string();
+
+			if (is_sname(fileName, atxt))
 			{
-				if (*itor == '/' || *itor == '\\')
-					lname = "";
-				else
-					lname += *itor;
-			}
-			
-			if (is_sname(lname, atxt))
-			{
-				// 文件行数
-				ngl::readfile lrf(lpath);
+				// 读取文件行数（保留你的原有逻辑）
+				ngl::readfile lrf(fullPath);
 				int lmaxline = lrf.get_maxline();
 
+				// 修复avec1的路径拼接逻辑
+				std::string mapKey;
+				if (awz) {
+					// awz=true：存储完整路径
+					mapKey = fullPath;
+				}
+				else {
+					// awz=false：仅存储文件名
+					mapKey = fileName;
+				}
+				avec1[mapKey] = lmaxline; // 用[]替代insert，避免重复插入覆盖问题
 
-				if (awz)
-				{
-					avec1.insert(std::make_pair(targetPath + '/' + lname, lmaxline));
-				}
-				else
-				{
-					avec1.insert(std::make_pair(lname, lmaxline));
-				}
-				avec2.insert(targetPath + '/' + lname);
-				continue;
+				// 修复avec2：插入文件的完整路径（核心修复点）
+				avec2.insert(fullPath);
 			}
 		}
 	}
@@ -261,6 +270,7 @@ int main(int argc, char** argv)
 			lfiletxt.read(lneirong);
 			ngl::tools::to_utf8(lneirong, lneirong);
 		}
+		if(!lneirong.empty())
 		{
 			ngl::writefile lwritetxt(item);
 			lwritetxt.write(lneirong);
