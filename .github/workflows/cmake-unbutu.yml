@@ -59,9 +59,7 @@ jobs:
        
     - name: Fix apt source & install correct libintl dependency
       run: |
-        sudo apt-get install -y --no-install-recommends \
-          gettext \          # libintl运行时库
-          gettext-dev        # libintl开发库（头文件+链接库）
+        sudo apt-get install -y libintl-dev
     
     - name: Verify libintl files (critical check)
       run: |
