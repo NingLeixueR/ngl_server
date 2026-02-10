@@ -71,7 +71,6 @@
 #include "nmysql.cpp"
 #include "family.cpp"
 #include "tools.cpp"
-#include "slist.cpp"
 #include "skill.cpp"
 #include "nrfun.cpp"
 #include "njson.cpp"
