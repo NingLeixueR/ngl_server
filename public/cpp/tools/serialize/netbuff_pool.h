@@ -193,7 +193,10 @@ namespace ngl
 			{
 				return instance().malloc_private(abytes);
 			}
-			return new char[abytes];
+			else
+			{
+				return new char[abytes];
+			}
 		}
 
 		static void free(char* abuff)
@@ -201,9 +204,11 @@ namespace ngl
 			if constexpr (ISUSENETPOOL)
 			{
 				instance().free_private(abuff);
-				return;
 			}
-			delete[] abuff;
+			else
+			{
+				delete[] abuff;
+			}
 		}
 	};
 }// namespace ngl
