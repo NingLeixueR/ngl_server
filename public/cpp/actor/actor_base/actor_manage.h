@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -34,35 +34,35 @@ namespace ngl
 		actor_manage& operator=(const actor_manage&) = delete;
 
 		using ptrnthread = std::shared_ptr<nthread>;
-		std::list<ptrnthread>		m_workthreads;		// ¹¤×÷Ïß³Ì
-		std::list<ptrnthread>		m_workthreadscopy;	// ¹¤×÷Ïß³Ì(Ö»ÔÚ³õÊ¼»¯ÊÇ¿½±´Ò»·İ£¬±£Ö¤Ê¹ÓÃÊ±²»»áÎö¹¹)
-		bool						m_suspend = false;	// ÊÇ·ñ¹ÒÆğ
-		std::list<ptrnthread>		m_suspendthreads;	// ¹ÒÆğµÄ¹¤×÷Ïß³Ì
-		std::jthread				m_thread;			// ¹ÜÀíÏß³Ì
-		i32_threadsize				m_threadnum = -1;	// ¹¤×÷Ïß³ÌÊıÁ¿
-		std::map<nguid, ptractor>	m_actorbyid;		// Ë÷Òıactor
-		std::map<nguid, ptractor>	m_actorbroadcast;	// Ö§³Ö¹ã²¥µÄactor
-		std::list<ptractor>			m_actorlist;		// ÓĞÈÎÎñµÄactorÁĞ±í
-		std::set<i16_actortype>		m_actortype;		// °üº¬ÄÄĞ©actortype
-		std::map<nguid, std::function<void()>>			m_delactorfun;	// É¾³ıactorºóĞèÒªÖ´ĞĞµÄ²Ù×÷// (ÑÓ³Ù²Ù×÷:É¾³ıµÄË²¼äactorÕıÊÇÔËĞĞ×´Ì¬,µÈ´ıÆä»Ø¹éºó½øĞĞÉ¾³ı)
-		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;	// °´ÀàĞÍË÷Òıactor
+		std::list<ptrnthread>		m_workthreads;		// å·¥ä½œçº¿ç¨‹
+		std::list<ptrnthread>		m_workthreadscopy;	// å·¥ä½œçº¿ç¨‹(åªåœ¨åˆå§‹åŒ–æ˜¯æ‹·è´ä¸€ä»½ï¼Œä¿è¯ä½¿ç”¨æ—¶ä¸ä¼šææ„)
+		bool						m_suspend = false;	// æ˜¯å¦æŒ‚èµ·
+		std::list<ptrnthread>		m_suspendthreads;	// æŒ‚èµ·çš„å·¥ä½œçº¿ç¨‹
+		std::jthread				m_thread;			// ç®¡ç†çº¿ç¨‹
+		i32_threadsize				m_threadnum = -1;	// å·¥ä½œçº¿ç¨‹æ•°é‡
+		std::map<nguid, ptractor>	m_actorbyid;		// ç´¢å¼•actor
+		std::map<nguid, ptractor>	m_actorbroadcast;	// æ”¯æŒå¹¿æ’­çš„actor
+		std::list<ptractor>			m_actorlist;		// æœ‰ä»»åŠ¡çš„actoråˆ—è¡¨
+		std::set<i16_actortype>		m_actortype;		// åŒ…å«å“ªäº›actortype
+		std::map<nguid, std::function<void()>>			m_delactorfun;	// åˆ é™¤actoråéœ€è¦æ‰§è¡Œçš„æ“ä½œ// (å»¶è¿Ÿæ“ä½œ:åˆ é™¤çš„ç¬é—´actoræ­£æ˜¯è¿è¡ŒçŠ¶æ€,ç­‰å¾…å…¶å›å½’åè¿›è¡Œåˆ é™¤)
+		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;	// æŒ‰ç±»å‹ç´¢å¼•actor
 
 		ngl_lockinit;
 
 		actor_manage();
 		~actor_manage() = default;
 
-		// # nosafe_¿ªÍ·µÄº¯Êı´ú±í"ÄÚ²¿²Ù×÷Î´¼ÓËø"£¬²»ÔÊĞíÀàÍâµ÷ÓÃ
-		// # ¸ù¾İguid»ñÈ¡actorÊµÀı
+		// # nosafe_å¼€å¤´çš„å‡½æ•°ä»£è¡¨"å†…éƒ¨æ“ä½œæœªåŠ é”"ï¼Œä¸å…è®¸ç±»å¤–è°ƒç”¨
+		// # æ ¹æ®guidè·å–actorå®ä¾‹
 		ptractor& nosafe_get_actor(const nguid& aguid);
 
-		// # ¸ù¾İguid»ñÈ¡actorÊµÀı,Èç¹û±¾½áµãÃ»ÓĞÕÒµ½¸ÃactorÊµÀı£¬Ôò¸ù¾İ½áµãÀàĞÍ»ñÈ¡(actor_client/actor_server)µÄguid£¬ÓÃÓÚ×ª·¢
+		// # æ ¹æ®guidè·å–actorå®ä¾‹,å¦‚æœæœ¬ç»“ç‚¹æ²¡æœ‰æ‰¾åˆ°è¯¥actorå®ä¾‹ï¼Œåˆ™æ ¹æ®ç»“ç‚¹ç±»å‹è·å–(actor_client/actor_server)çš„guidï¼Œç”¨äºè½¬å‘
 		ptractor& nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram);
 
-		// # ÏòactorÊµÀı²åÈëÈÎÎñ
+		// # å‘actorå®ä¾‹æ’å…¥ä»»åŠ¡
 		void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram);
 
-		// # actor_manage µ÷¶ÈactorÊµÀı´¦ÀíÈÎÎñµÄÏß³ÌÊµÀı
+		// # actor_manage è°ƒåº¦actorå®ä¾‹å¤„ç†ä»»åŠ¡çš„çº¿ç¨‹å®ä¾‹
 		void run();
 	public:
 		static actor_manage& instance()
@@ -71,19 +71,19 @@ namespace ngl
 			return ltemp;
 		}
 
-		//# »ñÈ¡
+		//# è·å–
 		nguid get_clientguid();
 
-		//# ³õÊ¼»¯ ÉèÖÃ¹¤×÷Ïß³ÌÊıÁ¿
+		//# åˆå§‹åŒ– è®¾ç½®å·¥ä½œçº¿ç¨‹æ•°é‡
 		void init(i32_threadsize apthreadnum);
 
-		//# »ñÈ¡±¾½ø³Ì´æÔÚµÄactorÀàĞÍ
+		//# è·å–æœ¬è¿›ç¨‹å­˜åœ¨çš„actorç±»å‹
 		void get_type(std::vector<i16_actortype>& aactortype);
 
-		//# ¸ù¾İnodeÀàĞÍ»ñÈ¡(actor_client/actor_server)µÄguid
+		//# æ ¹æ®nodeç±»å‹è·å–(actor_client/actor_server)çš„guid
 		nguid nodetypebyguid();
 
-		// # ½«ÏûÏ¢T·â×°ºó´«µİ¸øÖ¸¶¨guidµÄactor
+		// # å°†æ¶ˆæ¯Tå°è£…åä¼ é€’ç»™æŒ‡å®šguidçš„actor
 		template <typename T, bool IS_SEND = true>
 		inline void push_task_id(const nguid& aguid, std::shared_ptr<T>& apram)
 		{
@@ -91,46 +91,46 @@ namespace ngl
 			push_task_id(aguid, lparm);
 		}
 
-		// # Ìí¼Óactor
+		// # æ·»åŠ actor
 		bool add_actor(actor_base* apactor, const std::function<void()>& afun);
 
-		// # Ìí¼Óactor
+		// # æ·»åŠ actor
 		bool add_actor(const ptractor& apactor, const std::function<void()>& afun);
 
-		// # ÒÆ³ıactor
+		// # ç§»é™¤actor
 		void erase_actor(const nguid& aguid, const std::function<void()>& afun = nullptr);
 
-		// # ÊÇ·ñ´æÔÚÄ³¸öactor
+		// # æ˜¯å¦å­˜åœ¨æŸä¸ªactor
 		bool is_have_actor(const nguid& aguid);
 
-		// # ¹¤×÷Ïß³Ì½«actorÌí¼Óµ½m_actorlist
+		// # å·¥ä½œçº¿ç¨‹å°†actoræ·»åŠ åˆ°m_actorlist
 		void push(const ptractor& apactor, ptrnthread atorthread = nullptr);
 
-		// # ÏòactorÖĞÌí¼ÓÈÎÎñ
+		// # å‘actorä¸­æ·»åŠ ä»»åŠ¡
 		void push_task_id(const nguid& aguid, handle_pram& apram);
 		void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram);
 
-		// # ÏòÄ³¸öÀàĞÍµÄactorÖĞÌí¼ÓÈÎÎñ
+		// # å‘æŸä¸ªç±»å‹çš„actorä¸­æ·»åŠ ä»»åŠ¡
 		void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
-		// # Ïòµ±Ç°½ø³ÌËùÓĞactor¹ã²¥ÏûÏ¢
+		// # å‘å½“å‰è¿›ç¨‹æ‰€æœ‰actorå¹¿æ’­æ¶ˆæ¯
 		void broadcast_task(handle_pram& apram);
 
-		// # ÔİÊ±¹ÒÆğËùÓĞÏß³Ì£¬ÒÑÖ´ĞĞµ¥²½²Ù×÷(ÈÈ¸üÊı¾İ±í)
+		// # æš‚æ—¶æŒ‚èµ·æ‰€æœ‰çº¿ç¨‹ï¼Œå·²æ‰§è¡Œå•æ­¥æ“ä½œ(çƒ­æ›´æ•°æ®è¡¨)
 		void statrt_suspend_thread();
 		void finish_suspend_thread();
 
-		// # »ñÈ¡actorÊıÁ¿
+		// # è·å–actoræ•°é‡
 		int32_t actor_count();
 
-		// # »ñÈ¡actor stat Êı¾İ
+		// # è·å–actor stat æ•°æ®
 		void get_actor_stat(msg_actor_stat& adata);
 	};
 
-	// # ÔİÊ±¹ÒÆğ actor_manage
-	// # ×Ô¶¯µ÷ÓÃ
-	// # ¹¹Ôìµ÷ÓÃactor_manage.statrt_suspend_thread
-	// # Îö¹¹µ÷ÓÃactor_manage.finish_suspend_thread
+	// # æš‚æ—¶æŒ‚èµ· actor_manage
+	// # è‡ªåŠ¨è°ƒç”¨
+	// # æ„é€ è°ƒç”¨actor_manage.statrt_suspend_thread
+	// # ææ„è°ƒç”¨actor_manage.finish_suspend_thread
 	class actor_suspendthread
 	{
 		actor_suspendthread(const actor_suspendthread&) = delete;
@@ -140,7 +140,7 @@ namespace ngl
 		~actor_suspendthread();
 	};
 
-	// # ½ø³Ìµ¥Àûactor ×Ô¶¯×¢²áĞ­ÒéÓë×Ô¶¯Ìí¼Óactor_manage
+	// # è¿›ç¨‹å•åˆ©actor è‡ªåŠ¨æ³¨å†Œåè®®ä¸è‡ªåŠ¨æ·»åŠ actor_manage
 	template <typename T>
 	T& actor_instance<T>::instance()
 	{

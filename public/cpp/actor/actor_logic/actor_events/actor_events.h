@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -19,19 +19,19 @@
 
 namespace ngl
 {
-	// ENUM_EVENTSÖ÷ÒªÊÇÎªÁË¶à½ø³Ì¼äactor.m_typeÖµ²»Í¬
-	// ¿ÉÒÔ³éÀëactor_eventsµ½²»Í¬½ø³Ì
-	// ENUM_EVENTSÓëE_EVENTSÅä¶ÔÊ¹ÓÃ
+	// ENUM_EVENTSä¸»è¦æ˜¯ä¸ºäº†å¤šè¿›ç¨‹é—´actor.m_typeå€¼ä¸åŒ
+	// å¯ä»¥æŠ½ç¦»actor_eventsåˆ°ä¸åŒè¿›ç¨‹
+	// ENUM_EVENTSä¸E_EVENTSé…å¯¹ä½¿ç”¨
 	enum ENUM_EVENTS
 	{
-		ENUM_EVENTS_LOGIC,		// ¶ÔÓ¦eevents_logic
-		ENUM_EVENTS_MAP,		// ¶ÔÓ¦eevents_map
+		ENUM_EVENTS_LOGIC,		// å¯¹åº”eevents_logic
+		ENUM_EVENTS_MAP,		// å¯¹åº”eevents_map
 	};
 
 	template <
-		ENUM_EVENTS ETYPE			// ÊÂ¼şÀàĞÍ
-		, typename E_EVENTS			// ×ÓÊÂ¼şÀàĞÍ
-		, int E_EVENTS_COUNT		// ×ÓÊÂ¼şÊıÁ¿
+		ENUM_EVENTS ETYPE			// äº‹ä»¶ç±»å‹
+		, typename E_EVENTS			// å­äº‹ä»¶ç±»å‹
+		, int E_EVENTS_COUNT		// å­äº‹ä»¶æ•°é‡
 	>
 	class actor_events : 
 		public actor
@@ -91,7 +91,7 @@ namespace ngl
 			> (e_ready_all);
 		}
 
-		// # °´ÕÕÀàĞÍ´¥·¢
+		// # æŒ‰ç…§ç±»å‹è§¦å‘
 		template <typename TPARM>
 		static void register_parm(E_EVENTS atype)
 		{
@@ -130,7 +130,7 @@ namespace ngl
 			actor::send_actor(actorid(), aactorid, pro);
 		}
 
-		// # ´¥·¢ÊÂ¼ş
+		// # è§¦å‘äº‹ä»¶
 		struct tnactor {};
 		template <typename TPARM, typename TACTOR = tnactor>
 		static bool trigger_event(const TPARM& apram, TACTOR* aactor = nullptr)

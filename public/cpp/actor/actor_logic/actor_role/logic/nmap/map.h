@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -20,51 +20,51 @@ namespace ngl
 {
 	class aoimap
 	{
-		grids											m_grids;		// ÊÓÒ°¸ñ×Ó
-		obstacles										m_obstacles;	// Ñ°Â·¸ñ×Ó(µ¥Î»Ğ¡¸ñ×Ó)
-		int												m_tabid;		// µØÍ¼±í¸ñÅäÖÃÊı¾İ
-		std::map<i64_actorid, unit_role*>				m_roleunit;		// Íæ¼Òµ¥Î»
-		std::map<i64_actorid, unit_monster*>			m_monster;		// ¹ÖÎïµ¥Î»
+		grids											m_grids;		// è§†é‡æ ¼å­
+		obstacles										m_obstacles;	// å¯»è·¯æ ¼å­(å•ä½å°æ ¼å­)
+		int												m_tabid;		// åœ°å›¾è¡¨æ ¼é…ç½®æ•°æ®
+		std::map<i64_actorid, unit_role*>				m_roleunit;		// ç©å®¶å•ä½
+		std::map<i64_actorid, unit_monster*>			m_monster;		// æ€ªç‰©å•ä½
 	public:
 		aoimap();
 
-		// # ²éÕÒrole
+		// # æŸ¥æ‰¾role
 		unit_role*		find_role(i64_actorid aid);
 
-		// # ²éÕÒmonster
+		// # æŸ¥æ‰¾monster
 		unit_monster*	find_monster(i64_actorid aid);
 
-		// # ²éÕÒunit
+		// # æŸ¥æ‰¾unit
 		unit*			find_unit(i64_actorid aid);
 
-		// # ³õÊ¼»¯
+		// # åˆå§‹åŒ–
 		bool init(int32_t atid);
 
-		// # ¿½±´ unit => pbdb::UNIT
+		// # æ‹·è´ unit => pbdb::UNIT
 		bool copy_unit(unit* aunit, pbdb::UNIT* aUNIT);
 
-		// # ¸ù¾İunit id»ñÈ¡pbnet::UNIT
+		// # æ ¹æ®unit idè·å–pbnet::UNIT
 		bool copy_unit(i64_actorid aid, pbdb::UNIT* aunit);
 
-		// # ½øÈëµØÍ¼
+		// # è¿›å…¥åœ°å›¾
 		virtual bool enter(unit* aunit, int32_t ax, int32_t ay);
 
-		// # Àë¿ªµØÍ¼
+		// # ç¦»å¼€åœ°å›¾
 		virtual void leave(unit* aunit);
 
-		// # Í¬²½Î»ÖÃĞÅÏ¢
+		// # åŒæ­¥ä½ç½®ä¿¡æ¯
 		void sync_position(unit* aunit, int32_t agridid);
 
-		// # ÒÆ¶¯
+		// # ç§»åŠ¨
 		bool move(unit* aunit, int32_t ax, int32_t ay);
 
-		// # ¸Ä±ä·½Ïò
+		// # æ”¹å˜æ–¹å‘
 		void change_angle(i64_actorid aunitid, int32_t aangle);
 
-		// # ¸Ä±äËÙ¶È
+		// # æ”¹å˜é€Ÿåº¦
 		void change_speed(i64_actorid aunitid, int32_t aspeed);
 		
-		// # ¸Ä±äposition
+		// # æ”¹å˜position
 		void change(i64_actorid aunitid, pbdb::POSITION& aposition);
 
 		void update(int64_t ams);

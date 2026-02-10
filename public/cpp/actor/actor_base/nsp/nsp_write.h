@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -26,83 +26,83 @@ namespace ngl
 
 		TDerived*														m_actor = nullptr;
 		
-		// # ×Ô¶¯×¢²áhandleĞ­Òé´¦Àí
+		// # è‡ªåŠ¨æ³¨å†Œhandleåè®®å¤„ç†
 		nsp_callback<T>													m_call;
 
-		// # ¸ºÔğ¹ÜÀíÏò[nsp server]×¢²á±¾½áµãµÄ×´Ì¬Óë¹ÜÀíÊı¾İ¼ÓÔØ×´Ì¬
+		// # è´Ÿè´£ç®¡ç†å‘[nsp server]æ³¨å†Œæœ¬ç»“ç‚¹çš„çŠ¶æ€ä¸ç®¡ç†æ•°æ®åŠ è½½çŠ¶æ€
 		nsp_regload														m_regload;
 
-		// # ±¾½áµã¹Ø×¢"ÄÄĞ©Êı¾İ"
+		// # æœ¬ç»“ç‚¹å…³æ³¨"å“ªäº›æ•°æ®"
 		care_data														m_care;
 
-		// # ÆäËû½áµã ¹Ø×¢ÄÄĞ©Êı¾İ
+		// # å…¶ä»–ç»“ç‚¹ å…³æ³¨å“ªäº›æ•°æ®
 		std::map<i64_actorid, care_data>								m_othercare;
 
-		// # "ÄÄĞ©ÀàĞÍµÄ½áµã"¹Ø×¢"ÄÄĞ©Êı¾İ×Ö¶Î"
+		// # "å“ªäº›ç±»å‹çš„ç»“ç‚¹"å…³æ³¨"å“ªäº›æ•°æ®å­—æ®µ"
 		operator_field													m_operator_field;
 
-		// # ¶ÁÈ«²¿Êı¾İµÄ½áµã
+		// # è¯»å…¨éƒ¨æ•°æ®çš„ç»“ç‚¹
 		std::set<i64_nodeid>											m_nodereadalls;
 
-		// # Ğ´È«²¿Êı¾İµÄ½áµã
+		// # å†™å…¨éƒ¨æ•°æ®çš„ç»“ç‚¹
 		std::set<i64_nodeid>											m_nodewritealls;		
 
 		std::map<i64_actorid, T>										m_data;
 
-		// # ÆäËû½áµã/µ±±¾½áµãexit()Ê±ĞèÒªÍ¨ÖªÄÄĞ©½áµã(1¡¢ËùÓĞnsp_server½áµã¡£2¡¢ËùÓĞnsp_write½áµã)
+		// # å…¶ä»–ç»“ç‚¹/å½“æœ¬ç»“ç‚¹exit()æ—¶éœ€è¦é€šçŸ¥å“ªäº›ç»“ç‚¹(1ã€æ‰€æœ‰nsp_serverç»“ç‚¹ã€‚2ã€æ‰€æœ‰nsp_writeç»“ç‚¹)
 		std::set<i64_actorid>											m_exit;
 
-		// ±»¸Ä±äµÄÊı¾İÁĞ±í
+		// è¢«æ”¹å˜çš„æ•°æ®åˆ—è¡¨
 		std::set<i64_dataid>											m_changeids;
 
-		// ±»É¾³ıµÄÊı¾İÁĞ±í
+		// è¢«åˆ é™¤çš„æ•°æ®åˆ—è¡¨
 		std::set<i64_dataid>											m_delids;
 	public:
-		// # »ñÈ¡µ¥Àı
+		// # è·å–å•ä¾‹
 		static nsp_write<TDerived, TACTOR, T>& instance(i64_actorid aactorid);
 
-		// # [Ğ´È«²¿Êı¾İ]½¨²¢³õÊ¼»¯
+		// # [å†™å…¨éƒ¨æ•°æ®]å»ºå¹¶åˆå§‹åŒ–
 		static nsp_write<TDerived, TACTOR, T>& instance_writeall(
 			TDerived* aactor
-			, const std::set<i32_fieldnumber>& areadfieldnumbers  			/* Ö»¶ÁÄÄĞ©×Ö¶Î */
-			, const std::set<i32_fieldnumber>& awritefieldnumbers			/* Ö»¶ÁÄÄĞ©×Ö¶Î */
+			, const std::set<i32_fieldnumber>& areadfieldnumbers  			/* åªè¯»å“ªäº›å­—æ®µ */
+			, const std::set<i32_fieldnumber>& awritefieldnumbers			/* åªè¯»å“ªäº›å­—æ®µ */
 		);
 
-		// # [Ğ´²¿·ÖÊı¾İ]´´½¨²¢³õÊ¼»¯
+		// # [å†™éƒ¨åˆ†æ•°æ®]åˆ›å»ºå¹¶åˆå§‹åŒ–
 		static nsp_write<TDerived, TACTOR, T>& instance_writepart(
 			TDerived* aactor
-			, const std::set<i32_fieldnumber>& areadfieldnumbers			/* Ö»¶ÁÄÄĞ©×Ö¶Î */
-			, const std::set<i32_fieldnumber>& awritefieldnumbers			/* ¶Á/Ğ´ÄÄĞ©×Ö¶Î */
-			, const std::set<i64_actorid>& areadids							/* Ö»¶ÁÄÄĞ©Êı¾İ */
-			, const std::set<i64_actorid>& awriteids						/* ¶Á/Ğ´ÄÄĞ©Êı¾İ */
+			, const std::set<i32_fieldnumber>& areadfieldnumbers			/* åªè¯»å“ªäº›å­—æ®µ */
+			, const std::set<i32_fieldnumber>& awritefieldnumbers			/* è¯»/å†™å“ªäº›å­—æ®µ */
+			, const std::set<i64_actorid>& areadids							/* åªè¯»å“ªäº›æ•°æ® */
+			, const std::set<i64_actorid>& awriteids						/* è¯»/å†™å“ªäº›æ•°æ® */
 		);
 
-		// # Ìæ»»Êı¾İguidµÄ[actor_type]
+		// # æ›¿æ¢æ•°æ®guidçš„[actor_type]
 		static i64_actorid to_actorid(i64_actorid adataid);
 
-		// # ³õÊ¼»¯
+		// # åˆå§‹åŒ–
 		void init();
 
-		// # ÉèÖÃÊı¾İ·¢Éú±ä»¯µÄ»Øµ÷
+		// # è®¾ç½®æ•°æ®å‘ç”Ÿå˜åŒ–çš„å›è°ƒ
 		void set_changedatafun(const std::function<void(int64_t, const T&, bool)>& afun);
 
-		// # ÉèÖÃÊı¾İ±»É¾³ıµÄ»Øµ÷
+		// # è®¾ç½®æ•°æ®è¢«åˆ é™¤çš„å›è°ƒ
 		void set_deldatafun(const std::function<void(int64_t)>& afun);
 
-		// # ÉèÖÃÊı¾İÈ«²¿¼ÓÔØ³É¹¦µÄ»Øµ÷
+		// # è®¾ç½®æ•°æ®å…¨éƒ¨åŠ è½½æˆåŠŸçš„å›è°ƒ
 		void set_loadfinishfun(const std::function<void()>& afun);
 
-		// # Ìí¼ÓÊı¾İ
+		// # æ·»åŠ æ•°æ®
 		T* add(i64_dataid adataid);
 
-		// # »ñÈ¡Ö¸¶¨Êı¾İ(²¢×Ô¶¯ÉèÖÃÆä×´Ì¬ÎªÒÑĞŞ¸Ä)
+		// # è·å–æŒ‡å®šæ•°æ®(å¹¶è‡ªåŠ¨è®¾ç½®å…¶çŠ¶æ€ä¸ºå·²ä¿®æ”¹)
 		T* get(i64_dataid adataid);
 
-		// # »ñÈ¡Ö¸¶¨Êı¾İ
+		// # è·å–æŒ‡å®šæ•°æ®
 		const T* getconst(i64_dataid adataid);
 
-		////////////////////// ²»Ó¦¸ÃÌá¹©Õâ¸ö·½·¨(·ÀÖ¹ÎóÓÃÆµ·±¸ü¸ÄÊı¾İ) ////////////////////////
-		// Ó¦¸ÃÊ¹ÓÃ[get_mapconst]ÅäºÏ[get]·½·¨Ê¹ÓÃ
+		////////////////////// ä¸åº”è¯¥æä¾›è¿™ä¸ªæ–¹æ³•(é˜²æ­¢è¯¯ç”¨é¢‘ç¹æ›´æ”¹æ•°æ®) ////////////////////////
+		// åº”è¯¥ä½¿ç”¨[get_mapconst]é…åˆ[get]æ–¹æ³•ä½¿ç”¨
 		//std::map<i64_actorid, T>& get_map()
 		//{
 		//	std::transform(m_data.begin(), m_data.end(), std::inserter(m_changeids, m_changeids.end()),
@@ -113,26 +113,26 @@ namespace ngl
 
 		const std::map<i64_actorid, T>& get_mapconst();
 
-		// # Ğ¶ÔØ´ËnspÄ£¿é
+		// # å¸è½½æ­¤nspæ¨¡å—
 		void exit();
 
-		// # ÏûÏ¢½áÊøµ÷ÓÃ
+		// # æ¶ˆæ¯ç»“æŸè°ƒç”¨
 		void change();
 		static void change(i64_actorid aactorid);
 
-		// # Êı¾İÍ¬²½´¦Àí
+		// # æ•°æ®åŒæ­¥å¤„ç†
 		void handle(TDerived* aactor, const message<np_channel_data<T>>& adata);
 
-		// # Ïò[nsp server]×¢²á´ËÄ£¿é
+		// # å‘[nsp server]æ³¨å†Œæ­¤æ¨¡å—
 		void handle(TDerived*, const message<np_channel_check<T>>& adata);
 
-		// # Ïò[nsp server]×¢²á´ËÄ£¿éµÄ»Ø¸´
+		// # å‘[nsp server]æ³¨å†Œæ­¤æ¨¡å—çš„å›å¤
 		void handle(TDerived*, const message<np_channel_register_reply<T>>& adata);
 
-		// # Í¬²½ĞÂÔöµÄ[operator_field]
+		// # åŒæ­¥æ–°å¢çš„[operator_field]
 		void handle(TDerived*, const message<np_channel_dataid_sync<T>>& adata);
 
-		// # ½áµãÍË³ö
+		// # ç»“ç‚¹é€€å‡º
 		void handle(TDerived*, const message<np_channel_exit<T>>& adata);
 	};
 

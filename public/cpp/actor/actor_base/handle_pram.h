@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -29,8 +29,8 @@ namespace ngl
 
 	struct nnode_session
 	{
-		i32_sessionid	m_session = -1;	// ·şÎñÆ÷session
-		nactornode		m_node;		    // ·şÎñÆ÷»ù±¾ĞÅÏ¢
+		i32_sessionid	m_session = -1;	// æœåŠ¡å™¨session
+		nactornode		m_node;		    // æœåŠ¡å™¨åŸºæœ¬ä¿¡æ¯
 
 		nnode_session() = default;
 		nnode_session(i32_sessionid asession, const nactornode& anode);
@@ -57,38 +57,38 @@ namespace ngl
 		handle_pram(const handle_pram&) = default;
 		handle_pram& operator=(handle_pram&) = default;
 
-		i32_protocolnum			m_enum			= -1;				// Ğ­ÒéºÅ
-		std::shared_ptr<void>	m_data			= nullptr;			// Ğ­Òé½á¹¹
-		std::shared_ptr<pack>	m_pack			= nullptr;			// Èç¹ûÊÇÍøÂçÏûÏ¢»áĞ¯´øpackĞÅÏ¢
-		nguid					m_actor			= nguid::make();	// ·¢ËÍ¸øÄÄ¸öactor
-		nguid					m_requestactor	= nguid::make();	// ÄÄ¸öactor·¢ËÍµÄ
-		std::set<i64_actorid>   m_massactors;						// Èº·¢ÁĞ±í
+		i32_protocolnum			m_enum			= -1;				// åè®®å·
+		std::shared_ptr<void>	m_data			= nullptr;			// åè®®ç»“æ„
+		std::shared_ptr<pack>	m_pack			= nullptr;			// å¦‚æœæ˜¯ç½‘ç»œæ¶ˆæ¯ä¼šæºå¸¦packä¿¡æ¯
+		nguid					m_actor			= nguid::make();	// å‘é€ç»™å“ªä¸ªactor
+		nguid					m_requestactor	= nguid::make();	// å“ªä¸ªactorå‘é€çš„
+		std::set<i64_actorid>   m_massactors;						// ç¾¤å‘åˆ—è¡¨
 
 		using forwardtype = std::function<void(handle_pram&)>;
 		using callfail = std::function<void()>;
 
-		forwardtype				m_forward		= nullptr;			// ×ª·¢º¯Êı
-		bool					m_forwardtype	= false;			// ×ª·¢¸øËùÓĞÀàĞÍ
-		callfail				m_failfun		= nullptr;			// ÈçºÎactor_client¶¼ÕÒ²»µ½Ä¿±êactorÔòµ÷ÓÃ
-		bool					m_issend		= true;				// ÊÇ·ñ»á·¢ËÍ¸øÆäËû½ø³Ì
+		forwardtype				m_forward		= nullptr;			// è½¬å‘å‡½æ•°
+		bool					m_forwardtype	= false;			// è½¬å‘ç»™æ‰€æœ‰ç±»å‹
+		callfail				m_failfun		= nullptr;			// å¦‚ä½•actor_clientéƒ½æ‰¾ä¸åˆ°ç›®æ ‡actoråˆ™è°ƒç”¨
+		bool					m_issend		= true;				// æ˜¯å¦ä¼šå‘é€ç»™å…¶ä»–è¿›ç¨‹
 
-		//# ¸ù¾İ[Á¬½Ó]»ñÈ¡[id]
+		//# æ ¹æ®[è¿æ¥]è·å–[id]
 		static i32_serverid		serverid(i64_actorid aactorid);
 
-		//# ¸ù¾İ[actorid]»ñÈ¡[gatewayid]
+		//# æ ¹æ®[actorid]è·å–[gatewayid]
 		static i32_serverid		gatewayid(i64_actorid aactorid);
 
-		//# ¸ù¾İ[·şÎñÆ÷ÀàĞÍ]»ñÈ¡[·şÎñÆ÷ÁĞ±í]
+		//# æ ¹æ®[æœåŠ¡å™¨ç±»å‹]è·å–[æœåŠ¡å™¨åˆ—è¡¨]
 		static void				serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
 
-		//# ÊÇ·ñÊÇÎŞĞ§µÄactor guid
+		//# æ˜¯å¦æ˜¯æ— æ•ˆçš„actor guid
 		static bool				is_actoridnone(const nguid& aguid);
 
-		//# Í¨¹ısession·¢ËÍÏûÏ¢T
+		//# é€šè¿‡sessionå‘é€æ¶ˆæ¯T
 		template <typename T>
 		static bool	send(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid);
 		
-		//# Ïò·şÎñÆ÷·¢ËÍpack
+		//# å‘æœåŠ¡å™¨å‘é€pack
 		static bool	send_pack(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 		static bool	send_pack(i32_serverid aserverid, std::shared_ptr<void>& apack);
 		
@@ -146,7 +146,7 @@ namespace ngl
 		template <typename T, typename Y>
 		using nforward_g2c = std::shared_ptr<np_actor_forward<T, forward_g2c<Y>>>;
 
-		//Y:forward»òÕßT
+		//Y:forwardæˆ–è€…T
 		template <typename T, typename Y>
 		static handle_pram create(const nguid& aid, const nguid& arid, const nforward_g2c<T, Y>& adata, const callfail& afailfun = nullptr)
 		{
@@ -193,7 +193,7 @@ namespace ngl
 			if (lserverid == -1)
 			{
 				if (adata.m_forwardtype && handle_pram::is_actoridnone(aactorid))
-				{//# ×ª·¢¸øËùÓĞÀàĞÍÎªnguid::type(aactorid)µÄactor
+				{//# è½¬å‘ç»™æ‰€æœ‰ç±»å‹ä¸ºnguid::type(aactorid)çš„actor
 					std::set<i32_serverid> lserverids;
 					handle_pram::serveridlist(aactorid.type(), lserverids);
 					for (i32_serverid serverid : lserverids)

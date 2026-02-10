@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -71,7 +71,7 @@ namespace ngl
 	struct player
 	{
 		i64_actorid		m_roleid = 0;
-		bool			m_isconfirm = false; // ÊÇ·ñÈ·ÈÏ
+		bool			m_isconfirm = false; // æ˜¯å¦ç¡®è®¤
 		int32_t			m_index = 0;
 	};
 
@@ -79,12 +79,12 @@ namespace ngl
 	{
 		pbexample::EPLAY_TYPE			m_type = pbexample::EPLAY_TYPE::EPLAY_NULL;
 		int32_t							m_roomid = 0;
-		int32_t							m_totalnumber = 0;		// ĞèÒªµÄ×ÜÈËÊı
-		std::map<i64_actorid, player>	m_players;				// ²ÎÓëÆ¥ÅäµÄÍæ¼Ò
-		std::set<i64_actorid>			m_playersset;			// ²ÎÓëÆ¥ÅäµÄÍæ¼Ò
-		time_t							m_roomcreate = 0;		// ·¿¼ä´´½¨Ê±¼ä
-		time_t							m_roomready = 0;		// ·¿¼ä¾ÍĞ÷Ê±¼ä
-		int32_t							m_index = 0;			// ½øÈë·¿¼äµÄĞòºÅ
+		int32_t							m_totalnumber = 0;		// éœ€è¦çš„æ€»äººæ•°
+		std::map<i64_actorid, player>	m_players;				// å‚ä¸åŒ¹é…çš„ç©å®¶
+		std::set<i64_actorid>			m_playersset;			// å‚ä¸åŒ¹é…çš„ç©å®¶
+		time_t							m_roomcreate = 0;		// æˆ¿é—´åˆ›å»ºæ—¶é—´
+		time_t							m_roomready = 0;		// æˆ¿é—´å°±ç»ªæ—¶é—´
+		int32_t							m_index = 0;			// è¿›å…¥æˆ¿é—´çš„åºå·
 	};
 
 	struct room_index
@@ -92,11 +92,11 @@ namespace ngl
 		int32_t				m_index = 0;
 		enum eroom_stat
 		{
-			eroom_matching,		// ÈËÎ´ÂúÆ¥ÅäÖĞ
-			eroom_ready,		// ÈËÂú¾ÍĞ÷
+			eroom_matching,		// äººæœªæ»¡åŒ¹é…ä¸­
+			eroom_ready,		// äººæ»¡å°±ç»ª
 		};
 		std::map<int32_t, eroom_stat>	m_roomlist;
-		std::list<int32_t>				m_readyroomlist;	// ÈËÂú¾ÍĞ÷ÁĞ±í(Ë³ĞòÁĞ±í)
+		std::list<int32_t>				m_readyroomlist;	// äººæ»¡å°±ç»ªåˆ—è¡¨(é¡ºåºåˆ—è¡¨)
 	};
 
 	class actor_example_match : public actor
@@ -104,7 +104,7 @@ namespace ngl
 		actor_example_match(const actor_example_match&) = delete;
 		actor_example_match& operator=(const actor_example_match&) = delete;
 
-		std::map<pbexample::EPLAY_TYPE, room_index>						m_roomindex;			// ·¿¼äºÅ×ÔÔö
+		std::map<pbexample::EPLAY_TYPE, room_index>						m_roomindex;			// æˆ¿é—´å·è‡ªå¢
 		/////////roomid////////
 		std::map<pbexample::EPLAY_TYPE, std::map<int32_t, room>>		m_room;
 		std::map<i64_actorid, int32_t>									m_matching;				// key:roleid value:room id
@@ -131,40 +131,40 @@ namespace ngl
 
 		static void nregister();
 
-		// # Í¬²½·¿¼äĞÅÏ¢
+		// # åŒæ­¥æˆ¿é—´ä¿¡æ¯
 		void sync_match_info(room* aroom, i64_actorid aroleid = nguid::make());
 
-		// # Í¬²½[PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT]
+		// # åŒæ­¥[PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT]
 		static void send_error(pbexample::PLAY_MATCHING_EERROR_CODE acode, std::set<i64_actorid>* aplayer = nullptr, int32_t aroomid = 0, i64_actorid aroleid = nguid::make());
 
-		// # ·¿¼äÊÇ·ñÈËÂú¾ÍĞ÷
+		// # æˆ¿é—´æ˜¯å¦äººæ»¡å°±ç»ª
 		bool room_count_ready(room* aroom);
 
-		// # ¸ù¾İÍæ¼ÒÀëÏßÊı¾İÑ¡ÔñÆ¥Åä·¿¼ä
+		// # æ ¹æ®ç©å®¶ç¦»çº¿æ•°æ®é€‰æ‹©åŒ¹é…æˆ¿é—´
 		room* matching_room(i64_actorid aroleid, pbexample::EPLAY_TYPE atype);
 
-		// # ²éÕÒ·¿¼ä
+		// # æŸ¥æ‰¾æˆ¿é—´
 		room* find_room(int32_t aroomid);
 
-		// # ²éÕÒ·¿¼ä
+		// # æŸ¥æ‰¾æˆ¿é—´
 		room* find_room(pbexample::EPLAY_TYPE atype, int32_t aroomid);
 
-		// # Ôö¼Ó·¿¼ä
+		// # å¢åŠ æˆ¿é—´
 		room* add_room(pbexample::EPLAY_TYPE atype);
 
-		// # É¾³ı·¿¼ä
+		// # åˆ é™¤æˆ¿é—´
 		void erase_room(room* aroom, pbexample::PLAY_MATCHING_EERROR_CODE aerrorcode = pbexample::PLAY_MATCHING_EERROR_CODE::EERROR_CODE_ROOM_DESTORY);
 
-		// # Íæ¼ÒÈ¡ÏûÆ¥Åä
+		// # ç©å®¶å–æ¶ˆåŒ¹é…
 		void erase_player_room(room* aroom, i64_actorid aroleid);
 
-		// # ¼ì²éÊÇ·ñ³¬Ê±
+		// # æ£€æŸ¥æ˜¯å¦è¶…æ—¶
 		bool check_timeout(time_t atime, int32_t ainterval);
 
-		// # Æ¥Åä³É¹¦
+		// # åŒ¹é…æˆåŠŸ
 		void matching_finish(room* aroom);
 
-		// # ¼ì²é¾ÍĞ÷
+		// # æ£€æŸ¥å°±ç»ª
 		bool check_ready(room* aroom);
 
 		bool timer_handle(const message<np_timerparm>& adata);

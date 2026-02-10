@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "actor_robot_manage.h"
@@ -87,7 +87,7 @@ namespace ngl
 		}
 		else if (lrecv->mtype() == pbnet::ENUM_CHAT_SPEAK)
 		{
-			//log_error()->print("{}", (lrecv->m_stat() ? "[·¢ÑÔ³É¹¦]" : "[·¢ÑÔÊ§°Ü] "));
+			//log_error()->print("{}", (lrecv->m_stat() ? "[å‘è¨€æˆåŠŸ]" : "[å‘è¨€å¤±è´¥] "));
 		}
 		else if (lrecv->mtype() == pbnet::ENUM_UPDATA_SPEAK)
 		{
@@ -242,10 +242,10 @@ namespace ngl
 	{
 		struct noticeitem
 		{
-			int64_t		m_id;			// ¹«¸æid 
-			std::string m_notice;		// ÄÚÈİ
-			std::string m_starttime;	// ¿ªÊ¼Ê±¼ä
-			std::string m_finishtime;	// ½áÊøÊ±¼ä
+			int64_t		m_id;			// å…¬å‘Šid 
+			std::string m_notice;		// å†…å®¹
+			std::string m_starttime;	// å¼€å§‹æ—¶é—´
+			std::string m_finishtime;	// ç»“æŸæ—¶é—´
 			DPROTOCOL(noticeitem, m_id, m_notice, m_starttime, m_finishtime)
 		};
 		struct notices

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -46,11 +46,11 @@ namespace ngl
 	private:
 		struct pfun
 		{
-			protocol::fun_pack								m_packfun = nullptr;		// ½â°ü»Øµ÷
-			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;					// actorÀàĞÍ¶ÔÓ¦µÄÂß¼­»Øµ÷
+			protocol::fun_pack								m_packfun = nullptr;		// è§£åŒ…å›è°ƒ
+			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;					// actorç±»å‹å¯¹åº”çš„é€»è¾‘å›è°ƒ
 		};
-		static std::map<i32_protocolnum, protocol::pfun>	m_protocolfun;	// Ğ­ÒéºÅ¹ØÁªpfun
-		static std::shared_mutex							m_mutex;		// Ëø
+		static std::map<i32_protocolnum, protocol::pfun>	m_protocolfun;	// åè®®å·å…³è”pfun
+		static std::shared_mutex							m_mutex;		// é”
 
 	public:
 		static pfun* find(i32_protocolnum aprotocolnum);
@@ -59,15 +59,15 @@ namespace ngl
 
 		static void print(const char* amsg, i32_protocolnum aprotocolnum);
 
-		// # ×¢²áÍøÂçĞ­Òé
+		// # æ³¨å†Œç½‘ç»œåè®®
 		static void register_protocol(
 			int aprotocolnumber, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname
 		);
 
-		// # ½âÎöÍøÂçÊı¾İ°ü[net pack],½»¸¶¸øÉÏ²ãÂß¼­ 
+		// # è§£æç½‘ç»œæ•°æ®åŒ…[net pack],äº¤ä»˜ç»™ä¸Šå±‚é€»è¾‘ 
 		static void push(std::shared_ptr<pack>& apack);
 
-		// # ACTOR¼äÍ¨ĞÅ 
+		// # ACTORé—´é€šä¿¡ 
 		template <typename T>
 		static void registry_actor(ENUM_ACTOR atype, const char* aname)
 		{
@@ -101,7 +101,7 @@ namespace ngl
 				}
 
 				if (lactorguid.is_actortypenone() || lactorguid.is_moreactor(atype))
-				{// actor type ÊÇ·ñÎŞĞ§  || //·¢¸øÍ¬ÀàĞÍµÄËùÓĞactor
+				{// actor type æ˜¯å¦æ— æ•ˆ  || //å‘ç»™åŒç±»å‹çš„æ‰€æœ‰actor
 					lmanages.push_task_type(atype, lpram);
 					return true;
 				}
@@ -110,7 +110,7 @@ namespace ngl
 					if (lactorguid.type() == atype)
 					{
 						if (lactorguid.is_actoridnone())
-						{// actor id ÊÇ·ñÎŞĞ§
+						{// actor id æ˜¯å¦æ— æ•ˆ
 							lmanages.push_task_type(atype, lpram);
 						}							
 						else
@@ -124,7 +124,7 @@ namespace ngl
 			register_protocol(tprotocol::protocol<T>(), atype, lpackfun, lrunfun, aname);
 		}
 
-		// # gateway×¢²áµÄ×ª·¢c2g(ÓÉ[client]>>[gateway]>>[·şÎñÆ÷]) 
+		// # gatewayæ³¨å†Œçš„è½¬å‘c2g(ç”±[client]>>[gateway]>>[æœåŠ¡å™¨]) 
 		template <typename T>
 		static void registry_actor_c2g(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
@@ -154,7 +154,7 @@ namespace ngl
 			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
 		}
 
-		// # gateway×¢²áµÄ×ª·¢g2c(ÓÉ[·şÎñÆ÷]->[¿Í»§¶Ë]) 
+		// # gatewayæ³¨å†Œçš„è½¬å‘g2c(ç”±[æœåŠ¡å™¨]->[å®¢æˆ·ç«¯]) 
 		template <typename T>
 		static void registry_actor_g2c(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
@@ -184,7 +184,7 @@ namespace ngl
 			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
 		}
 
-		// # Èº·¢ÏûÏ¢(½âÎö°şÀënp_mass_actor<T> ½«TÍ¶µİµ½¶ÔÓ¦actor)
+		// # ç¾¤å‘æ¶ˆæ¯(è§£æå‰¥ç¦»np_mass_actor<T> å°†TæŠ•é€’åˆ°å¯¹åº”actor)
 		template <typename T>
 		static void registry_actor_mass(int32_t aprotocolnum, const char* aname)
 		{
@@ -216,7 +216,7 @@ namespace ngl
 			register_protocol(aprotocolnum, (ENUM_ACTOR)nguid::none_type(), lpackfun, lrunfun, aname);
 		}
 
-		// # ´¦ÀítelnetÃüÁî
+		// # å¤„ç†telnetå‘½ä»¤
 		static void telnet_cmd(const std::shared_ptr<pack>& apack);
 	};
 }// namespace ngl

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once 
@@ -21,61 +21,61 @@
 
 namespace ngl
 {
-	// # nsp client °üÀ¨nsp_readÓënsp_write
-	// # nsp client ¼ÓÔØ×´¿ö
+	// # nsp client åŒ…æ‹¬nsp_readä¸nsp_write
+	// # nsp client åŠ è½½çŠ¶å†µ
 	class nsp_regload
 	{
-		// # ĞèÒªÁ¬½ÓµÄnsp·şÎñÆ÷ÁĞ±í
+		// # éœ€è¦è¿æ¥çš„nspæœåŠ¡å™¨åˆ—è¡¨
 		std::map<i16_area, i64_actorid>		m_nspserver;
-		// # ×¢²á×´Ì¬
+		// # æ³¨å†ŒçŠ¶æ€
 		std::map<i16_area, bool>			m_register;
-		// # ¼ÓÔØ×´Ì¬
+		// # åŠ è½½çŠ¶æ€
 		std::map<i16_area, bool>			m_loadfinish;
 	public:
 		void init(i64_actorid aactorid);
 
-		// # ÉèÖÃ[area]Íê³É×¢²á
+		// # è®¾ç½®[area]å®Œæˆæ³¨å†Œ
 		void set_register(i16_area aarea);
 
-		// # [area]ÊÇ·ñÍê³É×¢²á
+		// # [area]æ˜¯å¦å®Œæˆæ³¨å†Œ
 		bool is_register(i16_area aarea)const;
 
-		// # ËùÓĞ[area]ÊÇ·ñ¶¼Íê³É×¢²á
+		// # æ‰€æœ‰[area]æ˜¯å¦éƒ½å®Œæˆæ³¨å†Œ
 		bool is_register()const;
 
-		// # ÉèÖÃ[area]¼ÓÔØÊı¾İÍê³É
+		// # è®¾ç½®[area]åŠ è½½æ•°æ®å®Œæˆ
 		void set_loadfinish(i16_area aarea);
 
-		// # [area]ÊÇ·ñ¼ÓÔØÊı¾İÍê³É
+		// # [area]æ˜¯å¦åŠ è½½æ•°æ®å®Œæˆ
 		bool is_loadfinish(i16_area aarea)const;
 
-		// # ËùÓĞ[area]ÊÇ·ñ¶¼¼ÓÔØÊı¾İÍê³É
+		// # æ‰€æœ‰[area]æ˜¯å¦éƒ½åŠ è½½æ•°æ®å®Œæˆ
 		bool is_loadfinish()const;
 
-		// # ¸ù¾İ[area]»ñÈ¡nsp server
+		// # æ ¹æ®[area]è·å–nsp server
 		i64_actorid nspserid(i16_area aarea)const;
 
-		// # ±éÀúËùÓĞĞèÒªÁ¬½ÓµÄnsp server
+		// # éå†æ‰€æœ‰éœ€è¦è¿æ¥çš„nsp server
 		void foreach_nspser(const std::function<void(i16_area, i64_actorid)>& afun)const;
 	};
 
-	// # ¶Ô"Êı¾İ×Ö¶Î"½øĞĞ·â×°
+	// # å¯¹"æ•°æ®å­—æ®µ"è¿›è¡Œå°è£…
 	class operator_field
 	{
-		// # Ö»ÓĞnep serverÉèÖÃÊ±²»¼ì²é"ÒòÎªÍ¬Ò»×Ö¶ÎÉèÖÃ¶Á/Ğ´£¬Ğ´ÓÅÏÈÓÚ¶Á£¬½øĞĞ¶Á¸²¸ÇĞ´µÄ¼ì²â"
+		// # åªæœ‰nep serverè®¾ç½®æ—¶ä¸æ£€æŸ¥"å› ä¸ºåŒä¸€å­—æ®µè®¾ç½®è¯»/å†™ï¼Œå†™ä¼˜å…ˆäºè¯»ï¼Œè¿›è¡Œè¯»è¦†ç›–å†™çš„æ£€æµ‹"
 		bool m_nspserver = false;
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>> m_node_fieldnumbers;
 	public:
-		// # ³õÊ¼»¯
+		// # åˆå§‹åŒ–
 		void init(bool anspserver);
 
-		// # ÉèÖÃ"Êı¾İ×Ö¶Î"
+		// # è®¾ç½®"æ•°æ®å­—æ®µ"
 		void set_field(i16_actortype atype, const std::map<i32_fieldnumber, epb_field>& anode_fieldnumbers);
 
-		// # ÉèÖÃ
+		// # è®¾ç½®
 		void set_field(const std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& anode_fieldnumbers);
 
-		// # Ìí¼Ó
+		// # æ·»åŠ 
 	private:
 		void nspser_add_field(std::map<i32_fieldnumber, epb_field>& afieldmap, i32_fieldnumber afieldnumber, epb_field afieldtype);
 		void nspcli_add_field(std::map<i32_fieldnumber, epb_field>& afieldmap, i32_fieldnumber afieldnumber, epb_field afieldtype);
@@ -86,7 +86,7 @@ namespace ngl
 		void add_field(i16_actortype atype, epb_field afieldtype, const std::set<i32_fieldnumber>& afield)
 		{
 			if (afieldtype == epb_field_read && afield.empty())
-			{//µ±[awritefieldnumbers]Îª¿Õ,ÔòÈÏÎªÆä¶ÁÈ«²¿×Ö¶Î
+			{//å½“[awritefieldnumbers]ä¸ºç©º,åˆ™è®¤ä¸ºå…¶è¯»å…¨éƒ¨å­—æ®µ
 				std::set<i32_fieldnumber> lreadfield;
 				pb_field::field_numbers<T>(lreadfield);
 				for (i32_fieldnumber field : lreadfield)
@@ -97,7 +97,7 @@ namespace ngl
 			else
 			{
 				if (afield.empty())
-				{//afieldtype == epb_field_write ²»ÔÊĞí[afield]Îª¿Õ
+				{//afieldtype == epb_field_write ä¸å…è®¸[afield]ä¸ºç©º
 					tools::no_core_dump();
 				}
 				for (i32_fieldnumber field : afield)
@@ -112,7 +112,7 @@ namespace ngl
 		{
 			std::set<i32_fieldnumber> lreadfield;
 			if (areadfield.empty())
-			{//µ±[awritefieldnumbers]Îª¿Õ,ÔòÈÏÎªÆä¶ÁÈ«²¿×Ö¶Î
+			{//å½“[awritefieldnumbers]ä¸ºç©º,åˆ™è®¤ä¸ºå…¶è¯»å…¨éƒ¨å­—æ®µ
 				pb_field::field_numbers<T>(lreadfield);
 			}
 			for (i32_fieldnumber field : awritefield)
@@ -125,10 +125,10 @@ namespace ngl
 			}
 		}
 
-		// # ¸ù¾İÀàĞÍ»ñÈ¡
+		// # æ ¹æ®ç±»å‹è·å–
 		std::map<i32_fieldnumber, epb_field>* get_field(i16_actortype atype);
 
-		// # ¸ù¾İ×Ö¶ÎÀàĞÍ½øĞĞÊı¾İ¿½±´
+		// # æ ¹æ®å­—æ®µç±»å‹è¿›è¡Œæ•°æ®æ‹·è´
 		template <typename T>
 		bool field_copy(i16_actortype atypesource, i16_actortype atypetarget, const T& asource, T& atarget, bool amessage)
 		{
@@ -142,7 +142,7 @@ namespace ngl
 			return true;
 		}
 
-		// # ¸ù¾İ×Ö¶ÎÀàĞÍ½øĞĞÊı¾İ¿½±´
+		// # æ ¹æ®å­—æ®µç±»å‹è¿›è¡Œæ•°æ®æ‹·è´
 		template <typename T>
 		bool field_copy(i16_actortype atype, const T& asource, T& atarget, bool amessage)
 		{
@@ -155,52 +155,52 @@ namespace ngl
 			return true;
 		}
 
-		// # »ñÈ¡ËùÓĞÇø·şµÄÊı¾İ×Ö¶Î
+		// # è·å–æ‰€æœ‰åŒºæœçš„æ•°æ®å­—æ®µ
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& field_numbers();
 	};
 
-	// # ¹Ø×¢ÄÄĞ©Êı¾İ
+	// # å…³æ³¨å“ªäº›æ•°æ®
 	class care_data
 	{
 		nsp_care m_core;
 	public:
-		// # "È«²¿¶Á,È«²¿Ğ´" ¹¹Ôì
+		// # "å…¨éƒ¨è¯»,å…¨éƒ¨å†™" æ„é€ 
 		void init(bool aread);
 
-		// # "²¿·Ö¶Á" ¹¹Ôì
+		// # "éƒ¨åˆ†è¯»" æ„é€ 
 		void init(const std::set<i64_actorid>& aids);
 
-		// # "²¿·Ö¶Á,²¿·ÖĞ´" ¹¹Ôì
+		// # "éƒ¨åˆ†è¯»,éƒ¨åˆ†å†™" æ„é€ 
 		void init(const std::set<i64_actorid>& areadids, const std::set<i64_actorid>& awriteids);
 
-		// # "È«²¿¶Á,²¿·ÖĞ´" ¹¹Ôì
+		// # "å…¨éƒ¨è¯»,éƒ¨åˆ†å†™" æ„é€ 
 		void init(bool aread, const std::set<i64_actorid>& awriteids);
 
-		// # Ê¹ÓÃnsp_careÊı¾İ³õÊ¼»¯
+		// # ä½¿ç”¨nsp_careæ•°æ®åˆå§‹åŒ–
 		void init(const nsp_care& acore);
 
-		// # ÊÇ·ñ¹ØĞÄ
+		// # æ˜¯å¦å…³å¿ƒ
 		bool is_care(i64_actorid adataid)const;
 
-		// # ÊÇ·ñ¿É¶Á
+		// # æ˜¯å¦å¯è¯»
 		bool is_read(i64_actorid adataid)const;
 
-		// # ÊÇ·ñ¿ÉĞ´(¼ÈÈ»¿ÉĞ´ µ±È»¿É¶Á)
+		// # æ˜¯å¦å¯å†™(æ—¢ç„¶å¯å†™ å½“ç„¶å¯è¯»)
 		bool is_write(i64_actorid adataid)const;
 
-		// # ÊÇ·ñ¿É¶ÁÈ«²¿Êı¾İ
+		// # æ˜¯å¦å¯è¯»å…¨éƒ¨æ•°æ®
 		bool is_readall()const;
 
-		// # ÊÇ·ñ¿ÉĞ´È«²¿Êı¾İ
+		// # æ˜¯å¦å¯å†™å…¨éƒ¨æ•°æ®
 		bool is_writeall()const;
 
-		// # ¿É¶ÁÁĞ±í
+		// # å¯è¯»åˆ—è¡¨
 		std::set<i64_actorid>& readids();
 
-		// # ¿ÉĞ´ÁĞ±í
+		// # å¯å†™åˆ—è¡¨
 		std::set<i64_actorid>& writeids();
 
-		// # »ñÈ¡¹Ø×¢Êı¾İ
+		// # è·å–å…³æ³¨æ•°æ®
 		const nsp_care& get_core()const;
 	};
 
@@ -258,41 +258,41 @@ namespace ngl
 		}
 	};
 
-	// nsp client ×¢²á»Øµ÷
+	// nsp client æ³¨å†Œå›è°ƒ
 	template <typename T>
 	class nsp_callback
 	{
 		template <typename TDATA>
 		struct tcallback
 		{
-			// [»Øµ÷] µ±Êı¾İ·¢Éú±ä»¯
+			// [å›è°ƒ] å½“æ•°æ®å‘ç”Ÿå˜åŒ–
 			std::function<void(int64_t, const TDATA&, bool)>				m_changedatafun = nullptr;
-			// [»Øµ÷] µ±Êı¾İ±»É¾³ı
+			// [å›è°ƒ] å½“æ•°æ®è¢«åˆ é™¤
 			std::function<void(int64_t)>									m_deldatafun = nullptr;
-			// [»Øµ÷] Êı¾İ¼ÓÔØÍê³É
+			// [å›è°ƒ] æ•°æ®åŠ è½½å®Œæˆ
 			std::function<void()>											m_loadfinishfun = nullptr;
 		};
 		tcallback<T> m_call;
 	public:
-		// # ÉèÖÃÊı¾İ±»ĞŞ¸Ä»òÊ×´Î»ñÈ¡Êı¾İµÄ»Øµ÷
+		// # è®¾ç½®æ•°æ®è¢«ä¿®æ”¹æˆ–é¦–æ¬¡è·å–æ•°æ®çš„å›è°ƒ
 		inline void set_changedatafun(const std::function<void(int64_t, const T&, bool)>& afun)
 		{
 			m_call.m_changedatafun = afun;
 		}
 
-		// # ÉèÖÃÊı¾İ±»É¾³ıµÄ»Øµ÷
+		// # è®¾ç½®æ•°æ®è¢«åˆ é™¤çš„å›è°ƒ
 		inline void set_deldatafun(const std::function<void(int64_t)>& afun)
 		{
 			m_call.m_deldatafun = afun;
 		}
 
-		// # ÉèÖÃÊı¾İ¼ÓÔØÍê³ÉµÄ»Øµ÷
+		// # è®¾ç½®æ•°æ®åŠ è½½å®Œæˆçš„å›è°ƒ
 		inline void set_loadfinishfun(const std::function<void()>& afun)
 		{
 			m_call.m_loadfinishfun = afun;
 		}
 
-		// # µ÷ÓÃÊı¾İ±»ĞŞ¸Ä»òÊ×´Î»ñÈ¡Êı¾İµÄ»Øµ÷
+		// # è°ƒç”¨æ•°æ®è¢«ä¿®æ”¹æˆ–é¦–æ¬¡è·å–æ•°æ®çš„å›è°ƒ
 		inline void changedatafun(int64_t aid, const T& adata, bool afrist)
 		{
 			if (m_call.m_changedatafun != nullptr)
@@ -301,7 +301,7 @@ namespace ngl
 			}
 		}
 
-		// # µ÷ÓÃÊı¾İ±»É¾³ıµÄ»Øµ÷
+		// # è°ƒç”¨æ•°æ®è¢«åˆ é™¤çš„å›è°ƒ
 		inline void deldatafun(int64_t aid)
 		{
 			if (m_call.m_deldatafun != nullptr)
@@ -310,7 +310,7 @@ namespace ngl
 			}
 		}
 
-		// # µ÷ÓÃÊı¾İ¼ÓÔØÍê³ÉµÄ»Øµ÷
+		// # è°ƒç”¨æ•°æ®åŠ è½½å®Œæˆçš„å›è°ƒ
 		inline void loadfinishfun()
 		{
 			if (m_call.m_loadfinishfun != nullptr)

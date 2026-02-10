@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -46,7 +46,7 @@ namespace ngl
 
 		static void nregister();
 
-		// # Í¨Öªactor_server [actorid]->[gateway server id]
+		// # é€šçŸ¥actor_server [actorid]->[gateway server id]
 		void sync_actorserver_gatewayid(const nguid& aguid, bool aisremove);
 
 		void update_gateway_info(const std::shared_ptr<np_actor_gatewayinfo_updata>& ap);
@@ -57,22 +57,22 @@ namespace ngl
 
 		bool handle(const message<np_gateway_close_session>& adata);
 
-		// # actor_loginÍ¨ÖªgatewayÍæ¼ÒÒÑ¾­µÇÂ¼(²¢¼ÍÂ¼session¼°¶ÔÓ¦µÄgame·şÎñÆ÷)
+		// # actor_loginé€šçŸ¥gatewayç©å®¶å·²ç»ç™»å½•(å¹¶çºªå½•sessionåŠå¯¹åº”çš„gameæœåŠ¡å™¨)
 		bool handle(const message<np_actorrole_login>& adata);
 
-		// # »ñÈ¡kcp-session
+		// # è·å–kcp-session
 		bool handle(const message<np_actor_kcp>& adata);
 
-		// # Íæ¼ÒÇĞ»»game½ø³Ì
+		// # ç©å®¶åˆ‡æ¢gameè¿›ç¨‹
 		bool handle(const message<np_actorswitch_process<np_actorswitch_process_role>>& adata);
 
-		// # ¶Ï¿ªÁ¬½Ó
+		// # æ–­å¼€è¿æ¥
 		bool handle(const message<np_actor_session_close>& adata);
 		
-		// # Íæ¼ÒµÇÂ½
+		// # ç©å®¶ç™»é™†
 		bool handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 
-		// # »ñÈ¡kcp-session
+		// # è·å–kcp-session
 		bool handle(const message<pbnet::PROBUFF_NET_KCPSESSION>& adata);
 	};
 }//namespace ngl

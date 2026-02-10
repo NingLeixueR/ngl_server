@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
@@ -21,10 +21,10 @@ namespace ngl
 {
 	struct skill_template
 	{
-		std::string					m_name;			// ¼¼ÄÜÃû³Æ
-		std::string					m_describe;		// ¼¼ÄÜÃèÊö
-		int32_t						m_maxlv;		// ×î´óµÈ¼¶
-		std::map<int32_t, int32_t>	m_cooldown;		// ÀäÈ´Ê±¼ä(ºÁÃë) key:lv value:ms
+		std::string					m_name;			// æŠ€èƒ½åç§°
+		std::string					m_describe;		// æŠ€èƒ½æè¿°
+		int32_t						m_maxlv;		// æœ€å¤§ç­‰çº§
+		std::map<int32_t, int32_t>	m_cooldown;		// å†·å´æ—¶é—´(æ¯«ç§’) key:lv value:ms
 				
 		struct consume_attr
 		{
@@ -32,7 +32,7 @@ namespace ngl
 
 			DXMLSERIALIZE(consume_attr, false, m_data)
 		};
-		std::map<int32_t, consume_attr> m_consumeattr;  // key:lv ÊÍ·Å¼¼ÄÜÏûºÄÊôĞÔÖµ
+		std::map<int32_t, consume_attr> m_consumeattr;  // key:lv é‡Šæ”¾æŠ€èƒ½æ¶ˆè€—å±æ€§å€¼
 
 		struct consume_item
 		{
@@ -40,13 +40,13 @@ namespace ngl
 
 			DXMLSERIALIZE(consume_item, false, m_data)
 		};
-		std::map<int32_t, consume_item> m_consumeitem;  // key:lv ÊÍ·Å¼¼ÄÜÏûºÄÎïÆ·µÀ¾ß
+		std::map<int32_t, consume_item> m_consumeitem;  // key:lv é‡Šæ”¾æŠ€èƒ½æ¶ˆè€—ç‰©å“é“å…·
 
 		struct setp
 		{
 			struct lv
 			{
-				int32_t m_release;				// ÊÍ·ÅÊ±¿Ì:Ïà¶ÔÓÚ¼¼ÄÜ¿ªÊ¼Ê±¼äµÄºÁÃë
+				int32_t m_release;				// é‡Šæ”¾æ—¶åˆ»:ç›¸å¯¹äºæŠ€èƒ½å¼€å§‹æ—¶é—´çš„æ¯«ç§’
 				struct buff
 				{
 					int32_t m_id;
@@ -59,7 +59,7 @@ namespace ngl
 
 					DXMLSERIALIZE(buff, true, m_id, m_lv)
 				};
-				std::set<buff> m_buffids;	// ¸½¼Óbuff
+				std::set<buff> m_buffids;	// é™„åŠ buff
 
 				DXMLSERIALIZE(lv, false, m_release, m_buffids)
 			};
@@ -77,27 +77,27 @@ namespace ngl
 
 	class skill
 	{
-		skill_template	m_template;			// ¼¼ÄÜxml
-		int32_t			m_lv;				// ¼¼ÄÜµÈ¼¶
-		int32_t			m_cooldownutc;		// ¼¼ÄÜÊÍ·ÅÊ±¼äutc
-		unit*			m_unit;				// Õ½¶·µ¥Î»
+		skill_template	m_template;			// æŠ€èƒ½xml
+		int32_t			m_lv;				// æŠ€èƒ½ç­‰çº§
+		int32_t			m_cooldownutc;		// æŠ€èƒ½é‡Šæ”¾æ—¶é—´utc
+		unit*			m_unit;				// æˆ˜æ–—å•ä½
 	public:
 		static std::shared_ptr<skill> create(int32_t askillid, int32_t askilllv)
 		{
 			return nullptr;
 		}
 
-		// # [ÉèÖÃ/»ñÈ¡]¼¼ÄÜµÈ¼¶
+		// # [è®¾ç½®/è·å–]æŠ€èƒ½ç­‰çº§
 		bool set_lv(int32_t askilllv);
 		int32_t lv();
 
-		// # »ñÈ¡¼¼ÄÜÀäÈ´Ê±¼ä
+		// # è·å–æŠ€èƒ½å†·å´æ—¶é—´
 		int32_t cooldown();
 
-		// # ¼ì²éÊÇ·ñ¿ÉÒÔÊÍ·Å¼¼ÄÜ
+		// # æ£€æŸ¥æ˜¯å¦å¯ä»¥é‡Šæ”¾æŠ€èƒ½
 		virtual bool release_check();
 	
-		// # ÊÍ·Å¼¼ÄÜ
+		// # é‡Šæ”¾æŠ€èƒ½
 		virtual bool release()
 		{
 			return true;

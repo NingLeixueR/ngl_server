@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -33,30 +33,30 @@ namespace ngl
 	public:
 		virtual void init(int32_t aw, int32_t al, int32_t anx, int32_t any);
 
-		// # ¸ù¾İ×ø±ê(ax,ay)½øÈë¸ñ×Ó
+		// # æ ¹æ®åæ ‡(ax,ay)è¿›å…¥æ ¼å­
 		bool enter(i64_actorid aunitid, int32_t ax, int32_t ay);
 
-		// # ¸ù¾İ¸ñ×Ó±àºÅ½øÈë¸ñ×Ó
+		// # æ ¹æ®æ ¼å­ç¼–å·è¿›å…¥æ ¼å­
 		bool enter(i64_actorid aunitid, int32_t agid);
 
-		// # ¸ù¾İ×ø±ê(ax,ay)Àë¿ª¸ñ×Ó
+		// # æ ¹æ®åæ ‡(ax,ay)ç¦»å¼€æ ¼å­
 		void leave(i64_actorid aunitid, int32_t ax, int32_t ay);
 
-		// # ¸ù¾İ¸ñ×Ó±àºÅÀë¿ª¸ñ×Ó
+		// # æ ¹æ®æ ¼å­ç¼–å·ç¦»å¼€æ ¼å­
 		void leave(i64_actorid aunitid, int32_t agid);
 
-		// # ¸ù¾İ¸ñ×Ó±àºÅ»ñÈ¡¸ñ×Ó
+		// # æ ¹æ®æ ¼å­ç¼–å·è·å–æ ¼å­
 		grid* get_grid(int32_t agid);
 
-		// # ¸ù¾İ×ø±ê(ax,ay)»ñÈ¡¸ñ×Ó
+		// # æ ¹æ®åæ ‡(ax,ay)è·å–æ ¼å­
 		grid* get_grid(int32_t ax, int32_t ay);
 	};
 
 	struct obstacle
 	{
-		int m_id = 0;			// ¸ñ×Ó±àºÅ
-		eobstacles m_pass;		// ÊÇ·ñ¿ÉÒÔÍ¨¹ı¸ñ×Ó
-		int m_value = 0;		// ¸¶³öµÄ´ú¼Û
+		int m_id = 0;			// æ ¼å­ç¼–å·
+		eobstacles m_pass;		// æ˜¯å¦å¯ä»¥é€šè¿‡æ ¼å­
+		int m_value = 0;		// ä»˜å‡ºçš„ä»£ä»·
 		int m_parent = 0;
 
 		void clear()
@@ -114,8 +114,8 @@ namespace ngl
 
 		bool find_path(int32_t ax1, int32_t ay1, int32_t ax2, int32_t ay2, std::list<int>& apath)
 		{
-			// ÆğÊ¼µã (ax1, ay1)
-			// ÖÕµã	  (ax2, ay2)
+			// èµ·å§‹ç‚¹ (ax1, ay1)
+			// ç»ˆç‚¹	  (ax2, ay2)
 			std::vector<bool> vis;
 			vis.resize(m_grid.size(), false);
 			int lstatrt = id(ax1, ay1);
@@ -204,7 +204,7 @@ namespace ngl
 			if (apath.empty())
 			{
 				(*lstream) << "[" << printf_point(aid1) << "->" << printf_point(aid2) << "]" << std::endl;
-				(*lstream) << "path:" << "Â·¾¶²»Í¨" << std::endl;
+				(*lstream) << "path:" << "è·¯å¾„ä¸é€š" << std::endl;
 			}
 			else
 			{

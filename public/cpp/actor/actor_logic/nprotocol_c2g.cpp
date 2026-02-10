@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "example.pb.h"
@@ -17,8 +17,8 @@
 
 namespace ngl
 {
-	// # ×¢²áclientµ½gameµÄÏûÏ¢ 
-	// # »á×¢²ágatewayµÄ×ª·¢ÓëgameµÄ´¦Àí
+	// # æ³¨å†Œclientåˆ°gameçš„æ¶ˆæ¯ 
+	// # ä¼šæ³¨å†Œgatewayçš„è½¬å‘ä¸gameçš„å¤„ç†
 	void nforward::c2g()
 	{
 		register_c2g<
@@ -33,52 +33,52 @@ namespace ngl
 			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD
 		>();
 
-		// actor_chat Ä£¿é¶ş´Î×ª·¢
+		// actor_chat æ¨¡å—äºŒæ¬¡è½¬å‘
 		register_c2g_2< ACTOR_CHAT
 			, pbnet::PROBUFF_NET_CHAT
 		>();
 
-		// actor_example_guess_number Ä£¿é¶ş´Î×ª·¢
+		// actor_example_guess_number æ¨¡å—äºŒæ¬¡è½¬å‘
 		register_c2g_2< ACTOR_EXAMPLE_GUESS_NUMBER
 			, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER
 		>();
 
-		// actor_example_manage Ä£¿é¶ş´Î×ª·¢
+		// actor_example_manage æ¨¡å—äºŒæ¬¡è½¬å‘
 		register_c2g_2< ACTOR_EXAMPLE_MANAGE
 			, pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE
 		>();
 
-		// actor_example_match Ä£¿é¶ş´Î×ª·¢
+		// actor_example_match æ¨¡å—äºŒæ¬¡è½¬å‘
 		register_c2g_2< ACTOR_EXAMPLE_MATCH
 			, pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL
 		>();
 
-		// actor_family Ä£¿é¶ş´Î×ª·¢
+		// actor_family æ¨¡å—äºŒæ¬¡è½¬å‘
 		register_c2g_2< ACTOR_FAMILY
 			, pbnet::PROBUFF_NET_FAMIL_CEDE
 		>();
 
-		// actor_friends Ä£¿é¶ş´Î×ª·¢
+		// actor_friends æ¨¡å—äºŒæ¬¡è½¬å‘
 		register_c2g_2< ACTOR_FRIENDS
 			, pbnet::PROBUFF_NET_FRIEND
 		>();
 
-		// actor_mail Ä£¿é¶ş´Î×ª·¢
+		// actor_mail æ¨¡å—äºŒæ¬¡è½¬å‘
 		register_c2g_2< ACTOR_MAIL
 			, pbnet::PROBUFF_NET_MAIL_DEL
 		>();
 
-		// actor_notice Ä£¿é¶ş´Î×ª·¢
+		// actor_notice æ¨¡å—äºŒæ¬¡è½¬å‘
 		register_c2g_2< ACTOR_NOTICE
 			, pbnet::PROBUFF_NET_NOTICE
 		>();
 
-		// actor_ranklist Ä£¿é¶ş´Î×ª·¢
+		// actor_ranklist æ¨¡å—äºŒæ¬¡è½¬å‘
 		register_c2g_2< ACTOR_RANKLIST
 			, pbnet::PROBUFF_NET_RANKLIST
 		>();
 
-		// actor_testlua Ä£¿é¶ş´Î×ª·¢
+		// actor_testlua æ¨¡å—äºŒæ¬¡è½¬å‘
 		register_c2g_2< ACTOR_TESTLUA
 			, pbnet::PROBUFF_NET_TESTLUA
 		>();

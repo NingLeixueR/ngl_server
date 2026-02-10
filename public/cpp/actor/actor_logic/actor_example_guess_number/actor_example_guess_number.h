@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -34,8 +34,8 @@ namespace ngl
 {
 	enum eactor_example_guess_number
 	{
-		guess_number_esetp_maxtime = 30, // µ¥²½ÖèÖ´ĞĞµÄ×î´óÃëÊı
-		guess_number_equit_time = 10,	// ÍË³öµÄ×î´óÃëÊı
+		guess_number_esetp_maxtime = 30, // å•æ­¥éª¤æ‰§è¡Œçš„æœ€å¤§ç§’æ•°
+		guess_number_equit_time = 10,	// é€€å‡ºçš„æœ€å¤§ç§’æ•°
 		guess_number_max_number = 101,
 		guess_number_min_number = 0,
 	};
@@ -46,13 +46,13 @@ namespace ngl
 		actor_example_guess_number(const actor_example_guess_number&) = delete;
 		actor_example_guess_number& operator=(const actor_example_guess_number&) = delete;
 
-		int32_t m_maxnumber		= 1000;	// ·¶Î§×î´óÖµ
-		int32_t m_minnumber		= 0;	// ·¶Î§×îĞ¡Öµ
-		int32_t m_index			= 0;	// ²Â²âµÄÍæ¼Ò(Ë÷Òı)
-		int32_t m_setputc		= 0;	// ²½ÖèÊ±¼ä
-		int32_t m_bombvalues	= 0;	// Õ¨µ¯Öµ
-		int32_t m_bombutc		= 0;	// ´¥·¢Õ¨µ¯ÖµµÄÊ±¼ä
-		i64_actorid m_bombrole	= 0;	// ´¥·¢Õ¨µ¯ÖµµÄÍæ¼Ò
+		int32_t m_maxnumber		= 1000;	// èŒƒå›´æœ€å¤§å€¼
+		int32_t m_minnumber		= 0;	// èŒƒå›´æœ€å°å€¼
+		int32_t m_index			= 0;	// çŒœæµ‹çš„ç©å®¶(ç´¢å¼•)
+		int32_t m_setputc		= 0;	// æ­¥éª¤æ—¶é—´
+		int32_t m_bombvalues	= 0;	// ç‚¸å¼¹å€¼
+		int32_t m_bombutc		= 0;	// è§¦å‘ç‚¸å¼¹å€¼çš„æ—¶é—´
+		i64_actorid m_bombrole	= 0;	// è§¦å‘ç‚¸å¼¹å€¼çš„ç©å®¶
 	public:
 		actor_example_guess_number(const std::map<int32_t, i64_actorid>& aroleids, int32_t aindex);
 

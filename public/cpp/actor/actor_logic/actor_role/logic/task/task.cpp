@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "actor_role.h"
@@ -24,7 +24,7 @@ namespace ngl
 	{
 		static std::array<std::unique_ptr<task_check>, ETaskCount> m_data;
 	public:
-		// ¼ì²éÌõ¼şÊÇ·ñÂú×ã
+		// æ£€æŸ¥æ¡ä»¶æ˜¯å¦æ»¡è¶³
 		static bool check(actor_role* arole, const task_condition& atab)
 		{
 			if (atab.m_condition == ETaskConditionMore)
@@ -52,7 +52,7 @@ namespace ngl
 		virtual int32_t values(actor_role* arole, const task_condition& atab) = 0;
 	};
 
-	// Ìõ¼ş¼ì²é:ETaskRoleLv Íæ¼ÒµÈ¼¶
+	// æ¡ä»¶æ£€æŸ¥:ETaskRoleLv ç©å®¶ç­‰çº§
 	class taskcheck_rolelv : 
 		public task_check
 	{
@@ -62,7 +62,7 @@ namespace ngl
 		}
 	};
 
-	// Ìõ¼ş¼ì²é:ETaskRoleVip Íæ¼ÒvipµÈ¼¶
+	// æ¡ä»¶æ£€æŸ¥:ETaskRoleVip ç©å®¶vipç­‰çº§
 	class taskcheck_rolevip : 
 		public task_check
 	{
@@ -72,7 +72,7 @@ namespace ngl
 		}
 	};
 
-	// Ìõ¼ş¼ì²é:ETaskTaskId Íê³ÉÄ³IDÈÎÎñ
+	// æ¡ä»¶æ£€æŸ¥:ETaskTaskId å®ŒæˆæŸIDä»»åŠ¡
 	class taskcheck_taskid : 
 		public task_check
 	{
@@ -142,15 +142,15 @@ namespace ngl
 	bool static_task::receive_task(actor_role* arole, i32_taskid ataskid)
 	{
 		if (ttab_task::instance().repeat(arole, ataskid) == false)
-		{//## ²»¿ÉÖØ¸´Íê³ÉÈÎÎñ
-			//## ½ÓÊÕÈÎÎñÇ°ÏÈ²é¿´ÊÇ·ñÒÑ¾­Íê³ÉÁË
+		{//## ä¸å¯é‡å¤å®Œæˆä»»åŠ¡
+			//## æ¥æ”¶ä»»åŠ¡å‰å…ˆæŸ¥çœ‹æ˜¯å¦å·²ç»å®Œæˆäº†
 			if (isfinish_task(arole, ataskid))
 			{
 				return false;
 			}
 		}
 		
-		//## ´ËÈÎÎñÊÇ·ñÒÑ¾­±»½ÓÊÕ
+		//## æ­¤ä»»åŠ¡æ˜¯å¦å·²ç»è¢«æ¥æ”¶
 		if (isreceive_task(arole, ataskid))
 		{
 			return true;
@@ -199,14 +199,14 @@ namespace ngl
 	{
 		if (ttab_task::instance().repeat(arole, ataskid) == false)
 		{
-			// # Íê³ÉÈÎÎñÇ°ÏÈ²é¿´ÊÇ·ñÒÑ¾­Íê³ÉÁË
+			// # å®Œæˆä»»åŠ¡å‰å…ˆæŸ¥çœ‹æ˜¯å¦å·²ç»å®Œæˆäº†
 			if (isfinish_task(arole, ataskid))
 			{
 				return false;
 			}
 		}
 		
-		// # ´ËÈÎÎñÊÇ·ñÒÑ¾­½ÓÊÕ
+		// # æ­¤ä»»åŠ¡æ˜¯å¦å·²ç»æ¥æ”¶
 		if (isreceive_task(arole, ataskid) == false)
 		{
 			return false;
@@ -220,7 +220,7 @@ namespace ngl
 			{
 				return false;
 			}
-			// # ·¢ËÍ½±Àø
+			// # å‘é€å¥–åŠ±
 			const tab_task* tab = ttab_task::instance().tab(ataskid);
 			if (tab == nullptr)
 			{
@@ -230,7 +230,7 @@ namespace ngl
 			{
 				if (tab->m_mailid > 0)
 				{
-					// ·¢ËÍÓÊ¼ş
+					// å‘é€é‚®ä»¶
 					if (actor_mail::sendmail(arole->id_guid(), tab->m_mailid, tab->m_dropid, "") == false)
 					{
 						log_error()->print("task[{}] actor_mail::sendmail({},{},{})"
@@ -256,11 +256,11 @@ namespace ngl
 		auto& lconst_rundatas = const_run(arole);
 		for (i32_taskid taskid : *ataskset)
 		{
-			//## ½ÓÊÕÈÎÎñÇ°ÏÈ²é¿´ÊÇ·ñÒÑ¾­½ÓÊÕ¹ıÁË
+			//## æ¥æ”¶ä»»åŠ¡å‰å…ˆæŸ¥çœ‹æ˜¯å¦å·²ç»æ¥æ”¶è¿‡äº†
 			auto itorrun = lconst_rundatas.find(taskid);
 			if (itorrun != lconst_rundatas.end())
 			{
-				//## ÒÑ½ÓÊÕÈÎÎñ¸üĞÂ½ø¶È
+				//## å·²æ¥æ”¶ä»»åŠ¡æ›´æ–°è¿›åº¦
 				for (int i = 0; i < itorrun->second.mschedules_size(); ++i)
 				{
 					auto& lcomplete = run(arole);
@@ -313,13 +313,13 @@ namespace ngl
 	void task::initdata()
 	{
 		log_error()->print("task load finish {}", data());
-		// ### ¼ì²éÊÇ·ñÓĞ¿É½ÓÊÜµÄÈÎÎñ
+		// ### æ£€æŸ¥æ˜¯å¦æœ‰å¯æ¥å—çš„ä»»åŠ¡
 		ttab_task::instance().foreach([&](tab_task& atab)
 			{
-				// # ¼ì²éÈÎÎñÊÇ·ñ¿É½ÓÊÕ
+				// # æ£€æŸ¥ä»»åŠ¡æ˜¯å¦å¯æ¥æ”¶
 				if (static_task::receive_task(nactor(), atab.m_id) == true)
-				{// ¿É½ÓÊÜ»òÕßÒÑ½ÓÊÜ
-					// # ¼ì²éÈÎÎñÊÇ·ñ¿ÉÍê³É
+				{// å¯æ¥å—æˆ–è€…å·²æ¥å—
+					// # æ£€æŸ¥ä»»åŠ¡æ˜¯å¦å¯å®Œæˆ
 					if (static_task::finish_task(nactor(), atab.m_id))
 					{
 						return;

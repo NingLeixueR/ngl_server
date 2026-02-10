@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "actor_client.h"
@@ -81,7 +81,7 @@ namespace ngl
 		}
 		if (apactor->type() != ACTOR_CLIENT && apactor->type() != ACTOR_SERVER)
 		{
-			// ĞÂÔöµÄactor 
+			// æ–°å¢çš„actor 
 			auto pro = std::make_shared<np_actornode_update_mass>(
 				np_actornode_update_mass
 				{
@@ -110,7 +110,7 @@ namespace ngl
 
 	void actor_manage::erase_actor(const nguid& aguid, const std::function<void()>& afun /*= nullptr*/)
 	{
-		// Í¨Öªactor_clientÒÑ¾­É¾³ıactor 
+		// é€šçŸ¥actor_clientå·²ç»åˆ é™¤actor 
 		auto pro = std::make_shared<np_actornode_update_mass>(
 			np_actornode_update_mass
 			{
@@ -135,7 +135,7 @@ namespace ngl
 			}
 			lpactor = *lpactorptr;
 
-			// # ´Óactor_manageÖĞÒÆ³ı
+			// # ä»actor_manageä¸­ç§»é™¤
 			m_actorbyid.erase(aguid);
 			m_actorbytype[aguid.type()].erase(aguid);
 			m_actorbroadcast.erase(aguid);
@@ -252,8 +252,8 @@ namespace ngl
 			{
 				return lnull;
 			}
-			// ·¢¸øactor_client/actor_server
-			// Èç¹ûÊÇactor_server½áµãĞèÒª·¢ËÍ¸øactor_server
+			// å‘ç»™actor_client/actor_server
+			// å¦‚æœæ˜¯actor_serverç»“ç‚¹éœ€è¦å‘é€ç»™actor_server
 			nguid lguid = nodetypebyguid();
 			lpactor = tools::findmap(m_actorbyid, lguid);
 			if (lpactor == nullptr)
@@ -305,7 +305,7 @@ namespace ngl
 	void actor_manage::push_task_type(ENUM_ACTOR atype, handle_pram& apram)
 	{
 		ngl_lock_s;
-		// 1.ÏÈ·¢¸ø±¾»úÉÏµÄatype
+		// 1.å…ˆå‘ç»™æœ¬æœºä¸Šçš„atype
 		for (auto& [_guid, _actor] : m_actorbytype[atype])
 		{
 			if (_actor->activity_stat() != actor_stat_close)
@@ -315,7 +315,7 @@ namespace ngl
 		}
 		if (apram.m_issend)
 		{
-			// 2.È»ºó·¢¸øactor_client£¬·¢¸øÆäËû·şÎñÆ÷
+			// 2.ç„¶åå‘ç»™actor_clientï¼Œå‘ç»™å…¶ä»–æœåŠ¡å™¨
 			nguid lguid = nodetypebyguid();
 			ptractor* lpactor = tools::findmap(m_actorbyid, lguid);
 			if (lpactor == nullptr)

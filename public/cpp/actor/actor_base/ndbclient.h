@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -57,25 +57,25 @@ namespace ngl
 	private:
 		std::set<i64_actorid> m_modified;
 	public:
-		// # ÄÄĞ©±»ĞŞ¸Ä
+		// # å“ªäº›è¢«ä¿®æ”¹
 		std::set<i64_actorid>& which_modified()
 		{
 			return m_modified;
 		}
 
-		// # ¼ì²éÊÇ·ñ±»ĞŞ¸Ä
+		// # æ£€æŸ¥æ˜¯å¦è¢«ä¿®æ”¹
 		bool is_modified(i64_actorid aidentifier)const
 		{
 			return m_modified.contains(aidentifier);
 		}
 
-		// # ÉèÖÃÎªĞŞ¸Ä×´Ì¬
+		// # è®¾ç½®ä¸ºä¿®æ”¹çŠ¶æ€
 		void modified(i64_actorid aidentifier)
 		{
 			m_modified.insert(aidentifier);
 		}
 
-		// # Çå¿ÕĞŞ¸Ä×´Ì¬±»
+		// # æ¸…ç©ºä¿®æ”¹çŠ¶æ€è¢«
 		void clear_modified(i64_actorid aidentifier)
 		{
 			m_modified.erase(aidentifier);
@@ -122,14 +122,14 @@ namespace ngl
 			return m_modified->is_modified(identifier());
 		}
 
-		// # ÉèÖÃÎªĞŞ¸Ä×´Ì¬
+		// # è®¾ç½®ä¸ºä¿®æ”¹çŠ¶æ€
 		inline void modified()const
 		{
 			check_init();
 			m_modified->modified(identifier());
 		}
 
-		// # Çå¿ÕĞŞ¸Ä×´Ì¬
+		// # æ¸…ç©ºä¿®æ”¹çŠ¶æ€
 		inline void clear_modified()const
 		{
 			check_init();
@@ -147,7 +147,7 @@ namespace ngl
 			}
 		}
 
-		// # getÓëgetconst»ñÈ¡Êı¾İÇ°ÏÈ "¼ì²é½Å±¾ÓïÑÔÖĞµÄ±¸·İÊÇ·ñ±»ĞŞ¸Ä"
+		// # getä¸getconstè·å–æ•°æ®å‰å…ˆ "æ£€æŸ¥è„šæœ¬è¯­è¨€ä¸­çš„å¤‡ä»½æ˜¯å¦è¢«ä¿®æ”¹"
 		TDBTAB* get(bool achange = true, bool anscript = true)
 		{
 			check_init();
@@ -161,11 +161,11 @@ namespace ngl
 			{
 				modified();
 			}
-			// # ¼ì²é½Å±¾ÓïÑÔÖĞµÄ±¸·İÊÇ·ñ±»ĞŞ¸Ä
+			// # æ£€æŸ¥è„šæœ¬è¯­è¨€ä¸­çš„å¤‡ä»½æ˜¯å¦è¢«ä¿®æ”¹
 			if (anscript && m_actor != nullptr)
 			{
 				if (m_actor->nscript_data_checkdel<TDBTAB>(ldata.mid()))
-				{//±»É¾³ıÁË
+				{//è¢«åˆ é™¤äº†
 					return nullptr;
 				}
 				if (m_actor->nscript_data_checkout<TDBTAB>(ldata.mid(), ldata))
@@ -180,11 +180,11 @@ namespace ngl
 		{
 			check_init();
 			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
-			// # ¼ì²é½Å±¾ÓïÑÔÖĞµÄ±¸·İÊÇ·ñ±»ĞŞ¸Ä
+			// # æ£€æŸ¥è„šæœ¬è¯­è¨€ä¸­çš„å¤‡ä»½æ˜¯å¦è¢«ä¿®æ”¹
 			if (anscript && m_actor != nullptr)
 			{
 				if (m_actor->nscript_data_checkdel<TDBTAB>(ldata.mid()))
-				{//±»É¾³ıÁË
+				{//è¢«åˆ é™¤äº†
 					return nullptr;
 				}
 				if (m_actor->nscript_data_checkout<TDBTAB>(ldata.mid(), ldata))
@@ -210,22 +210,22 @@ namespace ngl
 
 		enum
 		{
-			e_default_tcount = 1,		// Ä¬ÈÏtcount
+			e_default_tcount = 1,		// é»˜è®¤tcount
 		};
 		
-		tab_dbload*									m_tab = nullptr;							// ¼ÓÔØ"±íÅäÖÃÊı¾İ¼ÓÔØ"
-		nmodified<TDBTAB>							m_modified;									// ¼ÇÂ¼ÄÄĞ©Êı¾İ±»ĞŞ¸Ä
-		nguid										m_id = nguid::make();						// Êı¾İid(m_id == nguid::make() ¼ÓÔØÈ«²¿Êı¾İ)
-		std::map<nguid, data_modified<TDBTAB>>		m_data;										// Êı¾İ
-		data_modified<TDBTAB>*						m_dbdata = nullptr;							// m_id !=nguid::make() ´ËÖµÓĞĞ§
-		bool										m_load = false;								// ÊÇ·ñ¼ÓÔØÍê³É			
-		actor_manage_dbclient*						m_manage_dbclient = nullptr;				// ²Ù×÷·â×°
-		actor_base*									m_actor = nullptr;							// ËŞÖ÷actor
-		std::vector<int64_t>						m_dellist;									// É¾³ıÁĞ±í
-		std::string									m_name = tools::type_name<type_ndbclient>();// Ö÷Òªµ÷ÊÔĞèÒªÖªµÀTACTORµÄÃû×Ö
+		tab_dbload*									m_tab = nullptr;							// åŠ è½½"è¡¨é…ç½®æ•°æ®åŠ è½½"
+		nmodified<TDBTAB>							m_modified;									// è®°å½•å“ªäº›æ•°æ®è¢«ä¿®æ”¹
+		nguid										m_id = nguid::make();						// æ•°æ®id(m_id == nguid::make() åŠ è½½å…¨éƒ¨æ•°æ®)
+		std::map<nguid, data_modified<TDBTAB>>		m_data;										// æ•°æ®
+		data_modified<TDBTAB>*						m_dbdata = nullptr;							// m_id !=nguid::make() æ­¤å€¼æœ‰æ•ˆ
+		bool										m_load = false;								// æ˜¯å¦åŠ è½½å®Œæˆ			
+		actor_manage_dbclient*						m_manage_dbclient = nullptr;				// æ“ä½œå°è£…
+		actor_base*									m_actor = nullptr;							// å®¿ä¸»actor
+		std::vector<int64_t>						m_dellist;									// åˆ é™¤åˆ—è¡¨
+		std::string									m_name = tools::type_name<type_ndbclient>();// ä¸»è¦è°ƒè¯•éœ€è¦çŸ¥é“TACTORçš„åå­—
 	public:
-		// # Ïòactor_clientÉèÖÃÁ¬½ÓºóÊÂ¼ş
-		// # µ±Óëdb·şÎñÆ÷·¢ÉúÁ¬½ÓÊ±´¥·¢¼ÓÔØÊı¾İÊÂ¼ş
+		// # å‘actor_clientè®¾ç½®è¿æ¥åäº‹ä»¶
+		// # å½“ä¸dbæœåŠ¡å™¨å‘ç”Ÿè¿æ¥æ—¶è§¦å‘åŠ è½½æ•°æ®äº‹ä»¶
 		void load() final
 		{
 			const tab_servers* tab = ttab_servers::instance().const_tab();
@@ -241,28 +241,28 @@ namespace ngl
 			actor::send_actor(lclientguid, m_actor->guid(), pro);
 		}
 	private:
-		// # ¼ÓÔØÊı¾İ
+		// # åŠ è½½æ•°æ®
 		void init_load()
 		{
 			log_error()->print("ndbclient init_load [{}]", m_name);
 			load();
 		}
 
-		// # db½áµãµÄid
+		// # dbç»“ç‚¹çš„id
 		i32_actordataid dbnodeid()
 		{
 			const tab_servers* tab = ttab_servers::instance().const_tab();
 			return nnodeid::nodeid(tab->m_db, e_default_tcount);
 		}
 
-		// # »ñÈ¡db actorµÄguid
+		// # è·å–db actorçš„guid
 		inline i64_actorid dbguid()
 		{
 			ENUM_ACTOR ltype = nactor_type<actor_db<DBTYPE, TDBTAB>>::type();
 			return nguid::make(ltype, tab_self_area, nguid::none_actordataid());
 		}
 
-		// # ¼ÓÔØÊı¾İ
+		// # åŠ è½½æ•°æ®
 		void loaddb(const nguid& aid)
 		{
 			np_actordb_load<DBTYPE, TDBTAB> ldata;
@@ -297,14 +297,14 @@ namespace ngl
 			m_id = aid;
 		}
 
-		// # ÉèÖÃ³ÖÓĞ´ËÊı¾İµÄactor
+		// # è®¾ç½®æŒæœ‰æ­¤æ•°æ®çš„actor
 		void set_actor(actor_base* aactor)
 		{
 			m_manage_dbclient = aactor->manage_dbclient();
 			m_actor = aactor;
 		}
 
-		// # »ñÈ¡Êı¾İ
+		// # è·å–æ•°æ®
 		const std::map<nguid, data_modified<TDBTAB>>& get_data()
 		{ 
 			return m_data; 
@@ -315,7 +315,7 @@ namespace ngl
 			return m_data;
 		}
 
-		// # »ñÈ¡nguidÊı¾İ
+		// # è·å–nguidæ•°æ®
 		data_modified<TDBTAB>* get_data(const nguid& aid)
 		{
 			if (aid == m_id && m_id != nguid::make())
@@ -334,7 +334,7 @@ namespace ngl
 			return &ldata;
 		}
 
-		// # »ñÈ¡Êı¾İ
+		// # è·å–æ•°æ®
 		data_modified<TDBTAB>* get_dbdata()
 		{
 			return m_dbdata;
@@ -421,7 +421,7 @@ namespace ngl
 				if (lpdata != nullptr && lpdata->is_modified())
 				{
 					pro.add(aid, *lpdata->getconst(false));
-					// # Çå¿Õ±êÖ¾Î» 
+					// # æ¸…ç©ºæ ‡å¿—ä½ 
 					lpdata->clear_modified();
 				}			
 			}
@@ -433,13 +433,13 @@ namespace ngl
 					lpdata = tools::findmap(m_data, nguid(lactorid));
 					pro.add(lactorid, *lpdata->getconst(false));
 				}
-				// # Çå¿Õ±êÖ¾Î» 
+				// # æ¸…ç©ºæ ‡å¿—ä½ 
 				lmodified.clear();
 			}
 			if (!pro.empty())
 			{
 				log_error()->print("ndbclient<{}> save {}", m_name, aid);
-				// # ÏÈĞòÁĞ»¯ ÔÙÈÃactor_clientÈ·ÈÏÎ»ÖÃ
+				// # å…ˆåºåˆ—åŒ– å†è®©actor_clientç¡®è®¤ä½ç½®
 				i64_actorid lactorid = dbguid();
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
@@ -447,7 +447,7 @@ namespace ngl
 					log_error()->print("ndbclient<{}> actor_base::net_pack fail", m_name);
 					return;
 				}
-				// # Òì²½·¢ËÍpack
+				// # å¼‚æ­¥å‘é€pack
 				actor::send_actor(lactorid, lpack);
 			}
 		}
@@ -498,7 +498,7 @@ namespace ngl
 			pro.m_data.swap(m_dellist);
 			if (pro.m_data.empty() == false)
 			{
-				// # ÏÈĞòÁĞ»¯ ÔÙÈÃactor_clientÈ·ÈÏÎ»ÖÃ
+				// # å…ˆåºåˆ—åŒ– å†è®©actor_clientç¡®è®¤ä½ç½®
 				i64_actorid lactorid = dbguid();
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
@@ -506,7 +506,7 @@ namespace ngl
 					log_error()->print("ndbclient<{}> actor_base::net_pack fail", m_name);
 					return;
 				}
-				// # Òì²½·¢ËÍpack
+				// # å¼‚æ­¥å‘é€pack
 				actor::send_actor(lactorid, lpack);
 			}
 		}
@@ -569,8 +569,8 @@ namespace ngl
 		using tmap_dbclient = std::map<pbdb::ENUM_DB, ndbclient_base*>;
 		actor_base*											m_actor = nullptr;
 		tmap_dbclient										m_typedbclientmap;
-		tmap_dbclient										m_dbclientmap;						//ÒÑ¾­¼ÓÔØÍêµÄ
-		std::function<void(pbdb::ENUM_DB, enum_dbstat)>		m_loadfinishfun;					//bool dbÊı¾İ¿âÊÇ·ñÓĞ¸ÃÊı¾İ
+		tmap_dbclient										m_dbclientmap;						//å·²ç»åŠ è½½å®Œçš„
+		std::function<void(pbdb::ENUM_DB, enum_dbstat)>		m_loadfinishfun;					//bool dbæ•°æ®åº“æ˜¯å¦æœ‰è¯¥æ•°æ®
 
 		void foreach_function(const std::function<void(ndbclient_base*)>& afun)
 		{
@@ -634,19 +634,19 @@ namespace ngl
 	
 			m_actor->db_component_init_data();
 
-			// 1¡¢½«Êı¾İĞŞ¸ÄÎª[²Ã¼ôĞŞ¸Ä]
+			// 1ã€å°†æ•°æ®ä¿®æ”¹ä¸º[è£å‰ªä¿®æ”¹]
 			for (auto& [_enumdb, _npdbclient] : m_dbclientmap)
 			{
 				_npdbclient->clear_modified();
 			}
 
-			// 2¡¢Êı¾İÑ¹µ¹½Å±¾ÖĞ
+			// 2ã€æ•°æ®å‹å€’è„šæœ¬ä¸­
 			nscript_push_data();
 
-			// 3¡¢×öÒ»Ğ©³õÊ¼»¯Ö®ÀàµÄ¹¤×÷,²¢ÇÒĞèÒªµÄ»°½«Æä·¢ËÍ¸ø¿Í»§¶Ë
-			// 3.1 c++ÄÚ²¿²Ù×÷
+			// 3ã€åšä¸€äº›åˆå§‹åŒ–ä¹‹ç±»çš„å·¥ä½œ,å¹¶ä¸”éœ€è¦çš„è¯å°†å…¶å‘é€ç»™å®¢æˆ·ç«¯
+			// 3.1 c++å†…éƒ¨æ“ä½œ
 			m_loadfinishfun(pbdb::ENUM_DB_ALL, astat);
-			// 3.2 Í¨Öª½Å±¾
+			// 3.2 é€šçŸ¥è„šæœ¬
 			m_actor->nscript_db_loadfinish();
 			return true;
 		}

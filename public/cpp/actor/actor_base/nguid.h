@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -23,10 +23,10 @@
 namespace ngl
 {
 	///////////////////////////////////
-	// actorÎ¨Ò»id(64bit)			 //
-	// 16Î»			ÀàĞÍENUM_ACTOR	 //
-	// 16Î»			Çø·şid			 //
-	// 32Î»			Êı¾İid			 //
+	// actorå”¯ä¸€id(64bit)			 //
+	// 16ä½			ç±»å‹ENUM_ACTOR	 //
+	// 16ä½			åŒºæœid			 //
+	// 32ä½			æ•°æ®id			 //
 	// ############ 64 bit ######### //
 	// #actor_type###areaid###id#### //
 	// #16bit########16bit####32bit# //
@@ -57,37 +57,37 @@ namespace ngl
 			m_value1[1] = aid;
 		}
 
-		//# ¿ÉÒÔ½«unionÇ¿×ªÎªi64_actoridÖµ
+		//# å¯ä»¥å°†unionå¼ºè½¬ä¸ºi64_actoridå€¼
 		inline operator i64_actorid ()const
 		{
 			return m_id;
 		}
 
-		//# »ñÈ¡guididÖµ
+		//# è·å–guididå€¼
 		inline i64_actorid id()const
 		{
 			return m_id;
 		}
 
-		//# »ñÈ¡ENUM_ACTORÀàĞÍ
+		//# è·å–ENUM_ACTORç±»å‹
 		inline ENUM_ACTOR type()const
 		{
 			return (ENUM_ACTOR)m_value2[0];
 		}
 
-		//# »ñÈ¡Êı¾İid
+		//# è·å–æ•°æ®id
 		inline i32_actordataid actordataid()const
 		{
 			return m_value1[1];
 		}
 
-		//# »ñÈ¡Çø·ş
+		//# è·å–åŒºæœ
 		inline i16_area area()const
 		{
 			return m_value2[1];
 		}
 
-		//# Í¨¹ınactortype::enum2name»ñÈ¡Ã¶¾Ù¶ÔÓ¦×Ö·û´®
+		//# é€šè¿‡nactortype::enum2nameè·å–æšä¸¾å¯¹åº”å­—ç¬¦ä¸²
 		static const char* name(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
@@ -95,113 +95,113 @@ namespace ngl
 			return em<ENUM_ACTOR>::name((ENUM_ACTOR)ltype);
 		}
 
-		//# ¸ù¾İÀàĞÍ¡¢Çø·ş¡¢Êı¾İid´´½¨Ò»¸öi64_actorid
+		//# æ ¹æ®ç±»å‹ã€åŒºæœã€æ•°æ®idåˆ›å»ºä¸€ä¸ªi64_actorid
 		static i64_actorid make(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid)
 		{
 			nguid lguid(atype, aareaid, aid);
 			return (i64_actorid)lguid;
 		}
 
-		//# ¸ù¾İÀàĞÍ¡¢Êı¾İid¡¢Çø·şÎªnone_area()´´½¨Ò»¸öi64_actorid
+		//# æ ¹æ®ç±»å‹ã€æ•°æ®idã€åŒºæœä¸ºnone_area()åˆ›å»ºä¸€ä¸ªi64_actorid
 		static i64_actorid make(ENUM_ACTOR atype, i32_actordataid aid)
 		{
 			nguid lguid(atype, none_area(), aid);
 			return (i64_actorid)lguid;
 		}
 
-		//# ¸ù¾İÀàĞÍ¡¢Êı¾İidÎªnone_actordataid()¡¢Çø·şÎªnone_area()´´½¨Ò»¸öi64_actorid
+		//# æ ¹æ®ç±»å‹ã€æ•°æ®idä¸ºnone_actordataid()ã€åŒºæœä¸ºnone_area()åˆ›å»ºä¸€ä¸ªi64_actorid
 		static i64_actorid make(ENUM_ACTOR atype)
 		{
 			nguid lguid(atype, none_area(), none_actordataid());
 			return (i64_actorid)lguid;
 		}
 
-		//# ¸ù¾İÀàĞÍnone_type()¡¢Çø·şÎªnone_area()Êı¾İidÎªnone_actordataid()´´½¨Ò»¸öi64_actorid
+		//# æ ¹æ®ç±»å‹none_type()ã€åŒºæœä¸ºnone_area()æ•°æ®idä¸ºnone_actordataid()åˆ›å»ºä¸€ä¸ªi64_actorid
 		static i64_actorid make()
 		{
 			nguid lguid(none_type(), none_area(), none_actordataid());
 			return (i64_actorid)lguid;
 		}
 
-		//# ¸ù¾İÀàĞÍ¡¢Çø·şÎªtab_self_area none_actordataid()¡¢Êı¾İidÎªnone_actordataid´´½¨Ò»¸öi64_actorid
+		//# æ ¹æ®ç±»å‹ã€åŒºæœä¸ºtab_self_area none_actordataid()ã€æ•°æ®idä¸ºnone_actordataidåˆ›å»ºä¸€ä¸ªi64_actorid
 		static i64_actorid make_self(ENUM_ACTOR atype);
 
-		//# Ìæ»»type
+		//# æ›¿æ¢type
 		static i64_actorid make_type(i64_actorid aactorid, ENUM_ACTOR atype)
 		{
 			nguid lguid(aactorid);
 			return lguid.make_type(atype);
 		}
 
-		//# Ìæ»»area
+		//# æ›¿æ¢area
 		static i64_actorid make_area(i64_actorid aactorid, i16_area aareaid)
 		{
 			nguid lguid(aactorid);
 			return lguid.make_area(aareaid);
 		}
 
-		//# Ìæ»»actordataid
+		//# æ›¿æ¢actordataid
 		static i64_actorid make_actordataid(i64_actorid aactorid, i32_actordataid aid)
 		{
 			nguid lguid(aactorid);
 			return lguid.make_actordataid(aid);
 		}
 
-		//# Ìæ»»type
+		//# æ›¿æ¢type
 		inline i64_actorid make_type(ENUM_ACTOR atype)
 		{
 			m_value2[0] = atype;
 			return (i64_actorid)(*this);
 		}
 
-		//# Ìæ»»area
+		//# æ›¿æ¢area
 		inline i64_actorid make_area(i16_area aareaid)
 		{
 			m_value2[1] = aareaid;
 			return (i64_actorid)(*this);
 		}
 
-		//# Ìæ»»actordataid
+		//# æ›¿æ¢actordataid
 		inline i64_actorid make_actordataid(i32_actordataid aid)
 		{
 			m_value2[0] = aid;
 			return (i64_actorid)(*this);
 		}
 
-		//# »ñÈ¡actordataid
+		//# è·å–actordataid
 		static i32_actordataid actordataid(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
 			return lguid.actordataid();
 		}
 
-		//# »ñÈ¡type
+		//# è·å–type
 		static i16_actortype type(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
 			return lguid.type();
 		}
 
-		//# »ñÈ¡area
+		//# è·å–area
 		static i16_area area(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
 			return lguid.area();
 		}
 
-		//# send ·¢ËÍ¸øÍ¬ÀàĞÍµÄËùÓĞactor
+		//# send å‘é€ç»™åŒç±»å‹çš„æ‰€æœ‰actor
 		static i64_actorid moreactor(ENUM_ACTOR atype)
 		{
 			return make(atype, none_area(), none_actordataid());
 		}
 
-		//# ºÍÎŞ²Îmake()Ò»ÖÂ
+		//# å’Œæ— å‚make()ä¸€è‡´
 		static i64_actorid moreactor()
 		{
 			return make(none_type(), none_area(), none_actordataid());
 		}
 
-		//# ºÍÎŞ²Îmake()Ò»ÖÂ
+		//# å’Œæ— å‚make()ä¸€è‡´
 		inline void none()
 		{
 			m_value2[0] = none_type();
@@ -209,7 +209,7 @@ namespace ngl
 			m_value1[1] = none_actordataid();
 		}
 
-		//# ÊÇ·ñ·¢¸øÍ¬ÀàĞÍµÄËùÓĞactor
+		//# æ˜¯å¦å‘ç»™åŒç±»å‹çš„æ‰€æœ‰actor
 		static bool is_moreactor(i64_actorid actorid, ENUM_ACTOR atype)
 		{
 			nguid lguid(actorid);
@@ -222,7 +222,7 @@ namespace ngl
 			return (i64_actorid)(lguid) == (i64_actorid)(*this);
 		}
 
-		//# actor type ÊÇ·ñÎŞĞ§
+		//# actor type æ˜¯å¦æ— æ•ˆ
 		static bool is_actortypenone(i64_actorid actorid)
 		{
 			nguid lguid(actorid);
@@ -234,45 +234,45 @@ namespace ngl
 			return type() == none<i16_actortype>();
 		}
 
-		//# actor area ÊÇ·ñÎŞĞ§
+		//# actor area æ˜¯å¦æ— æ•ˆ
 		static bool is_actorareanone(i64_actorid actorid)
 		{
 			nguid lguid(actorid);
 			return lguid.is_actorareanone();
 		}
 
-		//# actor area ÊÇ·ñÎŞĞ§
+		//# actor area æ˜¯å¦æ— æ•ˆ
 		inline bool is_actorareanone()const
 		{
 			return area() == none<i16_area>();
 		}
 
-		//# actor id ÊÇ·ñÎŞĞ§
+		//# actor id æ˜¯å¦æ— æ•ˆ
 		static bool is_actoridnone(i64_actorid actorid)
 		{
 			nguid lguid(actorid);
 			return lguid.is_actoridnone();
 		}
 
-		//# actor id ÊÇ·ñÎŞĞ§
+		//# actor id æ˜¯å¦æ— æ•ˆ
 		inline bool is_actoridnone()const
 		{
 			return actordataid() == none<i32_actordataid>();
 		}
 
-		//# ÎŞĞ§area
+		//# æ— æ•ˆarea
 		static i16_area none_area()
 		{
 			return none<i16_area>();
 		}
 
-		//# ÎŞĞ§type
+		//# æ— æ•ˆtype
 		static ENUM_ACTOR none_type()
 		{
 			return none<ENUM_ACTOR>();
 		}
 
-		//# ÎŞĞ§dataid
+		//# æ— æ•ˆdataid
 		static i32_actordataid none_actordataid()
 		{
 			return none<i32_actordataid>();

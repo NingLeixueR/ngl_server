@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -19,17 +19,17 @@
 
 extern "C"
 {
-	// # ÒÔ#ºÅ·Ö¸îµÄnguid´®(actortype#area#dataid)×ª»»Îªint64
+	// # ä»¥#å·åˆ†å‰²çš„nguidä¸²(actortype#area#dataid)è½¬æ¢ä¸ºint64
 	// # parm 1 nguid(actor_type#areaid#dataid)
 	extern int nguidstr2int64(lua_State* L);
 
-	// # lua·¢ËÍĞ­Òé¸ø¿Í»§¶Ë
+	// # luaå‘é€åè®®ç»™å®¢æˆ·ç«¯
 	// # parm 1 nguid(actor_type#areaid#dataid)
 	// # parm 2 msgname
 	// # parm 3 lua table
 	extern int send_client(lua_State* L);
 
-	// # lua·¢ËÍĞ­Òé¸øÆäËûactor
+	// # luaå‘é€åè®®ç»™å…¶ä»–actor
 	// # parm 1 nguid(actor_type#areaid#dataid)
 	// # parm 2 msgname
 	// # parm 3 lua table
@@ -51,72 +51,72 @@ namespace ngl
 	class nscript
 	{
 	public:
-		// # ½Å±¾ÀàĞÍ
+		// # è„šæœ¬ç±»å‹
 		static enscript type()
 		{
 			return ESCRIPT;
 		}
 
-		// # ³õÊ¼»¯½Å±¾Êı¾İ
+		// # åˆå§‹åŒ–è„šæœ¬æ•°æ®
 		template <typename T>
 		bool init_sysdata(const T& asys)
 		{
 			return false;
 		}
 
-		// # ³õÊ¼»¯¼ÓÔØ½Å±¾ÎÄ¼ş
+		// # åˆå§‹åŒ–åŠ è½½è„šæœ¬æ–‡ä»¶
 		bool init(const char* asubdirectory, const char* ascript)
 		{
 			return false;
 		}
 
-		// # Ñ¹ÈëÊı¾İ
+		// # å‹å…¥æ•°æ®
 		template <typename T>
 		bool data_push(const char* aname, const char* asource, const T& adata, bool aedit)
 		{
 			return false;
 		}
 
-		// # dbÄ£¿é¼ÓÔØÍê³É,Í¨Öª½Å±¾Ä£¿é
+		// # dbæ¨¡å—åŠ è½½å®Œæˆ,é€šçŸ¥è„šæœ¬æ¨¡å—
 		bool db_loadfinish()
 		{
 			return false;
 		}
 
-		// # ´¦ÀíÊı¾İ
+		// # å¤„ç†æ•°æ®
 		template <typename T>
 		bool handle(const char* aname, const T& adata)
 		{
 			return false;
 		}
 
-		// # Êı¾İ±»É¾³ı
+		// # æ•°æ®è¢«åˆ é™¤
 		bool data_del(const char* aname, int64_t adataid)
 		{
 			return false;
 		}
 
-		// # ¼ì²éÊı¾İÊÇ·ñ±»ĞŞ¸Ä
+		// # æ£€æŸ¥æ•°æ®æ˜¯å¦è¢«ä¿®æ”¹
 		template <typename T>
 		bool data_checkout(const char* aname, i64_actorid adataid, T& adata)
 		{
 			return false;
 		}
 
-		// # ¼ì²éÊı¾İ×´Ì¬
+		// # æ£€æŸ¥æ•°æ®çŠ¶æ€
 		template <typename T>
 		bool data_checkout(const char* aname, std::map<int64_t, T>& adata)
 		{
 			return false;
 		}
 
-		// # ¼ì²éÊı¾İÊÇ·ñ±»É¾³ı
+		// # æ£€æŸ¥æ•°æ®æ˜¯å¦è¢«åˆ é™¤
 		bool data_checkdel(const char* aname, int64_t adataid)
 		{
 			return false;
 		}
 
-		// # ¼ì²éÒ»×éÊı¾İÊÇ·ñ±»É¾³ı
+		// # æ£€æŸ¥ä¸€ç»„æ•°æ®æ˜¯å¦è¢«åˆ é™¤
 		bool data_checkdel(const char* aname, std::vector<int64_t>& adataid)
 		{
 			return false;
@@ -147,7 +147,7 @@ namespace ngl
 		bool init(const char* asubdirectory, const char* ascript)
 		{
 			L = luaL_newstate();
-			luaL_openlibs(L);  // ´ò¿ª±ê×¼¿â
+			luaL_openlibs(L);  // æ‰“å¼€æ ‡å‡†åº“
 			setupluapaths();
 
 			if (luaL_loadfile(L, (sysconfig::lua() + "rfunction.lua").c_str()) || lua_pcall(L, 0, 0, 0))
@@ -202,7 +202,7 @@ namespace ngl
 			return lfun.call();
 		}
 
-		// # ¼ì²éÊı¾İÊÇ·ñ±»ĞŞ¸Ä
+		// # æ£€æŸ¥æ•°æ®æ˜¯å¦è¢«ä¿®æ”¹
 		template <typename T>
 		bool data_checkout(const char* aname, i64_actorid adataid, T& adata)
 		{
@@ -236,7 +236,7 @@ namespace ngl
 			return lfun.call();
 		}
 
-		// # ¼ì²éÊı¾İÊÇ·ñ±»É¾³ı
+		// # æ£€æŸ¥æ•°æ®æ˜¯å¦è¢«åˆ é™¤
 		bool data_checkdel(const char* aname, i64_actorid adataid)
 		{
 			luafunction lfun(L, m_scriptpath.c_str(), "data_checkdelbyid");

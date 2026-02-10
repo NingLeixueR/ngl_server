@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -30,59 +30,59 @@ namespace ngl
 	class aoi
 	{
 	protected:
-		int32_t m_nx;  // xÖá¸ñ×ÓÊıÁ¿
-		int32_t m_ny;  // yÖá¸ñ×ÓÊıÁ¿
-		int32_t m_w;   // xÖá¿í¶È
-		int32_t m_l;   // yÖá³¤¶È
+		int32_t m_nx;  // xè½´æ ¼å­æ•°é‡
+		int32_t m_ny;  // yè½´æ ¼å­æ•°é‡
+		int32_t m_w;   // xè½´å®½åº¦
+		int32_t m_l;   // yè½´é•¿åº¦
 	public:
 		virtual void init(int32_t aw, int32_t al, int32_t anx, int32_t any);
 
-		// xÖá¸ñ×ÓÊıÁ¿
+		// xè½´æ ¼å­æ•°é‡
 		int32_t nx();
 
-		// yÖá¸ñ×ÓÊıÁ¿
+		// yè½´æ ¼å­æ•°é‡
 		int32_t ny();
 
-		// ¸ñ×ÓÊıÁ¿
+		// æ ¼å­æ•°é‡
 		int32_t grid_count();
 
-		// ¸ñ×Ó¿í¶È
+		// æ ¼å­å®½åº¦
 		int32_t grid_w();
 
-		// ¸ñ×Ó³¤¶È
+		// æ ¼å­é•¿åº¦
 		int32_t grid_l();
 
-		// Í¨¹ı¸ñ×Ó±àºÅ»ñÈ¡ idx
+		// é€šè¿‡æ ¼å­ç¼–å·è·å– idx
 		int32_t idx(uint32_t aid);
 
-		// Í¨¹ı¸ñ×Ó±àºÅ»ñÈ¡ idy
+		// é€šè¿‡æ ¼å­ç¼–å·è·å– idy
 		int32_t idy(uint32_t aid);
 
-		// Í¨¹ıidx,idy»ñÈ¡ ¸ñ×Ó±àºÅ
+		// é€šè¿‡idx,idyè·å– æ ¼å­ç¼–å·
 		int32_t id(uint32_t aidx, uint32_t aidy);
 
-		// Í¨¹ıx yµÄ×ø±ê¼ÆËã¸ñ×Ó±àºÅ
+		// é€šè¿‡x yçš„åæ ‡è®¡ç®—æ ¼å­ç¼–å·
 		int32_t idbyxy(float ax, float ay);
 
-		// »ñÈ¡¸ñ×ÓÖÜÎ§µÄ9¹¬¸ñ
+		// è·å–æ ¼å­å‘¨å›´çš„9å®«æ ¼
 		void idaround_list(int32_t aid, std::set<int32_t>& avec);
 
-		// ¸ù¾İ¸ñ×Ó±àºÅ¼ÆËãÖÜÎ§¾Å¹¬¸ñ±àºÅ
+		// æ ¹æ®æ ¼å­ç¼–å·è®¡ç®—å‘¨å›´ä¹å®«æ ¼ç¼–å·
 		void idaround_foreach(int32_t aid, const std::function<void(int32_t)>& afun);
 
-		// ÔÚ¸ñ×ÓÖÜÎ§²éÕÒ Èç¹ûÕÒµ½ÔòÍË³ö
+		// åœ¨æ ¼å­å‘¨å›´æŸ¥æ‰¾ å¦‚æœæ‰¾åˆ°åˆ™é€€å‡º
 		void idaround_find(int32_t aid, const std::function<bool(int32_t)>& afun);
 
-		// ¼ÆËãÁ½µã¼ä¾àÀë
+		// è®¡ç®—ä¸¤ç‚¹é—´è·ç¦»
 		static float distance(aoi* aaoi, int aid1, int aid2);
 
-		// ¼ÆËãÁ½µã¼ä¾àÀë
+		// è®¡ç®—ä¸¤ç‚¹é—´è·ç¦»
 		static float distance(float ax1, float ay1, float ax2, float ay2);
 
-		// ¼ÆËãÁ½µã¼ä¾àÀë
+		// è®¡ç®—ä¸¤ç‚¹é—´è·ç¦»
 		static float distance(const pbdb::VECTOR2& apos1, const pbdb::VECTOR2& apos2);
 
-		// ¼ÆËãÁ½µã¼ä¾àÀë
+		// è®¡ç®—ä¸¤ç‚¹é—´è·ç¦»
 		static float distance(const pbdb::VECTOR3& apos1, const pbdb::VECTOR3& apos2);
 	};
 }// namespace ngl

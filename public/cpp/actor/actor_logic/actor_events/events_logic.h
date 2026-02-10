@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -17,18 +17,18 @@
 
 namespace ngl
 {
-	// ÊÂ¼şÃ¶¾ÙÀàĞÍ
+	// äº‹ä»¶æšä¸¾ç±»å‹
 	enum eevents_logic
 	{
-		eevents_logic_null,				// Î´¸³Öµ
-		eevents_logic_rolelogin,		// Íæ¼ÒµÇÂ½
-		eevents_logic_roleoffline,		// Íæ¼ÒÏÂÏß
-		eevents_logic_rolelevelchange,	// Íæ¼ÒµÈ¼¶·¢Éú±ä»¯
-		eevents_logic_rolegoldchange,	// Íæ¼Ò½ğ±Ò·¢Éú±ä»¯
+		eevents_logic_null,				// æœªèµ‹å€¼
+		eevents_logic_rolelogin,		// ç©å®¶ç™»é™†
+		eevents_logic_roleoffline,		// ç©å®¶ä¸‹çº¿
+		eevents_logic_rolelevelchange,	// ç©å®¶ç­‰çº§å‘ç”Ÿå˜åŒ–
+		eevents_logic_rolegoldchange,	// ç©å®¶é‡‘å¸å‘ç”Ÿå˜åŒ–
 		eevents_logic_count,
 	};
 
-	// ÊÂ¼şÀàĞÍ
+	// äº‹ä»¶ç±»å‹
 	class np_eevents_logic
 	{
 	public:

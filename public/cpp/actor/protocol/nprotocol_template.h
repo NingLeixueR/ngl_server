@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -36,7 +36,7 @@
 namespace ngl
 {
 	// [db client -> db server]
-	// ´Ódb server¼ÓÔØÊı¾İ
+	// ä»db serveråŠ è½½æ•°æ®
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_load
 	{
@@ -47,9 +47,9 @@ namespace ngl
 
 	enum enum_dbstat
 	{
-		enum_dbstat_fail = -1,		// ¼ÓÔØÊ§°Ü
-		enum_dbstat_success,		// Êı¾İ¿âÖĞÓĞÊı¾İ,¼ÓÔØ³É¹¦
-		enum_dbstat_create,			// Êı¾İ¿âÖĞÃ»ÓĞÊı¾İ,µ«ÊÇ´´½¨ÁËĞÂµÄÊı¾İ
+		enum_dbstat_fail = -1,		// åŠ è½½å¤±è´¥
+		enum_dbstat_success,		// æ•°æ®åº“ä¸­æœ‰æ•°æ®,åŠ è½½æˆåŠŸ
+		enum_dbstat_create,			// æ•°æ®åº“ä¸­æ²¡æœ‰æ•°æ®,ä½†æ˜¯åˆ›å»ºäº†æ–°çš„æ•°æ®
 	};
 
 	template <pbdb::ENUM_DB DBTYPE, typename T>
@@ -57,7 +57,7 @@ namespace ngl
 	{
 		nguid				m_id = -1;			// np_actordb_load.m_id 
 		std::map<nguid, T>	m_data;
-		//if(m_id != nguid::make())m_stat.enum_dbstat_create²ÅÓĞÒâÒå
+		//if(m_id != nguid::make())m_stat.enum_dbstat_createæ‰æœ‰æ„ä¹‰
 		enum_dbstat			m_stat = enum_dbstat_fail;
 		bool				m_over = true;
 
@@ -70,7 +70,7 @@ namespace ngl
 	};
 
 	// [db client -> db server]
-	// ±£´æÊı¾İ
+	// ä¿å­˜æ•°æ®
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_save
 	{
@@ -89,7 +89,7 @@ namespace ngl
 		DEF_PROTOCOL(m_data)
 	};
 
-	// É¾³ıÊı¾İ
+	// åˆ é™¤æ•°æ®
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_delete
 	{
@@ -98,7 +98,7 @@ namespace ngl
 		DPROTOCOL(actor_db_delete<T>, m_data)
 	};
 
-	// ±£´æÊı¾İ»º´æÁĞ±í
+	// ä¿å­˜æ•°æ®ç¼“å­˜åˆ—è¡¨
 	enum enum_cache_list
 	{
 		enum_clist_save = 1,
@@ -113,7 +113,7 @@ namespace ngl
 		DPROTOCOL(actor_time_db_cache<T>, m_ls)
 	};
 
-	// Ä£¿é¼ä×ª·¢
+	// æ¨¡å—é—´è½¬å‘
 	template <typename T>
 	struct np_actormodule_forward
 	{
@@ -278,7 +278,7 @@ namespace ngl
 		DPROTOCOL(np_actor_forward, m_data)
 	};
 	
-	// Èº·¢Êı¾İ¸øÆäËûactor
+	// ç¾¤å‘æ•°æ®ç»™å…¶ä»–actor
 	template <typename T>
 	struct np_mass_actor
 	{
@@ -320,7 +320,7 @@ namespace ngl
 	};
 
 
-	// actor ÇĞ»»½ø³Ì
+	// actor åˆ‡æ¢è¿›ç¨‹
 	//ACTOR_SPROCESS_ROLE
 	template <typename T>
 	struct np_actorswitch_process
@@ -335,26 +335,26 @@ namespace ngl
 
 	enum epb_field
 	{
-		epb_field_read,		    // ¶Á
-		epb_field_write,	    // Ğ´(¼ÈÈ»¿ÉĞ´±Ø¶¨Ò²¿É¶Á)
+		epb_field_read,		    // è¯»
+		epb_field_write,	    // å†™(æ—¢ç„¶å¯å†™å¿…å®šä¹Ÿå¯è¯»)
 	};
 
-	// ×¢²á
+	// æ³¨å†Œ
 	template <typename TDATA>
 	struct np_channel_register
 	{
 		using T = TDATA;
-		std::string		m_msg;									// µ÷ÊÔ²é¿´ĞÅÏ¢
-		i64_actorid		m_actorid = nguid::make();				// ×Ó½Úµãid
-		// ½áµãÊÇ·ñĞ´È«²¿½áµã
-		bool m_read = false;	//½áµãÊÇ[¶Á/Ğ´]
-		bool m_all = false;		// ÊÇ·ñ¿ÉÒÔ²Ù×÷È«²¿½áµã
-		//[[ m_all == false ÏÂÃæÊı¾İÓĞĞ§
-		std::set<i64_actorid> m_writeids;						// Ğ´ÄÄĞ©Êı¾İ
-		std::set<i64_actorid> m_readids;						// Ğ´ÄÄĞ©Êı¾İ
+		std::string		m_msg;									// è°ƒè¯•æŸ¥çœ‹ä¿¡æ¯
+		i64_actorid		m_actorid = nguid::make();				// å­èŠ‚ç‚¹id
+		// ç»“ç‚¹æ˜¯å¦å†™å…¨éƒ¨ç»“ç‚¹
+		bool m_read = false;	//ç»“ç‚¹æ˜¯[è¯»/å†™]
+		bool m_all = false;		// æ˜¯å¦å¯ä»¥æ“ä½œå…¨éƒ¨ç»“ç‚¹
+		//[[ m_all == false ä¸‹é¢æ•°æ®æœ‰æ•ˆ
+		std::set<i64_actorid> m_writeids;						// å†™å“ªäº›æ•°æ®
+		std::set<i64_actorid> m_readids;						// å†™å“ªäº›æ•°æ®
 		//]]
 
-		std::map<i32_fieldnumber, epb_field> m_field;			// ¿ÉĞŞ¸Ä/¿É¶ÁÄÄĞ©×Ö¶Î±àºÅ
+		std::map<i32_fieldnumber, epb_field> m_field;			// å¯ä¿®æ”¹/å¯è¯»å“ªäº›å­—æ®µç¼–å·
 
 		DPROTOCOL(np_channel_register, m_msg, m_actorid, m_read, m_all, m_writeids, m_readids, m_field)
 	};
@@ -374,15 +374,15 @@ namespace ngl
 	struct np_channel_register_reply
 	{
 		using T = TDATA;
-		std::string m_msg;											// µ÷ÊÔ²é¿´ĞÅÏ¢
-		i64_actorid m_actorid;										// ×Ó½Úµãid
+		std::string m_msg;											// è°ƒè¯•æŸ¥çœ‹ä¿¡æ¯
+		i64_actorid m_actorid;										// å­èŠ‚ç‚¹id
 
-		std::set<i64_nodeid> m_nodereadalls;						// ¶ÁÈ«²¿Êı¾İµÄ½áµã
-		std::set<i64_nodeid> m_nodewritealls;						// Ğ´È«²¿Êı¾İµÄ½áµã
+		std::set<i64_nodeid> m_nodereadalls;						// è¯»å…¨éƒ¨æ•°æ®çš„ç»“ç‚¹
+		std::set<i64_nodeid> m_nodewritealls;						// å†™å…¨éƒ¨æ•°æ®çš„ç»“ç‚¹
 
 		std::map<i64_nodeid, nsp_care> m_care;
 
-		// ½áµã¿ÉĞŞ¸ÄÄÄĞ©×Ö¶Î±àºÅ
+		// ç»“ç‚¹å¯ä¿®æ”¹å“ªäº›å­—æ®µç¼–å·
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>> m_node_fieldnumbers;
 
 		DPROTOCOL(np_channel_register_reply, m_msg, m_actorid, m_nodereadalls, m_nodewritealls, m_care, m_node_fieldnumbers)
@@ -392,22 +392,22 @@ namespace ngl
 	struct np_channel_dataid_sync
 	{
 		using T = TDATA;
-		std::string m_msg;										// µ÷ÊÔ²é¿´ĞÅÏ¢
-		i64_actorid m_actorid = 0;								// Òì±äµÄ×Ó½Úµãid
-		bool		m_read = true;								// ½áµãÊÇ¶ÁÊÇĞ´
-		bool		m_all = false;								// ½áµãÊÇ[¶Á/Ğ´]È«²¿Êı¾İÃ´
+		std::string m_msg;										// è°ƒè¯•æŸ¥çœ‹ä¿¡æ¯
+		i64_actorid m_actorid = 0;								// å¼‚å˜çš„å­èŠ‚ç‚¹id
+		bool		m_read = true;								// ç»“ç‚¹æ˜¯è¯»æ˜¯å†™
+		bool		m_all = false;								// ç»“ç‚¹æ˜¯[è¯»/å†™]å…¨éƒ¨æ•°æ®ä¹ˆ
 		//if (!m_all)
 		//{
-		// ÄÄ²¿·ÖÖ»¶Á¹ØĞÄ
+		// å“ªéƒ¨åˆ†åªè¯»å…³å¿ƒ
 		std::set<i64_dataid> m_readpart;
 		//}
 		//if (!m_all && !m_read)
 		//{
-		// ÄÄ²¿·Ö[¶Á/Ğ´]¹ØĞÄ
+		// å“ªéƒ¨åˆ†[è¯»/å†™]å…³å¿ƒ
 		std::set<i64_dataid> m_writepart;
 		//}
 
-		std::map<i32_fieldnumber, epb_field> m_field;			// ¿ÉĞŞ¸Ä/¿É¶ÁÄÄĞ©×Ö¶Î±àºÅ
+		std::map<i32_fieldnumber, epb_field> m_field;			// å¯ä¿®æ”¹/å¯è¯»å“ªäº›å­—æ®µç¼–å·
 
 		DPROTOCOL(np_channel_dataid_sync, m_msg, m_actorid, m_read, m_all, m_readpart, m_writepart, m_field)
 	};
@@ -416,7 +416,7 @@ namespace ngl
 	struct np_channel_exit
 	{
 		using T = TDATA;
-		std::string				m_msg;							// µ÷ÊÔ²é¿´ĞÅÏ¢
+		std::string				m_msg;							// è°ƒè¯•æŸ¥çœ‹ä¿¡æ¯
 		i64_actorid				m_actorid;
 		DPROTOCOL(np_channel_exit, m_msg, m_actorid)
 	};
@@ -425,12 +425,12 @@ namespace ngl
 	struct np_channel_data
 	{
 		using T = TDATA;
-		std::string m_msg;									// µ÷ÊÔ²é¿´ĞÅÏ¢
-		i64_nodeid m_actorid = 0;							// Ë­ĞŞ¸ÄµÄÊı¾İ
-		bool m_firstsynchronize = false;					// Ê×´ÎÍ¬²½
+		std::string m_msg;									// è°ƒè¯•æŸ¥çœ‹ä¿¡æ¯
+		i64_nodeid m_actorid = 0;							// è°ä¿®æ”¹çš„æ•°æ®
+		bool m_firstsynchronize = false;					// é¦–æ¬¡åŒæ­¥
 		bool m_recvfinish = false;
-		std::map<int64_t, TDATA> m_data;					// 1¡¢Êı¾İÍ¬²½2¡¢Êı¾İĞŞ¸Ä3¡¢Êı¾İÔö¼Ó
-		std::vector<int64_t> m_deldata;						// Êı¾İ±»É¾³ı
+		std::map<int64_t, TDATA> m_data;					// 1ã€æ•°æ®åŒæ­¥2ã€æ•°æ®ä¿®æ”¹3ã€æ•°æ®å¢åŠ 
+		std::vector<int64_t> m_deldata;						// æ•°æ®è¢«åˆ é™¤
 
 		DPROTOCOL(np_channel_data<TDATA>, m_msg, m_actorid, m_firstsynchronize, m_recvfinish, m_data, m_deldata)
 	};
@@ -439,7 +439,7 @@ namespace ngl
 	struct np_channel_check
 	{
 		using T = TDATA;
-		std::string m_msg;									// µ÷ÊÔ²é¿´ĞÅÏ¢
+		std::string m_msg;									// è°ƒè¯•æŸ¥çœ‹ä¿¡æ¯
 		int64_t m_timer;
 		i16_area m_area;
 		DPROTOCOL(np_channel_check, m_msg, m_timer, m_area)
@@ -475,7 +475,7 @@ namespace ngl
 		DPROTOCOL(msg_actor, m_actor_name, m_actor)
 	};
 
-	// # »ñÈ¡actor stat Êı¾İ
+	// # è·å–actor stat æ•°æ®
 	struct msg_actor_stat
 	{
 		

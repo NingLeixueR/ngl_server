@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -24,8 +24,8 @@
 
 namespace ngl
 {
-	// actorÇĞ»»½ø³Ì
-	// actorÄÚ²¿ÁÙÊ±Êı¾İÎŞ·¨Ç¨ÒÆ
+	// actoråˆ‡æ¢è¿›ç¨‹
+	// actorå†…éƒ¨ä¸´æ—¶æ•°æ®æ— æ³•è¿ç§»
 	class actor_create : 
 		public actor
 	{
@@ -46,11 +46,11 @@ namespace ngl
 
 		static i64_actorid actorid(i32_serverid aserverid);
 
-		// # ÔÚÖ¸¶¨[Server]ÉÏ´´½¨[Actor]
+		// # åœ¨æŒ‡å®š[Server]ä¸Šåˆ›å»º[Actor]
 		template <typename T>
 		static void switch_process_send(std::shared_ptr<np_actorswitch_process<T>>& pro)
 		{
-			// # 2 Èç¹ûÊÇactor_role·¢¸øgateway
+			// # 2 å¦‚æœæ˜¯actor_roleå‘ç»™gateway
 			ENUM_ACTOR ltype = (ENUM_ACTOR)nguid::type(pro->m_actor);
 			if (ltype == ENUM_ACTOR::ACTOR_ROLE)
 			{
@@ -59,7 +59,7 @@ namespace ngl
 				i64_actorid lactorgatewayid = nguid::make(ACTOR_GATEWAY, tab_self_area, nnodeid::tcount(lp->m_gatewayid));
 				send_actor(lactorgatewayid, nguid::make(), pro);
 			}
-			// # 3 ·¢¸øÈ¥µÄ½ø³Ì
+			// # 3 å‘ç»™å»çš„è¿›ç¨‹
 			i64_actorid lactortoserverid = actor_create::actorid(nnodeid::tcount(pro->m_toserverid));
 			send_actor(lactortoserverid, nguid::make(), pro);
 		}
@@ -80,7 +80,7 @@ namespace ngl
 
 			if (aserverid > 0)
 			{
-				// # 1 ·¢¸øactorÄ¿Ç°ËùÔÚµÄ½ø³Ì
+				// # 1 å‘ç»™actorç›®å‰æ‰€åœ¨çš„è¿›ç¨‹
 				i64_actorid lcreateactor = actor_create::actorid(nnodeid::tcount(aserverid));
 				send_actor(lcreateactor, nguid::make(), pro);
 			}

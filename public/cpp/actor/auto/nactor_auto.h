@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
@@ -32,15 +32,15 @@ namespace ngl
 	public:
 		using db_actor   = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
 		using db_modular = ndb_modular<TDBTAB_TYPE, TDBTAB, TACTOR>;
-		// ¶©ÔÄ/·¢²¼[Êı¾İ¸±±¾]
+		// è®¢é˜…/å‘å¸ƒ[æ•°æ®å‰¯æœ¬]
 		using nsp_ser		= nsp_server<TDBTAB_TYPE, TACTOR, TDBTAB>;
 		template <typename TDerived>
 		using nsp_cread		= nsp_read<TDerived, TACTOR, TDBTAB>;
 		template <typename TDerived>
 		using nsp_cwrite	= nsp_write<TDerived, TACTOR, TDBTAB>;
 
-		// [aregister == true] Ö÷ÒªÊÇ×¢²áĞ­Òé,ºêÓëÀàĞÍµÄ°ó¶¨
-		// [aregister == false] ÊµÀı»¯db_actor,db serverĞèÒª
+		// [aregister == true] ä¸»è¦æ˜¯æ³¨å†Œåè®®,å®ä¸ç±»å‹çš„ç»‘å®š
+		// [aregister == false] å®ä¾‹åŒ–db_actor,db serveréœ€è¦
 		static void init(bool aregister);
 	};
 
@@ -90,7 +90,7 @@ namespace ngl
 	public:
 		static void tdb_init(bool ainstance);
 
-		// # ¶¨ÒåÔÚnactor_auto.cppÖĞ,ÒòÎª¿ç·şÊÇ¿ÉÑ¡µÄ
+		// # å®šä¹‰åœ¨nactor_auto.cppä¸­,å› ä¸ºè·¨æœæ˜¯å¯é€‰çš„
 		static void tcrossdb_init(bool ainstance);
 	};
 }//namespace ngl

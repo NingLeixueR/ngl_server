@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -26,7 +26,7 @@ namespace ngl
 	struct rank_item
 	{
 		i64_actorid								m_actorid = nguid::make();		// actor id
-		std::map<pbdb::eranklist, rank_pair>	m_data;							// ÊôĞÔÖµ/Ë¢ĞÂÊ±¼ä
+		std::map<pbdb::eranklist, rank_pair>	m_data;							// å±æ€§å€¼/åˆ·æ–°æ—¶é—´
 
 		const pbdb::db_brief* get()const;
 
@@ -127,9 +127,9 @@ namespace ngl
 
 		enum ecompare
 		{
-			eless_bigger	= 1,		// ´óÓÚ
-			eless_less		= -1,		// Ğ¡ÓÚ
-			eless_equal		= 0,		// µÈÓÚ
+			eless_bigger	= 1,		// å¤§äº
+			eless_less		= -1,		// å°äº
+			eless_equal		= 0,		// ç­‰äº
 		};
 
 		ecompare value_compare(int64_t al, int64_t ar)
@@ -145,7 +145,7 @@ namespace ngl
 			return eless_equal;
 		}
 
-		// Öµ±È½Ï 
+		// å€¼æ¯”è¾ƒ 
 		ecompare value_compare(pbdb::eranklist atype, rank_item& ar)
 		{
 			auto itor = ar.m_data.find(atype);
@@ -155,7 +155,7 @@ namespace ngl
 				|| atype == pbdb::eranklist::activity_lv + 1
 				|| atype == pbdb::eranklist::activity_gold + 1
 			)
-			{//ÖµÔ½´óÅÅÃûÔ½¸ß
+			{//å€¼è¶Šå¤§æ’åè¶Šé«˜
 				return ltype;
 			}
 			else

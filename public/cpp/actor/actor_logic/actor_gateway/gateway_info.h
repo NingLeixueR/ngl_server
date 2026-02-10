@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -36,25 +36,25 @@ namespace ngl
 
 		std::map<i16_area, std::map<i32_actordataid, gateway_socket>>& info();
 
-		// # Ö»ÊÇ¶Ï¿ªÁ¬½Ó
+		// # åªæ˜¯æ–­å¼€è¿æ¥
 		void remove_socket(i32_socket asocket);
 
-		// # É¾³ıÁ¬½ÓĞÅÏ¢
+		// # åˆ é™¤è¿æ¥ä¿¡æ¯
 		void remove_actorid(i64_actorid aactorid);
 
-		// # ¸ù¾İareaºÍdataid»ñÈ¡gateway_socket
+		// # æ ¹æ®areaå’Œdataidè·å–gateway_socket
 		gateway_socket* get(i16_area aarea, i32_actordataid aroleid);
 
-		// # ¸ù¾İsocket»ñÈ¡gateway_socket
+		// # æ ¹æ®socketè·å–gateway_socket
 		gateway_socket* get(i32_socket asocket);
 
-		// # ¸ù¾İactorid»ñÈ¡gatewayid
+		// # æ ¹æ®actoridè·å–gatewayid
 		int64_t gatewayid(i64_actorid aid);
 
-		// # ±éÀúËùÓĞsocket
+		// # éå†æ‰€æœ‰socket
 		void foreach(const std::function<void(gateway_socket*)>& afun);
 
-		// # Êı¾İ¸üĞÂ
+		// # æ•°æ®æ›´æ–°
 		void updata(const np_actor_gatewayinfo_updata& adata);
 	};
 }//namespace ngl

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "actor_activity_manage.h"
@@ -28,9 +28,9 @@ namespace ngl
 
 	void activity_rank::finish()
 	{
-		// # ·¢ËÍÅÅĞĞ½±Àø 
-		// ## 1¡¢ÏòrankÄ£¿é·¢ËÍÏûÏ¢£¬À­È¥Íæ¼ÒÅÅĞĞĞÅÏ¢
-		// ## 2¡¢·¢ËÍ½±Àø
+		// # å‘é€æ’è¡Œå¥–åŠ± 
+		// ## 1ã€å‘rankæ¨¡å—å‘é€æ¶ˆæ¯ï¼Œæ‹‰å»ç©å®¶æ’è¡Œä¿¡æ¯
+		// ## 2ã€å‘é€å¥–åŠ±
 		auto pro = std::make_shared<np_get_rank>();
 		pro->m_rankid = m_tab->m_id;
 
@@ -48,7 +48,7 @@ namespace ngl
 			{
 				continue;
 			}
-			// ·¢ËÍÓÊ¼ş
+			// å‘é€é‚®ä»¶
 			std::string lsrc = std::format("activity_rank activityid=[{}] role=[{}] mail=[{}] drop=[{}]", activityid(), nguid(aresponse.m_rolerank[i]), lmailid, lreward);
 			if (!actor_activity_manage::get_drop().use(lreward, 1, aresponse.m_rolerank[i], lsrc, nullptr, lmailid))
 			{

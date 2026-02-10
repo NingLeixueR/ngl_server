@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -29,38 +29,38 @@ namespace ngl
 	class static_task
 	{
 	public:
-		// # ¼ì²éÌõ¼şÊÇ·ñ¶¼Íê³É
+		// # æ£€æŸ¥æ¡ä»¶æ˜¯å¦éƒ½å®Œæˆ
 		static bool check_condition(actor_role* arole, const std::vector<task_condition>& acondition);
 
-		// # »ñÈ¡ÒÑÍê³ÉÈÎÎñ
+		// # è·å–å·²å®Œæˆä»»åŠ¡
 		static google::protobuf::Map<int32_t, pbdb::db_task_complete>& complete(actor_role* arole);
 		static const google::protobuf::Map<int32_t, pbdb::db_task_complete>& const_complete(actor_role* arole);
 
-		// # »ñÈ¡ÕıÔÚÖ´ĞĞÖĞµÄÈÎÎñ
+		// # è·å–æ­£åœ¨æ‰§è¡Œä¸­çš„ä»»åŠ¡
 		static google::protobuf::Map<int32_t, pbdb::db_task_data>& run(actor_role* arole);
 		static const google::protobuf::Map<int32_t, pbdb::db_task_data>& const_run(actor_role* arole);
 
-		// # ¼ì²éÈÎÎñÊÇ·ñÍê³É
+		// # æ£€æŸ¥ä»»åŠ¡æ˜¯å¦å®Œæˆ
 		static bool isfinish_task(actor_role* arole, i32_taskid ataskid);
 
-		// # ¼ì²éÈÎÎñÊÇ·ñÒÑ½ÓÊÕ
+		// # æ£€æŸ¥ä»»åŠ¡æ˜¯å¦å·²æ¥æ”¶
 		static bool isreceive_task(actor_role* arole, i32_taskid ataskid);
 
-		// # Íê³ÉÈÎÎñ
+		// # å®Œæˆä»»åŠ¡
 		static bool finish_task(actor_role* arole, i32_taskid ataskid);
 
-		// # ½ÓÊÕÈÎÎñ
+		// # æ¥æ”¶ä»»åŠ¡
 		static bool receive_task(actor_role* arole, i32_taskid ataskid);
 
-		// # ÒÆ³ıÈÎÎñ
+		// # ç§»é™¤ä»»åŠ¡
 		static bool erase_task(actor_role* arole, i32_taskid ataskid);
 
-		// # ÊÇ·ñÓĞ¿ÉÒÔ½ÓÊÜÈÎÎñ
-		// # ÒòÎªÄ³¸öÌõ¼şÍê³É
+		// # æ˜¯å¦æœ‰å¯ä»¥æ¥å—ä»»åŠ¡
+		// # å› ä¸ºæŸä¸ªæ¡ä»¶å®Œæˆ
 		static bool update_change(actor_role* arole, ETask atype, std::set<i32_taskid>* ataskset);
 		static bool update_change(actor_role* arole, ETask atype, int32_t avalues);
 
-		// # ÖØÖÃÈÎÎñ
+		// # é‡ç½®ä»»åŠ¡
 		static bool reset_task(actor_role* arole, i32_taskid ataskid);
 	};
 }// namespace ngl
