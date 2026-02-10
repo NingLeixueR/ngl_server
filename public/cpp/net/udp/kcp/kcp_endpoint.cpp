@@ -12,7 +12,9 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "kcp_endpoint.h"
+#include "nprotocol.h"
 #include "asio_kcp.h"
+#include "nlog.h"
 
 namespace ngl
 {
@@ -42,6 +44,7 @@ namespace ngl
 
 	void kcp_endpoint::create(int32_t aconv, uint32_t asessionid, void* auser)
 	{
+		log_error()->print("kcp_endpoint::create conv={} sessionid={}", aconv, asessionid);
 		m_kcp = ikcp_create(aconv, auser);
 	}
 
