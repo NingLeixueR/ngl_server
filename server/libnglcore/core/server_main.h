@@ -3,15 +3,15 @@
 #include <functional>
 #include <string>
 
-// ¿çÆ½Ì¨µ¼³ö/µ¼Èëºê
+// è·¨å¹³å°å¯¼å‡º/å¯¼å…¥å®
 #ifdef _WIN32
-#	ifdef NGL_EXPORT  // Éú³É¶¯Ì¬¿âÊ±¶¨Òå
+#	ifdef NGL_EXPORT  // ç”ŸæˆåŠ¨æ€åº“æ—¶å®šä¹‰
 #		define NGL_EXPORT __declspec(dllexport)
 #	else
-#		define NGL_EXPORT __declspec(dllimport)  // Ê¹ÓÃÊ±µ¼Èë
+#		define NGL_EXPORT __declspec(dllimport)  // ä½¿ç”¨æ—¶å¯¼å…¥
 #	endif
 #else
-#	define NGL_EXPORT  // Linux/macOSÎŞĞèÌØÊâÉùÃ÷
+#	define NGL_EXPORT  // Linux/macOSæ— éœ€ç‰¹æ®Šå£°æ˜
 #endif
 
 NGL_EXPORT int ngl_main(int argc, char** argv);

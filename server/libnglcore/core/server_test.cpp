@@ -18,7 +18,7 @@ namespace ngl
 			ltemp.m_tid = 4;
 			ltemp.m_count = 5;
 			ltemp.m_time = 6;
-			ltemp.m_adddec = 7;// 1:Ôö¼Ó 2:¼õÉÙ
+			ltemp.m_adddec = 7;// 1:å¢åŠ  2:å‡å°‘
 			ltemp.m_mask = "mask";
 			ltemp.print();
 		}

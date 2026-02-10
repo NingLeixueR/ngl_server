@@ -16,13 +16,13 @@ using namespace std;
 
 struct Data
 {
-	std::string m_modifier;			/* ĞŞÊÎ·û */
-	std::string m_type;				/* ÀàĞÍ **/
-	std::string m_values_name;		/* ÀàĞÍÃû³Æ **/
-	std::string m_values_init;		/* ÀàĞÍµÄ³õÊ¼Öµ **/
-	std::string panduan;			/* ÅĞ¶Ï **/
-	std::string zhushi;				/* ×¢ÊÍ **/
-	std::string m_typestr;			/* Êı¾İ¿âĞèÒª ¸østringÌí¼Ó³¤¶È **/
+	std::string m_modifier;			/* ä¿®é¥°ç¬¦ */
+	std::string m_type;				/* ç±»å‹ **/
+	std::string m_values_name;		/* ç±»å‹åç§° **/
+	std::string m_values_init;		/* ç±»å‹çš„åˆå§‹å€¼ **/
+	std::string panduan;			/* åˆ¤æ–­ **/
+	std::string zhushi;				/* æ³¨é‡Š **/
+	std::string m_typestr;			/* æ•°æ®åº“éœ€è¦ ç»™stringæ·»åŠ é•¿åº¦ **/
 	int m_index = 0;
 	std::string m_load;
 
@@ -34,22 +34,22 @@ struct Data
 
 struct EnumVec
 {
-	std::string name;				/* Ã¶¾ÙÃû³Æ **/
-	std::vector<Data> dataVec;		/* Ã¶¾ÙÊı¾İ **/
+	std::string name;				/* æšä¸¾åç§° **/
+	std::vector<Data> dataVec;		/* æšä¸¾æ•°æ® **/
 };
 
 struct StructVec
 {
-	std::string name;					/* ÀàÃû³Æ **/
+	std::string name;					/* ç±»åç§° **/
 	std::string derived1;
 	std::string derived2;
-	std::vector<Data> dataVec;			/* ÀàµÄÊı¾İ **/
+	std::vector<Data> dataVec;			/* ç±»çš„æ•°æ® **/
 };
 
 struct DefVec
 {
-	std::string name;					/* define³Æ **/
-	std::vector<Data> dataVec;			/* ÀàµÄÊı¾İ **/
+	std::string name;					/* defineç§° **/
+	std::vector<Data> dataVec;			/* ç±»çš„æ•°æ® **/
 };
 
 
@@ -205,7 +205,7 @@ public:
 	
 	void _h_serialize(std::stringstream& astream, StructVec& astruct)
 	{
-		astream << "	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø" << std::endl;
+		astream << "	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³" << std::endl;
 		astream << "	DPROTOCOL("<< astruct.name;
 		for (Data item_ : astruct.dataVec)
 		{
@@ -219,7 +219,7 @@ public:
 		{
 			return;
 		}
-		// Éú³Écsv±íÍ·
+		// ç”Ÿæˆcsvè¡¨å¤´
 		std::stringstream lstreamcsv;
 		for (int i = 0; i < astruct.dataVec.size(); ++i)
 		{
@@ -240,7 +240,7 @@ public:
 
 		ngl::writefile lfilecsv("./idlfile/"+ astruct.name + ".csv");
 
-		//## ×ª»»Îªutf8
+		//## è½¬æ¢ä¸ºutf8
 		std::string lstr;
 		ngl::tools::to_utf8(lstreamcsv.str(), lstr);
 
@@ -280,7 +280,7 @@ public:
 			lstream << "{" << std::endl;
 			_h_member(lstream, item);
 			_h_serialize(lstream, item);
-			lstream << "	// csvÏà¹Ø" << std::endl;
+			lstream << "	// csvç›¸å…³" << std::endl;
 			lstream << "	inline bool rcsv(ngl::csvpair& apair)" << std::endl;
 			lstream << "	{" << std::endl;
 			for (int i = 0; i < item.dataVec.size(); ++i)
@@ -402,7 +402,7 @@ public:
 
 	void analysis(std::string apth)
 	{
-		//// ----- È¥µôÎÄ¼şºó×º
+		//// ----- å»æ‰æ–‡ä»¶åç¼€
 		bool lsssbool = true;
 		std::string lname;
 		std::ranges::for_each(apth, [&lsssbool, &lname](char item)
@@ -425,7 +425,7 @@ public:
 			});
 		m_data[lname].m_fname = lname;
 
-		//// ---- ¶ÁÈ¡ÎÄ¼ş
+		//// ---- è¯»å–æ–‡ä»¶
 		ngl::readfile lfile(apth);
 		string ldata;
 		lfile.read(ldata);
@@ -470,7 +470,7 @@ public:
 		ngl::tools::sregex(pattern, ldata, [aname,this](std::string& adata)
 		{
 			EnumVec lenumString;
-		//»ñÈ¡½á¹¹Ãû³Æ
+		//è·å–ç»“æ„åç§°
 		static string lpattern("enum[ \n\r\t]+([^ \n\r\t]+)");
 		ngl::tools::smatch(lpattern, adata, [&lenumString](std::smatch& awhat)
 			{
@@ -479,16 +479,16 @@ public:
 		static string lpattern2;
 		if (lpattern2.empty())
 		{
-			lpattern2 += "[ \n\r\t]*";//¿Õ°×
+			lpattern2 += "[ \n\r\t]*";//ç©ºç™½
 			lpattern2 += "([^ \n\r\t{}]*)";//type
-			lpattern2 += "[ \t]*";//¿Õ°×
+			lpattern2 += "[ \t]*";//ç©ºç™½
 			lpattern2 += "[=]*";
-			lpattern2 += "[ \t]*";//¿Õ°×
+			lpattern2 += "[ \t]*";//ç©ºç™½
 			lpattern2 += "([^ \t,{}]*)";//values
-			lpattern2 += "[ \t]*";//¿Õ°×
+			lpattern2 += "[ \t]*";//ç©ºç™½
 			lpattern2 += "[,]";
-			lpattern2 += "[ \t]*";//¿Õ°×
-			lpattern2 += "([//]*[^\r\n]*)";//×¢ÊÍ
+			lpattern2 += "[ \t]*";//ç©ºç™½
+			lpattern2 += "([//]*[^\r\n]*)";//æ³¨é‡Š
 		}
 		ngl::tools::smatch(lpattern2, adata, [&lenumString](std::smatch& awhat)
 			{
@@ -510,7 +510,7 @@ public:
 		ngl::tools::sregex(pattern, ldata, [aname,this](std::string& adata)
 		{
 			StructVec lstructString;
-			//»ñÈ¡½á¹¹Ãû³Æ
+			//è·å–ç»“æ„åç§°
 			static string lpattern("struct[ \t]+([^ \t\n\r]+)");
 			ngl::tools::smatch(lpattern, adata, [&lstructString](std::smatch& awhat)
 			{
@@ -550,42 +550,42 @@ public:
 			{
 				string lkb = "[ \t]*";
 				string lhh = "[ \t\r\n]*";
-				//  required¹Ø¼ü×Ö
-				//	¹ËÃûË¼Òå£¬¾ÍÊÇ±ØĞëµÄÒâË¼£¬Êı¾İ·¢ËÍ·½ºÍ½ÓÊÕ·½¶¼±ØĞë´¦ÀíÕâ¸ö×Ö¶Î£¬²»È»»¹ÔõÃ´Í¨Ñ¶ÄØ
-				//	optional¹Ø¼ü×Ö
-				//  ×ÖÃæÒâË¼ÊÇ¿ÉÑ¡µÄÒâË¼
+				//  requiredå…³é”®å­—
+				//	é¡¾åæ€ä¹‰ï¼Œå°±æ˜¯å¿…é¡»çš„æ„æ€ï¼Œæ•°æ®å‘é€æ–¹å’Œæ¥æ”¶æ–¹éƒ½å¿…é¡»å¤„ç†è¿™ä¸ªå­—æ®µï¼Œä¸ç„¶è¿˜æ€ä¹ˆé€šè®¯å‘¢
+				//	optionalå…³é”®å­—
+				//  å­—é¢æ„æ€æ˜¯å¯é€‰çš„æ„æ€
 
 				lpattern2
 					+= lkb + lhh + lkb
 					//+ "(if[\(][^\(\)]*[\)])*"
 					+ "(if[(][^)]*[)])*"
 					+= lkb + lhh + lkb
-					+ "(required|optional)*"	//ĞŞÊÎ·û
+					+ "(required|optional)*"	//ä¿®é¥°ç¬¦
 					+ lkb
-					+ "([^ <>\r\n};()]+)" //ÀàĞÍ
+					+ "([^ <>\r\n};()]+)" //ç±»å‹
 					+ "[ ]"
-					+ "([^ \t<>\r\n};]+)" //ÀàĞÍÃû
+					+ "([^ \t<>\r\n};]+)" //ç±»å‹å
 					+ lkb
 					+ "([ ]+[=][ ][^;]*)*"
 					+ "[;]"
 					+ lkb
-					+ "([//]*[^\r\n]*)" //×¢ÊÍ
+					+ "([//]*[^\r\n]*)" //æ³¨é‡Š
 					+ "[\r\n]*[\r\n]*";
 
 				lpattern3
 					+= lkb + lhh + lkb
 					+ "(if[(][^)]*[)])*"
 					+ lkb + lhh + lkb
-					+ "(required|optional)*"	//ĞŞÊÎ·û
+					+ "(required|optional)*"	//ä¿®é¥°ç¬¦
 					+ lkb
-					+ "(derived_class[<][^>]+[>]|map[<][^>]+[>]|vector[<][^>]+[>]|list[<][^>]+[>]|set[<][^>]+[>]|string[<][^>]+[>]|int[<][^>]+[>])" //ÀàĞÍ
+					+ "(derived_class[<][^>]+[>]|map[<][^>]+[>]|vector[<][^>]+[>]|list[<][^>]+[>]|set[<][^>]+[>]|string[<][^>]+[>]|int[<][^>]+[>])" //ç±»å‹
 					+ "[ ]"
-					+ "([^ \t<>\r\n};]+)" //ÀàĞÍÃû
+					+ "([^ \t<>\r\n};]+)" //ç±»å‹å
 					+ lkb
 					+ "([=][^;]+)*"
 					+ "[;]"
 					+ lkb
-					+ "([//]*[^\r\n]*)" //×¢ÊÍ
+					+ "([//]*[^\r\n]*)" //æ³¨é‡Š
 					+ "[\r\n]*[\r\n]*";
 			}
 

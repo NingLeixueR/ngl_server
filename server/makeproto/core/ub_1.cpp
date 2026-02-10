@@ -1,5 +1,5 @@
-// ×¢Òâ¡¾rebuild.bat ¹¤¾ßÉú³ÉÎÄ¼ş£¬²»ÒªÊÖ¶¯ĞŞ¸Ä¡¿
-// ´´½¨Ê±¼ä 26-02-10 14:38:46
+// æ³¨æ„ã€rebuild.bat å·¥å…·ç”Ÿæˆæ–‡ä»¶ï¼Œä¸è¦æ‰‹åŠ¨ä¿®æ”¹ã€‘
+// åˆ›å»ºæ—¶é—´ 26-02-10 19:37:38
 #include "pb_field.cpp"
 #include "npostgresql_manage.cpp"
 #include "npostgresql_pool.cpp"

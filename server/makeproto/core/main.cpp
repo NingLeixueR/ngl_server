@@ -46,12 +46,10 @@ int main(int argc, char** argv)
 
 
   
-    // 生成对应的sql文件
     {
         ngl::writefile lsql("create_db.sql");
         lsql.write(xml_protocol::g_stream_sql.str());
-    }
-    // 自动关联结构体为其提供协议号    
+    }    
     ngl::xmlprotocol::load();
     int32_t lnumber = 0;
     std::pair<std::string, std::string> lpair;

@@ -145,16 +145,16 @@ void init_DB_NOTICE()
 {
 	std::vector<std::string> lvec =
 	{
-		"Ò»¾ä»°", // 1
-		"Ò»±²×Ó", // 2
-		"Ò»ÉúÇé", // 3
-		"¹ş¹ş¹ş¹ş¹ş¹ş¹ş¹ş¹ş", // 4
-		"»¤»¨Ê¹Õß", // 5
-		"Å£±Æ¿ËÀ­Ë¹", // 6
-		"Õ½Ìì³ÇÎÊÎÊ", // 7
-		"³ÔºÈÀ­ÈöË¯", // 8
-		"ÑıÖ²ÎªºÎ", // 9
-		"ÒøÔÂ32³Ç", // 10
+		"ä¸€å¥è¯", // 1
+		"ä¸€è¾ˆå­", // 2
+		"ä¸€ç”Ÿæƒ…", // 3
+		"å“ˆå“ˆå“ˆå“ˆå“ˆå“ˆå“ˆå“ˆå“ˆ", // 4
+		"æŠ¤èŠ±ä½¿è€…", // 5
+		"ç‰›é€¼å…‹æ‹‰æ–¯", // 6
+		"æˆ˜å¤©åŸé—®é—®", // 7
+		"åƒå–æ‹‰æ’’ç¡", // 8
+		"å¦–æ¤ä¸ºä½•", // 9
+		"é“¶æœˆ32åŸ", // 10
 	};
 	for (int i = 1; i < 10; ++i)
 	{
@@ -555,7 +555,7 @@ bool start_cross()
 
 bool start_pushserverconfig()
 {
-	// ½«·şÎñÆ÷ÅäÖÃÉÏ´«lbgmsys
+	// å°†æœåŠ¡å™¨é…ç½®ä¸Šä¼ lbgmsys
 	ngl::xarg_info* lpublicxml = nconfig.info();
 	std::string lgmurl;
 	if (!lpublicxml->find("gmurl", lgmurl))
@@ -643,9 +643,9 @@ std::vector<std::string> get_lines()
 	char lbuff[4096] = { 0 };
 	std::cin.getline(lbuff, 4096);
 	std::string lstrbuff = lbuff;
-	//[== É¾³ı¶àÓà¿Õ¸ñ
+	//[== åˆ é™¤å¤šä½™ç©ºæ ¼
 	ngl::tools::erase_repeat(lstrbuff, ' ');
-	//É¾³ı¶àÓà¿Õ¸ñ ==]
+	//åˆ é™¤å¤šä½™ç©ºæ ¼ ==]
 
 	std::vector<std::string> lvec;
 	ngl::tools::splite(lstrbuff.c_str(), " ", lvec);
@@ -674,7 +674,7 @@ bool start_robot(int argc, char** argv)
 	ngl::i32_serverid llogin = ngl::nnodeid::nodeid(ngl::ttab_servers::instance().const_tab()->m_login, 1);
 	ngl::actor_robot_manage::instance().connect(llogin, [](int asession)
 		{
-			std::cout << "Á¬½ÓLogin·şÎñÆ÷³É¹¦" << std::endl;
+			std::cout << "è¿æ¥LoginæœåŠ¡å™¨æˆåŠŸ" << std::endl;
 		}
 	);
 	if (argc < 4)
@@ -787,25 +787,25 @@ namespace ngl
 int ngl_main(int argc, char** argv)
 {
 	ngl::server_test();
-	// # Ãû³Æ
+	// # åç§°
 	std::string lname = argv[1];
 
-	// # Çø·şid
+	// # åŒºæœid
 	int32_t larea = ngl::tools::lexical_cast<int32_t>(argv[2]);
 
-	// # Çø·şidÏÂ¹¦ÄÜ½ø³ÌµÄĞòºÅ
+	// # åŒºæœidä¸‹åŠŸèƒ½è¿›ç¨‹çš„åºå·
 	int32_t ltcount = 0;
 	ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
 
-	// # ³õÊ¼»¯¹ØÁªÃ¶¾ÙNODE_TYPEÓë×Ö·û´®
+	// # åˆå§‹åŒ–å…³è”æšä¸¾NODE_TYPEä¸å­—ç¬¦ä¸²
 	nconfig.init();
 
 	nconfig.set_server(argv[1]);
 
-	// # ¼ÓÔØxmlÅäÖÃ
+	// # åŠ è½½xmlé…ç½®
 	nconfig.load("./config", std::format("{}_{}", lname, ltcount));
 
-	// # ¼ÓÔØcsvÅäÖÃ
+	// # åŠ è½½csvé…ç½®
 	ngl::csv_base::set_path("./csv", lname);
 
 	const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab(argv[1], larea);
@@ -826,7 +826,7 @@ int ngl_main(int argc, char** argv)
 	}
 
 #ifdef WIN32
-	// # ÉèÖÃ¿ØÖÆÌ¨´°¿ÚÃû³Æ
+	// # è®¾ç½®æ§åˆ¶å°çª—å£åç§°
 	SetConsoleTitle(nconfig.servername().c_str());
 #endif
 	

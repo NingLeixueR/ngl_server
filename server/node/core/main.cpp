@@ -15,6 +15,6 @@ int main(int argc, char** argv)
 		lDumper.setDumperHandler(dump_logic("core dump"));
 		return ngl_main(argc, argv);
 	}
-	std::cout << "²ÎÊý´íÎó:EXE name areaid tab_servers::tcount" << std::endl;
+	std::cout << "å‚æ•°é”™è¯¯:EXE name areaid tab_servers::tcount" << std::endl;
 	return 0;
 }

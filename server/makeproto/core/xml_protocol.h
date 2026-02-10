@@ -35,7 +35,7 @@ class xml_protocol
         {
             const google::protobuf::Descriptor* nestedDescriptor = fieldDescriptor->message_type();
             fieldDescriptor->type();
-            // »ñÈ¡Ç¶Ì×ÏûÏ¢ÀàĞÍµÄÃû³Æ
+            // è·å–åµŒå¥—æ¶ˆæ¯ç±»å‹çš„åç§°
             std::string nestedMessageTypeName = nestedDescriptor->full_name();
             std::cout << nestedDescriptor->DebugString() << std::endl;
             std::cout << "Nested message type name: " << nestedMessageTypeName << std::endl;
@@ -69,9 +69,9 @@ public:
         case google::protobuf::FieldDescriptor::CPPTYPE_STRING:
             return "std::string";
         case google::protobuf::FieldDescriptor::CPPTYPE_MESSAGE:
-            return field->message_type()->full_name(); // Ç¶Ì×ÏûÏ¢ÀàĞÍÃû
+            return field->message_type()->full_name(); // åµŒå¥—æ¶ˆæ¯ç±»å‹å
         case google::protobuf::FieldDescriptor::CPPTYPE_ENUM:
-            return field->enum_type()->full_name(); // Ã¶¾ÙÀàĞÍÃû
+            return field->enum_type()->full_name(); // æšä¸¾ç±»å‹å
         default:
             return "unknown";
         }
@@ -79,7 +79,7 @@ public:
 
     static std::map<std::string, std::string> m_nscriptmap;
     static std::set<std::string> m_nscriptset;
-    // µİ¹é´òÓ¡×Ö¶ÎÀàĞÍĞÅÏ¢
+    // é€’å½’æ‰“å°å­—æ®µç±»å‹ä¿¡æ¯
     std::string FieldType(const google::protobuf::FieldDescriptor* field) 
     {
         return google::protobuf::FieldDescriptor::TypeName(field->type());
@@ -282,8 +282,8 @@ public:
 
         ngl::writefile lfile(std::format("./nscript_{}.h", lnamespace).c_str());
         std::stringstream m_stream;
-        m_stream << " // ×¢Òâ¡¾makeproto ¹¤¾ßÉú³ÉÎÄ¼ş£¬²»ÒªÊÖ¶¯ĞŞ¸Ä¡¿" << std::endl;
-        m_stream << " // ´´½¨Ê±¼ä¡¾" << ngl::localtime::time2str() << "¡¿" << std::endl;
+        m_stream << " // æ³¨æ„ã€makeproto å·¥å…·ç”Ÿæˆæ–‡ä»¶ï¼Œä¸è¦æ‰‹åŠ¨ä¿®æ”¹ã€‘" << std::endl;
+        m_stream << " // åˆ›å»ºæ—¶é—´ã€" << ngl::localtime::time2str() << "ã€‘" << std::endl;
         m_stream << std::endl;
         m_stream << "#pragma once" << std::endl;
         m_stream << "#include \"ndefine.h\"" << std::endl;
@@ -453,8 +453,8 @@ public:
         ngl::writefile lfile("./pbname_match.cpp");
 
         std::stringstream m_stream;
-        m_stream << " // ×¢Òâ¡¾makeproto ¹¤¾ßÉú³ÉÎÄ¼ş£¬²»ÒªÊÖ¶¯ĞŞ¸Ä¡¿" << std::endl;
-        m_stream << " // ´´½¨Ê±¼ä¡¾" << ngl::localtime::time2str() << "¡¿" << std::endl;
+        m_stream << " // æ³¨æ„ã€makeproto å·¥å…·ç”Ÿæˆæ–‡ä»¶ï¼Œä¸è¦æ‰‹åŠ¨ä¿®æ”¹ã€‘" << std::endl;
+        m_stream << " // åˆ›å»ºæ—¶é—´ã€" << ngl::localtime::time2str() << "ã€‘" << std::endl;
         m_stream << R"(#include "actor_base.h"
 #include "tools.h"
 #include "pack.h"
@@ -535,8 +535,8 @@ namespace ngl
         ngl::writefile lfile("./pb_protocol.cpp");
 
         std::stringstream m_stream;
-        m_stream << " // ×¢Òâ¡¾makeproto ¹¤¾ßÉú³ÉÎÄ¼ş£¬²»ÒªÊÖ¶¯ĞŞ¸Ä¡¿" << std::endl;
-        m_stream << " // ´´½¨Ê±¼ä¡¾" << ngl::localtime::time2str() << "¡¿" << std::endl;
+        m_stream << " // æ³¨æ„ã€makeproto å·¥å…·ç”Ÿæˆæ–‡ä»¶ï¼Œä¸è¦æ‰‹åŠ¨ä¿®æ”¹ã€‘" << std::endl;
+        m_stream << " // åˆ›å»ºæ—¶é—´ã€" << ngl::localtime::time2str() << "ã€‘" << std::endl;
         m_stream << "#include \"nprotocol.h\"" << std::endl;
         m_stream << "#include \"tprotocol.h\"" << std::endl;
         m_stream << "#include \"actor.h\"" << std::endl;
@@ -593,17 +593,17 @@ namespace ngl
         std::string ldata;
         {
 
-            // ¶ÁÈ¡ÎÄ¼şnactor_auto.h
+            // è¯»å–æ–‡ä»¶nactor_auto.h
             ngl::readfile lfile("../../public/cpp/actor/auto/nactor_auto.h");
             lfile.read(ldata);
         }
-        // ÕıÔò±í´ïÊ½£ºÆ¥Åä "using <name> = typedb<...>;"
+        // æ­£åˆ™è¡¨è¾¾å¼ï¼šåŒ¹é… "using <name> = typedb<...>;"
         std::regex pattern(R"(using\s+([a-zA-Z0-9_]+)\s*=\s*typedb<([^>]+)>;)");
 
-        // ÓÃÓÚ´æ´¢Æ¥Åäµ½µÄ½á¹û
+        // ç”¨äºå­˜å‚¨åŒ¹é…åˆ°çš„ç»“æœ
         std::smatch matches;
 
-        // µü´úÎÄ±¾²¢²éÕÒËùÓĞÆ¥ÅäÏî
+        // è¿­ä»£æ–‡æœ¬å¹¶æŸ¥æ‰¾æ‰€æœ‰åŒ¹é…é¡¹
         auto words_begin = std::sregex_iterator(ldata.begin(), ldata.end(), pattern);
         auto words_end = std::sregex_iterator();
 
@@ -618,14 +618,14 @@ namespace ngl
         std::set<std::string> lset;
         for (std::sregex_iterator i = words_begin; i != words_end; ++i)
         {
-            // »ñÈ¡ÍêÕûµÄÆ¥ÅäÏî£¨ÀıÈç£ºusing tdb_account = typedb<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account, actor_login>;£©
+            // è·å–å®Œæ•´çš„åŒ¹é…é¡¹ï¼ˆä¾‹å¦‚ï¼šusing tdb_account = typedb<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account, actor_login>;ï¼‰
             std::string full_match = (*i).str(0);
 
             struttt ltemp;
-            // »ñÈ¡µÚÒ»¸öÀ¨ºÅÀïµÄ²¿·Ö£¨tdb_account, user_data, customer_dataµÈ£©
+            // è·å–ç¬¬ä¸€ä¸ªæ‹¬å·é‡Œçš„éƒ¨åˆ†ï¼ˆtdb_account, user_data, customer_dataç­‰ï¼‰
             ltemp.name = (*i).str(1);
 
-            // »ñÈ¡µÚ¶ş²¿·Ö£¬¼´ typedb<...> ÄÚµÄÄÚÈİ
+            // è·å–ç¬¬äºŒéƒ¨åˆ†ï¼Œå³ typedb<...> å†…çš„å†…å®¹
             std::string arguments = (*i).str(2);
             ngl::tools::splite(arguments.c_str(), ",", ltemp.enumname, ltemp.proname, ltemp.actorname);
             ngl::tools::splite(ltemp.enumname.c_str(), "::", ltemp.enumname, ltemp.enumname);
@@ -644,7 +644,7 @@ namespace ngl
                 int enum_value_count = enumDescriptor->value_count();
                 std::cout << "Enum: " << enumDescriptor->name() << std::endl;
 
-                // ±éÀúÃ¶¾ÙÖµ
+                // éå†æšä¸¾å€¼
                 for (int j = 0; j < enum_value_count; ++j)
                 {
                     const auto& enumValueDescriptor = enumDescriptor->value(j);
@@ -699,15 +699,15 @@ namespace ngl
 	public:
 		using db_actor   = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
 		using db_modular = ndb_modular<TDBTAB_TYPE, TDBTAB, TACTOR>;
-		// ¶©ÔÄ/·¢²¼[Êı¾İ¸±±¾]
+		// è®¢é˜…/å‘å¸ƒ[æ•°æ®å‰¯æœ¬]
 		using nsp_ser		= nsp_server<TDBTAB_TYPE, TACTOR, TDBTAB>;
 		template <typename TDerived>
 		using nsp_cread		= nsp_read<TDerived, TACTOR, TDBTAB>;
 		template <typename TDerived>
 		using nsp_cwrite	= nsp_write<TDerived, TACTOR, TDBTAB>;
 
-		// [aregister == true] Ö÷ÒªÊÇ×¢²áĞ­Òé,ºêÓëÀàĞÍµÄ°ó¶¨
-		// [aregister == false] ÊµÀı»¯db_actor,db serverĞèÒª
+		// [aregister == true] ä¸»è¦æ˜¯æ³¨å†Œåè®®,å®ä¸ç±»å‹çš„ç»‘å®š
+		// [aregister == false] å®ä¾‹åŒ–db_actor,db serveréœ€è¦
 		static void init(bool aregister);
 	};
 
@@ -723,8 +723,8 @@ namespace ngl
         for (const std::string& item : lset)
         {
             if (item == "actor_xxxx")
-            {// ÈÃ±àÒë³ö´í Íæ¼ÒÈ·ÈÏĞŞ¸Ä
-                m_stream << "\t#±àÒë»á³ö´í£¬ĞèÒªÈ·ÈÏĞŞ¸Ä" << std::endl;
+            {// è®©ç¼–è¯‘å‡ºé”™ ç©å®¶ç¡®è®¤ä¿®æ”¹
+                m_stream << "\t#ç¼–è¯‘ä¼šå‡ºé”™ï¼Œéœ€è¦ç¡®è®¤ä¿®æ”¹" << std::endl;
             }
             m_stream << "\tclass " << item << ";" << std::endl;
         }
@@ -750,8 +750,8 @@ namespace ngl
                 if (lcount == 1 && proname.find("dbcross") != std::string::npos)
                 {
                     if (item.second.actorname == "actor_xxxx")
-                    {// ÈÃ±àÒë³ö´í Íæ¼ÒÈ·ÈÏĞŞ¸Ä
-                        m_stream << "\t#±àÒë»á³ö´í£¬ĞèÒªÈ·ÈÏĞŞ¸Ä" << std::endl;
+                    {// è®©ç¼–è¯‘å‡ºé”™ ç©å®¶ç¡®è®¤ä¿®æ”¹
+                        m_stream << "\t#ç¼–è¯‘ä¼šå‡ºé”™ï¼Œéœ€è¦ç¡®è®¤ä¿®æ”¹" << std::endl;
                     }
                     m_stream << std::format("\tusing {} = typedb<{}, {}, {}>;", name, enumname, proname, actorname) << std::endl;
                     continue;
@@ -759,8 +759,8 @@ namespace ngl
                 if (lcount == 2 && proname.find("dbcross") == std::string::npos)
                 {
                     if (item.second.actorname == "actor_xxxx")
-                    {// ÈÃ±àÒë³ö´í Íæ¼ÒÈ·ÈÏĞŞ¸Ä
-                        m_stream << "\t#±àÒë»á³ö´í£¬ĞèÒªÈ·ÈÏĞŞ¸Ä" << std::endl;
+                    {// è®©ç¼–è¯‘å‡ºé”™ ç©å®¶ç¡®è®¤ä¿®æ”¹
+                        m_stream << "\t#ç¼–è¯‘ä¼šå‡ºé”™ï¼Œéœ€è¦ç¡®è®¤ä¿®æ”¹" << std::endl;
                     }
                     m_stream << std::format("\tusing {} = typedb<{}, {}, {}>;", name, enumname, proname, actorname) << std::endl;
                     continue;
@@ -775,7 +775,7 @@ namespace ngl
 	public:
 		static void tdb_init(bool ainstance);
 
-		// # ¶¨ÒåÔÚnactor_auto.cppÖĞ,ÒòÎª¿ç·şÊÇ¿ÉÑ¡µÄ
+		// # å®šä¹‰åœ¨nactor_auto.cppä¸­,å› ä¸ºè·¨æœæ˜¯å¯é€‰çš„
 		static void tcrossdb_init(bool ainstance);
 	};
 }//namespace ngl)";
@@ -783,8 +783,8 @@ namespace ngl
 
         std::stringstream m_stream2;
         std::stringstream m_stream3;
-        m_stream2 << " // ×¢Òâ¡¾makeproto ¹¤¾ßÉú³ÉÎÄ¼ş£¬²»ÒªÊÖ¶¯ĞŞ¸Ä¡¿" << std::endl;
-        m_stream2 << " // ´´½¨Ê±¼ä¡¾" << ngl::localtime::time2str() << "¡¿" << std::endl;
+        m_stream2 << " // æ³¨æ„ã€makeproto å·¥å…·ç”Ÿæˆæ–‡ä»¶ï¼Œä¸è¦æ‰‹åŠ¨ä¿®æ”¹ã€‘" << std::endl;
+        m_stream2 << " // åˆ›å»ºæ—¶é—´ã€" << ngl::localtime::time2str() << "ã€‘" << std::endl;
         m_stream2 << R"(#include "auto_actor_enum.h"
 #include "nprotocol_auto.h"
 #include "nactor_auto.h"
@@ -944,12 +944,12 @@ namespace ngl
                 else
                 {
                     std::cout << fieldDescriptor->camelcase_name() << std::endl;
-                    // ÅĞ¶Ï×Ö¶ÎÊÇ·ñÎªmapÀàĞÍ
+                    // åˆ¤æ–­å­—æ®µæ˜¯å¦ä¸ºmapç±»å‹
                     if (fieldDescriptor->is_map()) {
                         // MAX_LABEL === maps
                         std::pair<std::list<tmessage>, std::list<tmessage>>& lpair = lmap[(Label)(Label::MAX_LABEL + 1)];
                         ls = &lpair.second;
-                        // Êä³ömapµÄkeyÃû³ÆºÍvalueÃû³Æ
+                        // è¾“å‡ºmapçš„keyåç§°å’Œvalueåç§°
                         std::cout << "Key Type: " << fieldDescriptor->message_type()->field(0)->type_name() << std::endl;
 
                         lparmname = fieldDescriptor->message_type()->field(0)->type_name();
@@ -1018,10 +1018,10 @@ namespace ngl
         db_fun(apackname, aname, fileDescriptor);
     }
 
-    // ¸ù¾İenumÉú³ÉactorÄ£°å
+    // æ ¹æ®enumç”Ÿæˆactoræ¨¡æ¿
     static void enum_actor(std::string aenum)
     {
-        // Ö»ÅĞ¶Ï·Çµ¥ÀûÆäËûµÄ¶¼°´ÕÕµ¥Àı
+        // åªåˆ¤æ–­éå•åˆ©å…¶ä»–çš„éƒ½æŒ‰ç…§å•ä¾‹
         bool issign = aenum != "ACTOR_ROLE" && aenum != "ACTOR_ROBOT";
         std::string ltolower = aenum;
         ngl::tools::transform_tolower(ltolower);
@@ -1034,7 +1034,7 @@ namespace ngl
                 return;
             }
         }
-        // ÅĞ¶ÏÎÄ¼şÊÇ·ñ´æÔÚ
+        // åˆ¤æ–­æ–‡ä»¶æ˜¯å¦å­˜åœ¨
         lpath += std::format("/{}", ltolower);
         std::string lpathH = std::format("{}.h", lpath);
         std::string lpathCPP = std::format("{}.cpp", lpath);
@@ -1131,9 +1131,9 @@ namespace ngl
 
 	void {0}::init()
 	{{
-		// °ó¶¨DB½á¹¹:DB.set(this);
+		// ç»‘å®šDBç»“æ„:DB.set(this);
         
-        // ÉèÖÃtimer_handle¶¨Ê±Æ÷
+        // è®¾ç½®timer_handleå®šæ—¶å™¨
         /*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{{
@@ -1155,14 +1155,14 @@ namespace ngl
 
 	void {0}::nregister()
 	{{
-        // ¶¨Ê±Æ÷
+        // å®šæ—¶å™¨
 		actor::register_timer<{0}, false>(&{0}::timer_handle);
 
-        // °ó¶¨×Ô¶¨Òånp_ÏûÏ¢
+        // ç»‘å®šè‡ªå®šä¹‰np_æ¶ˆæ¯
         register_handle<{0}
 		>(e_ready_all);
         
-        // °ó¶¨½Å±¾ÏûÏ¢
+        // ç»‘å®šè„šæœ¬æ¶ˆæ¯
         register_script_handle<{0}
 		>(false);
 	}}
@@ -1181,7 +1181,7 @@ namespace ngl
         std::set<std::string> lactorenumset;
         {
             std::string ldata;
-            // ¶ÁÈ¡ÎÄ¼şnactortype.h
+            // è¯»å–æ–‡ä»¶nactortype.h
             ngl::readfile lfile("../../public/cpp/actor/actor_base/nactortype.h");
             std::string lnr;
             bool lbool = false;
@@ -1196,7 +1196,7 @@ namespace ngl
                 }
                 else
                 {
-                    // È¥µôĞĞÊı¾İÖĞµÄ\t ¿Õ¸ñ , Óë×¢ÊÍ
+                    // å»æ‰è¡Œæ•°æ®ä¸­çš„\t ç©ºæ ¼ , ä¸æ³¨é‡Š
                     ngl::tools::replace(" ", "", lnr, lnr);
                     ngl::tools::replace("\t", "", lnr, lnr);
                     ngl::tools::replace(",", "", lnr, lnr);
@@ -1268,7 +1268,7 @@ namespace ngl
         auto lfun = [&lhactorfilemap](const char* fname, const char* pbname)
             {
                 std::string ldata;
-                // ¶ÁÈ¡ÎÄ¼şnactortype.h
+                // è¯»å–æ–‡ä»¶nactortype.h
                 std::string lfilename = std::format("../proto/{}.proto", fname);
                 ngl::readfile lfile(lfilename);
                 std::string lnr;
@@ -1354,7 +1354,7 @@ namespace ngl
        
         lfun("net", "pbnet");
         lfun("example", "pbexample");
-        // ¸ù¾İmessage¼ì²éactorÎÄ¼şÖĞÊÇ·ñÊµÏÖÁË¶ÔÓ¦µÄĞ­ÒéÃ»ÓĞÔò²åÈë
+        // æ ¹æ®messageæ£€æŸ¥actoræ–‡ä»¶ä¸­æ˜¯å¦å®ç°äº†å¯¹åº”çš„åè®®æ²¡æœ‰åˆ™æ’å…¥
 
         {
             for (const std::string& item : lactorenumset)
@@ -1367,7 +1367,7 @@ namespace ngl
                     ngl::readfile lfile(lactorhfile);
                     if (lfile.is_open() == false)
                     {
-                        std::cout << "Î´ÕÒµ½actorÎÄ¼ş:" << lactorhfile << std::endl;
+                        std::cout << "æœªæ‰¾åˆ°actoræ–‡ä»¶:" << lactorhfile << std::endl;
                         continue;
                     }
                     std::string lnr;
@@ -1486,7 +1486,7 @@ namespace ngl
                     ngl::readfile lfile(lactorhfile);
                     if (lfile.is_open() == false)
                     {
-                        std::cout << "Î´ÕÒµ½actorÎÄ¼ş:" << lactorhfile << std::endl;
+                        std::cout << "æœªæ‰¾åˆ°actoræ–‡ä»¶:" << lactorhfile << std::endl;
                         continue;
                     }
 
@@ -1501,7 +1501,7 @@ namespace ngl
                             size_t lpos = lnr.find("handle(const message<");
                             if (lpos != std::string::npos)
                             {
-                                // »ñÈ¡message
+                                // è·å–message
                                 int lcout = 0;
                                 for (size_t i = lpos + sizeof("handle(const message<") - 1; i < lnr.size(); ++i)
                                 {
@@ -1557,7 +1557,7 @@ namespace ngl
         }
 
         std::cout << std::endl;
-        // Ğ´ÈëÎÄ¼ş
+        // å†™å…¥æ–‡ä»¶
         
         for (const auto& item1 : lhactorfilemap)
         {
@@ -1587,7 +1587,7 @@ namespace ngl
                 }
             }
 
-            // ¶ÁÈ¡ÎÄ¼ş
+            // è¯»å–æ–‡ä»¶
             {
                 std::string lcontent;
 
@@ -1756,13 +1756,13 @@ namespace ngl
                 std::string lend = R"(
 	}
 }// namespace ngl)";
-                // ÕûÀí
+                // æ•´ç†
                 std::set<std::string> lpt;
                 std::map<std::string, std::set<std::string>> l2ci;
                 for (const auto& itme2 : item1.second.m_handle)
                 {
                    
-                    // ×ª·¢ mforward<pbnet::XXX>
+                    // è½¬å‘ mforward<pbnet::XXX>
                     auto& lmessage = itme2.first;
                     if (lmessage.find("np_") != std::string::npos)
                     {
@@ -1792,7 +1792,7 @@ namespace ngl
                 }
 
                 lcontent = lbeg;
-                // roleĞèÒª´¦ÀíµÄ
+                // roleéœ€è¦å¤„ç†çš„
                 bool lfirsttem = true;
                 for (const auto& item1 : lpt)
                 {
@@ -1807,13 +1807,13 @@ namespace ngl
                     }
                 }
                 lcontent += std::format("\t\t>();\n");
-                // ¶ş´Î×ª·¢
+                // äºŒæ¬¡è½¬å‘
                 for (const auto& item1 : l2ci)
                 {
                     lcontent += "\n";
 					std::string ltemp = item1.first;
 					ngl::tools::transform_toupper(ltemp);
-                    lcontent += std::format("\t\t// {} Ä£¿é¶ş´Î×ª·¢\n", item1.first);
+                    lcontent += std::format("\t\t// {} æ¨¡å—äºŒæ¬¡è½¬å‘\n", item1.first);
                     lcontent += std::format("\t\tregister_c2g_2< {}\n", ltemp);
                     bool lfirst = true;
                     for (const auto& item2 : item1.second)
@@ -1832,7 +1832,7 @@ namespace ngl
                 lhfile.write(lcontent);
 
             }
-            // Ğ´Èë.hÎÄ¼ş
+            // å†™å…¥.hæ–‡ä»¶
             if (lstream.str().empty() == false)
             {
                    std::string lactorhfile = std::format("../../public/cpp/actor/actor_logic/{0}/{0}.h", actorname);
