@@ -443,7 +443,7 @@ namespace ngl
 
 	void asio_kcp::close(i32_session asession)
 	{
-		m_session.erase(asession);
+		m_session.erasebysession(asession);
 	}
 
 	void asio_kcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient)
