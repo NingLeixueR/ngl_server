@@ -24,14 +24,20 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
                
-    - name: Install libgettextpo-dev
+    - name: Set up PostgreSQL 18.1 official repo
       run: |
-        sudo apt-get install -y libgettextpo-dev 
+        # Get Ubuntu codename
+        CODENAME=$(grep "UBUNTU_CODENAME" /etc/os-release | cut -d= -f2)
         
-    - name: Verify libgettextpo-dev
+        # Add official PostgreSQL APT repo
+        wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
+        echo "deb http://apt.postgresql.org/pub/repos/apt/ ${CODENAME}-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+
+    - name: Install PostgreSQL 18.1 client and libpq-dev
       run: |
-        find /usr/lib/ -name "libintl.so*"
-        
+        sudo apt update
+        sudo apt install -y postgresql-client-18 libpq-dev=18.1*
+            
     - name: Download and Install CMake
       run: |
         curl -LO https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3-linux-x86_64.tar.gz
@@ -65,35 +71,7 @@ jobs:
        $CC --version
        $CXX --version
        
-    - name: Install PostgreSQL
-      run: |
-        sudo apt-get update && sudo apt-get install -y \
-          build-essential \
-          libreadline-dev \
-          zlib1g-dev \
-          libssl-dev \
-          wget \
-          bison \
-          flex \
-          libxml2-dev \
-          gettext
-        cd ./third_party
-        tar -zxf postgresql-18.1.tar.gz
-        cd postgresql-18.1 && pwd  # 确认进入源码目录
-          # ./configure参数说明：
-          # --prefix：指定安装根目录
-          # --with-openssl：启用SSL（可选，建议开启）
-          # --with-libxml：启用XML功能（可选）
-        ./configure \
-          --prefix=/usr/local/pgsql \
-          --with-openssl \
-          --with-libxml \
-          --enable-thread-safety  # 启用线程安全（适配多线程场景）
-        make -j$(nproc)
-        # 安装到指定路径（需要sudo，因为/usr/local是系统目录）
-        sudo make install
-    
-
+   
     - name: Download Protobuf 3.12.2
       run: |
         cd ./third_party
