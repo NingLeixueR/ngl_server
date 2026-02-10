@@ -59,6 +59,16 @@ jobs:
        
     - name: Install PostgreSQL
       run: |
+        sudo apt-get update && sudo apt-get install -y \
+          build-essential \
+          libreadline-dev  # 关键：readline开发库（包含头文件和链接库）
+          libncurses5-dev  # 补充：readline依赖的ncurses开发库
+          zlib1g-dev \
+          libssl-dev \
+          wget \
+          bison \
+          flex \
+          libxml2-dev
         cd ./third_party
         tar -zxf postgresql-18.1.tar.gz
         cd postgresql-18.1 && pwd  # 确认进入源码目录
