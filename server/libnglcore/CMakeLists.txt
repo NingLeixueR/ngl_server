@@ -46,6 +46,7 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	target_link_libraries(nglcore hiredis)
 	target_link_libraries(nglcore lua)
 	target_link_libraries(nglcore pq)
+	target_link_libraries(nglcore intl)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 
