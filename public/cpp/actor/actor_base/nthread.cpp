@@ -64,7 +64,7 @@ namespace ngl
 						m_isactivity = false;
 					}
 				}
-				actor_manage::instance().push(lpactor, this);
+				actor_manage::instance().push(lpactor, shared_from_this());
 			}
 		}
 	}

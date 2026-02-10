@@ -33,9 +33,11 @@ namespace ngl
 		actor_manage(const actor_manage&) = delete;
 		actor_manage& operator=(const actor_manage&) = delete;
 
-		std::list<nthread*>			m_workthreads;		// 工作线程
+		using ptrnthread = std::shared_ptr<nthread>;
+		std::list<ptrnthread>		m_workthreads;		// 工作线程
+		std::list<ptrnthread>		m_workthreadscopy;	// 工作线程(只在初始化是拷贝一份，保证使用时不会析构)
 		bool						m_suspend = false;	// 是否挂起
-		std::list<nthread*>			m_suspendthreads;	// 挂起的工作线程
+		std::list<ptrnthread>		m_suspendthreads;	// 挂起的工作线程
 		std::jthread				m_thread;			// 管理线程
 		i32_threadsize				m_threadnum = -1;	// 工作线程数量
 		std::map<nguid, ptractor>	m_actorbyid;		// 索引actor
@@ -102,7 +104,7 @@ namespace ngl
 		bool is_have_actor(const nguid& aguid);
 
 		// # 工作线程将actor添加到m_actorlist
-		void push(const ptractor& apactor, nthread* atorthread = nullptr);
+		void push(const ptractor& apactor, ptrnthread atorthread = nullptr);
 
 		// # 向actor中添加任务
 		void push_task_id(const nguid& aguid, handle_pram& apram);

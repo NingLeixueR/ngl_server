@@ -33,8 +33,9 @@ namespace ngl
 		m_threadnum = apthreadnum;
 		for (int32_t i = 0; i < m_threadnum; ++i)
 		{
-			m_workthreads.push_back(new nthread(i));
+			m_workthreads.push_back(std::make_shared<nthread>(i));
 		}
+		m_workthreadscopy = m_workthreads;
 	}
 
 	void actor_manage::get_type(std::vector<i16_actortype>& aactortype)
@@ -179,7 +180,7 @@ namespace ngl
 		return m_actorbyid.contains(aguid);
 	}
 
-	void actor_manage::push(const ptractor& apactor, nthread* atorthread/* = nullptr*/)
+	void actor_manage::push(const ptractor& apactor, ptrnthread atorthread/* = nullptr*/)
 	{
 		std::function<void()> lfun = nullptr;
 		bool lrelease = false;
@@ -413,7 +414,7 @@ namespace ngl
 
 	void actor_manage::run()
 	{
-		nthread* lpthread = nullptr;
+		ptrnthread lpthread = nullptr;
 		ptractor lpactor = nullptr;
 
 #ifdef OPEN_SEM
@@ -429,8 +430,8 @@ namespace ngl
 						{
 							break;
 						}
-						lpthread = *m_workthreads.begin();
-						lpactor = *m_actorlist.begin();
+						lpthread = m_workthreads.front();
+						lpactor = m_actorlist.front();
 						m_actorlist.pop_front();
 						m_workthreads.pop_front();
 						lpactor->set_activity_stat(actor_stat_run);
