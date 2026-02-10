@@ -49,6 +49,8 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 	TARGET_LINK_LIBRARIES(IDL optimized ${PROJECT_SOURCE_DIR}/../../third_party/lib/lua54.lib)
 	TARGET_LINK_LIBRARIES(IDL debug ${PROJECT_SOURCE_DIR}/../../third_party/lib/luacjosn.lib)
 	TARGET_LINK_LIBRARIES(IDL optimized ${PROJECT_SOURCE_DIR}/../../third_party/lib/luacjosn.lib)
+	TARGET_LINK_LIBRARIES(IDL debug ${PROJECT_SOURCE_DIR}/../../third_party/lib/libpq.lib)
+	TARGET_LINK_LIBRARIES(IDL optimized ${PROJECT_SOURCE_DIR}/../../third_party/lib/libpq.lib)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 
