@@ -59,7 +59,7 @@ jobs:
        
     - name: Fix apt source & install correct libintl dependency
       run: |
-        sudo apt-get install -y libintl-dev
+        sudo apt-get install -y gettext
     
     - name: Verify libintl files (critical check)
       run: |
