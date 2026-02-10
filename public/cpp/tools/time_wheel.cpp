@@ -57,24 +57,24 @@ namespace ngl
 
 	struct time_wheel::impl_time_wheel
 	{
-		time_wheel_config	m_config;
-		int64_t				m_server_start_ms = 0;				// 服务器启动的毫秒
-		int64_t				m_current_ms = 0;					// 当前毫秒数
-		std::vector<wheel*> m_wheel;
-		std::thread*		m_thread = nullptr;					// 时间轮线程 
-		std::shared_mutex	m_mutex;
-		bool				m_isthreadcallback = false;			// 是否使用 [使用线程自动调用]
+		time_wheel_config						m_config;
+		int64_t									m_server_start_ms = 0;			// 服务器启动的毫秒
+		int64_t									m_current_ms = 0;				// 当前毫秒数
+		std::vector<std::shared_ptr<wheel>>		m_wheel;
+		std::unique_ptr<std::thread>			m_thread = nullptr;				// 时间轮线程 
+		std::shared_mutex						m_mutex;
+		bool									m_isthreadcallback = false;		// 是否使用 [使用线程自动调用]
 		// ###### 使用线程自动调用 start 
-		std::thread*		m_threadcallback = nullptr;			// 时间轮工作线程用来执行回调
-		std::shared_mutex	m_mutexcallback;
-		ngl::sem			m_sem;
+		std::unique_ptr<std::thread>			m_threadcallback = nullptr;		// 时间轮工作线程用来执行回调
+		std::shared_mutex						m_mutexcallback;
+		ngl::sem								m_sem;
 		// ###### 使用线程自动调用 finish
-		wheel_node*			m_worldnodehead = nullptr;
-		wheel_node*			m_worldnodetail = nullptr;
-		int64_t				m_timerid = 1;						// 定时器自增id
-		std::map<int64_t, bool> m_timer;						// 用于快速删除定时器
-		time_wheel*			m_twheel = nullptr;
-		bool				m_stop = false;
+		wheel_node*								m_worldnodehead = nullptr;
+		wheel_node*								m_worldnodetail = nullptr;
+		int64_t									m_timerid = 1;					// 定时器自增id
+		std::map<int64_t, bool>					m_timer;						// 用于快速删除定时器
+		time_wheel*								m_twheel = nullptr;
+		bool									m_stop = false;
 
 		impl_time_wheel(time_wheel* atwheel, const time_wheel_config& aconfig, bool aisthreadcallback):
 			m_twheel(atwheel),
@@ -93,19 +93,19 @@ namespace ngl
 				
 			for (int32_t i = 0; i < m_config.m_time_wheel_count; ++i)
 			{
-				m_wheel[i] = new wheel();
+				m_wheel[i] = std::make_shared<wheel>();
 			}
 
 			for (int32_t i = 0; i < m_config.m_time_wheel_count; ++i)
 			{
-				m_wheel[i]->set(lms, m_config.m_time_wheel_bit, (i + 1 < m_config.m_time_wheel_count) ? m_wheel[i + 1] : nullptr, (i == 0) ? nullptr : m_wheel[i - 1], atwheel);
+				m_wheel[i]->set(lms, m_config.m_time_wheel_bit, (i + 1 < m_config.m_time_wheel_count) ? m_wheel[i + 1].get() : nullptr, (i == 0) ? nullptr : m_wheel[i - 1].get(), atwheel);
 				lms = m_wheel[i]->all_slot_ms();
 			}
 
-			m_thread = new std::thread(&impl_time_wheel::run, this);
+			m_thread = std::make_unique<std::thread>(&impl_time_wheel::run, this);
 			if (m_isthreadcallback)
 			{
-				m_threadcallback = new std::thread(&impl_time_wheel::runcallback, this);
+				m_threadcallback = std::make_unique<std::thread>(&impl_time_wheel::runcallback, this);
 			}
 			else
 			{
@@ -116,10 +116,6 @@ namespace ngl
 		~impl_time_wheel()
 		{
 			stop();
-			for (auto item : m_wheel)
-			{
-				delete item;
-			}
 			m_wheel.clear();
 		}
 
@@ -187,7 +183,7 @@ namespace ngl
 				}
 				auto& ltimer = m_timer;
 				auto& lwheel = m_wheel;
-				for (wheel* item : lwheel)
+				for (auto& item : lwheel)
 				{
 					if (item->push(lpnode))
 					{
