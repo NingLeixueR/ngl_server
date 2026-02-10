@@ -27,6 +27,7 @@ jobs:
     - name: Install libgettextpo-dev
       run: |
         sudo apt-get install -y libgettextpo-dev 
+        find / -name libintl.so
         
     - name: Download and Install CMake
       run: |
