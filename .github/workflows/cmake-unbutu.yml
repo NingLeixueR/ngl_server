@@ -30,7 +30,7 @@ jobs:
         
     - name: Verify libgettextpo-dev
       run: |
-        find / -name libintl.so
+        find /usr/lib/ -name "libintl.so*"
         
     - name: Download and Install CMake
       run: |
