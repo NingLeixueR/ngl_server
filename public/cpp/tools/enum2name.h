@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -21,7 +21,7 @@
 
 namespace ngl
 {
-	// # ÓÃÓÚ¹ØÁªÃ¶¾ÙºÍ×Ö·û´®Ãû×Ö
+	// # ç”¨äºå…³è”æšä¸¾å’Œå­—ç¬¦ä¸²åå­—
 	template <typename ENUMT>
 	class enum2name
 	{
@@ -31,9 +31,9 @@ namespace ngl
 
 		struct data
 		{
-			std::string m_tolower;		// ×ª»»ÎªĞ¡Ğ´
-			std::string m_toupper;		// ×ª»»Îª´óĞ´
-			std::string m_never;		// ²»¸Ä±ä´óĞ¡Ğ´
+			std::string m_tolower;		// è½¬æ¢ä¸ºå°å†™
+			std::string m_toupper;		// è½¬æ¢ä¸ºå¤§å†™
+			std::string m_never;		// ä¸æ”¹å˜å¤§å°å†™
 		};
 		static std::map<int, std::map<ENUMT, data>>			m_datae2n;
 		static std::map<int, std::map<std::string, ENUMT>>	m_datan2e;

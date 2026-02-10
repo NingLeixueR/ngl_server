@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -23,11 +23,11 @@ namespace ngl
 	public:
 		enum ecmd
 		{
-			ecmd_connect,				// ·¢ÆğÁ¬½Ó
-			ecmd_connect_ret,			// ±»·¢ÆğÁ¬½ÓÕßµÄ·µ»Ø
-			ecmd_ping,					// ¶¨Ê±ping
-			ecmd_close,					// Ö÷¶¯¶Ï¿ªÁ¬½Ó
-			ecmd_close_ret,             // Ö÷¶¯¶Ï¿ªÁ¬½ÓµÄ·µ»Ø
+			ecmd_connect,				// å‘èµ·è¿æ¥
+			ecmd_connect_ret,			// è¢«å‘èµ·è¿æ¥è€…çš„è¿”å›
+			ecmd_ping,					// å®šæ—¶ping
+			ecmd_close,					// ä¸»åŠ¨æ–­å¼€è¿æ¥
+			ecmd_close_ret,             // ä¸»åŠ¨æ–­å¼€è¿æ¥çš„è¿”å›
 			ecmd_minlen = sizeof("ecmd*") - 1,
 		};
 		using ecmd_callback = std::function<void(asio_kcp*, ptr_se&, const std::string&)>;

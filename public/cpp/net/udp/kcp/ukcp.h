@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -127,7 +127,7 @@ namespace ngl
 			return m_kcp.sendu(aendpoint, buf, len);
 		}
 
-		// ## ·¢ËÍÔ­Ê¼udp°ü²¢µÈ´ıÆä·µ»Ø
+		// ## å‘é€åŸå§‹udpåŒ…å¹¶ç­‰å¾…å…¶è¿”å›
 		bool sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun)
 		{
 			std::unique_ptr<ngl::sem> lsem = std::make_unique<ngl::sem>();
@@ -142,7 +142,7 @@ namespace ngl
 		}
 #pragma endregion 
 
-		// ## ·¢ÆğÁ¬½Ó
+		// ## å‘èµ·è¿æ¥
 		void connect(
 			std::string& akcpsess
 			, i64_actorid aactoridserver
@@ -159,18 +159,18 @@ namespace ngl
 			, const std::function<void(i32_session)>& afun
 		);
 
-		// ## ²éÕÒsession¶ÔÓ¦µÄactorid
+		// ## æŸ¥æ‰¾sessionå¯¹åº”çš„actorid
 		i64_actorid find_actoridserver(i32_session asession);
 		i64_actorid find_actoridclient(i32_session asession);
 		bool find_actorid(i32_session asession, i64_actorid& aactoridserver, i64_actorid& aactoridclient);
 
-		// ## Éú³Ékcp-sessionÒÔÑéÖ¤Á¬½Ó
+		// ## ç”Ÿæˆkcp-sessionä»¥éªŒè¯è¿æ¥
 		static bool session_create(i64_actorid aactoridclient, i64_actorid aactoridserver, std::string& asession);
 
-		// ## ¼ì²ékcp-sessionÒÔÑéÖ¤Á¬½Ó
+		// ## æ£€æŸ¥kcp-sessionä»¥éªŒè¯è¿æ¥
 		static bool session_check(i64_actorid aactoridclient, i64_actorid aactoridserver, const std::string& asession);
 
-		// ## ÖØÖÃÁ¬½Ó
+		// ## é‡ç½®è¿æ¥
 		void reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient);
 		void reset_add(const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient);
 	};

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "nprotocol.h"
@@ -88,7 +88,7 @@ namespace ngl
 		}
 
 		curl_easy_setopt(ahttp.m_curl, CURLOPT_NOSIGNAL, 1L);
-		curl_easy_setopt(ahttp.m_curl, CURLOPT_FORBID_REUSE, 1L); //½ûµôalarmºó»áÓĞ´óÁ¿CLOSE_WAIT 
+		curl_easy_setopt(ahttp.m_curl, CURLOPT_FORBID_REUSE, 1L); //ç¦æ‰alarmåä¼šæœ‰å¤§é‡CLOSE_WAIT 
 
 		return curl_easy_perform(ahttp.m_curl);
 	}
@@ -186,27 +186,27 @@ namespace ngl
 			CURLcode res;
 			m_index = 0;
 
-			// ³õÊ¼»¯libcurl
+			// åˆå§‹åŒ–libcurl
 			curl = curl_easy_init();
 
 			if (curl)
 			{
 				curl_slist* recipients = nullptr;
 
-				// ÉèÖÃSMTP·şÎñÆ÷¡¢·¢¼şÈËºÍÊÕ¼şÈË
+				// è®¾ç½®SMTPæœåŠ¡å™¨ã€å‘ä»¶äººå’Œæ”¶ä»¶äºº
 				curl_easy_setopt(curl, CURLOPT_URL, aparm.m_smtp.c_str());
 				curl_easy_setopt(curl, CURLOPT_MAIL_FROM, aparm.m_email.c_str());
-				// ÉèÖÃSMTPÈÏÖ¤ĞÅÏ¢
+				// è®¾ç½®SMTPè®¤è¯ä¿¡æ¯
 				curl_easy_setopt(curl, CURLOPT_USERNAME, aparm.m_email.c_str());
 				curl_easy_setopt(curl, CURLOPT_PASSWORD, aparm.m_password.c_str());
 
 				curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
-				//ÊÇ·ñ´ò¿ªµ÷ÊÔĞÅÏ¢
+				//æ˜¯å¦æ‰“å¼€è°ƒè¯•ä¿¡æ¯
 				curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L);
 				curl_easy_setopt(curl, CURLOPT_TIMEOUT, 60L);
 				curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30L);
 
-				// ÉèÖÃÊÕ¼şÈË
+				// è®¾ç½®æ”¶ä»¶äºº
 				for (auto& [mailarr, name] : aparm.m_recvs)
 				{
 					recipients = curl_slist_append(recipients, std::format("<{}>", mailarr).c_str());
@@ -227,20 +227,20 @@ namespace ngl
 				}
 				payload += "\r\n";
 				payload += std::format("Subject: {}\r\n", aparm.m_title);
-				payload += "\r\n"; // ¿ÕĞĞ±íÊ¾header²¿·Ö½áÊø
-				payload += std::format("{}\r\n", aparm.m_content); // ÓÊ¼şÄÚÈİ
+				payload += "\r\n"; // ç©ºè¡Œè¡¨ç¤ºheaderéƒ¨åˆ†ç»“æŸ
+				payload += std::format("{}\r\n", aparm.m_content); // é‚®ä»¶å†…å®¹
 
 				curl_easy_setopt(curl, CURLOPT_READDATA, payload.c_str());
 
-				curl_easy_setopt(curl, CURLOPT_READFUNCTION, &email_sender::callback); // ÉèÖÃ¶ÁÈ¡Êı¾İµÄ»Øµ÷º¯Êı
+				curl_easy_setopt(curl, CURLOPT_READFUNCTION, &email_sender::callback); // è®¾ç½®è¯»å–æ•°æ®çš„å›è°ƒå‡½æ•°
 
 				curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, nullptr);
-				// ·¢ËÍÓÊ¼ş
+				// å‘é€é‚®ä»¶
 				res = curl_easy_perform(curl);
 
 				aparm.post();
 
-				// ¼ì²é½á¹û
+				// æ£€æŸ¥ç»“æœ
 				if (res != CURLE_OK)
 				{
 					std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
@@ -250,7 +250,7 @@ namespace ngl
 					std::cout << "email send successfully!" << std::endl;
 				}
 
-				// ÇåÀí
+				// æ¸…ç†
 				curl_slist_free_all(recipients);
 				curl_easy_cleanup(curl);
 			}
@@ -277,8 +277,8 @@ namespace ngl
 
 		if (amailvec.empty())
 		{
-			lparm->m_recvs.emplace_back(std::make_pair("libo1@youxigu.com", "Àî²©"));
-			lparm->m_recvs.emplace_back(std::make_pair("348634371@qq.com", "Àî²©QQ"));
+			lparm->m_recvs.emplace_back(std::make_pair("libo1@youxigu.com", "æåš"));
+			lparm->m_recvs.emplace_back(std::make_pair("348634371@qq.com", "æåšQQ"));
 		}
 		ncurl::sendemail(lparm);
 	}

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -45,9 +45,9 @@ namespace ngl
 			};
 
 			i32_actordataid m_id;					// nlogactor
-			std::string		m_dir;					// ÎÄ¼ş¼Ğ
-			ELOG_TYPE		m_type = ELOG_DEFAULT;	// ÈÕÖ¾ÀàĞÍ
-			int32_t			m_flush_time = 0;		// Ğ´ÈëÎÄ¼şµÄ¼ä¸ô
+			std::string		m_dir;					// æ–‡ä»¶å¤¹
+			ELOG_TYPE		m_type = ELOG_DEFAULT;	// æ—¥å¿—ç±»å‹
+			int32_t			m_flush_time = 0;		// å†™å…¥æ–‡ä»¶çš„é—´éš”
 
 			int32_t flush_time()
 			{
@@ -55,31 +55,31 @@ namespace ngl
 			}
 		};
 		std::ofstream	m_stream;
-		config			m_config;		// ÈÕÖ¾ÅäÖÃ
-		int				m_count = 0;	// ÊıÁ¿
-		int				m_fcount = 0;	// Ë¢ĞÂÊıÁ¿
+		config			m_config;		// æ—¥å¿—é…ç½®
+		int				m_count = 0;	// æ•°é‡
+		int				m_fcount = 0;	// åˆ·æ–°æ•°é‡
 
 		logfile(const config& aconfig);
 
-		// # Ë¢ĞÂÊıÁ¿
+		// # åˆ·æ–°æ•°é‡
 		bool flush_count()const;
 
-		// # ¹Ø±ÕÎÄ¼şÁ÷
+		// # å…³é—­æ–‡ä»¶æµ
 		void close_fstream();
 
-		// # ´´½¨Ä¿Â¼
+		// # åˆ›å»ºç›®å½•
 		bool create_directories(const std::string& apath);
 
-		// # ´´½¨
+		// # åˆ›å»º
 		void create();
 
-		// # ´òÓ¡ÈÕÖ¾
+		// # æ‰“å°æ—¥å¿—
 		virtual void printf(const np_logitem* alog) = 0;
 
-		// # Ë¢ĞÂµ½ÎÄ¼ş
+		// # åˆ·æ–°åˆ°æ–‡ä»¶
 		void flush();
 
-		// # ´´½¨ÈÕÖ¾ÊµÀı
+		// # åˆ›å»ºæ—¥å¿—å®ä¾‹
 		static std::shared_ptr<logfile> create_make(const config& aconfig);
 	};
 }// namespace ngl

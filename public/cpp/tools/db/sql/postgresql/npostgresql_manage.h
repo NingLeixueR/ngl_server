@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 *
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 *
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 *
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -60,16 +60,16 @@ namespace ngl
 				, tools::type_name<T>().c_str(), adata->mid(), larea
 			);
 
-			// ²ÎÊı×¼±¸
+			// å‚æ•°å‡†å¤‡
 			const char* param_values[1];
 			int param_lengths[1];
-			int param_formats[1] = { 1 }; // 0=text, 1=binary£¨data ÓÃ binary ¸ñÊ½£©
+			int param_formats[1] = { 1 }; // 0=text, 1=binaryï¼ˆdata ç”¨ binary æ ¼å¼ï¼‰
 
 			// data (binary)
 			param_values[0] = adb->m_malloc.buff();
 			param_lengths[0] = adb->m_malloc.pos();
 
-			// Ö´ĞĞ²ÎÊı»¯²éÑ¯
+			// æ‰§è¡Œå‚æ•°åŒ–æŸ¥è¯¢
 			PGresult* res = PQexecParams(
 				adb->postgresql(), lbuff, 1, nullptr, param_values, param_lengths, param_formats, 0 
 			);
@@ -125,7 +125,7 @@ namespace ngl
 			return true;
 		}
 
-		// # ¼ÓÔØ±¾µØÅäÖÃÇø·ş¹ØÁªµÄËùÓĞºÏ·şÊı¾İ
+		// # åŠ è½½æœ¬åœ°é…ç½®åŒºæœå…³è”çš„æ‰€æœ‰åˆæœæ•°æ®
 		static const char* where_area()
 		{
 			static std::string lareastr;
@@ -152,7 +152,7 @@ namespace ngl
 		template <typename T>
 		static bool select(npostgresql* adb, i64_actorid aid)
 		{
-			// # ´ÓÊı¾İ¿âÖĞ¼ÓÔØ
+			// # ä»æ•°æ®åº“ä¸­åŠ è½½
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(lbuff, 1024,
 				"SELECT id,data FROM %s WHERE id = %lld AND (%s);", tools::type_name<T>().c_str(), aid, where_area()
@@ -183,7 +183,7 @@ namespace ngl
 		template <typename T>
 		static bool select(npostgresql* adb)
 		{
-			// # ´ÓÊı¾İ¿âÖĞ¼ÓÔØ
+			// # ä»æ•°æ®åº“ä¸­åŠ è½½
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
 				lbuff, 1024, "SELECT id,data FROM %s WHERE %s;", tools::type_name<T>().c_str(), where_area()
@@ -211,11 +211,11 @@ namespace ngl
 			);
 		}
 
-		// # ¼ÓÔØ³öid ·ÀÖ¹ÄÚ´æ´©Í¸
+		// # åŠ è½½å‡ºid é˜²æ­¢å†…å­˜ç©¿é€
 		template <typename T>
 		static bool select(npostgresql* adb, std::set<int64_t>& aidset)
 		{
-			// # ´ÓÊı¾İ¿âÖĞ¼ÓÔØ
+			// # ä»æ•°æ®åº“ä¸­åŠ è½½
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
 				lbuff, 1024, "SELECT id FROM %s WHERE %s;", tools::type_name<T>().c_str(), where_area()

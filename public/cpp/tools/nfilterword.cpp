@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
@@ -40,8 +40,8 @@ namespace ngl
         int cur = m_root;
 
         for (auto c : apattern)
-        {  // ±éÀú¿í×Ö·û£¨ÖĞÎÄÃ¿¸ö×ÖÊÇÒ»¸öwchar_t£©
-            // Èôµ±Ç°×Ö·ûµÄ×Ó½Úµã²»´æÔÚ£¬Ôò´´½¨
+        {  // éå†å®½å­—ç¬¦ï¼ˆä¸­æ–‡æ¯ä¸ªå­—æ˜¯ä¸€ä¸ªwchar_tï¼‰
+            // è‹¥å½“å‰å­—ç¬¦çš„å­èŠ‚ç‚¹ä¸å­˜åœ¨ï¼Œåˆ™åˆ›å»º
             auto& ltemp = m_nodes[cur].m_children;
             if (!ltemp.contains(c))
             {
@@ -49,13 +49,13 @@ namespace ngl
             }
             cur = m_nodes[cur].m_children[c];
         }
-        m_nodes[cur].len = apattern.size();  // ±ê¼ÇÄ£Ê½´®½áÊø£¬¼ÇÂ¼³¤¶È
+        m_nodes[cur].len = apattern.size();  // æ ‡è®°æ¨¡å¼ä¸²ç»“æŸï¼Œè®°å½•é•¿åº¦
     }
 
     void nfilterword::build()
     {
         std::queue<int> q;
-        // ³õÊ¼»¯¸ù½ÚµãµÄ×Ó½Úµã£ºÊ§°ÜÖ¸ÕëÖ¸Ïò¸ù
+        // åˆå§‹åŒ–æ ¹èŠ‚ç‚¹çš„å­èŠ‚ç‚¹ï¼šå¤±è´¥æŒ‡é’ˆæŒ‡å‘æ ¹
         for (auto& pair : m_nodes[m_root].m_children)
         {
             int child = pair.second;
@@ -63,26 +63,26 @@ namespace ngl
             q.push(child);
         }
 
-        // BFS±éÀúËùÓĞ½Úµã
+        // BFSéå†æ‰€æœ‰èŠ‚ç‚¹
         while (!q.empty())
         {
             int p = q.front();
             q.pop();
 
-            // ±éÀúµ±Ç°½ÚµãµÄËùÓĞ×Ó½Úµã
+            // éå†å½“å‰èŠ‚ç‚¹çš„æ‰€æœ‰å­èŠ‚ç‚¹
             for (auto& pair : m_nodes[p].m_children)
             {
-                auto c = pair.first;   // µ±Ç°×Ö·û
-                int u = pair.second;      // µ±Ç°×Ó½ÚµãË÷Òı
-                int fail_p = m_nodes[p].m_fail;  // ¸¸½ÚµãµÄÊ§°ÜÖ¸Õë
+                auto c = pair.first;   // å½“å‰å­—ç¬¦
+                int u = pair.second;      // å½“å‰å­èŠ‚ç‚¹ç´¢å¼•
+                int fail_p = m_nodes[p].m_fail;  // çˆ¶èŠ‚ç‚¹çš„å¤±è´¥æŒ‡é’ˆ
 
-                // »ØËİÊ§°ÜÖ¸Õë£ºÖ±µ½ÕÒµ½°üº¬µ±Ç°×Ö·ûµÄ½Úµã£¬»ò¸ù½Úµã
+                // å›æº¯å¤±è´¥æŒ‡é’ˆï¼šç›´åˆ°æ‰¾åˆ°åŒ…å«å½“å‰å­—ç¬¦çš„èŠ‚ç‚¹ï¼Œæˆ–æ ¹èŠ‚ç‚¹
                 while (fail_p != -1 && !m_nodes[fail_p].m_children.contains(c))
                 {
                     fail_p = m_nodes[fail_p].m_fail;
                 }
 
-                // ÉèÖÃµ±Ç°½ÚµãµÄÊ§°ÜÖ¸Õë
+                // è®¾ç½®å½“å‰èŠ‚ç‚¹çš„å¤±è´¥æŒ‡é’ˆ
                 m_nodes[u].m_fail = (fail_p == -1) ? m_root : m_nodes[fail_p].m_children[c];
                 q.push(u);
             }
@@ -91,25 +91,25 @@ namespace ngl
 
     bool nfilterword::match(char c, int& cur, int i, std::vector<std::pair<int, int>>& res)
     {
-        // Ê§Åä»ØÍË£ºÑØÊ§°ÜÖ¸ÕëÕÒÆ¥ÅäµÄ½Úµã
+        // å¤±é…å›é€€ï¼šæ²¿å¤±è´¥æŒ‡é’ˆæ‰¾åŒ¹é…çš„èŠ‚ç‚¹
         while (cur != m_root && !m_nodes[cur].m_children.contains(c))
         {
             cur = m_nodes[cur].m_fail;
         }
 
-        // Æ¥Åä³É¹¦ÔòÒÆ¶¯µ½×Ó½Úµã£¬·ñÔòÁôÔÚ¸ù½Úµã
+        // åŒ¹é…æˆåŠŸåˆ™ç§»åŠ¨åˆ°å­èŠ‚ç‚¹ï¼Œå¦åˆ™ç•™åœ¨æ ¹èŠ‚ç‚¹
         if (m_nodes[cur].m_children.contains(c))
         {
             cur = m_nodes[cur].m_children[c];
         }
 
-        // ÊÕ¼¯ËùÓĞÆ¥ÅäµÄÄ£Ê½´®£¨±éÀúÊ§°ÜÁ´£¬´¦ÀíÇ¶Ì×Æ¥Åä£©
+        // æ”¶é›†æ‰€æœ‰åŒ¹é…çš„æ¨¡å¼ä¸²ï¼ˆéå†å¤±è´¥é“¾ï¼Œå¤„ç†åµŒå¥—åŒ¹é…ï¼‰
         int temp = cur;
         while (temp != m_root)
         {
             if (m_nodes[temp].len > 0)
             {
-                int start = i - m_nodes[temp].len + 1;  // ¼ÆËãÆğÊ¼Î»ÖÃ
+                int start = i - m_nodes[temp].len + 1;  // è®¡ç®—èµ·å§‹ä½ç½®
                 res.emplace_back(start, m_nodes[temp].len);
             }
             temp = m_nodes[temp].m_fail;
@@ -122,7 +122,7 @@ namespace ngl
         std::vector<std::pair<int, int>> res;
         int cur = m_root;
 
-        // ±éÀú¿í×Ö·ûÎÄ±¾£¨ÖĞÎÄÃ¿¸ö×ÖÊÇÒ»¸öÔªËØ£©
+        // éå†å®½å­—ç¬¦æ–‡æœ¬ï¼ˆä¸­æ–‡æ¯ä¸ªå­—æ˜¯ä¸€ä¸ªå…ƒç´ ï¼‰
         for (int i = 0; i < text.size(); ++i)
         {
             match(text[i], cur, i, res);
@@ -134,7 +134,7 @@ namespace ngl
     {
         std::string result = text;
         std::vector<std::pair<int, int>> matches = match(text);
-        // Ìæ»»ËùÓĞÆ¥ÅäµÄ×Ö·ûÎª*
+        // æ›¿æ¢æ‰€æœ‰åŒ¹é…çš„å­—ç¬¦ä¸º*
         for (auto& [start, len] : matches)
         {
             for (int i = start; i < start + len; ++i)
@@ -173,7 +173,7 @@ namespace ngl
 
     bool nfilterword::is_filter(const std::string& text)
     {
-        // È¥³ıÌØÊâ·ûºÅ
+        // å»é™¤ç‰¹æ®Šç¬¦å·
         std::u32string ltemp1;
         if (!utf8to32(text, ltemp1))
         {
@@ -226,10 +226,10 @@ namespace ngl
     {
         if (em<nfilterword::enfilter>::empty())
         {
-            em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_success, "³É¹¦");
-            em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_emojispecial, "Ê§°Ü:´æÔÚÌØÊâ·ûºÅ");
-            em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_charcount, "Ê§°Ü:×Ö·û¸öÊı²»·ûºÏÒªÇó");
-            em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_filter, "Ê§°Ü:´æÔÚÆÁ±Î×Ö");
+            em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_success, "æˆåŠŸ");
+            em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_emojispecial, "å¤±è´¥:å­˜åœ¨ç‰¹æ®Šç¬¦å·");
+            em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_charcount, "å¤±è´¥:å­—ç¬¦ä¸ªæ•°ä¸ç¬¦åˆè¦æ±‚");
+            em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_filter, "å¤±è´¥:å­˜åœ¨å±è”½å­—");
         }
         return em<nfilterword::enfilter>::name(astat);
     }
@@ -255,65 +255,65 @@ namespace ngl
 
     bool nfilterword::is_language_char(uint32_t codepoint)
     {
-        return (codepoint >= 0x0041 && codepoint <= 0x005A) ||  // ´óĞ´Ó¢ÎÄ×ÖÄ¸
-            (codepoint >= 0x0061 && codepoint <= 0x007A) ||  // Ğ¡Ğ´Ó¢ÎÄ×ÖÄ¸
-            (codepoint >= 0x4E00 && codepoint <= 0x9FFF) ||  // ³£ÓÃºº×Ö
-            (codepoint >= 0x3400 && codepoint <= 0x4DBF) ||  // ºº×ÖÀ©Õ¹A
-            (codepoint >= 0x20000 && codepoint <= 0x2A6DF) || // ºº×ÖÀ©Õ¹B
-            (codepoint >= 0x3040 && codepoint <= 0x309F) ||  // ÈÕÎÄÆ½¼ÙÃû
-            (codepoint >= 0x30A0 && codepoint <= 0x30FF) ||  // ÈÕÎÄÆ¬¼ÙÃû
-            (codepoint >= 0xAC00 && codepoint <= 0xD7AF) ||  // º«ÎÄÑèÎÄ
-            (codepoint >= 0x0400 && codepoint <= 0x04FF) ||  // ¶íÎÄÎ÷Àï¶û×ÖÄ¸
-            (codepoint >= 0x0370 && codepoint <= 0x03FF) ||  // Ï£À°ÎÄ×ÖÄ¸
-            (codepoint >= 0x0600 && codepoint <= 0x06FF);    // °¢À­²®×ÖÄ¸
+        return (codepoint >= 0x0041 && codepoint <= 0x005A) ||  // å¤§å†™è‹±æ–‡å­—æ¯
+            (codepoint >= 0x0061 && codepoint <= 0x007A) ||  // å°å†™è‹±æ–‡å­—æ¯
+            (codepoint >= 0x4E00 && codepoint <= 0x9FFF) ||  // å¸¸ç”¨æ±‰å­—
+            (codepoint >= 0x3400 && codepoint <= 0x4DBF) ||  // æ±‰å­—æ‰©å±•A
+            (codepoint >= 0x20000 && codepoint <= 0x2A6DF) || // æ±‰å­—æ‰©å±•B
+            (codepoint >= 0x3040 && codepoint <= 0x309F) ||  // æ—¥æ–‡å¹³å‡å
+            (codepoint >= 0x30A0 && codepoint <= 0x30FF) ||  // æ—¥æ–‡ç‰‡å‡å
+            (codepoint >= 0xAC00 && codepoint <= 0xD7AF) ||  // éŸ©æ–‡è°šæ–‡
+            (codepoint >= 0x0400 && codepoint <= 0x04FF) ||  // ä¿„æ–‡è¥¿é‡Œå°”å­—æ¯
+            (codepoint >= 0x0370 && codepoint <= 0x03FF) ||  // å¸Œè…Šæ–‡å­—æ¯
+            (codepoint >= 0x0600 && codepoint <= 0x06FF);    // é˜¿æ‹‰ä¼¯å­—æ¯
     }
 
     bool nfilterword::is_emojispecial(char32_t codepoint)
     {
-        // µÚÒ»²½£ºÈç¹ûÊÇÓïÑÔÎÄ×Ö£¬Ö±½Ó·µ»Øfalse
+        // ç¬¬ä¸€æ­¥ï¼šå¦‚æœæ˜¯è¯­è¨€æ–‡å­—ï¼Œç›´æ¥è¿”å›false
         if (is_language_char(codepoint))
         {
             return false;
         }
 
-        // µÚ¶ş²½£ºÅĞ¶ÏÊÇ·ñÊôÓÚ¡¸·ûºÅÇø¼ä¡¹£¨ĞÂÔö¿ØÖÆ×Ö·ûÇø¼ä£©
+        // ç¬¬äºŒæ­¥ï¼šåˆ¤æ–­æ˜¯å¦å±äºã€Œç¬¦å·åŒºé—´ã€ï¼ˆæ–°å¢æ§åˆ¶å­—ç¬¦åŒºé—´ï¼‰
         return (
-            // ===== ĞÂÔö£ºASCII¿ØÖÆ×Ö·û£¨°üº¬\n¡¢\t¡¢\rµÈ£©=====
-            (codepoint >= 0x0000 && codepoint <= 0x001F) ||  // 0x0000-0x001F ¿ØÖÆ×Ö·û
-            (codepoint == 0x007F) ||                          // 0x7F É¾³ı·û
-            // 1. »ù´¡ASCII±êµã/·ûºÅ
+            // ===== æ–°å¢ï¼šASCIIæ§åˆ¶å­—ç¬¦ï¼ˆåŒ…å«\nã€\tã€\rç­‰ï¼‰=====
+            (codepoint >= 0x0000 && codepoint <= 0x001F) ||  // 0x0000-0x001F æ§åˆ¶å­—ç¬¦
+            (codepoint == 0x007F) ||                          // 0x7F åˆ é™¤ç¬¦
+            // 1. åŸºç¡€ASCIIæ ‡ç‚¹/ç¬¦å·
             (codepoint >= 0x0020 && codepoint <= 0x002F) ||
             (codepoint >= 0x003A && codepoint <= 0x0040) ||
             (codepoint >= 0x005B && codepoint <= 0x0060) ||
             (codepoint >= 0x007B && codepoint <= 0x007E) ||
-            // 2. È«½Ç·ûºÅ/±êµã
+            // 2. å…¨è§’ç¬¦å·/æ ‡ç‚¹
             (codepoint >= 0xFF00 && codepoint <= 0xFFEF) ||
-            // 3. EmojiÈ«Á¿·ûºÅ
+            // 3. Emojiå…¨é‡ç¬¦å·
             (codepoint >= 0x2600 && codepoint <= 0x27BF) ||
             (codepoint >= 0x1F300 && codepoint <= 0x1F5FF) ||
             (codepoint >= 0x1F600 && codepoint <= 0x1F64F) ||
             (codepoint >= 0x1F680 && codepoint <= 0x1F6FF) ||
             (codepoint >= 0x1F900 && codepoint <= 0x1F9FF) ||
             (codepoint >= 0x1FA00 && codepoint <= 0x1FAFF) ||
-            // 4. ÊıÑ§·ûºÅ
+            // 4. æ•°å­¦ç¬¦å·
             (codepoint >= 0x2200 && codepoint <= 0x22FF) ||
             (codepoint >= 0x2100 && codepoint <= 0x214F) ||
             (codepoint >= 0x2500 && codepoint <= 0x257F) ||
             (codepoint >= 0x1D400 && codepoint <= 0x1D7FF) ||
-            // 5. ¼ıÍ··ûºÅ
+            // 5. ç®­å¤´ç¬¦å·
             (codepoint >= 0x2190 && codepoint <= 0x21FF) ||
             (codepoint >= 0x2900 && codepoint <= 0x297F) ||
             (codepoint >= 0x2B00 && codepoint <= 0x2BFF) ||
-            // 6. ×°ÊÎ/ÌØÊâ·ûºÅ
+            // 6. è£…é¥°/ç‰¹æ®Šç¬¦å·
             (codepoint >= 0x2000 && codepoint <= 0x206F) ||
             (codepoint >= 0x2300 && codepoint <= 0x23FF) ||
             (codepoint >= 0x3200 && codepoint <= 0x32FF) ||
-            // 7. »õ±Ò/µ¥Î»·ûºÅ
+            // 7. è´§å¸/å•ä½ç¬¦å·
             (codepoint >= 0x00A0 && codepoint <= 0x00FF) ||
             (codepoint >= 0x20A0 && codepoint <= 0x20CF) ||
-            // 8. °æÈ¨/±ê¼Ç·ûºÅ
+            // 8. ç‰ˆæƒ/æ ‡è®°ç¬¦å·
             (codepoint == 0x00A9 || codepoint == 0x00AE || codepoint == 0x2122 || codepoint == 0x2605) ||
-            // 9. EmojiĞŞÊÎ/×éºÏ·ûºÅ
+            // 9. Emojiä¿®é¥°/ç»„åˆç¬¦å·
             (codepoint >= 0x1F3FB && codepoint <= 0x1F3FF) ||
             (codepoint == 0xFE0F || codepoint == 0x200D)
             );
@@ -334,8 +334,8 @@ namespace ngl
 
     void test_nfilterword()
     { 
-        {// ÅĞ¶Ïutf8±àÂë
-            std::string ltemp1 = "Ãô¸Ğ´Ê";
+        {// åˆ¤æ–­utf8ç¼–ç 
+            std::string ltemp1 = "æ•æ„Ÿè¯";
             std::string ltemp11;
             tools::to_utf8(ltemp1, ltemp11);
             std::cout << "ltemp1:" << (tools::isutf8(ltemp1) ? "true" : "false") << std::endl;
@@ -347,7 +347,7 @@ namespace ngl
             std::cout << "ltemp2:" << (tools::isutf8(ltemp2) ? "true" : "false") << std::endl;
             std::cout << "ltemp22:" << (tools::isutf8(ltemp22) ? "true" : "false") << std::endl;
 
-            std::string ltemp3 = "12Ôà»°3";
+            std::string ltemp3 = "12è„è¯3";
             std::string ltemp33;
             tools::to_utf8(ltemp3, ltemp33);
             std::cout << "ltemp3:" << (tools::isutf8(ltemp3) ? "true" : "false") << std::endl;
@@ -359,7 +359,7 @@ namespace ngl
         {
             nfilterword::init();
             std::vector<std::string> filterWords = {
-                "Ãô¸Ğ´Ê", "Ôà»°", "123456", "Test"
+                "æ•æ„Ÿè¯", "è„è¯", "123456", "Test"
             };
             for (auto& item : filterWords)
             {
@@ -374,13 +374,13 @@ namespace ngl
             nfilterword::build();
 
             std::vector<std::string> testTexts = {
-                "Ãô¸Ğ´Ê²âÊÔ",
-                "²»ÒªËµÔà»°£¡",
-                "ÃÜÂëÊÇ123456£¬×¢Òâ±£ÃÜ",
-                "TEST´óĞ¡Ğ´Ò²»á±»¹ıÂË",
-                "ÎŞÆÁ±Î×ÖµÄÕı³£ÎÄ±¾",
-                "Ç¶Ì×ÆÁ±Î×Ö£ºÃô¸Ğ´Ê123456",
-                "Ãô-¸Ğ-´Ê²âÊÔ",
+                "æ•æ„Ÿè¯æµ‹è¯•",
+                "ä¸è¦è¯´è„è¯ï¼",
+                "å¯†ç æ˜¯123456ï¼Œæ³¨æ„ä¿å¯†",
+                "TESTå¤§å°å†™ä¹Ÿä¼šè¢«è¿‡æ»¤",
+                "æ— å±è”½å­—çš„æ­£å¸¸æ–‡æœ¬",
+                "åµŒå¥—å±è”½å­—ï¼šæ•æ„Ÿè¯123456",
+                "æ•-æ„Ÿ-è¯æµ‹è¯•",
             };
             for (auto& item : testTexts)
             {
@@ -396,16 +396,16 @@ namespace ngl
                 std::cout << "obj:" << filtered << std::endl;
             }
 
-            {// ¼ì²éÃû×ÖÊÇ·ñºÏ·¨
+            {// æ£€æŸ¥åå­—æ˜¯å¦åˆæ³•
                 std::vector<std::string> lnames = {
-                    "ÄãºÃ??£¡123@#",
-                    "ÄãºÃ£¡123@#",
-                    "ÄãºÃ",
+                    "ä½ å¥½??ï¼123@#",
+                    "ä½ å¥½ï¼123@#",
+                    "ä½ å¥½",
                     "abc",
-                    "ÄãºÃ\n",
-                    "ÄãºÃ\r",
-                    "ÄãºÃ\v",
-                    "ºÃÃô¸Ğ´Ê"
+                    "ä½ å¥½\n",
+                    "ä½ å¥½\r",
+                    "ä½ å¥½\v",
+                    "å¥½æ•æ„Ÿè¯"
                 };
                 std::vector<std::string> lnames2;
                 for (auto& item : lnames)
