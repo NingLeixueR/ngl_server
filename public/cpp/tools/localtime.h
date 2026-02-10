@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -25,147 +25,147 @@ namespace ngl
 		enum
 		{
 			MILLISECOND			= 1000,
-			MINUTES_SECOND		= 1 * 60,							// Ò»·ÖÖÓ¶àÉÙÃë
-			MINUTES_MILLISECOND	= MINUTES_SECOND * MILLISECOND,		// Ò»·ÖÖÓ¶àÉÙºÁÃë
+			MINUTES_SECOND		= 1 * 60,							// ä¸€åˆ†é’Ÿå¤šå°‘ç§’
+			MINUTES_MILLISECOND	= MINUTES_SECOND * MILLISECOND,		// ä¸€åˆ†é’Ÿå¤šå°‘æ¯«ç§’
 			
-			HOUR_MINUTES		= 1 * 60,							// Ò»Ğ¡Ê±¶àÉÙ·ÖÖÓ
-			HOUR_SECOND			= MINUTES_SECOND * HOUR_MINUTES,	// Ò»Ğ¡Ê±¶àÉÙÃë
-			HOUR_MILLISECOND	= HOUR_SECOND * MILLISECOND,		// Ò»Ğ¡Ê±¶àÉÙºÁÃë
+			HOUR_MINUTES		= 1 * 60,							// ä¸€å°æ—¶å¤šå°‘åˆ†é’Ÿ
+			HOUR_SECOND			= MINUTES_SECOND * HOUR_MINUTES,	// ä¸€å°æ—¶å¤šå°‘ç§’
+			HOUR_MILLISECOND	= HOUR_SECOND * MILLISECOND,		// ä¸€å°æ—¶å¤šå°‘æ¯«ç§’
 
-			DAY_HOUR			= 24,								// Ò»Ìì¶àÉÙĞ¡Ê±
-			DAY_MINUTES			= DAY_HOUR * HOUR_MINUTES,			// Ò»Ìì¶àÉÙ·ÖÖÓ
-			DAY_SECOND			= DAY_HOUR * HOUR_SECOND,			// Ò»Ìì¶àÉÙÃë
-			DAY_MILLISECOND		= DAY_SECOND * MILLISECOND,			// Ò»Ìì¶àÉÙºÁÃë
+			DAY_HOUR			= 24,								// ä¸€å¤©å¤šå°‘å°æ—¶
+			DAY_MINUTES			= DAY_HOUR * HOUR_MINUTES,			// ä¸€å¤©å¤šå°‘åˆ†é’Ÿ
+			DAY_SECOND			= DAY_HOUR * HOUR_SECOND,			// ä¸€å¤©å¤šå°‘ç§’
+			DAY_MILLISECOND		= DAY_SECOND * MILLISECOND,			// ä¸€å¤©å¤šå°‘æ¯«ç§’
 
-			WEEK_DAY			= 7,								// Ò»ÖÜ¶àÉÙÌì
-			WEEK_HOUR			= WEEK_DAY * DAY_HOUR,				// Ò»ÖÜ¶àÉÙĞ¡Ê±
-			WEEK_MINUTES		= WEEK_DAY * DAY_MINUTES,			// Ò»ÖÜ¶àÉÙ·ÖÖÓ
-			WEEK_SECOND			= WEEK_DAY * DAY_SECOND,			// Ò»ÖÜ¶àÉÙÃë
-			WEEK_MILLISECOND	= WEEK_SECOND * MILLISECOND,		// Ò»ÖÜ¶àÉÙºÁÃë
+			WEEK_DAY			= 7,								// ä¸€å‘¨å¤šå°‘å¤©
+			WEEK_HOUR			= WEEK_DAY * DAY_HOUR,				// ä¸€å‘¨å¤šå°‘å°æ—¶
+			WEEK_MINUTES		= WEEK_DAY * DAY_MINUTES,			// ä¸€å‘¨å¤šå°‘åˆ†é’Ÿ
+			WEEK_SECOND			= WEEK_DAY * DAY_SECOND,			// ä¸€å‘¨å¤šå°‘ç§’
+			WEEK_MILLISECOND	= WEEK_SECOND * MILLISECOND,		// ä¸€å‘¨å¤šå°‘æ¯«ç§’
 		};
-		// # ¼ì²éÔÂ·İ
+		// # æ£€æŸ¥æœˆä»½
 		static bool check_month(int amonth/*1-12*/);
 
 		static bool check_monthday(int amonthday/*1-31*/);
 
 		static bool check_week(int aweek/*1-7*/);
 
-		// # ¼ì²éĞ¡Ê±
+		// # æ£€æŸ¥å°æ—¶
 		static bool check_hour(int hour/*0-23*/);
 
-		// # ¼ì²é·ÖÖÓ
+		// # æ£€æŸ¥åˆ†é’Ÿ
 		static bool check_minute(int minute/*0-59*/);
 
-		// # ¼ì²éÃë
+		// # æ£€æŸ¥ç§’
 		static bool check_sec(int sec/*0-59*/);
 
-		// # ÉèÖÃÊ±¼ä
+		// # è®¾ç½®æ—¶é—´
 		static bool settime(time_t sti);
 
-		// # »ñÈ¡Ê±¼ä
+		// # è·å–æ—¶é—´
 		static time_t gettime();
 
-		// # »ñÈ¡Ê±¼ä
+		// # è·å–æ—¶é—´
 		static time_t getsystime();
 
-		// # »ñÈ¡ÃëÓëÃëÖ®¼äµÄºÁÃëÊı 
+		// # è·å–ç§’ä¸ç§’ä¹‹é—´çš„æ¯«ç§’æ•° 
 		static time_t getms();
 
-		// # »ñÈ¡ºÁÃë
+		// # è·å–æ¯«ç§’
 		static time_t gettimems();
 
-		// # Á½¸öutcÊ±¼äÊÇ·ñÊÇÍ¬Ò»Ìì
+		// # ä¸¤ä¸ªutcæ—¶é—´æ˜¯å¦æ˜¯åŒä¸€å¤©
 		static bool issameday(time_t a1, time_t a2);
 
-		// # µ±Ç°Ê±¼äºÍ²ÎÊıutcÊ±¼äÊÇ·ñÊÇÍ¬Ò»Ìì
+		// # å½“å‰æ—¶é—´å’Œå‚æ•°utcæ—¶é—´æ˜¯å¦æ˜¯åŒä¸€å¤©
 		static bool issameday(time_t autc);
 
-		// # ´òÓ¡Ê±¼ä
+		// # æ‰“å°æ—¶é—´
 		static void printf_time2str(time_t anow, const char* format = "%Y-%m-%d %H:%M:%S");
 
-		// # utc×ª»»Îª×Ö·û´®
+		// # utcè½¬æ¢ä¸ºå­—ç¬¦ä¸²
 		static size_t time2str(char* str, int len, time_t anow, const char* format = "%Y-%m-%d %H:%M:%S");
 		static std::string time2str(time_t anow, const char* format = "%Y-%m-%d %H:%M:%S");
 		static std::string time2str(const char* format = "%Y-%m-%d %H:%M:%S");
 
-		// # ×Ö·û´®×ª»»Îªutc
+		// # å­—ç¬¦ä¸²è½¬æ¢ä¸ºutc
 		static time_t str2time(const char* astr, const char* format = "%Y-%m-%d %H:%M:%S");
 
-		// # »ñÈ¡utcÊ±¿ÌÄÇÌìµÄ Ğ¡Ê±·ÖÖÓµÄutc
+		// # è·å–utcæ—¶åˆ»é‚£å¤©çš„ å°æ—¶åˆ†é’Ÿçš„utc
 		static time_t getsecond2time(time_t utc, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # »ñÈ¡½ñÌìµÄÖ¸¶¨ Ğ¡Ê±·ÖÖÓµÄutc(Èç¹ûÊ±¼äÒÑ¹ıÔò»ñÈ¡ÏÂÒ»ÌìµÄÖ¸¶¨Ğ¡Ê±·ÖÖÓµÄutc)
+		// # è·å–ä»Šå¤©çš„æŒ‡å®š å°æ—¶åˆ†é’Ÿçš„utc(å¦‚æœæ—¶é—´å·²è¿‡åˆ™è·å–ä¸‹ä¸€å¤©çš„æŒ‡å®šå°æ—¶åˆ†é’Ÿçš„utc)
 		static time_t getsecond2time(int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # »ñÈ¡Ö¸¶¨·ÖÖÓµÄutc(Èç¹ûµ±Ç°Ğ¡Ê±·ÖÖÓÃëÊıÒÑ¹ıÔò»ñÈ¡ÏÂÒ»¸öĞ¡Ê±µÄ)
+		// # è·å–æŒ‡å®šåˆ†é’Ÿçš„utc(å¦‚æœå½“å‰å°æ—¶åˆ†é’Ÿç§’æ•°å·²è¿‡åˆ™è·å–ä¸‹ä¸€ä¸ªå°æ—¶çš„)
 		static time_t getsecond2time(int minute/*0-59*/, int sec/*0-59*/);
 
-		// # »ñÈ¡Ö¸¶¨ÃëÖÓµÄutc(Èç¹ûµ±Ç°Ğ¡Ê±·ÖÖÓÃëÊıÒÑ¹ıÔò»ñÈ¡ÏÂÒ»¸öĞ¡Ê±µÄ)
+		// # è·å–æŒ‡å®šç§’é’Ÿçš„utc(å¦‚æœå½“å‰å°æ—¶åˆ†é’Ÿç§’æ•°å·²è¿‡åˆ™è·å–ä¸‹ä¸€ä¸ªå°æ—¶çš„)
 		static time_t getsecond2time(int sec/*0-59*/);
 
-		// # »ñÈ¡Ö¸¶¨ĞÇÆÚµÄĞ¡Ê±·ÖÖÓ
+		// # è·å–æŒ‡å®šæ˜ŸæœŸçš„å°æ—¶åˆ†é’Ÿ
 		static time_t getweekday(time_t utc, int aweek/*1-7*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # »ñÈ¡±¾ÖÜ¼¸µÄÖ¸¶¨ Ğ¡Ê±·ÖÖÓµÄutc(Èç¹ûÊ±¼äÒÑ¹ıÔò»ñÈ¡ÏÂÒ»ÖÜ¼¸µÄÖ¸¶¨Ğ¡Ê±·ÖÖÓµÄutc) 
+		// # è·å–æœ¬å‘¨å‡ çš„æŒ‡å®š å°æ—¶åˆ†é’Ÿçš„utc(å¦‚æœæ—¶é—´å·²è¿‡åˆ™è·å–ä¸‹ä¸€å‘¨å‡ çš„æŒ‡å®šå°æ—¶åˆ†é’Ÿçš„utc) 
 		static time_t getweekday(int aweek/*0-6*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # ÊÇ·ñÊÇÈòÄê
+		// # æ˜¯å¦æ˜¯é—°å¹´
 		static bool isleapyear(int year);
 
-		// # ÊÇ·ñ´æÔÚÄêÔÂÈÕ
+		// # æ˜¯å¦å­˜åœ¨å¹´æœˆæ—¥
 		static bool mothday(int year, int month, int aday);
 
-		// # »ñÈ¡Ö¸¶¨utcËùÔÚÔÂ·İµÄÈÕÊ±·ÖÃë
+		// # è·å–æŒ‡å®šutcæ‰€åœ¨æœˆä»½çš„æ—¥æ—¶åˆ†ç§’
 		static std::pair<bool,time_t> getmothday(time_t utc, int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # »ñÈ¡±¾ÔÂ Ö¸¶¨ ÈÕĞ¡Ê±·ÖÖÓµÄutc
+		// # è·å–æœ¬æœˆ æŒ‡å®š æ—¥å°æ—¶åˆ†é’Ÿçš„utc
 		static std::pair<bool, time_t> getmothday(int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # »ñÈ¡Á½¸öÊ±¼äÖ®¼äÏà²îµÄÌìÊı
+		// # è·å–ä¸¤ä¸ªæ—¶é—´ä¹‹é—´ç›¸å·®çš„å¤©æ•°
 		static time_t getspandays(time_t curr, time_t last);
 
-		// # µ±ÔÂµÄ¼¸ºÅ
+		// # å½“æœˆçš„å‡ å·
 		static int getmoonday(const tm* atm);
 		static int getmoonday(time_t curr);
 		static int getmoonday();
 
-		// # ÔÂ·İ
+		// # æœˆä»½
 		static int getmoon(const tm* atm);
 		static int getmoon(time_t curr);
 		static int getmoon();
 
-		// # Äê
+		// # å¹´
 		static int getyear(const tm* atm);
 		static int getyear(time_t curr);
 		static int getyear();
 
-		// # ÖÜ:ÈÕ
+		// # å‘¨:æ—¥
 		static int getweekday(const tm* atm);
 		static int getweekday(time_t curr);
 		static int getweekday();
 
-		// # Ğ¡Ê±
+		// # å°æ—¶
 		static int gethour(const tm* atm);
 		static int gethour(time_t curr);
 		static int gethour();
 
-		// # ·ÖÖÓ
+		// # åˆ†é’Ÿ
 		static int getmin(const tm* atm);
 		static int getmin(time_t curr);
 		static int getmin();
 
-		// # ÃëÊı
+		// # ç§’æ•°
 		static int getsec(const tm* atm);
 		static int getsec(time_t curr);
 		static int getsec();
 
-		// # »ñÈ¡ÖÜ: ÈÕ Ê± ·Ö
+		// # è·å–å‘¨: æ—¥ æ—¶ åˆ†
 		static void getweekday(time_t curr, int& weekday, int& hour, int& minute);
 
-		// # »ñÈ¡tm
+		// # è·å–tm
 		static void gettm(time_t curr, tm& atm);
 
-		// # »ñÈ¡Ö¸¶¨utcºó¼¸¸öĞ¡Ê±
+		// # è·å–æŒ‡å®šutcåå‡ ä¸ªå°æ—¶
 		static int getutcbyhour(time_t utc, int hour);
 		static int getutcbymin(time_t utc, int amin);
 
@@ -174,7 +174,7 @@ namespace ngl
 
 		static bool issameweek(time_t timestamp1, time_t timestamp2);
 	private:
-		static time_t m_offset;		//Ê±¼äÆ«ÒÆÁ¿
+		static time_t m_offset;		//æ—¶é—´åç§»é‡
 	};
 
 	void test_isweek();

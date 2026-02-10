@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ��Ŀ���ƣ�ngl_server
-* ��Ŀ��ַ��https://github.com/NingLeixueR/ngl_server
+* 项目名称：ngl_server
+* 项目地址：https://github.com/NingLeixueR/ngl_server
 * 
-* ���ļ��� ngl_server ��Ŀ��һ���֣���ѭ MIT ��ԴЭ�鷢����
-* �����԰���Э��涨����ʹ�á��޸ĺͷַ�����Ŀ��������ҵ��;��
-* ���豣��ԭʼ��Ȩ������������
+* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
+* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
+* 但需保留原始版权和许可声明。
 * 
-* ��������μ���Ŀ��Ŀ¼�µ� LICENSE �ļ���
+* 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -20,12 +20,12 @@
 namespace ngl
 {
 	///////////////////////////////////////////////////////////
-	// �����ṩkey/std::function<void(ARG...)>�ṹ
-	// ͨ����Ա����push�ṩkey��std::function<void(ARG...)>
-	// ͨ����Ա����functionִ�ж�Ӧ�ķ���
-	// TAG���,������,��Ҫ���ڲ�����ͬ����
-	// TKEY���ڲ��ҵ�key����
-	// ...ARG ����ָ��std::function<void(ARG...)>�Ĳ���
+	// 用于提供key/std::function<void(ARG...)>结构
+	// 通过成员函数push提供key与std::function<void(ARG...)>
+	// 通过成员函数function执行对应的方法
+	// TAG标记,无意义,主要用于产生不同类型
+	// TKEY用于查找的key类型
+	// ...ARG 用于指定std::function<void(ARG...)>的参数
 	template <typename TAG, typename TKEY, typename ...ARG>
 	class cmd
 	{

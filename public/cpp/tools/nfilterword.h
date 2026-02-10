@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
@@ -29,12 +29,12 @@
 namespace ngl
 {
 
-    // ĞŞÕıAC½Úµã½á¹¹£ºÓÃ¹şÏ£±í´æ´¢×Ó½Úµã£¨ÊÊÅäÖĞÎÄµÈÈÎÒâ×Ö·û£©
+    // ä¿®æ­£ACèŠ‚ç‚¹ç»“æ„ï¼šç”¨å“ˆå¸Œè¡¨å­˜å‚¨å­èŠ‚ç‚¹ï¼ˆé€‚é…ä¸­æ–‡ç­‰ä»»æ„å­—ç¬¦ï¼‰
     struct nacnode
     {
-        std::unordered_map<char, int> m_children;  // ¿í×Ö·û -> ×Ó½ÚµãË÷Òı
+        std::unordered_map<char, int> m_children;  // å®½å­—ç¬¦ -> å­èŠ‚ç‚¹ç´¢å¼•
         int m_fail = -1;
-        int len = 0;  // Ä£Ê½´®³¤¶È£¬0±íÊ¾·Ç½áÎ²
+        int len = 0;  // æ¨¡å¼ä¸²é•¿åº¦ï¼Œ0è¡¨ç¤ºéç»“å°¾
     };
 
     class nfilterword
@@ -43,7 +43,7 @@ namespace ngl
         static std::vector<nacnode> m_nodes;
         static int m_root;
 
-        // ´´½¨ĞÂ½Úµã
+        // åˆ›å»ºæ–°èŠ‚ç‚¹
         static int newnode()
         {
             m_nodes.emplace_back();
@@ -54,58 +54,58 @@ namespace ngl
         nfilterword(const nfilterword&) = delete;
         nfilterword(const nfilterword&&) = delete;
     public:
-        // ³õÊ¼»¯
+        // åˆå§‹åŒ–
         static void init();
 
-        // ÇåÀí
+        // æ¸…ç†
         static void clear();
 
-        // ²åÈëÄ£Ê½´®£¨Ö§³ÖÈÎÒâ¿í×Ö·û£ºÖĞÎÄ/Ó¢ÎÄ/·ûºÅ£©
+        // æ’å…¥æ¨¡å¼ä¸²ï¼ˆæ”¯æŒä»»æ„å®½å­—ç¬¦ï¼šä¸­æ–‡/è‹±æ–‡/ç¬¦å·ï¼‰
         static void load(const std::string& apattern);
 
-        // ¹¹½¨Ê§°ÜÖ¸Õë£¨BFS£¬Âß¼­ÊÊÅä¹şÏ£±í£©
+        // æ„å»ºå¤±è´¥æŒ‡é’ˆï¼ˆBFSï¼Œé€»è¾‘é€‚é…å“ˆå¸Œè¡¨ï¼‰
         static void build();
 
         static bool match(char c, int& cur, int i, std::vector<std::pair<int, int>>& res);
 
-        // Æ¥ÅäÎÄ±¾£¬·µ»ØËùÓĞÆ¥ÅäµÄ<ÆğÊ¼Î»ÖÃ, Ä£Ê½´®³¤¶È>
+        // åŒ¹é…æ–‡æœ¬ï¼Œè¿”å›æ‰€æœ‰åŒ¹é…çš„<èµ·å§‹ä½ç½®, æ¨¡å¼ä¸²é•¿åº¦>
         static std::vector<std::pair<int, int>> match(const std::string& text);
 
-        // ¸¨Öúº¯Êı£º¹ıÂËÎÄ±¾£¨½«Æ¥ÅäµÄ×Ö·ûÌæ»»Îª*£©
+        // è¾…åŠ©å‡½æ•°ï¼šè¿‡æ»¤æ–‡æœ¬ï¼ˆå°†åŒ¹é…çš„å­—ç¬¦æ›¿æ¢ä¸º*ï¼‰
         static std::string filter(const std::string& text);
 
-        // ¸¨Öúº¯Êı: 8×ª»»Îª32
+        // è¾…åŠ©å‡½æ•°: 8è½¬æ¢ä¸º32
         static bool utf8to32(const std::string& text1, std::u32string& text2);
 
-        // ¸¨Öúº¯Êı: 32×ª»»Îª8
+        // è¾…åŠ©å‡½æ•°: 32è½¬æ¢ä¸º8
         static bool utf32to8(const std::u32string& text1, std::string& text2);
 
-        // ÊÇ·ñ´æÔÚÆÁ±Î×Ö
+        // æ˜¯å¦å­˜åœ¨å±è”½å­—
         static bool is_filter(const std::string& text);
 
-        // ×ÖÊı°´ÕÕASCIIÒ»¸ö×Ö£¬ºº×ÖÁ½¸ö×ÖËã
+        // å­—æ•°æŒ‰ç…§ASCIIä¸€ä¸ªå­—ï¼Œæ±‰å­—ä¸¤ä¸ªå­—ç®—
         static int32_t charcount(const std::u32string& astr);
 
         enum enfilter
         {
-            enfilter_success,               // ³É¹¦
-            enfilter_emojispecial,          // Ê§°Ü:´æÔÚÌØÊâ·ûºÅ
-            enfilter_charcount,             // Ê§°Ü:×Ö·û¸öÊı²»·ûºÏÒªÇó
-            enfilter_filter,                // Ê§°Ü:´æÔÚÆÁ±Î×Ö
+            enfilter_success,               // æˆåŠŸ
+            enfilter_emojispecial,          // å¤±è´¥:å­˜åœ¨ç‰¹æ®Šç¬¦å·
+            enfilter_charcount,             // å¤±è´¥:å­—ç¬¦ä¸ªæ•°ä¸ç¬¦åˆè¦æ±‚
+            enfilter_filter,                // å¤±è´¥:å­˜åœ¨å±è”½å­—
         };
 
         static const char* enfilter_message(enfilter astat);
 
-        // ÊÇ·ñ¿ÉÒÔÓÃÀ´×öÃû×Ö
+        // æ˜¯å¦å¯ä»¥ç”¨æ¥åšåå­—
         static enfilter check_name(const std::string& astr, int32_t amincount, int32_t amaxcount);
 
-        // ¸¨Öúº¯Êı£ºÅĞ¶ÏÂëµãÊÇ·ñÎª¡¸¸÷¹úÓïÑÔÎÄ×Ö¡¹
+        // è¾…åŠ©å‡½æ•°ï¼šåˆ¤æ–­ç ç‚¹æ˜¯å¦ä¸ºã€Œå„å›½è¯­è¨€æ–‡å­—ã€
         static bool is_language_char(uint32_t codepoint);
 
-        // ºËĞÄº¯Êı£ºÅĞ¶ÏÂëµãÊÇ·ñÎª¡¸·ÇÎÄ×Ö·ûºÅ¡¹
+        // æ ¸å¿ƒå‡½æ•°ï¼šåˆ¤æ–­ç ç‚¹æ˜¯å¦ä¸ºã€Œéæ–‡å­—ç¬¦å·ã€
         static bool is_emojispecial(char32_t codepoint);
        
-        // ÊÇ·ñ°üº¬ÌØÊâ·ûºÅ
+        // æ˜¯å¦åŒ…å«ç‰¹æ®Šç¬¦å·
         static bool is_emojispecial(const std::u32string& astr);
     };
 

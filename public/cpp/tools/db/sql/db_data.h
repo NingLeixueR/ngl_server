@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -29,34 +29,34 @@ namespace ngl
 		db_data& operator=(const db_data&) = delete;
 	private:
 		static std::map<i64_actorid, T>		m_data;
-		// # ¼ÓÔØ³öid ·ÀÖ¹ÄÚ´æ´©Í¸
+		// # åŠ è½½å‡ºid é˜²æ­¢å†…å­˜ç©¿é€
 		static std::set<int64_t>			m_idindex;
 	public:
-		// # »ñÈ¡Êı¾İµÄËùÓĞË÷Òı
+		// # è·å–æ•°æ®çš„æ‰€æœ‰ç´¢å¼•
 		static const std::set<int64_t>& const_id_index()
 		{
 			return m_idindex;
 		}
 
-		// # »ñÈ¡Êı¾İµÄËùÓĞË÷Òı
+		// # è·å–æ•°æ®çš„æ‰€æœ‰ç´¢å¼•
 		static std::set<int64_t>& id_index()
 		{
 			return m_idindex;
 		}
 
-		// # ÉèÖÃÊı¾İË÷Òı
+		// # è®¾ç½®æ•°æ®ç´¢å¼•
 		static void set_index(int64_t aid)
 		{
 			m_idindex.insert(aid);
 		}
 
-		// # É¾³ıÊı¾İË÷Òı
+		// # åˆ é™¤æ•°æ®ç´¢å¼•
 		static void erase_index(int64_t aid)
 		{
 			m_idindex.erase(aid);
 		}
 
-		// # ÉèÖÃÊı¾İ
+		// # è®¾ç½®æ•°æ®
 		static bool set(i64_actorid aid, const T& adata)
 		{
 			m_data[aid] = adata;
@@ -64,14 +64,14 @@ namespace ngl
 			return true;		
 		}
 
-		// # ÒÆ³ıÊı¾İ
+		// # ç§»é™¤æ•°æ®
 		static void remove(i64_actorid aid)
 		{
 			m_data.erase(aid);
 			erase_index(aid);
 		}
 
-		// # ÒÆ³ıÒ»×éÊı¾İ
+		// # ç§»é™¤ä¸€ç»„æ•°æ®
 		static void remove(const std::set<i64_actorid>& aid)
 		{
 			for (i64_actorid id : aid)
@@ -81,7 +81,7 @@ namespace ngl
 			}				
 		}
 
-		// # ÒÆ³ıÒ»×éÊı¾İ
+		// # ç§»é™¤ä¸€ç»„æ•°æ®
 		static void remove(const std::vector<i64_actorid>& aid)
 		{
 			for (i64_actorid id : aid)
@@ -91,12 +91,12 @@ namespace ngl
 			}
 		}
 
-		// # ÊÇ·ñ¼ÓÔØÄ³¸öÊı¾İ
+		// # æ˜¯å¦åŠ è½½æŸä¸ªæ•°æ®
 		enum edbdata
 		{
-			edbdata_notload,	// Ã»ÓĞ¼ÓÔØ
-			edbdata_load,		// ÒÑ¼ÓÔØ
-			edbdata_notdata,	// Ã»ÓĞÊı¾İ
+			edbdata_notload,	// æ²¡æœ‰åŠ è½½
+			edbdata_load,		// å·²åŠ è½½
+			edbdata_notdata,	// æ²¡æœ‰æ•°æ®
 		};
 		static edbdata data_stat(i64_actorid aid)
 		{
@@ -112,7 +112,7 @@ namespace ngl
 			return edbdata_load;
 		}
 
-		// # ²éÕÒÖ¸¶¨Êı¾İ
+		// # æŸ¥æ‰¾æŒ‡å®šæ•°æ®
 		static T* find(i64_actorid aid)
 		{
 			auto itor = m_data.find(aid);

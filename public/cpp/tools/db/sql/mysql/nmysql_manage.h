@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -59,7 +59,7 @@ namespace ngl
 			}
 
 			// # INSERT INTO %s  (id,data)VALUES(%lld,'%s')  ON DUPLICATE KEY UPDATE %s
-			// # REPLACE INTO Ôò»áÏÈÉ¾³ıÊı¾İ£¬È»ºóÔÙ²åÈë¡£
+			// # REPLACE INTO åˆ™ä¼šå…ˆåˆ é™¤æ•°æ®ï¼Œç„¶åå†æ’å…¥ã€‚
 			char lbuff[4096] = { 0 };
 			int llen = snprintf(
 				lbuff, 4096
@@ -118,7 +118,7 @@ namespace ngl
 			return true;
 		}
 
-		// # ¼ÓÔØ±¾µØÅäÖÃÇø·ş¹ØÁªµÄËùÓĞºÏ·şÊı¾İ
+		// # åŠ è½½æœ¬åœ°é…ç½®åŒºæœå…³è”çš„æ‰€æœ‰åˆæœæ•°æ®
 		static const char* where_area()
 		{
 			static std::string lareastr;
@@ -145,7 +145,7 @@ namespace ngl
 		template <typename T>
 		static bool select(nmysql* adb, i64_actorid aid)
 		{
-			// # ´ÓÊı¾İ¿âÖĞ¼ÓÔØ
+			// # ä»æ•°æ®åº“ä¸­åŠ è½½
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(lbuff,1024,
 				"SELECT id,data FROM %s WHERE id = '%lld' AND (%s);", tools::type_name<T>().c_str(), aid, where_area()
@@ -171,7 +171,7 @@ namespace ngl
 		template <typename T>
 		static bool select(nmysql* adb)
 		{
-			// # ´ÓÊı¾İ¿âÖĞ¼ÓÔØ
+			// # ä»æ•°æ®åº“ä¸­åŠ è½½
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
 				lbuff, 1024, "SELECT id,data FROM %s WHERE %s;", tools::type_name<T>().c_str(), where_area()
@@ -195,11 +195,11 @@ namespace ngl
 			);
 		}
 
-		// # ¼ÓÔØ³öid ·ÀÖ¹ÄÚ´æ´©Í¸
+		// # åŠ è½½å‡ºid é˜²æ­¢å†…å­˜ç©¿é€
 		template <typename T>
 		static bool select(nmysql* adb, std::set<int64_t>& aidset)
 		{
-			// # ´ÓÊı¾İ¿âÖĞ¼ÓÔØ
+			// # ä»æ•°æ®åº“ä¸­åŠ è½½
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
 				lbuff, 1024, "SELECT id FROM %s WHERE %s;", tools::type_name<T>().c_str(), where_area()

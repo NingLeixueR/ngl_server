@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -35,32 +35,32 @@ namespace ngl
 {
 	enum ENUM_MODE
 	{
-		ENUM_MODE_NULL,		// Î´ÉèÖÃ
-		ENUM_MODE_HTTP,		// http·½Ê½
-		ENUM_MODE_HTTPS,	// https·½Ê½
+		ENUM_MODE_NULL,		// æœªè®¾ç½®
+		ENUM_MODE_HTTP,		// httpæ–¹å¼
+		ENUM_MODE_HTTPS,	// httpsæ–¹å¼
 	};
 
 	enum ENUM_TYPE
 	{
-		ENUM_TYPE_NULL,		// Î´ÉèÖÃ
-		ENUM_TYPE_POST,		// POST·½Ê½
-		ENUM_TYPE_GET,		// GET·½Ê½
+		ENUM_TYPE_NULL,		// æœªè®¾ç½®
+		ENUM_TYPE_POST,		// POSTæ–¹å¼
+		ENUM_TYPE_GET,		// GETæ–¹å¼
 	};
 
 	struct http_parm
 	{
 		using callback = std::function<void(int, http_parm&)>;
 
-		ENUM_MODE			m_mode = ENUM_MODE_NULL;				// httpÄ£Ê½
-		ENUM_TYPE			m_type = ENUM_TYPE_NULL;				// httpÀàĞÍ
-		CURL*				m_curl = nullptr;						// curlÖ¸Õë
-		std::string			m_url;									// ÇëÇóµÄurl
-		std::string			m_param;								// ÇëÇó²ÎÊı
-		int					m_timeout = 0;							// ³¬Ê±Ê±¼ä
+		ENUM_MODE			m_mode = ENUM_MODE_NULL;				// httpæ¨¡å¼
+		ENUM_TYPE			m_type = ENUM_TYPE_NULL;				// httpç±»å‹
+		CURL*				m_curl = nullptr;						// curlæŒ‡é’ˆ
+		std::string			m_url;									// è¯·æ±‚çš„url
+		std::string			m_param;								// è¯·æ±‚å‚æ•°
+		int					m_timeout = 0;							// è¶…æ—¶æ—¶é—´
 		std::string			m_cookies;								// cookie
-		curl_slist*			m_http_headers = nullptr;				// httpÍ·
-		callback			m_callback = nullptr;					// »Øµ÷
-		std::string			m_recvdata;								// ½ÓÊÕµÄÊı¾İ
+		curl_slist*			m_http_headers = nullptr;				// httpå¤´
+		callback			m_callback = nullptr;					// å›è°ƒ
+		std::string			m_recvdata;								// æ¥æ”¶çš„æ•°æ®
 
 		~http_parm()
 		{
@@ -163,26 +163,26 @@ namespace ngl
 
 		static size_t callback_write(void* buffer, size_t size, size_t nmemb, std::string* lpVoid);
 	public:
-		// # ÉèÖÃhttpÀàĞÍ
+		// # è®¾ç½®httpç±»å‹
 		static void set_mode(std::shared_ptr<http_parm>& ahttp, ENUM_MODE aval);
 
-		// # ÉèÖÃpost/getÀàĞÍ
+		// # è®¾ç½®post/getç±»å‹
 		static void set_type(std::shared_ptr<http_parm>& ahttp, ENUM_TYPE aval);
 
-		// # ÉèÖÃurl
+		// # è®¾ç½®url
 		static void set_url(std::shared_ptr<http_parm>& ahttp, const std::string& aurl);
 		static void set_url(std::shared_ptr<http_parm>& ahttp, const char* aurl);
 
-		// # ÉèÖÃ·ÃÎÊ²ÎÊı(parm xx=xx&xx=xx&xx=xx)
+		// # è®¾ç½®è®¿é—®å‚æ•°(parm xx=xx&xx=xx&xx=xx)
 		static void set_param(std::shared_ptr<http_parm>& ahttp, const std::string& aparam);
 
-		// # ÉèÖÃhttpÍ· 
+		// # è®¾ç½®httpå¤´ 
 		static void set_headers(std::shared_ptr<http_parm>& ahttp, std::vector<std::string>& aheaders);
 
-		// # ÉèÖÃ»Øµ÷
+		// # è®¾ç½®å›è°ƒ
 		static void set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback);
 
-		// # ¸¨ÖúÉèÖÃhttp·ÃÎÊ²ÎÊı
+		// # è¾…åŠ©è®¾ç½®httpè®¿é—®å‚æ•°
 		template <typename T>
 		static void param(std::string& aparam, const char* akey, const T& aval)
 		{
@@ -205,7 +205,7 @@ namespace ngl
 			param(aparam, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, aargs...);
 		}
 		
-		// # ·¢ËÍ
+		// # å‘é€
 		static void send(std::shared_ptr<http_parm>& adata);
 
 		static std::shared_ptr<http_parm> make_http();
