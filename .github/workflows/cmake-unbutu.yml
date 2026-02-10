@@ -57,10 +57,6 @@ jobs:
        $CC --version
        $CXX --version
        
-    - name: Fix apt source & install correct libintl dependency
-      run: |
-        sudo apt-get install -y gettext
-       
     - name: Install PostgreSQL
       run: |
         sudo apt-get update && sudo apt-get install -y \
@@ -72,8 +68,7 @@ jobs:
           bison \
           flex \
           libxml2-dev \
-          gettext \
-          libintl-dev
+          gettext
         cd ./third_party
         tar -zxf postgresql-18.1.tar.gz
         cd postgresql-18.1 && pwd  # 确认进入源码目录
