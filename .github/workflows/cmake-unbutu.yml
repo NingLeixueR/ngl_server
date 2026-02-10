@@ -57,6 +57,36 @@ jobs:
        $CC --version
        $CXX --version
        
+    - name: Fix apt source & install correct libintl dependency
+      run: |
+        # 1. 清理过期缓存+修复损坏的源
+        sudo apt-get clean
+        sudo apt-get autoclean
+        sudo apt-get update --fix-missing -y
+        # 2. 确认当前Ubuntu版本（打印出来，方便排查）
+        lsb_release -a
+        # 3. 安装正确的包（替代libintl-dev）
+        sudo apt-get install -y --no-install-recommends \
+          gettext \          # libintl运行时库
+          gettext-dev        # libintl开发库（头文件+链接库）
+    
+    - name: Verify libintl files (critical check)
+      run: |
+        # 检查头文件（libintl.h是编译的核心）
+        if [ -f /usr/include/libintl.h ]; then
+          echo "✅ libintl.h found"
+        else
+          echo "❌ libintl.h missing" && exit 1
+        fi
+        # 检查链接库（libintl.so是链接的核心）
+        ldconfig -p | grep libintl
+        if [ $? -eq 0 ]; then
+          echo "✅ libintl.so found"
+        else
+          echo "❌ libintl.so missing" && exit 1
+        fi
+       
+       
     - name: Install PostgreSQL
       run: |
         sudo apt-get update && sudo apt-get install -y \
