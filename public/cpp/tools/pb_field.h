@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -28,14 +28,14 @@ namespace ngl
 {
     enum
     {
-        epb_mid = 1, // ±ØĞëÎª proto ½á¹¹µÄÖ÷¼ü
+        epb_mid = 1, // å¿…é¡»ä¸º proto ç»“æ„çš„ä¸»é”®
     };
 
-    // ¹¤¾ßÀà£ºÖ»¸´ÖÆÖ¸¶¨×Ö¶Î±àºÅµÄÄÚÈİ
+    // å·¥å…·ç±»ï¼šåªå¤åˆ¶æŒ‡å®šå­—æ®µç¼–å·çš„å†…å®¹
     class pb_field
     {
     private:
-        // ¸´ÖÆµ¥¸ö×Ö¶Î£¨´¦ÀíËùÓĞÀàĞÍµÄ×Ö¶Î£º»ù´¡ÀàĞÍ¡¢repeated¡¢ÏûÏ¢ÀàĞÍµÈ£©
+        // å¤åˆ¶å•ä¸ªå­—æ®µï¼ˆå¤„ç†æ‰€æœ‰ç±»å‹çš„å­—æ®µï¼šåŸºç¡€ç±»å‹ã€repeatedã€æ¶ˆæ¯ç±»å‹ç­‰ï¼‰
         static void copyfield(
             const google::protobuf::Message& src
             , google::protobuf::Message* dst
@@ -44,7 +44,7 @@ namespace ngl
             , const google::protobuf::FieldDescriptor* field
         );
 
-        // ¸´ÖÆµ¥¸ö·Ç repeated ×Ö¶Î
+        // å¤åˆ¶å•ä¸ªé repeated å­—æ®µ
         static void copy_single_field(
             const google::protobuf::Message& src
             , google::protobuf::Message* dst
@@ -53,7 +53,7 @@ namespace ngl
             , const google::protobuf::FieldDescriptor* field
         );
 
-        // ¸´ÖÆ repeated ×Ö¶ÎÖĞµÄµ¥¸öÔªËØ
+        // å¤åˆ¶ repeated å­—æ®µä¸­çš„å•ä¸ªå…ƒç´ 
         static void copy_repeated_field(
             const google::protobuf::Message& src
             , google::protobuf::Message* dst
@@ -63,21 +63,21 @@ namespace ngl
             , int index
         );
     public:
-        // ¿½±´ src µ½ dst£¬µ«Ö»¸´ÖÆ×Ö¶Î±àºÅÔÚ field_numbers ÖĞµÄ×Ö¶Î
-        // field_numbers£ºĞèÒª¸´ÖÆµÄ×Ö¶Î±àºÅÁĞ±í£¨Èç {1, 3, 5}£©
+        // æ‹·è´ src åˆ° dstï¼Œä½†åªå¤åˆ¶å­—æ®µç¼–å·åœ¨ field_numbers ä¸­çš„å­—æ®µ
+        // field_numbersï¼šéœ€è¦å¤åˆ¶çš„å­—æ®µç¼–å·åˆ—è¡¨ï¼ˆå¦‚ {1, 3, 5}ï¼‰
         static void copy(
             const google::protobuf::Message& src
             , google::protobuf::Message* dst
             , const std::map<i32_fieldnumber, epb_field>& fieldsrc
             , const std::map<i32_fieldnumber, epb_field>& fielddst
-            , bool amessage /* ÊÇ·ñÊÇÏûÏ¢£¬ÏûÏ¢Ç¿ÖÆ¸´ÖÆmid */
+            , bool amessage /* æ˜¯å¦æ˜¯æ¶ˆæ¯ï¼Œæ¶ˆæ¯å¼ºåˆ¶å¤åˆ¶mid */
         );
 
         static void copy(
             const google::protobuf::Message& src
             , google::protobuf::Message* dst
             , const std::map<i32_fieldnumber, epb_field>& fieldsrc
-            , bool amessage /* ÊÇ·ñÊÇÏûÏ¢£¬ÏûÏ¢Ç¿ÖÆ¸´ÖÆmid */
+            , bool amessage /* æ˜¯å¦æ˜¯æ¶ˆæ¯ï¼Œæ¶ˆæ¯å¼ºåˆ¶å¤åˆ¶mid */
         );
     
     public:

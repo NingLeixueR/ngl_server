@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -31,7 +31,7 @@ namespace ngl
         const google::protobuf::Reflection* dst_refl = dst->GetReflection();
 
         if (amessage)
-        {// mid±ØĞëÎªepb_mid ÇÒ¸´ÖÆ±ØĞëĞ¯´ø
+        {// midå¿…é¡»ä¸ºepb_mid ä¸”å¤åˆ¶å¿…é¡»æºå¸¦
             const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(epb_mid);
             const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(epb_mid);
             if (src_field == nullptr || dst_field == nullptr)
@@ -70,7 +70,7 @@ namespace ngl
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
         , const std::map<i32_fieldnumber, epb_field>& fieldsrc
-        , bool amessage /* ÊÇ·ñÊÇÏûÏ¢£¬ÏûÏ¢Ç¿ÖÆ¸´ÖÆmid */
+        , bool amessage /* æ˜¯å¦æ˜¯æ¶ˆæ¯ï¼Œæ¶ˆæ¯å¼ºåˆ¶å¤åˆ¶mid */
     )
     {
         const google::protobuf::Descriptor* desc = src.GetDescriptor();
@@ -79,7 +79,7 @@ namespace ngl
         const google::protobuf::Reflection* dst_refl = dst->GetReflection();
 
         if (amessage)
-        {// mid±ØĞëÎªepb_mid ÇÒ¸´ÖÆ±ØĞëĞ¯´ø
+        {// midå¿…é¡»ä¸ºepb_mid ä¸”å¤åˆ¶å¿…é¡»æºå¸¦
             const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(epb_mid);
             const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(epb_mid);
             if (src_field == nullptr || dst_field == nullptr)
@@ -120,7 +120,7 @@ namespace ngl
         }
         if (field->is_repeated())
         {
-            // ´¦Àí repeated ×Ö¶Î£¨ÖØ¸´×Ö¶Î£©
+            // å¤„ç† repeated å­—æ®µï¼ˆé‡å¤å­—æ®µï¼‰
             int size = src_refl->FieldSize(src, field);
             for (int i = 0; i < size; ++i)
             {
@@ -129,7 +129,7 @@ namespace ngl
         }
         else
         {
-            // ´¦Àí·Ç repeated ×Ö¶Î£¨µ¥¸öÖµ£©
+            // å¤„ç†é repeated å­—æ®µï¼ˆå•ä¸ªå€¼ï¼‰
             if (src_refl->HasField(src, field))
             {
                 copy_single_field(src, dst, src_refl, dst_refl, field);
@@ -137,7 +137,7 @@ namespace ngl
         }
     }
 
-    // ¸´ÖÆµ¥¸ö·Ç repeated ×Ö¶Î
+    // å¤åˆ¶å•ä¸ªé repeated å­—æ®µ
     void pb_field::copy_single_field(
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
@@ -182,16 +182,16 @@ namespace ngl
         {
             const google::protobuf::Message& src_msg = src_refl->GetMessage(src, field);
             google::protobuf::Message* dst_msg = dst_refl->MutableMessage(dst, field);
-            dst_msg->CopyFrom(src_msg); // Ç¶Ì×ÏûÏ¢È«Á¿¸´ÖÆ
+            dst_msg->CopyFrom(src_msg); // åµŒå¥—æ¶ˆæ¯å…¨é‡å¤åˆ¶
             break;
         }
         default:
-            // ÀíÂÛÉÏ²»»á×ßµ½ÕâÀï£¬¸²¸ÇËùÓĞÃ¶¾ÙÖµ
+            // ç†è®ºä¸Šä¸ä¼šèµ°åˆ°è¿™é‡Œï¼Œè¦†ç›–æ‰€æœ‰æšä¸¾å€¼
             break;
         }
     }
 
-    // ¸´ÖÆ repeated ×Ö¶ÎÖĞµÄµ¥¸öÔªËØ
+    // å¤åˆ¶ repeated å­—æ®µä¸­çš„å•ä¸ªå…ƒç´ 
     void pb_field::copy_repeated_field(const google::protobuf::Message& src,
         google::protobuf::Message* dst,
         const google::protobuf::Reflection* src_refl,
@@ -238,11 +238,11 @@ namespace ngl
             const google::protobuf::Message& src_msg =
                 src_refl->GetRepeatedMessage(src, field, index);
             google::protobuf::Message* dst_msg = dst_refl->AddMessage(dst, field);
-            dst_msg->CopyFrom(src_msg); // Ç¶Ì×ÏûÏ¢È«Á¿¸´ÖÆ
+            dst_msg->CopyFrom(src_msg); // åµŒå¥—æ¶ˆæ¯å…¨é‡å¤åˆ¶
             break;
         }
         default:
-            // ¸²¸ÇËùÓĞÃ¶¾ÙÖµ£¬ÎŞÄ¬ÈÏĞĞÎª
+            // è¦†ç›–æ‰€æœ‰æšä¸¾å€¼ï¼Œæ— é»˜è®¤è¡Œä¸º
             break;
         }
     }

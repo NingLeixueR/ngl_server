@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -306,7 +306,7 @@ namespace ngl
 
 	public:
 #pragma region map
-		// map²Ù×÷·â×°
+		// mapæ“ä½œå°è£…
 		template <typename TMAP, typename TKEY>
 		static auto findmap(TMAP& amap, const TKEY& akey)
 		{
@@ -333,7 +333,7 @@ namespace ngl
 		}
 #pragma endregion 
 
-		// ÊÇ·ñÊÇÄÚÍøµØÖ·
+		// æ˜¯å¦æ˜¯å†…ç½‘åœ°å€
 		static bool is_lanip(const std::string& aip);
 
 		template <typename T>
@@ -346,11 +346,11 @@ namespace ngl
 			return google::protobuf::util::MessageToJsonString(adata, &json, options).ok();		
 		}
 
-		// ÒÔjson¸ñÊ½´òÓ¡pbÊı¾İ
+		// ä»¥jsonæ ¼å¼æ‰“å°pbæ•°æ®
 		template <typename T>
 		static void print_json(const T& adata, bool aislog = false);
 
-		// Í¨¹ıjson»ñÈ¡½á¹¹
+		// é€šè¿‡jsonè·å–ç»“æ„
 		template <typename T>
 		static bool json2proto(const std::string& json, T& adata)
 		{
@@ -403,13 +403,13 @@ namespace ngl
 		};
 
 #pragma region bytesorder
-		// # ÊÇ·ñÊÇĞ¡¶Ë?
+		// # æ˜¯å¦æ˜¯å°ç«¯?
 		static constexpr bool islittle()
 		{
 			return std::endian::native == std::endian::little;
 		}
 
-		// # ×ª»»ÎªĞ¡¶Ë
+		// # è½¬æ¢ä¸ºå°ç«¯
 		static int16_t	transformlittle(parm<int16_t>& avalues);
 		static uint16_t transformlittle(parm<uint16_t>& avalues);
 		static int32_t	transformlittle(parm<int32_t>& avalues);
@@ -428,7 +428,7 @@ namespace ngl
 		static bool uuid_make(std::string& astr);
 
 #pragma region asscii_utf8
-		// ¿í×Ö·ûÓëASCIIÏà»¥×ª»»  utf8
+		// å®½å­—ç¬¦ä¸ASCIIç›¸äº’è½¬æ¢  utf8
 		static bool wasscii2asscii(const std::wstring& awstr, std::string& astr);
 		static bool asscii2wasscii(const std::string& astr, std::wstring& awstr);
 		static bool wasscii2utf8(const std::wstring& awstr, std::string& astr);
@@ -438,9 +438,9 @@ namespace ngl
 		static bool to_utf8(const std::string& astr1, std::string& astr2);
 
 		static int32_t utf8firstbyte(uint8_t firstbyte);
-		// ÊÇ·ñÊÇutf8±àÂë
+		// æ˜¯å¦æ˜¯utf8ç¼–ç 
 		static bool isutf8(const std::string& astr1);
-		// utf8ÖĞÊÇ·ñ°üº¬mb4(utf8Îªmb3)
+		// utf8ä¸­æ˜¯å¦åŒ…å«mb4(utf8ä¸ºmb3)
 		static bool isincludeutf8mb4(const std::string& astr);
 
 #pragma endregion
@@ -520,7 +520,7 @@ namespace ngl
 			return 	splite(std::make_index_sequence<sizeof...(ARGS)>{}, abuff, afg, args...);
 		}
 
-		// ÌØÊâ·Ö¸î:ÀàËÆ"½ÓÊÕÓÊ¼şÁĞ±í[ÓÊ¼şµØÖ·1:Ãû×Ö1]"
+		// ç‰¹æ®Šåˆ†å‰²:ç±»ä¼¼"æ¥æ”¶é‚®ä»¶åˆ—è¡¨[é‚®ä»¶åœ°å€1:åå­—1]"
 		// [348634371@qq.com:libo][libo1@youxigu.com:libo1]
 		template <typename TFIRST = std::string, typename TSECOND = std::string>
 		static bool splite_special(const char* astr, const char* akey1, const char* akey2, std::vector<std::pair<TFIRST, TSECOND>>& avec)
@@ -703,12 +703,12 @@ namespace ngl
 
 #pragma region varint
 		///////////////////////////////////////////////////////////////////////////////////////////////////////
-		// VarintÊÇÒ»ÖÖÊ¹ÓÃÒ»¸ö»ò¶à¸ö×Ö½ÚĞòÁĞ»¯ÕûÊıµÄ·½·¨»á°ÑÕûÊı±àÂëÎª±ä³¤×Ö½Ú¡£
-		// ¶ÔÓÚ32Î»ÕûĞÍÊı¾İ¾­¹ıVarint±àÂëºóĞèÒª1~5¸ö×Ö½Ú£¬
-		// Ğ¡µÄÊı×ÖÊ¹ÓÃ1¸öbyte£¬´óµÄÊı×ÖÊ¹ÓÃ5¸öbytes¡£
-		// 64Î»ÕûĞÍÊı¾İ±àÂëºóÕ¼ÓÃ1~10¸ö×Ö½Ú¡£
-		// ÔÚÊµ¼Ê³¡¾°ÖĞĞ¡Êı×ÖµÄÊ¹ÓÃÂÊÔ¶Ô¶¶àÓÚ´óÊı×Ö£¬
-		// Òò´ËÍ¨¹ıVarint±àÂë¶ÔÓÚ´ó²¿·Ö³¡¾°¶¼¿ÉÒÔÆğµ½ºÜºÃµÄÑ¹ËõĞ§¹û¡£
+		// Varintæ˜¯ä¸€ç§ä½¿ç”¨ä¸€ä¸ªæˆ–å¤šä¸ªå­—èŠ‚åºåˆ—åŒ–æ•´æ•°çš„æ–¹æ³•ä¼šæŠŠæ•´æ•°ç¼–ç ä¸ºå˜é•¿å­—èŠ‚ã€‚
+		// å¯¹äº32ä½æ•´å‹æ•°æ®ç»è¿‡Varintç¼–ç åéœ€è¦1~5ä¸ªå­—èŠ‚ï¼Œ
+		// å°çš„æ•°å­—ä½¿ç”¨1ä¸ªbyteï¼Œå¤§çš„æ•°å­—ä½¿ç”¨5ä¸ªbytesã€‚
+		// 64ä½æ•´å‹æ•°æ®ç¼–ç åå ç”¨1~10ä¸ªå­—èŠ‚ã€‚
+		// åœ¨å®é™…åœºæ™¯ä¸­å°æ•°å­—çš„ä½¿ç”¨ç‡è¿œè¿œå¤šäºå¤§æ•°å­—ï¼Œ
+		// å› æ­¤é€šè¿‡Varintç¼–ç å¯¹äºå¤§éƒ¨åˆ†åœºæ™¯éƒ½å¯ä»¥èµ·åˆ°å¾ˆå¥½çš„å‹ç¼©æ•ˆæœã€‚
 	
 		static int varint_length(parm<int32_t>& avalue);
 		static int varint_length(parm<int64_t>& avalue);
@@ -773,29 +773,29 @@ namespace ngl
 
 		static int rand();
 
-		// ×Ö·û´®´óĞ¡Ğ´×ª»»
+		// å­—ç¬¦ä¸²å¤§å°å†™è½¬æ¢
 		static void transform_tolower(std::string& adata);
 		static void transform_toupper(std::string& adata);
 
-		// ÅĞ¶ÏÎÄ¼ş¼ĞÊÇ·ñ´æÔÚ
+		// åˆ¤æ–­æ–‡ä»¶å¤¹æ˜¯å¦å­˜åœ¨
 		static bool directories_exists(const std::string& apath);
 
-		// ÅĞ¶ÏÎÄ¼şÊÇ·ñ´æÔÚ
+		// åˆ¤æ–­æ–‡ä»¶æ˜¯å¦å­˜åœ¨
 		static bool file_exists(const std::string& apath);
 
-		// ´´½¨Ä¿Â¼
+		// åˆ›å»ºç›®å½•
 		static bool create_directories(const std::string& apath);
 
-		// ÒÆ³ıÎÄ¼ş
+		// ç§»é™¤æ–‡ä»¶
 		static bool file_remove(const std::string& afilename);
 
-		// # »ñÈ¡dirÏÂËùÓĞÎÄ¼ş
-		// # aiterationÊÇ·ñÑ­»·µü´údirÏÂµÄËùÓĞÄ¿Â¼
+		// # è·å–dirä¸‹æ‰€æœ‰æ–‡ä»¶
+		// # aiterationæ˜¯å¦å¾ªç¯è¿­ä»£dirä¸‹çš„æ‰€æœ‰ç›®å½•
 		static void dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration = false);
 
 		static std::string& format_json(std::string& ajson);
 
-		// ²»¿É»Ö¸´µÄÒì³££¬Ö±½ÓÉú³Écore dump
+		// ä¸å¯æ¢å¤çš„å¼‚å¸¸ï¼Œç›´æ¥ç”Ÿæˆcore dump
 		static void no_core_dump(bool anocreate = false);
 
 		static std::function<void()> send_mail(const std::string& acontent);
@@ -812,16 +812,16 @@ namespace ngl
 			std::copy(lvec.begin(), lvec.end(), aarrays.begin());
 			return;
 		}
-		// ¼ì²écjsonÀàĞÍ
+		// æ£€æŸ¥cjsonç±»å‹
 		static bool bit(int32_t atype, int32_t acjsontype)
 		{
 			return (atype & acjsontype) != 0;
 		}
 
-		//É¾³ıÖØ¸´¶àÓàµÄach
+		//åˆ é™¤é‡å¤å¤šä½™çš„ach
 		static void erase_repeat(std::string& astrbuff, const char ach);
 
-		// ±È½ÏÊÇ·ñÏàµÈ
+		// æ¯”è¾ƒæ˜¯å¦ç›¸ç­‰
 		template <typename ETYPE>
 		static bool equal(ETYPE avalue1, ETYPE avalue2)
 		{

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -23,55 +23,55 @@ namespace ngl
 {
 	enum ELOGLEVEL
 	{
-		ELOG_NONE	= -1,		// ÎŞ
-		ELOG_DEBUG	= 0,		// ²âÊÔĞÅÏ¢
-		ELOG_INFO	= 1,		// ´òÓ¡
-		ELOG_WARN	= 2,		// ¾¯¸æ
-		ELOG_ERROR	= 3,		// ´íÎó
-		ELOG_MAX	= 4,		// ±ß½çÖµ
+		ELOG_NONE	= -1,		// æ— 
+		ELOG_DEBUG	= 0,		// æµ‹è¯•ä¿¡æ¯
+		ELOG_INFO	= 1,		// æ‰“å°
+		ELOG_WARN	= 2,		// è­¦å‘Š
+		ELOG_ERROR	= 3,		// é”™è¯¯
+		ELOG_MAX	= 4,		// è¾¹ç•Œå€¼
 	};
 
 	struct sysconfig
 	{
 	private:
-		// [[ ÈÕÖ¾Ïà¹Ø 
-		static ELOGLEVEL	m_logwritelevel;		// ÈÕÖ¾µÈ¼¶(Ğ´ÈëÎÄ¼ş)
-		static ELOGLEVEL	m_logconsolelevel;		// ÈÕÖ¾µÈ¼¶(¿ØÖÆÌ¨ÏÔÊ¾)
-		static int32_t		m_logline;				// µ¥¸öÈÕÖ¾ÎÄ¼şµÄĞĞÊı
-		static int32_t		m_logflushtime;			// ÈÕÖ¾Ğ´ÈëÎÄ¼şµÄ¼ä¸ôÊ±¼ä
-		// ]] ÈÕÖ¾Ïà¹Ø 
+		// [[ æ—¥å¿—ç›¸å…³ 
+		static ELOGLEVEL	m_logwritelevel;		// æ—¥å¿—ç­‰çº§(å†™å…¥æ–‡ä»¶)
+		static ELOGLEVEL	m_logconsolelevel;		// æ—¥å¿—ç­‰çº§(æ§åˆ¶å°æ˜¾ç¤º)
+		static int32_t		m_logline;				// å•ä¸ªæ—¥å¿—æ–‡ä»¶çš„è¡Œæ•°
+		static int32_t		m_logflushtime;			// æ—¥å¿—å†™å…¥æ–‡ä»¶çš„é—´éš”æ—¶é—´
+		// ]] æ—¥å¿—ç›¸å…³ 
 
-		static int32_t		m_consumings;			// ¼ì²âactorÏûÏ¢ºÄÊ±
+		static int32_t		m_consumings;			// æ£€æµ‹actoræ¶ˆæ¯è€—æ—¶
 
-		// ÉèÖÃ¼òµ¥¼ÓÃÜ
+		// è®¾ç½®ç®€å•åŠ å¯†
 		static std::string	m_xorkey;
-		static int32_t		m_xorkeynum;			//2^n-1 nÎªxorkeyµÄ×Ö·ûÊı
+		static int32_t		m_xorkeynum;			//2^n-1 nä¸ºxorkeyçš„å­—ç¬¦æ•°
 		static bool			m_isxor;
-		static bool			m_varint;				// ÊÇ·ñ¿ªÆôvarint
-		static bool			m_robot_test;			// ÊÇ·ñ»úÆ÷ÈË²âÊÔ
+		static bool			m_varint;				// æ˜¯å¦å¼€å¯varint
+		static bool			m_robot_test;			// æ˜¯å¦æœºå™¨äººæµ‹è¯•
 
-		static int32_t		m_kcpping;				// kcp·¢ËÍpingµÄ¼ä¸ô(ºÁÃë)
-		static int32_t		m_kcppinginterval;		// kcp¼ì²épingµÄ¼ä¸ô(ºÁÃë)
+		static int32_t		m_kcpping;				// kcpå‘é€pingçš„é—´éš”(æ¯«ç§’)
+		static int32_t		m_kcppinginterval;		// kcpæ£€æŸ¥pingçš„é—´éš”(æ¯«ç§’)
 		static std::string	m_kcpsession;			// kcp session
 
-		static int32_t		m_sessionewait;			// µÈ´ıgatewayÒÆ³ısessionµÄÊ±¼ä(ºÁÃë)
-		static int32_t		m_open_servertime;		// ¿ª·şÊ±¼ä
-		static int32_t		m_head_version;			// Ğ­ÒéÍ·µÄ°æ±¾ºÅ
+		static int32_t		m_sessionewait;			// ç­‰å¾…gatewayç§»é™¤sessionçš„æ—¶é—´(æ¯«ç§’)
+		static int32_t		m_open_servertime;		// å¼€æœæ—¶é—´
+		static int32_t		m_head_version;			// åè®®å¤´çš„ç‰ˆæœ¬å·
 
-		static int32_t		m_rate_interval;		// ËÙÂÊ¼ì²âµÄ¼ä¸ô(µ¥Î»Ãë)
-		static int32_t		m_rate_count;			// ËÙÂÊ Ã¿Ãë¶àÉÙÌõ
-		static int32_t		m_heart_beat_interval;	// ĞÄÌø¼ä¸ô(µ¥Î»Ãë)
-		static int32_t		m_net_timeout;			// ÓÃÀ´¼ì²é°üÍ·ÖĞµÄÊ±¼äÓë·şÎñÆ÷Ê±¼ä
-		static std::map<std::string, int32_t>		m_nodecountbyname;			// ½áµãÊıÁ¿
-		static std::map<NODE_TYPE, int32_t>			m_nodecountbytype;			// ½áµãÊıÁ¿
+		static int32_t		m_rate_interval;		// é€Ÿç‡æ£€æµ‹çš„é—´éš”(å•ä½ç§’)
+		static int32_t		m_rate_count;			// é€Ÿç‡ æ¯ç§’å¤šå°‘æ¡
+		static int32_t		m_heart_beat_interval;	// å¿ƒè·³é—´éš”(å•ä½ç§’)
+		static int32_t		m_net_timeout;			// ç”¨æ¥æ£€æŸ¥åŒ…å¤´ä¸­çš„æ—¶é—´ä¸æœåŠ¡å™¨æ—¶é—´
+		static std::map<std::string, int32_t>		m_nodecountbyname;			// ç»“ç‚¹æ•°é‡
+		static std::map<NODE_TYPE, int32_t>			m_nodecountbytype;			// ç»“ç‚¹æ•°é‡
 
-		static int32_t		m_gamecount;			// gameÊıÁ¿
+		static int32_t		m_gamecount;			// gameæ•°é‡
 		static std::string	m_gmurl;				// gm url
 
-		// # Íø¹ØÁĞ±í
+		// # ç½‘å…³åˆ—è¡¨
 		static std::set<i32_serverid> m_gatewayids;
 
-		static std::string m_lua;					// luaËùÔÚÄ¿Â¼
+		static std::string m_lua;					// luaæ‰€åœ¨ç›®å½•
 	public:
 		static void init();
 

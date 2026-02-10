@@ -55,7 +55,7 @@
 
 bool init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {})
 {
-	// # 加载并关联协议号
+	// # 鍔犺浇骞跺叧鑱斿崗璁彿
 	ngl::xmlprotocol::load();
 
 	ngl::auto_actor();
@@ -64,10 +64,10 @@ bool init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {})
 	ngl::event_register();
 	ngl::tdb::tdb_init(true);
 
-	// # 启动actor广播
+	// # 鍚姩actor骞挎挱
 	ngl::actor_base::start_broadcast();
 
-	// # sysconfig关联xml配置
+	// # sysconfig鍏宠仈xml閰嶇疆
 	ngl::sysconfig::init();
 
 	const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab();
@@ -77,7 +77,7 @@ bool init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {})
 		return false;
 	}
 
-	// # 启动网络监听
+	// # 鍚姩缃戠粶鐩戝惉
 	{//TCP
 		ngl::net_works lnwork;
 		if (!ngl::ttab_servers::instance().get_nworks(ngl::ENET_PROTOCOL::ENET_TCP, nconfig.tcount(), lnwork))
@@ -98,10 +98,10 @@ bool init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {})
 		}
 	}
 
-	// # 初始化actor管理模块
+	// # 鍒濆鍖朼ctor绠＄悊妯″潡
 	ngl::actor_manage::instance().init(tab->m_actorthreadnum);
 
-	// # actor管理模块已初始化完毕，可以将日志发送给actor_log
+	// # actor绠＄悊妯″潡宸插垵濮嬪寲瀹屾瘯锛屽彲浠ュ皢鏃ュ織鍙戦�佺粰actor_log
 	ngl::nactor_logitem::m_init = true;
 
 	ngl::log_error()->print("ngl::actor_manage::instance().init({})", tab->m_actorthreadnum);

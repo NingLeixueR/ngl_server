@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -26,7 +26,7 @@ namespace ngl
 {
 	using thread = std::thread;
 
-	// # ĞÅºÅÁ¿
+	// # ä¿¡å·é‡
 	class sem
 	{
 		sem(const sem&) = delete;
@@ -50,26 +50,26 @@ namespace ngl
 		}
 	};
 
-	// # ÈÃµ±Ç°Ïß³ÌË¯Ãß
+	// # è®©å½“å‰çº¿ç¨‹ç¡çœ 
 	class sleep
 	{
 		sleep() = delete;
 		sleep(const sleep&) = delete;
 		sleep& operator=(const sleep&) = delete;
 	public:
-		// # Ïß³ÌË¯Ãß[avalue]Ğ¡Ê±
+		// # çº¿ç¨‹ç¡çœ [avalue]å°æ—¶
 		static void hours(int32_t avalue)
 		{
 			std::this_thread::sleep_for(std::chrono::hours(avalue));
 		}
 		
-		// # Ïß³ÌË¯Ãß[avalue]Ãë
+		// # çº¿ç¨‹ç¡çœ [avalue]ç§’
 		static void seconds(int32_t avalue)
 		{
 			std::this_thread::sleep_for(std::chrono::seconds(avalue));
 		}
 
-		// # Ïß³ÌË¯Ãß[avalue]ºÁÃë
+		// # çº¿ç¨‹ç¡çœ [avalue]æ¯«ç§’
 		static void milliseconds(int32_t avalue)
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(avalue));
@@ -81,7 +81,7 @@ namespace ngl
 #define lock_write(MUTEX)			std::lock_guard<std::shared_mutex> __Lock__(MUTEX)
 #define monopoly_shared_lock(MUTEX)	lock_write(MUTEX)
 
-// Ìõ¼ş±äÁ¿
+// æ¡ä»¶å˜é‡
 #define monopoly_lock(MUTEX)		std::lock_guard<std::mutex> __Lock__(MUTEX)
 #define cv_lock(CV, MUTEX, FUN)							\
 	std::unique_lock<std::mutex> __Lock__(m_mutex);		\
@@ -90,7 +90,7 @@ namespace ngl
 		CV.wait(__Lock__, FUN);							\
 	}
 
-// # Ê¹ÓÃĞÅºÅÁ¿/Ìõ¼ş±äÁ¿
+// # ä½¿ç”¨ä¿¡å·é‡/æ¡ä»¶å˜é‡
 #define OPEN_SEM
 
 #ifdef OPEN_SEM
@@ -109,7 +109,7 @@ namespace ngl
 # define ngl_lock monopoly_lock(m_mutex)
 #endif//OPEN_SEM
 
-// ÓÃÓÚ¼ì²éËÀËø
+// ç”¨äºæ£€æŸ¥æ­»é”
 #ifdef DECHECK_LOCK_TAR
 # define ngl_lock_s std::cout << std::format("lock_open:{},{}", __FILE__,__LINE__) << std::endl;\
 ngl_lock;\
