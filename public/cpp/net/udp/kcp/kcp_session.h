@@ -58,9 +58,9 @@ namespace ngl
 
 		ptr_se reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient);
 
-		void erase(const asio_udp_endpoint& aendpoint);
+		void erasebysession(i32_sessionid asession);
 
-		void erase(i32_sessionid asession);
+		void erasebyaactorid(i64_actorid aactorid);
 
 		ptr_se find(i32_sessionid asession);
 

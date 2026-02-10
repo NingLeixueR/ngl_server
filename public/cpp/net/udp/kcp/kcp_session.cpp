@@ -12,8 +12,10 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "kcp_session.h"
+#include "nprotocol.h"
 #include "asio_kcp.h"
 #include "nguid.h"
+#include "nlog.h"
 
 namespace ngl
 {
@@ -34,15 +36,7 @@ namespace ngl
 		std::string lip = aendpoint.address().to_string();
 		i16_port lport = aendpoint.port();
 		monopoly_shared_lock(m_mutex);
-		i32_sessionid lsessionid = 0;
-		if (tools::erasemap(m_actoridofsession, aactoridclient, lsessionid))
-		{
-			ptr_se lpse = nullptr;
-			if (tools::erasemap(m_dataofsession, lsessionid, lpse))
-			{
-				tools::erasemap(m_dataofendpoint[lpse->m_ip], lpse->m_port, lpse);
-			}
-		}
+		erasebyaactorid(aactoridclient);
 		if (aconv <= 0)
 		{
 			return nullptr;
@@ -68,7 +62,7 @@ namespace ngl
 		m_dataofendpoint[lip][lport] = ltemp;
 
 		int64_t lcreatems = time_wheel::getms();
-		lsessionid = m_sessionid;
+		i32_sessionid lsessionid = m_sessionid;
 		wheel_parm lparm
 		{
 			.m_ms = ekcp_update_intervalms,
@@ -93,44 +87,42 @@ namespace ngl
 
 	ptr_se kcp_session::reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient)
 	{
-		erase(aendpoint);
 		return add(aconv, aendpoint, aactoridserver, aactoridclient);
 	}
 
-	void kcp_session::erase(const asio_udp_endpoint& aendpoint)
+	void kcp_session::erasebysession(i32_sessionid asession)
 	{
-		std::string lip = aendpoint.address().to_string();
-		i16_port lport = aendpoint.port();
 		monopoly_shared_lock(m_mutex);
-		ptr_se lpstruct = find_info(aendpoint);
-		if (lpstruct == nullptr)
+		ptr_se lpse = nullptr;
+		if (tools::erasemap(m_dataofsession, asession, lpse))
 		{
-			return;
+			if (!tools::erasemap(m_dataofendpoint[lpse->m_ip], lpse->m_port, lpse))
+			{
+				log_error()->print("kcp_session erasebysession fail ip:{} port:{}", lpse->m_ip, lpse->m_port);
+			}
+			i32_sessionid lsession = 0;
+			if (!tools::erasemap(m_actoridofsession, lpse->m_actoridclient, lsession))
+			{
+				log_error()->print("kcp_session erasebysession fail session:{}", asession);
+			}
+			if (lsession != asession)
+			{
+				log_error()->print("kcp_session erasebysession fail session1:{} session2:{}", lsession, asession);
+			}
 		}
-		auto& lmap = m_dataofendpoint[lpstruct->m_ip];
-		lmap.erase(lpstruct->m_port);
-		if (lmap.empty())
-		{
-			m_dataofendpoint.erase(lpstruct->m_ip);
-		}
-		m_dataofsession.erase(lpstruct->m_session);
 	}
 
-	void kcp_session::erase(i32_sessionid asession)
+	void kcp_session::erasebyaactorid(i64_actorid aactorid)
 	{
-		monopoly_shared_lock(m_mutex);
-		ptr_se lpstruct = find_info(asession);
-		if (lpstruct == nullptr)
+		i32_sessionid lsessionid = 0;
+		if (!tools::erasemap(m_actoridofsession, aactorid, lsessionid))
 		{
-			return;
+			ptr_se lpse = nullptr;
+			if (tools::erasemap(m_dataofsession, lsessionid, lpse))
+			{
+				tools::erasemap(m_dataofendpoint[lpse->m_ip], lpse->m_port, lpse);
+			}
 		}
-		auto& lmap = m_dataofendpoint[lpstruct->m_ip];
-		lmap.erase(lpstruct->m_port);
-		if (lmap.empty())
-		{
-			m_dataofendpoint.erase(lpstruct->m_ip);
-		}
-		m_dataofsession.erase(asession);
 	}
 
 	ptr_se kcp_session::find_info(i32_sessionid asession)
