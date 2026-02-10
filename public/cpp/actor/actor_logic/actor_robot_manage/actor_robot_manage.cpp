@@ -233,7 +233,8 @@ namespace ngl
 				pro.set_mactoridserver(aseractorid);
 				pro.set_m_kcpnum(akcpenum);
 				ntcp::instance().send(lprobot->m_session, pro, nguid::moreactor(), lprobot->m_robot->id_guid());
-			});
+			}
+		);
 		return true;
 	}
 
