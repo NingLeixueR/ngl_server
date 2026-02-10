@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -28,9 +28,9 @@ namespace ngl
 		ttab_mergearea(const ttab_mergearea&) = delete;
 		ttab_mergearea& operator=(const ttab_mergearea&) = delete;
 
-		// key: Çø·şid value: ºÏ²¢µ½ÄÄ¸öÇø·ş(×îÖÕºÏ²¢µÄÇø·ş)
+		// key: åŒºæœid value: åˆå¹¶åˆ°å“ªä¸ªåŒºæœ(æœ€ç»ˆåˆå¹¶çš„åŒºæœ)
 		std::map<i16_area, i16_area> m_merge1;
-		// key: ºÏ·şÇø·şid value: ÄÄĞ©Çø·şÔÚ´ËÇø·ş
+		// key: åˆæœåŒºæœid value: å“ªäº›åŒºæœåœ¨æ­¤åŒºæœ
 		std::map<i16_area, std::set<i16_area>> m_merge2;
 
 		void reload()final
@@ -85,7 +85,7 @@ namespace ngl
 		// # std::map<int, tab_mergearea>& tabs()
 		// # tab_mergearea* tab(int aid)
 
-		// ÄÄĞ©Çø·şÔÚ´ËÇø·ş
+		// å“ªäº›åŒºæœåœ¨æ­¤åŒºæœ
 		std::set<i16_area>* mergelist(i16_area aarea)
 		{
 			if (!m_merge2.contains(aarea))

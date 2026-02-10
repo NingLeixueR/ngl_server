@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -62,15 +62,15 @@ namespace ngl
 		i32_threadid			m_threadid = 0;
 		i32_sessionid			m_sessionid = 0;
 		bool					m_is_lanip = false;
-		bool					m_issend = false;	// ÊÇ·ñ·¢ËÍ×´Ì¬
-		std::list<node_pack>	m_list;				// ·¢ËÍ¶ÓÁĞ(ÒòÎªasioÒì²½²Ù×÷,²»ÄÜÔÚÃ»ÓĞÖ´ĞĞÍê³ÉÔÙ´Îµ÷ÓÃ)
+		bool					m_issend = false;	// æ˜¯å¦å‘é€çŠ¶æ€
+		std::list<node_pack>	m_list;				// å‘é€é˜Ÿåˆ—(å› ä¸ºasioå¼‚æ­¥æ“ä½œ,ä¸èƒ½åœ¨æ²¡æœ‰æ‰§è¡Œå®Œæˆå†æ¬¡è°ƒç”¨)
 		std::shared_mutex		m_mutex;
 		basio_ioservice&		m_ioservice;
 
 		service_io(serviceio_info& amsi, i32_session asessionid);
 		virtual ~service_io() =default;
 
-		// # ÓĞÁ½¸öbuffÖ¸Õë½»ÌæÊ¹ÓÃ
+		// # æœ‰ä¸¤ä¸ªbuffæŒ‡é’ˆäº¤æ›¿ä½¿ç”¨
 		char* buff();
 	};
 

@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -26,9 +26,9 @@ namespace ngl
 {
 	enum enscript
 	{
-		enscript_none = -1,		// ´íÎó
+		enscript_none = -1,		// é”™è¯¯
 		enscript_lua = 0,		// lua
-		enscript_count,			// Ö§³ÖµÄ½Å±¾Êı¾İ
+		enscript_count,			// æ”¯æŒçš„è„šæœ¬æ•°æ®
 	};
 
 	class tprotocol
@@ -43,12 +43,12 @@ namespace ngl
 			using funclientc = std::function<bool(int64_t, const char*, void*)>;
 
 			i32_protocolnum	m_protocol = 0;
-			int8_t			m_highvalue = 0; // ¸ßÈ¨ÏŞÖµ(0-127)
+			int8_t			m_highvalue = 0; // é«˜æƒé™å€¼(0-127)
 			std::string		m_name;
 
-			// # ÎªÁË¸ø½Å±¾Ìá¹©¸ù¾İ½á¹¹Ãû×Ö·¢ËÍÊı¾İ¸ø¿Í»§¶Ë
+			// # ä¸ºäº†ç»™è„šæœ¬æä¾›æ ¹æ®ç»“æ„åå­—å‘é€æ•°æ®ç»™å®¢æˆ·ç«¯
 			std::array<funclientc, enscript_count> m_toclient;
-			// # ÎªÁË¸ø½Å±¾Ìá¹©¸ù¾İ½á¹¹Ãû×Ö·¢ËÍÊı¾İ¸øÆäËûactor
+			// # ä¸ºäº†ç»™è„šæœ¬æä¾›æ ¹æ®ç»“æ„åå­—å‘é€æ•°æ®ç»™å…¶ä»–actor
 			std::array<func, enscript_count> m_toactor;
 
 			template <enscript SCRIPT>
@@ -180,7 +180,7 @@ namespace ngl
 			return *lpinfo;
 		}
 
-		// # ¸ù¾İĞ­Òé»ñÈ¡Ğ­ÒéºÅ
+		// # æ ¹æ®åè®®è·å–åè®®å·
 		template <typename T>
 		static i32_protocolnum protocol()
 		{
@@ -203,7 +203,7 @@ namespace ngl
 			return *linfo;
 		}
 
-		// # ¸ù¾İĞ­ÒéºÅ»ñÈ¡Ğ­ÒéÃû³Æ
+		// # æ ¹æ®åè®®å·è·å–åè®®åç§°
 		static const char* name(i32_protocolnum aprotocol)
 		{
 			info* linfo = get(aprotocol);
@@ -224,7 +224,7 @@ namespace ngl
 			return linfo->m_highvalue;
 		}
 
-		// # »ñÈ¡µ±Ç°½ø³ÌÒÑ×¢²áµÄËùÓĞĞ­Òé
+		// # è·å–å½“å‰è¿›ç¨‹å·²æ³¨å†Œçš„æ‰€æœ‰åè®®
 		static void allprotocol(std::map<i32_protocolnum, std::string>& amap)
 		{
 			for (auto& [_key, _value] : m_keyval)

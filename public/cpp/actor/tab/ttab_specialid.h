@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -56,20 +56,20 @@ namespace ngl
 
 		ttab_specialid() = default;
 	public:
-		i32_rolelv	m_rolemaxlv = 0;			// Íæ¼Ò×î´óµÈ¼¶
-		i32_rolevip	m_rolemaxvip = 0;			// Íæ¼Ò×î´óvipµÈ¼¶
-		int32_t		m_createfamilconsume = 0;	// ´´½¨¾üÍÅµÄÏûºÄ
-		int32_t		m_familsignexp = 0;			// ¾üÍÅÇ©µ½¸ø¾üÍÅÔö¼ÓµÄ¾­ÑéÖµ
-		int32_t		m_familsigndrop = 0;		// ¾üÍÅÇ©µ½µÄ½±Àø
-		int32_t		m_familapplylistcount = 0;	// Íæ¼ÒÇëÇó¼ÓÈë¾üÍÅµÄ×î´óÊıÁ¿
-		int32_t		m_familjoininterval = 0;	// Íæ¼ÒÇëÇó¼ÓÈë/´´½¨¾üÍÅµÄÀäÈ´Ê±¼ä
-		int32_t		m_friendsapplylistcount = 0;// Íæ¼ÒºÃÓÑÇëÇóÁĞ±íÊıÁ¿
-		int32_t		m_friendscount = 0;			// Íæ¼ÒºÃÓÑÊıÁ¿
-		int32_t		m_ranklistmaxcount = 0;		// ÅÅĞĞ°ñ×î´óÌõÄ¿Êı
-		// Àı×ÓÓÎÏ·
-		int32_t						m_example_room_maxtime = 0;	// Àı×ÓÓÎÏ·µÄ×î´óÆ¥ÅäÊ±¼ä
-		std::map<int32_t, int32_t>	m_example_totalnumber;	// Àı×ÓÓÎÏ·µÄÆ¥ÅäÈËÊı
-		int32_t						m_example_room_readytime = 0; // Àı×ÓÓÎÏ·µÄµÈ´ıÍæ¼ÒÈ·ÈÏµÄ×î´óÊ±¼ä
+		i32_rolelv	m_rolemaxlv = 0;			// ç©å®¶æœ€å¤§ç­‰çº§
+		i32_rolevip	m_rolemaxvip = 0;			// ç©å®¶æœ€å¤§vipç­‰çº§
+		int32_t		m_createfamilconsume = 0;	// åˆ›å»ºå†›å›¢çš„æ¶ˆè€—
+		int32_t		m_familsignexp = 0;			// å†›å›¢ç­¾åˆ°ç»™å†›å›¢å¢åŠ çš„ç»éªŒå€¼
+		int32_t		m_familsigndrop = 0;		// å†›å›¢ç­¾åˆ°çš„å¥–åŠ±
+		int32_t		m_familapplylistcount = 0;	// ç©å®¶è¯·æ±‚åŠ å…¥å†›å›¢çš„æœ€å¤§æ•°é‡
+		int32_t		m_familjoininterval = 0;	// ç©å®¶è¯·æ±‚åŠ å…¥/åˆ›å»ºå†›å›¢çš„å†·å´æ—¶é—´
+		int32_t		m_friendsapplylistcount = 0;// ç©å®¶å¥½å‹è¯·æ±‚åˆ—è¡¨æ•°é‡
+		int32_t		m_friendscount = 0;			// ç©å®¶å¥½å‹æ•°é‡
+		int32_t		m_ranklistmaxcount = 0;		// æ’è¡Œæ¦œæœ€å¤§æ¡ç›®æ•°
+		// ä¾‹å­æ¸¸æˆ
+		int32_t						m_example_room_maxtime = 0;	// ä¾‹å­æ¸¸æˆçš„æœ€å¤§åŒ¹é…æ—¶é—´
+		std::map<int32_t, int32_t>	m_example_totalnumber;	// ä¾‹å­æ¸¸æˆçš„åŒ¹é…äººæ•°
+		int32_t						m_example_room_readytime = 0; // ä¾‹å­æ¸¸æˆçš„ç­‰å¾…ç©å®¶ç¡®è®¤çš„æœ€å¤§æ—¶é—´
 
 		static ttab_specialid& instance()
 		{

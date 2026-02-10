@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -30,22 +30,22 @@ namespace ngl
 		static std::multimap<i32_sessionid, i32_serverid>	m_session;	// key:sessionid value:serverid
 		static std::shared_mutex							m_mutex;
 	public:
-		// # Ìí¼Ó·şÎñÆ÷idÓësessionidÓ³Éä
+		// # æ·»åŠ æœåŠ¡å™¨idä¸sessionidæ˜ å°„
 		static void add(i32_serverid aserverid, i32_sessionid asession);
 
-		// # ÒÆ³ısessionid
+		// # ç§»é™¤sessionid
 		static void remove(i32_sessionid asession);
 
-		// # ¸ù¾İ·şÎñÆ÷id»ñÈ¡sessionid
+		// # æ ¹æ®æœåŠ¡å™¨idè·å–sessionid
 		static i32_sessionid sessionid(i32_serverid aserverid);
 
-		// # ¸ù¾İsessionid»ñÈ¡·şÎñÆ÷id
+		// # æ ¹æ®sessionidè·å–æœåŠ¡å™¨id
 		static i32_serverid serverid(i32_sessionid asessionid);
 
-		// # ¸ù¾İserverid»ñÈ¡tab_servers±íÖĞµÄ·şÎñÆ÷Ãû³Æ
+		// # æ ¹æ®serveridè·å–tab_serversè¡¨ä¸­çš„æœåŠ¡å™¨åç§°
 		static bool serverinfo(i32_serverid aserverid, str_servername& asername);
 
-		// # ¸ù¾İsession»ñÈ¡·şÎñÆ÷idÓë·şÎñÆ÷Ãû³Æ
+		// # æ ¹æ®sessionè·å–æœåŠ¡å™¨idä¸æœåŠ¡å™¨åç§°
 		static bool serverinfobysession(i32_sessionid asessionid, std::pair<str_servername, i32_serverid>& apair);
 	};
 }//namespace ngl

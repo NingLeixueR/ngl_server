@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "asio_timer.h"
@@ -82,7 +82,7 @@ namespace ngl
 					if (acount > 0)
 					{
 						log_error()->print("connect [{}:{}] fail [{}] add timer list! ", aip, aport, ec.message());
-						// ¼ÓÈë¶¨Ê±¶ÓÁĞ
+						// åŠ å…¥å®šæ—¶é˜Ÿåˆ—
 						wheel_parm lparm
 						{
 							.m_ms = etcp_connect_interval * localtime::MILLISECOND,
@@ -258,7 +258,7 @@ namespace ngl
 			return;
 		}
 
-		// Í¨ÖªÂß¼­²ãsession¶Ï¿ªÁ¬½Ó
+		// é€šçŸ¥é€»è¾‘å±‚sessionæ–­å¼€è¿æ¥
 		log_error()->print("asio_tcp close sessionid [{}]", sessionid);
 		std::shared_ptr<service_tcp> lpservice = nullptr;
 		std::function<void()> lclosefun = nullptr;
@@ -294,25 +294,25 @@ namespace ngl
 	{
 		asio::error_code ec;
 
-		// ²½Öè1: È¡ÏûËùÓĞÒì²½²Ù×÷
+		// æ­¥éª¤1: å–æ¶ˆæ‰€æœ‰å¼‚æ­¥æ“ä½œ
 		socket.cancel(ec);
 		if (ec)
 		{
 			std::cerr << "Cancel error: " << ec.message() << "\n";
 		}
 
-		// ²½Öè2: ¹Ø±ÕÁ¬½Ó·½Ïò£¨¿ÉÑ¡µ«ÍÆ¼ö£©
+		// æ­¥éª¤2: å…³é—­è¿æ¥æ–¹å‘ï¼ˆå¯é€‰ä½†æ¨èï¼‰
 		if (socket.is_open())
 		{
 			socket.shutdown(asio::ip::tcp::socket::shutdown_both, ec);
-			// ºöÂÔ"not_connected"´íÎó£¨¿ÉÄÜÒÑ×ÔÈ»¹Ø±Õ£©
+			// å¿½ç•¥"not_connected"é”™è¯¯ï¼ˆå¯èƒ½å·²è‡ªç„¶å…³é—­ï¼‰
 			if (ec && ec != asio::error::not_connected)
 			{
 				std::cerr << "Shutdown error: " << ec.message() << "\n";
 			}
 		}
 
-		// ²½Öè3: ¹Ø±ÕsocketÊÍ·Å×ÊÔ´
+		// æ­¥éª¤3: å…³é—­socketé‡Šæ”¾èµ„æº
 		if (socket.is_open())
 		{
 			socket.close(ec);
@@ -422,7 +422,7 @@ namespace ngl
 				}
 				else
 				{
-					//¹Ø±ÕÁ¬½Ó
+					//å…³é—­è¿æ¥
 					close(aservice.get());
 					log_error()->print("asio_tcp::handle_read[{}]", error.message().c_str());
 				}

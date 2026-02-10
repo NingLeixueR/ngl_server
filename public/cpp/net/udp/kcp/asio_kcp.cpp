@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #include "sysconfig.h"
@@ -104,7 +104,7 @@ namespace ngl
 		{
 			return false;
 		}
-		// »ñÈ¡°üÍ·
+		// è·å–åŒ…å¤´
 		std::shared_ptr<pack> lpack = pack::make_pack(&m_pool, 0);
 		lpack->m_protocol = ENET_KCP;
 		lpack->m_id = apstruct->m_session;
@@ -163,11 +163,11 @@ namespace ngl
 							{
 								while (true)
 								{
-									//´Ó bufÖĞ ÌáÈ¡ÕæÕıÊı¾İ£¬·µ»ØÌáÈ¡µ½µÄÊı¾İ´óĞ¡
+									//ä» bufä¸­ æå–çœŸæ­£æ•°æ®ï¼Œè¿”å›æå–åˆ°çš„æ•°æ®å¤§å°
 									int lrecv = lpstruct->recv(m_buffrecv, e_buffrecv_byte);
 									if (lrecv == -3)
 									{
-										// ret == -3 m_buffrecv µÄ´óĞ¡²»¹» 
+										// ret == -3 m_buffrecv çš„å¤§å°ä¸å¤Ÿ 
 										close(lpstruct->m_session);
 										break;
 									}
@@ -176,7 +176,7 @@ namespace ngl
 										break;
 									}
 
-									// Ê×ÏÈÅĞ¶ÏÏÂÊÇ·ñkcp_cmd
+									// é¦–å…ˆåˆ¤æ–­ä¸‹æ˜¯å¦kcp_cmd
 									if (udp_cmd::run_cmd(this, lpstruct, m_buffrecv, lrecv))
 									{
 										log_error()->print("kcp cmd [{}]", std::string(m_buffrecv, lrecv));
@@ -223,7 +223,7 @@ namespace ngl
 			});
 	};
 
-	// ## ·¢ËÍÔ­Ê¼udp°ü
+	// ## å‘é€åŸå§‹udpåŒ…
 	bool asio_kcp::sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len)
 	{
 		m_socket.async_send_to(asio::buffer(buf, len), aendpoint, [](const std::error_code& ec, std::size_t bytes_received)
@@ -264,7 +264,7 @@ namespace ngl
 		return true;
 	}
 
-	// ## Í¨¹ıkcp·¢ËÍpack
+	// ## é€šè¿‡kcpå‘é€pack
 	bool asio_kcp::send_server(i32_sessionid asessionid, const std::shared_ptr<pack>& apack)
 	{
 		ptr_se lpstruct = m_session.find(asessionid);
@@ -297,7 +297,7 @@ namespace ngl
 		return true;
 	}
 
-	// ## Í¨¹ıkcp·¢ËÍpack
+	// ## é€šè¿‡kcpå‘é€pack
 	bool asio_kcp::send_server(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack)
 	{
 		send(aendpoint, apack->m_buff, apack->m_len);
@@ -334,12 +334,12 @@ namespace ngl
 			return -1;
 		}
 		int ret = lpstruct->send(buf, len);
-		// ¿ìËÙflushÒ»´Î ÒÔ¸ü¿ìÈÃ¿Í»§¶ËÊÕµ½Êı¾İ
+		// å¿«é€Ÿflushä¸€æ¬¡ ä»¥æ›´å¿«è®©å®¢æˆ·ç«¯æ”¶åˆ°æ•°æ®
 		lpstruct->flush();
 		return ret;
 	}
 
-	// ## kcp·¢ËÍ»Øµ÷»áµ÷ÓÃµÄ·½·¨
+	// ## kcpå‘é€å›è°ƒä¼šè°ƒç”¨çš„æ–¹æ³•
 	int asio_kcp::sendbuff(i32_session asession, const char* buf, int len)
 	{
 		ptr_se lpstruct = m_session.find(asession);
@@ -390,7 +390,7 @@ namespace ngl
 		, const std::function<void(i32_session)>& afun
 	)
 	{
-		// #### ·¢ÆğÁ¬½Ó
+		// #### å‘èµ·è¿æ¥
 		ptr_se lpstruct = m_session.add(aconv, aendpoint, aactoridserver, aactoridclient);
 		ncjson ltempjson;
 		njson::push(ltempjson.json(), { "actoridserver","actoridclient","session" }, aactoridserver, aactoridclient, akcpsess);

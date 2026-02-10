@@ -1,19 +1,19 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-// ×¢Òâ¡¾IDL ¹¤¾ßÉú³ÉÎÄ¼ş£¬²»ÒªÊÖ¶¯ĞŞ¸Ä¡¿
-// ´´½¨Ê±¼ä // ´´½¨Ê±¼ä 26-02-10 14:38:17
+// æ³¨æ„ã€IDL å·¥å…·ç”Ÿæˆæ–‡ä»¶ï¼Œä¸è¦æ‰‹åŠ¨ä¿®æ”¹ã€‘
+// åˆ›å»ºæ—¶é—´ // åˆ›å»ºæ—¶é—´ 26-02-10 18:28:55
 #pragma once
 
 #include "csv.h"
@@ -29,25 +29,25 @@ enum ENET_CONFIG
 };
 enum EUDP_OPERATOR
 {
-	EUDP_OPERATOR_ACK,	// È·ÈÏ°ü
-	EUDP_OPERATOR_DATA,	// ´«Êä×ÓÊı¾İ°ü
-	EUDP_OPERATOR_HEARTBEAT,	// ĞÄÌøÖ÷ÒªÓÃÀ´È·ÈÏ¶Ô¶ËÊÇ·ñÔÚÏß
+	EUDP_OPERATOR_ACK,	// ç¡®è®¤åŒ…
+	EUDP_OPERATOR_DATA,	// ä¼ è¾“å­æ•°æ®åŒ…
+	EUDP_OPERATOR_HEARTBEAT,	// å¿ƒè·³ä¸»è¦ç”¨æ¥ç¡®è®¤å¯¹ç«¯æ˜¯å¦åœ¨çº¿
 };
 enum EPH_HEAD_VAL
 {
-	EPH_HEAD_MASK_SUCCESS = 1,	// MASKÒ»ÖÂ
-	EPH_HEAD_MASK_FAIL = 2,	// MASK²»Ò»ÖÂ
-	EPH_HEAD_FOLLOW = 3,	// °üÍ·Êı¾İÃ»ÓĞ½ÓÊÕÍê³É
-	EPH_HEAD_SUCCESS = 4,	// °üÍ·Êı¾İÒÑ½ÓÊÕÍê³É
+	EPH_HEAD_MASK_SUCCESS = 1,	// MASKä¸€è‡´
+	EPH_HEAD_MASK_FAIL = 2,	// MASKä¸ä¸€è‡´
+	EPH_HEAD_FOLLOW = 3,	// åŒ…å¤´æ•°æ®æ²¡æœ‰æ¥æ”¶å®Œæˆ
+	EPH_HEAD_SUCCESS = 4,	// åŒ…å¤´æ•°æ®å·²æ¥æ”¶å®Œæˆ
 };
 enum EPH
 {
 	EPH_MASK_VALUE = 0xff,	
 	EPH_MASK_COUNT = 2,	
-	EPH_MASK = 0,	// ÓÃÓÚÈ·ÈÏÊÇ·ñÊ¹ÓÃ°ü
-	EPH_BYTES = EPH_MASK_COUNT,	// Ğ­Òé×Ö½ÚÊı
-	EPH_TIME,	// ·¢ËÍ¶ËµÄÊ±¼ä´Á
-	EPH_PROTOCOLNUM,	// Ğ­ÒéºÅ
+	EPH_MASK = 0,	// ç”¨äºç¡®è®¤æ˜¯å¦ä½¿ç”¨åŒ…
+	EPH_BYTES = EPH_MASK_COUNT,	// åè®®å­—èŠ‚æ•°
+	EPH_TIME,	// å‘é€ç«¯çš„æ—¶é—´æˆ³
+	EPH_PROTOCOLNUM,	// åè®®å·
 	EPH_ACTOR_TYPEAREA,	// ACTOR_TYPE_AREA
 	EPH_ACTOR_ID,	// ACTOR_ID
 	EPH_REQUEST_ACTOR_TYPEAREA,	// Request ACTOR_TYPE_AREA
@@ -56,20 +56,20 @@ enum EPH
 };
 enum NODE_TYPE
 {
-	DB = 1,	// Êı¾İ¿â·şÎñÆ÷
-	ACTORSERVER = 2,	// actor ·şÎñÆ÷
-	GAME = 3,	// Âß¼­·şÎñÆ÷
-	GATEWAY = 4,	// Íø¹Ø·şÎñÆ÷
-	LOGIN = 5,	// µÇÂ¼·şÎñÆ÷
-	ROBOT = 6,	// ²âÊÔ»úÆ÷ÈË·şÎñÆ÷
-	WORLD = 7,	// ÊÀ½ç·şÎñÆ÷
-	LOG = 8,	// ÈÕÖ¾·şÎñÆ÷
-	RELOADCSV = 9,	// ÖØÔØ·Ö·¢csv·şÎñÆ÷
-	CROSS = 10,	// ¿ç·ş·şÎñÆ÷
-	CROSSDB = 11,	// ¿ç·şÊı¾İ¿â·şÎñÆ÷
-	PUSHSERVERCONFIG = 12,	// ½«·şÎñÆ÷ÅäÖÃÉÏ´«lbgmsys
+	DB = 1,	// æ•°æ®åº“æœåŠ¡å™¨
+	ACTORSERVER = 2,	// actor æœåŠ¡å™¨
+	GAME = 3,	// é€»è¾‘æœåŠ¡å™¨
+	GATEWAY = 4,	// ç½‘å…³æœåŠ¡å™¨
+	LOGIN = 5,	// ç™»å½•æœåŠ¡å™¨
+	ROBOT = 6,	// æµ‹è¯•æœºå™¨äººæœåŠ¡å™¨
+	WORLD = 7,	// ä¸–ç•ŒæœåŠ¡å™¨
+	LOG = 8,	// æ—¥å¿—æœåŠ¡å™¨
+	RELOADCSV = 9,	// é‡è½½åˆ†å‘csvæœåŠ¡å™¨
+	CROSS = 10,	// è·¨æœæœåŠ¡å™¨
+	CROSSDB = 11,	// è·¨æœæ•°æ®åº“æœåŠ¡å™¨
+	PUSHSERVERCONFIG = 12,	// å°†æœåŠ¡å™¨é…ç½®ä¸Šä¼ lbgmsys
 	NODE_TYPE_COUNT,	
-	FAIL = -1,	// ·şÎñÆ÷ÀàĞÍ´íÎó
+	FAIL = -1,	// æœåŠ¡å™¨ç±»å‹é”™è¯¯
 };
 enum ENET_PROTOCOL
 {
@@ -81,34 +81,34 @@ enum ENET_PROTOCOL
 };
 enum EnumModule
 {
-	E_ModuleNull = 0,	// ¿Õ	
-	E_ModuleRoot = 1,	// ¿¨ÅÆ(Á´Î²)
-	E_ModuleEquip = 3,	// ×°±¸
-	E_ModuleEquipWeapon = 4,	// ×°±¸ÎäÆ÷
-	E_ModuleEquipHelmet = 5,	// ×°±¸Í·¿ø
-	E_ModuleEquipCloth = 6,	// ×°±¸ÒÂ·ş
-	E_ModuleEquipPants = 7,	// ×°±¸»¤ÍÈ
+	E_ModuleNull = 0,	// ç©º	
+	E_ModuleRoot = 1,	// å¡ç‰Œ(é“¾å°¾)
+	E_ModuleEquip = 3,	// è£…å¤‡
+	E_ModuleEquipWeapon = 4,	// è£…å¤‡æ­¦å™¨
+	E_ModuleEquipHelmet = 5,	// è£…å¤‡å¤´ç›”
+	E_ModuleEquipCloth = 6,	// è£…å¤‡è¡£æœ
+	E_ModuleEquipPants = 7,	// è£…å¤‡æŠ¤è…¿
 	E_ModuleBuff = 100,	// buff
-	E_ModuleBuffStart = 100,	// Íæ¼Òbuff(100-200)£¬×î¶à100
-	E_ModuleBuffFinish = 200,	// Íæ¼Òbuff(100-200)£¬×î¶à100
-	E_ModuleCount = 200,	// ÊıÁ¿ 	
+	E_ModuleBuffStart = 100,	// ç©å®¶buff(100-200)ï¼Œæœ€å¤š100
+	E_ModuleBuffFinish = 200,	// ç©å®¶buff(100-200)ï¼Œæœ€å¤š100
+	E_ModuleCount = 200,	// æ•°é‡ 	
 };
 enum EnumAttribute
 {
-	E_Attack,	// [¹¥»÷]
-	E_Defense,	// [·ÀÓù]
-	E_Hp,	// [ÑªÁ¿]
-	E_Anger,	// [Å­Æø]
-	E_Speed,	// [ËÙ¶È]
-	E_CooldownAbsolute,	// [ÀäÈ´Ëõ¼õ-¾ø¶ÔÖµ]
-	E_CooldownProp,	// [ÀäÈ´Ëõ¼õ-Íò·Ö±È]
+	E_Attack,	// [æ”»å‡»]
+	E_Defense,	// [é˜²å¾¡]
+	E_Hp,	// [è¡€é‡]
+	E_Anger,	// [æ€’æ°”]
+	E_Speed,	// [é€Ÿåº¦]
+	E_CooldownAbsolute,	// [å†·å´ç¼©å‡-ç»å¯¹å€¼]
+	E_CooldownProp,	// [å†·å´ç¼©å‡-ä¸‡åˆ†æ¯”]
 	E_Count,	
 };
 enum EnumFightStat
 {
-	E_FightMove,	// [ÒÆ¶¯]
-	E_FightNormalAttack,	// [ÆÕÍ¨¹¥»÷]
-	E_FightReleaseSkill,	// [ÊÍ·Å¼¼ÄÜ]
+	E_FightMove,	// [ç§»åŠ¨]
+	E_FightNormalAttack,	// [æ™®é€šæ”»å‡»]
+	E_FightReleaseSkill,	// [é‡Šæ”¾æŠ€èƒ½]
 	E_FightCount,	
 };
 enum EItemSrc
@@ -123,83 +123,83 @@ enum EItemConsume
 };
 enum EItemType
 {
-	EEquipment = 1,	// ×°±¸
-	EMaterial = 2,	// ²ÄÁÏ
-	EMoneyGold = 3,	// ½ğ±Ò
-	EMoneySilver = 4,	// Òø±Ò
-	ECard = 5,	// ¿¨ÅÆ
+	EEquipment = 1,	// è£…å¤‡
+	EMaterial = 2,	// ææ–™
+	EMoneyGold = 3,	// é‡‘å¸
+	EMoneySilver = 4,	// é“¶å¸
+	ECard = 5,	// å¡ç‰Œ
 };
 enum EQuality
 {
-	EQualityGrey = 0,	//»ÒÉ«
-	EQualityGreen = 1,	//ÂÌÉ«
-	EQualityYellow = 2,	//»ÆÉ«
-	EQualityOrange = 3,	//³ÈÉ«
-	EQualityRed = 4,	//ºìÉ«
+	EQualityGrey = 0,	//ç°è‰²
+	EQualityGreen = 1,	//ç»¿è‰²
+	EQualityYellow = 2,	//é»„è‰²
+	EQualityOrange = 3,	//æ©™è‰²
+	EQualityRed = 4,	//çº¢è‰²
 };
 enum EEquip
 {
-	EEquipWeapon = 1,	// ÎäÆ÷
-	EEquipHelmet = 2,	// Í·¿ø
-	EEquipCloth = 3,	// ÒÂ·ş
-	EEquipPants = 4,	// »¤ÍÈ
+	EEquipWeapon = 1,	// æ­¦å™¨
+	EEquipHelmet = 2,	// å¤´ç›”
+	EEquipCloth = 3,	// è¡£æœ
+	EEquipPants = 4,	// æŠ¤è…¿
 };
 enum ECalendar
 {
-	Week = 0,	// ÖÜ¼¸
-	ServerOpen = 1,	// ÒÔ¿ª·şÊ±¼äÒÔÀ´µÄÌìÊı
-	RegularSlot = 2,	// ¹Ì¶¨Ê±¼ä¶Î
+	Week = 0,	// å‘¨å‡ 
+	ServerOpen = 1,	// ä»¥å¼€æœæ—¶é—´ä»¥æ¥çš„å¤©æ•°
+	RegularSlot = 2,	// å›ºå®šæ—¶é—´æ®µ
 };
 enum ECalendarType
 {
-	ECalendarTypeNull,	// ÎŞ
-	ECalendarTypeActivity,	// »î¶¯¿ªÆôÓë¹Ø±Õ
+	ECalendarTypeNull,	// æ— 
+	ECalendarTypeActivity,	// æ´»åŠ¨å¼€å¯ä¸å…³é—­
 	ECalendarTypeCount,	
 };
 enum EActivity
 {
-	EActivityDrawCompliance = 1,	// ÀàËÆÏÌÓãÖ®ÍõµÄ<<ÕĞÄ¼´ï±ê>>
-	EActivityTopRank = 2,	// ³å°ñ
+	EActivityDrawCompliance = 1,	// ç±»ä¼¼å’¸é±¼ä¹‹ç‹çš„<<æ‹›å‹Ÿè¾¾æ ‡>>
+	EActivityTopRank = 2,	// å†²æ¦œ
 };
 enum EActivityOpen
 {
-	EActivityOpenGm = 0,	// Gm¿ªÆô
-	EActivityOpenAlways = 1,	// ³£×¤»î¶¯
+	EActivityOpenGm = 0,	// Gmå¼€å¯
+	EActivityOpenAlways = 1,	// å¸¸é©»æ´»åŠ¨
 };
 enum EActivityAlways
 {
 	EActivityAlwaysNull = 0,	
-	EActivityAlwaysWeek = 1,	// ÖÜ
-	EActivityAlwaysMonth = 2,	// ÔÂ
-	EActivityAlwaysFixed = 3,	// ¼ä¸ô¹Ì¶¨Ê±¼ä
+	EActivityAlwaysWeek = 1,	// å‘¨
+	EActivityAlwaysMonth = 2,	// æœˆ
+	EActivityAlwaysFixed = 3,	// é—´éš”å›ºå®šæ—¶é—´
 };
 enum ETask
 {
-	ETaskRoleLv = 0,	// Íæ¼ÒµÈ¼¶
-	ETaskRoleVip = 1,	// Íæ¼ÒvipµÈ¼¶
-	ETaskTaskId = 2,	// Íê³ÉÄ³IDÈÎÎñ
-	ETaskRoleLogin = 3,	// ÀÛ¼ÆµÇÂ½
-	ETaskConsumeGold = 4,	// ÀÛ¼ÆÏûºÄ½ğ±Ò
+	ETaskRoleLv = 0,	// ç©å®¶ç­‰çº§
+	ETaskRoleVip = 1,	// ç©å®¶vipç­‰çº§
+	ETaskTaskId = 2,	// å®ŒæˆæŸIDä»»åŠ¡
+	ETaskRoleLogin = 3,	// ç´¯è®¡ç™»é™†
+	ETaskConsumeGold = 4,	// ç´¯è®¡æ¶ˆè€—é‡‘å¸
 	ETaskCount,	
 };
 enum ETaskCondition
 {
-	ETaskConditionMore = 0,	// ´óÓÚµÈÓÚ
-	ETaskConditionLess = 1,	// Ğ¡ÓÚµÈÓÚ
-	ETaskConditionEqual = 2,	// µÈÓÚ
+	ETaskConditionMore = 0,	// å¤§äºç­‰äº
+	ETaskConditionLess = 1,	// å°äºç­‰äº
+	ETaskConditionEqual = 2,	// ç­‰äº
 	ETaskConditionCount,	
 };
 enum ETaskType
 {
-	ETaskTypePrincipalLine = 0,	// Ö÷ÏßÈÎÎñ
-	ETaskTypeBranchLine = 1,	// Ö§ÏßÈÎÎñ
-	ETaskTypeDaily = 2,	// Ã¿ÈÕÈÎÎñ
-	ETaskTypeRepeat = 3,	// ¿ÉÖØ¸´Íê³ÉµÄÈÎÎñ
+	ETaskTypePrincipalLine = 0,	// ä¸»çº¿ä»»åŠ¡
+	ETaskTypeBranchLine = 1,	// æ”¯çº¿ä»»åŠ¡
+	ETaskTypeDaily = 2,	// æ¯æ—¥ä»»åŠ¡
+	ETaskTypeRepeat = 3,	// å¯é‡å¤å®Œæˆçš„ä»»åŠ¡
 };
 enum eobstacles
 {
-	eobstacles_pass = 0,	// ¿ÉÒÔÍ¨¹ı
-	eobstacles_nopass = 1,	// ÎŞ·¨Í¨¹ı
+	eobstacles_pass = 0,	// å¯ä»¥é€šè¿‡
+	eobstacles_nopass = 1,	// æ— æ³•é€šè¿‡
 };
 struct net_works
 {
@@ -210,9 +210,9 @@ struct net_works
 	uint16_t                         m_port                          ; 
 	/*********************************/
 	net_works();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(net_works, m_type, m_ip, m_nip, m_port)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		DEF_RCSV(m_type,m_ip,m_nip,m_port);
@@ -222,26 +222,26 @@ struct tab_servers
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int16_t                          m_area                          ; // [index:3][load:y] Çø·ş
-	NODE_TYPE                        m_type                          ; // [index:4][load:y] ·şÎñÆ÷ÀàĞÍ(1¡¢DB(Êı¾İ¿â·şÎñÆ÷)2¡¢ACTORSERVER(actor ·şÎñÆ÷))3¡¢GAME(Âß¼­·şÎñÆ÷)4¡¢GATEWAY(Íø¹Ø·şÎñÆ÷)5¡¢LOGIN(µÇÂ¼·şÎñÆ÷)6¡¢ROBOT(²âÊÔ»úÆ÷ÈË·şÎñÆ÷)7¡¢WORLD(ÊÀ½ç·şÎñÆ÷)8¡¢LOG(ÈÕÖ¾·şÎñÆ÷)9¡¢RELOADCSV(ÖØÔØ·Ö·¢csv·şÎñÆ÷)10¡¢CROSS(¿ç·ş·şÎñÆ÷)11¡¢CROSSDB(¿ç·şÊı¾İ¿â·şÎñÆ÷)12¡¢PUSHSERVERCONFIG(½«·şÎñÆ÷ÅäÖÃÉÏ´«lbgmsys))
-	int32_t                          m_tcount                        ; // [index:5][load:y] Í¬ÀàĞÍ·şÎñÆ÷µÄĞòºÅ
-	int32_t                          m_threadnum                     ; // [index:6][load:y] socketÏß³ÌÊı
-	int32_t                          m_actorthreadnum                ; // [index:7][load:y] actorÏß³Ì³ØÏß³ÌÊı
-	bool                             m_outernet                      ; // [index:8][load:y] ÊÇ·ñÔÊĞíÍâÍø·ÃÎÊ
-	int32_t                          m_db                            ; // [index:9][load:y] Á¬½ÓµÄdb½ø³Ìid
-	int32_t                          m_reloadcsv                     ; // [index:10][load:y] Á¬½ÓµÄreloadcsv½ø³Ìid
-	int32_t                          m_login                         ; // [index:11][load:y] Á¬½ÓµÄlogin½ø³Ìid
-	int16_t                          m_crossarea                     ; // [index:12][load:y] ¿ç·şÇø·ş
-	int32_t                          m_log                           ; // [index:13][load:y] Á¬½ÓµÄlog½ø³Ìid
-	std::vector<int32_t>             m_actorserver                   ; // [index:13][load:y] Á¬½ÓµÄactorserver½ø³Ìid(¿ç·şĞèÒªÌîĞ´¶à¸öactorserver)
-	std::vector<net_works>           m_net                           ; // [index:14][load:y] ·şÎñÆ÷ÍøÂçÏà¹Ø(net_works:m_type(0tcp1ws2kcp),m_ip,m_nip,m_port)
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int16_t                          m_area                          ; // [index:3][load:y] åŒºæœ
+	NODE_TYPE                        m_type                          ; // [index:4][load:y] æœåŠ¡å™¨ç±»å‹(1ã€DB(æ•°æ®åº“æœåŠ¡å™¨)2ã€ACTORSERVER(actor æœåŠ¡å™¨))3ã€GAME(é€»è¾‘æœåŠ¡å™¨)4ã€GATEWAY(ç½‘å…³æœåŠ¡å™¨)5ã€LOGIN(ç™»å½•æœåŠ¡å™¨)6ã€ROBOT(æµ‹è¯•æœºå™¨äººæœåŠ¡å™¨)7ã€WORLD(ä¸–ç•ŒæœåŠ¡å™¨)8ã€LOG(æ—¥å¿—æœåŠ¡å™¨)9ã€RELOADCSV(é‡è½½åˆ†å‘csvæœåŠ¡å™¨)10ã€CROSS(è·¨æœæœåŠ¡å™¨)11ã€CROSSDB(è·¨æœæ•°æ®åº“æœåŠ¡å™¨)12ã€PUSHSERVERCONFIG(å°†æœåŠ¡å™¨é…ç½®ä¸Šä¼ lbgmsys))
+	int32_t                          m_tcount                        ; // [index:5][load:y] åŒç±»å‹æœåŠ¡å™¨çš„åºå·
+	int32_t                          m_threadnum                     ; // [index:6][load:y] socketçº¿ç¨‹æ•°
+	int32_t                          m_actorthreadnum                ; // [index:7][load:y] actorçº¿ç¨‹æ± çº¿ç¨‹æ•°
+	bool                             m_outernet                      ; // [index:8][load:y] æ˜¯å¦å…è®¸å¤–ç½‘è®¿é—®
+	int32_t                          m_db                            ; // [index:9][load:y] è¿æ¥çš„dbè¿›ç¨‹id
+	int32_t                          m_reloadcsv                     ; // [index:10][load:y] è¿æ¥çš„reloadcsvè¿›ç¨‹id
+	int32_t                          m_login                         ; // [index:11][load:y] è¿æ¥çš„loginè¿›ç¨‹id
+	int16_t                          m_crossarea                     ; // [index:12][load:y] è·¨æœåŒºæœ
+	int32_t                          m_log                           ; // [index:13][load:y] è¿æ¥çš„logè¿›ç¨‹id
+	std::vector<int32_t>             m_actorserver                   ; // [index:13][load:y] è¿æ¥çš„actorserverè¿›ç¨‹id(è·¨æœéœ€è¦å¡«å†™å¤šä¸ªactorserver)
+	std::vector<net_works>           m_net                           ; // [index:14][load:y] æœåŠ¡å™¨ç½‘ç»œç›¸å…³(net_works:m_type(0tcp1ws2kcp),m_ip,m_nip,m_port)
 	/*********************************/
 	tab_servers();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_servers, m_id, m_name, m_area, m_type, m_tcount, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_log, m_actorserver, m_net)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -252,17 +252,17 @@ struct tab_dbload
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	bool                             m_isloadall                     ; // [index:3][load:y] ÊÇ·ñĞèÒªÆô¶¯¼ÓÔØÈ«²¿Êı¾İ
-	bool                             m_network                       ; // [index:4][load:y] ÊÇ·ñÔÊĞíÍ¨¹ıÍøÂç·Ö·¢
-	int32_t                          m_sendmaxcount                  ; // [index:5][load:y] µ¥´Î×î¶à·¢ËÍÊıÁ¿
-	int32_t                          m_dbcacheintervalms             ; // [index:6][load:y] Êı¾İ»º´æÈë¿â¼ä¸ô
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	bool                             m_isloadall                     ; // [index:3][load:y] æ˜¯å¦éœ€è¦å¯åŠ¨åŠ è½½å…¨éƒ¨æ•°æ®
+	bool                             m_network                       ; // [index:4][load:y] æ˜¯å¦å…è®¸é€šè¿‡ç½‘ç»œåˆ†å‘
+	int32_t                          m_sendmaxcount                  ; // [index:5][load:y] å•æ¬¡æœ€å¤šå‘é€æ•°é‡
+	int32_t                          m_dbcacheintervalms             ; // [index:6][load:y] æ•°æ®ç¼“å­˜å…¥åº“é—´éš”
 	/*********************************/
 	tab_dbload();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_dbload, m_id, m_name, m_isloadall, m_network, m_sendmaxcount, m_dbcacheintervalms)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -273,14 +273,14 @@ struct tab_errormessage
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	std::string                      m_message                       ; // [index:3][load:y] ´íÎóÃèÊö
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	std::string                      m_message                       ; // [index:3][load:y] é”™è¯¯æè¿°
 	/*********************************/
 	tab_errormessage();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_errormessage, m_id, m_name, m_message)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -291,14 +291,14 @@ struct tab_specialid
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1[load:y]] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	std::string                      m_value                         ; // [index:3][load:y] Öµ
+	std::string                      m_name                          ; // [index:1[load:y]] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	std::string                      m_value                         ; // [index:3][load:y] å€¼
 	/*********************************/
 	tab_specialid();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_specialid, m_id, m_name, m_value)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -309,17 +309,17 @@ struct tab_attribute
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	float                            m_fightcoefficient              ; // [index:3][load:y] ÊôĞÔÌá¹©µÄÕ½Á¦ÏµÊı
-	int32_t                          m_initvalue                     ; // [index:4][load:y] ÊôĞÔ³õÊ¼Öµ
-	int32_t                          m_uplimit                       ; // [index:5][load:y] ÉÏÏŞ
-	int32_t                          m_lowlimit                      ; // [index:6][load:y] ÏÂÏŞ
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	float                            m_fightcoefficient              ; // [index:3][load:y] å±æ€§æä¾›çš„æˆ˜åŠ›ç³»æ•°
+	int32_t                          m_initvalue                     ; // [index:4][load:y] å±æ€§åˆå§‹å€¼
+	int32_t                          m_uplimit                       ; // [index:5][load:y] ä¸Šé™
+	int32_t                          m_lowlimit                      ; // [index:6][load:y] ä¸‹é™
 	/*********************************/
 	tab_attribute();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_attribute, m_id, m_name, m_fightcoefficient, m_initvalue, m_uplimit, m_lowlimit)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -330,17 +330,17 @@ struct tab_item
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int32_t                          m_ranks                         ; // [index:3][load:y] ÅÅĞòÖµ
-	EItemType                        m_type                          ; // [index:4][load:y] ÎïÆ·ÀàĞÍEItemType(1×°±¸,2²ÄÁÏ,3½ğ±Ò,4Òø±Ò)
-	int32_t                          m_quality                       ; // [index:5][load:y] ÎïÆ·Æ·ÖÊ(EQuality)
-	bool                             m_isstack                       ; // [index:6][load:y] ÊÇ·ñ¿É¶Ñµş
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int32_t                          m_ranks                         ; // [index:3][load:y] æ’åºå€¼
+	EItemType                        m_type                          ; // [index:4][load:y] ç‰©å“ç±»å‹EItemType(1è£…å¤‡,2ææ–™,3é‡‘å¸,4é“¶å¸)
+	int32_t                          m_quality                       ; // [index:5][load:y] ç‰©å“å“è´¨(EQuality)
+	bool                             m_isstack                       ; // [index:6][load:y] æ˜¯å¦å¯å †å 
 	/*********************************/
 	tab_item();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_item, m_id, m_name, m_ranks, m_type, m_quality, m_isstack)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -350,14 +350,14 @@ struct tab_item
 struct attributevalue
 {
 	/*********************************/
-	int32_t                          m_id                            ; // ÊôĞÔid(EnumAttribute)
-	bool                             m_isratio                       ; // ÊÇ·ñÍò·Ö±ÈÊôĞÔ
-	int32_t                          m_value                         ; // ÊôĞÔÖµ
+	int32_t                          m_id                            ; // å±æ€§id(EnumAttribute)
+	bool                             m_isratio                       ; // æ˜¯å¦ä¸‡åˆ†æ¯”å±æ€§
+	int32_t                          m_value                         ; // å±æ€§å€¼
 	/*********************************/
 	attributevalue();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(attributevalue, m_id, m_isratio, m_value)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		DEF_RCSV(m_id,m_isratio,m_value);
@@ -367,15 +367,15 @@ struct tab_equip
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	EEquip                           m_position                      ; // [index:3][load:y] ²¿Î»EEquip(1ÎäÆ÷2Í·¿ø3ÒÂ·ş4»¤ÍÈ)
-	std::vector<attributevalue>      m_attributevalues               ; // [index:4][load:y] ×°±¸ÊôĞÔ
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	EEquip                           m_position                      ; // [index:3][load:y] éƒ¨ä½EEquip(1æ­¦å™¨2å¤´ç›”3è¡£æœ4æŠ¤è…¿)
+	std::vector<attributevalue>      m_attributevalues               ; // [index:4][load:y] è£…å¤‡å±æ€§
 	/*********************************/
 	tab_equip();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_equip, m_id, m_name, m_position, m_attributevalues)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -386,15 +386,15 @@ struct tab_equiplv
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int32_t                          m_consume                       ; // [index:3][load:y] Éı¼¶ÏûºÄid
-	std::vector<attributevalue>      m_attributevalues               ; // [index:4][load:y] ×°±¸ÊôĞÔ
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int32_t                          m_consume                       ; // [index:3][load:y] å‡çº§æ¶ˆè€—id
+	std::vector<attributevalue>      m_attributevalues               ; // [index:4][load:y] è£…å¤‡å±æ€§
 	/*********************************/
 	tab_equiplv();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_equiplv, m_id, m_name, m_consume, m_attributevalues)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -405,15 +405,15 @@ struct tab_card
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	EQuality                         m_quality                       ; // [index:3][load:y] Æ·ÖÊEQuality(0»ÒÉ«1ÂÌÉ«2»ÆÉ«3³ÈÉ«4ºìÉ«)
-	std::vector<attributevalue>      m_attributevalues               ; // [index:4][load:y] ÊôĞÔ
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	EQuality                         m_quality                       ; // [index:3][load:y] å“è´¨EQuality(0ç°è‰²1ç»¿è‰²2é»„è‰²3æ©™è‰²4çº¢è‰²)
+	std::vector<attributevalue>      m_attributevalues               ; // [index:4][load:y] å±æ€§
 	/*********************************/
 	tab_card();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_card, m_id, m_name, m_quality, m_attributevalues)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -429,9 +429,9 @@ struct trandom
 	int32_t                          m_weight                        ; 
 	/*********************************/
 	trandom();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(trandom, m_id, m_min, m_max, m_weight)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		DEF_RCSV(m_id,m_min,m_max,m_weight);
@@ -441,18 +441,18 @@ struct tab_random
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
 	std::vector<trandom>             m_randomdatas                   ; // [index:3][load:y] trandom(id*min*max*weight)
-	bool                             m_exclusive                     ; // [index:4][load:y] ÅÅËûĞÔ¶à´ÎµôÂäÊ±Ê¹ÓÃ£¨true²»»áµôÂä³öÒÑµôÂäÎïÆ· false»áµôÂä³öÒÑµôÂäÎïÆ·£©
-	int32_t                          m_count                         ; // [index:5][load:y] Ëæ»úÊıÁ¿
-	std::set<int32_t>                m_activityids                   ; // [index:6][load:y] Ö»ÓĞ»î¶¯¿ªÆô²Å»á´¥·¢´ËµôÂä
-	std::vector<int32_t>             m_childrandomids                ; // [index:7][load:y] ×ÓËæ»ú
+	bool                             m_exclusive                     ; // [index:4][load:y] æ’ä»–æ€§å¤šæ¬¡æ‰è½æ—¶ä½¿ç”¨ï¼ˆtrueä¸ä¼šæ‰è½å‡ºå·²æ‰è½ç‰©å“ falseä¼šæ‰è½å‡ºå·²æ‰è½ç‰©å“ï¼‰
+	int32_t                          m_count                         ; // [index:5][load:y] éšæœºæ•°é‡
+	std::set<int32_t>                m_activityids                   ; // [index:6][load:y] åªæœ‰æ´»åŠ¨å¼€å¯æ‰ä¼šè§¦å‘æ­¤æ‰è½
+	std::vector<int32_t>             m_childrandomids                ; // [index:7][load:y] å­éšæœº
 	/*********************************/
 	tab_random();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_random, m_id, m_name, m_randomdatas, m_exclusive, m_count, m_activityids, m_childrandomids)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -466,9 +466,9 @@ struct tconsume
 	int32_t                          m_count                         ; 
 	/*********************************/
 	tconsume();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tconsume, m_tid, m_count)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		DEF_RCSV(m_tid,m_count);
@@ -478,14 +478,14 @@ struct tab_consume
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
 	std::vector<tconsume>            m_consumeitems                  ; // [index:3][load:y] tid*count
 	/*********************************/
 	tab_consume();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_consume, m_id, m_name, m_consumeitems)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -496,15 +496,15 @@ struct tab_synthesis
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int32_t                          m_consume                       ; // [index:3][load:y] ÏûºÄÁĞ±í
-	int32_t                          m_generate                      ; // [index:4][load:y] Ëæ»ú±í(tab_rando)id Ëæ»ú³É¹¦ÎïÆ·ÁĞ±í
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int32_t                          m_consume                       ; // [index:3][load:y] æ¶ˆè€—åˆ—è¡¨
+	int32_t                          m_generate                      ; // [index:4][load:y] éšæœºè¡¨(tab_rando)id éšæœºæˆåŠŸç‰©å“åˆ—è¡¨
 	/*********************************/
 	tab_synthesis();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_synthesis, m_id, m_name, m_consume, m_generate)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -514,15 +514,15 @@ struct tab_synthesis
 struct tweek
 {
 	/*********************************/
-	int32_t                          m_weekstart                     ; // ÖÜ¼¸¿ªÊ¼
-	std::string                      m_opentime                      ; // ¿ªÆôÊ±¼ä HH:mm:ss
-	int32_t                          m_weekfinish                    ; // ÖÜ¼¸½áÊø
-	std::string                      m_closetime                     ; // ½áÊøÊ±¼ä HH:mm:ss
+	int32_t                          m_weekstart                     ; // å‘¨å‡ å¼€å§‹
+	std::string                      m_opentime                      ; // å¼€å¯æ—¶é—´ HH:mm:ss
+	int32_t                          m_weekfinish                    ; // å‘¨å‡ ç»“æŸ
+	std::string                      m_closetime                     ; // ç»“æŸæ—¶é—´ HH:mm:ss
 	/*********************************/
 	tweek();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tweek, m_weekstart, m_opentime, m_weekfinish, m_closetime)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		DEF_RCSV(m_weekstart,m_opentime,m_weekfinish,m_closetime);
@@ -531,15 +531,15 @@ struct tweek
 struct tserveropen
 {
 	/*********************************/
-	int32_t                          m_beg                           ; // ¿ª·şºó¶àÉÙÌì¿ªÆô
-	std::string                      m_opentime                      ; // ¿ªÆôÊ±¼ä HH:mm:ss
-	int32_t                          m_end                           ; // ¿ª·şºó¶àÉÙÌì½áÊø
-	std::string                      m_closetime                     ; // ½áÊøÊ±¼ä HH:mm:ss
+	int32_t                          m_beg                           ; // å¼€æœåå¤šå°‘å¤©å¼€å¯
+	std::string                      m_opentime                      ; // å¼€å¯æ—¶é—´ HH:mm:ss
+	int32_t                          m_end                           ; // å¼€æœåå¤šå°‘å¤©ç»“æŸ
+	std::string                      m_closetime                     ; // ç»“æŸæ—¶é—´ HH:mm:ss
 	/*********************************/
 	tserveropen();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tserveropen, m_beg, m_opentime, m_end, m_closetime)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		DEF_RCSV(m_beg,m_opentime,m_end,m_closetime);
@@ -548,13 +548,13 @@ struct tserveropen
 struct tregularslot
 {
 	/*********************************/
-	std::string                      m_opentime                      ; // ¿ªÆôÊ±¼ä YYYY-MM-DD HH:mm:ss
-	std::string                      m_closetime                     ; // ½áÊøÊ±¼ä YYYY-MM-DD HH:mm:ss
+	std::string                      m_opentime                      ; // å¼€å¯æ—¶é—´ YYYY-MM-DD HH:mm:ss
+	std::string                      m_closetime                     ; // ç»“æŸæ—¶é—´ YYYY-MM-DD HH:mm:ss
 	/*********************************/
 	tregularslot();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tregularslot, m_opentime, m_closetime)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		DEF_RCSV(m_opentime,m_closetime);
@@ -564,16 +564,16 @@ struct tab_mail
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	std::string                      m_title                         ; // [index:3][load:y] ÓÊ¼ş±êÌâ
-	std::string                      m_author                        ; // [index:4][load:y] ÓÊ¼ş×÷Õß
-	std::string                      m_content                       ; // [index:5][load:y] ÓÊ¼şÄÚÈİ
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	std::string                      m_title                         ; // [index:3][load:y] é‚®ä»¶æ ‡é¢˜
+	std::string                      m_author                        ; // [index:4][load:y] é‚®ä»¶ä½œè€…
+	std::string                      m_content                       ; // [index:5][load:y] é‚®ä»¶å†…å®¹
 	/*********************************/
 	tab_mail();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_mail, m_id, m_name, m_title, m_author, m_content)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -584,15 +584,15 @@ struct tab_chat
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int32_t                          m_time                          ; // [index:3][load:y] ÁÄÌì·¢ÑÔ¼ä¸ô
-	int32_t                          m_count                         ; // [index:4][load:y] ÁÄÌì·¢ÑÔ×î´óÊıÁ¿
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int32_t                          m_time                          ; // [index:3][load:y] èŠå¤©å‘è¨€é—´éš”
+	int32_t                          m_count                         ; // [index:4][load:y] èŠå¤©å‘è¨€æœ€å¤§æ•°é‡
 	/*********************************/
 	tab_chat();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_chat, m_id, m_name, m_time, m_count)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -602,14 +602,14 @@ struct tab_chat
 struct activity_task
 {
 	/*********************************/
-	int32_t                          m_begday                        ; // µÚ¼¸Ìì(´Ó1¿ªÊ¼)½ÓÊÕ
-	int32_t                          m_endday                        ; // µÚ¼¸Ìì(´Ó1¿ªÊ¼)ÒÆ³ı(-1´ú±í»î¶¯½áÊø)
-	std::vector<int32_t>             m_taskids                       ; // ÈÎÎñÁĞ±í
+	int32_t                          m_begday                        ; // ç¬¬å‡ å¤©(ä»1å¼€å§‹)æ¥æ”¶
+	int32_t                          m_endday                        ; // ç¬¬å‡ å¤©(ä»1å¼€å§‹)ç§»é™¤(-1ä»£è¡¨æ´»åŠ¨ç»“æŸ)
+	std::vector<int32_t>             m_taskids                       ; // ä»»åŠ¡åˆ—è¡¨
 	/*********************************/
 	activity_task();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(activity_task, m_begday, m_endday, m_taskids)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		DEF_RCSV(m_begday,m_endday,m_taskids);
@@ -619,18 +619,18 @@ struct tab_activity
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	EActivity                        m_type                          ; // [index:3][load:y] »î¶¯ÀàĞÍ(1:ÀàËÆÏÌÓãÖ®ÍõµÄ<<ÕĞÄ¼´ï±ê>>2:³å°ñ)
-	EActivityOpen                    m_open                          ; // [index:4][load:y] ¿ªÆô·½Ê½(0:GM¿ªÆô1:³£×¤»î¶¯)
-	std::vector<int32_t>             m_task                          ; // [index:5][load:y] »î¶¯ÆÚ¼ä½ÓÈ¡ÈÎÎñ
-	std::vector<activity_task>       m_taskday                       ; // [index:6][load:y] »î¶¯ÆÚ¼ä½ÓÈ¡ÈÎÎñ(µÚ¼¸Ìì½ÓÊÕÈÎÎñ)
-	std::vector<int32_t>             m_ranktype                      ; // [index:7][load:y] Ö§³ÖµÄ»î¶¯ÅÅĞĞÁĞ±í(eranklist.activity_lv:1000000»î¶¯ÆÚ¼äÍæ¼ÒµÈ¼¶±ä»¯Öµ,eranklist.activity_gold:2000000»î¶¯ÆÚ¼äÍæ¼Ò½ğ±ÒÔö¼ÓÖµ)
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	EActivity                        m_type                          ; // [index:3][load:y] æ´»åŠ¨ç±»å‹(1:ç±»ä¼¼å’¸é±¼ä¹‹ç‹çš„<<æ‹›å‹Ÿè¾¾æ ‡>>2:å†²æ¦œ)
+	EActivityOpen                    m_open                          ; // [index:4][load:y] å¼€å¯æ–¹å¼(0:GMå¼€å¯1:å¸¸é©»æ´»åŠ¨)
+	std::vector<int32_t>             m_task                          ; // [index:5][load:y] æ´»åŠ¨æœŸé—´æ¥å–ä»»åŠ¡
+	std::vector<activity_task>       m_taskday                       ; // [index:6][load:y] æ´»åŠ¨æœŸé—´æ¥å–ä»»åŠ¡(ç¬¬å‡ å¤©æ¥æ”¶ä»»åŠ¡)
+	std::vector<int32_t>             m_ranktype                      ; // [index:7][load:y] æ”¯æŒçš„æ´»åŠ¨æ’è¡Œåˆ—è¡¨(eranklist.activity_lv:1000000æ´»åŠ¨æœŸé—´ç©å®¶ç­‰çº§å˜åŒ–å€¼,eranklist.activity_gold:2000000æ´»åŠ¨æœŸé—´ç©å®¶é‡‘å¸å¢åŠ å€¼)
 	/*********************************/
 	tab_activity();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_activity, m_id, m_name, m_type, m_open, m_task, m_taskday, m_ranktype)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -641,21 +641,21 @@ struct tab_activityopenserver
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int                              m_openday                       ; // [index:3][load:y] ¿ª·şµÚ¼¸Ìì¿ªÆô£¨¿ª·şµ±ÌìËãÎªµÚÒ»Ìì£©
-	int                              m_openhour                      ; // [index:4][load:y] Ê±
-	int                              m_openminute                    ; // [index:5][load:y] ·Ö
-	int                              m_opensecond                    ; // [index:6][load:y] Ãë
-	int                              m_closeday                      ; // [index:7][load:y] ¿ª·şµÚ¼¸Ìì¿ªÆô£¨¿ª·şµ±ÌìËãÎªµÚÒ»Ìì£©
-	int                              m_closehour                     ; // [index:8][load:y] Ê±
-	int                              m_closeminute                   ; // [index:9][load:y] ·Ö
-	int                              m_closesecond                   ; // [index:10][load:y] Ãë
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int                              m_openday                       ; // [index:3][load:y] å¼€æœç¬¬å‡ å¤©å¼€å¯ï¼ˆå¼€æœå½“å¤©ç®—ä¸ºç¬¬ä¸€å¤©ï¼‰
+	int                              m_openhour                      ; // [index:4][load:y] æ—¶
+	int                              m_openminute                    ; // [index:5][load:y] åˆ†
+	int                              m_opensecond                    ; // [index:6][load:y] ç§’
+	int                              m_closeday                      ; // [index:7][load:y] å¼€æœç¬¬å‡ å¤©å¼€å¯ï¼ˆå¼€æœå½“å¤©ç®—ä¸ºç¬¬ä¸€å¤©ï¼‰
+	int                              m_closehour                     ; // [index:8][load:y] æ—¶
+	int                              m_closeminute                   ; // [index:9][load:y] åˆ†
+	int                              m_closesecond                   ; // [index:10][load:y] ç§’
 	/*********************************/
 	tab_activityopenserver();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_activityopenserver, m_id, m_name, m_openday, m_openhour, m_openminute, m_opensecond, m_closeday, m_closehour, m_closeminute, m_closesecond)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -666,37 +666,37 @@ struct tab_activityalways
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	EActivityAlways                  m_type                          ; // [index:3][load:y] ³£×¤»î¶¯µÄÖÜÆÚÀàĞÍ
-	int                              m_wbday                         ; // [index:4][load:y] ÖÜ¼¸(1-7)
-	int                              m_wbhour                        ; // [index:5][load:y] Ê±
-	int                              m_wbminute                      ; // [index:6][load:y] ·Ö
-	int                              m_wbsecond                      ; // [index:7][load:y] Ãë
-	int                              m_weday                         ; // [index:8][load:y] ÖÜ¼¸(1-7)
-	int                              m_wehour                        ; // [index:9][load:y] Ê±
-	int                              m_weminute                      ; // [index:10][load:y] ·Ö
-	int                              m_wesecond                      ; // [index:11][load:y] Ãë
-	int                              m_mbday                         ; // [index:12][load:y] Ã¿ÔÂ¼¸ºÅ(1-31)
-	int                              m_mbhour                        ; // [index:13][load:y] Ê±
-	int                              m_mbminute                      ; // [index:14][load:y] ·Ö
-	int                              m_mbsecond                      ; // [index:15][load:y] Ãë
-	int                              m_meday                         ; // [index:16][load:y] Ã¿ÔÂ¼¸ºÅ(1-31)
-	int                              m_mehour                        ; // [index:17][load:y] Ê±
-	int                              m_meminute                      ; // [index:18][load:y] ·Ö
-	int                              m_mesecond                      ; // [index:19][load:y] Ãë
-	int                              m_fixedday                      ; // [index:20][load:y] ³ÖĞøµ½µÚ¼¸Ìì
-	int                              m_fbhour                        ; // [index:21][load:y] Ê±
-	int                              m_fbminute                      ; // [index:22][load:y] ·Ö
-	int                              m_fbsecond                      ; // [index:23][load:y] Ãë
-	int                              m_fehour                        ; // [index:24][load:y] Ê±
-	int                              m_feminute                      ; // [index:25][load:y] ·Ö
-	int                              m_fesecond                      ; // [index:26][load:y] Ãë
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	EActivityAlways                  m_type                          ; // [index:3][load:y] å¸¸é©»æ´»åŠ¨çš„å‘¨æœŸç±»å‹
+	int                              m_wbday                         ; // [index:4][load:y] å‘¨å‡ (1-7)
+	int                              m_wbhour                        ; // [index:5][load:y] æ—¶
+	int                              m_wbminute                      ; // [index:6][load:y] åˆ†
+	int                              m_wbsecond                      ; // [index:7][load:y] ç§’
+	int                              m_weday                         ; // [index:8][load:y] å‘¨å‡ (1-7)
+	int                              m_wehour                        ; // [index:9][load:y] æ—¶
+	int                              m_weminute                      ; // [index:10][load:y] åˆ†
+	int                              m_wesecond                      ; // [index:11][load:y] ç§’
+	int                              m_mbday                         ; // [index:12][load:y] æ¯æœˆå‡ å·(1-31)
+	int                              m_mbhour                        ; // [index:13][load:y] æ—¶
+	int                              m_mbminute                      ; // [index:14][load:y] åˆ†
+	int                              m_mbsecond                      ; // [index:15][load:y] ç§’
+	int                              m_meday                         ; // [index:16][load:y] æ¯æœˆå‡ å·(1-31)
+	int                              m_mehour                        ; // [index:17][load:y] æ—¶
+	int                              m_meminute                      ; // [index:18][load:y] åˆ†
+	int                              m_mesecond                      ; // [index:19][load:y] ç§’
+	int                              m_fixedday                      ; // [index:20][load:y] æŒç»­åˆ°ç¬¬å‡ å¤©
+	int                              m_fbhour                        ; // [index:21][load:y] æ—¶
+	int                              m_fbminute                      ; // [index:22][load:y] åˆ†
+	int                              m_fbsecond                      ; // [index:23][load:y] ç§’
+	int                              m_fehour                        ; // [index:24][load:y] æ—¶
+	int                              m_feminute                      ; // [index:25][load:y] åˆ†
+	int                              m_fesecond                      ; // [index:26][load:y] ç§’
 	/*********************************/
 	tab_activityalways();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_activityalways, m_id, m_name, m_type, m_wbday, m_wbhour, m_wbminute, m_wbsecond, m_weday, m_wehour, m_weminute, m_wesecond, m_mbday, m_mbhour, m_mbminute, m_mbsecond, m_meday, m_mehour, m_meminute, m_mesecond, m_fixedday, m_fbhour, m_fbminute, m_fbsecond, m_fehour, m_feminute, m_fesecond)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -707,15 +707,15 @@ struct tab_activity_drawcompliance
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int32_t                          m_dropid                        ; // [index:3][load:y] µôÂäid
-	int32_t                          m_mailid                        ; // [index:4][load:y] ÓÊ¼şid
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int32_t                          m_dropid                        ; // [index:3][load:y] æ‰è½id
+	int32_t                          m_mailid                        ; // [index:4][load:y] é‚®ä»¶id
 	/*********************************/
 	tab_activity_drawcompliance();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_activity_drawcompliance, m_id, m_name, m_dropid, m_mailid)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -726,17 +726,17 @@ struct tab_activity_toprank
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int32_t                          m_activityid                    ; // [index:3][load:y] »î¶¯id
-	int32_t                          m_rank                          ; // [index:3][load:y] ÅÅÃû
-	int32_t                          m_dropid                        ; // [index:4][load:y] µôÂäid
-	int32_t                          m_mailid                        ; // [index:5][load:y] ÓÊ¼şid
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int32_t                          m_activityid                    ; // [index:3][load:y] æ´»åŠ¨id
+	int32_t                          m_rank                          ; // [index:3][load:y] æ’å
+	int32_t                          m_dropid                        ; // [index:4][load:y] æ‰è½id
+	int32_t                          m_mailid                        ; // [index:5][load:y] é‚®ä»¶id
 	/*********************************/
 	tab_activity_toprank();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_activity_toprank, m_id, m_name, m_activityid, m_rank, m_dropid, m_mailid)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -746,14 +746,14 @@ struct tab_activity_toprank
 struct task_condition
 {
 	/*********************************/
-	ETask                            m_type                          ; // ETask(0.Íæ¼ÒµÈ¼¶´ïµ½X 1.Ö÷¹«vipµÈ¼¶´ïµ½x 2.Íê³ÉÄ³IDÈÎÎñ)
+	ETask                            m_type                          ; // ETask(0.ç©å®¶ç­‰çº§è¾¾åˆ°X 1.ä¸»å…¬vipç­‰çº§è¾¾åˆ°x 2.å®ŒæˆæŸIDä»»åŠ¡)
 	ETaskCondition                   m_condition                     ; 
 	int32_t                          m_parmint                       ; 
 	/*********************************/
 	task_condition();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(task_condition, m_type, m_condition, m_parmint)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		DEF_RCSV(m_type,m_condition,m_parmint);
@@ -763,20 +763,20 @@ struct tab_task
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	ETaskType                        m_type                          ; // [index:3][load:y] ÈÎÎñÀàĞÍ(0:Ö÷ÏßÈÎÎñ1:Ö§ÏßÈÎÎñ2:Ã¿ÈÕÈÎÎñ3:¿ÉÖØ¸´Íê³ÉµÄÈÎÎñ)
-	std::string                      m_typeparm                      ; // [index:4][load:y] (m_type=2||=3 : ¿ÉÍê³É´ÎÊı)
-	std::vector<task_condition>      m_taskreceive                   ; // [index:5][load:y] ½ÓÊÕ´ËÈÎÎñµÄÇ°Ìá(ETask(0.Íæ¼ÒµÈ¼¶´ïµ½X 1.Ö÷¹«vipµÈ¼¶´ïµ½x 2.Íê³ÉÄ³IDÈÎÎñ)*ETaskCondition(0.´óÓÚµÈÓÚ1.Ğ¡ÓÚµÈÓÚ2.µÈÓÚ)*int32_t(Öµ))
-	std::vector<task_condition>      m_taskcomplete                  ; // [index:6][load:y] Íê³É´ËÈÎÎñµÄÌõ¼ş(ETask(0.Íæ¼ÒµÈ¼¶´ïµ½X 1.Ö÷¹«vipµÈ¼¶´ïµ½x 2.Íê³ÉÄ³IDÈÎÎñ)*ETaskCondition(0.´óÓÚµÈÓÚ1.Ğ¡ÓÚµÈÓÚ2.µÈÓÚ)*int32_t(Öµ))
-	int32_t                          m_dropid                        ; // [index:7][load:y] ÈÎÎñ½±Àø
-	bool                             m_autoreceive                   ; // [index:8][load:y] ÊÇ·ñ×Ô¶¯ÁìÈ¡
-	int32_t                          m_mailid                        ; // [index:9][load:y] ×Ô¶¯ÁìÈ¡ºóÊÇ·ñ·¢ËÍÓÊ¼şµÄÓÊ¼şid(×Ô¶¯ÁìÈ¡µÄÓÊ¼şid:m_autoreceive == true,µ±m_autoreceiveÎªture¿ÉÒÔÎª-1)
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	ETaskType                        m_type                          ; // [index:3][load:y] ä»»åŠ¡ç±»å‹(0:ä¸»çº¿ä»»åŠ¡1:æ”¯çº¿ä»»åŠ¡2:æ¯æ—¥ä»»åŠ¡3:å¯é‡å¤å®Œæˆçš„ä»»åŠ¡)
+	std::string                      m_typeparm                      ; // [index:4][load:y] (m_type=2||=3 : å¯å®Œæˆæ¬¡æ•°)
+	std::vector<task_condition>      m_taskreceive                   ; // [index:5][load:y] æ¥æ”¶æ­¤ä»»åŠ¡çš„å‰æ(ETask(0.ç©å®¶ç­‰çº§è¾¾åˆ°X 1.ä¸»å…¬vipç­‰çº§è¾¾åˆ°x 2.å®ŒæˆæŸIDä»»åŠ¡)*ETaskCondition(0.å¤§äºç­‰äº1.å°äºç­‰äº2.ç­‰äº)*int32_t(å€¼))
+	std::vector<task_condition>      m_taskcomplete                  ; // [index:6][load:y] å®Œæˆæ­¤ä»»åŠ¡çš„æ¡ä»¶(ETask(0.ç©å®¶ç­‰çº§è¾¾åˆ°X 1.ä¸»å…¬vipç­‰çº§è¾¾åˆ°x 2.å®ŒæˆæŸIDä»»åŠ¡)*ETaskCondition(0.å¤§äºç­‰äº1.å°äºç­‰äº2.ç­‰äº)*int32_t(å€¼))
+	int32_t                          m_dropid                        ; // [index:7][load:y] ä»»åŠ¡å¥–åŠ±
+	bool                             m_autoreceive                   ; // [index:8][load:y] æ˜¯å¦è‡ªåŠ¨é¢†å–
+	int32_t                          m_mailid                        ; // [index:9][load:y] è‡ªåŠ¨é¢†å–åæ˜¯å¦å‘é€é‚®ä»¶çš„é‚®ä»¶id(è‡ªåŠ¨é¢†å–çš„é‚®ä»¶id:m_autoreceive == true,å½“m_autoreceiveä¸ºtureå¯ä»¥ä¸º-1)
 	/*********************************/
 	tab_task();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_task, m_id, m_name, m_type, m_typeparm, m_taskreceive, m_taskcomplete, m_dropid, m_autoreceive, m_mailid)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -789,9 +789,9 @@ struct obstacles_data
 	std::vector<int32_t>             m_data                          ; //eobstacles
 	/*********************************/
 	obstacles_data();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(obstacles_data, m_data)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		DEF_RCSV(m_data);
@@ -801,20 +801,20 @@ struct tab_map
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int32_t                          m_w                             ; // [index:3][load:y] xÖá¿í¶È
-	int32_t                          m_l                             ; // [index:4][load:y] yÖá³¤¶È
-	int32_t                          m_nx                            ; // [index:5][load:y] [ÊÓÒ°]xÖá¸ñ×ÓÊıÁ¿
-	int32_t                          m_ny                            ; // [index:6][load:y] [ÊÓÒ°]yÖá¸ñ×ÓÊıÁ¿
-	int32_t                          m_obstaclenx                    ; // [index:7][load:y] [Ñ°Â·]xÖá¸ñ×ÓÊıÁ¿
-	int32_t                          m_obstacleny                    ; // [index:8][load:y] [Ñ°Â·]yÖá¸ñ×ÓÊıÁ¿
-	std::vector<obstacles_data>      m_obstacles                     ; // [index:9][load:y] µØÍ¼Êı¾İ
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int32_t                          m_w                             ; // [index:3][load:y] xè½´å®½åº¦
+	int32_t                          m_l                             ; // [index:4][load:y] yè½´é•¿åº¦
+	int32_t                          m_nx                            ; // [index:5][load:y] [è§†é‡]xè½´æ ¼å­æ•°é‡
+	int32_t                          m_ny                            ; // [index:6][load:y] [è§†é‡]yè½´æ ¼å­æ•°é‡
+	int32_t                          m_obstaclenx                    ; // [index:7][load:y] [å¯»è·¯]xè½´æ ¼å­æ•°é‡
+	int32_t                          m_obstacleny                    ; // [index:8][load:y] [å¯»è·¯]yè½´æ ¼å­æ•°é‡
+	std::vector<obstacles_data>      m_obstacles                     ; // [index:9][load:y] åœ°å›¾æ•°æ®
 	/*********************************/
 	tab_map();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_map, m_id, m_name, m_w, m_l, m_nx, m_ny, m_obstaclenx, m_obstacleny, m_obstacles)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -825,17 +825,17 @@ struct tab_matching
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int32_t                          m_count                         ; // [index:3][load:y] Íæ·¨´ïµ½´ËÈËÊı¿ÉÒÔ¿ªÆôÍæ·¨
-	int32_t                          m_time                          ; // [index:4][load:y] Æ¥Åä×î³¤Ê±¼ä
-	bool                             m_iswaitconfirm                 ; // [index:5][load:y] ÊÇ·ñĞèÒªµÈ´ıÈ·ÈÏ
-	int32_t                          m_waitconfirmtime               ; // [index:6][load:y] µÈ´ıÈ·ÈÏµÄÊ±¼ä
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int32_t                          m_count                         ; // [index:3][load:y] ç©æ³•è¾¾åˆ°æ­¤äººæ•°å¯ä»¥å¼€å¯ç©æ³•
+	int32_t                          m_time                          ; // [index:4][load:y] åŒ¹é…æœ€é•¿æ—¶é—´
+	bool                             m_iswaitconfirm                 ; // [index:5][load:y] æ˜¯å¦éœ€è¦ç­‰å¾…ç¡®è®¤
+	int32_t                          m_waitconfirmtime               ; // [index:6][load:y] ç­‰å¾…ç¡®è®¤çš„æ—¶é—´
 	/*********************************/
 	tab_matching();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_matching, m_id, m_name, m_count, m_time, m_iswaitconfirm, m_waitconfirmtime)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -849,9 +849,9 @@ struct Vector2
 	int32_t                          m_y                             ; 
 	/*********************************/
 	Vector2();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(Vector2, m_x, m_y)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		DEF_RCSV(m_x,m_y);
@@ -861,19 +861,19 @@ struct tab_plays
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int32_t                          m_type                          ; // [index:3][load:y] Íæ·¨ÀàĞÍ pbnet::eplays
-	int32_t                          m_mapid                         ; // [index:4][load:y] ÔÚÄÄ¸öµØÍ¼Ó¦ÓÃ¸ÃÍæ·¨
-	int32_t                          m_preparation_tm                ; // [index:5][load:y] ×¼±¸½×¶ÎÊ±¼ä
-	int32_t                          m_play_tm                       ; // [index:6][load:y] Íæ·¨Ê±¼ä
-	int32_t                          m_settlement_tm                 ; // [index:7][load:y] ½áËãÊ±¼ä
-	std::vector<Vector2>             m_birthpoint                    ; // [index:8][load:y] ³öÉúµãVector2(m_x:int32_t,m_y:int32_t)	
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int32_t                          m_type                          ; // [index:3][load:y] ç©æ³•ç±»å‹ pbnet::eplays
+	int32_t                          m_mapid                         ; // [index:4][load:y] åœ¨å“ªä¸ªåœ°å›¾åº”ç”¨è¯¥ç©æ³•
+	int32_t                          m_preparation_tm                ; // [index:5][load:y] å‡†å¤‡é˜¶æ®µæ—¶é—´
+	int32_t                          m_play_tm                       ; // [index:6][load:y] ç©æ³•æ—¶é—´
+	int32_t                          m_settlement_tm                 ; // [index:7][load:y] ç»“ç®—æ—¶é—´
+	std::vector<Vector2>             m_birthpoint                    ; // [index:8][load:y] å‡ºç”Ÿç‚¹Vector2(m_x:int32_t,m_y:int32_t)	
 	/*********************************/
 	tab_plays();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_plays, m_id, m_name, m_type, m_mapid, m_preparation_tm, m_play_tm, m_settlement_tm, m_birthpoint)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -884,22 +884,22 @@ struct tab_recharge
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int32_t                          m_price                         ; // [index:3][load:y] ¼Û¸ñ
-	int32_t                          m_gold                          ; // [index:4][load:y] »ñµÃµÄ½ğ±ÒÊıÁ¿
-	int32_t                          m_bonus                         ; // [index:5][load:y] ½±ÀøµÄ½ğ±ÒÊıÁ¿
-	int32_t                          m_firstbonus                    ; // [index:6][load:y] Ê×³ä½±ÀøµÄ½ğ±ÒÊıÁ¿
-	int32_t                          m_dropid                        ; // [index:7][load:y] µôÂä
-	int32_t                          m_vipexp                        ; // [index:8][load:y] ³äÖµ¸ÃµµÎ»ÔùËÍµÄvip¾­Ñé
-	int32_t                          m_count                         ; // [index:9][load:y] ÊÇ·ñÏŞÖÆ³äÖµ´ÎÊı
-	std::vector<int32_t>             m_activityid                    ; // [index:10][load:y] ±ØĞëÖ¸¶¨»î¶¯¿ªÆôÊ±²ÅÄÜ³äÖµÕâÒ»µµ
-	int32_t                          m_mailid                        ; // [index:11][load:y] ÓÊ¼şid
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int32_t                          m_price                         ; // [index:3][load:y] ä»·æ ¼
+	int32_t                          m_gold                          ; // [index:4][load:y] è·å¾—çš„é‡‘å¸æ•°é‡
+	int32_t                          m_bonus                         ; // [index:5][load:y] å¥–åŠ±çš„é‡‘å¸æ•°é‡
+	int32_t                          m_firstbonus                    ; // [index:6][load:y] é¦–å……å¥–åŠ±çš„é‡‘å¸æ•°é‡
+	int32_t                          m_dropid                        ; // [index:7][load:y] æ‰è½
+	int32_t                          m_vipexp                        ; // [index:8][load:y] å……å€¼è¯¥æ¡£ä½èµ é€çš„vipç»éªŒ
+	int32_t                          m_count                         ; // [index:9][load:y] æ˜¯å¦é™åˆ¶å……å€¼æ¬¡æ•°
+	std::vector<int32_t>             m_activityid                    ; // [index:10][load:y] å¿…é¡»æŒ‡å®šæ´»åŠ¨å¼€å¯æ—¶æ‰èƒ½å……å€¼è¿™ä¸€æ¡£
+	int32_t                          m_mailid                        ; // [index:11][load:y] é‚®ä»¶id
 	/*********************************/
 	tab_recharge();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_recharge, m_id, m_name, m_price, m_gold, m_bonus, m_firstbonus, m_dropid, m_vipexp, m_count, m_activityid, m_mailid)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -909,16 +909,16 @@ struct tab_recharge
 struct tab_familylv
 {
 	/*********************************/
-	int32_t                          m_id                            ; // [index:0][load:y] ¾üÍÅµÈ¼¶ 
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int32_t                          m_exp                           ; // [index:3][load:y] Éı¼¶ĞèÒªµÄ¾­Ñé
-	int32_t                          m_maxmembers                    ; // [index:4][load:y] ×î¶à¾üÍÅÈËÊı
+	int32_t                          m_id                            ; // [index:0][load:y] å†›å›¢ç­‰çº§ 
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int32_t                          m_exp                           ; // [index:3][load:y] å‡çº§éœ€è¦çš„ç»éªŒ
+	int32_t                          m_maxmembers                    ; // [index:4][load:y] æœ€å¤šå†›å›¢äººæ•°
 	/*********************************/
 	tab_familylv();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_familylv, m_id, m_name, m_exp, m_maxmembers)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -928,15 +928,15 @@ struct tab_familylv
 struct tab_mergearea
 {
 	/*********************************/
-	int32_t                          m_id                            ; // [index:0][load:y] Çø·şid
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int32_t                          m_mergeid                       ; // [index:3][load:y] ºÏ²¢µ½µÄÇø·şid
+	int32_t                          m_id                            ; // [index:0][load:y] åŒºæœid
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int32_t                          m_mergeid                       ; // [index:3][load:y] åˆå¹¶åˆ°çš„åŒºæœid
 	/*********************************/
 	tab_mergearea();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_mergearea, m_id, m_name, m_mergeid)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -946,18 +946,18 @@ struct tab_mergearea
 struct tab_ranklist
 {
 	/*********************************/
-	int32_t                          m_id                            ; // [index:0][load:y] eranklist(0:µÈ¼¶ÅÅĞĞ)
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	int32_t                          m_maxitem                       ; // [index:3][load:y] ×î´óÅÅĞĞ½áµãÊıÁ¿
-	int32_t                          m_showitem                      ; // [index:4][load:y] Õ¹Ê¾ÅÅĞĞ½áµãÊıÁ¿
-	int32_t                          m_everypagecount                ; // [index:5][load:y] Ã¿Ò³Õ¹Ê¾½áµãÊıÁ¿
-	int32_t                          m_minvalue                      ; // [index:6][load:y] ×îĞ¡Èë°ñÖµ
+	int32_t                          m_id                            ; // [index:0][load:y] eranklist(0:ç­‰çº§æ’è¡Œ)
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	int32_t                          m_maxitem                       ; // [index:3][load:y] æœ€å¤§æ’è¡Œç»“ç‚¹æ•°é‡
+	int32_t                          m_showitem                      ; // [index:4][load:y] å±•ç¤ºæ’è¡Œç»“ç‚¹æ•°é‡
+	int32_t                          m_everypagecount                ; // [index:5][load:y] æ¯é¡µå±•ç¤ºç»“ç‚¹æ•°é‡
+	int32_t                          m_minvalue                      ; // [index:6][load:y] æœ€å°å…¥æ¦œå€¼
 	/*********************************/
 	tab_ranklist();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_ranklist, m_id, m_name, m_maxitem, m_showitem, m_everypagecount, m_minvalue)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
@@ -967,15 +967,15 @@ struct tab_ranklist
 struct tab_filterword
 {
 	/*********************************/
-	int32_t                          m_id                            ; // [index:0][load:y] ÆÁ±Î×Öid
-	std::string                      m_name                          ; // [index:1][load:y] Ãû×Ö 
-//	std::string                      m_remarks                       ; // [index:2][load:n] ±¸×¢
-	std::string                      m_content                       ; // [index:3][load:y] ÆÁ±Î×Ö´® 
+	int32_t                          m_id                            ; // [index:0][load:y] å±è”½å­—id
+	std::string                      m_name                          ; // [index:1][load:y] åå­— 
+//	std::string                      m_remarks                       ; // [index:2][load:n] å¤‡æ³¨
+	std::string                      m_content                       ; // [index:3][load:y] å±è”½å­—ä¸² 
 	/*********************************/
 	tab_filterword();
-	// ĞòÁĞ»¯·´ĞòÁĞ»¯Ïà¹Ø
+	// åºåˆ—åŒ–ååºåˆ—åŒ–ç›¸å…³
 	DPROTOCOL(tab_filterword, m_id, m_name, m_content)
-	// csvÏà¹Ø
+	// csvç›¸å…³
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;

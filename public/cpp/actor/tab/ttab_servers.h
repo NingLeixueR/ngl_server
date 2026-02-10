@@ -1,14 +1,14 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* ÏîÄ¿Ãû³Æ£ºngl_server
-* ÏîÄ¿µØÖ·£ºhttps://github.com/NingLeixueR/ngl_server
+* é¡¹ç›®åç§°ï¼šngl_server
+* é¡¹ç›®åœ°å€ï¼šhttps://github.com/NingLeixueR/ngl_server
 * 
-* ±¾ÎÄ¼şÊÇ ngl_server ÏîÄ¿µÄÒ»²¿·Ö£¬×ñÑ­ MIT ¿ªÔ´Ğ­Òé·¢²¼¡£
-* Äú¿ÉÒÔ°´ÕÕĞ­Òé¹æ¶¨×ÔÓÉÊ¹ÓÃ¡¢ĞŞ¸ÄºÍ·Ö·¢±¾ÏîÄ¿£¬°üÀ¨ÉÌÒµÓÃÍ¾£¬
-* µ«Ğè±£ÁôÔ­Ê¼°æÈ¨ºÍĞí¿ÉÉùÃ÷¡£
+* æœ¬æ–‡ä»¶æ˜¯ ngl_server é¡¹ç›®çš„ä¸€éƒ¨åˆ†ï¼Œéµå¾ª MIT å¼€æºåè®®å‘å¸ƒã€‚
+* æ‚¨å¯ä»¥æŒ‰ç…§åè®®è§„å®šè‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘æœ¬é¡¹ç›®ï¼ŒåŒ…æ‹¬å•†ä¸šç”¨é€”ï¼Œ
+* ä½†éœ€ä¿ç•™åŸå§‹ç‰ˆæƒå’Œè®¸å¯å£°æ˜ã€‚
 * 
-* Ğí¿ÉÏêÇé²Î¼ûÏîÄ¿¸ùÄ¿Â¼ÏÂµÄ LICENSE ÎÄ¼ş£º
+* è®¸å¯è¯¦æƒ…å‚è§é¡¹ç›®æ ¹ç›®å½•ä¸‹çš„ LICENSE æ–‡ä»¶ï¼š
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
@@ -72,7 +72,7 @@ namespace ngl
 		ttab_servers& operator=(const ttab_servers&) = delete;
 
 		std::map<i16_area, std::map<i32_serverid, tab_servers*>> m_areaserver;
-		std::map<i16_area, std::set<i16_area>> m_coressserver;// key:Ó¦¸ÃÊÇĞ¡ÓÚ0µÄ¿ç·ş value:¿ç·ş¶ÔÓ¦µÄÇø·ş
+		std::map<i16_area, std::set<i16_area>> m_coressserver;// key:åº”è¯¥æ˜¯å°äº0çš„è·¨æœ value:è·¨æœå¯¹åº”çš„åŒºæœ
 
 		void reload()final
 		{
@@ -295,7 +295,7 @@ namespace ngl
 			return node_type(nconfig.tid());
 		}
 
-		// ±ãÀûËùÓĞ·şÎñÆ÷
+		// ä¾¿åˆ©æ‰€æœ‰æœåŠ¡å™¨
 		void foreach_server(const std::function<void(tab_servers*)>& afun)
 		{
 			ttab_mergearea::instance().for_each([&afun](i16_area aarea, std::set<i16_area>& aset)
@@ -313,7 +313,7 @@ namespace ngl
 			);
 		}
 
-		// »ñÈ¡ËùÓĞÇø·ş(¸ºÊıÇø·şÊÇ¿ç·şÇø·şĞèÒª×ª»¯Îª¿ç·şÄÚËùÓĞÇø·ş)
+		// è·å–æ‰€æœ‰åŒºæœ(è´Ÿæ•°åŒºæœæ˜¯è·¨æœåŒºæœéœ€è¦è½¬åŒ–ä¸ºè·¨æœå†…æ‰€æœ‰åŒºæœ)
 		const std::set<i16_area>* get_area(i16_area aarea)
 		{
 			if (aarea > 0)
@@ -326,8 +326,8 @@ namespace ngl
 			}
 		}
 
-		// ·şÎñÆ÷ÀàĞÍ	atype
-		// Çø·ş			aarea£¨¸ºÊı´ú±í¿ç·ş,ĞèÒªÌá¹©¿ç·şÄÚËùÓĞatype·şÎñÆ÷£©
+		// æœåŠ¡å™¨ç±»å‹	atype
+		// åŒºæœ			aareaï¼ˆè´Ÿæ•°ä»£è¡¨è·¨æœ,éœ€è¦æä¾›è·¨æœå†…æ‰€æœ‰atypeæœåŠ¡å™¨ï¼‰
 		bool foreach_server(NODE_TYPE atype, i16_area aarea, const std::function<void(const tab_servers*)>& afun)
 		{
 			const std::set<i16_area>* larea = get_area(aarea);
@@ -353,7 +353,7 @@ namespace ngl
 			return true;
 		}
 
-		// »ñÈ¡µÄÊÇ·şÎñÆ÷µÄtid  Ã»ÓĞ½áºÏtcount
+		// è·å–çš„æ˜¯æœåŠ¡å™¨çš„tid  æ²¡æœ‰ç»“åˆtcount
 		bool serverid(NODE_TYPE atype, i16_area aarea, std::set<i32_serverid>& aset)
 		{
 			return foreach_server(atype, aarea, [&aset](const tab_servers* iserver)
@@ -378,7 +378,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		// »ñÈ¡·şÎñÆ÷ËùÔÚÇø·ş(°üÀ¨±»ºÏ·şµÄ·şÎñÆ÷)
+		// è·å–æœåŠ¡å™¨æ‰€åœ¨åŒºæœ(åŒ…æ‹¬è¢«åˆæœçš„æœåŠ¡å™¨)
 		const std::set<i16_area>* get_arealist(i32_serverid aserverid)
 		{
 			const tab_servers* ltab = csv<tab_servers>::tab(aserverid);
@@ -389,7 +389,7 @@ namespace ngl
 			return get_area(ltab->m_area);
 		}
 
-		// »ñÈ¡·şÎñÆ÷ËùÔÚµÄÇø·ş(²»°üÀ¨±»ºÏ·şµÄ·şÎñÆ÷)
+		// è·å–æœåŠ¡å™¨æ‰€åœ¨çš„åŒºæœ(ä¸åŒ…æ‹¬è¢«åˆæœçš„æœåŠ¡å™¨)
 		const void get_arealist_nonrepet(i32_serverid aserverid, std::set<i16_area>& aareaset)
 		{
 			const std::set<i16_area>* larealist = get_arealist(aserverid);
