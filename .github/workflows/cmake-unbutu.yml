@@ -56,51 +56,41 @@ jobs:
        gcc --version
        $CC --version
        $CXX --version
-    
-name: Compile Install PostgreSQL 18.1
-on: [push, pull_request]
-
-jobs:
-  compile-postgres:
-    runs-on: ubuntu-latest  # 基于Ubuntu 22.04/24.04，适配性最好
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
+       
       # 编译PostgreSQL所需的依赖
-      - name: Install build dependencies
-        run: |
-          sudo apt-get update && sudo apt-get install -y \
-            build-essential  # 基础编译环境（gcc、g++、make）
-            libreadline-dev  # 命令行交互依赖
-            zlib1g-dev       # 压缩库依赖
-            libssl-dev       # SSL加密依赖（可选，建议装）
-            wget             # 下载源码包
-            bison            # 语法分析器依赖
-            flex             # 词法分析器依赖
-            libxml2-dev      # XML功能依赖（可选）
-            libxslt-dev      # XSLT功能依赖（可选）
-            python3-dev      # Python扩展依赖（可选）
+    - name: Install build dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y \
+        build-essential  # 基础编译环境（gcc、g++、make）
+        libreadline-dev  # 命令行交互依赖
+        zlib1g-dev       # 压缩库依赖
+        libssl-dev       # SSL加密依赖（可选，建议装）
+        wget             # 下载源码包
+        bison            # 语法分析器依赖
+        flex             # 词法分析器依赖
+        libxml2-dev      # XML功能依赖（可选）
+        libxslt-dev      # XSLT功能依赖（可选）
+        python3-dev      # Python扩展依赖（可选）
 
-      # 解压源码包并进入目录
-      - name: Extract source tarball
-        run: |
-          cd third_party
-          tar -zxf postgresql-18.1.tar.gz
-          cd postgresql-18.1 && pwd  # 确认进入源码目录
-          cd postgresql-18.1
+    # 解压源码包并进入目录
+    - name: Extract source tarball
+      run: |
+        cd third_party
+        tar -zxf postgresql-18.1.tar.gz
+        cd postgresql-18.1 && pwd  # 确认进入源码目录
+        cd postgresql-18.1
           # ./configure参数说明：
           # --prefix：指定安装根目录
           # --with-openssl：启用SSL（可选，建议开启）
           # --with-libxml：启用XML功能（可选）
-          ./configure \
-            --prefix=/usr/local/pgsql \
-            --with-openssl \
-            --with-libxml \
-            --enable-thread-safety  # 启用线程安全（适配多线程场景）
-          make -j$(nproc)
-          # 安装到指定路径（需要sudo，因为/usr/local是系统目录）
-          sudo make install
+        ./configure \
+          --prefix=/usr/local/pgsql \
+          --with-openssl \
+          --with-libxml \
+          --enable-thread-safety  # 启用线程安全（适配多线程场景）
+        make -j$(nproc)
+        # 安装到指定路径（需要sudo，因为/usr/local是系统目录）
+        sudo make install
 
     - name: Download Protobuf 3.12.2
       run: |
