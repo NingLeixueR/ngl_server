@@ -57,23 +57,7 @@ jobs:
        $CC --version
        $CXX --version
        
-      # 编译PostgreSQL所需的依赖
-    - name: Install build dependencies
-      run: |
-        sudo apt-get update && sudo apt-get install -y \
-        build-essential  # 基础编译环境（gcc、g++、make）
-        libreadline-dev  # 命令行交互依赖
-        zlib1g-dev       # 压缩库依赖
-        libssl-dev       # SSL加密依赖（可选，建议装）
-        wget             # 下载源码包
-        bison            # 语法分析器依赖
-        flex             # 词法分析器依赖
-        libxml2-dev      # XML功能依赖（可选）
-        libxslt-dev      # XSLT功能依赖（可选）
-        python3-dev      # Python扩展依赖（可选）
-
-    # 解压源码包并进入目录
-    - name: Extract source tarball
+    - name: Install PostgreSQL
       run: |
         cd third_party
         tar -zxf postgresql-18.1.tar.gz
