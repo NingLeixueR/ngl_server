@@ -59,13 +59,6 @@ jobs:
        
     - name: Fix apt source & install correct libintl dependency
       run: |
-        # 1. 清理过期缓存+修复损坏的源
-        sudo apt-get clean
-        sudo apt-get autoclean
-        sudo apt-get update --fix-missing -y
-        # 2. 确认当前Ubuntu版本（打印出来，方便排查）
-        lsb_release -a
-        # 3. 安装正确的包（替代libintl-dev）
         sudo apt-get install -y --no-install-recommends \
           gettext \          # libintl运行时库
           gettext-dev        # libintl开发库（头文件+链接库）
