@@ -18,7 +18,6 @@
 #include "actor_base.h"
 #include "tprotocol.h"
 #include "nrfun.h"
-#include "slist.h"
 #include "nlog.h"
 
 #include <deque>

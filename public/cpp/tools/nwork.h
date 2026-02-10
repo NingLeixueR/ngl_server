@@ -14,7 +14,6 @@
 #pragma once
 
 #include "threadtools.h"
-#include "slist.h"
 
 namespace ngl
 {
