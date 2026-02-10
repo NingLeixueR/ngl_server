@@ -60,23 +60,6 @@ jobs:
     - name: Fix apt source & install correct libintl dependency
       run: |
         sudo apt-get install -y gettext
-    
-    - name: Verify libintl files (critical check)
-      run: |
-        # 检查头文件（libintl.h是编译的核心）
-        if [ -f /usr/include/libintl.h ]; then
-          echo "✅ libintl.h found"
-        else
-          echo "❌ libintl.h missing" && exit 1
-        fi
-        # 检查链接库（libintl.so是链接的核心）
-        ldconfig -p | grep libintl
-        if [ $? -eq 0 ]; then
-          echo "✅ libintl.so found"
-        else
-          echo "❌ libintl.so missing" && exit 1
-        fi
-       
        
     - name: Install PostgreSQL
       run: |
