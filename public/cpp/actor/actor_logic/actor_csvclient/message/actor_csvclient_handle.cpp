@@ -22,7 +22,7 @@ namespace ngl
 		{
 			reload_csv::save(key, value);
 		}
-		actor_suspendthread ltemp;
+		actor_suspend ltemp;
 		for (auto& [key, value] : adata.get_data()->m_csvcontent)
 		{
 			reload_csv::reload(key);

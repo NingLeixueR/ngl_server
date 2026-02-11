@@ -41,11 +41,11 @@ namespace ngl
 				const tprotocol::info* lpinfo = tprotocol::get(apram.m_enum);
 				if (lpinfo == nullptr)
 				{
-					log_error()->print("{}::handle_switch  m_fun.find({}) == end", aactor->guid(), apram.m_enum);
+					log_error()->print("{}::handle_switch find({}) == end", aactor->guid(), apram.m_enum);
 				}
 				else
 				{
-					log_error()->print("{}::handle_switch  m_fun.find({}:{}) == end", aactor->guid(), apram.m_enum, lpinfo->m_name);
+					log_error()->print("{}::handle_switch find({}:{}) == end", aactor->guid(), apram.m_enum, lpinfo->m_name);
 				}
 			}
 			return false;

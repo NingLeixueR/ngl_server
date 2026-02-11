@@ -31,8 +31,7 @@ namespace ngl
 			m_server.insert(std::make_pair(aserverid, asession));
 			m_session.insert(std::make_pair(asession, aserverid));
 		}
-		auto tab = ttab_servers::instance().tab(nnodeid::tid(aserverid));
-		if (tab != nullptr)
+		if (auto tab = ttab_servers::instance().tab(nnodeid::tid(aserverid)); tab != nullptr)
 		{
 			log_error()->print("server_session::add [{}:{}_{}]", nnodeid::tid(aserverid), tab->m_name, nnodeid::tcount(aserverid));
 		}
@@ -48,8 +47,7 @@ namespace ngl
 				m_server.erase(lserverid);
 			}
 		}
-		auto tab = ttab_servers::instance().tab(nnodeid::tid(lserverid));
-		if (tab != nullptr)
+		if (auto tab = ttab_servers::instance().tab(nnodeid::tid(lserverid)); tab != nullptr)
 		{
 			log_error()->print("server_session::remove [{}:{}_{}]", nnodeid::tid(lserverid), tab->m_name, nnodeid::tcount(lserverid));
 		}
@@ -81,8 +79,7 @@ namespace ngl
 	{
 		if (aserverid != -1)
 		{
-			const tab_servers* tab = ttab_servers::instance().tab(nnodeid::tid(aserverid));
-			if (tab != nullptr)
+			if (const tab_servers* tab = ttab_servers::instance().tab(nnodeid::tid(aserverid)); tab != nullptr)
 			{
 				asername = tab->m_name;
 				return true;

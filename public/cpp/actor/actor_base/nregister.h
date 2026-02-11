@@ -39,7 +39,7 @@ namespace ngl
 		protocol::registry_actor<T>(nactor_type<TDerived>::type(), tools::type_name<T>().c_str());
 		if constexpr (!is_protobuf_message<T>::value)
 		{
-			protocol::registry_actor_mass<T>(tprotocol::protocol<np_mass_actor<T>>(), tools::type_name<T>().c_str());
+			protocol::registry_mass<T>(tprotocol::protocol<np_mass_actor<T>>(), tools::type_name<T>().c_str());
 		}
 		return *this;
 	}
@@ -90,7 +90,7 @@ namespace ngl
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		);
-		protocol::registry_actor_c2g<T>(nactor_type<TDerived>::type(), tprotocol::protocol<type_forward_c2g>(), tools::type_name<type_forward_c2g>().c_str());
+		protocol::registry_c2g<T>(nactor_type<TDerived>::type(), tprotocol::protocol<type_forward_c2g>(), tools::type_name<type_forward_c2g>().c_str());
 		return *this;
 	}
 
@@ -106,7 +106,7 @@ namespace ngl
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		);
-		protocol::registry_actor_g2c<T>(nactor_type<TDerived>::type(), tprotocol::protocol<type_forward_g2c>(), tools::type_name<type_forward_g2c>().c_str());
+		protocol::registry_g2c<T>(nactor_type<TDerived>::type(), tprotocol::protocol<type_forward_g2c>(), tools::type_name<type_forward_g2c>().c_str());
 		return *this;
 	}
 }//namespace ngl

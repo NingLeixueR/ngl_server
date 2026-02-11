@@ -396,18 +396,18 @@ namespace ngl
 		return nodetypebyguid();
 	}
 
-	actor_suspendthread::actor_suspendthread()
+	actor_suspend::actor_suspend()
 	{
-		log_info()->print("start actor_suspendthread");
+		log_info()->print("start actor_suspend");
 		actor_manage::instance().statrt_suspend_thread();
 	}
 
-	actor_suspendthread::~actor_suspendthread()
+	actor_suspend::~actor_suspend()
 	{		
 		Try
 		{
 			actor_manage::instance().finish_suspend_thread();
-			log_info()->print("finish actor_suspendthread");
+			log_info()->print("finish actor_suspend");
 		}
 		Catch
 	}

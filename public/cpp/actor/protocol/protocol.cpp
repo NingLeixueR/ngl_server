@@ -34,7 +34,7 @@ namespace ngl
 		log_error()->print("protocol::push msg:{} protocolnum:{} name:{}", amsg, aprotocolnum, name(aprotocolnum));
 	}
 
-	void protocol::register_protocol(
+	void protocol::registers(
 		int aprotocolnumber, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname
 	)
 	{

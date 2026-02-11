@@ -40,9 +40,9 @@ namespace ngl
 		std::map<i64_actorid, i32_sessionid>				m_actoridofsession;		// client/server对应的sessionid
 
 		std::map<std::string, std::map<i16_port, ptr_se>>	m_dataofendpoint;
-		int32_t												m_sessionid;
+		int32_t												m_sessionid = 0;
 		std::shared_mutex									m_mutex;
-		asio_kcp*											m_asiokcp;
+		asio_kcp*											m_asiokcp = nullptr;
 
 		ptr_se find_info(i32_sessionid asession);
 		ptr_se find_info(const asio_udp_endpoint& aendpoint);
@@ -53,6 +53,15 @@ namespace ngl
 		};
 
 		kcp_session(asio_kcp* asiokcp);
+		//std::string lip = aendpoint.address().to_string();
+		//i16_port lport = aendpoint.port();
+		std::shared_ptr<kcp_endpoint> add_kcp_endpoint(
+			int32_t aconv
+			, const char* aip
+			, i16_port aport
+			, i64_actorid aactoridserver
+			, i64_actorid aactoridclient
+		);
 
 		ptr_se add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient);
 

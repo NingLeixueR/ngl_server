@@ -22,8 +22,7 @@ namespace ngl
 	{
 		asio_timer(const asio_timer&) = delete;
 		asio_timer& operator=(const asio_timer&) = delete;
-
-		asio_timer() {}
+		asio_timer() = delete;
 
 		static time_wheel m_wheel;
 	public:
