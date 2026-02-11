@@ -31,57 +31,74 @@ namespace ngl
 		m_asiokcp(asiokcp)
 	{}
 
-	ptr_se kcp_session::add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient)
+	std::shared_ptr<kcp_endpoint> kcp_session::add_kcp_endpoint(
+		int32_t aconv
+		, const char* aip
+		, i16_port aport
+		, i64_actorid aactoridserver
+		, i64_actorid aactoridclient
+	)
 	{
-		std::string lip = aendpoint.address().to_string();
-		i16_port lport = aendpoint.port();
-		monopoly_shared_lock(m_mutex);
-		erasebyaactorid(aactoridclient);
-		if (aconv <= 0)
-		{
-			return nullptr;
-		}
 		auto ltemp = std::make_shared<kcp_endpoint>();
-		m_dataofsession[++m_sessionid] = ltemp;
-		ltemp->m_session = m_sessionid;
-		ltemp->m_endpoint = aendpoint;
-		ltemp->m_ip = lip;
-		ltemp->m_port = lport;
+		
+		ltemp->m_ip = aip;
+		ltemp->m_port = aport;
 		ltemp->m_asiokcp = m_asiokcp;
 		ltemp->m_actoridclient = aactoridclient;
 		ltemp->m_actoridserver = aactoridserver;
 		ltemp->create(aconv, m_sessionid, (void*)ltemp.get());
-		m_actoridofsession[aactoridclient] = m_sessionid;
-		m_actoridofsession[aactoridserver] = m_sessionid;
-
+		
 		//设置kcp对象的回调函数
 		ltemp->setoutput(udp_output);
 		ltemp->nodelay(1, 10, 2, 1);
 		ltemp->wndsize(128, 128);
 		ltemp->setmtu(512);
-		m_dataofendpoint[lip][lport] = ltemp;
 
-		int64_t lcreatems = time_wheel::getms();
-		i32_sessionid lsessionid = m_sessionid;
-		wheel_parm lparm
+		return ltemp;
+	}
+
+	ptr_se kcp_session::add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient)
+	{
+		if (aconv <= 0)
 		{
-			.m_ms = ekcp_update_intervalms,
-			.m_intervalms = [](int64_t) {return ekcp_update_intervalms; } ,
-			.m_count = 0x7fffffff,
-			.m_fun = [this, lsessionid,lcreatems](const wheel_node*)
+			return nullptr;
+		}
+		std::string lip = aendpoint.address().to_string();
+		i16_port lport = aendpoint.port();
+		int64_t lcreatems = time_wheel::getms();
+		auto ltemp = add_kcp_endpoint(aconv, lip.c_str(), lport, aactoridserver, aactoridclient);
+		ltemp->m_endpoint = aendpoint;
+
+		{
+			monopoly_shared_lock(m_mutex);
+			erasebyaactorid(aactoridclient);
+			i32_sessionid lsessionid = ++m_sessionid;
+			m_dataofsession[lsessionid] = ltemp;
+			ltemp->m_session = lsessionid;
+			m_actoridofsession[aactoridclient] = lsessionid;
+			m_actoridofsession[aactoridserver] = lsessionid;
+			m_dataofendpoint[lip][lport] = ltemp;
+			wheel_parm lparm
 			{
-				ptr_se* lpse = nullptr;
+				.m_ms = ekcp_update_intervalms,
+				.m_intervalms = [](int64_t) {return ekcp_update_intervalms; } ,
+				.m_count = 0x7fffffff,
+				.m_fun = [this, lsessionid, lcreatems](const wheel_node*)
 				{
-					monopoly_shared_lock(m_mutex);
-					lpse = tools::findmap(m_dataofsession, lsessionid);
+					ptr_se* lpse = nullptr;
+					{
+						monopoly_shared_lock(m_mutex);
+						lpse = tools::findmap(m_dataofsession, lsessionid);
+					}
+					if (lpse != nullptr)
+					{
+						(*lpse)->update((IUINT32)(time_wheel::getms() - lcreatems));
+					}
 				}
-				if (lpse != nullptr)
-				{
-					(*lpse)->update((IUINT32)(time_wheel::getms() - lcreatems));
-				}								
-			}
-		};
-		ltemp->m_timerid = m_kcptimer.addtimer(lparm);
+			};
+			ltemp->m_timerid = m_kcptimer.addtimer(lparm);
+		}
+		
 		return ltemp;
 	}
 

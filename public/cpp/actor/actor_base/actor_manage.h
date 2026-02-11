@@ -131,13 +131,13 @@ namespace ngl
 	// # 自动调用
 	// # 构造调用actor_manage.statrt_suspend_thread
 	// # 析构调用actor_manage.finish_suspend_thread
-	class actor_suspendthread
+	class actor_suspend
 	{
-		actor_suspendthread(const actor_suspendthread&) = delete;
-		actor_suspendthread& operator=(const actor_suspendthread&) = delete;
+		actor_suspend(const actor_suspend&) = delete;
+		actor_suspend& operator=(const actor_suspend&) = delete;
 	public:
-		actor_suspendthread();
-		~actor_suspendthread();
+		actor_suspend();
+		~actor_suspend();
 	};
 
 	// # 进程单利actor 自动注册协议与自动添加actor_manage

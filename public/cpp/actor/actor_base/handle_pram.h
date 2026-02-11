@@ -53,9 +53,9 @@ namespace ngl
 	{
 		handle_pram(handle_pram&&) noexcept = default;
 		handle_pram& operator=(handle_pram&&) noexcept = default;
-		handle_pram() = default;
 		handle_pram(const handle_pram&) = default;
 		handle_pram& operator=(handle_pram&) = default;
+		handle_pram() = default;
 
 		i32_protocolnum			m_enum			= -1;				// 协议号
 		std::shared_ptr<void>	m_data			= nullptr;			// 协议结构

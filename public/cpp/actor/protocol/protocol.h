@@ -60,7 +60,7 @@ namespace ngl
 		static void print(const char* amsg, i32_protocolnum aprotocolnum);
 
 		// # 注册网络协议
-		static void register_protocol(
+		static void registers(
 			int aprotocolnumber, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname
 		);
 
@@ -121,12 +121,12 @@ namespace ngl
 				}
 				return true;
 			};
-			register_protocol(tprotocol::protocol<T>(), atype, lpackfun, lrunfun, aname);
+			registers(tprotocol::protocol<T>(), atype, lpackfun, lrunfun, aname);
 		}
 
 		// # gateway注册的转发c2g(由[client]>>[gateway]>>[服务器]) 
 		template <typename T>
-		static void registry_actor_c2g(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
+		static void registry_c2g(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
 			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 				{
@@ -151,12 +151,12 @@ namespace ngl
 					actor_manage::instance().push_task_id(lguid, lpram);
 					return true;
 				};
-			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
+			registers(aprotocolnum, atype, lpackfun, lrunfun, aname);
 		}
 
 		// # gateway注册的转发g2c(由[服务器]->[客户端]) 
 		template <typename T>
-		static void registry_actor_g2c(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
+		static void registry_g2c(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
 			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 				{
@@ -181,12 +181,12 @@ namespace ngl
 					actor_manage::instance().push_task_id(lguid, lpram);
 					return true;
 				};
-			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
+			registers(aprotocolnum, atype, lpackfun, lrunfun, aname);
 		}
 
 		// # 群发消息(解析剥离np_mass_actor<T> 将T投递到对应actor)
 		template <typename T>
-		static void registry_actor_mass(int32_t aprotocolnum, const char* aname)
+		static void registry_mass(int32_t aprotocolnum, const char* aname)
 		{
 			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 				{
@@ -213,7 +213,7 @@ namespace ngl
 					actor_manage::instance().push_task_id(lactorids, lpram);
 					return true;
 				};
-			register_protocol(aprotocolnum, (ENUM_ACTOR)nguid::none_type(), lpackfun, lrunfun, aname);
+			registers(aprotocolnum, (ENUM_ACTOR)nguid::none_type(), lpackfun, lrunfun, aname);
 		}
 
 		// # 处理telnet命令

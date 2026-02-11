@@ -28,7 +28,7 @@ namespace ngl
 			{
 				if (!actor_manage::instance().is_have_actor(lidguid))
 				{
-					log_error()->print("time run fail: {} , {}", (nguid)lidguid, aparm->m_timerid);
+					log_error()->print("ntimer run fail: {}#{}", (nguid)lidguid, aparm->m_timerid);
 					twheel::wheel().removetimer(aparm->m_timerid);
 					return;
 				}

@@ -66,7 +66,6 @@ namespace ngl
 
 		//# 创建数据
 		void				create();
-
 		void				create(const nguid& aid);
 
 		//# 获取m_dbclient

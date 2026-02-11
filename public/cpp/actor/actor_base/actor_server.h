@@ -42,8 +42,8 @@ namespace ngl
 		void print(const std::vector<i64_actorid>& avec)const;
 
 		// # 回复/转发[np_actornode_register]请求
-		void reply_actornode_register(const pack* apack, i32_serverid aserverid);
-		void forward_actornode_register(const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd);
+		void reply_register(const pack* apack, i32_serverid aserverid);
+		void forward_register(const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd);
 
 		// # [actor client -> actor server] register
 		// # 注册结点

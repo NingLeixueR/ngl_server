@@ -48,7 +48,8 @@ namespace ngl
 			[](int, handle_pram& apram) 
 			{
 				naddress::forward(apram);
-			});
+			}
+		);
 
 		//# 注册协议
 		register_handle<actor_client
