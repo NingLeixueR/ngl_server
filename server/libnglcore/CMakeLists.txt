@@ -38,14 +38,16 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 		# LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/lib/Release"
 	)
 
-	target_link_libraries(nglcore protobuf)
-	target_link_libraries(nglcore pthread)
-	target_link_libraries(nglcore uuid)
-	target_link_libraries(nglcore mysqlclient)
-	target_link_libraries(nglcore curl)
-	target_link_libraries(nglcore hiredis)
-	target_link_libraries(nglcore lua)
-	target_link_libraries(nglcore pq)
+	target_link_libraries(nglcore PRIVATE
+            protobuf::libprotobuf 
+            pthread
+            uuid
+            mysqlclient
+            curl
+            hiredis
+            lua
+            pq
+    )
 	#target_link_libraries(nglcore intl)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
