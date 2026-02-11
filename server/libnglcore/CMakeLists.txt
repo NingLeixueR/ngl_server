@@ -39,7 +39,7 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	)
 
 	target_link_libraries(nglcore PRIVATE
-            protobuf::libprotobuf 
+            protobuf 
             pthread
             uuid
             mysqlclient
