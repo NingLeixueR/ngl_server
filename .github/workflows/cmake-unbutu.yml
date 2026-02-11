@@ -24,27 +24,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
                
-    - name: Add PostgreSQL official APT repository
-      run: |
-          # Import the official PostgreSQL signing key
-          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
-            sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
-
-          # Add the PGDG APT repo for Ubuntu 24.04 (noble)
-          echo "deb http://apt.postgresql.org/pub/repos/apt/ noble-pgdg main" | \
-            sudo tee /etc/apt/sources.list.d/pgdg.list
-
-    - name: Install PostgreSQL 18 client and libpq-dev
-      run: |
-          sudo apt update
-          # Install PostgreSQL 18 client + development headers (libpq-fe.h, etc.)
-          sudo apt install -y postgresql-client-18 libpq-dev=18.1*
-
-    - name: Fix libintl linking issue (required for PG's NLS support)
-      run: |
-          # Create libintl.so as a linker script pointing to libc
-          echo 'INPUT(-lc)' | sudo tee /usr/lib/x86_64-linux-gnu/libintl.so
-            
     - name: Download and Install CMake
       run: |
         curl -LO https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3-linux-x86_64.tar.gz
@@ -78,6 +57,23 @@ jobs:
        $CC --version
        $CXX --version
        
+    # 步骤1：安装libpq开发依赖（默认版本）
+    - name: Install libpq dev dependencies
+      run: |
+          sudo apt-get update && sudo apt-get install -y \
+            build-essential \
+            libpq-dev \
+            postgresql-client  # 可选：安装psql客户端，方便验证
+
+    # 步骤2：验证libpq安装（可选，排查用）
+    - name: Verify libpq installation
+      run: |
+          # 检查头文件
+          ls /usr/include/postgresql/libpq-fe.h || echo "libpq-fe.h missing"
+          # 检查链接库
+          ldconfig -p | grep libpq || echo "libpq.so missing"
+          # 检查pg_config（libpq-dev自带）
+          pg_config --version
    
     - name: Download Protobuf 3.12.2
       run: |
