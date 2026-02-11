@@ -107,7 +107,7 @@ namespace ngl
 	void actor::actor_handle(i32_threadid athreadid)
 	{
 		std::list<handle_pram> locallist;
-		std::map<int32_t, std::list<handle_pram>>	localhightlist;
+		std::map<int32_t, std::list<handle_pram>> localhightlist;
 		{
 			monopoly_shared_lock(m_mutex);
 			m_hightlist.swap(localhightlist);
@@ -136,7 +136,7 @@ namespace ngl
 		int32_t lweight = m_weight;
 		while (--lweight >= 0 && !locallist.empty())
 		{
-			if (m_release == false && localtime::gettimems() - lbeg > m_timeout)
+			if (m_release == false && localtime::timeout(lbeg, m_timeout))
 			{
 				break;
 			}

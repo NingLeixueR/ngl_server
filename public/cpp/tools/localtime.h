@@ -59,6 +59,8 @@ namespace ngl
 		// # 检查秒
 		static bool check_sec(int sec/*0-59*/);
 
+		static bool timeout(time_t abeg, int32_t atimeoutms);
+
 		// # 设置时间
 		static bool settime(time_t sti);
 
