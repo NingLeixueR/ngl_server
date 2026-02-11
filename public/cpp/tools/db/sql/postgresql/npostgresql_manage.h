@@ -200,7 +200,7 @@ namespace ngl
 		{
 			// # 从数据库中加载
 			std::string lsql = std::format(
-				"SELECT id FROM %s WHERE %s;", tools::type_name<T>().c_str(), where_area()
+				"SELECT id FROM {} WHERE {}", tools::type_name<T>().c_str(), where_area()
 			);
 			log_error()->print(lsql);
 			return adb->select(lsql.c_str(), 0, [&aidset](PGresult* result)->bool
