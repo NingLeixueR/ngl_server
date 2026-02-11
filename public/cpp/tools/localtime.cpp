@@ -51,6 +51,11 @@ namespace ngl
 		return sec >= 0 && sec <= 59;
 	}
 
+	bool localtime::timeout(time_t abeg, int32_t atimeoutms)
+	{
+		return (gettimems() - abeg) > atimeoutms;
+	}
+
 	bool localtime::settime(time_t sti)
 	{
 		time_t lnow = gettime();
