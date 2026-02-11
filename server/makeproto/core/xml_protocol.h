@@ -1476,11 +1476,14 @@ namespace ngl
                     if (ngl::tools::file_exists(lactorhfile) == false)
                     {
                         ngl::writefile lwfile(lactorhfile);
-                        lwfile.write(std::format(R"(#include "{}.h"
 
-namespace ngl
-{
-}//namespace ngl)", lactortolower));
+                        std::stringstream sstream;
+                        sstream << "#include \"" << lactortolower << ".h\"" << std::endl;
+                        sstream << std::endl;
+                        sstream << "namespace ngl" << std::endl;
+                        sstream << "{" << std::endl;
+                        sstream << "}//namespace ngl" << std::endl;
+                        lwfile.write(sstream.str());
                     }
 
                     ngl::readfile lfile(lactorhfile);
