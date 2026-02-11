@@ -56,7 +56,13 @@ namespace ngl
 						}
 						lstream << avec[i];
 					}
-					pro.set_mcmd(lstream.str());
+
+					std::string lmcmd = lstream.str();
+					if (!tools::isutf8(lmcmd))
+					{
+						tools::to_utf8(lmcmd, lmcmd);
+					}
+					pro.set_mcmd(lmcmd);
 					send(get_robot(avec[1]), pro);
 				};
 
@@ -77,7 +83,12 @@ namespace ngl
 						}
 						lstream << avec[i];
 					}
-					pro.set_mcmd(lstream.str());
+					std::string lmcmd = lstream.str();
+					if (!tools::isutf8(lmcmd))
+					{
+						tools::to_utf8(lmcmd, lmcmd);
+					}
+					pro.set_mcmd(lmcmd);
 					foreach([&pro, this](_robot& arobot)
 						{
 							send(&arobot, pro);
