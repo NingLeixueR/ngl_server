@@ -60,19 +60,12 @@ namespace ngl
 
 			// # INSERT INTO %s  (id,data)VALUES(%lld,'%s')  ON DUPLICATE KEY UPDATE %s
 			// # REPLACE INTO 则会先删除数据，然后再插入。
-			char lbuff[4096] = { 0 };
-			int llen = snprintf(
-				lbuff, 4096
-				, "INSERT INTO %s (id, area, data)VALUES(%lld, %d, ?)  ON DUPLICATE KEY UPDATE data=values(data), area=values(area);"
+			std::string lsql = std::format(
+				"INSERT INTO {} (id, area, data)VALUES({}, {}, ?)  ON DUPLICATE KEY UPDATE data=values(data), area=values(area);"
 				, tools::type_name<T>().c_str(), adata->mid(), larea
 			);
-
-			if (llen <= 0)
-			{
-				return false;
-			}
-			adb->stmt_query(lbuff, llen, lbind);
-			log_error()->print("{}", lbuff);
+			adb->stmt_query(lsql.c_str(), lsql.size(), lbind);
+			log_error()->print(lsql);
 			return true;
 		}
 
@@ -102,19 +95,14 @@ namespace ngl
 		template <typename T>
 		static bool del(nmysql* adb, i64_actorid aid)
 		{
-			char lbuff[1024] = { 0 };
-			int llen = snprintf(lbuff,1024,
-				"DELETE FROM %s WHERE id='%lld';", tools::type_name<T>().c_str(), aid
+			std::string lsql = std::format(
+				"DELETE FROM {} WHERE id='{}';", tools::type_name<T>().c_str(), aid
 			);
-			if (llen <= 0)
+			if (!adb->query(lsql.c_str(), lsql.size()))
 			{
 				return false;
 			}
-			if (!adb->query(lbuff, llen))
-			{
-				return false;
-			}
-			log_error()->print("{}", lbuff);
+			log_error()->print(lsql);
 			return true;
 		}
 
@@ -146,16 +134,11 @@ namespace ngl
 		static bool select(nmysql* adb, i64_actorid aid)
 		{
 			// # 从数据库中加载
-			char lbuff[1024] = { 0 };
-			int llen = snprintf(lbuff,1024,
-				"SELECT id,data FROM %s WHERE id = '%lld' AND (%s);", tools::type_name<T>().c_str(), aid, where_area()
+			std::string lsql = std::format(
+				"SELECT id,data FROM {} WHERE id = '{}' AND ({});", tools::type_name<T>().c_str(), aid, where_area()
 			);
-			if (llen <= 0)
-			{
-				return false;
-			}
-			log_error()->print("{}", lbuff);
-			return adb->select(lbuff, llen, [adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
+			log_error()->print(lsql);
+			return adb->select(lsql.c_str(), lsql.size(), [adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
 					T ldata;
 					if (!adb->m_malloc.unserialize(m_dbprotobinary, ldata, amysqlrow[1], alens[1]))
@@ -172,16 +155,11 @@ namespace ngl
 		static bool select(nmysql* adb)
 		{
 			// # 从数据库中加载
-			char lbuff[1024] = { 0 };
-			int llen = snprintf(
-				lbuff, 1024, "SELECT id,data FROM %s WHERE %s;", tools::type_name<T>().c_str(), where_area()
+			std::string lsql = std::format(
+				"SELECT id,data FROM {} WHERE {};", tools::type_name<T>().c_str(), where_area()
 			);
-			if (llen <= 0)
-			{
-				return false;
-			}
-			log_error()->print("{}", lbuff);
-			return adb->select(lbuff, llen,
+			log_error()->print(lsql);
+			return adb->select(lsql.c_str(), lsql.size(),
 				[adb](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
 					T ldata;
@@ -200,16 +178,11 @@ namespace ngl
 		static bool select(nmysql* adb, std::set<int64_t>& aidset)
 		{
 			// # 从数据库中加载
-			char lbuff[1024] = { 0 };
-			int llen = snprintf(
-				lbuff, 1024, "SELECT id FROM %s WHERE %s;", tools::type_name<T>().c_str(), where_area()
+			std::string lsql = std::format(
+				"SELECT id FROM {} WHERE {};", tools::type_name<T>().c_str(), where_area()
 			);
-			if (llen <= 0)
-			{
-				return false;
-			}
-			log_error()->print("{}", lbuff);
-			return adb->select(lbuff, llen,
+			log_error()->print(lsql);
+			return adb->select(lsql.c_str(), lsql.size(),
 				[adb, &aidset](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
 					aidset.insert(tools::lexical_cast<int64_t>(amysqlrow[0]));

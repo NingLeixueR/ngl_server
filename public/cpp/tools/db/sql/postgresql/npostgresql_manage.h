@@ -53,10 +53,8 @@ namespace ngl
 				larea = ttab_servers::instance().const_tab()->m_area;
 			}
 
-			char lbuff[4096] = { 0 };
-			int llen = snprintf(
-				lbuff, 4096
-				, "INSERT INTO %s (id, area, data) VALUES(%lld, %d, $1) ON CONFLICT (id) DO UPDATE SET area = EXCLUDED.area, data = EXCLUDED.data"
+			std::string lsql = std::format(
+				"INSERT INTO {} (id, area, data) VALUES({}, {}, $1) ON CONFLICT (id) DO UPDATE SET area = EXCLUDED.area, data = EXCLUDED.data"
 				, tools::type_name<T>().c_str(), adata->mid(), larea
 			);
 
@@ -71,7 +69,7 @@ namespace ngl
 
 			// 执行参数化查询
 			PGresult* res = PQexecParams(
-				adb->postgresql(), lbuff, 1, nullptr, param_values, param_lengths, param_formats, 0 
+				adb->postgresql(), lsql.c_str(), 1, nullptr, param_values, param_lengths, param_formats, 0
 			);
 			scope_guard lfreeres([res]()noexcept { PQclear(res); });
 			if (PQresultStatus(res) != PGRES_COMMAND_OK)
@@ -79,7 +77,7 @@ namespace ngl
 				log_error()->print("npostgresql::save fail id:{} name:{} error:{}", adata->mid(), tools::type_name<T>(), PQerrorMessage(adb->postgresql()));
 				return false;
 			}
-			log_error()->print("{}", lbuff);
+			log_error()->print(lsql);
 			return true;
 		}
 
@@ -109,19 +107,14 @@ namespace ngl
 		template <typename T>
 		static bool del(npostgresql* adb, i64_actorid aid)
 		{
-			char lbuff[1024] = { 0 };
-			int llen = snprintf(lbuff, 1024,
-				"DELETE FROM %s WHERE id=%lld;", tools::type_name<T>().c_str(), aid
+			std::string lsql = std::format(
+				"DELETE FROM {} WHERE id={}", tools::type_name<T>().c_str(), aid
 			);
-			if (llen <= 0)
+			if (!adb->query(lsql.c_str()))
 			{
 				return false;
 			}
-			if (!adb->query(lbuff))
-			{
-				return false;
-			}
-			log_error()->print("{}", lbuff);
+			log_error()->print(lsql);
 			return true;
 		}
 
@@ -153,16 +146,11 @@ namespace ngl
 		static bool select(npostgresql* adb, i64_actorid aid)
 		{
 			// # 从数据库中加载
-			char lbuff[1024] = { 0 };
-			int llen = snprintf(lbuff, 1024,
-				"SELECT id,data FROM %s WHERE id = %lld AND (%s);", tools::type_name<T>().c_str(), aid, where_area()
+			std::string lsql = std::format(
+				"SELECT id,data FROM {} WHERE id = {} AND ({})", tools::type_name<T>().c_str(), aid, where_area()
 			);
-			if (llen <= 0)
-			{
-				return false;
-			}
-			log_error()->print("{}", lbuff);
-			return adb->select(lbuff, 1, [adb, aid](PGresult* result)->bool
+			log_error()->print(lsql);
+			return adb->select(lsql.c_str(), 1, [adb, aid](PGresult* result)->bool
 				{
 					int rows = PQntuples(result);
 					int cols = PQnfields(result);
@@ -184,16 +172,11 @@ namespace ngl
 		static bool select(npostgresql* adb)
 		{
 			// # 从数据库中加载
-			char lbuff[1024] = { 0 };
-			int llen = snprintf(
-				lbuff, 1024, "SELECT id,data FROM %s WHERE %s;", tools::type_name<T>().c_str(), where_area()
+			std::string lsql = std::format(
+				"SELECT id,data FROM {} WHERE {}", tools::type_name<T>().c_str(), where_area()
 			);
-			if (llen <= 0)
-			{
-				return false;
-			}
-			log_error()->print("{}", lbuff);
-			return adb->select(lbuff, 1, [adb](PGresult* result)->bool
+			log_error()->print(lsql);
+			return adb->select(lsql.c_str(), 1, [adb](PGresult* result)->bool
 				{
 					int rows = PQntuples(result);
 					int cols = PQnfields(result);
@@ -216,16 +199,11 @@ namespace ngl
 		static bool select(npostgresql* adb, std::set<int64_t>& aidset)
 		{
 			// # 从数据库中加载
-			char lbuff[1024] = { 0 };
-			int llen = snprintf(
-				lbuff, 1024, "SELECT id FROM %s WHERE %s;", tools::type_name<T>().c_str(), where_area()
+			std::string lsql = std::format(
+				"SELECT id FROM %s WHERE %s;", tools::type_name<T>().c_str(), where_area()
 			);
-			if (llen <= 0)
-			{
-				return false;
-			}
-			log_error()->print("{}", lbuff);
-			return adb->select(lbuff, 0, [&aidset](PGresult* result)->bool
+			log_error()->print(lsql);
+			return adb->select(lsql.c_str(), 0, [&aidset](PGresult* result)->bool
 				{
 					int rows = PQntuples(result);
 					int cols = PQnfields(result);
