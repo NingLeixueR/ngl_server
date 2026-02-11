@@ -299,8 +299,12 @@ int main(int argc, char** argv)
 		{
 			ngl::readfile lfiletxt(item);
 			lfiletxt.read(lneirong);
+			if (ngl::tools::isutf8(lneirong))
+			{
+				continue;
+			}
 			ngl::tools::to_utf8(lneirong, lneirong);
-		}
+		}		
 		if (!lneirong.empty())
 		{
 			ngl::writefile lwritetxt(item);
