@@ -46,11 +46,11 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	target_link_libraries(nglcore hiredis)
 	target_link_libraries(nglcore lua)
 	target_link_libraries(nglcore pq)
-	target_link_libraries(nglcore intl)
+	#target_link_libraries(nglcore intl)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 
-IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+IF (CMAKE_SYSTEM_NAME MATCHES "Windows")	
 	SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MT")
 	ADD_DEFINITIONS(-DWIN32_LEAN_AND_MEAN)

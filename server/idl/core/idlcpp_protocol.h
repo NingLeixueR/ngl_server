@@ -506,24 +506,25 @@ namespace ngl
 					{
 						lset.insert(struc.name);
 						ngl::writefile lfile(std::format("../../public/cpp/actor/template_tab/t{}.h", struc.name));
-						std::string lcsvpp = std::format(R"(#pragma once
+
+						std::string format_str_part1 = R"(#pragma once
 
 #include "ncsv.h"
 #include "type.h"
 #include "xml.h"
 
 namespace ngl
-{{
+{
 	class t{0} :
 		public csv<{0}>
-	{{
+	{
 		t{0}(const t{0}&) = delete;
 		t{0}& operator=(const t{0}&) = delete;
 
 		void reload()final
-		{{
+		{
 			std::cout << "{0} reload" << std::endl;
-		}}	
+		}
 
 	public:
 		using type_tab = {0};
@@ -531,20 +532,22 @@ namespace ngl
 		t{0}() = default;
 
 		static t{0}& instance()
-		{{
+		{
 			static std::atomic lload = true;
 			if (lload.exchange(false))
 			{
 				ncsv::loadcsv<t{0}>();
 			}	
 			return *ncsv::get<t{0}>();
-		}}
+		}
 
 		// # std::map<int, {0}>& tabs()
 		// # {0}* tab(int aid)
 		
-	}};
-}}//namespace ngl)", struc.name);
+	};
+}//namespace ngl)";
+						std::string lcsvpp;
+						ngl::tools::replace("{0}", struc.name, format_str_part1, lcsvpp);
 						lfile.write(lcsvpp.c_str());
 					}
 				}
