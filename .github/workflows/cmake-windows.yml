@@ -1,42 +1,23 @@
-name: Build with CMake on Windows (VS2022)
+name: Build on Windows (VS2022)
 
-on:
- # push:
- #   branches: [ "main" ]
- # pull_request:
- #   branches: [ "main" ]
-  workflow_dispatch:
-
-env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
+on: [push, pull_request]
 
 jobs:
   build-windows:
-    name: Build on Windows with VS2022
-    runs-on: windows-latest  # 自动使用最新 Windows + VS2022 环境
+    runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
     - name: Install CMake
       uses: lukka/get-cmake@latest
-      # 或者使用官方 action（但 get-cmake 更可靠）
-      # uses: jwlawson/actions-setup-cmake@v1.13
 
     - name: Configure CMake
-      run: |
-        cmake -B build \
-              -G "Visual Studio 17 2022" \
-              -A x64 \
-              -DCMAKE_BUILD_TYPE=Release
+      run: cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release
 
-    - name: Build with CMake
+    - name: Build
       run: cmake --build build --config Release --parallel
 
-    - name: Run tests (if you have them)
-      run: |
-        cd build
-        ctest --output-on-failure -C Release
-      # 注意：需确保 CMakeLists.txt 中已 enable_testing() 并 add_test()
+    - name: Test
+      working-directory: build
+      run: ctest -C Release --output-on-failure
