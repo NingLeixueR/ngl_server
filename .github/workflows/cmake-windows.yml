@@ -18,15 +18,30 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4  # 升级到最新版本
+      uses: actions/checkout@v4
       with:
-        submodules: recursive  # 如果有子模块建议开启
+        submodules: recursive
 
-    # 修复：简化MSVC环境配置，使用最新版本Action+极简参数
-    - name: Setup MSVC compiler
-      uses: ilammy/msvc-dev-cmd@v1.16.0  # 升级到稳定新版本
-      with:
-        arch: x64  # 仅指定架构，移除多余的toolset参数
+    # 核心修复：直接调用VS原生命令配置MSVC 64位环境（无第三方依赖）
+    - name: Setup MSVC compiler (原生方式)
+      run: |
+        # 查找VS安装路径并配置64位编译环境
+        $vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+        $vcVarsPath = & $vsWherePath -products * -latest -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -find "VC\Auxiliary\Build\vcvars64.bat" | Select-Object -First 1
+        
+        if (-not $vcVarsPath) {
+          throw "Visual Studio C++ tools not found!"
+        }
+        
+        # 执行vcvars64.bat配置环境，并将环境变量传递到后续步骤
+        & $vcVarsPath
+        echo "Path=$env:Path" >> $env:GITHUB_ENV
+        echo "LIB=$env:LIB" >> $env:GITHUB_ENV
+        echo "INCLUDE=$env:INCLUDE" >> $env:GITHUB_ENV
+        
+        # 验证MSVC编译器
+        cl
+      shell: powershell
 
     # 安装Chocolatey包（基础工具）
     - name: Install base tools via Chocolatey
