@@ -34,7 +34,6 @@ int main(int argc, char** argv)
 
     xml_protocol::nactor_auto(sourceTree, "db");
 
-   
     xml_protocol::g_stream_sql << "/*Date:" << ngl::localtime::time2str("%Y-%m-%d %H:%M:%S")<< "*/" << std::endl;
     xml_protocol::g_stream_sql << std::endl;
     xml_protocol::g_stream_sql << " DROP Database IF EXISTS `lbtest`;" << std::endl;
