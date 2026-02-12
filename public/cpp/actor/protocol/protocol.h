@@ -53,15 +53,15 @@ namespace ngl
 		static std::shared_mutex							m_mutex;		// 锁
 
 	public:
-		static pfun* find(i32_protocolnum aprotocolnum);
+		static pfun* find(i32_protocolnum aprotocol);
 
-		static const char* name(i32_protocolnum aprotocolnum);
+		static const char* name(i32_protocolnum aprotocol);
 
-		static void print(const char* amsg, i32_protocolnum aprotocolnum);
+		static void print(const char* amsg, i32_protocolnum aprotocol);
 
 		// # 注册网络协议
 		static void registers(
-			int aprotocolnumber, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname
+			int aprotocol, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname
 		);
 
 		// # 解析网络数据包[net pack],交付给上层逻辑 

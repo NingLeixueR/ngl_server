@@ -111,8 +111,8 @@ namespace ngl
 		);
 
 		// # 查找连接关联的actor
-		i64_actorid find_actoridserver(i32_session asession);
-		i64_actorid find_actoridclient(i32_session asession);
+		i64_actorid find_server(i32_session asession);
+		i64_actorid find_client(i32_session asession);
 		bool find_actorid(i32_session asession, i64_actorid& aactoridserver, i64_actorid& aactoridclient);
 
 		// # 根据actorid获取session
