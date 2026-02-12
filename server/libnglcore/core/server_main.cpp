@@ -571,7 +571,7 @@ bool start_pushserverconfig()
 
 	ngl::ttab_servers::instance().foreach_server([&lpushserver](ngl::tab_servers* aserver)
 		{
-			auto lhttp = ngl::ncurl::make_http();
+			auto lhttp = ngl::ncurl::http();
 			ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
 			ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_GET);
 			ngl::ncurl::set_url(lhttp, lpushserver);

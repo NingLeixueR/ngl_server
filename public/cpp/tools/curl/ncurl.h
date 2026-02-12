@@ -58,16 +58,16 @@ namespace ngl
 		std::string			m_param;								// 请求参数
 		int					m_timeout = 0;							// 超时时间
 		std::string			m_cookies;								// cookie
-		curl_slist*			m_http_headers = nullptr;				// http头
+		curl_slist*			m_headers = nullptr;				// http头
 		callback			m_callback = nullptr;					// 回调
 		std::string			m_recvdata;								// 接收的数据
 
 		~http_parm()
 		{
-			if (m_http_headers != nullptr)
+			if (m_headers != nullptr)
 			{
-				curl_slist_free_all(m_http_headers);
-				m_http_headers = nullptr;
+				curl_slist_free_all(m_headers);
+				m_headers = nullptr;
 			}
 			if (m_curl != nullptr)
 			{
@@ -81,8 +81,8 @@ namespace ngl
 			int lsize = (int)aheaders.size();
 			for (int i = 0; i < lsize; i++)
 			{
-				m_http_headers = curl_slist_append(m_http_headers, aheaders[i].c_str());
-				curl_easy_setopt(m_curl, CURLOPT_HTTPHEADER, m_http_headers);
+				m_headers = curl_slist_append(m_headers, aheaders[i].c_str());
+				curl_easy_setopt(m_curl, CURLOPT_HTTPHEADER, m_headers);
 			}
 		}
 
@@ -161,7 +161,7 @@ namespace ngl
 
 		CURLcode visit(http_parm& ahttp);
 
-		static size_t callback_write(void* buffer, size_t size, size_t nmemb, std::string* lpVoid);
+		static size_t callback(void* buffer, size_t size, size_t nmemb, std::string* lpVoid);
 	public:
 		// # 设置http类型
 		static void set_mode(std::shared_ptr<http_parm>& ahttp, ENUM_MODE aval);
@@ -208,9 +208,9 @@ namespace ngl
 		// # 发送
 		static void send(std::shared_ptr<http_parm>& adata);
 
-		static std::shared_ptr<http_parm> make_http();
+		static std::shared_ptr<http_parm> http();
 
-		static std::shared_ptr<mail_param> make_mail();
+		static std::shared_ptr<mail_param> mail();
 
 		static void sendemail(std::shared_ptr<mail_param>& aparm);
 	};

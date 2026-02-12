@@ -63,7 +63,7 @@ namespace ngl
 			}
 			curl_easy_setopt(ahttp.m_curl, CURLOPT_URL, ahttp.m_url.c_str());
 		}
-		curl_easy_setopt(ahttp.m_curl, CURLOPT_WRITEFUNCTION, &ncurl::callback_write);
+		curl_easy_setopt(ahttp.m_curl, CURLOPT_WRITEFUNCTION, &ncurl::callback);
 		curl_easy_setopt(ahttp.m_curl, CURLOPT_WRITEDATA, &ahttp.m_recvdata);
 
 		if (ahttp.m_mode == ENUM_MODE_HTTPS)
@@ -93,7 +93,7 @@ namespace ngl
 		return curl_easy_perform(ahttp.m_curl);
 	}
 
-	size_t ncurl::callback_write(void* buffer, size_t size, size_t nmemb, std::string* lpVoid)
+	size_t ncurl::callback(void* buffer, size_t size, size_t nmemb, std::string* lpVoid)
 	{
 		if (buffer == nullptr)
 		{
@@ -139,12 +139,12 @@ namespace ngl
 		ahttp->m_callback = aback; 
 	}
 
-	std::shared_ptr<http_parm> ncurl::make_http()
+	std::shared_ptr<http_parm> ncurl::http()
 	{
 		return nwork<http_parm>::make_shared();
 	}
 
-	std::shared_ptr<mail_param> ncurl::make_mail()
+	std::shared_ptr<mail_param> ncurl::mail()
 	{
 		return nwork<mail_param>::make_shared();
 	}
@@ -265,7 +265,7 @@ namespace ngl
 
 	void test_mail(const char* atitle, const char* acontent, const std::vector<std::pair<std::string, std::string>>& amailvec/* = {}*/)
 	{
-		auto lparm = ncurl::make_mail();
+		auto lparm = ncurl::mail();
 
 		lparm->m_smtp = nconfig.mail().m_smtp;
 		lparm->m_email = nconfig.mail().m_email;
@@ -285,7 +285,7 @@ namespace ngl
 
 	void test_manage_curl()
 	{
-		auto lhttp = ngl::ncurl::make_http();
+		auto lhttp = ngl::ncurl::http();
 		ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTPS);
 		ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_POST);
 		ngl::ncurl::set_url(lhttp, "xxx");
