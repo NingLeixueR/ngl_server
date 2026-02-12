@@ -287,8 +287,8 @@ public:
         m_stream << " // 创建时间【" << ngl::localtime::time2str() << "】" << std::endl;
         m_stream << std::endl;
         m_stream << "#pragma once" << std::endl;
-        m_stream << "#include \"ndefine.h\"" << std::endl;
         m_stream << "#include \"example.pb.h\"" << std::endl;
+        m_stream << "#include \"ndefine.h\"" << std::endl;
         m_stream << "#include \"net.pb.h\"" << std::endl;
         m_stream << "#include \"db.pb.h\"" << std::endl;
         m_stream << std::endl;
@@ -456,12 +456,12 @@ public:
         std::stringstream m_stream;
         m_stream << " // 注意【makeproto 工具生成文件，不要手动修改】" << std::endl;
         m_stream << " // 创建时间【" << ngl::localtime::time2str() << "】" << std::endl;
-        m_stream << R"(#include "actor_base.h"
+        m_stream << R"(
+#include "example.pb.h"
+#include "actor_base.h"
+#include "net.pb.h"
 #include "tools.h"
 #include "pack.h"
-
-#include "example.pb.h"
-#include "net.pb.h"
 
 namespace ngl
 {
@@ -538,12 +538,12 @@ namespace ngl
         std::stringstream m_stream;
         m_stream << " // 注意【makeproto 工具生成文件，不要手动修改】" << std::endl;
         m_stream << " // 创建时间【" << ngl::localtime::time2str() << "】" << std::endl;
+        m_stream << "#include \"example.pb.h\"" << std::endl;
         m_stream << "#include \"nprotocol.h\"" << std::endl;
         m_stream << "#include \"tprotocol.h\"" << std::endl;
+        m_stream << "#include \"net.pb.h\"" << std::endl;
         m_stream << "#include \"actor.h\"" << std::endl;
         m_stream << std::endl;
-        m_stream << "#include \"example.pb.h\"" << std::endl;
-        m_stream << "#include \"net.pb.h\"" << std::endl;
         m_stream << std::endl;
         m_stream << "#include <map>" << std::endl;
         m_stream << std::endl;

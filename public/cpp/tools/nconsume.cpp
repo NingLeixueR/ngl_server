@@ -11,23 +11,23 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "nconsuming.h"
 #include "nprotocol.h"
+#include "nconsume.h"
 
 namespace ngl
 {
-	nconsuming::nconsuming(const std::string& aname):
+	nconsume::nconsume(const std::string& aname):
 		m_name(aname),
 		m_beg(0)
 	{
 	}
 
-	void nconsuming::start()
+	void nconsume::start()
 	{
 		m_beg = time_wheel::getms();
 	}
 
-	void nconsuming::finish()
+	void nconsume::finish()
 	{
 		int64_t lconsuming = time_wheel::getms() - m_beg;
 		bool lerror = lconsuming > sysconfig::consumings();

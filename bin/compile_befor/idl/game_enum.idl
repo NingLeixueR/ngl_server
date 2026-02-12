@@ -8,17 +8,17 @@ enum ENET_CONFIG
 
 enum EUDP_OPERATOR
 {
-	EUDP_OPERATOR_ACK,			// È·ÈÏ°ü
-	EUDP_OPERATOR_DATA,			// ´«Êä×ÓÊı¾İ°ü
-	EUDP_OPERATOR_HEARTBEAT,	// ĞÄÌøÖ÷ÒªÓÃÀ´È·ÈÏ¶Ô¶ËÊÇ·ñÔÚÏß
+	EUDP_OPERATOR_ACK,			// ç¡®è®¤åŒ…
+	EUDP_OPERATOR_DATA,			// ä¼ è¾“å­æ•°æ®åŒ…
+	EUDP_OPERATOR_HEARTBEAT,	// å¿ƒè·³ä¸»è¦ç”¨æ¥ç¡®è®¤å¯¹ç«¯æ˜¯å¦åœ¨çº¿
 };
 
 enum EPH
 {
-	EPH_BYTES = 0,				// Ğ­Òé×Ö½ÚÊı
-	EPH_TIME,					// ·¢ËÍ¶ËµÄÊ±¼ä´Á
-	EPH_PROTOCOLNUM,			// Ğ­ÒéºÅ
-	EPH_PROTOCOLTYPE,			// Ğ­ÒéÀàĞÍ EPROTOCOL_TYPE
+	EPH_BYTES = 0,				// åè®®å­—èŠ‚æ•°
+	EPH_TIME,					// å‘é€ç«¯çš„æ—¶é—´æˆ³
+	EPH_PROTOCOLNUM,			// åè®®å·
+	EPH_PROTOCOLTYPE,			// åè®®ç±»å‹ EPROTOCOL_TYPE
 	EPH_ACTOR_TYPEAREA,			// ACTOR_TYPE_AREA
 	EPH_ACTOR_ID,				// ACTOR_ID
 	EPH_REQUEST_ACTOR_TYPEAREA,	// Request REQUEST_ACTOR_TYPE_AREA
@@ -36,43 +36,43 @@ enum EPH_MODULE
 enum enum_attribute
 {
 	attribute_null = -1,
-	attribute_attack = 0,				// [¹¥»÷]
-	attribute_defense,					// [·ÀÓù]
-	attribute_hp,						// [ÑªÁ¿]
-	attribute_anger,					// [Å­Æø]
-	attribute_speed,					// [ËÙ¶È]
+	attribute_attack = 0,				// [æ”»å‡»]
+	attribute_defense,					// [é˜²å¾¡]
+	attribute_hp,						// [è¡€é‡]
+	attribute_anger,					// [æ€’æ°”]
+	attribute_speed,					// [é€Ÿåº¦]
 	attribute_count,
 };
 
 enum enum_config
 {
-	attribute_ratio_value = 10000,			// ÊôĞÔ±ÈÀıÖµ(Íò·Ö±È)
-	unit_corelist_role_maxcount = 50,		// ÊÓÒ°ÖĞÍæ¼ÒµÄ×î´óÊıÁ¿
-	unit_corelist_monster_maxcount = 1000,	// ÊÓÒ°ÖĞ¹ÖÎïµÄ×î´óÊıÁ¿
-	unit_corelist_region_maxcount = 1000,	// ÊÓÒ°ÖĞÇøÓòµÄ×î´óÊıÁ¿
+	attribute_ratio_value = 10000,			// å±æ€§æ¯”ä¾‹å€¼(ä¸‡åˆ†æ¯”)
+	unit_corelist_role_maxcount = 50,		// è§†é‡ä¸­ç©å®¶çš„æœ€å¤§æ•°é‡
+	unit_corelist_monster_maxcount = 1000,	// è§†é‡ä¸­æ€ªç‰©çš„æœ€å¤§æ•°é‡
+	unit_corelist_region_maxcount = 1000,	// è§†é‡ä¸­åŒºåŸŸçš„æœ€å¤§æ•°é‡
 };
 
-// ## Ä£¿éÌá¹©µÄÊôĞÔ
+// ## æ¨¡å—æä¾›çš„å±æ€§
 enum enum_module_attribute
 {
 	em_attribute_null = -2,
-	em_attribute_root = 0,		// Á´Î²
-	em_attribute_buff = 1,		// Íæ¼ÒbuffÌí¼ÓµÄÊôĞÔ
-	em_attribute_base = 2,		// Íæ¼Ò»ù´¡ÊôĞÔ
-	em_attribute_pet = 3,		// ³èÎï»ù´¡ÊôĞÔ
-	em_attribute_pet1 = 4,		// ³èÎï1»ù´¡ÊôĞÔ
-	em_attribute_pet2 = 5,		// ³èÎï2»ù´¡ÊôĞÔ
-	em_attribute_pet3 = 6,		// ³èÎï3»ù´¡ÊôĞÔ
-	em_attribute_pet4 = 7,		// ³èÎï4»ù´¡ÊôĞÔ
+	em_attribute_root = 0,		// é“¾å°¾
+	em_attribute_buff = 1,		// ç©å®¶buffæ·»åŠ çš„å±æ€§
+	em_attribute_base = 2,		// ç©å®¶åŸºç¡€å±æ€§
+	em_attribute_pet = 3,		// å® ç‰©åŸºç¡€å±æ€§
+	em_attribute_pet1 = 4,		// å® ç‰©1åŸºç¡€å±æ€§
+	em_attribute_pet2 = 5,		// å® ç‰©2åŸºç¡€å±æ€§
+	em_attribute_pet3 = 6,		// å® ç‰©3åŸºç¡€å±æ€§
+	em_attribute_pet4 = 7,		// å® ç‰©4åŸºç¡€å±æ€§
 	em_attribute_count,
 
 
-	em_attribute_effectindex = 10000, // Ğ§¹ûÌí¼ÓµÄÊôĞÔ[´ËÖµ+Ğ§¹ûid]
+	em_attribute_effectindex = 10000, // æ•ˆæœæ·»åŠ çš„å±æ€§[æ­¤å€¼+æ•ˆæœid]
 
 };
 
 enum enum_effect
 {
 	em_buff,		// buff
-	em_skill,		// ¼¼ÄÜ
+	em_skill,		// æŠ€èƒ½
 };

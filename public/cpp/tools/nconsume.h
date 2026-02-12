@@ -18,16 +18,16 @@
 
 namespace ngl
 {
-	class nconsuming
+	class nconsume
 	{
-		nconsuming() = delete;
-		nconsuming(const nconsuming&) = delete;
-		nconsuming& operator=(const nconsuming&) = delete;
+		nconsume() = delete;
+		nconsume(const nconsume&) = delete;
+		nconsume& operator=(const nconsume&) = delete;
 
 		std::string		m_name;
 		int64_t			m_beg;
 	public:
-		nconsuming(const std::string& aname);
+		nconsume(const std::string& aname);
 		void start();
 		void finish();
 	};

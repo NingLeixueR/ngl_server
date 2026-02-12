@@ -11,8 +11,8 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "nconsuming.h"
 #include "sysconfig.h"
+#include "nconsume.h"
 #include "nrfun.h"
 
 namespace ngl
@@ -55,7 +55,7 @@ namespace ngl
 			log_error()->print("{}::handle_switch isloadfinish() == {}", aactor->guid(), lpfun->m_ready);
 			return false;
 		}
-		nconsuming lconsuming(std::format("{}-{}-{}", aactor->guid(), apram.m_enum, tprotocol::name(apram.m_enum)));
+		nconsume lconsuming(std::format("{}-{}-{}", aactor->guid(), apram.m_enum, tprotocol::name(apram.m_enum)));
 		lconsuming.start();
 		lpfun->m_fun(aactor, athreadid, apram);
 		if (aactor->type() != ACTOR_LOG)
