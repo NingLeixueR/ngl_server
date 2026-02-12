@@ -22,25 +22,35 @@ jobs:
       with:
         submodules: recursive
 
-    # 核心修复：直接调用VS原生命令配置MSVC 64位环境（无第三方依赖）
-    - name: Setup MSVC compiler (原生方式)
+    # 核心修复：正确配置MSVC环境变量（适配PowerShell+CMD）
+    - name: Setup MSVC compiler (原生方式，修复环境变量传递)
       run: |
-        # 查找VS安装路径并配置64位编译环境
+        # 1. 查找VS的vcvars64.bat路径
         $vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
         $vcVarsPath = & $vsWherePath -products * -latest -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -find "VC\Auxiliary\Build\vcvars64.bat" | Select-Object -First 1
         
         if (-not $vcVarsPath) {
           throw "Visual Studio C++ tools not found!"
         }
-        
-        # 执行vcvars64.bat配置环境，并将环境变量传递到后续步骤
-        & $vcVarsPath
-        echo "Path=$env:Path" >> $env:GITHUB_ENV
-        echo "LIB=$env:LIB" >> $env:GITHUB_ENV
-        echo "INCLUDE=$env:INCLUDE" >> $env:GITHUB_ENV
-        
-        # 验证MSVC编译器
-        cl
+
+        # 2. 关键：通过CMD执行vcvars64.bat并导出环境变量到临时文件
+        $envFile = "$env:TEMP\msvc_env.txt"
+        cmd /c "`"$vcVarsPath`" && set > `"$envFile`""
+
+        # 3. 读取临时文件中的环境变量，注入到GitHub Actions环境
+        Get-Content $envFile | ForEach-Object {
+          if ($_ -match '^([^=]+)=(.*)$') {
+            $name = $matches[1]
+            $value = $matches[2]
+            # 只导入关键编译环境变量，避免冗余
+            if ($name -in 'Path', 'LIB', 'INCLUDE', 'LIBPATH') {
+              echo "$name=$value" >> $env:GITHUB_ENV
+            }
+          }
+        }
+
+        # 4. 验证：通过cmd执行cl命令（而非PowerShell）
+        cmd /c "cl 2>&1 | findstr /i 'Version'"
       shell: powershell
 
     # 安装Chocolatey包（基础工具）
