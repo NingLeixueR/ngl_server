@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 26-02-12 16:38:25
+// 创建时间 26-02-12 18:06:55
 #include "pb_field.cpp"
 #include "npostgresql_manage.cpp"
 #include "npostgresql_pool.cpp"
@@ -30,7 +30,6 @@
 #include "handle_pram.cpp"
 #include "time_wheel.cpp"
 #include "nscript_pb.cpp"
-#include "nconsuming.cpp"
 #include "events_map.cpp"
 #include "asio_timer.cpp"
 #include "activitydb.cpp"
@@ -48,6 +47,7 @@
 #include "roleinfo.cpp"
 #include "ranklist.cpp"
 #include "protocol.cpp"
+#include "nconsume.cpp"
 #include "naddress.cpp"
 #include "csvtable.cpp"
 #include "autoitem.cpp"

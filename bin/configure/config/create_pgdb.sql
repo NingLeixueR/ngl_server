@@ -1,4 +1,4 @@
-/*Date:2026-02-12 16:38:09*/
+/*Date:2026-02-12 18:06:22*/
 
  DROP DATABASE IF EXISTS lbtest;
  CREATE DATABASE lbtest WITH ENCODING='UTF8' LC_COLLATE='zh_CN.UTF-8' LC_CTYPE='zh_CN.UTF-8' OWNER=lbtest_user;
@@ -6,7 +6,7 @@
 -- ----------------------------
 -- Table structure for db_account
 -- ----------------------------
-DROP TABLE IF EXISTS `db_account`;
+DROP TABLE IF EXISTS db_account;
 CREATE TABLE db_account (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE db_account (
 -- ----------------------------
 -- Table structure for db_brief
 -- ----------------------------
-DROP TABLE IF EXISTS `db_brief`;
+DROP TABLE IF EXISTS db_brief;
 CREATE TABLE db_brief (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE db_brief (
 -- ----------------------------
 -- Table structure for db_role
 -- ----------------------------
-DROP TABLE IF EXISTS `db_role`;
+DROP TABLE IF EXISTS db_role;
 CREATE TABLE db_role (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE db_role (
 -- ----------------------------
 -- Table structure for db_bag
 -- ----------------------------
-DROP TABLE IF EXISTS `db_bag`;
+DROP TABLE IF EXISTS db_bag;
 CREATE TABLE db_bag (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE db_bag (
 -- ----------------------------
 -- Table structure for db_keyvalue
 -- ----------------------------
-DROP TABLE IF EXISTS `db_keyvalue`;
+DROP TABLE IF EXISTS db_keyvalue;
 CREATE TABLE db_keyvalue (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE db_keyvalue (
 -- ----------------------------
 -- Table structure for db_rolekeyvalue
 -- ----------------------------
-DROP TABLE IF EXISTS `db_rolekeyvalue`;
+DROP TABLE IF EXISTS db_rolekeyvalue;
 CREATE TABLE db_rolekeyvalue (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE db_rolekeyvalue (
 -- ----------------------------
 -- Table structure for db_mail
 -- ----------------------------
-DROP TABLE IF EXISTS `db_mail`;
+DROP TABLE IF EXISTS db_mail;
 CREATE TABLE db_mail (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE db_mail (
 -- ----------------------------
 -- Table structure for db_notice
 -- ----------------------------
-DROP TABLE IF EXISTS `db_notice`;
+DROP TABLE IF EXISTS db_notice;
 CREATE TABLE db_notice (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE db_notice (
 -- ----------------------------
 -- Table structure for db_ranklist
 -- ----------------------------
-DROP TABLE IF EXISTS `db_ranklist`;
+DROP TABLE IF EXISTS db_ranklist;
 CREATE TABLE db_ranklist (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE db_ranklist (
 -- ----------------------------
 -- Table structure for db_activitytimes
 -- ----------------------------
-DROP TABLE IF EXISTS `db_activitytimes`;
+DROP TABLE IF EXISTS db_activitytimes;
 CREATE TABLE db_activitytimes (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE db_activitytimes (
 -- ----------------------------
 -- Table structure for db_activity
 -- ----------------------------
-DROP TABLE IF EXISTS `db_activity`;
+DROP TABLE IF EXISTS db_activity;
 CREATE TABLE db_activity (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE db_activity (
 -- ----------------------------
 -- Table structure for db_task
 -- ----------------------------
-DROP TABLE IF EXISTS `db_task`;
+DROP TABLE IF EXISTS db_task;
 CREATE TABLE db_task (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE db_task (
 -- ----------------------------
 -- Table structure for db_familyer
 -- ----------------------------
-DROP TABLE IF EXISTS `db_familyer`;
+DROP TABLE IF EXISTS db_familyer;
 CREATE TABLE db_familyer (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -123,7 +123,7 @@ CREATE TABLE db_familyer (
 -- ----------------------------
 -- Table structure for db_family
 -- ----------------------------
-DROP TABLE IF EXISTS `db_family`;
+DROP TABLE IF EXISTS db_family;
 CREATE TABLE db_family (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -132,7 +132,7 @@ CREATE TABLE db_family (
 -- ----------------------------
 -- Table structure for db_friends
 -- ----------------------------
-DROP TABLE IF EXISTS `db_friends`;
+DROP TABLE IF EXISTS db_friends;
 CREATE TABLE db_friends (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE db_friends (
 -- ----------------------------
 -- Table structure for db_testlua
 -- ----------------------------
-DROP TABLE IF EXISTS `db_testlua`;
+DROP TABLE IF EXISTS db_testlua;
 CREATE TABLE db_testlua (
     id NOT NULL PRIMARY KEY,
     area integer NOT NULL,
