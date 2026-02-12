@@ -1029,7 +1029,7 @@ namespace ngl
         std::string lpath = std::format("../../public/cpp/actor/actor_logic/{}", ltolower);
         if (ngl::tools::directories_exists(lpath) == false)
         {
-            if (ngl::tools::create_directories(lpath) == false)
+            if (ngl::tools::create_dir(lpath) == false)
             {
                 return;
             }
@@ -1469,7 +1469,7 @@ namespace ngl
                     std::string ldirectories = std::format("../../public/cpp/actor/actor_logic/{0}/message", lactortolower);
                     if (ngl::tools::directories_exists(ldirectories) == false)
                     {
-                        ngl::tools::create_directories(ldirectories);
+                        ngl::tools::create_dir(ldirectories);
                     }
                     std::string lactorhfile = std::format("../../public/cpp/actor/actor_logic/{0}/message/{0}_handle.cpp", lactortolower);
 

@@ -119,11 +119,11 @@ namespace ngl
 		m_stream.close();
 	}
 
-	bool logfile::create_directories(const std::string& apath)
+	bool logfile::create_dir(const std::string& apath)
 	{
 		if (tools::directories_exists(apath) == false)
 		{
-			if (tools::create_directories(apath) == false)
+			if (tools::create_dir(apath) == false)
 			{
 				return false;
 			}
@@ -134,7 +134,7 @@ namespace ngl
 	void logfile::create()
 	{	
 		std::string lpath = std::format("./{}", m_config.m_dir);
-		if (create_directories(lpath) == false)
+		if (create_dir(lpath) == false)
 		{
 			tools::no_core_dump();
 			return;
@@ -148,14 +148,14 @@ namespace ngl
 		}
 
 		lpath = std::format("{}/{}", lpath, tab->m_name);
-		if (create_directories(lpath) == false)
+		if (create_dir(lpath) == false)
 		{
 			tools::no_core_dump();
 			return;
 		}
 
 		lpath = std::format("{}/{}", lpath, em<ELOG_TYPE>::tolower_name(m_config.m_type));
-		if (create_directories(lpath) == false)
+		if (create_dir(lpath) == false)
 		{
 			tools::no_core_dump();
 			return;
@@ -163,7 +163,7 @@ namespace ngl
 
 		std::string ltimestr = tools::time2str((int)localtime::gettime(), "%Y-%m-%d");
 		lpath = std::format("{}/{}", lpath, ltimestr);
-		if (create_directories(lpath) == false)
+		if (create_dir(lpath) == false)
 		{
 			tools::no_core_dump();
 			return;

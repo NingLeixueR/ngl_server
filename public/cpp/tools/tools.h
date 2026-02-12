@@ -784,7 +784,7 @@ namespace ngl
 		static bool file_exists(const std::string& apath);
 
 		// 创建目录
-		static bool create_directories(const std::string& apath);
+		static bool create_dir(const std::string& apath);
 
 		// 移除文件
 		static bool file_remove(const std::string& afilename);

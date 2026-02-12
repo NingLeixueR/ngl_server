@@ -49,7 +49,7 @@ namespace ngl
 			ELOG_TYPE		m_type = ELOG_DEFAULT;	// 日志类型
 			int32_t			m_flush_time = 0;		// 写入文件的间隔
 
-			int32_t flush_time()
+			int32_t flush()
 			{
 				return std::max(m_flush_time, (int32_t)min_flush_time);
 			}
@@ -68,7 +68,7 @@ namespace ngl
 		void close_fstream();
 
 		// # 创建目录
-		bool create_directories(const std::string& apath);
+		bool create_dir(const std::string& apath);
 
 		// # 创建
 		void create();

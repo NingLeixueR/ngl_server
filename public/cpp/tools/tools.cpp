@@ -1403,7 +1403,7 @@ namespace ngl
 		return std::filesystem::exists(apath) && std::filesystem::is_regular_file(apath);
 	}
 
-	bool tools::create_directories(const std::string& apath)
+	bool tools::create_dir(const std::string& apath)
 	{
 		if (!std::filesystem::exists(apath))
 		{
