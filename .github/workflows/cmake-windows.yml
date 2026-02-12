@@ -1,38 +1,37 @@
-# 适配Windows的CMake编译工作流
-name: CMake Windows Build
+name: Build with CMake on Windows (VS2022)
 
 on:
-  workflow_dispatch:
-
-env:
-  # 编译类型保持不变
-  BUILD_TYPE: Release
-  # vcpkg根目录（Windows默认路径）
-  VCPKG_ROOT: C:\vcpkg
-  # Visual Studio版本
-  VS_VERSION: 2022
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build:
-    runs-on: windows-latest
+  build-windows:
+    name: Build on Windows with VS2022
+    runs-on: windows-latest  # 自动使用最新 Windows + VS2022 环境
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v4
-      with:
-        submodules: recursive
 
-    # 配置CMake（生成VS工程）
+    - name: Install CMake
+      uses: lukka/get-cmake@latest
+      # 或者使用官方 action（但 get-cmake 更可靠）
+      # uses: jwlawson/actions-setup-cmake@v1.13
+
     - name: Configure CMake
       run: |
-        mkdir build
-        cd build
-        cmake .. -G "Visual Studio 17 2022" -A x64 
-      shell: cmd
+        cmake -B build \
+              -G "Visual Studio 17 2022" \
+              -A x64 \
+              -DCMAKE_BUILD_TYPE=Release
 
-    # 编译项目（使用MSBuild）
-    - name: Build project
+    - name: Build with CMake
+      run: cmake --build build --config Release --parallel
+
+    - name: Run tests (if you have them)
       run: |
         cd build
-        msbuild ALL_BUILD.vcxproj /p:Configuration=%BUILD_TYPE% /p:Platform=x64 /m
-      shell: cmd
+        ctest --output-on-failure -C Release
+      # 注意：需确保 CMakeLists.txt 中已 enable_testing() 并 add_test()
