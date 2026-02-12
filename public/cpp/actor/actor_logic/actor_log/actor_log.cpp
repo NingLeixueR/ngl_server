@@ -61,7 +61,7 @@ namespace ngl
 
 		// 设置timer_handle定时器
 		// flush
-		int32_t lflushtime = m_logarr.begin()->second->m_config.flush_time() / localtime::MILLISECOND;
+		int32_t lflushtime = m_logarr.begin()->second->m_config.flush() / localtime::MILLISECOND;
 		np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, lflushtime) == false)
 		{

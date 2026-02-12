@@ -37,19 +37,21 @@ namespace ngl
 
 	struct nactor_logitem;
 
-	extern std::shared_ptr<nactor_logitem> log_debug(const std::source_location& asource = std::source_location::current());
-	extern std::shared_ptr<nactor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current());
+	using ptr_logitem = std::shared_ptr<nactor_logitem>;
 
-	extern std::shared_ptr<nactor_logitem> log_info(const std::source_location& asource = std::source_location::current());
-	extern std::shared_ptr<nactor_logitem> log_info_net(const std::source_location& asource = std::source_location::current());
+	extern ptr_logitem log_debug(const std::source_location& asource = std::source_location::current());
+	extern ptr_logitem log_debug_net(const std::source_location& asource = std::source_location::current());
 
-	extern std::shared_ptr<nactor_logitem> log_warn(const std::source_location& asource = std::source_location::current());
-	extern std::shared_ptr<nactor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current());
+	extern ptr_logitem log_info(const std::source_location& asource = std::source_location::current());
+	extern ptr_logitem log_info_net(const std::source_location& asource = std::source_location::current());
 
-	extern std::shared_ptr<nactor_logitem> log_error(const std::source_location& asource = std::source_location::current());
-	extern std::shared_ptr<nactor_logitem> log_error_net(const std::source_location& asource = std::source_location::current());
+	extern ptr_logitem log_warn(const std::source_location& asource = std::source_location::current());
+	extern ptr_logitem log_warn_net(const std::source_location& asource = std::source_location::current());
 
-	extern std::shared_ptr<nactor_logitem> log_bi(const std::source_location& asource = std::source_location::current());
+	extern ptr_logitem log_error(const std::source_location& asource = std::source_location::current());
+	extern ptr_logitem log_error_net(const std::source_location& asource = std::source_location::current());
+
+	extern ptr_logitem log_bi(const std::source_location& asource = std::source_location::current());
 
 
 	template <typename T>
