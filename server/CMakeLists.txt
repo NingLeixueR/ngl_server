@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
+add_subdirectory(libnglcore)
+
 IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 	add_subdirectory(rebuild)
 	add_subdirectory(makeproto)
@@ -13,6 +15,5 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /DEBUG /OPT:REF /OPT:ICF")
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
-add_subdirectory(libnglcore)
 add_subdirectory(node)
 
