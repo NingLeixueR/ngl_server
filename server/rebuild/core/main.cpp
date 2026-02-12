@@ -171,8 +171,11 @@ int main(int argc, char** argv)
 			{
 				for (auto itor2 = itor1->second.rbegin(); itor2 != itor1->second.rend(); ++itor2)
 				{
-					*astream << "#include \"" << itor2->first << "\"\n";
-					llinecount += itor2->second;
+					if (itor2->first != "pb_field.cpp")
+					{
+						*astream << "#include \"" << itor2->first << "\"\n";
+						llinecount += itor2->second;
+					}
 				}
 			}
 		};

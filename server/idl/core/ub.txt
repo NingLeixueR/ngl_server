@@ -66,8 +66,6 @@ INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/ngl_server/public/cp
 INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/ngl_server/public/cpp/actor/actor_logic/actor_testlua2)
 INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/ngl_server/public/cpp/actor/actor_logic/actor_testlua2/message)
 INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/ngl_server/public/cpp/actor/auto)
-INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/ngl_server/public/cpp/actor/auto/log)
-INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/ngl_server/public/cpp/actor/auto/log/log)
 INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/ngl_server/public/cpp/actor/pb)
 INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/ngl_server/public/cpp/actor/protocol)
 INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/ngl_server/public/cpp/actor/tab)
