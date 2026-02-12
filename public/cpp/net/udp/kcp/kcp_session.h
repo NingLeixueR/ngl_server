@@ -53,8 +53,7 @@ namespace ngl
 		};
 
 		kcp_session(asio_kcp* asiokcp);
-		//std::string lip = aendpoint.address().to_string();
-		//i16_port lport = aendpoint.port();
+
 		std::shared_ptr<kcp_endpoint> add_kcp_endpoint(
 			int32_t aconv
 			, const char* aip
