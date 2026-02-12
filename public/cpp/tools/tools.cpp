@@ -1476,7 +1476,7 @@ namespace ngl
 				}				
 
 				std::cout << "dump_logic()" << std::endl;
-				std::shared_ptr<ngl::mail_param> lparm = ngl::ncurl::make_mail();
+				std::shared_ptr<ngl::mail_param> lparm = ngl::ncurl::mail();
 				lparm->m_smtp = nconfig.mail().m_smtp;
 				lparm->m_email = nconfig.mail().m_email;
 				lparm->m_password = nconfig.mail().m_password;

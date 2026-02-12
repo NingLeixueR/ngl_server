@@ -187,7 +187,7 @@ namespace ngl
 
 	void actor_role::requestgm(const char* aurl, const std::string& aparm, const std::function<void(int, http_parm&)>& acall)
 	{
-		auto lhttp = ngl::ncurl::make_http();
+		auto lhttp = ngl::ncurl::http();
 		ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
 		ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_GET);
 		ngl::ncurl::set_url(lhttp, aurl);
@@ -229,7 +229,7 @@ namespace ngl
 						return;
 					}
 
-					auto lpayhttp = ngl::ncurl::make_http();
+					auto lpayhttp = ngl::ncurl::http();
 
 					std::string lquestparm;
 					ngl::ncurl::param(lquestparm, "orderid", lorderid.c_str());
@@ -349,7 +349,7 @@ namespace ngl
 		
 		if (areporting && lstat == 0)
 		{
-			auto lhttp = ngl::ncurl::make_http();
+			auto lhttp = ngl::ncurl::http();
 			ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
 			ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_GET);
 			std::string lurl = std::format("{}/pay/pay_update.php", sysconfig::gmurl());
