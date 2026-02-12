@@ -1,0 +1,122 @@
+# 适配Windows的CMake编译工作流
+name: CMake Windows Build
+
+on:
+  workflow_dispatch:
+
+env:
+  # 编译类型保持不变
+  BUILD_TYPE: Release
+  # vcpkg根目录（Windows默认路径）
+  VCPKG_ROOT: C:\vcpkg
+  # Visual Studio版本
+  VS_VERSION: 2022
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4  # 升级到最新版本
+      with:
+        submodules: recursive  # 如果有子模块建议开启
+
+    # 配置Visual Studio环境
+    - name: Setup MSVC compiler
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        toolset: latest
+        arch: x64
+
+    # 安装Chocolatey包（基础工具）
+    - name: Install base tools via Chocolatey
+      run: |
+        choco install -y cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+        choco install -y postgresql --version=15.4
+        choco install -y 7zip git unzip wget
+        choco install -y lua --version=5.4.2
+        refreshenv
+      shell: powershell
+
+    # 安装vcpkg（C/C++库管理工具）
+    - name: Setup vcpkg
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git $env:VCPKG_ROOT
+        $env:VCPKG_ROOT\bootstrap-vcpkg.bat
+        $env:VCPKG_ROOT\vcpkg integrate install
+      shell: powershell
+
+    # 通过vcpkg安装核心依赖库
+    - name: Install dependencies via vcpkg
+      run: |
+        $env:VCPKG_ROOT\vcpkg install ^
+          boost-interprocess:x64-windows ^
+          curl:x64-windows ^
+          hiredis:x64-windows ^
+          libmysql:x64-windows ^
+          protobuf:x64-windows ^
+          uuid:x64-windows
+      shell: powershell
+
+    # 验证CMake版本
+    - name: Verify CMake installation
+      run: |
+        cmake --version
+      shell: powershell
+
+    # 编译安装Lua 5.4.2（带fPIC，适配Windows）
+    - name: Build and install Lua 5.4.2
+      run: |
+        wget https://www.lua.org/ftp/lua-5.4.2.tar.gz -OutFile lua-5.4.2.tar.gz
+        7z x lua-5.4.2.tar.gz -so | 7z x -si -ttar -olua-5.4.2
+        cd lua-5.4.2
+        # Windows下编译Lua的命令（适配MSVC）
+        cl /MD /O2 /c /DLUA_BUILD_AS_DLL src\*.c -Fosrc\
+        link /DLL /OUT:lua54.dll src\*.obj
+        link /OUT:lua.exe src\lua.obj lua54.lib
+        link /OUT:luac.exe src\luac.obj lua54.lib
+        # 安装Lua
+        mkdir C:\Lua\bin C:\Lua\include C:\Lua\lib
+        copy lua.exe luac.exe C:\Lua\bin
+        copy lua54.dll C:\Lua\bin
+        copy lua54.lib C:\Lua\lib
+        copy src\lua.h src\lualib.h src\luaconf.h src\lauxlib.h C:\Lua\include
+        # 添加到环境变量
+        $env:Path += ";C:\Lua\bin"
+        echo "Path=$env:Path" >> $env:GITHUB_ENV
+        lua -v
+      shell: cmd
+
+    # 编译安装lua-cjson
+    - name: Build and install lua-cjson
+      run: |
+        wget https://github.com/openresty/lua-cjson/archive/refs/heads/master.zip -OutFile lua-cjson-master.zip
+        unzip lua-cjson-master.zip
+        cd lua-cjson-master
+        # 修改Makefile适配Windows，直接用MSVC编译
+        cl /MD /O2 /c /I C:\Lua\include src\lua_cjson.c src\strbuf.c src\fpconv.c
+        link /DLL /OUT:cjson.dll src\lua_cjson.obj src\strbuf.obj src\fpconv.obj C:\Lua\lib\lua54.lib
+        # 安装到Lua库目录
+        mkdir C:\Lua\lib\lua\5.4
+        copy cjson.dll C:\Lua\lib\lua\5.4
+      shell: cmd
+
+    # 配置CMake（生成VS工程）
+    - name: Configure CMake
+      run: |
+        mkdir build
+        cd build
+        cmake .. -G "Visual Studio 17 2022" -A x64 ^
+          -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+          -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake ^
+          -DLUA_INCLUDE_DIR=C:\Lua\include ^
+          -DLUA_LIBRARY=C:\Lua\lib\lua54.lib
+      shell: cmd
+
+    # 编译项目（使用MSBuild）
+    - name: Build project
+      run: |
+        cd build
+        msbuild ALL_BUILD.vcxproj /p:Configuration=%BUILD_TYPE% /p:Platform=x64 /m
+      shell: cmd
