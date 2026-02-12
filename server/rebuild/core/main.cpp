@@ -171,29 +171,16 @@ int main(int argc, char** argv)
 			{
 				for (auto itor2 = itor1->second.rbegin(); itor2 != itor1->second.rend(); ++itor2)
 				{
-					//if (llinecount > 2000000000)
-					//{
-					//	lsavefun(++lindex, *astream);
-					//	std::cout << std::format("index[{}] line:[{}] ", lindex, llinecount) << std::endl;
-					//	astream = lmalloc();
-					//	llinecount = 0;
-					//}
-					//
 					*astream << "#include \"" << itor2->first << "\"\n";
 					llinecount += itor2->second;
 				}
 			}
-			//if (llinecount > 0)
-			//{
-			//	lsavefun(++lindex, *astream);
-			//}
 		};
 
 	std::stringstream* lstream = lmalloc();
 	foreach_map(lstream, lmap);
 	foreach_map(lstream, lmap2);
 	
-	//std::stringstream* m_stream = lmalloc();
 	*lstream << "extern \"C\"{\n";
 	for (const auto& item : lvec5)
 		*lstream << "#include \"" << item.first << "\"\n";

@@ -44,10 +44,8 @@ int main(int argc, char** argv)
 
     xml_protocol::db(sourceTree, "Template", "db");
 
-
-  
     {
-        ngl::writefile lsql("create_db.sql");
+        ngl::writefile lsql("../configure/config/create_db.sql");
         lsql.write(xml_protocol::g_stream_sql.str());
     }    
     ngl::xmlprotocol::load();
