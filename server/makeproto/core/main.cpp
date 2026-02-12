@@ -41,12 +41,26 @@ int main(int argc, char** argv)
     xml_protocol::g_stream_sql << " use lbtest;" << std::endl;
     xml_protocol::g_stream_sql << std::endl;
 
+    xml_protocol::g_stream_pgsql << "/*Date:" << ngl::localtime::time2str("%Y-%m-%d %H:%M:%S") << "*/" << std::endl;
+    xml_protocol::g_stream_pgsql << std::endl;
+    xml_protocol::g_stream_pgsql << " DROP DATABASE IF EXISTS lbtest;" << std::endl;
+    xml_protocol::g_stream_pgsql << " CREATE DATABASE lbtest WITH ENCODING='UTF8' LC_COLLATE='zh_CN.UTF-8' LC_CTYPE='zh_CN.UTF-8' OWNER=lbtest_user;" << std::endl;
+    xml_protocol::g_stream_pgsql << std::endl;
+
     xml_protocol::db(sourceTree, "Template", "db");
 
     {
-        ngl::writefile lsql("../configure/config/create_db.sql");
-        lsql.write(xml_protocol::g_stream_sql.str());
+        {
+            ngl::writefile lsql("../configure/config/create_db.sql");
+            lsql.write(xml_protocol::g_stream_sql.str());
+        }
+        {
+            ngl::writefile lsql("../configure/config/create_pgdb.sql");
+            lsql.write(xml_protocol::g_stream_pgsql.str());
+        }
     }    
+
+
     ngl::xmlprotocol::load();
     int32_t lnumber = 0;
     std::pair<std::string, std::string> lpair;

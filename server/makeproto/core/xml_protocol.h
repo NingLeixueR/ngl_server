@@ -48,6 +48,7 @@ class xml_protocol
 
 public:
     static std::stringstream g_stream_sql;
+    static std::stringstream g_stream_pgsql;
     static std::stringstream g_stream_xml;
 
     static std::string get_cpp_type_name(const google::protobuf::FieldDescriptor* field) {
@@ -1003,6 +1004,17 @@ namespace ngl
                     << "    PRIMARY KEY (`id`)\r\n"
                     << ")ENGINE = InnoDB DEFAULT CHARSET = utf8; \r\n";
 
+                g_stream_pgsql
+                    << "-- ----------------------------\r\n"
+                    << "-- Table structure for " << lmessage << "\r\n"
+                    << "-- ----------------------------\r\n"
+                    << "DROP TABLE IF EXISTS `" << lmessage << "`;\r\n"
+                    << "CREATE TABLE " << lmessage << " (\r\n"
+                    << "    id NOT NULL PRIMARY KEY,\r\n"
+                    << "    area integer NOT NULL,\r\n"
+                    << "    data bytea,\r\n"
+                    << "); \r\n";
+
             }
         }
     }
@@ -1867,6 +1879,7 @@ std::map<std::string, std::string> xml_protocol::g_typearr =
 };
 
 std::stringstream xml_protocol::g_stream_sql;
+std::stringstream xml_protocol::g_stream_pgsql;
 std::stringstream xml_protocol::g_stream_xml;
 std::map<std::string, std::string> xml_protocol::m_nscriptmap;
 std::set<std::string> xml_protocol::m_nscriptset;
