@@ -23,35 +23,35 @@ namespace ngl
 	std::map<i32_protocolnum, protocol::pfun> protocol::m_protocolfun;
 	std::shared_mutex protocol::m_mutex;
 
-	const char* protocol::name(i32_protocolnum aprotocolnum/*协议号*/)
+	const char* protocol::name(i32_protocolnum aprotocol/*协议号*/)
 	{
-		const char* lname = em<eprotocol_tar>::name((eprotocol_tar)(aprotocolnum));
+		const char* lname = em<eprotocol_tar>::name((eprotocol_tar)(aprotocol));
 		return lname != nullptr ? lname : "none";
 	}
 
-	void protocol::print(const char* amsg, i32_protocolnum aprotocolnum)
+	void protocol::print(const char* amsg, i32_protocolnum aprotocol)
 	{
-		log_error()->print("protocol::push msg:{} protocolnum:{} name:{}", amsg, aprotocolnum, name(aprotocolnum));
+		log_error()->print("protocol::push msg:{} protocolnum:{} name:{}", amsg, aprotocol, name(aprotocol));
 	}
 
 	void protocol::registers(
-		int aprotocolnumber, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname
+		int aprotocol, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname
 	)
 	{
 		lock_write(m_mutex);
-		pfun& lprotocol = m_protocolfun[aprotocolnumber];
+		pfun& lprotocol = m_protocolfun[aprotocol];
 		lprotocol.m_packfun = apackfun;
 		lprotocol.m_runfun[aenumactor] = arunfun;
-		em<eprotocol_tar>::set((eprotocol_tar)aprotocolnumber, aname);
+		em<eprotocol_tar>::set((eprotocol_tar)aprotocol, aname);
 	}
 
-	protocol::pfun* protocol::find(i32_protocolnum aprotocolnum)
+	protocol::pfun* protocol::find(i32_protocolnum aprotocol)
 	{
 		lock_read(m_mutex);
-		auto lpfun = tools::findmap(m_protocolfun, aprotocolnum);
+		auto lpfun = tools::findmap(m_protocolfun, aprotocol);
 		if (lpfun == nullptr)
 		{
-			print("protocol num none", aprotocolnum);
+			print("protocol num none", aprotocol);
 			return nullptr;
 		}
 		return lpfun;
@@ -86,10 +86,7 @@ namespace ngl
 				{
 					return;
 				}
-				else
-				{
-					apack->m_head.set_actor(nguid::make(), nguid::make());
-				}
+				apack->m_head.set_actor(nguid::make(), nguid::make());
 			}
 		}
 		for (std::pair<const ENUM_ACTOR, protocol::fun_run>& item : lpfun->m_runfun)
@@ -101,7 +98,7 @@ namespace ngl
 
 	class telnet_cmd_admin
 	{
-		static std::set<int> m_adminsocket;
+		static std::set<int>		m_adminsocket;
 		static std::shared_mutex	m_mutex;
 	public:
 		static bool login(int asocket, const std::string_view& auser, const std::string& apassworld)

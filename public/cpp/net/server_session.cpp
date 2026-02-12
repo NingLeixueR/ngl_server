@@ -56,23 +56,23 @@ namespace ngl
 	i32_sessionid server_session::sessionid(i32_serverid aserverid)
 	{
 		lock_read(m_mutex);
-		auto lpsessionid = tools::findmap(m_server, aserverid);
-		if (lpsessionid == nullptr)
+		auto lpsession = tools::findmap(m_server, aserverid);
+		if (lpsession == nullptr)
 		{
 			return -1;
 		}
-		return *lpsessionid;
+		return *lpsession;
 	}
 
 	i32_serverid server_session::serverid(i32_sessionid asessionid)
 	{
 		lock_read(m_mutex);
-		auto lpserverid = tools::findmap(m_session, asessionid);
-		if (lpserverid == nullptr)
+		auto lpserver = tools::findmap(m_session, asessionid);
+		if (lpserver == nullptr)
 		{
 			return -1;
 		}
-		return *lpserverid;
+		return *lpserver;
 	}
 
 	bool server_session::serverinfo(i32_serverid aserverid, str_servername& asername)

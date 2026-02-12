@@ -399,7 +399,7 @@ namespace ngl
 		m_connectfun = afun;
 	}
 
-	i64_actorid asio_kcp::find_actoridserver(i32_session asession)
+	i64_actorid asio_kcp::find_server(i32_session asession)
 	{
 		ptr_se lpstruct = m_session.find(asession);
 		if (lpstruct == nullptr)
@@ -409,7 +409,7 @@ namespace ngl
 		return lpstruct->m_actoridserver;
 	}
 
-	i64_actorid asio_kcp::find_actoridclient(i32_session asession)
+	i64_actorid asio_kcp::find_client(i32_session asession)
 	{
 		ptr_se lpstruct = m_session.find(asession);
 		if (lpstruct == nullptr)
