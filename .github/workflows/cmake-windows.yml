@@ -22,12 +22,11 @@ jobs:
       with:
         submodules: recursive  # 如果有子模块建议开启
 
-    # 配置Visual Studio环境
+    # 修复：简化MSVC环境配置，使用最新版本Action+极简参数
     - name: Setup MSVC compiler
-      uses: ilammy/msvc-dev-cmd@v1
+      uses: ilammy/msvc-dev-cmd@v1.16.0  # 升级到稳定新版本
       with:
-        toolset: latest
-        arch: x64
+        arch: x64  # 仅指定架构，移除多余的toolset参数
 
     # 安装Chocolatey包（基础工具）
     - name: Install base tools via Chocolatey
