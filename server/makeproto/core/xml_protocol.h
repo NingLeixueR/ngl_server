@@ -1008,7 +1008,7 @@ namespace ngl
                     << "-- ----------------------------\r\n"
                     << "-- Table structure for " << lmessage << "\r\n"
                     << "-- ----------------------------\r\n"
-                    << "DROP TABLE IF EXISTS `" << lmessage << "`;\r\n"
+                    << "DROP TABLE IF EXISTS " << lmessage << ";\r\n"
                     << "CREATE TABLE " << lmessage << " (\r\n"
                     << "    id NOT NULL PRIMARY KEY,\r\n"
                     << "    area integer NOT NULL,\r\n"
