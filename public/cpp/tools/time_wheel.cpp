@@ -15,6 +15,7 @@
 #include "time_wheel.h"
 
 #include <iostream>
+#include <unordered_map>
 
 namespace ngl
 {
@@ -72,7 +73,7 @@ namespace ngl
 		wheel_node*								m_worldnodehead = nullptr;
 		wheel_node*								m_worldnodetail = nullptr;
 		int64_t									m_timerid = 1;					// 定时器自增id
-		std::map<int64_t, bool>					m_timer;						// 用于快速删除定时器
+		std::unordered_map<int64_t, bool>			m_timer;						// 用于快速删除定时器
 		time_wheel*								m_twheel = nullptr;
 		bool									m_stop = false;
 

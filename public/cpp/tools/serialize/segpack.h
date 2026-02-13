@@ -20,7 +20,7 @@
 #include "pack.h"
 
 #include <functional>
-#include <map>
+#include <unordered_map>
 
 namespace ngl
 {
@@ -32,7 +32,7 @@ namespace ngl
 
 	class segpack
 	{
-		std::map<i32_socket, std::shared_ptr<pack>> m_data; //残包暂时保管
+		std::unordered_map<i32_socket, std::shared_ptr<pack>> m_data; //残包暂时保管
 		bpool			m_pool;
 		nrate			m_rate;
 		segpack*		m_segpack = nullptr;
