@@ -28,8 +28,8 @@
 namespace ngl
 {
 	struct wheel_node;
-	class wheel;
 	class time_wheel;
+	class wheel;
 
 	struct wheel_parm
 	{
