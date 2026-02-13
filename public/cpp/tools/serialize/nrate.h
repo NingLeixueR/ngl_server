@@ -16,6 +16,8 @@
 
 #include "tools.h"
 
+#include <unordered_map>
+
 namespace ngl
 {
 	class nrate
@@ -35,7 +37,7 @@ namespace ngl
 				m_ratecount = 0;
 			}
 		};
-		std::map<i32_socket, interval> m_data;
+		std::unordered_map<i32_socket, interval> m_data;
 	public:
 		bool add(i32_socket aid)
 		{

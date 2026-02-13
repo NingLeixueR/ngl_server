@@ -17,12 +17,13 @@
 #include "actor_base.h"
 #include "asio_kcp.h"
 #include "ukcp.h"
+#include <unordered_map>
 
 namespace ngl
 {
 	class nkcp
 	{
-		std::map<i16_port, std::shared_ptr<ukcp>> m_kcpnet;
+		std::unordered_map<i16_port, std::shared_ptr<ukcp>> m_kcpnet;
 		int16_t m_kcpindex;
 	public:
 		enum
