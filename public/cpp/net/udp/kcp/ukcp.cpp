@@ -44,19 +44,19 @@ namespace ngl
 			{
 				continue;
 			}
-			i64_actorid lactoridserver = 0;
-			i64_actorid lactoridclient = 0;
-			if (!m_kcp.find_actorid(lsession, lactoridserver, lactoridclient))
+			i64_actorid lserver = 0;
+			i64_actorid lclient = 0;
+			if (!m_kcp.find_actorid(lsession, lserver, lclient))
 			{
 				continue;
 			}
 			if (nconfig.nodetype() != ROBOT)
 			{
-				pack_head::head_set_actor((int32_t*)apack->m_buff, lactoridclient, lactoridserver);
+				pack_head::head_set_actor((int32_t*)apack->m_buff, lclient, lserver);
 			}
 			else
 			{
-				pack_head::head_set_actor((int32_t*)apack->m_buff, lactoridserver, lactoridclient);
+				pack_head::head_set_actor((int32_t*)apack->m_buff, lserver, lclient);
 			}
 			m_kcp.send_server(lsession, apack);
 		}
