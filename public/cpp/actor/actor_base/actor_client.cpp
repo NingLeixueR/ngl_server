@@ -19,6 +19,8 @@
 #include "naddress.h"
 #include "ntcp.h"
 
+#include <format>
+
 namespace ngl
 {
 	actor_client::actor_client() :
@@ -81,8 +83,8 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_connect_actor_server>& adata)
 	{
-		int32_t lserverid = adata.get_data()->m_serverid;
-		const tab_servers* tab = ttab_servers::instance().const_tab();
+		i32_serverid lserverid = adata.get_data()->m_serverid;
+		auto tab = ttab_servers::instance().const_tab();
 		if (tab == nullptr || ttab_servers::instance().tab(nnodeid::tid(lserverid)) == nullptr)
 		{
 			tools::no_core_dump();
@@ -125,16 +127,16 @@ namespace ngl
 		return true;
 	}
 
-	void actor_client::actor_server_register(i32_serverid aactorserver)
+	void actor_client::actor_server_register(i32_serverid aserver)
 	{
 		if (nconfig.nodetype() == NODE_TYPE::ROBOT)
 		{
 			return;
 		}
-		ntcp::instance().connect(aactorserver, [this, aactorserver](int asession)
+		ntcp::instance().connect(aserver, [this, aserver](int asession)
 			{
 				auto pro = std::make_shared<np_connect_actor_server>();
-				pro->m_serverid = aactorserver;
+				pro->m_serverid = aserver;
 				pro->m_session = asession;
 				send_actor(id_guid(), id_guid(), pro);
 			}, false, true
@@ -148,15 +150,13 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_actor_server_register>& adata)
 	{
-		// # 需要尝试连接ActorServer结点 并向其注册自己
-		NODE_TYPE ltype = ttab_servers::instance().nodetype();
-		if (nconfig.nodetype() != ltype || ltype == ngl::ACTORSERVER || ltype == ngl::ROBOT)
+		// # 需要尝试连接ActorServer结点 并向其注册自己		
+		if (auto ltype = ttab_servers::instance().nodetype(); nconfig.nodetype() != ltype || ltype == ngl::ACTORSERVER || ltype == ngl::ROBOT)
 		{
 			tools::no_core_dump();
 			return true;
 		}
-		const tab_servers* tab = ttab_servers::instance().const_tab();
-		for (int32_t id : tab->m_actorserver)
+		for (auto tab = ttab_servers::instance().const_tab(); int32_t id : tab->m_actorserver)
 		{
 			actor_server_register(nnodeid::nodeid(id, 1));
 		}

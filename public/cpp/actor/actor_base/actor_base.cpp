@@ -322,8 +322,7 @@ namespace ngl
 
 	i16_port actor_base::kcp_index(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum)
 	{
-		int32_t lserverid = nnodeid::nodeid(aservertid, atcount);
-		return kcp_index(lserverid, aenum);
+		return kcp_index(nnodeid::nodeid(aservertid, atcount), aenum);
 	}
 
 	bool actor_base::kcp_connect(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const
