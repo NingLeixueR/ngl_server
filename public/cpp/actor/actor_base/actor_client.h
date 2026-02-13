@@ -16,6 +16,7 @@
 #include "nprotocol.h"
 #include "naddress.h"
 #include "actor.h"
+#include <unordered_map>
 
 namespace ngl
 {
@@ -33,8 +34,8 @@ namespace ngl
 		actor_client(const actor_client&) = delete;
 		actor_client& operator=(const actor_client&) = delete;
 
-		using funclist = std::list<std::function<void()>>;
-		std::map<i32_serverid, funclist>	m_connectfun;			// 连接[指定服务器]成功后执行
+		using funclist = std::list<std::function<void()>>; 
+		std::unordered_map<i32_serverid, funclist>	m_connectfun;		// 连接[指定服务器]成功后执行
 		std::set<i32_serverid>				m_connectserverid;		// 已连接的服务器id
 
 		actor_client();
