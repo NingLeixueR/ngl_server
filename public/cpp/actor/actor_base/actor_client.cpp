@@ -314,10 +314,11 @@ namespace ngl
 		{
 			return;
 		}
-		for (auto itor = m_connectfun.begin(); itor != m_connectfun.end(); ++itor)
+		for (auto itor = m_connectfun.begin(); itor != m_connectfun.end(); )
 		{
 			if (!lserverids.contains(itor->first))
 			{
+				++itor;
 				continue;
 			}
 			for (auto& fun : itor->second)
