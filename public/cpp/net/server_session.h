@@ -26,8 +26,8 @@ namespace ngl
 		server_session(const server_session&) = delete;
 		server_session& operator=(const server_session&) = delete;
 
-		static std::multimap<i32_serverid, i32_sessionid>	m_server;	// key:serverid value:sessionid
-		static std::multimap<i32_sessionid, i32_serverid>	m_session;	// key:sessionid value:serverid
+		static std::unordered_map<i32_serverid, i32_sessionid>	m_server;	// key:serverid value:sessionid
+		static std::unordered_map<i32_sessionid, i32_serverid>	m_session;	// key:sessionid value:serverid
 		static std::shared_mutex							m_mutex;
 	public:
 		// # 添加服务器id与sessionid映射

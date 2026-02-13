@@ -13,6 +13,7 @@
 */
 #include "asio_base.h"
 #include "asio_tcp.h"
+#include <algorithm>
 
 namespace ngl
 {
@@ -28,10 +29,11 @@ namespace ngl
 
 	serviceio_info::serviceio_info(i32_threadid athread, int32_t abuffmaxsize) :
 		m_buffmaxsize(abuffmaxsize),
-		m_recvthreadsize(athread),
+		m_recvthreadsize(std::max<int32_t>(1, athread)),
 		m_next_index(0)
 	{
-		for (int32_t i = 0; i < m_recvthreadsize + 1; ++i)
+		// Ensure at least one io_service exists. create exactly m_recvthreadsize services.
+		for (int32_t i = 0; i < m_recvthreadsize; ++i)
 		{
 			auto lpioservice = std::make_shared<basio_ioservice>();
 			auto lpwork = std::make_shared<basio_ioservicework>(*lpioservice);

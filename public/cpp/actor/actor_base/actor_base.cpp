@@ -49,7 +49,7 @@ namespace ngl
 		}
 		if (aready == e_ready_all)
 		{
-			for (auto itor = m_readyfun.begin(); itor != m_readyfun.end();++itor)
+			for (auto itor = m_readyfun.begin(); itor != m_readyfun.end(); )
 			{
 				if (!itor->second())
 				{

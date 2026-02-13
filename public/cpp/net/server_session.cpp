@@ -18,8 +18,8 @@
 
 namespace ngl
 {
-	std::multimap<i32_serverid, i32_sessionid> server_session::m_server;
-	std::multimap<i32_sessionid, i32_serverid> server_session::m_session;
+	std::unordered_map<i32_serverid, i32_sessionid> server_session::m_server;
+	std::unordered_map<i32_sessionid, i32_serverid> server_session::m_session;
 	std::shared_mutex server_session::m_mutex;
 
 	void server_session::add(i32_serverid aserverid, i32_sessionid asession)
