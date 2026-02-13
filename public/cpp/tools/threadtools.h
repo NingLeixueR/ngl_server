@@ -77,8 +77,11 @@ namespace ngl
 	};
 }// namespace ngl
 
-#define lock_read(MUTEX)			std::shared_lock<std::shared_mutex> __Lock__(MUTEX)
-#define lock_write(MUTEX)			std::lock_guard<std::shared_mutex> __Lock__(MUTEX)
+#define CONCAT_(a, b) a##b
+#define CONCAT(a, b) CONCAT_(a, b)
+#define lock_read(mutex) std::shared_lock<std::shared_mutex> CONCAT(__read_lock_, __LINE__)(mutex) 
+#define lock_write(mutex)  std::lock_guard<std::shared_mutex> CONCAT(__write_lock_, __LINE__)(mutex)
+   
 #define monopoly_shared_lock(MUTEX)	lock_write(MUTEX)
 
 // 条件变量
