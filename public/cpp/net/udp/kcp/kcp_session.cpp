@@ -44,8 +44,8 @@ namespace ngl
 		ltemp->m_ip = aip;
 		ltemp->m_port = aport;
 		ltemp->m_asiokcp = m_asiokcp;
-		ltemp->m_actoridclient = aactoridclient;
-		ltemp->m_actoridserver = aactoridserver;
+		ltemp->m_client = aactoridclient;
+		ltemp->m_server = aactoridserver;
 		ltemp->create(aconv, m_sessionid, (void*)ltemp.get());
 		
 		//设置kcp对象的回调函数
@@ -118,7 +118,7 @@ namespace ngl
 				log_error()->print("kcp_session erasebysession fail ip:{} port:{}", lpse->m_ip, lpse->m_port);
 			}
 			i32_sessionid lsession = 0;
-			if (!tools::erasemap(m_actoridofsession, lpse->m_actoridclient, lsession))
+			if (!tools::erasemap(m_actoridofsession, lpse->m_client, lsession))
 			{
 				log_error()->print("kcp_session erasebysession fail session:{}", asession);
 			}

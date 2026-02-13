@@ -44,8 +44,8 @@ namespace ngl
 		asio_kcp*			m_asiokcp = nullptr;
 		ikcpcb*				m_kcp = nullptr;
 		bool				m_isconnect = false;		// 是否接收到kcp_cmd::ecmd_connect 或者ecmd_connect_ret
-		i64_actorid			m_actoridclient = 0;		// robot
-		i64_actorid			m_actoridserver = 0;		// server
+		i64_actorid			m_client = 0;		// robot
+		i64_actorid			m_server = 0;		// server
 		int64_t				m_timerid = 0;
 
 		typedef int (*output)(const char* buf, int len, struct IKCPCB* kcp, void* user);

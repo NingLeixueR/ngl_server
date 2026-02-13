@@ -94,8 +94,8 @@ namespace ngl
 		// # 发起连接
 		void connect(int32_t aconv
 			, std::string& akcpsess
-			, i64_actorid aactoridserver
-			, i64_actorid aactoridclient
+			, i64_actorid aserver
+			, i64_actorid aclient
 			, const std::string& aip
 			, i16_port aport
 			, const std::function<void(i32_session)>& afun
@@ -104,8 +104,8 @@ namespace ngl
 		// # 发起连接
 		void connect(int32_t aconv
 			, std::string& akcpsess
-			, i64_actorid aactoridserver
-			, i64_actorid aactoridclient
+			, i64_actorid aserver
+			, i64_actorid aclient
 			, const asio_udp_endpoint& aendpoint
 			, const std::function<void(i32_session)>& afun
 		);
@@ -113,10 +113,10 @@ namespace ngl
 		// # 查找连接关联的actor
 		i64_actorid find_server(i32_session asession);
 		i64_actorid find_client(i32_session asession);
-		bool find_actorid(i32_session asession, i64_actorid& aactoridserver, i64_actorid& aactoridclient);
+		bool find_actorid(i32_session asession, i64_actorid& aserver, i64_actorid& aclient);
 
 		// # 根据actorid获取session
-		i32_session find_session(i64_actorid aactoridclient);
+		i32_session find_session(i64_actorid aclient);
 
 		// # 关闭连接
 		void close(i32_session asession);
@@ -124,7 +124,7 @@ namespace ngl
 		void close_net(i32_session asession);
 
 		// # 重置连接
-		void reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient);
+		void reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aserver, i64_actorid aclient);
 
 		bool sempack(const ptr_se& apstruct, const char* abuff, int abufflen);
 
