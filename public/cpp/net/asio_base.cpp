@@ -19,11 +19,27 @@ namespace ngl
 {
 	basio_ioservice* serviceio_info::get_ioservice(i32_threadid athreadid)
 	{
+		if (m_ioservices.empty())
+		{
+			return nullptr;
+		}
+		if (athreadid < 0 || static_cast<size_t>(athreadid) >= m_ioservices.size())
+		{
+			return std::get<0>(m_ioservices[0]).get();
+		}
 		return std::get<0>(m_ioservices[athreadid]).get();
 	}
 
 	basio_ioservicework* serviceio_info::get_ioservice_work(i32_threadid athreadid)
 	{
+		if (m_ioservices.empty())
+		{
+			return nullptr;
+		}
+		if (athreadid < 0 || static_cast<size_t>(athreadid) >= m_ioservices.size())
+		{
+			return std::get<1>(m_ioservices[0]).get();
+		}
 		return std::get<1>(m_ioservices[athreadid]).get();
 	}
 
