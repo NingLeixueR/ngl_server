@@ -426,8 +426,8 @@ namespace ngl
 		{
 			return false;
 		}
-		aactoridserver = lpstruct->m_server;
-		aactoridclient = lpstruct->m_client;
+		aserver = lpstruct->m_server;
+		aclient = lpstruct->m_client;
 		return true;
 	}
 
