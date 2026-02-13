@@ -51,9 +51,9 @@ namespace ngl
 		asio::io_context					m_context;
 		asio_udp::socket					m_socket;
 		asio_udp_endpoint					m_remoteport;
-		char								m_buff[e_buff_byte] = { 0x0 };
+		char								m_buff[e_buff_byte] = { 0 };
 		std::size_t							m_bytes_received = 0;
-		char								m_buffrecv[e_buffrecv_byte] = { 0x0 };
+		char								m_buffrecv[e_buffrecv_byte] = { 0 };
 		std::function<void(char*, int)>		m_wait = nullptr;
 		asio_udp_endpoint					m_waitendpoint;
 		i16_port							m_port = 0;
