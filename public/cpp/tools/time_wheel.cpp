@@ -208,7 +208,7 @@ namespace ngl
 
 		void removetimer(int64_t atimerid)
 		{
-			monopoly_shared_lock(m_mutex);
+			lock_write(m_mutex);
 			auto itor = m_timer.find(atimerid);
 			if (itor == m_timer.end())
 			{
@@ -222,7 +222,7 @@ namespace ngl
 			wheel_node* ltailnode = nullptr;
 			if (m_isthreadcallback)
 			{
-				monopoly_shared_lock(m_mutexcallback);
+				lock_write(m_mutexcallback);
 				if (m_worldnodehead == nullptr)
 				{
 					m_worldnodehead = apnode;
@@ -278,7 +278,7 @@ namespace ngl
 				{
 					std::this_thread::sleep_for(std::chrono::milliseconds(ltempsleep));
 				}
-				monopoly_shared_lock(m_mutex);
+				lock_write(m_mutex);
 				if (!m_wheel.empty())
 				{
 					wheel_node* lpbnode = m_wheel[0]->shift_current_pos(nullptr);
@@ -298,7 +298,7 @@ namespace ngl
 			{
 				m_sem.wait();
 				{
-					monopoly_shared_lock(m_mutexcallback);
+					lock_write(m_mutexcallback);
 					std::swap(lpnode, m_worldnodehead);
 					m_worldnodetail = nullptr;
 				}
@@ -551,25 +551,25 @@ namespace ngl
 
 	int	time_wheel::count() 
 	{ 
-		monopoly_shared_lock(m_impl_time_wheel()->m_mutex);
+		lock_read(m_impl_time_wheel()->m_mutex);
 		return  (int)m_impl_time_wheel()->m_timer.size();
 	}
 
 	bool time_wheel::empty() 
 	{ 
-		monopoly_shared_lock(m_impl_time_wheel()->m_mutex);
+		lock_read(m_impl_time_wheel()->m_mutex);
 		return  m_impl_time_wheel()->m_timer.empty();
 	}
 
 	int64_t time_wheel::server_start_ms() 
 	{ 
-		monopoly_shared_lock(m_impl_time_wheel()->m_mutex);
+		lock_read(m_impl_time_wheel()->m_mutex);
 		return  m_impl_time_wheel()->m_server_start_ms;
 	}
 
 	int64_t time_wheel::server_current_ms() 
 	{ 
-		monopoly_shared_lock(m_impl_time_wheel()->m_mutex);
+		lock_read(m_impl_time_wheel()->m_mutex);
 		return  m_impl_time_wheel()->m_current_ms; 
 	}
 	

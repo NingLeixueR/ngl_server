@@ -79,18 +79,18 @@ namespace ngl
 
 #define CONCAT_(a, b) a##b
 #define CONCAT(a, b) CONCAT_(a, b)
-#define lock_read(mutex) std::shared_lock<std::shared_mutex> CONCAT(__read_lock_, __LINE__)(mutex) 
-#define lock_write(mutex)  std::lock_guard<std::shared_mutex> CONCAT(__write_lock_, __LINE__)(mutex)
-   
-#define monopoly_shared_lock(MUTEX)	lock_write(MUTEX)
 
+#define lock_read(MUTEX)		std::shared_lock<std::shared_mutex> CONCAT(__read_lock_, __LINE__)(MUTEX) 
+#define lock_write(MUTEX)		std::lock_guard<std::shared_mutex> CONCAT(__write_lock_, __LINE__)(MUTEX)
+   
 // 条件变量
-#define monopoly_lock(MUTEX)		std::lock_guard<std::mutex> __Lock__(MUTEX)
-#define cv_lock(CV, MUTEX, FUN)							\
-	std::unique_lock<std::mutex> __Lock__(m_mutex);		\
-	if (!FUN())											\
-	{													\
-		CV.wait(__Lock__, FUN);							\
+#define condition_lock(MUTEX)	std::lock_guard<std::mutex> CONCAT(__condition_lock_, __LINE__)(mutex)
+
+#define cv_lock(CV, MUTEX, FUN)														\
+	std::unique_lock<std::mutex> CONCAT(__lock_, __LINE__)(m_mutex);				\
+	if (!FUN())																		\
+	{																				\
+		CV.wait(__Lock__, FUN);														\
 	}
 
 // # 使用信号量/条件变量
@@ -107,9 +107,9 @@ namespace ngl
 #endif//OPEN_SEM
 
 #ifdef OPEN_SEM
-# define ngl_lock monopoly_shared_lock(m_mutex)
+# define ngl_lock lock_write(m_mutex)
 #else
-# define ngl_lock monopoly_lock(m_mutex)
+# define ngl_lock condition_lock(m_mutex)
 #endif//OPEN_SEM
 
 // 用于检查死锁

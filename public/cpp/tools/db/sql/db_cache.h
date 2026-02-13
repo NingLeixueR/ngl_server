@@ -52,20 +52,20 @@ namespace ngl
 
 		inline void push(i64_actorid aid)
 		{
-			monopoly_shared_lock(m_mutex);
+			lock_write(m_mutex);
 			m_cachelist.insert(aid);
 		}
 
 		inline void push(const std::vector<i64_actorid>& aidlist)
 		{
-			monopoly_shared_lock(m_mutex);
+			lock_write(m_mutex);
 			m_cachelist.insert(aidlist.begin(), aidlist.end());
 		}
 
 		inline void execute(const wheel_node*)
 		{
 			{
-				monopoly_shared_lock(m_mutex);
+				lock_write(m_mutex);
 				m_cachelist.swap(m_copycachelist);
 			}
 			if (!m_copycachelist.empty())

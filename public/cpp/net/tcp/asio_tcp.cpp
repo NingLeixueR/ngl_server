@@ -65,7 +65,7 @@ namespace ngl
 	{
 		std::shared_ptr<service_tcp> lservice = nullptr;
 		{
-			monopoly_shared_lock(m_maplock);
+			lock_write(m_maplock);
 			lservice = std::make_shared<service_tcp>(m_service_ios, ++m_sessionid);
 			auto [_, success] = m_data.insert(std::make_pair(lservice->m_sessionid, lservice));
 			if (!success)
@@ -103,7 +103,7 @@ namespace ngl
 				i16_port lport = lremote_endpoint.port();
 				bool llanip = tools::is_lanip(lip);
 				{
-					monopoly_shared_lock(m_ipportlock);
+					lock_write(m_ipportlock);
 					m_ipport[lservice->m_sessionid] = std::make_pair(lip, lport);
 					lservice->m_is_lanip = llanip;
 				}
@@ -116,7 +116,7 @@ namespace ngl
 
 	service_tcp* asio_tcp::get_tcp(i32_sessionid asessionid)
 	{
-		monopoly_shared_lock(m_maplock);
+		lock_write(m_maplock);
 		std::shared_ptr<service_tcp>* lp = tools::findmap(m_data, asessionid);
 		return lp == nullptr ? nullptr : lp->get();
 	}
@@ -131,7 +131,7 @@ namespace ngl
 		}
 		std::shared_ptr<std::list<node_pack>> llist = nullptr;
 		{
-			monopoly_shared_lock(tcp->m_mutex);
+			lock_write(tcp->m_mutex);
 			tcp->m_list.push_back({ asessionid, apack });
 			if (tcp->m_issend == false)
 			{
@@ -185,7 +185,7 @@ namespace ngl
 		if (alist->empty())
 		{
 			{
-				monopoly_shared_lock(atcp->m_mutex);
+				lock_write(atcp->m_mutex);
 				if (atcp->m_list.empty() == false)
 				{
 					atcp->m_list.swap(*alist);
@@ -263,7 +263,7 @@ namespace ngl
 		std::shared_ptr<service_tcp> lpservice = nullptr;
 		std::function<void()> lclosefun = nullptr;
 		{
-			monopoly_shared_lock(m_maplock);
+			lock_write(m_maplock);
 			tools::erasemap(m_data, sessionid, lpservice);
 			tools::erasemap(m_close, sessionid, lclosefun);
 		}
@@ -327,7 +327,7 @@ namespace ngl
 	{
 		std::shared_ptr<service_tcp> lpservice = nullptr;
 		{
-			monopoly_shared_lock(m_maplock);
+			lock_write(m_maplock);
 			tools::erasemap(m_data, sessionid, lpservice);
 			m_close.erase(sessionid);
 		}
@@ -339,7 +339,7 @@ namespace ngl
 
 	bool asio_tcp::get_ipport(i32_sessionid assionid, std::pair<str_ip, i16_port>& apair)
 	{
-		monopoly_shared_lock(m_ipportlock);
+		lock_read(m_ipportlock);
 		auto lpair = tools::findmap(m_ipport, assionid);
 		if (lpair == nullptr)
 		{
@@ -363,7 +363,7 @@ namespace ngl
 			i16_port lport = lremote_endpoint.port();
 			bool llanip = tools::is_lanip(lip);
 			{
-				monopoly_shared_lock(m_ipportlock);
+				lock_write(m_ipportlock);
 				m_ipport[aservice->m_sessionid] = std::make_pair(lip, lport);
 				aservice->m_is_lanip = llanip;
 			}
@@ -376,7 +376,7 @@ namespace ngl
 	{
 		std::shared_ptr<service_tcp> lservice = nullptr;
 		{
-			monopoly_shared_lock(m_maplock);
+			lock_write(m_maplock);
 			lservice = std::make_shared<service_tcp>(m_service_ios, ++m_sessionid);
 			auto [_, success] = m_data.insert(std::make_pair(lservice->m_sessionid, lservice));
 			if (!success)
@@ -432,7 +432,7 @@ namespace ngl
 
 	void asio_tcp::set_close(i32_sessionid asession, const std::function<void()>& afun)
 	{
-		monopoly_shared_lock(m_maplock);
+		lock_write(m_maplock);
 		m_close[asession] = afun;
 	}
 }// namespace ngl

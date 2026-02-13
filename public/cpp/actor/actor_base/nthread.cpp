@@ -31,13 +31,13 @@ namespace ngl
 
 	bool nthread::isactivity()
 	{
-		monopoly_shared_lock(m_mutex);
+		lock_read(m_mutex);
 		return m_isactivity;
 	}
 
 	void nthread::push(ptractor aactor)
 	{
-		monopoly_shared_lock(m_mutex);
+		lock_write(m_mutex);
 		m_actor = aactor;
 		m_isactivity = false;
 		m_sem.post();
@@ -50,7 +50,7 @@ namespace ngl
 		{
 			m_sem.wait();
 			{
-				monopoly_shared_lock(m_mutex);
+				lock_write(m_mutex);
 				lpactor = m_actor;
 			}
 			if (lpactor != nullptr)
@@ -59,7 +59,7 @@ namespace ngl
 				{
 					lpactor->actor_handle(m_id);
 					{
-						monopoly_shared_lock(m_mutex);
+						lock_write(m_mutex);
 						m_actor = nullptr;
 						m_isactivity = false;
 					}

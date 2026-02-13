@@ -81,7 +81,7 @@ namespace ngl
 			{
 				if (abool)
 				{
-					monopoly_shared_lock(m_mutex);
+					lock_write(m_mutex);
 					m_pool[lindex].push_back(abuff);
 				}
 				else
@@ -132,7 +132,7 @@ namespace ngl
 			{
 				int32_t lpos = (int32_t)(itor - m_bytes.begin());
 				{
-					monopoly_shared_lock(m_mutex);
+					lock_write(m_mutex);
 					if (m_pool[lpos].empty() == false)
 					{
 						char* ret = nullptr;
@@ -154,7 +154,7 @@ namespace ngl
 		// # 每分钟定时回收 超过初始化两倍的清空
 		void time_free()
 		{
-			monopoly_shared_lock(m_mutex);
+			lock_write(m_mutex);
 			for (int32_t i = 0; i < TCOUNT; ++i)
 			{
 				int32_t lcount = m_counts[i] * 2;

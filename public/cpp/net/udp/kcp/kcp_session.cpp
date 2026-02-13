@@ -70,7 +70,7 @@ namespace ngl
 		ltemp->m_endpoint = aendpoint;
 
 		{
-			monopoly_shared_lock(m_mutex);
+			lock_write(m_mutex);
 			erasebyaactorid(aactoridclient);
 			i32_sessionid lsessionid = ++m_sessionid;
 			m_dataofsession[lsessionid] = ltemp;
@@ -87,7 +87,7 @@ namespace ngl
 				{
 					ptr_se* lpse = nullptr;
 					{
-						monopoly_shared_lock(m_mutex);
+						lock_write(m_mutex);
 						lpse = tools::findmap(m_dataofsession, lsessionid);
 					}
 					if (lpse != nullptr)
@@ -109,7 +109,7 @@ namespace ngl
 
 	void kcp_session::erasebysession(i32_sessionid asession)
 	{
-		monopoly_shared_lock(m_mutex);
+		lock_write(m_mutex);
 		ptr_se lpse = nullptr;
 		if (tools::erasemap(m_dataofsession, asession, lpse))
 		{
@@ -171,13 +171,13 @@ namespace ngl
 
 	ptr_se kcp_session::find(i32_sessionid asession)
 	{
-		monopoly_shared_lock(m_mutex);
+		lock_read(m_mutex);
 		return find_info(asession);
 	}
 
 	ptr_se kcp_session::findbyactorid(i64_actorid aactorid)
 	{
-		monopoly_shared_lock(m_mutex);
+		lock_read(m_mutex);
 		auto lpse = tools::findmap(m_actoridofsession, aactorid);
 		if (lpse == nullptr)
 		{
@@ -188,13 +188,13 @@ namespace ngl
 
 	ptr_se kcp_session::find(const asio_udp_endpoint& aendpoint)
 	{
-		monopoly_shared_lock(m_mutex);
+		lock_read(m_mutex);
 		return find_info(aendpoint);
 	}
 
 	asio_udp_endpoint* kcp_session::find_endpoint(i32_sessionid asession)
 	{
-		monopoly_shared_lock(m_mutex);
+		lock_read(m_mutex);
 		ptr_se lpstruct = find_info(asession);
 		if (lpstruct == nullptr)
 		{
