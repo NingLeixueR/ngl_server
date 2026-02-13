@@ -41,8 +41,8 @@ namespace ngl
 					return;
 				}
 				
-				apstruct->m_actoridclient = lclient;
-				apstruct->m_actoridserver = lserver;
+				apstruct->m_client = lclient;
+				apstruct->m_server = lserver;
 
 				log_error()->print("kcp connect : {}@{}", kcp_endpoint::ip(apstruct.get()), kcp_endpoint::port(apstruct.get()));
 
@@ -123,7 +123,7 @@ namespace ngl
 		i64_actorid lactorid;
 		if (nconfig.nodetype() != ROBOT)
 		{
-			lpack->m_head.set_actor(apstruct->m_actoridserver, apstruct->m_actoridclient);
+			lpack->m_head.set_actor(apstruct->m_server, apstruct->m_client);
 		}
 		
 		lpack->m_pos = len;
@@ -371,29 +371,29 @@ namespace ngl
 
 	void asio_kcp::connect(int32_t aconv
 		, std::string& akcpsess
-		, i64_actorid aactoridlocal
-		, i64_actorid aactoridremote
+		, i64_actorid aserver
+		, i64_actorid aclient
 		, const std::string& aip
 		, i16_port aport
 		, const std::function<void(i32_session)>& afun
 	)
 	{
 		ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(aip), aport);
-		connect(aconv, akcpsess, aactoridlocal, aactoridremote, lendpoint, afun);
+		connect(aconv, akcpsess, aserver, aclient, lendpoint, afun);
 	}
 
 	void asio_kcp::connect(int32_t aconv
 		, std::string& akcpsess
-		, i64_actorid aactoridserver
-		, i64_actorid aactoridclient
+		, i64_actorid aserver
+		, i64_actorid aclient
 		, const asio_udp_endpoint& aendpoint
 		, const std::function<void(i32_session)>& afun
 	)
 	{
 		// #### 发起连接
-		ptr_se lpstruct = m_session.add(aconv, aendpoint, aactoridserver, aactoridclient);
+		ptr_se lpstruct = m_session.add(aconv, aendpoint, aserver, aclient);
 		ncjson ltempjson;
-		njson::push(ltempjson.json(), { "actoridserver","actoridclient","session" }, aactoridserver, aactoridclient, akcpsess);
+		njson::push(ltempjson.json(), { "actoridserver","actoridclient","session" }, aserver, aclient, akcpsess);
 		ltempjson.set_nonformatstr(true);
 		udp_cmd::sendcmd(this, lpstruct->m_session, udp_cmd::ecmd_connect, ltempjson.str());
 		m_connectfun = afun;
@@ -406,7 +406,7 @@ namespace ngl
 		{
 			return -1;
 		}
-		return lpstruct->m_actoridserver;
+		return lpstruct->m_server;
 	}
 
 	i64_actorid asio_kcp::find_client(i32_session asession)
@@ -416,18 +416,18 @@ namespace ngl
 		{
 			return nguid::make();
 		}
-		return lpstruct->m_actoridclient;
+		return lpstruct->m_client;
 	}
 
-	bool asio_kcp::find_actorid(i32_session asession, i64_actorid& aactoridserver, i64_actorid& aactoridclient)
+	bool asio_kcp::find_actorid(i32_session asession, i64_actorid& aserver, i64_actorid& aclient)
 	{
 		ptr_se lpstruct = m_session.find(asession);
 		if (lpstruct == nullptr)
 		{
 			return false;
 		}
-		aactoridserver = lpstruct->m_actoridserver;
-		aactoridclient = lpstruct->m_actoridclient;
+		aactoridserver = lpstruct->m_server;
+		aactoridclient = lpstruct->m_client;
 		return true;
 	}
 
@@ -446,10 +446,10 @@ namespace ngl
 		m_session.erasebysession(asession);
 	}
 
-	void asio_kcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aactoridserver, i64_actorid aactoridclient)
+	void asio_kcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aserver, i64_actorid aclient)
 	{
 		ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(aip), aport);
-		m_session.reset_add(aconv, lendpoint, aactoridserver, aactoridclient);
+		m_session.reset_add(aconv, lendpoint, aserver, aclient);
 	}
 
 	void asio_kcp::close_net(i32_session asession)
