@@ -45,7 +45,7 @@ namespace ngl
 
 	void actor::release()
 	{
-		monopoly_shared_lock(m_mutex);
+		lock_write(m_mutex);
 		m_release = true;
 		actor_handle(0x7fffffff);
 		save();
@@ -54,26 +54,26 @@ namespace ngl
 
 	bool actor::list_empty()
 	{
-		monopoly_shared_lock(m_mutex);
+		lock_read(m_mutex);
 		return m_list.empty() && m_hightlist.empty();
 	}
 
 	actor_stat actor::activity_stat()
 	{
-		monopoly_shared_lock(m_mutex);
+		lock_read(m_mutex);
 		return m_stat;
 	}
 
 	void actor::set_activity_stat(actor_stat astat)
 	{
-		monopoly_shared_lock(m_mutex);
+		lock_write(m_mutex);
 		m_stat = astat;
 	}
 
 	void actor::push(handle_pram& apram)
 	{
 		int8_t highvalue = tprotocol::highvalue(apram.m_enum);
-		monopoly_shared_lock(m_mutex);
+		lock_write(m_mutex);
 		if (highvalue <= 0)
 		{
 			m_list.push_back(apram);
@@ -109,7 +109,7 @@ namespace ngl
 		std::list<handle_pram> locallist;
 		std::map<int32_t, std::list<handle_pram>> localhightlist;
 		{
-			monopoly_shared_lock(m_mutex);
+			lock_write(m_mutex);
 			m_hightlist.swap(localhightlist);
 			m_list.swap(locallist);
 		}
@@ -146,7 +146,7 @@ namespace ngl
 		}
 		if (!locallist.empty())
 		{
-			monopoly_shared_lock(m_mutex);
+			lock_write(m_mutex);
 			m_list.insert(m_list.begin(), locallist.begin(), locallist.end());
 		}
 	}

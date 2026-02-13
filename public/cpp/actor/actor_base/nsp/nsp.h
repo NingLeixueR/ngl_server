@@ -209,11 +209,11 @@ namespace ngl
 	{
 	private:
 		static std::map<i64_actorid, std::shared_ptr<T>>	m_instance;
-		static std::mutex									m_mutex;
+		static std::shared_mutex							m_mutex;
 	public:
 		static T* nclient(i64_actorid aactorid, bool adump)
 		{
-			monopoly_lock(m_mutex);
+			lock_read(m_mutex);
 			auto lpinstance = tools::findmap(m_instance, aactorid);
 			if (lpinstance == nullptr)
 			{
@@ -228,7 +228,7 @@ namespace ngl
 
 		static T* init(i64_actorid aactorid, std::shared_ptr<T>& athis)
 		{
-			monopoly_lock(m_mutex);
+			lock_write(m_mutex);
 			if (m_instance.contains(aactorid))
 			{
 				tools::no_core_dump();
@@ -239,7 +239,7 @@ namespace ngl
 
 		static void exit(i64_actorid aactorid)
 		{
-			monopoly_lock(m_mutex);
+			lock_write(m_mutex);
 			m_instance.erase(aactorid);
 		}
 
@@ -346,5 +346,5 @@ namespace ngl
 	std::map<i64_actorid, std::shared_ptr<T>> nsp_instance<T>::m_instance;
 
 	template <typename T>
-	std::mutex nsp_instance<T>::m_mutex;
+	std::shared_mutex nsp_instance<T>::m_mutex;
 }//namespace ngl

@@ -43,7 +43,7 @@ namespace ngl
 			{
 				m_sem.wait();
 				{
-					monopoly_shared_lock(m_mutex);
+					lock_write(m_mutex);
 					if (m_list.empty())
 					{
 						continue;
@@ -68,7 +68,7 @@ namespace ngl
 		inline void push_back(std::shared_ptr<T>& anode)
 		{
 			{
-				monopoly_shared_lock(m_mutex);
+				lock_write(m_mutex);
 				m_list.push_back(anode);
 			}
 			ngl_post;

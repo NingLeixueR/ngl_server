@@ -103,7 +103,7 @@ namespace ngl
 	public:
 		static bool login(int asocket, const std::string_view& auser, const std::string& apassworld)
 		{
-			monopoly_shared_lock(m_mutex);
+			lock_write(m_mutex);
 			if (auser != nconfig.telnet().m_account)
 			{
 				return false;
@@ -117,7 +117,7 @@ namespace ngl
 		}
 		static bool check(int asocket)
 		{
-			monopoly_shared_lock(m_mutex);
+			lock_read(m_mutex);
 			if (m_adminsocket.contains(asocket))
 			{
 				return true;

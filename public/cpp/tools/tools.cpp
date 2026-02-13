@@ -1375,11 +1375,11 @@ namespace ngl
 	std::seed_seq g_tools_seed{ static_cast<unsigned int>(g_tools_now_ns), g_tools_rd() };
 	std::mt19937 g_tools_gen(g_tools_seed);
 	std::uniform_int_distribution<int> g_tools_dis(0, RAND_MAX);
-	std::mutex g_tools_mutex;
+	std::shared_mutex g_tools_mutex;
 
 	int tools::rand()
 	{
-		monopoly_lock(g_tools_mutex);
+		lock_write(g_tools_mutex);
 		return g_tools_dis(g_tools_gen);
 	}
 
@@ -1467,7 +1467,7 @@ namespace ngl
 			{
 				int32_t lnow = (int32_t)localtime::gettime();
 				{
-					monopoly_shared_lock(g_maillock);
+					lock_write(g_maillock);
 					if (g_mailmap[acontent] - lnow > g_mailinterval)
 					{
 						return;

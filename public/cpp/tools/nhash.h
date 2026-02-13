@@ -48,7 +48,7 @@ namespace ngl
 			static int64_t lcode = typeid(T).hash_code();
 			int32_t lindex = 0;
 			{
-				monopoly_shared_lock(m_mutex);
+				lock_write(m_mutex);
 				std::map<std::string, int32_t>& lmap = m_hash[lcode];
 				auto itor = lmap.find(tools::type_name<T>());
 				if (itor != lmap.end())
