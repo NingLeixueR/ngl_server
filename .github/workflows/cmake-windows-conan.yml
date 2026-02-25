@@ -29,6 +29,7 @@ jobs:
     - name: Install dependencies with Conan
       working-directory: build
       run: |
+        conan profile detect --force
         conan install .. --output-folder=. --build=missing
 
     - name: Configure with CMake (Windows)
