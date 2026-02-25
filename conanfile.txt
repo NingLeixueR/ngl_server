@@ -1,0 +1,17 @@
+# conanfile.txt
+[requires]
+lua/5.4.6
+protobuf/3.21.12
+libcurl/8.9.1
+libmysqlclient/8.0.39
+hiredis/1.2.0
+libpq/16.2
+
+[generators]
+CMakeDeps
+CMakeToolchain
+
+[options]
+# Windows: 使用 Schannel 避免 OpenSSL
+#*:shared=False
+# libcurl/*:with_ssl=schannel
