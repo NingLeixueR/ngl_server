@@ -1,4 +1,4 @@
-name: windows-vs2022
+name: windows-vs2022-concan
 
 on:
  # push:
