@@ -3,7 +3,7 @@
 lua/5.4.6
 protobuf/3.21.12
 libcurl/8.9.1
-libmysql/8.0.36
+libmysqlclient/8.1.0
 hiredis/1.2.0
 libpq/16.2
 
