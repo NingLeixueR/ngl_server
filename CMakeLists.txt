@@ -25,7 +25,17 @@ ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
-LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib)
+#LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib)
+
+
+# 查找依赖
+# find_package(lua)
+#     find_package(protobuf)
+ #    find_package(CURL)
+ #    find_package(libmysqlclient)
+ #    find_package(hiredis)
+ #    find_package(PostgreSQL)
+   
 
 INCLUDE_DIRECTORIES(/)
 INCLUDE_DIRECTORIES(public/cpp/third_party/mysql)

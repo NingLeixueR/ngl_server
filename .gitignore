@@ -8,10 +8,6 @@ public/csharp/
 public/csharp/csharp/.vs
 public/csharp/csharp/csharp/bin
 public/csharp/NodeConsoleApp1
-third_party/protobuf-all-3.12.2
-third_party/lua-cjson-2.1.0
-third_party/lua-5.4.2_Win64_dll17_lib
-third_party/websocketpp-0.8.2
-third_party/libpqxx-8.0.0-rc4
+build
 *.cpp text=auto charset=gbk
 *.h text=auto charset=gbk
