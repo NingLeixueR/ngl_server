@@ -40,7 +40,7 @@ jobs:
     - name: Configure with CMake (Linux/macOS)
       if: runner.os != 'Windows'
       working-directory: build
-      run: cmake ..
+      run: cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_POLICY_DEFAULT_CMP0091=NEW
 
     - name: Build project
       working-directory: build
