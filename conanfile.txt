@@ -1,4 +1,4 @@
-# conanfile.txt
+﻿# conanfile.txt
 [requires]
 lua/5.4.6
 protobuf/3.21.12
@@ -10,6 +10,9 @@ libpq/17.7
 [generators]
 CMakeDeps
 CMakeToolchain
+
+[layout]
+cmake_layout
 
 [options]
 # Windows: 使用 Schannel 避免 OpenSSL

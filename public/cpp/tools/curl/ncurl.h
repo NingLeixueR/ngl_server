@@ -21,7 +21,7 @@
 
 #include <functional>
 #include <string>
-#include <curl.h>
+#include <curl/curl.h>
 #include <list>
 
 #ifdef WIN32

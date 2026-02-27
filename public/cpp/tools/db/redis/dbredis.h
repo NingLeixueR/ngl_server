@@ -14,7 +14,7 @@
 #pragma once
 
 #include "nserialize.h"
-#include "hiredis.h"
+#include "hiredis/hiredis.h"
 #include "db_buff.h"
 #include "nlog.h"
 #include "type.h"

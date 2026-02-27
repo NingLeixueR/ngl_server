@@ -18,16 +18,11 @@ SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 ADD_DEFINITIONS(-DNGL_EXPORT)
 
-# ============ 加载 Conan 配置 ============
-if(EXISTS "${CMAKE_BINARY_DIR}/conan_toolchain.cmake")
-    include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
-endif()
-# =========================================
 # 查找依赖
 find_package(lua REQUIRED CONFIG)
 find_package(protobuf REQUIRED CONFIG)
 find_package(CURL REQUIRED CONFIG)
-find_package(libmysqlclient REQUIRED CONFIG)   # 注意：这个包可能不存在！
+find_package(libmysqlclient REQUIRED CONFIG)
 find_package(hiredis REQUIRED CONFIG)
 find_package(PostgreSQL REQUIRED CONFIG)
 
@@ -39,20 +34,20 @@ ADD_LIBRARY(nglcore SHARED
 	${CORE_PROTOBUF_LIST_CSRC}
 )
 
+# 链接
+target_link_libraries(nglcore PRIVATE lua::lua)
+target_link_libraries(nglcore PRIVATE protobuf::protobuf)
+target_link_libraries(nglcore PRIVATE CURL::libcurl)
+target_link_libraries(nglcore PRIVATE libmysqlclient::libmysqlclient)
+target_link_libraries(nglcore PRIVATE hiredis::hiredis)
+target_link_libraries(nglcore PRIVATE libpq::libpq)
+
+
 IF (CMAKE_SYSTEM_NAME MATCHES "Windows")	
 	SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MT")
 	ADD_DEFINITIONS(-DWIN32_LEAN_AND_MEAN)
 	SET_TARGET_PROPERTIES(nglcore PROPERTIES COMPILE_FLAGS "/EHa" )
-	
-	target_link_libraries(nglcore 
-		lua::lua 
-		protobuf::libprotobuf
-		CURL::libcurl 
-		libmysqlclient::libmysqlclient 
-		hiredis::hiredis 
-		libpq::libpq
-	)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 

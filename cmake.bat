@@ -1,1 +1,0 @@
-start cmake-gui.exe ./build -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_POLICY_DEFAULT_CMP0091=NEW 

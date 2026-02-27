@@ -21,23 +21,17 @@ ADD_EXECUTABLE(node
 	${CORE_LIST_CSRC}
 )
 
-IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
-	link_directories("${CMAKE_SOURCE_DIR}/lib")
-	target_link_libraries(node
-		PRIVATE nglcore  # 等价于链接 libnglcore.so
-	)
-ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+link_directories("${CMAKE_SOURCE_DIR}/lib")
+target_link_libraries(node
+	PRIVATE nglcore 
+)
+
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Windows")	
 	SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MT")
 	ADD_DEFINITIONS(-DWIN32_LEAN_AND_MEAN)
-	SET_TARGET_PROPERTIES(node PROPERTIES COMPILE_FLAGS "/EHa" )
-	TARGET_LINK_LIBRARIES(node PRIVATE nglcore)
-	#TARGET_LINK_LIBRARIES(node debug ${PROJECT_SOURCE_DIR}/../../bin/Debug/nglcore.lib)
-	#TARGET_LINK_LIBRARIES(node optimized ${PROJECT_SOURCE_DIR}/../../bin/Release/nglcore.lib)
+	SET_TARGET_PROPERTIES(nglcore PROPERTIES COMPILE_FLAGS "/EHa" )
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
-
-
 
 
