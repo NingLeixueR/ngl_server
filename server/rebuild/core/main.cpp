@@ -128,9 +128,9 @@ int main(int argc, char** argv)
 	{
 		std::string targetPath = argv[i];
 		ldic.insert(targetPath);
-		find(false, ".cpp", targetPath, ldic, lvec1, lset_head);
-		find(false, ".c", targetPath, ldic, lvec5, lset_head);
-		find(false, ".h", targetPath, ldic, lvec3, lset_head);
+		find(true, ".cpp", targetPath, ldic, lvec1, lset_head);
+		find(true, ".c", targetPath, ldic, lvec5, lset_head);
+		find(true, ".h", targetPath, ldic, lvec3, lset_head);
 	}
 
 	std::map<int, std::map<std::string,int>> lmap;
@@ -159,8 +159,25 @@ int main(int argc, char** argv)
 			char ltmbuff[1024] = { 0 };
 			ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
 			*m_stream << ltmbuff << std::endl;
-			*m_stream << "#include \"pb_field.cpp\"" << std::endl;
+			*m_stream << "#include \"tools/pb_field.cpp\"" << std::endl;
 			return m_stream;
+		};
+
+
+	auto lfunksb = [](const std::string& item)
+		{
+			const std::string delimiter = "cpp/";
+			size_t pos = item.find(delimiter);
+
+			std::string result;
+			if (pos != std::string::npos) {
+				result = item.substr(pos + delimiter.length());
+			}
+			else {
+				result = "";
+				std::cerr << "错误：未找到子串\"cpp/\"" << std::endl;
+			}
+			return result;
 		};
 
 	int lindex = 0; 
@@ -171,9 +188,13 @@ int main(int argc, char** argv)
 			{
 				for (auto itor2 = itor1->second.rbegin(); itor2 != itor1->second.rend(); ++itor2)
 				{
-					if (itor2->first != "pb_field.cpp")
+					if (itor2->first.find("pb_field.cpp") == std::string::npos)
 					{
-						*astream << "#include \"" << itor2->first << "\"\n";
+						std::string litem = lfunksb(itor2->first);
+						if (!litem.empty())
+						{
+							*astream << "#include \"" << litem << "\"\n";
+						}
 						llinecount += itor2->second;
 					}
 				}
@@ -186,18 +207,28 @@ int main(int argc, char** argv)
 	
 	*lstream << "extern \"C\"{\n";
 	for (const auto& item : lvec5)
-		*lstream << "#include \"" << item.first << "\"\n";
+	{
+		std::string litem = lfunksb(item.first);
+		if (!litem.empty())
+		{
+			*lstream << "#include \"" << litem << "\"\n";
+		}
+	}
+		
 	*lstream << "}//extern \"C\"\n";
 	lsavefun(++lindex, *lstream);
 
 	for (const auto& item : ldic)
 		m_streamtxt << "INCLUDE_DIRECTORIES(" << item << ")\n";
 
-	std::string cname = argv[1];
-	cname += ".txt";
-	ngl::writefile lfiletxt(cname);
-	lfiletxt.write(m_streamtxt.str());
-	std::cout << "##############" << cname << std::endl;
+
+	{
+		std::string cname = argv[1];
+		cname += ".txt";
+		ngl::writefile lfiletxt(cname);
+		lfiletxt.write(m_streamtxt.str());
+		std::cout << "##############" << cname << std::endl;
+	}
 
 	int32_t lsumline = 0;
 	std::ranges::for_each(lvec1, [&lsumline](const auto& apair)
