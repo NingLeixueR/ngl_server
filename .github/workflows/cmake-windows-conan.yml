@@ -38,8 +38,13 @@ jobs:
         conan install . -s build_type=Release -s compiler.cppstd=20 --build=missing
 
     - name: Configure with CMake
+      if: runner.os == 'Windows'
+      run: cmake --preset conan-default
+      
+    - name: Configure with CMake
+      if: runner.os != 'Windows'
       run: cmake --preset conan-release
 
     - name: Build project
       working-directory: build
-      run: cmake --build . --config Release
+      run: cmake --build .
