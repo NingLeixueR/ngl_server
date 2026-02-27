@@ -39,18 +39,16 @@ jobs:
         cd ..
         pwd
         conan install . -s build_type=Release -s compiler.cppstd=20 --build=missing
-        conan install . -s build_type=Debug -s compiler.cppstd=20 --build=missing
-        cmake --preset conan-default
 
     - name: Configure with CMake (Windows)
       if: runner.os == 'Windows'
       working-directory: build
-      run: cmake --preset conan-default
+      run: cmake --preset conan-release
 
     - name: Configure with CMake (Linux/macOS)
       if: runner.os != 'Windows'
       working-directory: build
-      run: cmake --preset conan-default
+      run: cmake --preset conan-release
 
     - name: Build project
       working-directory: build
