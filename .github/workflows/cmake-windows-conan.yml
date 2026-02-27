@@ -53,4 +53,4 @@ jobs:
     - name: Build project
       if: runner.os != 'Windows'
       working-directory: build
-      run: cmake --build .
+      run: cmake --build .. 
