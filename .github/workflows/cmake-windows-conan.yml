@@ -46,5 +46,11 @@ jobs:
       run: cmake --preset conan-release
 
     - name: Build project
+      if: runner.os == 'Windows'
       working-directory: build
       run: cmake --build . --config Release
+      
+    - name: Build project
+      if: runner.os != 'Windows'
+      working-directory: build
+      run: cmake --build .
