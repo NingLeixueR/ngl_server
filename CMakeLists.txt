@@ -188,8 +188,8 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 	LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/bin/Debug)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
-#IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
-#	add_subdirectory(public)
-#ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+	add_subdirectory(public)
+ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 add_subdirectory(server)
