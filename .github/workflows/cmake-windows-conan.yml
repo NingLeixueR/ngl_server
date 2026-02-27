@@ -47,4 +47,4 @@ jobs:
 
     - name: Build project
       working-directory: build
-      run: cmake --build .
+      run: cmake --build . --config Release
