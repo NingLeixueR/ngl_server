@@ -30,17 +30,19 @@ jobs:
       working-directory: build
       run: |
         conan profile detect --force
-        conan install .. --output-folder=. --build=missing
+        conan install . -s build_type=Release -s compiler.cppstd=20
+        conan install . -s build_type=Debug -s compiler.cppstd=20
+        cmake --preset conan-default
 
     - name: Configure with CMake (Windows)
       if: runner.os == 'Windows'
       working-directory: build
-      run: cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_POLICY_DEFAULT_CMP0091=NEW
+      run: cmake --preset conan-default
 
     - name: Configure with CMake (Linux/macOS)
       if: runner.os != 'Windows'
       working-directory: build
-      run: cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_POLICY_DEFAULT_CMP0091=NEW
+      run: cmake --preset conan-default
 
     - name: Build project
       working-directory: build
