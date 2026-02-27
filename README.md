@@ -1,5 +1,5 @@
-* [![GCC 13](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-unbutu.yml/badge.svg)](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-unbutu.yml)
-* [![VS2022](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-windows.yml/badge.svg)](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-windows.yml)
+* [![windows-2022, ubuntu-22.04, macos-13](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-windows-conan.yml/badge.svg)](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-windows-conan.yml)
+
 * [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NingLeixueR_ngl&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=NingLeixueR_ngl)
 ## ngl
 * 基于Actor的c++游戏服务器框架
