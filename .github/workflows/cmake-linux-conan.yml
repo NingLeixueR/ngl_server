@@ -42,5 +42,5 @@ jobs:
         cmake --preset conan-release
 
     - name: Build project
-      working-directory: build
+      working-directory: build/Release
       run: cmake --build . 
