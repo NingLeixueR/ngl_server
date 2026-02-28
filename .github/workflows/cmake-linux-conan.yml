@@ -18,6 +18,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Install Python (required for Conan)
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
     - name: Install GCC 12
       run: |
         sudo apt-get update
@@ -26,10 +31,11 @@ jobs:
         echo "CC=gcc-12" >> $GITHUB_ENV
         echo "CXX=g++-12" >> $GITHUB_ENV
     
-    - name: Install Python (required for Conan)
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+     - name: Install latest CMake
+      run: |
+        pip install cmake --upgrade
+        cmake --version
+    
 
     - name: Install Conan(python -m pip install conan)
       run: |
