@@ -63,11 +63,11 @@ namespace ngl
 		int64_t									m_server_start_ms = 0;			// 服务器启动的毫秒
 		int64_t									m_current_ms = 0;				// 当前毫秒数
 		std::vector<std::shared_ptr<wheel>>		m_wheel;
-		std::unique_ptr<std::thread>			m_thread = nullptr;				// 时间轮线程 
+		std::unique_ptr<std::jthread>			m_thread = nullptr;				// 时间轮线程 
 		std::shared_mutex						m_mutex;
 		bool									m_isthreadcallback = false;		// 是否使用 [使用线程自动调用]
 		// ###### 使用线程自动调用 start 
-		std::unique_ptr<std::thread>			m_threadcallback = nullptr;		// 时间轮工作线程用来执行回调
+		std::unique_ptr<std::jthread>			m_threadcallback = nullptr;		// 时间轮工作线程用来执行回调
 		std::shared_mutex						m_mutexcallback;
 		ngl::sem								m_sem;
 		// ###### 使用线程自动调用 finish
@@ -104,10 +104,10 @@ namespace ngl
 				lms = m_wheel[i]->all_slot_ms();
 			}
 
-			m_thread = std::make_unique<std::thread>(&impl_time_wheel::run, this);
+			m_thread = std::make_unique<std::jthread>(&impl_time_wheel::run, this);
 			if (m_isthreadcallback)
 			{
-				m_threadcallback = std::make_unique<std::thread>(&impl_time_wheel::runcallback, this);
+				m_threadcallback = std::make_unique<std::jthread>(&impl_time_wheel::runcallback, this);
 			}
 			else
 			{
