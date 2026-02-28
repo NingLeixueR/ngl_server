@@ -13,11 +13,11 @@
 */
 
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 26-02-12 18:06:08
+// 创建时间 // 创建时间 26-02-28 19:28:49
 #pragma once
 
-#include "tools/serialize/nserialize.h"
 #include "tools/serialize/ndefine.h"
+#include "tools/serialize/nserialize.h"
 #include "tools/tab/csv/csv.h"
 namespace ngl{
 enum ENET_CONFIG

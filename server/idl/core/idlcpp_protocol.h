@@ -395,7 +395,7 @@ namespace ngl
 						}
 						std::string lname = item3.m_type;
 						std::transform(lname.begin(), lname.end(), lname.begin(), [](unsigned char c) { return std::tolower(c); });
-						m_stream << "#include \"" << lname << ".h\"" << std::endl;
+						m_stream << "#include \"actor/actor_logic/" << lname << "/" << lname << ".h\"" << std::endl;
 					}
 				}
 			}
