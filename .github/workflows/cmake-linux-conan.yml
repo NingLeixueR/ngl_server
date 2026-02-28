@@ -18,6 +18,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Install GCC 12 (for C++20 <format> support)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc-12 g++-12
+        g++-12 --version
+        echo "CC=gcc-12" >> $GITHUB_ENV
+        echo "CXX=g++-12" >> $GITHUB_ENV
+    
     - name: Install Python (required for Conan)
       uses: actions/setup-python@v5
       with:
