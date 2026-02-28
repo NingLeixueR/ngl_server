@@ -1,0 +1,347 @@
+syntax = "proto3";
+
+
+package pbdb;
+
+//option optimize_for = SPEED;
+
+enum ENUM_DB
+{
+	ENUM_DB_ACCOUNT			= 0;		// 账号数据
+	ENUM_DB_ROLE			= 1;		// 玩家数据
+	ENUM_DB_BRIEF			= 2;		// 玩家简要数据
+	ENUM_DB_BAG				= 3;		// 背包数据
+	ENUM_DB_KEYVALUE		= 4;		// 公共key/value数据
+	ENUM_DB_MAIL			= 5;		// 邮件数据
+	ENUM_DB_NOTICE			= 6;		// 公告数据
+	ENUM_DB_RANKLIST		= 7;		// 排行数据
+	ENUM_DB_ACTIVITY		= 8;		// 活动数据
+	ENUM_DB_ACTIVITYTIMES	= 9;		// 活动开启关闭时间
+	ENUM_DB_TASK			= 10;		// 任务数据
+	ENUM_DB_ROLEKEYVALUE	= 11;		// 玩家个人key/value数据
+	ENUM_DB_FAMILY			= 12;		// 军团
+	ENUM_DB_FAMILYER		= 13;		// 军团成员
+	ENUM_DB_FRIENDS			= 14;		// 好友
+	ENUM_DB_TESTLUA			= 15;		// 测试lua脚本的处理
+	ENUM_DB_COUNT			= 16;
+
+	// # 跨服
+	ENUM_DBCROSS_TEST		= 1001;		// 测试跨服
+
+	ENUM_DB_FAIL			= -1;		// 无
+	ENUM_DB_ALL				= -2;		// 全部
+};
+
+// ENUM_DB_ACCOUNT,				// 账号数据
+message db_account
+{
+	optional int64	mid				= 1;				// 帐号id
+	optional int64	mroleid			= 2;				// 角色id
+	optional string maccount		= 3;				// 账号
+	optional string mpassworld		= 4;				// 密码
+	optional int32	marea			= 5;				// 区服id
+}
+
+message brief_base
+{
+	optional string mname			= 1;					// 名字
+	optional int32 mlv				= 2;					// 等级
+	optional int32 mmoneygold		= 3;					// 金币
+	optional int32 mmoneysilver		= 4;					// 银币
+	optional int32 mvip				= 5;					// vip等级
+	optional int32 mnotalkutc		= 6;					// 被禁言的期限
+	optional int32 mcreateutc		= 7;					// 创角时间
+}
+
+message brief_activityvalues
+{
+	map<int32,int32> mactivity_rolelv = 1;		// 活动期间玩家等级变化值 key:活动id value:等级增加值
+	map<int32,int32> mactivity_rolegold = 2;	// 活动期间玩家获取金币量 key:活动id value:等级增加值
+}
+
+// ENUM_DB_BRIEF,			// 玩家简要数据
+message db_brief
+{
+	optional int64 mid				= 1;					// role id
+	brief_base mbase				= 2;					// 基本数据(actor_role write)
+	optional brief_activityvalues mactivityvalues	= 3;	// 活动值(actor_activity_manage write)
+}
+
+// ENUM_DB_ROLE,			// 玩家数据
+message db_role
+{
+	optional int64 mid					= 1;				// role id
+	// 充值信息
+	message recharge
+	{
+		optional int32 mrechargeid		= 1;	// 充值id
+		optional int32 mutc				= 2;	// 充值时间
+	}
+	repeated recharge mrecharge			= 2;
+}
+
+//ENUM_DB_BAG,			// 背包数据
+message item
+{
+	optional int32 mid			= 1;
+	optional int32 mtid		= 2; // tab id
+	optional int32 mcount		= 3;
+	// ## 卡牌 装备
+	optional int32 mlv			= 4;	// 等级
+	optional int32 mstar		= 5;	// 星级
+}
+
+
+message db_bag
+{
+	optional int64 mid					= 1;	// roleid
+	map<int32, item> mitems			= 2;	// key item id
+	optional int32 mmaxid				= 3;
+}
+
+//ENUM_DB_KEYVALUE,		// 公共key/value数据
+message db_keyvalue
+{
+	enum ekv
+	{
+		none			= 0;
+		account_ban		= 1;	// 封号列表
+		open_server		= 2;	// 开服时间
+	}
+	optional int64 mid					= 1;				// ekeyvalue
+	optional string mvalue				= 2;				// value
+}
+
+//ENUM_DB_ROLEKEYVALUE,		// 玩家个人key/value数据
+message db_rolekeyvalue
+{
+	optional int64 mid					= 1;
+	map<string,string> mdata			= 2;				// key/val
+}
+
+//ENUM_DB_MAIL,			// 邮件数据
+message mailitem
+{
+	optional int32 mitemtid	= 1;
+	optional int32 mcount		= 2;
+}
+message mail
+{
+	optional int32 mid				= 1;
+	optional int32 mcreateutc		= 2;	// 创建时间
+	//// [邮件内容] 1.邮件表id关联参数
+	optional int32 mtid			= 3;	// 邮件表id
+	optional string mprams			= 4;	// 参数以#号分割pram1#pram2..
+	//// [邮件内容] 2.字符串
+	optional string mcontent		= 5;	// 邮件内容
+	repeated mailitem  mitems		= 6;	// 邮件附件
+	optional bool mread			= 7;	// 是否已读
+	optional bool mdraw			= 8;	// 是否领取附件	
+}
+
+message db_mail
+{
+	optional int64 mid				= 1;
+	map<int32, mail> mmail			= 2; // key mail id
+}
+
+//ENUM_DB_NOTICE,			// 公告数据
+message db_notice
+{
+	optional int64 mid			= 1;				// 公告id
+	optional string mnotice	= 2;				// 内容
+	optional int32 mstarttime	= 3;				// 开始时间
+	optional int32 mfinishtime	= 4;				// 结束时间
+};
+
+enum eranklist
+{
+	eranklist_null = 0;
+	//基础 ranklist中的类型
+	lv			= 1;			// 等级排行(值大排名越高)
+	gold		= 2;
+	count		= 3;
+	//活动
+	activity_lv		= 1000000;		// 活动期间玩家等级变化值
+	activity_gold	= 2000000;		// 活动期间玩家金币增加值
+}
+
+message rankitem
+{
+	optional int64 mvalue	= 1;
+	optional int32 mtime	= 2;
+}
+
+//ENUM_DB_RANKLIST,		// 排行数据
+message db_ranklist
+{
+	optional int64 mid			= 1;				// roleid
+	map<int32,rankitem> mitems	= 2;				// key:排行榜类型eranklist
+}
+
+message db_activitytimes
+{
+	optional int64 mid			= 1; // tab_actiivity 表id
+	optional int32 mbeg		= 2; // 活动开启时间
+	optional int32 mduration	= 3; // 活动持续时间
+	optional bool mstart		= 4; // 是否已开启(执行了开启方法)
+}
+
+message activity_task
+{
+	map<int32,bool> mopen	= 1;	// key:day
+	map<int32,bool> mclose = 2;	// key:day
+}
+
+message activity_drawcompliance
+{
+	optional int32 mcount		= 1; // 累计次数
+	map<int32,bool> mreward	= 2; // 累计领取哪些奖励
+}
+
+message db_activity
+{
+	optional int64 mid										= 1; // tab_actiivity 表id
+	map<int64,activity_task> mtask							= 2; // key:roleid
+	// tab_activity.mtype == EActivityDrawCompliance
+	map<int64,activity_drawcompliance> mdrawcompliance		= 3;
+}
+
+message db_task
+{
+	optional int64 mid				= 1; // roleid
+	message data_schedule
+	{
+		optional int32 mtype			= 1;	// csvtable.ETask
+		optional int32 mvalue			= 2;	// 当前值 
+		optional int32 msumint			= 3;	// 总值
+	}
+	message data
+	{
+		optional int32 mtaskid				= 1; // 任务id
+		optional int32 mreceiveutc			= 2; // 接收任务时间
+		optional int32 mfinshutc			= 3; // 完成任务时间
+		repeated data_schedule mschedules  = 4; // 任务进度
+		optional bool mreceive				= 5; // 任务奖励是否已领取
+	}
+	message complete
+	{
+		repeated data mhistory			= 1;	// 历史已完成任务
+	}
+	map<int32,data> mrundatas			= 2; // 正在进行的任务数据
+	map<int32,complete> mcompleteddatas	= 3; // 已完成的任务数据
+}
+
+message db_familyer
+{
+	optional int64 mid					= 1;	// 军团成员id
+	optional int32 mjoinutc			= 2;	// 加入军团的时间
+	optional int32 mlastsignutc		= 3;	// 上次签到时间
+	optional int32 mlastleaveutc		= 4;	// 上次离开军团时间
+	// 职位
+	enum eposition
+	{
+		none		= 0;		// 未加入军团
+		leader		= 1;		// 军团长
+		counsellor	= 2;		// 军师
+		ordinary	= 3;		// 普通成员
+	}
+	optional eposition mposition		= 5; // 职位
+}
+
+message db_family
+{
+	optional int64		mid			= 1; // 军团id
+	optional int32		mcreateutc		= 2; // 军团创建时间
+	optional string		mname			= 3; // 军团名称
+	optional int64		mleader		= 4; // 军团长
+	optional int32		mlv			= 5; // 军团等级
+	optional int32		mexp			= 6; // 军团经验
+	repeated int64		mmember		= 7; // 成员
+	repeated int64		mapplylist		= 8; // 申请列表
+}
+
+message db_friends
+{
+	optional int64		mid			= 1;	// 玩家roleid
+	repeated int64		mfriends		= 2;	// 好友列表
+	repeated int64		mapplyfriends	= 3;	// 好友请求列表
+}
+
+// # 跨服
+// ENUM_DBCROSS_TEST		= 1001;		// 测试跨服
+message dbcross_test
+{
+	optional string		mname			= 1;	// 名称
+	repeated int64		mvalue			= 2;	// 值
+}
+
+//ENUM_DB_TESTLUA			= 15;		// 测试lua脚本的处理
+message db_testlua
+{
+	optional int64		mid				= 1;
+	repeated int64		mvalue			= 2;
+	message luadata
+	{
+		optional string		mkey			= 1;
+		optional string		mval			= 2;
+	}
+	map<int32,luadata>		mdatas			= 3; 
+}
+
+///////////////////////////////////////////////////////////////
+//// ################ [aoi地图相关 Start] ################ ////
+//// ##################################################### ////
+
+enum EUNIT
+{
+	EUNIT_FAIL		= 0;		// 错误类型
+	EUNIT_ROLE		= 1;		// 玩家单位
+	EUNIT_MONSTER	= 2;		// 怪物单位
+	EUNIT_REGION	= 3;		// 区域单位
+};
+
+message VECTOR2
+{
+	optional int32 mx = 1;
+	optional int32 my = 2;
+};
+
+message VECTOR3
+{
+	optional int32 mx = 1;
+	optional int32 my = 2;
+	optional int32 mz = 3;
+};
+
+message POSITION
+{
+	optional int32 mmapid		= 1;			// 地图id
+	optional VECTOR2 mposition	= 2;
+	optional int32 mangle		= 3;			// 方向角度[0-360]
+	optional int32 mspeed		= 4;			// 速度[米/秒]
+};
+
+message ATTRIBUTE
+{
+	 optional int32 mtype				= 1;	// EnumAttribute
+	 optional int64 mvalue				= 2;	// 属性值
+};
+
+message UNIT_MODULE
+{
+	optional int32 mmtype			= 1;		// EnumModule
+	repeated ATTRIBUTE mmodules		= 2;
+};
+
+message UNIT
+{
+	optional EUNIT mtype				= 1;
+	optional int64 mid					= 2;
+	optional POSITION mposition			= 3;
+	repeated UNIT_MODULE mmodules		= 4;
+};
+
+//// ###################################################### ///
+//// ################ [aoi地图相关 Finish] ################ ///
+///////////////////////////////////////////////////////////////

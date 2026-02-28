@@ -1,0 +1,154 @@
+syntax = "proto3";
+
+
+import "db.proto";
+import "net.proto";
+
+package pbexample;
+//namespace
+//支持 SPEED(速度快，占用最大空间) CODE_SIZE LITE_RUNTIME(效率最高，且占用空间少，不支持反射)
+//option optimize_for = LITE_RUNTIME;	//不支持反射，代码和性能会提高不少
+option optimize_for = SPEED;
+
+enum ECROSS
+{
+	ECROSS_NULL				= 0;
+	ECROSS_ORDINARY			= 1;			// 本服转发
+	ECROSS_CROSS_ORDINARY	= 2;			// 跨服转发
+}
+
+enum EPLAY_TYPE
+{
+	EPLAY_NULL = 0;
+	EPLAY_GUESS_NUMBER = 1;
+}
+
+// 加入玩法
+message PROBUFF_EXAMPLE_PLAY_JOIN//C2G2 [actor_example_match]
+{
+	optional ECROSS mcross			= 1;
+	optional EPLAY_TYPE mtype		= 2;
+};
+
+message PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE//G2C [actor_robot]
+{
+	optional int32 mroomid					= 2; // 房间号
+};
+
+message PLAYER
+{
+	optional pbdb.db_brief mplayers		= 1; // 玩家基本信息
+	optional bool misconfirm				= 2; // 是否确认
+};
+
+// 同步匹配信息
+message PROBUFF_EXAMPLE_PLAY_MATCHING//G2C [actor_robot]
+{
+	optional int32 mroomid					= 1; // 房间号
+	optional int32 mtotalnumber			= 2; // 需要的总人数
+	optional int64 mroomcreate				= 3; // 房间创建时间
+	optional int64 mroomready				= 4; // 房间就绪时间
+	repeated PLAYER mplayers				= 5; // 匹配到的玩家
+};
+
+
+enum PLAY_MATCHING_EERROR_CODE
+{
+	EERROR_CODE_SUCCESS = 0;
+	EERROR_CODE_TIMEOUT = 1;			// 超时
+	EERROR_CODE_CANCEL  = 2;			// 有玩家取消匹配
+	EERROR_CODE_CURRENT_CANCEL  = 3;	// 当前不允许取消匹配
+	EERROR_CODE_NOTFINDROOM = 4;		// 未找到指定room
+	EERROR_CODE_ROOM_DESTORY = 5;		// 房间被销毁
+	EERROR_CODE_FINISH = 6;				// 匹配完成销毁房间
+	EERROR_CODE_NOTMATCH = 7;			// 已参与其他匹配无法加入新的匹配
+	EERROR_CODE_CREATEROOM_FAIL = 8;	// 创建房间失败
+	EERROR_CODE_CREATEGAME_FAIL = 9;	// 创建游戏失败
+	EERROR_CODE_NOTFIND = 10;			// 未找到指定目标
+}
+
+// 匹配结果
+message PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT//G2C [actor_robot]
+{
+	optional PLAY_MATCHING_EERROR_CODE merrorcode		= 1;
+	optional int32 mroomid								= 2; // 房间号
+};
+
+// 玩家确认加入
+message PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM//C2G2 [actor_example_match]
+{
+	optional bool misconfirm				= 1; // 是否需要确认加入
+	optional int32 mroomid					= 2; // 房间号
+};
+
+// 取消匹配
+message PROBUFF_EXAMPLE_PLAY_CANCEL//C2G2 [actor_example_match]
+{
+	optional EPLAY_TYPE mtype				= 1;
+	optional int32 mroomid					= 2; // 房间号
+};
+
+// 创建例子游戏成功
+message PROBUFF_EXAMPLE_PLAY_CREATE//G2C [actor_robot]
+{
+	optional EPLAY_TYPE mtype				= 1;
+	optional int64 mexampleactorid			= 2;
+	enum estat
+	{
+		estat_success = 0;
+		estat_fail = 1;
+	}
+	optional estat mstat					= 3;
+}
+
+// 进入例子游戏
+message PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE//C2G2 [actor_example_manage]
+{
+	optional ECROSS mcross					= 1;
+	optional EPLAY_TYPE mtype				= 2;
+	optional int64 mexampleactorid			= 3;
+}
+
+message PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE//G2C [actor_robot]
+{
+	optional ECROSS mcross					= 1;
+	optional EPLAY_TYPE mtype				= 2;
+	optional int64 mexampleactorid			= 3;
+	repeated int64 mplayers				= 4; // 进入游戏的玩家
+}
+
+///<<<<<<<<<<<<< 猜数字#数字炸弹 
+
+
+// 匹配结果
+message PROBUFF_EXAMPLE_GUESS_NUMBER_INFO//G2C [actor_robot]
+{
+	optional int32 mmaxnumber					= 1; // 数字最大值
+	optional int32 mminnumber					= 2; // 数字最小值
+	optional int64 mwhoguess					= 3; // 谁猜测
+};
+
+message PROBUFF_EXAMPLE_GUESS_NUMBER//C2G2 [actor_example_guess_number]
+{
+	optional int32 mguessnumber				= 1; // 猜测值
+};
+
+enum E_GUESS_NUMBER_ERROR
+{
+	E_GUESS_NUMBER_ERROR_NULL = 0;
+	E_GUESS_NUMBER_ERROR_VALUE = 1;	// 值错误
+	E_GUESS_NUMBER_ERROR_NOT_GUESS = 2; // 当前阶段该玩家无法进行操作
+}
+
+message PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR//G2C [actor_robot]
+{
+	optional E_GUESS_NUMBER_ERROR mstat		= 1; // 错误值
+};
+
+message PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB//G2C [actor_robot]
+{
+	optional int32 mbombvalue					= 1; // 爆炸值
+	optional int64 mroleid						= 2; // 触发爆炸的玩家
+};
+
+///>>>>>>>>>>>>> 猜数字 

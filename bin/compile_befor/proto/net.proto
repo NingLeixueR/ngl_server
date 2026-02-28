@@ -1,0 +1,595 @@
+syntax = "proto3";
+
+
+import "db.proto";
+
+package pbnet;
+//namespace
+//支持 SPEED(速度快，占用最大空间) CODE_SIZE LITE_RUNTIME(效率最高，且占用空间少，不支持反射)
+//option optimize_for = LITE_RUNTIME;	//不支持反射，代码和性能会提高不少
+option optimize_for = SPEED;
+
+// G2C					game->client
+// C2G					client->actor_role
+// C2G2					二次转发client->actor_role->ACTOR_XXX
+// XXX					特殊actor处理
+
+// [回复] 服务器用来回复端，一般用于cmd协议，用来返回一个字符串回显
+message PROBUFF_NET_MSG_RESPONSE//G2C [actor_robot]
+{
+	optional string mmsg		= 1;
+};
+
+// [请求]心跳协议
+message PROBUFF_NET_HEARTBEAT
+{
+};
+
+// [请求]充值
+message PROBUFF_NET_RECHARGE//C2G [actor_role]
+{
+	optional int32 mrechargeid			= 1;
+};
+
+// [回复]充值
+message PROBUFF_NET_RECHARGE_RESPONSE//G2C [actor_robot]
+{
+	optional int32 mrechargeid			= 1;
+	enum Estat
+	{
+		Estat_Success		= 0;	// 成功
+		Estat_NotRechargeId	= 1;	// 没有找到指定充值id
+		Estat_MaxCount		= 2;	// 超过充值最大限制次数
+	}
+	optional Estat mstat				= 2;
+	optional string morderid			= 3;
+};
+
+// [回复]通知客户端充值发货
+message PROBUFF_NET_DELIVER_GOODS_RECHARGE//G2C [actor_robot]
+{
+	optional int32 mrechargeid			= 1;
+	optional string morderid			= 2;
+	optional int32 mgold				= 3;
+	map<int32,int32> mitems			= 4;
+};
+
+// [发送]错误码
+message PROBUFF_NET_ERROR//G2C [actor_robot]
+{
+	optional string merrmessage	= 2; // 错误描述
+};
+
+// [请求]服务器时间
+message PROBUFF_NET_GET_TIME//C2G [actor_role]
+{
+};
+
+// [回复]服务器时间
+message PROBUFF_NET_GET_TIME_RESPONSE//G2C [actor_robot]
+{
+	optional int32 mutc			= 1; // 错误码
+};
+
+// [请求]获取公告列表
+message PROBUFF_NET_NOTICE//C2G2 [actor_notice]
+{
+};
+
+// [回复]获取公告列表
+message PROBUFF_NET_NOTICE_RESPONSE//G2C [actor_robot]
+{
+	repeated pbdb.db_notice mnotices		= 1;
+};
+
+// [请求]登录账号
+message PROBUFF_NET_ACOUNT_LOGIN//XXX [actor_login]
+{
+	optional int32 marea			= 1;	// 区服id
+	optional string maccount		= 2;	// 帐号
+	optional string mpassword		= 3;	// 密码
+};
+
+// [回复]登录账号
+message PROBUFF_NET_ACOUNT_LOGIN_RESPONSE//XXX [actor_manage_robot]
+{
+	optional int32 marea			= 1;				// 区服id
+	optional int64 mroleid			= 2;				// 玩家id(如果roleid == 0 说明玩家还未创建账号)
+	optional string msession		= 3;				// session
+	optional string maccount		= 4;				// 帐号
+	optional int32 mgatewayid		= 5;				// 网关id
+	optional int32 mgameid			= 6;				// 逻辑服务器id
+};
+
+// [请求]玩家登录
+message PROBUFF_NET_ROLE_LOGIN//XXX [actor_gateway,actor_manage_role]
+{
+	optional int64 mroleid			= 1;	// 玩家id
+	optional string msession		= 2;	// session
+	optional int32 marea			= 3;	// 区服id
+	optional int32 mgatewayid		= 5;	// gatewayid
+	optional int32 mgameid			= 6;	// gameid
+};
+
+// 登录 角色未创建
+message PROBUFF_NET_ROLE_NOT_CREATE//G2C [actor_robot]
+{
+	optional int64 mroleid			= 1;	// 玩家id
+};
+
+message PROBUFF_NET_ROLE_CREATE//XXX [actor_manage_role]
+{
+	optional string mname			= 1;	// 名字
+};
+
+message PROBUFF_NET_ROLE_CREATE_RESPONSE//G2C [actor_robot]
+{
+	enum estat
+	{
+		e_stat_success = 0;
+		e_stat_fail = 1;
+	};
+	optional estat mstat			= 1;	// 状态		
+	optional string mname			= 2;	// 名字
+};
+
+// [请求]获取角色信息
+message PROBUFF_NET_ROLE_SYNC//C2G [actor_role]
+{
+};
+
+// [回复]获取角色信息
+message PROBUFF_NET_ROLE_SYNC_RESPONSE//G2C [actor_robot]
+{
+	optional pbdb.db_role mrole	= 1;
+	optional pbdb.db_brief mbrief	= 2;
+	optional pbdb.db_bag mbag		= 3;
+	optional pbdb.db_task mtask	= 4;
+};
+
+// [请求]获取背包信息
+message PROBUFF_NET_BAG_SYNC//C2G [actor_role]
+{
+};
+
+// [回复]获取背包信息
+message PROBUFF_NET_BAG_SYNC_RESPONSE//G2C [actor_robot]
+{
+	optional pbdb.db_bag mbag			= 1;
+};
+
+// [回复]更新背包信息
+message PROBUFF_NET_BAG_UPDATE//G2C [actor_robot]
+{
+	message delitem
+	{
+		optional int32 mid				= 1; 
+		optional int32 mcount			= 2; 
+	};
+	message additem
+	{
+		optional int32 mid				= 1; 
+		optional int32 mcount			= 2; 
+	};
+	repeated delitem mdelitems					= 1;// 删除(可叠加物品)
+	repeated int32 mdelnostackitems			= 2;// 删除(不可叠加物品)
+	repeated additem madditems					= 3;// 增加(可叠加物品)
+	repeated int32 maddnostackitems			= 4;// 增加(不可叠加物品)
+	//repeated pbdb.item mchangeitems			= 5;// 改变的物品
+};
+
+// [请求]cmd协议
+message PROBUFF_NET_CMD//C2G [actor_role]
+{
+	optional string mcmd						= 1;
+};
+
+// [请求]聊天
+enum ENUM_LOGIC_CHAT
+{
+	ENUM_GET_CHAT_LIST			= 0;	// 获取聊天列表
+	ENUM_CHAT_SPEAK				= 1;	// 发言
+	ENUM_UPDATA_SPEAK			= 2;	// 更新聊天
+};
+
+enum ENUM_CHAT_CHANNEL
+{
+	ENUM_CHAT_CHANNEL_NULL	= 0;
+	ENUM_CHAT_CHANNEL_ORDINARY		= 1;	// 本服
+	ENUM_CHAT_CHANNEL_CROSS_ORDINARY= 2;	// 跨服
+	ENUM_CHAT_CHANNEL_NONE			= 3;	// 错误
+};
+
+// [请求]聊天
+message PROBUFF_NET_CHAT//C2G2 [actor_chat]
+{
+	optional int32 mtype				= 1; // enumlogic_chat
+	optional int32 mchannelid			= 2; // enumchat_channel
+	optional string mcontent			= 3; // mtype == chat_speak
+};
+
+message chatitem
+{
+	optional int64 mroleid	= 1;
+	optional string mrolename	= 2;
+	optional string mcontent	= 3;
+	optional int32 mutc		= 4;
+};
+	
+// [回复]聊天
+message PROBUFF_NET_CHAT_RESPONSE//G2C [actor_robot]
+{
+	optional int32 mtype				= 1; // enumlogic_chat
+	optional int32 mchannelid			= 2; // tab_chat.mid
+	repeated chatitem mchatlist		= 3; // mtype == get_chat_list || mtype == updata_speck
+	optional bool mstat				= 4; // mtype == chat_speak
+};
+
+// [请求]切换线路
+message PROBUFF_NET_SWITCH_LINE//C2G [actor_role]
+{
+	optional int32 mline				= 1;
+};
+
+// [回复]切换线路
+message PROBUFF_NET_SWITCH_LINE_RESPONSE//G2C [actor_robot]
+{
+	optional int32 mline				= 1;
+	optional bool mstat				= 2;
+};
+
+// [请求]获取邮件列表
+message PROBUFF_NET_MAIL_LIST//C2G2 [actor_mail]
+{
+};
+
+// [回复]获取邮件列表
+message PROBUFF_NET_MAIL_LIST_RESPONSE//G2C [actor_robot]
+{
+	map<int32, pbdb.mail> mmail			= 1; // key mail id
+};
+
+// [请求]读取邮件
+message PROBUFF_NET_MAIL_READ//C2G2 [actor_mail]
+{
+	optional int64 mmailid				= 1;
+};
+
+// [回复]读取邮件
+message PROBUFF_NET_MAIL_READ_RESPONSE//G2C [actor_robot]
+{
+	optional int64 mmailid				= 1;
+	optional bool mstat				= 2;
+};
+
+// [请求]领取邮件附件
+message PROBUFF_NET_MAIL_DRAW//C2G2 [actor_mail]
+{
+	optional int64 mmailid				= 1;
+};
+
+// [回复]领取邮件附件
+message PROBUFF_NET_MAIL_DRAW_RESPONSE//G2C [actor_robot]
+{
+	optional int64 mmailid				= 1;
+	optional bool mstat				= 2;
+};
+
+// [请求]领取邮件附件
+message PROBUFF_NET_MAIL_DEL//C2G2 [actor_mail]
+{
+	optional int64 mmailid				= 1;
+};
+
+// [回复]领取邮件附件
+message PROBUFF_NET_MAIL_DEL_RESPONSE//G2C [actor_robot]
+{
+	optional int64 mmailid				= 1;
+	optional bool mstat				= 2;
+};
+
+enum ENUM_KCP
+{
+	KCP_NULL = 0;
+	KCP_GATEWAY = 1;
+	KCP_ROLE = 2;
+};
+
+
+// [请求]获取连接kcp-session
+message PROBUFF_NET_KCPSESSION//XXX [actor_gateway]
+{
+	optional int64	mserverid	= 1;		// 玩家要进行kcp连接的服务器
+	optional string muip		= 2;
+	optional int32	muport		= 3;
+	optional int32	mconv		= 4;
+	optional int64  mactoridserver = 5;
+	optional int64  mactoridclient = 6;
+	optional ENUM_KCP m_kcpnum = 7;
+};
+
+// [回复]kcp-session
+message PROBUFF_NET_KCPSESSION_RESPONSE//G2C [actor_robot]
+{
+	optional string mkcpsession	= 1;
+	optional int64	mserverid	= 2;		// 玩家要进行kcp连接的服务器
+	optional ENUM_KCP m_kcpnum = 3;
+	optional int64  mactoridserver = 4;
+	optional int64  mactoridclient = 5;
+};
+
+// [请求]领取任务奖励
+message PROBUFF_NET_TASK_RECEIVE_AWARD//C2G [actor_role]
+{
+	optional int32	mtaskid	= 1;		// 任务id
+};
+
+message drop_item
+{
+	optional int32	mitem	= 1;
+	optional int32	mcount	= 2;
+};
+
+// [回复]领取任务奖励
+message PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE//G2C [actor_robot]
+{
+	optional int32	mtaskid			= 1;		// 任务id
+	optional bool   mstat				= 2;		// 是否领取成功
+	map<int32,int32> mdrop				= 3;		// 奖励 key:itemid value:itemcount
+};
+
+// [请求]创建军团
+message PROBUFF_NET_FAMIL_CREATE//C2G2 [actor_family]
+{
+	optional string mname = 1;	// 创建军团的名称
+}
+
+// [回复]创建军团
+message PROBUFF_NET_FAMIL_CREATE_RESPONSE//G2C [actor_robot]
+{
+	optional int32  mstat				= 1;		// 状态
+}
+
+// [请求]获取军团信息
+message PROBUFF_NET_FAMIL_INFO//C2G2 [actor_family]
+{
+}
+
+// [回复]创建军团
+message PROBUFF_NET_FAMIL_INFO_RESPONSE//G2C [actor_robot]
+{
+	optional int32  mstat					= 1;		// 状态
+	optional pbdb.db_family	minfo			= 2;				
+	repeated pbdb.db_brief mmember			= 3;
+}
+
+// [请求]申请/取消加入军团
+message PROBUFF_NET_FAMIL_JOIN//C2G2 [actor_family]
+{
+	optional int64 mfamilid = 1;
+	optional bool mapply = 2;
+}
+
+// [回复]加入军团
+message PROBUFF_NET_FAMIL_JOIN_RESPONSE//G2C [actor_robot]
+{
+	optional int32  mstat				= 1;		// 状态
+}
+
+// [请求]军团长同意/不同意玩家加入军团
+message PROBUFF_NET_FAMIL_RATIFY_JOIN//C2G2 [actor_family]
+{
+	optional int64 mroleid = 1;	
+	optional bool mratify = 2;
+}
+
+// [回复]军团长同意/不同意玩家加入军团
+message PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE//G2C [actor_robot]
+{
+	optional int32  mstat				= 1;		// 状态
+}
+
+// [请求]军团长转让军团
+message PROBUFF_NET_FAMIL_CEDE//C2G2 [actor_family]
+{
+	optional int64 mroleid = 1;
+}
+
+// [回复]军团长转让军团
+message PROBUFF_NET_FAMIL_CEDE_RESPONSE//G2C [actor_robot]
+{
+	optional int32  mstat				= 1;		// 状态
+}
+
+// [请求]离开军团
+message PROBUFF_NET_FAMIL_LEAVE//C2G2 [actor_family]
+{
+	optional int64 mfamilid = 1;	
+}
+
+// [回复]离开军团
+message PROBUFF_NET_FAMIL_LEAVE_RESPONSE//G2C [actor_robot]
+{
+	optional int32  mstat				= 1;		// 状态
+}
+
+// [请求]获取军团列表
+message PROBUFF_NET_FAMIL_LIST//C2G2 [actor_family]
+{	
+	optional int64 mfamilid = 1;	
+}
+
+// [回复]获取军团列表
+message PROBUFF_NET_FAMIL_LIST_RESPONSE//G2C [actor_robot]
+{
+	optional int64 mfamilid			= 1;	
+	repeated pbdb.db_family  mfamily	= 2;
+}
+
+// [请求]修改军团名称
+message PROBUFF_NET_FAMIL_CHANGENAME//C2G2 [actor_family]
+{
+	optional int64 mfamilid = 1;	
+	optional string mname = 2;	// 修改军团名称
+}
+
+// [回复]修改军团名称
+message PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE//G2C [actor_robot]
+{
+	optional int32  mstat				= 1;		// 状态
+}
+
+// [请求]军团签到
+message PROBUFF_NET_FAMIL_SIGN//C2G2 [actor_family]
+{
+	optional int64 mfamilid = 1;
+}
+
+// [回复]军团签到
+message PROBUFF_NET_FAMIL_SIGN_RESPONSE//G2C [actor_robot]
+{
+	optional int32  mstat				= 1;		// 状态
+}
+
+// [回复]恭喜获得x物品
+message PROBUFF_NET_REWARD_ITEM_RESPONSE//G2C [actor_robot]
+{
+	map<int32,int32>	mitems	= 1;		// 获取的物品 key:物品tid value:物品数量
+}
+
+// [请求]获取排行榜
+message PROBUFF_NET_RANKLIST//C2G2 [actor_ranklist]
+{
+	optional bool miscross						= 1;
+	optional pbdb.eranklist mtype				= 2;
+	optional int32 mactivityid					= 3; // mtype == eranklist.activity_lv 
+	optional int32 mpage						= 4;
+};
+
+// [回复]获取排行榜
+message PROBUFF_NET_RANKLIST_RESPONSE//G2C [actor_robot]
+{
+	optional pbdb.eranklist mtype				= 1;
+	repeated pbdb.db_brief mitems				= 2;
+	optional int32 mpage						= 3;
+	optional int32 mcount						= 4;
+	optional int32 mrolerank					= 5;
+};
+
+// [请求]好友信息
+message PROBUFF_NET_FRIEND//C2G2 [actor_friends]
+{
+};
+
+// [回复]添加好友
+message PROBUFF_NET_FRIEND_RESPONSE//G2C [actor_robot]
+{
+	repeated pbdb.db_brief mfriends			= 1;
+	repeated pbdb.db_brief mapplyfriends		= 2;
+};
+
+// [请求]添加好友
+message PROBUFF_NET_FRIEND_ADD//C2G2 [actor_friends]
+{
+	optional int64 mfriedid = 1;
+};
+
+// [回复]添加好友
+message PROBUFF_NET_FRIEND_ADD_RESPONSE//G2C [actor_robot]
+{
+	optional int64	mfriedid	= 1;
+	optional int32  mstat		= 2;		// 状态
+};
+
+// [请求]同意/拒绝添加好友
+message PROBUFF_NET_FRIEND_RATIFY_ADD//C2G2 [actor_friends]
+{
+	optional int64	mfriedid		= 1;
+	optional bool	mratify		= 2;
+};
+
+// [回复]同意添加好友
+message PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE//G2C [actor_robot]
+{
+	optional int64	mfriedid		= 1;
+	optional bool	mratify		= 2;
+	optional int32  mstat			= 3;		// 状态
+};
+
+// [请求]删除好友
+message PROBUFF_NET_FRIEND_ERASE//C2G2 [actor_friends]
+{
+	optional int64 mfriedid = 1;
+};
+
+// [回复]删除好友
+message PROBUFF_NET_FRIEND_ERASE_RESPONSE//G2C [actor_robot]
+{
+	optional int64 mfriedid = 1;
+	optional int32  mstat  = 2;		// 状态
+};
+
+// [回复]玩家上线
+message PROBUFF_NET_ROLESTAT//G2C [actor_robot]
+{
+	enum stat
+	{
+		online	= 0;	// 上线
+		offline = 1;	// 下线
+	}
+	optional stat mstat = 1;
+	enum logic_stat
+	{
+		friends = 0;
+		familyer = 1;
+	}
+	optional logic_stat mlogicstat = 2;
+	optional int64 mroleid = 3;
+};
+
+///////////////////////////////////////////////////////////////
+//// ################ [aoi地图相关 Start] ################ ////
+//// ##################################################### ////
+
+// 同步属性值
+message PROBUFF_NET_SYNC_ATTRIBUTE//G2C [actor_robot]
+{
+	repeated pbdb.UNIT_MODULE mmodules		= 1;
+};
+
+// 同步玩家信息
+message PROBUFF_NET_SYNC_UNIT//G2C [actor_robot]
+{
+	repeated pbdb.UNIT munits				= 1;
+};
+
+// 进入视野
+message PROBUFF_NET_ENTER_LEAVE_VIEW//G2C [actor_robot]
+{
+	optional bool misenter				= 1;
+	repeated int64 munits				= 2;
+};
+
+// 同步位置方向信息
+message PROBUFF_NET_SYNC_POSITION//G2C [actor_robot]
+{
+	map<int64,pbdb.POSITION> mposition = 1;
+};
+
+// 修改方向,速度
+message PROBUFF_NET_CHANGE_ANGLE//C2G [actor_role]
+{
+	optional pbdb.POSITION mposition		= 1;
+};
+
+//// ###################################################### ///
+//// ################ [aoi地图相关 Finish] ################ ///
+///////////////////////////////////////////////////////////////
+
+// [请求]删除好友
+message PROBUFF_NET_TESTLUA//C2G2 [actor_testlua]
+{
+	optional int64 mid = 1;
+	optional string mvalue = 2;
+	map<int64,string> mdata = 3;
+};

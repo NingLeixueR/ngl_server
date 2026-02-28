@@ -9,6 +9,10 @@ public/csharp/csharp/.vs
 public/csharp/csharp/csharp/bin
 public/csharp/NodeConsoleApp1
 build
+*.exe
+*.dll
+*.so
+*.dylib
 CMakeUserPresets.json
 *.cpp text=auto charset=gbk
 *.h text=auto charset=gbk
