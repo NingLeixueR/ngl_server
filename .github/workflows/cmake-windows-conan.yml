@@ -1,4 +1,4 @@
-name: Build with Conan
+name: windows-2022
 
 on:
  # push:
