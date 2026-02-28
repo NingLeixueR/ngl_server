@@ -13,11 +13,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)        # 关闭微软C++扩展，启用【纯标�
 add_compile_options(/Zc:preprocessor)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
-IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
-set(CMAKE_CXX_FLAGS "${COLLECT_GCC} -std=c++20 -march=native -msse4.1 -O3 -lrt -L/usr/lib64/mysql/ -L/usr/lib/x86_64-linux-gnu -I/usr/include/postgresql -lcurl -L/usr/lib64/ -I/usr/local/include/google/protobuf/ -L/usr/local/lib/ -L`pwd`/../../../lib -I/usr/include/mysql -I/usr/include/curl -I/usr/include/x86_64-linux-gnu/curl -L/usr/lib/x86_64-linux-gnu/ -I/usr/include -I/usr/include/protobuf -L/usr/local/lib/ -I/usr/local/include -lmysqlclient")
-INCLUDE_DIRECTORIES(3part/boost/libs/atomic/src)
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
-ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+#IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+#set(CMAKE_CXX_FLAGS "${COLLECT_GCC} -std=c++20 -march=native -msse4.1 -O3 -lrt -L/usr/lib64/mysql/ -L/usr/lib/x86_64-linux-gnu -I/usr/include/postgresql -lcurl -L/usr/lib64/ -I/usr/local/include/google/protobuf/ -L/usr/local/lib/ -L`pwd`/../../../lib -I/usr/include/mysql -I/usr/include/curl -I/usr/include/x86_64-linux-gnu/curl -L/usr/lib/x86_64-linux-gnu/ -I/usr/include -I/usr/include/protobuf -L/usr/local/lib/ -I/usr/local/include -lmysqlclient")
+#ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
