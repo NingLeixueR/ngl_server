@@ -11,10 +11,11 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "ttab_consume.h"
-#include "consume.h"
-#include "ncsv.h"
-#include "bag.h"
+
+#include "actor/actor_logic/actor_role/logic/bag/consume.h"
+#include "actor/actor_logic/actor_role/logic/bag/bag.h"
+#include "actor/tab/ttab_consume.h"
+#include "tools/tab/csv/ncsv.h"
 
 namespace ngl
 {

@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "pack_head.h"
-#include "type.h"
+#include "tools/serialize/pack_head.h"
+#include "tools/type.h"
 
 #include <functional>
 #include <cstdint>

@@ -11,15 +11,16 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "ttab_servers.h"
-#include "sysconfig.h"
-#include "localtime.h"
+
+#include "tools/tab/xml/sysconfig.h"
+#include "actor/tab/ttab_servers.h"
+#include "actor/actor_base/nguid.h"
+#include "tools/curl/ncurl.h"
+#include "tools/localtime.h"
+#include "tools/tools.h"
 #include "hmac_sha1.h"
 #include "base64.h"
 #include "varint.h"
-#include "tools.h"
-#include "nguid.h"
-#include "ncurl.h"
 #include "sha1.h"
 
 #include <filesystem>

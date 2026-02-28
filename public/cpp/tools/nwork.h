@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "threadtools.h"
+#include "tools/threadtools.h"
 
 namespace ngl
 {

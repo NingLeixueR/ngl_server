@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "time_wheel.h"
-#include "nlog.h"
+#include "tools/time_wheel.h"
+#include "tools/log/nlog.h"
 
 namespace ngl
 {

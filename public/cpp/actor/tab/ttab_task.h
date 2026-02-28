@@ -13,10 +13,10 @@
 */
 #pragma once
 
-#include "ttab_specialid.h"
-#include "ncsv.h"
-#include "type.h"
-#include "xml.h"
+#include "actor/tab/ttab_specialid.h"
+#include "tools/tab/csv/ncsv.h"
+#include "tools/tab/xml/xml.h"
+#include "tools/type.h"
 
 namespace ngl
 {

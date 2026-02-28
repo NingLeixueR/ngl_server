@@ -13,20 +13,20 @@
 */
 #pragma once
 
-#include "threadtools.h"
-#include "example.pb.h"
-#include "nactortype.h"
-#include "nserialize.h"
-#include "localtime.h"
-#include "sysconfig.h"
-#include "ndefine.h"
-#include "net.pb.h"
-#include "nguid.h"
-#include "db.pb.h"
-#include "tools.h"
-#include "pack.h"
-#include "type.h"
-#include "xml.h"
+#include "actor/actor_base/nactortype.h"
+#include "tools/serialize/nserialize.h"
+#include "tools/tab/xml/sysconfig.h"
+#include "tools/serialize/ndefine.h"
+#include "actor/actor_base/nguid.h"
+#include "tools/serialize/pack.h"
+#include "actor/pb/example.pb.h"
+#include "tools/tab/xml/xml.h"
+#include "tools/threadtools.h"
+#include "tools/localtime.h"
+#include "actor/pb/net.pb.h"
+#include "actor/pb/db.pb.h"
+#include "tools/tools.h"
+#include "tools/type.h"
 
 #include <source_location>
 #include <iostream>

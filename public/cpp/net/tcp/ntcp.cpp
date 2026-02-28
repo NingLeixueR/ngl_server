@@ -12,10 +12,10 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-#include "actor_gateway.h"
-#include "protocol.h"
-#include "nguid.h"
-#include "ntcp.h"
+#include "actor/actor_logic/actor_gateway/actor_gateway.h"
+#include "actor/protocol/protocol.h"
+#include "actor/actor_base/nguid.h"
+#include "net/tcp/ntcp.h"
 
 namespace ngl
 {

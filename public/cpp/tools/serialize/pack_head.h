@@ -13,11 +13,11 @@
 */
 #pragma once
 
-#include "nserialize.h"
-#include "localtime.h"
-#include "csvtable.h"
-#include "tools.h"
-#include "type.h"
+#include "tools/serialize/nserialize.h"
+#include "actor/tab/csvtable.h"
+#include "tools/localtime.h"
+#include "tools/tools.h"
+#include "tools/type.h"
 
 #include <cstdint>
 #include <map>

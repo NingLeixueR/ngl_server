@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "actor_manage.h"
-#include "naddress.h"
-#include "ntcp.h"
+#include "actor/actor_base/actor_manage.h"
+#include "actor/actor_base/naddress.h"
+#include "net/tcp/ntcp.h"
 
 namespace ngl
 {

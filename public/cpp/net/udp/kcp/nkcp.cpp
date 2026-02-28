@@ -12,8 +12,8 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-#include "tools.h"
-#include "nkcp.h"
+#include "net/udp/kcp/nkcp.h"
+#include "tools/tools.h"
 
 namespace ngl
 {

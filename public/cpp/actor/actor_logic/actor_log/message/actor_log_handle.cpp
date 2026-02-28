@@ -11,7 +11,9 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_log.h"
+
+#include "actor/actor_logic/actor_log/actor_log.h"
+
 namespace ngl
 {
 	bool actor_log::handle(const message<np_logitem>& adata)

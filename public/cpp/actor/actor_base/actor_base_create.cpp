@@ -11,12 +11,12 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_example_guess_number.h"
-#include "actor_manage.h"
-#include "actor_robot.h"
-#include "actor_base.h"
-#include "actor_role.h"
-#include "actor_log.h"
+#include "actor/actor_logic/actor_example_guess_number/actor_example_guess_number.h"
+#include "actor/actor_logic/actor_robot/actor_robot.h"
+#include "actor/actor_logic/actor_role/actor_role.h"
+#include "actor/actor_logic/actor_log/actor_log.h"
+#include "actor/actor_base/actor_manage.h"
+#include "actor/actor_base/actor_base.h"
 
 namespace ngl
 {

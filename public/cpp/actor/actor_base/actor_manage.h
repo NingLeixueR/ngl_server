@@ -13,13 +13,13 @@
 */
 #pragma once
 
-#include "actor_client.h"
-#include "threadtools.h"
-#include "actor_base.h"
-#include "naddress.h"
-#include "nthread.h"
-#include "ndefine.h"
-#include "pack.h"
+#include "actor/actor_base/actor_client.h"
+#include "actor/actor_base/actor_base.h"
+#include "actor/actor_base/naddress.h"
+#include "actor/actor_base/nthread.h"
+#include "tools/serialize/ndefine.h"
+#include "tools/serialize/pack.h"
+#include "tools/threadtools.h"
 
 #include <list>
 #include <map>

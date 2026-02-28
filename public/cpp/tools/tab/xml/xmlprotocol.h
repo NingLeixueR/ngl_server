@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "xmlinfo.h"
-#include "type.h"
-#include "nlog.h"
+#include "tools/tab/xml/xmlinfo.h"
+#include "tools/log/nlog.h"
+#include "tools/type.h"
 
 #include <functional>
 #include <string>

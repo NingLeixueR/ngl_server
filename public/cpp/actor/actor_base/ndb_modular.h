@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "ndbclient.h"
-#include "csvtable.h"
-#include "nlog.h"
+#include "actor/actor_base/ndbclient.h"
+#include "actor/tab/csvtable.h"
+#include "tools/log/nlog.h"
 
 namespace ngl
 {

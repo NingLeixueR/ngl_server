@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "nprotocol.h"
-#include "bi.h"
+#include "actor/protocol/nprotocol.h"
+#include "tools/log/bi/bi.h"
 
 namespace ngl
 {

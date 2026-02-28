@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "serialize_lua.h"
+#include "tools/script/lua/serialize_lua.h"
 
 namespace ngl
 {

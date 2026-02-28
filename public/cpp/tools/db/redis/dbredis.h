@@ -13,11 +13,11 @@
 */
 #pragma once
 
-#include "nserialize.h"
+#include "tools/serialize/nserialize.h"
+#include "tools/db/sql/db_buff.h"
 #include "hiredis/hiredis.h"
-#include "db_buff.h"
-#include "nlog.h"
-#include "type.h"
+#include "tools/log/nlog.h"
+#include "tools/type.h"
 
 #define REDIS_DATA_MAX (10240)
 

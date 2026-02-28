@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "luafunction.h"
-#include "actor_base.h"
-#include "ndefine.h"
+#include "tools/script/lua/luafunction.h"
+#include "actor/actor_base/actor_base.h"
+#include "tools/serialize/ndefine.h"
 
 extern "C"
 {

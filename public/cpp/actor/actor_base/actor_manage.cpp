@@ -11,11 +11,11 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_client.h"
-#include "actor_server.h"
-#include "actor_manage.h"
-#include "actor_db.h"
-#include "tools.h"
+#include "actor/actor_base/actor_client.h"
+#include "actor/actor_base/actor_server.h"
+#include "actor/actor_base/actor_manage.h"
+#include "actor/actor_base/actor_db.h"
+#include "tools/tools.h"
 
 namespace ngl
 {

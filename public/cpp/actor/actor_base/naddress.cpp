@@ -11,11 +11,11 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_base.h"
-#include "nactortype.h"
-#include "naddress.h"
-#include "nguid.h"
-#include "ntcp.h"
+#include "actor/actor_base/actor_base.h"
+#include "actor/actor_base/nactortype.h"
+#include "actor/actor_base/naddress.h"
+#include "actor/actor_base/nguid.h"
+#include "net/tcp/ntcp.h"
 
 namespace ngl
 {

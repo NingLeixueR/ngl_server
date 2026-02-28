@@ -12,8 +12,8 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-#include "nfilterword.h"
-#include "enum2name.h"
+#include "tools/nfilterword.h"
+#include "tools/enum2name.h"
 
 namespace ngl
 {

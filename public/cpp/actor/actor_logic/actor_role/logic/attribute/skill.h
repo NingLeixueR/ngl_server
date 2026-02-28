@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include "attribute.h"
-#include "tools.h"
+#include "actor/actor_logic/actor_role/logic/attribute/attribute.h"
+#include "tools/tools.h"
 
 namespace ngl
 {

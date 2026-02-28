@@ -11,9 +11,11 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_brief.h"
-#include "actor_chat.h"
-#include "ttab_chat.h"
+
+#include "actor/actor_logic/actor_brief/actor_brief.h"
+#include "actor/actor_logic/actor_chat/actor_chat.h"
+#include "actor/tab/ttab_chat.h"
+
 namespace ngl
 {
 	bool actor_chat::handle(const message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)

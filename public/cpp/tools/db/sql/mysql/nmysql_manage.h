@@ -13,15 +13,15 @@
 */
 #pragma once
 
-#include "ttab_mergearea.h"
-#include "ttab_servers.h"
-#include "scope_guard.h"
-#include "nmysql_pool.h"
-#include "nserialize.h"
-#include "db_data.h"
-#include "db_buff.h"
-#include "nmysql.h"
-#include "tools.h"
+#include "actor/tab/ttab_mergearea.h"
+#include "actor/tab/ttab_servers.h"
+#include "tools/scope_guard.h"
+#include "tools/db/sql/mysql/nmysql_pool.h"
+#include "tools/serialize/nserialize.h"
+#include "tools/db/sql/db_data.h"
+#include "tools/db/sql/db_buff.h"
+#include "tools/db/sql/mysql/nmysql.h"
+#include "tools/tools.h"
 
 namespace ngl
 {

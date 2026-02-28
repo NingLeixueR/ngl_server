@@ -13,11 +13,11 @@
 */
 #pragma once
 
-#include "nactor_auto.h"
-#include "ttab_random.h"
-#include "ncsv.h"
-#include "tools.h"
-#include "nlog.h"
+#include "actor/auto/nactor_auto.h"
+#include "actor/tab/ttab_random.h"
+#include "tools/tab/csv/ncsv.h"
+#include "tools/log/nlog.h"
+#include "tools/tools.h"
 
 #include <vector>
 #include <string>

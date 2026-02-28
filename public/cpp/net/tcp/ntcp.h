@@ -14,15 +14,15 @@
 
 #pragma once
 
-#include "server_session.h"
-#include "netbuff_pool.h"
-#include "handle_pram.h"
-#include "structbytes.h"
-#include "actor_base.h"
-#include "net_pack.h"
-#include "asio_tcp.h"
-#include "segpack.h"
-#include "pack.h"
+#include "tools/serialize/netbuff_pool.h"
+#include "actor/actor_base/handle_pram.h"
+#include "tools/serialize/structbytes.h"
+#include "actor/actor_base/actor_base.h"
+#include "tools/serialize/segpack.h"
+#include "tools/serialize/pack.h"
+#include "net/server_session.h"
+#include "net/tcp/asio_tcp.h"
+#include "net/net_pack.h"
 
 #include <vector>
 #include <memory>

@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "threadtools.h"
-#include "time_wheel.h"
-#include "nlog.h"
+#include "tools/threadtools.h"
+#include "tools/time_wheel.h"
+#include "tools/log/nlog.h"
 
 #include <algorithm>
 #include <array>

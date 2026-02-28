@@ -11,11 +11,12 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "asio_timer.h"
-#include "nprotocol.h"
-#include "asio_tcp.h"
-#include "nlog.h"
-#include "pack.h"
+
+#include "actor/protocol/nprotocol.h"
+#include "tools/serialize/pack.h"
+#include "net/tcp/asio_tcp.h"
+#include "net/asio_timer.h"
+#include "tools/log/nlog.h"
 
 namespace ngl
 {

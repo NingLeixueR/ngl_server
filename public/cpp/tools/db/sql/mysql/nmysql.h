@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "db_buff.h"
-#include "xmlinfo.h"
+#include "tools/db/sql/db_buff.h"
+#include "tools/tab/xml/xmlinfo.h"
 
 #include <iostream> 
 #include <mysql.h>

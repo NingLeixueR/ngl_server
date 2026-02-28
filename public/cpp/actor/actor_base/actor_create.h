@@ -13,14 +13,14 @@
 */
 #pragma once
 
-#include "actor_manage.h"
-#include "nactortype.h"
-#include "ndbclient.h"
-#include "db_data.h"
-#include "nmysql_pool.h"
-#include "nmysql.h"
-#include "ntimer.h"
-#include "ntcp.h"
+#include "tools/db/sql/mysql/nmysql_pool.h"
+#include "actor/actor_base/actor_manage.h"
+#include "actor/actor_base/nactortype.h"
+#include "actor/actor_base/ndbclient.h"
+#include "tools/db/sql/mysql/nmysql.h"
+#include "actor/actor_base/ntimer.h"
+#include "tools/db/sql/db_data.h"
+#include "net/tcp/ntcp.h"
 
 namespace ngl
 {

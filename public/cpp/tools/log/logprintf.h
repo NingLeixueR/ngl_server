@@ -13,10 +13,10 @@
 */
 #pragma once
 
+#include "tools/tab/xml/sysconfig.h"
+
 #include <fstream>
 #include <memory>
-
-#include "sysconfig.h"
 
 namespace ngl
 {

@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "actor.h"
+#include "actor/actor_base/actor.h"
 
 namespace ngl
 {

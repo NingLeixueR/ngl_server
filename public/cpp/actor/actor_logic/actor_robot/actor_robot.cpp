@@ -11,10 +11,11 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_robot_manage.h"
-#include "actor_robot.h"
-#include "nregister.h"
-#include "nforward.h"
+
+#include "actor/actor_logic/actor_robot_manage/actor_robot_manage.h"
+#include "actor/actor_logic/actor_robot/actor_robot.h"
+#include "actor/actor_base/nregister.h"
+#include "actor/actor_logic/nforward.h"
 
 namespace ngl
 {

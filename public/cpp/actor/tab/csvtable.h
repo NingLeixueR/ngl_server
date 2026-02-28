@@ -16,9 +16,9 @@
 // 创建时间 // 创建时间 26-02-12 18:06:08
 #pragma once
 
-#include "csv.h"
-#include "ndefine.h"
-#include "nserialize.h"
+#include "tools/serialize/nserialize.h"
+#include "tools/serialize/ndefine.h"
+#include "tools/tab/csv/csv.h"
 namespace ngl{
 enum ENET_CONFIG
 {

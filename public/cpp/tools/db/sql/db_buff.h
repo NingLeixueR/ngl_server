@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "nlog.h"
+#include "tools/log/nlog.h"
 
 #include <functional>
 #include <cstdint>

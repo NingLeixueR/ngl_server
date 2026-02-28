@@ -13,13 +13,13 @@
 */
 #pragma once
 
-#include "kcp_endpoint.h"
-#include "threadtools.h"
-#include "time_wheel.h"
-#include "asio_base.h"
-#include "type.h"
-#include "pack.h"
-#include "nlog.h"
+#include "net/udp/kcp/kcp_endpoint.h"
+#include "tools/serialize/pack.h"
+#include "tools/threadtools.h"
+#include "tools/time_wheel.h"
+#include "tools/log/nlog.h"
+#include "net/asio_base.h"
+#include "tools/type.h"
 #include "ikcp.h"
 
 #include <asio.hpp>

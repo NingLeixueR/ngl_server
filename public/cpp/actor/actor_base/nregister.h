@@ -13,12 +13,12 @@
 */
 #pragma once
 
-#include "nactortype.h"
-#include "actor_base.h"
-#include "tprotocol.h"
-#include "nprotocol.h"
-#include "protocol.h"
-#include "actor.h"
+#include "actor/actor_base/nactortype.h"
+#include "actor/actor_base/actor_base.h"
+#include "actor/protocol/tprotocol.h"
+#include "actor/protocol/nprotocol.h"
+#include "actor/protocol/protocol.h"
+#include "actor/actor_base/actor.h"
 
 namespace ngl
 {

@@ -13,10 +13,10 @@
 */
 #pragma once
 
-#include "nfilterword.h"
-#include "ncsv.h"
-#include "type.h"
-#include "xml.h"
+#include "tools/tab/csv/ncsv.h"
+#include "tools/tab/xml/xml.h"
+#include "tools/nfilterword.h"
+#include "tools/type.h"
 
 namespace ngl
 {

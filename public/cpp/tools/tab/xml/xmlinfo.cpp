@@ -11,10 +11,11 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "nprotocol.h"
-#include "xmlinfo.h"
-#include "tools.h"
-#include "nlog.h"
+
+#include "actor/protocol/nprotocol.h"
+#include "tools/tab/xml/xmlinfo.h"
+#include "tools/log/nlog.h"
+#include "tools/tools.h"
 
 #include <string>
 

@@ -11,8 +11,10 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_gmclient.h"
-#include "actor_gm.h"
+
+#include "actor/actor_logic/actor_gmclient/actor_gmclient.h"
+#include "actor/actor_logic/actor_gm/actor_gm.h"
+
 namespace ngl
 {
 	// 分发给独立进程的请求

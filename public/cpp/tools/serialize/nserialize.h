@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "net.pb.h"
-#include "tools.h"
+#include "actor/pb/net.pb.h"
+#include "tools/tools.h"
 
 #include <google/protobuf/util/json_util.h>
 #include <google/protobuf/message_lite.h>

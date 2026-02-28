@@ -16,10 +16,11 @@
  // 创建时间【2026-02-12 18:06:21】
 
 #pragma once
-#include "example.pb.h"
-#include "ndefine.h"
-#include "net.pb.h"
-#include "db.pb.h"
+
+#include "tools/serialize/ndefine.h"
+#include "actor/pb/example.pb.h"
+#include "actor/pb/net.pb.h"
+#include "actor/pb/db.pb.h"
 
 #include <array>
 

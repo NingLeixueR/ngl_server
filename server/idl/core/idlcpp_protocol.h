@@ -1,8 +1,8 @@
 #ifndef _IDLCPP_PROTOCOL_H_
 #define _IDLCPP_PROTOCOL_H_
 
-#include "localtime.h"
-#include "tools.h"
+#include "tools/localtime.h"
+#include "tools/tools.h"
 #include "idl.h"
 
 #include <algorithm>
@@ -261,12 +261,12 @@ public:
 		m_stream << m_tit;
 		m_stream << R"(#pragma once
 
-#include "ndb_modular.h"
-#include "nsp_server.h"
-#include "nsp_write.h"
-#include "nsp_read.h"
-#include "actor_db.h"
-#include "db.pb.h"
+#include "actor/actor_base/ndb_modular.h"
+#include "actor/actor_base/nsp/nsp_server.h"
+#include "actor/actor_base/nsp/nsp_write.h"
+#include "actor/actor_base/nsp/nsp_read.h"
+#include "actor/actor_base/actor_db.h"
+#include "actor/pb/db.pb.h"
 
 
 namespace ngl
@@ -338,7 +338,7 @@ namespace ngl
 		m_stream << m_tit;
 		m_stream << R"(#pragma once
 
-#include "nactortype.h"
+#include "actor/actor_base/nactortype.h"
 
 #define em_events_null(NAME) (ENUM_ACTOR)(ACTOR_EVENTS+ NAME::id_index())
 
@@ -509,9 +509,9 @@ namespace ngl
 
 						std::string format_str_part1 = R"(#pragma once
 
-#include "ncsv.h"
-#include "type.h"
-#include "xml.h"
+#include "tools/tab/csv/ncsv.h"
+#include "tools/type.h"
+#include "tools/tab/xml/xml.h"
 
 namespace ngl
 {

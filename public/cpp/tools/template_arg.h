@@ -13,9 +13,10 @@
 */
 #pragma once
 
-#include "ndefine.h"
-#include "tools.h"
-#include "type.h"
+#include "tools/serialize/ndefine.h"
+#include "tools/tools.h"
+#include "tools/type.h"
+
 #include <iostream>
 
 namespace ngl

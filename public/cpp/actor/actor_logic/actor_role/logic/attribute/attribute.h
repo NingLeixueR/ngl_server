@@ -13,14 +13,14 @@
 */
 #pragma once 
 
-#include "attribute_value.h"
-#include "ttab_attribute.h"
-#include "events_map.h"
-#include "actor_base.h"
-#include "net.pb.h"
-#include "ncsv.h"
-#include "nlog.h"
-#include "ntcp.h"
+#include "actor/actor_logic/actor_role/logic/attribute/attribute_value.h"
+#include "actor/actor_logic/actor_events/events_map.h"
+#include "actor/actor_base/actor_base.h"
+#include "actor/tab/ttab_attribute.h"
+#include "tools/tab/csv/ncsv.h"
+#include "actor/pb/net.pb.h"
+#include "tools/log/nlog.h"
+#include "net/tcp/ntcp.h"
 
 #include <functional>
 #include <vector>

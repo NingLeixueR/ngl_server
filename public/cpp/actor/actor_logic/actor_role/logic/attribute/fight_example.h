@@ -13,9 +13,9 @@
 */
 #pragma once 
 
-#include "nprotocol.h"
-#include "attribute.h"
-#include "unit.h"
+#include "actor/actor_logic/actor_role/logic/attribute/attribute.h"
+#include "actor/actor_logic/actor_role/logic/attribute/unit.h"
+#include "actor/protocol/nprotocol.h"
 
 namespace ngl
 {

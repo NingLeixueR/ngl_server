@@ -13,10 +13,10 @@
 */
 #pragma once
 
-#include "ttab_attribute.h"
-#include "ncsv.h"
-#include "nlog.h"
-#include "ntcp.h"
+#include "actor/tab/ttab_attribute.h"
+#include "tools/tab/csv/ncsv.h"
+#include "tools/log/nlog.h"
+#include "net/tcp/ntcp.h"
 
 #include <functional>
 #include <vector>

@@ -14,11 +14,11 @@
 #include <google/protobuf/dynamic_message.h>
 #include <google/protobuf/descriptor.h>
 
-#include "net.pb.h"
+#include "actor/pb/net.pb.h"
 
-#include "operator_file.h"
+#include "tools/operator_file.h"
 #include "xml_protocol.h"
-#include "tools.h"
+#include "tools/tools.h"
 
 
 int main(int argc, char** argv) 

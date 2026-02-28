@@ -12,6 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
+
 #include <memory>
 
 namespace ngl

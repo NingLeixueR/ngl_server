@@ -13,10 +13,10 @@
 */
 #pragma once
 
-#include "activitytimedb.h"
-#include "ttab_activity.h"
-#include "activitydb.h"
-#include "drop.h"
+#include "actor/actor_logic/actor_activity_manage/activitytimedb.h"
+#include "actor/actor_logic/actor_activity_manage/activitydb.h"
+#include "actor/actor_logic/actor_role/logic/bag/drop.h"
+#include "actor/tab/ttab_activity.h"
 
 namespace ngl
 {

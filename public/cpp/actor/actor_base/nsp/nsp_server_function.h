@@ -12,7 +12,8 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
-#include "nsp_server.h"
+
+#include "actor/actor_base/nsp/nsp_server.h"
 
 namespace ngl
 {

@@ -16,12 +16,12 @@
 // 创建时间 // 创建时间 26-02-12 18:06:17
 #pragma once
 
-#include "ndb_modular.h"
-#include "nsp_server.h"
-#include "nsp_write.h"
-#include "nsp_read.h"
-#include "actor_db.h"
-#include "db.pb.h"
+#include "actor/actor_base/nsp/nsp_server.h"
+#include "actor/actor_base/nsp/nsp_write.h"
+#include "actor/actor_base/nsp/nsp_read.h"
+#include "actor/actor_base/ndb_modular.h"
+#include "actor/actor_base/actor_db.h"
+#include "actor/pb/db.pb.h"
 
 
 namespace ngl

@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "asio_kcp.h"
-#include "net_pack.h"
-#include "type.h"
+#include "net/udp/kcp/asio_kcp.h"
+#include "net/net_pack.h"
+#include "tools/type.h"
 
 namespace ngl
 {

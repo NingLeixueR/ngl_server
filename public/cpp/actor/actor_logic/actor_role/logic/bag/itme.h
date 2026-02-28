@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "ttab_item.h"
-#include "db.pb.h"
-#include "ncsv.h"
+#include "actor/tab/ttab_item.h"
+#include "tools/tab/csv/ncsv.h"
+#include "actor/pb/db.pb.h"
 
 namespace ngl
 {

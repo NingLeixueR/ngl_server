@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "threadtools.h"
-#include "node_pack.h"
-#include "type.h"
+#include "tools/threadtools.h"
+#include "net/node_pack.h"
+#include "tools/type.h"
 
 #include <unordered_map>
 #include <unordered_set>

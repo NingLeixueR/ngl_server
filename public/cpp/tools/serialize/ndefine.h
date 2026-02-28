@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "serialize_lua.h"
-#include "nserialize.h"
-#include "njson.h"
+#include "tools/script/lua/serialize_lua.h"
+#include "tools/serialize/nserialize.h"
+#include "tools/tab/json/njson.h"
 #include "lua.hpp"
 
 #define DEF_PROTOCOL(...)														\

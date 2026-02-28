@@ -11,12 +11,13 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "protocol.h"
-#include "xmlinfo.h"
-#include "ncurl.h"
-#include "ntcp.h"
-#include "xml.h"
-#include "cmd.h"
+
+#include "actor/protocol/protocol.h"
+#include "tools/tab/xml/xmlinfo.h"
+#include "tools/tab/xml/xml.h"
+#include "tools/curl/ncurl.h"
+#include "net/tcp/ntcp.h"
+#include "tools/cmd.h"
 
 namespace ngl
 {

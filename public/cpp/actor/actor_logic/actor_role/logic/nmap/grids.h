@@ -13,12 +13,12 @@
 */
 #pragma once
 
-#include "csvtable.h"
-#include "net.pb.h"
-#include "type.h"
-#include "unit.h"
-#include "grid.h"
-#include "aoi.h"
+#include "actor/actor_logic/actor_role/logic/attribute/unit.h"
+#include "actor/actor_logic/actor_role/logic/nmap/grid.h"
+#include "actor/actor_logic/actor_role/logic/nmap/aoi.h"
+#include "actor/tab/csvtable.h"
+#include "actor/pb/net.pb.h"
+#include "tools/type.h"
 
 #include <vector>
 #include <list>

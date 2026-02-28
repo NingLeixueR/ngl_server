@@ -11,9 +11,10 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_gateway_c2g.h"
-#include "nregister.h"
-#include "nforward.h"
+
+#include "actor/actor_logic/actor_gateway_c2g/actor_gateway_c2g.h"
+#include "actor/actor_base/nregister.h"
+#include "actor/actor_logic/nforward.h"
 
 namespace ngl
 {

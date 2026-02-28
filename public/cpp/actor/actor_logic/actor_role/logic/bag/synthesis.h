@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "ncsv.h"
+#include "tools/tab/csv/ncsv.h"
 
 namespace ngl
 {

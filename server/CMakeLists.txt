@@ -20,7 +20,5 @@ if(IS_GITHUB_ACTIONS_BUILD)
 	ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 endif()
 
-
-
 add_subdirectory(node)
 

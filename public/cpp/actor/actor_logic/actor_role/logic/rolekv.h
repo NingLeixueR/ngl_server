@@ -13,10 +13,10 @@
 */
 #pragma once
 
-#include "nactor_auto.h"
-#include "net.pb.h"
-#include "db.pb.h"
-#include "ncsv.h"
+#include "actor/auto/nactor_auto.h"
+#include "tools/tab/csv/ncsv.h"
+#include "actor/pb/net.pb.h"
+#include "actor/pb/db.pb.h"
 
 namespace ngl
 {

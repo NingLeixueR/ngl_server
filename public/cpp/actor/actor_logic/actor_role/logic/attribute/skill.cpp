@@ -12,9 +12,9 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-#include "skill.h"
-#include "xmlinfo.h"
-#include "unit.h"
+#include "actor/actor_logic/actor_role/logic/attribute/skill.h"
+#include "actor/actor_logic/actor_role/logic/attribute/unit.h"
+#include "tools/tab/xml/xmlinfo.h"
 
 namespace ngl
 {

@@ -12,13 +12,14 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 #pragma once
-#include "nprotocol_template.h"
-#include "template_arg.h"
-#include "xmlprotocol.h"
-#include "net.pb.h"
+
+#include "actor/protocol/nprotocol_template.h"
+#include "tools/tab/xml/xmlprotocol.h"
+#include "tools/template_arg.h"
+#include "actor/pb/net.pb.h"
+#include "tools/tools.h"
+#include "tools/nhash.h"
 #include "lua.hpp"
-#include "tools.h"
-#include "nhash.h"
 
 #include <map>
 

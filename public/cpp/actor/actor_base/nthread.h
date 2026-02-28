@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "threadtools.h"
-#include "handle_pram.h"
-#include "actor_base.h"
+#include "actor/actor_base/handle_pram.h"
+#include "actor/actor_base/actor_base.h"
+#include "tools/threadtools.h"
 
 namespace ngl
 {

@@ -13,18 +13,18 @@
 */
 #pragma once
 
-#include "actor_manage.h"
-#include "threadtools.h"
-#include "handle_pram.h"
-#include "structbytes.h"
-#include "nactortype.h"
-#include "nprotocol.h"
-#include "tprotocol.h"
-#include "nguid.h"
-#include "nlog.h"
-#include "type.h"
-#include "pack.h"
-#include "ntcp.h"
+#include "actor/actor_base/actor_manage.h"
+#include "actor/actor_base/handle_pram.h"
+#include "tools/serialize/structbytes.h"
+#include "actor/actor_base/nactortype.h"
+#include "actor/protocol/nprotocol.h"
+#include "actor/protocol/tprotocol.h"
+#include "actor/actor_base/nguid.h"
+#include "tools/serialize/pack.h"
+#include "tools/threadtools.h"
+#include "tools/log/nlog.h"
+#include "net/tcp/ntcp.h"
+#include "tools/type.h"
 
 #include <functional>
 #include <map>

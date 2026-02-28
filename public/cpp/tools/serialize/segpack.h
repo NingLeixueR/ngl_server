@@ -13,11 +13,11 @@
 */
 #pragma once
 
-#include "threadtools.h"
-#include "segpack.h"
-#include "nrate.h"
-#include "type.h"
-#include "pack.h"
+#include "tools/serialize/segpack.h"
+#include "tools/serialize/nrate.h"
+#include "tools/serialize/pack.h"
+#include "tools/threadtools.h"
+#include "tools/type.h"
 
 #include <functional>
 #include <unordered_map>

@@ -13,16 +13,16 @@
 */
 #pragma once
 
-#include "ttab_servers.h"
-#include "handle_pram.h"
-#include "nactortype.h"
-#include "localtime.h"
-#include "nscript.h"
-#include "ntimer.h"
-#include "ngroup.h"
-#include "nguid.h"
-#include "type.h"
-#include "ukcp.h"
+#include "actor/actor_base/handle_pram.h"
+#include "actor/actor_base/nactortype.h"
+#include "actor/actor_base/nscript.h"
+#include "actor/actor_base/ntimer.h"
+#include "actor/tab/ttab_servers.h"
+#include "actor/actor_base/nguid.h"
+#include "net/udp/kcp/ukcp.h"
+#include "tools/localtime.h"
+#include "tools/ngroup.h"
+#include "tools/type.h"
 
 #include <memory>
 #include <vector>

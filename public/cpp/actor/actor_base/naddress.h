@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "handle_pram.h"
-#include "nguid.h"
-#include "type.h"
+#include "actor/actor_base/handle_pram.h"
+#include "actor/actor_base/nguid.h"
+#include "tools/type.h"
 
 #include <map>
 

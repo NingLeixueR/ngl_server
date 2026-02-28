@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "nsp.h"
+#include "actor/actor_base/nsp/nsp.h"
 
 #include <ranges>
 

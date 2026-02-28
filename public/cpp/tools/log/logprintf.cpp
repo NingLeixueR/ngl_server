@@ -12,17 +12,17 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-#include "ttab_servers.h"
-#include "time_wheel.h"
-#include "actor_log.h"
-#include "logprintf.h"
-#include "localtime.h"
-#include "enum2name.h"
-#include "nprotocol.h"
-#include "xmlinfo.h"
-#include "actor.h"
-#include "nlog.h"
-#include "xml.h"
+#include "actor/actor_logic/actor_log/actor_log.h"
+#include "actor/protocol/nprotocol.h"
+#include "actor/tab/ttab_servers.h"
+#include "actor/actor_base/actor.h"
+#include "tools/tab/xml/xmlinfo.h"
+#include "tools/log/logprintf.h"
+#include "tools/tab/xml/xml.h"
+#include "tools/time_wheel.h"
+#include "tools/localtime.h"
+#include "tools/enum2name.h"
+#include "tools/log/nlog.h"
 
 #ifdef WIN32
 # include <Windows.h>

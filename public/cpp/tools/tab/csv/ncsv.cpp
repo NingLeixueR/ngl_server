@@ -11,9 +11,10 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "csvtable.h"
-#include "ncsv.h"
-#include "drop.h"
+
+#include "actor/actor_logic/actor_role/logic/bag/drop.h"
+#include "actor/tab/csvtable.h"
+#include "tools/tab/csv/ncsv.h"
 
 namespace ngl
 {

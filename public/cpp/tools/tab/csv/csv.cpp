@@ -11,11 +11,12 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "operator_file.h"
-#include "nprotocol.h"
-#include "tools.h"
-#include "nlog.h"
-#include "csv.h"
+
+#include "actor/protocol/nprotocol.h"
+#include "tools/operator_file.h"
+#include "tools/tab/csv/csv.h"
+#include "tools/log/nlog.h"
+#include "tools/tools.h"
 
 namespace ngl
 {

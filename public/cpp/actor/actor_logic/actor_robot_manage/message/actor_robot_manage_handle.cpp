@@ -11,7 +11,9 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_robot_manage.h"
+
+#include "actor/actor_logic/actor_robot_manage/actor_robot_manage.h"
+
 namespace ngl
 {
 	bool actor_robot_manage::handle(const message<np_robot_pram>& adata)

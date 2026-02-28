@@ -13,22 +13,22 @@
 */
 #pragma once
 
-#include "npostgresql_manage.h"
-#include "npostgresql_pool.h"
-#include "nmysql_manage.h"
-#include "actor_manage.h"
-#include "scope_guard.h"
-#include "nmysql_pool.h"
-#include "ttab_dbload.h"
-#include "ndbclient.h"
-#include "nregister.h"
-#include "nprotocol.h"
-#include "db_cache.h"
-#include "db_data.h"
-#include "nmysql.h"
-#include "gcmd.h"
-#include "ntcp.h"
-#include "cmd.h"
+#include "tools/db/sql/postgresql/npostgresql_manage.h"
+#include "tools/db/sql/postgresql/npostgresql_pool.h"
+#include "tools/db/sql/mysql/nmysql_manage.h"
+#include "actor/actor_logic/actor_gm/gcmd.h"
+#include "tools/db/sql/mysql/nmysql_pool.h"
+#include "actor/actor_base/actor_manage.h"
+#include "actor/actor_base/ndbclient.h"
+#include "actor/actor_base/nregister.h"
+#include "tools/db/sql/mysql/nmysql.h"
+#include "actor/protocol/nprotocol.h"
+#include "actor/tab/ttab_dbload.h"
+#include "tools/db/sql/db_cache.h"
+#include "tools/db/sql/db_data.h"
+#include "tools/scope_guard.h"
+#include "net/tcp/ntcp.h"
+#include "tools/cmd.h"
 
 namespace ngl
 {

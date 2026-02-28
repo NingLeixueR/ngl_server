@@ -13,11 +13,11 @@
 */
 #pragma once
 
-#include "ttab_specialid.h"
-#include "nactor_auto.h"
-#include "rank_item.h"
-#include "rankset.h"
-#include "db.pb.h"
+#include "actor/actor_logic/actor_ranklist/rank_item.h"
+#include "actor/actor_logic/actor_ranklist/rankset.h"
+#include "actor/tab/ttab_specialid.h"
+#include "actor/auto/nactor_auto.h"
+#include "actor/pb/db.pb.h"
 
 #include <iostream>
 #include <sstream>

@@ -13,12 +13,12 @@
 */
 #pragma once
 
-#include "nactortype.h"
-#include "csvtable.h"
-#include "ndefine.h"
-#include "net.pb.h"
-#include "db.pb.h"
-#include "nlog.h"
+#include "actor/actor_base/nactortype.h"
+#include "tools/serialize/ndefine.h"
+#include "actor/tab/csvtable.h"
+#include "actor/pb/net.pb.h"
+#include "actor/pb/db.pb.h"
+#include "tools/log/nlog.h"
 
 #include <cstdint>
 #include <string>

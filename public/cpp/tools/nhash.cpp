@@ -12,7 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-#include "nhash.h"
+#include "tools/nhash.h"
 
 namespace ngl
 {

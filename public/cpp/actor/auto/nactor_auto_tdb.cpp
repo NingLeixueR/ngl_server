@@ -14,9 +14,9 @@
 
  // 注意【makeproto 工具生成文件，不要手动修改】
  // 创建时间【2026-02-12 18:06:22】
-#include "auto_actor_enum.h"
-#include "nprotocol_auto.h"
-#include "nactor_auto.h"
+#include "actor/auto/auto_actor_enum.h"
+#include "actor/auto/nprotocol_auto.h"
+#include "actor/auto/nactor_auto.h"
 
 namespace ngl
 {

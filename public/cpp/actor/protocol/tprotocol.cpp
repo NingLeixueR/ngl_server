@@ -11,11 +11,12 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "tprotocol.h"
-#include "nprotocol.h"
-#include "ntimer.h"
-#include "net.pb.h"
-#include "actor.h"
+
+#include "actor/protocol/tprotocol.h"
+#include "actor/protocol/nprotocol.h"
+#include "actor/actor_base/ntimer.h"
+#include "actor/actor_base/actor.h"
+#include "actor/pb/net.pb.h"
 
 namespace ngl
 {

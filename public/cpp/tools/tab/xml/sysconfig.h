@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "csvtable.h"
-#include "type.h"
+#include "actor/tab/csvtable.h"
+#include "tools/type.h"
 
 #include <vector>
 #include <set>

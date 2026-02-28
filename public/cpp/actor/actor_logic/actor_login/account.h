@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "nactor_auto.h"
+#include "actor/auto/nactor_auto.h"
 
 namespace ngl
 {

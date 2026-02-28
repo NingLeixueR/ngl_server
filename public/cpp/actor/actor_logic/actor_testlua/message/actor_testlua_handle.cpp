@@ -11,7 +11,9 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_testlua.h"
+
+#include "actor/actor_logic/actor_testlua/actor_testlua.h"
+
 namespace ngl
 {
 	bool actor_testlua::handle(const message<mforward<pbnet::PROBUFF_NET_TESTLUA>>& adata)

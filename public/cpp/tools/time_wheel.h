@@ -13,6 +13,9 @@
 */
 #pragma once
 
+#include "tools/threadtools.h"
+#include "tools/impl.h"
+
 #include <functional>
 #include <iostream>
 #include <thread>
@@ -21,9 +24,6 @@
 #include <mutex>
 #include <cmath>
 #include <map>
-
-#include "threadtools.h"
-#include "impl.h"
 
 namespace ngl
 {

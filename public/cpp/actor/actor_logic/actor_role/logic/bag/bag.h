@@ -13,10 +13,10 @@
 */
 #pragma once
 
-#include "nactor_auto.h"
-#include "remakes.h"
-#include "db.pb.h"
-#include "itme.h"
+#include "actor/actor_logic/actor_role/logic/bag/itme.h"
+#include "actor/actor_logic/actor_role/logic/remakes.h"
+#include "actor/auto/nactor_auto.h"
+#include "actor/pb/db.pb.h"
 
 namespace ngl
 {

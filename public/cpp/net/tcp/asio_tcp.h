@@ -13,10 +13,10 @@
 */
 #pragma once
 
-#include "threadtools.h"
-#include "asio_base.h"
-#include "pack.h"
-#include "nlog.h"
+#include "tools/serialize/pack.h"
+#include "tools/threadtools.h"
+#include "tools/log/nlog.h"
+#include "net/asio_base.h"
 
 namespace ngl
 {

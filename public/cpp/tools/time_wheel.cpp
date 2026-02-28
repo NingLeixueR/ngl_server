@@ -11,8 +11,9 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "threadtools.h"
-#include "time_wheel.h"
+
+#include "tools/threadtools.h"
+#include "tools/time_wheel.h"
 
 #include <iostream>
 #include <unordered_map>

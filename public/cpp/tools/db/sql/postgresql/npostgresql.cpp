@@ -12,9 +12,9 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-#include "npostgresql.h"
-#include "nprotocol.h"
-#include "nlog.h"
+#include "tools/db/sql/postgresql/npostgresql.h"
+#include "actor/protocol/nprotocol.h"
+#include "tools/log/nlog.h"
 
 #include <iostream>
 

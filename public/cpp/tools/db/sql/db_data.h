@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "nserialize.h"
-#include "nmysql.h"
-#include "type.h"
+#include "tools/serialize/nserialize.h"
+#include "tools/db/sql/mysql/nmysql.h"
+#include "tools/type.h"
 
 #include <set>
 

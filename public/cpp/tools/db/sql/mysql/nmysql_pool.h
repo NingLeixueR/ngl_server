@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "ttab_servers.h"
-#include "nmysql.h"
-#include "nlog.h"
+#include "actor/tab/ttab_servers.h"
+#include "tools/db/sql/mysql/nmysql.h"
+#include "tools/log/nlog.h"
 
 namespace ngl
 {

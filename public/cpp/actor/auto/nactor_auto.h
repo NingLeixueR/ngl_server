@@ -14,12 +14,12 @@
 
 #pragma once
 
-#include "nsp_server_function.h"
-#include "nsp_write_function.h"
-#include "nsp_read_function.h"
-#include "ndb_modular.h"
-#include "actor_db.h"
-#include "db.pb.h"
+#include "actor/actor_base/nsp/nsp_server_function.h"
+#include "actor/actor_base/nsp/nsp_write_function.h"
+#include "actor/actor_base/nsp/nsp_read_function.h"
+#include "actor/actor_base/ndb_modular.h"
+#include "actor/actor_base/actor_db.h"
+#include "actor/pb/db.pb.h"
 
 namespace ngl
 {

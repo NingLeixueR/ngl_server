@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "ttab_ranklist.h"
-#include "ttab_activity.h"
-#include "rank_item.h"
+#include "actor/actor_logic/actor_ranklist/rank_item.h"
+#include "actor/tab/ttab_ranklist.h"
+#include "actor/tab/ttab_activity.h"
 
 namespace ngl
 {

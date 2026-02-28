@@ -13,17 +13,17 @@
 */
 #pragma once
 
-#include "nmysql_manage.h"
-#include "actor_manage.h"
-#include "actor_create.h"
-#include "nmysql_pool.h"
-#include "nprotocol.h"
-#include "ndbclient.h"
-#include "logprintf.h"
-#include "db_data.h"
-#include "ntimer.h"
-#include "nmysql.h"
-#include "ntcp.h"
+#include "tools/db/sql/mysql/nmysql_manage.h"
+#include "tools/db/sql/mysql/nmysql_pool.h"
+#include "actor/actor_base/actor_manage.h"
+#include "actor/actor_base/actor_create.h"
+#include "actor/actor_base/ndbclient.h"
+#include "tools/db/sql/mysql/nmysql.h"
+#include "actor/protocol/nprotocol.h"
+#include "actor/actor_base/ntimer.h"
+#include "tools/db/sql/db_data.h"
+#include "tools/log/logprintf.h"
+#include "net/tcp/ntcp.h"
 
 #include <fstream>
 #include <memory>

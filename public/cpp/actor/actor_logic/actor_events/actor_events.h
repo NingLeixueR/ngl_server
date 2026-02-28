@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "actor.h"
-#include "type.h"
-#include "cmd.h"
+#include "actor/actor_base/actor.h"
+#include "tools/type.h"
+#include "tools/cmd.h"
 
 namespace ngl
 {

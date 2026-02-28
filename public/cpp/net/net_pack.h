@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "structbytes.h"
+#include "tools/serialize/structbytes.h"
 
 namespace ngl
 {

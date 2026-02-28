@@ -11,13 +11,13 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "server_session.h"
-#include "actor_client.h"
-#include "actor_server.h"
-#include "actor_manage.h"
-#include "nregister.h"
-#include "naddress.h"
-#include "ntcp.h"
+#include "actor/actor_base/actor_client.h"
+#include "actor/actor_base/actor_server.h"
+#include "actor/actor_base/actor_manage.h"
+#include "actor/actor_base/nregister.h"
+#include "actor/actor_base/naddress.h"
+#include "net/server_session.h"
+#include "net/tcp/ntcp.h"
 
 #include <format>
 

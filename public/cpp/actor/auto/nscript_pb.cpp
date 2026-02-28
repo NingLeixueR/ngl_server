@@ -11,6 +11,7 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "nscript_pbexample.h"
-#include "nscript_pbnet.h"
-#include "nscript_pbdb.h"
+
+#include "actor/auto/nscript_pbexample.h"
+#include "actor/auto/nscript_pbnet.h"
+#include "actor/auto/nscript_pbdb.h"

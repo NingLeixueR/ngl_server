@@ -13,11 +13,11 @@
 */
 #pragma once
 
-#include "nserialize.h"
-#include "tprotocol.h"
-#include "type.h"
-#include "pack.h"
-#include "nlog.h"
+#include "tools/serialize/nserialize.h"
+#include "actor/protocol/tprotocol.h"
+#include "tools/serialize/pack.h"
+#include "tools/log/nlog.h"
+#include "tools/type.h"
 
 #include <set>
 

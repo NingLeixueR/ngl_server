@@ -538,7 +538,7 @@ namespace ngl
 	}
 }//namespace ngl
 
-#include "ndefine.h"
+#include "tools/serialize/ndefine.h"
 
 #define DEF_XMLFUNCTION(XMLNAME)														\
 	inline bool xml_pop(const char* axml)												\

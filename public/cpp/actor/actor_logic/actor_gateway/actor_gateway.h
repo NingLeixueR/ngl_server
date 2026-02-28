@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "gateway_info.h"
-#include "actor_manage.h"
+#include "actor/actor_logic/actor_gateway/gateway_info.h"
+#include "actor/actor_base/actor_manage.h"
 
 namespace ngl
 {

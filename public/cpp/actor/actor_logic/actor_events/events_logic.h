@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "actor_events.h"
+#include "actor/actor_logic/actor_events/actor_events.h"
 
 namespace ngl
 {

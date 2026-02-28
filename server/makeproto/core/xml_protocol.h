@@ -1,13 +1,13 @@
 #pragma once
 
-#include "xml_serialize.h"
-#include "operator_file.h"
-#include "xml_serialize.h"
-#include "xmlprotocol.h"
-#include "localtime.h"
-#include "net.pb.h"
-#include "tools.h"
-#include "xml.h"
+#include "tools/tab/xml/xml_serialize.h"
+#include "tools/operator_file.h"
+#include "tools/tab/xml/xml_serialize.h"
+#include "tools/tab/xml/xmlprotocol.h"
+#include "tools/localtime.h"
+#include "actor/pb/net.pb.h"
+#include "tools/tools.h"
+#include "tools/tab/xml/xml.h"
 
 #include <google/protobuf/compiler/importer.h>
 #include <google/protobuf/dynamic_message.h>
@@ -457,11 +457,11 @@ public:
         m_stream << " // 注意【makeproto 工具生成文件，不要手动修改】" << std::endl;
         m_stream << " // 创建时间【" << ngl::localtime::time2str() << "】" << std::endl;
         m_stream << R"(
-#include "example.pb.h"
-#include "actor_base.h"
-#include "net.pb.h"
-#include "tools.h"
-#include "pack.h"
+#include "actor/pb/example.pb.h"
+#include "actor/actor_base/actor_base.h"
+#include "actor/pb/net.pb.h"
+#include "tools/tools.h"
+#include "tools/serialize/pack.h"
 
 namespace ngl
 {
@@ -682,12 +682,12 @@ namespace ngl
         std::stringstream m_stream;
         m_stream << R"(#pragma once
 
-#include "nsp_server_function.h"
-#include "nsp_write_function.h"
-#include "nsp_read_function.h"
-#include "ndb_modular.h"
-#include "actor_db.h"
-#include "db.pb.h"
+#include "actor/actor_base/nsp/nsp_server_function.h"
+#include "actor/actor_base/nsp/nsp_write_function.h"
+#include "actor/actor_base/nsp/nsp_read_function.h"
+#include "actor/actor_base/ndb_modular.h"
+#include "actor/actor_base/actor_db.h"
+#include "actor/pb/db.pb.h"
 
 namespace ngl
 {
@@ -786,9 +786,9 @@ namespace ngl
         std::stringstream m_stream3;
         m_stream2 << " // 注意【makeproto 工具生成文件，不要手动修改】" << std::endl;
         m_stream2 << " // 创建时间【" << ngl::localtime::time2str() << "】" << std::endl;
-        m_stream2 << R"(#include "auto_actor_enum.h"
-#include "nprotocol_auto.h"
-#include "nactor_auto.h"
+        m_stream2 << R"(#include "actor/auto/auto_actor_enum.h"
+#include "actor/auto/nprotocol_auto.h"
+#include "actor/auto/nactor_auto.h"
 
 namespace ngl
 {
@@ -1059,19 +1059,19 @@ namespace ngl
 
         std::string lnrh= std::format(R"(#pragma once
 
-#include "actor_manage.h"
-#include "actor_create.h"
-#include "ndb_modular.h"
-#include "nmysql_manage.h"
-#include "ndbclient.h"
-#include "nprotocol.h"
-#include "ranklist.h"
-#include "db_data.h"
-#include "nmysql_pool.h"
-#include "ntimer.h"
-#include "notice.h"
-#include "net.pb.h"
-#include "ntcp.h"
+#include "actor/actor_base/actor_manage.h"
+#include "actor/actor_base/actor_create.h"
+#include "actor/actor_base/ndb_modular.h"
+#include "tools/db/sql/mysql/nmysql_manage.h"
+#include "actor/actor_base/ndbclient.h"
+#include "actor/protocol/nprotocol.h"
+#include "actor/actor_logic/actor_ranklist/ranklist.h"
+#include "tools/db/sql/db_data.h"
+#include "tools/db/sql/mysql/nmysql_pool.h"
+#include "actor/actor_base/ntimer.h"
+#include "actor/actor_logic/actor_notice/notice.h"
+#include "actor/pb/net.pb.h"
+#include "net/tcp/ntcp.h"
 #include "db.h"
 
 namespace ngl

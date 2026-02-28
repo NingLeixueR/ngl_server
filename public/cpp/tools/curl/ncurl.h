@@ -13,15 +13,15 @@
 */
 #pragma once
 
-#include "threadtools.h"
-#include "nprotocol.h"
-#include "nwork.h"
-#include "nlog.h"
-#include "impl.h"
+#include "actor/protocol/nprotocol.h"
+#include "tools/threadtools.h"
+#include "tools/log/nlog.h"
+#include "tools/nwork.h"
+#include "tools/impl.h"
 
+#include <curl/curl.h>
 #include <functional>
 #include <string>
-#include <curl/curl.h>
 #include <list>
 
 #ifdef WIN32

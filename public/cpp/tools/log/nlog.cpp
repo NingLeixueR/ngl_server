@@ -11,12 +11,13 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_base.h"
-#include "actor_log.h"
-#include "logprintf.h"
-#include "nprotocol.h"
-#include "nlog.h"
-#include "xml.h"
+
+#include "actor/actor_logic/actor_log/actor_log.h"
+#include "actor/actor_base/actor_base.h"
+#include "actor/protocol/nprotocol.h"
+#include "tools/log/logprintf.h"
+#include "tools/tab/xml/xml.h"
+#include "tools/log/nlog.h"
 
 #include <iostream>
 

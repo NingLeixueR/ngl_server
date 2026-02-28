@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "nactor_auto.h"
-#include "localtime.h"
-#include "ncsv.h"
+#include "actor/auto/nactor_auto.h"
+#include "tools/tab/csv/ncsv.h"
+#include "tools/localtime.h"
 
 #include <string>
 #include <map>

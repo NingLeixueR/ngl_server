@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "pb_field.h"
+#include "tools/pb_field.h"
 
 namespace ngl
 {

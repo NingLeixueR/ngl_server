@@ -11,11 +11,12 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "kcp_session.h"
-#include "nprotocol.h"
-#include "asio_kcp.h"
-#include "nguid.h"
-#include "nlog.h"
+
+#include "actor/protocol/nprotocol.h"
+#include "net/udp/kcp/kcp_session.h"
+#include "actor/actor_base/nguid.h"
+#include "net/udp/kcp/asio_kcp.h"
+#include "tools/log/nlog.h"
 
 namespace ngl
 {

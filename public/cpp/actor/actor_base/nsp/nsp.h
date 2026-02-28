@@ -13,11 +13,11 @@
 */
 #pragma once 
 
-#include "nprotocol_template.h"
-#include "ttab_servers.h"
-#include "pb_field.h"
-#include "nguid.h"
-#include "actor.h"
+#include "actor/protocol/nprotocol_template.h"
+#include "actor/tab/ttab_servers.h"
+#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/actor.h"
+#include "tools/pb_field.h"
 
 namespace ngl
 {

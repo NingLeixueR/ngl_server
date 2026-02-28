@@ -13,11 +13,11 @@
 */
 #pragma once
 
-#include "ncsv.h"
-#include "type.h"
-#include "nlog.h"
-#include "xml.h"
-#include "nlog.h"
+#include "tools/tab/csv/ncsv.h"
+#include "tools/tab/xml/xml.h"
+#include "tools/log/nlog.h"
+#include "tools/log/nlog.h"
+#include "tools/type.h"
 
 namespace ngl
 {

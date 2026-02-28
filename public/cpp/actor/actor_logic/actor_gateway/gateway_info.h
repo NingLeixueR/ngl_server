@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "nprotocol.h"
-#include "nguid.h"
+#include "actor/protocol/nprotocol.h"
+#include "actor/actor_base/nguid.h"
 
 #include <map>
 

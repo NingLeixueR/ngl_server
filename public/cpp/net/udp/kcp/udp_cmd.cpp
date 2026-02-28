@@ -11,8 +11,9 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "asio_kcp.h"
-#include "udp_cmd.h"
+
+#include "net/udp/kcp/asio_kcp.h"
+#include "net/udp/kcp/udp_cmd.h"
 
 namespace ngl
 {

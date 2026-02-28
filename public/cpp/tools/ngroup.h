@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "nprotocol.h"
+#include "actor/protocol/nprotocol.h"
 
 #include <map>
 #include <set>

@@ -13,12 +13,12 @@
 */
 #pragma once
 
-#include "tools.h"
-#include "nguid.h"
-#include "nlog.h"
-#include "type.h"
-#include "ncsv.h"
-#include "xml.h"
+#include "actor/actor_base/nguid.h"
+#include "tools/tab/csv/ncsv.h"
+#include "tools/tab/xml/xml.h"
+#include "tools/log/nlog.h"
+#include "tools/tools.h"
+#include "tools/type.h"
 
 namespace ngl
 {

@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "actor_role.h"
-#include "tools.h"
-#include "nlog.h"
+#include "actor/actor_logic/actor_role/actor_role.h"
+#include "tools/log/nlog.h"
+#include "tools/tools.h"
 
 #include <vector>
 #include <string>

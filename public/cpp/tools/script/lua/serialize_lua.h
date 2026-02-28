@@ -15,9 +15,8 @@
 
 #include "lua.hpp"
 
-#include <google/protobuf/map.h>
 #include <google/protobuf/repeated_field.h>
-
+#include <google/protobuf/map.h>
 #include <vector>
 #include <string>
 #include <map>
@@ -1084,6 +1083,6 @@ namespace ngl
 
 }//namespace ngl
 
-#include "nscript_pbexample.h"
-#include "nscript_pbnet.h"
-#include "nscript_pbdb.h"
+#include "actor/auto/nscript_pbexample.h"
+#include "actor/auto/nscript_pbnet.h"
+#include "actor/auto/nscript_pbdb.h"

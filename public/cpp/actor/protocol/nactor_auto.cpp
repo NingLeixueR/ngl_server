@@ -11,22 +11,23 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "register_channel_db.h"
-#include "auto_actor_enum.h"
-#include "nprotocol_auto.h"
-#include "events_logic.h"
-#include "nactor_auto.h"
-#include "nactor_auto.h"
-#include "events_map.h"
-#include "nactortype.h"
-#include "enum2name.h"
-#include "actor_kcp.h"
-#include "tprotocol.h"
-#include "nprotocol.h"
-#include "actor_db.h"
-#include "ntimer.h"
-#include "net.pb.h"
-#include "actor.h"
+
+#include "actor/actor_logic/actor_events/events_logic.h"
+#include "actor/actor_logic/actor_events/events_map.h"
+#include "actor/actor_logic/actor_kcp/actor_kcp.h"
+#include "actor/auto/register_channel_db.h"
+#include "actor/actor_base/nactortype.h"
+#include "actor/auto/auto_actor_enum.h"
+#include "actor/auto/nprotocol_auto.h"
+#include "actor/actor_base/actor_db.h"
+#include "actor/protocol/tprotocol.h"
+#include "actor/protocol/nprotocol.h"
+#include "actor/actor_base/ntimer.h"
+#include "actor/auto/nactor_auto.h"
+#include "actor/auto/nactor_auto.h"
+#include "actor/actor_base/actor.h"
+#include "tools/enum2name.h"
+#include "actor/pb/net.pb.h"
 
 namespace ngl
 {

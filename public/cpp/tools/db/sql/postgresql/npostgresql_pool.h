@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "ttab_servers.h"
-#include "npostgresql.h"
-#include "nlog.h"
+#include "tools/db/sql/postgresql/npostgresql.h"
+#include "actor/tab/ttab_servers.h"
+#include "tools/log/nlog.h"
 
 namespace ngl
 {

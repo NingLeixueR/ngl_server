@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "kcp_session.h"
-#include "cmd.h"
+#include "net/udp/kcp/kcp_session.h"
+#include "tools/cmd.h"
 
 namespace ngl
 {

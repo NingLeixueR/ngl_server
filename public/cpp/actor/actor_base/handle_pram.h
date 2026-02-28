@@ -13,11 +13,11 @@
 */
 #pragma once
 
-#include "server_session.h"
-#include "tprotocol.h"
-#include "nprotocol.h"
-#include "nguid.h"
-#include "type.h"
+#include "actor/protocol/tprotocol.h"
+#include "actor/protocol/nprotocol.h"
+#include "actor/actor_base/nguid.h"
+#include "net/server_session.h"
+#include "tools/type.h"
 
 #include <cstdint>
 #include <memory>

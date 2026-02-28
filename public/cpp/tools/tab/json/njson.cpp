@@ -12,8 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-#include "njson.h"
-
+#include "tools/tab/json/njson.h"
 
 namespace ngl
 {

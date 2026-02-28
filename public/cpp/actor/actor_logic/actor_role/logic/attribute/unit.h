@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "attribute.h"
-#include "net.pb.h"
-#include "db.pb.h"
+#include "actor/actor_logic/actor_role/logic/attribute/attribute.h"
+#include "actor/pb/net.pb.h"
+#include "actor/pb/db.pb.h"
 
 namespace ngl
 {

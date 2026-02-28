@@ -11,9 +11,9 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "nprotocol.h"
-#include "nmysql.h"
-#include "nlog.h"
+#include "actor/protocol/nprotocol.h"
+#include "tools/db/sql/mysql/nmysql.h"
+#include "tools/log/nlog.h"
 
 namespace ngl
 {

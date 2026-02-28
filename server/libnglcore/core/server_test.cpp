@@ -1,8 +1,8 @@
-#include "xmlprotocol.h"
-#include "nfilterword.h"
-#include "bi_item.h"
-#include "dbredis.h"
-#include "ncurl.h"
+#include "tools/tab/xml/xmlprotocol.h"
+#include "tools/nfilterword.h"
+#include "tools/log/bi/bi_item.h"
+#include "tools/db/redis/dbredis.h"
+#include "tools/curl/ncurl.h"
 
 #include <utf8.h> 
 

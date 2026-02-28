@@ -11,10 +11,11 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "activity_drawcompliance.h"
-#include "actor_activity_manage.h"
-#include "activity_rank.h"
-#include "activity.h"
+
+#include "actor/actor_logic/actor_activity_manage/activity_drawcompliance.h"
+#include "actor/actor_logic/actor_activity_manage/actor_activity_manage.h"
+#include "actor/actor_logic/actor_activity_manage/activity_rank.h"
+#include "actor/actor_logic/actor_activity_manage/activity.h"
 
 namespace ngl
 {

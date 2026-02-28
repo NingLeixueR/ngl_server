@@ -13,10 +13,10 @@
 */
 #pragma once
 
-#include "nactor_auto.h"
-#include "ttab_mail.h"
-#include "localtime.h"
-#include "ncsv.h"
+#include "actor/auto/nactor_auto.h"
+#include "actor/tab/ttab_mail.h"
+#include "tools/tab/csv/ncsv.h"
+#include "tools/localtime.h"
 
 #include <string>
 #include <map>

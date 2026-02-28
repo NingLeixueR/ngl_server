@@ -13,13 +13,13 @@
 */
 #pragma once
 
-#include "operator_file.h"
-#include "threadtools.h"
-#include "enum2name.h"
-#include "csvtable.h"
-#include "nhash.h"
-#include "tools.h"
-#include "csv.h"
+#include "tools/operator_file.h"
+#include "actor/tab/csvtable.h"
+#include "tools/threadtools.h"
+#include "tools/tab/csv/csv.h"
+#include "tools/enum2name.h"
+#include "tools/nhash.h"
+#include "tools/tools.h"
 
 #include <functional>
 #include <iostream>

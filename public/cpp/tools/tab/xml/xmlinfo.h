@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "xml_serialize.h"
-#include "tools.h"
-#include "type.h"
+#include "tools/tab/xml/xml_serialize.h"
+#include "tools/tools.h"
+#include "tools/type.h"
 
 #include <string>
 #include <map>

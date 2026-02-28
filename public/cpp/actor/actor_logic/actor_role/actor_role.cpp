@@ -11,16 +11,17 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "ttab_specialid.h"
-#include "ttab_recharge.h"
-#include "actor_events.h"
-#include "actor_role.h"
-#include "nregister.h"
-#include "nforward.h"
-#include "net.pb.h"
-#include "ncurl.h"
-#include "drop.h"
-#include "gcmd.h"
+
+#include "actor/actor_logic/actor_events/actor_events.h"
+#include "actor/actor_logic/actor_role/logic/bag/drop.h"
+#include "actor/actor_logic/actor_role/actor_role.h"
+#include "actor/actor_logic/actor_gm/gcmd.h"
+#include "actor/actor_base/nregister.h"
+#include "actor/actor_logic/nforward.h"
+#include "actor/tab/ttab_specialid.h"
+#include "actor/tab/ttab_recharge.h"
+#include "tools/curl/ncurl.h"
+#include "actor/pb/net.pb.h"
 
 namespace ngl
 {

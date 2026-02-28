@@ -11,8 +11,10 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "asio_base.h"
-#include "asio_tcp.h"
+
+#include "net/tcp/asio_tcp.h"
+#include "net/asio_base.h"
+
 #include <algorithm>
 
 namespace ngl

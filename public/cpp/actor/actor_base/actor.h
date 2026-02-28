@@ -13,12 +13,12 @@
 */
 #pragma once
 
-#include "template_arg.h"
-#include "nactortype.h"
-#include "actor_base.h"
-#include "tprotocol.h"
-#include "nrfun.h"
-#include "nlog.h"
+#include "actor/actor_base/nactortype.h"
+#include "actor/actor_base/actor_base.h"
+#include "actor/protocol/tprotocol.h"
+#include "actor/actor_base/nrfun.h"
+#include "tools/template_arg.h"
+#include "tools/log/nlog.h"
 
 #include <deque>
 #include <queue>

@@ -1,6 +1,6 @@
 #include "server_main.h"
 #include "dumper.h"
-#include "type.h"
+#include "tools/type.h"
 
 #include <iostream>
 #include <format>

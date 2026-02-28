@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "nactor_auto.h"
-#include "db.pb.h"
+#include "actor/auto/nactor_auto.h"
+#include "actor/pb/db.pb.h"
 
 namespace ngl
 {

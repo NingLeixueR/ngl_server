@@ -13,15 +13,15 @@
 */
 #pragma once
 
-#include "npostgresql_pool.h"
-#include "ttab_mergearea.h"
-#include "ttab_servers.h"
-#include "scope_guard.h"
-#include "npostgresql.h"
-#include "nserialize.h"
-#include "db_data.h"
-#include "db_buff.h"
-#include "tools.h"
+#include "tools/db/sql/postgresql/npostgresql_pool.h"
+#include "tools/db/sql/postgresql/npostgresql.h"
+#include "tools/serialize/nserialize.h"
+#include "actor/tab/ttab_mergearea.h"
+#include "actor/tab/ttab_servers.h"
+#include "tools/db/sql/db_data.h"
+#include "tools/db/sql/db_buff.h"
+#include "tools/scope_guard.h"
+#include "tools/tools.h"
 
 namespace ngl
 {

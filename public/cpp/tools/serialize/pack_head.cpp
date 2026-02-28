@@ -11,10 +11,11 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "pack_head.h"
-#include "nguid.h"
-#include "nlog.h"
-#include "xml.h"
+
+#include "tools/serialize/pack_head.h"
+#include "actor/actor_base/nguid.h"
+#include "tools/tab/xml/xml.h"
+#include "tools/log/nlog.h"
 
 namespace ngl
 {

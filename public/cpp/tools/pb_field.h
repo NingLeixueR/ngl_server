@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "nprotocol_template.h"
-#include "tools.h"
-#include "type.h"
+#include "actor/protocol/nprotocol_template.h"
+#include "tools/tools.h"
+#include "tools/type.h"
 
 #include <google/protobuf/compiler/importer.h>
 #include <google/protobuf/dynamic_message.h>

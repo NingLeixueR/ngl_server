@@ -13,12 +13,12 @@
 */
 #pragma once
 
-#include "ndb_modular.h"
-#include "threadtools.h"
-#include "pb_field.h"
-#include "tools.h"
-#include "type.h"
-#include "nsp.h"
+#include "actor/actor_base/ndb_modular.h"
+#include "actor/actor_base/nsp/nsp.h"
+#include "tools/threadtools.h"
+#include "tools/pb_field.h"
+#include "tools/tools.h"
+#include "tools/type.h"
 
 namespace ngl
 {

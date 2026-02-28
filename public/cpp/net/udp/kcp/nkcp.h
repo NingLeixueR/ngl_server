@@ -11,12 +11,12 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-
 #pragma once
 
-#include "actor_base.h"
-#include "asio_kcp.h"
-#include "ukcp.h"
+#include "actor/actor_base/actor_base.h"
+#include "net/udp/kcp/asio_kcp.h"
+#include "net/udp/kcp/ukcp.h"
+
 #include <unordered_map>
 
 namespace ngl

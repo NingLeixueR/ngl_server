@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "nprotocol_template.h"
-#include "net.pb.h"
+#include "actor/protocol/nprotocol_template.h"
+#include "actor/pb/net.pb.h"
 
 namespace ngl
 {

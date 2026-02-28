@@ -11,9 +11,10 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_brief.h"
-#include "actor_role.h"
-#include "roleinfo.h"
+
+#include "actor/actor_logic/actor_role/logic/roleinfo.h"
+#include "actor/actor_logic/actor_brief/actor_brief.h"
+#include "actor/actor_logic/actor_role/actor_role.h"
 
 namespace ngl
 {

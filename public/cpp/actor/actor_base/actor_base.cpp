@@ -11,15 +11,15 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_manage.h"
-#include "ndb_modular.h"
-#include "actor_base.h"
-#include "actor_log.h"
-#include "ndbclient.h"
-#include "ngroup.h"
-#include "ntcp.h"
-#include "nkcp.h"
-#include "xml.h"
+#include "actor/actor_logic/actor_log/actor_log.h"
+#include "actor/actor_base/actor_manage.h"
+#include "actor/actor_base/ndb_modular.h"
+#include "actor/actor_base/actor_base.h"
+#include "actor/actor_base/ndbclient.h"
+#include "tools/tab/xml/xml.h"
+#include "net/udp/kcp/nkcp.h"
+#include "tools/ngroup.h"
+#include "net/tcp/ntcp.h"
 
 namespace ngl
 {

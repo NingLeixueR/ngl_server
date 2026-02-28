@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "threadtools.h"
-#include "pack.h"
+#include "tools/serialize/pack.h"
+#include "tools/threadtools.h"
 
 namespace ngl
 {

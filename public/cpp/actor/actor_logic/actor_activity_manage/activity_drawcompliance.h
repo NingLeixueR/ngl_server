@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include "ttab_activity_drawcompliance.h"
-#include "actor_activity_manage.h"
-#include "activity.h"
+#include "actor/actor_logic/actor_activity_manage/actor_activity_manage.h"
+#include "actor/actor_logic/actor_activity_manage/activity.h"
+#include "actor/tab/ttab_activity_drawcompliance.h"
 
 namespace ngl
 {

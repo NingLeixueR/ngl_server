@@ -13,14 +13,14 @@
 */
 #pragma once
 
-#include "actor_gateway_c2g.h"
-#include "actor_gateway_g2c.h"
-#include "actor_gateway.h"
-#include "template_arg.h"
-#include "actor_robot.h"
-#include "actor_role.h"
-#include "actor.h"
-#include "xml.h"
+#include "actor/actor_logic/actor_gateway_c2g/actor_gateway_c2g.h"
+#include "actor/actor_logic/actor_gateway_g2c/actor_gateway_g2c.h"
+#include "actor/actor_logic/actor_gateway/actor_gateway.h"
+#include "actor/actor_logic/actor_robot/actor_robot.h"
+#include "actor/actor_logic/actor_role/actor_role.h"
+#include "actor/actor_base/actor.h"
+#include "tools/template_arg.h"
+#include "tools/tab/xml/xml.h"
 
 namespace ngl
 {

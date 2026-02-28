@@ -11,7 +11,8 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_csvserver.h"
+
+#include "actor/actor_logic/actor_csvserver/actor_csvserver.h"
 
 namespace ngl
 {

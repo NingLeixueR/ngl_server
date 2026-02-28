@@ -11,10 +11,11 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "nprotocol.h"
-#include "dbredis.h"
-#include "nguid.h"
-#include "xml.h"
+
+#include "actor/protocol/nprotocol.h"
+#include "tools/db/redis/dbredis.h"
+#include "actor/actor_base/nguid.h"
+#include "tools/tab/xml/xml.h"
 
 namespace ngl
 {
@@ -71,7 +72,7 @@ namespace ngl
 	}
 }
 
-#include "ttab_servers.h"
+#include "actor/tab/ttab_servers.h"
 
 namespace ngl
 {

@@ -13,8 +13,8 @@
 */
 #pragma once
 
-#include "grids.h"
-#include "actor.h"
+#include "actor/actor_logic/actor_role/logic/nmap/grids.h"
+#include "actor/actor_base/actor.h"
 
 namespace ngl
 {

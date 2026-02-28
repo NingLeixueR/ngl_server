@@ -11,7 +11,8 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor_kcp.h"
+
+#include "actor/actor_logic/actor_kcp/actor_kcp.h"
 
 namespace ngl
 {

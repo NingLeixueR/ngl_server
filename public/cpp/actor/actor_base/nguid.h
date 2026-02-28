@@ -13,10 +13,10 @@
 */
 #pragma once
 
-#include "nactortype.h"
-#include "enum2name.h"
-#include "ndefine.h"
-#include "type.h"
+#include "actor/actor_base/nactortype.h"
+#include "tools/serialize/ndefine.h"
+#include "tools/enum2name.h"
+#include "tools/type.h"
 
 #include <format>
 

@@ -13,6 +13,8 @@
 */
 #pragma once
 
+#include "actor/pb/net.pb.h"
+
 #include <functional>
 #include <iostream>
 #include <cstdint>
@@ -22,8 +24,6 @@
 #include <list>
 #include <set>
 #include <map>
-
-#include "net.pb.h"
 
 namespace ngl
 {

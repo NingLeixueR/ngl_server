@@ -14,14 +14,20 @@ SOURCE_GROUP("Source Files" FILES ${CORE_LIST_SRC})
 SOURCE_GROUP("Source Files" FILES ${CORE_LIST_CSRC})
 SOURCE_GROUP("Protobuf Source Files" FILES ${CORE_PROTOBUF_LIST_CSRC})
 
-# 查找依赖
-find_package(lua REQUIRED CONFIG)
-find_package(protobuf REQUIRED CONFIG)
-find_package(CURL REQUIRED CONFIG)
-find_package(libmysqlclient REQUIRED CONFIG)
-find_package(hiredis REQUIRED CONFIG)
-find_package(PostgreSQL REQUIRED CONFIG)
 
+find_package(lua REQUIRED)
+find_package(protobuf REQUIRED)
+find_package(CURL REQUIRED)
+find_package(libmysqlclient REQUIRED)
+find_package(hiredis REQUIRED)
+find_package(PostgreSQL REQUIRED)
+
+INCLUDE_DIRECTORIES(${lua_INCLUDE_DIRS})   
+INCLUDE_DIRECTORIES(${protobuf_INCLUDE_DIRS})  
+INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIRS})  
+INCLUDE_DIRECTORIES(${libmysqlclient_INCLUDE_DIRS})  
+INCLUDE_DIRECTORIES(${hiredis_INCLUDE_DIRS})  
+INCLUDE_DIRECTORIES(${PostgreSQL_INCLUDE_DIRS})
 
 ADD_EXECUTABLE(IDL
 	${CORE_LIST_INCLUDE}

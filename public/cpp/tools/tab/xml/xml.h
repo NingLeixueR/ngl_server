@@ -13,12 +13,12 @@
 */
 #pragma once
 
-#include "xml_serialize.h"
-#include "csvtable.h"
-#include "xmlinfo.h"
-#include "tools.h"
-#include "type.h"
-#include "nlog.h"
+#include "tools/tab/xml/xml_serialize.h"
+#include "tools/tab/xml/xmlinfo.h"
+#include "actor/tab/csvtable.h"
+#include "tools/log/nlog.h"
+#include "tools/tools.h"
+#include "tools/type.h"
 
 namespace ngl
 {

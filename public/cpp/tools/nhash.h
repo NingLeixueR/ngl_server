@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include "threadtools.h"
-#include "tools.h"
+#include "tools/threadtools.h"
+#include "tools/tools.h"
 
 #include <map>
 

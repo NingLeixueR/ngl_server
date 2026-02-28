@@ -11,11 +11,11 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "sysconfig.h"
-#include "asio_kcp.h"
-#include "protocol.h"
-#include "ukcp.h"
-#include "cmd.h"
+#include "tools/tab/xml/sysconfig.h"
+#include "actor/protocol/protocol.h"
+#include "net/udp/kcp/asio_kcp.h"
+#include "net/udp/kcp/ukcp.h"
+#include "tools/cmd.h"
 
 #define USE_WHEEL_TIMER
 

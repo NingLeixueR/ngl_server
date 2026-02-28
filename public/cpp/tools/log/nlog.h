@@ -13,10 +13,10 @@
 */
 #pragma once
 
-#include "localtime.h"
-#include "logprintf.h"
-#include "sysconfig.h"
-#include "tools.h"
+#include "tools/tab/xml/sysconfig.h"
+#include "tools/log/logprintf.h"
+#include "tools/localtime.h"
+#include "tools/tools.h"
 
 #include <source_location>
 #include <sstream>
