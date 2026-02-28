@@ -547,7 +547,7 @@ namespace ngl
 	};
 }//namespace ngl)";
 						std::string lcsvpp;
-						ngl::tools::replace("{0}", struc.name, format_str_part1, lcsvpp);
+						ngl::tools::replace("\\{0\\}", struc.name, format_str_part1, lcsvpp);
 						lfile.write(lcsvpp.c_str());
 					}
 				}
