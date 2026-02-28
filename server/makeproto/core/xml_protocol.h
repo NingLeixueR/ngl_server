@@ -287,10 +287,10 @@ public:
         m_stream << " // 创建时间【" << ngl::localtime::time2str() << "】" << std::endl;
         m_stream << std::endl;
         m_stream << "#pragma once" << std::endl;
-        m_stream << "#include \"example.pb.h\"" << std::endl;
-        m_stream << "#include \"ndefine.h\"" << std::endl;
-        m_stream << "#include \"net.pb.h\"" << std::endl;
-        m_stream << "#include \"db.pb.h\"" << std::endl;
+        m_stream << "#include \"tools/serialize/ndefine.h\"" << std::endl;
+        m_stream << "#include \"actor/pb/example.pb.h\"" << std::endl;
+        m_stream << "#include \"actor/pb/net.pb.h\"" << std::endl;
+        m_stream << "#include \"actor/pb/db.pb.h\"" << std::endl;
         m_stream << std::endl;
         m_stream << "#include <array>" << std::endl;
         m_stream << std::endl;
@@ -457,11 +457,11 @@ public:
         m_stream << " // 注意【makeproto 工具生成文件，不要手动修改】" << std::endl;
         m_stream << " // 创建时间【" << ngl::localtime::time2str() << "】" << std::endl;
         m_stream << R"(
-#include "actor/pb/example.pb.h"
 #include "actor/actor_base/actor_base.h"
+#include "tools/serialize/pack.h"
+#include "actor/pb/example.pb.h"
 #include "actor/pb/net.pb.h"
 #include "tools/tools.h"
-#include "tools/serialize/pack.h"
 
 namespace ngl
 {
@@ -538,11 +538,11 @@ namespace ngl
         std::stringstream m_stream;
         m_stream << " // 注意【makeproto 工具生成文件，不要手动修改】" << std::endl;
         m_stream << " // 创建时间【" << ngl::localtime::time2str() << "】" << std::endl;
-        m_stream << "#include \"example.pb.h\"" << std::endl;
-        m_stream << "#include \"nprotocol.h\"" << std::endl;
-        m_stream << "#include \"tprotocol.h\"" << std::endl;
-        m_stream << "#include \"net.pb.h\"" << std::endl;
-        m_stream << "#include \"actor.h\"" << std::endl;
+        m_stream << "#include \"actor/protocol/nprotocol.h\"" << std::endl;
+        m_stream << "#include \"actor/protocol/tprotocol.h\"" << std::endl;
+        m_stream << "#include \"actor/actor_base/actor.h\"" << std::endl;
+        m_stream << "#include \"actor/pb/example.pb.h\"" << std::endl;
+        m_stream << "#include \"actor/pb/net.pb.h\"" << std::endl;
         m_stream << std::endl;
         m_stream << std::endl;
         m_stream << "#include <map>" << std::endl;
@@ -1059,17 +1059,17 @@ namespace ngl
 
         std::string lnrh= std::format(R"(#pragma once
 
+#include "actor/actor_logic/actor_ranklist/ranklist.h"
+#include "actor/actor_logic/actor_notice/notice.h"
+#include "tools/db/sql/mysql/nmysql_manage.h"
+#include "tools/db/sql/mysql/nmysql_pool.h"
 #include "actor/actor_base/actor_manage.h"
 #include "actor/actor_base/actor_create.h"
 #include "actor/actor_base/ndb_modular.h"
-#include "tools/db/sql/mysql/nmysql_manage.h"
 #include "actor/actor_base/ndbclient.h"
 #include "actor/protocol/nprotocol.h"
-#include "actor/actor_logic/actor_ranklist/ranklist.h"
-#include "tools/db/sql/db_data.h"
-#include "tools/db/sql/mysql/nmysql_pool.h"
 #include "actor/actor_base/ntimer.h"
-#include "actor/actor_logic/actor_notice/notice.h"
+#include "tools/db/sql/db_data.h"
 #include "actor/pb/net.pb.h"
 #include "net/tcp/ntcp.h"
 #include "db.h"
