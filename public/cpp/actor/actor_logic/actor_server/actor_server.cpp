@@ -11,7 +11,7 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-#include "actor/actor_base/actor_server.h"
+#include "actor/actor_logic/actor_server/actor_server.h"
 #include "actor/actor_base/nregister.h"
 
 namespace ngl

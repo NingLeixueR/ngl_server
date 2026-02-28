@@ -13,7 +13,7 @@
 */
 #pragma once
 
-#include "actor/actor_base/actor_client.h"
+#include "actor/actor_logic/actor_client/actor_client.h"
 #include "actor/actor_base/actor_base.h"
 #include "actor/actor_base/naddress.h"
 #include "actor/actor_base/nthread.h"

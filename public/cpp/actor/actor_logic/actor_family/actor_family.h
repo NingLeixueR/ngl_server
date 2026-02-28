@@ -20,7 +20,7 @@
 #include "tools/db/sql/mysql/nmysql_manage.h"
 #include "tools/db/sql/mysql/nmysql_pool.h"
 #include "actor/actor_base/actor_manage.h"
-#include "actor/actor_base/actor_create.h"
+#include "actor/actor_logic/actor_create/actor_create.h"
 #include "actor/actor_base/ndb_modular.h"
 #include "actor/actor_base/ndbclient.h"
 #include "tools/db/sql/mysql/nmysql.h"

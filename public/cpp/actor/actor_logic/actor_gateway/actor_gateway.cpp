@@ -15,7 +15,7 @@
 #include "actor/actor_logic/actor_gateway_c2g/actor_gateway_c2g.h"
 #include "actor/actor_logic/actor_gateway_g2c/actor_gateway_g2c.h"
 #include "actor/actor_logic/actor_gateway/actor_gateway.h"
-#include "actor/actor_base/actor_server.h"
+#include "actor/actor_logic/actor_server/actor_server.h"
 #include "actor/actor_base/nregister.h"
 
 namespace ngl
