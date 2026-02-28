@@ -31,6 +31,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y gcc-13 g++-13
     
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install uuid-dev
+    
     - name: Install latest CMake
       run: |
         pip install cmake --upgrade
