@@ -39,6 +39,13 @@ ADD_LIBRARY(nglcore SHARED
 	${CORE_PROTOBUF_LIST_CSRC}
 )
 
+find_library(UUID_LIBRARY NAMES uuid)
+if(NOT UUID_LIBRARY)
+    message(FATAL_ERROR "uuid library not found")
+endif()
+
+target_link_libraries(nglcore PRIVATE ${UUID_LIBRARY})
+
 # Á´½Ó
 target_link_libraries(nglcore PRIVATE lua::lua)
 target_link_libraries(nglcore PRIVATE protobuf::protobuf)
