@@ -11,10 +11,8 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-
 #include "actor/actor_logic/actor_kcp/actor_kcp.h"
 #include "net/udp/kcp/nkcp.h"
-
 namespace ngl
 {
 	bool actor_kcp::handle(const message<np_actor_kcp>& adata)

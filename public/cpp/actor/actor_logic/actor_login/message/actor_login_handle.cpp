@@ -11,10 +11,8 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-
 #include "actor/actor_logic/actor_login/actor_login.h"
 #include "actor/actor_base/nregister.h"
-
 namespace ngl
 {
 	bool actor_login::handle(const message<np_actor_disconnect_close>& adata)

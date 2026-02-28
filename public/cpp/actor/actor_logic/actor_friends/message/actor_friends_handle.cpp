@@ -11,10 +11,8 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-
 #include "actor/actor_logic/actor_friends/actor_friends.h"
 #include "actor/actor_logic/actor_brief/actor_brief.h"
-
 namespace ngl
 {
 	bool actor_friends::handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND>>& adata)

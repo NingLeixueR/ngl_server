@@ -11,7 +11,6 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-
 #include "actor/actor_logic/actor_testlua/actor_testlua.h"
 #include "actor/actor_logic/actor_events/actor_events.h"
 #include "actor/actor_logic/actor_role/logic/bag/drop.h"
@@ -23,7 +22,6 @@
 #include "actor/tab/ttab_task.h"
 #include "tools/curl/ncurl.h"
 #include "actor/pb/net.pb.h"
-
 namespace ngl
 {
 	bool actor_role::handle(const message<mforward<np_gm>>& adata)
