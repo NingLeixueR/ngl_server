@@ -31,7 +31,7 @@ jobs:
         echo "CC=gcc-12" >> $GITHUB_ENV
         echo "CXX=g++-12" >> $GITHUB_ENV
     
-     - name: Install latest CMake
+    - name: Install latest CMake
       run: |
         pip install cmake --upgrade
         cmake --version
