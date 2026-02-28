@@ -1,6 +1,6 @@
-#include "nserialize.h"
-#include "ndefine.h"
-#include "csv.h"
+#include "tools/serialize/nserialize.h"
+#include "tools/serialize/ndefine.h"
+#include "tools/tab/csv/csv.h"
 
 
 // ### 注释中 [index:%] 指定在csv中的列位置,序号从0开始
