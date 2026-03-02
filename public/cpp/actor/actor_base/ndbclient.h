@@ -196,9 +196,6 @@ namespace ngl
 		}
 	};
 
-	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
-	class actor_db;
-
 	template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 	class ndbclient : 
 		public ndbclient_base

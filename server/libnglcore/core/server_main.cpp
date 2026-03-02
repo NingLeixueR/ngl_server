@@ -15,7 +15,14 @@ void init_DB_ACCOUNT(const char* aname, int beg)
 		ltemp.set_mroleid(ltemp.mid());
 		ltemp.set_marea(tab_self_area);
 
-		ngl::ndbtab<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>::save(0, ltemp);
+		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, ltemp);
+		}
+		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, ltemp);
+		}
 	}
 }
 
@@ -42,8 +49,16 @@ void init_DB_ROLE(const char* aname, int beg)
 		lrolebase.mutable_mbase()->set_mmoneysilver(0);
 		lrolebase.mutable_mbase()->set_mcreateutc((int32_t)ngl::localtime::gettime());
 
-		ngl::ndbtab<pbdb::ENUM_DB_BRIEF, pbdb::db_brief>::save(0, lrolebase);
-		ngl::ndbtab<pbdb::ENUM_DB_ROLE, pbdb::db_role>::save(0, ltemp);
+		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_BRIEF, pbdb::db_brief, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, lrolebase);
+			ngl::ndbtab<pbdb::ENUM_DB_ROLE, pbdb::db_role, ngl::npostgresql_manage, ngl::nmysql_pool>::save(0, ltemp);
+		}
+		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_BRIEF, pbdb::db_brief, ngl::nmysql_manage, ngl::npostgresql_pool>::save(0, lrolebase);
+			ngl::ndbtab<pbdb::ENUM_DB_ROLE, pbdb::db_role, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, ltemp);
+		}
 	}
 }
 
@@ -65,7 +80,14 @@ void init_DB_BAG(const char* aname, int beg)
 		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		ltemp.set_mmaxid(1);
 
-		ngl::ndbtab<pbdb::ENUM_DB_BAG, pbdb::db_bag>::save(0, ltemp);
+		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_BAG, pbdb::db_bag, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, ltemp);
+		}
+		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_BAG, pbdb::db_bag, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, ltemp);
+		}
 	}
 }
 
@@ -93,7 +115,14 @@ void init_DB_TASK(const char* aname, int beg)
 		lschedulesnode->set_msumint(10);
 		(*lrundatas)[lpair.first] = lpair.second;
 
-		ngl::ndbtab<pbdb::ENUM_DB_TASK, pbdb::db_task>::save(0, ltemp);
+		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_TASK, pbdb::db_task, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, ltemp);
+		}
+		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_TASK, pbdb::db_task, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, ltemp);
+		}
 	}
 }
 
@@ -111,7 +140,14 @@ void init_DB_MAIL(int beg)
 		pbdb::db_mail ltemp;
 		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 
-		ngl::ndbtab<pbdb::ENUM_DB_MAIL, pbdb::db_mail>::save(0, ltemp);
+		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_MAIL, pbdb::db_mail, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, ltemp);
+		}
+		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_MAIL, pbdb::db_mail, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, ltemp);
+		}
 	}
 }
 
@@ -131,7 +167,14 @@ void init_DB_ROLEKEYVALUE(int beg)
 		(*ltemp.mutable_mdata())["test2"] = "2";
 		(*ltemp.mutable_mdata())["test3"] = "3";
 
-		ngl::ndbtab<pbdb::ENUM_DB_ROLEKEYVALUE, pbdb::db_rolekeyvalue>::save(0, ltemp);
+		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_ROLEKEYVALUE, pbdb::db_rolekeyvalue, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, ltemp);
+		}
+		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_ROLEKEYVALUE, pbdb::db_rolekeyvalue, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, ltemp);
+		}
 	}
 }
 
@@ -166,7 +209,14 @@ void init_DB_NOTICE()
 		ltemp.set_mstarttime((int32_t)time(nullptr));
 		ltemp.set_mfinishtime((int32_t)time(nullptr) + 36000);
 
-		ngl::ndbtab<pbdb::ENUM_DB_NOTICE, pbdb::db_notice>::save(0, ltemp);
+		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_NOTICE, pbdb::db_notice, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, ltemp);
+		}
+		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_NOTICE, pbdb::db_notice, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, ltemp);
+		}
 	}
 }
 
@@ -178,7 +228,14 @@ void init_DB_KEYVAL()
 	std::string ltempstr = std::format("{}*{}", lnow, ngl::localtime::time2str(lnow, "%y/%m/%d %H:%M:%S"));
 	ltemp.set_mvalue(ltempstr);
 
-	ngl::ndbtab<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue>::save(0, ltemp);
+	if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+	{
+		ngl::ndbtab<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, ltemp);
+	}
+	else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+	{
+		ngl::ndbtab<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, ltemp);
+	}	
 }
 
 void init_DB_FAMILY()
@@ -194,15 +251,29 @@ void init_DB_FAMILY()
 		ltemp.set_mleader(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		*ltemp.mutable_mmember()->Add() = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
 
-		ngl::ndbtab<pbdb::ENUM_DB_FAMILY, pbdb::db_family>::save(0, ltemp);
-
+		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_FAMILY, pbdb::db_family, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, ltemp);
+		}
+		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_FAMILY, pbdb::db_family, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, ltemp);
+		}
+		
 		pbdb::db_familyer ltempfamilyer;
 		ltempfamilyer.set_mjoinutc((int32_t)ngl::localtime::gettime());
 		ltempfamilyer.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		ltempfamilyer.set_mposition(pbdb::db_familyer_eposition_leader);
 		ltempfamilyer.set_mlastsignutc((int32_t)ngl::localtime::gettime());
 
-		ngl::ndbtab<pbdb::ENUM_DB_FAMILYER, pbdb::db_familyer>::save(0, ltempfamilyer);
+		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_FAMILYER, pbdb::db_familyer, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, ltempfamilyer);
+		}
+		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_FAMILYER, pbdb::db_familyer, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, ltempfamilyer);
+		}
 	}
 }
 
@@ -217,7 +288,14 @@ void init_DB_RANKLIST()
 		lrankitem.set_mvalue(i);
 		(*ltemp.mutable_mitems())[(int)pbdb::eranklist::lv] = lrankitem;
 
-		ngl::ndbtab<pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>::save(0, ltemp);
+		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, ltemp);
+		}
+		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, ltemp);
+		}
 	}*/
 }
 
@@ -248,7 +326,14 @@ void init_DB_FRIENDS()
 
 	for (auto& apair : lmap)
 	{
-		ngl::ndbtab<pbdb::ENUM_DB_FRIENDS, pbdb::db_friends>::save(0, apair.second);
+		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_FRIENDS, pbdb::db_friends, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, apair.second);
+		}
+		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_FRIENDS, pbdb::db_friends, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, apair.second);
+		}
 	}
 }
 
@@ -275,7 +360,14 @@ void init_DB_TESTLUA()
 
 	for (auto& apair : lmap)
 	{
-		ngl::ndbtab<pbdb::ENUM_DB_TESTLUA, pbdb::db_testlua>::save(0, apair.second);
+		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_TESTLUA, pbdb::db_testlua, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, apair.second);
+		}
+		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+		{
+			ngl::ndbtab<pbdb::ENUM_DB_TESTLUA, pbdb::db_testlua, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, apair.second);
+		}
 	}
 }
 
