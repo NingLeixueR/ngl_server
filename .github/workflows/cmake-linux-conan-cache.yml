@@ -1,28 +1,27 @@
-name: ubuntu-latest-cache
+name: C++ CI with Conan Cache
 
 on:
- # push:
- #   branches: [ "main" ]
- # pull_request:
- #   branches: [ "main" ]
-  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+
+    # 1. 安装 Conan (推荐使用官方 action 或 pip)
     - name: Setup Conan
       uses: conan-io/conan-action@v2  # 自动安装最新稳定版 Conan 2.x
-    
-    
-    # 配置 Conan 缓存 (Actions Cache)
+      # 或者手动安装: 
+      # - name: Install Conan
+      #   run: pip install conan
+
+    # 2. 配置 Conan 缓存 (Actions Cache)
     # Conan 2.x 默认缓存路径是 ~/.conan2
     - name: Cache Conan Packages
       id: cache-conan
@@ -34,7 +33,8 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-conan-${{ hashFiles('**/conan.lock') }}
           ${{ runner.os }}-conan-
-    
+
+    # 3. (可选但推荐) 缓存编译中间文件 (ccache)
     # 这需要你在 CMake 或 Makefile 中配置使用 ccache
     - name: Cache CCache
       uses: actions/cache@v4
@@ -43,48 +43,30 @@ jobs:
         key: ${{ runner.os }}-ccache-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-ccache-
-          
+
     # 4. 安装 ccache 工具 (如果镜像未预装)
     - name: Install ccache
       run: sudo apt-get update && sudo apt-get install -y ccache
-     
+
     # 5. 配置 ccache (设置最大大小等)
     - name: Configure ccache
       run: |
         ccache --set-config=maxsize=500M
         ccache --show-stats
-        
-    - name: Install dependencies
+
+    # 6. 安装依赖 (Conan install)
+    # 如果缓存命中，这一步会非常快，直接从本地缓存读取包
+    - name: Install Dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install uuid-dev 
-   
-    - name: Cache ccache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.CCACHE_DIR }}
-          key: ${{ runner.os }}-ccache-cpp20-gcc12-${{ hashFiles('**/CMakeLists.txt', '**/*.cpp', '**/*.h') }}-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-ccache-cpp20-gcc12-${{ hashFiles('**/CMakeLists.txt', '**/*.cpp', '**/*.h') }}-
+        # 如果是 Conan 2.x，建议使用 deployers 或直接安装到缓存
+        # 这里假设你有一个 conanfile.txt 或在根目录有 conanfile.py
+        # --build=missing 确保如果缓存中没有二进制包，则从源码构建并放入缓存
+        mkdir build
+        conan profile detect --force
+        conan install . -s build_type=Release -s compiler.cppstd=20 --build=missing
+        cmake --preset conan-release
 
-    - name: Install dependencies via Conan
-        run: |
-          mkdir -p build && cd build
-          conan install .. --output-folder=. --build=missing
-          
-    - name: Create build directory  
-        run: |
-          mkdir build    
-
-    - name: Install dependencies with Conan(python -m conan)
-        run: |
-          conan profile detect --force
-          conan install . -s build_type=Release -s compiler.cppstd=20 --build=missing
-          cmake --preset conan-release
-      
-    - name: Build project with C++20 (GCC)
-        working-directory: build/Release
-        run: |
-          cmake --build . 
-          # 打印ccache统计信息
-          ccache -s
+    # 7. 构建项目 (示例使用 CMake)
+    - name: Build
+      working-directory: build/Release
+      run: cmake --build .
