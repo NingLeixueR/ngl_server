@@ -1595,19 +1595,10 @@ namespace ngl
 		return tab->m_name;
 	}
 
-
-	auto g_tools_now = std::chrono::high_resolution_clock::now();
-	auto g_tools_now_ns = std::chrono::time_point_cast<std::chrono::nanoseconds>(g_tools_now).time_since_epoch().count();
-	std::random_device g_tools_rd;
-	std::seed_seq g_tools_seed{ static_cast<unsigned int>(g_tools_now_ns), g_tools_rd() };
-	std::mt19937 g_tools_gen(g_tools_seed);
-	std::uniform_int_distribution<int> g_tools_dis(0, RAND_MAX);
-	std::shared_mutex g_tools_mutex;
-
-	int tools::rand()
+	int tools::rand() 
 	{
-		lock_write(g_tools_mutex);
-		return g_tools_dis(g_tools_gen);
+		thread_local std::mt19937 gen((std::random_device())());
+		return std::uniform_int_distribution<int>(0, RAND_MAX)(gen);
 	}
 
 	void tools::transform_tolower(std::string& adata)
