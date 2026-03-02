@@ -17,17 +17,7 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-
-    - name: Install Python (required for Conan)
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
     
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install uuid-dev 
-
     - name: Install Conan, ccache and GCC 13 (C++20 compatible)
       run: |
         sudo apt update -y
@@ -40,9 +30,14 @@ jobs:
         echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
         echo "CCACHE_MAXSIZE=500M" >> $GITHUB_ENV
         echo "CCACHE_COMPRESS=1" >> $GITHUB_ENV
-        
-      - name: Cache Conan dependencies
-        uses: actions/cache@v4
+     
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install uuid-dev 
+   
+    - name: Cache Conan dependencies
+      uses: actions/cache@v4
         with:
           path: |
             ~/.conan2
