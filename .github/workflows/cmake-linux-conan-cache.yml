@@ -65,7 +65,11 @@ jobs:
 
     - name: Configure ccache
       run: |
-        ccache --set-config=maxsize=500M
+        # 使用环境变量设置最大大小，兼容性最好
+        export CCACHE_MAXSIZE=500M
+        # 显示当前配置确认生效
+        ccache --show-config
+        # 显示统计信息（此时应为空）
         ccache --show-stats
 
     # 安装依赖
