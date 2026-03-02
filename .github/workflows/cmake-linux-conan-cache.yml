@@ -18,19 +18,42 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     
-    - name: Install Conan, ccache and GCC 13 (C++20 compatible)
-      run: |
-        sudo apt update -y
-        sudo apt install -y ccache gcc-13 g++-13 python3-pip
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
-        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
-        gcc --version
-        g++ --version
+    - name: Setup Conan
+      uses: conan-io/conan-action@v2  # 自动安装最新稳定版 Conan 2.x
+    
+    
+    # 配置 Conan 缓存 (Actions Cache)
+    # Conan 2.x 默认缓存路径是 ~/.conan2
+    - name: Cache Conan Packages
+      id: cache-conan
+      uses: actions/cache@v4
+      with:
+        path: ~/.conan2
+        # Key 基于 lockfile (推荐) 或 conanfile。如果 lockfile 存在则优先使用它，因为它更精确。
+        key: ${{ runner.os }}-conan-${{ hashFiles('**/conan.lock') }}-${{ hashFiles('**/conanfile.txt', '**/conanfile.py') }}
+        restore-keys: |
+          ${{ runner.os }}-conan-${{ hashFiles('**/conan.lock') }}
+          ${{ runner.os }}-conan-
+    
+    # 这需要你在 CMake 或 Makefile 中配置使用 ccache
+    - name: Cache CCache
+      uses: actions/cache@v4
+      with:
+        path: ~/.ccache
+        key: ${{ runner.os }}-ccache-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-ccache-
           
-        echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
-        echo "CCACHE_MAXSIZE=500M" >> $GITHUB_ENV
-        echo "CCACHE_COMPRESS=1" >> $GITHUB_ENV
+    # 4. 安装 ccache 工具 (如果镜像未预装)
+    - name: Install ccache
+      run: sudo apt-get update && sudo apt-get install -y ccache
      
+    # 5. 配置 ccache (设置最大大小等)
+    - name: Configure ccache
+      run: |
+        ccache --set-config=maxsize=500M
+        ccache --show-stats
+        
     - name: Install dependencies
       run: |
         sudo apt-get update
@@ -46,7 +69,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-conan-cpp20-gcc12-
 
-      - name: Cache ccache
+    - name: Cache ccache
         uses: actions/cache@v4
         with:
           path: ${{ env.CCACHE_DIR }}
@@ -54,21 +77,22 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-ccache-cpp20-gcc12-${{ hashFiles('**/CMakeLists.txt', '**/*.cpp', '**/*.h') }}-
 
-      - name: Install dependencies via Conan
+    - name: Install dependencies via Conan
         run: |
           mkdir -p build && cd build
           conan install .. --output-folder=. --build=missing
-      - name: Create build directory  
+          
+    - name: Create build directory  
         run: |
           mkdir build    
 
-      - name: Install dependencies with Conan(python -m conan)
+    - name: Install dependencies with Conan(python -m conan)
         run: |
           conan profile detect --force
           conan install . -s build_type=Release -s compiler.cppstd=20 --build=missing
           cmake --preset conan-release
       
-      - name: Build project with C++20 (GCC)
+    - name: Build project with C++20 (GCC)
         working-directory: build/Release
         run: |
           cmake --build . 
