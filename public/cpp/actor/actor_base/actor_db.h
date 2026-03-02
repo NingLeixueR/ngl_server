@@ -217,7 +217,7 @@ namespace ngl
 	db_cache ndbtab<TDBTAB_TYPE, TDBTAB, TSQLMANAGE, TSQLPOOL>::m_cache_del;
 
 
-	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TSQLMANAGE = nmysql_manage, typename TSQLPOOL = nmysql_pool>
+	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_db :
 		public actor
 	{
@@ -489,7 +489,15 @@ namespace ngl
 							return;
 						}
 						ngl::db_data<TDBTAB>::set(ldata.mid(), ldata);
-						TSQLMANAGE::save<TDBTAB>(TSQLPOOL::instance().get(athread), ldata.mid());
+						if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+						{
+							nmysql_manage::save<TDBTAB>(nmysql_pool::instance().get(athread), ldata.mid());
+						}
+						else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+						{
+							npostgresql_manage::save<TDBTAB>(npostgresql_pool::instance().get(athread), ldata.mid());
+						}
+						
 						pro.m_data = true;
 					};
 			}
