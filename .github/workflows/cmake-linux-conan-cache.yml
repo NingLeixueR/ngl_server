@@ -1,10 +1,6 @@
 name: ubuntu-latest
 
 on:
-  # push:
-  #   branches: [ "main" ]
-  # pull_request:
-  #   branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -22,8 +18,8 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-        # 可选：缓存 pip 包（如 conan 本身），但这通常很快
-        cache: 'pip' 
+        # 移除 cache: pip，因为本项目没有 requirements.txt，避免报错
+        # 安装 conan 和 cmake 很快，不需要专门缓存 pip 包
 
     - name: Install GCC 13
       run: |
@@ -43,39 +39,44 @@ jobs:
         pip install cmake --upgrade
         cmake --version
     
+
     - name: Install Conan
       run: |
         pip install conan
         conan --version
         
-    # --- 新增：缓存 Conan 依赖和构建目录 ---
-    - name: Cache Conan packages
+    # --- 核心修改：缓存 Conan 数据和构建目录 ---
+    - name: Cache Conan and Build artifacts
       uses: actions/cache@v4
-      id: cache-conan
+      id: cache-conan-build
       with:
+        # 缓存 Conan 2.x 的主目录 (包含下载的包和编译好的二进制)
+        # 缓存 build 目录以加速增量编译
         path: |
           ~/.conan2
           build
-        key: ${{ runner.os }}-conan-${{ hashFiles('**/conanfile.txt', '**/conanfile.py', '**/CMakeLists.txt') }}
+        # 缓存键：基于操作系统 + conanfile 和 CMakeLists 的哈希
+        # 如果这些文件没变，直接恢复缓存
+        key: ${{ runner.os }}-gcc13-conan-${{ hashFiles('**/conanfile.txt', '**/conanfile.py', '**/CMakeLists.txt') }}
         restore-keys: |
-          ${{ runner.os }}-conan-
+          ${{ runner.os }}-gcc13-conan-
 
     - name: Create build directory  
       run: |
         mkdir -p build    
 
     - name: Install dependencies with Conan
-      # 如果缓存命中，Conan 可能会跳过下载，但仍需执行 install 命令以确保 profile 和生成器正确设置
-      # 如果缓存未命中，这将下载并构建依赖
       run: |
+        # 生成/更新 profile
         conan profile detect --force
-        # 使用 -c tools.build:skip_test=true 或其他配置优化安装过程如果需要
+        # 安装依赖
+        # 如果缓存命中，conan 会直接使用本地包，速度极快
+        # --build=missing 确保如果有源码包需要编译，它会执行（但在缓存命中时通常不需要）
         conan install . -s build_type=Release -s compiler.cppstd=20 --build=missing
       
     - name: Configure with CMake
       run: |
-        # 如果 build 目录被缓存且有效，这一步可能会很快完成或跳过部分工作
-        # 注意：如果缓存了 build 目录，有时直接 cmake --build 即可，但运行 configure 更安全
+        # 如果 build 目录被缓存且有效，CMake 会快速检测并完成配置
         cmake --preset conan-release
 
     - name: Build project
