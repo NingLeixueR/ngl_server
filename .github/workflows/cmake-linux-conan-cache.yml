@@ -1,4 +1,4 @@
-name: ubuntu-latest
+name: ubuntu-latest-conan-cache
 
 on:
   workflow_dispatch:

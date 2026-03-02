@@ -1,5 +1,6 @@
 * [![windows-2022](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-windows-conan.yml/badge.svg)](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-windows-conan.yml)
 * [![ubuntu-22.04](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-linux-conan.yml/badge.svg)](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-linux-conan.yml)
+* [![ubuntu-latest-conan-cache](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-linux-conan-cache.yml/badge.svg)](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-linux-conan-cache.yml)
 * [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NingLeixueR_ngl&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=NingLeixueR_ngl)
 ## ngl
 * 基于Actor的c++游戏服务器框架
