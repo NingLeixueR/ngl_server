@@ -67,11 +67,11 @@ namespace ngl
 
 			if (m_tab->m_isloadall)
 			{// 加载全部数据
-				TSQLMANAGE::select<TDBTAB>(TSQLPOOL::instance().get(0));
+				TSQLMANAGE::template select<TDBTAB>(TSQLPOOL::instance().get(0));
 			}
 			else
 			{// 加载全部id 防止内存穿透
-				TSQLMANAGE::select<TDBTAB>(TSQLPOOL::instance().get(0), db_data<TDBTAB>::id_index());
+				TSQLMANAGE::template select<TDBTAB>(TSQLPOOL::instance().get(0), db_data<TDBTAB>::id_index());
 			}
 		}
 
@@ -124,7 +124,7 @@ namespace ngl
 			}
 			if (ngl::db_data<TDBTAB>::data_stat(aid) == ngl::db_data<TDBTAB>::edbdata_notload)
 			{
-				TSQLMANAGE::select<TDBTAB>(TSQLPOOL::instance().get(athreadid), aid);
+				TSQLMANAGE::template select<TDBTAB>(TSQLPOOL::instance().get(athreadid), aid);
 			}
 		}
 
