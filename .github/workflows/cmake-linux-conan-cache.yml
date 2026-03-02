@@ -26,12 +26,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install uuid-dev
-    
-    - name: Install latest CMake
-      run: |
-        pip install cmake --upgrade
-        cmake --version    
+        sudo apt-get install uuid-dev 
 
     - name: Install Conan, ccache and GCC 13 (C++20 compatible)
       run: |
