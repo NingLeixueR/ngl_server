@@ -34,30 +34,18 @@ jobs:
         cmake --version    
 
     - name: Install Conan, ccache and GCC 13 (C++20 compatible)
-        run: |
-          # 更新包列表
-          sudo apt update -y
-          # 安装GCC 12（完整支持C++20）、ccache、python-pip
-          sudo apt install -y ccache gcc-13 g++-13 python3-pip
-          # 配置GCC 12为默认编译器（避免系统默认gcc版本过低）
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
-          # 验证GCC版本
-          gcc --version
-          g++ --version
+      run: |
+        sudo apt update -y
+        sudo apt install -y ccache gcc-13 g++-13 python3-pip
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
+        gcc --version
+        g++ --version
           
-          # 配置ccache环境变量（无修改）
-          echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
-          echo "CCACHE_MAXSIZE=500M" >> $GITHUB_ENV
-          echo "CCACHE_COMPRESS=1" >> $GITHUB_ENV
-          
-          # 配置Conan：切换为GCC（核心修改1）
-          conan profile new default --detect || true
-          conan profile update settings.compiler=gcc default          # 编译器改为gcc
-          conan profile update settings.compiler.version=12 default   # GCC版本12
-          conan profile update settings.compiler.libcxx=libstdc++11 default # GCC仅用libstdc++11
-          conan profile update settings.compiler.cppstd=20 default    # 保持C++20不变
-
+        echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
+        echo "CCACHE_MAXSIZE=500M" >> $GITHUB_ENV
+        echo "CCACHE_COMPRESS=1" >> $GITHUB_ENV
+        
       - name: Cache Conan dependencies
         uses: actions/cache@v4
         with:
