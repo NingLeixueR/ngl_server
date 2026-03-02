@@ -1595,10 +1595,51 @@ namespace ngl
 		return tab->m_name;
 	}
 
-	int tools::rand() 
+	namespace {
+		// 简单的 64-bit splitmix64，用于把一个 64-bit 值扩散成高质量种子
+		static inline uint64_t splitmix64(uint64_t x) 
+		{
+			x += 0x9e3779b97f4a7c15ULL;
+			x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9ULL;
+			x = (x ^ (x >> 27)) * 0x94d049bb133111ebULL;
+			return x ^ (x >> 31);
+		}
+
+		static std::once_flag g_seed_once;
+		static std::atomic<uint64_t> g_global_seed{ 0 };
+
+		static uint64_t make_global_seed() 
+		{
+			// 从 random_device 获取若干随机值（如果很慢也只做一次）
+			std::random_device rd;
+			uint64_t a = static_cast<uint64_t>(rd());
+			uint64_t b = static_cast<uint64_t>(rd());
+			uint64_t t = static_cast<uint64_t>(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+			return splitmix64(a ^ (b << 32) ^ t);
+		}
+
+		static uint64_t next_thread_seed() 
+		{
+			std::call_once(g_seed_once, []() {
+				g_global_seed.store(make_global_seed(), std::memory_order_relaxed);
+			});
+			// 原子加一个常数，保证每个线程拿到不同基值
+			uint64_t v = g_global_seed.fetch_add(0x9e3779b97f4a7c15ULL, std::memory_order_acq_rel);
+			// 混合 thread id 以防进程内多个线程同时到达
+			uint64_t tid_hash = std::hash<std::thread::id>()(std::this_thread::get_id());
+			return splitmix64(v ^ tid_hash);
+		}
+	} // namespace
+
+	int tools::rand()
 	{
-		thread_local std::mt19937 gen((std::random_device())());
-		return std::uniform_int_distribution<int>(0, RAND_MAX)(gen);
+		// 如果你更偏好 32-bit mt19937，可改为 std::mt19937 并对 seed 取低 32 位
+		thread_local std::mt19937_64 gen(static_cast<std::mt19937_64::result_type>(next_thread_seed()));
+
+		// 生成范围 [0, RAND_MAX]。注意 RAND_MAX 是 C 的宏，可用 numeric_limits<int>::max() 替代。
+		static thread_local std::uniform_int_distribution<int> dist(0, RAND_MAX);
+
+		return dist(gen);
 	}
 
 	void tools::transform_tolower(std::string& adata)
