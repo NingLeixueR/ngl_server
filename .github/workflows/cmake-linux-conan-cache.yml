@@ -59,16 +59,6 @@ jobs:
         sudo apt-get update
         sudo apt-get install uuid-dev 
    
-    - name: Cache Conan dependencies
-      uses: actions/cache@v4
-        with:
-          path: |
-            ~/.conan2
-            ./conan-cache
-          key: ${{ runner.os }}-conan-cpp20-gcc12-${{ hashFiles('**/conanfile.txt', '**/conanfile.py') }}
-          restore-keys: |
-            ${{ runner.os }}-conan-cpp20-gcc12-
-
     - name: Cache ccache
         uses: actions/cache@v4
         with:
