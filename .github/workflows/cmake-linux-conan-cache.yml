@@ -22,13 +22,14 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install GCC 13
+    - name: Install GCC 13 and uuid-dev
       run: |
        sudo apt-get update
         sudo apt-get install -y software-properties-common
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
         sudo apt-get update
         sudo apt-get install -y gcc-13 g++-13
+        sudo apt-get install uuid-dev
         
     # 这是官方推荐的方式，简单可靠
     - name: Install Conan
