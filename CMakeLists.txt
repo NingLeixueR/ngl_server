@@ -5,8 +5,10 @@ PROJECT (ngl)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)  # 强制要求C++20，不兼容则报错
 #set(CMAKE_CXX_EXTENSIONS OFF)        # 关闭微软C++扩展，启用【纯标准C++20】
-# 开启标准C++预处理器，支持__VA_OPT__
-add_compile_options(/Zc:preprocessor)
+IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+	# 开启标准C++预处理器，支持__VA_OPT__
+	add_compile_options(/Zc:preprocessor)
+ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 ADD_DEFINITIONS(-DASIO_STANDALONE)
 ADD_DEFINITIONS(-D_WEBSOCKETPP_CPP11_TYPE_TRAITS_)
