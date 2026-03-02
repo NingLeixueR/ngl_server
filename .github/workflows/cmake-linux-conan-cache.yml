@@ -1,90 +1,83 @@
-name: C++ CI with Conan Cache (Fixed)
+name: ubuntu-latest
 
 on:
- # push:
- #   branches: [ "main" ]
- # pull_request:
- #   branches: [ "main" ]
+  # push:
+  #   branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
-        
-    # GitHub 的 ubuntu-latest 通常预装了 Python，但这一步确保环境干净且版本明确
-    - name: Set up Python
+
+    - name: Install Python (required for Conan)
       uses: actions/setup-python@v5
       with:
-        python-version: '3.x'
+        python-version: '3.10'
+        # 可选：缓存 pip 包（如 conan 本身），但这通常很快
+        cache: 'pip' 
 
-    - name: Install GCC 13 and uuid-dev
+    - name: Install GCC 13
       run: |
-       sudo apt-get update
+        sudo apt-get update
         sudo apt-get install -y software-properties-common
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
         sudo apt-get update
         sudo apt-get install -y gcc-13 g++-13
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
         sudo apt-get install uuid-dev
-        
-    # 这是官方推荐的方式，简单可靠
+    
+    - name: Install latest CMake
+      run: |
+        pip install cmake --upgrade
+        cmake --version
+    
     - name: Install Conan
       run: |
-        python -m pip install --upgrade pip
         pip install conan
-        # 验证版本
         conan --version
-
-    # 配置 Conan 缓存 (Actions Cache)
-    # Conan 2.x 默认缓存路径是 ~/.conan2
-    - name: Cache Conan Packages
-      id: cache-conan
+        
+    # --- 新增：缓存 Conan 依赖和构建目录 ---
+    - name: Cache Conan packages
       uses: actions/cache@v4
+      id: cache-conan
       with:
-        path: ~/.conan2
-        # Key 基于 lockfile 或 conanfile
-        key: ${{ runner.os }}-conan-${{ hashFiles('**/conan.lock') }}-${{ hashFiles('**/conanfile.txt', '**/conanfile.py') }}
+        path: |
+          ~/.conan2
+          build
+        key: ${{ runner.os }}-conan-${{ hashFiles('**/conanfile.txt', '**/conanfile.py', '**/CMakeLists.txt') }}
         restore-keys: |
-          ${{ runner.os }}-conan-${{ hashFiles('**/conan.lock') }}
           ${{ runner.os }}-conan-
 
-    # 缓存编译中间文件 (ccache)
-    - name: Cache CCache
-      uses: actions/cache@v4
-      with:
-        path: ~/.ccache
-        key: ${{ runner.os }}-ccache-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-ccache-
-
-    - name: Install ccache
-      run: sudo apt-get update && sudo apt-get install -y ccache
-
-    - name: Configure ccache
+    - name: Create build directory  
       run: |
-        # 使用环境变量设置最大大小，兼容性最好
-        export CCACHE_MAXSIZE=500M
-        # 显示当前配置确认生效
-        ccache --show-config
-        # 显示统计信息（此时应为空）
-        ccache --show-stats
+        mkdir -p build    
 
-    # 安装依赖
-    - name: Install Dependencies
+    - name: Install dependencies with Conan
+      # 如果缓存命中，Conan 可能会跳过下载，但仍需执行 install 命令以确保 profile 和生成器正确设置
+      # 如果缓存未命中，这将下载并构建依赖
       run: |
-        # 如果是第一次运行，这会下载并构建包，然后存入缓存
-        # 后续运行如果 Key 命中，这里会瞬间完成
-        mkdir build
         conan profile detect --force
+        # 使用 -c tools.build:skip_test=true 或其他配置优化安装过程如果需要
         conan install . -s build_type=Release -s compiler.cppstd=20 --build=missing
+      
+    - name: Configure with CMake
+      run: |
+        # 如果 build 目录被缓存且有效，这一步可能会很快完成或跳过部分工作
+        # 注意：如果缓存了 build 目录，有时直接 cmake --build 即可，但运行 configure 更安全
         cmake --preset conan-release
 
-    # 构建项目
-    - name: Build
-      run: |
-       working-directory: build/Release
-       run: cmake --build . 
+    - name: Build project
+      working-directory: build/Release
+      run: cmake --build . -- -j$(nproc)
