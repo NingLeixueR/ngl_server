@@ -31,10 +31,6 @@
 
 #include <google/protobuf/util/json_util.h>
 
-#ifdef WIN32
-#define snprintf _snprintf
-#endif //WIN32
-
 namespace ngl
 {
 	template <typename Target>

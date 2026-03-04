@@ -21,7 +21,6 @@ ADD_EXECUTABLE(node
 	${CORE_LIST_CSRC}
 )
 
-link_directories("${CMAKE_SOURCE_DIR}/lib")
 target_link_libraries(node
 	PRIVATE nglcore 
 )

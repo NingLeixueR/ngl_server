@@ -13,7 +13,7 @@ SOURCE_GROUP("Source Files" FILES ${CORE_LIST_SRC})
 SOURCE_GROUP("Source Files" FILES ${CORE_LIST_CSRC})
 SOURCE_GROUP("Protobuf Source Files" FILES ${CORE_PROTOBUF_LIST_CSRC})
 
-
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 ADD_DEFINITIONS(-DNGL_EXPORT)
@@ -24,6 +24,11 @@ find_package(CURL REQUIRED)
 find_package(libmysqlclient REQUIRED)
 find_package(hiredis REQUIRED)
 find_package(PostgreSQL REQUIRED)
+IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+	find_package(libuuid REQUIRED)
+	INCLUDE_DIRECTORIES(${libuuid_INCLUDE_DIRS})
+ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+
 
 INCLUDE_DIRECTORIES(${lua_INCLUDE_DIRS})   
 INCLUDE_DIRECTORIES(${protobuf_INCLUDE_DIRS})  
@@ -39,13 +44,6 @@ ADD_LIBRARY(nglcore SHARED
 	${CORE_PROTOBUF_LIST_CSRC}
 )
 
-find_library(UUID_LIBRARY NAMES uuid)
-if(NOT UUID_LIBRARY)
-    message(FATAL_ERROR "uuid library not found")
-endif()
-
-target_link_libraries(nglcore PRIVATE ${UUID_LIBRARY})
-
 # Á´½Ó
 target_link_libraries(nglcore PRIVATE lua::lua)
 target_link_libraries(nglcore PRIVATE protobuf::protobuf)
@@ -53,6 +51,9 @@ target_link_libraries(nglcore PRIVATE CURL::libcurl)
 target_link_libraries(nglcore PRIVATE libmysqlclient::libmysqlclient)
 target_link_libraries(nglcore PRIVATE hiredis::hiredis)
 target_link_libraries(nglcore PRIVATE libpq::libpq)
+IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+	target_link_libraries(nglcore PRIVATE libuuid::libuuid)
+ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Windows")	

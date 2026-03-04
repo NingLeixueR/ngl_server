@@ -6,6 +6,7 @@ libcurl/8.9.1
 libmysqlclient/8.1.0
 hiredis/1.2.0
 libpq/17.7
+libuuid/1.0.3
 
 [generators]
 CMakeDeps
