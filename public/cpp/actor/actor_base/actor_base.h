@@ -491,7 +491,7 @@ namespace ngl
 		else
 		{
 			ncjson ltemp;
-			njson::push(ltemp.json(), "message", *adata.get_data());
+			njson::push(ltemp, { "message" }, *adata.get_data());
 			log_error()->print("{}", ltemp.str());
 		}
 	}

@@ -44,15 +44,23 @@ namespace ngl
 			{
 				return false;
 			}
+			if (std::string_view(lvalue).empty())
+			{
+				return false;
+			}
 			ncjson ljread(lvalue);
-			return njson::pop(ljread.json(), akeys, arg...);
+			if (!ljread.parsecheck())
+			{
+				return false;
+			}
+			return njson::pop(ljread, akeys, arg...);
 		}
 
 		template <typename ...ARG>
 		void set_value(const char* akey, const std::array<const char*, sizeof...(ARG)>& akeys, const ARG&... arg)
 		{
 			ncjson lwrite(get_value(akey));
-			njson::push(lwrite.json(), akeys, arg...);
+			njson::push(lwrite, akeys, arg...);
 			set_value(akey, lwrite.str());
 		}
 	};

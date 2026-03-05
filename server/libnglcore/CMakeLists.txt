@@ -24,6 +24,8 @@ find_package(CURL REQUIRED)
 find_package(libmysqlclient REQUIRED)
 find_package(hiredis REQUIRED)
 find_package(PostgreSQL REQUIRED)
+find_package(RapidJSON REQUIRED)
+
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	find_package(libuuid REQUIRED)
 	INCLUDE_DIRECTORIES(${libuuid_INCLUDE_DIRS})
@@ -36,6 +38,7 @@ INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${libmysqlclient_INCLUDE_DIRS})  
 INCLUDE_DIRECTORIES(${hiredis_INCLUDE_DIRS})  
 INCLUDE_DIRECTORIES(${PostgreSQL_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${RapidJSON_INCLUDE_DIRS})
 
 ADD_LIBRARY(nglcore SHARED 
 	${CORE_LIST_INCLUDE}
@@ -51,6 +54,7 @@ target_link_libraries(nglcore PRIVATE CURL::libcurl)
 target_link_libraries(nglcore PRIVATE libmysqlclient::libmysqlclient)
 target_link_libraries(nglcore PRIVATE hiredis::hiredis)
 target_link_libraries(nglcore PRIVATE libpq::libpq)
+
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	target_link_libraries(nglcore PRIVATE libuuid::libuuid)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")

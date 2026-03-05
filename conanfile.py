@@ -19,6 +19,7 @@ class MyProjectConan(ConanFile):
         self.requires("libmysqlclient/8.1.0")
         self.requires("hiredis/1.2.0")
         self.requires("libpq/17.7")
+        self.requires("rapidjson/1.1.0")
         
         # --- 平台特定依赖 ---
         if self.settings.os == "Linux":

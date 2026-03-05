@@ -18,6 +18,7 @@ find_package(CURL REQUIRED)
 find_package(libmysqlclient REQUIRED)
 find_package(hiredis REQUIRED)
 find_package(PostgreSQL REQUIRED)
+find_package(RapidJSON REQUIRED)
 
 INCLUDE_DIRECTORIES(${lua_INCLUDE_DIRS})   
 INCLUDE_DIRECTORIES(${protobuf_INCLUDE_DIRS})  
@@ -25,6 +26,7 @@ INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${libmysqlclient_INCLUDE_DIRS})  
 INCLUDE_DIRECTORIES(${hiredis_INCLUDE_DIRS})  
 INCLUDE_DIRECTORIES(${PostgreSQL_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${RapidJSON_INCLUDE_DIRS})
 
 
 # 判断是否在 GitHub Actions 环境中

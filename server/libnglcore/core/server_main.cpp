@@ -682,13 +682,22 @@ bool start_pushserverconfig()
 			std::array<std::string, ngl::ENET_COUNT> lparm = { "tcp","ws","kcp" };
 			for (ngl::net_works& item : aserver->m_net)
 			{
-				ngl::ncjson lwritetemp;
-				ngl::njson::push(lwritetemp.json(), { "ip","nip","port" }, item.m_ip, item.m_nip, item.m_port);
-				ngl::njson::push(lwrite.json(), { lparm[item.m_type].c_str() }, lwritetemp);
+				struct njcnet
+				{
+					std::string m_ip;
+					std::string m_nip;
+					uint16_t m_port;
+
+					DPROTOCOL(njcnet, m_ip, m_nip, m_port)
+				};
+				njcnet ltempnet;
+				ltempnet.m_ip = item.m_ip;
+				ltempnet.m_nip = item.m_nip;
+				ltempnet.m_port = item.m_port;
+				ngl::njson::push(lwrite, { lparm[item.m_type].c_str() }, ltempnet);
 			}
 
-			lwrite.set_nonformatstr(true);
-			std::string lnet = lwrite.str();
+			std::string lnet = lwrite.nonformat_str();
 
 			lstream << "&net=" << lnet;
 

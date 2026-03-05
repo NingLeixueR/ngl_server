@@ -32,7 +32,7 @@ namespace ngl
 				i64_actorid lclient = nguid::make();
 				i64_actorid lserver = nguid::make();
 				std::string lsession;
-				if (!njson::pop(ltempjson.json(), { "actoridclient","actoridserver","session" }, lclient, lserver, lsession))
+				if (!njson::pop(ltempjson, { "actoridclient","actoridserver","session" }, lclient, lserver, lsession))
 				{
 					return;
 				}
@@ -393,9 +393,8 @@ namespace ngl
 		// #### 发起连接
 		ptr_se lpstruct = m_session.add(aconv, aendpoint, aserver, aclient);
 		ncjson ltempjson;
-		njson::push(ltempjson.json(), { "actoridserver","actoridclient","session" }, aserver, aclient, akcpsess);
-		ltempjson.set_nonformatstr(true);
-		udp_cmd::sendcmd(this, lpstruct->m_session, udp_cmd::ecmd_connect, ltempjson.str());
+		njson::push(ltempjson, { "actoridserver","actoridclient","session" }, aserver, aclient, akcpsess);
+		udp_cmd::sendcmd(this, lpstruct->m_session, udp_cmd::ecmd_connect, ltempjson.nonformat_str());
 		m_connectfun = afun;
 	}
 

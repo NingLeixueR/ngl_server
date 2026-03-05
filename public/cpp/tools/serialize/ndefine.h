@@ -61,68 +61,27 @@ static std::array<const char*, NUMARGS(__VA_ARGS__)>& parms()										\
 
 #define DEF_PARMNAME(...)	DEF_PARMNAME_(false __VA_OPT__(, )__VA_ARGS__)
 
-#define DEF_JSON_FUNCTION															\
-bool json_pop(const char* ajson, const char* akey)									\
-{																					\
-	ngl::ncjson ltemp(ajson);														\
-	if (akey != nullptr)															\
-	{																				\
-		cJSON* ret = cJSON_GetObjectItem(ltemp.json(), akey);						\
-		if (nullptr == ret)															\
-		{																			\
-			return false;															\
-		}																			\
-		return json_pop(ret);														\
-	}																				\
-	return json_pop(ltemp.json());													\
-}																					\
-void json_push(std::string& ajson, const char* akey) const							\
-{																					\
-	ngl::ncjson ltemp;																\
-	json_push(ltemp.json(), akey);													\
-	ajson = ltemp.str();															\
-}
 
 // 特殊情况使用
-#define DEF_JSONFUNCTION_SPECIAL(...)											\
-bool json_pop(cJSON* ajson)															\
-{																					\
-	return ngl::njson::pop(ajson __VA_OPT__(, )__VA_ARGS__);						\
-}																					\
-void json_push(cJSON* ajson, const char* akey) const								\
-{																					\
-	if (akey != nullptr)															\
-	{																				\
-		ngl::ncjson ltemp;															\
-		ngl::njson::push(ltemp.json() __VA_OPT__(, )__VA_ARGS__);					\
-		ngl::njson::push(ajson, {akey}, ltemp);										\
-	}																				\
-	else																			\
-	{																				\
-		ngl::njson::push(ajson __VA_OPT__(, )__VA_ARGS__);							\
-	}																				\
-}																					\
-DEF_JSON_FUNCTION
+#define DEF_JSONFUNCTION_SPECIAL(...)															\
+bool json_pop(rapidjson::Value& ajson)															\
+{																								\
+	return ngl::njson::pop(ajson __VA_OPT__(, )__VA_ARGS__);									\
+}																								\
+bool json_push(rapidjson::Value& ajson, rapidjson::Document::AllocatorType* aallocator) const	\
+{																								\
+	return ngl::njson::push(ajson, aallocator __VA_OPT__(, )__VA_ARGS__);						\
+}
 
-#define DEF_JSONFUNCTION(...)														\
-bool json_pop(cJSON* ajson)															\
-{																					\
-	return ngl::njson::pop(ajson, parms() __VA_OPT__(, )__VA_ARGS__);				\
-}																					\
-void json_push(cJSON* ajson, const char* akey) const								\
-{																					\
-	if (akey != nullptr)															\
-	{																				\
-		ngl::ncjson ltempjson;														\
-		ngl::njson::push(ltempjson.json(), parms() __VA_OPT__(, )__VA_ARGS__);		\
-		ngl::njson::push(ajson, {akey}, ltempjson);									\
-	}																				\
-	else																			\
-	{																				\
-		ngl::njson::push(ajson, parms() __VA_OPT__(, )__VA_ARGS__);					\
-	}																				\
-}																					\
-DEF_JSON_FUNCTION
+#define DEF_JSONFUNCTION(...)																	\
+bool json_pop(rapidjson::Value& ajson)															\
+{																								\
+	return ngl::njson::pop(ajson, parms() __VA_OPT__(, )__VA_ARGS__);							\
+}																								\
+bool json_push(rapidjson::Value& ajson, rapidjson::Document::AllocatorType* aallocator) const	\
+{																								\
+	return ngl::njson::push(ajson, aallocator, parms() __VA_OPT__(, )__VA_ARGS__);				\
+}
 
 #define DEF_NLUA_FUNCTION(...)															\
 	void nlua_push(lua_State* aL, const char* aname = nullptr)const						\

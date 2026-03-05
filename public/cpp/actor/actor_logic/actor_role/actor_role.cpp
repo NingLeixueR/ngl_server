@@ -209,23 +209,15 @@ namespace ngl
 				try
 				{
 					ncjson ltempjson(ahttp.m_recvdata.c_str());
-					if (ltempjson.check() == false)
+					if (ltempjson.parsecheck() == false)
 					{
 						log_error()->print("actor_role::loginpay curl callback fail");
 						return;
 					}
 					std::string lorderid;
-					if (!njson::pop(ltempjson.json(), { "orderid" }, lorderid))
-					{
-						return;
-					}
 					int32_t lrechargeid = -1;
-					if (!njson::pop(ltempjson.json(), { "rechargeid" }, lrechargeid))
-					{
-						return;
-					}
 					int64_t lroleid = -1;
-					if (!njson::pop(ltempjson.json(), { "roleid" }, lroleid))
+					if (!njson::pop(ltempjson, { "orderid", "rechargeid", "roleid"}, lorderid, lrechargeid, lroleid))
 					{
 						return;
 					}
@@ -243,13 +235,13 @@ namespace ngl
 							try
 							{
 								ncjson ltempjson(ahttp.m_recvdata.c_str());
-								if (ltempjson.check() == false)
+								if (ltempjson.parsecheck() == false)
 								{
 									log_error()->print("actor_role::loginpay curl callback fail");
 									return;
 								}
 								int32_t lstat = -1;
-								if (!njson::pop(ltempjson.json(), { "orderid" }, lstat))
+								if (!njson::pop(ltempjson, { "orderid" }, lstat))
 								{
 									return;
 								}
@@ -258,12 +250,12 @@ namespace ngl
 									return;
 								}
 								int32_t lrechargeid = -1;
-								if (!njson::pop(ltempjson.json(), { "rechargeid" }, lrechargeid))
+								if (!njson::pop(ltempjson, { "rechargeid" }, lrechargeid))
 								{
 									return;
 								}
 								std::string lorderid;
-								if (!njson::pop(ltempjson.json(), { "orderid" }, lorderid))
+								if (!njson::pop(ltempjson, { "orderid" }, lorderid))
 								{
 									return;
 								}

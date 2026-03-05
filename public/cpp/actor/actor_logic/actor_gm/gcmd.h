@@ -56,7 +56,7 @@ namespace ngl
 			{
 				ncjson lwrite;
 				std::string lservername = tools::server_name();
-				njson::push(lwrite.json(), { "operator", "data", "server_name" }, m_operator, m_data, lservername);
+				njson::push(lwrite, { "operator", "data", "server_name" }, m_operator, m_data, lservername);
 				std::string ljson = lwrite.str();
 				if (m_istoutf8)
 				{

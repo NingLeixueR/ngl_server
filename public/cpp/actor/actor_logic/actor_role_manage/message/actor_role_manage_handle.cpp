@@ -22,7 +22,7 @@ namespace ngl
 	{
 		ncjson lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (!njson::pop(lojson.json(), { "operator" }, loperator))
+		if (!njson::pop(lojson, { "operator" }, loperator))
 		{
 			return true;
 		}
@@ -39,7 +39,7 @@ namespace ngl
 						DPROTOCOL(banrole, m_roleid, m_stat)
 					};
 					banrole lbanrole;
-					if (!njson::pop(aos.json(), { "data" }, lbanrole))
+					if (!njson::pop(aos, { "data" }, lbanrole))
 					{
 						return;
 					}
