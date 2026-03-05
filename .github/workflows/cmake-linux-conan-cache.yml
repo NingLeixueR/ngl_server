@@ -76,6 +76,8 @@ jobs:
       
     - name: Configure with CMake
       run: |
+        rm -f build/CMakeCache.txt
+        rm -rf build/CMakeFiles # 可选：更彻底地清除 CMake 内部缓存
         # 如果 build 目录被缓存且有效，CMake 会快速检测并完成配置
         cmake --preset conan-release
 
