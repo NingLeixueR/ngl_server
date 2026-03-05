@@ -62,4 +62,4 @@ jobs:
 
     - name: Build project
       working-directory: build/Release
-      run: cmake --build . 
+      run: cmake --build . -- -j$(nproc)
