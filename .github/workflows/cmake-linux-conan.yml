@@ -61,5 +61,4 @@ jobs:
         cmake --preset conan-release
 
     - name: Build project
-      working-directory: build
       run: cmake --build . -- -j$(nproc)
