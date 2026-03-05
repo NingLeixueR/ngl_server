@@ -60,7 +60,7 @@ namespace ngl
 		std::string ljson;
 		if (tools::proto2json(adata, ljson))
 		{
-			log_error()->print("{}:{}", tools::type_name<T>(), tools::format_json(ljson));
+			log_error()->print("{}:{}", tools::type_name<T>(), ljson);
 		}
 	}
 }//namespace ngl

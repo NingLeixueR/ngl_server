@@ -1700,13 +1700,6 @@ namespace ngl
 		}
 	}
 
-	std::string& tools::format_json(std::string& ajson)
-	{
-		cJSON* ljson = cJSON_Parse(ajson.c_str());
-		ajson = cJSON_Print(ljson);
-		return ajson;
-	}
-
 	void tools::no_core_dump(bool anocreate/* = false*/)
 	{
 		if (!anocreate)

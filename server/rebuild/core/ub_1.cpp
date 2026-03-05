@@ -17,7 +17,6 @@
 #include "actor/protocol/nprotocol.cpp"
 #include "tools/tab/xml/sysconfig.cpp"
 #include "tools/serialize/segpack.cpp"
-#include "third_party/cjson/cJSON.cpp"
 #include "net/udp/kcp/kcp_session.cpp"
 #include "actor/protocol/protocol.cpp"
 #include "actor/auto/pbname_match.cpp"
