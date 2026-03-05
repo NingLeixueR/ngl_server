@@ -18,7 +18,6 @@
 #include "tools/curl/ncurl.h"
 #include "tools/localtime.h"
 #include "tools/tools.h"
-#include "sha1.h"
 
 #include <filesystem>
 #include <iostream>

@@ -944,7 +944,7 @@ namespace ngl
 	{
 		static bool pop(rapidjson::Value* ajson, std::list<T>& adata)
 		{
-			if (ajson == nullptr || !ajson.IsArray())
+			if (ajson == nullptr || !ajson->IsArray())
 			{
 				return false;
 			}
