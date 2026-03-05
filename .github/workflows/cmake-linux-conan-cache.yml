@@ -57,7 +57,7 @@ jobs:
           build
         # 缓存键：基于操作系统 + conanfile 和 CMakeLists 的哈希
         # 如果这些文件没变，直接恢复缓存
-        key: ${{ runner.os }}-gcc13-conan-${{ hashFiles('**/conanfile.txt', '**/conanfile.py', '**/CMakeLists.txt') }}
+        key: ${{ runner.os }}-gcc13-conan-v2-${{ hashFiles('**/conanfile.txt', '**/conanfile.py', '**/CMakeLists.txt') }}
         restore-keys: |
           ${{ runner.os }}-gcc13-conan-
 
