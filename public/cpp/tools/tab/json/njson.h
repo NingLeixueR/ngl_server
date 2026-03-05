@@ -658,7 +658,7 @@ namespace ngl
 				return false;
 			}
 			rapidjson::Value val;
-			val.SetString(adata, strlen(adata));
+			val.SetString(adata, std::string(adata).size());
 			ajson->AddMember(rapidjson::StringRef(akey), val, *aallocator);
 			return true;
 		}
