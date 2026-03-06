@@ -107,7 +107,6 @@ INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/26_02_28/ngl_server/
 INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/26_02_28/ngl_server/public/cpp/third_party/asio/asio/ts)
 INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/26_02_28/ngl_server/public/cpp/third_party/asio/asio/windows)
 INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/26_02_28/ngl_server/public/cpp/third_party/kcp)
-INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/26_02_28/ngl_server/public/cpp/third_party/sha1)
 INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/26_02_28/ngl_server/public/cpp/third_party/tinyxml2)
 INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/26_02_28/ngl_server/public/cpp/third_party/utf8cpp)
 INCLUDE_DIRECTORIES(C:/Users/Administrator/Documents/GitHub/26_02_28/ngl_server/public/cpp/third_party/utf8cpp/utf8)
