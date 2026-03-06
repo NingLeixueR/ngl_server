@@ -124,11 +124,9 @@ namespace ngl
 		}
 	};
 
-
 	template <typename T>
 	struct json_format
 	{
-		static bool pop(rapidjson::Value* ajson, T& adata);
 		static bool pop(rapidjson::Value* ajson, const char* akey, T& adata);
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const T& adata);
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const T& adata);
@@ -137,14 +135,6 @@ namespace ngl
 	template <typename T>
 	struct json_format<T*>
 	{
-		static bool pop(rapidjson::Value* ajson, T*& adata)
-		{
-			if (ajson == nullptr || adata == nullptr)
-			{
-				return false;
-			}
-			return json_format<T>::pop(ajson, *adata);
-		}
 		static bool pop(rapidjson::Value* ajson, const char* akey, T*& adata)
 		{
 			if (adata == nullptr)
@@ -153,6 +143,7 @@ namespace ngl
 			}
 			return json_format<T>::pop(ajson, akey, *adata);
 		}
+
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const T* adata)
 		{
 			if (adata == nullptr)
@@ -161,6 +152,7 @@ namespace ngl
 			}
 			return json_format<T>::push(ajson, aallocator, akey, *adata);
 		}
+
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const T* adata)
 		{
 			if (adata == nullptr)
@@ -174,15 +166,6 @@ namespace ngl
 	template <typename T>
 	struct json_format<std::shared_ptr<T>>
 	{
-		static bool pop(rapidjson::Value* ajson, std::shared_ptr<T>& adata)
-		{
-			if (ajson == nullptr || adata == nullptr)
-			{
-				return false;
-			}
-			return json_format<T>::pop(ajson, *adata);
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, std::shared_ptr<T>& adata)
 		{
 			if (ajson == nullptr)
@@ -216,35 +199,47 @@ namespace ngl
 		}
 	};
 
-	class ncjson;
-	template <>
-	struct json_format<ncjson>;
+	class tool_rapidjson_value
+	{
+	public:
+		static rapidjson::Value* find(rapidjson::Value* ajson, const char* akey)
+		{
+			if (akey != nullptr)
+			{
+				auto itor = ajson->FindMember(akey);
+				if (itor == ajson->MemberEnd())
+				{
+					return nullptr;
+				}
+				return &itor->value;
+			}
+			return ajson;
+		}
+	};
+
+	
 
 	template <>
 	struct json_format<int64_t>
 	{
-		static bool pop(rapidjson::Value* ajson, int64_t& adata)
-		{
-			if (ajson == nullptr || !ajson->IsInt64())
-			{
-				return false;
-			}
-			adata = ajson->GetInt64();
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, int64_t& adata)
 		{
 			if (ajson == nullptr)
 			{
 				return false;
 			}
-			auto itor = ajson->FindMember(akey);
-			if (itor == ajson->MemberEnd())
+			rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
+			if (ljson == nullptr)
 			{
 				return false;
 			}
-			return pop(&itor->value, adata);
+			
+			if (ljson->IsInt64())
+			{
+				return false;
+			}
+			adata = ljson->GetInt64();
+			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, int64_t adata)
@@ -273,17 +268,6 @@ namespace ngl
 	template <>
 	struct json_format<uint64_t>
 	{
-		static bool pop(rapidjson::Value* ajson, uint64_t& adata)
-		{
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
-			{
-				return false;
-			}
-			adata = (uint64_t)lvalue;
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, uint64_t& adata)
 		{
 			int64_t lvalue = 0;
@@ -321,17 +305,6 @@ namespace ngl
 	template <>
 	struct json_format<int32_t>
 	{
-		static bool pop(rapidjson::Value* ajson, int32_t& adata)
-		{
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
-			{
-				return false;
-			}
-			adata = (int32_t)lvalue;
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, int32_t& adata)
 		{
 			int64_t lvalue = 0;
@@ -372,17 +345,6 @@ namespace ngl
 	template <>
 	struct json_format<uint32_t>
 	{
-		static bool pop(rapidjson::Value* ajson, uint32_t& adata)
-		{
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
-			{
-				return false;
-			}
-			adata = (uint32_t)lvalue;
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, uint32_t& adata)
 		{
 			int64_t lvalue = 0;
@@ -423,17 +385,6 @@ namespace ngl
 	template <>
 	struct json_format<int16_t>
 	{
-		static bool pop(rapidjson::Value* ajson, int16_t& adata)
-		{
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
-			{
-				return false;
-			}
-			adata = (int16_t)lvalue;
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, int16_t& adata)
 		{
 			int64_t lvalue = 0;
@@ -474,17 +425,6 @@ namespace ngl
 	template <>
 	struct json_format<uint16_t>
 	{
-		static bool pop(rapidjson::Value* ajson, uint16_t& adata)
-		{
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
-			{
-				return false;
-			}
-			adata = (uint16_t)lvalue;
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, uint16_t& adata)
 		{
 			int64_t lvalue = 0;
@@ -525,17 +465,6 @@ namespace ngl
 	template <>
 	struct json_format<int8_t>
 	{
-		static bool pop(rapidjson::Value* ajson, int8_t& adata)
-		{
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
-			{
-				return false;
-			}
-			adata = (int8_t)lvalue;
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, int8_t& adata)
 		{
 			int64_t lvalue = 0;
@@ -576,17 +505,6 @@ namespace ngl
 	template <>
 	struct json_format<uint8_t>
 	{
-		static bool pop(rapidjson::Value* ajson, uint8_t& adata)
-		{
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
-			{
-				return false;
-			}
-			adata = (uint8_t)lvalue;
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, uint8_t& adata)
 		{
 			int64_t lvalue = 0;
@@ -627,28 +545,23 @@ namespace ngl
 	template <>
 	struct json_format<const char*>
 	{
-		static bool pop(rapidjson::Value* ajson, const char* adata)
-		{
-			if (ajson == nullptr || !ajson->IsString())
-			{
-				return false;
-			}
-			adata = ajson->GetString();
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, const char*& adata)
 		{
 			if (ajson == nullptr)
 			{
 				return false;
 			}
-			auto itor = ajson->FindMember(akey);
-			if (itor == ajson->MemberEnd())
+			rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
+			if (ljson == nullptr)
+			{
+				return false;
+			}			
+			if (!ljson->IsString())
 			{
 				return false;
 			}
-			return pop(&itor->value, adata);
+			adata = ljson->GetString();
+			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const char* adata)
@@ -677,28 +590,23 @@ namespace ngl
 	template <>
 	struct json_format<std::string>
 	{
-		static bool pop(rapidjson::Value* ajson, std::string& adata)
-		{
-			if (ajson == nullptr || !ajson->IsString())
-			{
-				return false;
-			}
-			adata = ajson->GetString();
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, std::string& adata)
 		{
 			if (ajson == nullptr)
 			{
 				return false;
 			}
-			auto itor = ajson->FindMember(akey);
-			if (itor == ajson->MemberEnd())
+			rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
+			if (ljson == nullptr)
 			{
 				return false;
 			}
-			return pop(&itor->value, adata);
+			if (!ljson->IsString())
+			{
+				return false;
+			}
+			adata = ljson->GetString();
+			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const std::string& adata)
@@ -727,28 +635,23 @@ namespace ngl
 	template <>
 	struct json_format<double>
 	{
-		static bool pop(rapidjson::Value* ajson, double& adata)
-		{
-			if (ajson == nullptr || !ajson->IsDouble())
-			{
-				return false;
-			}
-			adata = ajson->GetDouble();
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, double& adata)
 		{
 			if (ajson == nullptr)
 			{
 				return false;
 			}
-			auto itor = ajson->FindMember(akey);
-			if (itor == ajson->MemberEnd())
+			rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
+			if (ljson == nullptr)
 			{
 				return false;
 			}
-			return pop(&itor->value, adata);
+			if (ljson->IsDouble())
+			{
+				return false;
+			}
+			adata = ljson->GetDouble();
+			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, double adata)
@@ -777,28 +680,23 @@ namespace ngl
 	template <>
 	struct json_format<float>
 	{
-		static bool pop(rapidjson::Value* ajson, float& adata)
-		{
-			if (ajson == nullptr || !ajson->IsFloat())
-			{
-				return false;
-			}
-			adata = ajson->GetFloat();
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, float& adata)
 		{
 			if (ajson == nullptr)
 			{
 				return false;
 			}
-			auto itor = ajson->FindMember(akey);
-			if (itor == ajson->MemberEnd())
+			rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
+			if (ljson == nullptr)
 			{
 				return false;
 			}
-			return pop(&itor->value, adata);
+			if (!ljson->IsFloat())
+			{
+				return false;
+			}
+			adata = ljson->GetFloat();
+			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, float adata)
@@ -827,28 +725,23 @@ namespace ngl
 	template <>
 	struct json_format<bool>
 	{
-		static bool pop(rapidjson::Value* ajson, bool& adata)
-		{
-			if (ajson == nullptr || !ajson->IsBool())
-			{
-				return false;
-			}
-			adata = ajson->GetBool();
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, bool& adata)
 		{
 			if (ajson == nullptr)
 			{
 				return false;
 			}
-			auto itor = ajson->FindMember(akey);
-			if (itor == ajson->MemberEnd())
+			rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
+			if (ljson == nullptr)
 			{
 				return false;
 			}
-			return pop(&itor->value, adata);
+			if (ljson->IsBool())
+			{
+				return false;
+			}
+			adata = ljson->GetBool();
+			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, bool adata)
@@ -877,13 +770,22 @@ namespace ngl
 	template <typename T>
 	struct json_format<std::vector<T>>
 	{
-		static bool pop(rapidjson::Value* ajson, std::vector<T>& adata)
+		static bool pop(rapidjson::Value* ajson, const char* akey, std::vector<T>& adata)
 		{
-			if (ajson == nullptr || !ajson->IsArray())
+			if (ajson == nullptr)
 			{
 				return false;
 			}
-			auto ltemparray = ajson->GetArray();
+			rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
+			if (ljson == nullptr)
+			{
+				return false;
+			}
+			if (!ljson->IsArray())
+			{
+				return false;
+			}
+			auto ltemparray = ljson->GetArray();
 			int32_t lcount = ltemparray.Size();
 			adata.resize(lcount);
 			int32_t lindex = 0;
@@ -894,27 +796,13 @@ namespace ngl
 					adata.clear();
 					return false;
 				}
-				if (!json_format<T>::pop(&item, adata[lindex]))
+				if (!json_format<T>::pop(&item, nullptr, adata[lindex]))
 				{
 					return false;
 				}
 				++lindex;
 			}
 			return true;
-		}
-
-		static bool pop(rapidjson::Value* ajson, const char* akey, std::vector<T>& adata)
-		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			auto itor = ajson->FindMember(akey);
-			if (itor == ajson->MemberEnd())
-			{
-				return false;
-			}
-			return pop(&itor->value, adata);
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const std::vector<T>& adata)
@@ -942,37 +830,32 @@ namespace ngl
 	template <typename T>
 	struct json_format<std::list<T>>
 	{
-		static bool pop(rapidjson::Value* ajson, std::list<T>& adata)
-		{
-			if (ajson == nullptr || !ajson->IsArray())
-			{
-				return false;
-			}
-			auto ltemparray = ajson->GetArray();
-			for (auto& item : ltemparray)
-			{
-				T ltemp;
-				if (!json_format<T>::pop(&item, ltemp))
-				{
-					return false;
-				}
-				adata.push_back(ltemp);
-			}
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, std::list<T>& adata)
 		{
 			if (ajson == nullptr)
 			{
 				return false;
 			}
-			auto itor = ajson->FindMember(akey);
-			if (itor == ajson->MemberEnd())
+			rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
+			if (ljson == nullptr)
 			{
 				return false;
 			}
-			return pop(&itor->value, adata);
+			if (!ljson->IsArray())
+			{
+				return false;
+			}
+			auto ltemparray = ljson->GetArray();
+			for (auto& item : ltemparray)
+			{
+				T ltemp;
+				if (!json_format<T>::pop(&item, nullptr, ltemp))
+				{
+					return false;
+				}
+				adata.push_back(ltemp);
+			}
+			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const std::list<T>& adata)
@@ -1000,37 +883,32 @@ namespace ngl
 	template <typename T>
 	struct json_format<std::set<T>>
 	{
-		static bool pop(rapidjson::Value* ajson, std::set<T>& adata)
-		{
-			if (ajson == nullptr || !ajson->IsArray())
-			{
-				return false;
-			}
-			auto ltemparray = ajson->GetArray();
-			for (auto& item : ltemparray)
-			{
-				T ltemp;
-				if (!json_format<T>::pop(&item, ltemp))
-				{
-					return false;
-				}
-				adata.insert(ltemp);
-			}
-			return true;
-		}
-
 		static bool pop(rapidjson::Value* ajson, const char* akey, std::set<T>& adata)
 		{
 			if (ajson == nullptr)
 			{
 				return false;
 			}
-			auto itor = ajson->FindMember(akey);
-			if (itor == ajson->MemberEnd())
+			rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
+			if (ljson == nullptr)
 			{
 				return false;
 			}
-			return pop(itor->value, adata);
+			if (!ljson->IsArray())
+			{
+				return false;
+			}
+			auto ltemparray = ljson->GetArray();
+			for (auto& item : ltemparray)
+			{
+				T ltemp;
+				if (!json_format<T>::pop(&item, nullptr, ltemp))
+				{
+					return false;
+				}
+				adata.insert(ltemp);
+			}
+			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const std::set<T>& adata)
@@ -1058,13 +936,22 @@ namespace ngl
 	template <typename TKEY, typename TVALUE>
 	struct json_format<std::map<TKEY, TVALUE>>
 	{
-		static bool pop(rapidjson::Value* ajson, std::map<TKEY, TVALUE>& adata)
+		static bool pop(rapidjson::Value* ajson, const char* akey, std::map<TKEY, TVALUE>& adata)
 		{
-			if (ajson == nullptr || !ajson->IsArray())
+			if (ajson == nullptr)
 			{
 				return false;
 			}
-			auto ltemparray = ajson->GetArray();
+			rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
+			if (ljson == nullptr)
+			{
+				return false;
+			}
+			if (!ljson->IsArray())
+			{
+				return false;
+			}
+			auto ltemparray = ljson->GetArray();
 			for (auto& item : ltemparray)
 			{
 				TKEY lkey;
@@ -1080,20 +967,6 @@ namespace ngl
 				adata.insert(std::make_pair(lkey, lvalue));
 			}
 			return true;
-		}
-
-		static bool pop(rapidjson::Value* ajson, const char* akey, std::map<TKEY, TVALUE>& adata)
-		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			auto itor = ajson->FindMember(akey);
-			if (itor == ajson->MemberEnd())
-			{
-				return false;
-			}
-			return pop(&itor->value, adata);
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const std::map<TKEY, TVALUE>& adata)
@@ -1127,27 +1000,10 @@ namespace ngl
 
 	class njson
 	{
-		template <typename T>
-		static rapidjson::Value* find(T& adoc, const char* akey)
-		{
-			auto itor = adoc.FindMember(akey);
-			if (itor != adoc.MemberEnd())
-			{
-				return &itor->value;
-			}
-			return nullptr;
-		}
-
-		template <std::size_t... INDEX, typename ...TARGS>
-		static bool pop(rapidjson::Document& adoc, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
-		{
-			return (json_format<TARGS>::pop(find(adoc, akeys[INDEX]), aargs) && ...);
-		}
-
 		template <std::size_t... INDEX, typename ...TARGS>
 		static bool pop(rapidjson::Value& ajson, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
-			return (json_format<TARGS>::pop(find(ajson, akeys[INDEX]), aargs) && ...);
+			return (json_format<TARGS>::pop(&ajson, akeys[INDEX], aargs) && ...);
 		}
 
 		template <std::size_t... INDEX, typename ...TARGS>
@@ -1159,7 +1015,8 @@ namespace ngl
 		template <typename ...TARGS>
 		static bool pop(ncjson& ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{
-			return pop(ajson.doc(), std::make_index_sequence<sizeof...(TARGS)>{}, akeys, aargs...);
+			rapidjson::Value& lval = static_cast<rapidjson::Value&>(ajson.doc());
+			return pop(lval, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, aargs...);
 		}
 
 		template <typename ...TARGS>
@@ -1172,14 +1029,8 @@ namespace ngl
 		static bool push(ncjson& ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
 		{
 			ajson.set_object(); 
-			return push(ajson.doc(), akeys, aargs...);
-		}
-
-		template <typename ...TARGS>
-		static bool push(rapidjson::Document& ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
-		{
-			rapidjson::Value& lval = static_cast<rapidjson::Value&>(ajson);
-			rapidjson::Document::AllocatorType* lallocator = &ajson.GetAllocator();
+			rapidjson::Value& lval = static_cast<rapidjson::Value&>(ajson.doc());
+			rapidjson::Document::AllocatorType* lallocator = &ajson.doc().GetAllocator();
 			return push(lval, lallocator, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, aargs...);
 		}
 
@@ -1214,16 +1065,21 @@ namespace ngl
 namespace ngl
 {
 	template <typename T>
-	bool json_format<T>::pop(rapidjson::Value* ajson, T& adata)
+	bool json_format<T>::pop(rapidjson::Value* ajson, const char* akey, T& adata)
 	{
 		if (ajson == nullptr)
+		{
+			return false;
+		}
+		rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
+		if (ljson == nullptr)
 		{
 			return false;
 		}
 		if constexpr (std::is_enum<T>::value)
 		{
 			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, lvalue))
+			if (!json_format<int64_t>::pop(ljson, nullptr, lvalue))
 			{
 				return false;
 			}
@@ -1233,7 +1089,7 @@ namespace ngl
 		{
 			if constexpr (is_protobuf_message<T>::value)
 			{
-				std::string lstr = ncjson::vstr(ajson);
+				std::string lstr = ncjson::vstr(ljson);
 				if (lstr.empty())
 				{
 					return true;
@@ -1245,25 +1101,10 @@ namespace ngl
 			}
 			else
 			{
-				return adata.json_pop(*ajson);
+				return adata.json_pop(*ljson);
 			}
 		}
 		return true;
-	}
-
-	template <typename T>
-	bool json_format<T>::pop(rapidjson::Value* ajson, const char* akey, T& adata)
-	{
-		if (ajson == nullptr)
-		{
-			return false;
-		}
-		auto itor = ajson->FindMember(akey);
-		if (itor == ajson->MemberEnd())
-		{
-			return false;
-		}
-		return pop(&itor->value, adata);
 	}
 
 	template <typename T>
