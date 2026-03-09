@@ -30,6 +30,11 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
         sudo apt-get update
         sudo apt-get install -y gcc-13 g++-13
+
+    - name: Set GCC 13 as default
+      run: |
+        echo "CC=gcc-13" >> $GITHUB_ENV
+        echo "CXX=g++-13" >> $GITHUB_ENV
     
     - name: Install dependencies
       run: |
