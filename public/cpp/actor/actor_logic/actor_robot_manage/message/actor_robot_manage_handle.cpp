@@ -136,7 +136,12 @@ namespace ngl
 							{
 								return false;
 							}
-							actor::kcp_send(arobot.m_robot->id_guid(), pro, arobot.m_robot->kcp_index(lservertid, ltcount, lkcpenum));
+							auto luport = arobot.m_robot->kcp_index(lservertid, ltcount, lkcpenum);
+							if (!luport.has_value())
+							{
+								return false;
+							}
+							actor::kcp_send(arobot.m_robot->id_guid(), pro, *luport);
 							return true;
 						});
 				};
@@ -169,7 +174,11 @@ namespace ngl
 							std::shared_ptr<pack> lpack = actor_base::jsonpack(avec[2], avec[3], nguid::moreactor(), arobot.m_actor_roleid);
 							if (lpack != nullptr)
 							{
-								actor::kcp_sendpack(arobot.m_robot->id_guid(), lpack, arobot.m_robot->kcp_index(lservertid, ltcount, lkcpenum));
+								auto luport = arobot.m_robot->kcp_index(lservertid, ltcount, lkcpenum);
+								if (luport.has_value())
+								{
+									actor::kcp_sendpack(arobot.m_robot->id_guid(), lpack, *luport);
+								}
 							}
 							return true;
 						});

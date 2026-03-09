@@ -17,6 +17,8 @@
 #include "actor/actor_base/actor_base.h"
 #include "tools/serialize/ndefine.h"
 
+#include <memory>
+
 extern "C"
 {
 	// # 以#号分割的nguid串(actortype#area#dataid)转换为int64
@@ -129,6 +131,15 @@ namespace ngl
 		lua_State* L = nullptr;
 		std::string m_scriptpath;
 	public:
+		~nscript()
+		{
+			if (L != nullptr)
+			{
+				lua_close(L);
+				L = nullptr;
+			}
+		}
+
 		template <typename T>
 		bool init_sysdata(const T& asys)
 		{
@@ -271,20 +282,27 @@ namespace ngl
 		{
 			if(atype == enscript_lua)
 			{
-				nscript<enscript_lua>* lpnscript =  new nscript<enscript_lua>();
-				if (lpnscript->init(asubdirectory, ascript))
+				auto lpnscript = std::make_unique<nscript<enscript_lua>>();
+				if (!lpnscript->init(asubdirectory, ascript))
 				{
-					return lpnscript;
+					return nullptr;
 				}
+				return lpnscript.release();
 			}
 			return nullptr;
 		}
 
-		static void release(void* anscript)
+		static void release(enscript atype, void* anscript)
 		{
-			if (anscript != nullptr)
+			if (anscript == nullptr)
 			{
-				delete anscript;
+				return;
+			}
+
+			if (atype == enscript_lua)
+			{
+				delete (nscript<enscript_lua>*)(anscript);
+				return;
 			}
 		}
 

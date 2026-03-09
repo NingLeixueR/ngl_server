@@ -59,11 +59,18 @@ namespace ngl
 			}
 			return true;
 		}
-		for (int32_t i = 1; i <= 32; ++i)
+		for (int32_t i = 0; i < 32; ++i)
 		{
-			if (!check_readybit(i, aready))
+			if ((aready >> i) != 0)
 			{
-				return false;
+				if (!check_readybit(i, aready))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				break;
 			}
 		}
 		return true;
@@ -76,7 +83,7 @@ namespace ngl
 
 	void nready::set_readybycustom(const std::function<bool()>& afun)
 	{
-		if (m_custom > e_max_custom)
+		if (m_custom >= e_max_custom)
 		{
 			log_error()->print("set_readybycustom fail [{}]", m_custom);
 			return;
@@ -130,6 +137,15 @@ namespace ngl
 				};
 				nscript_manage::init_sysdata(m_enscript, m_script, lsysdata);
 			}
+		}
+	}
+
+	actor_base::~actor_base()
+	{
+		if (m_script != nullptr)
+		{
+			nscript_manage::release(m_enscript, m_script);
+			m_script = nullptr;
 		}
 	}
 
@@ -205,7 +221,10 @@ namespace ngl
 
 	void actor_base::save()
 	{
-		m_dbclient->save();
+		if (m_dbclient != nullptr)
+		{
+			m_dbclient->save();
+		}
 	}
 
 	std::unique_ptr<actor_manage_dbclient>& actor_base::manage_dbclient()
@@ -305,33 +324,38 @@ namespace ngl
 		m_kcpindex[aserverid].m_data[aenum] = akcpindex;
 	}
 
-	i16_port actor_base::kcp_index(i32_serverid aserverid, pbnet::ENUM_KCP aenum)
+	std::optional<i16_port> actor_base::kcp_index(i32_serverid aserverid, pbnet::ENUM_KCP aenum)
 	{
 		auto lkcpport = tools::findmap(m_kcpindex, aserverid);
 		if (lkcpport == nullptr)
 		{
-			return -1;
+			return std::nullopt;
 		}
 		auto lpport = tools::findmap(lkcpport->m_data, aenum);
 		if (lpport == nullptr)
 		{
-			return -1;
+			return std::nullopt;
 		}
 		return *lpport;
 	}
 
-	i16_port actor_base::kcp_index(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum)
+	std::optional<i16_port> actor_base::kcp_index(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum)
 	{
 		return kcp_index(nnodeid::nodeid(aservertid, atcount), aenum);
 	}
 
-	bool actor_base::kcp_connect(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const
+	bool actor_base::kcp_connect(i16_port auport, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const
 	{
 		if (nconfig.nodetype() != ROBOT)
 		{//不允许服务器主动进行kcp连接
 			return false;
 		}
-		nkcp::instance().kcp(anum)->connect(akcpsession, aactoridserver, id_guid(), aip, aprot, [this](i32_session asession)
+		auto lpukcp = nkcp::instance().kcp(auport);
+		if (lpukcp == nullptr)
+		{
+			return false;
+		}
+		lpukcp->connect(akcpsession, aactoridserver, id_guid(), aip, aprot, [this](i32_session asession)
 			{
 				log_error()->print("kcp {} m_kcpsession = {}", (nguid)id_guid(), asession);
 			}

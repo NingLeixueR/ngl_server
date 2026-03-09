@@ -110,7 +110,10 @@ namespace ngl
 	std::shared_ptr<pack> pack::make_pack(bpool* apool, int32_t alen)
 	{
 		std::shared_ptr<pack> lpack = std::make_shared<pack>();
-		lpack->set(*apool);
+		if (apool != nullptr)
+		{
+			lpack->set(*apool);
+		}
 		if (alen > 0)
 		{
 			lpack->malloc(alen);

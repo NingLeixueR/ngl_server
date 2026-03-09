@@ -27,7 +27,9 @@
 #include <memory>
 #include <vector>
 #include <atomic>
+#include <functional>
 #include <list>
+#include <optional>
 #include <set>
 #include <map>
 
@@ -176,7 +178,7 @@ namespace ngl
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 		bool handle_db(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata);
 
-		virtual ~actor_base() = default;
+		virtual ~actor_base();
 
 		//# 初始化
 		//# 一般actor对象会在其重载虚函数
@@ -308,12 +310,12 @@ namespace ngl
 #pragma region kcp
 		void kcp_setindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex);
 
-		i16_port kcp_index(i32_serverid aserverid, pbnet::ENUM_KCP aenum);
+		std::optional<i16_port> kcp_index(i32_serverid aserverid, pbnet::ENUM_KCP aenum);
 
-		i16_port kcp_index(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum);
+		std::optional<i16_port> kcp_index(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum);
 
 		//# 发起kcp连接
-		bool kcp_connect(int16_t anum, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const;
+		bool kcp_connect(i16_port auport, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const;
 
 		//# 通过udp.kcp发送pack给指定actor
 		static bool kcp_sendpack(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport = 0);

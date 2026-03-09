@@ -234,7 +234,7 @@ namespace ngl
 				return false;
 			}
 			
-			if (ljson->IsInt64())
+			if (!ljson->IsInt64())
 			{
 				return false;
 			}

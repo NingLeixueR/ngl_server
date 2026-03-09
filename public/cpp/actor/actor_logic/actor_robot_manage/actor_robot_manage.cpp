@@ -209,12 +209,12 @@ namespace ngl
 		}
 		
 		lprobot->m_robot->kcp_setindex(lserverid, akcpenum, nkcp::instance().create_kcp());
-		int16_t lindex = lprobot->m_robot->kcp_index(lserverid, akcpenum);
-		if (lindex == -1)
+		auto loptuport = lprobot->m_robot->kcp_index(lserverid, akcpenum);
+		if (!loptuport.has_value())
 		{
 			return false;
 		}
-		auto lpukcp = nkcp::instance().kcp(lprobot->m_robot->kcp_index(lserverid, akcpenum));
+		auto lpukcp = nkcp::instance().kcp(*loptuport);
 		if (lpukcp == nullptr)
 		{
 			return false;
@@ -228,7 +228,12 @@ namespace ngl
 				pbnet::PROBUFF_NET_KCPSESSION pro;
 				pro.set_mserverid(lserverid);
 				pro.set_muip(ukcp::m_localuip);
-				pro.set_muport(lprobot->m_robot->kcp_index(lserverid, akcpenum));
+				auto luport2 = lprobot->m_robot->kcp_index(lserverid, akcpenum);
+				if (!luport2.has_value())
+				{
+					return;
+				}
+				pro.set_muport(*luport2);
 				pro.set_mconv(ukcp::m_conv);
 				pro.set_mactoridclient(lprobot->m_robot->id_guid());
 				pro.set_mactoridserver(aseractorid);
