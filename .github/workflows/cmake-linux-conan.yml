@@ -1,10 +1,10 @@
 name: ubuntu-latest
 
 on:
- # push:
- #   branches: [ "main" ]
- # pull_request:
- #   branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
 
     - name: Install GCC 13
       run: |
-       sudo apt-get update
+        sudo apt-get update
         sudo apt-get install -y software-properties-common
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
         sudo apt-get update
@@ -34,7 +34,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install uuid-dev
+        sudo apt-get install -y uuid-dev
     
     - name: Install latest CMake
       run: |
