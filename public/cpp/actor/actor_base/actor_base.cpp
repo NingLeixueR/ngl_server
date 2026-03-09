@@ -234,6 +234,11 @@ namespace ngl
 
 	void actor_base::set_db_component(ndb_component* acomponent)
 	{
+		if (acomponent == nullptr)
+		{
+			log_error()->print("[{}] set_db_component failed, acomponent == nullptr", (nguid)id_guid());
+			return;
+		}
 		m_dbcomponent[acomponent->type()] = acomponent;
 	}
 
@@ -241,6 +246,10 @@ namespace ngl
 	{
 		for (auto& [_, _dbcomponent] : m_dbcomponent)
 		{
+			if (_dbcomponent == nullptr)
+			{
+				continue;
+			}
 			_dbcomponent->init_data();
 		}
 	}
@@ -251,6 +260,10 @@ namespace ngl
 
 		for (auto& [_, _dbcomponent] : m_dbcomponent)
 		{
+			if (_dbcomponent == nullptr)
+			{
+				continue;
+			}
 			if (acreate)
 			{
 				_dbcomponent->create();
@@ -264,6 +277,10 @@ namespace ngl
 
 	bool actor_base::send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
+		if (apack == nullptr)
+		{
+			return false;
+		}
 		i32_session lsession = server_session::sessionid(aserverid);
 		if (lsession == -1)
 		{
@@ -274,17 +291,29 @@ namespace ngl
 
 	bool actor_base::send_pack(i32_sessionid asession, std::shared_ptr<pack>& apack)
 	{
+		if (apack == nullptr)
+		{
+			return false;
+		}
 		return ntcp::instance().send_pack(asession, apack);
 	}
 
 	void actor_base::send_actor(const nguid& aguid, const std::shared_ptr<pack>& adata)
 	{
+		if (adata == nullptr)
+		{
+			return;
+		}
 		handle_pram lpram = handle_pram::create(aguid, nguid::make(), adata);
 		actor_manage::instance().push_task_id(aguid, lpram);
 	}
 
 	void actor_base::start_broadcast()
 	{
+		if (m_broadcasttimer != -1)
+		{
+			return;
+		}
 		wheel_parm lparm
 		{
 			.m_ms = m_broadcast,
@@ -365,6 +394,10 @@ namespace ngl
 
 	bool actor_base::kcp_sendpack(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
 	{
+		if (adata == nullptr)
+		{
+			return false;
+		}
 		auto lpukcp = nkcp::instance().kcp(auport);
 		if (lpukcp == nullptr)
 		{
@@ -375,6 +408,10 @@ namespace ngl
 
 	bool actor_base::kcp_sendpack(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport/* = 0*/)
 	{
+		if (adata == nullptr)
+		{
+			return false;
+		}
 		auto lpukcp = nkcp::instance().kcp(auport);
 		if (lpukcp == nullptr)
 		{

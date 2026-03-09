@@ -32,6 +32,11 @@ namespace ngl
 
 	void ndb_component::set(actor_base* aactor)
 	{
+		if (aactor == nullptr)
+		{
+			log_error()->print("ndb_component::set failed, actor == nullptr");
+			return;
+		}
 		m_actor = aactor;
 		m_actor->set_db_component(this);
 	}
@@ -63,22 +68,38 @@ namespace ngl
 
 	void ndb_component::related_actorid()
 	{
+		if (m_actor == nullptr)
+		{
+			return;
+		}
 		m_id = m_actor->id_guid();
 	}
 
 	void ndb_component::init()
 	{
+		if (m_actor == nullptr || m_dbclient == nullptr)
+		{
+			return;
+		}
 		related_actorid();
 		m_actor->add_dbclient(m_dbclient, m_id);
 	}
 
 	void ndb_component::create()
 	{
+		if (m_dbclient == nullptr)
+		{
+			return;
+		}
 		m_dbclient->create(m_id);
 	}
 
 	void ndb_component::create(const nguid& aid)
 	{
+		if (m_dbclient == nullptr)
+		{
+			return;
+		}
 		m_dbclient->create(aid);
 	}
 
