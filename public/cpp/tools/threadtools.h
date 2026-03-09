@@ -84,7 +84,7 @@ namespace ngl
 #define lock_write(MUTEX)		std::lock_guard<std::shared_mutex> CONCAT(__write_lock_, __LINE__)(MUTEX)
 
 // 用于检查死锁
-#define DECHECK_LOCK_TAR
+// 如需开启锁日志，请在编译选项中定义 DECHECK_LOCK_TAR
 #ifdef DECHECK_LOCK_TAR
 # define nlock(MUTEX) \
 	std::cout << std::format("lock_open:{},{}", __FILE__,__LINE__) << std::endl;	\
