@@ -9,6 +9,8 @@ public/csharp/csharp/.vs
 public/csharp/csharp/csharp/bin
 public/csharp/NodeConsoleApp1
 build
+build_codex
+build_codex_vs
 *.exe
 *.dll
 *.so
