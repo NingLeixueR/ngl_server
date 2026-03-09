@@ -35,35 +35,35 @@ jobs:
       run: |
         echo "CC=gcc-13" >> $GITHUB_ENV
         echo "CXX=g++-13" >> $GITHUB_ENV
-    
+
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y uuid-dev
-    
+
     - name: Install latest CMake
       run: |
         pip install cmake --upgrade
         cmake --version
-    
 
     - name: Install Conan(python -m pip install conan)
       run: |
         pip install conan
         conan --version
-        
-    - name: Create build directory  
-      run: |
-        mkdir build    
+
+    - name: Create build directory
+      run: mkdir -p build
 
     - name: Install dependencies with Conan(python -m conan)
       run: |
         conan profile detect --force
         conan install . -s build_type=Release -s compiler.cppstd=20 --build=missing
-      
+
     - name: Configure with CMake
-      run: |
-        cmake --preset conan-release
+      run: cmake --preset conan-release
 
     - name: Build project
-      run: cmake --build . -- -j$(nproc)
+      run: cmake --build --preset conan-release
+
+    - name: Run tests
+      run: ctest --preset conan-release --output-on-failure

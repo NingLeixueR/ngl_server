@@ -1,0 +1,56 @@
+name: linux-sanitizers
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  asan-ubsan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Python (required for Conan)
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install toolchain
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y software-properties-common ninja-build uuid-dev
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+        sudo apt-get update
+        sudo apt-get install -y gcc-13 g++-13
+        echo "CC=gcc-13" >> $GITHUB_ENV
+        echo "CXX=g++-13" >> $GITHUB_ENV
+
+    - name: Install latest CMake and Conan
+      run: |
+        pip install cmake --upgrade
+        pip install conan
+        cmake --version
+        conan --version
+
+    - name: Install dependencies with Conan
+      run: |
+        conan profile detect --force
+        conan install . -of build/sanitizers -s build_type=Debug -s compiler.cppstd=20 --build=missing
+
+    - name: Configure sanitizer build
+      run: |
+        cmake -S . -B build/sanitizers -G Ninja \
+          -DCMAKE_TOOLCHAIN_FILE=build/sanitizers/conan_toolchain.cmake \
+          -DCMAKE_BUILD_TYPE=Debug \
+          -DNGL_ENABLE_SANITIZERS=ON
+
+    - name: Build sanitizer target
+      run: cmake --build build/sanitizers --parallel
+
+    - name: Run tests
+      run: ctest --test-dir build/sanitizers --output-on-failure
