@@ -218,18 +218,6 @@ int main(int argc, char** argv)
 	*lstream << "}//extern \"C\"\n";
 	lsavefun(++lindex, *lstream);
 
-	for (const auto& item : ldic)
-		m_streamtxt << "INCLUDE_DIRECTORIES(" << item << ")\n";
-
-
-	{
-		std::string cname = argv[1];
-		cname += ".txt";
-		ngl::writefile lfiletxt(cname);
-		lfiletxt.write(m_streamtxt.str());
-		std::cout << "##############" << cname << std::endl;
-	}
-
 	int32_t lsumline = 0;
 	std::ranges::for_each(lvec1, [&lsumline](const auto& apair)
 		{
