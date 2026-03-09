@@ -47,7 +47,7 @@ ADD_LIBRARY(nglcore SHARED
 	${CORE_PROTOBUF_LIST_CSRC}
 )
 
-# Á´½Ó
+# é“¾æŽ¥
 target_link_libraries(nglcore PRIVATE lua::lua)
 target_link_libraries(nglcore PRIVATE protobuf::protobuf)
 target_link_libraries(nglcore PRIVATE CURL::libcurl)
