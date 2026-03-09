@@ -1,6 +1,6 @@
 name: Clang Format Check
-on: #:push, pull_request]  # 推送/拉取请求时触发
-    workflow_dispatch:
+on:
+  workflow_dispatch:
 
 jobs:
   clang-format:
@@ -14,4 +14,5 @@ jobs:
 
       - name: Check code style
         run: |
-          find ./public/cpp \( -path "*/third_party" -o -path "*/pb" \) -prune -o \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) -type f | clang-format
+          find ./public/cpp \( -path "*/third_party" -o -path "*/pb" \) -prune -o \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) -type f -print0 \
+            | xargs -0 clang-format --dry-run --Werror
