@@ -1,0 +1,9 @@
+*.cpp text=auto charset=utf-8
+*.h text=auto charset=utf-8
+# 可选：禁止 Git 对二进制文件（如图片、库文件）做编码处理
+*.png binary
+*.jpg binary
+*.so binary
+*.dll binary
+*.exe binary
+*.lib binary

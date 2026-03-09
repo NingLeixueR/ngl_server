@@ -16,5 +16,3 @@ build_codex_vs
 *.so
 *.dylib
 CMakeUserPresets.json
-*.cpp text=auto charset=gbk
-*.h text=auto charset=gbk
