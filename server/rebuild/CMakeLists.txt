@@ -44,11 +44,5 @@ target_link_libraries(rebuild PRIVATE libmysqlclient::libmysqlclient)
 target_link_libraries(rebuild PRIVATE hiredis::hiredis)
 target_link_libraries(rebuild PRIVATE libpq::libpq)
 
-
-IF (CMAKE_SYSTEM_NAME MATCHES "Windows")	
-	SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MT")
-	ADD_DEFINITIONS(-DWIN32_LEAN_AND_MEAN)
-	SET_TARGET_PROPERTIES(nglcore PROPERTIES COMPILE_FLAGS "/EHa" )
-ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+ngl_apply_msvc_defaults(rebuild)
 

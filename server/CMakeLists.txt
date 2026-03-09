@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.15)
 
+function(ngl_apply_msvc_defaults target_name)
+	if(MSVC)
+		target_compile_definitions(${target_name} PRIVATE WIN32_LEAN_AND_MEAN)
+		target_compile_options(${target_name} PRIVATE /EHa)
+	endif()
+endfunction()
+
 add_subdirectory(libnglcore)
 
 # 判断是否在 GitHub Actions 环境中
