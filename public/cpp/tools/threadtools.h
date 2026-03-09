@@ -82,47 +82,12 @@ namespace ngl
 
 #define lock_read(MUTEX)		std::shared_lock<std::shared_mutex> CONCAT(__read_lock_, __LINE__)(MUTEX) 
 #define lock_write(MUTEX)		std::lock_guard<std::shared_mutex> CONCAT(__write_lock_, __LINE__)(MUTEX)
-   
-// 条件变量
-#define condition_lock(MUTEX)	std::lock_guard<std::mutex> CONCAT(__condition_lock_, __LINE__)(mutex)
-
-#define cv_lock(CV, MUTEX, FUN)														\
-	std::unique_lock<std::mutex> CONCAT(__lock_, __LINE__)(m_mutex);				\
-	if (!FUN())																		\
-	{																				\
-		CV.wait(__Lock__, FUN);														\
-	}
-
-// # 使用信号量/条件变量
-#define OPEN_SEM
-
-#ifdef OPEN_SEM
-# define ngl_lockinit							\
-		std::shared_mutex			m_mutex;	\
-		ngl::sem					m_sem
-#else
-# define ngl_lockinit							\
-		std::mutex					m_mutex;	\
-		std::condition_variable		m_cv
-#endif//OPEN_SEM
-
-#ifdef OPEN_SEM
-# define ngl_lock lock_write(m_mutex)
-#else
-# define ngl_lock condition_lock(m_mutex)
-#endif//OPEN_SEM
 
 // 用于检查死锁
 #ifdef DECHECK_LOCK_TAR
-# define ngl_lock_s std::cout << std::format("lock_open:{},{}", __FILE__,__LINE__) << std::endl;\
-ngl_lock;\
+# define ngl_lock_s(MUTEX) std::cout << std::format("lock_open:{},{}", __FILE__,__LINE__) << std::endl;	\
+lock_write(MUTEX);																				\
 std::cout << std::format("lock_close:{},{}", __FILE__,__LINE__) << std::endl
 #else
-# define ngl_lock_s ngl_lock
+# define ngl_lock_s(MUTEX) lock_write(MUTEX)
 #endif//DECHECK_LOCK_TAR
-
-#ifdef OPEN_SEM
-# define ngl_post m_sem.post()
-#else
-# define ngl_post m_cv.notify_one()
-#endif//OPEN_SEM

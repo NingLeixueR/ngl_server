@@ -47,7 +47,8 @@ namespace ngl
 		std::map<nguid, std::function<void()>>			m_delactorfun;	// 删除actor后需要执行的操作// (延迟操作:删除的瞬间actor正是运行状态,等待其回归后进行删除)
 		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;	// 按类型索引actor
 
-		ngl_lockinit;
+		std::shared_mutex			m_mutex;
+		ngl::sem					m_sem;
 
 		actor_manage();
 		~actor_manage() = default;

@@ -21,6 +21,7 @@
 #include "tools/nhash.h"
 #include "lua.hpp"
 
+#include <array>
 #include <map>
 
 namespace ngl
@@ -55,9 +56,9 @@ namespace ngl
 			template <enscript SCRIPT>
 			const func* toactor()
 			{
-				if constexpr (SCRIPT < enscript_count && SCRIPT > 0)
+				if constexpr (SCRIPT >= 0 && SCRIPT < enscript_count)
 				{
-					return &m_toactor[SCRIPT];
+					return &m_toactor[(size_t)SCRIPT];
 				}
 				return nullptr;
 			}
@@ -65,9 +66,9 @@ namespace ngl
 			template <enscript SCRIPT>
 			const funclientc* toclient()
 			{
-				if constexpr (SCRIPT < enscript_count && SCRIPT > 0)
+				if constexpr (SCRIPT >= 0 && SCRIPT < enscript_count)
 				{
-					return &m_toclient[SCRIPT];
+					return &m_toclient[(size_t)SCRIPT];
 				}
 				return nullptr;
 			}

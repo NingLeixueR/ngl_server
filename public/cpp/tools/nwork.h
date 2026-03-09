@@ -71,7 +71,7 @@ namespace ngl
 				lock_write(m_mutex);
 				m_list.push_back(anode);
 			}
-			ngl_post;
+			m_sem.post();
 		}
 	};
 }//namespace ngl
