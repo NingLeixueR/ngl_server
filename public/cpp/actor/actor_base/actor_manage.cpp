@@ -65,7 +65,7 @@ namespace ngl
 	{
 		const nguid& guid = apactor->guid();
 		{
-			ngl_lock_s(m_mutex);
+			nlock(m_mutex);
 			if (m_actorbyid.contains(guid))
 			{
 				std::cout << std::format("actor_manage add_actor m_actorbyid.contains(guid:{}) fail", guid) << std::endl;
@@ -126,7 +126,7 @@ namespace ngl
 		bool isrunfun = false;
 		ptractor lpactor = nullptr;
 		{
-			ngl_lock_s(m_mutex);
+			nlock(m_mutex);
 			const ptractor* lpactorptr = tools::findmap(m_actorbyid, aguid);
 			if (lpactorptr == nullptr)
 			{
@@ -176,7 +176,7 @@ namespace ngl
 
 	bool actor_manage::is_have_actor(const nguid& aguid)
 	{
-		ngl_lock_s(m_mutex);
+		nlock(m_mutex);
 		return m_actorbyid.contains(aguid);
 	}
 
@@ -185,7 +185,7 @@ namespace ngl
 		std::function<void()> lfun = nullptr;
 		bool lrelease = false;
 		{
-			ngl_lock_s(m_mutex);
+			nlock(m_mutex);
 			if (atorthread != nullptr)
 			{
 				if (m_suspend)
@@ -266,7 +266,7 @@ namespace ngl
 
 	void actor_manage::push_task_id(const nguid& aguid, handle_pram& apram)
 	{
-		ngl_lock_s(m_mutex);
+		nlock(m_mutex);
 		ptractor lpactor = nosafe_get_actorbyid(aguid, apram);
 		if (lpactor == nullptr || lpactor->activity_stat() == actor_stat_close)
 		{
@@ -278,7 +278,7 @@ namespace ngl
 
 	void actor_manage::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram)
 	{
-		ngl_lock_s(m_mutex);
+		nlock(m_mutex);
 		bool lmass = false;
 		ptractor lpclient = nullptr;
 		for (i64_actorid actorid : asetguid)
@@ -304,7 +304,7 @@ namespace ngl
 
 	void actor_manage::push_task_type(ENUM_ACTOR atype, handle_pram& apram)
 	{
-		ngl_lock_s(m_mutex);
+		nlock(m_mutex);
 		// 1.先发给本机上的atype
 		for (auto& [_guid, _actor] : m_actorbytype[atype])
 		{
@@ -329,7 +329,7 @@ namespace ngl
 
 	void actor_manage::broadcast_task(handle_pram& apram)
 	{
-		ngl_lock_s(m_mutex);
+		nlock(m_mutex);
 		for (auto& [_guid, _actor] : m_actorbroadcast)
 		{
 			if (_actor->isbroadcast())
@@ -345,7 +345,7 @@ namespace ngl
 		int lthreadnum = 0;
 		while (lthreadnum + 1 < m_threadnum)
 		{
-			ngl_lock_s(m_mutex);
+			nlock(m_mutex);
 			m_suspend = true;
 			if (m_workthreads.empty() == false)
 			{
@@ -358,7 +358,7 @@ namespace ngl
 
 	void actor_manage::finish_suspend_thread()
 	{
-		ngl_lock_s(m_mutex);
+		nlock(m_mutex);
 		m_suspend = false;
 		m_workthreads.insert(m_workthreads.end(), m_suspendthreads.begin(), m_suspendthreads.end());
 		m_suspendthreads.clear();
@@ -367,13 +367,13 @@ namespace ngl
 
 	int32_t actor_manage::actor_count()
 	{
-		ngl_lock_s(m_mutex);
+		nlock(m_mutex);
 		return (int32_t)m_actorbyid.size();
 	}
 
 	void actor_manage::get_actor_stat(msg_actor_stat& adata)
 	{
-		ngl_lock_s(m_mutex);
+		nlock(m_mutex);
 		for (auto& [_type, _map] : m_actorbytype)
 		{
 			msg_actor ltemp;
@@ -424,7 +424,7 @@ namespace ngl
 				for (;;)
 				{
 					{
-						ngl_lock_s(m_mutex);
+						nlock(m_mutex);
 						if (m_actorlist.empty() || m_workthreads.empty() || m_suspend)
 						{
 							break;

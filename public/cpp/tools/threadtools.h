@@ -84,10 +84,12 @@ namespace ngl
 #define lock_write(MUTEX)		std::lock_guard<std::shared_mutex> CONCAT(__write_lock_, __LINE__)(MUTEX)
 
 // 用于检查死锁
+#define DECHECK_LOCK_TAR
 #ifdef DECHECK_LOCK_TAR
-# define ngl_lock_s(MUTEX) std::cout << std::format("lock_open:{},{}", __FILE__,__LINE__) << std::endl;	\
-lock_write(MUTEX);																				\
-std::cout << std::format("lock_close:{},{}", __FILE__,__LINE__) << std::endl
+# define nlock(MUTEX) \
+	std::cout << std::format("lock_open:{},{}", __FILE__,__LINE__) << std::endl;	\
+	lock_write(MUTEX);																\
+	std::cout << std::format("lock_close:{},{}", __FILE__,__LINE__) << std::endl
 #else
-# define ngl_lock_s(MUTEX) lock_write(MUTEX)
+#	define nlock(MUTEX) lock_write(MUTEX)
 #endif//DECHECK_LOCK_TAR
