@@ -21,7 +21,7 @@
 #include "tools/serialize/pack.h"
 #include "tools/threadtools.h"
 
-#include <list>
+#include <deque>
 #include <map>
 #include <set>
 
@@ -34,15 +34,15 @@ namespace ngl
 		actor_manage& operator=(const actor_manage&) = delete;
 
 		using ptrnthread = std::shared_ptr<nthread>;
-		std::list<ptrnthread>		m_workthreads;		// 工作线程
-		std::list<ptrnthread>		m_workthreadscopy;	// 工作线程(只在初始化是拷贝一份，保证使用时不会析构)
+		std::deque<ptrnthread>		m_workthreads;		// 工作线程
+		std::deque<ptrnthread>		m_workthreadscopy;	// 工作线程(只在初始化是拷贝一份，保证使用时不会析构)
 		bool						m_suspend = false;	// 是否挂起
-		std::list<ptrnthread>		m_suspendthreads;	// 挂起的工作线程
+		std::deque<ptrnthread>		m_suspendthreads;	// 挂起的工作线程
 		std::jthread				m_thread;			// 管理线程
 		i32_threadsize				m_threadnum = -1;	// 工作线程数量
 		std::map<nguid, ptractor>	m_actorbyid;		// 索引actor
 		std::map<nguid, ptractor>	m_actorbroadcast;	// 支持广播的actor
-		std::list<ptractor>			m_actorlist;		// 有任务的actor列表
+		std::deque<ptractor>		m_actorlist;		// 有任务的actor列表
 		std::set<i16_actortype>		m_actortype;		// 包含哪些actortype
 		std::map<nguid, std::function<void()>>			m_delactorfun;	// 删除actor后需要执行的操作// (延迟操作:删除的瞬间actor正是运行状态,等待其回归后进行删除)
 		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;	// 按类型索引actor

@@ -65,7 +65,10 @@ namespace ngl
 		pack_head& lhead = apack->m_head;
 		if (apack->m_buff == nullptr)
 		{
-			apack->malloc(10240);
+			if (!apack->malloc(10240) || apack->m_buff == nullptr)
+			{
+				return edopush::e_error;
+			}
 			memcpy(apack->m_buff, lhead.m_data, lhead.m_wpos);
 			apack->m_pos += lhead.m_wpos;
 		}
@@ -115,7 +118,10 @@ namespace ngl
 	{
 		if (apack->m_buff == nullptr)
 		{
-			apack->malloc(len);
+			if (!apack->malloc(len))
+			{
+				return false;
+			}
 		}
 		if (len != 0 && apack->m_buff == nullptr)
 		{

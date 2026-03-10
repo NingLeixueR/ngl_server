@@ -54,7 +54,7 @@ namespace ngl
 		handle_pram(handle_pram&&) noexcept = default;
 		handle_pram& operator=(handle_pram&&) noexcept = default;
 		handle_pram(const handle_pram&) = default;
-		handle_pram& operator=(handle_pram&) = default;
+		handle_pram& operator=(const handle_pram&) = default;
 		handle_pram() = default;
 
 		i32_protocolnum			m_enum			= -1;				// 协议号
@@ -71,6 +71,23 @@ namespace ngl
 		bool					m_forwardtype	= false;			// 转发给所有类型
 		callfail				m_failfun		= nullptr;			// 如何actor_client都找不到目标actor则调用
 		bool					m_issend		= true;				// 是否会发送给其他进程
+
+		// # 浅拷贝：用于将“群发 handle_pram”拆分给本地 actor 时复用 data/forward 等信息
+		// # 注意：刻意不拷贝 m_massactors，避免在本地投递时产生大集合拷贝开销
+		static handle_pram shallow_copy_without_massactors(const handle_pram& asrc)
+		{
+			handle_pram ldst;
+			ldst.m_enum			= asrc.m_enum;
+			ldst.m_data			= asrc.m_data;
+			ldst.m_pack			= asrc.m_pack;
+			ldst.m_actor		= asrc.m_actor;
+			ldst.m_requestactor	= asrc.m_requestactor;
+			ldst.m_forward		= asrc.m_forward;
+			ldst.m_forwardtype	= asrc.m_forwardtype;
+			ldst.m_failfun		= asrc.m_failfun;
+			ldst.m_issend		= asrc.m_issend;
+			return ldst;
+		}
 
 		//# 根据[连接]获取[id]
 		static i32_serverid		serverid(i64_actorid aactorid);
@@ -262,11 +279,15 @@ namespace ngl
 	template <typename T>
 	bool handle_send<T>::send_client(handle_pram& adata)
 	{
-		auto ldata = (np_actor_forward<T, forward_g2c<T>>*)adata.m_data.get();
+		auto* ldata = static_cast<np_actor_forward<T, forward_g2c<T>>*>(adata.m_data.get());
+		if (ldata == nullptr)
+		{
+			return false;
+		}
 		std::vector<i32_actordataid>& luid = ldata->m_data.m_uid;
 		std::vector<i16_area>& lareas = ldata->m_data.m_area;
 		std::set<i32_serverid> lgateways;
-		for (int i = 0; i < luid.size() && i < lareas.size(); ++i)
+		for (std::size_t i = 0; i < luid.size() && i < lareas.size(); ++i)
 		{
 			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lareas[i], luid[i]);
 			i32_serverid lserverid = handle_pram::gatewayid(lroleactor);

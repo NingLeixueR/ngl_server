@@ -138,7 +138,7 @@ namespace ngl
 				"SELECT id,data FROM {} WHERE id = '{}' AND ({});", tools::type_name<T>().c_str(), aid, where_area()
 			);
 			log_error()->print(lsql);
-			return adb->select(lsql.c_str(), lsql.size(), [adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
+			return adb->select(lsql.c_str(), lsql.size(), [adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, my_ulonglong, my_ulonglong)->bool
 				{
 					T ldata;
 					if (!adb->m_malloc.unserialize(m_dbprotobinary, ldata, amysqlrow[1], alens[1]))
@@ -160,7 +160,7 @@ namespace ngl
 			);
 			log_error()->print(lsql);
 			return adb->select(lsql.c_str(), lsql.size(),
-				[adb](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
+				[adb](MYSQL_ROW amysqlrow, unsigned long* alens, my_ulonglong, my_ulonglong)->bool
 				{
 					T ldata;
 					if (!adb->m_malloc.unserialize(m_dbprotobinary, ldata, amysqlrow[1], alens[1]))
@@ -183,7 +183,7 @@ namespace ngl
 			);
 			log_error()->print(lsql);
 			return adb->select(lsql.c_str(), lsql.size(),
-				[adb, &aidset](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
+				[adb, &aidset](MYSQL_ROW amysqlrow, unsigned long* alens, my_ulonglong, my_ulonglong)->bool
 				{
 					aidset.insert(tools::lexical_cast<int64_t>(amysqlrow[0]));
 					return true;

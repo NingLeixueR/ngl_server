@@ -41,11 +41,11 @@ namespace ngl
 
 	void activity_rank::handle(const np_get_rank_response& aresponse)
 	{
-		for (int i = 0;i< aresponse.m_rolerank.size();++i)
+		for (std::size_t i = 0; i < aresponse.m_rolerank.size(); ++i)
 		{
 			int32_t lmailid = 0;
 			int32_t lreward = 0;
-			if (ttab_activity_toprank::instance().rankreward(m_tab->m_id, i + 1, lmailid, lreward))
+			if (ttab_activity_toprank::instance().rankreward(m_tab->m_id, static_cast<int32_t>(i + 1), lmailid, lreward))
 			{
 				continue;
 			}

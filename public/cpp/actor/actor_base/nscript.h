@@ -309,6 +309,10 @@ namespace ngl
 		template <typename T>
 		static bool init_sysdata(enscript atype, void* anscript, const T& asys)
 		{
+			if (anscript == nullptr)
+			{
+				return false;
+			}
 			if (atype == enscript_lua)
 			{
 				auto lpnscript = (nscript<enscript_lua>*)(anscript);
@@ -320,6 +324,10 @@ namespace ngl
 		template <typename T>
 		static bool data_push(enscript atype, void* anscript, const char* aname, const char* asource, const T& ajson, bool aedit)
 		{
+			if (anscript == nullptr)
+			{
+				return false;
+			}
 			if (atype == enscript_lua)
 			{
 				auto lpnscript = (nscript<enscript_lua>*)(anscript);
@@ -330,6 +338,10 @@ namespace ngl
 
 		static bool db_loadfinish(enscript atype, void* anscript)
 		{
+			if (anscript == nullptr)
+			{
+				return false;
+			}
 			if (atype == enscript_lua)
 			{
 				auto lpnscript = (nscript<enscript_lua>*)(anscript);
@@ -341,6 +353,10 @@ namespace ngl
 		template <typename T>
 		static bool handle(enscript atype, void* anscript, const char* aname, const T& adata)
 		{
+			if (anscript == nullptr)
+			{
+				return false;
+			}
 			if (atype == enscript_lua)
 			{
 				auto lpnscript = (nscript<enscript_lua>*)(anscript);
@@ -351,6 +367,10 @@ namespace ngl
 
 		static bool data_del(enscript atype, void* anscript, const char* aname, int64_t adataid)
 		{
+			if (anscript == nullptr)
+			{
+				return false;
+			}
 			if (atype == enscript_lua)
 			{
 				auto lpnscript = (nscript<enscript_lua>*)(anscript);
@@ -362,6 +382,10 @@ namespace ngl
 		template <typename T>
 		static bool data_checkout(enscript atype, void* anscript, const char* aname, i64_actorid adataid, T& adata)
 		{
+			if (anscript == nullptr)
+			{
+				return false;
+			}
 			if (atype == enscript_lua)
 			{
 				auto lpnscript = (nscript<enscript_lua>*)(anscript);
@@ -373,6 +397,10 @@ namespace ngl
 		template <typename T>
 		static bool data_checkout(enscript atype, void* anscript, const char* aname, std::map<int64_t,T>& adata)
 		{
+			if (anscript == nullptr)
+			{
+				return false;
+			}
 			if (atype == enscript_lua)
 			{
 				auto lpnscript = (nscript<enscript_lua>*)(anscript);
@@ -383,6 +411,10 @@ namespace ngl
 
 		static bool data_checkdel(enscript atype, void* anscript, const char* aname, int64_t adataid)
 		{
+			if (anscript == nullptr)
+			{
+				return false;
+			}
 			if (atype == enscript_lua)
 			{
 				auto lpnscript = (nscript<enscript_lua>*)(anscript);
@@ -393,6 +425,10 @@ namespace ngl
 
 		static bool data_checkdel(enscript atype, void* anscript, const char* aname, std::vector<int64_t>& adelids)
 		{
+			if (anscript == nullptr)
+			{
+				return false;
+			}
 			if (atype == enscript_lua)
 			{
 				auto lpnscript = (nscript<enscript_lua>*)(anscript);

@@ -46,8 +46,10 @@ namespace ngl
 		// # 检查月份
 		static bool check_month(int amonth/*1-12*/);
 
+		// # 检查月份中的日
 		static bool check_monthday(int amonthday/*1-31*/);
 
+		// # 检查周中的日
 		static bool check_week(int aweek/*1-7*/);
 
 		// # 检查小时
@@ -59,6 +61,7 @@ namespace ngl
 		// # 检查秒
 		static bool check_sec(int sec/*0-59*/);
 
+		// # 判断是否超时
 		static bool timeout(time_t abeg, int32_t atimeoutms);
 
 		// # 设置时间

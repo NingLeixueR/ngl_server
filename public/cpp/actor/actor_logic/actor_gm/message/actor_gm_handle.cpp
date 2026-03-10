@@ -56,7 +56,7 @@ namespace ngl
 			if (njson::pop(aos, { "data" }, lservertype))
 			{
 				bool lret = false;
-				for (int i = 0; i < lservertype.servertype.size(); ++i)
+				for (std::size_t i = 0; i < lservertype.servertype.size(); ++i)
 				{
 					NODE_TYPE lstype = (NODE_TYPE)lservertype.servertype[i];
 					if (actor_gm::checklocalbytype(lstype))

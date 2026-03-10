@@ -40,6 +40,7 @@ namespace ngl
 
 	void actor_manage::get_type(std::vector<i16_actortype>& aactortype)
 	{
+		lock_read(m_mutex);
 		aactortype.reserve(m_actortype.size());
 		std::copy(m_actortype.begin(), m_actortype.end(), std::back_inserter(aactortype));
 	}
@@ -57,8 +58,11 @@ namespace ngl
 		{
 			m_actorlist.push_back(lpactor);
 			lpactor->set_activity_stat(actor_stat_list);
+			if (!m_suspend && !m_workthreads.empty())
+			{
+				m_sem.post();
+			}
 		}
-		m_sem.post();
 	}
 
 	bool actor_manage::add_actor(const ptractor& apactor, const std::function<void()>& afun)
@@ -104,7 +108,11 @@ namespace ngl
 
 	bool actor_manage::add_actor(actor_base* apactor, const std::function<void()>& afun)
 	{
-		ptractor ltemp(apactor);
+		if (apactor == nullptr)
+		{
+			return false;
+		}
+		ptractor ltemp(apactor, [](actor_base*) {});
 		return add_actor(ltemp, afun);
 	}
 
@@ -170,7 +178,10 @@ namespace ngl
 		if (isrunfun)
 		{
 			lpactor->release();
-			afun();
+			if (afun != nullptr)
+			{
+				afun();
+			}
 		}
 	}
 
@@ -184,6 +195,7 @@ namespace ngl
 	{
 		std::function<void()> lfun = nullptr;
 		bool lrelease = false;
+		bool lneedpost = false;
 		{
 			nlock(m_mutex);
 			if (atorthread != nullptr)
@@ -207,7 +219,6 @@ namespace ngl
 					m_delactorfun.erase(leraseguid);
 					apactor->set_activity_stat(actor_stat_close);
 					lrelease = true;
-					m_sem.post();
 				}
 			}
 			else
@@ -221,8 +232,12 @@ namespace ngl
 				{
 					apactor->set_activity_stat(actor_stat_free);
 				}
-				m_sem.post();
 			}
+			lneedpost = !m_suspend && !m_actorlist.empty() && !m_workthreads.empty();
+		}
+		if (lneedpost)
+		{
+			m_sem.post();
 		}
 		if (lrelease)
 		{
@@ -281,6 +296,7 @@ namespace ngl
 		nlock(m_mutex);
 		bool lmass = false;
 		ptractor lpclient = nullptr;
+		const nguid lnodetypeguid = nodetypebyguid();
 		for (i64_actorid actorid : asetguid)
 		{
 			ptractor lpactor = nosafe_get_actorbyid(actorid, apram);
@@ -288,15 +304,17 @@ namespace ngl
 			{
 				continue;
 			}
-			if (lpactor->id_guid() == nodetypebyguid())
+			if (lpactor->id_guid() == lnodetypeguid)
 			{
 				lmass = true;
 				lpclient = lpactor;
 				continue;
 			}
-			nosafe_push_task_id(lpactor, apram);
+
+			handle_pram llocal = handle_pram::shallow_copy_without_massactors(apram);
+			nosafe_push_task_id(lpactor, llocal);
 		}
-		if (lmass)
+		if (lmass && lpclient != nullptr)
 		{
 			nosafe_push_task_id(lpclient, apram);
 		}
@@ -324,7 +342,6 @@ namespace ngl
 			}
 			nosafe_push_task_id(*lpactor, apram);
 		}
-		m_sem.post();
 	}
 
 	void actor_manage::broadcast_task(handle_pram& apram)
@@ -337,7 +354,6 @@ namespace ngl
 				nosafe_push_task_id(_actor, apram);
 			}
 		}
-		m_sem.post();
 	}
 
 	void actor_manage::statrt_suspend_thread()
@@ -345,14 +361,21 @@ namespace ngl
 		int lthreadnum = 0;
 		while (lthreadnum + 1 < m_threadnum)
 		{
-			nlock(m_mutex);
-			m_suspend = true;
-			if (m_workthreads.empty() == false)
 			{
-				m_suspendthreads.insert(m_suspendthreads.end(), m_workthreads.begin(), m_workthreads.end());
-				m_workthreads.clear();
+				nlock(m_mutex);
+				m_suspend = true;
+				if (!m_workthreads.empty())
+				{
+					m_suspendthreads.insert(m_suspendthreads.end(), m_workthreads.begin(), m_workthreads.end());
+					m_workthreads.clear();
+				}
+				lthreadnum = (int)m_suspendthreads.size();
 			}
-			lthreadnum = (int)m_suspendthreads.size();
+
+			if (lthreadnum + 1 < m_threadnum)
+			{
+				std::this_thread::yield();
+			}
 		}
 	}
 

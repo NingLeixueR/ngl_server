@@ -23,9 +23,11 @@ namespace ngl
 	naddress::map_typeguid		naddress::m_actortypeserver;
 	naddress::map_servernode	naddress::m_session;
 	naddress::map_rolegateway	naddress::m_rolegateway;
+	std::shared_mutex			naddress::m_mutex;
 
 	bool naddress::set_node(const nactornode& anode)
 	{
+		lock_write(m_mutex);
 		nnode_session* lpsession = tools::findmap(m_session, anode.m_serverid);
 		if (lpsession != nullptr)
 		{
@@ -69,6 +71,7 @@ namespace ngl
 
 	void naddress::actor_address_add(i32_serverid aserverid, i64_actorid adataid)
 	{
+		lock_write(m_mutex);
 		nguid lguid(adataid);
 		m_actorserver[lguid] = aserverid;
 		m_actortypeserver[lguid.type()].insert(adataid);
@@ -87,6 +90,7 @@ namespace ngl
 
 	void naddress::actor_address_del(i64_actorid adataid)
 	{
+		lock_write(m_mutex);
 		nguid lguid(adataid);
 #ifdef _DEBUG
 		auto lpserverid = tools::findmap(m_actorserver, adataid);
@@ -108,6 +112,7 @@ namespace ngl
 
 	void naddress::set_session(i32_serverid aserverid, i32_sessionid asession)
 	{
+		lock_write(m_mutex);
 		nnode_session* lpsession = tools::findmap(m_session, aserverid);
 		if (lpsession == nullptr)
 		{
@@ -119,6 +124,7 @@ namespace ngl
 
 	i32_sessionid naddress::sessionid(i32_serverid aserverid)
 	{
+		lock_read(m_mutex);
 		nnode_session* lpsession = tools::findmap(m_session, aserverid);
 		if (lpsession == nullptr)
 		{
@@ -130,6 +136,7 @@ namespace ngl
 
 	i32_serverid naddress::serverid(const nguid& aguid)
 	{
+		lock_read(m_mutex);
 		i32_serverid* lpserverid = tools::findmap(m_actorserver, aguid);
 		if (lpserverid == nullptr)
 		{
@@ -141,6 +148,7 @@ namespace ngl
 
 	void naddress::serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& aservers)
 	{
+		lock_read(m_mutex);
 		std::set<nguid>* lguids = tools::findmap(m_actortypeserver, (i16_actortype)atype);
 		if (lguids != nullptr)
 		{
@@ -153,25 +161,31 @@ namespace ngl
 
 	void naddress::foreach(const foreach_callbackfun& afun)
 	{
-		std::ranges::find_if(m_session, [&afun](auto& apair)->bool
+		lock_read(m_mutex);
+		for (auto& apair : m_session)
+		{
+			if (afun(apair.second) == false)
 			{
-				return afun(apair.second) == false;
+				break;
 			}
-		);
+		}
 	}
 
 	void naddress::ergodic(const ergodic_callbackfun& afun)
 	{
+		lock_read(m_mutex);
 		afun(m_actorserver, m_session, m_rolegateway);
 	}
 
-	naddress::map_guidserver& naddress::get_actorserver_map()
+	naddress::map_guidserver naddress::get_actorserver_map()
 	{
+		lock_read(m_mutex);
 		return m_actorserver;
 	}
 
 	i32_serverid naddress::gatewayid(const nguid& aguid)
 	{
+		lock_read(m_mutex);
 		const i32_serverid* lpserverid = tools::findmap(m_rolegateway, aguid);
 		if (lpserverid == nullptr)
 		{
@@ -182,16 +196,19 @@ namespace ngl
 
 	void naddress::gatewayid_add(const nguid& aguid, i32_serverid aserverid)
 	{
+		lock_write(m_mutex);
 		m_rolegateway[aguid] = aserverid;
 	}
 
 	void naddress::gatewayid_del(const nguid& aguid)
 	{
+		lock_write(m_mutex);
 		m_rolegateway.erase(aguid);
 	}
 
 	void naddress::gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
 	{
+		lock_read(m_mutex);
 		for (auto& aguid : aactorset)
 		{
 			const i32_serverid* lserverid = tools::findmap(m_rolegateway, aguid);

@@ -210,7 +210,7 @@ namespace ngl
 	void ntcp::send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
 	{
 		np_actor_forward<T, forward_g2c<forward>> pro;
-		for (int i = 0; i < avec.size(); ++i)
+		for (std::size_t i = 0; i < avec.size(); ++i)
 		{
 			pro.m_data.m_uid.push_back(avec[i].first);
 			pro.m_data.m_area.push_back(avec[i].second);

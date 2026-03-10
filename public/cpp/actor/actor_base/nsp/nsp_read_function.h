@@ -163,10 +163,12 @@ namespace ngl
 		bool lfirstsynchronize = recv->m_firstsynchronize;
 		i16_actortype ltypesource = nguid::type(recv->m_actorid);
 		i16_actortype ltypetarget = nguid::type(m_actor->id_guid());
+		bool lchanged = false;
 		for (auto& [_guid, _tdb] : recv->m_data)
 		{
 			if (m_care.is_care(_guid))
 			{
+				lchanged = true;
 				if (lfirstsynchronize)
 				{
 					m_operator_field.field_copy(ltypetarget, _tdb, m_data[_guid], true);
@@ -212,15 +214,7 @@ namespace ngl
 		{
 			if (m_actor->nscript_using())
 			{
-				std::map<i64_actorid, T> ldata;
-				for (auto& [_guid, _tdb] : recv->m_data)
-				{
-					if (m_care.is_care(_guid))
-					{
-						ldata[_guid] = m_data[_guid];
-					}
-				}
-				if (!ldata.empty())
+				if (lchanged)
 				{
 					nscript_data_nsp<T> ltemp(m_data);
 					m_actor->nscript_data_push("nsp", ltemp, true);

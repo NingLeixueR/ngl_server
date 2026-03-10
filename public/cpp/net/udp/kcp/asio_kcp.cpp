@@ -106,6 +106,10 @@ namespace ngl
 		}
 		// 获取包头
 		std::shared_ptr<pack> lpack = pack::make_pack(&m_pool, 0);
+		if (lpack == nullptr)
+		{
+			return false;
+		}
 		lpack->m_protocol = ENET_KCP;
 		lpack->m_id = apstruct->m_session;
 		if (EPH_HEAD_SUCCESS != lpack->m_head.push(abuff, abufflen))
@@ -117,10 +121,12 @@ namespace ngl
 		{
 			return false;
 		}
-		lpack->malloc(len);
+		if (!lpack->malloc(len) || lpack->m_buff == nullptr)
+		{
+			return false;
+		}
 		memcpy(lpack->m_buff, abuff, len);
 		
-		i64_actorid lactorid;
 		if (nconfig.nodetype() != ROBOT)
 		{
 			lpack->m_head.set_actor(apstruct->m_server, apstruct->m_client);

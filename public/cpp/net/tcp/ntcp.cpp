@@ -192,7 +192,10 @@ namespace ngl
 	{
 		auto lcount = (int)amsg.size();
 		auto lpack = std::make_shared<pack>();
-		lpack->malloc(lcount + 1);
+		if (!lpack->malloc(lcount + 1) || lpack->m_buff == nullptr)
+		{
+			return false;
+		}
 		memcpy(lpack->m_buff, amsg.c_str(), lcount);
 		lpack->m_buff[lcount] = '\0';
 		lpack->m_len = lcount + 1;
@@ -202,11 +205,19 @@ namespace ngl
 
 	bool ntcp::send_pack(i32_sessionid asession, std::shared_ptr<pack>& lpack)
 	{
+		if (m_server == nullptr || lpack == nullptr)
+		{
+			return false;
+		}
 		return m_server->send(asession, lpack);
 	}
 
 	bool ntcp::send_pack(i32_sessionid asession, std::shared_ptr<void>& lpack)
 	{
+		if (m_server == nullptr || lpack == nullptr)
+		{
+			return false;
+		}
 		return m_server->send(asession, lpack);
 	}
 

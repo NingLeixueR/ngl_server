@@ -14,23 +14,6 @@ SOURCE_GROUP("Source Files" FILES ${CORE_LIST_SRC})
 SOURCE_GROUP("Source Files" FILES ${CORE_LIST_CSRC})
 SOURCE_GROUP("Protobuf Source Files" FILES ${CORE_PROTOBUF_LIST_CSRC})
 
-
-find_package(lua REQUIRED)
-find_package(protobuf REQUIRED)
-find_package(CURL REQUIRED)
-find_package(libmysqlclient REQUIRED)
-find_package(hiredis REQUIRED)
-find_package(PostgreSQL REQUIRED)
-find_package(RapidJSON REQUIRED)
-
-INCLUDE_DIRECTORIES(${lua_INCLUDE_DIRS})   
-INCLUDE_DIRECTORIES(${protobuf_INCLUDE_DIRS})  
-INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIRS})  
-INCLUDE_DIRECTORIES(${libmysqlclient_INCLUDE_DIRS})  
-INCLUDE_DIRECTORIES(${hiredis_INCLUDE_DIRS})  
-INCLUDE_DIRECTORIES(${PostgreSQL_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${RapidJSON_INCLUDE_DIRS})
-
 ADD_EXECUTABLE(makeproto
 	${CORE_LIST_INCLUDE}
 	${CORE_LIST_SRC}
@@ -38,12 +21,5 @@ ADD_EXECUTABLE(makeproto
 	${CORE_PROTOBUF_LIST_CSRC}
 )
 
-# 链接
-target_link_libraries(makeproto PRIVATE lua::lua)
-target_link_libraries(makeproto PRIVATE protobuf::protobuf)
-target_link_libraries(makeproto PRIVATE CURL::libcurl)
-target_link_libraries(makeproto PRIVATE libmysqlclient::libmysqlclient)
-target_link_libraries(makeproto PRIVATE hiredis::hiredis)
-target_link_libraries(makeproto PRIVATE libpq::libpq)
-
+ngl_apply_runtime_deps(makeproto)
 ngl_apply_msvc_defaults(makeproto)

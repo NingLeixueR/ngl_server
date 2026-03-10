@@ -5,7 +5,7 @@
 
 // 跨平台导出/导入宏
 #ifdef _WIN32
-#	ifdef NGL_EXPORT  // 生成动态库时定义
+#	ifdef NGLCORE_EXPORTS  // 生成动态库时定义
 #		define NGL_EXPORT __declspec(dllexport)
 #	else
 #		define NGL_EXPORT __declspec(dllimport)  // 使用时导入
