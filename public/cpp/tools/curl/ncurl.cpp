@@ -218,7 +218,7 @@ namespace ngl
 
 				std::string payload = std::format("From: {}<{}>\r\n", aparm.m_name, aparm.m_email);
 				payload += "To: ";
-				for (int i = 0; i < aparm.m_recvs.size(); ++i)
+				for (std::size_t i = 0; i < aparm.m_recvs.size(); ++i)
 				{
 					if (i != 0)
 					{

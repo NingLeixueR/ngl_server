@@ -85,7 +85,7 @@ namespace ngl
 			}
 
 			int lweight = 0;
-			for (int i = 0; i < ltab->m_randomdatas.size(); ++i)
+			for (std::size_t i = 0; i < ltab->m_randomdatas.size(); ++i)
 			{
 				lweight += ltab->m_randomdatas[i].m_weight;
 			}
@@ -97,12 +97,12 @@ namespace ngl
 
 			int lcount = ltab->m_count;
 			bool lexclusive = ltab->m_exclusive;
-			std::set<int> lset;
+			std::set<std::size_t> lset;
 			for (int i = 0; i < lcount; ++i)
 			{
 				int lweightval = tools::rand() % lweight;
 				int ltempweight = 0;
-				for (int j = 0; j < ltab->m_randomdatas.size(); ++j)
+				for (std::size_t j = 0; j < ltab->m_randomdatas.size(); ++j)
 				{
 					if (lexclusive)
 					{

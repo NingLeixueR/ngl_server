@@ -26,7 +26,7 @@ namespace ngl
 		{
 			return false;
 		}
-		for (int i = 0; i < tab->m_consumeitems.size(); ++i)
+		for (std::size_t i = 0; i < tab->m_consumeitems.size(); ++i)
 		{
 			amap[tab->m_consumeitems[i].m_tid] += tab->m_consumeitems[i].m_count * acount;
 		}
