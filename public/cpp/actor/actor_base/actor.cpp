@@ -147,7 +147,7 @@ namespace ngl
 		if (!locallist.empty())
 		{
 			lock_write(m_mutex);
-			m_list.insert(m_list.begin(), locallist.begin(), locallist.end());
+			m_list.splice(m_list.begin(), locallist);
 		}
 	}
 
