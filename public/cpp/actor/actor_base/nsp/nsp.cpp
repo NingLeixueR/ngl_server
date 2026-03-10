@@ -18,6 +18,10 @@ namespace ngl
 {
 	void nsp_regload::init(i64_actorid aactorid)
 	{
+		m_nspserver.clear();
+		m_register.clear();
+		m_loadfinish.clear();
+
 		std::set<i16_area> lareaset;
 		ttab_servers::instance().get_arealist_nonrepet(nconfig.tid(), lareaset);
 		auto ltype = (ENUM_ACTOR)nguid::type(aactorid);
@@ -114,6 +118,7 @@ namespace ngl
 
 	void operator_field::init(bool anspserver)
 	{
+		m_node_fieldnumbers.clear();
 		m_nspserver = anspserver;
 	}
 
@@ -208,12 +213,14 @@ namespace ngl
 
 	void care_data::init(bool aread)
 	{
+		m_core = nsp_care{};
 		m_core.m_read = aread;
 		m_core.m_all = true;
 	}
 
 	void care_data::init(const std::set<i64_actorid>& aids)
 	{
+		m_core = nsp_care{};
 		m_core.m_read = true;
 		m_core.m_all = false;
 		m_core.m_readids = aids;
@@ -221,6 +228,7 @@ namespace ngl
 
 	void care_data::init(const std::set<i64_actorid>& areadids, const std::set<i64_actorid>& awriteids)
 	{
+		m_core = nsp_care{};
 		m_core.m_read = false;
 		m_core.m_all = false;
 		m_core.m_readids = areadids;
@@ -229,6 +237,7 @@ namespace ngl
 
 	void care_data::init(bool aread, const std::set<i64_actorid>& awriteids)
 	{
+		m_core = nsp_care{};
 		m_core.m_read = false;
 		m_core.m_all = true;
 		m_core.m_writeids = awriteids;
@@ -236,6 +245,7 @@ namespace ngl
 
 	void care_data::init(const nsp_care& acore)
 	{
+		m_core = nsp_care{};
 		m_core = acore;
 	}
 

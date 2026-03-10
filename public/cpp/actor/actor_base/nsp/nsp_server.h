@@ -84,4 +84,5 @@ namespace ngl
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	ndb_modular<ENUMDB, T, TDerived>* nsp_server<ENUMDB, TDerived, T>::m_dbmodule;
+
 }//namespace ngl

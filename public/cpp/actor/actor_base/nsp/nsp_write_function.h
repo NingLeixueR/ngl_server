@@ -83,7 +83,7 @@ namespace ngl
 		lpwrite->m_operator_field.template add_field<T>(nguid::type(aactor->id_guid()), areadfieldnumbers, awritefieldnumbers);
 
 		lpwrite->init();
-		log_error_net()->print("nsp_read::instance_readpart( actor({}) : {} : {})", nguid(aactor->id_guid()), areadids,  awriteids);
+		log_error_net()->print("nsp_write::instance_writepart( actor({}) : {} : {})", nguid(aactor->id_guid()), areadids,  awriteids);
 		return *lpwrite;
 	}
 
@@ -172,10 +172,11 @@ namespace ngl
 	template <typename TDerived, typename TACTOR, typename T>
 	T* nsp_write<TDerived, TACTOR, T>::get(i64_dataid adataid)
 	{
-		auto lpdata = tools::findmap(m_data, to_actorid(adataid));
+		i64_actorid ldataid = to_actorid(adataid);
+		auto lpdata = tools::findmap(m_data, ldataid);
 		if (lpdata != nullptr)
 		{
-			m_changeids.insert(to_actorid(adataid));
+			m_changeids.insert(ldataid);
 		}		
 		return lpdata;
 	}
@@ -243,6 +244,7 @@ namespace ngl
 				{
 					std::set<i64_nodeid> lnodes;
 					auto pro = std::make_shared<np_channel_data<T>>();
+					pro->m_actorid = m_actor->id_guid();
 					pro->m_firstsynchronize = false;
 					pro->m_recvfinish = true;
 					m_operator_field.field_copy(ltype, m_data[dataid], pro->m_data[dataid], true);
@@ -261,6 +263,7 @@ namespace ngl
 				{
 					std::set<i64_nodeid> lnodes;
 					auto pro = std::make_shared<np_channel_data<T>>();
+					pro->m_actorid = m_actor->id_guid();
 					pro->m_firstsynchronize = false;
 					pro->m_recvfinish = true;
 					pro->m_deldata.push_back(dataid);
@@ -324,10 +327,12 @@ namespace ngl
 		bool lfirstsynchronize = recv->m_firstsynchronize;
 		i16_actortype ltypesource = nguid::type(recv->m_actorid);
 		i16_actortype ltypetarget = nguid::type(m_actor->id_guid());
+		bool lchanged = false;
 		for (auto& [_guid, _tdata] : recv->m_data)
 		{
 			if (m_care.is_care(_guid))
 			{
+				lchanged = true;
 				if (lfirstsynchronize)
 				{
 					m_operator_field.field_copy(ltypetarget, _tdata, m_data[_guid], true);
@@ -373,15 +378,7 @@ namespace ngl
 		{
 			if (m_actor->nscript_using())
 			{
-				std::map<i64_actorid, T> ldata;
-				for (auto& [_guid, _tdata] : recv->m_data)
-				{
-					if (m_care.is_care(_guid))
-					{
-						ldata[_guid] = m_data[_guid];
-					}
-				}
-				if (!ldata.empty())
+				if (lchanged)
 				{
 					nscript_data_nsp<T> ltemp(m_data);
 					m_actor->nscript_data_push("nsp", ltemp, true);

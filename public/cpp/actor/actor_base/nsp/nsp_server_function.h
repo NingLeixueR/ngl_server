@@ -237,6 +237,7 @@ namespace ngl
 		care_data& lcare = m_care[lactorid];
 
 		i16_actortype ltype = nguid::type(lactorid);
+
 		for (auto& [ _dataid, _data] : recv->m_data)
 		{
 			if (!lcare.is_write(_dataid))
