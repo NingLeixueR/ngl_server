@@ -7,6 +7,53 @@ function(ngl_apply_msvc_defaults target_name)
 	endif()
 endfunction()
 
+function(ngl_find_runtime_deps)
+	if(NOT TARGET lua::lua)
+		find_package(lua REQUIRED)
+	endif()
+	if(NOT TARGET protobuf::protobuf)
+		find_package(protobuf REQUIRED)
+	endif()
+	if(NOT TARGET CURL::libcurl)
+		find_package(CURL REQUIRED)
+	endif()
+	if(NOT TARGET libmysqlclient::libmysqlclient)
+		find_package(libmysqlclient REQUIRED)
+	endif()
+	if(NOT TARGET hiredis::hiredis)
+		find_package(hiredis REQUIRED)
+	endif()
+	if(NOT TARGET libpq::libpq)
+		find_package(PostgreSQL REQUIRED)
+	endif()
+	if(NOT TARGET rapidjson)
+		find_package(RapidJSON REQUIRED)
+	endif()
+	if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+		if(NOT TARGET libuuid::libuuid)
+			find_package(libuuid REQUIRED)
+		endif()
+	endif()
+endfunction()
+
+function(ngl_apply_runtime_deps target_name)
+	ngl_find_runtime_deps()
+
+	target_link_libraries(${target_name} PRIVATE
+		lua::lua
+		protobuf::protobuf
+		CURL::libcurl
+		libmysqlclient::libmysqlclient
+		hiredis::hiredis
+		libpq::libpq
+		rapidjson
+	)
+
+	if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+		target_link_libraries(${target_name} PRIVATE libuuid::libuuid)
+	endif()
+endfunction()
+
 add_subdirectory(libnglcore)
 
 # 判断是否在 GitHub Actions 环境中
