@@ -574,7 +574,7 @@ namespace ngl
 		template <typename T>
 		static bool splicing(const std::vector<T>& avec, const char* afg, std::string& astr, const std::function<std::string(const T&)> afunction = m_splicing<T>)
 		{
-			for (int i = 0; i < avec.size(); ++i)
+			for (std::size_t i = 0; i < avec.size(); ++i)
 			{
 				if (i != 0)
 				{
@@ -587,7 +587,7 @@ namespace ngl
 
 		static bool splicing(const std::vector<std::string>& avec, const char* afg, std::string& astr)
 		{
-			for (int i = 0; i < avec.size(); ++i)
+			for (std::size_t i = 0; i < avec.size(); ++i)
 			{
 				if (i != 0)
 				{
@@ -601,57 +601,52 @@ namespace ngl
 		template <typename T>
 		static bool splicing(const std::set<T>& avec, const char* afg, std::string& astr, const std::function<std::string(const T&)> afunction = m_splicing<T>)
 		{
-			int i = 0;
-			for (auto itor = avec.begin(); i < avec.size(); ++i,++itor)
+			for (auto itor = avec.begin(); itor != avec.end(); ++itor)
 			{
-				if (i != 0)
+				if (itor != avec.begin())
 				{
 					astr += afg;
 				}
+				
 				astr += afunction(*itor);
 			}
 			return true;
 		}
 
 		template <typename TKEY, typename TVALUE>
-		static bool splicing(const std::map<TKEY, TVALUE>& avec, const char* afg, std::string& astr, const std::function<std::string(const TKEY&, const TVALUE&)> afunction = m_splicingmap<TKEY,TVALUE>)
+		static bool splicing(const std::map<TKEY, TVALUE>& amap, const char* afg, std::string& astr, const std::function<std::string(const TKEY&, const TVALUE&)> afunction = m_splicingmap<TKEY,TVALUE>)
 		{
-			bool lbool = false;
-			for (auto& item : avec)
+			for(auto itor = amap.begin(); itor != amap.end();++itor)
 			{
-				if (lbool)
+				if (itor != amap.begin())
 				{
 					astr += afg;
 				}
-				afunction(item.first, item.second);
-				lbool = true;
+				afunction(itor->first, itor->second);
 			}
 			return true;
 		}
 
 		template <typename TKEY, typename TVALUE>
-		static bool splicing(const google::protobuf::Map<TKEY, TVALUE>& avec, const char* afg, std::string& astr,const std::function<std::string(const TKEY&,const TVALUE&)> afunction = m_splicingmap<TKEY, TVALUE>)
+		static bool splicing(const google::protobuf::Map<TKEY, TVALUE>& amap, const char* afg, std::string& astr,const std::function<std::string(const TKEY&,const TVALUE&)> afunction = m_splicingmap<TKEY, TVALUE>)
 		{
-			bool lbool = false;
-			for (auto& item : avec)
+			for (auto itor = amap.begin(); itor != amap.end(); ++itor)
 			{
-				if (lbool)
+				if (itor != amap.begin())
 				{
 					astr += afg;
 				}
-				afunction(item.first, item.second);
-				lbool = true;
+				afunction(itor->first, itor->second);
 			}
 			return true;
 		}
 
 		template <typename T>
-		static bool splicing(const std::set<std::string>& avec, const char* afg, std::string& astr)
+		static bool splicing(const std::set<std::string>& aset, const char* afg, std::string& astr)
 		{
-			int i = 0;
-			for (auto itor = avec.begin(); i < avec.size(); ++i, ++itor)
+			for (auto itor = aset.begin(); itor != aset.end(); ++itor)
 			{
-				if (i != 0)
+				if (itor != aset.begin())
 				{
 					astr += afg;
 				}

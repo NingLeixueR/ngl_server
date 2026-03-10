@@ -50,12 +50,12 @@ namespace ngl
 		static naddress::map_servernode		m_session;
 		static naddress::map_rolegateway	m_rolegateway;
 		static std::shared_mutex			m_mutex;
-	public:
-#pragma region base
+
 		//# debug 打印
 		static void print_address();
 		static void print_address(const char* ainfo, i32_serverid aserverid, const nguid& aguid);
-
+	public:
+#pragma region base
 		//# 设置结点
 		static bool set_node(const nactornode& anode);
 
@@ -105,11 +105,8 @@ namespace ngl
 		//# [ergodic_callbackfun:std::function<bool(map_guidserver&, map_servernode&)>]
 		static void ergodic(const ergodic_callbackfun& afun);
 
-		//# 获取guid与server id对应关系
-		static map_guidserver& get_actorserver_map();
-
 		// # 获取actor->server映射快照(线程安全)
-		static map_guidserver get_actorserver_map_copy();
+		static map_guidserver get_actorserver_map();
 
 		//# 根据area与dataid获取session
 		static i32_sessionid sessionbyrole(i16_area aarea, i32_actordataid aroleid);
