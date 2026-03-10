@@ -15,6 +15,7 @@
 #include "tools/serialize/netbuff_pool.h"
 #include "tools/serialize/segpack.h"
 #include "tools/serialize/pack.h"
+#include <new>
 
 namespace ngl
 {
@@ -59,13 +60,25 @@ namespace ngl
 		{
 			free();
 		}
+		if (alen <= 0)
+		{
+			m_len = 0;
+			m_pos = 0;
+			return false;
+		}
 		if (m_bpool == nullptr)
 		{
-			m_buff = new char[alen];
+			m_buff = new(std::nothrow) char[alen];
 		}
 		else
 		{
 			m_buff = m_bpool->malloc(alen);
+		}
+		if (m_buff == nullptr)
+		{
+			m_len = 0;
+			m_pos = 0;
+			return false;
 		}
 		m_len = alen;
 		m_pos = 0;
@@ -116,7 +129,10 @@ namespace ngl
 		}
 		if (alen > 0)
 		{
-			lpack->malloc(alen);
+			if (!lpack->malloc(alen))
+			{
+				return nullptr;
+			}
 		}
 		return lpack;
 	}

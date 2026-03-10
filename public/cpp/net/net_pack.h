@@ -30,7 +30,15 @@ namespace ngl
 			ngl::ser::serialize_byte lserialize;
 			ngl::ser::nserialize::bytes(&lserialize, adata);
 			int lbuffbyte = lserialize.pos() + pack_head::size();
+			if (lbuffbyte <= 0)
+			{
+				return nullptr;
+			}
 			std::shared_ptr<pack> lpack = pack::make_pack(apool, lbuffbyte);
+			if (lpack == nullptr || lpack->m_buff == nullptr)
+			{
+				return nullptr;
+			}
 			if (structbytes<T>::tobytes(lpack, adata, aactorid, arequestactorid) == false)
 			{
 				return nullptr;
