@@ -18,6 +18,7 @@
 #include "tools/type.h"
 
 #include <map>
+#include <shared_mutex>
 
 namespace ngl
 {
@@ -48,6 +49,7 @@ namespace ngl
 		static naddress::map_typeguid		m_actortypeserver;
 		static naddress::map_servernode		m_session;
 		static naddress::map_rolegateway	m_rolegateway;
+		static std::shared_mutex			m_mutex;
 	public:
 #pragma region base
 		//# debug 打印
@@ -105,6 +107,9 @@ namespace ngl
 
 		//# 获取guid与server id对应关系
 		static map_guidserver& get_actorserver_map();
+
+		// # 获取actor->server映射快照(线程安全)
+		static map_guidserver get_actorserver_map_copy();
 
 		//# 根据area与dataid获取session
 		static i32_sessionid sessionbyrole(i16_area aarea, i32_actordataid aroleid);

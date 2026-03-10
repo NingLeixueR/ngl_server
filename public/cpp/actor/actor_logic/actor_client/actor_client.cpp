@@ -210,7 +210,7 @@ namespace ngl
 	{
 		np_actornode_update lpro;
 		lpro.m_id = alocalserverid;
-		for(auto& [_guid, _serverid]: naddress::get_actorserver_map())
+		for(auto& [_guid, _serverid]: naddress::get_actorserver_map_copy())
 		{
 			if (alocalserverid == _serverid)
 			{

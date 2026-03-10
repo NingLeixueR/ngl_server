@@ -177,7 +177,7 @@ namespace ngl
 						return;
 					}
 
-					auto lmap = naddress::get_actorserver_map();
+					auto lmap = naddress::get_actorserver_map_copy();
 					std::string lstr;
 					for (auto [lguid, serverid] : lmap)
 					{

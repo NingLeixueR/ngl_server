@@ -23,9 +23,11 @@ namespace ngl
 	naddress::map_typeguid		naddress::m_actortypeserver;
 	naddress::map_servernode	naddress::m_session;
 	naddress::map_rolegateway	naddress::m_rolegateway;
+	std::shared_mutex			naddress::m_mutex;
 
 	bool naddress::set_node(const nactornode& anode)
 	{
+		std::unique_lock<std::shared_mutex> lock(m_mutex);
 		nnode_session* lpsession = tools::findmap(m_session, anode.m_serverid);
 		if (lpsession != nullptr)
 		{
@@ -69,6 +71,7 @@ namespace ngl
 
 	void naddress::actor_address_add(i32_serverid aserverid, i64_actorid adataid)
 	{
+		std::unique_lock<std::shared_mutex> lock(m_mutex);
 		nguid lguid(adataid);
 		m_actorserver[lguid] = aserverid;
 		m_actortypeserver[lguid.type()].insert(adataid);
@@ -87,6 +90,7 @@ namespace ngl
 
 	void naddress::actor_address_del(i64_actorid adataid)
 	{
+		std::unique_lock<std::shared_mutex> lock(m_mutex);
 		nguid lguid(adataid);
 #ifdef _DEBUG
 		auto lpserverid = tools::findmap(m_actorserver, adataid);
@@ -108,6 +112,7 @@ namespace ngl
 
 	void naddress::set_session(i32_serverid aserverid, i32_sessionid asession)
 	{
+		std::unique_lock<std::shared_mutex> lock(m_mutex);
 		nnode_session* lpsession = tools::findmap(m_session, aserverid);
 		if (lpsession == nullptr)
 		{
@@ -119,6 +124,7 @@ namespace ngl
 
 	i32_sessionid naddress::sessionid(i32_serverid aserverid)
 	{
+		std::shared_lock<std::shared_mutex> lock(m_mutex);
 		nnode_session* lpsession = tools::findmap(m_session, aserverid);
 		if (lpsession == nullptr)
 		{
@@ -130,6 +136,7 @@ namespace ngl
 
 	i32_serverid naddress::serverid(const nguid& aguid)
 	{
+		std::shared_lock<std::shared_mutex> lock(m_mutex);
 		i32_serverid* lpserverid = tools::findmap(m_actorserver, aguid);
 		if (lpserverid == nullptr)
 		{
@@ -141,6 +148,7 @@ namespace ngl
 
 	void naddress::serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& aservers)
 	{
+		std::shared_lock<std::shared_mutex> lock(m_mutex);
 		std::set<nguid>* lguids = tools::findmap(m_actortypeserver, (i16_actortype)atype);
 		if (lguids != nullptr)
 		{
@@ -153,6 +161,7 @@ namespace ngl
 
 	void naddress::foreach(const foreach_callbackfun& afun)
 	{
+		std::shared_lock<std::shared_mutex> lock(m_mutex);
 		for (auto& apair : m_session)
 		{
 			if (afun(apair.second) == false)
@@ -164,6 +173,7 @@ namespace ngl
 
 	void naddress::ergodic(const ergodic_callbackfun& afun)
 	{
+		std::shared_lock<std::shared_mutex> lock(m_mutex);
 		afun(m_actorserver, m_session, m_rolegateway);
 	}
 
@@ -172,8 +182,15 @@ namespace ngl
 		return m_actorserver;
 	}
 
+	naddress::map_guidserver naddress::get_actorserver_map_copy()
+	{
+		std::shared_lock<std::shared_mutex> lock(m_mutex);
+		return m_actorserver;
+	}
+
 	i32_serverid naddress::gatewayid(const nguid& aguid)
 	{
+		std::shared_lock<std::shared_mutex> lock(m_mutex);
 		const i32_serverid* lpserverid = tools::findmap(m_rolegateway, aguid);
 		if (lpserverid == nullptr)
 		{
@@ -184,16 +201,19 @@ namespace ngl
 
 	void naddress::gatewayid_add(const nguid& aguid, i32_serverid aserverid)
 	{
+		std::unique_lock<std::shared_mutex> lock(m_mutex);
 		m_rolegateway[aguid] = aserverid;
 	}
 
 	void naddress::gatewayid_del(const nguid& aguid)
 	{
+		std::unique_lock<std::shared_mutex> lock(m_mutex);
 		m_rolegateway.erase(aguid);
 	}
 
 	void naddress::gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
 	{
+		std::shared_lock<std::shared_mutex> lock(m_mutex);
 		for (auto& aguid : aactorset)
 		{
 			const i32_serverid* lserverid = tools::findmap(m_rolegateway, aguid);
