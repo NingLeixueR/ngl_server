@@ -17,6 +17,7 @@
 
 #include <functional>
 #include <cstdint>
+#include <limits>
 #include <list>
 
 namespace ngl
@@ -156,16 +157,24 @@ namespace ngl
 						return false;
 					}
 				}
-				if (ltemp.size() > m_buff->buffsize())
+				const std::size_t lneed = ltemp.size() + 1;
+				if (lneed > static_cast<std::size_t>(std::numeric_limits<int32_t>::max()))
 				{
-					m_mallocbuff = std::make_shared<dbuff>(ltemp.size() + 1);
-					memcpy(m_mallocbuff->buff(), ltemp.c_str(), ltemp.size() + 1);
-					m_mallocbuff->pos() = (int32_t)ltemp.size() + 1;
+					log_error()->print("db_buff::serialize fail size={}", lneed);
+					return false;
+				}
+				const int32_t lneedpos = static_cast<int32_t>(lneed);
+
+				if (lneed > static_cast<std::size_t>(m_buff->buffsize()))
+				{
+					m_mallocbuff = std::make_shared<dbuff>(lneedpos);
+					memcpy(m_mallocbuff->buff(), ltemp.c_str(), lneed);
+					m_mallocbuff->pos() = lneedpos;
 				}
 				else
 				{
-					memcpy(m_buff->buff(), ltemp.c_str(), ltemp.size() + 1);
-					m_buff->pos() = (int32_t)ltemp.size() + 1;
+					memcpy(m_buff->buff(), ltemp.c_str(), lneed);
+					m_buff->pos() = lneedpos;
 				}
 			}
 			return true;

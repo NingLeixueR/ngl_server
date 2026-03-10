@@ -153,11 +153,13 @@ namespace ngl
 
 	void naddress::foreach(const foreach_callbackfun& afun)
 	{
-		std::ranges::find_if(m_session, [&afun](auto& apair)->bool
+		for (auto& apair : m_session)
+		{
+			if (afun(apair.second) == false)
 			{
-				return afun(apair.second) == false;
+				break;
 			}
-		);
+		}
 	}
 
 	void naddress::ergodic(const ergodic_callbackfun& afun)

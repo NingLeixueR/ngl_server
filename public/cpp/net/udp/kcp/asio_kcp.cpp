@@ -127,7 +127,6 @@ namespace ngl
 		}
 		memcpy(lpack->m_buff, abuff, len);
 		
-		i64_actorid lactorid;
 		if (nconfig.nodetype() != ROBOT)
 		{
 			lpack->m_head.set_actor(apstruct->m_server, apstruct->m_client);
