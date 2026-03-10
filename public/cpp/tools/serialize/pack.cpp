@@ -122,6 +122,10 @@ namespace ngl
 
 	std::shared_ptr<pack> pack::make_pack(bpool* apool, int32_t alen)
 	{
+		if (alen < 0)
+		{
+			return nullptr;
+		}
 		std::shared_ptr<pack> lpack = std::make_shared<pack>();
 		if (apool != nullptr)
 		{

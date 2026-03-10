@@ -32,7 +32,7 @@ namespace ngl
 		sem(const sem&) = delete;
 		sem& operator=(const sem&) = delete;
 
-		std::counting_semaphore<1> m_sem;
+		std::counting_semaphore<0x7fffffff> m_sem;
 	public:
 		inline sem() :
 			m_sem(0)

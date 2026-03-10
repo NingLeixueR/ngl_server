@@ -25,9 +25,17 @@ namespace ngl
 {
 	bool nready::check_readybit(int32_t anum, int32_t aready)
 	{
-		if (((1 << anum) & aready) != 0)
+		if (anum < 0 || anum >= 32)
 		{
-			auto itor = m_readyfun.find(1 << anum);
+			return true;
+		}
+
+		const uint32_t lready = static_cast<uint32_t>(aready);
+		const uint32_t lmask = (uint32_t{ 1 } << static_cast<uint32_t>(anum));
+		if ((lmask & lready) != 0u)
+		{
+			const int32_t lkey = static_cast<int32_t>(lmask);
+			auto itor = m_readyfun.find(lkey);
 			if (itor == m_readyfun.end())
 			{
 				return true;
@@ -59,9 +67,10 @@ namespace ngl
 			}
 			return true;
 		}
+		const uint32_t lready = static_cast<uint32_t>(aready);
 		for (int32_t i = 0; i < 32; ++i)
 		{
-			if ((aready >> i) != 0)
+			if ((lready >> static_cast<uint32_t>(i)) != 0u)
 			{
 				if (!check_readybit(i, aready))
 				{
