@@ -40,6 +40,7 @@ namespace ngl
 
 	void actor_manage::get_type(std::vector<i16_actortype>& aactortype)
 	{
+		lock_read(m_mutex);
 		aactortype.reserve(m_actortype.size());
 		std::copy(m_actortype.begin(), m_actortype.end(), std::back_inserter(aactortype));
 	}

@@ -17,8 +17,10 @@
 #include "actor/tab/ttab_servers.h"
 #include "tools/tab/xml/xml.h"
 
-namespace ngl
-{
+#include <cstdint>
+
+ namespace ngl
+ {
 	ELOGLEVEL	sysconfig::m_logwritelevel		= ELOG_ERROR;
 	ELOGLEVEL	sysconfig::m_logconsolelevel	= ELOG_ERROR;
 	int32_t		sysconfig::m_logline			= 10000;
@@ -71,13 +73,12 @@ namespace ngl
 				break;
 			}
 			int32_t lxorkeylen = (int32_t)m_xorkey.size();
-			for (int i = 1;; ++i)
+			std::uint64_t lxorkeylenadd = static_cast<std::uint64_t>(lxorkeylen) + 1u;
+			m_xorkeynum = 0;
+			while (lxorkeylenadd > 1u)
 			{
-				if (lxorkeylen < ((1 << i) - 1))
-				{
-					m_xorkeynum = i - 1;
-					break;
-				}
+				lxorkeylenadd >>= 1u;
+				++m_xorkeynum;
 			}
 			if (m_xorkeynum <= 0)
 			{

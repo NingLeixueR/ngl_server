@@ -45,11 +45,17 @@ namespace ngl
 
 	void actor::release()
 	{
-		lock_write(m_mutex);
-		m_release = true;
+		{
+			lock_write(m_mutex);
+			m_release = true;
+		}
 		actor_handle(0x7fffffff);
 		save();
-		m_list.clear();
+		{
+			lock_write(m_mutex);
+			m_list.clear();
+			m_hightlist.clear();
+		}
 	}
 
 	bool actor::list_empty()

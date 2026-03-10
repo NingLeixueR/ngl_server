@@ -15,6 +15,7 @@
 #include "tools/threadtools.h"
 #include "tools/time_wheel.h"
 
+#include <cstdint>
 #include <iostream>
 #include <unordered_map>
 
@@ -413,7 +414,11 @@ namespace ngl
 		m_nextround = anextround;
 		m_slot_ms = aslotms;
 		m_time_wheel = atime_wheel;
-		m_slot_count = (1 << aslotbit);
+		if (aslotbit < 0 || aslotbit > 30)
+		{
+			aslotbit = 0;
+		}
+		m_slot_count = static_cast<int32_t>(std::uint32_t{ 1 } << static_cast<std::uint32_t>(aslotbit));
 		m_slot_less = m_slot_count - 1;
 		m_current_pos = alastround != nullptr ? 0 : -1;
 		m_slot_sum_ms = m_slot_ms * m_slot_count;

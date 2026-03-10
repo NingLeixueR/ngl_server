@@ -4,6 +4,8 @@ function(ngl_apply_msvc_defaults target_name)
 	if(MSVC)
 		target_compile_definitions(${target_name} PRIVATE WIN32_LEAN_AND_MEAN)
 		target_compile_options(${target_name} PRIVATE /EHa)
+		# Prevent parallel compilation from contending on a shared PDB file (/Zi)
+		target_compile_options(${target_name} PRIVATE /FS)
 	endif()
 endfunction()
 
