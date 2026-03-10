@@ -89,6 +89,24 @@ namespace ngl
 			m_config(aconfig),
 			m_stop(false)
 		{
+			// Normalize config to avoid division by zero and oversized shifts.
+			if (m_config.m_time_wheel_precision <= 0)
+			{
+				m_config.m_time_wheel_precision = 1;
+			}
+			if (m_config.m_time_wheel_bit < 0)
+			{
+				m_config.m_time_wheel_bit = 0;
+			}
+			else if (m_config.m_time_wheel_bit > 30)
+			{
+				m_config.m_time_wheel_bit = 30;
+			}
+			if (m_config.m_time_wheel_count <= 0)
+			{
+				m_config.m_time_wheel_count = 1;
+			}
+
 			m_server_start_ms = getms();
 			m_current_ms = m_server_start_ms;
 			int64_t lms = m_config.m_time_wheel_precision;
