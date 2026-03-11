@@ -24,22 +24,37 @@ bool file_exists(const std::filesystem::path& path)
 	return std::filesystem::is_regular_file(path, ec);
 }
 
-bool candidate_usable(const RuntimePaths& candidate)
+bool candidate_usable(const RuntimePaths& candidate, std::string& config_root, std::string& csv_root)
 {
 	namespace fs = std::filesystem;
 	std::error_code ec;
-	if (!fs::is_directory(candidate.config_root, ec) || !fs::is_directory(candidate.csv_root, ec))
+	const fs::path candidate_config(candidate.config_root);
+	if (!fs::is_directory(candidate_config, ec))
 	{
 		return false;
 	}
 
-	const fs::path config_root(candidate.config_root);
-	const fs::path csv_root(candidate.csv_root);
+	fs::path candidate_csv(candidate.csv_root);
+	if (!fs::is_directory(candidate_csv, ec))
+	{
+		// Allow layout where csv is nested under config (bin/configure/config/csv).
+		candidate_csv = candidate_config / "csv";
+	}
+
 	const bool has_config =
-		file_exists(config_root / "config.xml") ||
-		file_exists(config_root / "config" / "config.xml");
-	const bool has_servers_csv = file_exists(csv_root / "tab_servers.csv");
-	return has_config && has_servers_csv;
+		file_exists(candidate_config / "config.xml") ||
+		file_exists(candidate_config / "config" / "config.xml");
+	const bool has_servers_csv =
+		fs::is_directory(candidate_csv, ec) &&
+		file_exists(candidate_csv / "tab_servers.csv");
+	if (!has_config || !has_servers_csv)
+	{
+		return false;
+	}
+
+	config_root = candidate_config.string();
+	csv_root = candidate_csv.string();
+	return true;
 }
 
 bool resolve_runtime_paths(std::string& config_root, std::string& csv_root, std::string& err)
@@ -47,15 +62,14 @@ bool resolve_runtime_paths(std::string& config_root, std::string& csv_root, std:
 	namespace fs = std::filesystem;
 
 	static const std::vector<RuntimePaths> kCandidates = {
-		{ "./bin/configure", "./bin/configure" }
+		{ "./config", "./csv" },
+		{ "./bin/configure/config", "./bin/configure/csv" }
 	};
 
 	for (const RuntimePaths& candidate : kCandidates)
 	{
-		if (candidate_usable(candidate))
+		if (candidate_usable(candidate, config_root, csv_root))
 		{
-			config_root = candidate.config_root;
-			csv_root = candidate.csv_root;
 			return true;
 		}
 	}

@@ -43,5 +43,5 @@ ngl_apply_msvc_defaults(ngl_test)
 
 add_test(NAME ngl_test COMMAND ngl_test)
 set_tests_properties(ngl_test PROPERTIES
-	WORKING_DIRECTORY $<TARGET_FILE_DIR:ngl_test>
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
