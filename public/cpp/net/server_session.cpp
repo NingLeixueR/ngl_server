@@ -27,10 +27,20 @@ namespace ngl
 	{
 		{
 			lock_write(m_mutex);
-			m_server.erase(aserverid);
-			m_session.erase(asession);
-			m_server.insert(std::make_pair(aserverid, asession));
-			m_session.insert(std::make_pair(asession, aserverid));
+			i32_sessionid loldsession = -1;
+			if (tools::erasemap(m_server, aserverid, loldsession))
+			{
+				m_session.erase(loldsession);
+			}
+
+			i32_serverid loldserver = -1;
+			if (tools::erasemap(m_session, asession, loldserver))
+			{
+				m_server.erase(loldserver);
+			}
+
+			m_server.insert_or_assign(aserverid, asession);
+			m_session.insert_or_assign(asession, aserverid);
 		}
 		if (auto tab = ttab_servers::instance().tab(nnodeid::tid(aserverid)); tab != nullptr)
 		{

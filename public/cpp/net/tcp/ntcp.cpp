@@ -123,6 +123,10 @@ namespace ngl
 
 	bool ntcp::connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun)
 	{
+		if (m_server == nullptr)
+		{
+			return false;
+		}
 		m_server->connect(aip, aport, afun);
 		return true;
 	}
@@ -134,19 +138,25 @@ namespace ngl
 		{
 			lsem = std::make_shared<ngl::sem>();
 		}
-		connect(aip, aport, [this, afun, aip, aport, areconnection, lsem](i32_sessionid asession)
+		if (!connect(aip, aport, [this, afun, aip, aport, areconnection, lsem](i32_sessionid asession)
 			{
-				afun(asession);
+				if (afun != nullptr)
+				{
+					afun(asession);
+				}
 				if (lsem != nullptr)
 				{
 					lsem->post();
 				}
-				if (areconnection)
+				if (areconnection && asession > 0)
 				{
 					set_close(asession, aip, aport, afun);
 				}
 			}
-		);
+		))
+		{
+			return false;
+		}
 		if (lsem != nullptr)
 		{
 			lsem->wait();
@@ -164,7 +174,10 @@ namespace ngl
 		i32_session lsession = server_session::sessionid(aserverid);
 		if (lsession != -1)
 		{
-			afun(lsession);
+			if (afun != nullptr)
+			{
+				afun(lsession);
+			}
 			return true;
 		}
 
@@ -179,7 +192,10 @@ namespace ngl
 		log_info()->print("Connect Server {}@{}:{}", aserverid, std::get<1>(lpair), std::get<2>(lpair));
 		return connect(std::get<1>(lpair), std::get<2>(lpair), [aserverid, afun](i32_session asession)
 			{
-				server_session::add(aserverid, asession);
+				if (asession > 0)
+				{
+					server_session::add(aserverid, asession);
+				}
 				if (afun != nullptr)
 				{
 					afun(asession);
@@ -233,22 +249,38 @@ namespace ngl
 
 	bool ntcp::send(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack)
 	{
+		if (apack == nullptr || asession.empty())
+		{
+			return false;
+		}
+		bool lret = true;
 		for (auto [_session, actorid] : asession)
 		{
 			apack->set_actor(actorid, aactorid);
-			send_pack(_session, apack);
+			if (!send_pack(_session, apack))
+			{
+				lret = false;
+			}
 		}
-		return  true;
+		return lret;
 	}
 
 	bool ntcp::send(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack)
 	{
+		if (apack == nullptr || asession.empty())
+		{
+			return false;
+		}
+		bool lret = true;
 		for (i32_sessionid session : asession)
 		{
 			apack->set_actor(aactorid, arequestactorid);
-			send_pack(session, apack);
+			if (!send_pack(session, apack))
+			{
+				lret = false;
+			}
 		}
-		return  true;
+		return lret;
 	}
 
 	bool handle_pram::send_pack(i32_serverid aserverid, std::shared_ptr<pack>& apack)

@@ -123,7 +123,7 @@ namespace ngl
 
 		// # 向客户端发送消息
 		template <typename T>
-		void send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata);
+		bool send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata);
 	};
 }//namespace ngl
 
@@ -207,7 +207,7 @@ namespace ngl
 
 	// # 向客户端发送消息
 	template <typename T>
-	void ntcp::send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
+	bool ntcp::send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
 	{
 		np_actor_forward<T, forward_g2c<forward>> pro;
 		for (std::size_t i = 0; i < avec.size(); ++i)
@@ -223,8 +223,12 @@ namespace ngl
 
 		lforward.m_bufflen = lserializebyte.pos();
 		lforward.m_buff = netbuff_pool::instance().malloc_private(lforward.m_bufflen);
+		if (lforward.m_buff == nullptr && lforward.m_bufflen > 0)
+		{
+			return false;
+		}
 
-		ngl::ser::serialize_push lserializepush(lforward.m_buff, lforward.m_bufflen);
+		ngl::ser::serialize_push lserializepush(const_cast<char*>(lforward.m_buff), lforward.m_bufflen);
 		if (ngl::ser::nserialize::push(&lserializepush, adata))
 		{
 			if (agateway != 0)
@@ -232,13 +236,14 @@ namespace ngl
 				i32_session lsession = server_session::sessionid(agateway);
 				if (lsession > 0)
 				{
-					send(lsession, pro, nguid::make(), nguid::make());
+					const bool lsent = send(lsession, pro, nguid::make(), nguid::make());
 					netbuff_pool::instance().free((char*)lforward.m_buff);
-					return;
+					return lsent;
 				}
 			}
 		}
 		netbuff_pool::instance().free((char*)lforward.m_buff);
+		return false;
 	}
 }
 

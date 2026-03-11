@@ -61,6 +61,54 @@ namespace ngl
 		}
 	}
 
+	void serviceio_info::shutdown()
+	{
+		if (m_ioservices.empty())
+		{
+			return;
+		}
+
+		for (auto& item : m_ioservices)
+		{
+			std::get<1>(item).reset();
+		}
+
+		for (auto& item : m_ioservices)
+		{
+			if (auto& service = std::get<0>(item); service != nullptr)
+			{
+				service->stop();
+			}
+		}
+
+		for (auto& item : m_ioservices)
+		{
+			auto& thread = std::get<2>(item);
+			if (thread == nullptr || !thread->joinable())
+			{
+				continue;
+			}
+
+			if (thread->get_id() == std::this_thread::get_id())
+			{
+				thread->detach();
+			}
+			else
+			{
+				thread->join();
+			}
+		}
+
+		m_ioservices.clear();
+		m_next_index = 0;
+		m_recvthreadsize = 0;
+	}
+
+	serviceio_info::~serviceio_info()
+	{
+		shutdown();
+	}
+
 	service_io::service_io(serviceio_info& amsi, i32_session asessionid) :
 		m_threadid(amsi.m_next_index++ % amsi.m_recvthreadsize)
 		, m_ioservice(*(amsi.get_ioservice(m_threadid)))

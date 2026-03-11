@@ -18,6 +18,8 @@
 #include "net/asio_timer.h"
 #include "tools/log/nlog.h"
 
+#include <vector>
+
 namespace ngl
 {
 	asio_tcp::asio_tcp(
@@ -62,6 +64,47 @@ namespace ngl
 	{
 	}
 
+	asio_tcp::~asio_tcp()
+	{
+		asio::error_code ec;
+		if (m_acceptor_v4 != nullptr)
+		{
+			m_acceptor_v4->close(ec);
+			m_acceptor_v4.reset();
+		}
+		if (m_acceptor_v6 != nullptr)
+		{
+			m_acceptor_v6->close(ec);
+			m_acceptor_v6.reset();
+		}
+
+		std::vector<std::shared_ptr<service_tcp>> lservices;
+		{
+			lock_write(m_maplock);
+			lservices.reserve(m_data.size());
+			for (auto& [_, service] : m_data)
+			{
+				if (service != nullptr)
+				{
+					lservices.push_back(service);
+				}
+			}
+			m_data.clear();
+			m_close.clear();
+		}
+		{
+			lock_write(m_ipportlock);
+			m_ipport.clear();
+		}
+
+		for (auto& service : lservices)
+		{
+			close_socket(service->m_socket);
+		}
+
+		m_service_ios.shutdown();
+	}
+
 	service_tcp* asio_tcp::connect(const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount)
 	{
 		std::shared_ptr<service_tcp> lservice = nullptr;
@@ -80,6 +123,7 @@ namespace ngl
 			{
 				if (ec)
 				{
+					close_net(lservice->m_sessionid);
 					if (acount > 0)
 					{
 						log_error()->print("connect [{}:{}] fail [{}] add timer list! ", aip, aport, ec.message());
@@ -96,6 +140,10 @@ namespace ngl
 						};
 						asio_timer::wheel().addtimer(lparm);
 					}
+					else if (afun != nullptr)
+					{
+						afun(-1);
+					}
 					return;
 				}
 
@@ -109,7 +157,10 @@ namespace ngl
 					lservice->m_is_lanip = llanip;
 				}
 				start(lservice);
-				afun(lservice->m_sessionid);
+				if (afun != nullptr)
+				{
+					afun(lservice->m_sessionid);
+				}
 			}
 		);
 		return lservice.get();
@@ -268,6 +319,10 @@ namespace ngl
 			tools::erasemap(m_data, sessionid, lpservice);
 			tools::erasemap(m_close, sessionid, lclosefun);
 		}
+		{
+			lock_write(m_ipportlock);
+			m_ipport.erase(sessionid);
+		}
 
 		if (lpservice != nullptr)
 		{
@@ -331,6 +386,10 @@ namespace ngl
 			lock_write(m_maplock);
 			tools::erasemap(m_data, sessionid, lpservice);
 			m_close.erase(sessionid);
+		}
+		{
+			lock_write(m_ipportlock);
+			m_ipport.erase(sessionid);
 		}
 		if (lpservice != nullptr)
 		{

@@ -73,6 +73,8 @@ namespace ngl
 			, const tcp_closecallback& aclosefun				// 关闭回调
 			, const tcp_sendfinishcallback& asendfinishfun		//发送失败的回调
 		);
+
+		~asio_tcp();
 	private:
 		service_tcp* get_tcp(i32_sessionid asessionid);
 
