@@ -47,8 +47,7 @@ bool resolve_runtime_paths(std::string& config_root, std::string& csv_root, std:
 	namespace fs = std::filesystem;
 
 	static const std::vector<RuntimePaths> kCandidates = {
-		{ "./config", "./csv" },
-		{ "./bin/configure/config", "./bin/configure/csv" }
+		{ "./bin/configure", "./bin/configure" }
 	};
 
 	for (const RuntimePaths& candidate : kCandidates)
