@@ -34,6 +34,10 @@ namespace ngl
 
 	tinyxml2::XMLElement* xml::get_child(tinyxml2::XMLElement* aele, const char* astr)
 	{
+		if (aele == nullptr || astr == nullptr)
+		{
+			return nullptr;
+		}
 		std::vector<std::string> lvec;
 		if (tools::splite(astr, ".", lvec) == false)
 		{
@@ -58,6 +62,10 @@ namespace ngl
 
 	tinyxml2::XMLElement* xml::set_child(tinyxml2::XMLElement* aele, const char* astr)
 	{
+		if (aele == nullptr || astr == nullptr)
+		{
+			return nullptr;
+		}
 		return aele->InsertNewChildElement(astr);
 	}
 
@@ -70,6 +78,10 @@ namespace ngl
 
 	bool xml::foreach(tinyxml2::XMLElement* aele, const char* akey, const std::function<bool(tinyxml2::XMLElement*)>& afun)
 	{
+		if (aele == nullptr || akey == nullptr)
+		{
+			return false;
+		}
 		for (tinyxml2::XMLNode* child = aele->FirstChildElement(); child; child = child->NextSiblingElement())
 		{
 			tinyxml2::XMLElement* lxele = child->ToElement();
@@ -86,6 +98,10 @@ namespace ngl
 
 	bool xml::foreach(tinyxml2::XMLElement* aele, const std::function<bool(tinyxml2::XMLElement*)>& afun)
 	{
+		if (aele == nullptr)
+		{
+			return false;
+		}
 		for (tinyxml2::XMLNode* child = aele->FirstChildElement(); child; child = child->NextSiblingElement())
 		{
 			tinyxml2::XMLElement* lxele = child->ToElement();
@@ -102,6 +118,10 @@ namespace ngl
 
 	bool xml::foreach_xmlattr(tinyxml2::XMLElement* aele, const std::function<bool(const char*, const char*)>& afun)
 	{
+		if (aele == nullptr)
+		{
+			return false;
+		}
 		for (const tinyxml2::XMLAttribute* attribute = aele->FirstAttribute(); attribute; attribute = attribute->Next())
 		{
 			const char* lkey = attribute->Name();

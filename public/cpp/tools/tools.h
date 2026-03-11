@@ -622,7 +622,7 @@ namespace ngl
 				{
 					astr += afg;
 				}
-				afunction(itor->first, itor->second);
+				astr += afunction(itor->first, itor->second);
 			}
 			return true;
 		}
@@ -636,7 +636,7 @@ namespace ngl
 				{
 					astr += afg;
 				}
-				afunction(itor->first, itor->second);
+				astr += afunction(itor->first, itor->second);
 			}
 			return true;
 		}

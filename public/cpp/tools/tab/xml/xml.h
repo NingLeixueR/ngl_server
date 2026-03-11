@@ -101,6 +101,10 @@ namespace ngl
 	template <typename T>
 	bool xml::get(tinyxml2::XMLElement* aele, const char* akey, T& aval)
 	{
+		if (aele == nullptr)
+		{
+			return false;
+		}
 		tinyxml2::XMLElement* valElement = aele;
 		if (akey != nullptr)
 		{
@@ -128,6 +132,10 @@ namespace ngl
 	template <typename T>
 	bool xml::set(tinyxml2::XMLElement* aele, const char* akey, const T& aval)
 	{
+		if (aele == nullptr)
+		{
+			return false;
+		}
 		tinyxml2::XMLElement* valElement = aele;
 		if (akey != nullptr)
 		{
@@ -150,6 +158,10 @@ namespace ngl
 	template <typename T>
 	bool xml::get_xmlattr(tinyxml2::XMLElement* aele, const char* akey, T& aval)
 	{
+		if (aele == nullptr || akey == nullptr)
+		{
+			return false;
+		}
 		const char* val = aele->Attribute(akey);
 		if (!val)
 		{
@@ -162,6 +174,10 @@ namespace ngl
 	template <typename T>
 	bool xml::set_xmlattr(tinyxml2::XMLElement* aele, const char* akey, const T& aval)
 	{
+		if (aele == nullptr || akey == nullptr)
+		{
+			return false;
+		}
 		aele->SetAttribute(akey, tools::lexical_cast<std::string>(aval).c_str());
 		return true;
 	}

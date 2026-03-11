@@ -18,6 +18,7 @@
 #include "tools/curl/ncurl.h"
 #include "tools/localtime.h"
 #include "tools/tools.h"
+#include "utf8cpp/utf8.h"
 
 #include <filesystem>
 #include <iostream>
@@ -475,22 +476,40 @@ namespace ngl
 	{
 		if (awstr.empty())
 		{
+			astr.clear();
 			return true;
 		}
-		std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-		astr = conv.to_bytes(awstr);
-		return true;
+		try
+		{
+			std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+			astr = conv.to_bytes(awstr);
+			return true;
+		}
+		catch (...)
+		{
+			astr.clear();
+			return false;
+		}
 	}
 
 	bool tools::utf82wasscii(const std::string& astr, std::wstring& awstr)
 	{
 		if (astr.empty())
 		{
+			awstr.clear();
+			return true;
+		}
+		try
+		{
+			std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+			awstr = conv.from_bytes(astr);
+			return true;
+		}
+		catch (...)
+		{
+			awstr.clear();
 			return false;
 		}
-		std::wstring_convert<std::codecvt_utf8<wchar_t> > conv;
-		awstr = conv.from_bytes(astr);
-		return true;
 	}
 
 	bool tools::to_asscii(const std::string& astr1, std::string& astr2)
@@ -547,21 +566,33 @@ namespace ngl
 
 	bool tools::isutf8(const std::string& astr)
 	{
-		int32_t ltemp = 0;
-		for (int32_t i = 0; i < astr.size();)
-		{
-			ltemp = utf8firstbyte(astr[i]);
-			if (ltemp == 0)
-			{
-				return false;
-			}
-			i += ltemp;
-		}
-		return true;
+		return utf8::is_valid(astr.begin(), astr.end());
 	}
 
 	bool tools::isincludeutf8mb4(const std::string& astr)
 	{
+		if (!isutf8(astr))
+		{
+			return false;
+		}
+		try
+		{
+			auto it = astr.begin();
+			while (it != astr.end())
+			{
+				const char32_t codepoint = static_cast<char32_t>(utf8::next(it, astr.end()));
+				if (codepoint > 0xFFFF)
+				{
+					return true;
+				}
+			}
+		}
+		catch (...)
+		{
+			return false;
+		}
+		return false;
+
 		int nPos = 0;
 		while (true) 
 		{
