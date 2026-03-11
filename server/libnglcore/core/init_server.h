@@ -45,6 +45,7 @@
 #include "net/udp/kcp/nkcp.h"
 #include "tools/tab/csv/csv.h"
 #include "tools/tab/xml/xml.h"
+#include "server_main.h"
 
 #include <string_view>
 #include <cstdint>
@@ -53,8 +54,13 @@
 #include <chrono>
 #include <thread>
 
-bool init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {})
+startup_error init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {}, int* atcp_port = nullptr)
 {
+	if (atcp_port != nullptr)
+	{
+		*atcp_port = -1;
+	}
+
 	// # 加载并关联协议号
 	ngl::xmlprotocol::load();
 
@@ -74,7 +80,7 @@ bool init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {})
 	if (tab == nullptr)
 	{
 		ngl::tools::no_core_dump();
-		return false;
+		return startup_error::tab_server_missing;
 	}
 
 	// # 启动网络监听
@@ -83,7 +89,11 @@ bool init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {})
 		if (!ngl::ttab_servers::instance().get_nworks(ngl::ENET_PROTOCOL::ENET_TCP, nconfig.tcount(), lnwork))
 		{
 			ngl::tools::no_core_dump();
-			return false;
+			return startup_error::net_config_missing;
+		}
+		if (atcp_port != nullptr)
+		{
+			*atcp_port = lnwork.m_port;
 		}
 		ngl::ntcp::instance().init(lnwork.m_port, tab->m_threadnum, tab->m_outernet);
 	}
@@ -105,5 +115,5 @@ bool init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {})
 	ngl::nactor_logitem::m_init = true;
 
 	ngl::log_error()->print("ngl::actor_manage::instance().init({})", tab->m_actorthreadnum);
-	return true;
+	return startup_error::ok;
 }

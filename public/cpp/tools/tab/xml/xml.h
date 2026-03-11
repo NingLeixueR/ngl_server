@@ -1,4 +1,4 @@
-/*
+﻿/*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
 * 项目名称：ngl_server
@@ -38,6 +38,8 @@ namespace ngl
 		int16_t		m_tcount = 0;		// 实例id
 
 		std::string m_servername;			// 程序名称
+		std::string m_configfile;			
+		std::string m_configname;			
 
 		xmlnode() {}
 	public:
@@ -53,7 +55,7 @@ namespace ngl
 
 		i16_area area();
 
-		void set_server(const char* aservertypename);
+		bool set_server(const char* aservertypename);
 
 		void set_nodeid(int atid, int atcount);
 
@@ -61,7 +63,13 @@ namespace ngl
 
 		std::string& servername();
 
-		void load(const std::string& axmlpath, const std::string& aname);
+		bool load(const std::string& axmlpath, const std::string& aname);
+
+		const std::string& nodename() const;
+
+		const std::string& config_file() const;
+
+		const std::string& config_name() const;
 
 		xarg_info* info();
 

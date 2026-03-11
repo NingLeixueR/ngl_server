@@ -371,13 +371,14 @@ void init_DB_TESTLUA()
 	}
 }
 
-bool start_db(int argc, char** argv)
+startup_error start_db(int argc, char** argv, int* tcp_port)
 {
 	ngl::log_error()->print("[{}] start", "DB");
 
-	if (!init_server(nconfig.nodeid()))
+	startup_error rc = init_server(nconfig.nodeid(), {}, tcp_port);
+	if (rc != startup_error::ok)
 	{
-		return false;
+		return rc;
 	}
 
 	ngl::actor_client::instance();
@@ -423,15 +424,16 @@ bool start_db(int argc, char** argv)
 			init_DB_TESTLUA();
 		}
 	}
-	return true;
+	return startup_error::ok;
 }
 
-bool start_crossdb()
+startup_error start_crossdb(int* tcp_port)
 {
 	ngl::log_error()->print("[{}] start", "CROSSDB");
-	if (!init_server(nconfig.nodeid()))
+	startup_error rc = init_server(nconfig.nodeid(), {}, tcp_port);
+	if (rc != startup_error::ok)
 	{
-		return false;
+		return rc;
 	}
 	ngl::actor_client::instance();
 
@@ -456,16 +458,17 @@ bool start_crossdb()
 	ngl::actor_gmclient::instance();
 
 	ngl::actor_client::instance().actor_server_register();
-	return true;
+	return startup_error::ok;
 }
 
-bool start_world()
+startup_error start_world(int* tcp_port)
 {
 	ngl::log_error()->print("[{}] start", "WORLD");
 
-	if (!init_server(nconfig.nodeid()))
+	startup_error rc = init_server(nconfig.nodeid(), {}, tcp_port);
+	if (rc != startup_error::ok)
 	{
-		return false;
+		return rc;
 	}
 
 	ngl::actor_client::instance();
@@ -494,16 +497,17 @@ bool start_world()
 	ngl::actor_testlua2::instance();
 
 	ngl::actor_client::instance().actor_server_register();
-	return true;
+	return startup_error::ok;
 }
 
-bool start_login()
+startup_error start_login(int* tcp_port)
 {
 	ngl::log_error()->print("[{}] start", "LOGIN");
 
-	if (!init_server(nconfig.nodeid()))
+	startup_error rc = init_server(nconfig.nodeid(), {}, tcp_port);
+	if (rc != startup_error::ok)
 	{
-		return false;
+		return rc;
 	}
 
 	ngl::actor_client::instance();
@@ -518,16 +522,17 @@ bool start_login()
 	ngl::actor_gmclient::instance();
 
 	ngl::actor_client::instance().actor_server_register();
-	return true;
+	return startup_error::ok;
 }
 
-bool start_gateway()
+startup_error start_gateway(int* tcp_port)
 {
 	ngl::log_error()->print("[{}] start", "GATEWAY");
 
-	if (!init_server(nconfig.nodeid(), { pbnet::KCP_GATEWAY }))
+	startup_error rc = init_server(nconfig.nodeid(), { pbnet::KCP_GATEWAY }, tcp_port);
+	if (rc != startup_error::ok)
 	{
-		return false;
+		return rc;
 	}
 
 	ngl::actor_client::instance();
@@ -545,16 +550,17 @@ bool start_gateway()
 	ngl::actor_kcp::instance();
 
 	ngl::actor_client::instance().actor_server_register();
-	return true;
+	return startup_error::ok;
 }
 
-bool start_log()
+startup_error start_log(int* tcp_port)
 {
 	ngl::log_error()->print("[{}] start", "LOG");
 
-	if (!init_server(nconfig.nodeid()))
+	startup_error rc = init_server(nconfig.nodeid(), {}, tcp_port);
+	if (rc != startup_error::ok)
 	{
-		return false;
+		return rc;
 	}
 
 	ngl::actor_client::instance();
@@ -569,16 +575,17 @@ bool start_log()
 	ngl::actor_gmclient::instance();
 
 	ngl::actor_client::instance().actor_server_register();
-	return true;
+	return startup_error::ok;
 }
 
-bool start_actor()
+startup_error start_actor(int* tcp_port)
 {
 	ngl::log_error()->print("[{}] start", "ACTORSERVER");
 
-	if (!init_server(nconfig.nodeid()))
+	startup_error rc = init_server(nconfig.nodeid(), {}, tcp_port);
+	if (rc != startup_error::ok)
 	{
-		return false;
+		return rc;
 	}
 
 	ngl::actor_server::instance();
@@ -591,16 +598,17 @@ bool start_actor()
 
 	ngl::actor_gmclient::instance();
 
-	return true;
+	return startup_error::ok;
 }
 
-bool start_game()
+startup_error start_game(int* tcp_port)
 {
 	ngl::log_error()->print("[{}] start", "GAME");
 
-	if (!init_server(nconfig.nodeid(), { pbnet::KCP_ROLE }))
+	startup_error rc = init_server(nconfig.nodeid(), { pbnet::KCP_ROLE }, tcp_port);
+	if (rc != startup_error::ok)
 	{
-		return false;
+		return rc;
 	}
 
 	ngl::actor_client::instance();
@@ -617,16 +625,17 @@ bool start_game()
 	ngl::actor_kcp::instance();
 
 	ngl::actor_client::instance().actor_server_register();
-	return true;
+	return startup_error::ok;
 }
 
-bool start_cross()
+startup_error start_cross(int* tcp_port)
 {
 	ngl::log_error()->print("[{}] start", "CROSS");
 
-	if (!init_server(nconfig.nodeid()))
+	startup_error rc = init_server(nconfig.nodeid(), {}, tcp_port);
+	if (rc != startup_error::ok)
 	{
-		return false;
+		return rc;
 	}
 
 	ngl::actor_client::instance();
@@ -642,22 +651,23 @@ bool start_cross()
 	ngl::actor_gmclient::instance();
 
 	ngl::actor_client::instance().actor_server_register();
-	return true;
+	return startup_error::ok;
 }
 
-bool start_pushserverconfig()
+startup_error start_pushserverconfig(int* tcp_port)
 {
+	(void)tcp_port;
 	// 将服务器配置上传lbgmsys
 	ngl::xarg_info* lpublicxml = nconfig.info();
 	std::string lgmurl;
 	if (!lpublicxml->find("gmurl", lgmurl))
 	{
-		return false;
+		return startup_error::node_start_failed;
 	}
 	std::string lpushserver;
 	if (!lpublicxml->find("push_server_config", lpushserver))
 	{
-		return false;
+		return startup_error::node_start_failed;
 	}
 	lpushserver = lgmurl + "/" + lpushserver;
 
@@ -712,16 +722,17 @@ bool start_pushserverconfig()
 				});
 			ngl::ncurl::send(lhttp);
 		});
-	return true;
+	return startup_error::ok;
 }
 
-bool start_csvserver()
+startup_error start_csvserver(int* tcp_port)
 {
 	ngl::log_error()->print("[{}] start", "RELOADCSV");
 
-	if (!init_server(nconfig.nodeid()))
+	startup_error rc = init_server(nconfig.nodeid(), {}, tcp_port);
+	if (rc != startup_error::ok)
 	{
-		return false;
+		return rc;
 	}
 
 	ngl::actor_client::instance();
@@ -736,7 +747,7 @@ bool start_csvserver()
 	ngl::actor_gmclient::instance();
 
 	ngl::actor_client::instance().actor_server_register();
-	return true;
+	return startup_error::ok;
 }
 
 std::vector<std::string> get_lines()
@@ -753,13 +764,14 @@ std::vector<std::string> get_lines()
 	return lvec;
 }
 
-bool start_robot(int argc, char** argv)
+startup_error start_robot(int argc, char** argv, int* tcp_port)
 {
 	ngl::log_error()->print("[{}] start", "ROBOT");
 
-	if (!init_server(nconfig.nodeid()))
+	startup_error rc = init_server(nconfig.nodeid(), {}, tcp_port);
+	if (rc != startup_error::ok)
 	{
-		return false;
+		return rc;
 	}
 
 	ngl::actor_client::instance();
@@ -805,7 +817,7 @@ bool start_robot(int argc, char** argv)
 		std::vector<std::string> lvec;
 		if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
 		{
-			return false;
+			return startup_error::node_start_failed;
 		}
 		ngl::actor_robot_manage::parse_command(lvec);
 		int lnum = 10000;
@@ -877,108 +889,164 @@ bool start_robot(int argc, char** argv)
 			}
 		}
 	}
-	return true;
+	return startup_error::ok;
+}
+
+namespace
+{
+	struct startup_context
+	{
+		std::string node_name;
+		int32_t area = 0;
+		int32_t tcount = 0;
+		std::string config_file;
+		int tcp_port = -1;
+		int node_type = -1;
+	};
+
+	void log_startup_failure(startup_error code, const startup_context& ctx, const char* reason)
+	{
+		ngl::log_error()->print(
+			"[startup][code:{}] reason:{} node:{} type:{} area:{} tcount:{} config:{} port:{}",
+			static_cast<int>(code),
+			reason,
+			ctx.node_name,
+			ctx.node_type,
+			ctx.area,
+			ctx.tcount,
+			ctx.config_file,
+			ctx.tcp_port
+		);
+	}
 }
 
 namespace ngl
 {
+#ifdef NGL_ENABLE_STARTUP_SELFTEST
 	extern void server_test();
+#endif
 }
 
 int ngl_main(int argc, char** argv)
 {
+#ifdef NGL_ENABLE_STARTUP_SELFTEST
 	ngl::server_test();
-	// # 名称
-	std::string lname = argv[1];
+#endif
 
-	// # 区服id
-	int32_t larea = ngl::tools::lexical_cast<int32_t>(argv[2]);
+	startup_context ctx{};
+	if (argc < 4)
+	{
+		log_startup_failure(startup_error::invalid_args, ctx, "argc < 4");
+		return static_cast<int>(startup_error::invalid_args);
+	}
 
-	// # 区服id下功能进程的序号
-	int32_t ltcount = 0;
-	ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
+	ctx.node_name = argv[1];
+	ctx.area = ngl::tools::lexical_cast<int32_t>(argv[2]);
+	ctx.tcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
 
-	// # 初始化关联枚举NODE_TYPE与字符串
+	// # ?????????
 	nconfig.init();
 
-	nconfig.set_server(argv[1]);
+	if (!nconfig.set_server(argv[1]))
+	{
+		ctx.node_type = static_cast<int>(nconfig.nodetype());
+		log_startup_failure(startup_error::invalid_node_type, ctx, "invalid node type");
+		return static_cast<int>(startup_error::invalid_node_type);
+	}
+	ctx.node_type = static_cast<int>(nconfig.nodetype());
 
-	// # 加载xml配置
-	nconfig.load("./config", std::format("{}_{}", lname, ltcount));
+	std::string config_name = std::format("{}_{}", ctx.node_name, ctx.tcount);
+	if (!nconfig.load("./config", config_name))
+	{
+		ctx.config_file = nconfig.config_file();
+		startup_error code = ngl::tools::file_exists(ctx.config_file) ?
+			startup_error::config_load_failed : startup_error::config_not_found;
+		log_startup_failure(code, ctx, "config load failed");
+		return static_cast<int>(code);
+	}
+	ctx.config_file = nconfig.config_file();
 
-	// # 加载csv配置
-	ngl::csv_base::set_path("./csv", lname);
+	// # ??csv??
+	ngl::csv_base::set_path("./csv", ctx.node_name);
 
-	const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab(argv[1], larea);
+	const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab(ctx.node_name, ctx.area);
 	if (tab == nullptr)
 	{
-		return 0;
+		log_startup_failure(startup_error::tab_server_missing, ctx, "tab_servers missing");
+		return static_cast<int>(startup_error::tab_server_missing);
 	}
-	nconfig.set_nodeid(tab->m_id, ltcount);
+	nconfig.set_nodeid(tab->m_id, ctx.tcount);
 
-	
-	if (larea < 0)
+	if (ctx.area < 0)
 	{
-		nconfig.set_servername(std::string(std::format("node_{}__{}_{}", lname, -larea, ltcount)));
+		nconfig.set_servername(std::string(std::format("node_{}__{}_{}", ctx.node_name, -ctx.area, ctx.tcount)));
 	}
 	else
 	{
-		nconfig.set_servername(std::string(std::format("node_{}_{}_{}", lname, tab->m_area, ltcount)));
+		nconfig.set_servername(std::string(std::format("node_{}_{}_{}", ctx.node_name, tab->m_area, ctx.tcount)));
 	}
 
 #ifdef WIN32
-	// # 设置控制台窗口名称
 	SetConsoleTitle(nconfig.servername().c_str());
 #endif
-	
+
+	startup_error rc = startup_error::ok;
 	switch (nconfig.nodetype())
 	{
 	case ngl::DB:
-		start_db(argc, argv);
+		rc = start_db(argc, argv, &ctx.tcp_port);
 		break;
 	case ngl::GAME:
-		start_game();
+		rc = start_game(&ctx.tcp_port);
 		break;
 	case ngl::ACTORSERVER:
-		start_actor();
+		rc = start_actor(&ctx.tcp_port);
 		break;
 	case ngl::LOG:
-		start_log();
+		rc = start_log(&ctx.tcp_port);
 		break;
 	case ngl::GATEWAY:
-		start_gateway();
+		rc = start_gateway(&ctx.tcp_port);
 		break;
 	case ngl::LOGIN:
-		start_login();
+		rc = start_login(&ctx.tcp_port);
 		break;
 	case ngl::WORLD:
-		start_world();
+		rc = start_world(&ctx.tcp_port);
 		break;
 	case ngl::RELOADCSV:
-		start_csvserver();
+		rc = start_csvserver(&ctx.tcp_port);
 		break;
 	case ngl::ROBOT:
-		start_robot(argc, argv);
+		rc = start_robot(argc, argv, &ctx.tcp_port);
 		break;
 	case ngl::CROSS:
-		start_cross();
+		rc = start_cross(&ctx.tcp_port);
 		break;
 	case ngl::CROSSDB:
-		start_crossdb();
+		rc = start_crossdb(&ctx.tcp_port);
 		break;
 	case ngl::PUSHSERVERCONFIG:
-		start_pushserverconfig();
+		rc = start_pushserverconfig(&ctx.tcp_port);
 		break;
 	default:
-		return 0;
+		rc = startup_error::invalid_node_type;
+		break;
+	}
+
+	if (rc != startup_error::ok)
+	{
+		log_startup_failure(rc, ctx, "node start failed");
+		return static_cast<int>(rc);
 	}
 
 	while (1)
 	{
 		ngl::sleep::seconds(1);
 	}
-	return 0;
+	return static_cast<int>(startup_error::ok);
 }
+
 
 std::function<void()> dump_logic(const std::string& acontent)
 {

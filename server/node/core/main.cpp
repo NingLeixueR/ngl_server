@@ -18,12 +18,12 @@ int main(int argc, char** argv)
 #ifdef _WIN32
 	SetConsoleOutputCP(CP_UTF8);
 #endif
-	if (argc >= 3)
+	if (argc >= 4)
 	{
 		Dumper::m_excname = std::format("node_{}", argv[1]);
 		lDumper.setDumperHandler(dump_logic("core dump"));
 		return ngl_main(argc, argv);
 	}
-	std::cout << "参数错误:EXE name areaid tab_servers::tcount" << std::endl;
-	return 0;
+	std::cout << "Argument error: EXE name areaid tab_servers::tcount" << std::endl;
+	return static_cast<int>(startup_error::invalid_args);
 }

@@ -20,14 +20,6 @@ find_package(hiredis REQUIRED)
 find_package(PostgreSQL REQUIRED)
 find_package(RapidJSON REQUIRED)
 
-INCLUDE_DIRECTORIES(${lua_INCLUDE_DIRS})   
-INCLUDE_DIRECTORIES(${protobuf_INCLUDE_DIRS})  
-INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIRS})  
-INCLUDE_DIRECTORIES(${libmysqlclient_INCLUDE_DIRS})  
-INCLUDE_DIRECTORIES(${hiredis_INCLUDE_DIRS})  
-INCLUDE_DIRECTORIES(${PostgreSQL_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${RapidJSON_INCLUDE_DIRS})
-
 
 # 判断是否在 GitHub Actions 环境中
 if(DEFINED ENV{GITHUB_ACTIONS} AND "$ENV{GITHUB_ACTIONS}" STREQUAL "true")
@@ -42,12 +34,22 @@ endif()
 if(IS_LOCAL_BUILD)
     IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 		ADD_LIBRARY(libmycore STATIC ${PUBLIC_LIST_INCLUDE} ${PUBLIC_LIST_SRC} ${PUBLIC_LIST_CSRC} ${CORE_LIST_PBSRC})
+		target_link_libraries(libmycore PRIVATE ngl_build_options)
 		target_link_libraries(libmycore PRIVATE lua::lua)
 		target_link_libraries(libmycore PRIVATE protobuf::protobuf)
 		target_link_libraries(libmycore PRIVATE CURL::libcurl)
 		target_link_libraries(libmycore PRIVATE libmysqlclient::libmysqlclient)
 		target_link_libraries(libmycore PRIVATE hiredis::hiredis)
 		target_link_libraries(libmycore PRIVATE libpq::libpq)
+		target_include_directories(libmycore PRIVATE
+			${lua_INCLUDE_DIRS}
+			${protobuf_INCLUDE_DIRS}
+			${CURL_INCLUDE_DIRS}
+			${libmysqlclient_INCLUDE_DIRS}
+			${hiredis_INCLUDE_DIRS}
+			${PostgreSQL_INCLUDE_DIRS}
+			${RapidJSON_INCLUDE_DIRS}
+		)
 	ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 endif()
 

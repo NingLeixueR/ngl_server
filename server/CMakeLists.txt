@@ -39,9 +39,14 @@ function(ngl_find_runtime_deps)
 endfunction()
 
 function(ngl_apply_runtime_deps target_name)
+	set(link_scope PRIVATE)
+	if(ARGC GREATER 1)
+		set(link_scope ${ARGV1})
+	endif()
+
 	ngl_find_runtime_deps()
 
-	target_link_libraries(${target_name} PRIVATE
+	target_link_libraries(${target_name} ${link_scope}
 		lua::lua
 		protobuf::protobuf
 		CURL::libcurl
@@ -52,7 +57,7 @@ function(ngl_apply_runtime_deps target_name)
 	)
 
 	if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-		target_link_libraries(${target_name} PRIVATE libuuid::libuuid)
+		target_link_libraries(${target_name} ${link_scope} libuuid::libuuid)
 	endif()
 endfunction()
 
@@ -76,4 +81,8 @@ if(IS_LOCAL_BUILD)
 endif()
 
 add_subdirectory(node)
+
+if(BUILD_TESTING)
+	add_subdirectory(tests)
+endif()
 

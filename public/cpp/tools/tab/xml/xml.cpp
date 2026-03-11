@@ -1,4 +1,4 @@
-﻿/*
+/*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
 * 项目名称：ngl_server
@@ -52,7 +52,7 @@ namespace ngl
 		return ltab->m_area;
 	}
 
-	void xmlnode::set_server(const char* aservertypename)
+	bool xmlnode::set_server(const char* aservertypename)
 	{
 		NODE_TYPE lnodetype = em<NODE_TYPE>::get_enum(aservertypename);
 		if (lnodetype == em<NODE_TYPE>::enum_null())
@@ -61,6 +61,7 @@ namespace ngl
 		}
 		m_nodename = aservertypename;
 		m_nodetype = lnodetype;
+		return lnodetype != em<NODE_TYPE>::enum_null();
 	}
 
 	void xmlnode::set_nodeid(int atid, int atcount)
@@ -80,18 +81,42 @@ namespace ngl
 		return m_servername;
 	}
 
-	void xmlnode::load(const std::string& axmlpath, const std::string& aname)
+	bool xmlnode::load(const std::string& axmlpath, const std::string& aname)
 	{
+		m_configname = aname;
+
 		std::string lxmlname = std::format("{}/config/config_{}.xml", axmlpath, aname);
 		if (tools::file_exists(lxmlname) == false)
 		{
 			lxmlname = std::format("{}/config/config.xml", axmlpath);
 		}
 
-		log_error()->print("begin xmlnode read [{}]", lxmlname);
+		m_configfile = lxmlname;
+		if (tools::file_exists(lxmlname) == false)
+		{
+			log_error()->print("xmlnode config file not found [{}]", lxmlname);
+			return false;
+		}
 
-		xml_pop(lxmlname.c_str());
-		log_error()->print("finish xmlnode read [{}]", lxmlname);
+		log_error()->print("begin xmlnode read [{}]", lxmlname);
+		bool ok = xml_pop(lxmlname.c_str());
+		log_error()->print("finish xmlnode read [{}] ok={}", lxmlname, ok);
+		return ok;
+	}
+
+	const std::string& xmlnode::nodename() const
+	{
+		return m_nodename;
+	}
+
+	const std::string& xmlnode::config_file() const
+	{
+		return m_configfile;
+	}
+
+	const std::string& xmlnode::config_name() const
+	{
+		return m_configname;
 	}
 
 	xarg_info* xmlnode::info()

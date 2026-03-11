@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.15)
 
 PROJECT (node)
 
-INCLUDE_DIRECTORIES(./core)
-
-INCLUDE_DIRECTORIES(./../libnglcore/core)
-
 SET(CORE_LIST ${PROJECT_SOURCE_DIR}/core)
 FILE(GLOB_RECURSE CORE_LIST_INCLUDE ${CORE_LIST}/*.h ) 
 FILE(GLOB_RECURSE CORE_LIST_SRC ${CORE_LIST}/*.cpp) 
@@ -22,7 +18,9 @@ ADD_EXECUTABLE(node
 
 target_link_libraries(node
 	PRIVATE nglcore 
+	PRIVATE ngl_build_options
 )
+target_include_directories(node PRIVATE ${CORE_LIST} ${PROJECT_SOURCE_DIR}/../libnglcore/core)
 
 ngl_apply_msvc_defaults(node)
 

@@ -24,3 +24,6 @@ class MyProjectConan(ConanFile):
         # --- 平台特定依赖 ---
         if self.settings.os == "Linux":
             self.requires("libuuid/1.0.3")
+
+    def build_requirements(self):
+        self.test_requires("gtest/1.14.0")
