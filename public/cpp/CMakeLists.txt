@@ -12,14 +12,6 @@ source_group("Header Files" FILES ${PUBLIC_LIST_INCLUDE})
 source_group("Source Files" FILES ${PUBLIC_LIST_SRC} ${PUBLIC_LIST_CSRC})
 source_group("Pb Source Files" FILES ${CORE_LIST_PBSRC})
 
-find_package(lua REQUIRED)
-find_package(protobuf REQUIRED)
-find_package(CURL REQUIRED)
-find_package(libmysqlclient REQUIRED)
-find_package(hiredis REQUIRED)
-find_package(PostgreSQL REQUIRED)
-find_package(RapidJSON REQUIRED)
-
 if(NOT DEFINED NGL_IS_LOCAL_BUILD)
 	set(NGL_IS_LOCAL_BUILD ON)
 endif()
@@ -34,22 +26,7 @@ if(NGL_IS_LOCAL_BUILD AND CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 	target_link_libraries(libmycore PRIVATE
 		ngl_build_options
-		lua::lua
-		protobuf::protobuf
-		CURL::libcurl
-		libmysqlclient::libmysqlclient
-		hiredis::hiredis
-		libpq::libpq
-		rapidjson
 	)
-
-	target_include_directories(libmycore PRIVATE
-		${lua_INCLUDE_DIRS}
-		${protobuf_INCLUDE_DIRS}
-		${CURL_INCLUDE_DIRS}
-		${libmysqlclient_INCLUDE_DIRS}
-		${hiredis_INCLUDE_DIRS}
-		${PostgreSQL_INCLUDE_DIRS}
-		${RapidJSON_INCLUDE_DIRS}
-	)
+	ngl_apply_runtime_deps(libmycore PRIVATE)
+	ngl_apply_msvc_defaults(libmycore)
 endif()

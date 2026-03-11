@@ -920,19 +920,8 @@ namespace
 	}
 }
 
-namespace ngl
-{
-#ifdef NGL_ENABLE_STARTUP_SELFTEST
-	extern void server_test();
-#endif
-}
-
 int ngl_main(int argc, char** argv)
 {
-#ifdef NGL_ENABLE_STARTUP_SELFTEST
-	ngl::server_test();
-#endif
-
 	startup_context ctx{};
 	if (argc < 4)
 	{
@@ -944,7 +933,6 @@ int ngl_main(int argc, char** argv)
 	ctx.area = ngl::tools::lexical_cast<int32_t>(argv[2]);
 	ctx.tcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
 
-	// # ?????????
 	nconfig.init();
 
 	if (!nconfig.set_server(argv[1]))
@@ -966,7 +954,6 @@ int ngl_main(int argc, char** argv)
 	}
 	ctx.config_file = nconfig.config_file();
 
-	// # ??csv??
 	ngl::csv_base::set_path("./csv", ctx.node_name);
 
 	const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab(ctx.node_name, ctx.area);

@@ -18,17 +18,27 @@
 namespace ngl
 {
     std::vector<nacnode> nfilterword::m_nodes;
-    int nfilterword::m_root = 0;
+    int nfilterword::m_root = -1;
+
+    void nfilterword::ensure_initialized()
+    {
+        if (m_root >= 0 && static_cast<std::size_t>(m_root) < m_nodes.size())
+        {
+            return;
+        }
+        init();
+    }
 
     void nfilterword::init()
     {
+        m_nodes.clear();
         m_root = newnode();
     }
 
     void nfilterword::clear()
     {
         m_nodes.clear();
-        m_root = 0;
+        m_root = -1;
     }
 
     void nfilterword::load(const std::string& apattern)
@@ -37,6 +47,7 @@ namespace ngl
         {
             return;
         }
+        ensure_initialized();
         int cur = m_root;
 
         for (auto c : apattern)
@@ -54,6 +65,7 @@ namespace ngl
 
     void nfilterword::build()
     {
+        ensure_initialized();
         std::queue<int> q;
         // 初始化根节点的子节点：失败指针指向根
         for (auto& pair : m_nodes[m_root].m_children)
@@ -91,6 +103,14 @@ namespace ngl
 
     bool nfilterword::match(char c, int& cur, int i, std::vector<std::pair<int, int>>& res)
     {
+        if (m_root < 0 || static_cast<std::size_t>(m_root) >= m_nodes.size())
+        {
+            return false;
+        }
+        if (cur < 0 || static_cast<std::size_t>(cur) >= m_nodes.size())
+        {
+            cur = m_root;
+        }
         // 失配回退：沿失败指针找匹配的节点
         while (cur != m_root && !m_nodes[cur].m_children.contains(c))
         {
@@ -120,12 +140,17 @@ namespace ngl
     std::vector<std::pair<int, int>> nfilterword::match(const std::string& text)
     {
         std::vector<std::pair<int, int>> res;
+        if (text.empty())
+        {
+            return res;
+        }
+        ensure_initialized();
         int cur = m_root;
 
         // 遍历宽字符文本（中文每个字是一个元素）
-        for (int i = 0; i < text.size(); ++i)
+        for (std::string::size_type i = 0; i < text.size(); ++i)
         {
-            match(text[i], cur, i, res);
+            match(text[i], cur, static_cast<int>(i), res);
         }
         return res;
     }
@@ -137,7 +162,9 @@ namespace ngl
         // 替换所有匹配的字符为*
         for (auto& [start, len] : matches)
         {
-            for (int i = start; i < start + len; ++i)
+            const std::size_t begin = start < 0 ? 0U : static_cast<std::size_t>(start);
+            const std::size_t end = std::min(result.size(), begin + static_cast<std::size_t>(std::max(len, 0)));
+            for (std::size_t i = begin; i < end; ++i)
             {
                 result[i] = '*';
             }
@@ -173,6 +200,11 @@ namespace ngl
 
     bool nfilterword::is_filter(const std::string& text)
     {
+        if (text.empty())
+        {
+            return false;
+        }
+        ensure_initialized();
         // 去除特殊符号
         std::u32string ltemp1;
         if (!utf8to32(text, ltemp1))
@@ -195,9 +227,9 @@ namespace ngl
 
         int cur = m_root;
         std::vector<std::pair<int, int>> res;
-        for (int i = 0; i < ltemp3.size(); ++i)
+        for (std::string::size_type i = 0; i < ltemp3.size(); ++i)
         {
-            if (match(ltemp3[i], cur, i, res))
+            if (match(ltemp3[i], cur, static_cast<int>(i), res))
             {
                 return true;
             }
@@ -208,9 +240,9 @@ namespace ngl
     int32_t nfilterword::charcount(const std::u32string& astr)
     {
         int32_t lcount = 0;
-        for (int32_t i = 0; i < astr.size(); ++i)
+        for (char32_t codepoint : astr)
         {
-            if (astr[i] < 0x80)
+            if (codepoint < 0x80)
             {
                 ++lcount;
             }
@@ -227,6 +259,7 @@ namespace ngl
         if (em<nfilterword::enfilter>::empty())
         {
             em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_success, "成功");
+            em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_invalid_utf8, "失败:UTF-8 非法");
             em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_emojispecial, "失败:存在特殊符号");
             em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_charcount, "失败:字符个数不符合要求");
             em<nfilterword::enfilter>::set(nfilterword::enfilter::enfilter_filter, "失败:存在屏蔽字");
@@ -236,7 +269,11 @@ namespace ngl
 
     nfilterword::enfilter nfilterword::check_name(const std::string& astr, int32_t amincount, int32_t amaxcount)
     {
-        std::u32string ltemp = utf8::utf8to32(astr);
+        std::u32string ltemp;
+        if (!utf8to32(astr, ltemp))
+        {
+            return enfilter_invalid_utf8;
+        }
         if (is_emojispecial(ltemp))
         {
             return enfilter_emojispecial;

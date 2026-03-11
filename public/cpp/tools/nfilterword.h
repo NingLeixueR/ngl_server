@@ -19,6 +19,7 @@
 #include "tools/tools.h"
 
 #include <unordered_map>
+#include <algorithm>
 #include <iostream>
 #include <utility>
 #include <string>
@@ -42,6 +43,7 @@ namespace ngl
     private:
         static std::vector<nacnode> m_nodes;
         static int m_root;
+        static void ensure_initialized();
 
         // 创建新节点
         static int newnode()
@@ -89,6 +91,7 @@ namespace ngl
         enum enfilter
         {
             enfilter_success,               // 成功
+            enfilter_invalid_utf8,          // 失败:UTF-8 非法
             enfilter_emojispecial,          // 失败:存在特殊符号
             enfilter_charcount,             // 失败:字符个数不符合要求
             enfilter_filter,                // 失败:存在屏蔽字

@@ -1,4 +1,5 @@
 find_package(GTest REQUIRED)
+include(GoogleTest)
 
 if(TARGET GTest::gtest_main)
 	set(NGL_GTEST_MAIN_TARGET GTest::gtest_main)
@@ -41,7 +42,8 @@ target_link_libraries(ngl_test PRIVATE
 ngl_apply_runtime_deps(ngl_test PRIVATE)
 ngl_apply_msvc_defaults(ngl_test)
 
-add_test(NAME ngl_test COMMAND ngl_test)
-set_tests_properties(ngl_test PROPERTIES
+gtest_discover_tests(ngl_test
 	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	DISCOVERY_TIMEOUT 30
+	PROPERTIES LABELS "unit"
 )

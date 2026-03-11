@@ -544,8 +544,15 @@ namespace ngl
 	inline bool xml_pop(const char* axml)												\
 	{																					\
 		tinyxml2::XMLDocument ldocument;												\
-		ngl::xml::readxml(axml, ldocument);												\
+		if (!ngl::xml::readxml(axml, ldocument))										\
+		{																				\
+			return false;																\
+		}																				\
 		tinyxml2::XMLElement* lelement = ngl::xml::get_child(ldocument, #XMLNAME);		\
+		if (lelement == nullptr)														\
+		{																				\
+			return false;																\
+		}																				\
 		return xml_pop(lelement);														\
 	}																					\
 	inline bool xml_push(const char* axml)const											\

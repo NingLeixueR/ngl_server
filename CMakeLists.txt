@@ -24,6 +24,8 @@ else()
 	message(STATUS "Build environment: Local development")
 endif()
 
+include(${CMAKE_SOURCE_DIR}/cmake/NglBuild.cmake)
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Keep predefined targets (ALL_BUILD / ZERO_CHECK / INSTALL) at solution top level.
 set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "")

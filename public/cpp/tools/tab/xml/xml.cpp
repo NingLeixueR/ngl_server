@@ -23,6 +23,8 @@
 #include "tools/type.h"
 #include "tinyxml2.h"
 
+#include <array>
+
 namespace ngl
 {
 	void xmlnode::init()
@@ -54,14 +56,20 @@ namespace ngl
 
 	bool xmlnode::set_server(const char* aservertypename)
 	{
+		if (aservertypename == nullptr)
+		{
+			log_error()->print("xmlnode invalid server type [null]");
+			return false;
+		}
 		NODE_TYPE lnodetype = em<NODE_TYPE>::get_enum(aservertypename);
 		if (lnodetype == em<NODE_TYPE>::enum_null())
 		{
-			tools::no_core_dump();
+			log_error()->print("xmlnode invalid server type [{}]", aservertypename);
+			return false;
 		}
 		m_nodename = aservertypename;
 		m_nodetype = lnodetype;
-		return lnodetype != em<NODE_TYPE>::enum_null();
+		return true;
 	}
 
 	void xmlnode::set_nodeid(int atid, int atcount)
@@ -84,19 +92,30 @@ namespace ngl
 	bool xmlnode::load(const std::string& axmlpath, const std::string& aname)
 	{
 		m_configname = aname;
+		const std::array<std::string, 4> candidates = {
+			std::format("{}/config/config_{}.xml", axmlpath, aname),
+			std::format("{}/config_{}.xml", axmlpath, aname),
+			std::format("{}/config/config.xml", axmlpath),
+			std::format("{}/config.xml", axmlpath),
+		};
 
-		std::string lxmlname = std::format("{}/config/config_{}.xml", axmlpath, aname);
-		if (tools::file_exists(lxmlname) == false)
+		std::string lxmlname;
+		for (const std::string& candidate : candidates)
 		{
-			lxmlname = std::format("{}/config/config.xml", axmlpath);
+			if (tools::file_exists(candidate))
+			{
+				lxmlname = candidate;
+				break;
+			}
 		}
 
-		m_configfile = lxmlname;
-		if (tools::file_exists(lxmlname) == false)
+		if (lxmlname.empty())
 		{
-			log_error()->print("xmlnode config file not found [{}]", lxmlname);
+			m_configfile = candidates[0];
+			log_error()->print("xmlnode config file not found [{}]", m_configfile);
 			return false;
 		}
+		m_configfile = lxmlname;
 
 		log_error()->print("begin xmlnode read [{}]", lxmlname);
 		bool ok = xml_pop(lxmlname.c_str());
