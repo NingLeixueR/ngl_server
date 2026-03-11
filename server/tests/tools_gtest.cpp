@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 
+#include "actor/actor_base/nguid.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/tools.h"
 
@@ -40,6 +41,22 @@ TEST(ToolsTest, Utf8ConversionsHandleEmptyAndInvalidInput)
 	const std::string invalid_utf8("\xFF\xFE", 2);
 	EXPECT_FALSE(ngl::tools::utf82wasscii(invalid_utf8, wide));
 	EXPECT_TRUE(wide.empty());
+}
+
+TEST(ToolsTest, LexicalCastAcceptsValidFloatingPointFormats)
+{
+	EXPECT_FLOAT_EQ(ngl::tools::lexical_cast<float>(std::string(".5")), 0.5f);
+	EXPECT_FLOAT_EQ(ngl::tools::lexical_cast<float>(std::string("-.5")), -0.5f);
+	EXPECT_DOUBLE_EQ(ngl::tools::lexical_cast<double>(std::string("1.")), 1.0);
+}
+
+TEST(ToolsTest, LexicalCastRejectsInvalidNumericFormats)
+{
+	EXPECT_THROW(ngl::tools::lexical_cast<int32_t>(std::string("")), std::string);
+	EXPECT_THROW(ngl::tools::lexical_cast<int32_t>(std::string("+")), std::string);
+	EXPECT_THROW(ngl::tools::lexical_cast<uint32_t>(std::string("-1")), std::string);
+	EXPECT_THROW(ngl::tools::lexical_cast<float>(std::string(".")), std::string);
+	EXPECT_THROW(ngl::tools::lexical_cast<float>(std::string("1.2.3")), std::string);
 }
 
 TEST(ToolsTest, MapSplicingAppendsFormatterOutput)

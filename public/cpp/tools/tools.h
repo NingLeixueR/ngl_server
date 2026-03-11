@@ -53,22 +53,61 @@ namespace ngl
 	class lexical_check
 	{
 	public:
+		static bool is_sign(char ch)
+		{
+			return ch == '-' || ch == '+';
+		}
+
+		static bool is_digit(char ch)
+		{
+			return std::isdigit(static_cast<unsigned char>(ch)) != 0;
+		}
+
+		static void require_non_empty(const char* source)
+		{
+			if (source == nullptr || *source == '\0')
+			{
+				throw std::string("empty numeric string");
+			}
+		}
+
 		static bool func_number(const std::string& source)
 		{
 			return func_number(source.c_str());
 		}
 		static bool func_number(const char* source)
 		{
+			require_non_empty(source);
+			bool saw_digit = false;
 			for (auto lpchar = source; *lpchar != '\0'; ++lpchar)
 			{
-				if (source == lpchar)
+				if (source == lpchar && is_sign(*lpchar))
 				{
-					if (*lpchar == '-' || *lpchar == '+')
-					{
-						continue;
-					}
+					continue;
 				}
-				if (!std::isdigit(*lpchar))
+				if (!is_digit(*lpchar))
+				{
+					throw std::string("isdigit fail");
+				}
+				saw_digit = true;
+			}
+			if (!saw_digit)
+			{
+				throw std::string("missing digits");
+			}
+			return true;
+		}
+
+		static bool func_unsigned_number(const std::string& source)
+		{
+			return func_unsigned_number(source.c_str());
+		}
+		static bool func_unsigned_number(const char* source)
+		{
+			require_non_empty(source);
+			for (auto lpchar = source; *lpchar != '\0'; ++lpchar)
+			{
+				if (!is_digit(*lpchar))
 				{
 					throw std::string("isdigit fail");
 				}
@@ -82,15 +121,14 @@ namespace ngl
 		}
 		static bool func_float(const char* source)
 		{
+			require_non_empty(source);
 			bool ldian = false;
+			bool saw_digit = false;
 			for (auto lpchar = source; *lpchar != '\0'; ++lpchar)
 			{
-				if (source == lpchar)
+				if (source == lpchar && is_sign(*lpchar))
 				{
-					if (*lpchar == '-' || *lpchar == '+')
-					{
-						continue;
-					}
+					continue;
 				}
 				if (*lpchar == '.')
 				{
@@ -99,11 +137,17 @@ namespace ngl
 						throw std::string("isdigit fail");
 					}
 					ldian = true;
+					continue;
 				}
-				if (!std::isdigit(*lpchar))
+				if (!is_digit(*lpchar))
 				{
 					throw std::string("isdigit fail");
 				}
+				saw_digit = true;
+			}
+			if (!saw_digit)
+			{
+				throw std::string("missing digits");
 			}
 			return true;
 		}
@@ -129,12 +173,12 @@ namespace ngl
 	{
 		static uint32_t fun(const std::string& source)
 		{
-			lexical_check::func_number(source);
+			lexical_check::func_unsigned_number(source);
 			return atoi(source.c_str());
 		}
 		static uint32_t fun(const char* source)
 		{
-			lexical_check::func_number(source);
+			lexical_check::func_unsigned_number(source);
 			return atoi(source);
 		}
 	};
@@ -159,12 +203,12 @@ namespace ngl
 	{
 		static uint16_t fun(const std::string& source)
 		{
-			lexical_check::func_number(source);
+			lexical_check::func_unsigned_number(source);
 			return atoi(source.c_str());
 		}
 		static uint16_t fun(const char* source)
 		{
-			lexical_check::func_number(source);
+			lexical_check::func_unsigned_number(source);
 			return atoi(source);
 		}
 	};
@@ -189,12 +233,12 @@ namespace ngl
 	{
 		static uint8_t fun(const std::string& source)
 		{
-			lexical_check::func_number(source);
+			lexical_check::func_unsigned_number(source);
 			return atoi(source.c_str());
 		}
 		static uint8_t fun(const char* source)
 		{
-			lexical_check::func_number(source);
+			lexical_check::func_unsigned_number(source);
 			return atoi(source);
 		}
 	};
@@ -220,13 +264,13 @@ namespace ngl
 	{
 		static uint64_t fun(const std::string& source)
 		{
-			lexical_check::func_number(source);
+			lexical_check::func_unsigned_number(source);
 			return atoll(source.c_str());
 		}
 
 		static uint64_t fun(const char* source)
 		{
-			lexical_check::func_number(source);
+			lexical_check::func_unsigned_number(source);
 			return atoll(source);
 		}
 	};

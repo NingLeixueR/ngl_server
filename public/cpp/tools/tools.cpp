@@ -592,26 +592,6 @@ namespace ngl
 			return false;
 		}
 		return false;
-
-		int nPos = 0;
-		while (true) 
-		{
-			if (nPos >= astr.size()) 
-			{
-				break;
-			}
-			int nCount = utf8firstbyte(astr[nPos]);
-			if (nCount == 0)
-			{//不是utf8编码
-				return false;
-			}
-			if (nCount >= 4) 
-			{
-				return true;
-			}
-			nPos += nCount;
-		}
-		return false;
 	}
 
 	void tools::sregex(const std::string& apattern, const std::string& adata, const std::function<void(std::string&)>& afun)
