@@ -30,16 +30,21 @@
 #include <iomanip>
 #include <sstream>
 #include <cstdio>
+#include <cstdlib>
 #include <string>
 #include <vector>
 #include <locale>
 #include <string>
 #include <random>
+#include <memory>
 
 #if defined(_WIN32)
 #include <objbase.h>
 #else
 #include <uuid/uuid.h>
+#if defined(__GNUC__) || defined(__clang__)
+#include <cxxabi.h>
+#endif
 #endif
 
 constexpr auto GUID_LEN = 64;
@@ -1958,6 +1963,18 @@ namespace ngl
 {
 	std::string& tools::type_name_handle(std::string& aname)
 	{
+#if defined(__GNUC__) || defined(__clang__)
+		int demangle_status = 0;
+		std::unique_ptr<char, void(*)(void*)> demangled_name(
+			abi::__cxa_demangle(aname.c_str(), nullptr, nullptr, &demangle_status),
+			std::free
+		);
+		if (demangle_status == 0 && demangled_name != nullptr)
+		{
+			aname = demangled_name.get();
+		}
+#endif
+
 		ngl::tools::replace("struct ", "", aname, aname);
 		ngl::tools::replace("class ", "", aname, aname);
 		ngl::tools::replace("ngl::", "", aname, aname);
