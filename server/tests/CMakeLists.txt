@@ -11,10 +11,12 @@ endif()
 file(GLOB_RECURSE NGL_TEST_CORE_PROTOBUF_CSRC CONFIGURE_DEPENDS
 	${CMAKE_SOURCE_DIR}/public/*.cc
 )
+list(SORT NGL_TEST_CORE_PROTOBUF_CSRC)
 
 file(GLOB NGL_TEST_CASE_SRCS CONFIGURE_DEPENDS
 	${CMAKE_CURRENT_SOURCE_DIR}/*_gtest.cpp
 )
+list(SORT NGL_TEST_CASE_SRCS)
 
 if(NOT NGL_TEST_CASE_SRCS)
 	message(FATAL_ERROR "No *_gtest.cpp files found under server/tests")
@@ -36,12 +38,10 @@ target_link_libraries(ngl_test PRIVATE
 	ngl_build_options
 	${NGL_GTEST_MAIN_TARGET}
 )
-set_target_properties(ngl_test PROPERTIES FOLDER "CMakeTargets")
-
 ngl_apply_runtime_deps(ngl_test PRIVATE)
 ngl_apply_msvc_defaults(ngl_test)
 
 add_test(NAME ngl_test COMMAND ngl_test)
 set_tests_properties(ngl_test PROPERTIES
-	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	WORKING_DIRECTORY $<TARGET_FILE_DIR:ngl_test>
 )

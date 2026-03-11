@@ -16,6 +16,14 @@ if(BUILD_TESTING)
 	enable_testing()
 endif()
 
+if(DEFINED ENV{GITHUB_ACTIONS} AND "$ENV{GITHUB_ACTIONS}" STREQUAL "true")
+	set(NGL_IS_LOCAL_BUILD OFF)
+	message(STATUS "Build environment: GitHub Actions CI")
+else()
+	set(NGL_IS_LOCAL_BUILD ON)
+	message(STATUS "Build environment: Local development")
+endif()
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Keep predefined targets (ALL_BUILD / ZERO_CHECK / INSTALL) at solution top level.
 set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "")

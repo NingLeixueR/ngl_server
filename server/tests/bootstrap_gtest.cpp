@@ -1,8 +1,10 @@
 #include <gtest/gtest.h>
 
+#include <filesystem>
 #include <format>
 #include <mutex>
 #include <string>
+#include <vector>
 
 #include "actor/tab/ttab_servers.h"
 #include "tools/tab/csv/ncsv.h"
@@ -10,13 +12,78 @@
 
 namespace
 {
+struct RuntimePaths
+{
+	const char* config_root;
+	const char* csv_root;
+};
+
+bool file_exists(const std::filesystem::path& path)
+{
+	std::error_code ec;
+	return std::filesystem::is_regular_file(path, ec);
+}
+
+bool candidate_usable(const RuntimePaths& candidate)
+{
+	namespace fs = std::filesystem;
+	std::error_code ec;
+	if (!fs::is_directory(candidate.config_root, ec) || !fs::is_directory(candidate.csv_root, ec))
+	{
+		return false;
+	}
+
+	const fs::path config_root(candidate.config_root);
+	const fs::path csv_root(candidate.csv_root);
+	const bool has_config =
+		file_exists(config_root / "config.xml") ||
+		file_exists(config_root / "config" / "config.xml");
+	const bool has_servers_csv = file_exists(csv_root / "tab_servers.csv");
+	return has_config && has_servers_csv;
+}
+
+bool resolve_runtime_paths(std::string& config_root, std::string& csv_root, std::string& err)
+{
+	namespace fs = std::filesystem;
+
+	static const std::vector<RuntimePaths> kCandidates = {
+		{ "./config", "./csv" },
+		{ "./bin/Debug/config", "./bin/Debug/csv" },
+		{ "./bin/Release/config", "./bin/Release/csv" },
+		{ "./bin/RelWithDebInfo/config", "./bin/RelWithDebInfo/csv" },
+		{ "./bin/MinSizeRel/config", "./bin/MinSizeRel/csv" },
+		{ "./bin/configure/config", "./bin/configure/csv" }
+	};
+
+	for (const RuntimePaths& candidate : kCandidates)
+	{
+		if (candidate_usable(candidate))
+		{
+			config_root = candidate.config_root;
+			csv_root = candidate.csv_root;
+			return true;
+		}
+	}
+
+	std::error_code ec;
+	const fs::path cwd = fs::current_path(ec);
+	const std::string cwd_text = ec ? "<unknown>" : cwd.string();
+	err = std::format("unable to locate config/csv directories from cwd={}", cwd_text);
+	return false;
+}
+
 bool init_test_runtime(std::string& err)
 {
 	constexpr const char* kNodeName = "db";
 	constexpr int kArea = 1;
 	constexpr int kTcount = 1;
-	constexpr const char* kConfigRoot = "./bin/Debug/config";
-	constexpr const char* kCsvRoot = "./bin/Debug/csv";
+
+	std::string config_root;
+	std::string csv_root;
+	if (!resolve_runtime_paths(config_root, csv_root, err))
+	{
+		return false;
+	}
 
 	nconfig.init();
 	if (!nconfig.set_server(kNodeName))
@@ -25,13 +92,13 @@ bool init_test_runtime(std::string& err)
 		return false;
 	}
 
-	if (!nconfig.load(kConfigRoot, std::format("{}_{}", kNodeName, kTcount)))
+	if (!nconfig.load(config_root, std::format("{}_{}", kNodeName, kTcount)))
 	{
 		err = std::format("nconfig.load failed: {}", nconfig.config_file());
 		return false;
 	}
 
-	ngl::csv_base::set_path(kCsvRoot, kNodeName);
+	ngl::csv_base::set_path(csv_root, kNodeName);
 	const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab(kNodeName, kArea);
 	if (tab == nullptr)
 	{
