@@ -48,10 +48,6 @@ bool resolve_runtime_paths(std::string& config_root, std::string& csv_root, std:
 
 	static const std::vector<RuntimePaths> kCandidates = {
 		{ "./config", "./csv" },
-		{ "./bin/Debug/config", "./bin/Debug/csv" },
-		{ "./bin/Release/config", "./bin/Release/csv" },
-		{ "./bin/RelWithDebInfo/config", "./bin/RelWithDebInfo/csv" },
-		{ "./bin/MinSizeRel/config", "./bin/MinSizeRel/csv" },
 		{ "./bin/configure/config", "./bin/configure/csv" }
 	};
 
