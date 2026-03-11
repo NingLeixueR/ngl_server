@@ -13,7 +13,7 @@
 */
 
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 26-03-06 11:10:06
+// 创建时间 // 创建时间 26-03-11 17:35:50
 #pragma once
 
 #include "actor/actor_base/ndb_modular.h"
