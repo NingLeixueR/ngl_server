@@ -18,6 +18,11 @@
 #include "tools/tab/json/njson.h"
 #include "lua.hpp"
 
+#include <array>
+#include <atomic>
+#include <string>
+#include <tuple>
+
 #define DEF_PROTOCOL(...)														\
 	bool push_format(ngl::ser::serialize_push* aser)const						\
 	{																			\
@@ -39,9 +44,9 @@
 #define DEF_PARMNAME_(ISMG,...)																		\
 static std::array<const char*, NUMARGS(__VA_ARGS__)>& parms()										\
 {																									\
-	static std::array<const char*, NUMARGS(__VA_ARGS__)> tempvec;									\
+	static std::array<const char*, NUMARGS(__VA_ARGS__)> tempvec{};									\
 	static std::string tempstr(#__VA_ARGS__);														\
-	static std::atomic lregister = true;															\
+	static std::atomic_bool lregister = true;														\
 	if (lregister.exchange(false) && !tempstr.empty())												\
 	{																								\
 		ngl::tools::split_str<NUMARGS(__VA_ARGS__)>(&tempstr[0], (int32_t)tempstr.size(), tempvec);	\
