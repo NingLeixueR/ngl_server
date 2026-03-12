@@ -48,11 +48,13 @@ namespace ngl
 		std::function<void(i32_session)>	m_connectfun = nullptr;
 		bpool								m_pool;
 		basio::io_context					m_context;
+		basio_ioservicework					m_work_guard;
 		asio_udp::socket					m_socket;
 		asio_udp_endpoint					m_remoteport;
 		char								m_buff[e_buff_byte] = { 0 };
 		std::size_t							m_bytes_received = 0;
 		char								m_buffrecv[e_buffrecv_byte] = { 0 };
+		std::mutex							m_waitmutex;
 		std::function<void(char*, int)>		m_wait = nullptr;
 		asio_udp_endpoint					m_waitendpoint;
 		i16_port							m_port = 0;
@@ -61,8 +63,10 @@ namespace ngl
 	public:
 		explicit asio_kcp(i16_port port);
 
-		~asio_kcp() = default;
+		~asio_kcp();
 	private:
+		bool async_send_copy(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(const basio_errorcode&)>& aerrorfun = {});
+
 		void func_ecmd_connect()const;
 
 		void func_ecmd_connect_ret()const;

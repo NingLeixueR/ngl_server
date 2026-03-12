@@ -76,19 +76,19 @@ namespace ngl
 
 		~asio_tcp();
 	private:
-		service_tcp* get_tcp(i32_sessionid asessionid);
+		std::shared_ptr<service_tcp> get_tcp(i32_sessionid asessionid);
 
 		template <typename T>
 		bool spack(i32_sessionid asessionid, std::shared_ptr<T>& apack);
 
 		template <typename TPACK>
-		void async_send(service_tcp* atcp, const std::shared_ptr<std::list<node_pack>>& alist, std::shared_ptr<TPACK>& apack, char* abuff, int32_t abufflen);
+		void async_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<std::list<node_pack>>& alist, std::shared_ptr<TPACK>& apack, char* abuff, int32_t abufflen);
 
-		void do_send(service_tcp* atcp, const std::shared_ptr<std::list<node_pack>>& alist);
+		void do_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<std::list<node_pack>>& alist);
 
-		void handle_write(service_tcp* atcp, const basio_errorcode& error, std::shared_ptr<pack> apack);
+		void handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, std::shared_ptr<pack> apack);
 
-		void handle_write(service_tcp* atcp, const basio_errorcode& error, std::shared_ptr<void> apack);
+		void handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, std::shared_ptr<void> apack);
 
 		void close_socket(basio_iptcpsocket& socket);
 

@@ -50,6 +50,55 @@ namespace ngl
 	template <typename TDATA>
 	using mforward = np_actormodule_forward<TDATA>;
 
+	namespace detail
+	{
+		template <typename T>
+		using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
+
+		template <typename T>
+		inline constexpr bool is_char_pointer_v =
+			std::is_pointer_v<remove_cvref_t<T>> &&
+			std::is_same_v<std::remove_cv_t<std::remove_pointer_t<remove_cvref_t<T>>>, char>;
+
+		template <typename T>
+		inline constexpr bool is_char_array_v =
+			std::is_array_v<remove_cvref_t<T>> &&
+			std::is_same_v<std::remove_cv_t<std::remove_extent_t<remove_cvref_t<T>>>, char>;
+
+		template <typename T>
+		inline constexpr bool is_string_like_v =
+			std::is_same_v<remove_cvref_t<T>, std::string> ||
+			std::is_same_v<remove_cvref_t<T>, std::string_view> ||
+			is_char_pointer_v<T> ||
+			is_char_array_v<T>;
+
+		template <typename T>
+		static std::string_view as_string_view(const T& avalue)
+		{
+			if constexpr (std::is_same_v<remove_cvref_t<T>, std::string> || std::is_same_v<remove_cvref_t<T>, std::string_view>)
+			{
+				return std::string_view(avalue);
+			}
+			else if constexpr (is_char_pointer_v<T>)
+			{
+				return avalue != nullptr ? std::string_view(avalue) : std::string_view{};
+			}
+			else
+			{
+				return std::string_view(avalue);
+			}
+		}
+
+		inline char first_non_space(std::string_view avalue)
+		{
+			const auto liter = std::find_if_not(avalue.begin(), avalue.end(), [](unsigned char achar)
+			{
+				return std::isspace(achar) != 0;
+			});
+			return liter == avalue.end() ? '\0' : *liter;
+		}
+	}
+
 	class tools
 	{
 		tools() = delete;
@@ -144,6 +193,28 @@ namespace ngl
 		template <typename To, typename From>
 		static To lexical_cast(const From& from, const std::source_location& asource = std::source_location::current())
 		{
+			if constexpr (std::is_integral_v<To> && std::is_unsigned_v<To>)
+			{
+				if constexpr (std::is_integral_v<detail::remove_cvref_t<From>> && std::is_signed_v<detail::remove_cvref_t<From>>)
+				{
+					if (from < 0)
+					{
+						const boost::bad_lexical_cast lerror(typeid(From), typeid(To));
+						log_lexical_cast_error(typeid(To).name(), typeid(From).name(), lerror.what(), asource);
+						throw lerror;
+					}
+				}
+				else if constexpr (detail::is_string_like_v<From>)
+				{
+					if (detail::first_non_space(detail::as_string_view(from)) == '-')
+					{
+						const boost::bad_lexical_cast lerror(typeid(From), typeid(To));
+						log_lexical_cast_error(typeid(To).name(), typeid(From).name(), lerror.what(), asource);
+						throw lerror;
+					}
+				}
+			}
+
 			try
 			{
 				return boost::lexical_cast<To>(from);
@@ -151,7 +222,7 @@ namespace ngl
 			catch (const boost::bad_lexical_cast& aerror)
 			{
 				log_lexical_cast_error(typeid(To).name(), typeid(From).name(), aerror.what(), asource);
-				throw std::string("lexical_cast error");
+				throw;
 			}
 		}
 		
@@ -233,9 +304,16 @@ namespace ngl
 			}
 			std::vector<T> lparsed;
 			lparsed.reserve(lvec.size());
-			for (auto& item : lvec)
+			try
 			{
-				lparsed.push_back(tools::lexical_cast<T>(item.c_str()));
+				for (auto& item : lvec)
+				{
+					lparsed.push_back(tools::lexical_cast<T>(item.c_str()));
+				}
+			}
+			catch (const boost::bad_lexical_cast&)
+			{
+				throw std::string("lexical_cast error");
 			}
 			avec = std::move(lparsed);
 			return true;
@@ -250,9 +328,16 @@ namespace ngl
 				return false;
 			}
 			std::set<T> lparsed;
-			for (auto& item : lvec)
+			try
 			{
-				lparsed.insert(tools::lexical_cast<T>(item.c_str()));
+				for (auto& item : lvec)
+				{
+					lparsed.insert(tools::lexical_cast<T>(item.c_str()));
+				}
+			}
+			catch (const boost::bad_lexical_cast&)
+			{
+				throw std::string("lexical_cast error");
 			}
 			aset = std::move(lparsed);
 			return true;

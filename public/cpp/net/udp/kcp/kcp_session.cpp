@@ -18,9 +18,12 @@
 #include "net/udp/kcp/asio_kcp.h"
 #include "tools/log/nlog.h"
 
+#include <set>
+#include <vector>
+
 namespace ngl
 {
-	int udp_output(const char* buf, int len, ikcpcb* kcp, void* user)
+	int udp_output(const char* buf, int len, ikcpcb*, void* user)
 	{
 		const auto lpstruct = (kcp_endpoint*)user;
 		lpstruct->m_asiokcp->sendbuff(lpstruct->m_endpoint, buf, len);
@@ -58,6 +61,28 @@ namespace ngl
 		return ltemp;
 	}
 
+	ptr_se kcp_session::erase_session_nolock(i32_sessionid asession)
+	{
+		ptr_se lpse = nullptr;
+		if (!tools::erasemap(m_dataofsession, asession, lpse) || lpse == nullptr)
+		{
+			return nullptr;
+		}
+
+		if (auto endpoint_map = tools::findmap(m_dataofendpoint, lpse->m_ip); endpoint_map != nullptr)
+		{
+			endpoint_map->erase(lpse->m_port);
+			if (endpoint_map->empty())
+			{
+				m_dataofendpoint.erase(lpse->m_ip);
+			}
+		}
+
+		m_actoridofsession.erase(lpse->m_client);
+		m_actoridofsession.erase(lpse->m_server);
+		return lpse;
+	}
+
 	ptr_se kcp_session::add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient)
 	{
 		if (aconv <= 0)
@@ -72,7 +97,10 @@ namespace ngl
 
 		{
 			lock_write(m_mutex);
-			erasebyaactorid(aactoridclient);
+			if (auto lsessionid = tools::findmap(m_actoridofsession, aactoridclient); lsessionid != nullptr)
+			{
+				erase_session_nolock(*lsessionid);
+			}
 			i32_sessionid lsessionid = ++m_sessionid;
 			m_dataofsession[lsessionid] = ltemp;
 			ltemp->m_session = lsessionid;
@@ -111,36 +139,18 @@ namespace ngl
 	void kcp_session::erasebysession(i32_sessionid asession)
 	{
 		lock_write(m_mutex);
-		ptr_se lpse = nullptr;
-		if (tools::erasemap(m_dataofsession, asession, lpse))
-		{
-			if (!tools::erasemap(m_dataofendpoint[lpse->m_ip], lpse->m_port, lpse))
-			{
-				log_error()->print("kcp_session erasebysession fail ip:{} port:{}", lpse->m_ip, lpse->m_port);
-			}
-			i32_sessionid lsession = 0;
-			if (!tools::erasemap(m_actoridofsession, lpse->m_client, lsession))
-			{
-				log_error()->print("kcp_session erasebysession fail session:{}", asession);
-			}
-			if (lsession != asession)
-			{
-				log_error()->print("kcp_session erasebysession fail session1:{} session2:{}", lsession, asession);
-			}
-		}
+		erase_session_nolock(asession);
 	}
 
 	void kcp_session::erasebyaactorid(i64_actorid aactorid)
 	{
-		i32_sessionid lsessionid = 0;
-		if (!tools::erasemap(m_actoridofsession, aactorid, lsessionid))
+		lock_write(m_mutex);
+		auto lsessionid = tools::findmap(m_actoridofsession, aactorid);
+		if (lsessionid == nullptr)
 		{
-			ptr_se lpse = nullptr;
-			if (tools::erasemap(m_dataofsession, lsessionid, lpse))
-			{
-				tools::erasemap(m_dataofendpoint[lpse->m_ip], lpse->m_port, lpse);
-			}
+			return;
 		}
+		erase_session_nolock(*lsessionid);
 	}
 
 	ptr_se kcp_session::find_info(i32_sessionid asession)
@@ -206,24 +216,51 @@ namespace ngl
 
 	void kcp_session::foreach(const std::function<void(ptr_se&)>& acall)
 	{
-		for (auto& [_session, _se] : m_dataofsession)
+		std::vector<ptr_se> lsessions;
 		{
-			acall(_se);
+			lock_read(m_mutex);
+			lsessions.reserve(m_dataofsession.size());
+			for (auto& [_session, _se] : m_dataofsession)
+			{
+				lsessions.push_back(_se);
+			}
+		}
+
+		for (auto& session : lsessions)
+		{
+			acall(session);
 		}
 	}
 
 	void kcp_session::foreachbyarea(i16_area aarea, const std::function<void(ptr_se&)>& acall)
 	{
-		for (std::pair<const i64_actorid, i32_sessionid>& lpair : m_actoridofsession)
+		std::vector<ptr_se> lsessions;
 		{
-			if (nguid::area(lpair.first) == aarea)
+			lock_read(m_mutex);
+			std::set<i32_sessionid> lvisited;
+			for (const std::pair<const i64_actorid, i32_sessionid>& lpair : m_actoridofsession)
 			{
-				ptr_se lptr = find(lpair.first);
+				if (nguid::area(lpair.first) != aarea)
+				{
+					continue;
+				}
+
+				if (!lvisited.insert(lpair.second).second)
+				{
+					continue;
+				}
+
+				ptr_se lptr = find_info(lpair.second);
 				if (lptr != nullptr)
 				{
-					acall(lptr);
+					lsessions.push_back(lptr);
 				}
 			}
+		}
+
+		for (auto& session : lsessions)
+		{
+			acall(session);
 		}
 	}
 }//namespace ngl

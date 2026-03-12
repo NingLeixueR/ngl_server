@@ -17,10 +17,26 @@
 #include "net/udp/kcp/ukcp.h"
 #include "tools/cmd.h"
 
+#include <vector>
+
 #define USE_WHEEL_TIMER
 
 namespace ngl
 {
+	namespace
+	{
+		using udp_payload = std::shared_ptr<std::vector<char>>;
+
+		udp_payload make_udp_payload(const char* buf, int len)
+		{
+			if (buf == nullptr || len <= 0)
+			{
+				return nullptr;
+			}
+			return std::make_shared<std::vector<char>>(buf, buf + len);
+		}
+	}
+
 	//## udp_cmd::ecmd_connect
 	void asio_kcp::func_ecmd_connect()const
 	{
@@ -54,10 +70,13 @@ namespace ngl
 	//## udp_cmd::ecmd_connect_ret
 	void asio_kcp::func_ecmd_connect_ret()const
 	{
-		udp_cmd::register_fun(udp_cmd::ecmd_connect_ret, [](asio_kcp* ap, ptr_se& apstruct, const std::string& ajson)
+		udp_cmd::register_fun(udp_cmd::ecmd_connect_ret, [](asio_kcp* ap, ptr_se& apstruct, const std::string&)
 			{
 				apstruct->m_isconnect = true;
-				ap->m_connectfun(apstruct->m_session);
+				if (ap->m_connectfun != nullptr)
+				{
+					ap->m_connectfun(apstruct->m_session);
+				}
 			}
 		);
 	}
@@ -85,17 +104,60 @@ namespace ngl
 	}
 
 	asio_kcp::asio_kcp(i16_port port)
-		: m_context()
-		, m_port(port)
+		: m_session(this)
+		, m_context()
+		, m_work_guard(basio::make_work_guard(m_context))
 		, m_socket(m_context, asio_udp_endpoint(asio_udp::v4(), port))
-		, m_session(this)
-		, m_thread([this](){m_context.run();})
+		, m_port(port)
 	{
 		func_ecmd_connect();
 		func_ecmd_connect_ret();
 		func_ecmd_close();
 
 		start();
+		m_thread = std::jthread([this](std::stop_token)
+			{
+				m_context.run();
+			}
+		);
+	}
+
+	asio_kcp::~asio_kcp()
+	{
+		{
+			std::lock_guard<std::mutex> llock(m_waitmutex);
+			m_wait = nullptr;
+			m_waitendpoint = asio_udp_endpoint();
+		}
+
+		basio_errorcode ec;
+		m_socket.cancel(ec);
+		m_socket.close(ec);
+		m_work_guard.reset();
+		m_context.stop();
+	}
+
+	bool asio_kcp::async_send_copy(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(const basio_errorcode&)>& aerrorfun)
+	{
+		const udp_payload lpayload = make_udp_payload(buf, len);
+		if (lpayload == nullptr)
+		{
+			std::lock_guard<std::mutex> llock(m_waitmutex);
+			m_wait = nullptr;
+			m_waitendpoint = asio_udp_endpoint();
+			return false;
+		}
+
+		m_socket.async_send_to(basio::buffer(*lpayload), aendpoint,
+			[lpayload, aerrorfun](const basio_errorcode& ec, std::size_t)
+			{
+				if (ec && aerrorfun != nullptr)
+				{
+					aerrorfun(ec);
+				}
+			}
+		);
+		return true;
 	}
 
 	bool asio_kcp::sempack(const ptr_se& apstruct, const char* abuff, int abufflen)
@@ -153,11 +215,20 @@ namespace ngl
 				m_bytes_received = bytes_received;
 				if (!ec && bytes_received > 0)
 				{
-					if (m_wait != nullptr && m_remoteport == m_waitendpoint)
+					std::function<void(char*, int)> lwait = nullptr;
 					{
-						m_wait(m_buff, (int)bytes_received);
-						m_waitendpoint = asio_udp_endpoint();
-						m_wait = nullptr;
+						std::lock_guard<std::mutex> llock(m_waitmutex);
+						if (m_wait != nullptr && m_remoteport == m_waitendpoint)
+						{
+							lwait = m_wait;
+							m_waitendpoint = asio_udp_endpoint();
+							m_wait = nullptr;
+						}
+					}
+
+					if (lwait != nullptr)
+					{
+						lwait(m_buff, static_cast<int>(bytes_received));
 					}
 					else
 					{
@@ -224,6 +295,14 @@ namespace ngl
 							}
 						}
 					}
+				}
+				else if (ec && ec != basio::error::operation_aborted)
+				{
+					log_error()->print("asio_kcp::receive error [{}]", ec.message());
+				}
+
+				if (m_socket.is_open() && ec != basio::error::operation_aborted)
+				{
 					start();
 				}
 			});
@@ -232,7 +311,7 @@ namespace ngl
 	// ## 发送原始udp包
 	bool asio_kcp::sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len)
 	{
-		m_socket.async_send_to(basio::buffer(buf, len), aendpoint, [](const basio_errorcode& ec, std::size_t bytes_received)
+		return async_send_copy(aendpoint, buf, len, [](const basio_errorcode& ec)
 			{
 				if (ec)
 				{
@@ -240,14 +319,23 @@ namespace ngl
 				}
 			}
 		);
-		return true;
 	}
 
 	bool asio_kcp::sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun)
 	{
-		m_wait = afun;
-		m_waitendpoint = aendpoint;
-		m_socket.async_send_to(basio::buffer(buf, len), aendpoint, [this, aendpoint, buf, len, afun](const basio_errorcode& ec, std::size_t bytes_received)
+		{
+			std::lock_guard<std::mutex> llock(m_waitmutex);
+			m_wait = afun;
+			m_waitendpoint = aendpoint;
+		}
+
+		const udp_payload lpayload = make_udp_payload(buf, len);
+		if (lpayload == nullptr)
+		{
+			return false;
+		}
+
+		m_socket.async_send_to(basio::buffer(*lpayload), aendpoint, [this, aendpoint, lpayload, afun](const basio_errorcode& ec, std::size_t)
 			{
 				if (ec)
 				{
@@ -258,9 +346,9 @@ namespace ngl
 						.m_ms = e_waitrecv_intervalms,
 						.m_intervalms = [](int64_t) {return e_waitrecv_intervalms; } ,
 						.m_count = 1,
-						.m_fun = [this, aendpoint, buf, len, afun](const wheel_node*)
+						.m_fun = [this, aendpoint, lpayload, afun](const wheel_node*)
 						{
-							sendu_waitrecv(aendpoint, buf, len, afun);
+							sendu_waitrecv(aendpoint, lpayload->data(), static_cast<int>(lpayload->size()), afun);
 						}
 					};
 					m_kcptimer.addtimer(lparm);
@@ -295,7 +383,7 @@ namespace ngl
 
 	bool asio_kcp::sendpackbyarea(i16_area aarea, const std::shared_ptr<pack>& apack)
 	{
-		m_session.foreach([this, &apack, aarea](ptr_se& aptr)
+		m_session.foreachbyarea(aarea, [this, &apack](ptr_se& aptr)
 			{
 				send(aptr->m_endpoint, apack->m_buff, apack->m_len);
 			}
@@ -349,30 +437,32 @@ namespace ngl
 	int asio_kcp::sendbuff(i32_session asession, const char* buf, int len)
 	{
 		ptr_se lpstruct = m_session.find(asession);
-		m_socket.async_send_to(basio::buffer(buf, len), lpstruct->m_endpoint, 
-			[](const basio_errorcode& ec, std::size_t)
+		if (lpstruct == nullptr)
+		{
+			return -1;
+		}
+		return async_send_copy(lpstruct->m_endpoint, buf, len,
+			[](const basio_errorcode& ec)
 			{
 				if (ec)
 				{
 					log_error()->print("asio_kcp::sendbuff error [{}]", ec.message());
 				}
 			}
-		);
-		return 0;
+		) ? 0 : -1;
 	}
 
 	int asio_kcp::sendbuff(const asio_udp_endpoint& aendpoint, const char* buf, int len)
 	{
-		m_socket.async_send_to(basio::buffer(buf, len), aendpoint, 
-			[](const basio_errorcode& ec, std::size_t)
+		return async_send_copy(aendpoint, buf, len,
+			[](const basio_errorcode& ec)
 			{
 				if (ec)
 				{
 					log_error()->print("asio_kcp::sendbuff error [{}]", ec.message());
 				}
 			}
-		);
-		return 0;
+		) ? 0 : -1;
 	}
 
 	void asio_kcp::connect(int32_t aconv
@@ -400,8 +490,8 @@ namespace ngl
 		ptr_se lpstruct = m_session.add(aconv, aendpoint, aserver, aclient);
 		ncjson ltempjson;
 		njson::push(ltempjson, { "actoridserver","actoridclient","session" }, aserver, aclient, akcpsess);
-		udp_cmd::sendcmd(this, lpstruct->m_session, udp_cmd::ecmd_connect, ltempjson.nonformat_str());
 		m_connectfun = afun;
+		udp_cmd::sendcmd(this, lpstruct->m_session, udp_cmd::ecmd_connect, ltempjson.nonformat_str());
 	}
 
 	i64_actorid asio_kcp::find_server(i32_session asession)

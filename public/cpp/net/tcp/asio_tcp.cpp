@@ -22,6 +22,17 @@
 
 namespace ngl
 {
+	namespace
+	{
+		constexpr int32_t tcp_connect_interval_ms =
+			asio_tcp::etcp_connect_interval * static_cast<int32_t>(localtime::MILLISECOND);
+
+		bool should_ignore_socket_close_error(const basio_errorcode& ec)
+		{
+			return !ec || ec == basio::error::not_connected || ec == basio::error::operation_aborted;
+		}
+	}
+
 	asio_tcp::asio_tcp(
 		i16_port aport
 		, i32_threadsize athread
@@ -56,7 +67,7 @@ namespace ngl
 		m_fun(acallfun),
 		m_closefun(aclosefun),
 		m_sendfinishfun(asendfinishfun),
-		m_port(-1),
+		m_port(0),
 		m_service_ios(athread + 1, etcp_buffmaxsize),
 		m_sessionid(0),
 		m_acceptor_v4(nullptr),
@@ -130,10 +141,10 @@ namespace ngl
 						// 加入定时队列
 						wheel_parm lparm
 						{
-							.m_ms = etcp_connect_interval * localtime::MILLISECOND,
-							.m_intervalms = [](int64_t) {return etcp_connect_interval * localtime::MILLISECOND; } ,
+							.m_ms = tcp_connect_interval_ms,
+							.m_intervalms = [](int64_t) { return tcp_connect_interval_ms; },
 							.m_count = 1,
-							.m_fun = [this, aip, aport, afun, acount](const wheel_node* anode)
+							.m_fun = [this, aip, aport, afun, acount](const wheel_node*)
 							{
 								connect(aip, aport, afun, acount - 1);
 							}
@@ -147,7 +158,18 @@ namespace ngl
 					return;
 				}
 
-				const auto& lremote_endpoint = lservice->m_socket.remote_endpoint();
+				basio_errorcode endpoint_ec;
+				const auto lremote_endpoint = lservice->m_socket.remote_endpoint(endpoint_ec);
+				if (endpoint_ec)
+				{
+					close_net(lservice->m_sessionid);
+					log_error()->print("asio_tcp::connect remote_endpoint [{}]", endpoint_ec.message());
+					if (afun != nullptr)
+					{
+						afun(-1);
+					}
+					return;
+				}
 				std::string lip = lremote_endpoint.address().to_string();
 				i16_port lport = lremote_endpoint.port();
 				bool llanip = tools::is_lanip(lip);
@@ -166,17 +188,17 @@ namespace ngl
 		return lservice.get();
 	}
 
-	service_tcp* asio_tcp::get_tcp(i32_sessionid asessionid)
+	std::shared_ptr<service_tcp> asio_tcp::get_tcp(i32_sessionid asessionid)
 	{
-		lock_write(m_maplock);
+		lock_read(m_maplock);
 		std::shared_ptr<service_tcp>* lp = tools::findmap(m_data, asessionid);
-		return lp == nullptr ? nullptr : lp->get();
+		return lp == nullptr ? nullptr : *lp;
 	}
 
 	template <typename T>
 	bool asio_tcp::spack(i32_sessionid asessionid, std::shared_ptr<T>& apack)
 	{
-		service_tcp* tcp = get_tcp(asessionid);
+		const std::shared_ptr<service_tcp> tcp = get_tcp(asessionid);
 		if (tcp == nullptr)
 		{
 			return false;
@@ -211,7 +233,7 @@ namespace ngl
 
 	template <typename TPACK>
 	void asio_tcp::async_send(
-		service_tcp* atcp
+		const std::shared_ptr<service_tcp>& atcp
 		, const std::shared_ptr<std::list<node_pack>>& alist
 		, std::shared_ptr<TPACK>& apack
 		, char* abuff
@@ -232,8 +254,13 @@ namespace ngl
 		);
 	}
 
-	void asio_tcp::do_send(service_tcp* atcp, const std::shared_ptr<std::list<node_pack>>& alist)
+	void asio_tcp::do_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<std::list<node_pack>>& alist)
 	{
+		if (atcp == nullptr)
+		{
+			return;
+		}
+
 		if (alist->empty())
 		{
 			{
@@ -251,56 +278,60 @@ namespace ngl
 		}
 
 		node_pack& item = *alist->begin();
-		if (atcp != nullptr)
+		if (item.is_pack())
 		{
-			if (item.is_pack())
-			{//pack
-				std::shared_ptr<pack>& lpack = item.get_pack();
-				int32_t lsize = 0;
-				int32_t lpos = 0;
-				if (lpack->m_pos != lpack->m_len)
-				{
-					lsize = lpack->m_len - lpack->m_pos;
-					lpos = lpack->m_pos;
-				}
-				else
-				{
-					lsize = lpack->m_pos;
-					lpos = 0;
-				}
-				if (lsize < 0)
-				{
-					return;
-				}
-				async_send(atcp, alist, lpack, &lpack->m_buff[lpos], lsize);
+			std::shared_ptr<pack>& lpack = item.get_pack();
+			int32_t lsize = 0;
+			int32_t lpos = 0;
+			if (lpack->m_pos != lpack->m_len)
+			{
+				lsize = lpack->m_len - lpack->m_pos;
+				lpos = lpack->m_pos;
 			}
 			else
 			{
-				std::shared_ptr<void>& lpack = item.get_voidpack();
-				pack* lpackptr = (pack*)lpack.get();
-				async_send(atcp, alist, lpack, lpackptr->m_buff, lpackptr->m_pos);
+				lsize = lpack->m_pos;
+				lpos = 0;
 			}
+			if (lsize < 0)
+			{
+				close(atcp.get());
+				return;
+			}
+			async_send(atcp, alist, lpack, &lpack->m_buff[lpos], lsize);
+		}
+		else
+		{
+			std::shared_ptr<void>& lpack = item.get_voidpack();
+			pack* lpackptr = static_cast<pack*>(lpack.get());
+			async_send(atcp, alist, lpack, lpackptr->m_buff, lpackptr->m_pos);
 		}
 	}
 
-	void asio_tcp::handle_write(service_tcp* atcp, const basio_errorcode& error, std::shared_ptr<pack> apack)
+	void asio_tcp::handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, std::shared_ptr<pack> apack)
 	{
 		if (error)
 		{
 			log_error()->print("asio_tcp::handle_write[{}]", error.message().c_str());
-			close(atcp);
+			close(atcp.get());
 		}
-		m_sendfinishfun(atcp->m_sessionid, error ? true : false, apack.get());
+		if (m_sendfinishfun != nullptr)
+		{
+			m_sendfinishfun(atcp->m_sessionid, error ? true : false, apack.get());
+		}
 	}
 
-	void asio_tcp::handle_write(service_tcp* atcp, const basio_errorcode& error, std::shared_ptr<void> apack)
+	void asio_tcp::handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, std::shared_ptr<void> apack)
 	{
 		if (error)
 		{
 			log_error()->print("asio_tcp::handle_write[{}]", error.message().c_str());
-			close(atcp);
+			close(atcp.get());
 		}
-		m_sendfinishfun(atcp->m_sessionid, error ? true : false, (pack*)apack.get());
+		if (m_sendfinishfun != nullptr)
+		{
+			m_sendfinishfun(atcp->m_sessionid, error ? true : false, static_cast<pack*>(apack.get()));
+		}
 	}
 
 	void asio_tcp::close(i32_sessionid sessionid)
@@ -354,9 +385,9 @@ namespace ngl
 
 		// 步骤1: 取消所有异步操作
 		socket.cancel(ec);
-		if (ec)
+		if (!should_ignore_socket_close_error(ec))
 		{
-			std::cerr << "Cancel error: " << ec.message() << "\n";
+			log_error()->print("asio_tcp::close_socket cancel [{}]", ec.message());
 		}
 
 		// 步骤2: 关闭连接方向（可选但推荐）
@@ -364,9 +395,9 @@ namespace ngl
 		{
 			socket.shutdown(basio_iptcpsocket::shutdown_both, ec);
 			// 忽略"not_connected"错误（可能已自然关闭）
-			if (ec && ec != basio::error::not_connected)
+			if (!should_ignore_socket_close_error(ec))
 			{
-				std::cerr << "Shutdown error: " << ec.message() << "\n";
+				log_error()->print("asio_tcp::close_socket shutdown [{}]", ec.message());
 			}
 		}
 
@@ -374,9 +405,9 @@ namespace ngl
 		if (socket.is_open())
 		{
 			socket.close(ec);
-			if (ec) 
+			if (!should_ignore_socket_close_error(ec))
 			{
-				std::cerr << "Close error: " << ec.message() << "\n";
+				log_error()->print("asio_tcp::close_socket close [{}]", ec.message());
 			}
 		}
 	}
@@ -415,12 +446,23 @@ namespace ngl
 	{
 		if (error)
 		{
-			close(aservice.get());
-			log_error()->print("asio_tcp::accept[{}]", error.message().c_str());
+			close_net(aservice->m_sessionid);
+			if (error != basio::error::operation_aborted)
+			{
+				log_error()->print("asio_tcp::accept[{}]", error.message().c_str());
+			}
 		}
 		else
 		{
-			const auto& lremote_endpoint = aservice->m_socket.remote_endpoint();
+			basio_errorcode endpoint_ec;
+			const auto lremote_endpoint = aservice->m_socket.remote_endpoint(endpoint_ec);
+			if (endpoint_ec)
+			{
+				close_net(aservice->m_sessionid);
+				log_error()->print("asio_tcp::accept remote_endpoint [{}]", endpoint_ec.message());
+				accept(aisv4);
+				return;
+			}
 			std::string lip = lremote_endpoint.address().to_string();
 			i16_port lport = lremote_endpoint.port();
 			bool llanip = tools::is_lanip(lip);
@@ -473,7 +515,7 @@ namespace ngl
 			{
 				if (!error)
 				{
-					if (!m_fun(aservice.get(), lbuff, (uint32_t)bytes_transferred))
+					if (m_fun == nullptr || !m_fun(aservice.get(), lbuff, static_cast<uint32_t>(bytes_transferred)))
 					{
 						close(aservice.get());
 					}

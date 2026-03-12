@@ -43,6 +43,7 @@ namespace ngl
 		std::shared_mutex									m_mutex;
 		asio_kcp*											m_asiokcp = nullptr;
 
+		ptr_se erase_session_nolock(i32_sessionid asession);
 		ptr_se find_info(i32_sessionid asession);
 		ptr_se find_info(const asio_udp_endpoint& aendpoint);
 	public:

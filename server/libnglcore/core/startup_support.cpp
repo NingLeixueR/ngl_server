@@ -22,6 +22,10 @@ namespace
 			value = ngl::tools::lexical_cast<int32_t>(text);
 			return true;
 		}
+		catch (const boost::bad_lexical_cast&)
+		{
+			return false;
+		}
 		catch (const std::string&)
 		{
 			return false;

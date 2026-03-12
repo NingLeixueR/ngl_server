@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <array>
+#include <algorithm>
 #include <atomic>
 #include <chrono>
 #include <future>
@@ -8,10 +9,13 @@
 #include <thread>
 #include <vector>
 
+#include "actor/actor_base/nguid.h"
 #include "actor/protocol/nprotocol.h"
 #include "net/server_session.h"
 #include "net/tcp/asio_tcp.h"
 #include "net/tcp/ntcp.h"
+#include "net/udp/kcp/asio_kcp.h"
+#include "net/udp/kcp/kcp_session.h"
 
 namespace basio = ngl::basio;
 using basio_errorcode = ngl::basio_errorcode;
@@ -270,4 +274,58 @@ TEST(NetTest, AsioTcpCloseDisconnectsPeerAndNotifiesOnce)
 	accept_work.reset();
 	accept_context.stop();
 	accept_thread.join();
+}
+
+TEST(NetTest, KcpSessionMaintainsActorIndexesAndAreaIteration)
+{
+	ngl::kcp_session session(nullptr);
+
+	const ngl::i64_actorid server1 = ngl::nguid::make(ngl::ACTOR_SERVER, 2, 101);
+	const ngl::i64_actorid client1 = ngl::nguid::make(ngl::ACTOR_ROLE, 2, 201);
+	const ngl::i64_actorid server2 = ngl::nguid::make(ngl::ACTOR_SERVER, 2, 102);
+	const ngl::i64_actorid client2 = ngl::nguid::make(ngl::ACTOR_ROLE, 2, 202);
+
+	auto endpoint1 = ngl::asio_udp_endpoint(basio::ip::make_address("127.0.0.1"), 12001);
+	auto endpoint2 = ngl::asio_udp_endpoint(basio::ip::make_address("127.0.0.1"), 12002);
+
+	auto entry1 = session.add(1, endpoint1, server1, client1);
+	auto entry2 = session.add(2, endpoint2, server2, client2);
+
+	ASSERT_NE(entry1, nullptr);
+	ASSERT_NE(entry2, nullptr);
+	EXPECT_EQ(session.find(entry1->m_session), entry1);
+	EXPECT_EQ(session.find(entry2->m_session), entry2);
+	EXPECT_EQ(session.findbyactorid(client1), entry1);
+	EXPECT_EQ(session.findbyactorid(server1), entry1);
+	EXPECT_EQ(session.findbyactorid(client2), entry2);
+	EXPECT_EQ(session.findbyactorid(server2), entry2);
+
+	std::vector<ngl::i32_sessionid> sessions_in_area;
+	session.foreachbyarea(2, [&sessions_in_area](ngl::ptr_se& entry) {
+		sessions_in_area.push_back(entry->m_session);
+	});
+	std::sort(sessions_in_area.begin(), sessions_in_area.end());
+
+	ASSERT_EQ(sessions_in_area.size(), 2u);
+	EXPECT_EQ(sessions_in_area[0], entry1->m_session);
+	EXPECT_EQ(sessions_in_area[1], entry2->m_session);
+
+	session.erasebysession(entry1->m_session);
+	EXPECT_EQ(session.find(entry1->m_session), nullptr);
+	EXPECT_EQ(session.findbyactorid(client1), nullptr);
+	EXPECT_EQ(session.findbyactorid(server1), nullptr);
+
+	session.erasebyaactorid(client2);
+	EXPECT_EQ(session.find(entry2->m_session), nullptr);
+	EXPECT_EQ(session.findbyactorid(client2), nullptr);
+	EXPECT_EQ(session.findbyactorid(server2), nullptr);
+}
+
+TEST(NetTest, AsioKcpRejectsInvalidBuffersAndUnknownSessions)
+{
+	ngl::asio_kcp kcp(0);
+
+	EXPECT_FALSE(kcp.sendu(ngl::asio_udp_endpoint(basio::ip::make_address("127.0.0.1"), 9), nullptr, 1));
+	EXPECT_EQ(kcp.sendbuff(123456, "x", 1), -1);
+	EXPECT_EQ(kcp.sendbuff(ngl::asio_udp_endpoint(basio::ip::make_address("127.0.0.1"), 9), nullptr, 1), -1);
 }

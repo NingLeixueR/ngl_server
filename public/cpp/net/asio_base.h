@@ -30,8 +30,8 @@ namespace ngl
 	namespace basio = boost::asio;
 
 	using basio_errorcode		= boost::system::error_code;
-	using basio_ioservice		= basio::io_service;
-	using basio_ioservicework	= basio::io_service::work;
+	using basio_ioservice		= basio::io_context;
+	using basio_ioservicework	= basio::executor_work_guard<basio_ioservice::executor_type>;
 	using basio_iptcpsocket		= basio::ip::tcp::socket;
 	using basio_iptcpendpoint	= basio::ip::tcp::endpoint;
 	using basio_ipaddress		= basio::ip::address;
