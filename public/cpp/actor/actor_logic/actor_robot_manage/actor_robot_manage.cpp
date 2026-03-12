@@ -200,7 +200,7 @@ namespace ngl
 		log_error()->print("kcp connect server[{}:{}] {}@{}", aservertid, atcount, lpstructserver.m_ip, luport);
 
 		// 获取本机uip
-		ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(lpstructserver.m_ip), luport);
+		ngl::asio_udp_endpoint lendpoint(ngl::basio_ipaddress::from_string(lpstructserver.m_ip), luport);
 		i64_actorid robotid = nguid::make_type(arobotid, ACTOR_ROLE);
 		_robot* lprobot = get_robot(robotid);
 		if (lprobot == nullptr || lprobot->m_robot == nullptr)

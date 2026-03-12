@@ -22,13 +22,12 @@
 #include "tools/type.h"
 #include "ikcp.h"
 
-#include <asio.hpp>
 #include <memory>
 #include <map>
 
 namespace ngl
 {
-	using asio_udp = asio::ip::udp;
+	using asio_udp = basio::ip::udp;
 	using asio_udp_endpoint = asio_udp::endpoint;
 
 	class asio_kcp;

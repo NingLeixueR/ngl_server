@@ -20,20 +20,23 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
-#include <asio.hpp>
+#include <boost/asio.hpp>
 #include <atomic>
 #include <string>
 #include <set>
 
 namespace ngl
 {
-	using basio_ioservice		= asio::io_service;
-	using basio_ioservicework	= asio::io_service::work;
-	using basio_iptcpsocket		= asio::ip::tcp::socket;
-	using basio_iptcpendpoint	= asio::ip::tcp::endpoint;
-	using basio_ipaddress		= asio::ip::address;
+	namespace basio = boost::asio;
+
+	using basio_errorcode		= boost::system::error_code;
+	using basio_ioservice		= basio::io_service;
+	using basio_ioservicework	= basio::io_service::work;
+	using basio_iptcpsocket		= basio::ip::tcp::socket;
+	using basio_iptcpendpoint	= basio::ip::tcp::endpoint;
+	using basio_ipaddress		= basio::ip::address;
 	using tuple_ioservice		= std::tuple<std::shared_ptr<basio_ioservice>, std::shared_ptr<basio_ioservicework>, std::shared_ptr<std::thread>>;
-	using basio_tcpacceptor		= asio::ip::tcp::acceptor;
+	using basio_tcpacceptor		= basio::ip::tcp::acceptor;
 
 	struct serviceio_info
 	{

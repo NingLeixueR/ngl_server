@@ -24,7 +24,6 @@
 #include "tools/type.h"
 #include "ikcp.h"
 
-#include <asio.hpp>
 #include <memory>
 #include <map>
 
@@ -48,7 +47,7 @@ namespace ngl
 		kcp_session							m_session;
 		std::function<void(i32_session)>	m_connectfun = nullptr;
 		bpool								m_pool;
-		asio::io_context					m_context;
+		basio::io_context					m_context;
 		asio_udp::socket					m_socket;
 		asio_udp_endpoint					m_remoteport;
 		char								m_buff[e_buff_byte] = { 0 };

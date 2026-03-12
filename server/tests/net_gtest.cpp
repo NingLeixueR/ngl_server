@@ -13,6 +13,9 @@
 #include "net/tcp/asio_tcp.h"
 #include "net/tcp/ntcp.h"
 
+namespace basio = ngl::basio;
+using basio_errorcode = ngl::basio_errorcode;
+
 TEST(NetTest, ServerSessionReplacesExistingMappingsBidirectionally)
 {
 	constexpr ngl::i32_serverid kServer1 = 91001;
@@ -80,8 +83,8 @@ TEST(NetTest, BatchSendReportsFailureWhenAnySessionIsUnavailable)
 
 TEST(NetTest, AsioTcpConnectReportsFinalFailure)
 {
-	asio::io_context probe_context;
-	asio::ip::tcp::acceptor probe_acceptor(probe_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), 0));
+	basio::io_context probe_context;
+	basio::ip::tcp::acceptor probe_acceptor(probe_context, basio::ip::tcp::endpoint(basio::ip::tcp::v4(), 0));
 	const ngl::i16_port port = probe_acceptor.local_endpoint().port();
 	probe_acceptor.close();
 
@@ -111,15 +114,15 @@ TEST(NetTest, AsioTcpConnectReportsFinalFailure)
 
 TEST(NetTest, AsioTcpCloseNetRemovesIpPortEntry)
 {
-	asio::io_context accept_context;
-	asio::ip::tcp::acceptor acceptor(accept_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), 0));
+	basio::io_context accept_context;
+	basio::ip::tcp::acceptor acceptor(accept_context, basio::ip::tcp::endpoint(basio::ip::tcp::v4(), 0));
 	const ngl::i16_port port = acceptor.local_endpoint().port();
 
-	auto accepted_socket = std::make_shared<asio::ip::tcp::socket>(accept_context);
+	auto accepted_socket = std::make_shared<basio::ip::tcp::socket>(accept_context);
 	auto accepted_result = std::make_shared<std::promise<void>>();
 	std::future<void> accepted_future = accepted_result->get_future();
 
-	acceptor.async_accept(*accepted_socket, [accepted_result](const std::error_code& ec) {
+	acceptor.async_accept(*accepted_socket, [accepted_result](const basio_errorcode& ec) {
 		EXPECT_FALSE(ec);
 		try
 		{
@@ -166,7 +169,7 @@ TEST(NetTest, AsioTcpCloseNetRemovesIpPortEntry)
 	client->close_net(sessionid);
 	EXPECT_FALSE(client->get_ipport(sessionid, endpoint));
 
-	asio::error_code ec;
+	basio_errorcode ec;
 	accepted_socket->close(ec);
 	acceptor.close(ec);
 	accept_context.stop();
@@ -175,16 +178,16 @@ TEST(NetTest, AsioTcpCloseNetRemovesIpPortEntry)
 
 TEST(NetTest, AsioTcpCloseDisconnectsPeerAndNotifiesOnce)
 {
-	asio::io_context accept_context;
-	auto accept_work = asio::make_work_guard(accept_context);
-	asio::ip::tcp::acceptor acceptor(accept_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), 0));
+	basio::io_context accept_context;
+	auto accept_work = basio::make_work_guard(accept_context);
+	basio::ip::tcp::acceptor acceptor(accept_context, basio::ip::tcp::endpoint(basio::ip::tcp::v4(), 0));
 	const ngl::i16_port port = acceptor.local_endpoint().port();
 
-	auto accepted_socket = std::make_shared<asio::ip::tcp::socket>(accept_context);
+	auto accepted_socket = std::make_shared<basio::ip::tcp::socket>(accept_context);
 	auto accepted_result = std::make_shared<std::promise<void>>();
 	std::future<void> accepted_future = accepted_result->get_future();
 
-	acceptor.async_accept(*accepted_socket, [accepted_result](const std::error_code& ec) {
+	acceptor.async_accept(*accepted_socket, [accepted_result](const basio_errorcode& ec) {
 		EXPECT_FALSE(ec);
 		try
 		{
@@ -235,11 +238,11 @@ TEST(NetTest, AsioTcpCloseDisconnectsPeerAndNotifiesOnce)
 	const ngl::i32_sessionid sessionid = future.get();
 	ASSERT_GT(sessionid, 0);
 
-	auto peer_close_result = std::make_shared<std::promise<std::error_code>>();
-	std::future<std::error_code> peer_close_future = peer_close_result->get_future();
+	auto peer_close_result = std::make_shared<std::promise<basio_errorcode>>();
+	std::future<basio_errorcode> peer_close_future = peer_close_result->get_future();
 	auto peer_buffer = std::make_shared<std::array<char, 16>>();
 
-	accepted_socket->async_read_some(asio::buffer(*peer_buffer), [peer_close_result](const std::error_code& ec, std::size_t bytes_transferred) {
+	accepted_socket->async_read_some(basio::buffer(*peer_buffer), [peer_close_result](const basio_errorcode& ec, std::size_t bytes_transferred) {
 		EXPECT_EQ(bytes_transferred, 0U);
 		try
 		{
@@ -253,15 +256,15 @@ TEST(NetTest, AsioTcpCloseDisconnectsPeerAndNotifiesOnce)
 	client->close(sessionid);
 
 	ASSERT_EQ(peer_close_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
-	const std::error_code peer_close_error = peer_close_future.get();
-	EXPECT_TRUE(peer_close_error == asio::error::eof || peer_close_error == asio::error::connection_reset);
+	const basio_errorcode peer_close_error = peer_close_future.get();
+	EXPECT_TRUE(peer_close_error == basio::error::eof || peer_close_error == basio::error::connection_reset);
 	EXPECT_EQ(close_count->load(std::memory_order_relaxed), 1);
 	EXPECT_EQ(recv_close_count->load(std::memory_order_relaxed), 0);
 
 	std::pair<ngl::str_ip, ngl::i16_port> endpoint;
 	EXPECT_FALSE(client->get_ipport(sessionid, endpoint));
 
-	asio::error_code ec;
+	basio_errorcode ec;
 	accepted_socket->close(ec);
 	acceptor.close(ec);
 	accept_work.reset();

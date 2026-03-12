@@ -49,12 +49,10 @@ target_include_directories(ngl_build_options INTERFACE
 target_include_directories(ngl_build_options SYSTEM INTERFACE
 	${CMAKE_SOURCE_DIR}/public/cpp/third_party
 	${CMAKE_SOURCE_DIR}/public/cpp/third_party/kcp
-	${CMAKE_SOURCE_DIR}/public/cpp/third_party/asio
 	${CMAKE_SOURCE_DIR}/public/cpp/third_party/utf8cpp
 	${CMAKE_SOURCE_DIR}/public/cpp/third_party/tinyxml2
 )
 target_compile_definitions(ngl_build_options INTERFACE
-	ASIO_STANDALONE
 	_WEBSOCKETPP_CPP11_TYPE_TRAITS_
 	USE_BOOST_INTERPROCESS
 	$<$<PLATFORM_ID:Windows>:BOOST_ALL_NO_LIB;BOOST_THREAD_BUILD_DLL;BUILDING_LIBCURL;HTTP_ONLY;NOMINMAX;_WIN32_WINNT=0x0601;WINVER=0x0601>

@@ -38,11 +38,11 @@ namespace ngl
 		m_acceptor_v4(nullptr),
 		m_acceptor_v6(nullptr)
 	{
-		asio::io_service& lioservice = *m_service_ios.get_ioservice(m_service_ios.m_recvthreadsize);
-		m_acceptor_v4 = std::make_shared<asio::ip::tcp::acceptor>(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port));
-		m_acceptor_v6 = std::make_shared<asio::ip::tcp::acceptor>(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v6(), m_port));
-		m_acceptor_v4->set_option(asio::socket_base::reuse_address(true));
-		m_acceptor_v6->set_option(asio::socket_base::reuse_address(true));
+		basio_ioservice& lioservice = *m_service_ios.get_ioservice(m_service_ios.m_recvthreadsize);
+		m_acceptor_v4 = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v4(), m_port));
+		m_acceptor_v6 = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v6(), m_port));
+		m_acceptor_v4->set_option(basio::socket_base::reuse_address(true));
+		m_acceptor_v6->set_option(basio::socket_base::reuse_address(true));
 		accept(true);
 		accept(false);
 	}
@@ -66,7 +66,7 @@ namespace ngl
 
 	asio_tcp::~asio_tcp()
 	{
-		asio::error_code ec;
+		basio_errorcode ec;
 		if (m_acceptor_v4 != nullptr)
 		{
 			m_acceptor_v4->close(ec);
@@ -119,7 +119,7 @@ namespace ngl
 			}
 		}
 		lservice->m_socket.async_connect(basio_iptcpendpoint(basio_ipaddress::from_string(aip), aport), 
-			[this, lservice, aip, aport, afun, acount](const std::error_code& ec)
+			[this, lservice, aip, aport, afun, acount](const basio_errorcode& ec)
 			{
 				if (ec)
 				{
@@ -218,7 +218,7 @@ namespace ngl
 		, int32_t abufflen
 	)
 	{
-		atcp->m_socket.async_send(asio::buffer(abuff, abufflen), [this, alist, atcp, apack](const std::error_code& ec, std::size_t /*length*/)
+		atcp->m_socket.async_send(basio::buffer(abuff, abufflen), [this, alist, atcp, apack](const basio_errorcode& ec, std::size_t /*length*/)
 			{
 				alist->pop_front();
 				handle_write(atcp, ec, apack);
@@ -283,7 +283,7 @@ namespace ngl
 		}
 	}
 
-	void asio_tcp::handle_write(service_tcp* atcp, const std::error_code& error, std::shared_ptr<pack> apack)
+	void asio_tcp::handle_write(service_tcp* atcp, const basio_errorcode& error, std::shared_ptr<pack> apack)
 	{
 		if (error)
 		{
@@ -293,7 +293,7 @@ namespace ngl
 		m_sendfinishfun(atcp->m_sessionid, error ? true : false, apack.get());
 	}
 
-	void asio_tcp::handle_write(service_tcp* atcp, const std::error_code& error, std::shared_ptr<void> apack)
+	void asio_tcp::handle_write(service_tcp* atcp, const basio_errorcode& error, std::shared_ptr<void> apack)
 	{
 		if (error)
 		{
@@ -348,9 +348,9 @@ namespace ngl
 		close(atcp->m_sessionid);
 	}
 
-	void  asio_tcp::close_socket(asio::ip::tcp::socket& socket)
+	void  asio_tcp::close_socket(basio_iptcpsocket& socket)
 	{
-		asio::error_code ec;
+		basio_errorcode ec;
 
 		// 步骤1: 取消所有异步操作
 		socket.cancel(ec);
@@ -362,9 +362,9 @@ namespace ngl
 		// 步骤2: 关闭连接方向（可选但推荐）
 		if (socket.is_open())
 		{
-			socket.shutdown(asio::ip::tcp::socket::shutdown_both, ec);
+			socket.shutdown(basio_iptcpsocket::shutdown_both, ec);
 			// 忽略"not_connected"错误（可能已自然关闭）
-			if (ec && ec != asio::error::not_connected)
+			if (ec && ec != basio::error::not_connected)
 			{
 				std::cerr << "Shutdown error: " << ec.message() << "\n";
 			}
@@ -411,7 +411,7 @@ namespace ngl
 		return true;
 	}
 
-	void  asio_tcp::accept_handle(bool aisv4, const std::shared_ptr<service_tcp>& aservice, const std::error_code& error)
+	void  asio_tcp::accept_handle(bool aisv4, const std::shared_ptr<service_tcp>& aservice, const basio_errorcode& error)
 	{
 		if (error)
 		{
@@ -449,7 +449,7 @@ namespace ngl
 		}
 		if (aisv4)
 		{
-			m_acceptor_v4->async_accept(lservice->m_socket, [this, lservice](const std::error_code& error)
+			m_acceptor_v4->async_accept(lservice->m_socket, [this, lservice](const basio_errorcode& error)
 				{
 					accept_handle(true, lservice, error);
 				}
@@ -457,7 +457,7 @@ namespace ngl
 		}
 		else
 		{
-			m_acceptor_v6->async_accept(lservice->m_socket, [this, lservice](const std::error_code& error)
+			m_acceptor_v6->async_accept(lservice->m_socket, [this, lservice](const basio_errorcode& error)
 				{
 					accept_handle(false, lservice, error);
 				}
@@ -468,8 +468,8 @@ namespace ngl
 	void  asio_tcp::start(const std::shared_ptr<service_tcp>& aservice)
 	{
 		char* lbuff = aservice->buff();
-		aservice->m_socket.async_read_some(asio::buffer(lbuff, m_service_ios.m_buffmaxsize)
-			, [this, lbuff, aservice](const std::error_code& error, size_t bytes_transferred)
+		aservice->m_socket.async_read_some(basio::buffer(lbuff, m_service_ios.m_buffmaxsize)
+			, [this, lbuff, aservice](const basio_errorcode& error, size_t bytes_transferred)
 			{
 				if (!error)
 				{
@@ -486,7 +486,7 @@ namespace ngl
 				{
 					//关闭连接
 					close(aservice.get());
-					if (error != asio::error::operation_aborted)
+					if (error != basio::error::operation_aborted)
 					{
 						log_error()->print("asio_tcp::handle_read[{}]", error.message().c_str());
 					}

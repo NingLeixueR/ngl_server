@@ -86,13 +86,13 @@ namespace ngl
 
 		void do_send(service_tcp* atcp, const std::shared_ptr<std::list<node_pack>>& alist);
 
-		void handle_write(service_tcp* atcp, const std::error_code& error, std::shared_ptr<pack> apack);
+		void handle_write(service_tcp* atcp, const basio_errorcode& error, std::shared_ptr<pack> apack);
 
-		void handle_write(service_tcp* atcp, const std::error_code& error, std::shared_ptr<void> apack);
+		void handle_write(service_tcp* atcp, const basio_errorcode& error, std::shared_ptr<void> apack);
 
-		void close_socket(asio::ip::tcp::socket& socket);
+		void close_socket(basio_iptcpsocket& socket);
 
-		void accept_handle(bool aisv4, const std::shared_ptr<service_tcp>& aservice, const std::error_code& error);
+		void accept_handle(bool aisv4, const std::shared_ptr<service_tcp>& aservice, const basio_errorcode& error);
 
 		void accept(bool aisv4);
 

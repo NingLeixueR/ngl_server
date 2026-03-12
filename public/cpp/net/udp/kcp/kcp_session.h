@@ -22,7 +22,6 @@
 #include "tools/type.h"
 #include "ikcp.h"
 
-#include <asio.hpp>
 #include <memory>
 #include <map>
 

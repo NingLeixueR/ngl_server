@@ -147,8 +147,8 @@ namespace ngl
 
 	void asio_kcp::start()
 	{
-		m_socket.async_receive_from(asio::buffer(m_buff, e_buff_byte), m_remoteport,
-			[this](const std::error_code& ec, std::size_t bytes_received)
+		m_socket.async_receive_from(basio::buffer(m_buff, e_buff_byte), m_remoteport,
+			[this](const basio_errorcode& ec, std::size_t bytes_received)
 			{
 				m_bytes_received = bytes_received;
 				if (!ec && bytes_received > 0)
@@ -232,7 +232,7 @@ namespace ngl
 	// ## 发送原始udp包
 	bool asio_kcp::sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len)
 	{
-		m_socket.async_send_to(asio::buffer(buf, len), aendpoint, [](const std::error_code& ec, std::size_t bytes_received)
+		m_socket.async_send_to(basio::buffer(buf, len), aendpoint, [](const basio_errorcode& ec, std::size_t bytes_received)
 			{
 				if (ec)
 				{
@@ -247,7 +247,7 @@ namespace ngl
 	{
 		m_wait = afun;
 		m_waitendpoint = aendpoint;
-		m_socket.async_send_to(asio::buffer(buf, len), aendpoint, [this, aendpoint, buf, len, afun](const std::error_code& ec, std::size_t bytes_received)
+		m_socket.async_send_to(basio::buffer(buf, len), aendpoint, [this, aendpoint, buf, len, afun](const basio_errorcode& ec, std::size_t bytes_received)
 			{
 				if (ec)
 				{
@@ -349,8 +349,8 @@ namespace ngl
 	int asio_kcp::sendbuff(i32_session asession, const char* buf, int len)
 	{
 		ptr_se lpstruct = m_session.find(asession);
-		m_socket.async_send_to(asio::buffer(buf, len), lpstruct->m_endpoint, 
-			[](const std::error_code& ec, std::size_t)
+		m_socket.async_send_to(basio::buffer(buf, len), lpstruct->m_endpoint, 
+			[](const basio_errorcode& ec, std::size_t)
 			{
 				if (ec)
 				{
@@ -363,8 +363,8 @@ namespace ngl
 
 	int asio_kcp::sendbuff(const asio_udp_endpoint& aendpoint, const char* buf, int len)
 	{
-		m_socket.async_send_to(asio::buffer(buf, len), aendpoint, 
-			[](const std::error_code& ec, std::size_t)
+		m_socket.async_send_to(basio::buffer(buf, len), aendpoint, 
+			[](const basio_errorcode& ec, std::size_t)
 			{
 				if (ec)
 				{
@@ -384,7 +384,7 @@ namespace ngl
 		, const std::function<void(i32_session)>& afun
 	)
 	{
-		ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(aip), aport);
+		ngl::asio_udp_endpoint lendpoint(basio_ipaddress::from_string(aip), aport);
 		connect(aconv, akcpsess, aserver, aclient, lendpoint, afun);
 	}
 
@@ -453,7 +453,7 @@ namespace ngl
 
 	void asio_kcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aserver, i64_actorid aclient)
 	{
-		ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(aip), aport);
+		ngl::asio_udp_endpoint lendpoint(basio_ipaddress::from_string(aip), aport);
 		m_session.reset_add(aconv, lendpoint, aserver, aclient);
 	}
 
