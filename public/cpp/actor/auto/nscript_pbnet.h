@@ -13,7 +13,7 @@
 */
 
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2026-03-11 17:38:07】
+ // 创建时间【2026-03-12 17:58:26】
 
 #pragma once
 #include "tools/serialize/ndefine.h"
@@ -28,12 +28,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_ACOUNT_LOGIN>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ACOUNT_LOGIN& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_ACOUNT_LOGIN& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"marea","maccount","mpassword"} , adata.marea(),adata.maccount(),adata.mpassword()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ACOUNT_LOGIN& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_ACOUNT_LOGIN& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -67,12 +67,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"marea","mroleid","msession","maccount","mgatewayid","mgameid"} , adata.marea(),adata.mroleid(),adata.msession(),adata.maccount(),adata.mgatewayid(),adata.mgameid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -112,10 +112,10 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_BAG_SYNC>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_BAG_SYNC& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_BAG_SYNC& adata, [[maybe_unused]] const char* aname = nullptr)
        {
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_SYNC& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_BAG_SYNC& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
            if (apop)
            {
@@ -135,12 +135,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mbag"} , adata.mbag()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -168,12 +168,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_BAG_UPDATE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_BAG_UPDATE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_BAG_UPDATE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mdelitems","mdelnostackitems","madditems","maddnostackitems"} , adata.mdelitems(),adata.mdelnostackitems(),adata.madditems(),adata.maddnostackitems()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_UPDATE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_BAG_UPDATE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -201,12 +201,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_BAG_UPDATE::additem>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_BAG_UPDATE::additem& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_BAG_UPDATE::additem& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mcount"} , adata.mid(),adata.mcount()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_UPDATE::additem& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_BAG_UPDATE::additem& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -238,12 +238,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_BAG_UPDATE::delitem>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_BAG_UPDATE::delitem& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_BAG_UPDATE::delitem& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mcount"} , adata.mid(),adata.mcount()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_UPDATE::delitem& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_BAG_UPDATE::delitem& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -275,12 +275,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_CHANGE_ANGLE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_CHANGE_ANGLE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_CHANGE_ANGLE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mposition"} , adata.mposition()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_CHANGE_ANGLE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_CHANGE_ANGLE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -308,12 +308,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_CHAT>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_CHAT& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_CHAT& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mtype","mchannelid","mcontent"} , adata.mtype(),adata.mchannelid(),adata.mcontent()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_CHAT& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_CHAT& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -347,12 +347,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_CHAT_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_CHAT_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_CHAT_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mtype","mchannelid","mchatlist","mstat"} , adata.mtype(),adata.mchannelid(),adata.mchatlist(),adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_CHAT_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_CHAT_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -386,12 +386,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_CMD>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_CMD& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_CMD& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mcmd"} , adata.mcmd()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_CMD& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_CMD& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -421,12 +421,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mrechargeid","morderid","mgold","mitems"} , adata.mrechargeid(),adata.morderid(),adata.mgold(),adata.mitems()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -460,12 +460,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"misenter","munits"} , adata.misenter(),adata.munits()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -495,12 +495,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_ERROR>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ERROR& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_ERROR& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"merrmessage"} , adata.merrmessage()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ERROR& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_ERROR& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -530,12 +530,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_CEDE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_CEDE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_CEDE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mroleid"} , adata.mroleid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CEDE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_CEDE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -565,12 +565,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mstat"} , adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -600,12 +600,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_CHANGENAME>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_CHANGENAME& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_CHANGENAME& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mfamilid","mname"} , adata.mfamilid(),adata.mname()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CHANGENAME& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_CHANGENAME& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -637,12 +637,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mstat"} , adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -672,12 +672,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_CREATE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_CREATE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_CREATE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mname"} , adata.mname()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CREATE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_CREATE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -707,12 +707,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mstat"} , adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -742,10 +742,10 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_INFO>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_INFO& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_INFO& adata, [[maybe_unused]] const char* aname = nullptr)
        {
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_INFO& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_INFO& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
            if (apop)
            {
@@ -765,12 +765,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mstat","minfo","mmember"} , adata.mstat(),adata.minfo(),adata.mmember()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -800,12 +800,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_JOIN>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_JOIN& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_JOIN& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mfamilid","mapply"} , adata.mfamilid(),adata.mapply()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_JOIN& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_JOIN& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -837,12 +837,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mstat"} , adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -872,12 +872,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_LEAVE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_LEAVE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_LEAVE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mfamilid"} , adata.mfamilid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_LEAVE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_LEAVE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -907,12 +907,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mstat"} , adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -942,12 +942,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_LIST>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_LIST& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_LIST& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mfamilid"} , adata.mfamilid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_LIST& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_LIST& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -977,12 +977,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mfamilid","mfamily"} , adata.mfamilid(),adata.mfamily()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1012,12 +1012,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mroleid","mratify"} , adata.mroleid(),adata.mratify()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1049,12 +1049,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mstat"} , adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1084,12 +1084,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_SIGN>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_SIGN& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_SIGN& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mfamilid"} , adata.mfamilid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_SIGN& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_SIGN& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1119,12 +1119,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mstat"} , adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1154,10 +1154,10 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FRIEND>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FRIEND& adata, [[maybe_unused]] const char* aname = nullptr)
        {
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FRIEND& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
            if (apop)
            {
@@ -1177,12 +1177,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FRIEND_ADD>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_ADD& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FRIEND_ADD& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mfriedid"} , adata.mfriedid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_ADD& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FRIEND_ADD& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1212,12 +1212,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mfriedid","mstat"} , adata.mfriedid(),adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1249,12 +1249,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FRIEND_ERASE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_ERASE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FRIEND_ERASE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mfriedid"} , adata.mfriedid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_ERASE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FRIEND_ERASE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1284,12 +1284,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mfriedid","mstat"} , adata.mfriedid(),adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1321,12 +1321,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mfriedid","mratify"} , adata.mfriedid(),adata.mratify()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1358,12 +1358,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mfriedid","mratify","mstat"} , adata.mfriedid(),adata.mratify(),adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1397,12 +1397,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_FRIEND_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_FRIEND_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mfriends","mapplyfriends"} , adata.mfriends(),adata.mapplyfriends()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_FRIEND_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1430,10 +1430,10 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_GET_TIME>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_GET_TIME& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_GET_TIME& adata, [[maybe_unused]] const char* aname = nullptr)
        {
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_GET_TIME& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_GET_TIME& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
            if (apop)
            {
@@ -1453,12 +1453,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_GET_TIME_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_GET_TIME_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mutc"} , adata.mutc()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_GET_TIME_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_GET_TIME_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1488,10 +1488,10 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_HEARTBEAT>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_HEARTBEAT& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_HEARTBEAT& adata, [[maybe_unused]] const char* aname = nullptr)
        {
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_HEARTBEAT& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_HEARTBEAT& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
            if (apop)
            {
@@ -1511,12 +1511,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_KCPSESSION>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_KCPSESSION& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_KCPSESSION& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mserverid","muip","muport","mconv","mactoridserver","mactoridclient","m_kcpnum"} , adata.mserverid(),adata.muip(),adata.muport(),adata.mconv(),adata.mactoridserver(),adata.mactoridclient(),adata.m_kcpnum()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_KCPSESSION& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_KCPSESSION& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1558,12 +1558,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mkcpsession","mserverid","m_kcpnum","mactoridserver","mactoridclient"} , adata.mkcpsession(),adata.mserverid(),adata.m_kcpnum(),adata.mactoridserver(),adata.mactoridclient()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1601,12 +1601,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_MAIL_DEL>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_DEL& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_MAIL_DEL& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mmailid"} , adata.mmailid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_DEL& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_MAIL_DEL& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1636,12 +1636,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mmailid","mstat"} , adata.mmailid(),adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1673,12 +1673,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_MAIL_DRAW>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_DRAW& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_MAIL_DRAW& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mmailid"} , adata.mmailid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_DRAW& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_MAIL_DRAW& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1708,12 +1708,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mmailid","mstat"} , adata.mmailid(),adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1745,10 +1745,10 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_MAIL_LIST>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_LIST& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_MAIL_LIST& adata, [[maybe_unused]] const char* aname = nullptr)
        {
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_LIST& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_MAIL_LIST& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
            if (apop)
            {
@@ -1768,12 +1768,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mmail"} , adata.mmail()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1801,12 +1801,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_MAIL_READ>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_READ& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_MAIL_READ& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mmailid"} , adata.mmailid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_READ& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_MAIL_READ& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1836,12 +1836,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_READ_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_MAIL_READ_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mmailid","mstat"} , adata.mmailid(),adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_READ_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_MAIL_READ_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1873,12 +1873,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_MSG_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MSG_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_MSG_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mmsg"} , adata.mmsg()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MSG_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_MSG_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1908,10 +1908,10 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_NOTICE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_NOTICE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_NOTICE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_NOTICE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_NOTICE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
            if (apop)
            {
@@ -1931,12 +1931,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_NOTICE_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_NOTICE_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_NOTICE_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mnotices"} , adata.mnotices()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_NOTICE_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_NOTICE_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1964,12 +1964,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_RANKLIST>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_RANKLIST& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_RANKLIST& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"miscross","mtype","mactivityid","mpage"} , adata.miscross(),adata.mtype(),adata.mactivityid(),adata.mpage()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_RANKLIST& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_RANKLIST& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2005,12 +2005,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_RANKLIST_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_RANKLIST_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mtype","mitems","mpage","mcount","mrolerank"} , adata.mtype(),adata.mitems(),adata.mpage(),adata.mcount(),adata.mrolerank()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_RANKLIST_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_RANKLIST_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2046,12 +2046,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_RECHARGE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_RECHARGE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_RECHARGE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mrechargeid"} , adata.mrechargeid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_RECHARGE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_RECHARGE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2081,12 +2081,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_RECHARGE_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_RECHARGE_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_RECHARGE_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mrechargeid","mstat","morderid"} , adata.mrechargeid(),adata.mstat(),adata.morderid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_RECHARGE_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_RECHARGE_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2120,12 +2120,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mitems"} , adata.mitems()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2153,12 +2153,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_ROLESTAT>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLESTAT& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_ROLESTAT& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mstat","mlogicstat","mroleid"} , adata.mstat(),adata.mlogicstat(),adata.mroleid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLESTAT& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_ROLESTAT& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2192,12 +2192,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_ROLE_CREATE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLE_CREATE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_ROLE_CREATE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mname"} , adata.mname()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_CREATE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_ROLE_CREATE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2227,12 +2227,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_ROLE_CREATE_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLE_CREATE_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_ROLE_CREATE_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mstat","mname"} , adata.mstat(),adata.mname()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_CREATE_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_ROLE_CREATE_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2264,12 +2264,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_ROLE_LOGIN>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLE_LOGIN& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_ROLE_LOGIN& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mroleid","msession","marea","mgatewayid","mgameid"} , adata.mroleid(),adata.msession(),adata.marea(),adata.mgatewayid(),adata.mgameid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_LOGIN& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_ROLE_LOGIN& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2307,12 +2307,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLE_NOT_CREATE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_ROLE_NOT_CREATE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mroleid"} , adata.mroleid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_NOT_CREATE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_ROLE_NOT_CREATE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2342,10 +2342,10 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_ROLE_SYNC>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLE_SYNC& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_ROLE_SYNC& adata, [[maybe_unused]] const char* aname = nullptr)
        {
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_SYNC& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_ROLE_SYNC& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
            if (apop)
            {
@@ -2365,12 +2365,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mrole","mbrief","mbag","mtask"} , adata.mrole(),adata.mbrief(),adata.mbag(),adata.mtask()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2398,12 +2398,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_SWITCH_LINE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_SWITCH_LINE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_SWITCH_LINE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mline"} , adata.mline()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SWITCH_LINE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_SWITCH_LINE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2433,12 +2433,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mline","mstat"} , adata.mline(),adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2470,12 +2470,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_SYNC_ATTRIBUTE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_SYNC_ATTRIBUTE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mmodules"} , adata.mmodules()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SYNC_ATTRIBUTE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_SYNC_ATTRIBUTE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2503,12 +2503,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_SYNC_POSITION>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_SYNC_POSITION& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_SYNC_POSITION& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mposition"} , adata.mposition()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SYNC_POSITION& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_SYNC_POSITION& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2536,12 +2536,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_SYNC_UNIT>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_SYNC_UNIT& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_SYNC_UNIT& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"munits"} , adata.munits()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SYNC_UNIT& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_SYNC_UNIT& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2569,12 +2569,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mtaskid"} , adata.mtaskid()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2604,12 +2604,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mtaskid","mstat","mdrop"} , adata.mtaskid(),adata.mstat(),adata.mdrop()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2641,12 +2641,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::PROBUFF_NET_TESTLUA>
    {
-       static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_TESTLUA& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::PROBUFF_NET_TESTLUA& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mvalue","mdata"} , adata.mid(),adata.mvalue(),adata.mdata()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_TESTLUA& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::PROBUFF_NET_TESTLUA& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2678,12 +2678,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::chatitem>
    {
-       static void stack_push(lua_State* L, const pbnet::chatitem& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::chatitem& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mroleid","mrolename","mcontent","mutc"} , adata.mroleid(),adata.mrolename(),adata.mcontent(),adata.mutc()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::chatitem& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::chatitem& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -2719,12 +2719,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbnet::drop_item>
    {
-       static void stack_push(lua_State* L, const pbnet::drop_item& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbnet::drop_item& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mitem","mcount"} , adata.mitem(),adata.mcount()
                );
        }
-       static bool stack_pop(lua_State* L, pbnet::drop_item& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbnet::drop_item& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {

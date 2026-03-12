@@ -13,7 +13,7 @@
 */
 
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2026-03-11 17:38:07】
+ // 创建时间【2026-03-12 17:58:26】
 
 #pragma once
 #include "tools/serialize/ndefine.h"
@@ -28,12 +28,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::ATTRIBUTE>
    {
-       static void stack_push(lua_State* L, const pbdb::ATTRIBUTE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::ATTRIBUTE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mtype","mvalue"} , adata.mtype(),adata.mvalue()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::ATTRIBUTE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::ATTRIBUTE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -65,12 +65,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::POSITION>
    {
-       static void stack_push(lua_State* L, const pbdb::POSITION& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::POSITION& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mmapid","mposition","mangle","mspeed"} , adata.mmapid(),adata.mposition(),adata.mangle(),adata.mspeed()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::POSITION& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::POSITION& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -104,12 +104,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::UNIT>
    {
-       static void stack_push(lua_State* L, const pbdb::UNIT& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::UNIT& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mtype","mid","mposition","mmodules"} , adata.mtype(),adata.mid(),adata.mposition(),adata.mmodules()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::UNIT& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::UNIT& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -141,12 +141,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::UNIT_MODULE>
    {
-       static void stack_push(lua_State* L, const pbdb::UNIT_MODULE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::UNIT_MODULE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mmtype","mmodules"} , adata.mmtype(),adata.mmodules()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::UNIT_MODULE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::UNIT_MODULE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -176,12 +176,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::VECTOR2>
    {
-       static void stack_push(lua_State* L, const pbdb::VECTOR2& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::VECTOR2& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mx","my"} , adata.mx(),adata.my()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::VECTOR2& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::VECTOR2& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -213,12 +213,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::VECTOR3>
    {
-       static void stack_push(lua_State* L, const pbdb::VECTOR3& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::VECTOR3& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mx","my","mz"} , adata.mx(),adata.my(),adata.mz()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::VECTOR3& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::VECTOR3& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -252,12 +252,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::activity_drawcompliance>
    {
-       static void stack_push(lua_State* L, const pbdb::activity_drawcompliance& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::activity_drawcompliance& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mcount","mreward"} , adata.mcount(),adata.mreward()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::activity_drawcompliance& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::activity_drawcompliance& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -287,12 +287,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::activity_task>
    {
-       static void stack_push(lua_State* L, const pbdb::activity_task& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::activity_task& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mopen","mclose"} , adata.mopen(),adata.mclose()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::activity_task& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::activity_task& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -320,12 +320,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::brief_activityvalues>
    {
-       static void stack_push(lua_State* L, const pbdb::brief_activityvalues& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::brief_activityvalues& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mactivity_rolelv","mactivity_rolegold"} , adata.mactivity_rolelv(),adata.mactivity_rolegold()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::brief_activityvalues& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::brief_activityvalues& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -353,12 +353,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::brief_base>
    {
-       static void stack_push(lua_State* L, const pbdb::brief_base& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::brief_base& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mname","mlv","mmoneygold","mmoneysilver","mvip","mnotalkutc","mcreateutc"} , adata.mname(),adata.mlv(),adata.mmoneygold(),adata.mmoneysilver(),adata.mvip(),adata.mnotalkutc(),adata.mcreateutc()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::brief_base& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::brief_base& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -400,12 +400,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_account>
    {
-       static void stack_push(lua_State* L, const pbdb::db_account& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_account& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mroleid","maccount","mpassworld","marea"} , adata.mid(),adata.mroleid(),adata.maccount(),adata.mpassworld(),adata.marea()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_account& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_account& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -443,12 +443,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_activity>
    {
-       static void stack_push(lua_State* L, const pbdb::db_activity& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_activity& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mtask","mdrawcompliance"} , adata.mid(),adata.mtask(),adata.mdrawcompliance()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_activity& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_activity& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -478,12 +478,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_activitytimes>
    {
-       static void stack_push(lua_State* L, const pbdb::db_activitytimes& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_activitytimes& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mbeg","mduration","mstart"} , adata.mid(),adata.mbeg(),adata.mduration(),adata.mstart()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_activitytimes& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_activitytimes& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -519,12 +519,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_bag>
    {
-       static void stack_push(lua_State* L, const pbdb::db_bag& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_bag& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mitems","mmaxid"} , adata.mid(),adata.mitems(),adata.mmaxid()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_bag& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_bag& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -556,12 +556,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_brief>
    {
-       static void stack_push(lua_State* L, const pbdb::db_brief& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_brief& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mbase","mactivityvalues"} , adata.mid(),adata.mbase(),adata.mactivityvalues()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_brief& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_brief& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -591,12 +591,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_family>
    {
-       static void stack_push(lua_State* L, const pbdb::db_family& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_family& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mcreateutc","mname","mleader","mlv","mexp","mmember","mapplylist"} , adata.mid(),adata.mcreateutc(),adata.mname(),adata.mleader(),adata.mlv(),adata.mexp(),adata.mmember(),adata.mapplylist()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_family& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_family& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -636,12 +636,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_familyer>
    {
-       static void stack_push(lua_State* L, const pbdb::db_familyer& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_familyer& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mjoinutc","mlastsignutc","mlastleaveutc","mposition"} , adata.mid(),adata.mjoinutc(),adata.mlastsignutc(),adata.mlastleaveutc(),adata.mposition()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_familyer& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_familyer& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -679,12 +679,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_friends>
    {
-       static void stack_push(lua_State* L, const pbdb::db_friends& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_friends& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mfriends","mapplyfriends"} , adata.mid(),adata.mfriends(),adata.mapplyfriends()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_friends& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_friends& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -714,12 +714,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_keyvalue>
    {
-       static void stack_push(lua_State* L, const pbdb::db_keyvalue& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_keyvalue& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mvalue"} , adata.mid(),adata.mvalue()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_keyvalue& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_keyvalue& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -751,12 +751,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_mail>
    {
-       static void stack_push(lua_State* L, const pbdb::db_mail& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_mail& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mmail"} , adata.mid(),adata.mmail()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_mail& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_mail& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -786,12 +786,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_notice>
    {
-       static void stack_push(lua_State* L, const pbdb::db_notice& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_notice& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mnotice","mstarttime","mfinishtime"} , adata.mid(),adata.mnotice(),adata.mstarttime(),adata.mfinishtime()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_notice& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_notice& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -827,12 +827,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_ranklist>
    {
-       static void stack_push(lua_State* L, const pbdb::db_ranklist& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_ranklist& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mitems"} , adata.mid(),adata.mitems()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_ranklist& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_ranklist& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -862,12 +862,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_role>
    {
-       static void stack_push(lua_State* L, const pbdb::db_role& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_role& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mrecharge"} , adata.mid(),adata.mrecharge()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_role& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_role& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -897,12 +897,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_role::recharge>
    {
-       static void stack_push(lua_State* L, const pbdb::db_role::recharge& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_role::recharge& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mrechargeid","mutc"} , adata.mrechargeid(),adata.mutc()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_role::recharge& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_role::recharge& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -934,12 +934,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_rolekeyvalue>
    {
-       static void stack_push(lua_State* L, const pbdb::db_rolekeyvalue& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_rolekeyvalue& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mdata"} , adata.mid(),adata.mdata()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_rolekeyvalue& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_rolekeyvalue& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -969,12 +969,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_task>
    {
-       static void stack_push(lua_State* L, const pbdb::db_task& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_task& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mrundatas","mcompleteddatas"} , adata.mid(),adata.mrundatas(),adata.mcompleteddatas()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_task& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_task& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1004,12 +1004,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_task::complete>
    {
-       static void stack_push(lua_State* L, const pbdb::db_task::complete& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_task::complete& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mhistory"} , adata.mhistory()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_task::complete& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_task::complete& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1037,12 +1037,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_task::data>
    {
-       static void stack_push(lua_State* L, const pbdb::db_task::data& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_task::data& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mtaskid","mreceiveutc","mfinshutc","mschedules","mreceive"} , adata.mtaskid(),adata.mreceiveutc(),adata.mfinshutc(),adata.mschedules(),adata.mreceive()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_task::data& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_task::data& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1078,12 +1078,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_task::data_schedule>
    {
-       static void stack_push(lua_State* L, const pbdb::db_task::data_schedule& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_task::data_schedule& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mtype","mvalue","msumint"} , adata.mtype(),adata.mvalue(),adata.msumint()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_task::data_schedule& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_task::data_schedule& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1117,12 +1117,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_testlua>
    {
-       static void stack_push(lua_State* L, const pbdb::db_testlua& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_testlua& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mvalue","mdatas"} , adata.mid(),adata.mvalue(),adata.mdatas()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_testlua& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_testlua& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1152,12 +1152,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::db_testlua::luadata>
    {
-       static void stack_push(lua_State* L, const pbdb::db_testlua::luadata& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::db_testlua::luadata& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mkey","mval"} , adata.mkey(),adata.mval()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::db_testlua::luadata& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::db_testlua::luadata& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1189,12 +1189,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::dbcross_test>
    {
-       static void stack_push(lua_State* L, const pbdb::dbcross_test& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::dbcross_test& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mname","mvalue"} , adata.mname(),adata.mvalue()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::dbcross_test& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::dbcross_test& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1224,12 +1224,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::item>
    {
-       static void stack_push(lua_State* L, const pbdb::item& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::item& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mtid","mcount","mlv","mstar"} , adata.mid(),adata.mtid(),adata.mcount(),adata.mlv(),adata.mstar()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::item& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::item& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1267,12 +1267,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::mail>
    {
-       static void stack_push(lua_State* L, const pbdb::mail& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::mail& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mid","mcreateutc","mtid","mprams","mcontent","mitems","mread","mdraw"} , adata.mid(),adata.mcreateutc(),adata.mtid(),adata.mprams(),adata.mcontent(),adata.mitems(),adata.mread(),adata.mdraw()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::mail& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::mail& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1314,12 +1314,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::mailitem>
    {
-       static void stack_push(lua_State* L, const pbdb::mailitem& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::mailitem& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mitemtid","mcount"} , adata.mitemtid(),adata.mcount()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::mailitem& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::mailitem& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -1351,12 +1351,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbdb::rankitem>
    {
-       static void stack_push(lua_State* L, const pbdb::rankitem& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbdb::rankitem& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mvalue","mtime"} , adata.mvalue(),adata.mtime()
                );
        }
-       static bool stack_pop(lua_State* L, pbdb::rankitem& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbdb::rankitem& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {

@@ -13,7 +13,7 @@
 */
 
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2026-03-11 17:38:07】
+ // 创建时间【2026-03-12 17:58:26】
 
 #pragma once
 #include "tools/serialize/ndefine.h"
@@ -28,12 +28,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PLAYER>
    {
-       static void stack_push(lua_State* L, const pbexample::PLAYER& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PLAYER& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mplayers","misconfirm"} , adata.mplayers(),adata.misconfirm()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PLAYER& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PLAYER& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -63,12 +63,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>
    {
-       static void stack_push(lua_State* L, const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mguessnumber"} , adata.mguessnumber()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -98,12 +98,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB>
    {
-       static void stack_push(lua_State* L, const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mbombvalue","mroleid"} , adata.mbombvalue(),adata.mroleid()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -135,12 +135,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR>
    {
-       static void stack_push(lua_State* L, const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mstat"} , adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -170,12 +170,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO>
    {
-       static void stack_push(lua_State* L, const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mmaxnumber","mminnumber","mwhoguess"} , adata.mmaxnumber(),adata.mminnumber(),adata.mwhoguess()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -209,12 +209,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>
    {
-       static void stack_push(lua_State* L, const pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mtype","mroomid"} , adata.mtype(),adata.mroomid()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -246,12 +246,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PROBUFF_EXAMPLE_PLAY_CREATE>
    {
-       static void stack_push(lua_State* L, const pbexample::PROBUFF_EXAMPLE_PLAY_CREATE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_PLAY_CREATE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mtype","mexampleactorid","mstat"} , adata.mtype(),adata.mexampleactorid(),adata.mstat()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_CREATE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PROBUFF_EXAMPLE_PLAY_CREATE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -285,12 +285,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>
    {
-       static void stack_push(lua_State* L, const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mcross","mtype","mexampleactorid"} , adata.mcross(),adata.mtype(),adata.mexampleactorid()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -324,12 +324,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mcross","mtype","mexampleactorid","mplayers"} , adata.mcross(),adata.mtype(),adata.mexampleactorid(),adata.mplayers()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -363,12 +363,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>
    {
-       static void stack_push(lua_State* L, const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mcross","mtype"} , adata.mcross(),adata.mtype()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_JOIN& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PROBUFF_EXAMPLE_PLAY_JOIN& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -400,12 +400,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>
    {
-       static void stack_push(lua_State* L, const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mroomid"} , adata.mroomid()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -435,12 +435,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>
    {
-       static void stack_push(lua_State* L, const pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"mroomid","mtotalnumber","mroomcreate","mroomready","mplayers"} , adata.mroomid(),adata.mtotalnumber(),adata.mroomcreate(),adata.mroomready(),adata.mplayers()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -476,12 +476,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>
    {
-       static void stack_push(lua_State* L, const pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"merrorcode","mroomid"} , adata.merrorcode(),adata.mroomid()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
@@ -513,12 +513,12 @@ namespace ngl
    template <>
    struct serialize_lua<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>
    {
-       static void stack_push(lua_State* L, const pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM& adata, const char* aname = nullptr)
+       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM& adata, [[maybe_unused]] const char* aname = nullptr)
        {
             ngl::nlua_table::table_push(L, aname, {"misconfirm","mroomid"} , adata.misconfirm(),adata.mroomid()
                );
        }
-       static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM& adata, bool apop = true, const char* aname = nullptr)
+       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)
        {
          if (lua_isnil(L, -1))
             {
