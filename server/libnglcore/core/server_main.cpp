@@ -1,5 +1,6 @@
 #include "tools/tab/xml/xml_serialize.h"
 #include "server_main.h"
+#include "startup_support.h"
 #include "init_server.h"
 
 #define DEF_COUNT (2000)
@@ -892,105 +893,14 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 	return startup_error::ok;
 }
 
-namespace
-{
-	struct startup_context
-	{
-		std::string node_name;
-		int32_t area = 0;
-		int32_t tcount = 0;
-		std::string config_file;
-		int tcp_port = -1;
-		int node_type = -1;
-	};
-
-	void log_startup_failure(startup_error code, const startup_context& ctx, const char* reason)
-	{
-		ngl::log_error()->print(
-			"[startup][code:{}] reason:{} node:{} type:{} area:{} tcount:{} config:{} port:{}"
-			, static_cast<int>(code)
-			, reason
-			, ctx.node_name
-			, ctx.node_type
-			, ctx.area
-			, ctx.tcount
-			, ctx.config_file
-			, ctx.tcp_port
-		);
-	}
-
-	bool parse_startup_int(const char* text, int32_t& value)
-	{
-		if (text == nullptr)
-		{
-			return false;
-		}
-		try
-		{
-			value = ngl::tools::lexical_cast<int32_t>(text);
-			return true;
-		}
-		catch (...)
-		{
-			return false;
-		}
-	}
-}
-
 int ngl_main(int argc, char** argv)
 {
-	startup_context ctx{};
-	if (argc < 4)
+	ngl_startup::context ctx{};
+	const ngl_startup::prepare_result lprepare = ngl_startup::prepare_context(argc, argv, ctx);
+	if (lprepare.code != startup_error::ok)
 	{
-		log_startup_failure(startup_error::invalid_args, ctx, "argc < 4");
-		return static_cast<int>(startup_error::invalid_args);
-	}
-
-	ctx.node_name = argv[1];
-	if (!parse_startup_int(argv[2], ctx.area) || !parse_startup_int(argv[3], ctx.tcount))
-	{
-		log_startup_failure(startup_error::invalid_args, ctx, "area/tcount parse failed");
-		return static_cast<int>(startup_error::invalid_args);
-	}
-
-	nconfig.init();
-
-	if (!nconfig.set_server(argv[1]))
-	{
-		ctx.node_type = static_cast<int>(nconfig.nodetype());
-		log_startup_failure(startup_error::invalid_node_type, ctx, "invalid node type");
-		return static_cast<int>(startup_error::invalid_node_type);
-	}
-	ctx.node_type = static_cast<int>(nconfig.nodetype());
-
-	std::string config_name = std::format("{}_{}", ctx.node_name, ctx.tcount);
-	if (!nconfig.load("./config", config_name))
-	{
-		ctx.config_file = nconfig.config_file();
-		startup_error code = ngl::tools::file_exists(ctx.config_file) ?
-			startup_error::config_load_failed : startup_error::config_not_found;
-		log_startup_failure(code, ctx, "config load failed");
-		return static_cast<int>(code);
-	}
-	ctx.config_file = nconfig.config_file();
-
-	ngl::csv_base::set_path("./csv", ctx.node_name);
-
-	const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab(ctx.node_name, ctx.area);
-	if (tab == nullptr)
-	{
-		log_startup_failure(startup_error::tab_server_missing, ctx, "tab_servers missing");
-		return static_cast<int>(startup_error::tab_server_missing);
-	}
-	nconfig.set_nodeid(tab->m_id, ctx.tcount);
-
-	if (ctx.area < 0)
-	{
-		nconfig.set_servername(std::string(std::format("node_{}__{}_{}", ctx.node_name, -ctx.area, ctx.tcount)));
-	}
-	else
-	{
-		nconfig.set_servername(std::string(std::format("node_{}_{}_{}", ctx.node_name, tab->m_area, ctx.tcount)));
+		ngl_startup::log_failure(lprepare.code, ctx, lprepare.reason);
+		return static_cast<int>(lprepare.code);
 	}
 
 #ifdef WIN32
@@ -1043,7 +953,7 @@ int ngl_main(int argc, char** argv)
 
 	if (rc != startup_error::ok)
 	{
-		log_startup_failure(rc, ctx, "node start failed");
+		ngl_startup::log_failure(rc, ctx, "node start failed");
 		return static_cast<int>(rc);
 	}
 

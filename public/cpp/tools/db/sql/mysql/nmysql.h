@@ -18,6 +18,7 @@
 
 #include <iostream> 
 #include <mysql.h>
+#include <cstddef>
 #include <cstdint>
 #include <sstream>
 #include <vector>
@@ -47,17 +48,17 @@ namespace ngl
 		bool changedb(MYSQL* amysql, std::string& adbname);
 
 		// # 执行sql语句
-		bool query(const char* asql, int alen);
+		bool query(const char* asql, std::size_t alen);
 
 		// # 转义 SQL 语句中使用的字符串中的特殊字符
-		void escape(const char* asql, int asqllen, std::string& aoutsql);
+		void escape(const char* asql, std::size_t asqllen, std::string& aoutsql);
 
 		// # 在callback中转化数据
 		using callback = std::function<bool(MYSQL_ROW, unsigned long*, my_ulonglong, my_ulonglong)>;
-		bool select(const char* asql, int asqllen, const callback& aback);
+		bool select(const char* asql, std::size_t asqllen, const callback& aback);
 
 		// # stmt 相关
-		bool stmt_query(const char* asql, int alen, MYSQL_BIND* abind);
+		bool stmt_query(const char* asql, std::size_t alen, MYSQL_BIND* abind);
 
 		db_buff m_malloc;
 	};

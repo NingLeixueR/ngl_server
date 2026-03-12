@@ -108,9 +108,12 @@ namespace ngl
 		{
 			return avalues.m_value;
 		}
-		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
-		avalues.m_value = (static_cast<int16_t>(value_p[0]) << 8) | static_cast<int16_t>(value_p[1]);
-		return avalues.m_value;
+		else
+		{
+			unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
+			avalues.m_value = (static_cast<int16_t>(value_p[0]) << 8) | static_cast<int16_t>(value_p[1]);
+			return avalues.m_value;
+		}
 	}
 
 	uint16_t tools::transformlittle(parm<uint16_t>& avalues)
@@ -119,9 +122,12 @@ namespace ngl
 		{
 			return avalues.m_value;
 		}
-		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
-		avalues.m_value = (static_cast<uint16_t>(value_p[0]) << 8) | static_cast<uint16_t>(value_p[1]);
-		return avalues.m_value;
+		else
+		{
+			unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
+			avalues.m_value = (static_cast<uint16_t>(value_p[0]) << 8) | static_cast<uint16_t>(value_p[1]);
+			return avalues.m_value;
+		}
 	}
 
 	int32_t tools::transformlittle(parm<int32_t>& avalues)
@@ -130,12 +136,15 @@ namespace ngl
 		{
 			return avalues.m_value;
 		}
-		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
-		avalues.m_value = (static_cast<int32_t>(value_p[0]) << 24)
-			| (static_cast<int32_t>(value_p[1]) << 16)
-			| (static_cast<int32_t>(value_p[2]) << 8)
-			| static_cast<int32_t>(value_p[3]);
-		return avalues.m_value;
+		else
+		{
+			unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
+			avalues.m_value = (static_cast<int32_t>(value_p[0]) << 24)
+				| (static_cast<int32_t>(value_p[1]) << 16)
+				| (static_cast<int32_t>(value_p[2]) << 8)
+				| static_cast<int32_t>(value_p[3]);
+			return avalues.m_value;
+		}
 	}
 
 	uint32_t tools::transformlittle(parm<uint32_t>& avalues)
@@ -144,12 +153,15 @@ namespace ngl
 		{
 			return avalues.m_value;
 		}
-		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
-		avalues.m_value = (static_cast<uint32_t>(value_p[0]) << 24)
-			| (static_cast<uint32_t>(value_p[1]) << 16)
-			| (static_cast<uint32_t>(value_p[2]) << 8)
-			| static_cast<uint32_t>(value_p[3]);
-		return avalues.m_value;
+		else
+		{
+			unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
+			avalues.m_value = (static_cast<uint32_t>(value_p[0]) << 24)
+				| (static_cast<uint32_t>(value_p[1]) << 16)
+				| (static_cast<uint32_t>(value_p[2]) << 8)
+				| static_cast<uint32_t>(value_p[3]);
+			return avalues.m_value;
+		}
 	}
 
 	int64_t tools::transformlittle(parm<int64_t>& avalues)
@@ -158,16 +170,19 @@ namespace ngl
 		{
 			return avalues.m_value;
 		}
-		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
-		avalues.m_value = (static_cast<uint64_t>(value_p[0]) << 56)
-			| (static_cast<int64_t>(value_p[1]) << 48)
-			| (static_cast<int64_t>(value_p[2]) << 40)
-			| (static_cast<int64_t>(value_p[3]) << 32)
-			| (static_cast<int64_t>(value_p[4]) << 24)
-			| (static_cast<int64_t>(value_p[5]) << 16)
-			| (static_cast<int64_t>(value_p[6]) << 8)
-			| static_cast<int64_t>(value_p[7]);
-		return avalues.m_value;
+		else
+		{
+			unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
+			avalues.m_value = (static_cast<uint64_t>(value_p[0]) << 56)
+				| (static_cast<int64_t>(value_p[1]) << 48)
+				| (static_cast<int64_t>(value_p[2]) << 40)
+				| (static_cast<int64_t>(value_p[3]) << 32)
+				| (static_cast<int64_t>(value_p[4]) << 24)
+				| (static_cast<int64_t>(value_p[5]) << 16)
+				| (static_cast<int64_t>(value_p[6]) << 8)
+				| static_cast<int64_t>(value_p[7]);
+			return avalues.m_value;
+		}
 	}
 
 	uint64_t tools::transformlittle(parm<uint64_t>& avalues)
@@ -176,16 +191,19 @@ namespace ngl
 		{
 			return avalues.m_value;
 		}
-		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
-		avalues.m_value = (static_cast<uint64_t>(value_p[0]) << 56)
-			| (static_cast<uint64_t>(value_p[1]) << 48)
-			| (static_cast<uint64_t>(value_p[2]) << 40)
-			| (static_cast<uint64_t>(value_p[3]) << 32)
-			| (static_cast<uint64_t>(value_p[4]) << 24)
-			| (static_cast<uint64_t>(value_p[5]) << 16)
-			| (static_cast<uint64_t>(value_p[6]) << 8)
-			| static_cast<uint64_t>(value_p[7]);
-		return avalues.m_value;
+		else
+		{
+			unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
+			avalues.m_value = (static_cast<uint64_t>(value_p[0]) << 56)
+				| (static_cast<uint64_t>(value_p[1]) << 48)
+				| (static_cast<uint64_t>(value_p[2]) << 40)
+				| (static_cast<uint64_t>(value_p[3]) << 32)
+				| (static_cast<uint64_t>(value_p[4]) << 24)
+				| (static_cast<uint64_t>(value_p[5]) << 16)
+				| (static_cast<uint64_t>(value_p[6]) << 8)
+				| static_cast<uint64_t>(value_p[7]);
+			return avalues.m_value;
+		}
 	}
 
 	class base64_impl

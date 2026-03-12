@@ -12,6 +12,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)  # 强制要求C++20，不兼容则报错
 #set(CMAKE_CXX_EXTENSIONS OFF)        # 关闭微软C++扩展，启用【纯标准C++20】
 option(NGL_USE_UB_CPP "Use generated ub_*.cpp unity sources" ON)
+option(NGL_ENABLE_STRONG_WARNINGS "Enable stronger compiler warnings for project targets" ON)
+option(NGL_ENABLE_SANITIZERS "Enable AddressSanitizer and UndefinedBehaviorSanitizer on supported toolchains" OFF)
 
 option(BUILD_TESTING "Build and register tests" ON)
 if(BUILD_TESTING)
@@ -35,6 +37,8 @@ set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "")
 add_library(ngl_build_options INTERFACE)
 target_include_directories(ngl_build_options INTERFACE
 	${CMAKE_SOURCE_DIR}/public/cpp
+)
+target_include_directories(ngl_build_options SYSTEM INTERFACE
 	${CMAKE_SOURCE_DIR}/public/cpp/third_party
 	${CMAKE_SOURCE_DIR}/public/cpp/third_party/kcp
 	${CMAKE_SOURCE_DIR}/public/cpp/third_party/asio

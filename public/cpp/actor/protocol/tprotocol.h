@@ -60,7 +60,10 @@ namespace ngl
 				{
 					return &m_toactor[(size_t)SCRIPT];
 				}
-				return nullptr;
+				else
+				{
+					return nullptr;
+				}
 			}
 
 			template <enscript SCRIPT>
@@ -70,7 +73,10 @@ namespace ngl
 				{
 					return &m_toclient[(size_t)SCRIPT];
 				}
-				return nullptr;
+				else
+				{
+					return nullptr;
+				}
 			}
 		};
 	private:

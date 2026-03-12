@@ -1037,30 +1037,28 @@ namespace ngl
 			{
 				return false;
 			}
-			adata = (T)lvalue;
+			adata = static_cast<T>(lvalue);
+			return true;
+		}
+		else if constexpr (is_protobuf_message<T>::value)
+		{
+			std::string lstr = ncjson::vstr(ljson);
+			if (lstr.empty())
+			{
+				return true;
+			}
+			T ltemp;
+			if (!tools::json2proto(lstr, ltemp))
+			{
+				return false;
+			}
+			adata = std::move(ltemp);
+			return true;
 		}
 		else
 		{
-			if constexpr (is_protobuf_message<T>::value)
-			{
-				std::string lstr = ncjson::vstr(ljson);
-				if (lstr.empty())
-				{
-					return true;
-				}
-				T ltemp;
-				if (!tools::json2proto(lstr, ltemp))
-				{
-					return false;
-				}
-				adata = std::move(ltemp);
-			}
-			else
-			{
-				return adata.json_pop(*ljson);
-			}
+			return adata.json_pop(*ljson);
 		}
-		return true;
 	}
 
 	template <typename T>
@@ -1072,41 +1070,38 @@ namespace ngl
 		}
 		if constexpr (std::is_enum<T>::value)
 		{
-			if (!json_format<int64_t>::push(ajson, aallocator, akey, (int64_t)adata))
+			if (!json_format<int64_t>::push(ajson, aallocator, akey, static_cast<int64_t>(adata)))
 			{
 				return false;
 			}
+			return true;
+		}
+		else if constexpr (is_protobuf_message<T>::value)
+		{
+			std::string lstr;
+			if (!tools::proto2json(adata, lstr))
+			{
+				return false;
+			}
+			ncjson ljsontemp(lstr.c_str());
+			if (!ljsontemp.parsecheck())
+			{
+				return false;
+			}
+			rapidjson::Value copiedValue;
+			copiedValue.CopyFrom(ljsontemp.doc(), *aallocator);
+			return njson_detail::add_member(ajson, aallocator, akey, copiedValue);
 		}
 		else
 		{
-			if constexpr (is_protobuf_message<T>::value)
+			rapidjson::Value lval;
+			lval.SetObject();
+			if (!adata.json_push(lval, aallocator))
 			{
-				std::string lstr;
-				if (!tools::proto2json(adata, lstr))
-				{
-					return false;
-				}
-				ncjson ljsontemp(lstr.c_str());
-				if (!ljsontemp.parsecheck())
-				{
-					return false;
-				}
-				rapidjson::Value copiedValue;
-				copiedValue.CopyFrom(ljsontemp.doc(), *aallocator);
-				return njson_detail::add_member(ajson, aallocator, akey, copiedValue);
+				return false;
 			}
-			else
-			{
-				rapidjson::Value lval;
-				lval.SetObject();
-				if (!adata.json_push(lval, aallocator))
-				{
-					return false;
-				}
-				return njson_detail::add_member(ajson, aallocator, akey, lval);
-			}
+			return njson_detail::add_member(ajson, aallocator, akey, lval);
 		}
-		return true;
 	}
 
 	template <typename T>
@@ -1118,41 +1113,37 @@ namespace ngl
 		}
 		if constexpr (std::is_enum<T>::value)
 		{
-			if (!json_format<int64_t>::pushback(ajson, aallocator, (int64_t)adata))
+			if (!json_format<int64_t>::pushback(ajson, aallocator, static_cast<int64_t>(adata)))
 			{
 				return false;
 			}
+			return true;
+		}
+		else if constexpr (is_protobuf_message<T>::value)
+		{
+			std::string lstr;
+			if (!tools::proto2json(adata, lstr))
+			{
+				return false;
+			}
+			ncjson ljsontemp(lstr.c_str());
+			if (!ljsontemp.parsecheck())
+			{
+				return false;
+			}
+			rapidjson::Value copiedValue;
+			copiedValue.CopyFrom(ljsontemp.doc(), *aallocator);
+			return njson_detail::push_back(ajson, aallocator, copiedValue);
 		}
 		else
 		{
-			if constexpr (is_protobuf_message<T>::value)
+			rapidjson::Value ljson;
+			ljson.SetObject();
+			if (!adata.json_push(ljson, aallocator))
 			{
-				std::string lstr;
-				if (!tools::proto2json(adata, lstr))
-				{
-					return false;
-				}
-				ncjson ljsontemp(lstr.c_str());
-				if (!ljsontemp.parsecheck())
-				{
-					return false;
-				}
-				rapidjson::Value copiedValue;
-				copiedValue.CopyFrom(ljsontemp.doc(), *aallocator);
-				return njson_detail::push_back(ajson, aallocator, copiedValue);
+				return false;
 			}
-			else
-			{
-				rapidjson::Value ljson;
-				ljson.SetObject();
-				if (!adata.json_push(ljson, aallocator))
-				{
-					return false;
-				}
-				return njson_detail::push_back(ajson, aallocator, ljson);
-			}
+			return njson_detail::push_back(ajson, aallocator, ljson);
 		}
-		return true;
-
 	}
 }//namespace ngl

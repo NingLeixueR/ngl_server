@@ -112,7 +112,7 @@ public:
         m_stream << "   template <>" << std::endl;
         m_stream << "   struct serialize_lua<" << lmesname << ">" << std::endl;
         m_stream << "   {" << std::endl;
-        m_stream << "       static void stack_push(lua_State* L, const " << lmesname << "& adata, const char* aname = nullptr)" << std::endl;
+        m_stream << "       static void stack_push([[maybe_unused]] lua_State* L, [[maybe_unused]] const " << lmesname << "& adata, [[maybe_unused]] const char* aname = nullptr)" << std::endl;
         m_stream << "       {" << std::endl;
         if (messageDescriptor->field_count() > 0)
         {
@@ -143,7 +143,7 @@ public:
 
         m_stream << "       }" << std::endl;
 
-        m_stream << "       static bool stack_pop(lua_State* L, " << lmesname << "& adata, bool apop = true, const char* aname = nullptr)" << std::endl;
+        m_stream << "       static bool stack_pop([[maybe_unused]] lua_State* L, [[maybe_unused]] " << lmesname << "& adata, [[maybe_unused]] bool apop = true, [[maybe_unused]] const char* aname = nullptr)" << std::endl;
         m_stream << "       {" << std::endl;
         if (messageDescriptor->field_count() > 0)
         {

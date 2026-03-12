@@ -361,13 +361,12 @@ namespace ngl
 		template <typename TSQLPOOL>
 		void gpage(int athread, int abegindex, int aendindex, gcmd<std::vector<std::string>>& pro)
 		{
-			nmysql* ldb = nullptr;
-			ldb = nmysql_pool::instance().get(athread);
+			auto* ldb = TSQLPOOL::instance().get(athread);
 			if (ldb == nullptr)
 			{
 				return;
 			}
-			ngl::db_data<TDBTAB>::foreach_index(abegindex, aendindex, [&pro, ldb](int32_t aindex, TDBTAB& aitem)
+			ngl::db_data<TDBTAB>::foreach_index(abegindex, aendindex, [&pro, ldb]([[maybe_unused]] int32_t aindex, TDBTAB& aitem)
 				{
 					if (ldb->m_malloc.serialize(false, aitem))
 					{

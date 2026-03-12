@@ -26,6 +26,7 @@ endif()
 add_executable(ngl_test
 	${NGL_TEST_CASE_SRCS}
 	${CMAKE_SOURCE_DIR}/server/libnglcore/core/server_main.cpp
+	${CMAKE_SOURCE_DIR}/server/libnglcore/core/startup_support.cpp
 	${CMAKE_SOURCE_DIR}/server/libnglcore/core/ub_1.cpp
 	${NGL_TEST_CORE_PROTOBUF_CSRC}
 )

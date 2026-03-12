@@ -72,7 +72,7 @@ namespace ngl
 		//# 获取ENUM_ACTOR类型
 		inline ENUM_ACTOR type()const
 		{
-			return (ENUM_ACTOR)m_value2[0];
+			return static_cast<ENUM_ACTOR>(m_value2[0]);
 		}
 
 		//# 获取数据id
@@ -91,8 +91,8 @@ namespace ngl
 		static const char* name(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
-			i16_actortype ltype = lguid.type();
-			return em<ENUM_ACTOR>::name((ENUM_ACTOR)ltype);
+			const auto ltype = static_cast<ENUM_ACTOR>(lguid.type());
+			return em<ENUM_ACTOR>::name(ltype);
 		}
 
 		//# 根据类型、区服、数据id创建一个i64_actorid
@@ -164,7 +164,7 @@ namespace ngl
 		//# 替换actordataid
 		inline i64_actorid make_actordataid(i32_actordataid aid)
 		{
-			m_value2[0] = aid;
+			m_value1[1] = aid;
 			return (i64_actorid)(*this);
 		}
 

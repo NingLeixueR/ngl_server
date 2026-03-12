@@ -18,6 +18,8 @@
 #include "tools/tab/xml/xml.h"
 #include "tools/type.h"
 
+#include <bit>
+
 namespace ngl
 {
 	class nnodeid
@@ -34,31 +36,34 @@ namespace ngl
 
 		static int32_t nodeid(int16_t atid, int16_t atcount)
 		{
-			int16_t m_nodeid[2] = { atid, atcount };
-			return *(int32_t*)(m_nodeid);
+			const auto ltid = static_cast<uint32_t>(static_cast<uint16_t>(atid));
+			const auto ltcount = static_cast<uint32_t>(static_cast<uint16_t>(atcount)) << 16;
+			return std::bit_cast<int32_t>(ltid | ltcount);
 		}
 
-		int32_t nodeid()
+		int32_t nodeid() const
 		{
 			return m_nodeid;
 		}
 
 		static int16_t tcount(int32_t anodeid)
 		{
-			return ((int16_t*)&anodeid)[1];
+			const auto lnodeid = std::bit_cast<uint32_t>(anodeid);
+			return static_cast<int16_t>(static_cast<uint16_t>(lnodeid >> 16));
 		}
 
 		static int16_t tid(int32_t anodeid)
 		{
-			return ((int16_t*)&anodeid)[0];
+			const auto lnodeid = std::bit_cast<uint32_t>(anodeid);
+			return static_cast<int16_t>(static_cast<uint16_t>(lnodeid & 0xFFFFu));
 		}
 
-		int16_t tcount()
+		int16_t tcount() const
 		{
 			return tcount(m_nodeid);
 		}
 
-		int16_t tid()
+		int16_t tid() const
 		{
 			return tid(m_nodeid);
 		}

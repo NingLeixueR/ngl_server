@@ -15,8 +15,24 @@
 #include "tools/db/sql/mysql/nmysql.h"
 #include "tools/log/nlog.h"
 
+#include <limits>
+
 namespace ngl
 {
+	namespace
+	{
+		bool mysql_length(std::size_t alen, unsigned long& aoutlen)
+		{
+			if (alen > static_cast<std::size_t>(std::numeric_limits<unsigned long>::max()))
+			{
+				log_error()->print("mysql sql too long [{}]", alen);
+				return false;
+			}
+			aoutlen = static_cast<unsigned long>(alen);
+			return true;
+		}
+	}
+
 	bool nmysql::connectdb(const xarg_db& arg)
 	{
 		if (m_connectdb)
@@ -78,9 +94,14 @@ namespace ngl
 		return mysql_select_db(amysql, adbname.c_str()) == 0;
 	}
 
-	bool nmysql::query(const char* asql, int alen)
+	bool nmysql::query(const char* asql, std::size_t alen)
 	{
-		int ret = mysql_real_query(m_mysql, asql, (unsigned long)(alen + 1));
+		unsigned long lsqlen = 0;
+		if (!mysql_length(alen, lsqlen))
+		{
+			return false;
+		}
+		const int ret = mysql_real_query(m_mysql, asql, lsqlen);
 		if (ret != 0)
 		{
 			log_error()->print("nmysql::query[{}][{}]", mysql_error(m_mysql), asql);
@@ -90,16 +111,27 @@ namespace ngl
 		return true;
 	}
 
-	void nmysql::escape(const char* asql, int asqllen, std::string& aoutsql)
+	void nmysql::escape(const char* asql, std::size_t asqllen, std::string& aoutsql)
 	{
+		unsigned long lsqlen = 0;
+		if (!mysql_length(asqllen, lsqlen))
+		{
+			aoutsql.clear();
+			return;
+		}
 		char lbuff[10240] = { 0 };
-		mysql_real_escape_string(m_mysql, lbuff, asql, asqllen);
+		mysql_real_escape_string(m_mysql, lbuff, asql, lsqlen);
 		aoutsql = lbuff;
 	}
 
-	bool nmysql::select(const char* asql, int asqllen, const callback& aback)
+	bool nmysql::select(const char* asql, std::size_t asqllen, const callback& aback)
 	{
-		if (int ret = mysql_real_query(m_mysql, asql, (unsigned long)(asqllen)); ret == 0)
+		unsigned long lsqlen = 0;
+		if (!mysql_length(asqllen, lsqlen))
+		{
+			return false;
+		}
+		if (const int ret = mysql_real_query(m_mysql, asql, lsqlen); ret == 0)
 		{
 			MYSQL_RES* pRes = nullptr;
 			do
@@ -133,14 +165,19 @@ namespace ngl
 	}
 
 	// # stmt 相关
-	bool nmysql::stmt_query(const char* asql, int alen, MYSQL_BIND* abind)
+	bool nmysql::stmt_query(const char* asql, std::size_t alen, MYSQL_BIND* abind)
 	{
+		unsigned long lsqlen = 0;
+		if (!mysql_length(alen, lsqlen))
+		{
+			return false;
+		}
 		MYSQL_STMT* lstmt = mysql_stmt_init(m_mysql);
 		if (lstmt == nullptr)
 		{
 			return false;
 		}
-		int err = mysql_stmt_prepare(lstmt, asql, alen);
+		int err = mysql_stmt_prepare(lstmt, asql, lsqlen);
 		if (err != 0)
 		{
 			log_error()->print("mysql_stmt_prepare fail [{}]", err);

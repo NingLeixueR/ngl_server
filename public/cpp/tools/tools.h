@@ -19,6 +19,7 @@
 #include <functional>
 #include <stdexcept>
 #include <algorithm>
+#include <charconv>
 #include <iostream>
 #include <utility>
 #include <sstream>
@@ -33,6 +34,7 @@
 #include <regex>
 #include <tuple>
 #include <array>
+#include <limits>
 #include <map>
 #include <set>
 #include <bit>
@@ -159,6 +161,56 @@ namespace ngl
 			}
 			return true;
 		}
+
+		template <typename Target>
+		static Target parse_integer(const char* source)
+		{
+			using parse_type = std::conditional_t<std::is_signed_v<Target>, int64_t, uint64_t>;
+
+			require_non_empty(source);
+			const char* begin = source;
+			if constexpr (std::is_signed_v<Target>)
+			{
+				if (*begin == '+')
+				{
+					++begin;
+				}
+			}
+			if (*begin == '\0')
+			{
+				throw std::string("missing digits");
+			}
+
+			parse_type value = 0;
+			const char* end = begin + std::strlen(begin);
+			const auto result = std::from_chars(begin, end, value);
+			if (result.ec == std::errc::invalid_argument || result.ptr != end)
+			{
+				throw std::string("isdigit fail");
+			}
+			if (result.ec == std::errc::result_out_of_range)
+			{
+				throw std::string("out of range");
+			}
+
+			if constexpr (std::is_signed_v<Target>)
+			{
+				if (value < static_cast<parse_type>(std::numeric_limits<Target>::min()) ||
+					value > static_cast<parse_type>(std::numeric_limits<Target>::max()))
+				{
+					throw std::string("out of range");
+				}
+			}
+			else
+			{
+				if (value > static_cast<parse_type>(std::numeric_limits<Target>::max()))
+				{
+					throw std::string("out of range");
+				}
+			}
+
+			return static_cast<Target>(value);
+		}
 	};
 
 	template <>
@@ -167,12 +219,12 @@ namespace ngl
 		static int32_t fun(const std::string& source)
 		{
 			lexical_check::func_number(source);
-			return atoi(source.c_str());
+			return lexical_check::parse_integer<int32_t>(source.c_str());
 		}
 		static int32_t fun(const char* source)
 		{
 			lexical_check::func_number(source);
-			return atoi(source);
+			return lexical_check::parse_integer<int32_t>(source);
 		}
 	};
 
@@ -182,12 +234,12 @@ namespace ngl
 		static uint32_t fun(const std::string& source)
 		{
 			lexical_check::func_unsigned_number(source);
-			return atoi(source.c_str());
+			return lexical_check::parse_integer<uint32_t>(source.c_str());
 		}
 		static uint32_t fun(const char* source)
 		{
 			lexical_check::func_unsigned_number(source);
-			return atoi(source);
+			return lexical_check::parse_integer<uint32_t>(source);
 		}
 	};
 
@@ -197,12 +249,12 @@ namespace ngl
 		static int16_t fun(const std::string& source)
 		{
 			lexical_check::func_number(source);
-			return atoi(source.c_str());
+			return lexical_check::parse_integer<int16_t>(source.c_str());
 		}
 		static int16_t fun(const char* source)
 		{
 			lexical_check::func_number(source);
-			return atoi(source);
+			return lexical_check::parse_integer<int16_t>(source);
 		}
 	};
 
@@ -212,12 +264,12 @@ namespace ngl
 		static uint16_t fun(const std::string& source)
 		{
 			lexical_check::func_unsigned_number(source);
-			return atoi(source.c_str());
+			return lexical_check::parse_integer<uint16_t>(source.c_str());
 		}
 		static uint16_t fun(const char* source)
 		{
 			lexical_check::func_unsigned_number(source);
-			return atoi(source);
+			return lexical_check::parse_integer<uint16_t>(source);
 		}
 	};
 
@@ -227,12 +279,12 @@ namespace ngl
 		static int8_t fun(const std::string& source)
 		{
 			lexical_check::func_number(source);
-			return atoi(source.c_str());
+			return lexical_check::parse_integer<int8_t>(source.c_str());
 		}
 		static int8_t fun(const char* source)
 		{
 			lexical_check::func_number(source);
-			return atoi(source);
+			return lexical_check::parse_integer<int8_t>(source);
 		}
 	};
 
@@ -242,12 +294,12 @@ namespace ngl
 		static uint8_t fun(const std::string& source)
 		{
 			lexical_check::func_unsigned_number(source);
-			return atoi(source.c_str());
+			return lexical_check::parse_integer<uint8_t>(source.c_str());
 		}
 		static uint8_t fun(const char* source)
 		{
 			lexical_check::func_unsigned_number(source);
-			return atoi(source);
+			return lexical_check::parse_integer<uint8_t>(source);
 		}
 	};
 
@@ -257,13 +309,13 @@ namespace ngl
 		static int64_t fun(const std::string& source)
 		{
 			lexical_check::func_number(source);
-			return atoll(source.c_str());
+			return lexical_check::parse_integer<int64_t>(source.c_str());
 		}
 
 		static int64_t fun(const char* source)
 		{
 			lexical_check::func_number(source);
-			return atoll(source);
+			return lexical_check::parse_integer<int64_t>(source);
 		}
 	};
 
@@ -273,13 +325,13 @@ namespace ngl
 		static uint64_t fun(const std::string& source)
 		{
 			lexical_check::func_unsigned_number(source);
-			return atoll(source.c_str());
+			return lexical_check::parse_integer<uint64_t>(source.c_str());
 		}
 
 		static uint64_t fun(const char* source)
 		{
 			lexical_check::func_unsigned_number(source);
-			return atoll(source);
+			return lexical_check::parse_integer<uint64_t>(source);
 		}
 	};
 

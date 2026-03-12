@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "actor/actor_base/nguid.h"
+#include "actor/tab/ttab_servers.h"
 #include "tools/curl/ncurl.h"
 #include "tools/localtime.h"
 #include "tools/operator_file.h"
@@ -204,6 +205,34 @@ TEST(ToolsTest, LexicalCastRejectsInvalidNumericFormats)
 	EXPECT_THROW(ngl::tools::lexical_cast<uint32_t>(std::string("-1")), std::string);
 	EXPECT_THROW(ngl::tools::lexical_cast<float>(std::string(".")), std::string);
 	EXPECT_THROW(ngl::tools::lexical_cast<float>(std::string("1.2.3")), std::string);
+}
+
+TEST(ToolsTest, LexicalCastRejectsIntegralOverflow)
+{
+	EXPECT_THROW(ngl::tools::lexical_cast<int8_t>(std::string("128")), std::string);
+	EXPECT_THROW(ngl::tools::lexical_cast<uint8_t>(std::string("256")), std::string);
+	EXPECT_THROW(ngl::tools::lexical_cast<int16_t>(std::string("40000")), std::string);
+}
+
+TEST(ToolsTest, NguidMakeActordataidUpdatesOnlyDataId)
+{
+	const ngl::i64_actorid actor = ngl::nguid::make(ngl::ACTOR_ROLE, 2, 11);
+	const ngl::nguid updated(ngl::nguid::make_actordataid(actor, 99));
+
+	EXPECT_EQ(updated.type(), ngl::ACTOR_ROLE);
+	EXPECT_EQ(updated.area(), 2);
+	EXPECT_EQ(updated.actordataid(), 99);
+}
+
+TEST(ToolsTest, NodeIdPackingRoundTripsTidAndTcount)
+{
+	const auto node = ngl::nnodeid::nodeid(42, 7);
+	EXPECT_EQ(ngl::nnodeid::tid(node), 42);
+	EXPECT_EQ(ngl::nnodeid::tcount(node), 7);
+
+	const auto invalid = ngl::nnodeid::nodeid(-1, -1);
+	EXPECT_EQ(ngl::nnodeid::tid(invalid), -1);
+	EXPECT_EQ(ngl::nnodeid::tcount(invalid), -1);
 }
 
 TEST(ToolsTest, MapSplicingAppendsFormatterOutput)

@@ -1,5 +1,48 @@
 include_guard(GLOBAL)
 
+function(ngl_apply_compiler_warnings target_name)
+	if(NOT NGL_ENABLE_STRONG_WARNINGS)
+		return()
+	endif()
+
+	if(MSVC)
+		target_compile_options(${target_name} PRIVATE /W4)
+	elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+		target_compile_options(${target_name} PRIVATE -Wall -Wextra -Wpedantic)
+	endif()
+endfunction()
+
+function(ngl_apply_sanitizers target_name)
+	if(NOT NGL_ENABLE_SANITIZERS)
+		return()
+	endif()
+
+	if(MSVC)
+		message(WARNING "NGL_ENABLE_SANITIZERS is not supported for MSVC target ${target_name}")
+		return()
+	endif()
+
+	if(NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+		message(WARNING "NGL_ENABLE_SANITIZERS is only supported for GNU and Clang toolchains")
+		return()
+	endif()
+
+	target_compile_options(${target_name} PRIVATE
+		-fsanitize=address,undefined
+		-fno-omit-frame-pointer
+		-fno-sanitize-recover=all
+	)
+
+	get_target_property(target_type ${target_name} TYPE)
+	if(NOT target_type STREQUAL "STATIC_LIBRARY")
+		target_link_options(${target_name} PRIVATE
+			-fsanitize=address,undefined
+			-fno-omit-frame-pointer
+			-fno-sanitize-recover=all
+		)
+	endif()
+endfunction()
+
 function(ngl_apply_msvc_defaults target_name)
 	if(MSVC)
 		target_compile_definitions(${target_name} PRIVATE WIN32_LEAN_AND_MEAN)
@@ -7,6 +50,9 @@ function(ngl_apply_msvc_defaults target_name)
 		# Prevent parallel compilation from contending on a shared PDB file (/Zi).
 		target_compile_options(${target_name} PRIVATE /FS)
 	endif()
+
+	ngl_apply_compiler_warnings(${target_name})
+	ngl_apply_sanitizers(${target_name})
 endfunction()
 
 function(ngl_find_runtime_deps)

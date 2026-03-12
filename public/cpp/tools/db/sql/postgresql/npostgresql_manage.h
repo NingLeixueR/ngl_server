@@ -153,7 +153,6 @@ namespace ngl
 			return adb->select(lsql.c_str(), 1, [adb, aid](PGresult* result)->bool
 				{
 					int rows = PQntuples(result);
-					int cols = PQnfields(result);
 					for (int i = 0; i < rows; i++)
 					{
 						T ldata;
@@ -179,7 +178,6 @@ namespace ngl
 			return adb->select(lsql.c_str(), 1, [adb](PGresult* result)->bool
 				{
 					int rows = PQntuples(result);
-					int cols = PQnfields(result);
 					for (int i = 0; i < rows; i++)
 					{
 						T ldata;
