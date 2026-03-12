@@ -16,6 +16,8 @@
 #include "actor/protocol/nprotocol_template.h"
 #include "actor/pb/net.pb.h"
 
+#include <limits>
+
 namespace ngl
 {
 	enum E_ACTOR_TIMER
@@ -316,7 +318,7 @@ namespace ngl
 		i64_actorid			m_actoridclient = -1;
 		i64_actorid			m_actoridserver = -1;
 		std::string			m_uip;
-		i16_port			m_uport = -1;
+		i16_port			m_uport = std::numeric_limits<i16_port>::max();
 		int32_t				m_conv = -1;
 		pbnet::ENUM_KCP		m_kcpnum;
 		i32_serverid		m_serverid;

@@ -19,6 +19,7 @@
 #include "tools/type.h"
 
 #include <bit>
+#include <limits>
 
 namespace ngl
 {
@@ -78,6 +79,17 @@ namespace ngl
 
 		std::map<i16_area, std::map<i32_serverid, tab_servers*>> m_areaserver;
 		std::map<i16_area, std::set<i16_area>> m_coressserver;// key:应该是小于0的跨服 value:跨服对应的区服
+
+		static bool normalize_area(int area, i16_area& aout)
+		{
+			if (area < static_cast<int>(std::numeric_limits<i16_area>::min()) ||
+				area > static_cast<int>(std::numeric_limits<i16_area>::max()))
+			{
+				return false;
+			}
+			aout = static_cast<i16_area>(area);
+			return true;
+		}
 
 		void reload()final
 		{
@@ -143,15 +155,20 @@ namespace ngl
 
 		const tab_servers* const_tab(const std::string& aname, int area)
 		{
-			i16_area larea = ttab_mergearea::instance().mergeid(area);
+			i16_area lquery_area = 0;
+			if (!normalize_area(area, lquery_area))
+			{
+				return nullptr;
+			}
+			i16_area larea = ttab_mergearea::instance().mergeid(lquery_area);
 			if (larea != nguid::none_area())
 			{
-				area = larea;
+				lquery_area = larea;
 			}
 			return find_if([&](tab_servers& atab)->bool
 				{
 					std::cout << std::format("m_area:[{}] m_name:[{}] m_tcount:[{}]", atab.m_area, atab.m_name, atab.m_tcount) << std::endl;
-					if (atab.m_area == area && atab.m_name == aname)
+					if (atab.m_area == lquery_area && atab.m_name == aname)
 					{
 						return true;
 					}
@@ -162,15 +179,20 @@ namespace ngl
 
 		const tab_servers* const_tab(NODE_TYPE atype, int area)
 		{
-			i16_area larea = ttab_mergearea::instance().mergeid(area);
+			i16_area lquery_area = 0;
+			if (!normalize_area(area, lquery_area))
+			{
+				return nullptr;
+			}
+			i16_area larea = ttab_mergearea::instance().mergeid(lquery_area);
 			if (larea != nguid::none_area())
 			{
-				area = larea;
+				lquery_area = larea;
 			}
 			return csv<tab_servers>::find_if([&](tab_servers& atab)->bool
 				{
 					std::cout << std::format("m_area:[{}] m_name:[{}] m_tcount:[{}]", atab.m_area, atab.m_name, atab.m_tcount) << std::endl;
-					if (atab.m_area == area && atab.m_type == atype)
+					if (atab.m_area == lquery_area && atab.m_type == atype)
 					{
 						return true;
 					}
@@ -200,13 +222,22 @@ namespace ngl
 	public:
 		bool get_nworks(const tab_servers* atab, ENET_PROTOCOL atype, int32_t atcount, net_works& anetwork)
 		{
+			if (atcount <= 0)
+			{
+				return false;
+			}
 			const net_works* lpnet = nworks(atype, atab);
 			if (lpnet == nullptr)
 			{
 				return false;
 			}
 			anetwork = *lpnet;
-			anetwork.m_port += (atcount - 1);
+			const int32_t lport = static_cast<int32_t>(anetwork.m_port) + (atcount - 1);
+			if (lport < 0 || lport > static_cast<int32_t>(std::numeric_limits<i16_port>::max()))
+			{
+				return false;
+			}
+			anetwork.m_port = static_cast<i16_port>(lport);
 			return true;
 		}
 
@@ -303,7 +334,7 @@ namespace ngl
 		// 便利所有服务器
 		void foreach_server(const std::function<void(tab_servers*)>& afun)
 		{
-			ttab_mergearea::instance().for_each([&afun](i16_area aarea, std::set<i16_area>& aset)
+			ttab_mergearea::instance().for_each([&afun](i16_area aarea, [[maybe_unused]] std::set<i16_area>& aset)
 				{
 					auto lpmap = tools::findmap(ttab_servers::instance().m_areaserver, aarea);
 					if (lpmap == nullptr)

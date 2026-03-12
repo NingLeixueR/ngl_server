@@ -3,6 +3,7 @@
 #include <array>
 #include <cstring>
 #include <list>
+#include <limits>
 #include <map>
 #include <memory>
 #include <set>
@@ -12,6 +13,7 @@
 #include "actor/actor_base/actor_base.h"
 #include "actor/actor_base/nguid.h"
 #include "actor/protocol/tprotocol.h"
+#include "tools/db/sql/db_buff.h"
 #include "tools/serialize/nserialize.h"
 #include "tools/serialize/netbuff_pool.h"
 #include "tools/serialize/pack.h"
@@ -420,4 +422,13 @@ TEST(SerializeTest, SegpackRejectsNullBufferWhenLengthIsPositive)
 
 	EXPECT_FALSE(parser.push(1001, nullptr, 1, false));
 	EXPECT_TRUE(parser.push(1001, nullptr, 0, false));
+}
+
+TEST(SerializeTest, DbBuffBinaryUnserializeRejectsOversizedLength)
+{
+	ngl::db_buff buffer;
+	int32_t value = 0;
+	const std::array<char, sizeof(int32_t)> data = {};
+
+	EXPECT_FALSE(buffer.unserialize(true, value, data.data(), static_cast<std::size_t>(std::numeric_limits<int32_t>::max()) + 1u));
 }

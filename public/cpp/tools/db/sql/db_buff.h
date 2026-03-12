@@ -15,6 +15,7 @@
 
 #include "tools/log/nlog.h"
 
+#include <cstddef>
 #include <functional>
 #include <cstdint>
 #include <limits>
@@ -181,11 +182,16 @@ namespace ngl
 		}
 
 		template <typename T>
-		inline bool unserialize(bool isbinary, T& adata, const char* abuff, int alen)
+		inline bool unserialize(bool isbinary, T& adata, const char* abuff, std::size_t alen)
 		{
 			if (isbinary)
 			{
-				ngl::ser::serialize_pop lserialize(abuff, alen);
+				if (alen > static_cast<std::size_t>(std::numeric_limits<int32_t>::max()))
+				{
+					log_error()->print("db_buff::unserialize fail size={}", alen);
+					return false;
+				}
+				ngl::ser::serialize_pop lserialize(abuff, static_cast<int32_t>(alen));
 				return ngl::ser::nserialize::pop(&lserialize, adata);
 			}
 			else

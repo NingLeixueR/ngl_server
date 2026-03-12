@@ -18,9 +18,10 @@
 #include "tools/tab/xml/xml.h"
 
 #include <cstdint>
+#include <limits>
 
- namespace ngl
- {
+namespace ngl
+{
 	ELOGLEVEL	sysconfig::m_logwritelevel		= ELOG_ERROR;
 	ELOGLEVEL	sysconfig::m_logconsolelevel	= ELOG_ERROR;
 	int32_t		sysconfig::m_logline			= 10000;
@@ -175,7 +176,14 @@
 		{
 			for (int i = 1; i <= atcout; ++i)
 			{
-				m_gatewayids.insert(nnodeid::nodeid(ltabid, i));
+				if (ltabid < static_cast<i32_serverid>(std::numeric_limits<int16_t>::min()) ||
+					ltabid > static_cast<i32_serverid>(std::numeric_limits<int16_t>::max()) ||
+					i > static_cast<int>(std::numeric_limits<int16_t>::max()))
+				{
+					tools::no_core_dump();
+					continue;
+				}
+				m_gatewayids.insert(nnodeid::nodeid(static_cast<int16_t>(ltabid), static_cast<int16_t>(i)));
 			}
 		}
 	}

@@ -68,7 +68,7 @@ namespace ngl
 		ACTOR_TESTLUA							= 56, // 测试lua
 		ACTOR_TESTLUA2							= 57, // 测试lua2
 		ACTOR_DB								= 1000, // 必须是最后一个
-		ACTOR_SIGNLE_FINISH						= ACTOR_DB + pbdb::ENUM_DB_COUNT,
+		ACTOR_SIGNLE_FINISH						= static_cast<ENUM_ACTOR>(ACTOR_DB + static_cast<int>(pbdb::ENUM_DB_COUNT)),
 		ACTOR_COUNT								= ACTOR_SIGNLE_FINISH,
 	};
 

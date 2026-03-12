@@ -13,6 +13,7 @@ class MyProjectConan(ConanFile):
 
     def requirements(self):
         # --- 通用依赖 (所有平台都需要) ---
+        self.requires("boost/1.86.0")
         self.requires("lua/5.4.6")
         self.requires("protobuf/3.21.12")
         self.requires("libcurl/8.9.1")

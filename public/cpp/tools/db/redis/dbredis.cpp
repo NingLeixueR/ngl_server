@@ -88,7 +88,7 @@ namespace ngl
 			ltemp.set_mid(lid);
 			pbdb::db_brief lrolebase;
 			lrolebase.set_mid(lid);
-			lrolebase.mutable_mbase()->set_mname(std::string("libo") + ngl::tools::lexical_cast<std::string>(i));
+			lrolebase.mutable_mbase()->set_mname(std::string("libo") + tools::lexical_cast<std::string>(i));
 			lrolebase.mutable_mbase()->set_mlv(i);
 			lrolebase.mutable_mbase()->set_mmoneygold(i + 1000);
 			lrolebase.mutable_mbase()->set_mmoneysilver(i + 2000);

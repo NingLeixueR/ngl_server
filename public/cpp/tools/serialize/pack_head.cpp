@@ -91,10 +91,10 @@ namespace ngl
 
 	void pack_head::head_set_mask(int32_t* abuff)
 	{
-		auto* lpbuff = (char*)abuff;
+		auto* lpbuff = reinterpret_cast<uint8_t*>(abuff);
 		for (int i = 0; i < EPH_MASK_COUNT_BYTES; ++i)
 		{
-			lpbuff[i] = (char)EPH::EPH_MASK_VALUE;
+			lpbuff[i] = static_cast<uint8_t>(EPH::EPH_MASK_VALUE);
 		}
 	}
 

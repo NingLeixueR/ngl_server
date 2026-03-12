@@ -200,18 +200,18 @@ TEST(ToolsTest, LexicalCastAcceptsValidFloatingPointFormats)
 
 TEST(ToolsTest, LexicalCastRejectsInvalidNumericFormats)
 {
-	EXPECT_THROW(ngl::tools::lexical_cast<int32_t>(std::string("")), std::string);
-	EXPECT_THROW(ngl::tools::lexical_cast<int32_t>(std::string("+")), std::string);
-	EXPECT_THROW(ngl::tools::lexical_cast<uint32_t>(std::string("-1")), std::string);
-	EXPECT_THROW(ngl::tools::lexical_cast<float>(std::string(".")), std::string);
-	EXPECT_THROW(ngl::tools::lexical_cast<float>(std::string("1.2.3")), std::string);
+	EXPECT_THROW(ngl::tools::lexical_cast<int32_t>(std::string("")), boost::bad_lexical_cast);
+	EXPECT_THROW(ngl::tools::lexical_cast<int32_t>(std::string("+")), boost::bad_lexical_cast);
+	EXPECT_THROW(ngl::tools::lexical_cast<uint32_t>(std::string("-1")), boost::bad_lexical_cast);
+	EXPECT_THROW(ngl::tools::lexical_cast<float>(std::string(".")), boost::bad_lexical_cast);
+	EXPECT_THROW(ngl::tools::lexical_cast<float>(std::string("1.2.3")), boost::bad_lexical_cast);
 }
 
 TEST(ToolsTest, LexicalCastRejectsIntegralOverflow)
 {
-	EXPECT_THROW(ngl::tools::lexical_cast<int8_t>(std::string("128")), std::string);
-	EXPECT_THROW(ngl::tools::lexical_cast<uint8_t>(std::string("256")), std::string);
-	EXPECT_THROW(ngl::tools::lexical_cast<int16_t>(std::string("40000")), std::string);
+	EXPECT_THROW(ngl::tools::lexical_cast<int8_t>(std::string("128")), boost::bad_lexical_cast);
+	EXPECT_THROW(ngl::tools::lexical_cast<uint8_t>(std::string("256")), boost::bad_lexical_cast);
+	EXPECT_THROW(ngl::tools::lexical_cast<int16_t>(std::string("40000")), boost::bad_lexical_cast);
 }
 
 TEST(ToolsTest, NguidMakeActordataidUpdatesOnlyDataId)

@@ -204,7 +204,6 @@ namespace ngl
 			return adb->select(lsql.c_str(), 0, [&aidset](PGresult* result)->bool
 				{
 					int rows = PQntuples(result);
-					int cols = PQnfields(result);
 					for (int i = 0; i < rows; i++)
 					{
 						aidset.insert(tools::lexical_cast<int64_t>(PQgetvalue(result, i, 0)));

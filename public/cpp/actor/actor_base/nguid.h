@@ -19,6 +19,8 @@
 #include "tools/type.h"
 
 #include <format>
+#include <istream>
+#include <ostream>
 
 namespace ngl
 {
@@ -34,13 +36,18 @@ namespace ngl
 	union nguid
 	{
 	private:
+		static constexpr int16_t actor_value(ENUM_ACTOR avalue)
+		{
+			return static_cast<int16_t>(avalue);
+		}
+
 		int64_t m_id;
 		int32_t m_value1[2];// m_value1[0] = type+area  m_value1[1]=actordataid
 		int16_t m_value2[4];// m_value2[0] = type		m_value2[1] = area
 	public:
 		inline nguid()
 		{
-			m_value2[0] = none_type();
+			m_value2[0] = actor_value(none_type());
 			m_value2[1] = none_area();
 			m_value1[1] = none_actordataid();
 		}
@@ -52,7 +59,7 @@ namespace ngl
 		inline nguid(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid) :
 			m_id(0)
 		{
-			m_value2[0] = atype;
+			m_value2[0] = actor_value(atype);
 			m_value2[1] = aareaid;
 			m_value1[1] = aid;
 		}
@@ -150,7 +157,7 @@ namespace ngl
 		//# 替换type
 		inline i64_actorid make_type(ENUM_ACTOR atype)
 		{
-			m_value2[0] = atype;
+			m_value2[0] = actor_value(atype);
 			return (i64_actorid)(*this);
 		}
 
@@ -179,7 +186,7 @@ namespace ngl
 		static i16_actortype type(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
-			return lguid.type();
+			return static_cast<i16_actortype>(lguid.type());
 		}
 
 		//# 获取area
@@ -204,7 +211,7 @@ namespace ngl
 		//# 和无参make()一致
 		inline void none()
 		{
-			m_value2[0] = none_type();
+			m_value2[0] = actor_value(none_type());
 			m_value2[1] = none_area();
 			m_value1[1] = none_actordataid();
 		}
@@ -293,6 +300,25 @@ namespace ngl
 	};
 }//namespace ngl
 
+namespace ngl
+{
+	inline std::ostream& operator<<(std::ostream& astream, const nguid& avalue)
+	{
+		astream << static_cast<i64_actorid>(avalue);
+		return astream;
+	}
+
+	inline std::istream& operator>>(std::istream& astream, nguid& avalue)
+	{
+		i64_actorid lid = 0;
+		if (astream >> lid)
+		{
+			avalue = nguid(lid);
+		}
+		return astream;
+	}
+}//namespace ngl
+
 template <>
 struct std::formatter<ngl::nguid>
 {
@@ -315,58 +341,3 @@ struct std::formatter<ngl::nguid>
 	}
 };
 
-namespace ngl
-{
-	template <>
-	struct lexical_cast2<nguid>
-	{
-		static nguid fun(const std::string& source)
-		{
-			int64_t lvalue = tools::lexical_cast<int64_t>(source);
-			return nguid(lvalue);
-		}
-
-		static nguid fun(const char* source)
-		{
-			int64_t lvalue = tools::lexical_cast<int64_t>(source);
-			return nguid(lvalue);
-		}
-	};
-
-	template <>
-	struct lexical_cast2<std::string>
-	{
-		template <typename Source>
-		static std::string fun(const Source& source)
-		{
-			return std::format("{}", source);
-		}
-
-		static std::string fun(const std::string& source)
-		{
-			return source;
-		}
-
-		static std::string fun(const char* source)
-		{
-			return source;
-		}
-
-		static std::string fun(const nguid& source)
-		{
-			return tools::lexical_cast<std::string>((int64_t)(source));
-		}
-	};
-
-	template <typename To, typename From>
-	To tools::lexical_cast(const From& from)
-	{
-		return lexical_cast2<To>::fun(from);
-	}
-
-	template <typename To>
-	To& tools::lexical_cast(To& from)
-	{
-		return from;
-	}
-}//namespace ngl

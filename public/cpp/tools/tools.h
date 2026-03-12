@@ -38,365 +38,17 @@
 #include <map>
 #include <set>
 #include <bit>
+#include <typeinfo>
 
+#include <boost/lexical_cast.hpp>
 #include <google/protobuf/util/json_util.h>
 
 namespace ngl
 {
-	template <typename Target>
-	struct lexical_cast2
-	{
-	};
-	
-	union nguid;
 	template <typename T>
 	struct np_actormodule_forward;
 	template <typename TDATA>
 	using mforward = np_actormodule_forward<TDATA>;
-
-	template <>
-	struct lexical_cast2<nguid>;
-
-	template <>
-	struct lexical_cast2<std::string>;
-
-	class lexical_check
-	{
-	public:
-		static bool is_sign(char ch)
-		{
-			return ch == '-' || ch == '+';
-		}
-
-		static bool is_digit(char ch)
-		{
-			return std::isdigit(static_cast<unsigned char>(ch)) != 0;
-		}
-
-		static void require_non_empty(const char* source)
-		{
-			if (source == nullptr || *source == '\0')
-			{
-				throw std::string("empty numeric string");
-			}
-		}
-
-		static bool func_number(const std::string& source)
-		{
-			return func_number(source.c_str());
-		}
-		static bool func_number(const char* source)
-		{
-			require_non_empty(source);
-			bool saw_digit = false;
-			for (auto lpchar = source; *lpchar != '\0'; ++lpchar)
-			{
-				if (source == lpchar && is_sign(*lpchar))
-				{
-					continue;
-				}
-				if (!is_digit(*lpchar))
-				{
-					throw std::string("isdigit fail");
-				}
-				saw_digit = true;
-			}
-			if (!saw_digit)
-			{
-				throw std::string("missing digits");
-			}
-			return true;
-		}
-
-		static bool func_unsigned_number(const std::string& source)
-		{
-			return func_unsigned_number(source.c_str());
-		}
-		static bool func_unsigned_number(const char* source)
-		{
-			require_non_empty(source);
-			for (auto lpchar = source; *lpchar != '\0'; ++lpchar)
-			{
-				if (!is_digit(*lpchar))
-				{
-					throw std::string("isdigit fail");
-				}
-			}
-			return true;
-		}
-
-		static bool func_float(const std::string& source)
-		{
-			return func_float(source.c_str());
-		}
-		static bool func_float(const char* source)
-		{
-			require_non_empty(source);
-			bool ldian = false;
-			bool saw_digit = false;
-			for (auto lpchar = source; *lpchar != '\0'; ++lpchar)
-			{
-				if (source == lpchar && is_sign(*lpchar))
-				{
-					continue;
-				}
-				if (*lpchar == '.')
-				{
-					if (ldian)
-					{
-						throw std::string("isdigit fail");
-					}
-					ldian = true;
-					continue;
-				}
-				if (!is_digit(*lpchar))
-				{
-					throw std::string("isdigit fail");
-				}
-				saw_digit = true;
-			}
-			if (!saw_digit)
-			{
-				throw std::string("missing digits");
-			}
-			return true;
-		}
-
-		template <typename Target>
-		static Target parse_integer(const char* source)
-		{
-			using parse_type = std::conditional_t<std::is_signed_v<Target>, int64_t, uint64_t>;
-
-			require_non_empty(source);
-			const char* begin = source;
-			if constexpr (std::is_signed_v<Target>)
-			{
-				if (*begin == '+')
-				{
-					++begin;
-				}
-			}
-			if (*begin == '\0')
-			{
-				throw std::string("missing digits");
-			}
-
-			parse_type value = 0;
-			const char* end = begin + std::strlen(begin);
-			const auto result = std::from_chars(begin, end, value);
-			if (result.ec == std::errc::invalid_argument || result.ptr != end)
-			{
-				throw std::string("isdigit fail");
-			}
-			if (result.ec == std::errc::result_out_of_range)
-			{
-				throw std::string("out of range");
-			}
-
-			if constexpr (std::is_signed_v<Target>)
-			{
-				if (value < static_cast<parse_type>(std::numeric_limits<Target>::min()) ||
-					value > static_cast<parse_type>(std::numeric_limits<Target>::max()))
-				{
-					throw std::string("out of range");
-				}
-			}
-			else
-			{
-				if (value > static_cast<parse_type>(std::numeric_limits<Target>::max()))
-				{
-					throw std::string("out of range");
-				}
-			}
-
-			return static_cast<Target>(value);
-		}
-	};
-
-	template <>
-	struct lexical_cast2<int32_t>
-	{
-		static int32_t fun(const std::string& source)
-		{
-			lexical_check::func_number(source);
-			return lexical_check::parse_integer<int32_t>(source.c_str());
-		}
-		static int32_t fun(const char* source)
-		{
-			lexical_check::func_number(source);
-			return lexical_check::parse_integer<int32_t>(source);
-		}
-	};
-
-	template <>
-	struct lexical_cast2<uint32_t>
-	{
-		static uint32_t fun(const std::string& source)
-		{
-			lexical_check::func_unsigned_number(source);
-			return lexical_check::parse_integer<uint32_t>(source.c_str());
-		}
-		static uint32_t fun(const char* source)
-		{
-			lexical_check::func_unsigned_number(source);
-			return lexical_check::parse_integer<uint32_t>(source);
-		}
-	};
-
-	template <>
-	struct lexical_cast2<int16_t>
-	{
-		static int16_t fun(const std::string& source)
-		{
-			lexical_check::func_number(source);
-			return lexical_check::parse_integer<int16_t>(source.c_str());
-		}
-		static int16_t fun(const char* source)
-		{
-			lexical_check::func_number(source);
-			return lexical_check::parse_integer<int16_t>(source);
-		}
-	};
-
-	template <>
-	struct lexical_cast2<uint16_t>
-	{
-		static uint16_t fun(const std::string& source)
-		{
-			lexical_check::func_unsigned_number(source);
-			return lexical_check::parse_integer<uint16_t>(source.c_str());
-		}
-		static uint16_t fun(const char* source)
-		{
-			lexical_check::func_unsigned_number(source);
-			return lexical_check::parse_integer<uint16_t>(source);
-		}
-	};
-
-	template <>
-	struct lexical_cast2<int8_t>
-	{
-		static int8_t fun(const std::string& source)
-		{
-			lexical_check::func_number(source);
-			return lexical_check::parse_integer<int8_t>(source.c_str());
-		}
-		static int8_t fun(const char* source)
-		{
-			lexical_check::func_number(source);
-			return lexical_check::parse_integer<int8_t>(source);
-		}
-	};
-
-	template <>
-	struct lexical_cast2<uint8_t>
-	{
-		static uint8_t fun(const std::string& source)
-		{
-			lexical_check::func_unsigned_number(source);
-			return lexical_check::parse_integer<uint8_t>(source.c_str());
-		}
-		static uint8_t fun(const char* source)
-		{
-			lexical_check::func_unsigned_number(source);
-			return lexical_check::parse_integer<uint8_t>(source);
-		}
-	};
-
-	template <>
-	struct lexical_cast2<int64_t>
-	{
-		static int64_t fun(const std::string& source)
-		{
-			lexical_check::func_number(source);
-			return lexical_check::parse_integer<int64_t>(source.c_str());
-		}
-
-		static int64_t fun(const char* source)
-		{
-			lexical_check::func_number(source);
-			return lexical_check::parse_integer<int64_t>(source);
-		}
-	};
-
-	template <>
-	struct lexical_cast2<uint64_t>
-	{
-		static uint64_t fun(const std::string& source)
-		{
-			lexical_check::func_unsigned_number(source);
-			return lexical_check::parse_integer<uint64_t>(source.c_str());
-		}
-
-		static uint64_t fun(const char* source)
-		{
-			lexical_check::func_unsigned_number(source);
-			return lexical_check::parse_integer<uint64_t>(source);
-		}
-	};
-
-	template <>
-	struct lexical_cast2<float>
-	{
-		static float fun(const std::string& source)
-		{
-			lexical_check::func_float(source);
-			return (float)std::atof(source.c_str());
-		}
-
-		static float fun(const char* source)
-		{
-			lexical_check::func_float(source);
-			return (float)std::atof(source);
-		}
-	};
-
-	template <>
-	struct lexical_cast2<double>
-	{
-		static double fun(const std::string& source)
-		{
-			lexical_check::func_float(source);
-			return std::atof(source.c_str());
-		}
-
-		static double fun(const char* source)
-		{
-			lexical_check::func_float(source);
-			return std::atof(source);
-		}
-	};
-
-	template <>
-	struct lexical_cast2<bool>
-	{
-		static bool fun(const std::string& source)
-		{
-			if (source == "true" || source == "TRUE")
-			{
-				return true;
-			}
-			else
-			{
-				if (source != "0" && source != "")
-				{
-					return true;
-				}
-				return false;
-			}
-		}
-
-		static bool fun(const char* source)
-		{
-			std::string lstr(source);
-			return (lstr == "0" || lstr.empty()) ? false : true;
-		}
-
-		static bool fun(int64_t source)
-		{
-			return source != 0;
-		}
-	};
 
 	class tools
 	{
@@ -481,13 +133,21 @@ namespace ngl
 				atarget.insert({ _key, _value });
 			}
 		}
-		
+
 		template <typename To, typename From>
-		static To lexical_cast(const From& from);
-
-		template <typename To>
-		static To& lexical_cast(To& from);
-
+		static To lexical_cast(const From& from, const std::source_location& asource = std::source_location::current())
+		{
+			try
+			{
+				return boost::lexical_cast<To>(from);
+			}
+			catch (const boost::bad_lexical_cast& aerror)
+			{
+				log_error(asource)->print("tools::lexical_cast<{}> failed from <{}> : {}", typeid(To).name(), typeid(From).name(), aerror.what());
+				throw std::string("lexical_cast error");
+			}
+		}
+		
 		template <typename T>
 		struct parm
 		{

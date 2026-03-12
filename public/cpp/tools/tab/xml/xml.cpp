@@ -20,9 +20,24 @@
 #include "tools/tools.h"
 #include "tools/type.h"
 #include <array>
+#include <limits>
 
 namespace ngl
 {
+	namespace
+	{
+		int16_t node_part_or_invalid(int value)
+		{
+			if (value < static_cast<int>(std::numeric_limits<int16_t>::min()) ||
+				value > static_cast<int>(std::numeric_limits<int16_t>::max()))
+			{
+				tools::no_core_dump();
+				return -1;
+			}
+			return static_cast<int16_t>(value);
+		}
+	}
+
 	void xmlnode::init()
 	{
 		em<NODE_TYPE>::set(DB, "db");
@@ -70,7 +85,7 @@ namespace ngl
 
 	void xmlnode::set_nodeid(int atid, int atcount)
 	{
-		m_nodeid = nnodeid::nodeid(atid, atcount);
+		m_nodeid = nnodeid::nodeid(node_part_or_invalid(atid), node_part_or_invalid(atcount));
 		m_tid = nnodeid::tid(m_nodeid);
 		m_tcount = nnodeid::tcount(m_nodeid);
 	}

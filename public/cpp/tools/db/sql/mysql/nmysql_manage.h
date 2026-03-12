@@ -183,7 +183,7 @@ namespace ngl
 			);
 			log_error()->print(lsql);
 			return adb->select(lsql.c_str(), lsql.size(),
-				[adb, &aidset](MYSQL_ROW amysqlrow, unsigned long* alens, my_ulonglong, my_ulonglong)->bool
+				[adb, &aidset](MYSQL_ROW amysqlrow, [[maybe_unused]] unsigned long* alens, my_ulonglong, my_ulonglong)->bool
 				{
 					aidset.insert(tools::lexical_cast<int64_t>(amysqlrow[0]));
 					return true;

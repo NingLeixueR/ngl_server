@@ -17,6 +17,7 @@
 #include "tools/threadtools.h"
 #include "tools/tools.h"
 
+#include <limits>
 #include <map>
 
 namespace ngl
@@ -55,7 +56,14 @@ namespace ngl
 				{
 					return nhashcode(lcode, itor->second);
 				}
-				lindex = lmap.size() + 1;
+				const auto lnext = lmap.size() + 1;
+				if (lnext > static_cast<std::size_t>(std::numeric_limits<int32_t>::max()))
+				{
+					log_error()->print("nhash::code index overflow [{}]", lnext);
+					tools::no_core_dump();
+					return nhashcode(lcode, 0);
+				}
+				lindex = static_cast<int32_t>(lnext);
 				lmap[tools::type_name<T>()] = lindex;
 			}
 			return nhashcode(lcode, lindex);
