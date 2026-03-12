@@ -20,6 +20,8 @@
 #include "tools/tools.h"
 
 #include <functional>
+#include <limits>
+#include <memory>
 #include <string>
 #include <vector>
 #include <array>
@@ -172,12 +174,31 @@ namespace ngl
 			{
 				return false;
 			}
-			auto itor = ajson->FindMember(akey);
-			if (itor == ajson->MemberEnd())
+			rapidjson::Value* ljson = ajson;
+			if (akey != nullptr)
+			{
+				if (!ajson->IsObject())
+				{
+					return false;
+				}
+				auto itor = ajson->FindMember(akey);
+				if (itor == ajson->MemberEnd())
+				{
+					return false;
+				}
+				ljson = &itor->value;
+			}
+			if (ljson == nullptr)
 			{
 				return false;
 			}
-			return pop(&itor->value, adata);
+			std::shared_ptr<T> ltemp = std::make_shared<T>();
+			if (!json_format<T>::pop(ljson, nullptr, *ltemp))
+			{
+				return false;
+			}
+			adata = std::move(ltemp);
+			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const std::shared_ptr<T>& adata)
@@ -204,8 +225,16 @@ namespace ngl
 	public:
 		static rapidjson::Value* find(rapidjson::Value* ajson, const char* akey)
 		{
+			if (ajson == nullptr)
+			{
+				return nullptr;
+			}
 			if (akey != nullptr)
 			{
+				if (!ajson->IsObject())
+				{
+					return nullptr;
+				}
 				auto itor = ajson->FindMember(akey);
 				if (itor == ajson->MemberEnd())
 				{
@@ -216,6 +245,53 @@ namespace ngl
 			return ajson;
 		}
 	};
+
+	namespace njson_detail
+	{
+		inline bool add_member(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, rapidjson::Value& avalue)
+		{
+			if (ajson == nullptr || aallocator == nullptr || akey == nullptr || !ajson->IsObject())
+			{
+				return false;
+			}
+			rapidjson::Value lkey;
+			lkey.SetString(akey, *aallocator);
+			ajson->AddMember(lkey, avalue, *aallocator);
+			return true;
+		}
+
+		inline bool push_back(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, rapidjson::Value& avalue)
+		{
+			if (ajson == nullptr || aallocator == nullptr || !ajson->IsArray())
+			{
+				return false;
+			}
+			ajson->PushBack(avalue, *aallocator);
+			return true;
+		}
+
+		template <typename T>
+		bool assign_signed_integral(int64_t avalue, T& adata)
+		{
+			if (avalue < static_cast<int64_t>(std::numeric_limits<T>::min()) || avalue > static_cast<int64_t>(std::numeric_limits<T>::max()))
+			{
+				return false;
+			}
+			adata = static_cast<T>(avalue);
+			return true;
+		}
+
+		template <typename T>
+		bool assign_unsigned_integral(uint64_t avalue, T& adata)
+		{
+			if (avalue > static_cast<uint64_t>(std::numeric_limits<T>::max()))
+			{
+				return false;
+			}
+			adata = static_cast<T>(avalue);
+			return true;
+		}
+	}
 
 	
 
@@ -244,24 +320,16 @@ namespace ngl
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, int64_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
 			rapidjson::Value val;
 			val.SetInt64(adata);
-			ajson->AddMember(rapidjson::StringRef(akey), val, *aallocator);
-			return true;
+			return njson_detail::add_member(ajson, aallocator, akey, val);
 		}
 
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, int64_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			ajson->PushBack(adata, *aallocator);
-			return true;
+			rapidjson::Value val;
+			val.SetInt64(adata);
+			return njson_detail::push_back(ajson, aallocator, val);
 		}
 	};
 
@@ -270,35 +338,31 @@ namespace ngl
 	{
 		static bool pop(rapidjson::Value* ajson, const char* akey, uint64_t& adata)
 		{
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, akey, lvalue))
+			if (ajson == nullptr)
 			{
 				return false;
 			}
-			adata = (uint64_t)lvalue;
+			rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
+			if (ljson == nullptr || !ljson->IsUint64())
+			{
+				return false;
+			}
+			adata = ljson->GetUint64();
 			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, uint64_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
 			rapidjson::Value val;
 			val.SetUint64(adata);
-			ajson->AddMember(rapidjson::StringRef(akey), val, *aallocator);
-			return true;
+			return njson_detail::add_member(ajson, aallocator, akey, val);
 		}
 
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, uint64_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			ajson->PushBack(adata, *aallocator);
-			return true;
+			rapidjson::Value val;
+			val.SetUint64(adata);
+			return njson_detail::push_back(ajson, aallocator, val);
 		}
 	};
 
@@ -312,33 +376,19 @@ namespace ngl
 			{
 				return false;
 			}
-			adata = (int32_t)lvalue;
-			return true;
+			return njson_detail::assign_signed_integral(lvalue, adata);
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, int32_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::push(ajson, aallocator, akey, lvalue))
-			{
-				return false;
-			}
-			adata = (int32_t)lvalue;
-			return true;
+			return json_format<int64_t>::push(ajson, aallocator, akey, static_cast<int64_t>(adata));
 		}
 
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, int32_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			ajson->PushBack(adata, *aallocator);
-			return true;
+			rapidjson::Value val;
+			val.SetInt(adata);
+			return njson_detail::push_back(ajson, aallocator, val);
 		}
 	};
 
@@ -347,38 +397,24 @@ namespace ngl
 	{
 		static bool pop(rapidjson::Value* ajson, const char* akey, uint32_t& adata)
 		{
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, akey, lvalue))
+			uint64_t lvalue = 0;
+			if (!json_format<uint64_t>::pop(ajson, akey, lvalue))
 			{
 				return false;
 			}
-			adata = (uint32_t)lvalue;
-			return true;
+			return njson_detail::assign_unsigned_integral(lvalue, adata);
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, uint32_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			uint64_t lvalue = 0;
-			if (!json_format<uint64_t>::push(ajson, aallocator, akey, lvalue))
-			{
-				return false;
-			}
-			adata = (uint32_t)lvalue;
-			return true;
+			return json_format<uint64_t>::push(ajson, aallocator, akey, static_cast<uint64_t>(adata));
 		}
 
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, uint32_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			ajson->PushBack(adata, *aallocator);
-			return true;
+			rapidjson::Value val;
+			val.SetUint(adata);
+			return njson_detail::push_back(ajson, aallocator, val);
 		}
 	};
 
@@ -392,33 +428,19 @@ namespace ngl
 			{
 				return false;
 			}
-			adata = (int16_t)lvalue;
-			return true;
+			return njson_detail::assign_signed_integral(lvalue, adata);
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, int16_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::push(ajson, aallocator, akey, lvalue))
-			{
-				return false;
-			}
-			adata = (int16_t)lvalue;
-			return true;
+			return json_format<int64_t>::push(ajson, aallocator, akey, static_cast<int64_t>(adata));
 		}
 
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, int16_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			ajson->PushBack(adata, *aallocator);
-			return true;
+			rapidjson::Value val;
+			val.SetInt(adata);
+			return njson_detail::push_back(ajson, aallocator, val);
 		}
 	};
 
@@ -427,38 +449,24 @@ namespace ngl
 	{
 		static bool pop(rapidjson::Value* ajson, const char* akey, uint16_t& adata)
 		{
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, akey, lvalue))
+			uint64_t lvalue = 0;
+			if (!json_format<uint64_t>::pop(ajson, akey, lvalue))
 			{
 				return false;
 			}
-			adata = (uint16_t)lvalue;
-			return true;
+			return njson_detail::assign_unsigned_integral(lvalue, adata);
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, uint16_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			uint64_t lvalue = 0;
-			if (!json_format<uint64_t>::push(ajson, aallocator, akey, lvalue))
-			{
-				return false;
-			}
-			adata = (uint16_t)lvalue;
-			return true;
+			return json_format<uint64_t>::push(ajson, aallocator, akey, static_cast<uint64_t>(adata));
 		}
 
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, uint16_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			ajson->PushBack(adata, *aallocator);
-			return true;
+			rapidjson::Value val;
+			val.SetUint(adata);
+			return njson_detail::push_back(ajson, aallocator, val);
 		}
 	};
 
@@ -472,33 +480,19 @@ namespace ngl
 			{
 				return false;
 			}
-			adata = (int8_t)lvalue;
-			return true;
+			return njson_detail::assign_signed_integral(lvalue, adata);
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, int8_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::push(ajson, aallocator, akey, lvalue))
-			{
-				return false;
-			}
-			adata = (int8_t)lvalue;
-			return true;
+			return json_format<int64_t>::push(ajson, aallocator, akey, static_cast<int64_t>(adata));
 		}
 
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, int8_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			ajson->PushBack(adata, *aallocator);
-			return true;
+			rapidjson::Value val;
+			val.SetInt(adata);
+			return njson_detail::push_back(ajson, aallocator, val);
 		}
 	};
 
@@ -507,38 +501,24 @@ namespace ngl
 	{
 		static bool pop(rapidjson::Value* ajson, const char* akey, uint8_t& adata)
 		{
-			int64_t lvalue = 0;
-			if (!json_format<int64_t>::pop(ajson, akey, lvalue))
+			uint64_t lvalue = 0;
+			if (!json_format<uint64_t>::pop(ajson, akey, lvalue))
 			{
 				return false;
 			}
-			adata = (uint8_t)lvalue;
-			return true;
+			return njson_detail::assign_unsigned_integral(lvalue, adata);
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, uint8_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			uint64_t lvalue = 0;
-			if (!json_format<uint64_t>::push(ajson, aallocator, akey, lvalue))
-			{
-				return false;
-			}
-			adata = (uint8_t)lvalue;
-			return true;
+			return json_format<uint64_t>::push(ajson, aallocator, akey, static_cast<uint64_t>(adata));
 		}
 
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, uint8_t adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			ajson->PushBack(adata, *aallocator);
-			return true;
+			rapidjson::Value val;
+			val.SetUint(adata);
+			return njson_detail::push_back(ajson, aallocator, val);
 		}
 	};
 	
@@ -566,24 +546,24 @@ namespace ngl
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const char* adata)
 		{
-			if (ajson == nullptr)
+			if (adata == nullptr)
 			{
 				return false;
 			}
 			rapidjson::Value val;
-			val.SetString(adata, std::string(adata).size());
-			ajson->AddMember(rapidjson::StringRef(akey), val, *aallocator);
-			return true;
+			val.SetString(adata, *aallocator);
+			return njson_detail::add_member(ajson, aallocator, akey, val);
 		}
 
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* adata)
 		{
-			if (ajson == nullptr)
+			if (adata == nullptr)
 			{
 				return false;
 			}
-			ajson->PushBack(rapidjson::StringRef(adata), *aallocator);
-			return true;
+			rapidjson::Value val;
+			val.SetString(adata, *aallocator);
+			return njson_detail::push_back(ajson, aallocator, val);
 		}
 	};
 
@@ -611,24 +591,16 @@ namespace ngl
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const std::string& adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
 			rapidjson::Value val;
-			val.SetString(adata.c_str(), adata.size());
-			ajson->AddMember(rapidjson::StringRef(akey), val, *aallocator);
-			return true;
+			val.SetString(adata.c_str(), static_cast<rapidjson::SizeType>(adata.size()), *aallocator);
+			return njson_detail::add_member(ajson, aallocator, akey, val);
 		}
 
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const std::string& adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			ajson->PushBack(rapidjson::StringRef(adata.c_str()), *aallocator);
-			return true;
+			rapidjson::Value val;
+			val.SetString(adata.c_str(), static_cast<rapidjson::SizeType>(adata.size()), *aallocator);
+			return njson_detail::push_back(ajson, aallocator, val);
 		}
 	};
 
@@ -646,7 +618,7 @@ namespace ngl
 			{
 				return false;
 			}
-			if (ljson->IsDouble())
+			if (!ljson->IsNumber())
 			{
 				return false;
 			}
@@ -656,24 +628,16 @@ namespace ngl
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, double adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
 			rapidjson::Value val;
 			val.SetDouble(adata);
-			ajson->AddMember(rapidjson::StringRef(akey), val, *aallocator);
-			return true;
+			return njson_detail::add_member(ajson, aallocator, akey, val);
 		}
 
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, double adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			ajson->PushBack(adata, *aallocator);
-			return true;
+			rapidjson::Value val;
+			val.SetDouble(adata);
+			return njson_detail::push_back(ajson, aallocator, val);
 		}
 	};
 
@@ -691,7 +655,7 @@ namespace ngl
 			{
 				return false;
 			}
-			if (!ljson->IsFloat())
+			if (!ljson->IsNumber())
 			{
 				return false;
 			}
@@ -701,24 +665,16 @@ namespace ngl
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, float adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
 			rapidjson::Value val;
 			val.SetFloat(adata);
-			ajson->AddMember(rapidjson::StringRef(akey), val, *aallocator);
-			return true;
+			return njson_detail::add_member(ajson, aallocator, akey, val);
 		}
 
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, float adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			ajson->PushBack(adata, *aallocator);
-			return true;
+			rapidjson::Value val;
+			val.SetFloat(adata);
+			return njson_detail::push_back(ajson, aallocator, val);
 		}
 	};
 	
@@ -736,7 +692,7 @@ namespace ngl
 			{
 				return false;
 			}
-			if (ljson->IsBool())
+			if (!ljson->IsBool())
 			{
 				return false;
 			}
@@ -746,24 +702,16 @@ namespace ngl
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, bool adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
 			rapidjson::Value val;
 			val.SetBool(adata);
-			ajson->AddMember(rapidjson::StringRef(akey), val, *aallocator);
-			return true;
+			return njson_detail::add_member(ajson, aallocator, akey, val);
 		}
 
 		static bool pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, bool adata)
 		{
-			if (ajson == nullptr)
-			{
-				return false;
-			}
-			ajson->PushBack(adata, *aallocator);
-			return true;
+			rapidjson::Value val;
+			val.SetBool(adata);
+			return njson_detail::push_back(ajson, aallocator, val);
 		}
 	};
 
@@ -786,28 +734,24 @@ namespace ngl
 				return false;
 			}
 			auto ltemparray = ljson->GetArray();
-			int32_t lcount = ltemparray.Size();
-			adata.resize(lcount);
-			int32_t lindex = 0;
+			std::vector<T> lparsed;
+			lparsed.reserve(ltemparray.Size());
 			for (auto& item : ltemparray)
 			{
-				if (lindex >= lcount)
-				{
-					adata.clear();
-					return false;
-				}
-				if (!json_format<T>::pop(&item, nullptr, adata[lindex]))
+				T ltemp;
+				if (!json_format<T>::pop(&item, nullptr, ltemp))
 				{
 					return false;
 				}
-				++lindex;
+				lparsed.push_back(std::move(ltemp));
 			}
+			adata = std::move(lparsed);
 			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const std::vector<T>& adata)
 		{
-			if (ajson == nullptr)
+			if (ajson == nullptr || aallocator == nullptr || akey == nullptr || !ajson->IsObject())
 			{
 				return false;
 			}
@@ -821,9 +765,7 @@ namespace ngl
 					return false;
 				}
 			}
-			ajson->AddMember(rapidjson::StringRef(akey), val, *aallocator);
-
-			return true;
+			return njson_detail::add_member(ajson, aallocator, akey, val);
 		}
 	};
 
@@ -845,6 +787,7 @@ namespace ngl
 			{
 				return false;
 			}
+			std::list<T> lparsed;
 			auto ltemparray = ljson->GetArray();
 			for (auto& item : ltemparray)
 			{
@@ -853,14 +796,15 @@ namespace ngl
 				{
 					return false;
 				}
-				adata.push_back(ltemp);
+				lparsed.push_back(std::move(ltemp));
 			}
+			adata = std::move(lparsed);
 			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const std::list<T>& adata)
 		{
-			if (ajson == nullptr)
+			if (ajson == nullptr || aallocator == nullptr || akey == nullptr || !ajson->IsObject())
 			{
 				return false;
 			}
@@ -874,9 +818,7 @@ namespace ngl
 					return false;
 				}
 			}
-			ajson->AddMember(rapidjson::StringRef(akey), val, *aallocator);
-
-			return true;
+			return njson_detail::add_member(ajson, aallocator, akey, val);
 		}
 	};
 
@@ -899,6 +841,7 @@ namespace ngl
 				return false;
 			}
 			auto ltemparray = ljson->GetArray();
+			std::set<T> lparsed;
 			for (auto& item : ltemparray)
 			{
 				T ltemp;
@@ -906,14 +849,18 @@ namespace ngl
 				{
 					return false;
 				}
-				adata.insert(ltemp);
+				if (!lparsed.insert(std::move(ltemp)).second)
+				{
+					return false;
+				}
 			}
+			adata = std::move(lparsed);
 			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const std::set<T>& adata)
 		{
-			if (ajson == nullptr)
+			if (ajson == nullptr || aallocator == nullptr || akey == nullptr || !ajson->IsObject())
 			{
 				return false;
 			}
@@ -927,9 +874,7 @@ namespace ngl
 					return false;
 				}
 			}
-			ajson->AddMember(rapidjson::StringRef(akey), val, *aallocator);
-
-			return true;
+			return njson_detail::add_member(ajson, aallocator, akey, val);
 		}
 	};
 
@@ -952,6 +897,7 @@ namespace ngl
 				return false;
 			}
 			auto ltemparray = ljson->GetArray();
+			std::map<TKEY, TVALUE> lparsed;
 			for (auto& item : ltemparray)
 			{
 				TKEY lkey;
@@ -964,14 +910,18 @@ namespace ngl
 				{
 					return false;
 				}
-				adata.insert(std::make_pair(lkey, lvalue));
+				if (!lparsed.emplace(std::move(lkey), std::move(lvalue)).second)
+				{
+					return false;
+				}
 			}
+			adata = std::move(lparsed);
 			return true;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const std::map<TKEY, TVALUE>& adata)
 		{
-			if (ajson == nullptr)
+			if (ajson == nullptr || aallocator == nullptr || akey == nullptr || !ajson->IsObject())
 			{
 				return false;
 			}
@@ -992,9 +942,7 @@ namespace ngl
 				}
 				val.PushBack(item, *aallocator);
 			}
-			ajson->AddMember(rapidjson::StringRef(akey), val, *aallocator);
-
-			return true;
+			return njson_detail::add_member(ajson, aallocator, akey, val);
 		}
 	};
 
@@ -1047,8 +995,11 @@ namespace ngl
 	template <typename T>
 	bool tools::json2custom(const std::string& ajson, T& adata)
 	{
-		ncjson ltemp;
-		ltemp.parse(ajson.c_str());
+		ncjson ltemp(ajson.c_str());
+		if (!ltemp.parsecheck())
+		{
+			return false;
+		}
 		return njson::pop(ltemp, { tools::type_name<T>().c_str() }, adata);
 	}
 
@@ -1056,7 +1007,10 @@ namespace ngl
 	bool tools::custom2json(const T& adata, std::string& json)
 	{
 		ncjson ltemp;
-		njson::push(ltemp, { tools::type_name<T>().c_str() }, adata);
+		if (!njson::push(ltemp, { tools::type_name<T>().c_str() }, adata))
+		{
+			return false;
+		}
 		json = ltemp.str();
 		return true;
 	}
@@ -1094,10 +1048,12 @@ namespace ngl
 				{
 					return true;
 				}
-				if (!tools::json2proto(lstr, adata))
+				T ltemp;
+				if (!tools::json2proto(lstr, ltemp))
 				{
 					return false;
 				}
+				adata = std::move(ltemp);
 			}
 			else
 			{
@@ -1110,7 +1066,7 @@ namespace ngl
 	template <typename T>
 	bool json_format<T>::push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const T& adata)
 	{
-		if (ajson == nullptr)
+		if (ajson == nullptr || aallocator == nullptr)
 		{
 			return false;
 		}
@@ -1137,7 +1093,7 @@ namespace ngl
 				}
 				rapidjson::Value copiedValue;
 				copiedValue.CopyFrom(ljsontemp.doc(), *aallocator);
-				ajson->AddMember(rapidjson::StringRef(akey), copiedValue, *aallocator);
+				return njson_detail::add_member(ajson, aallocator, akey, copiedValue);
 			}
 			else
 			{
@@ -1147,7 +1103,7 @@ namespace ngl
 				{
 					return false;
 				}
-				ajson->AddMember(rapidjson::StringRef(akey), lval, *aallocator);
+				return njson_detail::add_member(ajson, aallocator, akey, lval);
 			}
 		}
 		return true;
@@ -1156,6 +1112,10 @@ namespace ngl
 	template <typename T>
 	bool json_format<T>::pushback(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const T& adata)
 	{
+		if (ajson == nullptr || aallocator == nullptr)
+		{
+			return false;
+		}
 		if constexpr (std::is_enum<T>::value)
 		{
 			if (!json_format<int64_t>::pushback(ajson, aallocator, (int64_t)adata))
@@ -1179,7 +1139,7 @@ namespace ngl
 				}
 				rapidjson::Value copiedValue;
 				copiedValue.CopyFrom(ljsontemp.doc(), *aallocator);
-				ajson->PushBack(copiedValue, *aallocator);
+				return njson_detail::push_back(ajson, aallocator, copiedValue);
 			}
 			else
 			{
@@ -1189,7 +1149,7 @@ namespace ngl
 				{
 					return false;
 				}
-				ajson->PushBack(ljson, *aallocator);
+				return njson_detail::push_back(ajson, aallocator, ljson);
 			}
 		}
 		return true;

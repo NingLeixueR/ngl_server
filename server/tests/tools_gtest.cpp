@@ -2,21 +2,37 @@
 
 #include <array>
 #include <chrono>
+#include <cstring>
 #include <filesystem>
 #include <fstream>
+#include <list>
 #include <map>
 #include <set>
 #include <string>
 #include <vector>
 
 #include "actor/actor_base/nguid.h"
+#include "tools/curl/ncurl.h"
 #include "tools/localtime.h"
 #include "tools/operator_file.h"
+#include "tools/tab/csv/csv.h"
+#include "tools/tab/json/njson.h"
+#include "tools/tab/xml/sysconfig.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/tools.h"
 
 namespace
 {
+int CountCurlHeaders(const curl_slist* headers)
+{
+	int count = 0;
+	for (auto* node = headers; node != nullptr; node = node->next)
+	{
+		++count;
+	}
+	return count;
+}
+
 std::filesystem::path make_temp_test_dir(const std::string& test_name)
 {
 	const auto suffix = std::to_string(std::chrono::high_resolution_clock::now().time_since_epoch().count());
@@ -27,6 +43,96 @@ std::filesystem::path make_temp_test_dir(const std::string& test_name)
 	std::filesystem::create_directories(dir, ec);
 	return dir;
 }
+
+struct CsvTestRow
+{
+	int32_t m_id = 0;
+	std::string m_name;
+
+	bool rcsv(ngl::csvpair& apair)
+	{
+		return ngl::rcsv::readcsv(apair, m_id, m_name);
+	}
+};
+
+struct JsonCustomPayload
+{
+	int32_t m_value = 0;
+	std::string m_name;
+
+	bool json_pop(rapidjson::Value& ajson)
+	{
+		return ngl::njson::pop(ajson, { "m_value", "m_name" }, m_value, m_name);
+	}
+
+	bool json_push(rapidjson::Value& ajson, rapidjson::Document::AllocatorType* aallocator) const
+	{
+		return ngl::njson::push(ajson, aallocator, { "m_value", "m_name" }, m_value, m_name);
+	}
+};
+}
+
+TEST(ToolsTest, CurlHttpFactoryInitializesHandle)
+{
+	auto http = ngl::ncurl::http();
+	ASSERT_NE(http, nullptr);
+	EXPECT_NE(http->m_curl, nullptr);
+}
+
+TEST(ToolsTest, CurlSettersHandleNullAndNullUrl)
+{
+	std::shared_ptr<ngl::http_parm> http;
+	EXPECT_NO_THROW(ngl::ncurl::set_mode(http, ngl::ENUM_MODE_HTTP));
+	EXPECT_NO_THROW(ngl::ncurl::set_type(http, ngl::ENUM_TYPE_GET));
+	EXPECT_NO_THROW(ngl::ncurl::set_url(http, static_cast<const char*>(nullptr)));
+	EXPECT_NO_THROW(ngl::ncurl::set_param(http, "a=1"));
+	EXPECT_NO_THROW(ngl::ncurl::set_headers(http, std::vector<std::string>{ "A: 1" }));
+	EXPECT_NO_THROW(ngl::ncurl::set_callback(http, [](int, ngl::http_parm&) {}));
+
+	auto http2 = ngl::ncurl::http();
+	ASSERT_NE(http2, nullptr);
+	ngl::ncurl::set_url(http2, "abc");
+	ngl::ncurl::set_url(http2, static_cast<const char*>(nullptr));
+	EXPECT_TRUE(http2->m_url.empty());
+}
+
+TEST(ToolsTest, CurlParamSkipsNullKeysAndBuildsQuery)
+{
+	std::string query;
+	ngl::ncurl::param(query, nullptr, 1);
+	ngl::ncurl::param(query, "", 2);
+	ngl::ncurl::param(query, "a", 1);
+	ngl::ncurl::param(query, "b", "x");
+
+	EXPECT_EQ(query, "a=1&b=x");
+}
+
+TEST(ToolsTest, CurlHeadersReplaceExistingList)
+{
+	auto http = ngl::ncurl::http();
+	ASSERT_NE(http, nullptr);
+
+	const std::vector<std::string> first = {
+		"A: 1",
+		"B: 2",
+	};
+	http->headers(first);
+	ASSERT_NE(http->m_headers, nullptr);
+	EXPECT_EQ(CountCurlHeaders(http->m_headers), 2);
+
+	const std::vector<std::string> second = {
+		"C: 3",
+	};
+	http->headers(second);
+	ASSERT_NE(http->m_headers, nullptr);
+	EXPECT_EQ(CountCurlHeaders(http->m_headers), 1);
+	EXPECT_STREQ(http->m_headers->data, "C: 3");
+}
+
+TEST(ToolsTest, CurlSendEmailHandlesNullMailParam)
+{
+	std::shared_ptr<ngl::mail_param> mail;
+	EXPECT_NO_THROW(ngl::ncurl::sendemail(mail));
 }
 
 TEST(ToolsTest, Utf8ValidationRejectsBrokenSequences)
@@ -286,6 +392,54 @@ TEST(ToolsTest, SplitStrArrayCopyDoesNotWritePastArrayBounds)
 	EXPECT_STREQ(values[1], "two");
 }
 
+TEST(ToolsTest, CsvReadVariadicDoesNotMutateOutputsOnFailure)
+{
+	ngl::csvpair pair;
+	pair.m_data = "broken,alice";
+
+	int32_t id = 7;
+	std::string name = "keep";
+
+	EXPECT_FALSE(ngl::rcsv::readcsv(pair, id, name));
+	EXPECT_EQ(id, 7);
+	EXPECT_EQ(name, "keep");
+}
+
+TEST(ToolsTest, CsvReadListParsesDelimitedItems)
+{
+	ngl::csvpair pair;
+	pair.m_data = "1*2*3";
+
+	std::list<int32_t> values;
+	ASSERT_TRUE((ngl::csv_read<std::list<int32_t>>::read(pair, values)));
+
+	ASSERT_EQ(values.size(), 3u);
+	EXPECT_EQ(values.front(), 1);
+	EXPECT_EQ(values.back(), 3);
+}
+
+TEST(ToolsTest, CsvReaderSkipsCommentLinesWithoutPoisoningNextRow)
+{
+	const std::filesystem::path root = make_temp_test_dir("csv_reader");
+	const std::filesystem::path file = root / "sample.csv";
+	{
+		std::ofstream(file) << "header1\nheader2\nheader3\n#comment\n1,alpha\n2,beta\n";
+	}
+
+	ngl::rcsv reader;
+	std::string verify;
+	ASSERT_TRUE(reader.read(file.string(), verify));
+
+	std::map<int, CsvTestRow> rows;
+	ASSERT_TRUE(reader.readcsv(rows));
+	ASSERT_EQ(rows.size(), 2u);
+	EXPECT_EQ(rows.at(1).m_name, "alpha");
+	EXPECT_EQ(rows.at(2).m_name, "beta");
+
+	std::error_code ec;
+	std::filesystem::remove_all(root, ec);
+}
+
 TEST(ToolsTest, ReadFileGetMaxlinePreservesReadPosition)
 {
 	const std::filesystem::path root = make_temp_test_dir("readfile");
@@ -340,6 +494,92 @@ TEST(ToolsTest, NguidStringRejectsNullAndMalformedInput)
 	EXPECT_EQ(ngl::tools::nguidstr2int64("malformed"), ngl::nguid::make());
 }
 
+TEST(ToolsTest, JsonRoundTripsIntegralValues)
+{
+	ngl::ncjson json;
+	ASSERT_TRUE((ngl::njson::push(json, { "value", "small", "uvalue" }, int32_t(123), int8_t(-5), uint32_t(456))));
+
+	int32_t value = 0;
+	int8_t small = 0;
+	uint32_t uvalue = 0;
+	ASSERT_TRUE((ngl::njson::pop(json, { "value", "small", "uvalue" }, value, small, uvalue)));
+	EXPECT_EQ(value, 123);
+	EXPECT_EQ(small, -5);
+	EXPECT_EQ(uvalue, 456u);
+}
+
+TEST(ToolsTest, JsonPopAcceptsBoolAndDouble)
+{
+	ngl::ncjson json("{\"flag\":true,\"ratio\":1.25}");
+	ASSERT_TRUE(json.parsecheck());
+
+	bool flag = false;
+	double ratio = 0.0;
+	ASSERT_TRUE((ngl::njson::pop(json, { "flag", "ratio" }, flag, ratio)));
+	EXPECT_TRUE(flag);
+	EXPECT_DOUBLE_EQ(ratio, 1.25);
+}
+
+TEST(ToolsTest, JsonPushCopiesStringStorage)
+{
+	ngl::ncjson json;
+	std::string name = "alpha";
+	ASSERT_TRUE((ngl::njson::push(json, { "name" }, name)));
+	name[0] = 'z';
+
+	std::string roundtrip;
+	ASSERT_TRUE((ngl::njson::pop(json, { "name" }, roundtrip)));
+	EXPECT_EQ(roundtrip, "alpha");
+}
+
+TEST(ToolsTest, JsonSetPopDoesNotMutateOutputOnFailure)
+{
+	ngl::ncjson json("{\"values\":[1,1]}");
+	ASSERT_TRUE(json.parsecheck());
+
+	std::set<int32_t> values = {
+		42,
+	};
+	EXPECT_FALSE((ngl::njson::pop(json, { "values" }, values)));
+	ASSERT_EQ(values.size(), 1u);
+	EXPECT_TRUE(values.contains(42));
+}
+
+TEST(ToolsTest, JsonCustomRoundTripUsesToolHelpers)
+{
+	JsonCustomPayload source;
+	source.m_value = 77;
+	source.m_name = "delta";
+
+	std::string text;
+	ASSERT_TRUE(ngl::tools::custom2json(source, text));
+
+	JsonCustomPayload roundtrip;
+	ASSERT_TRUE(ngl::tools::json2custom(text, roundtrip));
+	EXPECT_EQ(roundtrip.m_value, 77);
+	EXPECT_EQ(roundtrip.m_name, "delta");
+}
+
+TEST(ToolsTest, XargInfoFindRejectsNullKeys)
+{
+	ngl::xarg_info info;
+	int32_t number = 7;
+	std::string text = "keep";
+	bool flag = true;
+
+	EXPECT_FALSE(info.find(nullptr, number));
+	EXPECT_FALSE(info.find(nullptr, text));
+	EXPECT_FALSE(info.find(nullptr, flag));
+	EXPECT_EQ(number, 7);
+	EXPECT_EQ(text, "keep");
+	EXPECT_TRUE(flag);
+}
+
+TEST(ToolsTest, SysconfigNodeCountRejectsNullName)
+{
+	EXPECT_EQ(ngl::sysconfig::node_count(nullptr), 1);
+}
+
 TEST(LocaltimeTest, GetMothdayValidatesCalendarDayAgainstTargetMonth)
 {
 	const time_t non_leap_february = ngl::localtime::str2time("2025-02-10 12:00:00");
@@ -366,4 +606,33 @@ TEST(XmlUtilsTest, NullElementApisFailGracefully)
 	EXPECT_FALSE(ngl::xml::foreach(nullptr, "node", [](tinyxml2::XMLElement*) { return true; }));
 	EXPECT_FALSE(ngl::xml::foreach(nullptr, [](tinyxml2::XMLElement*) { return true; }));
 	EXPECT_FALSE(ngl::xml::foreach_xmlattr(nullptr, [](const char*, const char*) { return true; }));
+}
+
+TEST(XmlUtilsTest, NullPathApisFailGracefully)
+{
+	tinyxml2::XMLDocument document;
+	EXPECT_FALSE(ngl::xml::readxml(nullptr, document));
+	EXPECT_FALSE(ngl::xml::writexml(nullptr, document));
+	EXPECT_EQ(ngl::xml::set_child(document, nullptr), nullptr);
+}
+
+TEST(XmlUtilsTest, XmlSetPopDoesNotMutateOutputOnFailure)
+{
+	tinyxml2::XMLDocument document;
+	tinyxml2::XMLElement* root = ngl::xml::set_child(document, "root");
+	ASSERT_NE(root, nullptr);
+
+	tinyxml2::XMLElement* first = ngl::xml::set_child(root, "value");
+	tinyxml2::XMLElement* second = ngl::xml::set_child(root, "value");
+	ASSERT_NE(first, nullptr);
+	ASSERT_NE(second, nullptr);
+	ASSERT_TRUE(ngl::xml::set(first, 1));
+	ASSERT_TRUE(ngl::xml::set(second, 1));
+
+	std::set<int32_t> values = {
+		42,
+	};
+	EXPECT_FALSE((ngl::xml_serialize<false, std::set<int32_t>>::pop(root, "value", values)));
+	ASSERT_EQ(values.size(), 1u);
+	EXPECT_TRUE(values.contains(42));
 }

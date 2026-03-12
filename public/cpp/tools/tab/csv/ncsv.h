@@ -102,8 +102,7 @@ namespace ngl
 
 		static std::string path()
 		{
-			static std::string lcsvname = std::format("./{}/{}.csv", csv_base::path(), tools::type_name<T>());
-			return lcsvname;
+			return std::format("./{}/{}.csv", csv_base::path(), tools::type_name<T>());
 		}
 
 		virtual void load();
@@ -249,7 +248,11 @@ namespace ngl
 			ngl::rcsv lrcsv;
 			if (lrcsv.read(lcsvname, m_verify))
 			{
-				lrcsv.readcsv(m_csv);
+				if (!lrcsv.readcsv(m_csv))
+				{
+					m_csv.clear();
+					m_verify.clear();
+				}
 			}			
 		}
 	}

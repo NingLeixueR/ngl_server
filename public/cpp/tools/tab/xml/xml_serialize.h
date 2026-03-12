@@ -273,17 +273,23 @@ namespace ngl
 		{
 			if constexpr (!ATTR)
 			{
-				return xml::foreach(aele, akey, [&adata](tinyxml2::XMLElement* apt)
+				std::vector<T> lparsed;
+				if (!xml::foreach(aele, akey, [&lparsed](tinyxml2::XMLElement* apt)
 					{
 						T ltemp;
 						if (!xml_serialize<ATTR, T>::pop(apt, nullptr, ltemp))
 						{
 							return false;
 						}
-						adata.push_back(ltemp);
+						lparsed.push_back(std::move(ltemp));
 						return true;
 					}
-				);
+				))
+				{
+					return false;
+				}
+				adata = std::move(lparsed);
+				return true;
 			}
 			else
 			{
@@ -318,17 +324,23 @@ namespace ngl
 		{
 			if constexpr (!ATTR)
 			{
-				return xml::foreach(aele, akey, [&adata](tinyxml2::XMLElement* apt)
+				std::list<T> lparsed;
+				if (!xml::foreach(aele, akey, [&lparsed](tinyxml2::XMLElement* apt)
 					{
 						T ltemp;
 						if (!xml_serialize<ATTR, T>::pop(apt, nullptr, ltemp))
 						{
 							return false;
 						}
-						adata.push_back(ltemp);
+						lparsed.push_back(std::move(ltemp));
 						return true;
 					}
-				);
+				))
+				{
+					return false;
+				}
+				adata = std::move(lparsed);
+				return true;
 			}
 			else
 			{
@@ -367,17 +379,26 @@ namespace ngl
 		{
 			if constexpr (!ATTR)
 			{
-				return xml::foreach(aele, akey, [&adata](tinyxml2::XMLElement* apt)
+				std::set<T> lparsed;
+				if (!xml::foreach(aele, akey, [&lparsed](tinyxml2::XMLElement* apt)
 					{
 						T ltemp;
 						if (!xml_serialize<ATTR, T>::pop(apt, nullptr, ltemp))
 						{
 							return false;
 						}
-						adata.insert(ltemp);
+						if (!lparsed.insert(std::move(ltemp)).second)
+						{
+							return false;
+						}
 						return true;
 					}
-				);
+				))
+				{
+					return false;
+				}
+				adata = std::move(lparsed);
+				return true;
 			}
 			else
 			{
@@ -417,7 +438,8 @@ namespace ngl
 		{
 			if constexpr (!ATTR)
 			{
-				return xml::foreach(aele, akey, [&adata](tinyxml2::XMLElement* apt)
+				std::map<TKEY, TVALUE> lparsed;
+				if (!xml::foreach(aele, akey, [&lparsed](tinyxml2::XMLElement* apt)
 					{
 						TKEY lkey;
 						TVALUE lvalue;
@@ -425,14 +447,22 @@ namespace ngl
 						{
 							return false;
 						}
-						if (xml_serialize<ATTR, TVALUE>::pop(apt, nullptr, lvalue))
+						if (!xml_serialize<ATTR, TVALUE>::pop(apt, nullptr, lvalue))
 						{
-							adata[lkey] = lvalue;
-							return true;
+							return false;
 						}
-						return false;
+						if (!lparsed.emplace(std::move(lkey), std::move(lvalue)).second)
+						{
+							return false;
+						}
+						return true;
 					}
-				);
+				))
+				{
+					return false;
+				}
+				adata = std::move(lparsed);
+				return true;
 			}
 			return false;
 		}
@@ -493,7 +523,12 @@ namespace ngl
 				{
 					return adata.xml_push(aele);
 				}
-				return adata.xml_push(xml::set_child(aele, akey));
+				tinyxml2::XMLElement* lchild = xml::set_child(aele, akey);
+				if (lchild == nullptr)
+				{
+					return false;
+				}
+				return adata.xml_push(lchild);
 			}
 		}		
 		return false;
@@ -531,7 +566,12 @@ namespace ngl
 				{
 					return adata.xml_pop(aele);
 				}
-				return adata.xml_pop(xml::get_child(aele, akey));
+				tinyxml2::XMLElement* lchild = xml::get_child(aele, akey);
+				if (lchild == nullptr)
+				{
+					return false;
+				}
+				return adata.xml_pop(lchild);
 			}
 		}		
 		return false;

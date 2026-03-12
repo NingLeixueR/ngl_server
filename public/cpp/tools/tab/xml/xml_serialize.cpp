@@ -18,6 +18,10 @@ namespace ngl
 {
 	bool xml::readxml(const char* aname, tinyxml2::XMLDocument& axml)
 	{
+		if (aname == nullptr || *aname == '\0')
+		{
+			return false;
+		}
 		if (axml.LoadFile(aname) != tinyxml2::XML_SUCCESS)
 		{
 			std::cout << "Failed to load XML file[" << aname << "]." << std::endl;
@@ -28,6 +32,10 @@ namespace ngl
 
 	bool xml::writexml(const char* aname, tinyxml2::XMLDocument& axml)
 	{
+		if (aname == nullptr || *aname == '\0')
+		{
+			return false;
+		}
 		tinyxml2::XMLError lerror = axml.SaveFile(aname);
 		return lerror == tinyxml2::XML_SUCCESS;
 	}
@@ -71,6 +79,10 @@ namespace ngl
 
 	tinyxml2::XMLElement* xml::set_child(tinyxml2::XMLDocument& axml, const char* astr)
 	{
+		if (astr == nullptr || *astr == '\0')
+		{
+			return nullptr;
+		}
 		tinyxml2::XMLElement* lelement = axml.NewElement(astr);
 		axml.LinkEndChild(lelement);
 		return lelement;

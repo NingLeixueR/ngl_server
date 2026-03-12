@@ -1,13 +1,13 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
-* 
+*
 * 项目名称：ngl_server
 * 项目地址：https://github.com/NingLeixueR/ngl_server
-* 
+*
 * 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
 * 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
 * 但需保留原始版权和许可声明。
-* 
+*
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
@@ -17,8 +17,28 @@
 #include "tools/tab/xml/xml.h"
 #include "tools/log/nlog.h"
 
+#include <algorithm>
+#include <cstring>
+
 namespace ngl
 {
+	namespace
+	{
+		template <typename T>
+		void copy_to_head(int32_t* abuff, EPH aoffset, const T& avalue)
+		{
+			memcpy(&abuff[aoffset], &avalue, sizeof(avalue));
+		}
+
+		template <typename T>
+		T copy_from_head(const int32_t* abuff, EPH aoffset)
+		{
+			T lvalue{};
+			memcpy(&lvalue, &abuff[aoffset], sizeof(lvalue));
+			return lvalue;
+		}
+	}
+
 	pack_head::pack_head() :
 		m_wpos(0)
 	{
@@ -26,20 +46,17 @@ namespace ngl
 
 	void pack_head::head_set_actor(
 		int32_t* abuff,
-		i64_actorid aactor, /* aenum == ACTOR_NONE 此值无效 */
+		i64_actorid aactor,
 		i64_actorid arequestactorid
 	)
 	{
-		/* 此值为ACTOR_NONE,则送发送的进程上的所有注册ACTOR的都会被调用 (EPH::EPH_ACTORID_TYPE)*/
-		/* aenum == ACTOR_NONE 此值无效 (EPH::EPH_ACTORID_ID) */
-		*(i64_actorid*)(&abuff[EPH::EPH_ACTOR_TYPEAREA]) = aactor;
-		*(i64_actorid*)(&abuff[EPH::EPH_REQUEST_ACTOR_TYPEAREA]) = arequestactorid;
+		copy_to_head(abuff, EPH::EPH_ACTOR_TYPEAREA, aactor);
+		copy_to_head(abuff, EPH::EPH_REQUEST_ACTOR_TYPEAREA, arequestactorid);
 	}
 
 	void pack_head::head_set_actor(int32_t* abuff, i64_actorid aactor)
 	{
-		ngl::ser::serialize_push lserialize((char*)&abuff[EPH::EPH_ACTOR_TYPEAREA], sizeof(i64_actorid));
-		lserialize.basetype(&aactor, sizeof(aactor));
+		copy_to_head(abuff, EPH::EPH_ACTOR_TYPEAREA, aactor);
 	}
 
 	void pack_head::set_actor(i64_actorid aactor, i64_actorid arequestactorid)
@@ -49,7 +66,7 @@ namespace ngl
 
 	void pack_head::set_requestactor(i64_actorid arequestactor)
 	{
-		*(i64_actorid*)(&m_data[EPH::EPH_REQUEST_ACTOR_TYPEAREA]) = arequestactor;
+		copy_to_head(m_data, EPH::EPH_REQUEST_ACTOR_TYPEAREA, arequestactor);
 	}
 
 	void pack_head::set_time()
@@ -69,12 +86,12 @@ namespace ngl
 
 	enum
 	{
-		EPH_MASK_COUNT_BYTES = EPH_MASK_COUNT * sizeof(int)
+		EPH_MASK_COUNT_BYTES = EPH_MASK_COUNT * sizeof(int32_t)
 	};
 
 	void pack_head::head_set_mask(int32_t* abuff)
 	{
-		auto lpbuff = (char*)abuff;
+		auto* lpbuff = (char*)abuff;
 		for (int i = 0; i < EPH_MASK_COUNT_BYTES; ++i)
 		{
 			lpbuff[i] = (char)EPH::EPH_MASK_VALUE;
@@ -83,12 +100,12 @@ namespace ngl
 
 	EPH_HEAD_VAL pack_head::head_check_mask(const int32_t* abuff, int awpos)
 	{
-		int lnum = awpos / sizeof(char);
+		int lnum = awpos;
 		if (lnum > EPH_MASK_COUNT_BYTES)
 		{
 			lnum = EPH_MASK_COUNT_BYTES;
 		}
-		auto lpbuff = (const uint8_t*)abuff;
+		auto* lpbuff = (const uint8_t*)abuff;
 		for (int i = 0; i < lnum; ++i)
 		{
 			if (lpbuff[i] != EPH::EPH_MASK_VALUE)
@@ -116,12 +133,12 @@ namespace ngl
 
 	i64_actorid pack_head::get_actor()const
 	{
-		return *(i64_actorid*)(&m_data[EPH::EPH_ACTOR_TYPEAREA]);
+		return copy_from_head<i64_actorid>(m_data, EPH::EPH_ACTOR_TYPEAREA);
 	}
 
 	i64_actorid pack_head::get_request_actor()const
 	{
-		return *(i64_actorid*)(&m_data[EPH::EPH_REQUEST_ACTOR_TYPEAREA]);
+		return copy_from_head<i64_actorid>(m_data, EPH::EPH_REQUEST_ACTOR_TYPEAREA);
 	}
 
 	i16_actortype pack_head::get_actortype()const
@@ -146,7 +163,7 @@ namespace ngl
 
 	void pack_head::reset()
 	{
-		memset(&m_data, 0x0, EPH_SUM * sizeof(int32_t));
+		memset(&m_data, 0x0, sizeof(m_data));
 		m_wpos = 0;
 	}
 
@@ -162,7 +179,7 @@ namespace ngl
 
 	int32_t pack_head::size()
 	{
-		return EPH_SUM * sizeof(int32_t);
+		return (int32_t)sizeof(m_data);
 	}
 
 	EPH_HEAD_VAL pack_head::isready()const
@@ -183,7 +200,6 @@ namespace ngl
 		return m_data[EPH::EPH_PROTOCOLNUM];
 	}
 
-	// # 获取协议号
 	i32_protocolnum pack_head::get_protocolnumber()const
 	{
 		return protocolnum();
@@ -200,23 +216,42 @@ namespace ngl
 		{
 			return EPH_HEAD_MASK_FAIL;
 		}
-		int ltemp = size() - m_wpos;
-		ltemp = (alen < ltemp) ? alen : ltemp;
+		if (alen <= 0)
+		{
+			return isready();
+		}
+		if (abuff == nullptr)
+		{
+			return EPH_HEAD_MASK_FAIL;
+		}
+
+		const int32_t ltemp = std::min(alen, size() - m_wpos);
+		if (ltemp <= 0)
+		{
+			return isready();
+		}
+
 		char* lp = (char*)m_data;
 		memcpy(&lp[m_wpos], abuff, ltemp);
 		alen -= ltemp;
 		abuff += ltemp;
 		m_wpos += ltemp;
-		return isready();		
+		return isready();
 	}
 
 	bool pack_head::push_format(ngl::ser::serialize_push* aserialize)const
 	{
-		return aserialize->basetype((void*)m_data, sizeof(int32_t) * EPH_SUM);
+		return aserialize->basetype((void*)m_data, sizeof(m_data));
 	}
 
 	void pack_head::reservebuff(char* abuff, int abufflen, std::pair<char*, int32_t>& apair)
 	{
+		if (abuff == nullptr || abufflen < size())
+		{
+			apair.first = nullptr;
+			apair.second = 0;
+			return;
+		}
 		apair.first = &(abuff[size()]);
 		apair.second = abufflen - size();
 	}

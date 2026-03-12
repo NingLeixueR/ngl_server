@@ -21,6 +21,10 @@ namespace ngl
 
 	void xmlprotocol::read(const char* axml)
 	{
+		if (axml == nullptr || *axml == '\0' || !tools::file_exists(axml))
+		{
+			return;
+		}
 		xarg_protocols ltemps;
 		if (!ltemps.xml_pop(axml))
 		{
@@ -45,6 +49,7 @@ namespace ngl
 
 	void xmlprotocol::load()
 	{
+		m_protocol.clear();
 		read("./config/net_protocol.xml");
 		read("./config/example_protocol.xml");
 	}
@@ -62,13 +67,10 @@ namespace ngl
 
 	int32_t xmlprotocol::free_protocol()
 	{
-		static std::set<int32_t> lset;
-		if (lset.empty())
+		std::set<int32_t> lset;
+		for (auto& [_key, value] : m_protocol)
 		{
-			for (auto& [key, value] : m_protocol)
-			{
-				lset.insert(value);
-			}
+			lset.insert(value);
 		}
 		int lvalue = 1;
 		while (lset.find(lvalue) != lset.end())

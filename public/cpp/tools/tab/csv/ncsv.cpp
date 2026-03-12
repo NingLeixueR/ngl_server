@@ -12,8 +12,6 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-#include "actor/actor_logic/actor_role/logic/bag/drop.h"
-#include "actor/tab/csvtable.h"
 #include "tools/tab/csv/ncsv.h"
 
 namespace ngl
@@ -85,11 +83,11 @@ namespace ngl
 
 	void ncsv::add(const char* akey, std::shared_ptr<csv_base>& ap)
 	{
-		if (m_csv[akey] != nullptr)
+		if (akey == nullptr || ap == nullptr)
 		{
-			m_csv.erase(akey);
+			return;
 		}
-		m_csv[akey] = ap;
+		m_csv.insert_or_assign(akey, ap);
 	}
 
 	csv_base* ncsv::get_csvbase(const std::string& akey)
@@ -106,7 +104,7 @@ namespace ngl
 	{
 		for (auto& [key, value] : m_csv)
 		{
-			averify.insert(std::make_pair(key, value->verify()));
+			averify.insert_or_assign(key, value->verify());
 		}
 	}
 

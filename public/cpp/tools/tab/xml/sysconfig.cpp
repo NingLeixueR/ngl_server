@@ -50,6 +50,10 @@
 	void sysconfig::init()
 	{
 		ngl::xarg_info* lpublicxml = nconfig.info();
+		m_nodecountbyname.clear();
+		m_nodecountbytype.clear();
+		m_gatewayids.clear();
+
 		lpublicxml->find("logflushtime", m_logflushtime);
 		lpublicxml->find("logline", m_logline);
 		{
@@ -131,6 +135,10 @@
 
 	int32_t sysconfig::node_count(const char* anodename)
 	{
+		if (anodename == nullptr || *anodename == '\0')
+		{
+			return 1;
+		}
 		auto itor = m_nodecountbyname.find(anodename);
 		if (itor == m_nodecountbyname.end())
 		{

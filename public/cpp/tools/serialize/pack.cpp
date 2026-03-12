@@ -13,8 +13,9 @@
 */
 
 #include "tools/serialize/netbuff_pool.h"
-#include "tools/serialize/segpack.h"
+#include "actor/protocol/nprotocol.h"
 #include "tools/serialize/pack.h"
+
 #include <new>
 
 namespace ngl
@@ -37,11 +38,12 @@ namespace ngl
 
 	void pack::reset()
 	{
+		free();
+		m_protocol = ENET_TCP;
 		m_id = 0;
-		m_buff = nullptr;
 		m_len = 0;
 		m_pos = 0;
-		m_segpack = nullptr;
+		m_rate_accounted = false;
 		m_head.reset();
 	}
 
@@ -64,6 +66,7 @@ namespace ngl
 		{
 			m_len = 0;
 			m_pos = 0;
+			m_rate_accounted = false;
 			return false;
 		}
 		if (m_bpool == nullptr)
@@ -78,10 +81,12 @@ namespace ngl
 		{
 			m_len = 0;
 			m_pos = 0;
+			m_rate_accounted = false;
 			return false;
 		}
 		m_len = alen;
 		m_pos = 0;
+		m_rate_accounted = false;
 		return true;
 	}
 
@@ -101,11 +106,13 @@ namespace ngl
 		}
 		m_buff = nullptr;
 		m_len = 0;
+		m_pos = 0;
+		m_rate_accounted = false;
 	}
 
 	void pack::set_actor(i64_actorid aactor, i64_actorid arequestactorid)
 	{
-		if (m_buff == nullptr)
+		if (m_buff == nullptr || m_len < pack_head::size())
 		{
 			return;
 		}

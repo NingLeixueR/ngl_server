@@ -26,8 +26,10 @@
 #include <cstring>
 #include <memory>
 #include <cstdio>
+#include <limits>
 #include <vector>
 #include <string>
+#include <utility>
 #include <list>
 #include <set>
 #include <map>
@@ -101,11 +103,25 @@ namespace ngl
 
 			virtual bool basetype(void* adata, int32_t abytes)
 			{
-				if (pos() + abytes > len())
+				const int32_t lpos = pos();
+				const int32_t llen = len();
+				if (abytes < 0 || lpos < 0 || llen < 0 || lpos > llen || abytes > (llen - lpos))
 				{
 					return false;
 				}
-				memcpy(&buff()[pos()], adata, abytes);
+				if (abytes == 0)
+				{
+					return true;
+				}
+				if (adata == nullptr)
+				{
+					return false;
+				}
+				if (buff() == nullptr)
+				{
+					return false;
+				}
+				memcpy(&buff()[lpos], adata, (size_t)abytes);
 				move_pos(abytes);
 				return true;
 			}
@@ -121,11 +137,25 @@ namespace ngl
 
 			virtual bool basetype(void* adata, int32_t abytes)
 			{
-				if (pos() + abytes > len())
+				const int32_t lpos = pos();
+				const int32_t llen = len();
+				if (abytes < 0 || lpos < 0 || llen < 0 || lpos > llen || abytes > (llen - lpos))
 				{
 					return false;
 				}
-				memcpy(adata, &buff()[pos()], abytes);
+				if (abytes == 0)
+				{
+					return true;
+				}
+				if (adata == nullptr)
+				{
+					return false;
+				}
+				if (buff() == nullptr)
+				{
+					return false;
+				}
+				memcpy(adata, &buff()[lpos], (size_t)abytes);
 				move_pos(abytes);
 				return true;
 			}
@@ -196,7 +226,7 @@ namespace ngl
 			{
 				tools::parm<int16_t> lparm(adata);
 				lparm.m_value = tools::transformlittle(lparm);
-				return aser->basetype((void*)&adata, sizeof(adata));
+				return aser->basetype((void*)&lparm.m_value, sizeof(lparm.m_value));
 			}
 
 			static bool pop(serialize_pop* aser, int16_t& adata)
@@ -223,7 +253,7 @@ namespace ngl
 			{
 				tools::parm<int32_t> lparm(adata);
 				lparm.m_value = tools::transformlittle(lparm);
-				return aser->basetype((void*)&adata, sizeof(adata));
+				return aser->basetype((void*)&lparm.m_value, sizeof(lparm.m_value));
 			}
 
 			static bool pop(serialize_pop* aser, int32_t& adata)
@@ -250,7 +280,7 @@ namespace ngl
 			{
 				tools::parm<int64_t> lparm(adata);
 				lparm.m_value = tools::transformlittle(lparm);
-				return aser->basetype((void*)&adata, sizeof(adata));
+				return aser->basetype((void*)&lparm.m_value, sizeof(lparm.m_value));
 			}
 
 			static bool pop(serialize_pop* aser, int64_t& adata)
@@ -300,18 +330,20 @@ namespace ngl
 		{
 			static bool push(serialize_push* aser, const uint16_t adata)
 			{
-				return serialize_format<int16_t>::push(aser, (int16_t)adata);
+				tools::parm<uint16_t> lparm(adata);
+				lparm.m_value = tools::transformlittle(lparm);
+				return aser->basetype((void*)&lparm.m_value, sizeof(lparm.m_value));
 			}
 
 			static bool pop(serialize_pop* aser, uint16_t& adata)
 			{
-				int16_t lvalue = 0;
-				if (serialize_format<int16_t>::pop(aser, lvalue))
+				if (!aser->basetype((void*)&adata, sizeof(adata)))
 				{
-					adata = (uint16_t)lvalue;
-					return true;
+					return false;
 				}
-				return false;
+				tools::parm<uint16_t> lparm(adata);
+				adata = tools::transformlittle(lparm);
+				return true;
 			}
 
 			static void bytes(serialize_byte* aser, const uint16_t adata)
@@ -325,18 +357,20 @@ namespace ngl
 		{
 			static bool push(serialize_push* aser, const uint32_t adata)
 			{
-				return serialize_format<uint32_t>::push(aser, adata);
+				tools::parm<uint32_t> lparm(adata);
+				lparm.m_value = tools::transformlittle(lparm);
+				return aser->basetype((void*)&lparm.m_value, sizeof(lparm.m_value));
 			}
 
 			static bool pop(serialize_pop* aser, uint32_t& adata)
 			{
-				int32_t lvalue = 0;
-				if (serialize_format<int32_t>::pop(aser, lvalue))
+				if (!aser->basetype((void*)&adata, sizeof(adata)))
 				{
-					adata = lvalue;
-					return true;
+					return false;
 				}
-				return false;
+				tools::parm<uint32_t> lparm(adata);
+				adata = tools::transformlittle(lparm);
+				return true;
 			}
 
 			static void bytes(serialize_byte* aser, const uint32_t adata)
@@ -350,18 +384,20 @@ namespace ngl
 		{
 			static bool push(serialize_push* aser, const uint64_t adata)
 			{
-				return serialize_format<int64_t>::push(aser, adata);
+				tools::parm<uint64_t> lparm(adata);
+				lparm.m_value = tools::transformlittle(lparm);
+				return aser->basetype((void*)&lparm.m_value, sizeof(lparm.m_value));
 			}
 
 			static bool pop(serialize_pop* aser, uint64_t& adata)
 			{
-				int64_t lvalue = 0;
-				if (serialize_format<int64_t>::pop(aser, lvalue))
+				if (!aser->basetype((void*)&adata, sizeof(adata)))
 				{
-					adata = (uint64_t)lvalue;
-					return true;
+					return false;
 				}
-				return false;
+				tools::parm<uint64_t> lparm(adata);
+				adata = tools::transformlittle(lparm);
+				return true;
 			}
 
 			static void bytes(serialize_byte* aser, const uint64_t adata)
@@ -443,12 +479,28 @@ namespace ngl
 			};
 			static bool push(serialize_push* aser, const std::string& adata)
 			{
-				int32_t lsize = (int32_t)adata.size();
-				if (!serialize_format<int32_t>::push(aser, lsize))
+				const int32_t lpos = aser->pos();
+				if (adata.size() > eserialize_format_bytes || adata.size() > (size_t)std::numeric_limits<int32_t>::max())
 				{
 					return false;
 				}
-				return aser->basetype((void*)adata.c_str(), lsize);
+				const int32_t lsize = (int32_t)adata.size();
+				const int32_t lremain = aser->len() - aser->pos();
+				if (lremain < (int32_t)sizeof(int32_t) || lsize > (lremain - (int32_t)sizeof(int32_t)))
+				{
+					return false;
+				}
+				if (!serialize_format<int32_t>::push(aser, lsize))
+				{
+					aser->pos() = lpos;
+					return false;
+				}
+				if (!aser->basetype((void*)adata.c_str(), lsize))
+				{
+					aser->pos() = lpos;
+					return false;
+				}
+				return true;
 			}
 
 			static bool pop(serialize_pop* aser, std::string& adata)
@@ -458,12 +510,18 @@ namespace ngl
 				{
 					return false;
 				}
-				if (lsize > eserialize_format_bytes)
+				if (lsize < 0 || lsize > eserialize_format_bytes || lsize > (aser->len() - aser->pos()))
 				{
 					return false;
 				}
-				adata.resize(lsize);
-				return aser->basetype((void*)adata.data(), lsize);
+				std::string ltemp;
+				ltemp.resize(lsize);
+				if (lsize > 0 && !aser->basetype((void*)ltemp.data(), lsize))
+				{
+					return false;
+				}
+				adata.swap(ltemp);
+				return true;
 			}
 
 			static void bytes(serialize_byte* aser, const std::string& adata)
@@ -479,7 +537,13 @@ namespace ngl
 		{
 			static bool push(serialize_push* aser, const std::vector<T>& adata)
 			{
-				if (!serialize_format<int32_t>::push(aser, (int32_t)adata.size()))
+				const int32_t lpos = aser->pos();
+				if (adata.size() > (size_t)std::numeric_limits<int32_t>::max())
+				{
+					return false;
+				}
+				const int32_t lsize = (int32_t)adata.size();
+				if (!serialize_format<int32_t>::push(aser, lsize))
 				{
 					return false;
 				}
@@ -487,6 +551,7 @@ namespace ngl
 				{
 					if (!serialize_format<T>::push(aser, item))
 					{
+						aser->pos() = lpos;
 						return false;
 					}
 				}
@@ -500,17 +565,22 @@ namespace ngl
 				{
 					return false;
 				}
-				if (lsize > 0)
+				if (lsize < 0)
 				{
-					adata.resize(lsize);
+					return false;
 				}
+				std::vector<T> ltemp;
+				ltemp.reserve((size_t)lsize);
 				for (int32_t i = 0; i < lsize; ++i)
 				{
-					if (!serialize_format<T>::pop(aser, adata[i]))
+					T lvalue;
+					if (!serialize_format<T>::pop(aser, lvalue))
 					{
 						return false;
 					}
+					ltemp.push_back(std::move(lvalue));
 				}
+				adata.swap(ltemp);
 				return true;
 			}
 
@@ -529,7 +599,13 @@ namespace ngl
 		{
 			static bool push(serialize_push* aser, const std::set<T>& adata)
 			{
-				if (!serialize_format<int32_t>::push(aser, (int32_t)adata.size()))
+				const int32_t lpos = aser->pos();
+				if (adata.size() > (size_t)std::numeric_limits<int32_t>::max())
+				{
+					return false;
+				}
+				const int32_t lsize = (int32_t)adata.size();
+				if (!serialize_format<int32_t>::push(aser, lsize))
 				{
 					return false;
 				}
@@ -537,6 +613,7 @@ namespace ngl
 				{
 					if (!serialize_format<T>::push(aser, item))
 					{
+						aser->pos() = lpos;
 						return false;
 					}
 				}
@@ -550,15 +627,25 @@ namespace ngl
 				{
 					return false;
 				}
+				if (lsize < 0)
+				{
+					return false;
+				}
+				std::set<T> lcontainer;
 				for (int32_t i = 0; i < lsize; ++i)
 				{
-					T ltemp;
-					if (!serialize_format<T>::pop(aser, ltemp))
+					T lvalue;
+					if (!serialize_format<T>::pop(aser, lvalue))
 					{
 						return false;
 					}
-					adata.insert(ltemp);
+					const auto [_it, inserted] = lcontainer.insert(std::move(lvalue));
+					if (!inserted)
+					{
+						return false;
+					}
 				}
+				adata.swap(lcontainer);
 				return true;
 			}
 
@@ -577,7 +664,13 @@ namespace ngl
 		{
 			static bool push(serialize_push* aser, const std::list<T>& adata)
 			{
-				if (!serialize_format<int32_t>::push(aser, (int32_t)adata.size()))
+				const int32_t lpos = aser->pos();
+				if (adata.size() > (size_t)std::numeric_limits<int32_t>::max())
+				{
+					return false;
+				}
+				const int32_t lsize = (int32_t)adata.size();
+				if (!serialize_format<int32_t>::push(aser, lsize))
 				{
 					return false;
 				}
@@ -585,6 +678,7 @@ namespace ngl
 				{
 					if (!serialize_format<T>::push(aser, item))
 					{
+						aser->pos() = lpos;
 						return false;
 					}
 				}
@@ -598,15 +692,21 @@ namespace ngl
 				{
 					return false;
 				}
+				if (lsize < 0)
+				{
+					return false;
+				}
+				std::list<T> lcontainer;
 				for (int32_t i = 0; i < lsize; ++i)
 				{
-					T ltemp;
-					if (!serialize_format<T>::pop(aser, ltemp))
+					T lvalue;
+					if (!serialize_format<T>::pop(aser, lvalue))
 					{
 						return false;
 					}
-					adata.push_back(ltemp);
+					lcontainer.push_back(std::move(lvalue));
 				}
+				adata.swap(lcontainer);
 				return true;
 			}
 
@@ -626,7 +726,13 @@ namespace ngl
 		{
 			static bool push(serialize_push* aser, const std::map<TKEY, TVAL>& adata)
 			{
-				if (!serialize_format<int32_t>::push(aser, (int32_t)adata.size()))
+				const int32_t lpos = aser->pos();
+				if (adata.size() > (size_t)std::numeric_limits<int32_t>::max())
+				{
+					return false;
+				}
+				const int32_t lsize = (int32_t)adata.size();
+				if (!serialize_format<int32_t>::push(aser, lsize))
 				{
 					return false;
 				}
@@ -634,10 +740,12 @@ namespace ngl
 				{
 					if (!serialize_format<TKEY>::push(aser, _key))
 					{
+						aser->pos() = lpos;
 						return false;
 					}
 					if (!serialize_format<TVAL>::push(aser, _value))
 					{
+						aser->pos() = lpos;
 						return false;
 					}
 				}
@@ -651,6 +759,11 @@ namespace ngl
 				{
 					return false;
 				}
+				if (lsize < 0)
+				{
+					return false;
+				}
+				std::map<TKEY, TVAL> ltemp;
 				for (int32_t i = 0; i < lsize; ++i)
 				{
 					std::pair<TKEY, TVAL> lpair;
@@ -662,12 +775,13 @@ namespace ngl
 					{
 						return false;
 					}
-				 	const auto& [_, success] = adata.insert(lpair);
-					if (!success)
+				 	const auto [_it, inserted] = ltemp.insert(std::move(lpair));
+					if (!inserted)
 					{
-						std::cout << "serialize map repeat key" << std::endl;
+						return false;
 					}
 				}
+				adata.swap(ltemp);
 				return true;
 			}
 
@@ -687,18 +801,36 @@ namespace ngl
 			template <typename ...ARGS>
 			static bool push(serialize_push* aser, const ARGS&... aargs)
 			{
-				return (serialize_format<ARGS>::push(aser, aargs) && ...);
+				if (aser == nullptr)
+				{
+					return false;
+				}
+				const int32_t lpos = aser->pos();
+				if ((serialize_format<ARGS>::push(aser, aargs) && ...))
+				{
+					return true;
+				}
+				aser->pos() = lpos;
+				return false;
 			}
 
 			template <typename ...ARGS>
 			static bool pop(serialize_pop* aser, ARGS&... aargs)
 			{
+				if (aser == nullptr)
+				{
+					return false;
+				}
 				return (serialize_format<ARGS>::pop(aser, aargs) && ...);
 			}
 
 			template <typename ...ARGS>
 			static void bytes(serialize_byte* aser, const ARGS&... aargs)
 			{
+				if (aser == nullptr)
+				{
+					return;
+				}
 				(serialize_format<ARGS>::bytes(aser, aargs), ...);
 			}
 		};
@@ -718,17 +850,26 @@ namespace ngl
 			}
 			else if constexpr (is_protobuf_message<T>::value)
 			{
-				int32_t lbytes = adata.ByteSize();
-				if (!serialize_format<int32_t>::push(aser, lbytes))
+				const int32_t lpos = aser->pos();
+				const size_t lbytes_long = adata.ByteSizeLong();
+				if (lbytes_long > (size_t)std::numeric_limits<int32_t>::max())
 				{
 					return false;
 				}
-				if (lbytes > (aser->len() - aser->pos()))
+				const int32_t lbytes = (int32_t)lbytes_long;
+				const int32_t lremain = aser->len() - aser->pos();
+				if (lremain < (int32_t)sizeof(int32_t) || lbytes > (lremain - (int32_t)sizeof(int32_t)))
 				{
+					return false;
+				}
+				if (!serialize_format<int32_t>::push(aser, lbytes))
+				{
+					aser->pos() = lpos;
 					return false;
 				}
 				if (!adata.SerializeToArray(&aser->buff()[aser->pos()], lbytes))
 				{
+					aser->pos() = lpos;
 					return false;
 				}
 				aser->move_pos(lbytes);
@@ -760,15 +901,17 @@ namespace ngl
 				{
 					return false;
 				}
-				if (lbytes > (aser->len() - aser->pos()))
+				if (lbytes < 0 || lbytes > (aser->len() - aser->pos()))
 				{
 					return false;
 				}
-				if (!adata.ParseFromArray(&aser->buff()[aser->pos()], lbytes))
+				T ltemp;
+				if (!ltemp.ParseFromArray(&aser->buff()[aser->pos()], lbytes))
 				{
 					return false;
 				}
 				aser->move_pos(lbytes);
+				adata = std::move(ltemp);
 				return true;
 			}
 			else
@@ -786,7 +929,10 @@ namespace ngl
 			}
 			else if constexpr (is_protobuf_message<T>::value)
 			{
-				int32_t lvalue = (int32_t)adata.ByteSize();
+				const auto lbytes = adata.ByteSizeLong();
+				const int32_t lvalue = lbytes > (size_t)std::numeric_limits<int32_t>::max()
+					? std::numeric_limits<int32_t>::max()
+					: (int32_t)lbytes;
 				serialize_format<int32_t>::bytes(aser, lvalue);
 				aser->move_pos(lvalue);
 			}

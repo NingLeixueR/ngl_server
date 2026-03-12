@@ -119,8 +119,16 @@ namespace ngl
 		{
 			return false;
 		}
-		aval = tools::lexical_cast<T>(val);
-		return true;
+		try
+		{
+			T lvalue = tools::lexical_cast<T>(val);
+			aval = std::move(lvalue);
+			return true;
+		}
+		catch (...)
+		{
+			return false;
+		}
 	}
 
 	template <typename T>
@@ -145,8 +153,16 @@ namespace ngl
 				return false;
 			}
 		}
-		valElement->SetText(tools::lexical_cast<std::string>(aval).c_str());
-		return true;
+		try
+		{
+			std::string lvalue = tools::lexical_cast<std::string>(aval);
+			valElement->SetText(lvalue.c_str());
+			return true;
+		}
+		catch (...)
+		{
+			return false;
+		}
 	}
 
 	template <typename T>
@@ -167,8 +183,16 @@ namespace ngl
 		{
 			return false;
 		}
-		aval = tools::lexical_cast<T>(val);
-		return true;
+		try
+		{
+			T lvalue = tools::lexical_cast<T>(val);
+			aval = std::move(lvalue);
+			return true;
+		}
+		catch (...)
+		{
+			return false;
+		}
 	}
 
 	template <typename T>
@@ -178,7 +202,15 @@ namespace ngl
 		{
 			return false;
 		}
-		aele->SetAttribute(akey, tools::lexical_cast<std::string>(aval).c_str());
-		return true;
+		try
+		{
+			std::string lvalue = tools::lexical_cast<std::string>(aval);
+			aele->SetAttribute(akey, lvalue.c_str());
+			return true;
+		}
+		catch (...)
+		{
+			return false;
+		}
 	}
 }//namespace ngl

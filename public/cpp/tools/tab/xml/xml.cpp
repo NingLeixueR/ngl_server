@@ -12,8 +12,6 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-#include "actor/actor_logic/actor_role/logic/attribute/skill.h"
-#include "actor/protocol/nprotocol.h"
 #include "actor/tab/ttab_servers.h"
 #include "tools/tab/xml/xmlinfo.h"
 #include "actor/tab/csvtable.h"
@@ -21,8 +19,6 @@
 #include "tools/log/nlog.h"
 #include "tools/tools.h"
 #include "tools/type.h"
-#include "tinyxml2.h"
-
 #include <array>
 
 namespace ngl

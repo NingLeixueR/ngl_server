@@ -122,8 +122,8 @@ struct std::formatter<ngl::pack_head>
 			{
 				ss += std::format("{} ", avalue);
 			});
-		ngl::nguid lactor(*(int64_t*)&val.m_data[ngl::EPH_ACTOR_TYPEAREA]);
-		ngl::nguid lrequestactor(*(int64_t*)&val.m_data[ngl::EPH_REQUEST_ACTOR_TYPEAREA]);
+		ngl::nguid lactor(val.get_actor());
+		ngl::nguid lrequestactor(val.get_request_actor());
 		std::format_to(out
 			, R"(
 HEAD[

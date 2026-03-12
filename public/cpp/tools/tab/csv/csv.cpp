@@ -12,10 +12,8 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-#include "actor/protocol/nprotocol.h"
 #include "tools/operator_file.h"
 #include "tools/tab/csv/csv.h"
-#include "tools/log/nlog.h"
 #include "tools/tools.h"
 
 namespace ngl
@@ -23,6 +21,8 @@ namespace ngl
 	bool rcsv::read(const std::string& aname, std::string& averify)
 	{
 		//# 读取文件
+		m_pos = 0;
+		m_data.clear();
 		readfile lrf(aname);
 		//# 跳过前3行表头
 		lrf.jumpbegin(3, true);

@@ -12,9 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
-#include "actor/protocol/nprotocol.h"
 #include "tools/tab/xml/xmlinfo.h"
-#include "tools/log/nlog.h"
 #include "tools/tools.h"
 
 #include <string>
@@ -23,17 +21,32 @@ namespace ngl
 {
 	bool xarg_info::find(const char* akey, bool& adata)
 	{
+		if (akey == nullptr)
+		{
+			return false;
+		}
 		std::string* lp = tools::findmap(m_data, akey);
 		if (lp == nullptr)
 		{
 			return false;
 		}
-		adata = *lp == "true" || *lp == "TRUE";
-		return true;
+		try
+		{
+			adata = tools::lexical_cast<bool>(*lp);
+			return true;
+		}
+		catch (...)
+		{
+			return false;
+		}
 	}
 
 	bool xarg_info::find(const char* akey, std::string& adata)
 	{
+		if (akey == nullptr)
+		{
+			return false;
+		}
 		std::string* lp = tools::findmap(m_data, akey);
 		if (lp == nullptr)
 		{

@@ -20,6 +20,7 @@
 #include <cstdint>
 #include <fstream>
 #include <string>
+#include <tuple>
 #include <vector>
 #include <list>
 #include <map>
@@ -189,6 +190,7 @@ namespace ngl
 			std::string& lret = apair.m_data;
 			int& lpos = apair.m_pos;
 			auto lsize = (int)lret.size();
+			std::string lvalue;
 			for (; lpos < lsize; ++lpos)
 			{
 				if (!apair.m_doublequotationmarks)
@@ -208,8 +210,13 @@ namespace ngl
 					apair.m_doublequotationmarks = apair.m_doublequotationmarks ? false : true;
 					continue;
 				}
-				adata += lret[lpos];
+				lvalue += lret[lpos];
 			}
+			if (apair.m_doublequotationmarks)
+			{
+				return false;
+			}
+			adata = std::move(lvalue);
 			return true;
 		}
 	};
@@ -220,19 +227,24 @@ namespace ngl
 		static bool read(csvpair& apair, std::vector<T>& adata)
 		{
 			std::string ltempstr;
-			csv_read<std::string>::read(apair, ltempstr);
+			if (!csv_read<std::string>::read(apair, ltempstr))
+			{
+				return false;
+			}
 			csvpair lpair;
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
+			std::vector<T> lparsed;
 			for (; lpair.m_pos < lpair.m_data.size();)
 			{
 				T ltemp;
-				if (csv_read<T>::read(lpair, ltemp))
+				if (!csv_read<T>::read(lpair, ltemp))
 				{
-					adata.push_back(ltemp);
+					return false;
 				}
+				lparsed.push_back(std::move(ltemp));
 			}
-			lpair.m_fg = ',';
+			adata = std::move(lparsed);
 			return true;
 		}
 	};
@@ -243,19 +255,24 @@ namespace ngl
 		static bool read(csvpair& apair, std::list<T>& adata)
 		{
 			std::string ltempstr;
-			read(apair, ltempstr);
+			if (!csv_read<std::string>::read(apair, ltempstr))
+			{
+				return false;
+			}
 			csvpair lpair;
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
+			std::list<T> lparsed;
 			for (; lpair.m_pos < lpair.m_data.size();)
 			{
 				T ltemp;
-				if (csv_read<T>::read(lpair, ltemp))
+				if (!csv_read<T>::read(lpair, ltemp))
 				{
-					adata.insert(ltemp);
+					return false;
 				}
+				lparsed.push_back(std::move(ltemp));
 			}
-			lpair.m_fg = ',';
+			adata = std::move(lparsed);
 			return true;
 		}
 	};
@@ -266,19 +283,27 @@ namespace ngl
 		static bool read(csvpair& apair, std::set<T>& adata)
 		{
 			std::string ltempstr;
-			csv_read<std::string>::read(apair, ltempstr);
+			if (!csv_read<std::string>::read(apair, ltempstr))
+			{
+				return false;
+			}
 			csvpair lpair;
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
+			std::set<T> lparsed;
 			for (; lpair.m_pos < lpair.m_data.size();)
 			{
 				T ltemp;
-				if (csv_read<T>::read(lpair, ltemp))
+				if (!csv_read<T>::read(lpair, ltemp))
 				{
-					adata.insert(ltemp);
+					return false;
+				}
+				if (!lparsed.insert(std::move(ltemp)).second)
+				{
+					return false;
 				}
 			}
-			lpair.m_fg = ',';
+			adata = std::move(lparsed);
 			return true;
 		}
 	};
@@ -288,6 +313,18 @@ namespace ngl
 	private:
 		std::string m_data;
 		int m_pos;
+
+		template <typename TTUPLE, std::size_t... INDEX>
+		static bool readcsv_impl(csvpair& apair, std::index_sequence<INDEX...>, TTUPLE& avalues)
+		{
+			return (csv_read<std::tuple_element_t<INDEX, TTUPLE>>::read(apair, std::get<INDEX>(avalues)) && ...);
+		}
+
+		template <typename TTUPLE, std::size_t... INDEX, typename ...ARG>
+		static void assigncsv_impl(std::index_sequence<INDEX...>, TTUPLE& avalues, ARG&... args)
+		{
+			((args = std::move(std::get<INDEX>(avalues))), ...);
+		}
 	public:
 		bool read(const std::string& aname, std::string& averify);
 
@@ -299,15 +336,30 @@ namespace ngl
 		template <typename ...ARG>
 		static bool readcsv(csvpair& apair, ARG& ...args)
 		{
-			return ((!apair.m_data.empty() && csv_read<ARG>::read(apair, args)) && ...);
+			if (apair.m_data.empty())
+			{
+				return false;
+			}
+			std::tuple<std::decay_t<ARG>...> lparsed;
+			if (!readcsv_impl(apair, std::make_index_sequence<sizeof...(ARG)>{}, lparsed))
+			{
+				return false;
+			}
+			assigncsv_impl(std::make_index_sequence<sizeof...(ARG)>{}, lparsed, args...);
+			return true;
 		}
 
 		template <typename T>
 		bool readcsv(std::map<int, T>& adata)
 		{
-			csvpair lpair;
-			for (; csv_helper::readline(m_data, m_pos, lpair.m_data);)
+			std::map<int, T> lparsed;
+			for (;;)
 			{
+				csvpair lpair;
+				if (!csv_helper::readline(m_data, m_pos, lpair.m_data))
+				{
+					break;
+				}
 				if (!lpair.m_data.empty())
 				{
 					if (lpair.m_data[0] == '#')
@@ -315,13 +367,20 @@ namespace ngl
 						continue;
 					}
 					T ltemp;
-					if (ltemp.rcsv(lpair) && ltemp.m_id != 0)
+					if (!ltemp.rcsv(lpair))
 					{
-						adata.insert(std::make_pair(ltemp.m_id, ltemp));
-						lpair.clear();
+						return false;
+					}
+					if (ltemp.m_id != 0)
+					{
+						if (!lparsed.emplace(ltemp.m_id, std::move(ltemp)).second)
+						{
+							return false;
+						}
 					}
 				}
 			}
+			adata = std::move(lparsed);
 			return true;
 		}
 	};
@@ -349,15 +408,23 @@ namespace ngl
 	bool csv_helper::number(csvpair& apair, TNUMBER& adata)
 	{
 		std::string ltemp;
-		csv_read<std::string>::read(apair, ltemp);
-		if (ltemp != "")
+		if (!csv_read<std::string>::read(apair, ltemp))
 		{
-			adata = tools::lexical_cast<TNUMBER>(ltemp.c_str());
+			return false;
 		}
-		else
+		TNUMBER lvalue = TNUMBER();
+		if (!ltemp.empty())
 		{
-			adata = TNUMBER();
+			try
+			{
+				lvalue = tools::lexical_cast<TNUMBER>(ltemp.c_str());
+			}
+			catch (...)
+			{
+				return false;
+			}
 		}
+		adata = lvalue;
 		return true;
 	}
 }//namespace ngl

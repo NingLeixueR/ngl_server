@@ -82,12 +82,24 @@ namespace ngl
 		template <typename TVALUE>
 		bool find(const char* akey, TVALUE& adata)
 		{
+			if (akey == nullptr)
+			{
+				return false;
+			}
 			std::string* lp = tools::findmap(m_data, akey);
 			if (lp == nullptr)
 			{
 				return false;
 			}
-			adata = tools::lexical_cast<TVALUE>(*lp);
+			try
+			{
+				TVALUE lvalue = tools::lexical_cast<TVALUE>(*lp);
+				adata = std::move(lvalue);
+			}
+			catch (...)
+			{
+				return false;
+			}
 			return true;
 		}
 

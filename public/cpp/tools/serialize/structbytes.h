@@ -16,9 +16,10 @@
 #include "tools/serialize/nserialize.h"
 #include "actor/protocol/tprotocol.h"
 #include "tools/serialize/pack.h"
-#include "tools/log/nlog.h"
 #include "tools/type.h"
 
+#include <format>
+#include <iostream>
 #include <set>
 
 namespace ngl
@@ -26,11 +27,21 @@ namespace ngl
 	class encryption_bytexor
 	{
 	public:
+		static i32_protocolnum get_registered_protocolnum(const char* aname)
+		{
+			if (aname == nullptr || *aname == '\0')
+			{
+				return -1;
+			}
+			tprotocol::info* lpinfo = tprotocol::get(aname);
+			return lpinfo == nullptr ? -1 : lpinfo->m_protocol;
+		}
+
 		static bool check_xor(int aprotocolnum)
 		{
-			static i32_protocolnum lprotocol1 = tprotocol::protocol<np_gm>();
-			static i32_protocolnum lprotocol2 = tprotocol::protocol<np_gm_response>();
-			if (aprotocolnum == lprotocol1 || aprotocolnum == lprotocol2)
+			static const i32_protocolnum lprotocol1 = get_registered_protocolnum(tools::type_name<np_gm>().c_str());
+			static const i32_protocolnum lprotocol2 = get_registered_protocolnum(tools::type_name<np_gm_response>().c_str());
+			if ((lprotocol1 != -1 && aprotocolnum == lprotocol1) || (lprotocol2 != -1 && aprotocolnum == lprotocol2))
 			{
 				return false;
 			}
@@ -48,13 +59,22 @@ namespace ngl
 	class structbytes
 	{
 	public:
-		static bool tostruct(std::shared_ptr<pack>& apack, T& adata, bool aissetpos = false)
+		static bool tostruct(std::shared_ptr<pack>& apack, T& adata, [[maybe_unused]] bool aissetpos = false)
 		{
+			if (apack == nullptr)
+			{
+				return false;
+			}
+			const int32_t lbytes = apack->m_head.getvalue(EPH_BYTES);
+			if (lbytes < 0)
+			{
+				return false;
+			}
 			if (apack->m_buff != nullptr)
 			{
-				if (apack->m_head.getvalue(EPH_BYTES) != apack->m_pos)
+				if (lbytes != apack->m_pos)
 				{
-					log_error()->print("[##structbytes::tostruct() {} byte<{}!={}>]", tools::type_name<T>(), apack->m_head.getvalue(EPH_BYTES), apack->m_pos);
+					std::cout << std::format("[##structbytes::tostruct() {} byte<{}!={}>]", tools::type_name<T>(), lbytes, apack->m_pos) << std::endl;
 					return false;
 				}
 
@@ -63,35 +83,52 @@ namespace ngl
 					ngl::tools::bytexor(apack->m_buff, apack->m_len, 0);
 				}
 
-				ngl::ser::serialize_pop lser(apack->m_buff, apack->m_head.getvalue(EPH_BYTES));
+				ngl::ser::serialize_pop lser(apack->m_buff, lbytes);
 				if (!ngl::ser::nserialize::pop(&lser, adata))
 				{
 					return false;
 				}
 			}
+			else if (lbytes != 0)
+			{
+				return false;
+			}
 			return true;
 		}
 
 		template <typename Y>
-		static bool tobytes(std::shared_ptr<pack>& apack, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool tobytes(std::shared_ptr<pack>& apack, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
+			if (apack == nullptr || apack->m_buff == nullptr)
+			{
+				return false;
+			}
 			std::pair<char*, int> lpair;
 			apack->m_head.reservebuff(apack->m_buff, apack->m_len, lpair);
+			if (lpair.first == nullptr)
+			{
+				return false;
+			}
 			ngl::ser::serialize_push lser(lpair.first, lpair.second);
 			if (!ngl::ser::nserialize::push(&lser, adata))
 			{
-				log_error()->print("[##structbytes::tobytes() {} actorid:{} requestactorid:{}] ", tools::type_name<T>(), aactorid, arequestactorid);
+				std::cout << std::format("[##structbytes::tobytes() {} actorid:{} requestactorid:{}]", tools::type_name<T>(), aactorid, arequestactorid) << std::endl;
+				return false;
+			}
+			const int32_t lpayloadbytes = lser.pos();
+			if (lpayloadbytes < 0 || lpayloadbytes > lpair.second)
+			{
 				return false;
 			}
 
 			// # encryption bytexor
-			if(encryption_bytexor::check_xor<T>())
+			if (lpayloadbytes > 0 && encryption_bytexor::check_xor<T>())
 			{
-				ngl::tools::bytexor(lpair.first, lpair.second, 0);
+				ngl::tools::bytexor(lpair.first, lpayloadbytes, 0);
 			}
 			
 			// ### sethead start ###
-			apack->m_head.m_data[EPH_BYTES] = (apack->m_len - pack_head::size());
+			apack->m_head.m_data[EPH_BYTES] = lpayloadbytes;
 			apack->m_head.set_mask();
 			apack->m_head.set_time();
 			apack->m_head.set_actor(aactorid, arequestactorid);
@@ -102,6 +139,7 @@ namespace ngl
 			{
 				return false;
 			}
+			apack->m_len = pack_head::size() + lpayloadbytes;
 			apack->m_pos = apack->m_len;
 			return true;
 		}
