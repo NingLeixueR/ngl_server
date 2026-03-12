@@ -134,6 +134,13 @@ namespace ngl
 			}
 		}
 
+		static void log_lexical_cast_error(
+			const char* atotype,
+			const char* afromtype,
+			const char* aerror,
+			const std::source_location& asource
+		);
+
 		template <typename To, typename From>
 		static To lexical_cast(const From& from, const std::source_location& asource = std::source_location::current())
 		{
@@ -143,7 +150,7 @@ namespace ngl
 			}
 			catch (const boost::bad_lexical_cast& aerror)
 			{
-				log_error(asource)->print("tools::lexical_cast<{}> failed from <{}> : {}", typeid(To).name(), typeid(From).name(), aerror.what());
+				log_lexical_cast_error(typeid(To).name(), typeid(From).name(), aerror.what(), asource);
 				throw std::string("lexical_cast error");
 			}
 		}

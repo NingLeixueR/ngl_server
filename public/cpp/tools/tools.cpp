@@ -16,6 +16,7 @@
 #include "actor/tab/ttab_servers.h"
 #include "actor/actor_base/nguid.h"
 #include "tools/curl/ncurl.h"
+#include "tools/log/nlog.h"
 #include "tools/localtime.h"
 #include "utf8cpp/utf8.h"
 #include "tools/tools.h"
@@ -100,6 +101,16 @@ namespace ngl
 			return false;
 		}
 		return is_a_address(lvec) || is_b_address(lvec) || is_c_address(lvec);
+	}
+
+	void tools::log_lexical_cast_error(
+		const char* atotype,
+		const char* afromtype,
+		const char* aerror,
+		const std::source_location& asource
+	)
+	{
+		log_error(asource)->print("tools::lexical_cast<{}> failed from <{}> : {}", atotype, afromtype, aerror);
 	}
 
 	int16_t tools::transformlittle(parm<int16_t>& avalues)
