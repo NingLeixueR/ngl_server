@@ -15,18 +15,58 @@
 #include "actor/protocol/nprotocol.h"
 #include "tools/curl/ncurl.h"
 
-#include <thread>
+#include <algorithm>
+#include <cstring>
 #include <format>
-#include <utf8.h> 
+#include <iostream>
+#include <sstream>
+#include <thread>
 
 namespace ngl
 {
+	namespace
+	{
+		struct mail_payload_state
+		{
+			const std::string* m_payload = nullptr;
+			size_t m_offset = 0;
+		};
+
+		std::string make_request_url(const http_parm& ahttp)
+		{
+			if (ahttp.m_param.empty())
+			{
+				return ahttp.m_url;
+			}
+
+			std::string lurl = ahttp.m_url;
+			if (lurl.empty())
+			{
+				return std::string();
+			}
+			if (lurl.find('?') == std::string::npos)
+			{
+				lurl += '?';
+			}
+			else if (!lurl.ends_with('?') && !lurl.ends_with('&'))
+			{
+				lurl += '&';
+			}
+			lurl += ahttp.m_param;
+			return lurl;
+		}
+	}
+
 	ncurl::ncurl() :
 		m_works(std::bind_front(&ncurl::work, this))
 	{}
 
 	void ncurl::send(std::shared_ptr<http_parm>& adata)
 	{
+		if (adata == nullptr)
+		{
+			return;
+		}
 		instance().m_works.push_back(adata);
 	}
 
@@ -46,26 +86,37 @@ namespace ngl
 
 	CURLcode ncurl::visit(http_parm& ahttp)
 	{
+		if (ahttp.m_curl == nullptr)
+		{
+			return CURLE_FAILED_INIT;
+		}
+		if (ahttp.m_url.empty())
+		{
+			return CURLE_URL_MALFORMAT;
+		}
+
+		ahttp.m_recvdata.clear();
+		curl_easy_reset(ahttp.m_curl);
+		const std::string lrequest_url = make_request_url(ahttp);
+
 		if (ahttp.m_type == ENUM_TYPE_POST)
 		{
-			//curl_easy_setopt(lhttp->m_curl, CURLOPT_SSL_VERIFYPEER, 0L);
-			curl_easy_setopt(ahttp.m_curl, CURLOPT_POST, 1);
-			if (ahttp.m_param != "")
+			curl_easy_setopt(ahttp.m_curl, CURLOPT_POST, 1L);
+			if (!ahttp.m_param.empty())
 			{
 				curl_easy_setopt(ahttp.m_curl, CURLOPT_POSTFIELDS, ahttp.m_param.c_str());
+				curl_easy_setopt(ahttp.m_curl, CURLOPT_POSTFIELDSIZE, static_cast<long>(ahttp.m_param.size()));
 			}
 			curl_easy_setopt(ahttp.m_curl, CURLOPT_URL, ahttp.m_url.c_str());
 		}
-		else//get
+		else
 		{
-			if (!ahttp.m_param.empty())
-			{
-				ahttp.m_url += std::format("?{}", ahttp.m_param);
-			}
-			curl_easy_setopt(ahttp.m_curl, CURLOPT_URL, ahttp.m_url.c_str());
+			curl_easy_setopt(ahttp.m_curl, CURLOPT_HTTPGET, 1L);
+			curl_easy_setopt(ahttp.m_curl, CURLOPT_URL, lrequest_url.c_str());
 		}
 		curl_easy_setopt(ahttp.m_curl, CURLOPT_WRITEFUNCTION, &ncurl::callback);
 		curl_easy_setopt(ahttp.m_curl, CURLOPT_WRITEDATA, &ahttp.m_recvdata);
+		curl_easy_setopt(ahttp.m_curl, CURLOPT_HTTPHEADER, ahttp.m_headers);
 
 		if (ahttp.m_mode == ENUM_MODE_HTTPS)
 		{
@@ -96,48 +147,74 @@ namespace ngl
 
 	size_t ncurl::callback(void* buffer, size_t size, size_t nmemb, std::string* lpVoid)
 	{
+		const size_t lbytes = size * nmemb;
 		if (buffer == nullptr)
 		{
 			return 0;
 		}
-		char* pData = (char*)buffer;
-		lpVoid->append(pData, size * nmemb);
-		return nmemb;
+		if (lpVoid == nullptr)
+		{
+			return lbytes;
+		}
+		const char* ldata = static_cast<const char*>(buffer);
+		lpVoid->append(ldata, lbytes);
+		return lbytes;
 	}
 
 	void ncurl::set_mode(std::shared_ptr<http_parm>& ahttp, ENUM_MODE aval)
 	{ 
-		ahttp->m_mode = aval; 
+		if (ahttp != nullptr)
+		{
+			ahttp->m_mode = aval;
+		}
 	}
 
 	void ncurl::set_type(std::shared_ptr<http_parm>& ahttp, ENUM_TYPE aval)
 	{ 
-		ahttp->m_type = aval; 
+		if (ahttp != nullptr)
+		{
+			ahttp->m_type = aval;
+		}
 	}
 
 	void ncurl::set_url(std::shared_ptr<http_parm>& ahttp, const std::string& aurl)
 	{ 
-		ahttp->m_url = aurl; 
+		if (ahttp != nullptr)
+		{
+			ahttp->m_url = aurl;
+		}
 	}
 
 	void ncurl::set_url(std::shared_ptr<http_parm>& ahttp, const char* aurl)
 	{ 
-		ahttp->m_url = aurl; 
+		if (ahttp != nullptr)
+		{
+			ahttp->m_url = aurl == nullptr ? "" : aurl;
+		}
 	}
 
 	void ncurl::set_param(std::shared_ptr<http_parm>& ahttp, const std::string& aparam)
 	{ 
-		ahttp->m_param = aparam;
+		if (ahttp != nullptr)
+		{
+			ahttp->m_param = aparam;
+		}
 	}
 
-	void ncurl::set_headers(std::shared_ptr<http_parm>& ahttp, std::vector<std::string>& aheaders)
+	void ncurl::set_headers(std::shared_ptr<http_parm>& ahttp, const std::vector<std::string>& aheaders)
 	{ 
-		ahttp->headers(aheaders); 
+		if (ahttp != nullptr)
+		{
+			ahttp->headers(aheaders);
+		}
 	}
 
 	void ncurl::set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback)
 	{ 
-		ahttp->m_callback = aback; 
+		if (ahttp != nullptr)
+		{
+			ahttp->m_callback = aback;
+		}
 	}
 
 	std::shared_ptr<http_parm> ncurl::http()
@@ -155,7 +232,6 @@ namespace ngl
 		~email_sender() = default;
 
 		nwork<mail_param> m_works;
-		int32_t m_index = 0;
 
 		email_sender() :
 			m_works(std::bind_front(&email_sender::work, this))
@@ -169,29 +245,59 @@ namespace ngl
 	public:
 		static void send(std::shared_ptr<mail_param>& aparm)
 		{
+			if (aparm == nullptr)
+			{
+				return;
+			}
 			instance().m_works.push_back(aparm);
 		}
 	private:
 		static size_t callback(void* ptr, size_t size, size_t nmemb, void* userp)
 		{
-			std::string data((const char*)userp);
-			size_t to_copy = std::min(data.size() - email_sender::instance().m_index, size * nmemb);
-			memcpy(ptr, data.c_str() + email_sender::instance().m_index, to_copy);
-			email_sender::instance().m_index += (int32_t)to_copy;
-			return to_copy;
+			if (ptr == nullptr)
+			{
+				return 0;
+			}
+
+			auto* lstate = static_cast<mail_payload_state*>(userp);
+			if (lstate == nullptr || lstate->m_payload == nullptr)
+			{
+				return 0;
+			}
+			if (lstate->m_offset >= lstate->m_payload->size())
+			{
+				return 0;
+			}
+
+			const size_t lremaining = lstate->m_payload->size() - lstate->m_offset;
+			const size_t lto_copy = std::min(lremaining, size * nmemb);
+			memcpy(ptr, lstate->m_payload->data() + lstate->m_offset, lto_copy);
+			lstate->m_offset += lto_copy;
+			return lto_copy;
 		}
 		
 		void work(mail_param& aparm)
 		{
-			CURL* curl;
-			CURLcode res;
-			m_index = 0;
+			struct post_guard
+			{
+				mail_param& m_param;
+
+				~post_guard()
+				{
+					m_param.post();
+				}
+			} lguard{ aparm };
+
+			CURL* curl = curl_easy_init();
 
 			// 初始化libcurl
-			curl = curl_easy_init();
 
-			if (curl)
+			if (curl == nullptr)
 			{
+				std::cerr << "curl_easy_init() failed" << std::endl;
+				return;
+			}
+
 				curl_slist* recipients = nullptr;
 
 				// 设置SMTP服务器、发件人和收件人
@@ -208,9 +314,10 @@ namespace ngl
 				curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30L);
 
 				// 设置收件人
-				for (auto& [mailarr, name] : aparm.m_recvs)
+				for (const auto& [mailaddr, name] : aparm.m_recvs)
 				{
-					recipients = curl_slist_append(recipients, std::format("<{}>", mailarr).c_str());
+					(void)name;
+					recipients = curl_slist_append(recipients, std::format("<{}>", mailaddr).c_str());
 				}
 				curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
 
@@ -231,15 +338,15 @@ namespace ngl
 				payload += "\r\n"; // 空行表示header部分结束
 				payload += std::format("{}\r\n", aparm.m_content); // 邮件内容
 
-				curl_easy_setopt(curl, CURLOPT_READDATA, payload.c_str());
+				mail_payload_state lstate;
+				lstate.m_payload = &payload;
+				curl_easy_setopt(curl, CURLOPT_READDATA, &lstate);
 
 				curl_easy_setopt(curl, CURLOPT_READFUNCTION, &email_sender::callback); // 设置读取数据的回调函数
 
 				curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, nullptr);
 				// 发送邮件
-				res = curl_easy_perform(curl);
-
-				aparm.post();
+				const CURLcode res = curl_easy_perform(curl);
 
 				// 检查结果
 				if (res != CURLE_OK)
@@ -254,12 +361,15 @@ namespace ngl
 				// 清理
 				curl_slist_free_all(recipients);
 				curl_easy_cleanup(curl);
-			}
 		}
 	};
 
 	void ncurl::sendemail(std::shared_ptr<mail_param>& aparm)
 	{
+		if (aparm == nullptr)
+		{
+			return;
+		}
 		email_sender::send(aparm);
 		aparm->wait();
 	}

@@ -20,9 +20,12 @@
 #include "tools/impl.h"
 
 #include <curl/curl.h>
+#include <array>
 #include <functional>
+#include <memory>
 #include <string>
 #include <list>
+#include <vector>
 
 #ifdef WIN32
 #pragma comment ( lib, "ws2_32.lib" )
@@ -51,6 +54,16 @@ namespace ngl
 	{
 		using callback = std::function<void(int, http_parm&)>;
 
+		http_parm() :
+			m_curl(curl_easy_init())
+		{
+		}
+
+		http_parm(const http_parm&) = delete;
+		http_parm& operator=(const http_parm&) = delete;
+		http_parm(http_parm&&) = delete;
+		http_parm& operator=(http_parm&&) = delete;
+
 		ENUM_MODE			m_mode = ENUM_MODE_NULL;				// http模式
 		ENUM_TYPE			m_type = ENUM_TYPE_NULL;				// http类型
 		CURL*				m_curl = nullptr;						// curl指针
@@ -76,12 +89,19 @@ namespace ngl
 			}
 		}
 
-		void headers(std::vector<std::string>& aheaders)
+		void headers(const std::vector<std::string>& aheaders)
 		{
-			int lsize = (int)aheaders.size();
-			for (int i = 0; i < lsize; i++)
+			if (m_headers != nullptr)
 			{
-				m_headers = curl_slist_append(m_headers, aheaders[i].c_str());
+				curl_slist_free_all(m_headers);
+				m_headers = nullptr;
+			}
+			for (const std::string& lheader : aheaders)
+			{
+				m_headers = curl_slist_append(m_headers, lheader.c_str());
+			}
+			if (m_curl != nullptr)
+			{
 				curl_easy_setopt(m_curl, CURLOPT_HTTPHEADER, m_headers);
 			}
 		}
@@ -177,7 +197,7 @@ namespace ngl
 		static void set_param(std::shared_ptr<http_parm>& ahttp, const std::string& aparam);
 
 		// # 设置http头 
-		static void set_headers(std::shared_ptr<http_parm>& ahttp, std::vector<std::string>& aheaders);
+		static void set_headers(std::shared_ptr<http_parm>& ahttp, const std::vector<std::string>& aheaders);
 
 		// # 设置回调
 		static void set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback);
@@ -186,6 +206,10 @@ namespace ngl
 		template <typename T>
 		static void param(std::string& aparam, const char* akey, const T& aval)
 		{
+			if (akey == nullptr || *akey == '\0')
+			{
+				return;
+			}
 			if (aparam.empty() == false)
 			{
 				aparam += '&';
@@ -193,14 +217,14 @@ namespace ngl
 			aparam += std::format("{}={}", akey, aval);
 		}
 
-		template <typename ...TARGS, int32_t... INDEX>
-		static void param(std::string& aparam, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
+		template <typename ...TARGS, std::size_t... INDEX>
+		static void param(std::string& aparam, std::index_sequence<INDEX...>, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
 		{
 			(param(aparam, akeys[INDEX], aargs), ...);
 		}
 
 		template <typename ...TARGS>
-		static void param(std::string& aparam, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
+		static void param(std::string& aparam, const std::array<const char*, sizeof...(TARGS)>& akeys, const TARGS&... aargs)
 		{
 			param(aparam, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, aargs...);
 		}
