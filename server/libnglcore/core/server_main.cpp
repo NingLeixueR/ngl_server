@@ -907,16 +907,33 @@ namespace
 	void log_startup_failure(startup_error code, const startup_context& ctx, const char* reason)
 	{
 		ngl::log_error()->print(
-			"[startup][code:{}] reason:{} node:{} type:{} area:{} tcount:{} config:{} port:{}",
-			static_cast<int>(code),
-			reason,
-			ctx.node_name,
-			ctx.node_type,
-			ctx.area,
-			ctx.tcount,
-			ctx.config_file,
-			ctx.tcp_port
+			"[startup][code:{}] reason:{} node:{} type:{} area:{} tcount:{} config:{} port:{}"
+			, static_cast<int>(code)
+			, reason
+			, ctx.node_name
+			, ctx.node_type
+			, ctx.area
+			, ctx.tcount
+			, ctx.config_file
+			, ctx.tcp_port
 		);
+	}
+
+	bool parse_startup_int(const char* text, int32_t& value)
+	{
+		if (text == nullptr)
+		{
+			return false;
+		}
+		try
+		{
+			value = ngl::tools::lexical_cast<int32_t>(text);
+			return true;
+		}
+		catch (...)
+		{
+			return false;
+		}
 	}
 }
 
@@ -930,8 +947,11 @@ int ngl_main(int argc, char** argv)
 	}
 
 	ctx.node_name = argv[1];
-	ctx.area = ngl::tools::lexical_cast<int32_t>(argv[2]);
-	ctx.tcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
+	if (!parse_startup_int(argv[2], ctx.area) || !parse_startup_int(argv[3], ctx.tcount))
+	{
+		log_startup_failure(startup_error::invalid_args, ctx, "area/tcount parse failed");
+		return static_cast<int>(startup_error::invalid_args);
+	}
 
 	nconfig.init();
 

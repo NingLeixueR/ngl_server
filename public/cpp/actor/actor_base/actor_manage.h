@@ -22,6 +22,7 @@
 #include "tools/threadtools.h"
 
 #include <deque>
+#include <atomic>
 #include <map>
 #include <set>
 
@@ -51,7 +52,7 @@ namespace ngl
 		ngl::sem					m_sem;
 
 		actor_manage();
-		~actor_manage() = default;
+		~actor_manage();
 
 		// # nosafe_开头的函数代表"内部操作未加锁"，不允许类外调用
 		// # 根据guid获取actor实例
@@ -64,7 +65,7 @@ namespace ngl
 		void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram);
 
 		// # actor_manage 调度actor实例处理任务的线程实例
-		void run();
+		void run(std::stop_token astop);
 	public:
 		static actor_manage& instance()
 		{

@@ -98,6 +98,10 @@ namespace ngl
 		{
 			log_error()->print("close sessionid:{} server[{}:{}]", asession, lpair.second, lpair.first);
 		}
+		if (m_server != nullptr)
+		{
+			m_server->close_net(asession);
+		}
 
 		auto pro = std::make_shared<np_actor_session_close>();
 		pro->m_sessionid = asession;
@@ -109,11 +113,19 @@ namespace ngl
 
 	void ntcp::close_net(i32_sessionid asession)
 	{
+		if (m_server == nullptr)
+		{
+			return;
+		}
 		m_server->close_net(asession);
 	}
 
 	void ntcp::set_close(int asession, const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun)
 	{
+		if (m_server == nullptr)
+		{
+			return;
+		}
 		m_server->set_close(asession, [this, aip, aport, afun, asession]()
 			{
 				connect(aip, aport, afun);

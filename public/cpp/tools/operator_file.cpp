@@ -48,11 +48,30 @@ namespace ngl
 
 	int readfile::get_maxline()
 	{
+		if (!m_file.is_open())
+		{
+			return 0;
+		}
+
+		const std::streampos lcurrent = m_file.tellg();
+		m_file.clear();
+		m_file.seekg(0, std::ios::beg);
+
 		std::string line;
 		int32_t lline = 0;
 		while (std::getline(m_file, line))
 		{
 			++lline;
+		}
+
+		m_file.clear();
+		if (lcurrent != std::streampos(-1))
+		{
+			m_file.seekg(lcurrent);
+		}
+		else
+		{
+			m_file.seekg(0, std::ios::beg);
 		}
 		return lline;
 	}
@@ -124,22 +143,24 @@ namespace ngl
 	{
 		if (m_file.is_open())
 		{
-			int lsizecurrent = (int)m_file.tellg();
-			if (lsizecurrent == -1)
+			m_file.clear();
+			const std::streamoff lsizecurrent = m_file.tellg();
+			if (lsizecurrent < 0)
 			{
 				return false;
 			}
 			m_file.seekg(0, std::ios::end);
-			int lsize = (int)m_file.tellg();
+			const std::streamoff lsize = m_file.tellg();
 			m_file.seekg(lsizecurrent, std::ios::beg);
 
-			if (lsize == lsizecurrent)
+			if (lsize <= lsizecurrent)
 			{
 				return false;
 			}	
-			int lstrlen = (int)astr.size();
-			astr.resize(lstrlen + (lsize - lsizecurrent));
-			m_file.read(&astr.data()[lstrlen], lsize - lsizecurrent);
+			const size_t lstrlen = astr.size();
+			const size_t lappend = static_cast<size_t>(lsize - lsizecurrent);
+			astr.resize(lstrlen + lappend);
+			m_file.read(&astr.data()[lstrlen], static_cast<std::streamsize>(lappend));
 			return true;
 		}
 		return false;
@@ -149,16 +170,22 @@ namespace ngl
 	{
 		if (m_file.is_open())
 		{
+			m_file.clear();
 			m_file.seekg(0, std::ios::end);
-			size_t lsize = m_file.tellg();
+			const std::streamoff lsize = m_file.tellg();
+			if (lsize < 0)
+			{
+				aneirong.clear();
+				return;
+			}
 			m_file.seekg(0, std::ios::beg);
 			if (lsize == 0) 
 			{
 				aneirong.clear();
 				return;
 			}
-			aneirong.resize(lsize);
-			m_file.read(aneirong.data(), lsize);
+			aneirong.resize(static_cast<size_t>(lsize));
+			m_file.read(aneirong.data(), static_cast<std::streamsize>(lsize));
 		}
 	}
 

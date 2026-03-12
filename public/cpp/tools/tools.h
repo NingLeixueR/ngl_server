@@ -15,19 +15,27 @@
 
 #include <unordered_map>
 #include <type_traits>
+#include <string_view>
 #include <functional>
-#include <algorithm>
 #include <stdexcept>
+#include <algorithm>
 #include <iostream>
+#include <utility>
+#include <sstream>
+#include <cstdint>
 #include <cstdlib>
 #include <cstring>
-#include <sstream>
-#include <string>
-#include <cctype>
+#include <compare>
 #include <format>
 #include <string>
+#include <cctype>
+#include <atomic>
 #include <regex>
+#include <tuple>
+#include <array>
 #include <map>
+#include <set>
+#include <bit>
 
 #include <google/protobuf/util/json_util.h>
 
@@ -504,10 +512,13 @@ namespace ngl
 			{
 				return false;
 			}
+			std::vector<T> lparsed;
+			lparsed.reserve(lvec.size());
 			for (auto& item : lvec)
 			{
-				avec.push_back(tools::lexical_cast<T>(item.c_str()));
+				lparsed.push_back(tools::lexical_cast<T>(item.c_str()));
 			}
+			avec = std::move(lparsed);
 			return true;
 		}
 
@@ -519,17 +530,19 @@ namespace ngl
 			{
 				return false;
 			}
+			std::set<T> lparsed;
 			for (auto& item : lvec)
 			{
-				aset.insert(tools::lexical_cast<T>(item.c_str()));
+				lparsed.insert(tools::lexical_cast<T>(item.c_str()));
 			}
+			aset = std::move(lparsed);
 			return true;
 		}
 
 		static bool splite(const char* abuff, const char* afg, std::vector<std::string>& avec);
 
 		template <typename T>
-		static bool splite(int32_t aindex, std::vector<std::string>& avec, T& adata)
+		static bool splite(int32_t aindex, const std::vector<std::string>& avec, T& adata)
 		{
 			if (aindex >= avec.size())
 			{
@@ -546,12 +559,29 @@ namespace ngl
 			return true;
 		}
 
+		template <std::size_t... INDEX, typename TTUPLE>
+		static bool splite_tuple(std::index_sequence<INDEX...>, const std::vector<std::string>& avec, TTUPLE& atuple)
+		{
+			return (splite<std::tuple_element_t<INDEX, TTUPLE>>(static_cast<int32_t>(INDEX), avec, std::get<INDEX>(atuple)) && ...);
+		}
+
 		template <std::size_t... INDEX, typename ...ARGS>
 		static bool splite(std::index_sequence<INDEX...>, const char* abuff, const char* afg, ARGS&... args)
 		{
 			std::vector<std::string> lvec;
-			splite(abuff, afg, lvec);
-			return (splite<ARGS>(INDEX, lvec, args) && ...);
+			if (splite(abuff, afg, lvec) == false)
+			{
+				return false;
+			}
+
+			std::tuple<std::decay_t<ARGS>...> lparsed;
+			if (splite_tuple(std::index_sequence<INDEX...>{}, lvec, lparsed) == false)
+			{
+				return false;
+			}
+
+			((args = std::move(std::get<INDEX>(lparsed))), ...);
+			return true;
 		}
 
 		template <typename ...ARGS>
@@ -572,7 +602,7 @@ namespace ngl
 			{
 				return false;
 			}
-			std::vector<std::pair<std::string, std::string>> lmailvec;
+			std::vector<std::pair<TFIRST, TSECOND>> lmailvec;
 			for (auto& item : lvec)
 			{
 				std::pair<TFIRST, TSECOND> lpair;
@@ -582,6 +612,7 @@ namespace ngl
 				}
 				lmailvec.push_back(lpair);
 			}
+			avec = std::move(lmailvec);
 			return true;
 		}
 
@@ -595,6 +626,7 @@ namespace ngl
 			{
 				return false;
 			}
+			std::map<TFIRST, TSECOND> lparsed;
 			for (auto& item : lvec)
 			{
 				std::pair<TFIRST, TSECOND> lpair;
@@ -602,8 +634,9 @@ namespace ngl
 				{
 					return false;
 				}
-				amap.insert(lpair);
+				lparsed.insert(lpair);
 			}
+			amap.insert(lparsed.begin(), lparsed.end());
 			return true;
 		}
 #pragma endregion
@@ -842,7 +875,9 @@ namespace ngl
 		static void split_str(char* apbuff, int32_t abuffcount, std::array<const char*, N>& aarrays)
 		{
 			std::vector<const char*> lvec = split_str(apbuff, abuffcount);
-			std::copy(lvec.begin(), lvec.end(), aarrays.begin());
+			aarrays.fill(nullptr);
+			const auto lcopy_count = std::min<std::size_t>(lvec.size(), aarrays.size());
+			std::copy_n(lvec.begin(), lcopy_count, aarrays.begin());
 			return;
 		}
 		// 检查cjson类型

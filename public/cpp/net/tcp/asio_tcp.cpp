@@ -311,7 +311,6 @@ namespace ngl
 		}
 
 		// 通知逻辑层session断开连接
-		log_error()->print("asio_tcp close sessionid [{}]", sessionid);
 		std::shared_ptr<service_tcp> lpservice = nullptr;
 		std::function<void()> lclosefun = nullptr;
 		{
@@ -326,24 +325,27 @@ namespace ngl
 
 		if (lpservice != nullptr)
 		{
-			m_closefun(sessionid);
+			log_error()->print("asio_tcp close sessionid [{}]", sessionid);
+			close_socket(lpservice->m_socket);
+			if (m_closefun != nullptr)
+			{
+				m_closefun(sessionid);
+			}
 		}
 
 		if (lclosefun != nullptr)
 		{
 			lclosefun();
 		}
-
-		if (lpservice != nullptr)
-		{
-			m_fun(lpservice.get(), nullptr, 0);
-		}
 	}
 
 	void asio_tcp::close(service_tcp* atcp)
 	{
+		if (atcp == nullptr)
+		{
+			return;
+		}
 		close(atcp->m_sessionid);
-		close_socket(atcp->m_socket);
 	}
 
 	void  asio_tcp::close_socket(asio::ip::tcp::socket& socket)
@@ -484,7 +486,10 @@ namespace ngl
 				{
 					//关闭连接
 					close(aservice.get());
-					log_error()->print("asio_tcp::handle_read[{}]", error.message().c_str());
+					if (error != asio::error::operation_aborted)
+					{
+						log_error()->print("asio_tcp::handle_read[{}]", error.message().c_str());
+					}
 				}
 			}
 		);

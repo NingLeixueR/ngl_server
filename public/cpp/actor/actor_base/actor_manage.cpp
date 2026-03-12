@@ -17,11 +17,23 @@
 #include "actor/actor_base/actor_db.h"
 #include "tools/tools.h"
 
+#include <iostream>
+#include <format>
+
 namespace ngl
 {
 	actor_manage::actor_manage():
-		m_thread(&actor_manage::run, this)
+		m_thread([this](std::stop_token astop)
+			{
+				run(astop);
+			})
 	{
+	}
+
+	actor_manage::~actor_manage()
+	{
+		m_thread.request_stop();
+		m_sem.post();
 	}
 
 	void actor_manage::init(i32_threadsize apthreadnum)
@@ -50,7 +62,7 @@ namespace ngl
 		actor_stat lstat = lpactor->activity_stat();
 		if (lstat == actor_stat_close || lstat == actor_stat_init)
 		{
-			std::cout << std::format("actor_mange push task actor:{} stat:{} fail", lpactor->guid(), (int32_t)lstat) << std::endl;
+			std::cout << std::format("actor_manage push task fail actor:{} stat:{}", lpactor->guid(), static_cast<int32_t>(lstat)) << std::endl;
 			return;
 		}
 		lpactor->push(apram);
@@ -68,11 +80,14 @@ namespace ngl
 	bool actor_manage::add_actor(const ptractor& apactor, const std::function<void()>& afun)
 	{
 		const nguid& guid = apactor->guid();
+		const bool lneedsync = apactor->type() != ACTOR_CLIENT && apactor->type() != ACTOR_SERVER;
+		const nguid lrouteactor = nodetypebyguid();
+		bool lhasrouteactor = false;
 		{
 			nlock(m_mutex);
 			if (m_actorbyid.contains(guid))
 			{
-				std::cout << std::format("actor_manage add_actor m_actorbyid.contains(guid:{}) fail", guid) << std::endl;
+				std::cout << std::format("actor_manage add_actor duplicate guid:{}", guid) << std::endl;
 				return false;
 			}
 			m_actorbyid[guid] = apactor;
@@ -82,11 +97,14 @@ namespace ngl
 			{
 				m_actorbroadcast[guid] = apactor;
 			}
+			lhasrouteactor = lneedsync && m_actorbyid.contains(lrouteactor);
 		}
-		if (apactor->type() != ACTOR_CLIENT && apactor->type() != ACTOR_SERVER)
+		if (lneedsync)
 		{
 			// 新增的actor 
-			auto pro = std::make_shared<np_actornode_update_mass>(
+			if (lhasrouteactor)
+			{
+				auto pro = std::make_shared<np_actornode_update_mass>(
 				np_actornode_update_mass
 				{
 					.m_mass = np_actornode_update
@@ -97,7 +115,12 @@ namespace ngl
 					.m_fun = afun
 				}
 			);
-			push_task_id<np_actornode_update_mass, false>(nodetypebyguid(), pro);
+				push_task_id<np_actornode_update_mass, false>(lrouteactor, pro);
+			}
+			else
+			{
+				std::cout << std::format("actor_manage add_actor skip route sync guid:{} route_actor:{}", guid, lrouteactor) << std::endl;
+			}
 		}
 		else
 		{
@@ -118,8 +141,16 @@ namespace ngl
 
 	void actor_manage::erase_actor(const nguid& aguid, const std::function<void()>& afun /*= nullptr*/)
 	{
+		const nguid lrouteactor = nodetypebyguid();
+		bool lhasrouteactor = false;
+		{
+			nlock(m_mutex);
+			lhasrouteactor = m_actorbyid.contains(lrouteactor);
+		}
 		// 通知actor_client已经删除actor 
-		auto pro = std::make_shared<np_actornode_update_mass>(
+		if (lhasrouteactor)
+		{
+			auto pro = std::make_shared<np_actornode_update_mass>(
 			np_actornode_update_mass
 			{
 				.m_mass = np_actornode_update
@@ -129,7 +160,8 @@ namespace ngl
 				}
 			}
 		);
-		push_task_id<np_actornode_update_mass, false>(nodetypebyguid(), pro);
+			push_task_id<np_actornode_update_mass, false>(lrouteactor, pro);
+		}
 
 		bool isrunfun = false;
 		ptractor lpactor = nullptr;
@@ -138,14 +170,23 @@ namespace ngl
 			const ptractor* lpactorptr = tools::findmap(m_actorbyid, aguid);
 			if (lpactorptr == nullptr)
 			{
-				std::cout << std::format("actor_manage erase_actor_byid m_actorbyid.find(guid:{}) fail", aguid) << std::endl;
+				std::cout << std::format("actor_manage erase_actor missing guid:{}", aguid) << std::endl;
 				return;
 			}
 			lpactor = *lpactorptr;
 
 			// # 从actor_manage中移除
 			m_actorbyid.erase(aguid);
-			m_actorbytype[aguid.type()].erase(aguid);
+			auto type_it = m_actorbytype.find(aguid.type());
+			if (type_it != m_actorbytype.end())
+			{
+				type_it->second.erase(aguid);
+				if (type_it->second.empty())
+				{
+					m_actorbytype.erase(type_it);
+					m_actortype.erase(aguid.type());
+				}
+			}
 			m_actorbroadcast.erase(aguid);
 
 			if (lpactor->activity_stat() == actor_stat_list)
@@ -285,7 +326,7 @@ namespace ngl
 		ptractor lpactor = nosafe_get_actorbyid(aguid, apram);
 		if (lpactor == nullptr || lpactor->activity_stat() == actor_stat_close)
 		{
-			std::cout << "push_task_id fail !!!" << std::endl;
+			std::cout << std::format("actor_manage push_task_id fail actor:{}", aguid) << std::endl;
 			return;
 		}
 		nosafe_push_task_id(lpactor, apram);
@@ -324,11 +365,15 @@ namespace ngl
 	{
 		nlock(m_mutex);
 		// 1.先发给本机上的atype
-		for (auto& [_guid, _actor] : m_actorbytype[atype])
+		auto type_it = m_actorbytype.find(atype);
+		if (type_it != m_actorbytype.end())
 		{
-			if (_actor->activity_stat() != actor_stat_close)
+			for (auto& [_guid, _actor] : type_it->second)
 			{
-				nosafe_push_task_id(_actor, apram);
+				if (_actor->activity_stat() != actor_stat_close)
+				{
+					nosafe_push_task_id(_actor, apram);
+				}
 			}
 		}
 		if (apram.m_issend)
@@ -399,6 +444,10 @@ namespace ngl
 		nlock(m_mutex);
 		for (auto& [_type, _map] : m_actorbytype)
 		{
+			if (_map.empty())
+			{
+				continue;
+			}
 			msg_actor ltemp;
 			ltemp.m_actor_name = em<ENUM_ACTOR>::name(_type);
 			for (auto& [_guid, _actor] : _map)
@@ -435,20 +484,24 @@ namespace ngl
 		Catch
 	}
 
-	void actor_manage::run()
+	void actor_manage::run(std::stop_token astop)
 	{
 		ptrnthread lpthread = nullptr;
 		ptractor lpactor = nullptr;
 
-		while (true)
+		while (!astop.stop_requested())
 		{
 			m_sem.wait();
+			if (astop.stop_requested())
+			{
+				break;
+			}
 			{
 				for (;;)
 				{
 					{
 						nlock(m_mutex);
-						if (m_actorlist.empty() || m_workthreads.empty() || m_suspend)
+						if (astop.stop_requested() || m_actorlist.empty() || m_workthreads.empty() || m_suspend)
 						{
 							break;
 						}

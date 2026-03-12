@@ -17,9 +17,10 @@
 #include "actor/actor_base/nguid.h"
 #include "tools/curl/ncurl.h"
 #include "tools/localtime.h"
-#include "tools/tools.h"
 #include "utf8cpp/utf8.h"
+#include "tools/tools.h"
 
+#include <system_error>
 #include <filesystem>
 #include <iostream>
 #include <cassert>
@@ -157,7 +158,7 @@ namespace ngl
 		{
 			return avalues.m_value;
 		}
-		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues);
+		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
 		avalues.m_value = (static_cast<uint64_t>(value_p[0]) << 56)
 			| (static_cast<int64_t>(value_p[1]) << 48)
 			| (static_cast<int64_t>(value_p[2]) << 40)
@@ -175,7 +176,7 @@ namespace ngl
 		{
 			return avalues.m_value;
 		}
-		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues);
+		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
 		avalues.m_value = (static_cast<uint64_t>(value_p[0]) << 56)
 			| (static_cast<uint64_t>(value_p[1]) << 48)
 			| (static_cast<uint64_t>(value_p[2]) << 40)
@@ -339,9 +340,14 @@ namespace ngl
 
     std::string tools::base64_encode(const char* data, std::size_t len)
     {
+        if (data == nullptr || len == 0)
+        {
+            return {};
+        }
+
         std::string dest;
         dest.resize(base64_impl::encoded_size(len));
-        dest.resize(base64_impl::encode(&dest[0], data, len));
+        dest.resize(base64_impl::encode(dest.data(), data, len));
         return dest;
     }
 
@@ -352,9 +358,14 @@ namespace ngl
 
     std::string tools::base64_decode(char const* data, std::size_t len)
     {
+        if (data == nullptr || len == 0)
+        {
+            return {};
+        }
+
         std::string dest;
         dest.resize(base64_impl::decoded_size(len));
-        auto const result = base64_impl::decode(&dest[0], data, len);
+        auto const result = base64_impl::decode(dest.data(), data, len);
         dest.resize(result.first);
         return dest;
     }
@@ -375,7 +386,7 @@ namespace ngl
                 return false;
             }
 
-            sprintf(buf,
+            std::snprintf(buf, sizeof(buf),
                 "%08X-%04X-%04x-%02X%02X-%02X%02X%02X%02X%02X%02X",
                 guid.Data1, guid.Data2, guid.Data3,
                 guid.Data4[0], guid.Data4[1], guid.Data4[2],
@@ -400,7 +411,10 @@ namespace ngl
 	bool tools::wasscii2asscii(const std::wstring& awstr, std::string& astr)
 	{
 		if (awstr.empty())
+		{
+			astr.clear();
 			return true;
+		}
 
 		std::locale sys_locale("");
 
@@ -408,12 +422,11 @@ namespace ngl
 		const wchar_t* data_from_end = awstr.c_str() + awstr.size();
 		const wchar_t* data_from_next = 0;
 
-		int wchar_size = 4;
-		char* data_to = new char[(awstr.size() + 1) * wchar_size];
-		char* data_to_end = data_to + (awstr.size() + 1) * wchar_size;
+		const std::size_t wchar_size = 4;
+		std::vector<char> buffer((awstr.size() + 1) * wchar_size, '\0');
+		char* data_to = buffer.data();
+		char* data_to_end = data_to + buffer.size();
 		char* data_to_next = 0;
-
-		memset(data_to, 0, (awstr.size() + 1) * wchar_size);
 
 		typedef std::codecvt<wchar_t, char, mbstate_t> convert_facet;
 		mbstate_t out_state;
@@ -423,15 +436,10 @@ namespace ngl
 		if (result == convert_facet::ok)
 		{
 			astr = data_to;
-			delete[] data_to;
 			return true;
 		}
-		else
-		{
-			delete[] data_to;
-			astr.clear();
-			return false;
-		}
+		astr.clear();
+		return false;
 	}
 
 	bool tools::asscii2wasscii(const std::string& astr, std::wstring& awstr)
@@ -447,11 +455,10 @@ namespace ngl
 		const char* data_from_end = astr.c_str() + astr.size();
 		const char* data_from_next = 0;
 
-		wchar_t* data_to = new wchar_t[astr.size() + 1];
-		wchar_t* data_to_end = data_to + astr.size() + 1;
+		std::vector<wchar_t> buffer(astr.size() + 1, L'\0');
+		wchar_t* data_to = buffer.data();
+		wchar_t* data_to_end = data_to + buffer.size();
 		wchar_t* data_to_next = 0;
-
-		wmemset(data_to, 0, astr.size() + 1);
 
 		typedef std::codecvt<wchar_t, char, mbstate_t> convert_facet;
 		mbstate_t in_state;
@@ -461,15 +468,10 @@ namespace ngl
 		if (result == convert_facet::ok)
 		{
 			awstr = data_to;
-			delete[] data_to;
 			return true;
 		}
-		else
-		{
-			delete[] data_to;
-			awstr.clear();
-			return false;
-		}
+		awstr.clear();
+		return false;
 	}
 
 	bool tools::wasscii2utf8(const std::wstring& awstr, std::string& astr)
@@ -633,29 +635,19 @@ namespace ngl
 
 	bool tools::splite(const char* abuff, const char* afg, std::vector<std::string>& avec)
 	{
-		if (abuff == nullptr || afg == nullptr)
+		if (abuff == nullptr || afg == nullptr || *afg == '\0')
 		{
 			return false;
 		}
+		const size_t lfglen = std::strlen(afg);
 		std::string ltemp;
 		for (const char* lp1 = abuff; *lp1 != '\0';)
 		{
-			int lpos = 0;
-			bool lfg = true;
-			const char* lp2 = lp1;
-			for (; lp2[lpos] != '\0' && afg[lpos] != '\0'; ++lpos)
-			{
-				if (lp2[lpos] != afg[lpos])
-				{
-					lfg = false;
-					break;
-				}
-			}
-			if (lfg)
+			if (std::strncmp(lp1, afg, lfglen) == 0)
 			{
 				avec.push_back(ltemp);
-				ltemp = "";
-				lp1 += lpos;
+				ltemp.clear();
+				lp1 += lfglen;
 			}
 			else
 			{
@@ -720,7 +712,9 @@ namespace ngl
 				result += ' ';
 				break;
 			case '%':
-				if (isxdigit(szToDecode[i + 1]) && isxdigit(szToDecode[i + 2]))
+				if (i + 2 < szToDecode.length()
+					&& std::isxdigit(static_cast<unsigned char>(szToDecode[i + 1])) != 0
+					&& std::isxdigit(static_cast<unsigned char>(szToDecode[i + 2])) != 0)
 				{
 					std::string hexStr = szToDecode.substr(i + 1, 2);
 					hex = strtol(hexStr.c_str(), 0, 16);
@@ -1740,11 +1734,15 @@ namespace ngl
 
 	std::vector<std::string_view> tools::get_line(const char* apbuff, size_t abuffsize)
 	{
-		size_t lreadpos = 0;
 		std::vector<std::string_view> lvec;
+		if (apbuff == nullptr || abuffsize == 0)
+		{
+			return lvec;
+		}
+		size_t lreadpos = 0;
 		while (lreadpos < abuffsize)
 		{
-			std::string_view strref(apbuff + lreadpos, abuffsize);
+			std::string_view strref(apbuff + lreadpos, abuffsize - lreadpos);
 			size_t pos = strref.find("\r\n");
 			if (pos != std::string_view::npos)
 			{
@@ -1762,7 +1760,8 @@ namespace ngl
 
 	bool tools::isnumber(const std::string& anumber)
 	{
-		return !anumber.empty() && std::all_of(anumber.begin(), anumber.end(), ::isdigit);
+		return !anumber.empty() && std::all_of(anumber.begin(), anumber.end(),
+			[](unsigned char ch) { return std::isdigit(ch) != 0; });
 	}
 
 	const std::string& tools::server_name()
@@ -1826,31 +1825,42 @@ namespace ngl
 
 	void tools::transform_tolower(std::string& adata)
 	{
-		std::ranges::transform(adata, adata.begin(), tolower);
+		std::ranges::transform(adata, adata.begin(), [](unsigned char ch) {
+			return static_cast<char>(std::tolower(ch));
+		});
 	}
 
 	void tools::transform_toupper(std::string& adata)
 	{
-		std::ranges::transform(adata, adata.begin(), toupper);
+		std::ranges::transform(adata, adata.begin(), [](unsigned char ch) {
+			return static_cast<char>(std::toupper(ch));
+		});
 	}
 
 	bool tools::directories_exists(const std::string& apath)
 	{
-		return std::filesystem::exists(apath);
+		std::error_code ec;
+		return std::filesystem::is_directory(apath, ec);
 	}
 
 	bool tools::file_exists(const std::string& apath)
 	{
-		return std::filesystem::exists(apath) && std::filesystem::is_regular_file(apath);
+		std::error_code ec;
+		return std::filesystem::is_regular_file(apath, ec);
 	}
 
 	bool tools::create_dir(const std::string& apath)
 	{
-		if (!std::filesystem::exists(apath))
+		std::error_code ec;
+		if (std::filesystem::exists(apath, ec))
 		{
-			return std::filesystem::create_directories(apath);
+			return std::filesystem::is_directory(apath, ec);
 		}
-		return true;
+		if (ec)
+		{
+			return false;
+		}
+		return std::filesystem::create_directories(apath, ec) && !ec;
 	}
 
 	bool tools::file_remove(const std::string& afilename)
@@ -1860,24 +1870,26 @@ namespace ngl
 
 	void tools::dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration/* = false*/)
 	{
-		for (auto& entry : std::filesystem::directory_iterator(apath))
+		std::error_code ec;
+		if (!std::filesystem::is_directory(apath, ec))
 		{
-			if (entry.is_regular_file())
+			return;
+		}
+
+		for (std::filesystem::directory_iterator it(apath, std::filesystem::directory_options::skip_permission_denied, ec), end;
+			!ec && it != end; it.increment(ec))
+		{
+			const std::filesystem::directory_entry& entry = *it;
+			if (entry.is_regular_file(ec))
 			{
 				afilevec.push_back(entry.path().string());
-				std::cout << "File: " << entry.path() << std::endl;
 			}
-			else if (entry.is_directory())
+			else if (!ec && entry.is_directory(ec))
 			{
-				std::cout << "Directory: " << entry.path() << std::endl;
 				if (aiteration)
 				{
-					dir(entry.path().string(), afilevec);
+					dir(entry.path().string(), afilevec, true);
 				}
-			}
-			else
-			{
-				std::cout << "Other: " << entry.path() << std::endl;
 			}
 		}
 	}
@@ -1902,7 +1914,8 @@ namespace ngl
 				int32_t lnow = (int32_t)localtime::gettime();
 				{
 					lock_write(g_maillock);
-					if (g_mailmap[acontent] - lnow > g_mailinterval)
+					auto it = g_mailmap.find(acontent);
+					if (it != g_mailmap.end() && (lnow - it->second) < g_mailinterval)
 					{
 						return;
 					}
@@ -1925,19 +1938,29 @@ namespace ngl
 
 	int64_t tools::nguidstr2int64(const char* anguidstr)
 	{
+		if (anguidstr == nullptr)
+		{
+			return ngl::nguid::make();
+		}
 		ngl::ENUM_ACTOR lactortype;
 		std::string lactortypestr;
 		ngl::i16_area larea = nguid::none_area();
 		ngl::i32_actordataid ldataid = nguid::none_actordataid();
-		ngl::tools::splite(anguidstr, "#", lactortypestr, larea, ldataid);
+		if (!ngl::tools::splite(anguidstr, "#", lactortypestr, larea, ldataid))
+		{
+			return ngl::nguid::make();
+		}
 		lactortype = ngl::em<ngl::ENUM_ACTOR>::get_enum(lactortypestr.c_str());
-		std::cout << "tools nguid:" << lactortypestr << "#" << (int32_t)lactortype << ":" << larea << ":" << ldataid << std::endl;
 		return ngl::nguid::make(lactortype, larea, ldataid);
 	}
 
 	std::vector<const char*> tools::split_str(char* apbuff, int32_t abuffcount)
 	{
 		std::vector<const char*> lpbuffs;
+		if (apbuff == nullptr || abuffcount <= 0)
+		{
+			return lpbuffs;
+		}
 		int j = 0;
 		for (int32_t i = 0; i < abuffcount; )
 		{

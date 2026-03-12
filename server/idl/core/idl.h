@@ -1,6 +1,9 @@
 #ifndef _IDL_H_
 #define _IDL_H_
 
+#include "tools/operator_file.h"
+#include "tools/tools.h"
+
 #include <algorithm>
 #include <iostream>
 #include <fstream> 
@@ -10,9 +13,11 @@
 #include <set>
 #include <map>
 
-#include "tools/operator_file.h"
-#include "tools/tools.h"
-using namespace std;
+using std::stringstream;
+using std::vector;
+using std::string;
+using std::map;
+using std::set;
 
 struct Data
 {

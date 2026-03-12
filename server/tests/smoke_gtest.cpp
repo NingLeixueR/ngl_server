@@ -58,6 +58,30 @@ TEST(A02Smoke, StartupInvalidNodeType)
 	EXPECT_EQ(rc, static_cast<int>(startup_error::invalid_node_type));
 }
 
+TEST(A02Smoke, StartupRejectsNonNumericArea)
+{
+	char program_name[] = "ngl_test";
+	char db_node[] = "db";
+	char area[] = "area";
+	char tcount[] = "1";
+	char* argv[] = { program_name, db_node, area, tcount };
+
+	const int rc = ngl_main(4, argv);
+	EXPECT_EQ(rc, static_cast<int>(startup_error::invalid_args));
+}
+
+TEST(A02Smoke, StartupRejectsNonNumericThreadCount)
+{
+	char program_name[] = "ngl_test";
+	char db_node[] = "db";
+	char area[] = "1";
+	char tcount[] = "thread";
+	char* argv[] = { program_name, db_node, area, tcount };
+
+	const int rc = ngl_main(4, argv);
+	EXPECT_EQ(rc, static_cast<int>(startup_error::invalid_args));
+}
+
 TEST(A03Smoke, StartupReturnsConfigNotFoundWhenConfigRootMissing)
 {
 	const std::filesystem::path temp_dir = make_temp_test_dir("config_missing");

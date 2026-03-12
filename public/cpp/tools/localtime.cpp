@@ -265,7 +265,12 @@ namespace ngl
 		std::tm ltime;
 		gettm(utc, ltime);
 
-		if (mothday(ltime.tm_year, ltime.tm_mday, amday) == false)
+		if (!check_hour(hour) || !check_minute(minute) || !check_sec(sec))
+		{
+			return std::make_pair(false, -1);
+		}
+
+		if (mothday(1900 + ltime.tm_year, ltime.tm_mon + 1, amday) == false)
 		{
 			return std::make_pair(false, -1);
 		}
