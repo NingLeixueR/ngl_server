@@ -464,7 +464,10 @@ namespace ngl
 				adata = std::move(lparsed);
 				return true;
 			}
-			return false;
+			else
+			{
+				return false;
+			}
 		}
 	};
 
@@ -547,6 +550,7 @@ namespace ngl
 					adata = (T)lvalue;
 					return true;
 				}
+				return false;
 			}
 		}
 		else
@@ -559,6 +563,7 @@ namespace ngl
 					adata = (T)lvalue;
 					return true;
 				}
+				return false;
 			}
 			else
 			{
@@ -574,7 +579,6 @@ namespace ngl
 				return adata.xml_pop(lchild);
 			}
 		}		
-		return false;
 	}
 }//namespace ngl
 

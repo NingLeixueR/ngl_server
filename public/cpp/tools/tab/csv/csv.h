@@ -396,12 +396,12 @@ namespace ngl
 				adata = (T)lvalue;
 				return true;
 			}
+			return false;
 		}
 		else
 		{
 			return adata.rcsv(apair);
 		}
-		return false;
 	}
 
 	template <typename TNUMBER>
