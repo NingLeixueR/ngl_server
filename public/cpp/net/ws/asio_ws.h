@@ -120,6 +120,7 @@ namespace ngl
 		void accept_handle(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error);
 		void accept();
 		void start(const std::shared_ptr<service_ws>& aservice);
+		void close_session(i32_sessionid sessionid, bool agraceful, bool anotifyclose, bool anotifycallback);
 		void close_socket(basio_iptcpsocket& asocket);
 	public:
 		i16_port port() const;

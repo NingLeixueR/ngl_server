@@ -53,8 +53,10 @@ namespace ngl
 	void actor_manage::get_type(std::vector<i16_actortype>& aactortype)
 	{
 		lock_read(m_mutex);
-		aactortype.reserve(m_actortype.size());
-		std::copy(m_actortype.begin(), m_actortype.end(), std::back_inserter(aactortype));
+		std::vector<i16_actortype> ltypes;
+		ltypes.reserve(m_actortype.size());
+		std::copy(m_actortype.begin(), m_actortype.end(), std::back_inserter(ltypes));
+		aactortype.swap(ltypes);
 	}
 
 	void actor_manage::nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram)
@@ -442,6 +444,8 @@ namespace ngl
 	void actor_manage::get_actor_stat(msg_actor_stat& adata)
 	{
 		nlock(m_mutex);
+		std::vector<msg_actor> lactors;
+		lactors.reserve(m_actorbytype.size());
 		for (auto& [_type, _map] : m_actorbytype)
 		{
 			if (_map.empty())
@@ -454,8 +458,9 @@ namespace ngl
 			{
 				ltemp.m_actor[nguid::area(_guid)].push_back(nguid::actordataid(_guid));
 			}
-			adata.m_vec.push_back(ltemp);
+			lactors.push_back(std::move(ltemp));
 		}
+		adata.m_vec = std::move(lactors);
 	}
 
 	nguid actor_manage::nodetypebyguid()

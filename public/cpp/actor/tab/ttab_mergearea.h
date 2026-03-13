@@ -36,6 +36,8 @@ namespace ngl
 		void reload()final
 		{
 			std::cout << "[ttab_mergearea] reload" << std::endl;
+			m_merge1.clear();
+			m_merge2.clear();
 			// 1,2,3,4,5,6,7,8,9,10
 			// 1->2, 3->4, 5->6, 7->8, 9->10
 			// 2->4, 6->8

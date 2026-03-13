@@ -94,9 +94,15 @@ struct std::formatter<std::vector<T>>
 	{
 		auto out = ctx.out();
 		std::format_to(out, "vector[");
+		bool lfirst = true;
 		for (auto it = vec.begin(); it != vec.end(); ++it) 
 		{
-			std::format_to(out, "{},", *it);
+			if (!lfirst)
+			{
+				std::format_to(out, ",");
+			}
+			std::format_to(out, "{}", *it);
+			lfirst = false;
 		}
 		format_to(out, "]");
 		return out;
@@ -111,13 +117,19 @@ struct std::formatter<std::list<T>>
 		return ctx.begin();
 	}
 
-	auto format(const std::vector<T>& vec, std::format_context& ctx)const
+	auto format(const std::list<T>& vec, std::format_context& ctx)const
 	{
 		auto out = ctx.out();
 		std::format_to(out, "list[");
+		bool lfirst = true;
 		for (auto it = vec.begin(); it != vec.end(); ++it) 
 		{
-			std::format_to(out, "{},", *it);
+			if (!lfirst)
+			{
+				std::format_to(out, ",");
+			}
+			std::format_to(out, "{}", *it);
+			lfirst = false;
 		}
 		format_to(out, "]");
 		return out;
@@ -136,9 +148,15 @@ struct std::formatter<std::set<T>>
 	{
 		auto out = ctx.out();
 		std::format_to(out, "set[");
+		bool lfirst = true;
 		for (auto it = aset.begin(); it != aset.end(); ++it)
 		{
-			std::format_to(out, "{},", *it);
+			if (!lfirst)
+			{
+				std::format_to(out, ",");
+			}
+			std::format_to(out, "{}", *it);
+			lfirst = false;
 		}
 		format_to(out, "]");
 		return out;
@@ -157,9 +175,15 @@ struct std::formatter<std::map<TKEY, TVAL>>
 	{
 		auto out = ctx.out();
 		std::format_to(out, "map[");
+		bool lfirst = true;
 		for (auto it = vec.begin(); it != vec.end(); ++it) 
 		{
-			std::format_to(out, "({}:{}),", it->first, it->second);
+			if (!lfirst)
+			{
+				std::format_to(out, ",");
+			}
+			std::format_to(out, "({}:{})", it->first, it->second);
+			lfirst = false;
 		}
 		format_to(out, "]");
 		return out;

@@ -18,6 +18,7 @@
 #include "tools/tab/xml/xml.h"
 #include "tools/type.h"
 
+#include <array>
 #include <bit>
 #include <limits>
 
@@ -80,6 +81,10 @@ namespace ngl
 		std::map<i16_area, std::map<i32_serverid, tab_servers*>> m_areaserver;
 		std::map<i16_area, std::set<i16_area>> m_coressserver;// key:应该是小于0的跨服 value:跨服对应的区服
 
+		std::map<i16_area, std::map<std::string, tab_servers*, std::less<>>> m_areanameindex;
+		std::map<i16_area, std::map<NODE_TYPE, tab_servers*>> m_areatypeindex;
+		std::map<i32_serverid, std::array<const net_works*, static_cast<std::size_t>(ENET_COUNT)>> m_networkindex;
+
 		static bool normalize_area(int area, i16_area& aout)
 		{
 			if (area < static_cast<int>(std::numeric_limits<i16_area>::min()) ||
@@ -95,9 +100,26 @@ namespace ngl
 		{
 			std::cout << "[ttab_servers] reload" << std::endl;
 			m_areaserver.clear();
+			m_coressserver.clear();
+			m_areanameindex.clear();
+			m_areatypeindex.clear();
+			m_networkindex.clear();
 			foreach([&](tab_servers& atab)
 				{
 					m_areaserver[atab.m_area][atab.m_id] = &atab;
+					m_areanameindex[atab.m_area].try_emplace(atab.m_name, &atab);
+					m_areatypeindex[atab.m_area].try_emplace(atab.m_type, &atab);
+
+					auto& lnetwork = m_networkindex[atab.m_id];
+					lnetwork.fill(nullptr);
+					for (const net_works& item : atab.m_net)
+					{
+						if (item.m_type < ENET_TCP || item.m_type >= ENET_COUNT)
+						{
+							continue;
+						}
+						lnetwork[static_cast<std::size_t>(item.m_type)] = &item;
+					}
 
 					if (atab.m_area < 0)
 					{
@@ -165,16 +187,13 @@ namespace ngl
 			{
 				lquery_area = larea;
 			}
-			return find_if([&](tab_servers& atab)->bool
-				{
-					std::cout << std::format("m_area:[{}] m_name:[{}] m_tcount:[{}]", atab.m_area, atab.m_name, atab.m_tcount) << std::endl;
-					if (atab.m_area == lquery_area && atab.m_name == aname)
-					{
-						return true;
-					}
-					return false;
-				}
-			);
+			auto* lmap = tools::findmap(m_areanameindex, lquery_area);
+			if (lmap == nullptr)
+			{
+				return nullptr;
+			}
+			auto* lserver = tools::findmap(*lmap, aname);
+			return lserver == nullptr ? nullptr : *lserver;
 		}
 
 		const tab_servers* const_tab(NODE_TYPE atype, int area)
@@ -189,21 +208,26 @@ namespace ngl
 			{
 				lquery_area = larea;
 			}
-			return csv<tab_servers>::find_if([&](tab_servers& atab)->bool
-				{
-					std::cout << std::format("m_area:[{}] m_name:[{}] m_tcount:[{}]", atab.m_area, atab.m_name, atab.m_tcount) << std::endl;
-					if (atab.m_area == lquery_area && atab.m_type == atype)
-					{
-						return true;
-					}
-					return false;
-				}
-			);
+			auto* lmap = tools::findmap(m_areatypeindex, lquery_area);
+			if (lmap == nullptr)
+			{
+				return nullptr;
+			}
+			auto* lserver = tools::findmap(*lmap, atype);
+			return lserver == nullptr ? nullptr : *lserver;
 		}
 
 	private:
 		const net_works* nworks(ENET_PROTOCOL atype, const tab_servers* atab)
 		{
+			if (atab == nullptr || atype < ENET_TCP || atype >= ENET_COUNT)
+			{
+				return nullptr;
+			}
+			if (auto* lnetwork = tools::findmap(m_networkindex, atab->m_id); lnetwork != nullptr)
+			{
+				return (*lnetwork)[static_cast<std::size_t>(atype)];
+			}
 			for (auto& item : atab->m_net)
 			{
 				if (item.m_type == atype)

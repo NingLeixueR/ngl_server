@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <atomic>
 #include <array>
 #include <chrono>
 #include <cstring>
@@ -9,13 +10,16 @@
 #include <map>
 #include <set>
 #include <string>
+#include <thread>
 #include <vector>
 
 #include "actor/actor_base/nguid.h"
 #include "actor/tab/ttab_servers.h"
 #include "tools/curl/ncurl.h"
 #include "tools/localtime.h"
+#include "tools/log/nlog.h"
 #include "tools/operator_file.h"
+#include "tools/time_wheel.h"
 #include "tools/tab/csv/csv.h"
 #include "tools/tab/json/njson.h"
 #include "tools/tab/xml/sysconfig.h"
@@ -628,6 +632,81 @@ TEST(ToolsTest, XargInfoFindRejectsNullKeys)
 TEST(ToolsTest, SysconfigNodeCountRejectsNullName)
 {
 	EXPECT_EQ(ngl::sysconfig::node_count(nullptr), 1);
+}
+
+TEST(ToolsTest, CollectionFormattersSupportListAndStableDelimiters)
+{
+	const std::string formatted = std::format(
+		"{} {} {} {}",
+		std::vector<int>{ 1, 2 },
+		std::list<int>{ 3, 4 },
+		std::set<int>{ 5, 6 },
+		std::map<int, int>{ {7, 8}, {9, 10} }
+	);
+
+	EXPECT_EQ(formatted, "vector[1,2] list[3,4] set[5,6] map[(7:8),(9:10)]");
+}
+
+TEST(ToolsTest, TimeWheelManualModePopsReadyCallbacks)
+{
+	ngl::time_wheel wheel(
+		ngl::time_wheel_config{
+			.m_time_wheel_precision = 5,
+			.m_time_wheel_bit = 4,
+			.m_time_wheel_count = 2,
+		},
+		false
+	);
+
+	std::atomic_bool fired = false;
+	const int64_t timerid = wheel.addtimer(ngl::wheel_parm{
+		.m_ms = 10,
+		.m_count = 1,
+		.m_fun = [&fired](const ngl::wheel_node*) {
+			fired.store(true, std::memory_order_relaxed);
+		},
+	});
+
+	ASSERT_GT(timerid, 0);
+	std::this_thread::sleep_for(std::chrono::milliseconds(40));
+
+	auto node = wheel.pop_node();
+	ASSERT_NE(node, nullptr);
+	EXPECT_FALSE(node->removed());
+	ASSERT_NE(node->m_parm.m_fun, nullptr);
+	node->m_parm.m_fun(node.get());
+	EXPECT_TRUE(fired.load(std::memory_order_relaxed));
+}
+
+TEST(ToolsTest, TimeWheelRecurringTimerStopsSoonAfterRemove)
+{
+	ngl::time_wheel wheel(
+		ngl::time_wheel_config{
+			.m_time_wheel_precision = 5,
+			.m_time_wheel_bit = 4,
+			.m_time_wheel_count = 2,
+		},
+		true
+	);
+
+	std::atomic_int fired = 0;
+	const int64_t timerid = wheel.addtimer(ngl::wheel_parm{
+		.m_ms = 5,
+		.m_intervalms = [](int64_t) {
+			return 5;
+		},
+		.m_count = 100,
+		.m_fun = [&fired](const ngl::wheel_node*) {
+			fired.fetch_add(1, std::memory_order_relaxed);
+		},
+	});
+
+	ASSERT_GT(timerid, 0);
+	std::this_thread::sleep_for(std::chrono::milliseconds(40));
+	wheel.removetimer(timerid);
+	const int before = fired.load(std::memory_order_relaxed);
+	std::this_thread::sleep_for(std::chrono::milliseconds(30));
+	EXPECT_LE(fired.load(std::memory_order_relaxed), before + 2);
 }
 
 TEST(LocaltimeTest, GetMothdayValidatesCalendarDayAgainstTargetMonth)

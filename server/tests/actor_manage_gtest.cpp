@@ -124,3 +124,31 @@ TEST(ActorManageTest, PushTaskTypeWithoutActorsDoesNotCreateGhostStats)
 	manage.get_actor_stat(after);
 	EXPECT_FALSE(contains_actor_name(after, kEphemeralActorType));
 }
+
+TEST(ActorManageTest, GetTypeOverwritesCallerBuffer)
+{
+	ngl::actor_manage& manage = ngl::actor_manage::instance();
+
+	std::vector<ngl::i16_actortype> types = {
+		static_cast<ngl::i16_actortype>(-32768),
+	};
+	manage.get_type(types);
+
+	EXPECT_FALSE(std::find(types.begin(), types.end(), static_cast<ngl::i16_actortype>(-32768)) != types.end());
+}
+
+TEST(ActorManageTest, GetActorStatOverwritesCallerBuffer)
+{
+	ngl::actor_manage& manage = ngl::actor_manage::instance();
+
+	ngl::msg_actor_stat stat;
+	ngl::msg_actor stale;
+	stale.m_actor_name = "stale";
+	stat.m_vec.push_back(std::move(stale));
+
+	manage.get_actor_stat(stat);
+
+	EXPECT_FALSE(std::any_of(stat.m_vec.begin(), stat.m_vec.end(), [](const ngl::msg_actor& item) {
+		return item.m_actor_name == "stale";
+	}));
+}

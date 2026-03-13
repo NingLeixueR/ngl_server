@@ -37,7 +37,59 @@ namespace ngl
 
 		bool should_ignore_socket_close_error(const basio_errorcode& ec)
 		{
-			return !ec || ec == basio::error::not_connected || ec == basio::error::operation_aborted;
+			return !ec
+				|| ec == basio::error::not_connected
+				|| ec == basio::error::operation_aborted
+				|| ec == basio::error::bad_descriptor;
+		}
+
+		bool should_ignore_ws_close_error(const basio_errorcode& ec)
+		{
+			return should_ignore_socket_close_error(ec)
+				|| ec == basio::error::eof
+				|| ec == bwebsocket::error::closed;
+		}
+
+		void force_close_socket(basio_iptcpsocket& asocket)
+		{
+			basio_errorcode ec;
+			asocket.cancel(ec);
+			if (!should_ignore_socket_close_error(ec))
+			{
+				log_error()->print("asio_ws::close_socket cancel [{}]", ec.message());
+			}
+
+			if (asocket.is_open())
+			{
+				asocket.shutdown(basio_iptcpsocket::shutdown_both, ec);
+				if (!should_ignore_socket_close_error(ec))
+				{
+					log_error()->print("asio_ws::close_socket shutdown [{}]", ec.message());
+				}
+			}
+
+			if (asocket.is_open())
+			{
+				asocket.close(ec);
+				if (!should_ignore_socket_close_error(ec))
+				{
+					log_error()->print("asio_ws::close_socket close [{}]", ec.message());
+				}
+			}
+		}
+
+		void close_stream(service_ws& aservice)
+		{
+			aservice.visit_stream([](auto& astream)
+				{
+					basio_errorcode ec;
+					astream.close(bwebsocket::close_code::normal, ec);
+					if (!should_ignore_ws_close_error(ec))
+					{
+						log_error()->print("asio_ws::close_stream [{}]", ec.message());
+					}
+				}
+			);
 		}
 	}
 
@@ -121,10 +173,15 @@ namespace ngl
 
 		for (auto& service : lservices)
 		{
-			close_socket(service->socket());
+			service->m_closing.store(true, std::memory_order_release);
 		}
 
 		m_service_ios.shutdown();
+
+		for (auto& service : lservices)
+		{
+			ngl::ws::force_close_socket(service->socket());
+		}
 	}
 
 	std::shared_ptr<service_ws> asio_ws::create_service()
@@ -504,10 +561,18 @@ namespace ngl
 		{
 			return false;
 		}
+		if (ws->m_closing.load(std::memory_order_acquire))
+		{
+			return false;
+		}
 
 		std::shared_ptr<std::list<ws_send_node>> llist = nullptr;
 		{
 			lock_write(ws->m_mutex);
+			if (ws->m_closing.load(std::memory_order_relaxed))
+			{
+				return false;
+			}
 			ws->m_ws_send_list.push_back(anode);
 			if (!ws->m_ws_sending)
 			{
@@ -724,7 +789,9 @@ namespace ngl
 						else
 						{
 							close(aservice.get());
-							if (error != basio::error::operation_aborted && error != bwebsocket::error::closed)
+							if (error != basio::error::operation_aborted
+								&& error != basio::error::eof
+								&& error != bwebsocket::error::closed)
 							{
 								log_error()->print("asio_ws::handle_read [{}]", error.message());
 							}
@@ -737,30 +804,7 @@ namespace ngl
 
 	void asio_ws::close_socket(basio_iptcpsocket& asocket)
 	{
-		basio_errorcode ec;
-		asocket.cancel(ec);
-		if (!ngl::ws::should_ignore_socket_close_error(ec))
-		{
-			log_error()->print("asio_ws::close_socket cancel [{}]", ec.message());
-		}
-
-		if (asocket.is_open())
-		{
-			asocket.shutdown(basio_iptcpsocket::shutdown_both, ec);
-			if (!ngl::ws::should_ignore_socket_close_error(ec))
-			{
-				log_error()->print("asio_ws::close_socket shutdown [{}]", ec.message());
-			}
-		}
-
-		if (asocket.is_open())
-		{
-			asocket.close(ec);
-			if (!ngl::ws::should_ignore_socket_close_error(ec))
-			{
-				log_error()->print("asio_ws::close_socket close [{}]", ec.message());
-			}
-		}
+		ngl::ws::force_close_socket(asocket);
 	}
 
 	i16_port asio_ws::port() const
@@ -841,6 +885,11 @@ namespace ngl
 
 	void asio_ws::close(i32_sessionid sessionid)
 	{
+		close_session(sessionid, false, true, true);
+	}
+
+	void asio_ws::close_session(i32_sessionid sessionid, bool agraceful, bool anotifyclose, bool anotifycallback)
+	{
 		if (sessionid <= 0)
 		{
 			return;
@@ -870,14 +919,27 @@ namespace ngl
 
 		if (lservice != nullptr)
 		{
-			close_socket(lservice->socket());
-			if (m_closefun != nullptr)
+			if (!lservice->m_closing.exchange(true, std::memory_order_acq_rel))
 			{
-				m_closefun(sessionid);
+				basio::post(lservice->m_ioservice,
+					[lservice, agraceful]()
+					{
+						if (agraceful)
+						{
+							ngl::ws::close_stream(*lservice);
+						}
+						ngl::ws::force_close_socket(lservice->socket());
+					}
+				);
+
+				if (anotifyclose && m_closefun != nullptr)
+				{
+					m_closefun(sessionid);
+				}
 			}
 		}
 
-		if (lclosefun != nullptr)
+		if (anotifycallback && lclosefun != nullptr)
 		{
 			lclosefun();
 		}
@@ -889,30 +951,12 @@ namespace ngl
 		{
 			return;
 		}
-		close(asession->m_sessionid);
+		close_session(asession->m_sessionid, false, true, true);
 	}
 
 	void asio_ws::close_net(i32_sessionid sessionid)
 	{
-		std::shared_ptr<service_ws> lservice = nullptr;
-		{
-			lock_write(m_maplock);
-			auto it = m_data.find(sessionid);
-			if (it != m_data.end())
-			{
-				lservice = it->second;
-				m_data.erase(it);
-			}
-			m_close.erase(sessionid);
-		}
-		{
-			lock_write(m_ipportlock);
-			m_ipport.erase(sessionid);
-		}
-		if (lservice != nullptr)
-		{
-			close_socket(lservice->socket());
-		}
+		close_session(sessionid, false, false, false);
 	}
 
 	bool asio_ws::get_ipport(i32_sessionid asessionid, std::pair<str_ip, i16_port>& apair)

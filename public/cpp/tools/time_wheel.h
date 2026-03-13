@@ -1,29 +1,24 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
-* 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
-* 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
-* 
-* 许可详情参见项目根目录下的 LICENSE 文件：
-* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*
+* Project: ngl_server
+* License: MIT
 */
 #pragma once
 
-#include "tools/threadtools.h"
 #include "tools/impl.h"
+#include "tools/threadtools.h"
 
+#include <array>
+#include <atomic>
+#include <cmath>
+#include <cstdint>
 #include <functional>
-#include <iostream>
+#include <map>
+#include <memory>
+#include <mutex>
 #include <thread>
 #include <vector>
-#include <array>
-#include <mutex>
-#include <cmath>
-#include <map>
 
 namespace ngl
 {
@@ -33,62 +28,62 @@ namespace ngl
 
 	struct wheel_parm
 	{
-		int64_t									m_timerstart		= 0;		// 定时器开启的时间
-		int32_t									m_ms				= 0;		// 首次触发的毫秒
-		std::function<int(int64_t)>				m_intervalms		= nullptr;	// 间隔触发的毫秒(根据传递进去的触发时间返回下次触发的间隔)
-		int										m_count				= 0;		// 触发次数
-		void*									m_pram				= nullptr;	// 透传参数
-		std::function<void(const wheel_node*)>	m_fun				= nullptr;	// 定时回调函数
+		int64_t m_timerstart = 0;
+		int32_t m_ms = 0;
+		std::function<int(int64_t)> m_intervalms = nullptr;
+		int m_count = 0;
+		void* m_pram = nullptr;
+		std::function<void(const wheel_node*)> m_fun = nullptr;
 	};
 
 	struct wheel_node
 	{
 		using timecallback = std::function<void(wheel_node*)>;
 
-		time_wheel*		m_tw = nullptr;
-		int64_t			m_timerid = 0;		// 定时器id
-		bool&			m_remove;			// 定时器是否被移除
-		wheel_node*		m_next = nullptr;	// 下一个结点
-		wheel_parm		m_parm;				// 定时器回调参数
+		time_wheel* m_tw = nullptr;
+		int64_t m_timerid = 0;
+		std::shared_ptr<std::atomic_bool> m_remove;
+		wheel_node* m_next = nullptr;
+		wheel_parm m_parm;
 
-		wheel_node(time_wheel* atw, int64_t atimerid, const wheel_parm& aparm);
-
+		wheel_node(time_wheel* atw, int64_t atimerid, const std::shared_ptr<std::atomic_bool>& aremove, const wheel_parm& aparm);
 		wheel_node(const wheel_node& aparm);
-
 		wheel_node() = delete;
+
+		bool removed() const
+		{
+			return m_remove != nullptr && m_remove->load(std::memory_order_relaxed);
+		}
 	};
 
 	struct time_wheel_config
 	{
 	public:
-		int32_t m_time_wheel_precision	= 10;	// 定时器精度  单位毫秒
-		int32_t m_time_wheel_bit		= 8;	// 时间轮的槽数  2^etime_wheel_bit
-		int32_t m_time_wheel_count		= 4;
+		int32_t m_time_wheel_precision = 10;
+		int32_t m_time_wheel_bit = 8;
+		int32_t m_time_wheel_count = 4;
 
-		// # 定时器从头建立开始支持的最大时间
 		int64_t max_time()
 		{
 			int64_t lsum = 0;
 			int64_t lprecision = m_time_wheel_precision;
 			for (int i = 0; i < m_time_wheel_count; ++i)
 			{
-				lprecision *= (int64_t)std::pow(2, m_time_wheel_bit);
+				lprecision *= static_cast<int64_t>(std::pow(2, m_time_wheel_bit));
 				lsum += lprecision;
 			}
 			return lsum;
 		}
 
-		// # 定时器从头建立开始支持的最大时间(年)
 		double year()
 		{
 			return day() / 365.0;
 		}
 
-		// # 定时器从头建立开始支持的最大时间(日)
 		double day()
 		{
-			double lnum = 24 * 60 * 60 * 1000;
-			uint64_t lsum = max_time();
+			const double lnum = 24 * 60 * 60 * 1000;
+			const uint64_t lsum = max_time();
 			return lsum / lnum;
 		}
 	};
@@ -105,32 +100,15 @@ namespace ngl
 	public:
 		static int64_t getms();
 		time_wheel(const time_wheel_config& aconfig = time_wheel_config(), bool aisthreadcallback = true);
-		~time_wheel() = default;
+		~time_wheel();
 
-		// # 获取现存定时器数量
-		int	count();
-
-		// # 是否没有正在执行的定时器
+		int count();
 		bool empty();
-
-		// # 获取服务器启动的毫秒数
 		int64_t server_start_ms();
-
-		// # 获取服务器当前的毫秒数
 		int64_t server_current_ms();
-
-		// # addtimer添加定时器
-		// # 返回值定时器id   定时器id大于0有效
 		int64_t addtimer(const wheel_parm& apram);
-
-		// # removetimer移除指定定时器
-		// # int atimerid  定时器id
 		void removetimer(int64_t atimerid);
-
-		// # m_isthreadcallback == false
 		std::shared_ptr<wheel_node> pop_node();
-
-		bool& get_remove(int64_t atimerid);
 	};
 
 	class twheel
@@ -143,4 +121,4 @@ namespace ngl
 			return m_wheel;
 		}
 	};
-}//namespace ngl
+}// namespace ngl

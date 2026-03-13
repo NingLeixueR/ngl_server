@@ -59,6 +59,10 @@ namespace ngl
 			aline.clear();
 			bool lbool = false;
 			auto lsize = (int)adata.size();
+			if (apos >= 0 && apos < lsize)
+			{
+				aline.reserve(static_cast<std::size_t>(lsize - apos));
+			}
 			for (; apos < lsize; ++apos)
 			{
 				if (!lbool)
@@ -77,7 +81,7 @@ namespace ngl
 				{
 					lbool = lbool ? false : true;
 				}
-				aline += adata[apos];
+				aline.push_back(adata[apos]);
 			}
 			return !aline.empty();
 		}
@@ -191,6 +195,10 @@ namespace ngl
 			int& lpos = apair.m_pos;
 			auto lsize = (int)lret.size();
 			std::string lvalue;
+			if (lpos >= 0 && lpos < lsize)
+			{
+				lvalue.reserve(static_cast<std::size_t>(lsize - lpos));
+			}
 			for (; lpos < lsize; ++lpos)
 			{
 				if (!apair.m_doublequotationmarks)
@@ -210,7 +218,7 @@ namespace ngl
 					apair.m_doublequotationmarks = apair.m_doublequotationmarks ? false : true;
 					continue;
 				}
-				lvalue += lret[lpos];
+				lvalue.push_back(lret[lpos]);
 			}
 			if (apair.m_doublequotationmarks)
 			{

@@ -181,6 +181,7 @@ namespace ngl
 		bool m_message_is_text = false;
 		bool m_use_tls = false;
 	public:
+		std::atomic_bool m_closing = false;
 		bool m_ws_sending = false;
 		std::list<ws_send_node> m_ws_send_list;
 

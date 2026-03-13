@@ -1,95 +1,78 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
-* 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
-* 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
-* 
-* 许可详情参见项目根目录下的 LICENSE 文件：
-* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*
+* Project: ngl_server
+* License: MIT
 */
 
 #include "tools/threadtools.h"
 #include "tools/time_wheel.h"
 
+#include <algorithm>
+#include <chrono>
 #include <cstdint>
-#include <iostream>
+#include <limits>
+#include <memory>
 #include <unordered_map>
+#include <utility>
 
 namespace ngl
 {
 	class wheel
 	{
 		friend class time_wheel;
+		friend struct time_wheel::impl_time_wheel;
+
 		wheel(const wheel&) = delete;
 		wheel& operator=(const wheel&) = delete;
 
-		std::vector<wheel_node*>	m_slots;
-		wheel*						m_nextround = nullptr;
-		wheel*						m_lastround = nullptr;
-		time_wheel*					m_time_wheel = nullptr;
+		std::vector<wheel_node*> m_slots;
+		wheel* m_nextround = nullptr;
+		wheel* m_lastround = nullptr;
+		time_wheel* m_time_wheel = nullptr;
 
-		int64_t			m_slot_ms = 0;			 // 每个槽位的毫秒数
-		int32_t			m_slot_count = 0;		 // 槽位的数量
-		int32_t			m_slot_less = 0;		 // 取余用
-		int64_t			m_slot_sum_ms = 0;		 // m_slot_ms * m_slot_count
-		int32_t			m_current_pos = 0;		 // 当前指针
+		int64_t m_slot_ms = 0;
+		int32_t m_slot_count = 0;
+		int32_t m_slot_less = 0;
+		int64_t m_slot_sum_ms = 0;
+		int32_t m_current_pos = 0;
 	public:
 		wheel();
 		inline void set(int64_t aslotms, int32_t aslotbit, wheel* anextround, wheel* alastround, time_wheel* atime_wheel);
-
 		inline int slot_count();
-
 		inline int slot_less();
-
 		inline int64_t all_slot_ms();
-
 		inline bool push_slots(wheel_node* anode);
-
 		inline bool push(wheel_node* anode);
-
 		inline wheel_node* shift_current_pos(int apos, wheel* awheel);
-
-		// 返回需要插入的节点
 		inline wheel_node* shift_current_pos(wheel* awheel);
 	};
 
-
 	struct time_wheel::impl_time_wheel
 	{
-		time_wheel_config						m_config;
-		int64_t									m_server_start_ms = 0;			// 服务器启动的毫秒
-		int64_t									m_current_ms = 0;				// 当前毫秒数
-		std::vector<std::shared_ptr<wheel>>		m_wheel;
-		std::unique_ptr<std::jthread>			m_thread = nullptr;				// 时间轮线程 
-		std::shared_mutex						m_mutex;
-		bool									m_isthreadcallback = false;		// 是否使用 [使用线程自动调用]
-		// ###### 使用线程自动调用 start 
-		std::unique_ptr<std::jthread>			m_threadcallback = nullptr;		// 时间轮工作线程用来执行回调
-		std::shared_mutex						m_mutexcallback;
-		ngl::sem								m_sem;
-		// ###### 使用线程自动调用 finish
-		wheel_node*								m_worldnodehead = nullptr;
-		wheel_node*								m_worldnodetail = nullptr;
-		int64_t									m_timerid = 1;					// 定时器自增id
-		std::unordered_map<int64_t, bool>			m_timer;						// 用于快速删除定时器
-		time_wheel*								m_twheel = nullptr;
-		bool									m_stop = false;
+		time_wheel_config m_config;
+		int64_t m_server_start_ms = 0;
+		int64_t m_current_ms = 0;
+		std::vector<std::shared_ptr<wheel>> m_wheel;
+		std::unique_ptr<std::jthread> m_thread = nullptr;
+		std::shared_mutex m_mutex;
+		bool m_isthreadcallback = false;
+		std::unique_ptr<std::jthread> m_threadcallback = nullptr;
+		std::shared_mutex m_mutexcallback;
+		ngl::sem m_sem;
+		wheel_node* m_worldnodehead = nullptr;
+		wheel_node* m_worldnodetail = nullptr;
+		int64_t m_timerid = 1;
+		std::unordered_map<int64_t, std::shared_ptr<std::atomic_bool>> m_timer;
+		time_wheel* m_twheel = nullptr;
+		std::atomic_bool m_stop = false;
 
-		impl_time_wheel(time_wheel* atwheel, const time_wheel_config& aconfig, bool aisthreadcallback):
-			m_twheel(atwheel),
-			m_isthreadcallback(aisthreadcallback),
-			m_thread(nullptr),
-			m_timerid(1),
-			m_worldnodehead(nullptr),
-			m_worldnodetail(nullptr),
+		impl_time_wheel(time_wheel* atwheel, const time_wheel_config& aconfig, bool aisthreadcallback) :
 			m_config(aconfig),
+			m_isthreadcallback(aisthreadcallback),
+			m_twheel(atwheel),
 			m_stop(false)
 		{
-			// Normalize config to avoid division by zero and oversized shifts.
 			if (m_config.m_time_wheel_precision <= 0)
 			{
 				m_config.m_time_wheel_precision = 1;
@@ -109,17 +92,22 @@ namespace ngl
 
 			m_server_start_ms = getms();
 			m_current_ms = m_server_start_ms;
+
 			int64_t lms = m_config.m_time_wheel_precision;
 			m_wheel.resize(m_config.m_time_wheel_count);
-				
 			for (int32_t i = 0; i < m_config.m_time_wheel_count; ++i)
 			{
 				m_wheel[i] = std::make_shared<wheel>();
 			}
-
 			for (int32_t i = 0; i < m_config.m_time_wheel_count; ++i)
 			{
-				m_wheel[i]->set(lms, m_config.m_time_wheel_bit, (i + 1 < m_config.m_time_wheel_count) ? m_wheel[i + 1].get() : nullptr, (i == 0) ? nullptr : m_wheel[i - 1].get(), atwheel);
+				m_wheel[i]->set(
+					lms,
+					m_config.m_time_wheel_bit,
+					(i + 1 < m_config.m_time_wheel_count) ? m_wheel[i + 1].get() : nullptr,
+					(i == 0) ? nullptr : m_wheel[i - 1].get(),
+					atwheel
+				);
 				lms = m_wheel[i]->all_slot_ms();
 			}
 
@@ -128,16 +116,47 @@ namespace ngl
 			{
 				m_threadcallback = std::make_unique<std::jthread>(&impl_time_wheel::runcallback, this);
 			}
-			else
-			{
-				m_threadcallback = nullptr;
-			}
 		}
 
 		~impl_time_wheel()
 		{
 			stop();
-			m_wheel.clear();
+			m_threadcallback.reset();
+			m_thread.reset();
+			clear_callback_nodes();
+			{
+				lock_write(m_mutex);
+				for (auto& item : m_wheel)
+				{
+					if (item == nullptr)
+					{
+						continue;
+					}
+					for (wheel_node*& slot : item->m_slots)
+					{
+						remove(slot);
+						slot = nullptr;
+					}
+				}
+				m_wheel.clear();
+				m_timer.clear();
+			}
+		}
+
+		void clear_callback_nodes()
+		{
+			wheel_node* lhead = nullptr;
+			{
+				lock_write(m_mutexcallback);
+				std::swap(lhead, m_worldnodehead);
+				m_worldnodetail = nullptr;
+			}
+			while (lhead != nullptr)
+			{
+				wheel_node* lnext = lhead->m_next;
+				delete lhead;
+				lhead = lnext;
+			}
 		}
 
 		void remove(wheel_node* anode)
@@ -147,98 +166,106 @@ namespace ngl
 			{
 				std::unique_ptr<wheel_node> ltemp(lpnode);
 				lpnextnode = lpnode->m_next;
-				auto itor = m_timer.find(lpnode->m_timerid);
-				if (itor == m_timer.end())
-				{
-					continue;
-				}
-				m_timer.erase(itor);
+				m_timer.erase(lpnode->m_timerid);
 			}
 		}
 
-		int64_t all_slot_ms()
+		int64_t all_slot_ms() const
 		{
-			return  m_wheel[m_config.m_time_wheel_count - 1]->all_slot_ms();
+			return m_wheel[m_config.m_time_wheel_count - 1]->all_slot_ms();
 		}
 
-		int64_t duration_ms()
+		int64_t duration_ms() const
 		{
 			return m_current_ms - m_server_start_ms;
 		}
 
-		bool addtimer(wheel_node* apnode)
+		bool schedule_locked(wheel_node* apnode)
 		{
 			wheel_node* lpnextnode = nullptr;
 			wheel_node* removenode = nullptr;
-			int64_t lduration = duration_ms();
-			int64_t lallslot = all_slot_ms();
-			bool lbool = false;
+			const int64_t lduration = duration_ms();
+			const int64_t lallslot = all_slot_ms();
+			bool lscheduled = false;
+
 			for (wheel_node* lpnode = apnode; lpnode != nullptr; lpnode = lpnextnode)
 			{
-				lbool = false;
 				lpnextnode = lpnode->m_next;
 				lpnode->m_next = nullptr;
 
 				if (lpnode->m_parm.m_ms > lallslot)
-				{//定时时间超过定时器所能达到的最大时间
+				{
+					lpnode->m_next = removenode;
+					removenode = lpnode;
 					continue;
 				}
-				
+
 				if (lpnode->m_parm.m_ms < lduration)
-				{// 如果定时时间在以前 那么直接执行定时任务
-					int lintervalms = lpnode->m_parm.m_intervalms(m_current_ms);
-					bool lcopy = lintervalms > 0 && lpnode->m_parm.m_count - 1 > 0;
-					if (lcopy)//拷贝
+				{
+					const int lintervalms = lpnode->m_parm.m_intervalms != nullptr
+						? lpnode->m_parm.m_intervalms(m_current_ms)
+						: 0;
+					const bool lcopy = lintervalms > 0 && lpnode->m_parm.m_count - 1 > 0;
+					if (lcopy)
 					{
 						wheel_node* lpnewnode = new wheel_node(*lpnode);
 						push(lpnewnode);
 						--lpnode->m_parm.m_count;
 						lpnode->m_parm.m_ms += lintervalms;
-						addtimer(lpnode);
+						lscheduled = schedule_locked(lpnode) || lscheduled;
 					}
 					else
 					{
 						push(lpnode);
+						lscheduled = true;
 					}
 					continue;
 				}
-				auto& ltimer = m_timer;
-				auto& lwheel = m_wheel;
-				for (auto& item : lwheel)
+
+				for (auto& item : m_wheel)
 				{
-					if (item->push(lpnode))
+					if (!item->push(lpnode))
 					{
-						lbool = true;
-						m_timer.insert(std::make_pair(m_timerid, &lpnode->m_remove));
-						break;
+						continue;
 					}
+					m_timer.insert_or_assign(lpnode->m_timerid, lpnode->m_remove);
+					lscheduled = true;
+					lpnode = nullptr;
+					break;
 				}
-				if (lbool == false)
+
+				if (lpnode != nullptr)
 				{
 					lpnode->m_next = removenode;
 					removenode = lpnode;
 				}
 			}
+
 			if (removenode != nullptr)
 			{
 				remove(removenode);
 			}
-			return true;
+			return lscheduled;
 		}
 
 		void removetimer(int64_t atimerid)
 		{
 			lock_write(m_mutex);
 			auto itor = m_timer.find(atimerid);
-			if (itor == m_timer.end())
+			if (itor == m_timer.end() || itor->second == nullptr)
 			{
 				return;
 			}
-			itor->second = true;
+			itor->second->store(true, std::memory_order_relaxed);
 		}
 
 		void push(wheel_node* apnode)
 		{
+			if (apnode == nullptr)
+			{
+				return;
+			}
+
 			wheel_node* ltailnode = nullptr;
 			if (m_isthreadcallback)
 			{
@@ -259,162 +286,167 @@ namespace ngl
 				}
 				m_worldnodetail = ltailnode;
 				m_sem.post();
+				return;
+			}
+
+			lock_write(m_mutexcallback);
+			if (m_worldnodehead == nullptr)
+			{
+				m_worldnodehead = apnode;
+				ltailnode = m_worldnodehead;
 			}
 			else
 			{
-				if (m_worldnodehead == nullptr)
-				{
-					m_worldnodehead = apnode;
-					ltailnode = m_worldnodehead;
-				}
-				else
-				{
-					m_worldnodetail->m_next = apnode;
-					ltailnode = m_worldnodetail;
-				}
-				while (ltailnode->m_next != nullptr)
-				{
-					ltailnode = ltailnode->m_next;
-				}
-				m_worldnodetail = ltailnode;
+				m_worldnodetail->m_next = apnode;
+				ltailnode = m_worldnodetail;
 			}
+			while (ltailnode->m_next != nullptr)
+			{
+				ltailnode = ltailnode->m_next;
+			}
+			m_worldnodetail = ltailnode;
 		}
-		
+
 		void stop()
 		{
-			m_stop = true;
+			m_stop.store(true, std::memory_order_relaxed);
 			m_sem.post();
 		}
 
 		void run()
 		{
-			int32_t ltemp = 0;
-			int32_t ltempsleep = 0;
-			while (m_stop == false)
+			while (!m_stop.load(std::memory_order_relaxed))
 			{
-				ltemp = (int32_t)(getms() - m_current_ms);
-				ltempsleep = m_config.m_time_wheel_precision - ltemp;
+				const int32_t ltemp = static_cast<int32_t>(getms() - m_current_ms);
+				const int32_t ltempsleep = m_config.m_time_wheel_precision - ltemp;
 				if (ltempsleep > 0)
 				{
 					std::this_thread::sleep_for(std::chrono::milliseconds(ltempsleep));
 				}
+
 				lock_write(m_mutex);
-				if (!m_wheel.empty())
+				if (m_wheel.empty())
 				{
-					wheel_node* lpbnode = m_wheel[0]->shift_current_pos(nullptr);
-					if (lpbnode != nullptr)
-					{
-						addtimer(lpbnode);
-					}
-					m_current_ms += m_config.m_time_wheel_precision;
-				}				
+					continue;
+				}
+
+				wheel_node* lpbnode = m_wheel[0]->shift_current_pos(nullptr);
+				if (lpbnode != nullptr)
+				{
+					schedule_locked(lpbnode);
+				}
+				m_current_ms += m_config.m_time_wheel_precision;
 			}
 		}
 
 		void runcallback()
 		{
-			wheel_node* lpnode = nullptr;
-			while (m_stop == false)
+			while (true)
 			{
 				m_sem.wait();
+
+				wheel_node* lpnode = nullptr;
 				{
 					lock_write(m_mutexcallback);
 					std::swap(lpnode, m_worldnodehead);
 					m_worldnodetail = nullptr;
 				}
+
 				wheel_node* lnextnode = nullptr;
 				for (wheel_node* pnode = lpnode; pnode != nullptr; pnode = lnextnode)
 				{
 					lnextnode = pnode->m_next;
-					if (pnode->m_remove != true)
+					if (!pnode->removed() && pnode->m_parm.m_fun != nullptr)
 					{
 						pnode->m_parm.m_fun(pnode);
 					}
 					delete pnode;
 				}
-				lpnode = nullptr;
+
+				if (m_stop.load(std::memory_order_relaxed))
+				{
+					wheel_node* lremaining = nullptr;
+					{
+						lock_write(m_mutexcallback);
+						lremaining = m_worldnodehead;
+					}
+					if (lremaining == nullptr)
+					{
+						return;
+					}
+				}
 			}
 		}
 
 		std::shared_ptr<wheel_node> pop_node()
 		{
+			lock_write(m_mutexcallback);
 			wheel_node* ret = nullptr;
+			if (m_worldnodehead == nullptr)
+			{
+				return nullptr;
+			}
 			if (m_worldnodehead == m_worldnodetail)
 			{
-				if (m_worldnodehead == nullptr)
-				{
-					return nullptr;
-				}
 				ret = m_worldnodehead;
-				m_worldnodetail = nullptr;
 				m_worldnodehead = nullptr;
+				m_worldnodetail = nullptr;
 				return std::shared_ptr<wheel_node>(ret);
 			}
-			else
-			{
-				ret = m_worldnodehead;
-				m_worldnodehead = m_worldnodehead->m_next;
-				return std::shared_ptr<wheel_node>(ret);
-			}
+
+			ret = m_worldnodehead;
+			m_worldnodehead = m_worldnodehead->m_next;
+			ret->m_next = nullptr;
+			return std::shared_ptr<wheel_node>(ret);
 		}
 
 		int64_t addtimer(const wheel_parm& apram)
 		{
-			bool lbool = true;
-			std::shared_ptr<wheel_node> lpnode(new wheel_node(m_twheel, ++m_timerid, apram),[&lbool](wheel_node* ap) 
-				{
-					if (lbool)
-					{
-						delete ap;
-					}
-				}
-			);
-			lpnode->m_parm.m_timerstart = getms();
-			lpnode->m_parm.m_ms += (int32_t)(getms() - m_server_start_ms);
-			if (lpnode->m_parm.m_ms < 0)
+			wheel_parm lparm = apram;
+			const int64_t lnow = getms();
+			lparm.m_timerstart = lnow;
+			lparm.m_ms += static_cast<int32_t>(lnow - m_server_start_ms);
+			if (lparm.m_ms < 0)
 			{
 				return -1;
 			}
-			if (lpnode->m_parm.m_count == -1)
+			if (lparm.m_count == -1)
 			{
-				lpnode->m_parm.m_count = 0x7fffffff;
+				lparm.m_count = std::numeric_limits<int>::max();
 			}
-			if (addtimer(lpnode.get()) == false)
-			{
-				return -1;
-			}
-			lbool = false;
-			return m_timerid;
-		}
 
-		bool& get_remove(int64_t atimerid)
-		{
-			auto itor = m_timer.find(atimerid);
-			if (itor == m_timer.end())
+			lock_write(m_mutex);
+			const int64_t ltimerid = ++m_timerid;
+			auto lremove = std::make_shared<std::atomic_bool>(false);
+			std::unique_ptr<wheel_node> lpnode(new wheel_node(m_twheel, ltimerid, lremove, lparm));
+			m_timer.insert_or_assign(ltimerid, lremove);
+			if (!schedule_locked(lpnode.get()))
 			{
-				bool& ret = m_timer[atimerid];
-				ret = false;
-				return ret;
+				m_timer.erase(ltimerid);
+				return -1;
 			}
-			return itor->second;
+			lpnode.release();
+			return ltimerid;
 		}
 	};
 
-	wheel_node::wheel_node(time_wheel* atw, int64_t atimerid, const wheel_parm& aparm) :
-		m_tw(atw)
-		, m_remove(atw->get_remove(atimerid))
-		, m_timerid(atimerid)
-		, m_next(nullptr)
-		, m_parm(aparm)
-	{}
+	wheel_node::wheel_node(time_wheel* atw, int64_t atimerid, const std::shared_ptr<std::atomic_bool>& aremove, const wheel_parm& aparm) :
+		m_tw(atw),
+		m_timerid(atimerid),
+		m_remove(aremove),
+		m_next(nullptr),
+		m_parm(aparm)
+	{
+	}
 
 	wheel_node::wheel_node(const wheel_node& aparm) :
-		m_tw(aparm.m_tw)
-		, m_remove(aparm.m_remove)
-		, m_timerid(aparm.m_timerid)
-		, m_next(nullptr)
-		, m_parm(aparm.m_parm)
-	{}
+		m_tw(aparm.m_tw),
+		m_timerid(aparm.m_timerid),
+		m_remove(aparm.m_remove),
+		m_next(nullptr),
+		m_parm(aparm.m_parm)
+	{
+	}
 
 	wheel::wheel() :
 		m_nextround(nullptr),
@@ -425,7 +457,8 @@ namespace ngl
 		m_slot_less(0),
 		m_slot_sum_ms(0),
 		m_current_pos(0)
-	{}
+	{
+	}
 
 	void wheel::set(int64_t aslotms, int32_t aslotbit, wheel* anextround, wheel* alastround, time_wheel* atime_wheel)
 	{
@@ -444,36 +477,35 @@ namespace ngl
 		m_slots.resize(m_slot_count);
 	}
 
-	int wheel::slot_count() 
-	{ 
-		return m_slot_count; 
+	int wheel::slot_count()
+	{
+		return m_slot_count;
 	}
 
-	int wheel::slot_less() 
-	{ 
-		return m_slot_less; 
+	int wheel::slot_less()
+	{
+		return m_slot_less;
 	}
 
-	int64_t wheel::all_slot_ms() 
-	{ 
-		return m_slot_sum_ms; 
+	int64_t wheel::all_slot_ms()
+	{
+		return m_slot_sum_ms;
 	}
 
 	bool wheel::push_slots(wheel_node* anode)
 	{
-		int lcallcount = (int32_t)(anode->m_parm.m_ms / m_slot_ms);
-		lcallcount &= m_slot_less;//lcallcount %= m_slot_count;
-		int lcount = m_current_pos & m_slot_less;
-		if (lcallcount <= lcount && m_current_pos != -1)//if (lcallcount <= m_current_pos% m_slot_count)
+		int lcallcount = static_cast<int32_t>(anode->m_parm.m_ms / m_slot_ms);
+		lcallcount &= m_slot_less;
+		const int lcount = m_current_pos & m_slot_less;
+		if (lcallcount <= lcount && m_current_pos != -1)
 		{
 			if (m_lastround != nullptr)
 			{
 				m_lastround->push_slots(anode);
 				return true;
 			}
-			else if (lcallcount != lcount)
+			if (lcallcount != lcount)
 			{
-				//log_error()->print("wheel.push_slots({},{})", lcallcount, lcount);
 				return true;
 			}
 		}
@@ -510,8 +542,8 @@ namespace ngl
 	wheel_node* wheel::shift_current_pos(wheel* awheel)
 	{
 		++m_current_pos;
-		int lpos = m_current_pos & m_slot_less;
-		if (lpos == 0 && m_current_pos != 0)//if (m_current_pos % m_slot_count == 0 && m_current_pos != 0)
+		const int lpos = m_current_pos & m_slot_less;
+		if (lpos == 0 && m_current_pos != 0)
 		{
 			if (m_nextround == nullptr)
 			{
@@ -523,39 +555,34 @@ namespace ngl
 				return shift_current_pos(lpos, awheel);
 			}
 		}
-		else
+		else if (awheel != nullptr)
 		{
-			if (awheel != nullptr)
-			{
-				return shift_current_pos(lpos, awheel);
-			}
+			return shift_current_pos(lpos, awheel);
 		}
+
 		wheel_node* lpushnode = nullptr;
 		for (wheel_node* lpnode = m_slots[lpos], *ltempnode = nullptr; lpnode != nullptr; lpnode = ltempnode)
 		{
 			ltempnode = lpnode->m_next;
 			lpnode->m_next = nullptr;
-			if (lpnode->m_remove != true)
+			if (!lpnode->removed())
 			{
-				//lpnode->m_fun(m_current_ms);
 				if (lpnode->m_parm.m_intervalms != nullptr)
 				{
-					int lintervalms = lpnode->m_parm.m_intervalms(m_time_wheel->m_impl_time_wheel()->m_current_ms);
+					const int lintervalms = lpnode->m_parm.m_intervalms(m_time_wheel->m_impl_time_wheel()->m_current_ms);
 					--lpnode->m_parm.m_count;
-					if (lintervalms > 0 && lpnode->m_parm.m_count > 0)//拷贝
+					if (lintervalms > 0 && lpnode->m_parm.m_count > 0)
 					{
 						wheel_node* lpnewnode = new wheel_node(*lpnode);
 						m_time_wheel->m_impl_time_wheel()->push(lpnewnode);
 						lpnode->m_parm.m_ms += lintervalms;
 						lpnode->m_next = lpushnode;
 						lpushnode = lpnode;
+						continue;
 					}
-					else
-					{
-						m_time_wheel->m_impl_time_wheel()->push(lpnode);
-					}
-					continue;
 				}
+				m_time_wheel->m_impl_time_wheel()->push(lpnode);
+				continue;
 			}
 			m_time_wheel->m_impl_time_wheel()->remove(lpnode);
 		}
@@ -565,38 +592,42 @@ namespace ngl
 
 	int64_t time_wheel::getms()
 	{
-		return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+		return std::chrono::duration_cast<std::chrono::milliseconds>(
+			std::chrono::system_clock::now().time_since_epoch()
+		).count();
 	}
 
-	time_wheel::time_wheel(const time_wheel_config& aconfig, bool aisthreadcallback /*= true*/)
+	time_wheel::time_wheel(const time_wheel_config& aconfig, bool aisthreadcallback)
 	{
 		m_impl_time_wheel.make_unique(this, aconfig, aisthreadcallback);
 	}
 
-	int	time_wheel::count() 
-	{ 
+	time_wheel::~time_wheel() = default;
+
+	int time_wheel::count()
+	{
 		lock_read(m_impl_time_wheel()->m_mutex);
-		return  (int)m_impl_time_wheel()->m_timer.size();
+		return static_cast<int>(m_impl_time_wheel()->m_timer.size());
 	}
 
-	bool time_wheel::empty() 
-	{ 
+	bool time_wheel::empty()
+	{
 		lock_read(m_impl_time_wheel()->m_mutex);
-		return  m_impl_time_wheel()->m_timer.empty();
+		return m_impl_time_wheel()->m_timer.empty();
 	}
 
-	int64_t time_wheel::server_start_ms() 
-	{ 
+	int64_t time_wheel::server_start_ms()
+	{
 		lock_read(m_impl_time_wheel()->m_mutex);
-		return  m_impl_time_wheel()->m_server_start_ms;
+		return m_impl_time_wheel()->m_server_start_ms;
 	}
 
-	int64_t time_wheel::server_current_ms() 
-	{ 
+	int64_t time_wheel::server_current_ms()
+	{
 		lock_read(m_impl_time_wheel()->m_mutex);
-		return  m_impl_time_wheel()->m_current_ms; 
+		return m_impl_time_wheel()->m_current_ms;
 	}
-	
+
 	int64_t time_wheel::addtimer(const wheel_parm& apram)
 	{
 		return m_impl_time_wheel()->addtimer(apram);
@@ -610,11 +641,6 @@ namespace ngl
 	std::shared_ptr<wheel_node> time_wheel::pop_node()
 	{
 		return m_impl_time_wheel()->pop_node();
-	}
-
-	bool& time_wheel::get_remove(int64_t atimerid)
-	{
-		return m_impl_time_wheel()->get_remove(atimerid);
 	}
 
 	time_wheel twheel::m_wheel;
