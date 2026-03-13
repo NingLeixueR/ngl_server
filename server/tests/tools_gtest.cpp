@@ -434,7 +434,7 @@ TEST(ToolsTest, SplitStrArrayCopyDoesNotWritePastArrayBounds)
 {
 	char buffer[] = "one, two, three";
 	std::array<const char*, 2> values = {};
-	ngl::tools::split_str(buffer, static_cast<int32_t>(sizeof(buffer) - 1), values);
+	ngl::tools::split_str((char*)buffer, static_cast<int32_t>(sizeof(buffer) - 1), values);
 
 	ASSERT_NE(values[0], nullptr);
 	ASSERT_NE(values[1], nullptr);
