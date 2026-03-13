@@ -67,6 +67,16 @@ namespace ngl
 		DXMLSERIALIZE(xarg_telnet, false, m_account, m_password)
 	};
 
+	struct xarg_wss
+	{
+		std::string m_certificate_chain;
+		std::string m_private_key;
+		std::string m_ca_certificates;
+		int32_t		m_verify_peer = 1;
+
+		DXMLSERIALIZE(xarg_wss, false, m_certificate_chain, m_private_key, m_ca_certificates, m_verify_peer)
+	};
+
 	class xarg_info
 	{
 		std::map<std::string, std::string> m_data;

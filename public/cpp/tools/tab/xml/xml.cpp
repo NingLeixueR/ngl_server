@@ -12,6 +12,7 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 
+#include "actor/protocol/nprotocol.h"
 #include "actor/tab/ttab_servers.h"
 #include "tools/tab/xml/xmlinfo.h"
 #include "actor/tab/csvtable.h"
@@ -19,8 +20,9 @@
 #include "tools/log/nlog.h"
 #include "tools/tools.h"
 #include "tools/type.h"
-#include <array>
+
 #include <limits>
+#include <array>
 
 namespace ngl
 {
@@ -205,6 +207,11 @@ namespace ngl
 	xarg_telnet& xmlnode::telnet()
 	{
 		return m_telnet;
+	}
+
+	xarg_wss& xmlnode::wss()
+	{
+		return m_wss;
 	}
 
 	xarg_redis& xmlnode::redis()

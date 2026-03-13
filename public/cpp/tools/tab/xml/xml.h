@@ -29,6 +29,7 @@ namespace ngl
 		xarg_info	m_public;
 		xarg_mail	m_mail;
 		xarg_telnet	m_telnet;
+		xarg_wss	m_wss;
 		xarg_redis	m_redis;
 
 		std::string	m_nodename;
@@ -41,7 +42,7 @@ namespace ngl
 		std::string m_configfile;			
 		std::string m_configname;			
 
-		xmlnode() {}
+		xmlnode() = default;
 	public:
 		static xmlnode& instance()
 		{
@@ -49,7 +50,7 @@ namespace ngl
 			return ltemp;
 		}
 
-		DXMLSERIALIZE(xmlnode, false, m_db, m_dbcross,  m_public, m_mail, m_telnet)
+		DXMLSERIALIZE(xmlnode, false, m_db, m_dbcross, m_public, m_mail, m_telnet, m_wss)
 
 		void init();
 
@@ -90,6 +91,8 @@ namespace ngl
 		xarg_mail& mail();
 
 		xarg_telnet& telnet();
+
+		xarg_wss& wss();
 
 		xarg_redis&	redis();
 	};

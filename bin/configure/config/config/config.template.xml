@@ -35,4 +35,16 @@
 		<!-- md5("123456") = e10adc3949ba59abbe56e057f20f883e -->
         <password>e10adc3949ba59abbe56e057f20f883e</password>
     </telnet>
+    <wss>
+        <certificate_chain><![CDATA[-----BEGIN CERTIFICATE-----
+your server certificate pem
+-----END CERTIFICATE-----]]></certificate_chain>
+        <private_key><![CDATA[-----BEGIN PRIVATE KEY-----
+your private key pem
+-----END PRIVATE KEY-----]]></private_key>
+        <ca_certificates><![CDATA[-----BEGIN CERTIFICATE-----
+your ca certificate pem
+-----END CERTIFICATE-----]]></ca_certificates>
+        <verify_peer>1</verify_peer>
+    </wss>
 </xmlnode>
