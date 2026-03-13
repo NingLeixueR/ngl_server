@@ -712,7 +712,9 @@ namespace ngl
 
 			static void bytes(serialize_byte* aser, const std::list<T>& adata)
 			{
-				int32_t lsize = adata.size();
+				const int32_t lsize = adata.size() > static_cast<std::size_t>(std::numeric_limits<int32_t>::max())
+					? std::numeric_limits<int32_t>::max()
+					: static_cast<int32_t>(adata.size());
 				serialize_format<int32_t>::bytes(aser, lsize);
 				for (auto& item : adata)
 				{

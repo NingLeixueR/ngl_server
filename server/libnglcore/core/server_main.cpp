@@ -864,7 +864,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
 						lcmdvec.clear();
 						lcmdvec.push_back(std::vector<std::string>());
-						for (int i = 2; i < lvec.size(); ++i)
+						for (std::size_t i = 2; i < lvec.size(); ++i)
 						{
 							lcmdvec.rbegin()->push_back(lvec[i]);
 						}
@@ -882,7 +882,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 					{
 						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
 						lcmdvec.push_back(std::vector<std::string>());
-						for (int i = 2; i < lvec.size(); ++i)
+						for (std::size_t i = 2; i < lvec.size(); ++i)
 						{
 							lcmdvec.rbegin()->push_back(lvec[i]);
 						}
@@ -904,7 +904,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 				ngl::sleep::seconds(1);
 				continue;
 			}
-			for (int j = 0; j < lcmdvec.size() && j < lms.size(); ++j)
+			for (std::size_t j = 0; j < lcmdvec.size() && j < lms.size(); ++j)
 			{
 				ngl::sleep::milliseconds(lms[j]);
 				std::vector<std::string> lcmdvec2 = lcmdvec[j];

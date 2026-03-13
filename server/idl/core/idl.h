@@ -226,17 +226,17 @@ public:
 		}
 		// 生成csv表头
 		std::stringstream lstreamcsv;
-		for (int i = 0; i < astruct.dataVec.size(); ++i)
+		for (std::size_t i = 0; i < astruct.dataVec.size(); ++i)
 		{
 			lstreamcsv << astruct.dataVec[i].m_type << ",";
 		}
 		lstreamcsv << std::endl;
-		for (int i = 0; i < astruct.dataVec.size(); ++i)
+		for (std::size_t i = 0; i < astruct.dataVec.size(); ++i)
 		{
 			lstreamcsv << astruct.dataVec[i].m_values_name << ",";
 		}
 		lstreamcsv << std::endl;
-		for (int i = 0; i < astruct.dataVec.size(); ++i)
+		for (std::size_t i = 0; i < astruct.dataVec.size(); ++i)
 		{
 			lstreamcsv << "\"" << (&astruct.dataVec[i].zhushi.c_str()[2]) << "\",";
 		}
@@ -288,7 +288,7 @@ public:
 			lstream << "	// csv相关" << std::endl;
 			lstream << "	inline bool rcsv(ngl::csvpair& apair)" << std::endl;
 			lstream << "	{" << std::endl;
-			for (int i = 0; i < item.dataVec.size(); ++i)
+			for (std::size_t i = 0; i < item.dataVec.size(); ++i)
 			{
 				if (item.dataVec[i].m_load == "n")
 				{
@@ -299,7 +299,7 @@ public:
 				}
 			}
 			lstream << "		DEF_RCSV(";
-			for (int i = 0, index = 0; i < item.dataVec.size(); ++i)
+			for (std::size_t i = 0, index = 0; i < item.dataVec.size(); ++i)
 			{
 				if (index != 0)
 					lstream << ",";
@@ -525,7 +525,7 @@ public:
 					if (memcmp("DERIVED<", lstructString.name.c_str(), sizeof("DERIVED<")-1) == 0)
 					{
 						int lcount = 0;
-						for (int i = 0; i < lstructString.name.size(); ++i)
+						for (std::size_t i = 0; i < lstructString.name.size(); ++i)
 						{
 							if (lstructString.name[i] == '<')
 							{
@@ -664,10 +664,10 @@ public:
 
 			m_data[aname].m_struct.push_back(lstructString);
 		});
-		for (int i = 0; i < m_data[aname].m_struct.size(); ++i)
+		for (std::size_t i = 0; i < m_data[aname].m_struct.size(); ++i)
 		{
 			size_t lpos = m_data[aname].m_struct[i].name.find("tab_");
-			if (lpos >= 0)
+			if (lpos != std::string::npos)
 			{
 				
 				std::set<int32_t> lset;

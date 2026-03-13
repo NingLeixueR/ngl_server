@@ -44,7 +44,7 @@ namespace ngl
 				{
 					pbnet::PROBUFF_NET_CMD pro;
 					std::stringstream lstream;
-					for (int i = 2; i < avec.size(); ++i)
+					for (std::size_t i = 2; i < avec.size(); ++i)
 					{
 						if (i == 3)
 						{
@@ -71,7 +71,7 @@ namespace ngl
 				{
 					pbnet::PROBUFF_NET_CMD pro;
 					std::stringstream lstream;
-					for (int i = 1; i < avec.size(); ++i)
+					for (std::size_t i = 1; i < avec.size(); ++i)
 					{
 						if (i == 2)
 						{

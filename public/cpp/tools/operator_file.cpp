@@ -18,6 +18,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <limits>
 #include <string>
 
 namespace ngl
@@ -98,8 +99,7 @@ namespace ngl
 				std::string line;
 				if (std::getline(m_file, line))
 				{
-					int lsize = (int)line.size();
-					for (int i = 0; i < lsize; ++i)
+					for (std::size_t i = 0; i < line.size(); ++i)
 					{
 						if (line[i] == '\"')
 						{
@@ -198,7 +198,13 @@ namespace ngl
 	{
 		if (m_file.is_open())
 		{
-			m_file.write(aneirong.c_str(), aneirong.size());
+			const std::size_t lsize = aneirong.size();
+			if (lsize > static_cast<std::size_t>(std::numeric_limits<std::streamsize>::max()))
+			{
+				log_error()->print("writefile::write content too large [{}]", lsize);
+				return;
+			}
+			m_file.write(aneirong.c_str(), static_cast<std::streamsize>(lsize));
 		}
 	}
 

@@ -15,6 +15,8 @@
 #include "tools/nfilterword.h"
 #include "tools/enum2name.h"
 
+#include <limits>
+
 namespace ngl
 {
     std::vector<nacnode> nfilterword::m_nodes;
@@ -59,6 +61,10 @@ namespace ngl
                 m_nodes[cur].m_children[c] = newnode();
             }
             cur = m_nodes[cur].m_children[c];
+        }
+        if (apattern.size() > static_cast<std::size_t>(std::numeric_limits<int>::max()))
+        {
+            return;
         }
         m_nodes[cur].len = static_cast<int>(apattern.size());  // 标记模式串结束，记录长度
     }
@@ -358,8 +364,7 @@ namespace ngl
 
     bool nfilterword::is_emojispecial(const std::u32string& astr)
     {
-        int32_t lcount = static_cast<int32_t>(astr.size());
-        for (int i = 0; i < lcount; ++i)
+        for (std::size_t i = 0; i < astr.size(); ++i)
         {
             if (is_emojispecial(astr[i]))
             {
@@ -451,7 +456,7 @@ namespace ngl
                     tools::to_utf8(item, ltemp);
                     lnames2.push_back(ltemp);
                 }
-                for(int i = 0;i< lnames2.size();++i)
+                for (std::size_t i = 0; i < lnames2.size(); ++i)
                 {
                     nfilterword::enfilter lerror = nfilterword::check_name(lnames2[i], 1, 20);
                     std::cout << lnames[i] << ":" << nfilterword::enfilter_message(lerror) << std::endl;

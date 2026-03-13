@@ -83,35 +83,36 @@ namespace ngl
 		}
 
 		const pbdb::activity_task& ltask = itor->second;
-		for (int32_t i = 0; i < ltab->m_taskday.size(); ++i)
+		for (std::size_t i = 0; i < ltab->m_taskday.size(); ++i)
 		{
+			const int32_t ltask_index = static_cast<int32_t>(i);
 			auto& item = ltab->m_taskday[i];
 			// 开启任务
 			if (lday >= item.m_begday && lday < item.m_endday)
 			{
-				auto itoropen = ltask.mopen().find(i);
+				auto itoropen = ltask.mopen().find(ltask_index);
 				if (itoropen == ltask.mopen().end())
 				{
 					auto pro = std::make_shared<mforward<np_operator_task>>(actor_activity_manage::actorid());
 					np_operator_task* lnp = pro->data();
 					lnp->m_isreceive = true;
 					lnp->m_taskids = item.m_taskids;
-					lnp->m_msg = std::format("{}:{}", activityid(), i);
+					lnp->m_msg = std::format("{}:{}", activityid(), ltask_index);
 					actor::send_actor(aroleid, nguid::make(), pro);
 				}
 			}
 			// 关闭任务
 			if (lday >= item.m_endday)
 			{
-				auto itoropen = ltask.mopen().find(i);
-				auto itorclose = ltask.mclose().find(i);
+				auto itoropen = ltask.mopen().find(ltask_index);
+				auto itorclose = ltask.mclose().find(ltask_index);
 				if (itoropen != ltask.mopen().end() && itorclose == ltask.mclose().end())
 				{
 					auto pro = std::make_shared<mforward<np_operator_task>>(actor_activity_manage::actorid());
 					np_operator_task* lnp = pro->data();
 					lnp->m_isreceive = false;
 					lnp->m_taskids = item.m_taskids;
-					lnp->m_msg = std::format("{}:{}", activityid(), i);
+					lnp->m_msg = std::format("{}:{}", activityid(), ltask_index);
 					actor::send_actor(aroleid, nguid::make(), pro);
 				}
 			}
