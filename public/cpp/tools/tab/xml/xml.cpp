@@ -1,43 +1,197 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
-* 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
-* 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
-* 
-* 许可详情参见项目根目录下的 LICENSE 文件：
-* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*
+* Project: ngl_server
+* License: MIT
 */
 
 #include "actor/protocol/nprotocol.h"
 #include "actor/tab/ttab_servers.h"
-#include "tools/tab/xml/xmlinfo.h"
-#include "actor/tab/csvtable.h"
 #include "tools/tab/xml/xml.h"
-#include "tools/log/nlog.h"
-#include "tools/tools.h"
-#include "tools/type.h"
 
-#include <limits>
 #include <array>
+#include <cstring>
+#include <filesystem>
+#include <limits>
+#include <string>
 
 namespace ngl
 {
 	namespace
 	{
-		int16_t node_part_or_invalid(int value)
+		bool parse_node_part(int avalue, int16_t& aout)
 		{
-			if (value < static_cast<int>(std::numeric_limits<int16_t>::min()) ||
-				value > static_cast<int>(std::numeric_limits<int16_t>::max()))
+			if (avalue < static_cast<int>(std::numeric_limits<int16_t>::min()) ||
+				avalue > static_cast<int>(std::numeric_limits<int16_t>::max()))
 			{
 				tools::no_core_dump();
-				return -1;
+				return false;
 			}
-			return static_cast<int16_t>(value);
+			aout = static_cast<int16_t>(avalue);
+			return true;
 		}
+
+		template <typename T>
+		bool pop_required(tinyxml2::XMLElement* aroot, const char* akey, T& aout)
+		{
+			return xml_serialize<false, T>::pop(aroot, akey, aout);
+		}
+
+		template <typename T>
+		bool pop_optional(tinyxml2::XMLElement* aroot, const char* akey, T& aout)
+		{
+			T parsed{};
+			if (!xml_serialize<false, T>::pop(aroot, akey, parsed))
+			{
+				return true;
+			}
+			aout = std::move(parsed);
+			return true;
+		}
+
+		template <typename T>
+		bool pop_optional_any(tinyxml2::XMLElement* aroot, std::initializer_list<const char*> akeys, T& aout)
+		{
+			for (const char* key : akeys)
+			{
+				T parsed{};
+				if (xml_serialize<false, T>::pop(aroot, key, parsed))
+				{
+					aout = std::move(parsed);
+					return true;
+				}
+			}
+			return true;
+		}
+
+		bool has_data(const xarg_db& adb)
+		{
+			return adb.m_port != 0 ||
+				!adb.m_ip.empty() ||
+				!adb.m_account.empty() ||
+				!adb.m_passworld.empty() ||
+				!adb.m_dbname.empty();
+		}
+
+		bool has_data(const xarg_mail& amail)
+		{
+			return !amail.m_smtp.empty() ||
+				!amail.m_email.empty() ||
+				!amail.m_password.empty() ||
+				!amail.m_name.empty() ||
+				!amail.m_recvs.empty();
+		}
+
+		bool has_data(const xarg_telnet& atelnet)
+		{
+			return !atelnet.m_account.empty() || !atelnet.m_password.empty();
+		}
+
+		bool has_data(const xarg_wss& awss)
+		{
+			return !awss.m_certificate_chain.empty() ||
+				!awss.m_private_key.empty() ||
+				!awss.m_ca_certificates.empty() ||
+				awss.m_verify_peer != 1;
+		}
+
+		bool has_data(const xarg_redis& aredis)
+		{
+			return !aredis.m_ip.empty() || aredis.m_port != 0 || !aredis.m_passworld.empty();
+		}
+
+		template <typename T>
+		bool push_if_present(tinyxml2::XMLElement* aroot, const char* akey, const T& avalue)
+		{
+			return has_data(avalue) ? xml_serialize<false, T>::push(aroot, akey, avalue) : true;
+		}
+	}
+
+	bool xmlnode::xml_pop(const char* axml)
+	{
+		tinyxml2::XMLDocument ldocument;
+		if (!ngl::xml::readxml(axml, ldocument))
+		{
+			return false;
+		}
+		tinyxml2::XMLElement* lelement = ngl::xml::get_child(ldocument, "xmlnode");
+		if (lelement == nullptr)
+		{
+			return false;
+		}
+		return xml_pop(lelement);
+	}
+
+	bool xmlnode::xml_push(const char* axml) const
+	{
+		tinyxml2::XMLDocument ldocument;
+		tinyxml2::XMLElement* lelement = xml::set_child(ldocument, "xmlnode");
+		if (lelement == nullptr || !xml_push(lelement))
+		{
+			return false;
+		}
+		return xml::writexml(axml, ldocument);
+	}
+
+	bool xmlnode::xml_pop(tinyxml2::XMLElement* aele)
+	{
+		if (aele == nullptr)
+		{
+			return false;
+		}
+
+		xarg_db db{};
+		xarg_db dbcross{};
+		xarg_info publicinfo{};
+		xarg_mail mail{};
+		xarg_telnet telnet{};
+		xarg_wss wss{};
+		xarg_redis redis{};
+
+		if (!pop_required(aele, "db", db) || !pop_required(aele, "public", publicinfo))
+		{
+			return false;
+		}
+		if (!pop_optional_any(aele, { "dbcross", "crossdb" }, dbcross))
+		{
+			return false;
+		}
+		if (!pop_optional(aele, "mail", mail) ||
+			!pop_optional(aele, "telnet", telnet) ||
+			!pop_optional(aele, "wss", wss) ||
+			!pop_optional(aele, "redis", redis))
+		{
+			return false;
+		}
+
+		m_db = std::move(db);
+		m_dbcross = std::move(dbcross);
+		m_public = std::move(publicinfo);
+		m_mail = std::move(mail);
+		m_telnet = std::move(telnet);
+		m_wss = std::move(wss);
+		m_redis = std::move(redis);
+		return true;
+	}
+
+	bool xmlnode::xml_push(tinyxml2::XMLElement* aele) const
+	{
+		if (aele == nullptr)
+		{
+			return false;
+		}
+
+		if (!xml_serialize<false, xarg_db>::push(aele, "db", m_db) ||
+			!xml_serialize<false, xarg_info>::push(aele, "public", m_public))
+		{
+			return false;
+		}
+
+		return push_if_present(aele, "dbcross", m_dbcross) &&
+			push_if_present(aele, "mail", m_mail) &&
+			push_if_present(aele, "telnet", m_telnet) &&
+			push_if_present(aele, "wss", m_wss) &&
+			push_if_present(aele, "redis", m_redis);
 	}
 
 	void xmlnode::init()
@@ -87,9 +241,18 @@ namespace ngl
 
 	void xmlnode::set_nodeid(int atid, int atcount)
 	{
-		m_nodeid = nnodeid::nodeid(node_part_or_invalid(atid), node_part_or_invalid(atcount));
-		m_tid = nnodeid::tid(m_nodeid);
-		m_tcount = nnodeid::tcount(m_nodeid);
+		int16_t tid = -1;
+		int16_t tcount = -1;
+		if (!parse_node_part(atid, tid) || !parse_node_part(atcount, tcount))
+		{
+			m_nodeid = nnodeid::nodeid(static_cast<int16_t>(-1), static_cast<int16_t>(-1));
+			m_tid = -1;
+			m_tcount = -1;
+			return;
+		}
+		m_nodeid = nnodeid::nodeid(tid, tcount);
+		m_tid = tid;
+		m_tcount = tcount;
 	}
 
 	void xmlnode::set_servername(const std::string& asername)
@@ -104,35 +267,38 @@ namespace ngl
 
 	bool xmlnode::load(const std::string& axmlpath, const std::string& aname)
 	{
+		namespace fs = std::filesystem;
+
 		m_configname = aname;
-		const std::array<std::string, 4> candidates = {
-			std::format("{}/config/config_{}.xml", axmlpath, aname),
-			std::format("{}/config_{}.xml", axmlpath, aname),
-			std::format("{}/config/config.xml", axmlpath),
-			std::format("{}/config.xml", axmlpath),
+		const fs::path base(axmlpath);
+		const std::array<fs::path, 4> candidates = {
+			base / "config" / std::format("config_{}.xml", aname),
+			base / std::format("config_{}.xml", aname),
+			base / "config" / "config.xml",
+			base / "config.xml",
 		};
 
-		std::string lxmlname;
-		for (const std::string& candidate : candidates)
+		fs::path config_path;
+		for (const fs::path& candidate : candidates)
 		{
-			if (tools::file_exists(candidate))
+			if (tools::file_exists(candidate.string()))
 			{
-				lxmlname = candidate;
+				config_path = candidate;
 				break;
 			}
 		}
 
-		if (lxmlname.empty())
+		if (config_path.empty())
 		{
-			m_configfile = candidates[0];
+			m_configfile = candidates.front().string();
 			log_error()->print("xmlnode config file not found [{}]", m_configfile);
 			return false;
 		}
-		m_configfile = lxmlname;
 
-		log_error()->print("begin xmlnode read [{}]", lxmlname);
-		bool ok = xml_pop(lxmlname.c_str());
-		log_error()->print("finish xmlnode read [{}] ok={}", lxmlname, ok);
+		m_configfile = config_path.string();
+		log_error()->print("begin xmlnode read [{}]", m_configfile);
+		const bool ok = xml_pop(m_configfile.c_str());
+		log_error()->print("finish xmlnode read [{}] ok={}", m_configfile, ok);
 		return ok;
 	}
 
@@ -192,11 +358,11 @@ namespace ngl
 		{
 			return crossdb().m_db;
 		}
-		else if (NODE_TYPE::DB == nconfig.nodetype())
+		if (NODE_TYPE::DB == nconfig.nodetype())
 		{
 			return db().m_db;
 		}
-		return (xarg_db::edb)(-1);
+		return static_cast<xarg_db::edb>(-1);
 	}
 
 	xarg_mail& xmlnode::mail()
@@ -218,4 +384,5 @@ namespace ngl
 	{
 		return m_redis;
 	}
+
 }// namespace ngl

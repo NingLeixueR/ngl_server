@@ -1,22 +1,15 @@
-﻿/*
+/*
 * Copyright (c) [2020-2025] NingLeixueR
-* 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
-* 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
-* 
-* 许可详情参见项目根目录下的 LICENSE 文件：
-* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*
+* Project: ngl_server
+* License: MIT
 */
 #pragma once
 
-#include "tools/tab/xml/xml_serialize.h"
-#include "tools/tab/xml/xmlinfo.h"
 #include "actor/tab/csvtable.h"
 #include "tools/log/nlog.h"
+#include "tools/tab/xml/xml_serialize.h"
+#include "tools/tab/xml/xmlinfo.h"
 #include "tools/tools.h"
 #include "tools/type.h"
 
@@ -33,14 +26,14 @@ namespace ngl
 		xarg_redis	m_redis;
 
 		std::string	m_nodename;
-		NODE_TYPE	m_nodetype;
-		i32_serverid m_nodeid = 0;		// server id
-		int16_t		m_tid = 0;			// 对应tab_servers表中的id
-		int16_t		m_tcount = 0;		// 实例id
+		NODE_TYPE	m_nodetype{};
+		i32_serverid m_nodeid = 0;
+		int16_t		m_tid = 0;
+		int16_t		m_tcount = 0;
 
-		std::string m_servername;			// 程序名称
-		std::string m_configfile;			
-		std::string m_configname;			
+		std::string m_servername;
+		std::string m_configfile;
+		std::string m_configname;
 
 	public:
 		static xmlnode& instance()
@@ -49,7 +42,10 @@ namespace ngl
 			return ltemp;
 		}
 
-		DXMLSERIALIZE(xmlnode, false, m_db, m_dbcross, m_public, m_mail, m_telnet, m_wss)
+		bool xml_pop(const char* axml);
+		bool xml_push(const char* axml) const;
+		bool xml_pop(tinyxml2::XMLElement* aele);
+		bool xml_push(tinyxml2::XMLElement* aele) const;
 
 		void init();
 
@@ -93,9 +89,10 @@ namespace ngl
 
 		xarg_wss& wss();
 
-		xarg_redis&	redis();
+		xarg_redis& redis();
 	};
 }//namespace ngl
+
 #define nconfig ngl::xmlnode::instance()
 
 namespace ngl

@@ -232,7 +232,7 @@ namespace ngl
 	template <typename T>
 	void actor_base::send_client(const T& adata, ENET_PROTOCOL aprotocol/* = ENET_TCP*/)
 	{
-		std::set<i32_serverid>& lgatewayids = sysconfig::gatewayids();
+		const std::set<i32_serverid>& lgatewayids = sysconfig::gatewayids();
 		if (!lgatewayids.empty())
 		{
 			auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();

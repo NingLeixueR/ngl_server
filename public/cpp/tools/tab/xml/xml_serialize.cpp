@@ -1,18 +1,13 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
-* 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
-* 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
-* 
-* 许可详情参见项目根目录下的 LICENSE 文件：
-* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*
+* Project: ngl_server
+* License: MIT
 */
 
 #include "tools/tab/xml/xml_serialize.h"
+
+#include <cstring>
 
 namespace ngl
 {
@@ -24,7 +19,7 @@ namespace ngl
 		}
 		if (axml.LoadFile(aname) != tinyxml2::XML_SUCCESS)
 		{
-			std::cout << "Failed to load XML file[" << aname << "]." << std::endl;
+			std::cout << "Failed to load XML file[" << aname << "]: " << axml.ErrorStr() << std::endl;
 			return false;
 		}
 		return true;
@@ -36,41 +31,57 @@ namespace ngl
 		{
 			return false;
 		}
-		tinyxml2::XMLError lerror = axml.SaveFile(aname);
-		return lerror == tinyxml2::XML_SUCCESS;
+		return axml.SaveFile(aname) == tinyxml2::XML_SUCCESS;
 	}
 
 	tinyxml2::XMLElement* xml::get_child(tinyxml2::XMLElement* aele, const char* astr)
 	{
-		if (aele == nullptr || astr == nullptr)
+		if (aele == nullptr || astr == nullptr || *astr == '\0')
 		{
 			return nullptr;
 		}
-		std::vector<std::string> lvec;
-		if (tools::splite(astr, ".", lvec) == false)
+
+		if (std::strchr(astr, '.') == nullptr)
 		{
-			return nullptr;
+			return aele->FirstChildElement(astr);
 		}
-		tinyxml2::XMLElement* valElement = aele;
-		for (auto& item : lvec)
+
+		tinyxml2::XMLElement* current = aele;
+		std::string segment;
+		segment.reserve(std::strlen(astr));
+
+		const char* begin = astr;
+		while (current != nullptr && *begin != '\0')
 		{
-			valElement = valElement->FirstChildElement(item.c_str());
-			if (valElement == nullptr)
+			const char* dot = std::strchr(begin, '.');
+			const std::size_t length = dot == nullptr ? std::strlen(begin) : static_cast<std::size_t>(dot - begin);
+			if (length == 0)
 			{
 				return nullptr;
 			}
+			segment.assign(begin, length);
+			current = current->FirstChildElement(segment.c_str());
+			if (dot == nullptr)
+			{
+				return current;
+			}
+			begin = dot + 1;
 		}
-		return valElement;
+		return nullptr;
 	}
 
 	tinyxml2::XMLElement* xml::get_child(tinyxml2::XMLDocument& axml, const char* astr)
 	{
+		if (astr == nullptr || *astr == '\0')
+		{
+			return nullptr;
+		}
 		return axml.FirstChildElement(astr);
 	}
 
 	tinyxml2::XMLElement* xml::set_child(tinyxml2::XMLElement* aele, const char* astr)
 	{
-		if (aele == nullptr || astr == nullptr)
+		if (aele == nullptr || astr == nullptr || *astr == '\0')
 		{
 			return nullptr;
 		}
@@ -94,15 +105,11 @@ namespace ngl
 		{
 			return false;
 		}
-		for (tinyxml2::XMLNode* child = aele->FirstChildElement(); child; child = child->NextSiblingElement())
+		for (tinyxml2::XMLElement* child = aele->FirstChildElement(akey); child != nullptr; child = child->NextSiblingElement(akey))
 		{
-			tinyxml2::XMLElement* lxele = child->ToElement();
-			if (lxele != nullptr && std::string(lxele->Name()) == akey)
+			if (!afun(child))
 			{
-				if (!afun(lxele))
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 		return true;
@@ -114,15 +121,11 @@ namespace ngl
 		{
 			return false;
 		}
-		for (tinyxml2::XMLNode* child = aele->FirstChildElement(); child; child = child->NextSiblingElement())
+		for (tinyxml2::XMLElement* child = aele->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
 		{
-			tinyxml2::XMLElement* lxele = child->ToElement();
-			if (lxele != nullptr)
+			if (!afun(child))
 			{
-				if (!afun(lxele))
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 		return true;
@@ -134,11 +137,9 @@ namespace ngl
 		{
 			return false;
 		}
-		for (const tinyxml2::XMLAttribute* attribute = aele->FirstAttribute(); attribute; attribute = attribute->Next())
+		for (const tinyxml2::XMLAttribute* attribute = aele->FirstAttribute(); attribute != nullptr; attribute = attribute->Next())
 		{
-			const char* lkey = attribute->Name();
-			const char* lval = attribute->Value();
-			if (!afun(lkey, lval))
+			if (!afun(attribute->Name(), attribute->Value()))
 			{
 				return false;
 			}

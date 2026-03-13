@@ -1,35 +1,56 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
-* 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
-* 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
-* 
-* 许可详情参见项目根目录下的 LICENSE 文件：
-* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*
+* Project: ngl_server
+* License: MIT
 */
 
 #include "tools/tab/xml/xmlinfo.h"
-#include "tools/tools.h"
 
-#include <string>
+#include <algorithm>
+#include <cctype>
+#include <string_view>
 
 namespace ngl
 {
-	bool xarg_info::find(const char* akey, bool& adata)
+	const std::string* xarg_info::find_raw(const char* akey) const
 	{
 		if (akey == nullptr)
 		{
-			return false;
+			return nullptr;
 		}
-		std::string* lp = tools::findmap(m_data, akey);
+		return tools::findmap(m_data, akey);
+	}
+
+	bool xarg_info::find(const char* akey, bool& adata) const
+	{
+		const std::string* lp = find_raw(akey);
 		if (lp == nullptr)
 		{
 			return false;
 		}
+
+		std::string normalized;
+		normalized.reserve(lp->size());
+		for (unsigned char ch : *lp)
+		{
+			if (std::isspace(ch) == 0)
+			{
+				normalized.push_back(static_cast<char>(std::tolower(ch)));
+			}
+		}
+
+		if (normalized == "true" || normalized == "1" || normalized == "yes" || normalized == "on")
+		{
+			adata = true;
+			return true;
+		}
+		if (normalized == "false" || normalized == "0" || normalized == "no" || normalized == "off")
+		{
+			adata = false;
+			return true;
+		}
+
 		try
 		{
 			adata = tools::lexical_cast<bool>(*lp);
@@ -41,26 +62,14 @@ namespace ngl
 		}
 	}
 
-	bool xarg_info::find(const char* akey, std::string& adata)
+	bool xarg_info::find(const char* akey, std::string& adata) const
 	{
-		if (akey == nullptr)
-		{
-			return false;
-		}
-		std::string* lp = tools::findmap(m_data, akey);
+		const std::string* lp = find_raw(akey);
 		if (lp == nullptr)
 		{
 			return false;
 		}
 		adata = *lp;
 		return true;
-	}
-
-	void xarg_info::foreach(const std::function<void(const std::pair<const std::string, std::string>&)>& afun)
-	{
-		for (auto& item : m_data)
-		{
-			afun(item);
-		}
 	}
 }// namespace ngl

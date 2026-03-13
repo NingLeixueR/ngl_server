@@ -1,15 +1,8 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
-* 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
-* 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
-* 
-* 许可详情参见项目根目录下的 LICENSE 文件：
-* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
+*
+* Project: ngl_server
+* License: MIT
 */
 #pragma once
 
@@ -17,9 +10,10 @@
 #include "tools/tools.h"
 #include "tools/type.h"
 
-#include <string>
+#include <functional>
 #include <map>
 #include <set>
+#include <string>
 
 namespace ngl
 {
@@ -30,7 +24,8 @@ namespace ngl
 			edb_mysql = 0,
 			edb_postgresql = 1,
 		};
-		edb			m_db;		// mysql/postgresql
+
+		edb			m_db{};
 		std::string m_ip;
 		uint32_t	m_port = 0;
 		std::string m_account;
@@ -80,6 +75,8 @@ namespace ngl
 	class xarg_info
 	{
 		std::map<std::string, std::string> m_data;
+
+		const std::string* find_raw(const char* akey) const;
 	public:
 		DXMLSERIALIZE(xarg_info, false, m_data)
 
@@ -88,15 +85,20 @@ namespace ngl
 			return m_data;
 		}
 
-		//# 根据key查找value
-		template <typename TVALUE>
-		bool find(const char* akey, TVALUE& adata)
+		const std::map<std::string, std::string>& data() const
 		{
-			if (akey == nullptr)
-			{
-				return false;
-			}
-			std::string* lp = tools::findmap(m_data, akey);
+			return m_data;
+		}
+
+		std::size_t size() const noexcept
+		{
+			return m_data.size();
+		}
+
+		template <typename TVALUE>
+		bool find(const char* akey, TVALUE& adata) const
+		{
+			const std::string* lp = find_raw(akey);
 			if (lp == nullptr)
 			{
 				return false;
@@ -113,14 +115,18 @@ namespace ngl
 			return true;
 		}
 
-		//# 根据key查找value
-		bool find(const char* akey, bool& adata);
+		bool find(const char* akey, bool& adata) const;
 
-		//# 根据key查找value
-		bool find(const char* akey, std::string& adata);
+		bool find(const char* akey, std::string& adata) const;
 
-		//# 遍历所有key/value
-		void foreach(const std::function<void(const std::pair<const std::string, std::string>&)>& afun);
+		template <typename TFUN>
+		void foreach(TFUN&& afun) const
+		{
+			for (const auto& item : m_data)
+			{
+				afun(item);
+			}
+		}
 	};
 
 	struct xarg_redis
