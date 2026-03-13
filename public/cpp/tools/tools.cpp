@@ -1120,13 +1120,27 @@ namespace ngl
 		{
 			return;
 		}
-		if (sysconfig::xorkeynum() < 1 || sysconfig::xorkey().empty())
+		const std::string& key = sysconfig::xorkey();
+		const int32_t keylen = sysconfig::xorkeynum();
+		if (keylen < 1 || key.empty())
 		{
 			return;
 		}
-		for (int i = 0, j = apos; i < aplen; ++i, ++j)
+
+		int32_t key_index = apos % keylen;
+		if (key_index < 0)
 		{
-			ap[i] = ap[i] ^ sysconfig::xorkey()[j & sysconfig::xorkeynum()];
+			key_index += keylen;
+		}
+
+		for (int i = 0; i < aplen; ++i)
+		{
+			ap[i] = ap[i] ^ key[static_cast<std::size_t>(key_index)];
+			++key_index;
+			if (key_index == keylen)
+			{
+				key_index = 0;
+			}
 		}
 	}
 }//namespace ngl
