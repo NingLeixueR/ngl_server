@@ -308,7 +308,7 @@ namespace ngl
 			{
 				for (auto& item : lvec)
 				{
-					lparsed.push_back(tools::lexical_cast<T>(item.c_str()));
+					lparsed.emplace_back(tools::lexical_cast<T>(item.c_str()));
 				}
 			}
 			catch (const boost::bad_lexical_cast&)
@@ -332,7 +332,7 @@ namespace ngl
 			{
 				for (auto& item : lvec)
 				{
-					lparsed.insert(tools::lexical_cast<T>(item.c_str()));
+					lparsed.emplace(tools::lexical_cast<T>(item.c_str()));
 				}
 			}
 			catch (const boost::bad_lexical_cast&)
@@ -407,6 +407,7 @@ namespace ngl
 				return false;
 			}
 			std::vector<std::pair<TFIRST, TSECOND>> lmailvec;
+			lmailvec.reserve(lvec.size());
 			for (auto& item : lvec)
 			{
 				std::pair<TFIRST, TSECOND> lpair;
@@ -414,7 +415,7 @@ namespace ngl
 				{
 					return false;
 				}
-				lmailvec.push_back(lpair);
+				lmailvec.emplace_back(std::move(lpair));
 			}
 			avec = std::move(lmailvec);
 			return true;
@@ -438,7 +439,7 @@ namespace ngl
 				{
 					return false;
 				}
-				lparsed.insert(lpair);
+				lparsed.emplace(std::move(lpair));
 			}
 			amap.insert(lparsed.begin(), lparsed.end());
 			return true;
@@ -468,6 +469,14 @@ namespace ngl
 
 		static bool splicing(const std::vector<std::string>& avec, const char* afg, std::string& astr)
 		{
+			const std::size_t lfglen = std::strlen(afg);
+			std::size_t lappend_size = avec.empty() ? 0 : lfglen * (avec.size() - 1);
+			for (const auto& item : avec)
+			{
+				lappend_size += item.size();
+			}
+			astr.reserve(astr.size() + lappend_size);
+
 			for (std::size_t i = 0; i < avec.size(); ++i)
 			{
 				if (i != 0)
@@ -525,6 +534,14 @@ namespace ngl
 		template <typename T>
 		static bool splicing(const std::set<std::string>& aset, const char* afg, std::string& astr)
 		{
+			const std::size_t lfglen = std::strlen(afg);
+			std::size_t lappend_size = aset.empty() ? 0 : lfglen * (aset.size() - 1);
+			for (const auto& item : aset)
+			{
+				lappend_size += item.size();
+			}
+			astr.reserve(astr.size() + lappend_size);
+
 			for (auto itor = aset.begin(); itor != aset.end(); ++itor)
 			{
 				if (itor != aset.begin())

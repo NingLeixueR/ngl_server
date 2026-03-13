@@ -52,6 +52,21 @@
 
 constexpr auto GUID_LEN = 64;
 
+namespace
+{
+	constexpr char G_HEX_DIGITS[] = "0123456789ABCDEF";
+
+	inline bool is_url_encode_passthrough(unsigned char achar)
+	{
+		return (achar >= '0' && achar <= '9')
+			|| (achar >= 'A' && achar <= 'Z')
+			|| (achar >= 'a' && achar <= 'z')
+			|| achar == '-'
+			|| achar == '_'
+			|| achar == '.';
+	}
+}
+
 namespace ngl
 { 
 	//A类地址：10.0.0.0--10.255.255.255
@@ -668,62 +683,52 @@ namespace ngl
 		{
 			return false;
 		}
-		const size_t lfglen = std::strlen(afg);
-		std::string ltemp;
-		for (const char* lp1 = abuff; *lp1 != '\0';)
+		const std::size_t lfglen = std::strlen(afg);
+		std::string_view lsource(abuff);
+		const std::string_view ldelimiter(afg, lfglen);
+		std::size_t lbegin = 0;
+		while (true)
 		{
-			if (std::strncmp(lp1, afg, lfglen) == 0)
+			const std::size_t lpos = lsource.find(ldelimiter, lbegin);
+			if (lpos == std::string_view::npos)
 			{
-				avec.push_back(ltemp);
-				ltemp.clear();
-				lp1 += lfglen;
+				break;
 			}
-			else
-			{
-				ltemp += *lp1;
-				++lp1;
-			}
+
+			avec.emplace_back(lsource.substr(lbegin, lpos - lbegin));
+			lbegin = lpos + lfglen;
 		}
-		if (ltemp.empty() == false)
+		if (lbegin < lsource.size())
 		{
-			avec.push_back(ltemp);
+			avec.emplace_back(lsource.substr(lbegin));
 		}
 		return !avec.empty();
 	}
 
 	std::string tools::char2hex(char dec)
 	{
-		char dig1 = (dec & 0xF0) >> 4;
-		char dig2 = (dec & 0x0F);
-		if (0 <= dig1 && dig1 <= 9) dig1 += 48;    //0,48 in ascii
-		if (10 <= dig1 && dig1 <= 15) dig1 += 65 - 10; //A,65 in ascii
-		if (0 <= dig2 && dig2 <= 9) dig2 += 48;
-		if (10 <= dig2 && dig2 <= 15) dig2 += 65 - 10;
-
-		std::string r;
-		r.append(&dig1, 1);
-		r.append(&dig2, 1);
-		return r;
+		const unsigned char lvalue = static_cast<unsigned char>(dec);
+		std::string lret(2, '\0');
+		lret[0] = G_HEX_DIGITS[lvalue >> 4];
+		lret[1] = G_HEX_DIGITS[lvalue & 0x0F];
+		return lret;
 	}
 
 	std::string tools::url_encode(const std::string& c)
 	{
 		std::string escaped;
-		int max = (int)c.length();
-		for (int i = 0; i < max; i++)
+		escaped.reserve(c.size() * 3);
+		for (unsigned char achar : c)
 		{
-			if ((48 <= c[i] && c[i] <= 57) ||//0-9
-				(65 <= c[i] && c[i] <= 90) ||//ABC...XYZ
-				(97 <= c[i] && c[i] <= 122) || //abc...xyz
-				(c[i] == '-' || c[i] == '_' || c[i] == '.')//(c[i]=='~' || c[i]=='-' || c[i]=='_' || c[i]=='.')
-				)
+			if (is_url_encode_passthrough(achar))
 			{
-				escaped.append(&c[i], 1);
+				escaped.push_back(static_cast<char>(achar));
 			}
 			else
 			{
-				escaped.append("%");
-				escaped.append(char2hex(c[i]));//converts char 255 to string "FF"
+				escaped.push_back('%');
+				escaped.push_back(G_HEX_DIGITS[achar >> 4]);
+				escaped.push_back(G_HEX_DIGITS[achar & 0x0F]);
 			}
 		}
 		return escaped;
@@ -732,21 +737,22 @@ namespace ngl
 	std::string tools::url_decode(const std::string& szToDecode)
 	{
 		std::string result;
+		result.reserve(szToDecode.size());
 		int hex = 0;
 		for (size_t i = 0; i < szToDecode.length(); ++i)
 		{
 			switch (szToDecode[i])
 			{
 			case '+':
-				result += ' ';
+				result.push_back(' ');
 				break;
 			case '%':
 				if (i + 2 < szToDecode.length()
 					&& std::isxdigit(static_cast<unsigned char>(szToDecode[i + 1])) != 0
 					&& std::isxdigit(static_cast<unsigned char>(szToDecode[i + 2])) != 0)
 				{
-					std::string hexStr = szToDecode.substr(i + 1, 2);
-					hex = strtol(hexStr.c_str(), 0, 16);
+					char hexStr[3] = { szToDecode[i + 1], szToDecode[i + 2], '\0' };
+					hex = strtol(hexStr, 0, 16);
 					//字母和数字[0-9a-zA-Z]、一些特殊符号[$-_.+!*'(),] 、以及某些保留字[$&+,/:;=?@]
 					//可以不经过编码直接用于URL
 					if (!((hex >= 48 && hex <= 57) ||	//0-9
@@ -758,17 +764,17 @@ namespace ngl
 						|| hex == 0x3A || hex == 0x3B || hex == 0x3D || hex == 0x3f || hex == 0x40 || hex == 0x5f
 						))
 					{
-						result += char(hex);
+						result.push_back(static_cast<char>(hex));
 						i += 2;
 					}
-					else result += '%';
+					else result.push_back('%');
 				}
 				else {
-					result += '%';
+					result.push_back('%');
 				}
 				break;
 			default:
-				result += szToDecode[i];
+				result.push_back(szToDecode[i]);
 				break;
 			}
 		}
@@ -1768,21 +1774,35 @@ namespace ngl
 		{
 			return lvec;
 		}
-		size_t lreadpos = 0;
-		while (lreadpos < abuffsize)
+
+		std::size_t lline_count = 1;
+		for (std::size_t i = 0; i + 1 < abuffsize; ++i)
 		{
-			std::string_view strref(apbuff + lreadpos, abuffsize - lreadpos);
-			size_t pos = strref.find("\r\n");
-			if (pos != std::string_view::npos)
+			if (apbuff[i] == '\r' && apbuff[i + 1] == '\n')
 			{
-				lvec.emplace_back(std::string_view(strref.data(), pos));
-				lreadpos += pos + 2;
+				++lline_count;
+				++i;
 			}
-			else
+		}
+		lvec.reserve(lline_count);
+
+		const char* lline_begin = apbuff;
+		const char* lcursor = apbuff;
+		const char* lend = apbuff + abuffsize;
+		while (lcursor + 1 < lend)
+		{
+			if (lcursor[0] == '\r' && lcursor[1] == '\n')
 			{
-				lvec.emplace_back(strref);
-				break;
+				lvec.emplace_back(lline_begin, static_cast<std::size_t>(lcursor - lline_begin));
+				lcursor += 2;
+				lline_begin = lcursor;
+				continue;
 			}
+			++lcursor;
+		}
+		if (lline_begin < lend)
+		{
+			lvec.emplace_back(lline_begin, static_cast<std::size_t>(lend - lline_begin));
 		}
 		return lvec;
 	}
@@ -1990,25 +2010,22 @@ namespace ngl
 		{
 			return lpbuffs;
 		}
-		int j = 0;
-		for (int32_t i = 0; i < abuffcount; )
+		lpbuffs.reserve(static_cast<std::size_t>(std::count(apbuff, apbuff + abuffcount, ',')) + 1);
+		int32_t lbegin = 0;
+		for (int32_t i = 0; i < abuffcount; ++i)
 		{
 			if (apbuff[i] == ',')
 			{
 				apbuff[i] = '\0';
-				lpbuffs.push_back(&apbuff[j]);
-				j = ++i;
-				if (j < abuffcount && apbuff[j] == ' ')
+				lpbuffs.push_back(&apbuff[lbegin]);
+				lbegin = i + 1;
+				if (lbegin < abuffcount && apbuff[lbegin] == ' ')
 				{
-					j = ++i;
+					++lbegin;
 				}
 			}
-			else
-			{
-				++i;
-			}
 		}
-		lpbuffs.push_back(&apbuff[j]);
+		lpbuffs.push_back(&apbuff[lbegin]);
 		return lpbuffs;
 	}
 

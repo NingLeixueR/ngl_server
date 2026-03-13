@@ -19,6 +19,11 @@
 
 namespace ngl
 {
+	namespace
+	{
+		constexpr std::size_t G_SERVER_SESSION_RESERVE = 64;
+	}
+
 	std::unordered_map<i32_serverid, i32_sessionid> server_session::m_server;
 	std::unordered_map<i32_sessionid, i32_serverid> server_session::m_session;
 	std::shared_mutex server_session::m_mutex;
@@ -27,20 +32,26 @@ namespace ngl
 	{
 		{
 			lock_write(m_mutex);
-			i32_sessionid loldsession = -1;
-			if (tools::erasemap(m_server, aserverid, loldsession))
+			if (m_server.empty())
 			{
-				m_session.erase(loldsession);
+				m_server.reserve(G_SERVER_SESSION_RESERVE);
+				m_session.reserve(G_SERVER_SESSION_RESERVE);
 			}
 
-			i32_serverid loldserver = -1;
-			if (tools::erasemap(m_session, asession, loldserver))
+			if (const auto lserver_it = m_server.find(aserverid); lserver_it != m_server.end())
 			{
-				m_server.erase(loldserver);
+				m_session.erase(lserver_it->second);
+				m_server.erase(lserver_it);
 			}
 
-			m_server.insert_or_assign(aserverid, asession);
-			m_session.insert_or_assign(asession, aserverid);
+			if (const auto lsession_it = m_session.find(asession); lsession_it != m_session.end())
+			{
+				m_server.erase(lsession_it->second);
+				m_session.erase(lsession_it);
+			}
+
+			m_server.emplace(aserverid, asession);
+			m_session.emplace(asession, aserverid);
 		}
 		if (auto tab = ttab_servers::instance().tab(nnodeid::tid(aserverid)); tab != nullptr)
 		{
@@ -53,9 +64,11 @@ namespace ngl
 		i32_serverid lserverid = 0;
 		{
 			lock_write(m_mutex);
-			if (tools::erasemap(m_session, asession, lserverid))
+			if (const auto lsession_it = m_session.find(asession); lsession_it != m_session.end())
 			{
+				lserverid = lsession_it->second;
 				m_server.erase(lserverid);
+				m_session.erase(lsession_it);
 			}
 		}
 		if (auto tab = ttab_servers::instance().tab(nnodeid::tid(lserverid)); tab != nullptr)
@@ -67,23 +80,23 @@ namespace ngl
 	i32_sessionid server_session::sessionid(i32_serverid aserverid)
 	{
 		lock_read(m_mutex);
-		auto lpsession = tools::findmap(m_server, aserverid);
-		if (lpsession == nullptr)
+		const auto liter = m_server.find(aserverid);
+		if (liter == m_server.end())
 		{
 			return -1;
 		}
-		return *lpsession;
+		return liter->second;
 	}
 
 	i32_serverid server_session::serverid(i32_sessionid asessionid)
 	{
 		lock_read(m_mutex);
-		auto lpserver = tools::findmap(m_session, asessionid);
-		if (lpserver == nullptr)
+		const auto liter = m_session.find(asessionid);
+		if (liter == m_session.end())
 		{
 			return -1;
 		}
-		return *lpserver;
+		return liter->second;
 	}
 
 	bool server_session::serverinfo(i32_serverid aserverid, str_servername& asername)

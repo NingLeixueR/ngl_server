@@ -298,6 +298,13 @@ TEST(ToolsTest, UrlDecodeHandlesIncompletePercentSequences)
 	EXPECT_EQ(ngl::tools::url_decode("value%zz"), "value%zz");
 }
 
+TEST(ToolsTest, UrlCodecPreservesExistingSafeEscapesAndDecodesUnsafeBytes)
+{
+	EXPECT_EQ(ngl::tools::url_encode("A z+"), "A%20z%2B");
+	EXPECT_EQ(ngl::tools::url_decode("%41%20%2F%22"), "%41 %2F\"");
+	EXPECT_EQ(ngl::tools::char2hex(static_cast<char>(0xAF)), "AF");
+}
+
 TEST(ToolsTest, GetLineHonorsProvidedBufferLength)
 {
 	const std::string data = "alpha\r\nbeta\r\ngamma";
@@ -318,6 +325,20 @@ TEST(ToolsTest, SpliteRejectsEmptyDelimiterAndHandlesLongerDelimiters)
 	EXPECT_TRUE(ngl::tools::splite("alpha", "alphabet", values));
 	ASSERT_EQ(values.size(), 1u);
 	EXPECT_EQ(values[0], "alpha");
+}
+
+TEST(ToolsTest, SpliteKeepsIntermediateEmptyFieldsAndDropsTrailingDelimiterField)
+{
+	std::vector<std::string> values;
+	ASSERT_TRUE(ngl::tools::splite(",alpha,,beta,", ",", values));
+
+	const std::vector<std::string> expected = {
+		"",
+		"alpha",
+		"",
+		"beta",
+	};
+	EXPECT_EQ(values, expected);
 }
 
 TEST(ToolsTest, SpliteVariadicDoesNotMutateOutputsOnFailure)
