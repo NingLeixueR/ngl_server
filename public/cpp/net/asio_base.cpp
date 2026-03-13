@@ -11,14 +11,19 @@
 * 许可详情参见项目根目录下的 LICENSE 文件：
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-
-#include "net/tcp/asio_tcp.h"
 #include "net/asio_base.h"
 
 #include <algorithm>
+#include <type_traits>
 
 namespace ngl
 {
+	namespace
+	{
+		template <typename T>
+		using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
+	}
+
 	basio_ioservice* serviceio_info::get_ioservice(i32_threadid athreadid)
 	{
 		if (m_ioservices.empty())
@@ -132,5 +137,88 @@ namespace ngl
 		service_io(amsi, asessionid),
 		m_socket(m_ioservice)
 	{
+	}
+
+	service_ws::service_ws(serviceio_info& amsi, i32_session asessionid) :
+		service_io(amsi, asessionid),
+		m_stream(std::in_place_type<basio_websocket>, m_ioservice),
+		m_use_tls(false)
+	{
+		visit_stream([](auto& astream)
+			{
+				astream.binary(true);
+			}
+		);
+	}
+
+	service_ws::service_ws(serviceio_info& amsi, i32_session asessionid, basio_sslcontext& acontext) :
+		service_io(amsi, asessionid),
+		m_stream(std::in_place_type<basio_websocket_tls>, m_ioservice, acontext),
+		m_use_tls(true)
+	{
+		visit_stream([](auto& astream)
+			{
+				astream.binary(true);
+			}
+		);
+	}
+
+	basio_iptcpsocket& service_ws::socket()
+	{
+		return visit_stream([](auto& astream) -> basio_iptcpsocket&
+			{
+				using stream_type = remove_cvref_t<decltype(astream)>;
+				if constexpr (std::is_same_v<stream_type, basio_websocket>)
+				{
+					return astream.next_layer().socket();
+				}
+				else
+				{
+					return astream.next_layer().next_layer().socket();
+				}
+			}
+		);
+	}
+
+	const basio_iptcpsocket& service_ws::socket() const
+	{
+		return visit_stream([](const auto& astream) -> const basio_iptcpsocket&
+			{
+				using stream_type = remove_cvref_t<decltype(astream)>;
+				if constexpr (std::is_same_v<stream_type, basio_websocket>)
+				{
+					return astream.next_layer().socket();
+				}
+				else
+				{
+					return astream.next_layer().next_layer().socket();
+				}
+			}
+		);
+	}
+
+	bool service_ws::using_tls() const
+	{
+		return m_use_tls;
+	}
+
+	bool service_ws::message_is_text() const
+	{
+		return m_message_is_text;
+	}
+
+	void service_ws::set_message_is_text(bool avalue)
+	{
+		m_message_is_text = avalue;
+	}
+
+	beast::flat_buffer& service_ws::read_buffer()
+	{
+		return m_read_buffer;
+	}
+
+	void service_ws::consume_read_buffer(std::size_t asize)
+	{
+		m_read_buffer.consume(std::min(asize, m_read_buffer.size()));
 	}
 }// namespace ngl

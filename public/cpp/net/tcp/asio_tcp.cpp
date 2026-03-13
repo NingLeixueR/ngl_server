@@ -22,7 +22,7 @@
 
 namespace ngl
 {
-	namespace
+	namespace tcp
 	{
 		constexpr int32_t tcp_connect_interval_ms =
 			asio_tcp::etcp_connect_interval * static_cast<int32_t>(localtime::MILLISECOND);
@@ -141,8 +141,8 @@ namespace ngl
 						// 加入定时队列
 						wheel_parm lparm
 						{
-							.m_ms = tcp_connect_interval_ms,
-							.m_intervalms = [](int64_t) { return tcp_connect_interval_ms; },
+							.m_ms = ngl::tcp::tcp_connect_interval_ms,
+							.m_intervalms = [](int64_t) { return ngl::tcp::tcp_connect_interval_ms; },
 							.m_count = 1,
 							.m_fun = [this, aip, aport, afun, acount](const wheel_node*)
 							{
@@ -385,7 +385,7 @@ namespace ngl
 
 		// 步骤1: 取消所有异步操作
 		socket.cancel(ec);
-		if (!should_ignore_socket_close_error(ec))
+		if (!ngl::tcp::should_ignore_socket_close_error(ec))
 		{
 			log_error()->print("asio_tcp::close_socket cancel [{}]", ec.message());
 		}
@@ -395,7 +395,7 @@ namespace ngl
 		{
 			socket.shutdown(basio_iptcpsocket::shutdown_both, ec);
 			// 忽略"not_connected"错误（可能已自然关闭）
-			if (!should_ignore_socket_close_error(ec))
+			if (!ngl::tcp::should_ignore_socket_close_error(ec))
 			{
 				log_error()->print("asio_tcp::close_socket shutdown [{}]", ec.message());
 			}
@@ -405,7 +405,7 @@ namespace ngl
 		if (socket.is_open())
 		{
 			socket.close(ec);
-			if (!should_ignore_socket_close_error(ec))
+			if (!ngl::tcp::should_ignore_socket_close_error(ec))
 			{
 				log_error()->print("asio_tcp::close_socket close [{}]", ec.message());
 			}

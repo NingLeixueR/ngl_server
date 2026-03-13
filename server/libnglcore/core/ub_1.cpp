@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 26-03-12 17:58:32
+// 创建时间 26-03-13 11:23:49
 #include "tools/pb_field.cpp"
 #include "tools/db/sql/postgresql/npostgresql_manage.cpp"
 #include "tools/db/sql/postgresql/npostgresql_pool.cpp"
@@ -43,6 +43,7 @@
 #include "tools/localtime.cpp"
 #include "tools/nconsume.cpp"
 #include "tools/log/nlog.cpp"
+#include "net/ws/asio_ws.cpp"
 #include "net/asio_timer.cpp"
 #include "net/asio_base.cpp"
 #include "net/tcp/ntcp.cpp"

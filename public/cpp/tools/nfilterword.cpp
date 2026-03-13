@@ -60,7 +60,7 @@ namespace ngl
             }
             cur = m_nodes[cur].m_children[c];
         }
-        m_nodes[cur].len = apattern.size();  // 标记模式串结束，记录长度
+        m_nodes[cur].len = static_cast<int>(apattern.size());  // 标记模式串结束，记录长度
     }
 
     void nfilterword::build()
@@ -358,7 +358,7 @@ namespace ngl
 
     bool nfilterword::is_emojispecial(const std::u32string& astr)
     {
-        int32_t lcount = astr.size();
+        int32_t lcount = static_cast<int32_t>(astr.size());
         for (int i = 0; i < lcount; ++i)
         {
             if (is_emojispecial(astr[i]))

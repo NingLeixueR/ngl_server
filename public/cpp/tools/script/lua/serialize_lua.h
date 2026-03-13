@@ -970,13 +970,13 @@ namespace ngl
 	class nlua_table
 	{
 		template <std::size_t... INDEX, typename ...TARGS>
-		static void push(lua_State* L, const char* aname, std::index_sequence<INDEX...>, const std::array<const char*, sizeof ...(TARGS)>& akeys, const TARGS&... args)
+		static void push(lua_State* L, std::index_sequence<INDEX...>, const std::array<const char*, sizeof ...(TARGS)>& akeys, const TARGS&... args)
 		{
 			(serialize_lua<TARGS>::table_push(L, akeys[INDEX], args), ...);
 		}
 
 		template <std::size_t... INDEX, typename ...TARGS>
-		static bool pop(lua_State* L, const char* aname, std::index_sequence<INDEX...>, const std::array<const char*, sizeof ...(TARGS)>& akeys, TARGS&... args)
+		static bool pop(lua_State* L, std::index_sequence<INDEX...>, const std::array<const char*, sizeof ...(TARGS)>& akeys, TARGS&... args)
 		{
 			
 			return (serialize_lua<TARGS>::table_pop(L, akeys[sizeof ...(TARGS) - 1 - INDEX], args) && ...);
@@ -987,7 +987,7 @@ namespace ngl
 		{
 			lua_newtable(L);
 
-			push(L, aname, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, args...);
+			push(L, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, args...);
 			
 			if (aname != nullptr)
 			{
@@ -1007,7 +1007,7 @@ namespace ngl
 				return true;
 			}
 
-			return pop(L, aname, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, args...);
+			return pop(L, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, args...);
 		}
 	};
 

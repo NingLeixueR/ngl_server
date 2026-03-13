@@ -49,7 +49,7 @@ namespace ngl
         static int newnode()
         {
             m_nodes.emplace_back();
-            return m_nodes.size() - 1;
+            return static_cast<int>(m_nodes.size() - 1);
         }
 
         nfilterword() = delete;
