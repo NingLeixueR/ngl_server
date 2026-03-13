@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 26-03-13 11:23:56
+// 创建时间 26-03-13 18:31:43
 #include "tools/pb_field.cpp"
 #include "tools/db/sql/postgresql/npostgresql_manage.cpp"
 #include "tools/db/sql/postgresql/npostgresql_pool.cpp"
@@ -144,6 +144,7 @@
 #include "actor/actor_logic/actor_gm/actor_gm.cpp"
 #include "actor/actor_base/actor_base_create.cpp"
 #include "actor/actor_logic/actor_mail/mail.cpp"
+#include "actor/actor_base/nmanage_dbclient.cpp"
 #include "actor/actor_logic/nprotocol_g2c.cpp"
 #include "actor/actor_logic/nprotocol_c2g.cpp"
 #include "actor/actor_base/actor_manage.cpp"

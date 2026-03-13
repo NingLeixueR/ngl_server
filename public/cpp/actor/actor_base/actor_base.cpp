@@ -121,7 +121,7 @@ namespace ngl
 	{
 		if (aparm.m_manage_dbclient)
 		{
-			m_dbclient = std::make_unique<actor_manage_dbclient>(this);
+			m_dbclient = std::make_unique<nmanage_dbclient>(this);
 			m_dbclient->set_loadfinish_function([this](pbdb::ENUM_DB atype, enum_dbstat astat)
 				{
 					loaddb_finish(atype, astat);
@@ -236,7 +236,7 @@ namespace ngl
 		}
 	}
 
-	std::unique_ptr<actor_manage_dbclient>& actor_base::manage_dbclient()
+	std::unique_ptr<nmanage_dbclient>& actor_base::manage_dbclient()
 	{
 		return m_dbclient;
 	}

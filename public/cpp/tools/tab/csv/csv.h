@@ -235,7 +235,8 @@ namespace ngl
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
 			std::vector<T> lparsed;
-			for (; lpair.m_pos < lpair.m_data.size();)
+			const int lsize = static_cast<int>(lpair.m_data.size());
+			for (; lpair.m_pos < lsize;)
 			{
 				T ltemp;
 				if (!csv_read<T>::read(lpair, ltemp))
@@ -263,7 +264,8 @@ namespace ngl
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
 			std::list<T> lparsed;
-			for (; lpair.m_pos < lpair.m_data.size();)
+			const int lsize = static_cast<int>(lpair.m_data.size());
+			for (; lpair.m_pos < lsize;)
 			{
 				T ltemp;
 				if (!csv_read<T>::read(lpair, ltemp))
@@ -291,7 +293,8 @@ namespace ngl
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
 			std::set<T> lparsed;
-			for (; lpair.m_pos < lpair.m_data.size();)
+			const int lsize = static_cast<int>(lpair.m_data.size());
+			for (; lpair.m_pos < lsize;)
 			{
 				T ltemp;
 				if (!csv_read<T>::read(lpair, ltemp))
@@ -397,6 +400,10 @@ namespace ngl
 				return true;
 			}
 			return false;
+		}
+		else if constexpr (std::is_arithmetic_v<T>)
+		{
+			return csv_helper::number(apair, adata);
 		}
 		else
 		{

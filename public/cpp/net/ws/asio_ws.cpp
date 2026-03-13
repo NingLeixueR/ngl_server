@@ -19,7 +19,6 @@
 
 #include <boost/asio/buffers_iterator.hpp>
 #include <openssl/ssl.h>
-
 #include <type_traits>
 #include <vector>
 

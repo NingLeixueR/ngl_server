@@ -42,7 +42,6 @@ namespace ngl
 		std::string m_configfile;			
 		std::string m_configname;			
 
-		xmlnode() = default;
 	public:
 		static xmlnode& instance()
 		{

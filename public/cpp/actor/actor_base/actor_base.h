@@ -13,6 +13,7 @@
 */
 #pragma once
 
+#include "actor/actor_base/nmanage_dbclient.h"
 #include "actor/actor_base/handle_pram.h"
 #include "actor/actor_base/nactortype.h"
 #include "actor/actor_base/nscript.h"
@@ -38,7 +39,7 @@ namespace ngl
 	class actor_base;
 	class ndb_component;
 	class ndbclient_base;
-	class actor_manage_dbclient;
+	class nmanage_dbclient;
 
 	template <typename TDBTAB>
 	struct data_modified;
@@ -138,7 +139,7 @@ namespace ngl
 	class actor_base
 	{
 		nguid										m_guid = nguid::make();			// actor guid
-		std::unique_ptr<actor_manage_dbclient>		m_dbclient = nullptr;			// dbclient组件管理
+		std::unique_ptr<nmanage_dbclient>		m_dbclient = nullptr;			// dbclient组件管理
 		bool										m_isload = false;				// 数据是否加载完成
 		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;					// dbclient组件
 
@@ -159,8 +160,8 @@ namespace ngl
 		//# 获取"ready"组件实例
 		nready& ready();
 
-		//# 获取actor_manage_dbclient实例
-		std::unique_ptr<actor_manage_dbclient>& manage_dbclient();
+		//# 获取nmanage_dbclient实例
+		std::unique_ptr<nmanage_dbclient>& manage_dbclient();
 
 		//# 设置db_component组件
 		void set_db_component(ndb_component* acomponent);
