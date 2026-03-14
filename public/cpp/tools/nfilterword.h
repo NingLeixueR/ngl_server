@@ -36,6 +36,7 @@ namespace ngl
         std::unordered_map<char, int> m_children;  // 宽字符 -> 子节点索引
         int m_fail = -1;
         int len = 0;  // 模式串长度，0表示非结尾
+        bool m_has_match = false;
     };
 
     class nfilterword

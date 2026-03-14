@@ -149,6 +149,60 @@ void load_perf_filter_words()
 	ngl::nfilterword::build();
 }
 
+struct legacy_mergearea_indexes
+{
+	std::map<ngl::i16_area, ngl::i16_area> m_merge1;
+	std::map<ngl::i16_area, std::set<ngl::i16_area>> m_merge2;
+};
+
+legacy_mergearea_indexes legacy_reload_mergeareas(const std::map<ngl::i16_area, ngl::i16_area>& adirect)
+{
+	legacy_mergearea_indexes lindexes;
+	auto resolve_mergeid = [&adirect](ngl::i16_area aarea)
+	{
+		std::set<ngl::i16_area> lvisited;
+		ngl::i16_area lcurrent = aarea;
+		while (true)
+		{
+			if (!lvisited.insert(lcurrent).second)
+			{
+				return *std::min_element(lvisited.begin(), lvisited.end());
+			}
+
+			auto it = adirect.find(lcurrent);
+			if (it == adirect.end() || it->second == lcurrent)
+			{
+				break;
+			}
+			lcurrent = it->second;
+		}
+		return lcurrent;
+	};
+
+	for (const auto& [area, _mergeid] : adirect)
+	{
+		const ngl::i16_area lroot = resolve_mergeid(area);
+		lindexes.m_merge1.emplace(area, lroot);
+		lindexes.m_merge2[lroot].insert(lroot);
+		lindexes.m_merge2[lroot].insert(area);
+	}
+	return lindexes;
+}
+
+std::unique_ptr<ngl::ttab_mergearea> make_mergearea_table(int count)
+{
+	auto table = std::make_unique<ngl::ttab_mergearea>();
+	for (int i = 1; i <= count; ++i)
+	{
+		ngl::tab_mergearea row{};
+		row.m_id = i;
+		row.m_name = std::format("area_{}", i);
+		row.m_mergeid = (i == count) ? i : (i + 1);
+		table->m_csv.emplace(row.m_id, std::move(row));
+	}
+	return table;
+}
+
 std::unique_ptr<ngl::ttab_servers> make_server_table(int count)
 {
 	auto table = std::make_unique<ngl::ttab_servers>();
@@ -234,6 +288,20 @@ TEST(TTabServersTest, FindFirstKeepsLowestMatchingServerId)
 	EXPECT_EQ(first_game->m_id, 2);
 }
 
+TEST(TTabMergeAreaTest, ReloadResolvesLongChains)
+{
+	const auto table = make_mergearea_table(6);
+	table->reload();
+
+	EXPECT_EQ(table->mergeid(1), 6);
+	EXPECT_EQ(table->mergeid(5), 6);
+	auto* merged = table->mergelist(6);
+	ASSERT_NE(merged, nullptr);
+	EXPECT_EQ(merged->size(), 6U);
+	EXPECT_TRUE(merged->contains(1));
+	EXPECT_TRUE(merged->contains(6));
+}
+
 TEST(TTabServersPerfTest, IndexedLookupBenchmark)
 {
 	const auto table = make_server_table(2000);
@@ -266,6 +334,46 @@ TEST(TTabServersPerfTest, IndexedLookupBenchmark)
 	EXPECT_GT(sink, 0);
 	EXPECT_LT(optimized_us, legacy_us);
 	std::cout << "[perf] ttab_servers_lookup legacy_us=" << legacy_us
+		<< " optimized_us=" << optimized_us << std::endl;
+}
+
+TEST(TTabMergeAreaPerfTest, MergeLookupBenchmark)
+{
+	constexpr int kAreaCount = 6000;
+	std::vector<ngl::i16_area> optimized_index(ngl::ttab_mergearea::m_merge_slot_count, ngl::nguid::none_area());
+	legacy_mergearea_indexes legacy;
+	for (int i = 1; i <= kAreaCount; ++i)
+	{
+		const ngl::i16_area area = static_cast<ngl::i16_area>(i);
+		legacy.m_merge1.emplace(area, static_cast<ngl::i16_area>(kAreaCount));
+		optimized_index[ngl::ttab_mergearea::merge_slot(area)] = static_cast<ngl::i16_area>(kAreaCount);
+	}
+	constexpr int kIterations = 200000;
+	volatile long long sink = 0;
+
+	const long long legacy_us = benchmark_us([&]() {
+		for (int i = 0; i < kIterations; ++i)
+		{
+			const ngl::i16_area larea = static_cast<ngl::i16_area>((i % kAreaCount) + 1);
+			auto it = legacy.m_merge1.find(larea);
+			if (it != legacy.m_merge1.end())
+			{
+				sink += it->second;
+			}
+		}
+	});
+
+	const long long optimized_us = benchmark_us([&]() {
+		for (int i = 0; i < kIterations; ++i)
+		{
+			const ngl::i16_area larea = static_cast<ngl::i16_area>((i % kAreaCount) + 1);
+			sink += optimized_index[ngl::ttab_mergearea::merge_slot(larea)];
+		}
+	});
+
+	EXPECT_EQ(optimized_index[ngl::ttab_mergearea::merge_slot(1)], kAreaCount);
+	EXPECT_LT(optimized_us, legacy_us);
+	std::cout << "[perf] ttab_mergearea_lookup legacy_us=" << legacy_us
 		<< " optimized_us=" << optimized_us << std::endl;
 }
 

@@ -45,6 +45,11 @@ namespace ngl
 
     void nfilterword::advance_state(char c, int& cur)
     {
+        if (m_root < 0 || static_cast<std::size_t>(m_root) >= m_nodes.size())
+        {
+            cur = -1;
+            return;
+        }
         if (cur < 0 || static_cast<std::size_t>(cur) >= m_nodes.size())
         {
             cur = m_root;
@@ -52,32 +57,56 @@ namespace ngl
 
         while (cur != m_root)
         {
+            if (cur < 0 || static_cast<std::size_t>(cur) >= m_nodes.size())
+            {
+                cur = m_root;
+                break;
+            }
+
             auto& lchildren = m_nodes[cur].m_children;
             if (auto litor = lchildren.find(c); litor != lchildren.end())
             {
                 cur = litor->second;
                 return;
             }
-            cur = m_nodes[cur].m_fail;
+
+            const int lfail = m_nodes[cur].m_fail;
+            if (lfail < 0 || static_cast<std::size_t>(lfail) >= m_nodes.size())
+            {
+                cur = m_root;
+                break;
+            }
+            cur = lfail;
         }
 
-        auto& lroot_children = m_nodes[cur].m_children;
+        auto& lroot_children = m_nodes[m_root].m_children;
         if (auto litor = lroot_children.find(c); litor != lroot_children.end())
         {
             cur = litor->second;
+        }
+        else
+        {
+            cur = m_root;
         }
     }
 
     bool nfilterword::append_matches(int cur, int i, std::vector<std::pair<int, int>>& res)
     {
         bool lmatched = false;
-        for (int temp = cur; temp != m_root; temp = m_nodes[temp].m_fail)
+        for (int temp = cur; temp >= 0 && static_cast<std::size_t>(temp) < m_nodes.size() && temp != m_root;)
         {
             if (m_nodes[temp].len > 0)
             {
                 res.emplace_back(i - m_nodes[temp].len + 1, m_nodes[temp].len);
                 lmatched = true;
             }
+
+            const int lfail = m_nodes[temp].m_fail;
+            if (lfail < 0 || static_cast<std::size_t>(lfail) >= m_nodes.size())
+            {
+                break;
+            }
+            temp = lfail;
         }
         return lmatched;
     }
@@ -90,14 +119,7 @@ namespace ngl
         }
 
         advance_state(c, cur);
-        for (int temp = cur; temp != m_root; temp = m_nodes[temp].m_fail)
-        {
-            if (m_nodes[temp].len > 0)
-            {
-                return true;
-            }
-        }
-        return false;
+        return cur >= 0 && static_cast<std::size_t>(cur) < m_nodes.size() && m_nodes[cur].m_has_match;
     }
 
     void nfilterword::load(const std::string& apattern)
@@ -110,13 +132,12 @@ namespace ngl
         int cur = m_root;
 
         for (auto c : apattern)
-        {  // 遍历宽字符（中文每个字是一个wchar_t）
-            // 若当前字符的子节点不存在，则创建
-            auto& ltemp = m_nodes[cur].m_children;
-            auto litor = ltemp.find(c);
-            if (litor == ltemp.end())
+        {
+            auto litor = m_nodes[cur].m_children.find(c);
+            if (litor == m_nodes[cur].m_children.end())
             {
-                litor = ltemp.emplace(c, newnode()).first;
+                const int lnext = newnode();
+                litor = m_nodes[cur].m_children.emplace(c, lnext).first;
             }
             cur = litor->second;
         }
@@ -124,35 +145,34 @@ namespace ngl
         {
             return;
         }
-        m_nodes[cur].len = static_cast<int>(apattern.size());  // 标记模式串结束，记录长度
+        m_nodes[cur].len = static_cast<int>(apattern.size());
+        m_nodes[cur].m_has_match = true;
     }
 
     void nfilterword::build()
     {
         ensure_initialized();
+        m_nodes[m_root].m_has_match = m_nodes[m_root].len > 0;
         std::queue<int> q;
-        // 初始化根节点的子节点：失败指针指向根
         for (auto& pair : m_nodes[m_root].m_children)
         {
             int child = pair.second;
             m_nodes[child].m_fail = m_root;
+            m_nodes[child].m_has_match = m_nodes[child].len > 0 || m_nodes[m_root].m_has_match;
             q.push(child);
         }
 
-        // BFS遍历所有节点
         while (!q.empty())
         {
             int p = q.front();
             q.pop();
 
-            // 遍历当前节点的所有子节点
             for (auto& pair : m_nodes[p].m_children)
             {
-                auto c = pair.first;   // 当前字符
-                int u = pair.second;      // 当前子节点索引
-                int fail_p = m_nodes[p].m_fail;  // 父节点的失败指针
+                auto c = pair.first;
+                int u = pair.second;
+                int fail_p = m_nodes[p].m_fail;
 
-                // 回溯失败指针：直到找到包含当前字符的节点，或根节点
                 int lnext = m_root;
                 while (fail_p != -1)
                 {
@@ -165,8 +185,8 @@ namespace ngl
                     fail_p = m_nodes[fail_p].m_fail;
                 }
 
-                // 设置当前节点的失败指针
                 m_nodes[u].m_fail = lnext;
+                m_nodes[u].m_has_match = m_nodes[u].len > 0 || m_nodes[lnext].m_has_match;
                 q.push(u);
             }
         }
@@ -251,34 +271,32 @@ namespace ngl
             return false;
         }
         ensure_initialized();
-        // 鍘婚櫎鐗规畩绗﹀彿
-        std::u32string ltemp1;
-        if (!utf8to32(text, ltemp1))
-        {
-            return false;
-        }
-        std::u32string ltemp2;
-        ltemp2.reserve(ltemp1.size());
-        for (auto item : ltemp1)
-        {
-            if (!is_emojispecial(item))
-            {
-                ltemp2.push_back(item);
-            }
-        }
-        std::string ltemp3;
-        if (!utf32to8(ltemp2, ltemp3))
-        {
-            return false;
-        }
 
         int cur = m_root;
-        for (std::string::size_type i = 0; i < ltemp3.size(); ++i)
+        try
         {
-            if (match_exists(ltemp3[i], cur))
+            auto liter = text.begin();
+            const auto lend = text.end();
+            while (liter != lend)
             {
-                return true;
+                const auto lcode_begin = liter;
+                const char32_t lcodepoint = utf8::next(liter, lend);
+                if (is_emojispecial(lcodepoint))
+                {
+                    continue;
+                }
+                for (auto lbyte = lcode_begin; lbyte != liter; ++lbyte)
+                {
+                    if (match_exists(*lbyte, cur))
+                    {
+                        return true;
+                    }
+                }
             }
+        }
+        catch (...)
+        {
+            return false;
         }
         return false;
     }
