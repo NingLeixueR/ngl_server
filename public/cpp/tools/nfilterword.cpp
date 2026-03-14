@@ -43,6 +43,63 @@ namespace ngl
         m_root = -1;
     }
 
+    void nfilterword::advance_state(char c, int& cur)
+    {
+        if (cur < 0 || static_cast<std::size_t>(cur) >= m_nodes.size())
+        {
+            cur = m_root;
+        }
+
+        while (cur != m_root)
+        {
+            auto& lchildren = m_nodes[cur].m_children;
+            if (auto litor = lchildren.find(c); litor != lchildren.end())
+            {
+                cur = litor->second;
+                return;
+            }
+            cur = m_nodes[cur].m_fail;
+        }
+
+        auto& lroot_children = m_nodes[cur].m_children;
+        if (auto litor = lroot_children.find(c); litor != lroot_children.end())
+        {
+            cur = litor->second;
+        }
+    }
+
+    bool nfilterword::append_matches(int cur, int i, std::vector<std::pair<int, int>>& res)
+    {
+        bool lmatched = false;
+        for (int temp = cur; temp != m_root; temp = m_nodes[temp].m_fail)
+        {
+            if (m_nodes[temp].len > 0)
+            {
+                res.emplace_back(i - m_nodes[temp].len + 1, m_nodes[temp].len);
+                lmatched = true;
+            }
+        }
+        return lmatched;
+    }
+
+    bool nfilterword::match_exists(char c, int& cur)
+    {
+        if (m_root < 0 || static_cast<std::size_t>(m_root) >= m_nodes.size())
+        {
+            return false;
+        }
+
+        advance_state(c, cur);
+        for (int temp = cur; temp != m_root; temp = m_nodes[temp].m_fail)
+        {
+            if (m_nodes[temp].len > 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void nfilterword::load(const std::string& apattern)
     {
         if (apattern.empty())
@@ -56,11 +113,12 @@ namespace ngl
         {  // 遍历宽字符（中文每个字是一个wchar_t）
             // 若当前字符的子节点不存在，则创建
             auto& ltemp = m_nodes[cur].m_children;
-            if (!ltemp.contains(c))
+            auto litor = ltemp.find(c);
+            if (litor == ltemp.end())
             {
-                m_nodes[cur].m_children[c] = newnode();
+                litor = ltemp.emplace(c, newnode()).first;
             }
-            cur = m_nodes[cur].m_children[c];
+            cur = litor->second;
         }
         if (apattern.size() > static_cast<std::size_t>(std::numeric_limits<int>::max()))
         {
@@ -95,13 +153,20 @@ namespace ngl
                 int fail_p = m_nodes[p].m_fail;  // 父节点的失败指针
 
                 // 回溯失败指针：直到找到包含当前字符的节点，或根节点
-                while (fail_p != -1 && !m_nodes[fail_p].m_children.contains(c))
+                int lnext = m_root;
+                while (fail_p != -1)
                 {
+                    auto& lfail_children = m_nodes[fail_p].m_children;
+                    if (auto litor = lfail_children.find(c); litor != lfail_children.end())
+                    {
+                        lnext = litor->second;
+                        break;
+                    }
                     fail_p = m_nodes[fail_p].m_fail;
                 }
 
                 // 设置当前节点的失败指针
-                m_nodes[u].m_fail = (fail_p == -1) ? m_root : m_nodes[fail_p].m_children[c];
+                m_nodes[u].m_fail = lnext;
                 q.push(u);
             }
         }
@@ -113,34 +178,9 @@ namespace ngl
         {
             return false;
         }
-        if (cur < 0 || static_cast<std::size_t>(cur) >= m_nodes.size())
-        {
-            cur = m_root;
-        }
-        // 失配回退：沿失败指针找匹配的节点
-        while (cur != m_root && !m_nodes[cur].m_children.contains(c))
-        {
-            cur = m_nodes[cur].m_fail;
-        }
 
-        // 匹配成功则移动到子节点，否则留在根节点
-        if (m_nodes[cur].m_children.contains(c))
-        {
-            cur = m_nodes[cur].m_children[c];
-        }
-
-        // 收集所有匹配的模式串（遍历失败链，处理嵌套匹配）
-        int temp = cur;
-        while (temp != m_root)
-        {
-            if (m_nodes[temp].len > 0)
-            {
-                int start = i - m_nodes[temp].len + 1;  // 计算起始位置
-                res.emplace_back(start, m_nodes[temp].len);
-            }
-            temp = m_nodes[temp].m_fail;
-        }
-        return !res.empty();
+        advance_state(c, cur);
+        return append_matches(cur, i, res);
     }
 
     std::vector<std::pair<int, int>> nfilterword::match(const std::string& text)
@@ -211,18 +251,19 @@ namespace ngl
             return false;
         }
         ensure_initialized();
-        // 去除特殊符号
+        // 鍘婚櫎鐗规畩绗﹀彿
         std::u32string ltemp1;
         if (!utf8to32(text, ltemp1))
         {
             return false;
         }
         std::u32string ltemp2;
+        ltemp2.reserve(ltemp1.size());
         for (auto item : ltemp1)
         {
             if (!is_emojispecial(item))
             {
-                ltemp2 += item;
+                ltemp2.push_back(item);
             }
         }
         std::string ltemp3;
@@ -232,10 +273,9 @@ namespace ngl
         }
 
         int cur = m_root;
-        std::vector<std::pair<int, int>> res;
         for (std::string::size_type i = 0; i < ltemp3.size(); ++i)
         {
-            if (match(ltemp3[i], cur, static_cast<int>(i), res))
+            if (match_exists(ltemp3[i], cur))
             {
                 return true;
             }

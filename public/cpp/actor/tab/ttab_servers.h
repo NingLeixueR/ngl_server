@@ -26,6 +26,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace ngl
@@ -81,6 +82,19 @@ namespace ngl
 	struct ttab_servers :
 		public csv<tab_servers>
 	{
+		struct node_type_hash
+		{
+			std::size_t operator()(NODE_TYPE avalue) const noexcept
+			{
+				return std::hash<int>{}(static_cast<int>(avalue));
+			}
+		};
+
+		using name_index = std::unordered_map<std::string, tab_servers*>;
+		using type_index = std::unordered_map<NODE_TYPE, tab_servers*, node_type_hash>;
+		using type_group_index = std::unordered_map<NODE_TYPE, std::vector<const tab_servers*>, node_type_hash>;
+		using network_index = std::unordered_map<i32_serverid, std::array<const net_works*, static_cast<std::size_t>(ENET_COUNT)>>;
+
 		ttab_servers(const ttab_servers&) = delete;
 		ttab_servers& operator=(const ttab_servers&) = delete;
 
@@ -88,10 +102,10 @@ namespace ngl
 		std::map<i16_area, std::set<i16_area>> m_coressserver;// key:应该是小于0的跨服 value:跨服对应的区服
 		std::map<i16_area, std::set<i16_area>> m_singleareas;
 
-		std::map<i16_area, std::map<std::string, tab_servers*, std::less<>>> m_areanameindex;
-		std::map<i16_area, std::map<NODE_TYPE, tab_servers*>> m_areatypeindex;
-		std::map<i16_area, std::map<NODE_TYPE, std::vector<const tab_servers*>>> m_areatypegroup;
-		std::map<i32_serverid, std::array<const net_works*, static_cast<std::size_t>(ENET_COUNT)>> m_networkindex;
+		std::map<i16_area, name_index> m_areanameindex;
+		std::map<i16_area, type_index> m_areatypeindex;
+		std::map<i16_area, type_group_index> m_areatypegroup;
+		network_index m_networkindex;
 
 		static bool normalize_area(int area, i16_area& aout)
 		{
@@ -101,6 +115,19 @@ namespace ngl
 				return false;
 			}
 			aout = static_cast<i16_area>(area);
+			return true;
+		}
+
+		static bool resolve_lookup_area(int area, i16_area& aout)
+		{
+			if (!normalize_area(area, aout))
+			{
+				return false;
+			}
+			if (const i16_area merged_area = ttab_mergearea::instance().mergeid(aout); merged_area != nguid::none_area())
+			{
+				aout = merged_area;
+			}
 			return true;
 		}
 
@@ -114,15 +141,22 @@ namespace ngl
 			m_areatypeindex.clear();
 			m_areatypegroup.clear();
 			m_networkindex.clear();
+			m_networkindex.reserve(m_csv.size());
 			foreach([&](tab_servers& atab)
 				{
-					m_areaserver[atab.m_area][atab.m_id] = &atab;
-					m_singleareas[atab.m_area].insert(atab.m_area);
-					m_areanameindex[atab.m_area].try_emplace(atab.m_name, &atab);
-					m_areatypeindex[atab.m_area].try_emplace(atab.m_type, &atab);
-					m_areatypegroup[atab.m_area][atab.m_type].push_back(&atab);
+					auto& larea_server = m_areaserver[atab.m_area];
+					auto& lsingleareas = m_singleareas[atab.m_area];
+					auto& lnameindex = m_areanameindex[atab.m_area];
+					auto& ltypeindex = m_areatypeindex[atab.m_area];
+					auto& ltypegroup = m_areatypegroup[atab.m_area];
 
-					auto& lnetwork = m_networkindex[atab.m_id];
+					larea_server[atab.m_id] = &atab;
+					lsingleareas.insert(atab.m_area);
+					lnameindex.try_emplace(atab.m_name, &atab);
+					ltypeindex.try_emplace(atab.m_type, &atab);
+					ltypegroup[atab.m_type].push_back(&atab);
+
+					auto& lnetwork = m_networkindex.try_emplace(atab.m_id).first->second;
 					lnetwork.fill(nullptr);
 					for (const net_works& item : atab.m_net)
 					{
@@ -190,14 +224,9 @@ namespace ngl
 		const tab_servers* const_tab(const std::string& aname, int area)
 		{
 			i16_area lquery_area = 0;
-			if (!normalize_area(area, lquery_area))
+			if (!resolve_lookup_area(area, lquery_area))
 			{
 				return nullptr;
-			}
-			i16_area larea = ttab_mergearea::instance().mergeid(lquery_area);
-			if (larea != nguid::none_area())
-			{
-				lquery_area = larea;
 			}
 			auto* lmap = tools::findmap(m_areanameindex, lquery_area);
 			if (lmap == nullptr)
@@ -211,14 +240,9 @@ namespace ngl
 		const tab_servers* const_tab(NODE_TYPE atype, int area)
 		{
 			i16_area lquery_area = 0;
-			if (!normalize_area(area, lquery_area))
+			if (!resolve_lookup_area(area, lquery_area))
 			{
 				return nullptr;
-			}
-			i16_area larea = ttab_mergearea::instance().mergeid(lquery_area);
-			if (larea != nguid::none_area())
-			{
-				lquery_area = larea;
 			}
 			auto* lmap = tools::findmap(m_areatypeindex, lquery_area);
 			if (lmap == nullptr)
@@ -364,9 +388,9 @@ namespace ngl
 		// 便利所有服务器
 		void foreach_server(const std::function<void(tab_servers*)>& afun)
 		{
-			ttab_mergearea::instance().for_each([&afun](i16_area aarea, [[maybe_unused]] std::set<i16_area>& aset)
+			ttab_mergearea::instance().for_each([&afun, this](i16_area aarea, [[maybe_unused]] std::set<i16_area>& aset)
 				{
-					auto lpmap = tools::findmap(ttab_servers::instance().m_areaserver, aarea);
+					auto lpmap = tools::findmap(m_areaserver, aarea);
 					if (lpmap == nullptr)
 					{
 						return;
@@ -442,17 +466,15 @@ namespace ngl
 
 		const tab_servers* find_first(NODE_TYPE atype, i16_area aarea, const std::function<bool(const tab_servers*)>& afun)
 		{
-			std::set<i32_serverid> lset;
-			serverid(atype, aarea, lset);
-			for (i32_serverid serverid : lset)
+			const tab_servers* lbest = nullptr;
+			foreach_server(atype, aarea, [&afun, &lbest](const tab_servers* ltab)
 			{
-				const tab_servers* ltab = csv<tab_servers>::tab(serverid);
-				if (ltab != nullptr && afun(ltab))
+				if (ltab != nullptr && afun(ltab) && (lbest == nullptr || ltab->m_id < lbest->m_id))
 				{
-					return ltab;
+					lbest = ltab;
 				}
-			}
-			return nullptr;
+			});
+			return lbest;
 		}
 
 		// 获取服务器所在区服(包括被合服的服务器)

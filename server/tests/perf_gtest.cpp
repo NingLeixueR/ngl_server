@@ -8,8 +8,10 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "actor/tab/ttab_servers.h"
+#include "tools/nfilterword.h"
 #include "tools/tab/csv/csv.h"
 #include "tools/tab/xml/xmlinfo.h"
 
@@ -96,6 +98,57 @@ bool legacy_csv_read_string(ngl::csvpair& apair, std::string& adata)
 	return true;
 }
 
+bool legacy_is_filter(const std::string& atext)
+{
+	if (atext.empty())
+	{
+		return false;
+	}
+
+	std::u32string decoded;
+	if (!ngl::nfilterword::utf8to32(atext, decoded))
+	{
+		return false;
+	}
+
+	std::u32string normalized;
+	normalized.reserve(decoded.size());
+	for (char32_t codepoint : decoded)
+	{
+		if (!ngl::nfilterword::is_emojispecial(codepoint))
+		{
+			normalized.push_back(codepoint);
+		}
+	}
+
+	std::string filtered;
+	if (!ngl::nfilterword::utf32to8(normalized, filtered))
+	{
+		return false;
+	}
+
+	int state = -1;
+	std::vector<std::pair<int, int>> matches;
+	for (std::string::size_type i = 0; i < filtered.size(); ++i)
+	{
+		if (ngl::nfilterword::match(filtered[i], state, static_cast<int>(i), matches))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void load_perf_filter_words()
+{
+	ngl::nfilterword::clear();
+	ngl::nfilterword::init();
+	ngl::nfilterword::load("badword");
+	ngl::nfilterword::load("unsafe");
+	ngl::nfilterword::load("123456");
+	ngl::nfilterword::build();
+}
+
 std::unique_ptr<ngl::ttab_servers> make_server_table(int count)
 {
 	auto table = std::make_unique<ngl::ttab_servers>();
@@ -168,6 +221,17 @@ TEST(TTabServersTest, ReloadClearsStaleIndexesAndCachedNetworks)
 	EXPECT_FALSE(table.get_nworks(table.const_tab("login", 1), ngl::ENET_TCP, 1, second_network));
 	ASSERT_TRUE(table.get_nworks(table.const_tab("login", 1), ngl::ENET_WS, 1, second_network));
 	EXPECT_EQ(second_network.m_port, 9100);
+}
+
+TEST(TTabServersTest, FindFirstKeepsLowestMatchingServerId)
+{
+	const auto table = make_server_table(12);
+	const ngl::tab_servers* first_game = table->find_first(ngl::GAME, 1, [](const ngl::tab_servers* row) {
+		return row->m_tcount == 1;
+	});
+
+	ASSERT_NE(first_game, nullptr);
+	EXPECT_EQ(first_game->m_id, 2);
 }
 
 TEST(TTabServersPerfTest, IndexedLookupBenchmark)
@@ -275,5 +339,38 @@ TEST(CsvPerfTest, StringFieldParsingBenchmark)
 	EXPECT_GT(sink, 0);
 	EXPECT_LT(optimized_us, legacy_us);
 	std::cout << "[perf] csv_string_parse legacy_us=" << legacy_us
+		<< " optimized_us=" << optimized_us << std::endl;
+}
+
+TEST(NFilterWordPerfTest, IsFilterBenchmark)
+{
+	load_perf_filter_words();
+	const std::string payload = std::string(2048, 'x') + "badword" + std::string(2048, 'y');
+	constexpr int kIterations = 5000;
+	volatile int sink = 0;
+
+	const long long legacy_us = benchmark_us([&]() {
+		for (int i = 0; i < kIterations; ++i)
+		{
+			if (legacy_is_filter(payload))
+			{
+				++sink;
+			}
+		}
+	});
+
+	const long long optimized_us = benchmark_us([&]() {
+		for (int i = 0; i < kIterations; ++i)
+		{
+			if (ngl::nfilterword::is_filter(payload))
+			{
+				++sink;
+			}
+		}
+	});
+
+	EXPECT_GT(sink, 0);
+	EXPECT_LT(optimized_us, legacy_us);
+	std::cout << "[perf] nfilterword_is_filter legacy_us=" << legacy_us
 		<< " optimized_us=" << optimized_us << std::endl;
 }

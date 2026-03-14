@@ -44,6 +44,9 @@ namespace ngl
         static std::vector<nacnode> m_nodes;
         static int m_root;
         static void ensure_initialized();
+        static void advance_state(char c, int& cur);
+        static bool append_matches(int cur, int i, std::vector<std::pair<int, int>>& res);
+        static bool match_exists(char c, int& cur);
 
         // 创建新节点
         static int newnode()
