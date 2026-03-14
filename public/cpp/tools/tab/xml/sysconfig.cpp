@@ -46,22 +46,9 @@ namespace ngl
 			return false;
 		}
 
-		std::string_view trim_ascii_spaces(std::string_view avalue)
-		{
-			while (!avalue.empty() && std::isspace(static_cast<unsigned char>(avalue.front())) != 0)
-			{
-				avalue.remove_prefix(1);
-			}
-			while (!avalue.empty() && std::isspace(static_cast<unsigned char>(avalue.back())) != 0)
-			{
-				avalue.remove_suffix(1);
-			}
-			return avalue;
-		}
-
 		bool parse_int32(std::string_view avalue, int32_t& aout)
 		{
-			avalue = trim_ascii_spaces(avalue);
+			avalue = tools::trim_ascii_spaces(avalue);
 			if (avalue.empty())
 			{
 				return false;
@@ -103,7 +90,7 @@ namespace ngl
 			{
 				return afallback;
 			}
-			text = trim_ascii_spaces(text);
+			text = tools::trim_ascii_spaces(text);
 			if (text.empty())
 			{
 				return afallback;

@@ -742,6 +742,8 @@ namespace ngl
 			}
 			return less_member(members...);
 		}
+
+		static std::string_view trim_ascii_spaces(std::string_view avalue);
 	};
 
 	template <typename T>

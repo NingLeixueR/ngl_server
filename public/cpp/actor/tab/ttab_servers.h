@@ -88,7 +88,6 @@ namespace ngl
 		std::map<i16_area, std::set<i16_area>> m_coressserver;// key:应该是小于0的跨服 value:跨服对应的区服
 		std::map<i16_area, std::set<i16_area>> m_singleareas;
 
-		std::map<i16_area, std::set<i16_area>> m_singleareas;
 		std::map<i16_area, std::map<std::string, tab_servers*, std::less<>>> m_areanameindex;
 		std::map<i16_area, std::map<NODE_TYPE, tab_servers*>> m_areatypeindex;
 		std::map<i16_area, std::map<NODE_TYPE, std::vector<const tab_servers*>>> m_areatypegroup;

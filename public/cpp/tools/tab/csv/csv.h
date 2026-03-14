@@ -57,23 +57,10 @@ namespace ngl
 
 	struct csv_helper
 	{
-		static std::string_view trim_ascii_spaces(std::string_view avalue)
-		{
-			while (!avalue.empty() && std::isspace(static_cast<unsigned char>(avalue.front())) != 0)
-			{
-				avalue.remove_prefix(1);
-			}
-			while (!avalue.empty() && std::isspace(static_cast<unsigned char>(avalue.back())) != 0)
-			{
-				avalue.remove_suffix(1);
-			}
-			return avalue;
-		}
-
 		template <typename TNUMBER>
 		static bool parse_number_text(std::string_view atext, TNUMBER& adata)
 		{
-			atext = trim_ascii_spaces(atext);
+			atext = tools::trim_ascii_spaces(atext);
 			if (atext.empty())
 			{
 				adata = TNUMBER();

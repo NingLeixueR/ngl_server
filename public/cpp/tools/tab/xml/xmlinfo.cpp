@@ -20,19 +20,6 @@ namespace ngl
 			return (avalue >= 'A' && avalue <= 'Z') ? static_cast<char>(avalue - 'A' + 'a') : avalue;
 		}
 
-		std::string_view trim_ascii_spaces(std::string_view avalue)
-		{
-			while (!avalue.empty() && std::isspace(static_cast<unsigned char>(avalue.front())) != 0)
-			{
-				avalue.remove_prefix(1);
-			}
-			while (!avalue.empty() && std::isspace(static_cast<unsigned char>(avalue.back())) != 0)
-			{
-				avalue.remove_suffix(1);
-			}
-			return avalue;
-		}
-
 		bool equals_ascii_icase(std::string_view alhs, const char* arhs)
 		{
 			std::size_t index = 0;
@@ -52,7 +39,7 @@ namespace ngl
 
 		bool parse_text_bool(std::string_view avalue, bool& aout)
 		{
-			const std::string_view trimmed = trim_ascii_spaces(avalue);
+			const std::string_view trimmed = tools::trim_ascii_spaces(avalue);
 			if (trimmed.empty())
 			{
 				return false;

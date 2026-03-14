@@ -2133,4 +2133,17 @@ namespace ngl
 		ngl::tools::replace(" ", "", aname, aname);
 		return aname;
 	}
+
+	std::string_view tools::trim_ascii_spaces(std::string_view avalue)
+	{
+		while (!avalue.empty() && std::isspace(static_cast<unsigned char>(avalue.front())) != 0)
+		{
+			avalue.remove_prefix(1);
+		}
+		while (!avalue.empty() && std::isspace(static_cast<unsigned char>(avalue.back())) != 0)
+		{
+			avalue.remove_suffix(1);
+		}
+		return avalue;
+	}
 }//namespace ngl
