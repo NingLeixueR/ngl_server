@@ -157,4 +157,15 @@ namespace ngl
 		adata = *lp;
 		return true;
 	}
+
+	bool xarg_info::find_view(const char* akey, std::string_view& adata) const
+	{
+		const std::string* lp = find_raw(akey);
+		if (lp == nullptr)
+		{
+			return false;
+		}
+		adata = *lp;
+		return true;
+	}
 }// namespace ngl

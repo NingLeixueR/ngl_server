@@ -407,10 +407,12 @@ namespace ngl
 		}
 	};
 
-	template <bool ATTR, typename TKEY, typename TVALUE>
-	struct xml_serialize<ATTR, std::map<TKEY, TVALUE>>
+	template <bool ATTR, typename TKEY, typename TVALUE, typename TCOMP, typename TALLOC>
+	struct xml_serialize<ATTR, std::map<TKEY, TVALUE, TCOMP, TALLOC>>
 	{
-		static bool push(tinyxml2::XMLElement* aele, const char* akey, const std::map<TKEY, TVALUE>& adata)
+		using map_type = std::map<TKEY, TVALUE, TCOMP, TALLOC>;
+
+		static bool push(tinyxml2::XMLElement* aele, const char* akey, const map_type& adata)
 		{
 			if constexpr (!ATTR)
 			{
@@ -434,11 +436,11 @@ namespace ngl
 			}
 			return false;
 		}
-		static bool pop(tinyxml2::XMLElement* aele, const char* akey, std::map<TKEY, TVALUE>& adata)
+		static bool pop(tinyxml2::XMLElement* aele, const char* akey, map_type& adata)
 		{
 			if constexpr (!ATTR)
 			{
-				std::map<TKEY, TVALUE> lparsed;
+				map_type lparsed;
 				if (!xml::foreach(aele, akey, [&lparsed](tinyxml2::XMLElement* apt)
 					{
 						TKEY lkey;

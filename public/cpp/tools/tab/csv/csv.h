@@ -15,16 +15,22 @@
 
 #include "tools/tools.h"
 
-#include <functional>
-#include <iostream>
+#include <charconv>
+#include <cctype>
 #include <cstdint>
 #include <fstream>
+#include <functional>
+#include <iostream>
 #include <string>
-#include <tuple>
-#include <vector>
+#include <string_view>
+#include <system_error>
+#include <limits>
 #include <list>
 #include <map>
 #include <set>
+#include <tuple>
+#include <type_traits>
+#include <vector>
 
 namespace ngl
 {
@@ -51,6 +57,90 @@ namespace ngl
 
 	struct csv_helper
 	{
+		static std::string_view trim_ascii_spaces(std::string_view avalue)
+		{
+			while (!avalue.empty() && std::isspace(static_cast<unsigned char>(avalue.front())) != 0)
+			{
+				avalue.remove_prefix(1);
+			}
+			while (!avalue.empty() && std::isspace(static_cast<unsigned char>(avalue.back())) != 0)
+			{
+				avalue.remove_suffix(1);
+			}
+			return avalue;
+		}
+
+		template <typename TNUMBER>
+		static bool parse_number_text(std::string_view atext, TNUMBER& adata)
+		{
+			atext = trim_ascii_spaces(atext);
+			if (atext.empty())
+			{
+				adata = TNUMBER();
+				return true;
+			}
+
+			if constexpr (std::is_same_v<TNUMBER, bool>)
+			{
+				if (atext == "1" || atext == "true" || atext == "TRUE" || atext == "True"
+					|| atext == "yes" || atext == "YES" || atext == "on" || atext == "ON")
+				{
+					adata = true;
+					return true;
+				}
+				if (atext == "0" || atext == "false" || atext == "FALSE" || atext == "False"
+					|| atext == "no" || atext == "NO" || atext == "off" || atext == "OFF")
+				{
+					adata = false;
+					return true;
+				}
+				return false;
+			}
+			else if constexpr (std::is_integral_v<TNUMBER>)
+			{
+				if constexpr (std::is_signed_v<TNUMBER>)
+				{
+					long long parsed = 0;
+					const auto [ptr, ec] = std::from_chars(atext.data(), atext.data() + atext.size(), parsed);
+					if (ec != std::errc() || ptr != atext.data() + atext.size())
+					{
+						return false;
+					}
+					if (parsed < static_cast<long long>(std::numeric_limits<TNUMBER>::min())
+						|| parsed > static_cast<long long>(std::numeric_limits<TNUMBER>::max()))
+					{
+						return false;
+					}
+					adata = static_cast<TNUMBER>(parsed);
+					return true;
+				}
+				else
+				{
+					unsigned long long parsed = 0;
+					const auto [ptr, ec] = std::from_chars(atext.data(), atext.data() + atext.size(), parsed);
+					if (ec != std::errc() || ptr != atext.data() + atext.size()
+						|| parsed > static_cast<unsigned long long>(std::numeric_limits<TNUMBER>::max()))
+					{
+						return false;
+					}
+					adata = static_cast<TNUMBER>(parsed);
+					return true;
+				}
+			}
+			else
+			{
+				try
+				{
+					adata = tools::lexical_cast<TNUMBER>(std::string(atext).c_str());
+					return true;
+				}
+				catch (...)
+				{
+					return false;
+				}
+			}
+		}
+
 		template <typename TNUMBER>
 		static bool number(csvpair& apair, TNUMBER& adata);
 
@@ -193,32 +283,54 @@ namespace ngl
 		{
 			std::string& lret = apair.m_data;
 			int& lpos = apair.m_pos;
-			auto lsize = (int)lret.size();
+			const int lsize = static_cast<int>(lret.size());
 			std::string lvalue;
 			if (lpos >= 0 && lpos < lsize)
 			{
 				lvalue.reserve(static_cast<std::size_t>(lsize - lpos));
 			}
+
+			int chunk_begin = lpos;
 			for (; lpos < lsize; ++lpos)
 			{
+				const char current = lret[lpos];
+				if (current == '\"')
+				{
+					if (chunk_begin < lpos)
+					{
+						lvalue.append(lret, static_cast<std::size_t>(chunk_begin), static_cast<std::size_t>(lpos - chunk_begin));
+					}
+					apair.m_doublequotationmarks = !apair.m_doublequotationmarks;
+					chunk_begin = lpos + 1;
+					continue;
+				}
+
 				if (!apair.m_doublequotationmarks)
 				{
-					if (lret[lpos] == apair.m_fg || lret[lpos] == '\n')
+					if (current == apair.m_fg || current == '\n')
 					{
+						if (chunk_begin < lpos)
+						{
+							lvalue.append(lret, static_cast<std::size_t>(chunk_begin), static_cast<std::size_t>(lpos - chunk_begin));
+						}
 						++lpos;
+						chunk_begin = lpos;
 						break;
 					}
-					if (lret[lpos] == '\r')
+					if (current == '\r')
 					{
+						if (chunk_begin < lpos)
+						{
+							lvalue.append(lret, static_cast<std::size_t>(chunk_begin), static_cast<std::size_t>(lpos - chunk_begin));
+						}
+						chunk_begin = lpos + 1;
 						continue;
 					}
 				}
-				if (lret[lpos] == '\"')
-				{
-					apair.m_doublequotationmarks = apair.m_doublequotationmarks ? false : true;
-					continue;
-				}
-				lvalue.push_back(lret[lpos]);
+			}
+			if (chunk_begin < lpos)
+			{
+				lvalue.append(lret, static_cast<std::size_t>(chunk_begin), static_cast<std::size_t>(lpos - chunk_begin));
 			}
 			if (apair.m_doublequotationmarks)
 			{
@@ -428,16 +540,9 @@ namespace ngl
 			return false;
 		}
 		TNUMBER lvalue = TNUMBER();
-		if (!ltemp.empty())
+		if (!parse_number_text(std::string_view(ltemp), lvalue))
 		{
-			try
-			{
-				lvalue = tools::lexical_cast<TNUMBER>(ltemp.c_str());
-			}
-			catch (...)
-			{
-				return false;
-			}
+			return false;
 		}
 		adata = lvalue;
 		return true;

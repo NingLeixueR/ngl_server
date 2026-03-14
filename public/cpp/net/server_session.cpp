@@ -17,11 +17,34 @@
 #include "net/server_session.h"
 #include "tools/log/nlog.h"
 
+#include <algorithm>
+
 namespace ngl
 {
 	namespace
 	{
 		constexpr std::size_t G_SERVER_SESSION_RESERVE = 64;
+
+		void ensure_server_session_capacity(
+			std::unordered_map<i32_serverid, i32_sessionid>& aserver_map,
+			std::unordered_map<i32_sessionid, i32_serverid>& asession_map)
+		{
+			const std::size_t ltarget_size = aserver_map.size() + 1;
+			const std::size_t lreserve_threshold = static_cast<std::size_t>(aserver_map.bucket_count() * aserver_map.max_load_factor());
+			if (ltarget_size <= lreserve_threshold)
+			{
+				return;
+			}
+
+			const std::size_t lnew_capacity = std::max<std::size_t>(G_SERVER_SESSION_RESERVE, ltarget_size * 2);
+			aserver_map.reserve(lnew_capacity);
+			asession_map.reserve(lnew_capacity);
+		}
+
+		const tab_servers* find_server_tab(i32_serverid aserverid)
+		{
+			return ttab_servers::instance().tab(nnodeid::tid(aserverid));
+		}
 	}
 
 	std::unordered_map<i32_serverid, i32_sessionid> server_session::m_server;
@@ -36,6 +59,10 @@ namespace ngl
 			{
 				m_server.reserve(G_SERVER_SESSION_RESERVE);
 				m_session.reserve(G_SERVER_SESSION_RESERVE);
+			}
+			else
+			{
+				ensure_server_session_capacity(m_server, m_session);
 			}
 
 			if (const auto lserver_it = m_server.find(aserverid); lserver_it != m_server.end())
@@ -53,7 +80,7 @@ namespace ngl
 			m_server.emplace(aserverid, asession);
 			m_session.emplace(asession, aserverid);
 		}
-		if (auto tab = ttab_servers::instance().tab(nnodeid::tid(aserverid)); tab != nullptr)
+		if (auto tab = find_server_tab(aserverid); tab != nullptr)
 		{
 			log_error()->print("server_session::add [{}:{}_{}]", nnodeid::tid(aserverid), tab->m_name, nnodeid::tcount(aserverid));
 		}
@@ -71,7 +98,7 @@ namespace ngl
 				m_session.erase(lsession_it);
 			}
 		}
-		if (auto tab = ttab_servers::instance().tab(nnodeid::tid(lserverid)); tab != nullptr)
+		if (auto tab = find_server_tab(lserverid); tab != nullptr)
 		{
 			log_error()->print("server_session::remove [{}:{}_{}]", nnodeid::tid(lserverid), tab->m_name, nnodeid::tcount(lserverid));
 		}
@@ -103,7 +130,7 @@ namespace ngl
 	{
 		if (aserverid != -1)
 		{
-			if (const tab_servers* tab = ttab_servers::instance().tab(nnodeid::tid(aserverid)); tab != nullptr)
+			if (const tab_servers* tab = find_server_tab(aserverid); tab != nullptr)
 			{
 				asername = tab->m_name;
 				return true;

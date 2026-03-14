@@ -22,9 +22,11 @@
 #include "tools/tools.h"
 
 #include <system_error>
+#include <charconv>
 #include <filesystem>
 #include <iostream>
 #include <cassert>
+#include <array>
 #include <cstdint>
 #include <codecvt>
 #include <cstring>
@@ -35,9 +37,9 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <string_view>
 #include <vector>
 #include <locale>
-#include <string>
 #include <random>
 #include <memory>
 
@@ -65,57 +67,82 @@ namespace
 			|| achar == '_'
 			|| achar == '.';
 	}
+
+	inline int hex_value(char achar)
+	{
+		if (achar >= '0' && achar <= '9')
+		{
+			return achar - '0';
+		}
+		if (achar >= 'A' && achar <= 'F')
+		{
+			return achar - 'A' + 10;
+		}
+		if (achar >= 'a' && achar <= 'f')
+		{
+			return achar - 'a' + 10;
+		}
+		return -1;
+	}
+
+	inline bool should_preserve_percent_escape(unsigned char ahex)
+	{
+		return (ahex >= '0' && ahex <= '9')
+			|| (ahex >= 'a' && ahex <= 'z')
+			|| (ahex >= 'A' && ahex <= 'Z')
+			|| ahex == 0x21 || ahex == 0x24 || ahex == 0x26 || ahex == 0x27 || ahex == 0x28 || ahex == 0x29
+			|| ahex == 0x2a || ahex == 0x2b || ahex == 0x2c || ahex == 0x2d || ahex == 0x2e || ahex == 0x2f
+			|| ahex == 0x3A || ahex == 0x3B || ahex == 0x3D || ahex == 0x3F || ahex == 0x40 || ahex == 0x5F;
+	}
+
+	bool parse_ipv4_octets(std::string_view aip, std::array<int, 4>& aoctets)
+	{
+		std::size_t begin = 0;
+		for (std::size_t index = 0; index < aoctets.size(); ++index)
+		{
+			const bool is_last = index + 1 == aoctets.size();
+			const std::size_t dot = aip.find('.', begin);
+			if ((dot == std::string_view::npos) != is_last)
+			{
+				return false;
+			}
+
+			const std::size_t end = is_last ? aip.size() : dot;
+			if (end <= begin || end - begin > 3)
+			{
+				return false;
+			}
+
+			int value = 0;
+			const auto [ptr, ec] = std::from_chars(aip.data() + begin, aip.data() + end, value);
+			if (ec != std::errc() || ptr != aip.data() + end || value < 0 || value > 255)
+			{
+				return false;
+			}
+
+			aoctets[index] = value;
+			begin = end + 1;
+		}
+		return begin == aip.size() + 1;
+	}
 }
 
 namespace ngl
 { 
-	//A类地址：10.0.0.0--10.255.255.255
-	bool is_a_address(const std::vector<std::string>& lvec)
-	{
-		if (lvec.empty())
-		{
-			return false;
-		}
-		return lvec[0] == "10";
-	}
-
-	//B类地址：172.16.0.0--172.31.255.255
-	bool is_b_address(const std::vector<std::string>& lvec)
-	{
-		if (lvec.size() < 2)
-		{
-			return false;
-		}
-		if (lvec[0] != "172")
-		{
-			return false;
-		}
-		int lnum = tools::lexical_cast<int>(lvec[1]);
-		return lnum >= 16 && lnum <= 31;
-	}
-
-	//C类地址：192.168.0.0--192.168.255.255
-	bool is_c_address(const std::vector<std::string>& lvec)
-	{
-		if (lvec.size() < 2)
-		{
-			return false;
-		}
-		return lvec[0] == "192" && lvec[1] == "168";
-	}
-
 	bool tools::is_lanip(const std::string& aip)
 	{
 		if (aip == "127.0.0.1")
 		{
 			return true;
 		}
-		std::vector<std::string> lvec;
-		if (splite(aip.c_str(), ".", lvec) == false)
+		std::array<int, 4> loctets{};
+		if (!parse_ipv4_octets(aip, loctets))
 		{
 			return false;
 		}
-		return is_a_address(lvec) || is_b_address(lvec) || is_c_address(lvec);
+		return loctets[0] == 10
+			|| (loctets[0] == 172 && loctets[1] >= 16 && loctets[1] <= 31)
+			|| (loctets[0] == 192 && loctets[1] == 168);
 	}
 
 	void tools::log_lexical_cast_error(
@@ -738,7 +765,6 @@ namespace ngl
 	{
 		std::string result;
 		result.reserve(szToDecode.size());
-		int hex = 0;
 		for (size_t i = 0; i < szToDecode.length(); ++i)
 		{
 			switch (szToDecode[i])
@@ -747,29 +773,30 @@ namespace ngl
 				result.push_back(' ');
 				break;
 			case '%':
-				if (i + 2 < szToDecode.length()
-					&& std::isxdigit(static_cast<unsigned char>(szToDecode[i + 1])) != 0
-					&& std::isxdigit(static_cast<unsigned char>(szToDecode[i + 2])) != 0)
+				if (i + 2 < szToDecode.length())
 				{
-					char hexStr[3] = { szToDecode[i + 1], szToDecode[i + 2], '\0' };
-					hex = strtol(hexStr, 0, 16);
-					//字母和数字[0-9a-zA-Z]、一些特殊符号[$-_.+!*'(),] 、以及某些保留字[$&+,/:;=?@]
-					//可以不经过编码直接用于URL
-					if (!((hex >= 48 && hex <= 57) ||	//0-9
-						(hex >= 97 && hex <= 122) ||	//a-z
-						(hex >= 65 && hex <= 90) ||	//A-Z
-						//一些特殊符号及保留字[$-_.+!*'(),]  [$&+,/:;=?@]
-						hex == 0x21 || hex == 0x24 || hex == 0x26 || hex == 0x27 || hex == 0x28 || hex == 0x29
-						|| hex == 0x2a || hex == 0x2b || hex == 0x2c || hex == 0x2d || hex == 0x2e || hex == 0x2f
-						|| hex == 0x3A || hex == 0x3B || hex == 0x3D || hex == 0x3f || hex == 0x40 || hex == 0x5f
-						))
+					const int high = hex_value(szToDecode[i + 1]);
+					const int low = hex_value(szToDecode[i + 2]);
+					if (high >= 0 && low >= 0)
 					{
-						result.push_back(static_cast<char>(hex));
-						i += 2;
+						const unsigned char decoded = static_cast<unsigned char>((high << 4) | low);
+						if (should_preserve_percent_escape(decoded))
+						{
+							result.push_back('%');
+						}
+						else
+						{
+							result.push_back(static_cast<char>(decoded));
+							i += 2;
+						}
 					}
-					else result.push_back('%');
+					else
+					{
+						result.push_back('%');
+					}
 				}
-				else {
+				else
+				{
 					result.push_back('%');
 				}
 				break;
@@ -1928,7 +1955,8 @@ namespace ngl
 
 	bool tools::file_remove(const std::string& afilename)
 	{
-		return ::remove(afilename.c_str()) == 0;
+		std::error_code ec;
+		return std::filesystem::remove(afilename, ec);
 	}
 
 	void tools::dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration/* = false*/)
@@ -1939,20 +1967,25 @@ namespace ngl
 			return;
 		}
 
+		if (aiteration)
+		{
+			for (std::filesystem::recursive_directory_iterator it(apath, std::filesystem::directory_options::skip_permission_denied, ec), end;
+				!ec && it != end; it.increment(ec))
+			{
+				if (it->is_regular_file(ec))
+				{
+					afilevec.push_back(it->path().string());
+				}
+			}
+			return;
+		}
+
 		for (std::filesystem::directory_iterator it(apath, std::filesystem::directory_options::skip_permission_denied, ec), end;
 			!ec && it != end; it.increment(ec))
 		{
-			const std::filesystem::directory_entry& entry = *it;
-			if (entry.is_regular_file(ec))
+			if (it->is_regular_file(ec))
 			{
-				afilevec.push_back(entry.path().string());
-			}
-			else if (!ec && entry.is_directory(ec))
-			{
-				if (aiteration)
-				{
-					dir(entry.path().string(), afilevec, true);
-				}
+				afilevec.push_back(it->path().string());
 			}
 		}
 	}
@@ -1969,6 +2002,24 @@ namespace ngl
 	std::map<std::string, int32_t> g_mailmap;
 	std::shared_mutex g_maillock;
 	int32_t g_mailinterval = localtime::MINUTES_SECOND * 10;
+	constexpr std::size_t g_mailmap_soft_limit = 1024;
+
+	void prune_mailmap_locked(int32_t anow)
+	{
+		for (auto it = g_mailmap.begin(); it != g_mailmap.end();)
+		{
+			if ((anow - it->second) >= g_mailinterval)
+			{
+				it = g_mailmap.erase(it);
+				continue;
+			}
+			++it;
+		}
+		if (g_mailmap.size() >= g_mailmap_soft_limit)
+		{
+			g_mailmap.erase(g_mailmap.begin());
+		}
+	}
 
 	std::function<void()> tools::send_mail(const std::string& acontent)
 	{
@@ -1977,6 +2028,10 @@ namespace ngl
 				int32_t lnow = (int32_t)localtime::gettime();
 				{
 					lock_write(g_maillock);
+					if (g_mailmap.size() >= g_mailmap_soft_limit)
+					{
+						prune_mailmap_locked(lnow);
+					}
 					auto it = g_mailmap.find(acontent);
 					if (it != g_mailmap.end() && (lnow - it->second) < g_mailinterval)
 					{

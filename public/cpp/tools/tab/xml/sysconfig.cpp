@@ -11,6 +11,8 @@
 #include "tools/tab/xml/xml.h"
 
 #include <algorithm>
+#include <charconv>
+#include <cctype>
 #include <cstdint>
 #include <limits>
 #include <string_view>
@@ -30,6 +32,49 @@ namespace ngl
 				}
 			}
 			return false;
+		}
+
+		bool find_first_view(const xarg_info& ainfo, std::initializer_list<const char*> akeys, std::string_view& aout)
+		{
+			for (const char* key : akeys)
+			{
+				if (ainfo.find_view(key, aout))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		std::string_view trim_ascii_spaces(std::string_view avalue)
+		{
+			while (!avalue.empty() && std::isspace(static_cast<unsigned char>(avalue.front())) != 0)
+			{
+				avalue.remove_prefix(1);
+			}
+			while (!avalue.empty() && std::isspace(static_cast<unsigned char>(avalue.back())) != 0)
+			{
+				avalue.remove_suffix(1);
+			}
+			return avalue;
+		}
+
+		bool parse_int32(std::string_view avalue, int32_t& aout)
+		{
+			avalue = trim_ascii_spaces(avalue);
+			if (avalue.empty())
+			{
+				return false;
+			}
+
+			int32_t parsed = 0;
+			const auto [ptr, ec] = std::from_chars(avalue.data(), avalue.data() + avalue.size(), parsed);
+			if (ec != std::errc() || ptr != avalue.data() + avalue.size())
+			{
+				return false;
+			}
+			aout = parsed;
+			return true;
 		}
 
 		ELOGLEVEL sanitize_log_level(int32_t alevel, ELOGLEVEL afallback)
@@ -53,12 +98,19 @@ namespace ngl
 
 		int32_t parse_open_servertime(const xarg_info& ainfo, int32_t afallback)
 		{
-			std::string text;
-			if (!ainfo.find("open_servertime", text) || text.empty())
+			std::string_view text;
+			if (!find_first_view(ainfo, { "open_servertime" }, text))
 			{
 				return afallback;
 			}
-			return static_cast<int32_t>(localtime::str2time(text.c_str(), "%Y/%m/%d %H:%M:%S"));
+			text = trim_ascii_spaces(text);
+			if (text.empty())
+			{
+				return afallback;
+			}
+
+			const std::string parsed(text);
+			return static_cast<int32_t>(localtime::str2time(parsed.c_str(), "%Y/%m/%d %H:%M:%S"));
 		}
 
 		int32_t xor_cycle_length(const std::string& akey)
@@ -190,16 +242,14 @@ namespace ngl
 					return;
 				}
 
-				try
+				int32_t count = 0;
+				if (!parse_int32(apair.second, count))
 				{
-					int32_t count = tools::lexical_cast<int32_t>(apair.second);
-					count = std::max<int32_t>(1, count);
-					nodecountbyname[nodename] = count;
-					nodecountbytype[type] = count;
+					return;
 				}
-				catch (...)
-				{
-				}
+				count = std::max<int32_t>(1, count);
+				nodecountbyname[nodename] = count;
+				nodecountbytype[type] = count;
 			}
 		);
 

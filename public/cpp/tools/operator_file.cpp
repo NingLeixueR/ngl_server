@@ -53,6 +53,10 @@ namespace ngl
 		{
 			return 0;
 		}
+		if (m_cached_maxline >= 0)
+		{
+			return m_cached_maxline;
+		}
 
 		const std::streampos lcurrent = m_file.tellg();
 		m_file.clear();
@@ -74,15 +78,16 @@ namespace ngl
 		{
 			m_file.seekg(0, std::ios::beg);
 		}
-		return lline;
+		m_cached_maxline = lline;
+		return m_cached_maxline;
 	}
 
 	//跳过前三行
 	void readfile::jumpbegin(int anum, bool aiscsv)
 	{
+		std::string line;
 		if (aiscsv == false)
 		{
-			std::string line;
 			while (--anum >= 0)
 			{
 				if (!std::getline(m_file, line))
@@ -93,20 +98,19 @@ namespace ngl
 		}
 		else
 		{
-			int32_t lisshuyin = 0;
+			bool linside_quote = false;
 			while (anum > 0)
 			{
-				std::string line;
 				if (std::getline(m_file, line))
 				{
 					for (std::size_t i = 0; i < line.size(); ++i)
 					{
 						if (line[i] == '\"')
 						{
-							++lisshuyin;
+							linside_quote = !linside_quote;
 						}
 					}
-					if (lisshuyin % 2 == 0)
+					if (!linside_quote)
 					{
 						--anum;
 					}

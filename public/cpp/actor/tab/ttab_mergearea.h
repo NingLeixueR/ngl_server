@@ -20,6 +20,12 @@
 #include "tools/tools.h"
 #include "tools/type.h"
 
+#include <algorithm>
+#include <atomic>
+#include <functional>
+#include <map>
+#include <set>
+
 namespace ngl
 {
 	struct ttab_mergearea :
@@ -38,36 +44,44 @@ namespace ngl
 			std::cout << "[ttab_mergearea] reload" << std::endl;
 			m_merge1.clear();
 			m_merge2.clear();
-			// 1,2,3,4,5,6,7,8,9,10
-			// 1->2, 3->4, 5->6, 7->8, 9->10
-			// 2->4, 6->8
-			// 4->10, 8->10
-			// {{1,2},{2,4},{3,4},{4,10},{5,6},{6,8},{7,8},{8,10},{9.10}}
-			// {10,{1,2,3,4,5,6,7,8,9,10}}
 
-			foreach([&](tab_mergearea& atab)
+			std::map<i16_area, i16_area> ldirect;
+			foreach([&ldirect](tab_mergearea& atab)
 				{
-					i16_area larea = (i16_area)atab.m_id;
-					i16_area lmergeid = (i16_area)atab.m_mergeid;
-
-					std::set<i16_area>* lpset = tools::findmap(m_merge2, larea);
-					if (lpset == nullptr)
-					{
-						m_merge1[larea] = lmergeid;
-						m_merge2[lmergeid].insert(larea);
-					}
-					else
-					{
-						m_merge2[lmergeid].insert(lpset->begin(), lpset->end());
-						m_merge2[lmergeid].insert(larea);
-						m_merge1[larea] = lmergeid;
-						if (larea != lmergeid)
-						{
-							m_merge2.erase(larea);
-						}
-					}
+					ldirect[static_cast<i16_area>(atab.m_id)] = static_cast<i16_area>(atab.m_mergeid);
 				}
 			);
+
+			auto resolve_mergeid = [&ldirect](i16_area aarea)
+			{
+				std::set<i16_area> lvisited;
+				i16_area lcurrent = aarea;
+				while (true)
+				{
+					if (!lvisited.insert(lcurrent).second)
+					{
+						const i16_area lroot = *std::min_element(lvisited.begin(), lvisited.end());
+						log_error()->print("ttab_mergearea::reload cycle detected area:[{}] root:[{}]", aarea, lroot);
+						return lroot;
+					}
+
+					auto it = ldirect.find(lcurrent);
+					if (it == ldirect.end() || it->second == lcurrent)
+					{
+						break;
+					}
+					lcurrent = it->second;
+				}
+				return lcurrent;
+			};
+
+			for (const auto& [area, _mergeid] : ldirect)
+			{
+				const i16_area lroot = resolve_mergeid(area);
+				m_merge1[area] = lroot;
+				m_merge2[lroot].insert(lroot);
+				m_merge2[lroot].insert(area);
+			}
 		}
 	public:
 		using type_tab = tab_mergearea;
@@ -90,21 +104,22 @@ namespace ngl
 		// 哪些区服在此区服
 		std::set<i16_area>* mergelist(i16_area aarea)
 		{
-			if (!m_merge2.contains(aarea))
+			const auto it = m_merge2.find(aarea);
+			if (it == m_merge2.end())
 			{
 				return nullptr;
 			}
-			return &m_merge2[aarea];
+			return &it->second;
 		}
 
 		i16_area mergeid(i16_area aarea)
 		{
-			i16_area* ret = tools::findmap(m_merge1, aarea);
-			if (ret == nullptr)
+			const auto it = m_merge1.find(aarea);
+			if (it == m_merge1.end())
 			{
 				return nguid::none_area();
 			}
-			return *ret;
+			return it->second;
 		}
 
 		void for_each(const std::function<void(i16_area, std::set<i16_area>&)>& afun)

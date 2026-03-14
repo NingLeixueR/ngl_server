@@ -19,8 +19,14 @@
 #include "tools/type.h"
 
 #include <array>
+#include <atomic>
 #include <bit>
+#include <functional>
 #include <limits>
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
 
 namespace ngl
 {
@@ -80,9 +86,12 @@ namespace ngl
 
 		std::map<i16_area, std::map<i32_serverid, tab_servers*>> m_areaserver;
 		std::map<i16_area, std::set<i16_area>> m_coressserver;// key:应该是小于0的跨服 value:跨服对应的区服
+		std::map<i16_area, std::set<i16_area>> m_singleareas;
 
+		std::map<i16_area, std::set<i16_area>> m_singleareas;
 		std::map<i16_area, std::map<std::string, tab_servers*, std::less<>>> m_areanameindex;
 		std::map<i16_area, std::map<NODE_TYPE, tab_servers*>> m_areatypeindex;
+		std::map<i16_area, std::map<NODE_TYPE, std::vector<const tab_servers*>>> m_areatypegroup;
 		std::map<i32_serverid, std::array<const net_works*, static_cast<std::size_t>(ENET_COUNT)>> m_networkindex;
 
 		static bool normalize_area(int area, i16_area& aout)
@@ -101,14 +110,18 @@ namespace ngl
 			std::cout << "[ttab_servers] reload" << std::endl;
 			m_areaserver.clear();
 			m_coressserver.clear();
+			m_singleareas.clear();
 			m_areanameindex.clear();
 			m_areatypeindex.clear();
+			m_areatypegroup.clear();
 			m_networkindex.clear();
 			foreach([&](tab_servers& atab)
 				{
 					m_areaserver[atab.m_area][atab.m_id] = &atab;
+					m_singleareas[atab.m_area].insert(atab.m_area);
 					m_areanameindex[atab.m_area].try_emplace(atab.m_name, &atab);
 					m_areatypeindex[atab.m_area].try_emplace(atab.m_type, &atab);
+					m_areatypegroup[atab.m_area][atab.m_type].push_back(&atab);
 
 					auto& lnetwork = m_networkindex[atab.m_id];
 					lnetwork.fill(nullptr);
@@ -320,12 +333,6 @@ namespace ngl
 				tools::no_core_dump();
 				return false;
 			}
-			net_works lnets1;
-			if (!get_nworks(ltab1->m_type, ltab1->m_area, ENET_TCP, nnodeid::tcount(alocalserver), lnets1))
-			{
-				tools::no_core_dump();
-				return false;
-			}
 			if (!get_nworks(ltab2->m_type, ltab2->m_area, ENET_TCP, nnodeid::tcount(aotherserver), anetwork))
 			{
 				tools::no_core_dump();
@@ -378,7 +385,16 @@ namespace ngl
 		{
 			if (aarea > 0)
 			{
-				return ttab_mergearea::instance().mergelist(aarea);
+				i16_area lquery_area = aarea;
+				if (const i16_area merged_area = ttab_mergearea::instance().mergeid(aarea); merged_area != nguid::none_area())
+				{
+					lquery_area = merged_area;
+				}
+				if (const std::set<i16_area>* merged = ttab_mergearea::instance().mergelist(lquery_area); merged != nullptr)
+				{
+					return merged;
+				}
+				return tools::findmap(m_singleareas, lquery_area);
 			}
 			else
 			{
@@ -397,17 +413,19 @@ namespace ngl
 			}
 			for (i16_area area : *larea)
 			{
-				auto lmap = tools::findmap(m_areaserver, area);
+				auto lmap = tools::findmap(m_areatypegroup, area);
 				if (lmap == nullptr)
 				{
 					continue;
 				}
-				for (auto [_serverid, _servertab] : *lmap)
+				auto lservers = tools::findmap(*lmap, atype);
+				if (lservers == nullptr)
 				{
-					if (atype == _servertab->m_type)
-					{
-						afun(_servertab);
-					}
+					continue;
+				}
+				for (const tab_servers* lservertab : *lservers)
+				{
+					afun(lservertab);
 				}
 			}
 			return true;

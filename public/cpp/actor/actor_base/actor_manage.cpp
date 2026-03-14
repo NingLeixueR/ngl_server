@@ -230,7 +230,7 @@ namespace ngl
 
 	bool actor_manage::is_have_actor(const nguid& aguid)
 	{
-		nlock(m_mutex);
+		lock_read(m_mutex);
 		return m_actorbyid.contains(aguid);
 	}
 
@@ -437,7 +437,7 @@ namespace ngl
 
 	int32_t actor_manage::actor_count()
 	{
-		nlock(m_mutex);
+		lock_read(m_mutex);
 		return (int32_t)m_actorbyid.size();
 	}
 

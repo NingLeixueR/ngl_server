@@ -27,6 +27,7 @@ namespace ngl
 		readfile& operator=(const readfile&) = delete;
 
 		std::ifstream m_file;
+		int m_cached_maxline = -1;
 	public:
 		explicit readfile(const std::string& filename);
 

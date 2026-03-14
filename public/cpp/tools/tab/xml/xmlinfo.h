@@ -14,6 +14,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <string_view>
 
 namespace ngl
 {
@@ -74,18 +75,22 @@ namespace ngl
 
 	class xarg_info
 	{
-		std::map<std::string, std::string> m_data;
+	public:
+		using map_type = std::map<std::string, std::string, std::less<>>;
+
+	private:
+		map_type m_data;
 
 		const std::string* find_raw(const char* akey) const;
 	public:
 		DXMLSERIALIZE(xarg_info, false, m_data)
 
-		std::map<std::string, std::string>& data()
+		map_type& data()
 		{
 			return m_data;
 		}
 
-		const std::map<std::string, std::string>& data() const
+		const map_type& data() const
 		{
 			return m_data;
 		}
@@ -118,6 +123,8 @@ namespace ngl
 		bool find(const char* akey, bool& adata) const;
 
 		bool find(const char* akey, std::string& adata) const;
+
+		bool find_view(const char* akey, std::string_view& adata) const;
 
 		template <typename TFUN>
 		void foreach(TFUN&& afun) const

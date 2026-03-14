@@ -594,6 +594,13 @@ namespace ngl
 		{
 			return;
 		}
+		if (aservice->m_closing.load(std::memory_order_acquire))
+		{
+			lock_write(aservice->m_mutex);
+			aservice->m_ws_send_list.clear();
+			aservice->m_ws_sending = false;
+			return;
+		}
 
 		if (alist->empty())
 		{
@@ -699,7 +706,10 @@ namespace ngl
 	{
 		if (error)
 		{
-			log_error()->print("asio_ws::handle_write [{}]", error.message());
+			if (!aservice->m_closing.load(std::memory_order_acquire))
+			{
+				log_error()->print("asio_ws::handle_write [{}]", error.message());
+			}
 			close(aservice.get());
 		}
 		if (m_sendfinishfun != nullptr)
@@ -753,6 +763,10 @@ namespace ngl
 	void asio_ws::start(const std::shared_ptr<service_ws>& aservice)
 	{
 		if (aservice == nullptr)
+		{
+			return;
+		}
+		if (aservice->m_closing.load(std::memory_order_acquire))
 		{
 			return;
 		}
