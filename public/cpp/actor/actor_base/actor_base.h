@@ -25,12 +25,12 @@
 #include "tools/ngroup.h"
 #include "tools/type.h"
 
+#include <functional>
+#include <optional>
 #include <memory>
 #include <vector>
 #include <atomic>
-#include <functional>
 #include <list>
-#include <optional>
 #include <set>
 #include <map>
 
@@ -79,6 +79,13 @@ namespace ngl
 		e_max_custom	= 10,					// 最多允许自定义ready方法数量
 	};
 
+	/**
+	 * Actor就绪状态检查器
+	 *
+	 * 作用：把「数据库加载完成」「NSP同步完成」「自定义条件满足」这三类状态
+	 * 统一转换成位标记（二进制标志位），通过is_ready()方法判断这些状态是否都达标；
+	 * 用途：在分发消息给Actor之前，先通过这个检查器判断Actor是否具备处理消息的条件。
+	 */
 	class nready
 	{
 	private:
