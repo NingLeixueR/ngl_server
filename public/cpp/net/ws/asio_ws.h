@@ -49,20 +49,20 @@ namespace ngl
 
 		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4 = nullptr;		// 用于支持ipv4
 		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6 = nullptr;		// 用于支持ipv6
-		i16_port m_port = 0;
-		bool m_use_tls = false;
-		ws_callback m_fun = nullptr;
-		ws_closecallback m_closefun = nullptr;
-		ws_sendfinishcallback m_sendfinishfun = nullptr;
-		i32_sessionid m_sessionid = 0;
-		serviceio_info m_service_ios;
-		std::shared_mutex m_maplock;
-		std::shared_mutex m_ipportlock;
-		map_service_ws m_data;
-		map_ipport m_ipport;
-		map_close m_close;
-		std::unique_ptr<basio_sslcontext> m_tls_context = nullptr;
-		ws_tls_options m_tls_options;
+		i16_port							m_port = 0;						// 监听的端口
+		bool								m_use_tls = false;				// wss
+		ws_callback							m_fun = nullptr;				// 接收数据的回调
+		ws_closecallback					m_closefun = nullptr;			// 关闭连接的回调
+		ws_sendfinishcallback				m_sendfinishfun = nullptr;		// 发送失败的回调
+		i32_sessionid						m_sessionid = 0;				// 自增的session id	
+		serviceio_info						m_service_ios;					// asio支持			
+		std::shared_mutex					m_maplock;						// 用于锁定"m_data,m_sessionid"
+		std::shared_mutex					m_ipportlock;					// 用于锁定"m_ipport"
+		map_service_ws						m_data;							// key:session id value:连接数据
+		map_ipport							m_ipport;						// key:session id value:ipport
+		map_close							m_close;						// 关闭连接回调				
+		std::unique_ptr<basio_sslcontext>	m_tls_context = nullptr;		// wss tls context
+		ws_tls_options						m_tls_options;					// m_use_tls==true,tls配置
 	public:
 		enum
 		{
