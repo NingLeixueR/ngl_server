@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for tools.
+
 #pragma once
 
 #include <unordered_map>
@@ -107,7 +109,7 @@ namespace ngl
 
 	public:
 #pragma region map
-		// map操作封装
+		// Map
 		template <typename TMAP, typename TKEY>
 		static auto findmap(TMAP& amap, const TKEY& akey)
 		{
@@ -134,7 +136,7 @@ namespace ngl
 		}
 #pragma endregion 
 
-		// 是否是内网地址
+		// Whether address
 		static bool is_lanip(const std::string& aip);
 
 		template <typename T>
@@ -147,11 +149,11 @@ namespace ngl
 			return google::protobuf::util::MessageToJsonString(adata, &json, options).ok();		
 		}
 
-		// 以json格式打印pb数据
+		// json pbdata
 		template <typename T>
 		static void print_json(const T& adata, bool aislog = false);
 
-		// 通过json获取结构
+		// Throughjsongetstructure
 		template <typename T>
 		static bool json2proto(const std::string& json, T& adata)
 		{
@@ -241,13 +243,13 @@ namespace ngl
 		};
 
 #pragma region bytesorder
-		// # 是否是小端?
+		// # Whether little-endian?
 		static constexpr bool islittle()
 		{
 			return std::endian::native == std::endian::little;
 		}
 
-		// # 转换为小端
+		// # Convert little-endian
 		static int16_t	transformlittle(parm<int16_t>& avalues);
 		static uint16_t transformlittle(parm<uint16_t>& avalues);
 		static int32_t	transformlittle(parm<int32_t>& avalues);
@@ -266,7 +268,7 @@ namespace ngl
 		static bool uuid_make(std::string& astr);
 
 #pragma region asscii_utf8
-		// 宽字符与ASCII相互转换  utf8
+		// Wide charactersandASCII convert utf8
 		static bool wasscii2asscii(const std::wstring& awstr, std::string& astr);
 		static bool asscii2wasscii(const std::string& astr, std::wstring& awstr);
 		static bool wasscii2utf8(const std::wstring& awstr, std::string& astr);
@@ -276,9 +278,9 @@ namespace ngl
 		static bool to_utf8(const std::string& astr1, std::string& astr2);
 
 		static int32_t utf8firstbyte(uint8_t firstbyte);
-		// 是否是utf8编码
+		// Whether utf8
 		static bool isutf8(const std::string& astr1);
-		// utf8中是否包含mb4(utf8为mb3)
+		// Utf8inwhetherpack mb4(utf8 mb3)
 		static bool isincludeutf8mb4(const std::string& astr);
 
 #pragma endregion
@@ -394,7 +396,7 @@ namespace ngl
 			return 	splite(std::make_index_sequence<sizeof...(ARGS)>{}, abuff, afg, args...);
 		}
 
-		// 特殊分割:类似"接收邮件列表[邮件地址1:名字1]"
+		// Special:similar" maillist[mailaddress1: 1]"
 		// [348634371@qq.com:libo][libo1@youxigu.com:libo1]
 		template <typename TFIRST = std::string, typename TSECOND = std::string>
 		static bool splite_special(const char* astr, const char* akey1, const char* akey2, std::vector<std::pair<TFIRST, TSECOND>>& avec)
@@ -592,12 +594,12 @@ namespace ngl
 
 #pragma region varint
 		///////////////////////////////////////////////////////////////////////////////////////////////////////
-		// Varint是一种使用一个或多个字节序列化整数的方法会把整数编码为变长字节。
-		// 对于32位整型数据经过Varint编码后需要1~5个字节，
-		// 小的数字使用1个byte，大的数字使用5个bytes。
-		// 64位整型数据编码后占用1~10个字节。
-		// 在实际场景中小数字的使用率远远多于大数字，
-		// 因此通过Varint编码对于大部分场景都可以起到很好的压缩效果。
+		// Varint or.
+		// 32 Data Varint afterneed to1~5,
+		// 1 Byte, 5 bytes.
+		// 64 Data after 1~10.
+		// In,
+		// This throughVarint partial can to.
 	
 		static int varint_length(parm<int32_t>& avalue);
 		static int varint_length(parm<int64_t>& avalue);
@@ -662,27 +664,27 @@ namespace ngl
 
 		static int rand();
 
-		// 字符串大小写转换
+		// String convert
 		static void transform_tolower(std::string& adata);
 		static void transform_toupper(std::string& adata);
 
-		// 判断文件夹是否存在
+		// Checkdirectorywhether
 		static bool directories_exists(const std::string& apath);
 
-		// 判断文件是否存在
+		// Checkfilewhether
 		static bool file_exists(const std::string& apath);
 
-		// 创建目录
+		// Createdirectory
 		static bool create_dir(const std::string& apath);
 
-		// 移除文件
+		// Removefile
 		static bool file_remove(const std::string& afilename);
 
-		// # 获取dir下所有文件
-		// # aiteration是否循环迭代dir下的所有目录
+		// # Getdirunderallfile
+		// # Aiterationwhether dirunder alldirectory
 		static void dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration = false);
 
-		// 不可恢复的异常，直接生成core dump
+		// Unrecoverable exceptions, generate a core dump
 		static void no_core_dump(bool anocreate = false);
 
 		static std::function<void()> send_mail(const std::string& acontent);
@@ -701,16 +703,16 @@ namespace ngl
 			std::copy_n(lvec.begin(), lcopy_count, aarrays.begin());
 			return;
 		}
-		// 检查cjson类型
+		// Cjsontype
 		static bool bit(int32_t atype, int32_t acjsontype)
 		{
 			return (atype & acjsontype) != 0;
 		}
 
-		//删除重复多余的ach
+		// Delete ach
 		static void erase_repeat(std::string& astrbuff, const char ach);
 
-		// 比较是否相等
+		// Comparewhether
 		template <typename ETYPE>
 		static bool equal(ETYPE avalue1, ETYPE avalue2)
 		{

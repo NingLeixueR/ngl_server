@@ -1,5 +1,7 @@
-// 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 26-03-14 11:11:13
+// File overview: Implements logic for core.
+
+// Note [rebuild.bat tool-generated file, do not edit manually]
+// Createtime 26-03-14 11:11:13
 #include "tools/pb_field.cpp"
 #include "tools/db/sql/postgresql/npostgresql_manage.cpp"
 #include "tools/db/sql/postgresql/npostgresql_pool.cpp"

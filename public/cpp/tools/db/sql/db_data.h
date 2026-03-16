@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for sql.
+
 #pragma once
 
 #include "tools/serialize/nserialize.h"
@@ -29,34 +31,34 @@ namespace ngl
 		db_data& operator=(const db_data&) = delete;
 	private:
 		static std::map<i64_actorid, T>		m_data;
-		// # 加载出id 防止内存穿透
+		// # Load id preventcache penetration
 		static std::set<int64_t>			m_idindex;
 	public:
-		// # 获取数据的所有索引
+		// # Getdata allindex
 		static const std::set<int64_t>& const_id_index()
 		{
 			return m_idindex;
 		}
 
-		// # 获取数据的所有索引
+		// # Getdata allindex
 		static std::set<int64_t>& id_index()
 		{
 			return m_idindex;
 		}
 
-		// # 设置数据索引
+		// # Setdataindex
 		static void set_index(int64_t aid)
 		{
 			m_idindex.insert(aid);
 		}
 
-		// # 删除数据索引
+		// # Deletedataindex
 		static void erase_index(int64_t aid)
 		{
 			m_idindex.erase(aid);
 		}
 
-		// # 设置数据
+		// # Setdata
 		static bool set(i64_actorid aid, const T& adata)
 		{
 			m_data[aid] = adata;
@@ -64,14 +66,14 @@ namespace ngl
 			return true;		
 		}
 
-		// # 移除数据
+		// # Removedata
 		static void remove(i64_actorid aid)
 		{
 			m_data.erase(aid);
 			erase_index(aid);
 		}
 
-		// # 移除一组数据
+		// # Removea group ofdata
 		static void remove(const std::set<i64_actorid>& aid)
 		{
 			for (i64_actorid id : aid)
@@ -81,7 +83,7 @@ namespace ngl
 			}				
 		}
 
-		// # 移除一组数据
+		// # Removea group ofdata
 		static void remove(const std::vector<i64_actorid>& aid)
 		{
 			for (i64_actorid id : aid)
@@ -91,12 +93,12 @@ namespace ngl
 			}
 		}
 
-		// # 是否加载某个数据
+		// # Whetherload data
 		enum edbdata
 		{
-			edbdata_notload,	// 没有加载
-			edbdata_load,		// 已加载
-			edbdata_notdata,	// 没有数据
+			edbdata_notload,	// Load
+			edbdata_load,		// Load
+			edbdata_notdata,	// Data
 		};
 		static edbdata data_stat(i64_actorid aid)
 		{
@@ -112,7 +114,7 @@ namespace ngl
 			return edbdata_load;
 		}
 
-		// # 查找指定数据
+		// # Findspecifieddata
 		static T* find(i64_actorid aid)
 		{
 			auto itor = m_data.find(aid);

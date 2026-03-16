@@ -1,3 +1,5 @@
+// File overview: Declares interfaces for core.
+
 #pragma once
 
 #include "actor/tab/ttab_servers.h"

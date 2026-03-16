@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for curl.
+
 
 #include "actor/protocol/nprotocol.h"
 #include "tools/curl/ncurl.h"
@@ -140,7 +142,7 @@ namespace ngl
 		}
 
 		curl_easy_setopt(ahttp.m_curl, CURLOPT_NOSIGNAL, 1L);
-		curl_easy_setopt(ahttp.m_curl, CURLOPT_FORBID_REUSE, 1L); //禁掉alarm后会有大量CLOSE_WAIT 
+		curl_easy_setopt(ahttp.m_curl, CURLOPT_FORBID_REUSE, 1L); // Alarmafter CLOSE_WAIT
 
 		return curl_easy_perform(ahttp.m_curl);
 	}
@@ -290,7 +292,7 @@ namespace ngl
 
 			CURL* curl = curl_easy_init();
 
-			// 初始化libcurl
+			// Initializelibcurl
 
 			if (curl == nullptr)
 			{
@@ -300,20 +302,20 @@ namespace ngl
 
 				curl_slist* recipients = nullptr;
 
-				// 设置SMTP服务器、发件人和收件人
+				// SetSMTPserver,
 				curl_easy_setopt(curl, CURLOPT_URL, aparm.m_smtp.c_str());
 				curl_easy_setopt(curl, CURLOPT_MAIL_FROM, aparm.m_email.c_str());
-				// 设置SMTP认证信息
+				// SetSMTP info
 				curl_easy_setopt(curl, CURLOPT_USERNAME, aparm.m_email.c_str());
 				curl_easy_setopt(curl, CURLOPT_PASSWORD, aparm.m_password.c_str());
 
 				curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
-				//是否打开调试信息
+				// Whether info
 				curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L);
 				curl_easy_setopt(curl, CURLOPT_TIMEOUT, 60L);
 				curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30L);
 
-				// 设置收件人
+				// Set
 				for (const auto& [mailaddr, name] : aparm.m_recvs)
 				{
 					(void)name;
@@ -335,20 +337,20 @@ namespace ngl
 				}
 				payload += "\r\n";
 				payload += std::format("Subject: {}\r\n", aparm.m_title);
-				payload += "\r\n"; // 空行表示header部分结束
-				payload += std::format("{}\r\n", aparm.m_content); // 邮件内容
+				payload += "\r\n"; // Table headerpartialend
+				payload += std::format("{}\r\n", aparm.m_content); // Mailcontent
 
 				mail_payload_state lstate;
 				lstate.m_payload = &payload;
 				curl_easy_setopt(curl, CURLOPT_READDATA, &lstate);
 
-				curl_easy_setopt(curl, CURLOPT_READFUNCTION, &email_sender::callback); // 设置读取数据的回调函数
+				curl_easy_setopt(curl, CURLOPT_READFUNCTION, &email_sender::callback); // Setreaddata callbackfunction
 
 				curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, nullptr);
-				// 发送邮件
+				// Sendmail
 				const CURLcode res = curl_easy_perform(curl);
 
-				// 检查结果
+				// Translated comment.
 				if (res != CURLE_OK)
 				{
 					std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
@@ -358,7 +360,7 @@ namespace ngl
 					std::cout << "email send successfully!" << std::endl;
 				}
 
-				// 清理
+				// Cleanup.
 				curl_slist_free_all(recipients);
 				curl_easy_cleanup(curl);
 		}

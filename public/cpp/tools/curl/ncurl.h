@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for curl.
+
 #pragma once
 
 #include "actor/protocol/nprotocol.h"
@@ -38,16 +40,16 @@ namespace ngl
 {
 	enum ENUM_MODE
 	{
-		ENUM_MODE_NULL,		// 未设置
-		ENUM_MODE_HTTP,		// http方式
-		ENUM_MODE_HTTPS,	// https方式
+		ENUM_MODE_NULL,		// Set
+		ENUM_MODE_HTTP,		// http
+		ENUM_MODE_HTTPS,	// https
 	};
 
 	enum ENUM_TYPE
 	{
-		ENUM_TYPE_NULL,		// 未设置
-		ENUM_TYPE_POST,		// POST方式
-		ENUM_TYPE_GET,		// GET方式
+		ENUM_TYPE_NULL,		// Set
+		ENUM_TYPE_POST,		// POST
+		ENUM_TYPE_GET,		// GET
 	};
 
 	struct http_parm
@@ -64,16 +66,16 @@ namespace ngl
 		http_parm(http_parm&&) = delete;
 		http_parm& operator=(http_parm&&) = delete;
 
-		ENUM_MODE			m_mode = ENUM_MODE_NULL;				// http模式
-		ENUM_TYPE			m_type = ENUM_TYPE_NULL;				// http类型
-		CURL*				m_curl = nullptr;						// curl指针
-		std::string			m_url;									// 请求的url
-		std::string			m_param;								// 请求参数
-		int					m_timeout = 0;							// 超时时间
+		ENUM_MODE			m_mode = ENUM_MODE_NULL;				// http
+		ENUM_TYPE			m_type = ENUM_TYPE_NULL;				// Httptype
+		CURL*				m_curl = nullptr;						// Curl
+		std::string			m_url;									// Request url
+		std::string			m_param;								// Requestparameters
+		int					m_timeout = 0;							// Time
 		std::string			m_cookies;								// cookie
-		curl_slist*			m_headers = nullptr;				// http头
-		callback			m_callback = nullptr;					// 回调
-		std::string			m_recvdata;								// 接收的数据
+		curl_slist*			m_headers = nullptr;				// http
+		callback			m_callback = nullptr;					// Callback
+		std::string			m_recvdata;								// Data
 
 		~http_parm()
 		{
@@ -183,26 +185,26 @@ namespace ngl
 
 		static size_t callback(void* buffer, size_t size, size_t nmemb, std::string* lpVoid);
 	public:
-		// # 设置http类型
+		// # Sethttptype
 		static void set_mode(std::shared_ptr<http_parm>& ahttp, ENUM_MODE aval);
 
-		// # 设置post/get类型
+		// # Setpost/gettype
 		static void set_type(std::shared_ptr<http_parm>& ahttp, ENUM_TYPE aval);
 
-		// # 设置url
+		// # Seturl
 		static void set_url(std::shared_ptr<http_parm>& ahttp, const std::string& aurl);
 		static void set_url(std::shared_ptr<http_parm>& ahttp, const char* aurl);
 
-		// # 设置访问参数(parm xx=xx&xx=xx&xx=xx)
+		// # Set parameters(parm xx=xx&xx=xx&xx=xx)
 		static void set_param(std::shared_ptr<http_parm>& ahttp, const std::string& aparam);
 
-		// # 设置http头 
+		// # Sethttp
 		static void set_headers(std::shared_ptr<http_parm>& ahttp, const std::vector<std::string>& aheaders);
 
-		// # 设置回调
+		// # Setcallback
 		static void set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback);
 
-		// # 辅助设置http访问参数
+		// # Sethttp parameters
 		template <typename T>
 		static void param(std::string& aparam, const char* akey, const T& aval)
 		{
@@ -229,7 +231,7 @@ namespace ngl
 			param(aparam, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, aargs...);
 		}
 		
-		// # 发送
+		// # Send
 		static void send(std::shared_ptr<http_parm>& adata);
 
 		static std::shared_ptr<http_parm> http();

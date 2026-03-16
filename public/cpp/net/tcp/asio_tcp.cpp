@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for tcp.
+
 
 #include "actor/protocol/nprotocol.h"
 #include "tools/serialize/pack.h"
@@ -151,7 +153,7 @@ namespace ngl
 					if (acount > 0)
 					{
 						log_error()->print("connect [{}:{}] fail [{}] add timer list! ", aip, aport, ec.message());
-						// 加入定时队列
+						// Join queue
 						wheel_parm lparm
 						{
 							.m_ms = ngl::tcp::tcp_connect_interval_ms,
@@ -354,7 +356,7 @@ namespace ngl
 			return;
 		}
 
-		// 通知逻辑层session断开连接
+		// Notify session connection
 		std::shared_ptr<service_tcp> lpservice = nullptr;
 		std::function<void()> lclosefun = nullptr;
 		{
@@ -396,25 +398,25 @@ namespace ngl
 	{
 		basio_errorcode ec;
 
-		// 步骤1: 取消所有异步操作
+		// 1: Cancelallasynchronously
 		socket.cancel(ec);
 		if (!ngl::tcp::should_ignore_socket_close_error(ec))
 		{
 			log_error()->print("asio_tcp::close_socket cancel [{}]", ec.message());
 		}
 
-		// 步骤2: 关闭连接方向（可选但推荐）
+		// 2: Closeconnectiondirection( )
 		if (socket.is_open())
 		{
 			socket.shutdown(basio_iptcpsocket::shutdown_both, ec);
-			// 忽略"not_connected"错误（可能已自然关闭）
+			// "Not_connected" ( close)
 			if (!ngl::tcp::should_ignore_socket_close_error(ec))
 			{
 				log_error()->print("asio_tcp::close_socket shutdown [{}]", ec.message());
 			}
 		}
 
-		// 步骤3: 关闭socket释放资源
+		// 3: Closesocket
 		if (socket.is_open())
 		{
 			socket.close(ec);
@@ -539,7 +541,7 @@ namespace ngl
 				}
 				else
 				{
-					//关闭连接
+					// Closeconnection
 					close(aservice.get());
 					if (error != basio::error::operation_aborted)
 					{

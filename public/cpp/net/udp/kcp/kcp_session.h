@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for kcp.
+
 #pragma once
 
 #include "net/udp/kcp/kcp_endpoint.h"
@@ -36,7 +38,7 @@ namespace ngl
 		kcp_session& operator=(const kcp_session&) = delete;
 
 		std::map<i32_sessionid, ptr_se>						m_dataofsession;
-		std::map<i64_actorid, i32_sessionid>				m_actoridofsession;		// client/server对应的sessionid
+		std::map<i64_actorid, i32_sessionid>				m_actoridofsession;		// Client/servercorresponding sessionid
 
 		std::map<std::string, std::map<i16_port, ptr_se>>	m_dataofendpoint;
 		int32_t												m_sessionid = 0;
@@ -49,7 +51,7 @@ namespace ngl
 	public:
 		enum
 		{
-			ekcp_update_intervalms = 10,		// 调用kcp api update的间隔(单位毫秒)
+			ekcp_update_intervalms = 10,		// kcp api update ( )
 		};
 
 		kcp_session(asio_kcp* asiokcp);

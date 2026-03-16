@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for protocol.
+
 #pragma once
 
 #include "actor/protocol/nprotocol_template.h"
@@ -23,23 +25,23 @@ namespace ngl
 	enum E_ACTOR_TIMER
 	{
 		ET_NULL,
-		ET_MONTH,			// 每月触发
-		ET_WEEK,			// 每周触发
-		ET_DAY,				// 每日触发		ahour时amin分asec秒
-		ET_HOUR,			// 每小时触发	amin分asec秒
-		ET_MIN,				// 每分钟触发	asec秒
-		ET_INTERVAL_SEC,	// 间隔n秒触发
+		ET_MONTH,			// Translated comment.
+		ET_WEEK,			// Translated comment.
+		ET_DAY,				// Ahour amin asec
+		ET_HOUR,			// Amin asec
+		ET_MIN,				// Asec
+		ET_INTERVAL_SEC,	// N
 	};
 
 	struct np_timerparm
 	{
 		int								m_type = 0;
 		int								m_timerid = 0;
-		int64_t							m_ms = 0;					// 相对于当前时间 ms
-		int								m_count = 1;				// 触发次数
-		std::function<int32_t(int64_t)> m_intervalms = nullptr;		// 触发间隔
-		std::shared_ptr<void>			m_parm = nullptr;			// 自定义参数
-		int64_t							m_triggerms = 0;			// 触发时的毫秒
+		int64_t							m_ms = 0;					// Currenttime ms
+		int								m_count = 1;				// Translated comment.
+		std::function<int32_t(int64_t)> m_intervalms = nullptr;		// Translated comment.
+		std::shared_ptr<void>			m_parm = nullptr;			// Parameters
+		int64_t							m_triggerms = 0;			// Translated comment.
 
 		DPROTOCOL(np_timerparm, m_type, m_timerid, m_ms, m_count, m_triggerms)
 	};
@@ -50,7 +52,7 @@ namespace ngl
 		apparm->m_parm = std::static_pointer_cast<void>(aparm);
 	}
 
-	// 机器人测试
+	// Test
 	struct np_robot_pram
 	{
 		std::vector<std::string> m_parm;
@@ -60,9 +62,9 @@ namespace ngl
 
 	struct nactornode
 	{
-		std::string		m_name;							// 服务器名称
-		NODE_TYPE		m_nodetype = NODE_TYPE::FAIL;	// 服务器类型
-		i32_serverid	m_serverid = -1;				// 服务器id
+		std::string		m_name;							// Servername
+		NODE_TYPE		m_nodetype = NODE_TYPE::FAIL;	// Servertype
+		i32_serverid	m_serverid = -1;				// Serverid
 		std::vector<i16_actortype>	m_actortype;		// ENUM_ACTOR_TYPE
 
 		DPROTOCOL(nactornode, m_name, m_serverid, m_actortype)
@@ -82,7 +84,7 @@ namespace ngl
 	};
 
 	// [actor client -> actor server]
-	// 注册结点
+	// Registernode
 	struct np_actornode_register
 	{
 		nactornode m_node;
@@ -92,7 +94,7 @@ namespace ngl
 	};
 
 	// [actor_client -> actor_server]
-	// [回复]注册结点
+	// [Response]registernode
 	struct np_actornode_register_response
 	{
 		std::vector<nactornode> m_vec;
@@ -101,7 +103,7 @@ namespace ngl
 	};
 
 	// [actor_client -> actor_client]
-	// 客户端间相互连接(actor客户端相互连接,id大的) 
+	// Client connection(actorclient connection,id )
 	struct np_actorclient_node_connect
 	{
 		i32_serverid m_id = -1;
@@ -110,10 +112,10 @@ namespace ngl
 	};
 
 	// [actor_server -> actor_client]	[actor_client -> actor_server] 
-	// 服务器向客户端同步结点信息		客户端向服务器同步结点信息
+	// Servertoclientsynchronizenodeinfo clienttoserversynchronizenodeinfo
 	struct np_actornode_update
 	{
-		i32_serverid m_id = -1;				// 服务器id
+		i32_serverid m_id = -1;				// Serverid
 		std::vector<i64_actorid> m_add;
 		std::vector<i64_actorid> m_del;
 		std::map<nguid, i32_serverid> m_rolegateway;
@@ -128,7 +130,7 @@ namespace ngl
 		DPROTOCOL(np_actornode_update_server, m_data)
 	};
 
-	// 向actor客户端同步结点信息(群发)
+	// Toactorclientsynchronizenodeinfo( )
 	struct np_actornode_update_mass
 	{
 		np_actornode_update m_mass;
@@ -137,8 +139,8 @@ namespace ngl
 		DPROTOCOL(np_actornode_update_mass_client, m_mass)
 	};
 
-	// 连接成功后执行任务
-	// 将任务添加到actor_client中,当指定类型的Actor连接成功后执行该任务
+	// Connectionsuccessfulafterexecutetask
+	// Taskaddtoactor_clientin, specifiedtype Actorconnectionsuccessfulafterexecutethis task
 	struct np_actornode_connect_task
 	{
 		i32_serverid m_serverid;
@@ -149,7 +151,7 @@ namespace ngl
 
 	// [login server -> game server]
 	// [login server -> gateway server]
-	// 通知服务器玩家账号验证通过
+	// Notifyserverplayeraccount through
 	struct np_actorrole_login
 	{
 		std::string		m_session;
@@ -189,7 +191,7 @@ namespace ngl
 		DPROTOCOL(np_actorswitch_process_plays, m_players);
 	};
 
-	// 服务器会通过此消息告诉对方连接成功 
+	// Server throughthis message connectionsuccessful
 	struct np_actorserver_connect
 	{
 		i32_serverid m_serverid;
@@ -197,7 +199,7 @@ namespace ngl
 		DPROTOCOL(np_actorserver_connect, m_serverid);
 	};
 
-	// SESSION断开连接
+	// SESSION connection
 	struct np_actor_session_close
 	{
 		i32_sessionid m_sessionid = 0;
@@ -206,7 +208,7 @@ namespace ngl
 	};
 
 	// [gateway -> game,gateway -> login] 
-	// 玩家与gateway断开连接
+	// Playerandgateway connection
 	struct np_actor_disconnect_close
 	{
 		i64_actorid m_actorid;
@@ -223,14 +225,14 @@ namespace ngl
 		DPROTOCOL(np_actor_gatewayid_updata, m_isremove, m_actorid, m_gatewayid)
 	};
 
-	// 间隔一段时间发起的全员(所有actor)广播
-	// 可以在这个广播里推送一些需要处理的任务,例如 保存数据
+	// Time (allactor)broadcast
+	// Can this broadcast need tohandle task,for example save data
 	struct np_actor_broadcast
 	{
 		DPROTOCOL(np_actor_broadcast)
 	};
 
-	// 重新加载csv
+	// Loadcsv
 	struct np_actor_reloadcsv
 	{
 		std::map<std::string, std::string> m_csvcontent;
@@ -238,7 +240,7 @@ namespace ngl
 		DPROTOCOL(np_actor_reloadcsv, m_csvcontent)
 	};
 
-	// 核实csv版本
+	// csv
 	struct np_actor_csv_verify_version
 	{
 		std::map<std::string, std::string> m_verify; // key: tab typeid(TAB).hash_code() val:md5
@@ -246,10 +248,10 @@ namespace ngl
 		DPROTOCOL(np_actor_csv_verify_version, m_verify)
 	};
 
-	// 发送物品给actor_role
+	// Senditemtoactor_role
 	struct np_actor_senditem
 	{
-		std::string					m_src;//物品来源
+		std::string					m_src;// Itemsource
 		std::map<int32_t, int32_t>	m_item;
 
 		DPROTOCOL(np_actor_senditem, m_src, m_item)
@@ -261,7 +263,7 @@ namespace ngl
 		i64_actorid m_roleid = -1;
 		std::string m_rolename;
 		std::string m_content;
-		int			m_utc = -1;				//发言utc
+		int			m_utc = -1;				// Utc
 
 		DPROTOCOL(chat, m_id, m_roleid, m_rolename, m_content, m_utc)
 	};
@@ -279,7 +281,7 @@ namespace ngl
 		DPROTOCOL(gateway_socket, m_session, m_area, m_accountid, m_dataid, m_gameid, m_gatewayid, m_socket)
 	};
 
-	// 更新连接数据
+	// Connectiondata
 	struct np_actor_gatewayinfo_updata
 	{
 		std::vector<gateway_socket>	m_add;
@@ -289,7 +291,7 @@ namespace ngl
 		DPROTOCOL(np_actor_gatewayinfo_updata, m_add, m_delsocket, m_delactorid)
 	};
 
-	// 新增邮件
+	// Newly addedmail
 	struct np_actor_addmail
 	{
 		i64_actorid					m_roleid = -1;
@@ -310,7 +312,7 @@ namespace ngl
 		DPROTOCOL(ncalendar_info, m_time, m_calendarid, m_start)
 	};
 
-	// 通知kcp服务器创建连接
+	// Notifykcpservercreateconnection
 	struct np_actor_kcp
 	{
 		std::string			m_kcpsession;
@@ -335,17 +337,17 @@ namespace ngl
 		DPROTOCOL(calendar_utc, m_time, m_beg, m_end)
 	};
 
-	// 新增邮件
+	// Newly addedmail
 	struct np_actor_addnotice
 	{
-		std::string m_notice;		// 内容
-		int32_t m_starttime = -1;	// 开始时间
-		int32_t m_finishtime = -1;	// 结束时间
+		std::string m_notice;		// Content
+		int32_t m_starttime = -1;	// Time
+		int32_t m_finishtime = -1;	// Endtime
 
 		DPROTOCOL(np_actor_addnotice, m_notice, m_starttime, m_finishtime)
 	};
 
-	// 关闭指定actor(不能关闭actor_role)
+	// Closespecifiedactor( closeactor_role)
 	struct np_actor_close
 	{
 		DPROTOCOL(np_actor_close)
@@ -357,15 +359,15 @@ namespace ngl
 # define FindSrcPos(STR) STR.rfind("/")
 #endif
 
-	// 日志发送 
+	// Logsend
 	struct np_logitem
 	{
-		int				m_serverid = -1;			// 服务器id
-		ELOGLEVEL		m_loglevel;					// 日志等级
-		ELOG_TYPE		m_type;						// 日志类型
-		std::string		m_src;						// 触发日志的文件位置
-		std::string		m_data;						// 日志内容
-		int32_t			m_time = -1;				// 日志发生时间
+		int				m_serverid = -1;			// Serverid
+		ELOGLEVEL		m_loglevel;					// Loglevel
+		ELOG_TYPE		m_type;						// Logtype
+		std::string		m_src;						// Log fileposition
+		std::string		m_data;						// Logcontent
+		int32_t			m_time = -1;				// Log time
 
 		DPROTOCOL(logitem, m_serverid, m_loglevel, m_type, m_src, m_data, m_time)
 	};
@@ -373,8 +375,8 @@ namespace ngl
 	struct nactor_logitem
 	{
 	private:
-		/** 临时数据 **/
-		std::string				m_src;						// 触发日志的文件位置
+		/* * Data * */
+		std::string				m_src;						// Log fileposition
 		ENUM_ACTOR				m_actortype;
 		ELOG_TYPE				m_logtype;
 		std::source_location	m_source;
@@ -382,7 +384,7 @@ namespace ngl
 		std::stringstream		m_stream;
 		ELOGLEVEL				m_level;
 		bool					m_isnet;
-		/** 临时数据 **/
+		/* * Data * */
 		static bool				m_init;
 	public:
 		
@@ -486,7 +488,7 @@ namespace ngl
 			return *this;
 		}
 
-		// 重载 << 操作符以输出 std::endl
+		// << Output std::endl
 		nactor_logitem& operator<<(std::ostream& (*manipulator)(std::ostream&))
 		{
 			if (m_init && check_level(m_level))
@@ -497,10 +499,10 @@ namespace ngl
 		}
 	};
 
-	///# 例子小游戏
-	// 玩家登陆
-	// 1、获取匹配信息
-	// 2、例子小游戏信息
+	// Translated comment.
+	// Player
+	// 1, Get info
+	// 2, Info
 	struct np_login_request_info
 	{
 		i64_actorid m_roleid;
@@ -508,7 +510,7 @@ namespace ngl
 	};
 
 	// actor_example_match->actor_example_manage 
-	// 为指定玩家创建指定例子小游戏
+	// Specifiedplayercreatespecified
 	struct np_create_example
 	{
 		pbexample::EPLAY_TYPE m_type;
@@ -516,13 +518,13 @@ namespace ngl
 		DPROTOCOL(np_create_example, m_type, m_roleids)
 	};
 
-	// actor_example_manage->例子小游戏
+	// Actor_example_manage->
 	struct np_example_entergame_ready
 	{
 		DPROTOCOL(np_example_entergame_ready)
 	};
 
-	// 例子小游戏->actor_role
+	// ->Actor_role
 	struct np_example_actorid
 	{
 		pbexample::EPLAY_TYPE m_type;
@@ -530,7 +532,7 @@ namespace ngl
 		DPROTOCOL(np_example_id, m_type, m_actorexampleid)
 	};
 
-	// 例子小游戏->actor_example_manage 例子小游戏退出
+	// ->Actor_example_manage exit
 	struct np_example_equit
 	{
 		pbexample::EPLAY_TYPE m_type;
@@ -544,7 +546,7 @@ namespace ngl
 		DPROTOCOL(np_thruput_test, m_rounds)
 	};
 
-	// 接收/移除任务
+	// /Removetask
 	struct np_operator_task
 	{
 		std::string m_msg;
@@ -562,7 +564,7 @@ namespace ngl
 		DPROTOCOL(np_operator_task_response, m_msg, m_isreceive)
 	};
 
-	// 拉取排行信息
+	// Fetchrankinfo
 	struct np_get_rank
 	{
 		int32_t m_rankid = 0;
@@ -578,7 +580,7 @@ namespace ngl
 		DPROTOCOL(np_get_rank_response, m_rankid, m_rolerank)
 	};
 
-	// 增加删除活动排行榜
+	// Deleteactivityrank list
 	struct np_activityrank_operator
 	{
 		int32_t m_rankid = 0;

@@ -1,3 +1,5 @@
+// File overview: Declares interfaces for core.
+
 #pragma once
 
 #include <functional>
@@ -21,7 +23,3 @@ public:
 
 	static std::string m_excname;
 };
-
-
-
-

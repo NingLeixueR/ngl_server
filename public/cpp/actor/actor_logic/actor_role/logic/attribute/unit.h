@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for attribute.
+
 #pragma once
 
 #include "actor/actor_logic/actor_role/logic/attribute/attribute.h"
@@ -40,21 +42,21 @@ namespace ngl
 			m_dynamic.init(m_attribute.get_attribute());
 		}
 
-		// # [设置/获取]unit类型
+		// # [Set/get]unittype
 		bool set_type(pbdb::EUNIT atype);
 		pbdb::EUNIT type();
 
-		// # 获取unit属性
+		// # Getunitattribute
 		attribute& get_attribute();
 
-		// # [设置/获取]unit id
+		// # [Set/get]unit id
 		bool set_id(int32_t aid);
 		int32_t id();
 
-		// # 获取unit动态属性
+		// # Getunit attribute
 		dynamic_attribute& dynamic();
 
-		// # [设置/获取]unit position
+		// # [Set/get]unit position
 		void set_x(int32_t ax);
 		void set_y(int32_t ay);
 		int32_t x();
@@ -62,11 +64,11 @@ namespace ngl
 		pbdb::POSITION& position();
 		bool is_position_invalid();
 
-		// # [设置/获取]unit 方向
+		// # [Set/get]unit direction
 		void set_angle(int32_t aangle);
 		int32_t angle();
 
-		// # [设置/获取]unit 速度
+		// # [Set/get]unit
 		void set_speed(int32_t aspeed);
 		int32_t speed();
 

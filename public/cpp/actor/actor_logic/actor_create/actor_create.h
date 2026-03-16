@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor create.
+
 #pragma once
 
 #include "tools/db/sql/mysql/nmysql_pool.h"
@@ -24,8 +26,8 @@
 
 namespace ngl
 {
-	// actor切换进程
-	// actor内部临时数据无法迁移
+	// Actorswitch
+	// Actor datacannot
 	class actor_create : 
 		public actor
 	{
@@ -46,11 +48,11 @@ namespace ngl
 
 		static i64_actorid actorid(i32_serverid aserverid);
 
-		// # 在指定[Server]上创建[Actor]
+		// # Specified[Server]oncreate[Actor]
 		template <typename T>
 		static void switch_process_send(std::shared_ptr<np_actorswitch_process<T>>& pro)
 		{
-			// # 2 如果是actor_role发给gateway
+			// # 2 If actor_role togateway
 			ENUM_ACTOR ltype = (ENUM_ACTOR)nguid::type(pro->m_actor);
 			if (ltype == ENUM_ACTOR::ACTOR_ROLE)
 			{
@@ -59,7 +61,7 @@ namespace ngl
 				i64_actorid lactorgatewayid = nguid::make(ACTOR_GATEWAY, tab_self_area, nnodeid::tcount(lp->m_gatewayid));
 				send_actor(lactorgatewayid, nguid::make(), pro);
 			}
-			// # 3 发给去的进程
+			// # 3 To
 			i64_actorid lactortoserverid = actor_create::actorid(nnodeid::tcount(pro->m_toserverid));
 			send_actor(lactortoserverid, nguid::make(), pro);
 		}
@@ -80,7 +82,7 @@ namespace ngl
 
 			if (aserverid > 0)
 			{
-				// # 1 发给actor目前所在的进程
+				// # 1 Toactor before
 				i64_actorid lcreateactor = actor_create::actorid(nnodeid::tcount(aserverid));
 				send_actor(lcreateactor, nguid::make(), pro);
 			}

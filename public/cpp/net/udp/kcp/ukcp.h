@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for kcp.
+
 #pragma once
 
 #include "net/udp/kcp/asio_kcp.h"
@@ -85,11 +87,11 @@ namespace ngl
 
 		bool sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len);
 
-		// ## 发送原始udp包并等待其返回
+		// ## Send udppackand return
 		bool sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun);
 #pragma endregion 
 
-		// ## 发起连接
+		// ## Connection
 		void connect(
 			std::string& akcpsess
 			, i64_actorid aserver
@@ -106,18 +108,18 @@ namespace ngl
 			, const std::function<void(i32_session)>& afun
 		);
 
-		// ## 查找session对应的actorid
+		// ## Findsessioncorresponding actorid
 		i64_actorid find_server(i32_session asession);
 		i64_actorid find_client(i32_session asession);
 		bool find_actorid(i32_session asession, i64_actorid& aserver, i64_actorid& aclient);
 
-		// ## 生成kcp-session以验证连接
+		// ## Kcp-session connection
 		static bool session_create(i64_actorid aclient, i64_actorid aserver, std::string& asession);
 
-		// ## 检查kcp-session以验证连接
+		// ## Kcp-session connection
 		static bool session_check(i64_actorid aclient, i64_actorid aserver, const std::string& asession);
 
-		// ## 重置连接
+		// ## Connection
 		void reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aserver, i64_actorid aclient);
 		void reset_add(const std::string& aip, i16_port aport, i64_actorid aserver, i64_actorid aclient);
 	};

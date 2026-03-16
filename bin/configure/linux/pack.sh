@@ -1,4 +1,6 @@
 #!/bin/sh
+# File overview: Automates the pack workflow on Linux.
+
 rm -rf ngl*
 rm -rf sql*
 mkdir ngl -p

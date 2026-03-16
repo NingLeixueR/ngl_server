@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor base.
+
 #pragma once
 
 #include "tools/db/sql/postgresql/npostgresql_manage.h"
@@ -39,9 +41,9 @@ namespace ngl
 		ndbtab(const ndbtab&) = delete;
 		ndbtab& operator=(const ndbtab&) = delete;
 
-		static tab_dbload*		m_tab;				// 数据库加载策略
-		static db_cache			m_cache_save;		// 数据保存队列
-		static db_cache			m_cache_del;		// 数据删除队列
+		static tab_dbload*		m_tab;				// Databaseload
+		static db_cache			m_cache_save;		// Datasavequeue
+		static db_cache			m_cache_del;		// Datadeletequeue
 
 		enum
 		{
@@ -50,7 +52,7 @@ namespace ngl
 
 		static void cachelist(enum_cache_list atype, std::set<i64_actorid>& aset);
 	public:
-		// # 初始化
+		// # Initialize
 		static void init()
 		{
 			m_tab = ttab_dbload::instance().get_tabdb<TDBTAB>();
@@ -61,21 +63,21 @@ namespace ngl
 				return;
 			}
 
-			// # 设置数据保存/数据删除队列
+			// # Setdatasave/datadeletequeue
 			m_cache_save.set_cachefun(std::bind_front(&cachelist, enum_clist_save), m_tab->m_dbcacheintervalms);
 			m_cache_del.set_cachefun(std::bind_front(&cachelist, enum_clist_del), m_tab->m_dbcacheintervalms);
 
 			if (m_tab->m_isloadall)
-			{// 加载全部数据
+			{// Loadalldata
 				TSQLMANAGE::template select<TDBTAB>(TSQLPOOL::instance().get(0));
 			}
 			else
-			{// 加载全部id 防止内存穿透
+			{// Loadallid preventcache penetration
 				TSQLMANAGE::template select<TDBTAB>(TSQLPOOL::instance().get(0), db_data<TDBTAB>::id_index());
 			}
 		}
 
-		// # 加载表中的所有数据
+		// # Loadtableinalldata
 		static void load(const pack* apack)
 		{
 			if (!m_tab->m_isloadall)
@@ -115,7 +117,7 @@ namespace ngl
 			log_info()->print("loadall[{}]", tools::type_name<TDBTAB>());
 		}
 
-		// # 加载表中的指定数据
+		// # Loadtableinspecifieddata
 		static void load(i32_threadid athreadid, int64_t aid)
 		{
 			if (aid == nguid::make())
@@ -128,7 +130,7 @@ namespace ngl
 			}
 		}
 
-		// # 加载数据 ：同步方式
+		// # Loaddata: synchronize
 		static void load(i32_threadid athreadid, const pack* apack, const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if (!m_tab->m_network)
@@ -138,7 +140,7 @@ namespace ngl
 			i64_actorid lid = adata.m_id.id();			
 			if (lid == nguid::none_actordataid())
 			{
-				//加载全部数据
+				// Loadalldata
 				load(apack);
 			}
 			else
@@ -175,7 +177,7 @@ namespace ngl
 			}
 		}
 
-		// # 异步保存数据  将需要保存的数据添加到缓存保存队列
+		// # Asynchronouslysave data need tosave dataaddtocachesavequeue
 		static void save(i32_threadid, const TDBTAB& adata)
 		{
 			int64_t lid = adata.mid();
@@ -183,21 +185,21 @@ namespace ngl
 			m_cache_save.push(lid);
 		}
 
-		// # 异步删除数据  将需要删除的数据添加到缓存保存队列
+		// # Asynchronouslydeletedata need todelete dataaddtocachesavequeue
 		static void del(i32_threadid, i64_actorid aid)
 		{
 			ngl::db_data<TDBTAB>::remove(aid);
 			m_cache_del.push(aid);
 		}
 
-		// # 异步删除一组数据
+		// # Asynchronouslydeletea group ofdata
 		static void del(i32_threadid, const std::vector<i64_actorid>& aids)
 		{
 			ngl::db_data<TDBTAB>::remove(aids);
 			m_cache_del.push(aids);
 		}
 
-		// # 数据保存
+		// # Datasave
 		static void save(i32_threadid athreadid, const pack*, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			for (auto& [_guid, _tdb] : adata.m_data)
@@ -268,7 +270,7 @@ namespace ngl
 			>(e_ready_all);
 		}
 
-		// # 同步:加载数据
+		// # Synchronize:loaddata
 		bool handle(const message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			log_error()->print("load: np_actordb_load<{}> id:{}", tools::type_name<TDBTAB>(), adata.get_data()->m_id);
@@ -283,7 +285,7 @@ namespace ngl
 			return true;
 		}
 
-		// # 异步:保存数据
+		// # Asynchronously:save data
 		bool handle(const message<np_actordb_save<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
@@ -297,7 +299,7 @@ namespace ngl
 			return true;
 		}
 
-		// # 异步:删除数据
+		// # Asynchronously:deletedata
 		bool handle(const message<np_actordb_delete<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			log_error()->print("load: np_actordb_delete<{}> id:{}", tools::type_name<TDBTAB>(), adata.get_data()->m_data);
@@ -312,7 +314,7 @@ namespace ngl
 			return true;
 		}
 
-		// # ACTOR_TIMER_DB_CACHE, db cache list  保存缓存列表
+		// # ACTOR_TIMER_DB_CACHE, db cache list savecachelist
 		bool handle(const message<np_actortime_db_cache<TDBTAB>>& adata)
 		{
 			enum_cache_list ltype = adata.get_data()->m_type;
@@ -355,7 +357,7 @@ namespace ngl
 			return true;
 		}
 
-		// # 支持gm操作
+		// # Supportgm
 		using handle_cmd = cmd<tactor_db, std::string, int, int, ncjson&>;
 
 		template <typename TSQLPOOL>

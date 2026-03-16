@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for tab.
+
 #pragma once
 
 #include "tools/tab/csv/ncsv.h"
@@ -56,20 +58,20 @@ namespace ngl
 
 		ttab_specialid() = default;
 	public:
-		i32_rolelv	m_rolemaxlv = 0;			// 玩家最大等级
-		i32_rolevip	m_rolemaxvip = 0;			// 玩家最大vip等级
-		int32_t		m_createfamilconsume = 0;	// 创建军团的消耗
-		int32_t		m_familsignexp = 0;			// 军团签到给军团增加的经验值
-		int32_t		m_familsigndrop = 0;		// 军团签到的奖励
-		int32_t		m_familapplylistcount = 0;	// 玩家请求加入军团的最大数量
-		int32_t		m_familjoininterval = 0;	// 玩家请求加入/创建军团的冷却时间
-		int32_t		m_friendsapplylistcount = 0;// 玩家好友请求列表数量
-		int32_t		m_friendscount = 0;			// 玩家好友数量
-		int32_t		m_ranklistmaxcount = 0;		// 排行榜最大条目数
-		// 例子游戏
-		int32_t						m_example_room_maxtime = 0;	// 例子游戏的最大匹配时间
-		std::map<int32_t, int32_t>	m_example_totalnumber;	// 例子游戏的匹配人数
-		int32_t						m_example_room_readytime = 0; // 例子游戏的等待玩家确认的最大时间
+		i32_rolelv	m_rolemaxlv = 0;			// Player level
+		i32_rolevip	m_rolemaxvip = 0;			// Player viplevel
+		int32_t		m_createfamilconsume = 0;	// Createguild
+		int32_t		m_familsignexp = 0;			// Guildsign intoguild
+		int32_t		m_familsigndrop = 0;		// Guildsign in reward
+		int32_t		m_familapplylistcount = 0;	// Playerrequestjoinguild
+		int32_t		m_familjoininterval = 0;	// Playerrequestjoin/createguild time
+		int32_t		m_friendsapplylistcount = 0;// Playerfriendsrequestlist
+		int32_t		m_friendscount = 0;			// Playerfriends
+		int32_t		m_ranklistmaxcount = 0;		// Rank list
+		// Instance game
+		int32_t						m_example_room_maxtime = 0;	// Instance game time
+		std::map<int32_t, int32_t>	m_example_totalnumber;	// Instance game
+		int32_t						m_example_room_readytime = 0; // Instance game playerconfirm time
 
 		static ttab_specialid& instance()
 		{

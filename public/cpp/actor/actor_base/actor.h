@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor base.
+
 #pragma once
 
 #include "actor/actor_base/nactortype.h"
@@ -28,9 +30,9 @@ namespace ngl
 	struct actorparm
 	{
 		actorparmbase	m_parm;
-		int32_t			m_weight	= 0x7fffffff;	// 权重:单次获取线程后处理消息的数量
-		int32_t			m_timeout	= 0x7fffffff;	// 超时:(当actor处理消息超过此时间)
-		bool			m_broadcast	= false;		// 是否支持广播(如果需要加载dbclient，需要支持广播)
+		int32_t			m_weight	= 0x7fffffff;	// : Getthreadafterhandlemessage
+		int32_t			m_timeout	= 0x7fffffff;	// :( Actorhandlemessage this time)
+		bool			m_broadcast	= false;		// Whethersupportbroadcast(ifneed toloaddbclient, need tosupportbroadcast)
 	};
 
 	template <typename T>
@@ -39,14 +41,14 @@ namespace ngl
 	class actor : 
 		public actor_base
 	{
-		std::list<handle_pram>						m_list;							// 待处理消息列表
-		std::map<int32_t, std::list<handle_pram>>	m_hightlist;					// 待处理消息列表(高特权)
-		actor_stat									m_stat = actor_stat_init;		// actor状态
-		std::shared_mutex							m_mutex;						// 锁:[m_list:待处理消息列表]
-		int32_t										m_weight = 0;					// 权重
-		int32_t										m_timeout = 0;					// 超时:(当actor处理消息超过此时间)
-		bool										m_release = false;				// 释放将忽略权重和超时
-		nrfunbase*									m_actorfun = nullptr;			// 注册可处理函数
+		std::list<handle_pram>						m_list;							// Pending message list
+		std::map<int32_t, std::list<handle_pram>>	m_hightlist;					// Pending message list(high priority)
+		actor_stat									m_stat = actor_stat_init;		// Actorstate
+		std::shared_mutex							m_mutex;						// Lock:[m_list:pending message list]
+		int32_t										m_weight = 0;					// Translated comment.
+		int32_t										m_timeout = 0;					// :( Actorhandlemessage this time)
+		bool										m_release = false;				// Translated comment.
+		nrfunbase*									m_actorfun = nullptr;			// Register handler
 	public:
 		template <typename TDerived>
 		void init_rfun()
@@ -54,12 +56,12 @@ namespace ngl
 			m_actorfun = &nrfun<TDerived>::instance();
 			if (isbroadcast())
 			{
-				// # 注册广播处理函数
+				// # Registerbroadcast handler
 				register_actornonet<TDerived, np_actor_broadcast>(
 					e_ready_all, (Tfun<actor, np_actor_broadcast>) & actor::handle_broadcast
 				);
 			}
-			// # 注册actor close处理函数
+			// # Registeractor closehandler
 			register_actornonet<TDerived, np_actor_close>(
 				e_ready_all, (Tfun<actor, np_actor_close>) & actor::handle_close
 			);
@@ -71,63 +73,63 @@ namespace ngl
 			return nrfun<TDerived>::instance();
 		}
 
-		// # 注册定时器
+		// # Register a timer
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, np_timerparm> afun = &TDerived::timer_handle)
 		{
 			nrf<TDerived>().template rfun_nonet<TDerived, np_timerparm>(afun, e_ready_all);
 		}
 
-		// # 用来注册匿名函数挂载在对应actor上
+		// # Used toregister function correspondingactoron
 		template <typename TDerived, typename T>
 		static void register_actor_s(int32_t aready, const std::function<void(TDerived*, const message<T>&)>& afun)
 		{
 			nrf<TDerived>().template rfun<TDerived, T>(afun, aready);
 		}
 
-		// # 注册actor成员函数(可以是非handle)
+		// # Registeractor function(can handle)
 		template <typename TDerived, typename ...ARG>
 		static void register_actor(int32_t aready, ARG... afun)
 		{
 			(nrf<TDerived>().template rfun<TDerived, ARG>(afun, aready), ...);
 		}
 
-		// # 与register_actor类似 只不过不注册网络层
+		// # Andregister_actorsimilar registernetwork layer
 		template <typename TDerived, typename T>
 		static void register_actornonet(enum_ready aready, const Tfun<TDerived, T> afun)
 		{
 			nrf<TDerived>().template rfun_nonet<TDerived, T>(afun, aready);
 		}
 
-		// # 注册actor handle函数
+		// # Registeractor handlefunction
 		template <typename TDerived, typename ...ARG>
 		static void register_handle(enum_ready aready)
 		{
 			(nrf<TDerived>().template rfun<TDerived, ARG>((Tfun<TDerived, ARG>) & TDerived::handle, aready), ...);
 		}
 
-		// # 注册actor handle函数
+		// # Registeractor handlefunction
 		template <typename TDerived, typename ...ARG>
 		static void register_script_handle(enum_ready aready)
 		{
 			(nrf<TDerived>().template rfun<actor, ARG>((Tfun<actor, ARG>) & actor::handle_script<ARG>, aready), ...);
 		}
 
-		// # actor_gateway_c2g 注册转发
+		// # Actor_gateway_c2g register forwarding
 		template <typename TDerived, typename ...ARG>
 		static void register_forward_c2g()
 		{
 			(nrf<TDerived>().template rfun_c2g<ARG>((Tfun<TDerived, np_actor_forward<ARG, forward_c2g<forward>>>) & TDerived::handle), ...);
 		}
 		
-		// # register_forward_g2c 注册转发
+		// # Register_forward_g2c register forwarding
 		template <typename TDerived, typename ...ARG>
 		static void register_forward_g2c()
 		{
 			(nrf<TDerived>().template rfun_g2c<ARG>((Tfun<TDerived, np_actor_forward<ARG, forward_g2c<forward>>>) & TDerived::handle), ...);
 		}
 
-		// # actor_role 注册二次转发
+		// # Actor_role registersecondaryforwarding
 		template <typename TDerived, ENUM_ACTOR ACTOR, typename ...ARG>
 		static void register_secondary_forward_c2g()
 		{
@@ -136,22 +138,22 @@ namespace ngl
 
 		explicit actor(const actorparm& aparm);
 
-		// # 获取actor的状态
+		// # Get the actor state
 		actor_stat activity_stat() final;
 
-		// # 设置actor的状态
+		// # Set the actor state
 		void set_activity_stat(actor_stat astat) final;
 
-		// # 释放actor消息列表
+		// # Actormessage list
 		void release() final;
 
-		// # 消息列表是否为空
+		// # Message listwhether
 		bool list_empty() final;
 
-		// # 向消息列表中添加新的消息
+		// # Tomessage listinadd message
 		void push(handle_pram& apram) final;
 
-		// # 由线程主动调用消费消息
+		// # Thread message
 		void actor_handle(i32_threadid athreadid) final;
 
 		template <typename T>
@@ -167,21 +169,21 @@ namespace ngl
 
 		bool ahandle(i32_threadid athreadid, handle_pram& aparm);
 
-		// ############# [广播] ############# 
-		// # 间隔一段时间发起的广播
-		// # 1、保存数据 
-		// # 2、调用broadcast函数
-		// # 与actor_base::start_broadcast() 相呼应
-		// # 重载此方法实现actor_base::m_broadcast毫秒触发事件
+		// ############# [Broadcast] #############
+		// # Time broadcast
+		// # 1, Save data
+		// # 2, Broadcastfunction
+		// # Andactor_base::start_broadcast()
+		// # This actor_base::m_broadcast event
 		virtual void broadcast() {}
-		// # 广播处理函数
+		// # Broadcast handler
 		bool handle_broadcast(const message<np_actor_broadcast>& adata);
-		// ############# [广播] ############# 
+		// ############# [Broadcast] #############
 		
-		// # 关闭此actor
+		// # Closethis actor
 		bool handle_close(const message<np_actor_close>&);
 
-		// # 脚本语言处理消息
+		// # Script-side message handling
 		template <typename TMESSAGE>
 		bool handle_script(const message<TMESSAGE>& adata);
 	};

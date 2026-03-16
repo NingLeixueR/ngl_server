@@ -1,3 +1,5 @@
+// File overview: Declares interfaces for core.
+
 #ifndef _IDLCPP_PROTOCOL_H_
 #define _IDLCPP_PROTOCOL_H_
 
@@ -274,8 +276,8 @@ namespace ngl
 	void tprotocol_customs_200000000()
 	{
 		tprotocol::set_customs_index(200000000);
-		// 新增内部协议需要补充
-		// 注册T与"np_mass_actor<T>"
+		// Newly added protocolneed to
+		// RegisterTand"np_mass_actor<T>"
 		tprotocol::tp_customs_script<
 )";
 		int lindex = 200000000;

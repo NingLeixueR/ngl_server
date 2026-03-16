@@ -1,3 +1,5 @@
+// File overview: Implements logic for core.
+
 #include "tools/tab/xml/xml_serialize.h"
 #include "server_main.h"
 #include "startup_support.h"
@@ -725,7 +727,7 @@ startup_error start_cross(int* tcp_port)
 startup_error start_pushserverconfig(int* tcp_port)
 {
 	(void)tcp_port;
-	// 将服务器配置上传lbgmsys
+	// Serverconfigon lbgmsys
 	ngl::xarg_info* lpublicxml = nconfig.info();
 	std::string lgmurl;
 	if (!lpublicxml->find("gmurl", lgmurl))
@@ -780,9 +782,9 @@ std::vector<std::string> get_lines()
 	char lbuff[4096] = { 0 };
 	std::cin.getline(lbuff, 4096);
 	std::string lstrbuff = lbuff;
-	//[== 删除多余空格
+	// [== Delete
 	ngl::tools::erase_repeat(lstrbuff, ' ');
-	//删除多余空格 ==]
+	// Delete ==]
 
 	std::vector<std::string> lvec;
 	ngl::tools::splite(lstrbuff.c_str(), " ", lvec);

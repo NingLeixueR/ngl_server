@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements message handlers for message.
+
 
 #include "actor/actor_logic/actor_gateway_c2g/actor_gateway_c2g.h"
 #include "actor/actor_logic/actor_gateway_g2c/actor_gateway_g2c.h"
@@ -45,9 +47,9 @@ namespace ngl
 		{
 			auto pro = std::make_shared<np_actor_disconnect_close>();
 			pro->m_actorid = nguid::make(ACTOR_ROLE, larea, lroleid);
-			// # 通知game服务器 玩家已经断开连接
+			// # Notifygameserver player connection
 			send_actor(pro->m_actorid, id_guid(), pro);
-			// # 通知login服务器 玩家已经断开连接
+			// # Notifyloginserver player connection
 			ttab_servers::instance().foreach_server(LOGIN, tab_self_area, [&pro, this](const tab_servers* atab)
 				{
 					nguid lguid(ACTOR_LOGIN, tab_self_area, atab->m_id);
@@ -58,7 +60,7 @@ namespace ngl
 	}
 
 	bool actor_gateway::handle(const message<np_actorrole_login>& adata)
-	{// login服务器通知GateWay服务器 玩家账号验证成功
+	{// LoginservernotifyGateWayserver playeraccount successful
 		auto lparm = adata.get_data();
 		nguid lguid(lparm->m_roleid);
 
@@ -87,7 +89,7 @@ namespace ngl
 			)
 		);
 
-		// 通知actor_server [actorid]->[gateway server id]
+		// Notifyactor_server [actorid]->[gateway server id]
 		sync_actorserver_gatewayid(lguid, false);
 		return true;
 	}
@@ -205,7 +207,7 @@ namespace ngl
 					)
 				);
 			}
-			// 断线重连或者其他设备顶号
+			// Or
 			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid());
 			pbnet::PROBUFF_NET_ROLE_SYNC ltemp;
 			ntcp::instance().send_server(linfo->m_gameid, ltemp, lroleactor, nguid::make());
@@ -241,7 +243,7 @@ namespace ngl
 			return true;
 		}
 
-		// ### 通知kcp服务器创建连接
+		// ### Notifykcpservercreateconnection
 		auto pro = std::make_shared<np_actor_kcp>();
 		pro->m_kcpsession		= lkcpsession;
 		pro->m_sessionid		= lpack->m_id;

@@ -1,3 +1,5 @@
+// File overview: Implements the entry point for the rebuild target.
+
 #include <type_traits>
 #include <filesystem>
 #include <functional>
@@ -42,19 +44,19 @@ void find(
 	std::set<std::string>& avec2
 )
 {
-	namespace fs = std::filesystem; // 简化命名空间
+	namespace fs = std::filesystem; // Translated comment.
 	fs::path rootPath(targetPath);
-	// 确保路径是绝对路径（避免相对路径拼接混乱）
+	// Path path( path )
 	fs::path absRootPath = fs::absolute(rootPath);
 
-	// 修复：使用普通directory_iterator，避免recursive+递归调用的双重遍历
+	// : Directory_iterator, recursive+
 	fs::directory_iterator endIter;
 	for (fs::directory_iterator iter(absRootPath); iter != endIter; ++iter)
 	{
-		// 统一转换为带/的字符串路径（兼容Windows/Linux）
-		std::string fullPath = iter->path().generic_string(); // generic_string()自动将\转为/
+		// Convert / stringpath( Windows/Linux)
+		std::string fullPath = iter->path().generic_string(); // Generic_string()automatically \ /
 
-		// 跳过third_party目录
+		// Third_partydirectory
 		if (fs::is_directory(*iter))
 		{
 			if (atxt == ".h")
@@ -65,47 +67,47 @@ void find(
 			}
 			
 
-			// 修复：安全截取路径（跳过../../，避免越界）
+			// : Path(../../, )
 			std::string relPath;
 			const std::string prefix = "../../";
 
 			//if (fullPath.size() >= prefix.size()) {
-			//	relPath = fullPath.substr(prefix.size()); // 从prefix长度后截取
+			// RelPath = fullPath.substr(prefix.size()); // fromprefix after
 			//}
 			//else {
-				relPath = fullPath; // 长度不足时直接用原路径
+				relPath = fullPath; // Path
 			//}
 			std::cout << "dir:[" << relPath << "]" << std::endl;
 			adir.insert(relPath);
 
-			// 递归处理子目录（此时用普通iterator，递归才合理）
+			// Handle directory(this iterator, )
 			find(awz, atxt, fullPath, adir, avec1, avec2);
 		}
 		else
 		{
 			std::cout << "file:[" << fullPath << "]" << std::endl;
-			// 修复：用filesystem直接获取文件名，避免手动遍历
+			// : Filesystem getfile,
 			std::string fileName = iter->path().filename().generic_string();
 
 			if (is_sname(fileName, atxt))
 			{
-				// 读取文件行数（保留你的原有逻辑）
+				// Readfile ( )
 				ngl::readfile lrf(fullPath);
 				int lmaxline = lrf.get_maxline();
 
-				// 修复avec1的路径拼接逻辑
+				// Avec1 path
 				std::string mapKey;
 				if (awz) {
-					// awz=true：存储完整路径
+					// Awz=true: path
 					mapKey = fullPath;
 				}
 				else {
-					// awz=false：仅存储文件名
+					// Awz=false: file
 					mapKey = fileName;
 				}
-				avec1[mapKey] = lmaxline; // 用[]替代insert，避免重复插入覆盖问题
+				avec1[mapKey] = lmaxline; // [] Insert,
 
-				// 修复avec2：插入文件的完整路径（核心修复点）
+				// Avec2: file path( )
 				if (fullPath.find("third_party") == std::string::npos) {
 					avec2.insert(fullPath);
 				}
@@ -276,7 +278,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-	// 将所有文件转换为utf8格式
+	// Allfileconvert utf8
 	std::cout << "to utf8..." << std::endl;
 	for (const std::string& item : lset_head)
 	{

@@ -1,3 +1,5 @@
+// File overview: Implements GoogleTest coverage for xml sysconfig.
+
 #include <gtest/gtest.h>
 
 #include <chrono>

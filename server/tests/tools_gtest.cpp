@@ -1,3 +1,5 @@
+// File overview: Implements GoogleTest coverage for tools.
+
 #include <gtest/gtest.h>
 
 #include <atomic>

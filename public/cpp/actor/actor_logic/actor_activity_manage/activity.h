@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor activity manage.
+
 #pragma once
 
 #include "actor/actor_logic/actor_activity_manage/activitytimedb.h"
@@ -53,19 +55,19 @@ namespace ngl
 
 		activity(EActivity atype);
 
-		// # 获取活动类型
+		// # Getactivitytype
 		EActivity type()
 		{
 			return m_tab->m_type;
 		}
 
-		// # 获取活动ID
+		// # GetactivityID
 		int64_t activityid()
 		{
 			return m_actorid;
 		}
 
-		// # 活动是否开启
+		// # Activitywhetherstart
 		virtual bool is_start()
 		{
 			const pbdb::db_activitytimes* lpdata = m_activitytimes->getconst();
@@ -76,7 +78,7 @@ namespace ngl
 			return lpdata->mstart();
 		}
 
-		// # 活动开启时间
+		// # Activitystarttime
 		int32_t start_utc()
 		{
 			const pbdb::db_activitytimes* lpdata = m_activitytimes->getconst();
@@ -87,7 +89,7 @@ namespace ngl
 			return lpdata->mbeg();
 		}
 		
-		// # 活动结束时间
+		// # Activityendtime
 		int32_t finish_utc()
 		{
 			const pbdb::db_activitytimes* lpdata = m_activitytimes->getconst();
@@ -102,25 +104,25 @@ namespace ngl
 			return start_utc() + lpdata->mduration();
 		}
 
-		// # 此刻是活动第几天
+		// # This activity
 		int32_t day()
 		{
 			return (int32_t)localtime::getspandays(localtime::gettime(), start_utc());
 		}
 
-		// # 获取活动表
+		// # Getactivitytable
 		const tab_activity* tab()
 		{
 			return m_tab;
 		}
 
-		// # 是否支持排行榜
+		// # Whethersupportrank list
 		bool is_rank()
 		{
 			return activityid() >= pbdb::eranklist::activity_lv;
 		}
 	public:
-		// # 调用:活动开启
+		// #:Activitystart
 		virtual void start() 
 		{
 			const pbdb::db_activitytimes* lpconstdata = m_activitytimes->getconst();
@@ -141,16 +143,16 @@ namespace ngl
 			lpdata->set_mstart(true);
 		}
 
-		// # 调用:活动开启后和服务器重启
+		// #:Activitystartafter server
 		virtual void init() 
 		{
 			log_error()->print("activity::init() activityid=[{}]", activityid());
 		}
 
-		// # 调用:玩家登陆
+		// #:Player
 		virtual void rolelogin(i64_actorid aroleid);
 
-		// # 调用:玩家开启活动成功
+		// #:Playerstartactivitysuccessful
 		void recv_task_response(i64_actorid aroleid, int32_t aindex, bool aisreceive)
 		{
 			pbdb::db_activity* lpdata = m_activity->get();
@@ -168,16 +170,16 @@ namespace ngl
 			}
 		}
 
-		// # 调用:玩家等级发生变化
+		// #:Playerlevel change
 		virtual void rolelevelchange(i64_actorid aroleid, int32_t abeforelevel, int32_t anowlevel);
 
-		// # 调用:玩家金币发生变化
+		// #:Player change
 		virtual void rolegoldchange(i64_actorid aroleid, int32_t abeforegold, int32_t anowgold);
 
-		// # db_brief.m_activityvalues发生变化后调用
+		// # Db_brief.m_activityvalues changeafter
 		static void brief_activityvalues(i64_actorid aroleid);
 
-		// # 调用:活动关闭
+		// #:Activityclose
 		virtual void finish() 
 		{
 			log_error()->print("activity::finish() activityid=[{}]", activityid());

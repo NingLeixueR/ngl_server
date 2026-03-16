@@ -1,3 +1,5 @@
+// File overview: Implements the entry point for the makeproto target.
+
 #include <functional>
 #include <filesystem>
 #include <algorithm>

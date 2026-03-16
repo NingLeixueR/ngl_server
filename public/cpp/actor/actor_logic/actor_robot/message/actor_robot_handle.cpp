@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements message handlers for message.
+
 #include "actor/actor_logic/actor_robot_manage/actor_robot_manage.h"
 #include "actor/actor_logic/actor_robot/actor_robot.h"
 #include "actor/actor_base/nregister.h"
@@ -87,7 +89,7 @@ namespace ngl
 		}
 		else if (lrecv->mtype() == pbnet::ENUM_CHAT_SPEAK)
 		{
-			//log_error()->print("{}", (lrecv->m_stat() ? "[发言成功]" : "[发言失败] "));
+			// Log_error()->print("{}", (lrecv->m_stat()? "[ successful]": "[ ] "));
 		}
 		else if (lrecv->mtype() == pbnet::ENUM_UPDATA_SPEAK)
 		{
@@ -247,10 +249,10 @@ namespace ngl
 	{
 		struct noticeitem
 		{
-			int64_t		m_id;			// 公告id 
-			std::string m_notice;		// 内容
-			std::string m_starttime;	// 开始时间
-			std::string m_finishtime;	// 结束时间
+			int64_t		m_id;			// Noticeid
+			std::string m_notice;		// Content
+			std::string m_starttime;	// Time
+			std::string m_finishtime;	// Endtime
 			DPROTOCOL(noticeitem, m_id, m_notice, m_starttime, m_finishtime)
 		};
 		struct notices

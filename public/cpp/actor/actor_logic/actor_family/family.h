@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor family.
+
 #pragma once
 
 #include "actor/tab/ttab_specialid.h"
@@ -42,7 +44,7 @@ namespace ngl
 			log_error()->print("{}", data());
 		}
 
-		// 检查是否可以创建军团
+		// Whethercancreateguild
 		bool check_createfamily(i64_actorid aroleid)
 		{
 			data_modified<pbdb::db_familyer>& lpdbfamilyer = get(aroleid);
@@ -69,7 +71,7 @@ namespace ngl
 		int32_t									m_maxid = 0;
 		std::map<int64_t, int64_t>				m_rolefamily;	// key:roleid value:familyid
 		std::map<int64_t, std::set<int64_t>>	m_applylist;	// key:roleid value:std::set<familyid>
-		std::set<std::string>					m_familyname;	// 用来检查军团名称是否重复
+		std::set<std::string>					m_familyname;	// Used to guildnamewhether
 	public:
 		family():
 			m_maxid(0)
@@ -109,31 +111,31 @@ namespace ngl
 			}
 		}
 
-		// # 创建军团
+		// # Createguild
 		int32_t create_family(i64_actorid aroleid, const std::string& aname);
 
-		// # 申请加入军团
+		// # Applyjoinguild
 		int32_t join_family(i64_actorid aroleid, i64_actorid afamilyid);
 
-		// # 从军团[afamilyid]中的applylist中移除[aroleid]
+		// # Fromguild[afamilyid]inapplylistinremove[aroleid]
 		int32_t erase_applylist(i64_actorid aroleid, i64_actorid afamilyid);
 
-		// # 取消加入军团
+		// # Canceljoinguild
 		int32_t cancel_join_family(i64_actorid aroleid, i64_actorid afamilyid);
 
-		// # 军团长同意/不同意玩家加入军团
+		// # Guild accept/rejectplayerjoinguild
 		int32_t ratify_join_family(i64_actorid aroleid, i64_actorid ajoinroleid, bool aratify);
 
-		// # 军团长转让军团
+		// # Guild transferguild
 		int32_t cede_family(i64_actorid aroleid, i64_actorid acederoleid);
 
-		// # 退出军团
+		// # Exitguild
 		int32_t leave_family(i64_actorid aroleid, i64_actorid afamilyid);
 
-		// # 修改军团名称
+		// # Guildname
 		int32_t change_familyname(i64_actorid aroleid, i64_actorid afamilyid, const std::string& afamilyname);
 
-		// # 军团签到
+		// # Guildsign in
 		int32_t sign_family(i64_actorid aroleid, i64_actorid afamilyid);
 
 		bool get_familylist(i64_actorid afamilyid, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& apro);
@@ -142,7 +144,7 @@ namespace ngl
 
 		void sync_family(i64_actorid aroleid);
 
-		// # 获取军团所有人
+		// # Getguildall
 		bool get_familyers(i64_actorid aroleid, std::vector<i64_actorid>& afamilyers);
 	};
 }// namespace ngl

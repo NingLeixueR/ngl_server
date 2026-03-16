@@ -1,25 +1,27 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements message handlers for message.
+
 #include "actor/actor_logic/actor_notice/actor_notice.h"
 namespace ngl
 {
 	struct gm_notice
 	{
-		int64_t		m_id = 0;// 公告id
+		int64_t		m_id = 0;// Noticeid
 		std::string	m_notice;
-		int32_t		m_starttime = 0;// 开始时间
-		int32_t		m_finishtime = 0;// 结束时间
+		int32_t		m_starttime = 0;// Time
+		int32_t		m_finishtime = 0;// Endtime
 		DPROTOCOL(gm_notice, m_id, m_notice, m_starttime, m_finishtime)
 	};
 	bool actor_notice::handle(const message<mforward<np_gm>>& adata)
@@ -35,7 +37,7 @@ namespace ngl
 		if (handle_cmd::empty())
 		{
 			handle_cmd::add("get_notice") = [this](int id, ncjson& aos)
-				{// 返回 {"notice":gm_notice[]}
+				{// Return {"notice":gm_notice[]}
 					gcmd<std::vector<std::string>> pro(id, "get_notice");
 					for (auto& [_guid, _data] : m_notice.data())
 					{

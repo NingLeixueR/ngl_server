@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for tools.
+
 
 #include "tools/tab/xml/sysconfig.h"
 #include "actor/tab/ttab_servers.h"
@@ -616,7 +618,7 @@ namespace ngl
 	int32_t tools::utf8firstbyte(uint8_t firstbyte)
 	{
 		int nCount = 0;
-		unsigned char mask = 0x80; // 初始掩码：10000000
+		unsigned char mask = 0x80; // Translated comment.
 		if ((firstbyte & mask) == 0)
 		{
 			return 1;
@@ -919,8 +921,8 @@ namespace ngl
 				{
 					return false;
 				}
-				//0x7F 即　0111 1111
-				//~ 表示取反  
+				// 0x7F means 0111 1111.
+				// ~ means bitwise NOT.
 				if ((ln & ~0x7F) == 0)
 				{
 					aparm.m_buf[index] = (uint8_t)(ln & 0x7F);
@@ -928,10 +930,10 @@ namespace ngl
 				}
 				else
 				{
-					//取出7位并在第8位加上标记1
+					// Extract 7 bits and set the 8th bit to 1 as the continuation marker.
 					aparm.m_buf[index] = (uint8_t)((ln & 0x7F) | 0x80);
 					index++;
-					//已经处理的舍去
+					// Discard the bits that have already been processed.
 					ln = ln >> 7;
 				}
 			}
@@ -960,8 +962,8 @@ namespace ngl
 				{
 					return false;
 				}
-				//0x7F 即　0111 1111
-				//~ 表示取反  
+				// 0x7F means 0111 1111.
+				// ~ means bitwise NOT.
 				if ((ln & ~0x7F) == 0)
 				{
 					aparm.m_buf[index] = (uint8_t)(ln & 0x7F);
@@ -969,10 +971,10 @@ namespace ngl
 				}
 				else
 				{
-					//取出7位并在第8位加上标记1
+					// Extract 7 bits and set the 8th bit to 1 as the continuation marker.
 					aparm.m_buf[index] = (uint8_t)((ln & 0x7F) | 0x80);
 					index++;
-					//已经处理的舍去
+					// Discard the bits that have already been processed.
 					ln = ln >> 7;
 				}
 			}
@@ -1011,12 +1013,12 @@ namespace ngl
 			for (; i < aparm.m_len; i++)
 			{
 				uint8_t b = aparm.m_buf[i];
-				//0x7F 即　0111 1111
-				//取出7位然后右移，因为是小端存储
+				// 0x7F means 0111 1111.
+				// Extract 7 bits and then shift right because the value is stored in little-endian order.
 				uint8_t c = (b & 0x7F);
 				aparm.m_value |= (int64_t)c << (i * 7);
-				// 0x80 即 1000 0000
-				//第8位是0 说明后面没有字节了
+				// 0x80 means 1000 0000.
+				// If the 8th bit is 0, there are no more bytes after this one.
 				if ((uint8_t)(b & 0x80) == 0)
 				{
 					break;
@@ -1051,11 +1053,11 @@ namespace ngl
 			for (; i < aparm.m_len; i++)
 			{
 				uint8_t b = aparm.m_buf[i];
-				//0x7F 即　0111 1111
-				//取出7位然后右移，因为是小端存储
+				// 0x7F means 0111 1111.
+				// Extract 7 bits and then shift right because the value is stored in little-endian order.
 				aparm.m_value |= (b & 0x7F) << (i * 7);
-				// 0x80 即 1000 0000
-				//第8位是0 说明后面没有字节了
+				// 0x80 means 1000 0000.
+				// If the 8th bit is 0, there are no more bytes after this one.
 				if ((uint8_t)(b & 0x80) == 0)
 				{
 					break;
@@ -1867,7 +1869,7 @@ namespace ngl
 	}
 
 	namespace {
-		// 简单的 64-bit splitmix64，用于把一个 64-bit 值扩散成高质量种子
+		// 64-Bit splitmix64, used to 64-bit
 		static inline uint64_t splitmix64(uint64_t x) 
 		{
 			x += 0x9e3779b97f4a7c15ULL;
@@ -1881,7 +1883,7 @@ namespace ngl
 
 		static uint64_t make_global_seed() 
 		{
-			// 从 random_device 获取若干随机值（如果很慢也只做一次）
+			// From random_device get (if )
 			std::random_device rd;
 			uint64_t a = static_cast<uint64_t>(rd());
 			uint64_t b = static_cast<uint64_t>(rd());
@@ -1894,9 +1896,9 @@ namespace ngl
 			std::call_once(g_seed_once, []() {
 				g_global_seed.store(make_global_seed(), std::memory_order_relaxed);
 			});
-			// 原子加一个常数，保证每个线程拿到不同基值
+			// , Thread to
 			uint64_t v = g_global_seed.fetch_add(0x9e3779b97f4a7c15ULL, std::memory_order_acq_rel);
-			// 混合 thread id 以防进程内多个线程同时到达
+			// Thread id thread to
 			uint64_t tid_hash = std::hash<std::thread::id>()(std::this_thread::get_id());
 			return splitmix64(v ^ tid_hash);
 		}
@@ -1904,10 +1906,10 @@ namespace ngl
 
 	int tools::rand()
 	{
-		// 如果你更偏好 32-bit mt19937，可改为 std::mt19937 并对 seed 取低 32 位
+		// If 32-bit mt19937, std::mt19937 and seed 32
 		thread_local std::mt19937_64 gen(static_cast<std::mt19937_64::result_type>(next_thread_seed()));
 
-		// 生成范围 [0, RAND_MAX]。注意 RAND_MAX 是 C 的宏，可用 numeric_limits<int>::max() 替代。
+		// [0, RAND_MAX]. RAND_MAX C, numeric_limits<int>::max().
 		static thread_local std::uniform_int_distribution<int> dist(0, RAND_MAX);
 
 		return dist(gen);
@@ -1998,7 +2000,7 @@ namespace ngl
 		}
 	}
 
-	// 防止邮件被频繁发送,每隔10分钟发送一封相同内容的邮件
+	// Preventmail send, 10 send content mail
 	std::map<std::string, int32_t> g_mailmap;
 	std::shared_mutex g_maillock;
 	int32_t g_mailinterval = localtime::MINUTES_SECOND * 10;

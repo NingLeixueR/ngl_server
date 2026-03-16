@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor base.
+
 #pragma once
 
 #include "actor/actor_base/nactortype.h"
@@ -25,10 +27,10 @@
 namespace ngl
 {
 	///////////////////////////////////
-	// actor唯一id(64bit)			 //
-	// 16位			类型ENUM_ACTOR	 //
-	// 16位			区服id			 //
-	// 32位			数据id			 //
+	// Actor id(64bit) //
+	// 16 TypeENUM_ACTOR //
+	// 16 Areaid //
+	// 32 Dataid //
 	// ############ 64 bit ######### //
 	// #actor_type###areaid###id#### //
 	// #16bit########16bit####32bit# //
@@ -64,37 +66,37 @@ namespace ngl
 			m_value1[1] = aid;
 		}
 
-		//# 可以将union强转为i64_actorid值
+		// # Can union i64_actorid
 		inline operator i64_actorid ()const
 		{
 			return m_id;
 		}
 
-		//# 获取guidid值
+		// # Getguidid
 		inline i64_actorid id()const
 		{
 			return m_id;
 		}
 
-		//# 获取ENUM_ACTOR类型
+		// # GetENUM_ACTORtype
 		inline ENUM_ACTOR type()const
 		{
 			return static_cast<ENUM_ACTOR>(m_value2[0]);
 		}
 
-		//# 获取数据id
+		// # Getdataid
 		inline i32_actordataid actordataid()const
 		{
 			return m_value1[1];
 		}
 
-		//# 获取区服
+		// # Getarea
 		inline i16_area area()const
 		{
 			return m_value2[1];
 		}
 
-		//# 通过nactortype::enum2name获取枚举对应字符串
+		// # Throughnactortype::enum2nameget correspondingstring
 		static const char* name(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
@@ -102,113 +104,113 @@ namespace ngl
 			return em<ENUM_ACTOR>::name(ltype);
 		}
 
-		//# 根据类型、区服、数据id创建一个i64_actorid
+		// # Type, area, dataidcreate i64_actorid
 		static i64_actorid make(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid)
 		{
 			nguid lguid(atype, aareaid, aid);
 			return (i64_actorid)lguid;
 		}
 
-		//# 根据类型、数据id、区服为none_area()创建一个i64_actorid
+		// # Type, dataid, area none_area()create i64_actorid
 		static i64_actorid make(ENUM_ACTOR atype, i32_actordataid aid)
 		{
 			nguid lguid(atype, none_area(), aid);
 			return (i64_actorid)lguid;
 		}
 
-		//# 根据类型、数据id为none_actordataid()、区服为none_area()创建一个i64_actorid
+		// # Type, dataid none_actordataid(), area none_area()create i64_actorid
 		static i64_actorid make(ENUM_ACTOR atype)
 		{
 			nguid lguid(atype, none_area(), none_actordataid());
 			return (i64_actorid)lguid;
 		}
 
-		//# 根据类型none_type()、区服为none_area()数据id为none_actordataid()创建一个i64_actorid
+		// # Typenone_type(), area none_area()dataid none_actordataid()create i64_actorid
 		static i64_actorid make()
 		{
 			nguid lguid(none_type(), none_area(), none_actordataid());
 			return (i64_actorid)lguid;
 		}
 
-		//# 根据类型、区服为tab_self_area none_actordataid()、数据id为none_actordataid创建一个i64_actorid
+		// # Type, area tab_self_area none_actordataid(), dataid none_actordataidcreate i64_actorid
 		static i64_actorid make_self(ENUM_ACTOR atype);
 
-		//# 替换type
+		// # Replacetype
 		static i64_actorid make_type(i64_actorid aactorid, ENUM_ACTOR atype)
 		{
 			nguid lguid(aactorid);
 			return lguid.make_type(atype);
 		}
 
-		//# 替换area
+		// # Replacearea
 		static i64_actorid make_area(i64_actorid aactorid, i16_area aareaid)
 		{
 			nguid lguid(aactorid);
 			return lguid.make_area(aareaid);
 		}
 
-		//# 替换actordataid
+		// # Replaceactordataid
 		static i64_actorid make_actordataid(i64_actorid aactorid, i32_actordataid aid)
 		{
 			nguid lguid(aactorid);
 			return lguid.make_actordataid(aid);
 		}
 
-		//# 替换type
+		// # Replacetype
 		inline i64_actorid make_type(ENUM_ACTOR atype)
 		{
 			m_value2[0] = actor_value(atype);
 			return (i64_actorid)(*this);
 		}
 
-		//# 替换area
+		// # Replacearea
 		inline i64_actorid make_area(i16_area aareaid)
 		{
 			m_value2[1] = aareaid;
 			return (i64_actorid)(*this);
 		}
 
-		//# 替换actordataid
+		// # Replaceactordataid
 		inline i64_actorid make_actordataid(i32_actordataid aid)
 		{
 			m_value1[1] = aid;
 			return (i64_actorid)(*this);
 		}
 
-		//# 获取actordataid
+		// # Getactordataid
 		static i32_actordataid actordataid(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
 			return lguid.actordataid();
 		}
 
-		//# 获取type
+		// # Gettype
 		static i16_actortype type(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
 			return static_cast<i16_actortype>(lguid.type());
 		}
 
-		//# 获取area
+		// # Getarea
 		static i16_area area(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
 			return lguid.area();
 		}
 
-		//# send 发送给同类型的所有actor
+		// # Send sendto type allactor
 		static i64_actorid moreactor(ENUM_ACTOR atype)
 		{
 			return make(atype, none_area(), none_actordataid());
 		}
 
-		//# 和无参make()一致
+		// # Make()consistent
 		static i64_actorid moreactor()
 		{
 			return make(none_type(), none_area(), none_actordataid());
 		}
 
-		//# 和无参make()一致
+		// # Make()consistent
 		inline void none()
 		{
 			m_value2[0] = actor_value(none_type());
@@ -216,7 +218,7 @@ namespace ngl
 			m_value1[1] = none_actordataid();
 		}
 
-		//# 是否发给同类型的所有actor
+		// # Whether to type allactor
 		static bool is_moreactor(i64_actorid actorid, ENUM_ACTOR atype)
 		{
 			nguid lguid(actorid);
@@ -229,7 +231,7 @@ namespace ngl
 			return (i64_actorid)(lguid) == (i64_actorid)(*this);
 		}
 
-		//# actor type 是否无效
+		// # Actor type whetherinvalid
 		static bool is_actortypenone(i64_actorid actorid)
 		{
 			nguid lguid(actorid);
@@ -241,45 +243,45 @@ namespace ngl
 			return type() == none<i16_actortype>();
 		}
 
-		//# actor area 是否无效
+		// # Actor area whetherinvalid
 		static bool is_actorareanone(i64_actorid actorid)
 		{
 			nguid lguid(actorid);
 			return lguid.is_actorareanone();
 		}
 
-		//# actor area 是否无效
+		// # Actor area whetherinvalid
 		inline bool is_actorareanone()const
 		{
 			return area() == none<i16_area>();
 		}
 
-		//# actor id 是否无效
+		// # Actor id whetherinvalid
 		static bool is_actoridnone(i64_actorid actorid)
 		{
 			nguid lguid(actorid);
 			return lguid.is_actoridnone();
 		}
 
-		//# actor id 是否无效
+		// # Actor id whetherinvalid
 		inline bool is_actoridnone()const
 		{
 			return actordataid() == none<i32_actordataid>();
 		}
 
-		//# 无效area
+		// # Invalidarea
 		static i16_area none_area()
 		{
 			return none<i16_area>();
 		}
 
-		//# 无效type
+		// # Invalidtype
 		static ENUM_ACTOR none_type()
 		{
 			return none<ENUM_ACTOR>();
 		}
 
-		//# 无效dataid
+		// # Invaliddataid
 		static i32_actordataid none_actordataid()
 		{
 			return none<i32_actordataid>();
@@ -340,4 +342,3 @@ struct std::formatter<ngl::nguid>
 		}
 	}
 };
-

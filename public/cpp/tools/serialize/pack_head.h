@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for serialize.
+
 #pragma once
 
 #include "tools/serialize/nserialize.h"
@@ -28,7 +30,7 @@
 
 namespace ngl
 {
-	// # 包头
+	// # Packet header
 	struct pack_head
 	{
 		int32_t m_data[EPH_SUM] = {0};
@@ -36,68 +38,68 @@ namespace ngl
 
 		pack_head();
 
-		// # 设置mask
+		// # Setmask
 		static void				head_set_mask(int32_t* abuff);
 		void					set_mask();
 
-		// # 检查mask
+		// # Mask
 		static EPH_HEAD_VAL		head_check_mask(const int32_t* abuff, int awpos);
 		EPH_HEAD_VAL			check_mask()const;
 
-		// # 设置包头时间
+		// # Setpacket headertime
 		static void		head_set_time(int32_t* abuff);
 		void			set_time();
 
-		// # 获取包头时间
+		// # Getpacket headertime
 		static i32_time head_get_time(const int32_t* abuff);
 		i32_time		get_time()const;
 
-		// # 设置actor 
-		// # aactor:发送给哪个actor /* aenum == ACTOR_NONE 此值无效 */
-		// # arequestactorid:哪个actor发送的
+		// # Setactor
+		// # Aactor:sendto actor /* aenum == ACTOR_NONE this invalid */
+		// # Arequestactorid: actorsend
 		static void head_set_actor(int32_t* abuff, i64_actorid aactor, i64_actorid arequestactorid);
 		static void head_set_actor(int32_t* abuff, i64_actorid aactor);
 		void		set_actor(i64_actorid aactor, i64_actorid arequestactorid);
 		void		set_requestactor(i64_actorid arequestactorid);
 
-		// # 获取actor
+		// # Getactor
 		i64_actorid		get_actor()const;
 		i64_actorid		get_request_actor()const;
 
-		// # 获取要发送给的actor的type
+		// # Get sendto actor type
 		i16_actortype	get_actortype()const;
 
-		// # 获取谁发送的actor的type
+		// # Get send actor type
 		i16_actortype	get_request_actortype()const;
 
-		// # 获取要发送给的actor的area
+		// # Get sendto actor area
 		i16_area		get_actorarea()const;
 
-		// # 获取要发送给的actor的dataid
+		// # Get sendto actor dataid
 		i32_actordataid get_actordataid()const;
 
-		// # 重置head
+		// # Head
 		void			reset();
 
-		// # 获取EPH对应的值
+		// # GetEPHcorresponding
 		int32_t			getvalue(EPH aeph)const;
 
-		// # 获取协议字节数
+		// # Getprotocol
 		int32_t			get_bytes()const;
 
-		// # 获取包头长度
+		// # Getpacket header
 		static int32_t	size();
 
-		// # 包头是否接收完毕
+		// # Packet headerwhether
 		EPH_HEAD_VAL	isready()const;
 
-		// # 获取协议号
+		// # Getprotocol id
 		i32_protocolnum protocolnum()const;
 
-		// # 获取协议号
+		// # Getprotocol id
 		i32_protocolnum get_protocolnumber()const;
 
-		// # 设置协议号
+		// # Setprotocol id
 		void set_protocol(i32_protocolnum aprotocolnum);
 		
 		EPH_HEAD_VAL push(const char*& abuff, int32_t& alen);

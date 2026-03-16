@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor login.
+
 #pragma once
 
 #include "actor/actor_logic/actor_login/account.h"
@@ -76,28 +78,28 @@ namespace ngl
 
 		static void nregister();
 
-		// # 根据账号密码获取pbdb::db_account
+		// # Account getpbdb::db_account
 		data_modified<pbdb::db_account>* get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate);
 
-		// # 获取amap中相对空闲的服务器
+		// # Getamapin server
 		bool get_freeserver(std::map<i32_serverid, server_info>& amap, std::pair<i32_serverid, int32_t>& apair);
 
-		// # 获取game服务器中相对空闲的服务器
+		// # Getgameserverin server
 		bool get_freeserver_game(std::pair<i32_serverid, int32_t>& apair);
 
-		// # 获取gateway服务器中相对空闲的服务器
+		// # Getgatewayserverin server
 		bool get_freeserver_gateway(std::pair<int32_t, int32_t>& apair);
 
-		// # 减少amap中aserverid对应服务器的承载人数
+		// # Amapinaserveridcorrespondingserver
 		bool dec_freeserver(std::map<i32_serverid, server_info>& amap, i32_serverid aserverid);
 
-		// # 减少game服务器中aserverid对应服务器的承载人数
+		// # Gameserverinaserveridcorrespondingserver
 		bool dec_freeserver_game(i32_serverid aserverid);
 
-		// # 减少gateway服务器中aserverid对应服务器的承载人数
+		// # Gatewayserverinaserveridcorrespondingserver
 		bool dec_freeserver_gateway(i32_serverid aserverid);
 
-		// # 打印空闲服务器数据
+		// # Serverdata
 		void printf_freeserver();
 
 		bool timer_handle(const message<np_timerparm>& adata);
@@ -121,4 +123,3 @@ struct std::formatter<ngl::server_info>
 		return std::format_to(ctx.out(), "[server_info:id{}-rolesize{}]", aval.m_id, aval.m_rolesize);
 	}
 };
-

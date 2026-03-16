@@ -1,3 +1,5 @@
+# File overview: Defines CMake targets and build rules for node.
+
 cmake_minimum_required(VERSION 3.15)
 
 PROJECT (node)
@@ -23,5 +25,3 @@ target_link_libraries(node
 target_include_directories(node PRIVATE ${CORE_LIST} ${PROJECT_SOURCE_DIR}/../libnglcore/core)
 
 ngl_apply_msvc_defaults(node)
-
-

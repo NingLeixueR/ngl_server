@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor base.
+
 #pragma once
 
 #include "tools/serialize/nserialize.h"
@@ -39,7 +41,7 @@ namespace ngl
 			return -1;
 		}
 
-		//ET_MONTH,		// 每月触发
+		// ET_MONTH, //
 		static bool parm_month(np_timerparm& aparm, int amonthday/*1-31*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_monthday(amonthday) && localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
@@ -56,7 +58,7 @@ namespace ngl
 			return false;			
 		}
 
-		// 每周触发 1-7
+		// Translated comment.
 		static bool parm_week(np_timerparm& aparm, int aweek/*1-7*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_week(aweek) && localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
@@ -75,7 +77,7 @@ namespace ngl
 			return false;
 		}
 
-		// 每日触发  ahour时amin分asec秒
+		// Ahour amin asec
 		static bool parm_day(np_timerparm& aparm, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
@@ -94,7 +96,7 @@ namespace ngl
 			return false;
 		}
 
-		// 每小时触发  amin分asec秒
+		// Amin asec
 		static bool parm_hour(np_timerparm& aparm, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_minute(amin) && localtime::check_sec(asec))
@@ -113,7 +115,7 @@ namespace ngl
 			return false;
 		}
 
-		// 每分钟触发  asec秒
+		// Asec
 		static bool parm_min(np_timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_sec(asec))
@@ -132,7 +134,7 @@ namespace ngl
 			return false;
 		}
 
-		// 每n秒触发
+		// N
 		static bool make_interval(np_timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
 			if (asec >= 0)
@@ -158,7 +160,7 @@ namespace ngl
 		ntimer(const ntimer&) = delete;
 		ntimer& operator=(const ntimer&) = delete;
 	public:
-		// 抛出一个定时器
+		// Timer
 		static int addtimer(actor_base* actor, const std::shared_ptr<np_timerparm>& aparm);
 	};
 }//namespace ngl

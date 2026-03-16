@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor friends.
+
 #pragma once
 
 #include "actor/tab/ttab_specialid.h"
@@ -52,7 +54,7 @@ namespace ngl
 			return std::find(avec1.begin(), avec1.end(), aroleid) != avec1.end() || std::find(avec2.begin(), avec2.end(), aroleid) != avec2.end();
 		}
 
-		// 请求添加好友
+		// Requestaddfriends
 		int addfriends(i64_actorid aroleid, i64_actorid afriends)
 		{
 			data_modified<pbdb::db_friends>& lfriends = get(aroleid);
@@ -88,7 +90,7 @@ namespace ngl
 			return 0;
 		}
 
-		// 同意/拒绝好友申请
+		// Accept/ friendsapply
 		int ratifyfriends(i64_actorid aroleid, i64_actorid afriends, bool aratify)
 		{
 			data_modified<pbdb::db_friends>& lfriends1 = get(aroleid);
@@ -130,7 +132,7 @@ namespace ngl
 			return 0;
 		}
 
-		// 删除好友
+		// Deletefriends
 		int erasefriends(i64_actorid aroleid, i64_actorid afriends)
 		{
 			data_modified<pbdb::db_friends>& lfriends1 = get(aroleid);
@@ -160,7 +162,7 @@ namespace ngl
 			return 0;
 		}
 
-		// 同步好友信息
+		// Synchronizefriendsinfo
 		void syncfriends(i64_actorid aroleid)
 		{
 			pbnet::PROBUFF_NET_FRIEND_RESPONSE pro;
@@ -193,7 +195,7 @@ namespace ngl
 			actor::send_client(aroleid, pro);
 		}
 
-		// 获取好友
+		// Getfriends
 		bool get_friends(i64_actorid aroleid, std::vector<i64_actorid>& afriends)
 		{
 			data_modified<pbdb::db_friends>& lfriends = get(aroleid);
@@ -212,4 +214,3 @@ namespace ngl
 }// namespace ngl
 
 mk_formatter(pbdb::db_friends)
-

@@ -1,0 +1,1 @@
+// File overview: Declares interfaces for attribute.

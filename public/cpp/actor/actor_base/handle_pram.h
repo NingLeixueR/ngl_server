@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor base.
+
 #pragma once
 
 #include "actor/protocol/tprotocol.h"
@@ -29,8 +31,8 @@ namespace ngl
 
 	struct nnode_session
 	{
-		i32_sessionid	m_session = -1;	// 服务器session
-		nactornode		m_node;		    // 服务器基本信息
+		i32_sessionid	m_session = -1;	// Serversession
+		nactornode		m_node;		    // Server info
 
 		nnode_session() = default;
 		nnode_session(i32_sessionid asession, const nactornode& anode);
@@ -57,23 +59,23 @@ namespace ngl
 		handle_pram& operator=(const handle_pram&) = default;
 		handle_pram() = default;
 
-		i32_protocolnum			m_enum			= -1;				// 协议号
-		std::shared_ptr<void>	m_data			= nullptr;			// 协议结构
-		std::shared_ptr<pack>	m_pack			= nullptr;			// 如果是网络消息会携带pack信息
-		nguid					m_actor			= nguid::make();	// 发送给哪个actor
-		nguid					m_requestactor	= nguid::make();	// 哪个actor发送的
-		std::set<i64_actorid>   m_massactors;						// 群发列表
+		i32_protocolnum			m_enum			= -1;				// Protocol id
+		std::shared_ptr<void>	m_data			= nullptr;			// Protocolstructure
+		std::shared_ptr<pack>	m_pack			= nullptr;			// If message packinfo
+		nguid					m_actor			= nguid::make();	// Sendto actor
+		nguid					m_requestactor	= nguid::make();	// Actorsend
+		std::set<i64_actorid>   m_massactors;						// List
 
 		using forwardtype = std::function<void(handle_pram&)>;
 		using callfail = std::function<void()>;
 
-		forwardtype				m_forward		= nullptr;			// 转发函数
-		bool					m_forwardtype	= false;			// 转发给所有类型
-		callfail				m_failfun		= nullptr;			// 如何actor_client都找不到目标actor则调用
-		bool					m_issend		= true;				// 是否会发送给其他进程
+		forwardtype				m_forward		= nullptr;			// Forwardingfunction
+		bool					m_forwardtype	= false;			// Forwardingtoalltype
+		callfail				m_failfun		= nullptr;			// Actor_client to actor
+		bool					m_issend		= true;				// Whether sendto
 
-		// # 浅拷贝：用于将“群发 handle_pram”拆分给本地 actor 时复用 data/forward 等信息
-		// # 注意：刻意不拷贝 m_massactors，避免在本地投递时产生大集合拷贝开销
+		// # Copy: used to " handle_pram" tolocal actor data/forward info
+		// #: Copy m_massactors, local generate copy
 		static handle_pram shallow_copy_without_massactors(const handle_pram& asrc)
 		{
 			handle_pram ldst;
@@ -89,23 +91,23 @@ namespace ngl
 			return ldst;
 		}
 
-		//# 根据[连接]获取[id]
+		// # [Connection]get[id]
 		static i32_serverid		serverid(i64_actorid aactorid);
 
-		//# 根据[actorid]获取[gatewayid]
+		// # [Actorid]get[gatewayid]
 		static i32_serverid		gatewayid(i64_actorid aactorid);
 
-		//# 根据[服务器类型]获取[服务器列表]
+		// # [Servertype]get[serverlist]
 		static void				serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
 
-		//# 是否是无效的actor guid
+		// # Whether invalid actor guid
 		static bool				is_actoridnone(const nguid& aguid);
 
-		//# 通过session发送消息T
+		// # ThroughsessionsendmessageT
 		template <typename T>
 		static bool	send(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid);
 		
-		//# 向服务器发送pack
+		// # Toserversendpack
 		static bool	send_pack(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 		static bool	send_pack(i32_serverid aserverid, std::shared_ptr<void>& apack);
 		
@@ -163,7 +165,7 @@ namespace ngl
 		template <typename T, typename Y>
 		using nforward_g2c = std::shared_ptr<np_actor_forward<T, forward_g2c<Y>>>;
 
-		//Y:forward或者T
+		// Y:forwardor T
 		template <typename T, typename Y>
 		static handle_pram create(const nguid& aid, const nguid& arid, const nforward_g2c<T, Y>& adata, const callfail& afailfun = nullptr)
 		{
@@ -210,7 +212,7 @@ namespace ngl
 			if (lserverid == -1)
 			{
 				if (adata.m_forwardtype && handle_pram::is_actoridnone(aactorid))
-				{//# 转发给所有类型为nguid::type(aactorid)的actor
+				{// # Forwardingtoalltype nguid::type(aactorid) actor
 					std::set<i32_serverid> lserverids;
 					handle_pram::serveridlist(aactorid.type(), lserverids);
 					for (i32_serverid serverid : lserverids)

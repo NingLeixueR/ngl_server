@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for actor client.
+
 #include "actor/actor_logic/actor_client/actor_client.h"
 #include "actor/actor_logic/actor_server/actor_server.h"
 #include "actor/actor_base/actor_manage.h"
@@ -45,7 +47,7 @@ namespace ngl
 
 	void actor_client::nregister()
 	{
-		//# 设置未找到协议处理函数
+		// # Set toprotocol handler
 		nrfun<actor_client>::instance().set_notfindfun(
 			[](int, handle_pram& apram) 
 			{
@@ -53,7 +55,7 @@ namespace ngl
 			}
 		);
 
-		//# 注册协议
+		// # Registerprotocol
 		register_handle<actor_client
 			, np_actornode_register_response
 			, np_actorclient_node_connect
@@ -96,7 +98,7 @@ namespace ngl
 		set_node(lserverid, adata.get_data()->m_session);
 		naddress::actor_address_add(lserverid, lactorserve);
 
-		//注册结点
+		// Registernode
 		np_actornode_register lpram
 		{
 			.m_node
@@ -150,7 +152,7 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_actor_server_register>& adata)
 	{
-		// # 需要尝试连接ActorServer结点 并向其注册自己		
+		// # Need to connectionActorServernode andto register
 		if (auto ltype = ttab_servers::instance().nodetype(); nconfig.nodetype() != ltype || ltype == ngl::ACTORSERVER || ltype == ngl::ROBOT)
 		{
 			tools::no_core_dump();
@@ -199,7 +201,7 @@ namespace ngl
 		{
 			if (nconfig.nodeid() != node.m_serverid && server_session::sessionid(node.m_serverid) == -1)
 			{
-				// # 比较id(较大的主动连接较小的)
+				// # Compareid( connection )
 				activ_connect(node.m_serverid);
 			}
 		}
@@ -244,7 +246,7 @@ namespace ngl
 		set_node(lserverid, lpack->m_id);
 		naddress::set_session(lserverid, lpack->m_id);
 
-		// 主动连接
+		// Connection
 		if (isactiv_connect(lserverid) == false)
 		{
 			np_actorclient_node_connect pro;
@@ -255,7 +257,7 @@ namespace ngl
 		set_connect_fnish(lparm->m_id);
 		connect_fnish();
 
-		// 当前结点类型如果是登陆服务器，且连接的结点为[GAME/GATEWAY]
+		// Currentnodetypeif server, connection node [GAME/GATEWAY]
 		NODE_TYPE lservertype = ttab_servers::instance().node_type(nnodeid::tid(lserverid));
 		log_error()->print("np_actorclient_node_connect [{}:{}]", nnodeid::tid(lserverid), nnodeid::tcount(lserverid));
 		if (nconfig.nodetype() == ngl::LOGIN && (lservertype == ngl::GAME || lservertype == ngl::GATEWAY))

@@ -1,3 +1,5 @@
+# File overview: Defines CMake targets and build rules for tests.
+
 find_package(GTest REQUIRED)
 include(GoogleTest)
 

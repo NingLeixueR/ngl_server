@@ -1,3 +1,5 @@
+# File overview: Defines CMake targets and build rules for server.
+
 cmake_minimum_required(VERSION 3.15)
 
 if(NOT DEFINED NGL_IS_LOCAL_BUILD)

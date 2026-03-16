@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for tcp.
+
 
 #include "actor/actor_logic/actor_gateway/actor_gateway.h"
 #include "actor/protocol/protocol.h"
@@ -22,14 +24,14 @@ namespace ngl
 	bool ntcp::socket_recv(service_io* ap, const char* abuff, int32_t abufflen)
 	{
 		if (abuff == nullptr && abufflen == 0)
-		{// # 连接被异常中断 net -> application
+		{// # Connection in net -> application
 			close(ap->m_sessionid);
 			return true;
 		}
 		if (m_outernet == false)
-		{// # 不允许外网访问
+		{// # Do not allow
 			if (ap->m_is_lanip == false)
-			{//连接不是内网
+			{// Connection
 				return false;
 			}
 		}
@@ -61,9 +63,9 @@ namespace ngl
 
 		std::function<void(i32_sessionid)> lclose = [this](i32_sessionid asession)
 			{
-				// 如果断开连接的是db服务器 
-				// 自动关闭此进程
-				// 防止玩家数据无法保存造成回档
+				// If connection dbserver
+				// Automaticallyclosethis
+				// Preventplayerdatacannotsave
 				i32_serverid lserverid = server_session::serverid(asession);
 				if (lserverid != -1 && ttab_servers::instance().node_type(nnodeid::tid(lserverid)) == NODE_TYPE::DB)
 				{
@@ -143,7 +145,7 @@ namespace ngl
 		return true;
 	}
 
-	bool ntcp::connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection /*断线是否重连*/)
+	bool ntcp::connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection /* Whether */)
 	{
 		std::shared_ptr<ngl::sem> lsem = nullptr;
 		if (await)

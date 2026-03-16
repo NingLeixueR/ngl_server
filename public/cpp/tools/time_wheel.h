@@ -4,6 +4,8 @@
 * Project: ngl_server
 * License: MIT
 */
+// File overview: Declares interfaces for tools.
+
 #pragma once
 
 #include "tools/impl.h"

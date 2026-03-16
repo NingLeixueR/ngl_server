@@ -1,3 +1,5 @@
+REM File overview: Automates the build idl workflow on Windows.
+
 mkdir idlfile
 cd ..\..\Debug\
 IDL.exe idl

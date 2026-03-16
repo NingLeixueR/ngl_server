@@ -1,3 +1,5 @@
+-- File overview: Defines SQL statements for create pgdb.
+
 /*Date:2026-03-14 11:11:12*/
 
  DROP DATABASE IF EXISTS lbtest;

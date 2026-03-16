@@ -1,3 +1,5 @@
+// File overview: Implements logic for core.
+
 #if WIN32
 #define _CRT_SECURE_NO_WARNINGS
 
@@ -18,7 +20,7 @@
 std::function<void()> Dumper::m_callback;
 std::string Dumper::m_excname;
 
-// 1. 生成 Dump 文件的函数（复用之前的实现）
+// 1. Dump file function( before )
 void CreateMiniDump(EXCEPTION_POINTERS* pExcepInfo, const TCHAR* dumpPath) {
     HANDLE hFile = CreateFile(dumpPath, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     if (hFile == INVALID_HANDLE_VALUE) return;
@@ -41,7 +43,7 @@ void CreateMiniDump(EXCEPTION_POINTERS* pExcepInfo, const TCHAR* dumpPath) {
     CloseHandle(hFile);
 }
 
-// 2. 全局异常处理函数
+// 2. Handler
 LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* pExcepInfo) 
 {
     char szTime[_MAX_PATH];
@@ -49,18 +51,18 @@ LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* pExcepInfo)
     strftime(szTime, _MAX_PATH, ".%Y%m%d-%H%M%S", localtime(&timeNow));
 
     char dumpPath[MAX_PATH];
-    GetModuleFileNameA(NULL, dumpPath, MAX_PATH); // 获取 EXE 路径
-    PathRemoveFileSpecA(dumpPath); // 去掉文件名，保留目录
-    strcat_s(dumpPath, "\\"); // 拼接 Dump 文件名
+    GetModuleFileNameA(NULL, dumpPath, MAX_PATH); // Get EXE path
+    PathRemoveFileSpecA(dumpPath); // File, directory
+    strcat_s(dumpPath, "\\"); // Dump file
     strcat_s(dumpPath, Dumper::m_excname.c_str());
     strcat_s(dumpPath, szTime);
-    strcat_s(dumpPath, ".dmp"); // 拼接 Dump 文件名
+    strcat_s(dumpPath, ".dmp"); // Dump file
 
     CreateMiniDump(pExcepInfo, dumpPath);
 
     Dumper::getDumperHandler()();
 
-    return EXCEPTION_EXECUTE_HANDLER; // 允许系统默认处理（如弹窗）
+    return EXCEPTION_EXECUTE_HANDLER; // Defaulthandle( )
 }
 
 void cxerr()

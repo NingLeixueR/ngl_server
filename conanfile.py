@@ -1,18 +1,20 @@
+# File overview: Declares Conan dependencies and generators for ngl_server.
+
 from conan import ConanFile
 
 class MyProjectConan(ConanFile):
-    # 1. 定义项目元数据 (可选，但推荐)
+    # 1. Data (, )
     name = "my_project"
     version = "1.0"
     
-    # 2. 必须声明 settings，否则 Conan 不知道当前是什么系统/编译器
+    # 2. Settings, Conan current /
     settings = "os", "compiler", "build_type", "arch"
     
-    # 3. 声明生成器，对应原 txt 中的 [generators]
+    # 3., Corresponding txt in [generators]
     generators = "CMakeDeps", "CMakeToolchain"
 
     def requirements(self):
-        # --- 通用依赖 (所有平台都需要) ---
+        # --- (All need to) ---
         self.requires("boost/1.86.0")
         self.requires("lua/5.4.6")
         self.requires("protobuf/3.21.12")
@@ -22,7 +24,7 @@ class MyProjectConan(ConanFile):
         self.requires("libpq/17.7")
         self.requires("rapidjson/1.1.0")
         
-        # --- 平台特定依赖 ---
+        # Translated comment.
         if self.settings.os == "Linux":
             self.requires("libuuid/1.0.3")
 

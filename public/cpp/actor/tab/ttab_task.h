@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for tab.
+
 #pragma once
 
 #include "actor/tab/ttab_specialid.h"
@@ -30,8 +32,8 @@ namespace ngl
 		ttab_task(const ttab_task&) = delete;
 		ttab_task& operator=(const ttab_task&) = delete;
 
-		// first	: 根据可接受条件进行分类 
-		// second	: 根据可完成条件进行分类 
+		// First: condition
+		// Second: completecondition
 		using receive_complete = std::pair<std::set<i32_taskid>, std::set<i32_taskid>>;
 		std::map<ETask, int32_t> m_maxval;
 		std::map<ETask, std::map<int32_t, receive_complete>> m_map;
@@ -117,7 +119,7 @@ namespace ngl
 			}
 		}
 
-		// 获取条件关联的所有任务
+		// Getcondition alltask
 		std::set<i32_taskid>* check(ETask atype, int32_t avalues, bool aisreceive)
 		{
 			auto itor = m_map.find(atype);
@@ -151,7 +153,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		// # 获取任务接取条件
+		// # Gettask condition
 		const std::vector<task_condition>* condition_receive(i32_taskid ataskid)
 		{
 			const tab_task* table = tab(ataskid);
@@ -179,7 +181,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		// # 获取任务完成条件
+		// # Gettaskcompletecondition
 		const std::vector<task_condition>* condition_complete(i32_taskid ataskid)
 		{
 			const tab_task* table = tab(ataskid);
@@ -190,7 +192,7 @@ namespace ngl
 			return &table->m_taskcomplete;
 		}
 
-		// # 任务是否可重复完成
+		// # Taskwhether complete
 		bool repeat(actor_role* rd, i32_taskid ataskid)
 		{
 			const tab_task* table = tab(ataskid);

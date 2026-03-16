@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for attribute.
+
 #pragma once
 
 #include "actor/tab/ttab_attribute.h"
@@ -49,15 +51,15 @@ namespace ngl
 	class attribute_value
 	{
 		friend class attribute;
-		std::map<EnumAttribute, int64_t>	m_attr;		// [absolute] 属性绝对值  
-		std::map<EnumAttribute, float>		m_rattr;	// 万分比属性[自身提供的]
-		std::map<EnumAttribute, float>		m_orattr;	// 万分比属性[别人提供的]
+		std::map<EnumAttribute, int64_t>	m_attr;		// [Absolute] attribute
+		std::map<EnumAttribute, float>		m_rattr;	// Attribute[ ]
+		std::map<EnumAttribute, float>		m_orattr;	// Attribute[ ]
 		
-		// ## 以下比例属性 是往父链上添加的属性 ##
-		std::map<EnumAttribute, int64_t>	m_fight;						// [m_attr+m_rattr] 产生的属性
-		int64_t								m_fightscore = 0;				// 战力
+		// ## Under attribute onadd attribute ##
+		std::map<EnumAttribute, int64_t>	m_fight;						// [M_attr+m_rattr] generate attribute
+		int64_t								m_fightscore = 0;				// Translated comment.
 		EnumModule							m_module = EnumModule::E_ModuleNull;
-		std::map<EnumModule, std::map<EnumAttribute, float>> m_crattr;		// 哪个模块加的比例属性,往父链的[万分比属性]上添加 
+		std::map<EnumModule, std::map<EnumAttribute, float>> m_crattr;		// Module attribute, [ attribute]onadd
 	private:
 		void update(std::map<EnumAttribute, int64_t>& aattr, const std::map<EnumAttribute, float>& amr);
 
@@ -69,34 +71,34 @@ namespace ngl
 
 		int64_t update();
 
-		// 打印属性
+		// Attribute
 		void printf();
 
-		// 清空属性
+		// Clearattribute
 		void clear();
 
-		// 添加属性
+		// Addattribute
 		void set_attr(EnumAttribute atype, double avalues);
 
-		// 获取属性
+		// Getattribute
 		double get_attr(EnumAttribute atype);
 
-		// 添加比例属性属性
+		// Add attributeattribute
 		void set_rattr(EnumAttribute atype, double avalues);
 
-		// 获取比例属性属性
+		// Get attributeattribute
 		double get_rattr(EnumAttribute atype);
 
-		// 给父结点添加属性
+		// To nodeaddattribute
 		void set_father_rattr(EnumModule amodule, EnumAttribute atype, double avalues);
 
-		// 获取父结点添属性
+		// Get node attribute
 		double get_father_rattr(EnumModule amodule, EnumAttribute atype);
 
-		// 战力积分
+		// Translated comment.
 		int64_t fightscore();
 
-		// 转换为pb结构
+		// Convert pbstructure
 		void topb(pbdb::UNIT_MODULE& aunitmodule);
 	};
 }// namespace ngl

@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for kcp.
+
 #pragma once
 
 #include "net/udp/kcp/kcp_session.h"
@@ -23,11 +25,11 @@ namespace ngl
 	public:
 		enum ecmd
 		{
-			ecmd_connect,				// 发起连接
-			ecmd_connect_ret,			// 被发起连接者的返回
-			ecmd_ping,					// 定时ping
-			ecmd_close,					// 主动断开连接
-			ecmd_close_ret,             // 主动断开连接的返回
+			ecmd_connect,				// Connection
+			ecmd_connect_ret,			// Connection return
+			ecmd_ping,					// Ping
+			ecmd_close,					// Connection
+			ecmd_close_ret,             // Connection return
 			ecmd_minlen = sizeof("ecmd*") - 1,
 		};
 		using ecmd_callback = std::function<void(asio_kcp*, ptr_se&, const std::string&)>;

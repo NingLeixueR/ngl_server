@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 *
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 *
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 *
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for actor base.
+
 #include "actor/actor_base/nmanage_dbclient.h"
 #include "actor/actor_base/actor_base.h"
 #include "actor/actor_base/ndbclient.h"
@@ -75,19 +77,19 @@ namespace ngl
 
 		m_actor->db_component_init_data();
 
-		// 1、将数据修改为[裁剪修改]
+		// 1, Data [ ]
 		for (auto& [_enumdb, _npdbclient] : m_dbclientmap)
 		{
 			_npdbclient->clear_modified();
 		}
 
-		// 2、数据压倒脚本中
+		// 2, Data scriptin
 		nscript_push_data();
 
-		// 3、做一些初始化之类的工作,并且需要的话将其发送给客户端
-		// 3.1 c++内部操作
+		// 3, Initialize,and need to sendtoclient
+		// 3.1 C++
 		m_loadfinishfun(pbdb::ENUM_DB_ALL, astat);
-		// 3.2 通知脚本
+		// 3.2 Notifyscript
 		m_actor->nscript_db_loadfinish();
 		return true;
 	}

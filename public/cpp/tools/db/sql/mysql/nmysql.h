@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for mysql.
+
 #pragma once
 
 #include "tools/db/sql/db_buff.h"
@@ -38,26 +40,26 @@ namespace ngl
 	public:
 		nmysql() = default;
 
-		// # 连接数据库
+		// # Connectiondatabase
 		bool connectdb(const xarg_db& arg);
 
-		// # 关闭数据库
+		// # Closedatabase
 		void closedb();
 
-		// # 选择数据库
+		// # Database
 		bool changedb(MYSQL* amysql, std::string& adbname);
 
-		// # 执行sql语句
+		// # Execute SQL statements
 		bool query(const char* asql, std::size_t alen);
 
-		// # 转义 SQL 语句中使用的字符串中的特殊字符
+		// # SQL in stringinspecial
 		void escape(const char* asql, std::size_t asqllen, std::string& aoutsql);
 
-		// # 在callback中转化数据
+		// # Callbackin data
 		using callback = std::function<bool(MYSQL_ROW, unsigned long*, my_ulonglong, my_ulonglong)>;
 		bool select(const char* asql, std::size_t asqllen, const callback& aback);
 
-		// # stmt 相关
+		// # Stmt related
 		bool stmt_query(const char* asql, std::size_t alen, MYSQL_BIND* abind);
 
 		db_buff m_malloc;

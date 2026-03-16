@@ -1,3 +1,5 @@
+# File overview: Provides shared CMake helpers for NglBuild.
+
 include_guard(GLOBAL)
 
 function(ngl_collect_imported_target_include_dirs out_var)

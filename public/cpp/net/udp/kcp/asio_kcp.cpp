@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for kcp.
+
 #include "tools/tab/xml/sysconfig.h"
 #include "actor/protocol/protocol.h"
 #include "net/udp/kcp/asio_kcp.h"
@@ -166,7 +168,7 @@ namespace ngl
 		{
 			return false;
 		}
-		// 获取包头
+		// Getpacket header
 		std::shared_ptr<pack> lpack = pack::make_pack(&m_pool, 0);
 		if (lpack == nullptr)
 		{
@@ -240,11 +242,11 @@ namespace ngl
 							{
 								while (true)
 								{
-									//从 buf中 提取真正数据，返回提取到的数据大小
+									// From bufin data, return to data
 									int lrecv = lpstruct->recv(m_buffrecv, e_buffrecv_byte);
 									if (lrecv == -3)
 									{
-										// ret == -3 m_buffrecv 的大小不够 
+										// Ret == -3 m_buffrecv
 										close(lpstruct->m_session);
 										break;
 									}
@@ -253,7 +255,7 @@ namespace ngl
 										break;
 									}
 
-									// 首先判断下是否kcp_cmd
+									// First checkunderwhetherkcp_cmd
 									if (udp_cmd::run_cmd(this, lpstruct, m_buffrecv, lrecv))
 									{
 										log_error()->print("kcp cmd [{}]", std::string(m_buffrecv, lrecv));
@@ -308,7 +310,7 @@ namespace ngl
 			});
 	};
 
-	// ## 发送原始udp包
+	// ## Send udppack
 	bool asio_kcp::sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len)
 	{
 		return async_send_copy(aendpoint, buf, len, [](const basio_errorcode& ec)
@@ -358,7 +360,7 @@ namespace ngl
 		return true;
 	}
 
-	// ## 通过kcp发送pack
+	// ## Send a pack through KCP
 	bool asio_kcp::send_server(i32_sessionid asessionid, const std::shared_ptr<pack>& apack)
 	{
 		ptr_se lpstruct = m_session.find(asessionid);
@@ -391,7 +393,7 @@ namespace ngl
 		return true;
 	}
 
-	// ## 通过kcp发送pack
+	// ## Send a pack through KCP
 	bool asio_kcp::send_server(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack)
 	{
 		send(aendpoint, apack->m_buff, apack->m_len);
@@ -428,12 +430,12 @@ namespace ngl
 			return -1;
 		}
 		int ret = lpstruct->send(buf, len);
-		// 快速flush一次 以更快让客户端收到数据
+		// Flush let client todata
 		lpstruct->flush();
 		return ret;
 	}
 
-	// ## kcp发送回调会调用的方法
+	// ## Kcpsendcallback
 	int asio_kcp::sendbuff(i32_session asession, const char* buf, int len)
 	{
 		ptr_se lpstruct = m_session.find(asession);
@@ -486,7 +488,7 @@ namespace ngl
 		, const std::function<void(i32_session)>& afun
 	)
 	{
-		// #### 发起连接
+		// #### Connection
 		ptr_se lpstruct = m_session.add(aconv, aendpoint, aserver, aclient);
 		ncjson ltempjson;
 		njson::push(ltempjson, { "actoridserver","actoridclient","session" }, aserver, aclient, akcpsess);

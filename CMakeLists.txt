@@ -1,3 +1,5 @@
+# File overview: Defines CMake targets and build rules for .
+
 cmake_minimum_required(VERSION 3.15)
 
 if(POLICY CMP0091)
@@ -9,8 +11,8 @@ PROJECT (ngl)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)  # 强制要求C++20，不兼容则报错
-#set(CMAKE_CXX_EXTENSIONS OFF)        # 关闭微软C++扩展，启用【纯标准C++20】
+set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Require C++20 and fail if the compiler is incompatible.
+# Set(CMAKE_CXX_EXTENSIONS OFF) # close C++, [ C++20]
 option(NGL_USE_UB_CPP "Use generated ub_*.cpp unity sources" ON)
 option(NGL_ENABLE_STRONG_WARNINGS "Enable stronger compiler warnings for project targets" ON)
 option(NGL_ENABLE_SANITIZERS "Enable AddressSanitizer and UndefinedBehaviorSanitizer on supported toolchains" OFF)

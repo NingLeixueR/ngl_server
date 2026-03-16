@@ -1,3 +1,5 @@
+# File overview: Defines CMake targets and build rules for libnglcore.
+
 cmake_minimum_required(VERSION 3.15)
 
 PROJECT (nglcore)

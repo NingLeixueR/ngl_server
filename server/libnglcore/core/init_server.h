@@ -1,3 +1,5 @@
+// File overview: Declares interfaces for core.
+
 #pragma once
 #include "actor/actor_logic/actor_activity_manage/actor_activity_manage.h"
 #include "actor/actor_logic/actor_example_manage/actor_example_manage.h"
@@ -61,7 +63,7 @@ startup_error init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {}, i
 		*atcp_port = -1;
 	}
 
-	// # 加载并关联协议号
+	// # Loadand protocol id
 	ngl::xmlprotocol::load();
 
 	ngl::auto_actor();
@@ -70,10 +72,10 @@ startup_error init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {}, i
 	ngl::event_register();
 	ngl::tdb::tdb_init(true);
 
-	// # 启动actor广播
+	// # Actorbroadcast
 	ngl::actor_base::start_broadcast();
 
-	// # sysconfig关联xml配置
+	// # Sysconfig xmlconfig
 	ngl::sysconfig::init();
 
 	const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab();
@@ -83,7 +85,7 @@ startup_error init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {}, i
 		return startup_error::tab_server_missing;
 	}
 
-	// # 启动网络监听
+	// Translated comment.
 	{//TCP
 		ngl::net_works lnwork;
 		if (!ngl::ttab_servers::instance().get_nworks(ngl::ENET_PROTOCOL::ENET_TCP, nconfig.tcount(), lnwork))
@@ -108,10 +110,10 @@ startup_error init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {}, i
 		}
 	}
 
-	// # 初始化actor管理模块
+	// # Initializeactormanagemodule
 	ngl::actor_manage::instance().init(tab->m_actorthreadnum);
 
-	// # actor管理模块已初始化完毕，可以将日志发送给actor_log
+	// # Actormanagemodule initialize, can logsendtoactor_log
 	ngl::nactor_logitem::m_init = true;
 
 	ngl::log_error()->print("ngl::actor_manage::instance().init({})", tab->m_actorthreadnum);

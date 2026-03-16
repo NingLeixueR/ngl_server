@@ -4,6 +4,8 @@
 * Project: ngl_server
 * License: MIT
 */
+// File overview: Implements logic for xml.
+
 
 #include "tools/tab/xml/xml_serialize.h"
 

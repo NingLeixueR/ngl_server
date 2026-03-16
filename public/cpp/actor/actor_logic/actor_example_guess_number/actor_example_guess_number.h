@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor example guess number.
+
 #pragma once
 
 #include "actor/actor_logic/actor_example_guess_number/actor_example.h"
@@ -34,8 +36,8 @@ namespace ngl
 {
 	enum eactor_example_guess_number
 	{
-		guess_number_esetp_maxtime = 30, // 单步骤执行的最大秒数
-		guess_number_equit_time = 10,	// 退出的最大秒数
+		guess_number_esetp_maxtime = 30, // Execute
+		guess_number_equit_time = 10,	// Exit
 		guess_number_max_number = 101,
 		guess_number_min_number = 0,
 	};
@@ -46,13 +48,13 @@ namespace ngl
 		actor_example_guess_number(const actor_example_guess_number&) = delete;
 		actor_example_guess_number& operator=(const actor_example_guess_number&) = delete;
 
-		int32_t m_maxnumber		= 1000;	// 范围最大值
-		int32_t m_minnumber		= 0;	// 范围最小值
-		int32_t m_index			= 0;	// 猜测的玩家(索引)
-		int32_t m_setputc		= 0;	// 步骤时间
-		int32_t m_bombvalues	= 0;	// 炸弹值
-		int32_t m_bombutc		= 0;	// 触发炸弹值的时间
-		i64_actorid m_bombrole	= 0;	// 触发炸弹值的玩家
+		int32_t m_maxnumber		= 1000;	// Translated comment.
+		int32_t m_minnumber		= 0;	// Translated comment.
+		int32_t m_index			= 0;	// Player(index)
+		int32_t m_setputc		= 0;	// Time
+		int32_t m_bombvalues	= 0;	// Translated comment.
+		int32_t m_bombutc		= 0;	// Time
+		i64_actorid m_bombrole	= 0;	// Player
 	public:
 		actor_example_guess_number(const std::map<int32_t, i64_actorid>& aroleids, int32_t aindex);
 

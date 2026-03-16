@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor role.
+
 #pragma once
 
 #include "actor/actor_logic/actor_role/logic/attribute/attribute.h"
@@ -41,10 +43,10 @@ namespace ngl
 {
 	enum ecross
 	{
-		ecross_ordinary			= 1,		// 本服转发
-		ecross_cross_ordinary	= 2,		// 跨服转发
-		ecross_cross_example	= 3,		// 例子转发
-		ecross_none				= 4,		// 错误转发
+		ecross_ordinary			= 1,		// Forwarding
+		ecross_cross_ordinary	= 2,		// Cross-serverforwarding
+		ecross_cross_example	= 3,		// Forwarding
+		ecross_none				= 4,		// Forwarding
 	};
 
 	struct prorechange
@@ -91,7 +93,7 @@ namespace ngl
 
 		virtual i32_serverid get_getwayserverid();
 
-		//# 执行handle之后调用
+		// # Executehandle after
 		virtual void handle_after(handle_pram&);
 
 		virtual void erase_actor_before();
@@ -103,21 +105,21 @@ namespace ngl
 			return m_drop;
 		}
 
-		//# 设置更新角色属性
+		// # Set roleattribute
 		void update_attribute(EnumModule amodule, attribute_value& avalue);
 
 		void sync_data_client();
 
-#pragma region forward //转发相关
+#pragma region forward // Forwardingrelated
 		
-		//# 重载forward_type来指定转发类型
+		// # Forward_type specifiedforwardingtype
 		template <typename T>
 		ecross forward_type(const T& adata)
 		{
 			return ecross_ordinary;
 		}
 
-		//# 聊天的转发类型
+		// # Chat forwardingtype
 		ecross forward_type(const pbnet::PROBUFF_NET_CHAT& adata)
 		{
 			if (m_info.bantalk())
@@ -136,13 +138,13 @@ namespace ngl
 			return ecross_none;
 		}
 
-		//# ranklist的转发类型
+		// # Ranklist forwardingtype
 		ecross forward_type(const pbnet::PROBUFF_NET_RANKLIST& adata)
 		{
 			return adata.miscross() ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
-		//# 加入例子小游戏匹配的转发类型
+		// # Join forwardingtype
 		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN& adata)
 		{
 			if (m_example.second != 0)
@@ -157,7 +159,7 @@ namespace ngl
 			return tools::equal(adata.mcross(), pbexample::ECROSS_CROSS_ORDINARY) ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
-		//# 例子小游戏匹配的转发类型
+		// # Forwardingtype
 		ecross example_type()
 		{
 			if (m_example.second == nguid::make())
@@ -175,17 +177,17 @@ namespace ngl
 			return example_type();
 		}
 
-		//# 重载forward_before来指定转发前事件
+		// # Forward_before specifiedforwardingbeforeevent
 		template <typename T>
 		bool forward_before(const T& adata)
 		{
 			return true;
 		}
 
-		//# 转发"创建军团"前
+		// # Forwarding"createguild"before
 		bool forward_before(const pbnet::PROBUFF_NET_FAMIL_CREATE& adata);
 
-		//# 重载dataid来指定转发模块的dataid
+		// # Dataid specifiedforwardingmodule dataid
 		template <typename T>
 		int32_t forward_dataid(const T& adata)
 		{
@@ -238,34 +240,34 @@ namespace ngl
 		}
 #pragma endregion
 
-		//# 重置登陆时间
+		// # Time
 		void reset_logintime();
 
-		//# 回显给客户端一个字符串
+		// # Toclient string
 		void echo_msg(const char* amsg);
 
 		int32_t rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting);
 
-		//# 登录请求未发货充值
+		// # Loginrequest
 		void loginpay();
 
 		void requestgm(const char* aurl, const std::string& aparm, const std::function<void(int32_t, http_parm&)>& acall);
 
-		//# 请求创建订单
+		// # Requestcreate
 		void createorder(std::string& aorder, int32_t arechargeid);
 
-		//# 是否首次充值
+		// # Whether
 		bool is_first_recharge(int32_t arechargeid);
 
-		//# CMD协议
+		// # CMDprotocol
 		using handle_cmd = cmd<actor_role, std::string, const std::shared_ptr<pack>&, actor_role*, const char*>;
-		//# GM协议
+		// # GMprotocol
 		using handle_gm = cmd<actor_role, std::string, int, ncjson&>;
 
-		//# 定时器
+		// # Timer
 		bool timer_handle(const message<np_timerparm>& adata);
 
-		//# 角色创建初始化
+		// # Rolecreateinitialize
 		void create_init(const std::string& aname);
 
 		bool handle(const message<mforward<np_gm>>& adata);
@@ -285,4 +287,3 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata);
 	};
 }//namespace ngl
-

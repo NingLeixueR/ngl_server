@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 *
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 *
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 *
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor base.
+
 #pragma once
 
 #include "actor/protocol/nprotocol_template.h"
@@ -32,8 +34,8 @@ namespace ngl
 		using tmap_dbclient = std::map<pbdb::ENUM_DB, ndbclient_base*>;
 		actor_base* m_actor = nullptr;
 		tmap_dbclient										m_typedbclientmap;
-		tmap_dbclient										m_dbclientmap;						//已经加载完的
-		std::function<void(pbdb::ENUM_DB, enum_dbstat)>		m_loadfinishfun;					//bool db数据库是否有该数据
+		tmap_dbclient										m_dbclientmap;						// Load
+		std::function<void(pbdb::ENUM_DB, enum_dbstat)>		m_loadfinishfun;					// Bool dbdatabasewhether this data
 
 		void foreach_function(const std::function<void(ndbclient_base*)>& afun);
 	public:

@@ -1,3 +1,5 @@
+// File overview: Implements GoogleTest coverage for serialize.
+
 #include <gtest/gtest.h>
 
 #include <array>

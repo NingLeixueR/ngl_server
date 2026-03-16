@@ -1,3 +1,5 @@
+// File overview: Implements GoogleTest coverage for runtime.
+
 #include <gtest/gtest.h>
 
 #include <string>

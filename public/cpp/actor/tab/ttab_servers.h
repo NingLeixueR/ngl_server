@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for tab.
+
 #pragma once
 
 #include "actor/tab/ttab_mergearea.h"
@@ -99,7 +101,7 @@ namespace ngl
 		ttab_servers& operator=(const ttab_servers&) = delete;
 
 		std::map<i16_area, std::map<i32_serverid, tab_servers*>> m_areaserver;
-		std::map<i16_area, std::set<i16_area>> m_coressserver;// key:应该是小于0的跨服 value:跨服对应的区服
+		std::map<i16_area, std::set<i16_area>> m_coressserver;// Key: this 0 cross-server value:cross-servercorresponding area
 		std::map<i16_area, std::set<i16_area>> m_singleareas;
 
 		std::map<i16_area, name_index> m_areanameindex;
@@ -385,7 +387,7 @@ namespace ngl
 			return node_type(nconfig.tid());
 		}
 
-		// 便利所有服务器
+		// Allserver
 		void foreach_server(const std::function<void(tab_servers*)>& afun)
 		{
 			ttab_mergearea::instance().for_each([&afun, this](i16_area aarea, [[maybe_unused]] std::set<i16_area>& aset)
@@ -403,7 +405,7 @@ namespace ngl
 			);
 		}
 
-		// 获取所有区服(负数区服是跨服区服需要转化为跨服内所有区服)
+		// Getallarea( area cross-serverareaneed to cross-server allarea)
 		const std::set<i16_area>* get_area(i16_area aarea)
 		{
 			if (aarea > 0)
@@ -425,8 +427,8 @@ namespace ngl
 			}
 		}
 
-		// 服务器类型	atype
-		// 区服			aarea（负数代表跨服,需要提供跨服内所有atype服务器）
+		// Servertype atype
+		// Area aarea( tablecross-server,need to cross-server allatypeserver)
 		bool foreach_server(NODE_TYPE atype, i16_area aarea, const std::function<void(const tab_servers*)>& afun)
 		{
 			const std::set<i16_area>* larea = get_area(aarea);
@@ -454,7 +456,7 @@ namespace ngl
 			return true;
 		}
 
-		// 获取的是服务器的tid  没有结合tcount
+		// Get server tid tcount
 		bool serverid(NODE_TYPE atype, i16_area aarea, std::set<i32_serverid>& aset)
 		{
 			return foreach_server(atype, aarea, [&aset](const tab_servers* iserver)
@@ -477,7 +479,7 @@ namespace ngl
 			return lbest;
 		}
 
-		// 获取服务器所在区服(包括被合服的服务器)
+		// Getserver area(pack server)
 		const std::set<i16_area>* get_arealist(i32_serverid aserverid)
 		{
 			const tab_servers* ltab = csv<tab_servers>::tab(aserverid);
@@ -488,7 +490,7 @@ namespace ngl
 			return get_area(ltab->m_area);
 		}
 
-		// 获取服务器所在的区服(不包括被合服的服务器)
+		// Getserver area( pack server)
 		const void get_arealist_nonrepet(i32_serverid aserverid, std::set<i16_area>& aareaset)
 		{
 			const std::set<i16_area>* larealist = get_arealist(aserverid);

@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor events.
+
 #pragma once
 
 #include "actor/actor_base/actor.h"
@@ -19,19 +21,19 @@
 
 namespace ngl
 {
-	// ENUM_EVENTS主要是为了多进程间actor.m_type值不同
-	// 可以抽离actor_events到不同进程
-	// ENUM_EVENTS与E_EVENTS配对使用
+	// ENUM_EVENTS actor.m_type
+	// Can actor_eventsto
+	// ENUM_EVENTSandE_EVENTS
 	enum ENUM_EVENTS
 	{
-		ENUM_EVENTS_LOGIC,		// 对应eevents_logic
-		ENUM_EVENTS_MAP,		// 对应eevents_map
+		ENUM_EVENTS_LOGIC,		// Correspondingeevents_logic
+		ENUM_EVENTS_MAP,		// Correspondingeevents_map
 	};
 
 	template <
-		ENUM_EVENTS ETYPE			// 事件类型
-		, typename E_EVENTS			// 子事件类型
-		, int E_EVENTS_COUNT		// 子事件数量
+		ENUM_EVENTS ETYPE			// Eventtype
+		, typename E_EVENTS			// Eventtype
+		, int E_EVENTS_COUNT		// Event
 	>
 	class actor_events : 
 		public actor
@@ -91,7 +93,7 @@ namespace ngl
 			> (e_ready_all);
 		}
 
-		// # 按照类型触发
+		// # Type
 		template <typename TPARM>
 		static void register_parm(E_EVENTS atype)
 		{
@@ -130,7 +132,7 @@ namespace ngl
 			actor::send_actor(actorid(), aactorid, pro);
 		}
 
-		// # 触发事件
+		// # Event
 		struct tnactor {};
 		template <typename TPARM, typename TACTOR = tnactor>
 		static bool trigger_event(const TPARM& apram, TACTOR* aactor = nullptr)

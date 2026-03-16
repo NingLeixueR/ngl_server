@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for nsp.
+
 #pragma once
 
 #include "actor/actor_base/nsp/nsp_write.h"
@@ -109,11 +111,11 @@ namespace ngl
 			
 			nsp_instance<nsp_write<TDerived, TACTOR, T>>::template register_handle<
 				TDerived
-				, np_channel_data<T>					// 更新数据
-				, np_channel_check<T>					// 检查是否向nsp服务器注册
-				, np_channel_register_reply<T>			// 处理注册回复
-				, np_channel_dataid_sync<T>				// 接收结点信息
-				, np_channel_exit<T>					// 结点退出				
+				, np_channel_data<T>					// Data
+				, np_channel_check<T>					// Whethertonspserverregister
+				, np_channel_register_reply<T>			// Handleregisterresponse
+				, np_channel_dataid_sync<T>				// Nodeinfo
+				, np_channel_exit<T>					// Nodeexit
 			>();		
 		}
 
@@ -287,7 +289,7 @@ namespace ngl
 	void nsp_write<TDerived, TACTOR, T>::exit()
 	{
 		{
-			// 通知其他写结点，本结点退除
+			// Notify node, node
 			auto pro = std::make_shared<np_channel_dataid_sync<T>>();
 			pro->m_actorid = m_actor->id_guid();
 			pro->m_read = false;
@@ -297,7 +299,7 @@ namespace ngl
 				pro->m_readpart = m_care.readids();
 				pro->m_writepart = m_care.writeids();
 			}
-			// 发送给其他结点
+			// Sendto node
 			std::set<i64_nodeid> lnodes;
 			std::ranges::copy(m_othercare | std::views::keys, std::inserter(lnodes, lnodes.begin()));
 			lnodes.insert(m_nodewritealls.begin(), m_nodewritealls.end());

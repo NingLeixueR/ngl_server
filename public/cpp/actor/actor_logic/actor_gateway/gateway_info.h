@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor gateway.
+
 #pragma once
 
 #include "actor/protocol/nprotocol.h"
@@ -36,25 +38,25 @@ namespace ngl
 
 		std::map<i16_area, std::map<i32_actordataid, gateway_socket>>& info();
 
-		// # 只是断开连接
+		// # Connection
 		void remove_socket(i32_socket asocket);
 
-		// # 删除连接信息
+		// # Deleteconnectioninfo
 		void remove_actorid(i64_actorid aactorid);
 
-		// # 根据area和dataid获取gateway_socket
+		// # Area dataidgetgateway_socket
 		gateway_socket* get(i16_area aarea, i32_actordataid aroleid);
 
-		// # 根据socket获取gateway_socket
+		// # Socketgetgateway_socket
 		gateway_socket* get(i32_socket asocket);
 
-		// # 根据actorid获取gatewayid
+		// # Actoridgetgatewayid
 		int64_t gatewayid(i64_actorid aid);
 
-		// # 遍历所有socket
+		// # Allsocket
 		void foreach(const std::function<void(gateway_socket*)>& afun);
 
-		// # 数据更新
+		// # Data
 		void updata(const np_actor_gatewayinfo_updata& adata);
 	};
 }//namespace ngl

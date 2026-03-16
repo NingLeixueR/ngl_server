@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor base.
+
 #pragma once
 
 #include "tools/script/lua/luafunction.h"
@@ -21,17 +23,17 @@
 
 extern "C"
 {
-	// # 以#号分割的nguid串(actortype#area#dataid)转换为int64
+	// # # Nguid (actortype#area#dataid)convert int64
 	// # parm 1 nguid(actor_type#areaid#dataid)
 	extern int nguidstr2int64(lua_State* L);
 
-	// # lua发送协议给客户端
+	// # Luasendprotocoltoclient
 	// # parm 1 nguid(actor_type#areaid#dataid)
 	// # parm 2 msgname
 	// # parm 3 lua table
 	extern int send_client(lua_State* L);
 
-	// # lua发送协议给其他actor
+	// # Luasendprotocolto actor
 	// # parm 1 nguid(actor_type#areaid#dataid)
 	// # parm 2 msgname
 	// # parm 3 lua table
@@ -53,72 +55,72 @@ namespace ngl
 	class nscript
 	{
 	public:
-		// # 脚本类型
+		// # Scripttype
 		static enscript type()
 		{
 			return ESCRIPT;
 		}
 
-		// # 初始化脚本数据
+		// # Initializescriptdata
 		template <typename T>
 		bool init_sysdata(const T& asys)
 		{
 			return false;
 		}
 
-		// # 初始化加载脚本文件
+		// # Initializeloadscriptfile
 		bool init(const char* asubdirectory, const char* ascript)
 		{
 			return false;
 		}
 
-		// # 压入数据
+		// # Data
 		template <typename T>
 		bool data_push(const char* aname, const char* asource, const T& adata, bool aedit)
 		{
 			return false;
 		}
 
-		// # db模块加载完成,通知脚本模块
+		// # Dbmoduleloadcomplete,notifyscriptmodule
 		bool db_loadfinish()
 		{
 			return false;
 		}
 
-		// # 处理数据
+		// # Handledata
 		template <typename T>
 		bool handle(const char* aname, const T& adata)
 		{
 			return false;
 		}
 
-		// # 数据被删除
+		// # Data delete
 		bool data_del(const char* aname, int64_t adataid)
 		{
 			return false;
 		}
 
-		// # 检查数据是否被修改
+		// # Check whether the data has been modified
 		template <typename T>
 		bool data_checkout(const char* aname, i64_actorid adataid, T& adata)
 		{
 			return false;
 		}
 
-		// # 检查数据状态
+		// # Datastate
 		template <typename T>
 		bool data_checkout(const char* aname, std::map<int64_t, T>& adata)
 		{
 			return false;
 		}
 
-		// # 检查数据是否被删除
+		// # Check whether the data has been deleted
 		bool data_checkdel(const char* aname, int64_t adataid)
 		{
 			return false;
 		}
 
-		// # 检查一组数据是否被删除
+		// # Check whether a group of data has been deleted
 		bool data_checkdel(const char* aname, std::vector<int64_t>& adataid)
 		{
 			return false;
@@ -158,7 +160,7 @@ namespace ngl
 		bool init(const char* asubdirectory, const char* ascript)
 		{
 			L = luaL_newstate();
-			luaL_openlibs(L);  // 打开标准库
+			luaL_openlibs(L);  // Translated comment.
 			setupluapaths();
 
 			if (luaL_loadfile(L, (sysconfig::lua() + "rfunction.lua").c_str()) || lua_pcall(L, 0, 0, 0))
@@ -213,7 +215,7 @@ namespace ngl
 			return lfun.call();
 		}
 
-		// # 检查数据是否被修改
+		// # Check whether the data has been modified
 		template <typename T>
 		bool data_checkout(const char* aname, i64_actorid adataid, T& adata)
 		{
@@ -247,7 +249,7 @@ namespace ngl
 			return lfun.call();
 		}
 
-		// # 检查数据是否被删除
+		// # Check whether the data has been deleted
 		bool data_checkdel(const char* aname, i64_actorid adataid)
 		{
 			luafunction lfun(L, m_scriptpath.c_str(), "data_checkdelbyid");

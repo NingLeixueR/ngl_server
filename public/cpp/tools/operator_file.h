@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for tools.
+
 #pragma once
 
 #include <fstream>
@@ -33,22 +35,22 @@ namespace ngl
 
 		~readfile();
 
-		// # 是否成功打开文件
+		// # Whethersuccessful file
 		bool is_open()const;
 
-		// # 获取文件的行数
+		// # Getfile
 		int get_maxline();
 
-		// # 跳过前anum行
+		// # Beforeanum
 		void jumpbegin(int anum, bool aiscsv);
 
-		// # 行读取
+		// # Read
 		bool readline(std::string& aline);
 
-		// # 读取当前位置之后的全部内容
+		// # Readcurrentposition after allcontent
 		bool readcurrent(std::string& astr);
 
-		// # 读取整个文件的内容
+		// # Read file content
 		void read(std::string& aneirong);
 	};
 
@@ -64,7 +66,7 @@ namespace ngl
 
 		~writefile();
 
-		// # 向文件写入内容
+		// # Tofilewritecontent
 		void write(const std::string& aneirong);
 	};
 }//namespace ngl

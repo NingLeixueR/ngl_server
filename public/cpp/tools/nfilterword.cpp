@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for tools.
+
 
 #include "tools/nfilterword.h"
 #include "tools/enum2name.h"
@@ -213,7 +215,7 @@ namespace ngl
         ensure_initialized();
         int cur = m_root;
 
-        // 遍历宽字符文本（中文每个字是一个元素）
+        // Wide characters (in )
         for (std::string::size_type i = 0; i < text.size(); ++i)
         {
             match(text[i], cur, static_cast<int>(i), res);
@@ -225,7 +227,7 @@ namespace ngl
     {
         std::string result = text;
         std::vector<std::pair<int, int>> matches = match(text);
-        // 替换所有匹配的字符为*
+        // Replaceall *
         for (auto& [start, len] : matches)
         {
             const std::size_t begin = start < 0 ? 0U : static_cast<std::size_t>(start);
@@ -356,65 +358,65 @@ namespace ngl
 
     bool nfilterword::is_language_char(uint32_t codepoint)
     {
-        return (codepoint >= 0x0041 && codepoint <= 0x005A) ||  // 大写英文字母
-            (codepoint >= 0x0061 && codepoint <= 0x007A) ||  // 小写英文字母
-            (codepoint >= 0x4E00 && codepoint <= 0x9FFF) ||  // 常用汉字
-            (codepoint >= 0x3400 && codepoint <= 0x4DBF) ||  // 汉字扩展A
-            (codepoint >= 0x20000 && codepoint <= 0x2A6DF) || // 汉字扩展B
-            (codepoint >= 0x3040 && codepoint <= 0x309F) ||  // 日文平假名
-            (codepoint >= 0x30A0 && codepoint <= 0x30FF) ||  // 日文片假名
-            (codepoint >= 0xAC00 && codepoint <= 0xD7AF) ||  // 韩文谚文
-            (codepoint >= 0x0400 && codepoint <= 0x04FF) ||  // 俄文西里尔字母
-            (codepoint >= 0x0370 && codepoint <= 0x03FF) ||  // 希腊文字母
-            (codepoint >= 0x0600 && codepoint <= 0x06FF);    // 阿拉伯字母
+        return (codepoint >= 0x0041 && codepoint <= 0x005A) ||  // Translated comment.
+            (codepoint >= 0x0061 && codepoint <= 0x007A) ||  // Translated comment.
+            (codepoint >= 0x4E00 && codepoint <= 0x9FFF) ||  // Translated comment.
+            (codepoint >= 0x3400 && codepoint <= 0x4DBF) ||  // A
+            (codepoint >= 0x20000 && codepoint <= 0x2A6DF) || // B
+            (codepoint >= 0x3040 && codepoint <= 0x309F) ||  // Translated comment.
+            (codepoint >= 0x30A0 && codepoint <= 0x30FF) ||  // Translated comment.
+            (codepoint >= 0xAC00 && codepoint <= 0xD7AF) ||  // Translated comment.
+            (codepoint >= 0x0400 && codepoint <= 0x04FF) ||  // Translated comment.
+            (codepoint >= 0x0370 && codepoint <= 0x03FF) ||  // Translated comment.
+            (codepoint >= 0x0600 && codepoint <= 0x06FF);    // Translated comment.
     }
 
     bool nfilterword::is_emojispecial(char32_t codepoint)
     {
-        // 第一步：如果是语言文字，直接返回false
+        // : If, returnfalse
         if (is_language_char(codepoint))
         {
             return false;
         }
 
-        // 第二步：判断是否属于「符号区间」（新增控制字符区间）
+        // : Checkwhether 「 」(newly added )
         return (
-            // ===== 新增：ASCII控制字符（包含\n、\t、\r等）=====
-            (codepoint >= 0x0000 && codepoint <= 0x001F) ||  // 0x0000-0x001F 控制字符
-            (codepoint == 0x007F) ||                          // 0x7F 删除符
-            // 1. 基础ASCII标点/符号
+            // ===== Newly added: ASCII (pack \n, \t, \r )=====
+            (codepoint >= 0x0000 && codepoint <= 0x001F) ||  // 0X0000-0x001F
+            (codepoint == 0x007F) ||                          // 0X7F delete
+            // 1. BaseASCII /
             (codepoint >= 0x0020 && codepoint <= 0x002F) ||
             (codepoint >= 0x003A && codepoint <= 0x0040) ||
             (codepoint >= 0x005B && codepoint <= 0x0060) ||
             (codepoint >= 0x007B && codepoint <= 0x007E) ||
-            // 2. 全角符号/标点
+            // Translated comment.
             (codepoint >= 0xFF00 && codepoint <= 0xFFEF) ||
-            // 3. Emoji全量符号
+            // 3. Emoji
             (codepoint >= 0x2600 && codepoint <= 0x27BF) ||
             (codepoint >= 0x1F300 && codepoint <= 0x1F5FF) ||
             (codepoint >= 0x1F600 && codepoint <= 0x1F64F) ||
             (codepoint >= 0x1F680 && codepoint <= 0x1F6FF) ||
             (codepoint >= 0x1F900 && codepoint <= 0x1F9FF) ||
             (codepoint >= 0x1FA00 && codepoint <= 0x1FAFF) ||
-            // 4. 数学符号
+            // Translated comment.
             (codepoint >= 0x2200 && codepoint <= 0x22FF) ||
             (codepoint >= 0x2100 && codepoint <= 0x214F) ||
             (codepoint >= 0x2500 && codepoint <= 0x257F) ||
             (codepoint >= 0x1D400 && codepoint <= 0x1D7FF) ||
-            // 5. 箭头符号
+            // Translated comment.
             (codepoint >= 0x2190 && codepoint <= 0x21FF) ||
             (codepoint >= 0x2900 && codepoint <= 0x297F) ||
             (codepoint >= 0x2B00 && codepoint <= 0x2BFF) ||
-            // 6. 装饰/特殊符号
+            // 6. /Special
             (codepoint >= 0x2000 && codepoint <= 0x206F) ||
             (codepoint >= 0x2300 && codepoint <= 0x23FF) ||
             (codepoint >= 0x3200 && codepoint <= 0x32FF) ||
-            // 7. 货币/单位符号
+            // Translated comment.
             (codepoint >= 0x00A0 && codepoint <= 0x00FF) ||
             (codepoint >= 0x20A0 && codepoint <= 0x20CF) ||
-            // 8. 版权/标记符号
+            // Translated comment.
             (codepoint == 0x00A9 || codepoint == 0x00AE || codepoint == 0x2122 || codepoint == 0x2605) ||
-            // 9. Emoji修饰/组合符号
+            // 9. Emoji /
             (codepoint >= 0x1F3FB && codepoint <= 0x1F3FF) ||
             (codepoint == 0xFE0F || codepoint == 0x200D)
             );
@@ -434,7 +436,7 @@ namespace ngl
 
     void test_nfilterword()
     { 
-        {// 判断utf8编码
+        {// Checkutf8
             std::string ltemp1 = "敏感词";
             std::string ltemp11;
             tools::to_utf8(ltemp1, ltemp11);
@@ -496,7 +498,7 @@ namespace ngl
                 std::cout << "obj:" << filtered << std::endl;
             }
 
-            {// 检查名字是否合法
+            {// Whether
                 std::vector<std::string> lnames = {
                     "你好??！123@#",
                     "你好！123@#",

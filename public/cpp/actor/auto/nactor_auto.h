@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for auto.
+
 
 #pragma once
 
@@ -32,15 +34,15 @@ namespace ngl
 	public:
 		using db_actor   = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
 		using db_modular = ndb_modular<TDBTAB_TYPE, TDBTAB, TACTOR>;
-		// 订阅/发布[数据副本]
+		// / [Data ]
 		using nsp_ser		= nsp_server<TDBTAB_TYPE, TACTOR, TDBTAB>;
 		template <typename TDerived>
 		using nsp_cread		= nsp_read<TDerived, TACTOR, TDBTAB>;
 		template <typename TDerived>
 		using nsp_cwrite	= nsp_write<TDerived, TACTOR, TDBTAB>;
 
-		// [aregister == true] 主要是注册协议,宏与类型的绑定
-		// [aregister == false] 实例化db_actor,db server需要
+		// [Aregister == true] registerprotocol, andtype bind
+		// [Aregister == false] instance db_actor,db serverneed to
 		static void init(bool aregister);
 	};
 
@@ -90,7 +92,7 @@ namespace ngl
 	public:
 		static void tdb_init(bool ainstance);
 
-		// # 定义在nactor_auto.cpp中,因为跨服是可选的
+		// # Nactor_auto.cppin,becausecross-server
 		static void tcrossdb_init(bool ainstance);
 	};
 }//namespace ngl

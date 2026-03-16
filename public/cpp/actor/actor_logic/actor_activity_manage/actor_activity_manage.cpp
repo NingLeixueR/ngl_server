@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for actor activity manage.
+
 
 #include "actor/actor_logic/actor_activity_manage/actor_activity_manage.h"
 #include "actor/actor_logic/actor_activity_manage/activity.h"
@@ -52,7 +54,7 @@ namespace ngl
 
 	void actor_activity_manage::init()
 	{
-		// 绑定DB结构:DB.set(this);
+		// Bind the DB structure: DB.set(this);
 		m_activitydb.set(this);
 		m_activitytimedb.set(this);
 	}
@@ -89,7 +91,7 @@ namespace ngl
 
 		actor_events_logic::event_func(actorid(), eevents_logic_rolelogin, eevents_logic_rolelevelchange, eevents_logic_rolegoldchange);
 
-		// 加载初始化活动
+		// Loadinitializeactivity
 		int32_t lnow = (int32_t)localtime::gettime();
 		//std::map<nguid, data_modified<TDATA>>&
 		for (auto& [_guid, _modified] : m_activitytimedb.data())
@@ -186,10 +188,10 @@ namespace ngl
 
 	void actor_activity_manage::nregister()
 	{
-		// 定时器
+		// Timer.
 		actor::register_timer<actor_activity_manage>(&actor_activity_manage::timer_handle);
 
-		// 绑定自定义np_消息
+		// Bind custom np_ messages.
 		register_handle<actor_activity_manage
 			, mforward<np_operator_task_response>
 			, np_eevents_logic_rolelogin
@@ -228,12 +230,12 @@ namespace ngl
 		}
 		int32_t lnow = (int32_t)localtime::gettime();
 		if (lnow < atime)
-		{//未来时间定时开启活动
+		{// Time startactivity
 			post_timer(aactivityid, eactivity_start, atime, aduration);
 			return;
 		}
 		if (lnow >= atime + aduration && aduration != -1)
-		{//关闭活动
+		{// Closeactivity
 			m_activitys[aactivityid] = activity::make(nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb);
 			m_activitys[aactivityid]->init();
 			m_activitys[aactivityid]->finish();
@@ -241,7 +243,7 @@ namespace ngl
 			return;
 		}
 		if ((lnow >= atime && lnow < atime + aduration) || (lnow >= atime && aduration == -1))
-		{//开启活动
+		{// Startactivity
 			m_activitys[aactivityid] = activity::make(nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb);
 			m_activitys[aactivityid]->start();
 			m_activitys[aactivityid]->init();

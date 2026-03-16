@@ -4,6 +4,8 @@
 * Project: ngl_server
 * License: MIT
 */
+// File overview: Implements logic for xml.
+
 
 #include "actor/tab/ttab_mergearea.h"
 #include "actor/tab/ttab_servers.h"

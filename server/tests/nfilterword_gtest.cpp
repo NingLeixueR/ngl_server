@@ -1,3 +1,5 @@
+// File overview: Implements GoogleTest coverage for nfilterword.
+
 #include <gtest/gtest.h>
 
 #include "tools/nfilterword.h"

@@ -1,3 +1,5 @@
+REM File overview: Builds ngl_server with the default Conan and CMake workflow.
+
 cd idl
 call build_actor.bat
 cd ..\compile_befor\idl

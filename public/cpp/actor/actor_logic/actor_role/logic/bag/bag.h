@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for bag.
+
 #pragma once
 
 #include "actor/actor_logic/actor_role/logic/bag/itme.h"
@@ -25,8 +27,8 @@ namespace ngl
 	class bag :
 		public tdb_bag::db_modular
 	{
-		std::map<int, pbdb::item*> m_stackitems;				// key tid 可堆叠的物品
-		std::map<int, pbdb::item*> m_nostackitems;				// key id  不可堆叠的物品
+		std::map<int, pbdb::item*> m_stackitems;				// Key tid item
+		std::map<int, pbdb::item*> m_nostackitems;				// Key id item
 		std::unique_ptr<autoitem>  m_autoitem;
 	public:
 		bag();
@@ -39,9 +41,9 @@ namespace ngl
 		bool add_item(const std::map<int32_t, int32_t>& amap);
 		bool add_item(std::vector<pbdb::item>& avec);
 
-		// 只能删除可堆叠物品
+		// Delete item
 		bool dec_item(int32_t atid, int32_t acount);
-		// 删除不可堆叠物品
+		// Delete item
 		bool dec_item(int32_t aid);
 		
 		bool checkbytid(int32_t atid, int32_t acount);

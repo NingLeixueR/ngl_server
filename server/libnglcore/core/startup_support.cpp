@@ -1,3 +1,5 @@
+// File overview: Implements logic for core.
+
 #include "startup_support.h"
 
 #include "actor/protocol/nprotocol.h"

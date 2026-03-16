@@ -1,3 +1,5 @@
+// File overview: Implements the entry point for the idl target.
+
 #include "idlcpp_protocol.h"
 #include "idl.h"
 

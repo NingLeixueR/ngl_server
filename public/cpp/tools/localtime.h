@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for tools.
+
 #pragma once
 
 #include <cstdio>
@@ -25,152 +27,152 @@ namespace ngl
 		enum
 		{
 			MILLISECOND			= 1000,
-			MINUTES_SECOND		= 1 * 60,							// 一分钟多少秒
-			MINUTES_MILLISECOND	= MINUTES_SECOND * MILLISECOND,		// 一分钟多少毫秒
+			MINUTES_SECOND		= 1 * 60,							// Translated comment.
+			MINUTES_MILLISECOND	= MINUTES_SECOND * MILLISECOND,		// Translated comment.
 			
-			HOUR_MINUTES		= 1 * 60,							// 一小时多少分钟
-			HOUR_SECOND			= MINUTES_SECOND * HOUR_MINUTES,	// 一小时多少秒
-			HOUR_MILLISECOND	= HOUR_SECOND * MILLISECOND,		// 一小时多少毫秒
+			HOUR_MINUTES		= 1 * 60,							// Translated comment.
+			HOUR_SECOND			= MINUTES_SECOND * HOUR_MINUTES,	// Translated comment.
+			HOUR_MILLISECOND	= HOUR_SECOND * MILLISECOND,		// Translated comment.
 
-			DAY_HOUR			= 24,								// 一天多少小时
-			DAY_MINUTES			= DAY_HOUR * HOUR_MINUTES,			// 一天多少分钟
-			DAY_SECOND			= DAY_HOUR * HOUR_SECOND,			// 一天多少秒
-			DAY_MILLISECOND		= DAY_SECOND * MILLISECOND,			// 一天多少毫秒
+			DAY_HOUR			= 24,								// Translated comment.
+			DAY_MINUTES			= DAY_HOUR * HOUR_MINUTES,			// Translated comment.
+			DAY_SECOND			= DAY_HOUR * HOUR_SECOND,			// Translated comment.
+			DAY_MILLISECOND		= DAY_SECOND * MILLISECOND,			// Translated comment.
 
-			WEEK_DAY			= 7,								// 一周多少天
-			WEEK_HOUR			= WEEK_DAY * DAY_HOUR,				// 一周多少小时
-			WEEK_MINUTES		= WEEK_DAY * DAY_MINUTES,			// 一周多少分钟
-			WEEK_SECOND			= WEEK_DAY * DAY_SECOND,			// 一周多少秒
-			WEEK_MILLISECOND	= WEEK_SECOND * MILLISECOND,		// 一周多少毫秒
+			WEEK_DAY			= 7,								// Translated comment.
+			WEEK_HOUR			= WEEK_DAY * DAY_HOUR,				// Translated comment.
+			WEEK_MINUTES		= WEEK_DAY * DAY_MINUTES,			// Translated comment.
+			WEEK_SECOND			= WEEK_DAY * DAY_SECOND,			// Translated comment.
+			WEEK_MILLISECOND	= WEEK_SECOND * MILLISECOND,		// Translated comment.
 		};
-		// # 检查月份
+		// Translated comment.
 		static bool check_month(int amonth/*1-12*/);
 
-		// # 检查月份中的日
+		// # In
 		static bool check_monthday(int amonthday/*1-31*/);
 
-		// # 检查周中的日
+		// # In
 		static bool check_week(int aweek/*1-7*/);
 
-		// # 检查小时
+		// Translated comment.
 		static bool check_hour(int hour/*0-23*/);
 
-		// # 检查分钟
+		// Translated comment.
 		static bool check_minute(int minute/*0-59*/);
 
-		// # 检查秒
+		// Translated comment.
 		static bool check_sec(int sec/*0-59*/);
 
-		// # 判断是否超时
+		// # Checkwhether
 		static bool timeout(time_t abeg, int32_t atimeoutms);
 
-		// # 设置时间
+		// # Settime
 		static bool settime(time_t sti);
 
-		// # 获取时间
+		// # Gettime
 		static time_t gettime();
 
-		// # 获取时间
+		// # Gettime
 		static time_t getsystime();
 
-		// # 获取秒与秒之间的毫秒数 
+		// # Get and
 		static time_t getms();
 
-		// # 获取毫秒
+		// # Get
 		static time_t gettimems();
 
-		// # 两个utc时间是否是同一天
+		// # Utctimewhether
 		static bool issameday(time_t a1, time_t a2);
 
-		// # 当前时间和参数utc时间是否是同一天
+		// # Currenttime parametersutctimewhether
 		static bool issameday(time_t autc);
 
-		// # 打印时间
+		// # Time
 		static void printf_time2str(time_t anow, const char* format = "%Y-%m-%d %H:%M:%S");
 
-		// # utc转换为字符串
+		// # Utcconvert string
 		static size_t time2str(char* str, int len, time_t anow, const char* format = "%Y-%m-%d %H:%M:%S");
 		static std::string time2str(time_t anow, const char* format = "%Y-%m-%d %H:%M:%S");
 		static std::string time2str(const char* format = "%Y-%m-%d %H:%M:%S");
 
-		// # 字符串转换为utc
+		// # Stringconvert utc
 		static time_t str2time(const char* astr, const char* format = "%Y-%m-%d %H:%M:%S");
 
-		// # 获取utc时刻那天的 小时分钟的utc
+		// # Getutc that day utc
 		static time_t getsecond2time(time_t utc, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # 获取今天的指定 小时分钟的utc(如果时间已过则获取下一天的指定小时分钟的utc)
+		// # Get specified utc(iftime getunder specified utc)
 		static time_t getsecond2time(int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # 获取指定分钟的utc(如果当前小时分钟秒数已过则获取下一个小时的)
+		// # Getspecified utc(ifcurrent getunder )
 		static time_t getsecond2time(int minute/*0-59*/, int sec/*0-59*/);
 
-		// # 获取指定秒钟的utc(如果当前小时分钟秒数已过则获取下一个小时的)
+		// # Getspecified utc(ifcurrent getunder )
 		static time_t getsecond2time(int sec/*0-59*/);
 
-		// # 获取指定星期的小时分钟
+		// # Getspecified
 		static time_t getweekday(time_t utc, int aweek/*1-7*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # 获取本周几的指定 小时分钟的utc(如果时间已过则获取下一周几的指定小时分钟的utc) 
+		// # Get specified utc(iftime getunder specified utc)
 		static time_t getweekday(int aweek/*0-6*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # 是否是闰年
+		// # Whether
 		static bool isleapyear(int year);
 
-		// # 是否存在年月日
+		// # Whether
 		static bool mothday(int year, int month, int aday);
 
-		// # 获取指定utc所在月份的日时分秒
+		// # Getspecifiedutc
 		static std::pair<bool,time_t> getmothday(time_t utc, int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # 获取本月 指定 日小时分钟的utc
+		// # Get specified utc
 		static std::pair<bool, time_t> getmothday(int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # 获取两个时间之间相差的天数
+		// # Get time
 		static time_t getspandays(time_t curr, time_t last);
 
-		// # 当月的几号
+		// Translated comment.
 		static int getmoonday(const tm* atm);
 		static int getmoonday(time_t curr);
 		static int getmoonday();
 
-		// # 月份
+		// Translated comment.
 		static int getmoon(const tm* atm);
 		static int getmoon(time_t curr);
 		static int getmoon();
 
-		// # 年
+		// Translated comment.
 		static int getyear(const tm* atm);
 		static int getyear(time_t curr);
 		static int getyear();
 
-		// # 周:日
+		// Translated comment.
 		static int getweekday(const tm* atm);
 		static int getweekday(time_t curr);
 		static int getweekday();
 
-		// # 小时
+		// Translated comment.
 		static int gethour(const tm* atm);
 		static int gethour(time_t curr);
 		static int gethour();
 
-		// # 分钟
+		// Translated comment.
 		static int getmin(const tm* atm);
 		static int getmin(time_t curr);
 		static int getmin();
 
-		// # 秒数
+		// Translated comment.
 		static int getsec(const tm* atm);
 		static int getsec(time_t curr);
 		static int getsec();
 
-		// # 获取周: 日 时 分
+		// # Get:
 		static void getweekday(time_t curr, int& weekday, int& hour, int& minute);
 
-		// # 获取tm
+		// # Gettm
 		static void gettm(time_t curr, tm& atm);
 
-		// # 获取指定utc后几个小时
+		// # Getspecifiedutcafter
 		static int getutcbyhour(time_t utc, int hour);
 		static int getutcbymin(time_t utc, int amin);
 
@@ -179,7 +181,7 @@ namespace ngl
 
 		static bool issameweek(time_t timestamp1, time_t timestamp2);
 	private:
-		static time_t m_offset;		//时间偏移量
+		static time_t m_offset;		// Time
 	};
 
 	void test_isweek();

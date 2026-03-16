@@ -1,4 +1,6 @@
 #!/bin/bash
+# File overview: Automates the close workflow on Linux.
+
 path="$(cd $(dirname $0); pwd)"
 pids=`ps -elf|grep node|grep -v grep|awk '{print $4}'`
 function stop_pid() {

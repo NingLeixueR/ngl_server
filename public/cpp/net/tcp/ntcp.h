@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for tcp.
+
 
 #pragma once
 
@@ -32,18 +34,18 @@ namespace ngl
 	class ntcp
 	{
 		std::shared_ptr<asio_tcp>				m_server = nullptr;			// asio
-		std::vector<std::shared_ptr<segpack>>	m_segpackvec;				// 分包
-		i16_port								m_port = 0;					// 服务器监听端口号
-		i32_threadsize							m_socketthreadnum = 0;		// socket 接收数据线程数
-		bool									m_outernet = false;			// 是否允许外网连接
-		bpool									m_pool;						// 发送池
-		std::shared_mutex						m_mutex;					// 互斥量
-		std::list<pack>							m_packlist;					// 发送队列
+		std::vector<std::shared_ptr<segpack>>	m_segpackvec;				// Pack
+		i16_port								m_port = 0;					// Server port
+		i32_threadsize							m_socketthreadnum = 0;		// Socket datathread
+		bool									m_outernet = false;			// Whether connection
+		bpool									m_pool;						// Send
+		std::shared_mutex						m_mutex;					// Translated comment.
+		std::list<pack>							m_packlist;					// Sendqueue
 	private:
 		bool socket_recv(service_io* ap, const char* abuff, int32_t abufflen);
 	public:
-		// # 并非强制单例，也可以添加instance1....n
-		// # 扩展单进程中监听端口的数量
+		// # And singleton, canaddinstance1....n
+		// # In port
 		static ntcp& instance()
 		{
 			static ntcp ltemp;
@@ -52,51 +54,51 @@ namespace ngl
 
 		bpool& pool();
 
-		// # 监听端口 线程数量
+		// # Port thread
 		bool init(i16_port aport, i32_threadsize asocketthreadnum, bool	aouternet);
 
-		// # 监听端口
+		// # Port
 		i16_port port();
 
-		// # 关闭socket连接以及加载的数据
-		// # 通知上层应用
+		// # Closesocketconnectionandload data
+		// # Notifyon
 		void close(i32_sessionid asession);
 
-		// # 关闭session
+		// # Closesession
 		void close_net(i32_sessionid asession);
 
-		// # 设置socket关闭后的断线重连,afun:connect的parm3
+		// # Setsocketcloseafter,afun:connect parm3
 		void set_close(int asession, const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun);
 
-		// # 获取服务器ip
+		// # Getserverip
 		const std::string& ip(const net_works& anets);
 
-		// # 连接ip:aport
+		// # Connectionip:aport
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun);
 
-		// # 尝试连接指定ip/port
-		// # aip/aport		要连接的ip/端口
-		// # afun			连接回调
-		// # await			是否等待连接成功
-		// # areconnection	断线是否重连
+		// # Connectionspecifiedip/port
+		// # Aip/aport connection ip/port
+		// # Afun connectioncallback
+		// # Await whether connectionsuccessful
+		// # Areconnection whether
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection);
 
-		// # 尝试连接指定服务器
+		// # Connectionspecifiedserver
 		bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection);
 		
-		// # 发送消息
+		// # Sendmessage
 		bool send_msg(i32_sessionid asession, const std::string& amsg);
 
-		// # 发送消息
+		// # Sendmessage
 		bool send_pack(i32_sessionid asession, std::shared_ptr<pack>& lpack);
 
-		// # 发送消息
+		// # Sendmessage
 		bool send_pack(i32_sessionid asession, std::shared_ptr<void>& lpack);
 
-		// # 向某个服务器发送pack
+		// # To serversendpack
 		bool send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
-		// # 发送消息
+		// # Sendmessage
 		template <typename Y, typename T = Y>
 		bool send(i32_sessionid asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
@@ -106,22 +108,22 @@ namespace ngl
 		template <typename Y, typename T = Y>
 		bool send(const std::set<i32_sessionid>& asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// # 向服务器发送消息
+		// # Toserversendmessage
 		template <typename Y, typename T = Y>
 		bool send_server(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		template <typename Y, typename T = Y>
 		bool send_server(const std::set<i32_serverid>& aserverids, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// # 给一组sesion发送消息
+		// # Toa group ofsesionsendmessage
 		bool send(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack);
 		bool send(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack);
 
-		// # 向客户端发送消息
+		// # Toclientsendmessage
 		template <typename T>
 		bool send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata);
 
-		// # 向客户端发送消息
+		// # Toclientsendmessage
 		template <typename T>
 		bool send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata);
 	};
@@ -167,7 +169,7 @@ namespace ngl
 		return send(asession, aactorid, arequestactorid, lpack);
 	}
 
-	// # 向服务器发送消息
+	// # Toserversendmessage
 	template <typename Y, typename T/* = Y*/>
 	bool ntcp::send_server(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
@@ -205,7 +207,7 @@ namespace ngl
 		return send_client(lvecs, agateway, adata);
 	}
 
-	// # 向客户端发送消息
+	// # Toclientsendmessage
 	template <typename T>
 	bool ntcp::send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
 	{

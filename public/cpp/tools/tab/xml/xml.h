@@ -4,6 +4,8 @@
 * Project: ngl_server
 * License: MIT
 */
+// File overview: Declares interfaces for xml.
+
 #pragma once
 
 #include "actor/tab/csvtable.h"

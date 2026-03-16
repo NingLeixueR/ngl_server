@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for nsp.
+
 #pragma once
 
 #include "actor/actor_base/ndb_modular.h"
@@ -25,17 +27,17 @@ namespace ngl
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	class nsp_server
 	{
-		// # 可操作的"数据字段"
+		// # "Datafield"
 		static operator_field						m_operator_field;
-		// # 哪些结点关注哪些数据
+		// # Whichnode whichdata
 		static std::map<i64_actorid, care_data>		m_care;
-		// # 读全部数据的结点
+		// # Alldata node
 		static std::set<i64_nodeid>					m_nodereadalls;
-		// # 写全部数据的结点
+		// # Alldata node
 		static std::set<i64_nodeid>					m_nodewritealls;
-		// # 读部分数据的结点
+		// # Partialdata node
 		static std::set<i64_nodeid>					m_nodepart;
-		// # 数据
+		// # Data
 		static ndb_modular<ENUMDB, T, TDerived>*	m_dbmodule;
 	public:
 		using tnsp_server = nsp_server<ENUMDB, TDerived, T>;
@@ -45,25 +47,25 @@ namespace ngl
 			esend_maxcount = 100,
 		};
 
-		// # 订阅注册处理
+		// # Registerhandle
 		static void init(ndb_modular<ENUMDB, T, TDerived>* adbmodule);
 
-		// # 注册回复
+		// # Registerresponse
 		static void channel_register_reply(i64_actorid aactorid);
 
-		// # 注册回复数据
+		// # Registerresponsedata
 		static void channel_channel_data(i64_actorid aactorid, const np_channel_register<T>* recv);
 
-		// # 注册同步其他结点信息
+		// # Registersynchronize nodeinfo
 		static void channel_dataid_sync(i64_actorid aactorid, const np_channel_register<T>* recv);
 
-		// # 结点注册
+		// # Noderegister
 		static void handle(TDerived*, const message<np_channel_register<T>>& adata);
 
-		// # 结点退出
+		// # Nodeexit
 		static void handle(TDerived*, const message<np_channel_exit<T>>& adata);
 
-		// # 结点修改数据
+		// # Node data
 		static void handle(TDerived*, const message<np_channel_data<T>>& adata);
 	};
 

@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for nsp.
+
 #pragma once 
 
 #include "actor/protocol/nprotocol_template.h"
@@ -21,61 +23,61 @@
 
 namespace ngl
 {
-	// # nsp client 包括nsp_read与nsp_write
-	// # nsp client 加载状况
+	// # Nsp client pack nsp_readandnsp_write
+	// # Nsp client load
 	class nsp_regload
 	{
-		// # 需要连接的nsp服务器列表
+		// # Need toconnection nspserverlist
 		std::map<i16_area, i64_actorid>		m_nspserver;
-		// # 注册状态
+		// # Registerstate
 		std::map<i16_area, bool>			m_register;
-		// # 加载状态
+		// # Loadstate
 		std::map<i16_area, bool>			m_loadfinish;
 	public:
 		void init(i64_actorid aactorid);
 
-		// # 设置[area]完成注册
+		// # Set[area]completeregister
 		void set_register(i16_area aarea);
 
-		// # [area]是否完成注册
+		// # [Area]whethercompleteregister
 		bool is_register(i16_area aarea)const;
 
-		// # 所有[area]是否都完成注册
+		// # All[area]whether completeregister
 		bool is_register()const;
 
-		// # 设置[area]加载数据完成
+		// # Set[area]loaddatacomplete
 		void set_loadfinish(i16_area aarea);
 
-		// # [area]是否加载数据完成
+		// # [Area]whetherloaddatacomplete
 		bool is_loadfinish(i16_area aarea)const;
 
-		// # 所有[area]是否都加载数据完成
+		// # All[area]whether loaddatacomplete
 		bool is_loadfinish()const;
 
-		// # 根据[area]获取nsp server
+		// # [Area]getnsp server
 		i64_actorid nspserid(i16_area aarea)const;
 
-		// # 遍历所有需要连接的nsp server
+		// # Allneed toconnection nsp server
 		void foreach_nspser(const std::function<void(i16_area, i64_actorid)>& afun)const;
 	};
 
-	// # 对"数据字段"进行封装
+	// # "Datafield"
 	class operator_field
 	{
-		// # 只有nep server设置时不检查"因为同一字段设置读/写，写优先于读，进行读覆盖写的检测"
+		// # Nep serverset "because fieldset /, first, "
 		bool m_nspserver = false;
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>> m_node_fieldnumbers;
 	public:
-		// # 初始化
+		// # Initialize
 		void init(bool anspserver);
 
-		// # 设置"数据字段"
+		// # Set"datafield"
 		void set_field(i16_actortype atype, const std::map<i32_fieldnumber, epb_field>& anode_fieldnumbers);
 
-		// # 设置
+		// # Set
 		void set_field(const std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& anode_fieldnumbers);
 
-		// # 添加
+		// # Add
 	private:
 		void nspser_add_field(std::map<i32_fieldnumber, epb_field>& afieldmap, i32_fieldnumber afieldnumber, epb_field afieldtype);
 		void nspcli_add_field(std::map<i32_fieldnumber, epb_field>& afieldmap, i32_fieldnumber afieldnumber, epb_field afieldtype);
@@ -86,7 +88,7 @@ namespace ngl
 		void add_field(i16_actortype atype, epb_field afieldtype, const std::set<i32_fieldnumber>& afield)
 		{
 			if (afieldtype == epb_field_read && afield.empty())
-			{//当[awritefieldnumbers]为空,则认为其读全部字段
+			{// [Awritefieldnumbers], allfield
 				std::set<i32_fieldnumber> lreadfield;
 				pb_field::field_numbers<T>(lreadfield);
 				for (i32_fieldnumber field : lreadfield)
@@ -97,7 +99,7 @@ namespace ngl
 			else
 			{
 				if (afield.empty())
-				{//afieldtype == epb_field_write 不允许[afield]为空
+				{// Afieldtype == epb_field_write do not allow[afield]
 					tools::no_core_dump();
 				}
 				for (i32_fieldnumber field : afield)
@@ -112,7 +114,7 @@ namespace ngl
 		{
 			std::set<i32_fieldnumber> lreadfield;
 			if (areadfield.empty())
-			{//当[awritefieldnumbers]为空,则认为其读全部字段
+			{// [Awritefieldnumbers], allfield
 				pb_field::field_numbers<T>(lreadfield);
 			}
 			for (i32_fieldnumber field : awritefield)
@@ -125,10 +127,10 @@ namespace ngl
 			}
 		}
 
-		// # 根据类型获取
+		// # Typeget
 		std::map<i32_fieldnumber, epb_field>* get_field(i16_actortype atype);
 
-		// # 根据字段类型进行数据拷贝
+		// # Fieldtype datacopy
 		template <typename T>
 		bool field_copy(i16_actortype atypesource, i16_actortype atypetarget, const T& asource, T& atarget, bool amessage)
 		{
@@ -142,7 +144,7 @@ namespace ngl
 			return true;
 		}
 
-		// # 根据字段类型进行数据拷贝
+		// # Fieldtype datacopy
 		template <typename T>
 		bool field_copy(i16_actortype atype, const T& asource, T& atarget, bool amessage)
 		{
@@ -155,52 +157,52 @@ namespace ngl
 			return true;
 		}
 
-		// # 获取所有区服的数据字段
+		// # Getallarea datafield
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& field_numbers();
 	};
 
-	// # 关注哪些数据
+	// # Whichdata
 	class care_data
 	{
 		nsp_care m_core;
 	public:
-		// # "全部读,全部写" 构造
+		// # "All,all "
 		void init(bool aread);
 
-		// # "部分读" 构造
+		// # "Partial "
 		void init(const std::set<i64_actorid>& aids);
 
-		// # "部分读,部分写" 构造
+		// # "Partial,partial "
 		void init(const std::set<i64_actorid>& areadids, const std::set<i64_actorid>& awriteids);
 
-		// # "全部读,部分写" 构造
+		// # "All,partial "
 		void init(bool aread, const std::set<i64_actorid>& awriteids);
 
-		// # 使用nsp_care数据初始化
+		// # Nsp_caredatainitialize
 		void init(const nsp_care& acore);
 
-		// # 是否关心
+		// # Whether
 		bool is_care(i64_actorid adataid)const;
 
-		// # 是否可读
+		// # Whether
 		bool is_read(i64_actorid adataid)const;
 
-		// # 是否可写(既然可写 当然可读)
+		// # Whether ( )
 		bool is_write(i64_actorid adataid)const;
 
-		// # 是否可读全部数据
+		// # Whether alldata
 		bool is_readall()const;
 
-		// # 是否可写全部数据
+		// # Whether alldata
 		bool is_writeall()const;
 
-		// # 可读列表
+		// # List
 		std::set<i64_actorid>& readids();
 
-		// # 可写列表
+		// # List
 		std::set<i64_actorid>& writeids();
 
-		// # 获取关注数据
+		// # Get data
 		const nsp_care& get_core()const;
 	};
 
@@ -258,41 +260,41 @@ namespace ngl
 		}
 	};
 
-	// nsp client 注册回调
+	// Nsp client registercallback
 	template <typename T>
 	class nsp_callback
 	{
 		template <typename TDATA>
 		struct tcallback
 		{
-			// [回调] 当数据发生变化
+			// [Callback] data change
 			std::function<void(int64_t, const TDATA&, bool)>				m_changedatafun = nullptr;
-			// [回调] 当数据被删除
+			// [Callback] data delete
 			std::function<void(int64_t)>									m_deldatafun = nullptr;
-			// [回调] 数据加载完成
+			// [Callback] dataloadcomplete
 			std::function<void()>											m_loadfinishfun = nullptr;
 		};
 		tcallback<T> m_call;
 	public:
-		// # 设置数据被修改或首次获取数据的回调
+		// # Setdata or getdata callback
 		inline void set_changedatafun(const std::function<void(int64_t, const T&, bool)>& afun)
 		{
 			m_call.m_changedatafun = afun;
 		}
 
-		// # 设置数据被删除的回调
+		// # Setdata delete callback
 		inline void set_deldatafun(const std::function<void(int64_t)>& afun)
 		{
 			m_call.m_deldatafun = afun;
 		}
 
-		// # 设置数据加载完成的回调
+		// # Setdataloadcomplete callback
 		inline void set_loadfinishfun(const std::function<void()>& afun)
 		{
 			m_call.m_loadfinishfun = afun;
 		}
 
-		// # 调用数据被修改或首次获取数据的回调
+		// # Data or getdata callback
 		inline void changedatafun(int64_t aid, const T& adata, bool afrist)
 		{
 			if (m_call.m_changedatafun != nullptr)
@@ -301,7 +303,7 @@ namespace ngl
 			}
 		}
 
-		// # 调用数据被删除的回调
+		// # Data delete callback
 		inline void deldatafun(int64_t aid)
 		{
 			if (m_call.m_deldatafun != nullptr)
@@ -310,7 +312,7 @@ namespace ngl
 			}
 		}
 
-		// # 调用数据加载完成的回调
+		// # Dataloadcomplete callback
 		inline void loadfinishfun()
 		{
 			if (m_call.m_loadfinishfun != nullptr)

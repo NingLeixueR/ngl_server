@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for nmap.
+
 #pragma once
 
 #include "actor/actor_logic/actor_role/logic/attribute/unit.h"
@@ -33,30 +35,30 @@ namespace ngl
 	public:
 		virtual void init(int32_t aw, int32_t al, int32_t anx, int32_t any);
 
-		// # 根据坐标(ax,ay)进入格子
+		// # (Ax,ay)
 		bool enter(i64_actorid aunitid, int32_t ax, int32_t ay);
 
-		// # 根据格子编号进入格子
+		// Translated comment.
 		bool enter(i64_actorid aunitid, int32_t agid);
 
-		// # 根据坐标(ax,ay)离开格子
+		// # (Ax,ay)leave
 		void leave(i64_actorid aunitid, int32_t ax, int32_t ay);
 
-		// # 根据格子编号离开格子
+		// # Leave
 		void leave(i64_actorid aunitid, int32_t agid);
 
-		// # 根据格子编号获取格子
+		// # Get
 		grid* get_grid(int32_t agid);
 
-		// # 根据坐标(ax,ay)获取格子
+		// # (Ax,ay)get
 		grid* get_grid(int32_t ax, int32_t ay);
 	};
 
 	struct obstacle
 	{
-		int m_id = 0;			// 格子编号
-		eobstacles m_pass;		// 是否可以通过格子
-		int m_value = 0;		// 付出的代价
+		int m_id = 0;			// Translated comment.
+		eobstacles m_pass;		// Whethercanthrough
+		int m_value = 0;		// Translated comment.
 		int m_parent = 0;
 
 		void clear()
@@ -114,8 +116,8 @@ namespace ngl
 
 		bool find_path(int32_t ax1, int32_t ay1, int32_t ax2, int32_t ay2, std::list<int>& apath)
 		{
-			// 起始点 (ax1, ay1)
-			// 终点	  (ax2, ay2)
+			// (Ax1, ay1)
+			// (Ax2, ay2)
 			std::vector<bool> vis;
 			vis.resize(m_grid.size(), false);
 			int lstatrt = id(ax1, ay1);

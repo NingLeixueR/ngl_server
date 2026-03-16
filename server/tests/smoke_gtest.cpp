@@ -1,3 +1,5 @@
+// File overview: Implements GoogleTest coverage for smoke.
+
 #include <gtest/gtest.h>
 
 #include <filesystem>

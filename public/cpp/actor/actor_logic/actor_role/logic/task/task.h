@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for task.
+
 #pragma once
 
 #include "actor/auto/nactor_auto.h"
@@ -29,38 +31,38 @@ namespace ngl
 	class static_task
 	{
 	public:
-		// # 检查条件是否都完成
+		// # Conditionwhether complete
 		static bool check_condition(actor_role* arole, const std::vector<task_condition>& acondition);
 
-		// # 获取已完成任务
+		// # Get completetask
 		static google::protobuf::Map<int32_t, pbdb::db_task_complete>& complete(actor_role* arole);
 		static const google::protobuf::Map<int32_t, pbdb::db_task_complete>& const_complete(actor_role* arole);
 
-		// # 获取正在执行中的任务
+		// # Get executeintask
 		static google::protobuf::Map<int32_t, pbdb::db_task_data>& run(actor_role* arole);
 		static const google::protobuf::Map<int32_t, pbdb::db_task_data>& const_run(actor_role* arole);
 
-		// # 检查任务是否完成
+		// # Taskwhethercomplete
 		static bool isfinish_task(actor_role* arole, i32_taskid ataskid);
 
-		// # 检查任务是否已接收
+		// # Taskwhether
 		static bool isreceive_task(actor_role* arole, i32_taskid ataskid);
 
-		// # 完成任务
+		// # Completetask
 		static bool finish_task(actor_role* arole, i32_taskid ataskid);
 
-		// # 接收任务
+		// # Task
 		static bool receive_task(actor_role* arole, i32_taskid ataskid);
 
-		// # 移除任务
+		// # Removetask
 		static bool erase_task(actor_role* arole, i32_taskid ataskid);
 
-		// # 是否有可以接受任务
-		// # 因为某个条件完成
+		// # Whether can task
+		// # Because conditioncomplete
 		static bool update_change(actor_role* arole, ETask atype, std::set<i32_taskid>* ataskset);
 		static bool update_change(actor_role* arole, ETask atype, int32_t avalues);
 
-		// # 重置任务
+		// # Task
 		static bool reset_task(actor_role* arole, i32_taskid ataskid);
 	};
 }// namespace ngl

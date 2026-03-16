@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor base.
+
 #pragma once
 
 #include "actor/actor_base/nmanage_dbclient.h"
@@ -58,25 +60,25 @@ namespace ngl
 	private:
 		std::set<i64_actorid> m_modified;
 	public:
-		// # 哪些被修改
+		// # Which
 		std::set<i64_actorid>& which_modified()
 		{
 			return m_modified;
 		}
 
-		// # 检查是否被修改
+		// # Whether
 		bool is_modified(i64_actorid aidentifier)const
 		{
 			return m_modified.contains(aidentifier);
 		}
 
-		// # 设置为修改状态
+		// # Set state
 		void modified(i64_actorid aidentifier)
 		{
 			m_modified.insert(aidentifier);
 		}
 
-		// # 清空修改状态被
+		// # Clear state
 		void clear_modified(i64_actorid aidentifier)
 		{
 			m_modified.erase(aidentifier);
@@ -123,14 +125,14 @@ namespace ngl
 			return m_modified->is_modified(identifier());
 		}
 
-		// # 设置为修改状态
+		// # Set state
 		inline void modified()const
 		{
 			check_init();
 			m_modified->modified(identifier());
 		}
 
-		// # 清空修改状态
+		// # Clear state
 		inline void clear_modified()const
 		{
 			check_init();
@@ -148,7 +150,7 @@ namespace ngl
 			}
 		}
 
-		// # get与getconst获取数据前先 "检查脚本语言中的备份是否被修改"
+		// # Getandgetconstgetdatabeforefirst " scripting languagein whether "
 		TDBTAB* get(bool achange = true, bool anscript = true)
 		{
 			check_init();
@@ -162,11 +164,11 @@ namespace ngl
 			{
 				modified();
 			}
-			// # 检查脚本语言中的备份是否被修改
+			// # Scripting languagein whether
 			if (anscript && m_actor != nullptr)
 			{
 				if (m_actor->nscript_data_checkdel<TDBTAB>(ldata.mid()))
-				{//被删除了
+				{// Delete
 					return nullptr;
 				}
 				if (m_actor->nscript_data_checkout<TDBTAB>(ldata.mid(), ldata))
@@ -181,11 +183,11 @@ namespace ngl
 		{
 			check_init();
 			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
-			// # 检查脚本语言中的备份是否被修改
+			// # Scripting languagein whether
 			if (anscript && m_actor != nullptr)
 			{
 				if (m_actor->nscript_data_checkdel<TDBTAB>(ldata.mid()))
-				{//被删除了
+				{// Delete
 					return nullptr;
 				}
 				if (m_actor->nscript_data_checkout<TDBTAB>(ldata.mid(), ldata))
@@ -208,22 +210,22 @@ namespace ngl
 
 		enum
 		{
-			e_default_tcount = 1,		// 默认tcount
+			e_default_tcount = 1,		// Defaulttcount
 		};
 		
-		tab_dbload*									m_tab = nullptr;							// 加载"表配置数据加载"
-		nmodified<TDBTAB>							m_modified;									// 记录哪些数据被修改
-		nguid										m_id = nguid::make();						// 数据id(m_id == nguid::make() 加载全部数据)
-		std::map<nguid, data_modified<TDBTAB>>		m_data;										// 数据
-		data_modified<TDBTAB>*						m_dbdata = nullptr;							// m_id !=nguid::make() 此值有效
-		bool										m_load = false;								// 是否加载完成			
-		nmanage_dbclient*						m_manage_dbclient = nullptr;				// 操作封装
-		actor_base*									m_actor = nullptr;							// 宿主actor
-		std::vector<int64_t>						m_dellist;									// 删除列表
-		std::string									m_name = tools::type_name<type_ndbclient>();// 主要调试需要知道TACTOR的名字
+		tab_dbload*									m_tab = nullptr;							// Load"tableconfigdataload"
+		nmodified<TDBTAB>							m_modified;									// Recordwhichdata
+		nguid										m_id = nguid::make();						// Dataid(m_id == nguid::make() loadalldata)
+		std::map<nguid, data_modified<TDBTAB>>		m_data;										// Data
+		data_modified<TDBTAB>*						m_dbdata = nullptr;							// M_id !=nguid::make() this
+		bool										m_load = false;								// Whetherloadcomplete
+		nmanage_dbclient*						m_manage_dbclient = nullptr;				// Translated comment.
+		actor_base*									m_actor = nullptr;							// Hostactor
+		std::vector<int64_t>						m_dellist;									// Deletelist
+		std::string									m_name = tools::type_name<type_ndbclient>();// Need to TACTOR
 	public:
-		// # 向actor_client设置连接后事件
-		// # 当与db服务器发生连接时触发加载数据事件
+		// # Toactor_clientsetconnectionafterevent
+		// # Anddbserver connection loaddataevent
 		void load() final
 		{
 			const tab_servers* tab = ttab_servers::instance().const_tab();
@@ -239,28 +241,28 @@ namespace ngl
 			actor::send_actor(lclientguid, m_actor->guid(), pro);
 		}
 	private:
-		// # 加载数据
+		// # Loaddata
 		void init_load()
 		{
 			log_error()->print("ndbclient init_load [{}]", m_name);
 			load();
 		}
 
-		// # db结点的id
+		// # Dbnode id
 		i32_actordataid dbnodeid()
 		{
 			const tab_servers* tab = ttab_servers::instance().const_tab();
 			return nnodeid::nodeid(tab->m_db, e_default_tcount);
 		}
 
-		// # 获取db actor的guid
+		// # Getdb actor guid
 		inline i64_actorid dbguid()
 		{
 			ENUM_ACTOR ltype = nactor_type<actor_db<DBTYPE, TDBTAB>>::type();
 			return nguid::make(ltype, tab_self_area, nguid::none_actordataid());
 		}
 
-		// # 加载数据
+		// # Loaddata
 		void loaddb(const nguid& aid)
 		{
 			np_actordb_load<DBTYPE, TDBTAB> ldata;
@@ -295,14 +297,14 @@ namespace ngl
 			m_id = aid;
 		}
 
-		// # 设置持有此数据的actor
+		// # Set this data actor
 		void set_actor(actor_base* aactor)
 		{
 			m_manage_dbclient = aactor->manage_dbclient();
 			m_actor = aactor;
 		}
 
-		// # 获取数据
+		// # Getdata
 		const std::map<nguid, data_modified<TDBTAB>>& get_data()
 		{ 
 			return m_data; 
@@ -313,7 +315,7 @@ namespace ngl
 			return m_data;
 		}
 
-		// # 获取nguid数据
+		// # Getnguiddata
 		data_modified<TDBTAB>* get_data(const nguid& aid)
 		{
 			if (aid == m_id && m_id != nguid::make())
@@ -332,7 +334,7 @@ namespace ngl
 			return &ldata;
 		}
 
-		// # 获取数据
+		// # Getdata
 		data_modified<TDBTAB>* get_dbdata()
 		{
 			return m_dbdata;
@@ -419,7 +421,7 @@ namespace ngl
 				if (lpdata != nullptr && lpdata->is_modified())
 				{
 					pro.add(aid, *lpdata->getconst(false));
-					// # 清空标志位 
+					// # Clearflag bits
 					lpdata->clear_modified();
 				}			
 			}
@@ -431,13 +433,13 @@ namespace ngl
 					lpdata = tools::findmap(m_data, nguid(lactorid));
 					pro.add(lactorid, *lpdata->getconst(false));
 				}
-				// # 清空标志位 
+				// # Clearflag bits
 				lmodified.clear();
 			}
 			if (!pro.empty())
 			{
 				log_error()->print("ndbclient<{}> save {}", m_name, aid);
-				// # 先序列化 再让actor_client确认位置
+				// # Serialize first, then let actor_client confirm the position
 				i64_actorid lactorid = dbguid();
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
@@ -445,7 +447,7 @@ namespace ngl
 					log_error()->print("ndbclient<{}> actor_base::net_pack fail", m_name);
 					return;
 				}
-				// # 异步发送pack
+				// # Asynchronouslysendpack
 				actor::send_actor(lactorid, lpack);
 			}
 		}
@@ -496,7 +498,7 @@ namespace ngl
 			pro.m_data.swap(m_dellist);
 			if (pro.m_data.empty() == false)
 			{
-				// # 先序列化 再让actor_client确认位置
+				// # Serialize first, then let actor_client confirm the position
 				i64_actorid lactorid = dbguid();
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
@@ -504,7 +506,7 @@ namespace ngl
 					log_error()->print("ndbclient<{}> actor_base::net_pack fail", m_name);
 					return;
 				}
-				// # 异步发送pack
+				// # Asynchronouslysendpack
 				actor::send_actor(lactorid, lpack);
 			}
 		}

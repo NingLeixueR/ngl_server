@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for actor base.
+
 #include "actor/actor_logic/actor_client/actor_client.h"
 #include "actor/actor_logic/actor_server/actor_server.h"
 #include "actor/actor_base/actor_manage.h"
@@ -103,7 +105,7 @@ namespace ngl
 		}
 		if (lneedsync)
 		{
-			// 新增的actor 
+			// Newly added actor
 			if (lhasrouteactor)
 			{
 				auto pro = std::make_shared<np_actornode_update_mass>(
@@ -149,7 +151,7 @@ namespace ngl
 			nlock(m_mutex);
 			lhasrouteactor = m_actorbyid.contains(lrouteactor);
 		}
-		// 通知actor_client已经删除actor 
+		// Notifyactor_client deleteactor
 		if (lhasrouteactor)
 		{
 			auto pro = std::make_shared<np_actornode_update_mass>(
@@ -177,7 +179,7 @@ namespace ngl
 			}
 			lpactor = *lpactorptr;
 
-			// # 从actor_manage中移除
+			// # Fromactor_manageinremove
 			m_actorbyid.erase(aguid);
 			auto type_it = m_actorbytype.find(aguid.type());
 			if (type_it != m_actorbytype.end())
@@ -310,8 +312,8 @@ namespace ngl
 			{
 				return lnull;
 			}
-			// 发给actor_client/actor_server
-			// 如果是actor_server结点需要发送给actor_server
+			// Toactor_client/actor_server
+			// If actor_servernodeneed tosendtoactor_server
 			nguid lguid = nodetypebyguid();
 			lpactor = tools::findmap(m_actorbyid, lguid);
 			if (lpactor == nullptr)
@@ -366,7 +368,7 @@ namespace ngl
 	void actor_manage::push_task_type(ENUM_ACTOR atype, handle_pram& apram)
 	{
 		nlock(m_mutex);
-		// 1.先发给本机上的atype
+		// 1.First to on atype
 		auto type_it = m_actorbytype.find(atype);
 		if (type_it != m_actorbytype.end())
 		{
@@ -380,7 +382,7 @@ namespace ngl
 		}
 		if (apram.m_issend)
 		{
-			// 2.然后发给actor_client，发给其他服务器
+			// 2. After toactor_client, to server
 			nguid lguid = nodetypebyguid();
 			ptractor* lpactor = tools::findmap(m_actorbyid, lguid);
 			if (lpactor == nullptr)

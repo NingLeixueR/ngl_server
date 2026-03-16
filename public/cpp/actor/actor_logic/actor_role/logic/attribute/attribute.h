@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for attribute.
+
 #pragma once 
 
 #include "actor/actor_logic/actor_role/logic/attribute/attribute_value.h"
@@ -32,27 +34,27 @@ namespace ngl
 {
 	class attribute
 	{
-		// # 模块属性(只能模块间发生变化通过updata[EnumModule,attribute_value])
+		// # Moduleattribute( module changethroughupdata[EnumModule,attribute_value])
 		std::map<EnumModule, attribute_value> m_moduledata;
 		bool m_sync = false;
 		int64_t m_unitid = 0;
 
-		// # 根节点
+		// # Node
 		attribute_value& root();
 
-		// # 添加模块，并将属性添加到父链
+		// # Addmodule, and attributeaddto
 		void module_add(EnumModule aenum);
 
-		// # 移除模块,并将其添加到父链上的属性去除
+		// # Removemodule,and addto on attribute
 		void module_dec(EnumModule aenum);
 
-		// # 判断EnumModule是否是根节点
+		// # CheckEnumModulewhether node
 		bool module_is_root(EnumModule aenum);
 
-		// # 判断EnumModule是否为空
+		// # CheckEnumModulewhether
 		bool module_is_null(EnumModule aenum);
 
-		// # 更新模块
+		// # Module
 		void module_update(EnumModule aenum);
 	public:
 		attribute() = default;
@@ -61,19 +63,19 @@ namespace ngl
 
 		void set_sync(bool async);
 
-		// # 初始化数据 将模块属性输入
+		// # Initializedata moduleattribute
 		void init_data(EnumModule aenum, attribute_value& avalue);
 
-		// # 计算输入的模块属性 生成最终属性与战力
+		// # Moduleattribute attributeand
 		void init();
 
-		// # 更新模块属性
+		// # Moduleattribute
 		void updata(EnumModule aenum, attribute_value& avalue);
 
-		// # 移除属性模块
+		// # Removeattributemodule
 		void remove(EnumModule aenum);
 
-		// # 战力
+		// Translated comment.
 		int64_t fight();
 
 		const std::map<EnumAttribute, int64_t>& get_attribute();
@@ -96,7 +98,7 @@ namespace ngl
 
 	class aoimap;
 
-	// 动态属性,可以在战斗中改变的属性
+	// Attribute,can in attribute
 	class dynamic_attribute
 	{
 	private:
@@ -111,20 +113,20 @@ namespace ngl
 		{
 		}
 
-		// 根据[模块属性]生成动态属性
+		// [Moduleattribute] attribute
 		void init(const std::map<EnumAttribute, int64_t>& aattribute)
 		{
 			m_base = aattribute;
 			m_dynamic = m_base;
 		}
 
-		// 是否死亡
+		// Whether
 		bool is_death()
 		{
 			return m_dynamic[E_Hp] <= 0;
 		}
 
-		// 修改动态属性
+		// Attribute
 		void change_attribute(EnumAttribute aattribute, int64_t avalue, bool adynamic)
 		{
 			m_dynamic[aattribute] += avalue;
@@ -157,19 +159,19 @@ namespace ngl
 			return m_stat[astat];
 		}
 
-		// 是否可以移动
+		// Whethercan
 		bool is_move()
 		{
 			return get_fightstst(E_FightMove);
 		}
 
-		// 是否可以普通攻击
+		// Whethercan
 		bool is_normalattack()
 		{
 			return get_fightstst(E_FightNormalAttack);
 		}
 
-		// 是否可以释放技能
+		// Whethercan
 		bool is_releaseskill()
 		{
 			return get_fightstst(E_FightReleaseSkill);

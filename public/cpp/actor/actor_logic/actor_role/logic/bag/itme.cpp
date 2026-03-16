@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for bag.
+
 
 #include "actor/actor_logic/actor_role/logic/bag/itme.h"
 #include "actor/actor_logic/actor_role/actor_role.h"
@@ -19,7 +21,7 @@ namespace ngl
 {
 	std::map<EItemType, item_create*> item_create::m_data;
 
-	// 材料
+	// Translated comment.
 	class item_create_material : 
 		public item_create
 	{
@@ -39,7 +41,7 @@ namespace ngl
 		{}
 	};
 
-	// 金币
+	// Translated comment.
 	class item_create_money : public item_create
 	{
 		virtual bool mode(actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
@@ -61,7 +63,7 @@ namespace ngl
 		{}
 	};
 
-	// 装备
+	// Equipment
 	class item_create_equip : 
 		public item_create
 	{
@@ -83,7 +85,7 @@ namespace ngl
 		{}
 	};
 
-	// 卡牌
+	// Card
 	class item_create_card : 
 		public item_create
 	{

@@ -1,3 +1,5 @@
+// File overview: Implements GoogleTest coverage for bootstrap.
+
 #include <gtest/gtest.h>
 
 #include <filesystem>

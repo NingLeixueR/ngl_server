@@ -1,3 +1,5 @@
+// File overview: Declares interfaces for core.
+
 #pragma once
 
 #include "tools/tab/xml/xml_serialize.h"
@@ -35,7 +37,7 @@ class xml_protocol
         {
             const google::protobuf::Descriptor* nestedDescriptor = fieldDescriptor->message_type();
             fieldDescriptor->type();
-            // 获取嵌套消息类型的名称
+            // Get messagetype name
             std::string nestedMessageTypeName = nestedDescriptor->full_name();
             std::cout << nestedDescriptor->DebugString() << std::endl;
             std::cout << "Nested message type name: " << nestedMessageTypeName << std::endl;
@@ -70,9 +72,9 @@ public:
         case google::protobuf::FieldDescriptor::CPPTYPE_STRING:
             return "std::string";
         case google::protobuf::FieldDescriptor::CPPTYPE_MESSAGE:
-            return field->message_type()->full_name(); // 嵌套消息类型名
+            return field->message_type()->full_name(); // Messagetype
         case google::protobuf::FieldDescriptor::CPPTYPE_ENUM:
-            return field->enum_type()->full_name(); // 枚举类型名
+            return field->enum_type()->full_name(); // Type
         default:
             return "unknown";
         }
@@ -80,7 +82,7 @@ public:
 
     static std::map<std::string, std::string> m_nscriptmap;
     static std::set<std::string> m_nscriptset;
-    // 递归打印字段类型信息
+    // Fieldtypeinfo
     std::string FieldType(const google::protobuf::FieldDescriptor* field) 
     {
         return google::protobuf::FieldDescriptor::TypeName(field->type());
@@ -594,17 +596,17 @@ namespace ngl
         std::string ldata;
         {
 
-            // 读取文件nactor_auto.h
+            // Readfilenactor_auto.h
             ngl::readfile lfile("../../public/cpp/actor/auto/nactor_auto.h");
             lfile.read(ldata);
         }
-        // 正则表达式：匹配 "using <name> = typedb<...>;"
+        // Table: "using <name> = typedb<...>;"
         std::regex pattern(R"(using\s+([a-zA-Z0-9_]+)\s*=\s*typedb<([^>]+)>;)");
 
-        // 用于存储匹配到的结果
+        // Used to to
         std::smatch matches;
 
-        // 迭代文本并查找所有匹配项
+        // Andfindall
         auto words_begin = std::sregex_iterator(ldata.begin(), ldata.end(), pattern);
         auto words_end = std::sregex_iterator();
 
@@ -619,14 +621,14 @@ namespace ngl
         std::set<std::string> lset;
         for (std::sregex_iterator i = words_begin; i != words_end; ++i)
         {
-            // 获取完整的匹配项（例如：using tdb_account = typedb<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account, actor_login>;）
+            // Get (for example: using tdb_account = typedb<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account, actor_login>;)
             std::string full_match = (*i).str(0);
 
             struttt ltemp;
-            // 获取第一个括号里的部分（tdb_account, user_data, customer_data等）
+            // Get partial(tdb_account, user_data, customer_data )
             ltemp.name = (*i).str(1);
 
-            // 获取第二部分，即 typedb<...> 内的内容
+            // Get partial, typedb<...> content
             std::string arguments = (*i).str(2);
             ngl::tools::splite(arguments.c_str(), ",", ltemp.enumname, ltemp.proname, ltemp.actorname);
             ngl::tools::splite(ltemp.enumname.c_str(), "::", ltemp.enumname, ltemp.enumname);
@@ -645,7 +647,7 @@ namespace ngl
                 int enum_value_count = enumDescriptor->value_count();
                 std::cout << "Enum: " << enumDescriptor->name() << std::endl;
 
-                // 遍历枚举值
+                // Translated comment.
                 for (int j = 0; j < enum_value_count; ++j)
                 {
                     const auto& enumValueDescriptor = enumDescriptor->value(j);
@@ -700,15 +702,15 @@ namespace ngl
 	public:
 		using db_actor   = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
 		using db_modular = ndb_modular<TDBTAB_TYPE, TDBTAB, TACTOR>;
-		// 订阅/发布[数据副本]
+		// / [Data ]
 		using nsp_ser		= nsp_server<TDBTAB_TYPE, TACTOR, TDBTAB>;
 		template <typename TDerived>
 		using nsp_cread		= nsp_read<TDerived, TACTOR, TDBTAB>;
 		template <typename TDerived>
 		using nsp_cwrite	= nsp_write<TDerived, TACTOR, TDBTAB>;
 
-		// [aregister == true] 主要是注册协议,宏与类型的绑定
-		// [aregister == false] 实例化db_actor,db server需要
+		// [Aregister == true] registerprotocol, andtype bind
+		// [Aregister == false] instance db_actor,db serverneed to
 		static void init(bool aregister);
 	};
 
@@ -724,7 +726,7 @@ namespace ngl
         for (const std::string& item : lset)
         {
             if (item == "actor_xxxx")
-            {// 让编译出错 玩家确认修改
+            {// Let playerconfirm
                 m_stream << "\t#编译会出错，需要确认修改" << std::endl;
             }
             m_stream << "\tclass " << item << ";" << std::endl;
@@ -751,7 +753,7 @@ namespace ngl
                 if (lcount == 1 && proname.find("dbcross") != std::string::npos)
                 {
                     if (item.second.actorname == "actor_xxxx")
-                    {// 让编译出错 玩家确认修改
+                    {// Let playerconfirm
                         m_stream << "\t#编译会出错，需要确认修改" << std::endl;
                     }
                     m_stream << std::format("\tusing {} = typedb<{}, {}, {}>;", name, enumname, proname, actorname) << std::endl;
@@ -760,7 +762,7 @@ namespace ngl
                 if (lcount == 2 && proname.find("dbcross") == std::string::npos)
                 {
                     if (item.second.actorname == "actor_xxxx")
-                    {// 让编译出错 玩家确认修改
+                    {// Let playerconfirm
                         m_stream << "\t#编译会出错，需要确认修改" << std::endl;
                     }
                     m_stream << std::format("\tusing {} = typedb<{}, {}, {}>;", name, enumname, proname, actorname) << std::endl;
@@ -776,7 +778,7 @@ namespace ngl
 	public:
 		static void tdb_init(bool ainstance);
 
-		// # 定义在nactor_auto.cpp中,因为跨服是可选的
+		// # Nactor_auto.cppin,becausecross-server
 		static void tcrossdb_init(bool ainstance);
 	};
 }//namespace ngl)";
@@ -945,12 +947,12 @@ namespace ngl
                 else
                 {
                     std::cout << fieldDescriptor->camelcase_name() << std::endl;
-                    // 判断字段是否为map类型
+                    // Checkfieldwhether maptype
                     if (fieldDescriptor->is_map()) {
                         // MAX_LABEL === maps
                         std::pair<std::list<tmessage>, std::list<tmessage>>& lpair = lmap[(Label)(Label::MAX_LABEL + 1)];
                         ls = &lpair.second;
-                        // 输出map的key名称和value名称
+                        // Outputmap keyname valuename
                         std::cout << "Key Type: " << fieldDescriptor->message_type()->field(0)->type_name() << std::endl;
 
                         lparmname = fieldDescriptor->message_type()->field(0)->type_name();
@@ -1030,10 +1032,10 @@ namespace ngl
         db_fun(apackname, aname, fileDescriptor);
     }
 
-    // 根据enum生成actor模板
+    // Enum actor
     static void enum_actor(std::string aenum)
     {
-        // 只判断非单利其他的都按照单例
+        // Check singleton
         bool issign = aenum != "ACTOR_ROLE" && aenum != "ACTOR_ROBOT";
         std::string ltolower = aenum;
         ngl::tools::transform_tolower(ltolower);
@@ -1046,7 +1048,7 @@ namespace ngl
                 return;
             }
         }
-        // 判断文件是否存在
+        // Checkfilewhether
         lpath += std::format("/{}", ltolower);
         std::string lpathH = std::format("{}.h", lpath);
         std::string lpathCPP = std::format("{}.cpp", lpath);
@@ -1143,9 +1145,9 @@ namespace ngl
 
 	void {0}::init()
 	{{
-		// 绑定DB结构:DB.set(this);
+		// Bind the DB structure: DB.set(this);
         
-        // 设置timer_handle定时器
+        // Set up the timer_handle timer.
         /*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{{
@@ -1167,14 +1169,14 @@ namespace ngl
 
 	void {0}::nregister()
 	{{
-        // 定时器
+        // Timer.
 		actor::register_timer<{0}, false>(&{0}::timer_handle);
 
-        // 绑定自定义np_消息
+        // Bind custom np_ messages.
         register_handle<{0}
 		>(e_ready_all);
         
-        // 绑定脚本消息
+        // Bindscriptmessage
         register_script_handle<{0}
 		>(false);
 	}}
@@ -1193,7 +1195,7 @@ namespace ngl
         std::set<std::string> lactorenumset;
         {
             std::string ldata;
-            // 读取文件nactortype.h
+            // Readfilenactortype.h
             ngl::readfile lfile("../../public/cpp/actor/actor_base/nactortype.h");
             std::string lnr;
             bool lbool = false;
@@ -1208,7 +1210,7 @@ namespace ngl
                 }
                 else
                 {
-                    // 去掉行数据中的\t 空格 , 与注释
+                    // Datain\t, and
                     ngl::tools::replace(" ", "", lnr, lnr);
                     ngl::tools::replace("\t", "", lnr, lnr);
                     ngl::tools::replace(",", "", lnr, lnr);
@@ -1280,7 +1282,7 @@ namespace ngl
         auto lfun = [&lhactorfilemap](const char* fname, const char* pbname)
             {
                 std::string ldata;
-                // 读取文件nactortype.h
+                // Readfilenactortype.h
                 std::string lfilename = std::format("../proto/{}.proto", fname);
                 ngl::readfile lfile(lfilename);
                 std::string lnr;
@@ -1366,7 +1368,7 @@ namespace ngl
        
         lfun("net", "pbnet");
         lfun("example", "pbexample");
-        // 根据message检查actor文件中是否实现了对应的协议没有则插入
+        // Message actorfileinwhether corresponding protocol
 
         {
             for (const std::string& item : lactorenumset)
@@ -1516,7 +1518,7 @@ namespace ngl
                             size_t lpos = lnr.find("handle(const message<");
                             if (lpos != std::string::npos)
                             {
-                                // 获取message
+                                // Getmessage
                                 int lcout = 0;
                                 for (size_t i = lpos + sizeof("handle(const message<") - 1; i < lnr.size(); ++i)
                                 {
@@ -1572,7 +1574,7 @@ namespace ngl
         }
 
         std::cout << std::endl;
-        // 写入文件
+        // Writefile
         
         for (const auto& item1 : lhactorfilemap)
         {
@@ -1602,7 +1604,7 @@ namespace ngl
                 }
             }
 
-            // 读取文件
+            // Readfile
             {
                 std::string lcontent;
 
@@ -1771,13 +1773,13 @@ namespace ngl
                 std::string lend = R"(
 	}
 }// namespace ngl)";
-                // 整理
+                // Translated comment.
                 std::set<std::string> lpt;
                 std::map<std::string, std::set<std::string>> l2ci;
                 for (const auto& itme2 : item1.second.m_handle)
                 {
                    
-                    // 转发 mforward<pbnet::XXX>
+                    // Forwarding mforward<pbnet::XXX>
                     auto& lmessage = itme2.first;
                     if (lmessage.find("np_") != std::string::npos)
                     {
@@ -1807,7 +1809,7 @@ namespace ngl
                 }
 
                 lcontent = lbeg;
-                // role需要处理的
+                // Roleneed tohandle
                 bool lfirsttem = true;
                 for (const auto& item1 : lpt)
                 {
@@ -1822,7 +1824,7 @@ namespace ngl
                     }
                 }
                 lcontent += std::format("\t\t>();\n");
-                // 二次转发
+                // Secondaryforwarding
                 for (const auto& item1 : l2ci)
                 {
                     lcontent += "\n";
@@ -1847,7 +1849,7 @@ namespace ngl
                 lhfile.write(lcontent);
 
             }
-            // 写入.h文件
+            // Write.hfile
             if (lstream.str().empty() == false)
             {
                    std::string lactorhfile = std::format("../../public/cpp/actor/actor_logic/{0}/{0}.h", actorname);

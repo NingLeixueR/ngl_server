@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor base.
+
 #pragma once
 
 #include "actor/actor_logic/actor_client/actor_client.h"
@@ -35,18 +37,18 @@ namespace ngl
 		actor_manage& operator=(const actor_manage&) = delete;
 
 		using ptrnthread = std::shared_ptr<nthread>;
-		std::deque<ptrnthread>		m_workthreads;		// 工作线程
-		std::deque<ptrnthread>		m_workthreadscopy;	// 工作线程(只在初始化是拷贝一份，保证使用时不会析构)
-		bool						m_suspend = false;	// 是否挂起
-		std::deque<ptrnthread>		m_suspendthreads;	// 挂起的工作线程
-		std::jthread				m_thread;			// 管理线程
-		i32_threadsize				m_threadnum = -1;	// 工作线程数量
-		std::map<nguid, ptractor>	m_actorbyid;		// 索引actor
-		std::map<nguid, ptractor>	m_actorbroadcast;	// 支持广播的actor
-		std::deque<ptractor>		m_actorlist;		// 有任务的actor列表
-		std::set<i16_actortype>		m_actortype;		// 包含哪些actortype
-		std::map<nguid, std::function<void()>>			m_delactorfun;	// 删除actor后需要执行的操作// (延迟操作:删除的瞬间actor正是运行状态,等待其回归后进行删除)
-		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;	// 按类型索引actor
+		std::deque<ptrnthread>		m_workthreads;		// Thread
+		std::deque<ptrnthread>		m_workthreadscopy;	// Thread( initialize copy, )
+		bool						m_suspend = false;	// Whether
+		std::deque<ptrnthread>		m_suspendthreads;	// Thread
+		std::jthread				m_thread;			// Managethread
+		i32_threadsize				m_threadnum = -1;	// Thread
+		std::map<nguid, ptractor>	m_actorbyid;		// Indexactor
+		std::map<nguid, ptractor>	m_actorbroadcast;	// Supportbroadcast actor
+		std::deque<ptractor>		m_actorlist;		// Task actorlist
+		std::set<i16_actortype>		m_actortype;		// Pack whichactortype
+		std::map<nguid, std::function<void()>>			m_delactorfun;	// Deleteactorafterneed toexecute // (:delete actor state, after delete)
+		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;	// Typeindexactor
 
 		std::shared_mutex			m_mutex;
 		ngl::sem					m_sem;
@@ -54,17 +56,17 @@ namespace ngl
 		actor_manage();
 		~actor_manage();
 
-		// # nosafe_开头的函数代表"内部操作未加锁"，不允许类外调用
-		// # 根据guid获取actor实例
+		// # Nosafe_ function table" lock", do not allow
+		// # Guidgetactorinstance
 		ptractor& nosafe_get_actor(const nguid& aguid);
 
-		// # 根据guid获取actor实例,如果本结点没有找到该actor实例，则根据结点类型获取(actor_client/actor_server)的guid，用于转发
+		// # Guidgetactorinstance,if node tothis actorinstance, nodetypeget(actor_client/actor_server) guid, used toforwarding
 		ptractor& nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram);
 
-		// # 向actor实例插入任务
+		// # Toactorinstance task
 		void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram);
 
-		// # actor_manage 调度actor实例处理任务的线程实例
+		// # Actor_manage actorinstancehandletask threadinstance
 		void run(std::stop_token astop);
 	public:
 		static actor_manage& instance()
@@ -73,19 +75,19 @@ namespace ngl
 			return ltemp;
 		}
 
-		//# 获取
+		// # Get
 		nguid get_clientguid();
 
-		//# 初始化 设置工作线程数量
+		// # Initialize set thread
 		void init(i32_threadsize apthreadnum);
 
-		//# 获取本进程存在的actor类型
+		// # Get actortype
 		void get_type(std::vector<i16_actortype>& aactortype);
 
-		//# 根据node类型获取(actor_client/actor_server)的guid
+		// # Nodetypeget(actor_client/actor_server) guid
 		nguid nodetypebyguid();
 
-		// # 将消息T封装后传递给指定guid的actor
+		// # MessageT after tospecifiedguid actor
 		template <typename T, bool IS_SEND = true>
 		inline void push_task_id(const nguid& aguid, std::shared_ptr<T>& apram)
 		{
@@ -93,46 +95,46 @@ namespace ngl
 			push_task_id(aguid, lparm);
 		}
 
-		// # 添加actor
+		// # Addactor
 		bool add_actor(actor_base* apactor, const std::function<void()>& afun);
 
-		// # 添加actor
+		// # Addactor
 		bool add_actor(const ptractor& apactor, const std::function<void()>& afun);
 
-		// # 移除actor
+		// # Removeactor
 		void erase_actor(const nguid& aguid, const std::function<void()>& afun = nullptr);
 
-		// # 是否存在某个actor
+		// # Whether actor
 		bool is_have_actor(const nguid& aguid);
 
-		// # 工作线程将actor添加到m_actorlist
+		// # Thread actoraddtom_actorlist
 		void push(const ptractor& apactor, ptrnthread atorthread = nullptr);
 
-		// # 向actor中添加任务
+		// # Toactorinaddtask
 		void push_task_id(const nguid& aguid, handle_pram& apram);
 		void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram);
 
-		// # 向某个类型的actor中添加任务
+		// # To type actorinaddtask
 		void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
-		// # 向当前进程所有actor广播消息
+		// # Tocurrent allactorbroadcastmessage
 		void broadcast_task(handle_pram& apram);
 
-		// # 暂时挂起所有线程，已执行单步操作(热更数据表)
+		// # Allthread, execute ( datatable)
 		void statrt_suspend_thread();
 		void finish_suspend_thread();
 
-		// # 获取actor数量
+		// # Getactor
 		int32_t actor_count();
 
-		// # 获取actor stat 数据
+		// # Getactor stat data
 		void get_actor_stat(msg_actor_stat& adata);
 	};
 
-	// # 暂时挂起 actor_manage
-	// # 自动调用
-	// # 构造调用actor_manage.statrt_suspend_thread
-	// # 析构调用actor_manage.finish_suspend_thread
+	// # Actor_manage
+	// # Automatically
+	// # Actor_manage.statrt_suspend_thread
+	// # Actor_manage.finish_suspend_thread
 	class actor_suspend
 	{
 		actor_suspend(const actor_suspend&) = delete;
@@ -142,7 +144,7 @@ namespace ngl
 		~actor_suspend();
 	};
 
-	// # 进程单利actor 自动注册协议与自动添加actor_manage
+	// # Actor automaticallyregisterprotocolandautomaticallyaddactor_manage
 	template <typename T>
 	T& actor_instance<T>::instance()
 	{

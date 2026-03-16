@@ -4,6 +4,8 @@
 * Project: ngl_server
 * License: MIT
 */
+// File overview: Implements logic for tools.
+
 
 #include "tools/threadtools.h"
 #include "tools/time_wheel.h"

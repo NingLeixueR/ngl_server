@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for protocol.
+
 #pragma once
 
 #include "actor/protocol/nprotocol_template.h"
@@ -28,9 +30,9 @@ namespace ngl
 {
 	enum enscript
 	{
-		enscript_none = -1,		// 错误
+		enscript_none = -1,		// Translated comment.
 		enscript_lua = 0,		// lua
-		enscript_count,			// 支持的脚本数据
+		enscript_count,			// Support scriptdata
 	};
 
 	class tprotocol
@@ -45,12 +47,12 @@ namespace ngl
 			using funclientc = std::function<bool(int64_t, const char*, void*)>;
 
 			i32_protocolnum	m_protocol = 0;
-			int8_t			m_highvalue = 0; // 高权限值(0-127)
+			int8_t			m_highvalue = 0; // Translated comment.
 			std::string		m_name;
 
-			// # 为了给脚本提供根据结构名字发送数据给客户端
+			// # Toscript structure senddatatoclient
 			std::array<funclientc, enscript_count> m_toclient;
-			// # 为了给脚本提供根据结构名字发送数据给其他actor
+			// # Toscript structure senddatato actor
 			std::array<func, enscript_count> m_toactor;
 
 			template <enscript SCRIPT>
@@ -188,7 +190,7 @@ namespace ngl
 			return *lpinfo;
 		}
 
-		// # 根据协议获取协议号
+		// # Protocolgetprotocol id
 		template <typename T>
 		static i32_protocolnum protocol()
 		{
@@ -211,7 +213,7 @@ namespace ngl
 			return *linfo;
 		}
 
-		// # 根据协议号获取协议名称
+		// # Protocol idgetprotocolname
 		static const char* name(i32_protocolnum aprotocol)
 		{
 			info* linfo = get(aprotocol);
@@ -232,7 +234,7 @@ namespace ngl
 			return linfo->m_highvalue;
 		}
 
-		// # 获取当前进程已注册的所有协议
+		// # Getcurrent register allprotocol
 		static void allprotocol(std::map<i32_protocolnum, std::string>& amap)
 		{
 			for (auto& [_key, _value] : m_keyval)

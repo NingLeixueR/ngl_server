@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for tools.
+
 #pragma once
 
 #include "tools/pb_field.h"
@@ -31,7 +33,7 @@ namespace ngl
         const google::protobuf::Reflection* dst_refl = dst->GetReflection();
 
         if (amessage)
-        {// mid必须为epb_mid 且复制必须携带
+        {// Mid epb_mid
             const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(epb_mid);
             const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(epb_mid);
             if (src_field == nullptr || dst_field == nullptr)
@@ -70,7 +72,7 @@ namespace ngl
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
         , const std::map<i32_fieldnumber, epb_field>& fieldsrc
-        , bool amessage /* 是否是消息，消息强制复制mid */
+        , bool amessage /* Whether message, message mid */
     )
     {
         const google::protobuf::Descriptor* desc = src.GetDescriptor();
@@ -79,7 +81,7 @@ namespace ngl
         const google::protobuf::Reflection* dst_refl = dst->GetReflection();
 
         if (amessage)
-        {// mid必须为epb_mid 且复制必须携带
+        {// Mid epb_mid
             const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(epb_mid);
             const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(epb_mid);
             if (src_field == nullptr || dst_field == nullptr)
@@ -120,7 +122,7 @@ namespace ngl
         }
         if (field->is_repeated())
         {
-            // 处理 repeated 字段（重复字段）
+            // Handle repeated field( field)
             int size = src_refl->FieldSize(src, field);
             for (int i = 0; i < size; ++i)
             {
@@ -129,7 +131,7 @@ namespace ngl
         }
         else
         {
-            // 处理非 repeated 字段（单个值）
+            // Handle repeated field( )
             if (src_refl->HasField(src, field))
             {
                 copy_single_field(src, dst, src_refl, dst_refl, field);
@@ -137,7 +139,7 @@ namespace ngl
         }
     }
 
-    // 复制单个非 repeated 字段
+    // Copy a single non-repeated field
     void pb_field::copy_single_field(
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
@@ -182,16 +184,16 @@ namespace ngl
         {
             const google::protobuf::Message& src_msg = src_refl->GetMessage(src, field);
             google::protobuf::Message* dst_msg = dst_refl->MutableMessage(dst, field);
-            dst_msg->CopyFrom(src_msg); // 嵌套消息全量复制
+            dst_msg->CopyFrom(src_msg); // Message
             break;
         }
         default:
-            // 理论上不会走到这里，覆盖所有枚举值
+            // On tothis, all
             break;
         }
     }
 
-    // 复制 repeated 字段中的单个元素
+    // Repeated fieldin
     void pb_field::copy_repeated_field(const google::protobuf::Message& src,
         google::protobuf::Message* dst,
         const google::protobuf::Reflection* src_refl,
@@ -238,11 +240,11 @@ namespace ngl
             const google::protobuf::Message& src_msg =
                 src_refl->GetRepeatedMessage(src, field, index);
             google::protobuf::Message* dst_msg = dst_refl->AddMessage(dst, field);
-            dst_msg->CopyFrom(src_msg); // 嵌套消息全量复制
+            dst_msg->CopyFrom(src_msg); // Message
             break;
         }
         default:
-            // 覆盖所有枚举值，无默认行为
+            // All, default
             break;
         }
     }

@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for actor activity manage.
+
 
 #include "actor/actor_logic/actor_activity_manage/activity_drawcompliance.h"
 #include "actor/actor_logic/actor_activity_manage/actor_activity_manage.h"
@@ -87,7 +89,7 @@ namespace ngl
 		{
 			const int32_t ltask_index = static_cast<int32_t>(i);
 			auto& item = ltab->m_taskday[i];
-			// 开启任务
+			// Starttask
 			if (lday >= item.m_begday && lday < item.m_endday)
 			{
 				auto itoropen = ltask.mopen().find(ltask_index);
@@ -101,7 +103,7 @@ namespace ngl
 					actor::send_actor(aroleid, nguid::make(), pro);
 				}
 			}
-			// 关闭任务
+			// Closetask
 			if (lday >= item.m_endday)
 			{
 				auto itoropen = ltask.mopen().find(ltask_index);
@@ -142,7 +144,7 @@ namespace ngl
 			return;
 		}
 
-		// 活动期间产生等级变化
+		// Activityduringgeneratelevelchange
 		pbdb::db_brief* lpbrief = tdb_brief::nsp_cwrite<actor_activity_manage>::instance(actor_activity_manage::actorid()).get(aroleid);
 		if (lpbrief != nullptr)
 		{
@@ -173,7 +175,7 @@ namespace ngl
 		{
 			return;
 		}
-		// 活动期间产生等级变化
+		// Activityduringgeneratelevelchange
 		pbdb::db_brief* lpbrief = tdb_brief::nsp_cwrite<actor_activity_manage>::instance(actor_activity_manage::actorid()).get(aroleid);
 		if (lpbrief != nullptr)
 		{

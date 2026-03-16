@@ -1,17 +1,19 @@
+-- File overview: Defines Lua script logic for ngldata.
+
 local cjson = require("cjson")
-local logger = require("nlog").get_instance("./log/lua/ngldata"..os.date("%Y_%m_%d__%H_%M_%S")..".json") -- 获取日志实例
+local logger = require("nlog").get_instance("./log/lua/ngldata"..os.date("%Y_%m_%d__%H_%M_%S")..".json") -- Getloginstance
 
 local ngldata = {}
 
--- 私有构造函数
+-- Private function
 local function new()
     local instance = 
     {
-        data = {},              -- 数据
-        edit = {},              -- 数据是否允许被编辑
-        change = {},            -- 哪些数据被改变
-        del = {},               -- 哪些数据被删除
-        data_source = {},       -- 数据来源：db,csv,dbnsp  如果数据来源dbnsp,修改数据后将自动调用auto_save方法
+        data = {},              -- Data
+        edit = {},              -- Datawhether
+        change = {},            -- Whichdata
+        del = {},               -- Whichdata delete
+        data_source = {},       -- Datasource: db,csv,dbnsp ifdatasourcedbnsp, dataafter automatically auto_save
 
 
         sysdata = {},
@@ -21,7 +23,7 @@ local function new()
         __newindex = function()
             error("Cannot modify readonly table", 2)
         end,
-        __metatable = false  -- 防止获取或修改元表
+        __metatable = false  -- Preventgetor table
     }
 
     function instance:print_table(t, indent, visited)
@@ -151,7 +153,7 @@ local function new()
         return nil
     end
 
-    -- parm iscpp 是否cpp调用
+    -- Parm iscpp whethercpp
     function instance:data_del(aname, adataid, iscpp)
         logger:write("instance:data_del("..aname..","..adataid)
         if self.data[aname] and self.data[aname][adataid] then
@@ -167,7 +169,7 @@ local function new()
         end
     end
 
-    -- 拉取所有变化数据
+    -- Fetchallchangedata
     function instance:data_checkout(aname)
         logger:write("instance:check_outdata("..aname..")")
         if self.edit[aname] == false then
@@ -195,7 +197,7 @@ local function new()
         return false, nil
     end
 
-	-- 拉起指定变化数据
+	-- Specifiedchangedata
     function instance:data_checkoutbyid(aname, adataid)
         logger:write("instance:data_checkoutbyid("..aname..", "..adataid..")")
         if self.edit[aname] == false then
@@ -265,7 +267,7 @@ local function new()
     return instance
 end
 
--- 静态方法：获取单例实例
+-- Static method: getsingletoninstance
 function ngldata.getInstance()
     if not ngldata._instance then
         ngldata._instance = new()

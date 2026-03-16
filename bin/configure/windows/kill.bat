@@ -1,3 +1,5 @@
+REM File overview: Automates the kill workflow on Windows.
+
 taskkill /F /im node_actor.exe
 taskkill /F /im node_game.exe
 taskkill /F /im node_login.exe

@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for logic.
+
 #pragma once
 
 #include "actor/auto/nactor_auto.h"
@@ -37,7 +39,7 @@ namespace ngl
 
 		void change_event(eevents_logic type, int abegvalue, int32_t anowvalue);
 
-		// # 等级
+		// # Level
 		int32_t lv();
 		void change_lv(int avalues);
 
@@ -45,19 +47,19 @@ namespace ngl
 		int32_t vip();
 		void change_vip(int avalues);
 
-		// # 名字
+		// Translated comment.
 		const char* name();
 		void rename(const char* aname);
 
-		// # 金币
+		// Translated comment.
 		int32_t gold();
 		void change_gold(int avalues);
 
-		// # 银币
+		// Translated comment.
 		int32_t silver();
 		void change_silver(int avalues);
 
-		// # 禁言
+		// Translated comment.
 		int32_t notalkutc();
 		void change_notalkutc(int avalues);
 		bool bantalk();

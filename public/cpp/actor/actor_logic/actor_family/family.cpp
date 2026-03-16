@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for actor family.
+
 
 #include "actor/actor_logic/actor_family/actor_family.h"
 #include "actor/actor_logic/actor_family/family.h"
@@ -66,7 +68,7 @@ namespace ngl
 		{
 			return 1;
 		}
-		// 加入申请加入列表
+		// Joinapplyjoinlist
 		std::set<int64_t>& lset = m_applylist[aroleid];
 		if (lset.contains(afamilyid))
 		{
@@ -343,7 +345,7 @@ namespace ngl
 
 		lpfamilyer->set_mlastsignutc((int32_t)localtime::gettime());
 
-		// 给军团增加经验
+		// Toguild
 		MODIFIED_RETURN_CONST(lpfamilyconst, *lpmodifiedfamily, 5);
 		int32_t* lpexp = ttab_familylv::instance().failylvexp(lpfamilyconst->mlv());
 		if (lpexp == nullptr)
@@ -359,7 +361,7 @@ namespace ngl
 		}
 		lpfamily->set_mexp(lexp);
 
-		// 发送奖励
+		// Sendreward
 		if (!actor_family::instance().get_drop().use(ttab_specialid::instance().m_familsigndrop, 1, aroleid, "family sign"))
 		{
 			return 6;

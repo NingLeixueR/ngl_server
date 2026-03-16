@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for protocol.
+
 #pragma once
 
 #include "actor/actor_base/actor_manage.h"
@@ -46,11 +48,11 @@ namespace ngl
 	private:
 		struct pfun
 		{
-			protocol::fun_pack								m_packfun = nullptr;		// 解包回调
-			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;					// actor类型对应的逻辑回调
+			protocol::fun_pack								m_packfun = nullptr;		// Packcallback
+			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;					// Actortypecorresponding callback
 		};
-		static std::map<i32_protocolnum, protocol::pfun>	m_protocolfun;	// 协议号关联pfun
-		static std::shared_mutex							m_mutex;		// 锁
+		static std::map<i32_protocolnum, protocol::pfun>	m_protocolfun;	// Protocol id pfun
+		static std::shared_mutex							m_mutex;		// Lock
 
 	public:
 		static pfun* find(i32_protocolnum aprotocol);
@@ -59,15 +61,15 @@ namespace ngl
 
 		static void print(const char* amsg, i32_protocolnum aprotocol);
 
-		// # 注册网络协议
+		// # Register protocol
 		static void registers(
 			int aprotocol, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname
 		);
 
-		// # 解析网络数据包[net pack],交付给上层逻辑 
+		// # Datapack[net pack], toon
 		static void push(std::shared_ptr<pack>& apack);
 
-		// # ACTOR间通信 
+		// # ACTOR
 		template <typename T>
 		static void registry_actor(ENUM_ACTOR atype, const char* aname)
 		{
@@ -101,7 +103,7 @@ namespace ngl
 				}
 
 				if (lactorguid.is_actortypenone() || lactorguid.is_moreactor(atype))
-				{// actor type 是否无效  || //发给同类型的所有actor
+				{// Actor type whetherinvalid || // to type allactor
 					lmanages.push_task_type(atype, lpram);
 					return true;
 				}
@@ -110,7 +112,7 @@ namespace ngl
 					if (lactorguid.type() == atype)
 					{
 						if (lactorguid.is_actoridnone())
-						{// actor id 是否无效
+						{// Actor id whetherinvalid
 							lmanages.push_task_type(atype, lpram);
 						}							
 						else
@@ -124,7 +126,7 @@ namespace ngl
 			registers(tprotocol::protocol<T>(), atype, lpackfun, lrunfun, aname);
 		}
 
-		// # gateway注册的转发c2g(由[client]>>[gateway]>>[服务器]) 
+		// # Gatewayregister forwardingc2g( [client]>>[gateway]>>[server])
 		template <typename T>
 		static void registry_c2g(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
@@ -154,7 +156,7 @@ namespace ngl
 			registers(aprotocolnum, atype, lpackfun, lrunfun, aname);
 		}
 
-		// # gateway注册的转发g2c(由[服务器]->[客户端]) 
+		// # Gatewayregister forwardingg2c( [server]->[client])
 		template <typename T>
 		static void registry_g2c(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
@@ -184,7 +186,7 @@ namespace ngl
 			registers(aprotocolnum, atype, lpackfun, lrunfun, aname);
 		}
 
-		// # 群发消息(解析剥离np_mass_actor<T> 将T投递到对应actor)
+		// # Message( np_mass_actor<T> T tocorrespondingactor)
 		template <typename T>
 		static void registry_mass(int32_t aprotocolnum, const char* aname)
 		{
@@ -216,7 +218,7 @@ namespace ngl
 			registers(aprotocolnum, (ENUM_ACTOR)nguid::none_type(), lpackfun, lrunfun, aname);
 		}
 
-		// # 处理telnet命令
+		// # Handletelnet
 		static void telnet_cmd(const std::shared_ptr<pack>& apack);
 	};
 }// namespace ngl

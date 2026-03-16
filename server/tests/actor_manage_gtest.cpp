@@ -1,3 +1,5 @@
+// File overview: Implements GoogleTest coverage for actor manage.
+
 #include <gtest/gtest.h>
 
 #include <algorithm>

@@ -1,3 +1,5 @@
+// File overview: Declares interfaces for core.
+
 #ifndef _IDL_H_
 #define _IDL_H_
 
@@ -21,13 +23,13 @@ using std::set;
 
 struct Data
 {
-	std::string m_modifier;			/* 修饰符 */
-	std::string m_type;				/* 类型 **/
-	std::string m_values_name;		/* 类型名称 **/
-	std::string m_values_init;		/* 类型的初始值 **/
-	std::string panduan;			/* 判断 **/
-	std::string zhushi;				/* 注释 **/
-	std::string m_typestr;			/* 数据库需要 给string添加长度 **/
+	std::string m_modifier;			/* Translated comment. */
+	std::string m_type;				/* Type * */
+	std::string m_values_name;		/* Typename * */
+	std::string m_values_init;		/* Type * */
+	std::string panduan;			/* Check * */
+	std::string zhushi;				/* Translated comment. */
+	std::string m_typestr;			/* Databaseneed to tostringadd * */
 	int m_index = 0;
 	std::string m_load;
 
@@ -39,22 +41,22 @@ struct Data
 
 struct EnumVec
 {
-	std::string name;				/* 枚举名称 **/
-	std::vector<Data> dataVec;		/* 枚举数据 **/
+	std::string name;				/* Name * */
+	std::vector<Data> dataVec;		/* Data * */
 };
 
 struct StructVec
 {
-	std::string name;					/* 类名称 **/
+	std::string name;					/* Name * */
 	std::string derived1;
 	std::string derived2;
-	std::vector<Data> dataVec;			/* 类的数据 **/
+	std::vector<Data> dataVec;			/* Data * */
 };
 
 struct DefVec
 {
-	std::string name;					/* define称 **/
-	std::vector<Data> dataVec;			/* 类的数据 **/
+	std::string name;					/* Define * */
+	std::vector<Data> dataVec;			/* Data * */
 };
 
 
@@ -224,7 +226,7 @@ public:
 		{
 			return;
 		}
-		// 生成csv表头
+		// Csvtable
 		std::stringstream lstreamcsv;
 		for (std::size_t i = 0; i < astruct.dataVec.size(); ++i)
 		{
@@ -245,7 +247,7 @@ public:
 
 		ngl::writefile lfilecsv("./idlfile/"+ astruct.name + ".csv");
 
-		//## 转换为utf8
+		// ## Convert utf8
 		std::string lstr;
 		ngl::tools::to_utf8(lstreamcsv.str(), lstr);
 
@@ -407,7 +409,7 @@ public:
 
 	void analysis(std::string apth)
 	{
-		//// ----- 去掉文件后缀
+		// // ----- Fileafter
 		bool lsssbool = true;
 		std::string lname;
 		std::ranges::for_each(apth, [&lsssbool, &lname](char item)
@@ -430,7 +432,7 @@ public:
 			});
 		m_data[lname].m_fname = lname;
 
-		//// ---- 读取文件
+		// // ---- Readfile
 		ngl::readfile lfile(apth);
 		string ldata;
 		lfile.read(ldata);
@@ -475,7 +477,7 @@ public:
 		ngl::tools::sregex(pattern, ldata, [aname,this](std::string& adata)
 		{
 			EnumVec lenumString;
-		//获取结构名称
+		// Getstructurename
 		static string lpattern("enum[ \n\r\t]+([^ \n\r\t]+)");
 		ngl::tools::smatch(lpattern, adata, [&lenumString](std::smatch& awhat)
 			{
@@ -484,16 +486,16 @@ public:
 		static string lpattern2;
 		if (lpattern2.empty())
 		{
-			lpattern2 += "[ \n\r\t]*";//空白
+			lpattern2 += "[ \n\r\t]*";// Translated comment.
 			lpattern2 += "([^ \n\r\t{}]*)";//type
-			lpattern2 += "[ \t]*";//空白
+			lpattern2 += "[ \t]*";// Translated comment.
 			lpattern2 += "[=]*";
-			lpattern2 += "[ \t]*";//空白
+			lpattern2 += "[ \t]*";// Translated comment.
 			lpattern2 += "([^ \t,{}]*)";//values
-			lpattern2 += "[ \t]*";//空白
+			lpattern2 += "[ \t]*";// Translated comment.
 			lpattern2 += "[,]";
-			lpattern2 += "[ \t]*";//空白
-			lpattern2 += "([//]*[^\r\n]*)";//注释
+			lpattern2 += "[ \t]*";// Translated comment.
+			lpattern2 += "([//]*[^\r\n]*)";// Translated comment.
 		}
 		ngl::tools::smatch(lpattern2, adata, [&lenumString](std::smatch& awhat)
 			{
@@ -515,7 +517,7 @@ public:
 		ngl::tools::sregex(pattern, ldata, [aname,this](std::string& adata)
 		{
 			StructVec lstructString;
-			//获取结构名称
+			// Getstructurename
 			static string lpattern("struct[ \t]+([^ \t\n\r]+)");
 			ngl::tools::smatch(lpattern, adata, [&lstructString](std::smatch& awhat)
 			{
@@ -555,42 +557,42 @@ public:
 			{
 				string lkb = "[ \t]*";
 				string lhh = "[ \t\r\n]*";
-				//  required关键字
-				//	顾名思义，就是必须的意思，数据发送方和接收方都必须处理这个字段，不然还怎么通讯呢
-				//	optional关键字
-				//  字面意思是可选的意思
+				// Required
+				// ,, Datasend handlethis field,
+				// Optional
+				// Translated comment.
 
 				lpattern2
 					+= lkb + lhh + lkb
 					//+ "(if[\(][^\(\)]*[\)])*"
 					+ "(if[(][^)]*[)])*"
 					+= lkb + lhh + lkb
-					+ "(required|optional)*"	//修饰符
+					+ "(required|optional)*"	// Translated comment.
 					+ lkb
-					+ "([^ <>\r\n};()]+)" //类型
+					+ "([^ <>\r\n};()]+)" // Type
 					+ "[ ]"
-					+ "([^ \t<>\r\n};]+)" //类型名
+					+ "([^ \t<>\r\n};]+)" // Type
 					+ lkb
 					+ "([ ]+[=][ ][^;]*)*"
 					+ "[;]"
 					+ lkb
-					+ "([//]*[^\r\n]*)" //注释
+					+ "([//]*[^\r\n]*)" // Translated comment.
 					+ "[\r\n]*[\r\n]*";
 
 				lpattern3
 					+= lkb + lhh + lkb
 					+ "(if[(][^)]*[)])*"
 					+ lkb + lhh + lkb
-					+ "(required|optional)*"	//修饰符
+					+ "(required|optional)*"	// Translated comment.
 					+ lkb
-					+ "(derived_class[<][^>]+[>]|map[<][^>]+[>]|vector[<][^>]+[>]|list[<][^>]+[>]|set[<][^>]+[>]|string[<][^>]+[>]|int[<][^>]+[>])" //类型
+					+ "(derived_class[<][^>]+[>]|map[<][^>]+[>]|vector[<][^>]+[>]|list[<][^>]+[>]|set[<][^>]+[>]|string[<][^>]+[>]|int[<][^>]+[>])" // Type
 					+ "[ ]"
-					+ "([^ \t<>\r\n};]+)" //类型名
+					+ "([^ \t<>\r\n};]+)" // Type
 					+ lkb
 					+ "([=][^;]+)*"
 					+ "[;]"
 					+ lkb
-					+ "([//]*[^\r\n]*)" //注释
+					+ "([//]*[^\r\n]*)" // Translated comment.
 					+ "[\r\n]*[\r\n]*";
 			}
 

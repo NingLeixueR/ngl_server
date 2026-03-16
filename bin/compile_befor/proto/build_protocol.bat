@@ -1,3 +1,5 @@
+REM File overview: Automates the build protocol workflow on Windows.
+
 mkdir pro
 protoc.exe --version
 protoc.exe --experimental_allow_proto3_optional  --cpp_out=./pro net.proto

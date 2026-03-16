@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for tab.
+
 #pragma once
 
 #include "actor/protocol/nprotocol.h"
@@ -38,14 +40,14 @@ namespace ngl
 		ttab_mergearea(const ttab_mergearea&) = delete;
 		ttab_mergearea& operator=(const ttab_mergearea&) = delete;
 
-		// key: 区服id value: 合并到哪个区服(最终合并的区服)
+		// Key: areaid value: andto area( and area)
 		static constexpr std::size_t m_merge_slot_count = 1u << 16;
 		static constexpr std::size_t merge_slot(i16_area aarea) noexcept
 		{
 			return static_cast<std::size_t>(static_cast<std::uint16_t>(aarea));
 		}
 		std::array<i16_area, m_merge_slot_count> m_merge1;
-		// key: 合服区服id value: 哪些区服在此区服
+		// Key: areaid value: whicharea this area
 		std::map<i16_area, std::set<i16_area>> m_merge2;
 
 		void reload()final
@@ -148,7 +150,7 @@ namespace ngl
 		// # std::map<int, tab_mergearea>& tabs()
 		// # tab_mergearea* tab(int aid)
 
-		// 哪些区服在此区服
+		// Whicharea this area
 		std::set<i16_area>* mergelist(i16_area aarea)
 		{
 			const auto it = m_merge2.find(aarea);

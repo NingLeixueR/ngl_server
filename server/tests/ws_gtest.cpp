@@ -1,3 +1,5 @@
+// File overview: Implements GoogleTest coverage for ws.
+
 #include <gtest/gtest.h>
 
 #include <openssl/buffer.h>

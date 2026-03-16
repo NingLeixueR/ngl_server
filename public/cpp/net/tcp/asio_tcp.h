@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for tcp.
+
 #pragma once
 
 #include "tools/serialize/pack.h"
@@ -35,43 +37,43 @@ namespace ngl
 		using map_ipport = std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>;
 		using map_close = std::unordered_map<i32_sessionid, std::function<void()>>;
 
-		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4	= nullptr;		// 用于支持ipv4
-		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6	= nullptr;		// 用于支持ipv6
-		i16_port							m_port			= 0;			// 监听的端口
-		tcp_callback						m_fun			= nullptr;		// 接收数据的回调
-		tcp_closecallback					m_closefun		= nullptr;		// 关闭连接的回调
-		tcp_sendfinishcallback				m_sendfinishfun = nullptr;		// 发送失败的回调
-		i32_sessionid						m_sessionid		= 0;			// 自增的session id	
-		std::shared_mutex					m_maplock;						// 用于锁定"m_data,m_sessionid"
-		serviceio_info						m_service_ios;					// asio支持
-		std::shared_mutex					m_ipportlock;					// 用于锁定"m_ipport"
-		map_service_tcp						m_data;							// key:session id value:连接数据
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4	= nullptr;		// Used tosupportipv4
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6	= nullptr;		// Used tosupportipv6
+		i16_port							m_port			= 0;			// Port
+		tcp_callback						m_fun			= nullptr;		// Data callback
+		tcp_closecallback					m_closefun		= nullptr;		// Closeconnection callback
+		tcp_sendfinishcallback				m_sendfinishfun = nullptr;		// Send callback
+		i32_sessionid						m_sessionid		= 0;			// Session id
+		std::shared_mutex					m_maplock;						// Used tolock "m_data,m_sessionid"
+		serviceio_info						m_service_ios;					// Asiosupport
+		std::shared_mutex					m_ipportlock;					// Used tolock "m_ipport"
+		map_service_tcp						m_data;							// Key:session id value:connectiondata
 		map_ipport							m_ipport;						// key:session id value:ipport
-		map_close							m_close;						// 关闭连接回调
+		map_close							m_close;						// Closeconnectioncallback
 	public:
 		enum
 		{
 			etcp_buffmaxsize = 20480,	// tcp buff byte
-			etcp_connect_interval = 1,	// 连接间隔,单位秒
+			etcp_connect_interval = 1,	// Connection,
 		};
 
 		friend class service_tcp;
 
-		// # 服务器 server(会监听端口,建立连接)
+		// # Server server( port, connection)
 		asio_tcp(
-			i16_port aport										// 监听端口
-			, i32_threadsize athread							// 线程数
-			, const tcp_callback& acallfun						// 回调
-			, const tcp_closecallback& aclosefun				// 关闭回调
-			, const tcp_sendfinishcallback& asendfinishfun		// 发送失败的回调
+			i16_port aport										// Port
+			, i32_threadsize athread							// Thread
+			, const tcp_callback& acallfun						// Callback
+			, const tcp_closecallback& aclosefun				// Closecallback
+			, const tcp_sendfinishcallback& asendfinishfun		// Send callback
 		);
 
-		// # 客户端 client(本地不会监听端口)
+		// # Client client(local port)
 		asio_tcp(
-			i32_threadsize athread								// 线程数
-			, const tcp_callback& acallfun						// 回调
-			, const tcp_closecallback& aclosefun				// 关闭回调
-			, const tcp_sendfinishcallback& asendfinishfun		//发送失败的回调
+			i32_threadsize athread								// Thread
+			, const tcp_callback& acallfun						// Callback
+			, const tcp_closecallback& aclosefun				// Closecallback
+			, const tcp_sendfinishcallback& asendfinishfun		// Send callback
 		);
 
 		~asio_tcp();
@@ -98,24 +100,24 @@ namespace ngl
 
 		void start(const std::shared_ptr<service_tcp>& aservice);
 	public:
-		// # 发起连接
+		// # Connection
 		service_tcp* connect(const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount = 5);
 
-		// # 发送pack
+		// # Sendpack
 		bool send(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
 		bool send(i32_sessionid asessionid, std::shared_ptr<void>& apack);
 
-		// # 关闭连接(会通知逻辑层)
+		// # Closeconnection( notify )
 		void close(i32_sessionid sessionid);
 		void close(service_tcp* atcp);
 
-		// # 关闭连接(不会通知逻辑层)
+		// # Closeconnection( notify )
 		void close_net(i32_sessionid sessionid);
 
-		// # 根据session获取ip与端口
+		// # Sessiongetipandport
 		bool get_ipport(i32_sessionid assionid, std::pair<str_ip, i16_port>& apair);
 
-		// # 设置连接关闭回调
+		// # Setconnectionclosecallback
 		void set_close(i32_sessionid asession, const std::function<void()>& afun);
 	};	
 }// namespace ngl

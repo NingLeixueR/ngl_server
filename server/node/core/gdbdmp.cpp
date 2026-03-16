@@ -1,13 +1,15 @@
+// File overview: Implements logic for core.
+
 #ifndef WIN32
 #include "dumper.h"
 
 /**
-* 平台相关
+* Related
 */
 #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
-#define SYSTEM_WIN // win 平台
+#define SYSTEM_WIN // Win
 #else
-#define SYSTEM_LINUX // linux 平台
+#define SYSTEM_LINUX // Linux
 #endif
 
 #ifdef SYSTEM_WIN
@@ -30,35 +32,35 @@
 #include <winsock2.h>
 #endif
 
-// 单字节
+// Translated comment.
 typedef char char_x;
 typedef char byte_x;
 typedef unsigned char ubyte_x;
 
-// 单字节 - 布尔型
+// Translated comment.
 typedef bool bool_x;
 
-// 两字节
+// Translated comment.
 typedef short short_x;
 typedef unsigned short ushort_x;
 
-// 四字节
+// Translated comment.
 typedef int int_x;
 typedef unsigned int uint_x;
 
-// 八字节
+// Translated comment.
 typedef long long long_x;
 typedef unsigned long long ulong_x;
 
-// 浮点
+// Translated comment.
 typedef float float_x;
 typedef double double_x;
 
-// 为"BL"统一风格
+// "BL"
 typedef size_t size_x;
 typedef long_x time_x;
 
-// socket类型
+// Sockettype
 #ifdef SYSTEM_WIN
 typedef SOCKET socket_x;
 #else
@@ -126,7 +128,7 @@ void sighandler(int sig)
 	signal(SIGFPE, SIG_DFL);
 	signal(SIGPIPE, SIG_DFL);
 
-	// 调用上层处理器
+	// On handle
 	auto dumperHandler = Dumper::getDumperHandler();
 	if (dumperHandler != nullptr) {
 		dumperHandler();

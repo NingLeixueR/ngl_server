@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor client.
+
 #pragma once
 
 #include "actor/actor_base/naddress.h"
@@ -21,12 +23,12 @@
 namespace ngl
 {
 	//####################################################################
-	//# 每个进程都需要有一个actor_client或actor_server
-	//# 通常一个区服只有一个进程中包含actor_server 
-	//# 其他所有进程都必须包含actor_client
-	//# actor_client 用来纪录保存nguid与服务器id的对应关系，
-	//# actor_client相当于actor框架的路由器，为actor提供路由功能
-	//# 而actor_server负责分发各个actor_client中本地的nguid对应关系
+	// # Need to actor_clientoractor_server
+	// # Area inpack actor_server
+	// # All pack actor_client
+	// # Actor_client used to savenguidandserverid corresponding,
+	// # Actor_client actor, actor
+	// # Actor_serverresponsible for actor_clientinlocal nguidcorresponding
 	//###################################################################
 	class actor_client : 
 		public actor
@@ -35,8 +37,8 @@ namespace ngl
 		actor_client& operator=(const actor_client&) = delete;
 
 		using funclist = std::list<std::function<void()>>; 
-		std::unordered_map<i32_serverid, funclist>	m_connectfun;		// 连接[指定服务器]成功后执行
-		std::set<i32_serverid>				m_connectserverid;		// 已连接的服务器id
+		std::unordered_map<i32_serverid, funclist>	m_connectfun;		// Connection[specifiedserver]successfulafterexecute
+		std::set<i32_serverid>				m_connectserverid;		// Connection serverid
 
 		actor_client();
 		virtual ~actor_client() = default;
@@ -47,52 +49,52 @@ namespace ngl
 			return actor_instance<actor_client>::instance(); 
 		}
 		
-		//# 注册需要处理的消息
+		// # Registerneed tohandle message
 		static void nregister();
 	private:
-		//# 主动向actor_server注册actor_client
+		// # Toactor_serverregisteractor_client
 		void actor_server_register(i32_serverid aserverid);
 
-		//# 设置连接后时间 例如actor_dbclient会注册连接后事件（加载数据）
+		// # Setconnectionaftertime for exampleactor_dbclient registerconnectionafterevent(loaddata)
 		void set_connect_fnish(i32_serverid aserverid);
 
-		//# 连接成功后调用
+		// # Connectionsuccessfulafter
 		void connect_fnish();
 
-		//# 相对于本进程是否需要主动连接
+		// # Whetherneed to connection
 		bool isactiv_connect(i32_serverid aserverid);
 
-		//# 主动连接
+		// # Connection
 		void activ_connect(i32_serverid aserverid);
 	public:
-		//# 向actor_server注册结点
+		// # Toactor_serverregisternode
 		void actor_server_register();
 
-		//# actor_client的actorid
+		// # Actor_client actorid
 		static i64_actorid actorid();
 
-		//# net连接actor server成功
+		// # Netconnectionactor serversuccessful
 		bool handle(const message<np_connect_actor_server>& adata);
 
-		//# 注册结点
+		// # Registernode
 		bool handle(const message<np_actor_server_register>& adata);
 
-		//# actor_server回复注册结点
+		// # Actor_serverresponseregisternode
 		bool handle(const message<np_actornode_register_response>& adata);
 
-		//# actor客户端间相互连接
+		// # Actorclient connection
 		bool handle(const message<np_actorclient_node_connect>& adata);
 
-		//# 服务器向actor客户端同步结点信息
+		// # Servertoactorclientsynchronizenodeinfo
 		bool handle(const message<np_actornode_update>& adata);
 
-		//# 向actor客户端同步结点信息(群发)
+		// # Toactorclientsynchronizenodeinfo( )
 		bool handle(const message<np_actornode_update_mass>& adata);
 
-		//# 连接成功后执行任务
+		// # Connectionsuccessfulafterexecutetask
 		bool handle(const message<np_actornode_connect_task>& adata);
 
-		//# 同步actor_role对应的gateway
+		// # Synchronizeactor_rolecorresponding gateway
 		bool handle(const message<np_actor_gatewayid_updata>& adata);
 	};
 }//namespace ngl

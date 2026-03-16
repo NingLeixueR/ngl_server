@@ -1,3 +1,5 @@
+// File overview: Implements GoogleTest coverage for net.
+
 #include <gtest/gtest.h>
 
 #include <array>

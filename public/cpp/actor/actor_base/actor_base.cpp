@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for actor base.
+
 #include "actor/actor_logic/actor_log/actor_log.h"
 #include "actor/actor_base/actor_manage.h"
 #include "actor/actor_base/ndb_modular.h"
@@ -385,7 +387,7 @@ namespace ngl
 	bool actor_base::kcp_connect(i16_port auport, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const
 	{
 		if (nconfig.nodetype() != ROBOT)
-		{//不允许服务器主动进行kcp连接
+		{// Do not allowserver kcpconnection
 			return false;
 		}
 		auto lpukcp = nkcp::instance().kcp(auport);

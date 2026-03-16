@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor base.
+
 #pragma once
 
 #include "actor/actor_base/nactortype.h"
@@ -26,53 +28,53 @@
 
 namespace ngl
 {
-	// # actor对应的枚举类型
+	// # Actorcorresponding type
 	enum ENUM_ACTOR
 	{
 		ACTOR_NONE								= -1,
-		//# 非单例
+		// # Singleton
 		ACTOR_ROLE								= 1,
-		ACTOR_ROBOT								= 2, // 机器人
-		ACTOR_LOG								= 3, // 日志
-		ACTOR_EXAMPLE_GUESS_NUMBER				= 4, // 例子小游戏:猜数字-数字炸弹
+		ACTOR_ROBOT								= 2, // Translated comment.
+		ACTOR_LOG								= 3, // Log
+		ACTOR_EXAMPLE_GUESS_NUMBER				= 4, // Translated comment.
 
-		//# 单例(包括全局单例，和单进程单例) 
+		// # Singleton(pack singleton, singleton)
 		ACTOR_SIGNLE_START						= 20,
-		ACTOR_SERVER							= ACTOR_SIGNLE_START, // 单例 actor address server  管理分发地址的中心
-		ACTOR_CLIENT							= 21, // 单例 actor address client 
-		ACTOR_LOGIN								= 22, // 登陆
-		ACTOR_GATEWAY							= 23, // 网关
-		ACTOR_GATEWAY_C2G						= 24, // 网关 [Client]->[Game]
-		ACTOR_GATEWAY_G2C						= 25, // 网关 [Game]->[Client]
-		ACTOR_CREATE							= 26, // 在指定[Server]上创建[Actor]
-		ACTOR_ROLE_MANAGE						= 27, // 负责创建actor_role
+		ACTOR_SERVER							= ACTOR_SIGNLE_START, // Singleton actor address server manage address in
+		ACTOR_CLIENT							= 21, // Singleton actor address client
+		ACTOR_LOGIN								= 22, // Translated comment.
+		ACTOR_GATEWAY							= 23, // Gateway
+		ACTOR_GATEWAY_C2G						= 24, // Gateway [Client]->[Game]
+		ACTOR_GATEWAY_G2C						= 25, // Gateway [Game]->[Client]
+		ACTOR_CREATE							= 26, // Specified[Server]oncreate[Actor]
+		ACTOR_ROLE_MANAGE						= 27, // Responsible forcreateactor_role
 		ACTOR_KCP								= 28, // kcp
-		ACTOR_ROBOT_MANAGE						= 29, // 管理robot
-		ACTOR_CSVSERVER							= 30, // 热更csv server
-		ACTOR_CSVCLIENT							= 31, // 热更csv client
-		ACTOR_NOTICE							= 32, // 公告
-		ACTOR_GM								= 33, // GM			(world 进程 )
-		ACTOR_GMCLIENT							= 34, // GM CLIENT	(除了world进程每个进程都应该有此进程)
-		ACTOR_MAIL								= 35, // 邮件
-		ACTOR_CHAT								= 36, // 聊天
-		ACTOR_RANKLIST							= 37, // 排行榜
-		ACTOR_ACTIVITY_MANAGE					= 38, // 活动管理
-		ACTOR_BRIEF								= 39, // brief简要信息
-		ACTOR_KEYVALUE							= 40, // 公共key/value
-		ACTOR_FAMILY							= 41, // 军团家族
-		ACTOR_FRIENDS							= 42, // 好友
-		ACTOR_EVENTS							= 43, // 事件
-		ACTOR_EVENTS_MAX_COUNT					= ACTOR_EVENTS + 10, // 事件预留10个
-		ACTOR_EXAMPLE_MATCH						= 54, // 例子小游戏:匹配
-		ACTOR_EXAMPLE_MANAGE					= 55, // 创建管理例子小游戏
-		ACTOR_TESTLUA							= 56, // 测试lua
-		ACTOR_TESTLUA2							= 57, // 测试lua2
-		ACTOR_DB								= 1000, // 必须是最后一个
+		ACTOR_ROBOT_MANAGE						= 29, // Managerobot
+		ACTOR_CSVSERVER							= 30, // csv server
+		ACTOR_CSVCLIENT							= 31, // csv client
+		ACTOR_NOTICE							= 32, // Notice
+		ACTOR_GM								= 33, // GM (world )
+		ACTOR_GMCLIENT							= 34, // GM CLIENT ( world this this )
+		ACTOR_MAIL								= 35, // Mail
+		ACTOR_CHAT								= 36, // Chat
+		ACTOR_RANKLIST							= 37, // Rank list
+		ACTOR_ACTIVITY_MANAGE					= 38, // Activitymanage
+		ACTOR_BRIEF								= 39, // Briefsummaryinfo
+		ACTOR_KEYVALUE							= 40, // Sharedkey/value
+		ACTOR_FAMILY							= 41, // Guild
+		ACTOR_FRIENDS							= 42, // Friends
+		ACTOR_EVENTS							= 43, // Event
+		ACTOR_EVENTS_MAX_COUNT					= ACTOR_EVENTS + 10, // Event 10
+		ACTOR_EXAMPLE_MATCH						= 54, // Translated comment.
+		ACTOR_EXAMPLE_MANAGE					= 55, // Createmanage
+		ACTOR_TESTLUA							= 56, // Testlua
+		ACTOR_TESTLUA2							= 57, // Testlua2
+		ACTOR_DB								= 1000, // After
 		ACTOR_SIGNLE_FINISH						= ACTOR_DB + pbdb::ENUM_DB_COUNT,
 		ACTOR_COUNT								= ACTOR_SIGNLE_FINISH,
 	};
 
-	// # 判断ENUM_ACTOR枚举是否为单例
+	// # CheckENUM_ACTOR whether singleton
 	class enum_actor
 	{
 	public:
@@ -118,18 +120,18 @@ namespace ngl
 	template <typename TACTOR>
 	using nactor_type = type_enum<TACTOR, ENUM_ACTOR>;
 
-	// # 根据pbdb::ENUM_DB获取ENUM_ACTOR
+	// # Pbdb::ENUM_DBgetENUM_ACTOR
 	ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE);
 
-	// 宏与类型的绑定
+	// Andtype bind
 	void auto_actor();
 
-	// # 注册自定义协议
+	// # Register protocol
 	void tprotocol_customs();
 
-	// # 注册转发协议
+	// # Register forwardingprotocol
 	void tprotocol_forward_pb();
 
-	// # actor event注册
+	// # Actor eventregister
 	void event_register();
 }//namespace ngl

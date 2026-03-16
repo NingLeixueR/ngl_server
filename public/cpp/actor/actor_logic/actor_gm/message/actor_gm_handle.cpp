@@ -1,21 +1,23 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements message handlers for message.
+
 #include "actor/actor_logic/actor_gmclient/actor_gmclient.h"
 #include "actor/actor_logic/actor_gm/actor_gm.h"
 namespace ngl
 {
-	// 分发给独立进程的请求
+	// To request
 	class distribute_gmclient
 	{
 		distribute_gmclient() = default;
@@ -44,7 +46,7 @@ namespace ngl
 			}
 			return false;
 		}
-		// 返回值:是否还需要actor_gm处理
+		// Return:whether need toactor_gmhandle
 		bool distribute(std::string akey, ncjson& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
 			struct servertype
@@ -160,7 +162,7 @@ namespace ngl
 		i64_actorid lactorid = -1;
 		if (njson::pop(lreadjson, { "actor_name" }, lactorname))
 		{
-			// ### 单例
+			// ### Singleton
 			if (lactorname == "ACTOR_GM")
 			{
 				std::string loperator;
@@ -201,7 +203,7 @@ namespace ngl
 			return true;
 		}
 		else if (njson::pop(lreadjson, { "actor_id" }, lactorid))
-		{// ### 非单例
+		{// ### Singleton
 			sendbyactorid(lactorid, adata.get_pack(), *adata.get_data());
 			return true;
 		}

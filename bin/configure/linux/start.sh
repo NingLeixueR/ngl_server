@@ -1,6 +1,8 @@
+# File overview: Automates the start workflow on Linux.
+
 cd $(dirname $0)
 declare -A map
-filename="config.txt" # 指定要读取的文件名
+filename="config.txt" # Specified read file
 while IFS= read -r line; do
 	array=($line)
 	map["${array[0]}"]="${array[2]}"

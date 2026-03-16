@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor server.
+
 #pragma once
 
 #include "actor/actor_base/actor_manage.h"
@@ -41,21 +43,21 @@ namespace ngl
 
 		void print(const std::vector<i64_actorid>& avec)const;
 
-		// # 回复/转发[np_actornode_register]请求
+		// # Response/forwarding[np_actornode_register]request
 		void reply_register(const pack* apack, i32_serverid aserverid);
 		void forward_register(const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd);
 
 		// # [actor client -> actor server] register
-		// # 注册结点
+		// # Registernode
 		bool handle(const message<np_actornode_register>& adata);
 
-		// # 更新结点中的actor
+		// # Nodeinactor
 		bool handle(const message<np_actornode_update_server>& adata);
 
-		//# 向actor客户端同步结点信息(群发)
+		// # Toactorclientsynchronizenodeinfo( )
 		bool handle(const message<np_actornode_update_mass>& adata);
 
-		// # 更新gateway表 actor_role.guidid与gateway server id对应关系
+		// # Gatewaytable actor_role.guididandgateway server idcorresponding
 		bool handle(const message<np_actor_gatewayid_updata>& adata);
 	};
 }//namespace ngl

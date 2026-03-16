@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor base.
+
 #pragma once
 
 #include "actor/actor_base/ndbclient.h"
@@ -26,52 +28,52 @@ namespace ngl
 		ndb_component& operator=(const ndb_component&) = delete;
 
 	private:
-		actor_base*				m_actor		= nullptr;							// 宿主actor
-		ndbclient_base*			m_dbclient  = nullptr;							// ndbclient基类
-		i64_actorid				m_id		= 0;								// 宿主actor id
-		pbdb::ENUM_DB			m_type		= pbdb::ENUM_DB::ENUM_DB_FAIL;		// 数据类型
+		actor_base*				m_actor		= nullptr;							// Hostactor
+		ndbclient_base*			m_dbclient  = nullptr;							// Ndbclientbase class
+		i64_actorid				m_id		= 0;								// Hostactor id
+		pbdb::ENUM_DB			m_type		= pbdb::ENUM_DB::ENUM_DB_FAIL;		// Datatype
 
 	protected:
 		explicit ndb_component(pbdb::ENUM_DB aenum);
 
-		//# 设置ndbclient基类
+		// # Setndbclientbase class
 		void set_dbclient(ndbclient_base* andbclient);
 
-		//# 获取ndbclient基类
+		// # Get the ndbclient base class
 		inline ndbclient_base* get_dbclient();
 	public:
-		//# 设置宿主actor
+		// # Sethostactor
 		void				set(actor_base* aactor);
 
-		// # 获取actor
+		// # Getactor
 		actor_base*			get_actor();
 
-		//# 获取宿主actor id
+		// # Get the host actor id
 		i64_actorid			get_actorid()const;
 
-		//# 获取数据类型
+		// # Getdatatype
 		pbdb::ENUM_DB		type()const;
 
-		//# 获取宿主actor
+		// # Get the host actor
 		actor_base*			actorbase();
 
-		//# 服务于related_actorid,用于自定义actor id
+		// # Related_actorid,used to actor id
 		void				set_actorid(i64_actorid aactorid);
 
-		//# 设置m_id关联m_actor
+		// # Setm_id m_actor
 		virtual void		related_actorid();
 
-		//# 设置m_actor关联m_dbclient
+		// # Setm_actor m_dbclient
 		void				init();
 
-		//# 创建数据
+		// # Createdata
 		void				create();
 		void				create(const nguid& aid);
 
-		//# 获取m_dbclient
+		// # Getm_dbclient
 		ndbclient_base*		dbclientbase();
 
-		//# 当数据全部加载后调用
+		// # Dataallloadafter
 		virtual void		init_data();
 	};
 
@@ -98,7 +100,7 @@ namespace ngl
 			return &m_data;
 		}
 
-		//# 遍历data
+		// # Data
 		inline void foreach(const std::function<void(const data_modified<TDATA>&)>& afun)
 		{
 			for (auto& [_guid, _datamodified] : data())
@@ -107,7 +109,7 @@ namespace ngl
 			}
 		}
 
-		//# 查找指定数据
+		// # Findspecifieddata
 		inline data_modified<TDATA>* find(const std::function<bool(const data_modified<TDATA>&)>& afun)
 		{
 			for(auto& [_guid, _datamodified] : data())
@@ -120,7 +122,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		//# 获取所有数据
+		// # Getalldata
 		inline const std::map<nguid, data_modified<TDATA>>& data()
 		{
 			return m_data.get_data();
@@ -131,13 +133,13 @@ namespace ngl
 			return m_data.get_foreach_data();
 		}
 
-		//# 获取m_id对应的数据
+		// # Getm_idcorresponding data
 		inline data_modified<TDATA>& get()
 		{
 			return get(get_actorid());
 		}
 
-		// # 查找指定数据
+		// # Findspecifieddata
 		inline data_modified<TDATA>* find(nguid aid)
 		{
 			if (!data().contains(aid))
@@ -147,7 +149,7 @@ namespace ngl
 			return &get(aid);
 		}
 
-		// # 与find类似(只是没有就添加)
+		// # Andfindsimilar( add)
 		inline data_modified<TDATA>& get(nguid aid)
 		{
 			if (aid == nguid::make())
@@ -161,31 +163,31 @@ namespace ngl
 			return *m_data.get_data(aid);
 		}
 
-		// # 删除指定数据
+		// # Deletespecifieddata
 		inline void erase(nguid aid)
 		{
 			get_actor_dbclient()->del(aid, true);
 		}
 
-		// # 返回保护数据
+		// # Return data
 		inline data_modified<TDATA>* db()
 		{ 
 			return m_data.get_dbdata();
 		}
 
-		// # 获取宿主actor
+		// # Get the host actor
 		inline TACTOR* nactor()
 		{ 
 			return (TACTOR*)get_actor();
 		}
 
-		// # 清空数据
+		// # Cleardata
 		inline void clear()
 		{
 			get_actor_dbclient()->clear();
 		}
 
-		// # 当数据全部加载后调用
+		// # Dataallloadafter
 		void init_data() final;
 
 		virtual void initdata() = 0;

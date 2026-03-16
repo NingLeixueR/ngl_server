@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for log.
+
 #pragma once
 
 #include "tools/tab/xml/sysconfig.h"
@@ -45,9 +47,9 @@ namespace ngl
 			};
 
 			i32_actordataid m_id;					// nlogactor
-			std::string		m_dir;					// 文件夹
-			ELOG_TYPE		m_type = ELOG_DEFAULT;	// 日志类型
-			int32_t			m_flush_time = 0;		// 写入文件的间隔
+			std::string		m_dir;					// Directory
+			ELOG_TYPE		m_type = ELOG_DEFAULT;	// Logtype
+			int32_t			m_flush_time = 0;		// Writefile
 
 			int32_t flush()
 			{
@@ -55,31 +57,31 @@ namespace ngl
 			}
 		};
 		std::ofstream	m_stream;
-		config			m_config;		// 日志配置
-		int				m_count = 0;	// 数量
-		int				m_fcount = 0;	// 刷新数量
+		config			m_config;		// Logconfig
+		int				m_count = 0;	// Translated comment.
+		int				m_fcount = 0;	// Translated comment.
 
 		logfile(const config& aconfig);
 
-		// # 刷新数量
+		// Translated comment.
 		bool flush_count()const;
 
-		// # 关闭文件流
+		// # Closefile
 		void close_fstream();
 
-		// # 创建目录
+		// # Createdirectory
 		bool create_dir(const std::string& apath);
 
-		// # 创建
+		// # Create
 		void create();
 
-		// # 打印日志
+		// # Log
 		virtual void printf(const np_logitem* alog) = 0;
 
-		// # 刷新到文件
+		// # Tofile
 		void flush();
 
-		// # 创建日志实例
+		// # Createloginstance
 		static std::shared_ptr<logfile> create_make(const config& aconfig);
 	};
 }// namespace ngl

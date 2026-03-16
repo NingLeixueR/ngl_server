@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 *
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 *
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 *
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for ws.
+
 #pragma once
 
 #include "tools/serialize/pack.h"
@@ -47,22 +49,22 @@ namespace ngl
 		using map_ipport = std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>;
 		using map_close = std::unordered_map<i32_sessionid, std::function<void()>>;
 
-		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4 = nullptr;		// 用于支持ipv4
-		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6 = nullptr;		// 用于支持ipv6
-		i16_port							m_port = 0;						// 监听的端口
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4 = nullptr;		// Used tosupportipv4
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6 = nullptr;		// Used tosupportipv6
+		i16_port							m_port = 0;						// Port
 		bool								m_use_tls = false;				// wss
-		ws_callback							m_fun = nullptr;				// 接收数据的回调
-		ws_closecallback					m_closefun = nullptr;			// 关闭连接的回调
-		ws_sendfinishcallback				m_sendfinishfun = nullptr;		// 发送失败的回调
-		i32_sessionid						m_sessionid = 0;				// 自增的session id	
-		serviceio_info						m_service_ios;					// asio支持			
-		std::shared_mutex					m_maplock;						// 用于锁定"m_data,m_sessionid"
-		std::shared_mutex					m_ipportlock;					// 用于锁定"m_ipport"
-		map_service_ws						m_data;							// key:session id value:连接数据
+		ws_callback							m_fun = nullptr;				// Data callback
+		ws_closecallback					m_closefun = nullptr;			// Closeconnection callback
+		ws_sendfinishcallback				m_sendfinishfun = nullptr;		// Send callback
+		i32_sessionid						m_sessionid = 0;				// Session id
+		serviceio_info						m_service_ios;					// Asiosupport
+		std::shared_mutex					m_maplock;						// Used tolock "m_data,m_sessionid"
+		std::shared_mutex					m_ipportlock;					// Used tolock "m_ipport"
+		map_service_ws						m_data;							// Key:session id value:connectiondata
 		map_ipport							m_ipport;						// key:session id value:ipport
-		map_close							m_close;						// 关闭连接回调				
+		map_close							m_close;						// Closeconnectioncallback
 		std::unique_ptr<basio_sslcontext>	m_tls_context = nullptr;		// wss tls context
-		ws_tls_options						m_tls_options;					// m_use_tls==true,tls配置
+		ws_tls_options						m_tls_options;					// M_use_tls==true,tlsconfig
 	public:
 		enum
 		{

@@ -1,5 +1,7 @@
+# File overview: Automates the scp workflow on Linux.
+
 declare -A map
-filename="scp.txt" # 指定要读取的文件名
+filename="scp.txt" # Specified read file
 while IFS= read -r line; do
 	array=($line)
 	map["${array[0]}"]="${array[2]}"

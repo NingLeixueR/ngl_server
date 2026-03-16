@@ -1,3 +1,5 @@
+REM File overview: Automates the rename node workflow on Windows.
+
 xcopy node.exe node_actor.exe /y
 xcopy node.exe node_game.exe /y
 xcopy node.exe node_db.exe /y

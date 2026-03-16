@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for actor base.
+
 #pragma once
 
 #include "actor/actor_base/handle_pram.h"
@@ -36,20 +38,20 @@ namespace ngl
 		nrfunbase(const nrfunbase&) = delete;
 		nrfunbase& operator=(const nrfunbase&) = delete;
 
-		std::map<i32_protocolnum, nlogicfun>	m_fun;				// key:协议号 value:处理方法
-		tnotfindfun								m_notfindfun;		// 如果在m_fun没有查找到处理方法,则使用其处理
+		std::map<i32_protocolnum, nlogicfun>	m_fun;				// Key:protocol id value:handle
+		tnotfindfun								m_notfindfun;		// If m_fun findtohandle, handle
 	protected:
 		void register_logic(i32_protocolnum aprotocol, int32_t aready, const tlogicfun& afun);
 	public:
 		nrfunbase() = default;
 
-		//# 设置协议处理没有匹配的调用
+		// # Setprotocol handling
 		nrfunbase& set_notfindfun(const tnotfindfun& afun);
 
-		//# 未匹配的协议调用
+		// # Protocol
 		void notfindfun(const actor_base* aactor, i32_threadid athreadid, handle_pram& apram)const;
 
-		//# 协议处理
+		// # Protocol handling
 		bool handle_switch(actor_base* aactor, i32_threadid athreadid, handle_pram& apram);
 
 		template <typename T>
@@ -71,10 +73,10 @@ namespace ngl
 	private:
 		message() = delete;
 
-		std::shared_ptr<T>		m_shared_data		= nullptr;	// 数据
-		T*						m_original_data		= nullptr;	// 数据
-		std::shared_ptr<pack>	m_pack				= nullptr;	// 如果消息来自网络，这个值不为空即为网络数据包
-		i32_threadid			m_thread			= 0;		// 线程id
+		std::shared_ptr<T>		m_shared_data		= nullptr;	// Data
+		T*						m_original_data		= nullptr;	// Data
+		std::shared_ptr<pack>	m_pack				= nullptr;	// Ifmessage, this datapack
+		i32_threadid			m_thread			= 0;		// Threadid
 	public:
 		inline message(i32_threadid athread, const std::shared_ptr<pack>& apack, const std::shared_ptr<T>& adata) :
 			m_thread(athread),
@@ -137,28 +139,28 @@ namespace ngl
 			return ltemp;
 		}
 
-		//# 允许任意std::function<void(TTTDerived*, T&)>挂载到指定actor上
+		// # Std::function<void(TTTDerived*, T&)> tospecifiedactoron
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(const std::function<void(TTTDerived*, message<T>&)>& afun, int32_t aready = e_ready_all);
 
 		//# bool aisload = false 
-		//# 是否允许db数据加载完成之前处理此消息
+		// # Whether dbdataloadcomplete beforehandlethis message
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(const Tfun<TTTDerived, T> afun, int32_t aready = e_ready_all);
 
-		//# actor间消息处理
+		// # Actor messagehandle
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, int32_t aready = e_ready_all);
 
-		//# actor间消息处理,不注册网络层
+		// # Actor messagehandle, registernetwork layer
 		template <typename TTTDerived, typename T>
 		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun, int32_t aready = e_ready_all);
 
-		//# gateway注册c2g接收转发协议处理协议
+		// # Gatewayregisterc2g forwardingprotocol handlingprotocol
 		template <typename T>
 		nrfun& rfun_c2g(const Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>> afun);
 
-		//# gateway注册g2c接收转发协议处理协议
+		// # Gatewayregisterg2c forwardingprotocol handlingprotocol
 		template <typename T>
 		nrfun& rfun_g2c(const Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>> afun);		
 	};

@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for tools.
+
 #pragma once
 
 #include "actor/protocol/nprotocol_template.h"
@@ -28,14 +30,14 @@ namespace ngl
 {
     enum
     {
-        epb_mid = 1, // 必须为 proto 结构的主键
+        epb_mid = 1, // proto structure
     };
 
-    // 工具类：只复制指定字段编号的内容
+    // : Specifiedfield content
     class pb_field
     {
     private:
-        // 复制单个字段（处理所有类型的字段：基础类型、repeated、消息类型等）
+        // Field(handlealltype field: basetype, repeated, messagetype )
         static void copyfield(
             const google::protobuf::Message& src
             , google::protobuf::Message* dst
@@ -44,7 +46,7 @@ namespace ngl
             , const google::protobuf::FieldDescriptor* field
         );
 
-        // 复制单个非 repeated 字段
+        // Copy a single non-repeated field
         static void copy_single_field(
             const google::protobuf::Message& src
             , google::protobuf::Message* dst
@@ -53,7 +55,7 @@ namespace ngl
             , const google::protobuf::FieldDescriptor* field
         );
 
-        // 复制 repeated 字段中的单个元素
+        // Repeated fieldin
         static void copy_repeated_field(
             const google::protobuf::Message& src
             , google::protobuf::Message* dst
@@ -63,21 +65,21 @@ namespace ngl
             , int index
         );
     public:
-        // 拷贝 src 到 dst，但只复制字段编号在 field_numbers 中的字段
-        // field_numbers：需要复制的字段编号列表（如 {1, 3, 5}）
+        // Copy src to dst, field field_numbers infield
+        // Field_numbers: need to field list( {1, 3, 5})
         static void copy(
             const google::protobuf::Message& src
             , google::protobuf::Message* dst
             , const std::map<i32_fieldnumber, epb_field>& fieldsrc
             , const std::map<i32_fieldnumber, epb_field>& fielddst
-            , bool amessage /* 是否是消息，消息强制复制mid */
+            , bool amessage /* Whether message, message mid */
         );
 
         static void copy(
             const google::protobuf::Message& src
             , google::protobuf::Message* dst
             , const std::map<i32_fieldnumber, epb_field>& fieldsrc
-            , bool amessage /* 是否是消息，消息强制复制mid */
+            , bool amessage /* Whether message, message mid */
         );
     
     public:

@@ -1,21 +1,23 @@
+-- File overview: Defines Lua script logic for actor testlua.
+
 local ngldata = require("ngldata").getInstance()
 require("ngldata")
 
 function db_loadfinish()
-    -- 数据加载完成
+    -- Dataloadcomplete
 end
 
 function handle(amsgname, amsg)
-	-- 如何获取db数据:明确需求是否修改
-	-- 无需修改数据使用 ngldata:getconst("数据名称")
-	-- 需修改数据使用 ngldata:get("数据名称")
+	-- Getdbdata: whether
+	-- Data ngldata:getconst("dataname")
+	-- Data ngldata:get("dataname")
 
-	-- 如何发送数据给client,actor
+	-- Senddatatoclient,actor
 	-- nguid:actor_type#areaid#dataid
 	--send_client("guid", "kcp" or "tcp","msgname", "msgjson")
 	--send_actor("guid", "msgname", "msgjson")
 	
-	-- 因为 tab_servers 是只读的 所以不允许玩家修改，无法通过get获取
+	-- Because tab_servers read-only do not allowplayer, cannotthroughgetget
 	print("ngldata:get ############################")
 	local tab = ngldata:get("tab_servers","1")
 	if tab ~= nil then
@@ -29,7 +31,7 @@ function handle(amsgname, amsg)
 	end
 	print("############################")
 
-	-- 可以通过[amsgname]和[amsgjson]进行消息处理
+	-- Canthrough[amsgname] [amsgjson] messagehandle
 	print("msg name:" .. amsgname)
 	print(amsg)
 
@@ -40,7 +42,7 @@ function handle(amsgname, amsg)
 	end
 
 	if amsgname == "np_actormodule_forward<PROBUFF_NET_TESTLUA>" then
-		-- 此处对db_testlua数据进行了修改
+		-- This db_testluadata
 		local testlua = ngldata:get("db_testlua", id)
 		if testlua ~= nil then
 			ngldata:print_table(testlua)

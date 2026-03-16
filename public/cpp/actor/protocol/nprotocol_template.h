@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares interfaces for protocol.
+
 #pragma once
 
 #include "actor/actor_base/nactortype.h"
@@ -36,7 +38,7 @@
 namespace ngl
 {
 	// [db client -> db server]
-	// 从db server加载数据
+	// Fromdb serverloaddata
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_load
 	{
@@ -47,9 +49,9 @@ namespace ngl
 
 	enum enum_dbstat
 	{
-		enum_dbstat_fail = -1,		// 加载失败
-		enum_dbstat_success,		// 数据库中有数据,加载成功
-		enum_dbstat_create,			// 数据库中没有数据,但是创建了新的数据
+		enum_dbstat_fail = -1,		// Load
+		enum_dbstat_success,		// Databasein data,loadsuccessful
+		enum_dbstat_create,			// Databasein data, create data
 	};
 
 	template <pbdb::ENUM_DB DBTYPE, typename T>
@@ -57,7 +59,7 @@ namespace ngl
 	{
 		nguid				m_id = -1;			// np_actordb_load.m_id 
 		std::map<nguid, T>	m_data;
-		//if(m_id != nguid::make())m_stat.enum_dbstat_create才有意义
+		// If(m_id != nguid::make())m_stat.enum_dbstat_create
 		enum_dbstat			m_stat = enum_dbstat_fail;
 		bool				m_over = true;
 
@@ -70,7 +72,7 @@ namespace ngl
 	};
 
 	// [db client -> db server]
-	// 保存数据
+	// Save data
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_save
 	{
@@ -89,7 +91,7 @@ namespace ngl
 		DEF_PROTOCOL(m_data)
 	};
 
-	// 删除数据
+	// Deletedata
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_delete
 	{
@@ -98,7 +100,7 @@ namespace ngl
 		DPROTOCOL(actor_db_delete<T>, m_data)
 	};
 
-	// 保存数据缓存列表
+	// Save datacachelist
 	enum enum_cache_list
 	{
 		enum_clist_save = 1,
@@ -113,7 +115,7 @@ namespace ngl
 		DPROTOCOL(actor_time_db_cache<T>, m_ls)
 	};
 
-	// 模块间转发
+	// Module forwarding
 	template <typename T>
 	struct np_actormodule_forward
 	{
@@ -278,7 +280,7 @@ namespace ngl
 		DPROTOCOL(np_actor_forward, m_data)
 	};
 	
-	// 群发数据给其他actor
+	// Datato actor
 	template <typename T>
 	struct np_mass_actor
 	{
@@ -320,7 +322,7 @@ namespace ngl
 	};
 
 
-	// actor 切换进程
+	// Actor switch
 	//ACTOR_SPROCESS_ROLE
 	template <typename T>
 	struct np_actorswitch_process
@@ -335,26 +337,26 @@ namespace ngl
 
 	enum epb_field
 	{
-		epb_field_read,		    // 读
-		epb_field_write,	    // 写(既然可写必定也可读)
+		epb_field_read,		    // Translated comment.
+		epb_field_write,	    // Translated comment.
 	};
 
-	// 注册
+	// Register
 	template <typename TDATA>
 	struct np_channel_register
 	{
 		using T = TDATA;
-		std::string		m_msg;									// 调试查看信息
-		i64_actorid		m_actorid = nguid::make();				// 子节点id
-		// 结点是否写全部结点
-		bool m_read = false;	//结点是[读/写]
-		bool m_all = false;		// 是否可以操作全部结点
-		//[[ m_all == false 下面数据有效
-		std::set<i64_actorid> m_writeids;						// 写哪些数据
-		std::set<i64_actorid> m_readids;						// 写哪些数据
+		std::string		m_msg;									// Info
+		i64_actorid		m_actorid = nguid::make();				// Nodeid
+		// Nodewhether allnode
+		bool m_read = false;	// Node [ / ]
+		bool m_all = false;		// Whethercan allnode
+		// [[ M_all == false under data
+		std::set<i64_actorid> m_writeids;						// Whichdata
+		std::set<i64_actorid> m_readids;						// Whichdata
 		//]]
 
-		std::map<i32_fieldnumber, epb_field> m_field;			// 可修改/可读哪些字段编号
+		std::map<i32_fieldnumber, epb_field> m_field;			// / Whichfield
 
 		DPROTOCOL(np_channel_register, m_msg, m_actorid, m_read, m_all, m_writeids, m_readids, m_field)
 	};
@@ -374,15 +376,15 @@ namespace ngl
 	struct np_channel_register_reply
 	{
 		using T = TDATA;
-		std::string m_msg;											// 调试查看信息
-		i64_actorid m_actorid;										// 子节点id
+		std::string m_msg;											// Info
+		i64_actorid m_actorid;										// Nodeid
 
-		std::set<i64_nodeid> m_nodereadalls;						// 读全部数据的结点
-		std::set<i64_nodeid> m_nodewritealls;						// 写全部数据的结点
+		std::set<i64_nodeid> m_nodereadalls;						// Alldata node
+		std::set<i64_nodeid> m_nodewritealls;						// Alldata node
 
 		std::map<i64_nodeid, nsp_care> m_care;
 
-		// 结点可修改哪些字段编号
+		// Node whichfield
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>> m_node_fieldnumbers;
 
 		DPROTOCOL(np_channel_register_reply, m_msg, m_actorid, m_nodereadalls, m_nodewritealls, m_care, m_node_fieldnumbers)
@@ -392,22 +394,22 @@ namespace ngl
 	struct np_channel_dataid_sync
 	{
 		using T = TDATA;
-		std::string m_msg;										// 调试查看信息
-		i64_actorid m_actorid = 0;								// 异变的子节点id
-		bool		m_read = true;								// 结点是读是写
-		bool		m_all = false;								// 结点是[读/写]全部数据么
+		std::string m_msg;										// Info
+		i64_actorid m_actorid = 0;								// Nodeid
+		bool		m_read = true;								// Node
+		bool		m_all = false;								// Node [ / ]alldata
 		//if (!m_all)
 		//{
-		// 哪部分只读关心
+		// Partialread-only
 		std::set<i64_dataid> m_readpart;
 		//}
 		//if (!m_all && !m_read)
 		//{
-		// 哪部分[读/写]关心
+		// Partial[ / ]
 		std::set<i64_dataid> m_writepart;
 		//}
 
-		std::map<i32_fieldnumber, epb_field> m_field;			// 可修改/可读哪些字段编号
+		std::map<i32_fieldnumber, epb_field> m_field;			// / Whichfield
 
 		DPROTOCOL(np_channel_dataid_sync, m_msg, m_actorid, m_read, m_all, m_readpart, m_writepart, m_field)
 	};
@@ -416,7 +418,7 @@ namespace ngl
 	struct np_channel_exit
 	{
 		using T = TDATA;
-		std::string				m_msg;							// 调试查看信息
+		std::string				m_msg;							// Info
 		i64_actorid				m_actorid;
 		DPROTOCOL(np_channel_exit, m_msg, m_actorid)
 	};
@@ -425,12 +427,12 @@ namespace ngl
 	struct np_channel_data
 	{
 		using T = TDATA;
-		std::string m_msg;									// 调试查看信息
-		i64_nodeid m_actorid = 0;							// 谁修改的数据
-		bool m_firstsynchronize = false;					// 首次同步
+		std::string m_msg;									// Info
+		i64_nodeid m_actorid = 0;							// Data
+		bool m_firstsynchronize = false;					// Synchronize
 		bool m_recvfinish = false;
-		std::map<int64_t, TDATA> m_data;					// 1、数据同步2、数据修改3、数据增加
-		std::vector<int64_t> m_deldata;						// 数据被删除
+		std::map<int64_t, TDATA> m_data;					// 1, Datasynchronize2, data 3, data
+		std::vector<int64_t> m_deldata;						// Data delete
 
 		DPROTOCOL(np_channel_data<TDATA>, m_msg, m_actorid, m_firstsynchronize, m_recvfinish, m_data, m_deldata)
 	};
@@ -439,7 +441,7 @@ namespace ngl
 	struct np_channel_check
 	{
 		using T = TDATA;
-		std::string m_msg;									// 调试查看信息
+		std::string m_msg;									// Info
 		int64_t m_timer;
 		i16_area m_area;
 		DPROTOCOL(np_channel_check, m_msg, m_timer, m_area)
@@ -475,7 +477,7 @@ namespace ngl
 		DPROTOCOL(msg_actor, m_actor_name, m_actor)
 	};
 
-	// # 获取actor stat 数据
+	// # Getactor stat data
 	struct msg_actor_stat
 	{
 		

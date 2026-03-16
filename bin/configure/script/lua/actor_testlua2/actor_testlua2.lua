@@ -1,12 +1,14 @@
+-- File overview: Defines Lua script logic for actor testlua2.
+
 local ngldata = require("ngldata").getInstance()
 require("ngldata")
 
 function db_loadfinish()
-    -- 数据加载完成
+    -- Dataloadcomplete
 end
 
 function handle(amsgname, amsgjson)
-	-- 可以通过[amsgname]和[amsgjson]进行消息处理
+	-- Canthrough[amsgname] [amsgjson] messagehandle
 	print("actor_testlua2.lua")
 	print("msg name:" .. amsgname)
 	print(amsgjson)

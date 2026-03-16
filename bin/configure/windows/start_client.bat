@@ -1,3 +1,5 @@
+REM File overview: Automates the start client workflow on Windows.
+
 set /P rebot_value1=区服id
 set /P rebot_value2=实例id
 set /P rebot_value3=请输入玩家id

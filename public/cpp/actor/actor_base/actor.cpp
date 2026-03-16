@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for actor base.
+
 #include "actor/actor_base/actor_manage.h"
 #include "actor/actor_base/ndbclient.h"
 #include "actor/actor_base/actor.h"
@@ -27,9 +29,9 @@ namespace ngl
 		{
 			tools::no_core_dump();
 		}
-		// 检查数据库依赖actorparmbase.m_manage_dbclient
-		// 如果依赖数据库那么需要开启"是否支持广播"m_broadcast
-		// 以便顺利保存数据修改
+		// Database actorparmbase.m_manage_dbclient
+		// If database need tostart"whethersupportbroadcast"m_broadcast
+		// Save data
 		if (aparm.m_parm.m_manage_dbclient && !aparm.m_broadcast)
 		{
 			log_error()->print("actorparm fail [m_parm.m_manage_dbclient && !m_broadcast]");
@@ -157,13 +159,13 @@ namespace ngl
 
 	bool actor::handle_broadcast(const message<np_actor_broadcast>& adata)
 	{
-		// # 保存数据
+		// # Save data
 		if (manage_dbclient() != nullptr)
 		{
 			manage_dbclient()->save();
 			manage_dbclient()->del();
 		}
-		// # actor派生类自定义处理逻辑
+		// # Actor handle
 		broadcast();
 		return true;
 	}

@@ -1,17 +1,19 @@
+// File overview: Declares interfaces for core.
+
 #pragma once
 
 #include <functional>
 #include <string>
 
-// 跨平台导出/导入宏
+// Translated comment.
 #ifdef _WIN32
-#	ifdef NGLCORE_EXPORTS  // 生成动态库时定义
+#	ifdef NGLCORE_EXPORTS  // Translated comment.
 #		define NGL_EXPORT __declspec(dllexport)
 #	else
-#		define NGL_EXPORT __declspec(dllimport)  // 使用时导入
+#		define NGL_EXPORT __declspec(dllimport)  // Translated comment.
 #	endif
 #else
-#	define NGL_EXPORT  // Linux/macOS无需特殊声明
+#	define NGL_EXPORT  // Linux/macOS special
 #endif
 
 enum class startup_error : int

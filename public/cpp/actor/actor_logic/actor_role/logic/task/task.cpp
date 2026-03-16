@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for task.
+
 
 #include "actor/actor_logic/actor_role/logic/task/task.h"
 #include "actor/actor_logic/actor_role/logic/bag/drop.h"
@@ -25,7 +27,7 @@ namespace ngl
 	{
 		static std::array<std::unique_ptr<task_check>, ETaskCount> m_data;
 	public:
-		// 检查条件是否满足
+		// Conditionwhether
 		static bool check(actor_role* arole, const task_condition& atab)
 		{
 			if (atab.m_condition == ETaskConditionMore)
@@ -53,7 +55,7 @@ namespace ngl
 		virtual int32_t values(actor_role* arole, const task_condition& atab) = 0;
 	};
 
-	// 条件检查:ETaskRoleLv 玩家等级
+	// Condition:ETaskRoleLv playerlevel
 	class taskcheck_rolelv : 
 		public task_check
 	{
@@ -63,7 +65,7 @@ namespace ngl
 		}
 	};
 
-	// 条件检查:ETaskRoleVip 玩家vip等级
+	// Condition:ETaskRoleVip playerviplevel
 	class taskcheck_rolevip : 
 		public task_check
 	{
@@ -73,7 +75,7 @@ namespace ngl
 		}
 	};
 
-	// 条件检查:ETaskTaskId 完成某ID任务
+	// Condition:ETaskTaskId complete IDtask
 	class taskcheck_taskid : 
 		public task_check
 	{
@@ -143,15 +145,15 @@ namespace ngl
 	bool static_task::receive_task(actor_role* arole, i32_taskid ataskid)
 	{
 		if (ttab_task::instance().repeat(arole, ataskid) == false)
-		{//## 不可重复完成任务
-			//## 接收任务前先查看是否已经完成了
+		{// ## Completetask
+			// ## Taskbeforefirst whether complete
 			if (isfinish_task(arole, ataskid))
 			{
 				return false;
 			}
 		}
 		
-		//## 此任务是否已经被接收
+		// ## This taskwhether
 		if (isreceive_task(arole, ataskid))
 		{
 			return true;
@@ -200,14 +202,14 @@ namespace ngl
 	{
 		if (ttab_task::instance().repeat(arole, ataskid) == false)
 		{
-			// # 完成任务前先查看是否已经完成了
+			// # Completetaskbeforefirst whether complete
 			if (isfinish_task(arole, ataskid))
 			{
 				return false;
 			}
 		}
 		
-		// # 此任务是否已经接收
+		// # This taskwhether
 		if (isreceive_task(arole, ataskid) == false)
 		{
 			return false;
@@ -221,7 +223,7 @@ namespace ngl
 			{
 				return false;
 			}
-			// # 发送奖励
+			// # Sendreward
 			const tab_task* tab = ttab_task::instance().tab(ataskid);
 			if (tab == nullptr)
 			{
@@ -231,7 +233,7 @@ namespace ngl
 			{
 				if (tab->m_mailid > 0)
 				{
-					// 发送邮件
+					// Sendmail
 					if (actor_mail::sendmail(arole->id_guid(), tab->m_mailid, tab->m_dropid, "") == false)
 					{
 						log_error()->print("task[{}] actor_mail::sendmail({},{},{})"
@@ -257,11 +259,11 @@ namespace ngl
 		auto& lconst_rundatas = const_run(arole);
 		for (i32_taskid taskid : *ataskset)
 		{
-			//## 接收任务前先查看是否已经接收过了
+			// ## Taskbeforefirst whether
 			auto itorrun = lconst_rundatas.find(taskid);
 			if (itorrun != lconst_rundatas.end())
 			{
-				//## 已接收任务更新进度
+				// ## Task
 				for (int i = 0; i < itorrun->second.mschedules_size(); ++i)
 				{
 					auto& lcomplete = run(arole);
@@ -314,13 +316,13 @@ namespace ngl
 	void task::initdata()
 	{
 		log_error()->print("task load finish {}", data());
-		// ### 检查是否有可接受的任务
+		// ### Whether task
 		ttab_task::instance().foreach([&](tab_task& atab)
 			{
-				// # 检查任务是否可接收
+				// # Taskwhether
 				if (static_task::receive_task(nactor(), atab.m_id) == true)
-				{// 可接受或者已接受
-					// # 检查任务是否可完成
+				{// Or
+					// # Taskwhether complete
 					if (static_task::finish_task(nactor(), atab.m_id))
 					{
 						return;

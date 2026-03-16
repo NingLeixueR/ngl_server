@@ -1,16 +1,18 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Implements logic for actor logic.
+
 
 #include "actor/actor_logic/nforward.h"
 #include "actor/pb/example.pb.h"
@@ -18,8 +20,8 @@
 
 namespace ngl
 {
-	// # 注册client到game的消息 
-	// # 会注册gateway的转发与game的处理
+	// # Registerclienttogame message
+	// # Registergateway forwardingandgame handle
 	void nforward::c2g()
 	{
 		register_c2g<
@@ -34,52 +36,52 @@ namespace ngl
 			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD
 		>();
 
-		// actor_chat 模块二次转发
+		// Actor_chat modulesecondaryforwarding
 		register_c2g_2< ACTOR_CHAT
 			, pbnet::PROBUFF_NET_CHAT
 		>();
 
-		// actor_example_guess_number 模块二次转发
+		// Actor_example_guess_number modulesecondaryforwarding
 		register_c2g_2< ACTOR_EXAMPLE_GUESS_NUMBER
 			, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER
 		>();
 
-		// actor_example_manage 模块二次转发
+		// Actor_example_manage modulesecondaryforwarding
 		register_c2g_2< ACTOR_EXAMPLE_MANAGE
 			, pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE
 		>();
 
-		// actor_example_match 模块二次转发
+		// Actor_example_match modulesecondaryforwarding
 		register_c2g_2< ACTOR_EXAMPLE_MATCH
 			, pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL
 		>();
 
-		// actor_family 模块二次转发
+		// Actor_family modulesecondaryforwarding
 		register_c2g_2< ACTOR_FAMILY
 			, pbnet::PROBUFF_NET_FAMIL_CEDE
 		>();
 
-		// actor_friends 模块二次转发
+		// Actor_friends modulesecondaryforwarding
 		register_c2g_2< ACTOR_FRIENDS
 			, pbnet::PROBUFF_NET_FRIEND
 		>();
 
-		// actor_mail 模块二次转发
+		// Actor_mail modulesecondaryforwarding
 		register_c2g_2< ACTOR_MAIL
 			, pbnet::PROBUFF_NET_MAIL_DEL
 		>();
 
-		// actor_notice 模块二次转发
+		// Actor_notice modulesecondaryforwarding
 		register_c2g_2< ACTOR_NOTICE
 			, pbnet::PROBUFF_NET_NOTICE
 		>();
 
-		// actor_ranklist 模块二次转发
+		// Actor_ranklist modulesecondaryforwarding
 		register_c2g_2< ACTOR_RANKLIST
 			, pbnet::PROBUFF_NET_RANKLIST
 		>();
 
-		// actor_testlua 模块二次转发
+		// Actor_testlua modulesecondaryforwarding
 		register_c2g_2< ACTOR_TESTLUA
 			, pbnet::PROBUFF_NET_TESTLUA
 		>();
