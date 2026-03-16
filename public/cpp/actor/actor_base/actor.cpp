@@ -137,18 +137,16 @@ namespace ngl
 		{
 			log_error()->print("actor::actor_handle({}) {}:[weight:{}/count:{}]", athreadid, nguid(id_guid()), m_weight, locallist.size());
 		}
-		time_t lbeg = localtime::gettimems();
-		int32_t lcount = 0;
+		const time_t lbeg = localtime::gettimems();
 		int32_t lweight = m_weight;
 		while (--lweight >= 0 && !locallist.empty())
 		{
-			if (m_release == false && localtime::timeout(lbeg, m_timeout))
+			if (!m_release && localtime::timeout(lbeg, m_timeout))
 			{
 				break;
 			}
 			ahandle(athreadid, locallist.front());
 			locallist.pop_front();
-			++lcount;
 		}
 		if (!locallist.empty())
 		{
