@@ -31,6 +31,11 @@ namespace ngl
 		{
 			return !ec || ec == basio::error::not_connected || ec == basio::error::operation_aborted;
 		}
+
+		bool should_ignore_acceptor_close_error(const basio_errorcode& ec)
+		{
+			return !ec || ec == basio::error::operation_aborted || ec == basio::error::bad_descriptor;
+		}
 	}
 
 	asio_tcp::asio_tcp(
@@ -81,11 +86,19 @@ namespace ngl
 		if (m_acceptor_v4 != nullptr)
 		{
 			m_acceptor_v4->close(ec);
+			if (!ngl::tcp::should_ignore_acceptor_close_error(ec))
+			{
+				log_error()->print("asio_tcp::~asio_tcp close v4 acceptor [{}]", ec.message());
+			}
 			m_acceptor_v4.reset();
 		}
 		if (m_acceptor_v6 != nullptr)
 		{
 			m_acceptor_v6->close(ec);
+			if (!ngl::tcp::should_ignore_acceptor_close_error(ec))
+			{
+				log_error()->print("asio_tcp::~asio_tcp close v6 acceptor [{}]", ec.message());
+			}
 			m_acceptor_v6.reset();
 		}
 
@@ -476,7 +489,7 @@ namespace ngl
 		accept(aisv4);
 	}
 
-	void asio_tcp::accept(bool aisv4)
+	void asio_tcp::accept(bool av4)
 	{
 		std::shared_ptr<service_tcp> lservice = nullptr;
 		{
@@ -489,7 +502,7 @@ namespace ngl
 				return;
 			}
 		}
-		if (aisv4)
+		if (av4)
 		{
 			m_acceptor_v4->async_accept(lservice->m_socket, [this, lservice](const basio_errorcode& error)
 				{

@@ -50,6 +50,11 @@ namespace ngl
 				|| ec == bwebsocket::error::closed;
 		}
 
+		bool should_ignore_acceptor_close_error(const basio_errorcode& ec)
+		{
+			return !ec || ec == basio::error::operation_aborted || ec == basio::error::bad_descriptor;
+		}
+
 		void force_close_socket(basio_iptcpsocket& asocket)
 		{
 			basio_errorcode ec;
@@ -116,10 +121,12 @@ namespace ngl
 		}
 
 		basio_ioservice& lioservice = *m_service_ios.get_ioservice(m_service_ios.m_recvthreadsize);
-		m_acceptor = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v4(), m_port));
-		m_acceptor->set_option(basio::socket_base::reuse_address(true));
-		m_port = m_acceptor->local_endpoint().port();
-		accept();
+		m_acceptor_v4 = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v4(), m_port));
+		m_acceptor_v6 = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v4(), m_port));
+		m_acceptor_v4->set_option(basio::socket_base::reuse_address(true));
+		m_acceptor_v6->set_option(basio::socket_base::reuse_address(true));
+		accept(true);
+		accept(false);
 	}
 
 	asio_ws::asio_ws(
@@ -146,10 +153,23 @@ namespace ngl
 	asio_ws::~asio_ws()
 	{
 		basio_errorcode ec;
-		if (m_acceptor != nullptr)
+		if (m_acceptor_v4 != nullptr)
 		{
-			m_acceptor->close(ec);
-			m_acceptor.reset();
+			m_acceptor_v4->close(ec);
+			if (!ngl::ws::should_ignore_acceptor_close_error(ec))
+			{
+				log_error()->print("asio_ws::~asio_ws close v4 acceptor [{}]", ec.message());
+			}
+			m_acceptor_v4.reset();
+		}
+		if (m_acceptor_v6 != nullptr)
+		{
+			m_acceptor_v6->close(ec);
+			if (!ngl::ws::should_ignore_acceptor_close_error(ec))
+			{
+				log_error()->print("asio_ws::~asio_ws close v6 acceptor [{}]", ec.message());
+			}
+			m_acceptor_v6.reset();
 		}
 
 		std::vector<std::shared_ptr<service_ws>> lservices;
@@ -718,7 +738,7 @@ namespace ngl
 		}
 	}
 
-	void asio_ws::accept_handle(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error)
+	void asio_ws::accept_handle(bool av4, const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error)
 	{
 		if (error)
 		{
@@ -733,17 +753,24 @@ namespace ngl
 			begin_server_handshake(aservice);
 		}
 
-		if (m_acceptor != nullptr && m_acceptor->is_open())
-		{
-			accept();
-		}
+		accept(av4);
 	}
 
-	void asio_ws::accept()
+	void asio_ws::accept(bool av4)
 	{
-		if (m_acceptor == nullptr || !m_acceptor->is_open())
+		if (av4)
 		{
-			return;
+			if (m_acceptor_v4 == nullptr || !m_acceptor_v4->is_open())
+			{
+				return;
+			}
+		}
+		else
+		{
+			if (m_acceptor_v6 == nullptr || !m_acceptor_v6->is_open())
+			{
+				return;
+			}
 		}
 
 		const std::shared_ptr<service_ws> lservice = create_service();
@@ -752,12 +779,24 @@ namespace ngl
 			return;
 		}
 
-		m_acceptor->async_accept(lservice->socket(),
-			[this, lservice](const basio_errorcode& error)
-			{
-				accept_handle(lservice, error);
-			}
-		);
+		if (av4)
+		{
+			m_acceptor_v4->async_accept(lservice->socket(),
+				[this, lservice, av4](const basio_errorcode& error)
+				{
+					accept_handle(av4, lservice, error);
+				}
+			);
+		}
+		else
+		{
+			m_acceptor_v6->async_accept(lservice->socket(),
+				[this, lservice, av4](const basio_errorcode& error)
+				{
+					accept_handle(av4, lservice, error);
+				}
+			);
+		}		
 	}
 
 	void asio_ws::start(const std::shared_ptr<service_ws>& aservice)

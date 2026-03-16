@@ -94,7 +94,7 @@ namespace ngl
 
 		void accept_handle(bool aisv4, const std::shared_ptr<service_tcp>& aservice, const basio_errorcode& error);
 
-		void accept(bool aisv4);
+		void accept(bool av4);
 
 		void start(const std::shared_ptr<service_tcp>& aservice);
 	public:

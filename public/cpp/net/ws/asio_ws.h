@@ -47,7 +47,8 @@ namespace ngl
 		using map_ipport = std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>;
 		using map_close = std::unordered_map<i32_sessionid, std::function<void()>>;
 
-		std::shared_ptr<basio_tcpacceptor> m_acceptor = nullptr;
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4 = nullptr;		// 用于支持ipv4
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6 = nullptr;		// 用于支持ipv6
 		i16_port m_port = 0;
 		bool m_use_tls = false;
 		ws_callback m_fun = nullptr;
@@ -117,8 +118,8 @@ namespace ngl
 		bool queue_send(i32_sessionid asessionid, const ws_send_node& anode);
 		void do_send(const std::shared_ptr<service_ws>& aservice, const std::shared_ptr<std::list<ws_send_node>>& alist);
 		void handle_write(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error, const ws_send_node& anode);
-		void accept_handle(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error);
-		void accept();
+		void accept_handle(bool av4, const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error);
+		void accept(bool av4);
 		void start(const std::shared_ptr<service_ws>& aservice);
 		void close_session(i32_sessionid sessionid, bool agraceful, bool anotifyclose, bool anotifycallback);
 		void close_socket(basio_iptcpsocket& asocket);
