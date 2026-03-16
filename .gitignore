@@ -11,6 +11,8 @@ public/csharp/NodeConsoleApp1
 build
 build_codex
 build_codex_vs
+client
+doc
 .vs/
 .idea/
 .vscode/
