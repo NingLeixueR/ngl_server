@@ -87,7 +87,7 @@ namespace ngl
 
 	void nready::set_ready(enum_ready aready, const std::function<bool()>& afun)
 	{
-		m_readyfun[aready] = afun;
+		m_readyfun.insert_or_assign(aready, afun);
 	}
 
 	void nready::set_readybycustom(const std::function<bool()>& afun)
@@ -103,7 +103,7 @@ namespace ngl
 			log_error()->print("set_readybycustom fail [{}:{}]", m_custom, (int32_t)lvalue);
 			return;
 		}
-		m_readyfun[lvalue] = afun;
+		m_readyfun.insert_or_assign(lvalue, afun);
 		++m_custom;
 	}
 
@@ -248,7 +248,7 @@ namespace ngl
 			log_error()->print("[{}] set_db_component failed, acomponent == nullptr", (nguid)id_guid());
 			return;
 		}
-		m_dbcomponent[acomponent->type()] = acomponent;
+		m_dbcomponent.insert_or_assign(acomponent->type(), acomponent);
 	}
 
 	void actor_base::db_component_init_data()
@@ -359,7 +359,7 @@ namespace ngl
 
 	void actor_base::kcp_setindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex)
 	{
-		m_kcpindex[aserverid].m_data[aenum] = akcpindex;
+		m_kcpindex[aserverid].m_data.insert_or_assign(aenum, akcpindex);
 	}
 
 	std::optional<i16_port> actor_base::kcp_index(i32_serverid aserverid, pbnet::ENUM_KCP aenum)
