@@ -70,12 +70,29 @@ long long benchmark_us(TFUN&& afun)
 }
 }
 
-TEST(XmlNodeRuntimeTest, BootstrapConfigLoadsWithoutOptionalWssSection)
+TEST(XmlNodeRuntimeTest, XmlPopUsesDefaultsWhenOptionalWssSectionMissing)
 {
-	ASSERT_FALSE(nconfig.config_file().empty());
-	EXPECT_TRUE(nconfig.wss().m_certificate_chain.empty());
-	EXPECT_TRUE(nconfig.wss().m_private_key.empty());
-	EXPECT_TRUE(nconfig.wss().m_ca_certificates.empty());
+	static constexpr char kXml[] = R"xml(
+<xmlnode>
+	<db db="1" ip="127.0.0.1" port="5432" account="postgres" passworld="123456" dbname="lbtest"/>
+	<public>
+		<data key="logline">1</data>
+	</public>
+</xmlnode>
+)xml";
+
+	tinyxml2::XMLDocument document;
+	ASSERT_EQ(document.Parse(kXml), tinyxml2::XML_SUCCESS);
+
+	auto* root = document.FirstChildElement("xmlnode");
+	ASSERT_NE(root, nullptr);
+
+	ngl::xmlnode config;
+	ASSERT_TRUE(config.xml_pop(root));
+	EXPECT_TRUE(config.wss().m_certificate_chain.empty());
+	EXPECT_TRUE(config.wss().m_private_key.empty());
+	EXPECT_TRUE(config.wss().m_ca_certificates.empty());
+	EXPECT_EQ(config.wss().m_verify_peer, 1);
 }
 
 TEST(XmlNodeRuntimeTest, CrossDbSettingsRemainAvailableAfterLoad)
