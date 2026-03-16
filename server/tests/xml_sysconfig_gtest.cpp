@@ -70,6 +70,15 @@ long long benchmark_us(TFUN&& afun)
 }
 }
 
+TEST(XmlNodeRuntimeTest, BootstrapConfigLoadsConfiguredWssSection)
+{
+	ASSERT_FALSE(nconfig.config_file().empty());
+	EXPECT_FALSE(nconfig.wss().m_certificate_chain.empty());
+	EXPECT_FALSE(nconfig.wss().m_private_key.empty());
+	EXPECT_FALSE(nconfig.wss().m_ca_certificates.empty());
+	EXPECT_EQ(nconfig.wss().m_verify_peer, true);
+}
+
 TEST(XmlNodeRuntimeTest, XmlPopUsesDefaultsWhenOptionalWssSectionMissing)
 {
 	static constexpr char kXml[] = R"xml(
@@ -92,7 +101,7 @@ TEST(XmlNodeRuntimeTest, XmlPopUsesDefaultsWhenOptionalWssSectionMissing)
 	EXPECT_TRUE(config.wss().m_certificate_chain.empty());
 	EXPECT_TRUE(config.wss().m_private_key.empty());
 	EXPECT_TRUE(config.wss().m_ca_certificates.empty());
-	EXPECT_EQ(config.wss().m_verify_peer, 1);
+	EXPECT_EQ(config.wss().m_verify_peer, true);
 }
 
 TEST(XmlNodeRuntimeTest, CrossDbSettingsRemainAvailableAfterLoad)
