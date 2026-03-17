@@ -101,17 +101,6 @@ namespace ngl
 		return true;
 	}
 
-	template <typename T>
-	void gcmd<T>::execute(std::shared_ptr<mforward<ngl::np_gm_response>>& apro)
-	{
-		if (m_actor == nullptr || m_actor->id_guid() != actor_gm::instance().id_guid())
-		{
-			tools::no_core_dump();
-			return;
-		}
-		actor_gm::sendtophp((i32_sessionid)apro->identifier(), *apro->data());
-	}
-
 	bool actor_gm::timer_handle(const message<np_timerparm>& adata)
 	{
 		return true;

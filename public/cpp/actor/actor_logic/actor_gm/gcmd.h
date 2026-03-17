@@ -50,7 +50,19 @@ namespace ngl
 		{}
 
 		// [Actor_gm.cpp]in
-		void execute(std::shared_ptr<mforward<ngl::np_gm_response>>& apro);
+		void execute(std::shared_ptr<mforward<ngl::np_gm_response>>& apro)
+		{
+			// Keep the template implementation in the header so unity grouping does
+			// not hide it from other translation units that instantiate gcmd<T>.
+			if (m_actor == nullptr || nguid::type(m_actor->id_guid()) != ACTOR_GM)
+			{
+				tools::no_core_dump();
+				return;
+			}
+
+			log_error()->print("gm2php [{}]", apro->data()->m_json);
+			actor::send((i32_sessionid)apro->identifier(), *apro->data(), nguid::make(), nguid::make());
+		}
 
 		~gcmd()
 		{
