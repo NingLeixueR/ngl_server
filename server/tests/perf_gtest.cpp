@@ -387,9 +387,9 @@ TEST(XargInfoPerfTest, BoolLookupBenchmark)
 	volatile int sink = 0;
 
 	const long long legacy_us = benchmark_us([&]() {
-		bool value = false;
 		for (int i = 0; i < kIterations; ++i)
 		{
+			bool value = false;
 			if (legacy_parse_bool(info.data().at("flag"), value) && value)
 			{
 				++sink;
@@ -398,9 +398,9 @@ TEST(XargInfoPerfTest, BoolLookupBenchmark)
 	});
 
 	const long long optimized_us = benchmark_us([&]() {
-		bool value = false;
 		for (int i = 0; i < kIterations; ++i)
 		{
+			bool value = false;
 			if (info.find("flag", value) && value)
 			{
 				++sink;
