@@ -17,6 +17,7 @@ namespace
 {
 	struct node_bootstrap_options
 	{
+		// Optional node-specific startup toggles used by start_node().
 		std::set<pbnet::ENUM_KCP> m_kcp_types;
 		bool m_use_actor_client = true;
 		bool m_create_default_log_actor = true;
@@ -25,12 +26,14 @@ namespace
 
 	struct robot_test_plan
 	{
+		// Parallel arrays: each delay is followed by one command token list.
 		std::vector<int> m_interval_ms;
 		std::vector<std::vector<std::string>> m_commands;
 	};
 
 	struct robot_test_state
 	{
+		// Console thread updates the plan while the main loop replays it.
 		std::atomic_bool m_enabled = false;
 		std::mutex m_mutex;
 		robot_test_plan m_plan;
@@ -53,6 +56,8 @@ namespace
 	template <pbdb::ENUM_DB TDbType, typename TRecord>
 	void seed_db_record(const TRecord& record)
 	{
+		// Keep the seed helpers backend-agnostic so tests and bootstrap scripts work with
+		// either MySQL or PostgreSQL.
 		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
 		{
 			ngl::ndbtab<TDbType, TRecord, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, record);
@@ -77,6 +82,7 @@ namespace
 	{
 		ngl::log_error()->print("[{}] start", node_name);
 
+		// init_server wires up protocols, networking and the actor scheduler.
 		startup_error rc = init_server(nconfig.nodeid(), options.m_kcp_types, tcp_port);
 		if (rc != startup_error::ok)
 		{
@@ -97,6 +103,7 @@ namespace
 
 		if (options.m_register_actor_server && options.m_use_actor_client)
 		{
+			// Once all singleton actors exist locally, publish them to the route layer.
 			ngl::actor_client::instance().actor_server_register();
 		}
 
@@ -177,6 +184,7 @@ namespace
 
 		if (equals_ignore_case_ascii(tokens[0], "test"))
 		{
+			// Replace the replay plan with a single repeating command.
 			int delay_ms = 0;
 			if (tokens.size() < 3 || !try_parse_int(tokens[1], delay_ms))
 			{
@@ -192,6 +200,7 @@ namespace
 
 		if (equals_ignore_case_ascii(tokens[0], "tests"))
 		{
+			// Append one more delayed command to the current replay plan.
 			int delay_ms = 0;
 			if (tokens.size() < 3 || !try_parse_int(tokens[1], delay_ms))
 			{
@@ -206,6 +215,7 @@ namespace
 
 		if (equals_ignore_case_ascii(tokens[0], "notest"))
 		{
+			// Clear the replay plan entirely.
 			std::scoped_lock lock(state.m_mutex);
 			state.m_plan = {};
 			state.m_enabled.store(false, std::memory_order_release);
@@ -214,6 +224,7 @@ namespace
 
 		if (equals_ignore_case_ascii(tokens[0], "start"))
 		{
+			// Resume replay without modifying the stored plan.
 			state.m_enabled.store(true, std::memory_order_release);
 			return true;
 		}
@@ -245,6 +256,7 @@ namespace ngl_runtime
 		robot_launch_request request;
 		if (argc <= 4)
 		{
+			// No account arguments means the robot will read commands interactively.
 			request.mode = robot_launch_mode::interactive;
 			return request;
 		}
@@ -255,6 +267,7 @@ namespace ngl_runtime
 
 		if (argc == 5)
 		{
+			// One extra argument maps to the legacy "login <account>" shortcut.
 			request.mode = robot_launch_mode::login;
 			request.command = std::format("login {}", argv[4]);
 			return request;
@@ -262,6 +275,7 @@ namespace ngl_runtime
 
 		if (argc >= 7 && argv[5] != nullptr && argv[6] != nullptr)
 		{
+			// Three extra arguments map to the legacy batched login flow.
 			request.mode = robot_launch_mode::logins;
 			request.command = std::format("logins {} {} {}", argv[4], argv[5], argv[6]);
 		}
@@ -275,6 +289,7 @@ namespace ngl_runtime
 			return {};
 		}
 
+		// The existing command parser expects single-space separators only.
 		ngl::tools::erase_repeat(line, ' ');
 		std::vector<std::string> tokens;
 		ngl::tools::splite(line.c_str(), " ", tokens);
@@ -285,6 +300,7 @@ namespace ngl_runtime
 	{
 		param.clear();
 
+		// The endpoint expects the scalar fields as flat query params.
 		ngl::ncurl::param(param, "id", server.m_id);
 		ngl::ncurl::param(param, "name", ngl::tools::url_encode(server.m_name));
 		ngl::ncurl::param(param, "area", server.m_area);
@@ -314,6 +330,7 @@ namespace ngl_runtime
 			net_value.m_ip = item.m_ip;
 			net_value.m_nip = item.m_nip;
 			net_value.m_port = item.m_port;
+			// The network list is encoded as a small JSON object and then URL-escaped.
 			ngl::njson::push(net_json, { kNetNames[type_index] }, net_value);
 		}
 
@@ -343,7 +360,7 @@ void init_DB_ACCOUNT()
 	init_DB_ACCOUNT("wac", (1 * DEF_COUNT) + 1);
 }
 
-//DB_ROLE
+// Seed demo role records.
 void init_DB_ROLE(const char* aname, int beg)
 {
 	for (int i = beg; i < beg + DEF_COUNT; ++i)
@@ -374,7 +391,7 @@ void init_DB_ROLE()
 	init_DB_ROLE(lstr.c_str(), (1 * DEF_COUNT) + 1);
 }
 
-//DB_BAG
+// Seed demo bag records.
 void init_DB_BAG(const char* aname, int beg)
 {
 	(void)aname;
@@ -423,7 +440,7 @@ void init_DB_TASK()
 	init_DB_TASK("wac", (1 * DEF_COUNT) + 1);
 }
 
-//DB_MAIL
+// Seed demo mailbox records.
 void init_DB_MAIL(int beg)
 {
 	for (int i = beg; i < beg + DEF_COUNT; ++i)
@@ -727,7 +744,7 @@ startup_error start_cross(int* tcp_port)
 startup_error start_pushserverconfig(int* tcp_port)
 {
 	(void)tcp_port;
-	// Serverconfigon lbgmsys
+	// This process only pushes tab_servers data to the external GM service.
 	ngl::xarg_info* lpublicxml = nconfig.info();
 	std::string lgmurl;
 	if (!lpublicxml->find("gmurl", lgmurl))
@@ -742,6 +759,8 @@ startup_error start_pushserverconfig(int* tcp_port)
 	lpushserver = lgmurl + "/" + lpushserver;
 	bool lhas_invalid_network = false;
 
+	// Push every configured server entry independently so one bad row does not block logging
+	// for the rest of the batch.
 	ngl::ttab_servers::instance().foreach_server([&lpushserver, &lhas_invalid_network](ngl::tab_servers* aserver)
 		{
 			auto lhttp = ngl::ncurl::http();
@@ -948,6 +967,7 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 
 			if (request.mode == ngl_runtime::robot_launch_mode::interactive)
 			{
+				// Pure interactive mode behaves like the legacy robot shell.
 				while (true)
 				{
 					std::vector<std::string> tokens = read_console_tokens();
@@ -969,6 +989,7 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 			robot_test_state state;
 			std::thread([&state]()
 				{
+					// Console input can either mutate the replay plan or execute a normal command immediately.
 					while (true)
 					{
 						std::vector<std::string> tokens = read_console_tokens();
@@ -991,6 +1012,7 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 					continue;
 				}
 
+				// Snapshot the replay plan so the console thread can keep editing the next iteration.
 				const robot_test_plan plan = copy_robot_test_plan(state);
 				if (plan.m_interval_ms.empty() || plan.m_commands.empty())
 				{
@@ -1023,6 +1045,7 @@ int ngl_main(int argc, char** argv)
 #endif
 
 	startup_error rc = startup_error::ok;
+	// Each node type shares the same bootstrap path but installs a different actor set.
 	switch (nconfig.nodetype())
 	{
 	case ngl::DB:

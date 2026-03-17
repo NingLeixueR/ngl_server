@@ -31,6 +31,8 @@ namespace ngl
 			std::unordered_map<i32_serverid, i32_sessionid>& aserver_map,
 			std::unordered_map<i32_sessionid, i32_serverid>& asession_map)
 		{
+			// Reserve both maps together so the bi-directional update stays cheap and avoids
+			// rehash churn during bursts of reconnects.
 			const std::size_t ltarget_size = aserver_map.size() + 1;
 			const std::size_t lreserve_threshold = static_cast<std::size_t>(aserver_map.bucket_count() * aserver_map.max_load_factor());
 			if (ltarget_size <= lreserve_threshold)
@@ -69,12 +71,14 @@ namespace ngl
 
 			if (const auto lserver_it = m_server.find(aserverid); lserver_it != m_server.end())
 			{
+				// Replace stale mappings so each server id owns at most one live session.
 				m_session.erase(lserver_it->second);
 				m_server.erase(lserver_it);
 			}
 
 			if (const auto lsession_it = m_session.find(asession); lsession_it != m_session.end())
 			{
+				// Also enforce the reverse invariant: one session belongs to one server id.
 				m_server.erase(lsession_it->second);
 				m_session.erase(lsession_it);
 			}
@@ -95,6 +99,7 @@ namespace ngl
 			lock_write(m_mutex);
 			if (const auto lsession_it = m_session.find(asession); lsession_it != m_session.end())
 			{
+				// Remove both directions under the same lock to keep the mapping consistent.
 				lserverid = lsession_it->second;
 				m_server.erase(lserverid);
 				m_session.erase(lsession_it);

@@ -44,19 +44,19 @@ void find(
 	std::set<std::string>& avec2
 )
 {
-	namespace fs = std::filesystem; // Translated comment.
+	namespace fs = std::filesystem;
 	fs::path rootPath(targetPath);
-	// Path path( path )
+	// Normalize to an absolute path so recursive traversal is deterministic.
 	fs::path absRootPath = fs::absolute(rootPath);
 
-	// : Directory_iterator, recursive+
+	// Recursively walk the directory tree using manual recursion.
 	fs::directory_iterator endIter;
 	for (fs::directory_iterator iter(absRootPath); iter != endIter; ++iter)
 	{
-		// Convert / stringpath( Windows/Linux)
-		std::string fullPath = iter->path().generic_string(); // Generic_string()automatically \ /
+		// generic_string() keeps path separators stable across Windows and Linux.
+		std::string fullPath = iter->path().generic_string();
 
-		// Third_partydirectory
+		// Skip third-party headers when gathering local project headers.
 		if (fs::is_directory(*iter))
 		{
 			if (atxt == ".h")
@@ -67,47 +67,40 @@ void find(
 			}
 			
 
-			// : Path(../../, )
+			// Keep the discovered directory path so later generated files can reuse it.
 			std::string relPath;
-			const std::string prefix = "../../";
-
-			//if (fullPath.size() >= prefix.size()) {
-			// RelPath = fullPath.substr(prefix.size()); // fromprefix after
-			//}
-			//else {
-				relPath = fullPath; // Path
-			//}
+			relPath = fullPath;
 			std::cout << "dir:[" << relPath << "]" << std::endl;
 			adir.insert(relPath);
 
-			// Handle directory(this iterator, )
+			// Recurse into subdirectories.
 			find(awz, atxt, fullPath, adir, avec1, avec2);
 		}
 		else
 		{
 			std::cout << "file:[" << fullPath << "]" << std::endl;
-			// : Filesystem getfile,
+			// Extract the bare file name for suffix-based filtering.
 			std::string fileName = iter->path().filename().generic_string();
 
 			if (is_sname(fileName, atxt))
 			{
-				// Readfile ( )
+				// Record the line count so the generated unity-build file can order includes.
 				ngl::readfile lrf(fullPath);
 				int lmaxline = lrf.get_maxline();
 
-				// Avec1 path
+				// Use either the full path or the plain file name as the aggregation key.
 				std::string mapKey;
 				if (awz) {
-					// Awz=true: path
+					// awz=true: store the full path.
 					mapKey = fullPath;
 				}
 				else {
-					// Awz=false: file
+					// awz=false: store only the file name.
 					mapKey = fileName;
 				}
-				avec1[mapKey] = lmaxline; // [] Insert,
+				avec1[mapKey] = lmaxline;
 
-				// Avec2: file path( )
+				// Keep a separate list of local source files for later header/banner updates.
 				if (fullPath.find("third_party") == std::string::npos) {
 					avec2.insert(fullPath);
 				}
@@ -154,6 +147,7 @@ int main(int argc, char** argv)
 			ngl::writefile lfile(cname);
 			lfile.write(astream.str());
 	};
+	// Build the generated unity-build source body and stamp it with a small header.
 	auto lmalloc = [/*&lmapinclude*/]()->std::stringstream*
 		{
 			std::stringstream* m_stream = new std::stringstream();
@@ -166,6 +160,7 @@ int main(int argc, char** argv)
 		};
 
 
+	// Convert an absolute source path into the include path rooted at public/cpp.
 	auto lfunksb = [](const std::string& item)
 		{
 			const std::string delimiter = "cpp/";
@@ -239,14 +234,14 @@ int main(int argc, char** argv)
 	std::string lhead = R"(/*
 * Copyright (c) [2020-2025] NingLeixueR
 * 
-* 项目名称：ngl_server
-* 项目地址：https://github.com/NingLeixueR/ngl_server
+* Project name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
 * 
-* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
-* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
-* 但需保留原始版权和许可声明。
+* This file is part of the ngl_server project and is distributed under the MIT License.
+* You may use, modify, and distribute this project under the license, including commercial use,
+* but you must retain the original copyright and license notice.
 * 
-* 许可详情参见项目根目录下的 LICENSE 文件：
+* For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 )";
@@ -278,7 +273,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-	// Allfileconvert utf8
+	// Convert all collected source files to UTF-8.
 	std::cout << "to utf8..." << std::endl;
 	for (const std::string& item : lset_head)
 	{

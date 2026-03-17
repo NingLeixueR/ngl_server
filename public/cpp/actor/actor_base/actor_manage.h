@@ -37,18 +37,18 @@ namespace ngl
 		actor_manage& operator=(const actor_manage&) = delete;
 
 		using ptrnthread = std::shared_ptr<nthread>;
-		std::deque<ptrnthread>		m_workthreads;		// Thread
-		std::deque<ptrnthread>		m_workthreadscopy;	// Thread( initialize copy, )
-		bool						m_suspend = false;	// Whether
-		std::deque<ptrnthread>		m_suspendthreads;	// Thread
-		std::jthread				m_thread;			// Managethread
-		i32_threadsize				m_threadnum = -1;	// Thread
-		std::map<nguid, ptractor>	m_actorbyid;		// Indexactor
-		std::map<nguid, ptractor>	m_actorbroadcast;	// Supportbroadcast actor
-		std::deque<ptractor>		m_actorlist;		// Task actorlist
-		std::set<i16_actortype>		m_actortype;		// Pack whichactortype
-		std::map<nguid, std::function<void()>>			m_delactorfun;	// Deleteactorafterneed toexecute // (:delete actor state, after delete)
-		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;	// Typeindexactor
+		std::deque<ptrnthread>		m_workthreads;		// Idle workers available for scheduling.
+		std::deque<ptrnthread>		m_workthreadscopy;	// Full worker set kept for bookkeeping/debugging.
+		bool						m_suspend = false;	// Freeze dispatch while world-state critical sections run.
+		std::deque<ptrnthread>		m_suspendthreads;	// Workers parked during suspension.
+		std::jthread				m_thread;			// Dispatcher thread that matches actors to workers.
+		i32_threadsize				m_threadnum = -1;	// Configured worker count.
+		std::map<nguid, ptractor>	m_actorbyid;		// Fast lookup by full actor guid.
+		std::map<nguid, ptractor>	m_actorbroadcast;	// Actors that receive periodic broadcast ticks.
+		std::deque<ptractor>		m_actorlist;		// Actors waiting for a worker.
+		std::set<i16_actortype>		m_actortype;		// Distinct actor types currently registered.
+		std::map<nguid, std::function<void()>>			m_delactorfun;	// Deferred callbacks to run after in-flight actors finish.
+		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;	// Lookup by actor type, then guid.
 
 		std::shared_mutex			m_mutex;
 		ngl::sem					m_sem;
@@ -56,17 +56,16 @@ namespace ngl
 		actor_manage();
 		~actor_manage();
 
-		// # Nosafe_ function table" lock", do not allow
-		// # Guidgetactorinstance
+		// Internal helpers require the caller to already hold m_mutex.
 		ptractor* nosafe_get_actor(const nguid& aguid);
 
-		// # Guidgetactorinstance,if node tothis actorinstance, nodetypeget(actor_client/actor_server) guid, used toforwarding
+		// Resolve a local actor or fall back to the route actor for forwarded traffic.
 		ptractor* nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram);
 
-		// # Toactorinstance task
+		// Push work into an actor queue and schedule it if the actor was idle.
 		void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram);
 
-		// # Actor_manage actorinstancehandletask threadinstance
+		// Dispatcher loop: pair queued actors with available workers.
 		void run(std::stop_token astop);
 	public:
 		static actor_manage& instance()
@@ -75,16 +74,16 @@ namespace ngl
 			return ltemp;
 		}
 
-		// # Get
+		// Return the actor id used as the node-level routing endpoint.
 		nguid get_clientguid();
 
-		// # Initialize set thread
+		// Create the worker pool once during startup.
 		void init(i32_threadsize apthreadnum);
 
-		// # Get actortype
+		// Return the set of currently registered actor types.
 		void get_type(std::vector<i16_actortype>& aactortype);
 
-		// # Nodetypeget(actor_client/actor_server) guid
+		// Resolve the routing actor for this node type.
 		nguid nodetypebyguid();
 
 		// # MessageT after tospecifiedguid actor
@@ -95,46 +94,43 @@ namespace ngl
 			push_task_id(aguid, lparm);
 		}
 
-		// # Addactor
+		// Register a newly created actor instance.
 		bool add_actor(actor_base* apactor, const std::function<void()>& afun);
 
-		// # Addactor
+		// Register a newly created actor instance.
 		bool add_actor(const ptractor& apactor, const std::function<void()>& afun);
 
-		// # Removeactor
+		// Remove an actor and optionally run a callback after release.
 		void erase_actor(const nguid& aguid, const std::function<void()>& afun = nullptr);
 
-		// # Whether actor
+		// Return whether the actor is still registered.
 		bool is_have_actor(const nguid& aguid);
 
-		// # Thread actoraddtom_actorlist
+		// Return a worker to the pool and reschedule the actor if more work remains.
 		void push(const ptractor& apactor, ptrnthread atorthread = nullptr);
 
-		// # Toactorinaddtask
+		// Route work to one actor or a set of actors.
 		void push_task_id(const nguid& aguid, handle_pram& apram);
 		void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram);
 
-		// # To type actorinaddtask
+		// Broadcast work to all actors of a given type.
 		void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
-		// # Tocurrent allactorbroadcastmessage
+		// Deliver the periodic broadcast task to actors that opted in.
 		void broadcast_task(handle_pram& apram);
 
-		// # Allthread, execute ( datatable)
+		// Pause and resume dispatch while critical shared state is updated.
 		void statrt_suspend_thread();
 		void finish_suspend_thread();
 
-		// # Getactor
+		// Return the number of registered actors.
 		int32_t actor_count();
 
-		// # Getactor stat data
+		// Collect scheduler statistics grouped by actor type.
 		void get_actor_stat(msg_actor_stat& adata);
 	};
 
-	// # Actor_manage
-	// # Automatically
-	// # Actor_manage.statrt_suspend_thread
-	// # Actor_manage.finish_suspend_thread
+	// RAII helper that pauses actor dispatch for the lifetime of the object.
 	class actor_suspend
 	{
 		actor_suspend(const actor_suspend&) = delete;
@@ -144,7 +140,7 @@ namespace ngl
 		~actor_suspend();
 	};
 
-	// # Actor automaticallyregisterprotocolandautomaticallyaddactor_manage
+	// Lazily create singleton actors, then register their protocol handlers once.
 	template <typename T>
 	T& actor_instance<T>::instance()
 	{

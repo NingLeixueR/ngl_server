@@ -36,6 +36,7 @@ namespace
 
 	void apply_server_identity(const ngl_startup::context& ctx, const ngl::tab_servers& tab)
 	{
+		// Compose the runtime node id and a readable process name from tab_servers metadata.
 		nconfig.set_nodeid(tab.m_id, ctx.tcount);
 		if (ctx.area < 0)
 		{
@@ -69,17 +70,20 @@ namespace ngl_startup
 	{
 		ctx = context{};
 
+		// Expected CLI shape: <program> <node_name> <area> <tcount> [extra args...].
 		if (argc < 4 || argv == nullptr)
 		{
 			return { startup_error::invalid_args, "argc < 4" };
 		}
 
+		// Parse the minimal identity first so later failures can be logged with context.
 		ctx.node_name = argv[1] == nullptr ? "" : argv[1];
 		if (!parse_startup_int(argv[2], ctx.area) || !parse_startup_int(argv[3], ctx.tcount))
 		{
 			return { startup_error::invalid_args, "area/tcount parse failed" };
 		}
 
+		// Resolve node type from the symbolic server name before loading config files.
 		nconfig.init();
 		if (!nconfig.set_server(ctx.node_name.c_str()))
 		{
@@ -88,6 +92,7 @@ namespace ngl_startup
 		}
 		ctx.node_type = static_cast<int>(nconfig.nodetype());
 
+		// Each process reads its own config variant, for example "game_1".
 		const std::string config_name = std::format("{}_{}", ctx.node_name, ctx.tcount);
 		if (!nconfig.load("./config", config_name))
 		{
@@ -98,8 +103,10 @@ namespace ngl_startup
 		}
 		ctx.config_file = nconfig.config_file();
 
+		// CSV tables are namespaced by node name so test and tool processes can load different views.
 		ngl::csv_base::set_path("./csv", ctx.node_name);
 
+		// tab_servers is the authoritative source for network layout and thread counts.
 		const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab(ctx.node_name, ctx.area);
 		if (tab == nullptr)
 		{

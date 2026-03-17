@@ -72,6 +72,7 @@ namespace ngl
 		const uint32_t lready = static_cast<uint32_t>(aready);
 		for (int32_t i = 0; i < 32; ++i)
 		{
+			// Walk the requested bit mask from low to high until there are no more bits set.
 			if ((lready >> static_cast<uint32_t>(i)) != 0u)
 			{
 				if (!check_readybit(i, aready))
@@ -123,6 +124,8 @@ namespace ngl
 	{
 		if (aparm.m_manage_dbclient)
 		{
+			// Actors with DB-backed state expose a ready bit that flips only after all
+			// registered dbclient components finish loading.
 			m_dbclient = std::make_unique<nmanage_dbclient>(this);
 			m_dbclient->set_loadfinish_function([this](pbdb::ENUM_DB atype, enum_dbstat astat)
 				{
@@ -137,6 +140,8 @@ namespace ngl
 		}
 		if (aparm.m_enscript != enscript_none)
 		{
+			// Script-enabled actors allocate a per-actor VM object and inject the actor guid
+			// so scripts can address their owner without extra plumbing.
 			m_enscript = aparm.m_enscript;
 			const char* lactorname = em<ENUM_ACTOR>::name(type());
 			m_script = nscript_manage::malloc(m_enscript, lactorname, std::format("{}.lua", lactorname).c_str());
@@ -335,6 +340,8 @@ namespace ngl
 			.m_count = 0x7fffffff,
 			.m_fun = [](const wheel_node*)
 			{
+				// Broadcast is implemented as a synthetic actor message so regular actor
+				// sequencing rules still apply.
 				auto pro = std::make_shared<np_actor_broadcast>();
 				handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(nguid::make(), nguid::make(), pro);
 				actor_manage::instance().broadcast_task(lpram);
@@ -387,7 +394,8 @@ namespace ngl
 	bool actor_base::kcp_connect(i16_port auport, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const
 	{
 		if (nconfig.nodetype() != ROBOT)
-		{// Do not allowserver kcpconnection
+		{
+			// Active outbound KCP dialing is only used by robot clients in this codebase.
 			return false;
 		}
 		auto lpukcp = nkcp::instance().kcp(auport);

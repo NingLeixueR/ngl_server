@@ -48,37 +48,37 @@ namespace ngl
 
 	struct actorparmbase
 	{
-		ENUM_ACTOR		m_type				= nguid::none_type();				// Actortype
-		i16_area		m_area				= tab_self_area;					// Area
-		i32_actordataid m_id				= nguid::none_actordataid();		// Dataid
-		bool			m_manage_dbclient	= false;							// Whether database
-		enscript		m_enscript			= enscript_none;					// Scriptsupport
+		ENUM_ACTOR		m_type				= nguid::none_type();				// Actor type.
+		i16_area		m_area				= tab_self_area;					// Logical area/shard.
+		i32_actordataid m_id				= nguid::none_actordataid();		// Actor-local numeric id.
+		bool			m_manage_dbclient	= false;							// Create the dbclient manager for this actor.
+		enscript		m_enscript			= enscript_none;					// Optional scripting backend.
 	};
 
-	// # Actor state
+	// Scheduler-visible actor lifecycle state.
 	enum actor_stat
 	{
 		actor_stat_init,  // Initialization stage
 		actor_stat_free,  // Idle state
-		actor_stat_list,  // - Thread actorqueue
-		actor_stat_run,	  // -Online inexecutetask
+		actor_stat_list,  // Queued in actor_manage and waiting for a worker.
+		actor_stat_run,	  // Currently executing on a worker thread.
 		actor_stat_close, // Closed state
 	};
 
-	// # Message
+	// Strongly typed message envelope declared in handle_pram-related code.
 	template <typename T>
 	struct message;
 
-	// # "Ready"component
+	// Bit flags that gate whether an actor is ready to process work.
 	enum enum_ready
 	{
-		e_ready_all		= 0xFFFFFFFF,			// Alldatawhetherloadcomplete
-		e_ready_null	= 0x00000000,			// Does not need whetherloadcomplete
-		e_ready_db		= 0x00000001,			// Databasedataload
-		e_ready_nsp		= 0x00000002,			// Nspdatasynchronize
-		e_ready_custom	= 0x00008000,			// Ready
+		e_ready_all		= 0xFFFFFFFF,			// Require every registered gate to pass.
+		e_ready_null	= 0x00000000,			// Skip readiness checks.
+		e_ready_db		= 0x00000001,			// Database state loaded.
+		e_ready_nsp		= 0x00000002,			// NSP synchronization completed.
+		e_ready_custom	= 0x00008000,			// First custom readiness bit.
 
-		e_max_custom	= 10,					// Ready
+		e_max_custom	= 10,					// Maximum number of custom readiness gates.
 	};
 
 	/**
@@ -96,13 +96,13 @@ namespace ngl
 
 		bool check_readybit(int32_t anum, int32_t aready);
 	public:
-		// # Whetherready
+		// Return true when the requested readiness bits are satisfied.
 		bool is_ready(int32_t aready = e_ready_all);
 
-		// # Setreadyfunction
+		// Register a readiness predicate for a predefined readiness bit.
 		void set_ready(enum_ready aready, const std::function<bool()>& afun);
 
-		// # Set readyfunction
+		// Register a readiness predicate using the next available custom bit.
 		void set_readybycustom(const std::function<bool()>& afun);
 	};
 
@@ -142,118 +142,116 @@ namespace ngl
 
 	struct kcpport
 	{
+		// Remote KCP type to local endpoint index mapping.
 		std::map<pbnet::ENUM_KCP, i16_port> m_data;
 	};
 
 	class actor_base
 	{
-		nguid										m_guid = nguid::make();			// actor guid
-		std::unique_ptr<nmanage_dbclient>		m_dbclient = nullptr;			// Dbclientcomponentmanage
-		bool										m_isload = false;				// Datawhetherloadcomplete
-		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;					// Dbclientcomponent
+		nguid										m_guid = nguid::make();			// Immutable actor identity.
+		std::unique_ptr<nmanage_dbclient>		m_dbclient = nullptr;			// Optional DB component manager.
+		bool										m_isload = false;				// Whether this actor participates in DB loading.
+		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;					// Registered DB-backed subcomponents.
 
-		// # Time (allactor)broadcast
-		// # Can this broadcast need tohandle task,for example save data
-		static int									m_broadcast;					// Broadcast ( )
-		static int									m_broadcasttimer;				// Broadcast timerid
-		bool										m_isbroadcast = false;			// Whether broadcastmessage
+		// Shared periodic broadcast tick used by actors that opt in for maintenance work.
+		static int									m_broadcast;					// Broadcast interval in milliseconds.
+		static int									m_broadcasttimer;				// Timer id for the shared broadcast task.
+		bool										m_isbroadcast = false;			// Whether this actor receives broadcast ticks.
 				
-		nready										m_ready;						// "Ready"componentinstance
-		void*										m_script = nullptr;				// Scripting language support
-		enscript									m_enscript = enscript_none;		// Scriptsupport
+		nready										m_ready;						// Readiness gate collection.
+		void*										m_script = nullptr;				// Script runtime instance, if enabled.
+		enscript									m_enscript = enscript_none;		// Active scripting backend.
 
-		std::map<i32_serverid, kcpport>				m_kcpindex;
+		std::map<i32_serverid, kcpport>				m_kcpindex;					// Cached KCP routing metadata by server.
 	public:
 		explicit actor_base(const actorparmbase& aparm);
 
-		// # Get"ready"componentinstance
+		// Access the actor's readiness gate collection.
 		nready& ready();
 
-		// # Getnmanage_dbclientinstance
+		// Access the optional DB manager owned by this actor.
 		std::unique_ptr<nmanage_dbclient>& manage_dbclient();
 
-		// # Setdb_componentcomponent
+		// Register one DB-backed subcomponent with this actor.
 		void set_db_component(ndb_component* acomponent);
 
-		// # Initialize dataloadcompleteafter)
+		// Let all registered DB components populate their in-memory derived state.
 		void db_component_init_data();
 
-		// # Initializedb_component
+		// Initialize DB components either from persisted data or by creating fresh records.
 		void init_db_component(bool acreate);
 
-		// # Adddbclient
+		// Attach a concrete dbclient instance to the actor-level DB manager.
 		void add_dbclient(ndbclient_base* adbclient, i64_actorid aid);
 
-		// # Toactor_dbsenddatarequestafter return
+		// Handle a DB load response and feed the result into the actor's DB components.
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 		bool handle_db(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata);
 
 		virtual ~actor_base();
 
-		// # Initialize
-		// # Actor function
-		// # Let dbclientandactor bind
+		// Actor-specific startup hook. Derived classes normally bind dbclients here.
 		virtual void init() {/* Function,if base class */ }
 
-		// # Getactorstate
+		// Return the scheduler-visible actor state.
 		virtual actor_stat activity_stat() = 0;
 
-		// # Setactorstate
+		// Update the scheduler-visible actor state.
 		virtual void set_activity_stat(actor_stat astat) = 0;
 
-		// # Tasklistwhether
+		// Return whether the actor currently has pending tasks.
 		virtual bool list_empty() = 0;
 
-		// # Task
+		// Process the actor's pending work on the given worker thread.
 		virtual void actor_handle(i32_threadid athreadid) = 0;
 
-		// # Addtask
+		// Enqueue one new message/task for this actor.
 		virtual void push(handle_pram& apram) = 0;
 
-		// # Executehandle after
+		// Optional hook after one handle_pram item is processed.
 		virtual void handle_after(handle_pram&) {/* Function,if base class */ }
 
-		// # Actor this function dataloadcompleteafter
+		// Optional hook triggered when a DB table finishes loading.
 		virtual void loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat) {/* Function,if base class */ }
 
-		// # Deleteactor
+		// Destroy or recycle the actor implementation.
 		virtual void release() = 0;
 
-		// # Removeactorbefore
+		// Optional cleanup hook before the actor is removed from actor_manage.
 		virtual void erase_actor_before() {/* Function,if base class */ }
 
-		// # Savedbclient
+		// Flush DB-backed state through the actor's dbclient manager.
 		virtual void save();
 
-		// # Whether singleton
+		// Return whether the actor type is a singleton actor.
 		bool is_single()const;
 
-		// # Get the actor GUID
+		// Return the full actor guid object.
 		const nguid& guid()const;
 
-		// # Get the actor GUID i64_actorid
+		// Return the actor guid encoded as i64_actorid.
 		i64_actorid id_guid()const;
 
-		// # Get the actor GUID dataid
+		// Return the actor-local numeric id.
 		i32_actordataid id()const;
 
-		// # Get the actor GUID areaid
+		// Return the logical area/shard id.
 		i16_area area()const;
 
-		// # Get the actor GUID actor type
+		// Return the actor type enum.
 		ENUM_ACTOR type()const;
 
-		// # Removeactor
+		// Remove this actor instance from actor_manage.
 		virtual void erase_actor();
 
-		// # Removespecifiedactor
+		// Remove the specified actor from actor_manage.
 		static void erase_actor(const nguid& aguid);
 
 #pragma region nscript
-		// # Actorwhether script
+		// Return whether this actor has an active scripting runtime.
 		bool nscript_using()const;
 
-		// # Notify the script that DB data loading is complete
+		// Notify the script runtime that DB loading has finished.
 		bool nscript_db_loadfinish()const;
 
 		// # Toscript 1, csvdata 2, dbdata 3, nspdata)
@@ -291,40 +289,43 @@ namespace ngl
 		bool nscript_handle(const T& adata);
 #pragma endregion
 
-		// # Build a pack from the proto structure name and JSON message body
+		// Build a protocol pack from a proto name and JSON payload.
 		static std::shared_ptr<pack> jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// # Build the pack
+		// Build a protocol pack from a strongly typed message.
 		template <typename T>
 		static std::shared_ptr<pack> net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// # Tospecifiedconnectionsenddata
+		// Send an already-built pack through a specific session.
 		static bool send_pack(i32_sessionid asession, std::shared_ptr<pack>& apack);
 
-		// # Tospecifiedconnectionsenddata
+		// Serialize and send one message through a specific session.
 		template <typename T>
 		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 #pragma region send_server
-		// # Senddatatospecifiedserver
+		// Send one message to a specific server.
 		template <typename T>
 		static bool send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// # Toa group ofserversenddata
+		// Send one message to multiple servers.
 		template <typename T>
 		static bool send_server(const std::set<i32_serverid>& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// # Sendpacktospecifiedserver
+		// Send an already-built pack to a specific server.
 		static bool send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 #pragma endregion
 
 #pragma region kcp
+		// Cache which local KCP endpoint index corresponds to a remote server/type pair.
 		void kcp_setindex(i32_serverid aserverid, pbnet::ENUM_KCP aenum, int16_t akcpindex);
 
+		// Resolve the cached local KCP endpoint index for a remote server/type pair.
 		std::optional<i16_port> kcp_index(i32_serverid aserverid, pbnet::ENUM_KCP aenum);
 
+		// Convenience overload that derives the server id from tid/tcount.
 		std::optional<i16_port> kcp_index(int16_t aservertid, int16_t atcount, pbnet::ENUM_KCP aenum);
 
-		// # Kcpconnection
+		// Initiate an outbound KCP connection, primarily used by robot actors.
 		bool kcp_connect(i16_port auport, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const;
 
 		// # Send a pack to the specified actor through UDP/KCP
@@ -343,7 +344,7 @@ namespace ngl
 #pragma endregion
 
 #pragma region send_client
-		// # Get actor (actor_client/actor_server)
+		// Return the node-level routing actor (actor_client or actor_server).
 		static i64_actorid actorclient_guid();
 
 		// # Send data to a group of clients
@@ -388,28 +389,27 @@ namespace ngl
 		static void send_actor(const std::set<i64_actorid>& asetguid, const nguid& arequestguid, const std::shared_ptr<T>& adata);
 #pragma endregion
 
-		// # Set taskparameters
+		// Register a timer task for this actor.
 		int32_t set_timer(const np_timerparm& aparm);
 
-		// # Whethersupportbroadcast
+		// Return whether this actor participates in the shared broadcast tick.
 		bool isbroadcast()const;
 
-		// # Setwhethersupportbroadcast
+		// Enable or disable shared broadcast ticks for this actor.
 		void set_broadcast(bool aisbroadcast);
 
-		// # Broadcasttimer
+		// Start the shared broadcast timer once for the whole process.
 		static void start_broadcast();
 
-		// # Protocol
+		// Debug-print a handled message.
 		template <typename T>
 		void handle_print(const message<T>& adata)const;
 
-		//# actor_base::create 
-		// # Actor automatically
+		// Ensure static protocol registration runs once for a derived actor type.
 		template <typename TDerived>
 		static void first_nregister([[maybe_unused]] ENUM_ACTOR atype);
 
-		// # Used tocreate singletonactor
+		// Factory used by generated actor registration code and singleton startup.
 		static std::shared_ptr<actor_base> create(ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm = nullptr);
 	};
 

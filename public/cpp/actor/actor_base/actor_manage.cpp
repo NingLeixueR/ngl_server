@@ -63,6 +63,7 @@ namespace ngl
 	{
 		bool actor_is_unavailable(ngl::actor_stat astat) noexcept
 		{
+			// init/close states cannot accept new work and should never be queued.
 			return astat == ngl::actor_stat_close || astat == ngl::actor_stat_init;
 		}
 	}
@@ -77,6 +78,8 @@ namespace ngl
 		lpactor->push(apram);
 		if (lstat == actor_stat_free)
 		{
+			// Only transition free actors into the ready queue. Running/list actors will be
+			// rescheduled by the worker thread once they finish the current batch.
 			m_actorlist.push_back(lpactor);
 			lpactor->set_activity_stat(actor_stat_list);
 			if (!m_suspend && !m_workthreads.empty())
@@ -89,6 +92,8 @@ namespace ngl
 	bool actor_manage::add_actor(const ptractor& apactor, const std::function<void()>& afun)
 	{
 		const nguid& guid = apactor->guid();
+		// actor_client and actor_server are the routing actors themselves, so they do not
+		// announce their existence through the route actor.
 		const bool lneedsync = apactor->type() != ACTOR_CLIENT && apactor->type() != ACTOR_SERVER;
 		const nguid lrouteactor = nodetypebyguid();
 		bool lhasrouteactor = false;
@@ -110,7 +115,7 @@ namespace ngl
 		}
 		if (lneedsync)
 		{
-			// Newly added actor
+			// Notify the route actor so other nodes can discover the new actor location.
 			if (lhasrouteactor)
 			{
 				auto pro = std::make_shared<np_actornode_update_mass>(
@@ -133,6 +138,7 @@ namespace ngl
 		}
 		else
 		{
+			// Route actors become immediately available because nothing needs to sync them first.
 			apactor->set_activity_stat(actor_stat_free);
 		}
 		return true;
@@ -156,7 +162,7 @@ namespace ngl
 			nlock(m_mutex);
 			lhasrouteactor = m_actorbyid.contains(lrouteactor);
 		}
-		// Notifyactor_client deleteactor
+		// Inform the route actor first so remote nodes stop targeting this actor.
 		if (lhasrouteactor)
 		{
 			auto pro = std::make_shared<np_actornode_update_mass>(
@@ -200,6 +206,7 @@ namespace ngl
 
 			if (lpactor->activity_stat() == actor_stat_list)
 			{
+				// If the actor is waiting in the scheduler queue, remove it immediately.
 				auto litorfind = std::find_if(m_actorlist.begin(), m_actorlist.end(), [&aguid](const ptractor& ap)->bool
 					{
 						return aguid == ap->id_guid();
@@ -218,6 +225,7 @@ namespace ngl
 			}
 			else
 			{
+				// The actor is currently running, so delay the callback until the worker returns it.
 				if (afun != nullptr)
 				{
 					m_delactorfun.try_emplace(lpactor->id_guid(), afun);
@@ -250,6 +258,7 @@ namespace ngl
 			nlock(m_mutex);
 			if (atorthread != nullptr)
 			{
+				// Workers return themselves here after finishing an actor batch.
 				if (m_suspend)
 				{
 					m_suspendthreads.push_back(atorthread);
@@ -275,11 +284,13 @@ namespace ngl
 			{
 				if(!apactor->list_empty())
 				{
+					// More messages arrived while the actor was running, so queue it again.
 					m_actorlist.push_back(apactor);
 					apactor->set_activity_stat(actor_stat_list);
 				}
 				else
 				{
+					// No pending work left; the actor goes back to the idle pool.
 					apactor->set_activity_stat(actor_stat_free);
 				}
 			}
@@ -315,8 +326,8 @@ namespace ngl
 			{
 				return nullptr;
 			}
-			// Toactor_client/actor_server
-			// If actor_servernodeneed tosendtoactor_server
+			// Forwarded messages fall back to the node-level routing actor when the target
+			// actor does not exist on this process.
 			nguid lguid = nodetypebyguid();
 			lpactor = tools::findmap(m_actorbyid, lguid);
 			if (lpactor == nullptr)
@@ -354,11 +365,13 @@ namespace ngl
 			}
 			if ((*lpactor)->id_guid() == lnodetypeguid)
 			{
+				// Preserve the original mass-send payload only for the route actor.
 				lmass = true;
 				lpclient = *lpactor;
 				continue;
 			}
 
+			// Local actors should not see the remote mass-send metadata.
 			handle_pram llocal = handle_pram::shallow_copy_without_massactors(apram);
 			nosafe_push_task_id(*lpactor, llocal);
 		}
@@ -415,6 +428,7 @@ namespace ngl
 		{
 			{
 				nlock(m_mutex);
+				// Keep one thread outside the suspended pool so the caller can continue making progress.
 				m_suspend = true;
 				if (!m_workthreads.empty())
 				{
@@ -515,6 +529,8 @@ namespace ngl
 						{
 							break;
 						}
+						// The scheduler is single-threaded: it pops one ready actor and one idle
+						// worker, then lets the worker run independently.
 						lpthread = m_workthreads.front();
 						lpactor = m_actorlist.front();
 						m_actorlist.pop_front();

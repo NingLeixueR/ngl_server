@@ -5,15 +5,15 @@
 #include <functional>
 #include <string>
 
-// Translated comment.
+// Export symbols from the core library when building on Windows.
 #ifdef _WIN32
-#	ifdef NGLCORE_EXPORTS  // Translated comment.
+#	ifdef NGLCORE_EXPORTS
 #		define NGL_EXPORT __declspec(dllexport)
 #	else
-#		define NGL_EXPORT __declspec(dllimport)  // Translated comment.
+#		define NGL_EXPORT __declspec(dllimport)
 #	endif
 #else
-#	define NGL_EXPORT  // Linux/macOS special
+#	define NGL_EXPORT
 #endif
 
 enum class startup_error : int
@@ -29,6 +29,8 @@ enum class startup_error : int
 	node_start_failed = 9,
 };
 
+// Main entry used by the thin executable wrappers in the server targets.
 NGL_EXPORT int ngl_main(int argc, char** argv);
 
+// Return a crash-dump callback that forwards the captured content to mail.
 NGL_EXPORT std::function<void()> dump_logic(const std::string& acontent);

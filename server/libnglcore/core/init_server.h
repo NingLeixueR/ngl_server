@@ -63,19 +63,20 @@ startup_error init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {}, i
 		*atcp_port = -1;
 	}
 
-	// # Loadand protocol id
+	// Load generated protocol ids before any actor or network code starts using them.
 	ngl::xmlprotocol::load();
 
+	// Register generated actor factories and protocol handlers.
 	ngl::auto_actor();
 	ngl::tprotocol_customs();
 	ngl::tprotocol_forward_pb();
 	ngl::event_register();
 	ngl::tdb::tdb_init(true);
 
-	// # Actorbroadcast
+	// Start the shared broadcast timer used by actors that opt into periodic ticks.
 	ngl::actor_base::start_broadcast();
 
-	// # Sysconfig xmlconfig
+	// Load XML-driven runtime settings after the protocol system is ready.
 	ngl::sysconfig::init();
 
 	const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab();
@@ -85,8 +86,8 @@ startup_error init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {}, i
 		return startup_error::tab_server_missing;
 	}
 
-	// Translated comment.
-	{//TCP
+	{
+		// Bring up the TCP listener first. Most nodes use TCP even if they also open KCP ports.
 		ngl::net_works lnwork;
 		if (!ngl::ttab_servers::instance().get_nworks(ngl::ENET_PROTOCOL::ENET_TCP, nconfig.tcount(), lnwork))
 		{
@@ -100,7 +101,8 @@ startup_error init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {}, i
 		ngl::ntcp::instance().init(lnwork.m_port, tab->m_threadnum, tab->m_outernet);
 	}
 
-	{//KCP
+	{
+		// Only create the KCP endpoints explicitly requested by the current node type.
 		if (!akcp.empty())
 		{
 			for (pbnet::ENUM_KCP kcptype : akcp)
@@ -110,10 +112,10 @@ startup_error init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {}, i
 		}
 	}
 
-	// # Initializeactormanagemodule
+	// Worker threads must exist before singleton actors start registering themselves.
 	ngl::actor_manage::instance().init(tab->m_actorthreadnum);
 
-	// # Actormanagemodule initialize, can logsendtoactor_log
+	// Logging can be forwarded to the log actor once the actor scheduler is alive.
 	ngl::nactor_logitem::m_init = true;
 
 	ngl::log_error()->print("ngl::actor_manage::instance().init({})", tab->m_actorthreadnum);

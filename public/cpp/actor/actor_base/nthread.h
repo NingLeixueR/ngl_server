@@ -27,24 +27,24 @@ namespace ngl
 		nthread(const nthread&) = delete;
 		nthread& operator=(const nthread&) = delete;
 
-		i32_threadid		m_id = 0;				// Threadid
-		ptractor			m_actor = nullptr;		// This thread actor
-		bool				m_isactivity = false;	// Threadwhether
-		ngl::thread			m_thread;				// Thread
-		std::shared_mutex	m_mutex;				// Translated comment.
-		ngl::sem			m_sem;					// Semaphore
+		i32_threadid		m_id = 0;				// Stable worker index assigned by actor_manage.
+		ptractor			m_actor = nullptr;		// Actor currently borrowed by this worker.
+		bool				m_isactivity = false;	// Legacy activity flag preserved for diagnostics/API compatibility.
+		ngl::thread			m_thread;				// Dedicated worker thread.
+		std::shared_mutex	m_mutex;				// Protects the current actor pointer and activity flag.
+		ngl::sem			m_sem;					// Wakes the worker when a new actor is assigned.
 
 		void run();
 	public:
 		explicit nthread(i32_threadid aid);
 
-		// # Returnthreadid
+		// Return the worker id used in actor_handle callbacks.
 		i32_threadid id();
 
-		// # Whether
+		// Return the legacy activity flag for this worker.
 		bool isactivity();
 
-		// # Tothreadinaddactor
+		// Assign an actor to this worker and wake the thread.
 		void push(ptractor aactor);
 	};
 }//namespace ngl
