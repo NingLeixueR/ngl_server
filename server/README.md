@@ -1,14 +1,15 @@
-# 目录简介
+# Server Directory Overview
 
-## ./idl
-	* csv表格工具项目，用来根据.idl配置生成对应的表格文件，与加载表格的源文件
+## `./idl`
+- Generates table-related source files from IDL definitions and supporting metadata.
 
-## ./node
-	* 服务器进程
+## `./node`
+- Contains the server process entry target.
 
-## ./makeproto
-	* 根据db.proto文件生成[create_db.sql]文件
-	* 根据net.proto文件生成[net_protocol.xml与netserver_protocol.xml]文件,自动关联结构体为其提供协议号
+## `./makeproto`
+- Generates `create_db.sql` from `db.proto`.
+- Generates protocol XML files from `net.proto` and associates message structures with protocol ids.
 
-## ./rebuild
-  * 遍历public/cpp文件夹生成[ub.cpp],用于加速编译
+## `./rebuild`
+- Legacy maintenance utility target.
+- Native CMake unity build now generates combined sources in the build directory instead of checked-in `ub_*.cpp` files.

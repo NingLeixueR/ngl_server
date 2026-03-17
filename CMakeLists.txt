@@ -1,6 +1,6 @@
 # File overview: Defines CMake targets and build rules for .
 
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.16)
 
 if(POLICY CMP0091)
 	cmake_policy(SET CMP0091 NEW)
@@ -13,9 +13,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Require C++20 and fail if the compiler is incompatible.
 # Set(CMAKE_CXX_EXTENSIONS OFF) # close C++, [ C++20]
-option(NGL_USE_UB_CPP "Use generated ub_*.cpp unity sources" ON)
 option(NGL_ENABLE_STRONG_WARNINGS "Enable stronger compiler warnings for project targets" ON)
 option(NGL_ENABLE_SANITIZERS "Enable AddressSanitizer and UndefinedBehaviorSanitizer on supported toolchains" OFF)
+option(NGL_ENABLE_NATIVE_UNITY_BUILD "Enable CMake native unity build for large targets" ON)
+set(NGL_UNITY_BUILD_BATCH_SIZE 50 CACHE STRING "Maximum number of non-protobuf source files per native unity batch")
 
 option(BUILD_TESTING "Build and register tests" ON)
 if(BUILD_TESTING)

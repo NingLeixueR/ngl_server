@@ -17,6 +17,11 @@
 
 #include "tools/pb_field.h"
 
+#ifdef GetMessage
+// Windows headers define GetMessage as a macro, which breaks protobuf Reflection::GetMessage.
+#undef GetMessage
+#endif
+
 namespace ngl
 {
     void pb_field::copy(

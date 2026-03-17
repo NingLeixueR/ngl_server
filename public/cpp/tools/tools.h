@@ -58,6 +58,66 @@ namespace ngl
 		using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
 		template <typename T>
+		constexpr std::string_view compiler_type_name() noexcept
+		{
+#if defined(_MSC_VER)
+			constexpr std::string_view signature = __FUNCSIG__;
+			constexpr std::string_view prefix = "compiler_type_name<";
+			const auto start = signature.find(prefix);
+			if (start == std::string_view::npos)
+			{
+				return signature;
+			}
+
+			const auto type_begin = start + prefix.size();
+			const auto end = signature.find(">(void", type_begin);
+			if (end == std::string_view::npos || end <= type_begin)
+			{
+				return signature.substr(type_begin);
+			}
+			return signature.substr(type_begin, end - type_begin);
+#elif defined(__clang__)
+			constexpr std::string_view signature = __PRETTY_FUNCTION__;
+			constexpr std::string_view prefix = "T = ";
+			const auto start = signature.find(prefix);
+			if (start == std::string_view::npos)
+			{
+				return signature;
+			}
+
+			const auto type_begin = start + prefix.size();
+			const auto end = signature.find(']', type_begin);
+			if (end == std::string_view::npos || end <= type_begin)
+			{
+				return signature.substr(type_begin);
+			}
+			return signature.substr(type_begin, end - type_begin);
+#elif defined(__GNUC__)
+			constexpr std::string_view signature = __PRETTY_FUNCTION__;
+			constexpr std::string_view prefix = "with T = ";
+			const auto start = signature.find(prefix);
+			if (start == std::string_view::npos)
+			{
+				return signature;
+			}
+
+			const auto type_begin = start + prefix.size();
+			auto end = signature.find(';', type_begin);
+			if (end == std::string_view::npos)
+			{
+				end = signature.find(']', type_begin);
+			}
+			if (end == std::string_view::npos || end <= type_begin)
+			{
+				return signature.substr(type_begin);
+			}
+			return signature.substr(type_begin, end - type_begin);
+#else
+			return "unknown";
+#endif
+		}
+
+		template <typename T>
 		inline constexpr bool is_char_pointer_v =
 			std::is_pointer_v<remove_cvref_t<T>> &&
 			std::is_same_v<std::remove_cv_t<std::remove_pointer_t<remove_cvref_t<T>>>, char>;
@@ -633,7 +693,9 @@ namespace ngl
 		template <typename T>
 		static std::string& type_name()
 		{
-			static std::string lname = typeid(T).name();
+			// Derive the name from the compiler signature so incomplete forward-declared
+			// types still work when unity builds change template instantiation order.
+			static std::string lname = std::string(detail::compiler_type_name<T>());
 			static std::atomic lfirst = true;
 			if (lfirst.exchange(false))
 			{

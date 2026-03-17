@@ -15,21 +15,29 @@ file(GLOB_RECURSE NGL_TEST_CORE_PROTOBUF_CSRC CONFIGURE_DEPENDS
 	${CMAKE_SOURCE_DIR}/public/*.cc
 )
 list(SORT NGL_TEST_CORE_PROTOBUF_CSRC)
+source_group("Protobuf Source Files" FILES ${NGL_TEST_CORE_PROTOBUF_CSRC})
 
 file(GLOB NGL_TEST_CASE_SRCS CONFIGURE_DEPENDS
 	${CMAKE_CURRENT_SOURCE_DIR}/*_gtest.cpp
 )
 list(SORT NGL_TEST_CASE_SRCS)
+source_group("Test Files" FILES ${NGL_TEST_CASE_SRCS})
+ngl_configure_vs_unity_filters()
 
 if(NOT NGL_TEST_CASE_SRCS)
 	message(FATAL_ERROR "No *_gtest.cpp files found under server/tests")
 endif()
 
-add_executable(ngl_test
-	${NGL_TEST_CASE_SRCS}
+set(NGL_TEST_SUPPORT_SRCS
 	${CMAKE_SOURCE_DIR}/server/libnglcore/core/server_main.cpp
 	${CMAKE_SOURCE_DIR}/server/libnglcore/core/startup_support.cpp
-	${CMAKE_SOURCE_DIR}/server/libnglcore/core/ub_1.cpp
+	${NGL_PUBLIC_CPP_SRC}
+	${NGL_PUBLIC_CPP_CSRC}
+)
+
+add_executable(ngl_test
+	${NGL_TEST_CASE_SRCS}
+	${NGL_TEST_SUPPORT_SRCS}
 	${NGL_TEST_CORE_PROTOBUF_CSRC}
 )
 
@@ -43,6 +51,7 @@ target_link_libraries(ngl_test PRIVATE
 	${NGL_GTEST_MAIN_TARGET}
 )
 ngl_apply_runtime_deps(ngl_test PRIVATE)
+ngl_apply_unity_build(ngl_test)
 ngl_apply_msvc_defaults(ngl_test)
 
 gtest_discover_tests(ngl_test

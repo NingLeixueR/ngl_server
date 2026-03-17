@@ -132,6 +132,89 @@ function(ngl_apply_msvc_defaults target_name)
 	ngl_apply_sanitizers(${target_name})
 endfunction()
 
+function(ngl_assign_unity_groups target_name group_prefix batch_size)
+	if(${batch_size} LESS 1)
+		message(FATAL_ERROR "NGL_UNITY_BUILD_BATCH_SIZE must be >= 1")
+	endif()
+
+	set(source_index 0)
+	foreach(source_file IN LISTS ARGN)
+		math(EXPR group_index "${source_index} / ${batch_size}")
+		set_source_files_properties(${source_file} PROPERTIES
+			UNITY_GROUP "${target_name}_${group_prefix}_${group_index}"
+		)
+		math(EXPR source_index "${source_index} + 1")
+	endforeach()
+endfunction()
+
+function(ngl_apply_unity_build target_name)
+	if(NOT NGL_ENABLE_NATIVE_UNITY_BUILD)
+		return()
+	endif()
+
+	get_target_property(target_sources ${target_name} SOURCES)
+	if(NOT target_sources)
+		return()
+	endif()
+
+	set(c_sources)
+	set(cxx_sources)
+	set(protobuf_cc_sources)
+
+	foreach(source_file IN LISTS target_sources)
+		if(source_file MATCHES "^\\$<")
+			continue()
+		endif()
+
+		get_filename_component(source_ext "${source_file}" LAST_EXT)
+		string(TOLOWER "${source_ext}" source_ext)
+
+		if(source_ext STREQUAL ".c")
+			list(APPEND c_sources "${source_file}")
+		elseif(source_ext STREQUAL ".cc")
+			if(source_file MATCHES [[(^|[\\/]).*\.pb\.cc$]])
+				list(APPEND protobuf_cc_sources "${source_file}")
+			else()
+				list(APPEND cxx_sources "${source_file}")
+			endif()
+		elseif(source_ext STREQUAL ".cpp" OR source_ext STREQUAL ".cxx")
+			list(APPEND cxx_sources "${source_file}")
+		endif()
+	endforeach()
+
+	set_target_properties(${target_name} PROPERTIES
+		UNITY_BUILD ON
+		UNITY_BUILD_MODE GROUP
+	)
+
+	if(cxx_sources)
+		ngl_assign_unity_groups(${target_name} cxx ${NGL_UNITY_BUILD_BATCH_SIZE} ${cxx_sources})
+	endif()
+
+	if(c_sources)
+		ngl_assign_unity_groups(${target_name} c ${NGL_UNITY_BUILD_BATCH_SIZE} ${c_sources})
+	endif()
+
+	if(protobuf_cc_sources)
+		# Generated protobuf sources declare file-local static data that collides when
+		# multiple .pb.cc files share one unity translation unit, so keep each .pb.cc
+		# in its own generated unity source.
+		ngl_assign_unity_groups(${target_name} protobuf_cc 1 ${protobuf_cc_sources})
+	endif()
+endfunction()
+
+function(ngl_configure_vs_unity_filters)
+	if(NOT CMAKE_GENERATOR MATCHES "Visual Studio")
+		return()
+	endif()
+
+	# CMake places generated unity translation units under:
+	#   <build-dir>/.../CMakeFiles/<target>.dir/Unity/...
+	# Put them into a dedicated Visual Studio filter so they do not visually mix
+	# with hand-written source files in Solution Explorer.
+	source_group("Generated Files/Unity" REGULAR_EXPRESSION [[[\\/]CMakeFiles[\\/].*[\\/]Unity[\\/].*]])
+endfunction()
+
 function(ngl_find_runtime_deps)
 	if(NOT TARGET lua::lua)
 		find_package(lua REQUIRED)

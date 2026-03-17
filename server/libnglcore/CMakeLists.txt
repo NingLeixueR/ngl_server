@@ -1,6 +1,6 @@
 # File overview: Defines CMake targets and build rules for libnglcore.
 
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.16)
 
 PROJECT (nglcore)
 
@@ -13,12 +13,11 @@ SOURCE_GROUP("Header Files" FILES ${CORE_LIST_INCLUDE})
 SOURCE_GROUP("Source Files" FILES ${CORE_LIST_SRC})
 SOURCE_GROUP("Source Files" FILES ${CORE_LIST_CSRC})
 SOURCE_GROUP("Protobuf Source Files" FILES ${CORE_PROTOBUF_LIST_CSRC})
+ngl_configure_vs_unity_filters()
 
-if(NOT NGL_USE_UB_CPP)
-	list(FILTER CORE_LIST_SRC EXCLUDE REGEX "ub_.*\\.cpp$")
-	list(APPEND CORE_LIST_SRC ${NGL_PUBLIC_CPP_SRC})
-	list(APPEND CORE_LIST_CSRC ${NGL_PUBLIC_CPP_CSRC})
-endif()
+list(FILTER CORE_LIST_SRC EXCLUDE REGEX "ub_.*\\.cpp$")
+list(APPEND CORE_LIST_SRC ${NGL_PUBLIC_CPP_SRC})
+list(APPEND CORE_LIST_CSRC ${NGL_PUBLIC_CPP_CSRC})
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -34,4 +33,5 @@ target_include_directories(nglcore PRIVATE ${CORE_LIST})
 target_link_libraries(nglcore PRIVATE ngl_build_options)
 
 ngl_apply_runtime_deps(nglcore PRIVATE)
+ngl_apply_unity_build(nglcore)
 ngl_apply_msvc_defaults(nglcore)

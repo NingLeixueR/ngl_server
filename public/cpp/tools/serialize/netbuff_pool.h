@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include "tools/localtime.h"
 #include "tools/threadtools.h"
 #include "tools/time_wheel.h"
 

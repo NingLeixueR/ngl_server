@@ -98,7 +98,9 @@ namespace ngl
 	template <typename TDerived, typename TACTOR, typename T>
 	void nsp_write<TDerived, TACTOR, T>::init()
 	{
-		m_regload.init(TACTOR::actorid());
+		// Use the registered actor enum instead of TACTOR::actorid() so NSP templates do
+		// not require the DB owner actor to be a complete type at every instantiation site.
+		m_regload.init(nguid::make_self(nactor_type<TACTOR>::type()));
 
 		m_regload.foreach_nspser([this](i16_area aarea, i64_actorid aactorid)
 			{
