@@ -112,11 +112,20 @@ namespace ngl
 			}
 		}
 
+		inline TDBTAB& data_ref() noexcept
+		{
+			return m_pdata == nullptr ? m_data : *m_pdata;
+		}
+
+		inline const TDBTAB& data_ref() const noexcept
+		{
+			return m_pdata == nullptr ? m_data : *m_pdata;
+		}
+
 		inline i64_actorid identifier()const
 		{
 			check_init();
-			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
-			return ldata.mid();
+			return data_ref().mid();
 		}
 
 		inline bool is_modified()
@@ -150,11 +159,11 @@ namespace ngl
 			}
 		}
 
-		// # Getandgetconstgetdatabeforefirst " scripting languagein whether "
+		// # Get and getconst getdata before first " scripting languagein whether "
 		TDBTAB* get(bool achange = true, bool anscript = true)
 		{
 			check_init();
-			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
+			TDBTAB& ldata = data_ref();
 			i64_actorid lidentifier = identifier();
 			if ((achange || anscript) && (lidentifier == 0 || lidentifier == nguid::make()))
 			{
@@ -182,7 +191,7 @@ namespace ngl
 		const TDBTAB* getconst(bool anscript = true)const
 		{
 			check_init();
-			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
+			TDBTAB& ldata = const_cast<TDBTAB&>(data_ref());
 			// # Scripting languagein whether
 			if (anscript && m_actor != nullptr)
 			{
@@ -300,7 +309,7 @@ namespace ngl
 		// # Set this data actor
 		void set_actor(actor_base* aactor)
 		{
-			m_manage_dbclient = aactor->manage_dbclient();
+			m_manage_dbclient = aactor != nullptr ? aactor->manage_dbclient().get() : nullptr;
 			m_actor = aactor;
 		}
 
@@ -322,11 +331,13 @@ namespace ngl
 			{
 				return m_dbdata;
 			}
-			if (m_data.contains(aid))
+			auto it = m_data.find(aid);
+			if (it != m_data.end())
 			{
-				return &m_data[aid];
+				return &it->second;
 			}
-			data_modified<TDBTAB>& ldata = m_data[aid];
+			auto [insert_it, _] = m_data.try_emplace(aid);
+			data_modified<TDBTAB>& ldata = insert_it->second;
 			TDBTAB lTDBTAB;
 			lTDBTAB.set_mid(aid);
 			ldata.set(m_actor, lTDBTAB);

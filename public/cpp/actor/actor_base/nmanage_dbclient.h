@@ -36,8 +36,6 @@ namespace ngl
 		tmap_dbclient										m_typedbclientmap;
 		tmap_dbclient										m_dbclientmap;						// Load
 		std::function<void(pbdb::ENUM_DB, enum_dbstat)>		m_loadfinishfun;					// Bool dbdatabasewhether this data
-
-		void foreach_function(const std::function<void(ndbclient_base*)>& afun);
 	public:
 		explicit nmanage_dbclient(actor_base* aactor) :
 			m_actor(aactor)

@@ -58,10 +58,10 @@ namespace ngl
 
 		// # Nosafe_ function table" lock", do not allow
 		// # Guidgetactorinstance
-		ptractor& nosafe_get_actor(const nguid& aguid);
+		ptractor* nosafe_get_actor(const nguid& aguid);
 
 		// # Guidgetactorinstance,if node tothis actorinstance, nodetypeget(actor_client/actor_server) guid, used toforwarding
-		ptractor& nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram);
+		ptractor* nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram);
 
 		// # Toactorinstance task
 		void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram);

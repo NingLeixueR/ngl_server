@@ -64,6 +64,7 @@ namespace ngl
 			}
 			handle_pram lpram = handle_pram::create<T, false>(nguid::make(), nguid::make(), aparm);
 			lpfun->m_fun(aactor, -1, lpram);
+			return true;
 		}
 	};
 

@@ -195,7 +195,7 @@ namespace ngl
 			{
 				care_data& lcare = m_care[lactorid];
 				lcare.init(false);
-				m_nodereadalls.insert(lactorid);
+				m_nodewritealls.insert(lactorid);
 			}
 			else
 			{

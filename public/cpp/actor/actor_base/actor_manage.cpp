@@ -55,16 +55,21 @@ namespace ngl
 	void actor_manage::get_type(std::vector<i16_actortype>& aactortype)
 	{
 		lock_read(m_mutex);
-		std::vector<i16_actortype> ltypes;
-		ltypes.reserve(m_actortype.size());
-		std::copy(m_actortype.begin(), m_actortype.end(), std::back_inserter(ltypes));
+		std::vector<i16_actortype> ltypes(m_actortype.begin(), m_actortype.end());
 		aactortype.swap(ltypes);
 	}
 
+	namespace
+	{
+		bool actor_is_unavailable(ngl::actor_stat astat) noexcept
+		{
+			return astat == ngl::actor_stat_close || astat == ngl::actor_stat_init;
+		}
+	}
 	void actor_manage::nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram)
 	{
-		actor_stat lstat = lpactor->activity_stat();
-		if (lstat == actor_stat_close || lstat == actor_stat_init)
+		const actor_stat lstat = lpactor->activity_stat();
+		if (actor_is_unavailable(lstat))
 		{
 			std::cout << std::format("actor_manage push task fail actor:{} stat:{}", lpactor->guid(), static_cast<int32_t>(lstat)) << std::endl;
 			return;
@@ -291,26 +296,24 @@ namespace ngl
 		}
 	}
 
-	ptractor& actor_manage::nosafe_get_actor(const nguid& aguid)
+	ptractor* actor_manage::nosafe_get_actor(const nguid& aguid)
 	{
-		static ptractor lnullptr(nullptr);
 		auto lpactor = tools::findmap(m_actorbyid, aguid);
 		if (lpactor == nullptr)
 		{
-			return lnullptr;
+			return nullptr;
 		}
-		return *lpactor;
+		return lpactor;
 	}
 
-	ptractor& actor_manage::nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram)
+	ptractor* actor_manage::nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram)
 	{
-		static ptractor lnull(nullptr);
 		ptractor* lpactor = tools::findmap(m_actorbyid, aguid);
 		if (lpactor == nullptr)
 		{
 			if (!apram.m_issend)
 			{
-				return lnull;
+				return nullptr;
 			}
 			// Toactor_client/actor_server
 			// If actor_servernodeneed tosendtoactor_server
@@ -318,22 +321,22 @@ namespace ngl
 			lpactor = tools::findmap(m_actorbyid, lguid);
 			if (lpactor == nullptr)
 			{
-				return lnull;
+				return nullptr;
 			}
 		}
-		return *lpactor;
+		return lpactor;
 	}
 
 	void actor_manage::push_task_id(const nguid& aguid, handle_pram& apram)
 	{
 		nlock(m_mutex);
-		ptractor lpactor = nosafe_get_actorbyid(aguid, apram);
-		if (lpactor == nullptr || lpactor->activity_stat() == actor_stat_close)
+		auto lpactor = nosafe_get_actorbyid(aguid, apram);
+		if (lpactor == nullptr || actor_is_unavailable((*lpactor)->activity_stat()))
 		{
 			std::cout << std::format("actor_manage push_task_id fail actor:{}", aguid) << std::endl;
 			return;
 		}
-		nosafe_push_task_id(lpactor, apram);
+		nosafe_push_task_id(*lpactor, apram);
 	}
 
 	void actor_manage::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram)
@@ -344,20 +347,20 @@ namespace ngl
 		const nguid lnodetypeguid = nodetypebyguid();
 		for (i64_actorid actorid : asetguid)
 		{
-			ptractor lpactor = nosafe_get_actorbyid(actorid, apram);
-			if (lpactor == nullptr || lpactor->activity_stat() == actor_stat_close)
+			auto lpactor = nosafe_get_actorbyid(actorid, apram);
+			if (lpactor == nullptr || actor_is_unavailable((*lpactor)->activity_stat()))
 			{
 				continue;
 			}
-			if (lpactor->id_guid() == lnodetypeguid)
+			if ((*lpactor)->id_guid() == lnodetypeguid)
 			{
 				lmass = true;
-				lpclient = lpactor;
+				lpclient = *lpactor;
 				continue;
 			}
 
 			handle_pram llocal = handle_pram::shallow_copy_without_massactors(apram);
-			nosafe_push_task_id(lpactor, llocal);
+			nosafe_push_task_id(*lpactor, llocal);
 		}
 		if (lmass && lpclient != nullptr)
 		{
@@ -374,7 +377,7 @@ namespace ngl
 		{
 			for (auto& [_guid, _actor] : type_it->second)
 			{
-				if (_actor->activity_stat() != actor_stat_close)
+				if (!actor_is_unavailable(_actor->activity_stat()))
 				{
 					nosafe_push_task_id(_actor, apram);
 				}
@@ -398,7 +401,7 @@ namespace ngl
 		nlock(m_mutex);
 		for (auto& [_guid, _actor] : m_actorbroadcast)
 		{
-			if (_actor->isbroadcast())
+			if (_actor->isbroadcast() && !actor_is_unavailable(_actor->activity_stat()))
 			{
 				nosafe_push_task_id(_actor, apram);
 			}

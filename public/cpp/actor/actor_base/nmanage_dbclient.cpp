@@ -19,22 +19,14 @@
 
 namespace ngl
 {
-	void nmanage_dbclient::foreach_function(const std::function<void(ndbclient_base*)>& afun)
-	{
-		for (auto& [_enumdb, _npdbclient] : m_dbclientmap)
-		{
-			afun(_npdbclient);
-		}
-	}
-
 	void nmanage_dbclient::add(ndbclient_base* adbclient, const nguid& aid)
 	{
-		if (m_typedbclientmap.contains(adbclient->type()))
+		auto [_, inserted] = m_typedbclientmap.try_emplace(adbclient->type(), adbclient);
+		if (!inserted)
 		{
 			tools::no_core_dump();
 			return;
 		}
-		m_typedbclientmap.insert(std::make_pair(adbclient->type(), adbclient));
 		init(adbclient, m_actor, aid);
 	}
 
@@ -65,7 +57,7 @@ namespace ngl
 				++itor;
 				continue;
 			}
-			m_dbclientmap.insert(std::make_pair(itor->first, itor->second));
+			m_dbclientmap.insert_or_assign(itor->first, itor->second);
 			itor = m_typedbclientmap.erase(itor);
 		}
 
@@ -88,7 +80,10 @@ namespace ngl
 
 		// 3, Initialize,and need to sendtoclient
 		// 3.1 C++
-		m_loadfinishfun(pbdb::ENUM_DB_ALL, astat);
+		if (m_loadfinishfun != nullptr)
+		{
+			m_loadfinishfun(pbdb::ENUM_DB_ALL, astat);
+		}
 		// 3.2 Notifyscript
 		m_actor->nscript_db_loadfinish();
 		return true;
@@ -101,28 +96,25 @@ namespace ngl
 
 	void nmanage_dbclient::save()
 	{
-		static std::function<void(ndbclient_base*)> lfun = [](ndbclient_base* ap)
-			{
-				ap->savedb();
-			};
-		foreach_function(lfun);
+		for (auto& [_enumdb, _npdbclient] : m_dbclientmap)
+		{
+			_npdbclient->savedb();
+		}
 	}
 
 	void nmanage_dbclient::del()
 	{
-		static std::function<void(ndbclient_base*)> lfun = [](ndbclient_base* ap)
-			{
-				ap->deldb();
-			};
-		foreach_function(lfun);
+		for (auto& [_enumdb, _npdbclient] : m_dbclientmap)
+		{
+			_npdbclient->deldb();
+		}
 	}
 
 	void nmanage_dbclient::nscript_push_data()
 	{
-		static std::function<void(ndbclient_base*)> lfun = [](ndbclient_base* ap)
-			{
-				ap->nscript_push_data();
-			};
-		foreach_function(lfun);
+		for (auto& [_enumdb, _npdbclient] : m_dbclientmap)
+		{
+			_npdbclient->nscript_push_data();
+		}
 	}
 }//namespace ngl

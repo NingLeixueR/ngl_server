@@ -171,7 +171,7 @@ namespace ngl
 				tools::no_core_dump();
 			}
 		}
-		afieldmap[afieldnumber] = afieldtype;
+		afieldmap.insert_or_assign(afieldnumber, afieldtype);
 	}
 
 	void operator_field::nspcli_add_field(std::map<i32_fieldnumber, epb_field>& afieldmap, i32_fieldnumber afieldnumber, epb_field afieldtype)
@@ -184,7 +184,7 @@ namespace ngl
 				return;
 			}
 		}
-		afieldmap[afieldnumber] = afieldtype;
+		afieldmap.insert_or_assign(afieldnumber, afieldtype);
 	}
 
 	void operator_field::add_field(i16_actortype atype, i32_fieldnumber afieldnumber, epb_field afieldtype)
@@ -201,9 +201,10 @@ namespace ngl
 
 	std::map<i32_fieldnumber, epb_field>* operator_field::get_field(i16_actortype atype)
 	{
-		if (m_node_fieldnumbers.contains(atype))
+		auto it = m_node_fieldnumbers.find(atype);
+		if (it != m_node_fieldnumbers.end())
 		{
-			return &m_node_fieldnumbers[atype];
+			return &it->second;
 		}
 		return nullptr;
 	}

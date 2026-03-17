@@ -71,28 +71,33 @@ namespace ngl
 		return true;
 	}
 
-	void naddress::actor_address_add(i32_serverid aserverid, i64_actorid adataid)
+	void naddress::nosafe_actor_address_add(i32_serverid aserverid, i64_actorid adataid)
 	{
-		lock_write(m_mutex);
 		nguid lguid(adataid);
-		m_actorserver[lguid] = aserverid;
+		m_actorserver.insert_or_assign(lguid, aserverid);
 		m_actortypeserver[lguid.type()].insert(adataid);
 #ifdef _DEBUG
 		print_address("ADD", aserverid, adataid);
 #endif		
 	}
 
+	void naddress::actor_address_add(i32_serverid aserverid, i64_actorid adataid)
+	{
+		lock_write(m_mutex);
+		nosafe_actor_address_add(aserverid, adataid);
+	}
+
 	void naddress::actor_address_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
 	{
+		lock_write(m_mutex);
 		for (auto actorid : avec)
 		{
-			actor_address_add(aserverid, actorid);
+			nosafe_actor_address_add(aserverid, actorid);
 		}
 	}
 
-	void naddress::actor_address_del(i64_actorid adataid)
+	void naddress::nosafe_actor_address_del(i64_actorid adataid)
 	{
-		lock_write(m_mutex);
 		nguid lguid(adataid);
 #ifdef _DEBUG
 		auto lpserverid = tools::findmap(m_actorserver, adataid);
@@ -102,13 +107,25 @@ namespace ngl
 		}
 #endif
 		m_actorserver.erase(lguid);
+		auto itor = m_actortypeserver.find(lguid.type());
+		if (itor != m_actortypeserver.end())
+		{
+			itor->second.erase(adataid);
+		}
+	}
+
+	void naddress::actor_address_del(i64_actorid adataid)
+	{
+		lock_write(m_mutex);
+		nosafe_actor_address_del(adataid);
 	}
 
 	void naddress::actor_address_del(const std::vector<i64_actorid>& avec)
 	{
-		for (const i64_actorid item : avec)
+		lock_write(m_mutex);
+		for (i64_actorid actorid : avec)
 		{
-			actor_address_del(item);
+			nosafe_actor_address_del(actorid);
 		}
 	}
 

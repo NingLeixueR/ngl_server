@@ -109,20 +109,20 @@ namespace ngl
 			}
 		}
 
-		// # Findspecifieddata
+		// # Find specified data
 		inline data_modified<TDATA>* find(const std::function<bool(const data_modified<TDATA>&)>& afun)
 		{
 			for(auto& [_guid, _datamodified] : data())
 			{
 				if (afun(_datamodified))
 				{
-					return &get(_guid);
+					return &_datamodified;
 				}
 			}
 			return nullptr;
 		}
 
-		// # Getalldata
+		// # Get all data
 		inline const std::map<nguid, data_modified<TDATA>>& data()
 		{
 			return m_data.get_data();
@@ -139,17 +139,18 @@ namespace ngl
 			return get(get_actorid());
 		}
 
-		// # Findspecifieddata
+		// # Finds pecified data
 		inline data_modified<TDATA>* find(nguid aid)
 		{
-			if (!data().contains(aid))
+			auto itor = data().find(aid);
+			if (itor == data().end())
 			{
 				return nullptr;
 			}
-			return &get(aid);
+			return const_cast<data_modified<TDATA>*>(&itor->second);
 		}
 
-		// # Andfindsimilar( add)
+		// # And find similar( add)
 		inline data_modified<TDATA>& get(nguid aid)
 		{
 			if (aid == nguid::make())
@@ -163,7 +164,7 @@ namespace ngl
 			return *m_data.get_data(aid);
 		}
 
-		// # Deletespecifieddata
+		// # Delete specified data
 		inline void erase(nguid aid)
 		{
 			get_actor_dbclient()->del(aid, true);
@@ -181,13 +182,13 @@ namespace ngl
 			return (TACTOR*)get_actor();
 		}
 
-		// # Cleardata
+		// # Clear data
 		inline void clear()
 		{
 			get_actor_dbclient()->clear();
 		}
 
-		// # Dataallloadafter
+		// # Data all loadafter
 		void init_data() final;
 
 		virtual void initdata() = 0;

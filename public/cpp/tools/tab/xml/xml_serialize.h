@@ -436,7 +436,10 @@ namespace ngl
 				}
 				return true;
 			}
-			return false;
+			else
+			{
+				return false;
+			}
 		}
 		static bool pop(tinyxml2::XMLElement* aele, const char* akey, map_type& adata)
 		{
@@ -538,7 +541,6 @@ namespace ngl
 				return adata.xml_push(lchild);
 			}
 		}		
-		return false;
 	}
 
 	template <bool ATTR, typename T>

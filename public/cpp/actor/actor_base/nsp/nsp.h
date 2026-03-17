@@ -231,12 +231,12 @@ namespace ngl
 		static T* init(i64_actorid aactorid, std::shared_ptr<T>& athis)
 		{
 			lock_write(m_mutex);
-			if (m_instance.contains(aactorid))
+			auto [it, inserted] = m_instance.emplace(aactorid, athis);
+			if (!inserted)
 			{
 				tools::no_core_dump();
 			}
-			m_instance[aactorid] = athis;
-			return athis.get();
+			return it->second.get();
 		}
 
 		static void exit(i64_actorid aactorid)

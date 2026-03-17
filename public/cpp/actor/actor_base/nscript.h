@@ -132,14 +132,19 @@ namespace ngl
 	{
 		lua_State* L = nullptr;
 		std::string m_scriptpath;
-	public:
-		~nscript()
+
+		void close_state() noexcept
 		{
 			if (L != nullptr)
 			{
 				lua_close(L);
 				L = nullptr;
 			}
+		}
+	public:
+		~nscript()
+		{
+			close_state();
 		}
 
 		template <typename T>
@@ -159,23 +164,26 @@ namespace ngl
 
 		bool init(const char* asubdirectory, const char* ascript)
 		{
+			close_state();
 			L = luaL_newstate();
+			if (L == nullptr)
+			{
+				return false;
+			}
 			luaL_openlibs(L);  // Translated comment.
 			setupluapaths();
 
 			if (luaL_loadfile(L, (sysconfig::lua() + "rfunction.lua").c_str()) || lua_pcall(L, 0, 0, 0))
 			{
 				LOG_SCRIPT("can't run [{}#{}] : {} !", asubdirectory, m_scriptpath, lua_tostring(L, -1));
-				lua_close(L);
-				L = nullptr;
+				close_state();
 				return false;
 			}
 			m_scriptpath = std::format("../configure/script/lua/{}/{}", asubdirectory, ascript);
 			if (luaL_loadfile(L, m_scriptpath.c_str()) || lua_pcall(L, 0, 0, 0))
 			{
 				LOG_SCRIPT("can't run [{}#{}] : {} !", asubdirectory, m_scriptpath, lua_tostring(L, -1));
-				lua_close(L);
-				L = nullptr;
+				close_state();
 				return false;
 			}
 			return true;

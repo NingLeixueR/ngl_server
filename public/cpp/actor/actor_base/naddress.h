@@ -61,6 +61,14 @@ namespace ngl
 		// # Setnode
 		static bool set_node(const nactornode& anode);
 
+	private:
+		// # Nosafe_ function table" lock", do not allow
+		static void nosafe_actor_address_add(i32_serverid aserverid, i64_actorid adataid);
+
+		// # Nosafe_ function table" lock", do not allow
+		static void nosafe_actor_address_del(i64_actorid adataid);
+
+	public:
 		// # Addactor
 		static void actor_address_add(i32_serverid aserverid, i64_actorid adataid);
 

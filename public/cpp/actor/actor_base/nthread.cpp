@@ -39,6 +39,10 @@ namespace ngl
 
 	void nthread::push(ptractor aactor)
 	{
+		if (aactor == nullptr)
+		{
+			tools::no_core_dump();
+		}
 		lock_write(m_mutex);
 		m_actor = aactor;
 		m_isactivity = false;

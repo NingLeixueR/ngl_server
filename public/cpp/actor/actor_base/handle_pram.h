@@ -259,6 +259,7 @@ namespace ngl
 				pro.m_actorids.swap(_actorids);
 				handle_send<np_mass_actor<T>>::send_server(_serverid, nguid::make(), lrequestactor, pro);
 			}
+			return true;
 		}
 		return false;
 	}
