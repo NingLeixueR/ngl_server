@@ -28,21 +28,22 @@
 
 namespace ngl
 {
-	// # Actorcorresponding type
+	// Global actor type registry. Values are serialized into routes, nguid
+	// identifiers, and protocol metadata, so the numeric ids are stable.
 	enum ENUM_ACTOR
 	{
 		ACTOR_NONE								= -1,
-		// # Singleton
+		// Core long-lived actors that usually exist once per logical owner.
 		ACTOR_ROLE								= 1,
-		ACTOR_ROBOT								= 2, // Translated comment.
+		ACTOR_ROBOT								= 2, // One actor per robot/test client.
 		ACTOR_LOG								= 3, // Log
-		ACTOR_EXAMPLE_GUESS_NUMBER				= 4, // Translated comment.
+		ACTOR_EXAMPLE_GUESS_NUMBER				= 4, // Example gameplay actor.
 
-		// # Singleton(pack singleton, singleton)
+		// Singleton/system actors.
 		ACTOR_SIGNLE_START						= 20,
-		ACTOR_SERVER							= ACTOR_SIGNLE_START, // Singleton actor address server manage address in
-		ACTOR_CLIENT							= 21, // Singleton actor address client
-		ACTOR_LOGIN								= 22, // Translated comment.
+		ACTOR_SERVER							= ACTOR_SIGNLE_START, // Server-side address/routing manager.
+		ACTOR_CLIENT							= 21, // Client-side address/routing manager.
+		ACTOR_LOGIN								= 22, // Login coordinator.
 		ACTOR_GATEWAY							= 23, // Gateway
 		ACTOR_GATEWAY_C2G						= 24, // Gateway [Client]->[Game]
 		ACTOR_GATEWAY_G2C						= 25, // Gateway [Game]->[Client]
@@ -65,8 +66,8 @@ namespace ngl
 		ACTOR_FRIENDS							= 42, // Friends
 		ACTOR_EVENTS							= 43, // Event
 		ACTOR_EVENTS_MAX_COUNT					= ACTOR_EVENTS + 10, // Event 10
-		ACTOR_EXAMPLE_MATCH						= 54, // Translated comment.
-		ACTOR_EXAMPLE_MANAGE					= 55, // Createmanage
+		ACTOR_EXAMPLE_MATCH						= 54, // Example match actor.
+		ACTOR_EXAMPLE_MANAGE					= 55, // Example actor manager.
 		ACTOR_TESTLUA							= 56, // Testlua
 		ACTOR_TESTLUA2							= 57, // Testlua2
 		ACTOR_DB								= 1000, // After
@@ -74,7 +75,7 @@ namespace ngl
 		ACTOR_COUNT								= ACTOR_SIGNLE_FINISH,
 	};
 
-	// # CheckENUM_ACTOR whether singleton
+	// Helper for actor kinds that are allocated from the singleton/system range.
 	class enum_actor
 	{
 	public:
@@ -120,18 +121,18 @@ namespace ngl
 	template <typename TACTOR>
 	using nactor_type = type_enum<TACTOR, ENUM_ACTOR>;
 
-	// # Pbdb::ENUM_DBgetENUM_ACTOR
+	// Map a DB table enum to the corresponding DB actor type.
 	ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE);
 
-	// Andtype bind
+	// Bind actor classes to enum values.
 	void auto_actor();
 
-	// # Register protocol
+	// Register custom protocol ids.
 	void tprotocol_customs();
 
-	// # Register forwardingprotocol
+	// Register generated forwarding protocol wrappers.
 	void tprotocol_forward_pb();
 
-	// # Actor eventregister
+	// Register actor lifecycle and event handlers.
 	void event_register();
 }//namespace ngl

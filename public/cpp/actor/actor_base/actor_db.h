@@ -41,9 +41,9 @@ namespace ngl
 		ndbtab(const ndbtab&) = delete;
 		ndbtab& operator=(const ndbtab&) = delete;
 
-		static tab_dbload*		m_tab;				// Databaseload
-		static db_cache			m_cache_save;		// Datasavequeue
-		static db_cache			m_cache_del;		// Datadeletequeue
+		static tab_dbload*		m_tab;				// Static DB load config for the table.
+		static db_cache			m_cache_save;		// Buffered save queue flushed by timer.
+		static db_cache			m_cache_del;		// Buffered delete queue flushed by timer.
 
 		enum
 		{
@@ -52,7 +52,7 @@ namespace ngl
 
 		static void cachelist(enum_cache_list atype, std::set<i64_actorid>& aset);
 	public:
-		// # Initialize
+		// Initialize load policy and delayed save/delete queues for this table.
 		static void init()
 		{
 			m_tab = ttab_dbload::instance().get_tabdb<TDBTAB>();
@@ -63,21 +63,24 @@ namespace ngl
 				return;
 			}
 
-			// # Setdatasave/datadeletequeue
+			// Batch save/delete requests instead of hitting the database per message.
 			m_cache_save.set_cachefun(std::bind_front(&cachelist, enum_clist_save), m_tab->m_dbcacheintervalms);
 			m_cache_del.set_cachefun(std::bind_front(&cachelist, enum_clist_del), m_tab->m_dbcacheintervalms);
 
 			if (m_tab->m_isloadall)
-			{// Loadalldata
+			{
+				// Preload the full table on startup.
 				TSQLMANAGE::template select<TDBTAB>(TSQLPOOL::instance().get(0));
 			}
 			else
-			{// Loadallid preventcache penetration
+			{
+				// Load ids only so later point-lookups can distinguish missing rows
+				// from rows that still need to be fetched.
 				TSQLMANAGE::template select<TDBTAB>(TSQLPOOL::instance().get(0), db_data<TDBTAB>::id_index());
 			}
 		}
 
-		// # Loadtableinalldata
+		// Stream the full table back to the requesting actor in bounded chunks.
 		static void load(const pack* apack)
 		{
 			if (!m_tab->m_isloadall)
@@ -117,7 +120,7 @@ namespace ngl
 			log_info()->print("loadall[{}]", tools::type_name<TDBTAB>());
 		}
 
-		// # Loadtableinspecifieddata
+		// Load one row on demand if it has not been materialized yet.
 		static void load(i32_threadid athreadid, int64_t aid)
 		{
 			if (aid == nguid::make())
@@ -130,7 +133,7 @@ namespace ngl
 			}
 		}
 
-		// # Loaddata: synchronize
+		// Handle actor-initiated load requests and reply over TCP when enabled.
 		static void load(i32_threadid athreadid, const pack* apack, const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if (!m_tab->m_network)
@@ -140,7 +143,7 @@ namespace ngl
 			i64_actorid lid = adata.m_id.id();			
 			if (lid == nguid::none_actordataid())
 			{
-				// Loadalldata
+				// `none_actordataid()` means "load the whole table".
 				load(apack);
 			}
 			else
@@ -177,7 +180,7 @@ namespace ngl
 			}
 		}
 
-		// # Asynchronouslysave data need tosave dataaddtocachesavequeue
+		// Cache the row immediately and defer the physical DB write.
 		static void save(i32_threadid, const TDBTAB& adata)
 		{
 			int64_t lid = adata.mid();
@@ -185,21 +188,21 @@ namespace ngl
 			m_cache_save.push(lid);
 		}
 
-		// # Asynchronouslydeletedata need todelete dataaddtocachesavequeue
+		// Remove one row from cache and enqueue the DB delete.
 		static void del(i32_threadid, i64_actorid aid)
 		{
 			ngl::db_data<TDBTAB>::remove(aid);
 			m_cache_del.push(aid);
 		}
 
-		// # Asynchronouslydeletea group ofdata
+		// Remove a batch of rows from cache and enqueue the DB deletes.
 		static void del(i32_threadid, const std::vector<i64_actorid>& aids)
 		{
 			ngl::db_data<TDBTAB>::remove(aids);
 			m_cache_del.push(aids);
 		}
 
-		// # Datasave
+		// Save a batch payload received from another actor.
 		static void save(i32_threadid athreadid, const pack*, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			for (auto& [_guid, _tdb] : adata.m_data)
@@ -270,7 +273,7 @@ namespace ngl
 			>(e_ready_all);
 		}
 
-		// # Synchronize:loaddata
+		// Handle one logical load request message.
 		bool handle(const message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			log_error()->print("load: np_actordb_load<{}> id:{}", tools::type_name<TDBTAB>(), adata.get_data()->m_id);
@@ -285,7 +288,7 @@ namespace ngl
 			return true;
 		}
 
-		// # Asynchronously:save data
+		// Handle one logical save request message.
 		bool handle(const message<np_actordb_save<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
@@ -299,7 +302,7 @@ namespace ngl
 			return true;
 		}
 
-		// # Asynchronously:deletedata
+		// Handle one logical delete request message.
 		bool handle(const message<np_actordb_delete<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			log_error()->print("load: np_actordb_delete<{}> id:{}", tools::type_name<TDBTAB>(), adata.get_data()->m_data);
@@ -314,7 +317,7 @@ namespace ngl
 			return true;
 		}
 
-		// # ACTOR_TIMER_DB_CACHE, db cache list savecachelist
+		// Flush one buffered save/delete batch to the real database backend.
 		bool handle(const message<np_actortime_db_cache<TDBTAB>>& adata)
 		{
 			enum_cache_list ltype = adata.get_data()->m_type;
@@ -357,7 +360,7 @@ namespace ngl
 			return true;
 		}
 
-		// # Supportgm
+		// GM endpoint for manual inspection and edits of cached DB rows.
 		using handle_cmd = cmd<tactor_db, std::string, int, int, ncjson&>;
 
 		template <typename TSQLPOOL>

@@ -30,7 +30,7 @@
 
 namespace ngl
 {
-	// # Packet header
+	// Fixed-size wire header prepended to every framed TCP/KCP packet.
 	struct pack_head
 	{
 		// The header is stored as raw int32 slots so it can be copied directly
@@ -45,49 +45,47 @@ namespace ngl
 		static void				head_set_mask(int32_t* abuff);
 		void					set_mask();
 
-		// # Mask
+		// Validate the framing mask while the header is being streamed in.
 		static EPH_HEAD_VAL		head_check_mask(const int32_t* abuff, int awpos);
 		EPH_HEAD_VAL			check_mask()const;
 
-		// # Setpacket headertime
+		// Stamp the sender's current logical time into the header.
 		static void		head_set_time(int32_t* abuff);
 		void			set_time();
 
-		// # Getpacket headertime
+		// Read the sender timestamp back from the header.
 		static i32_time head_get_time(const int32_t* abuff);
 		i32_time		get_time()const;
 
-		// # Setactor
-		// # Aactor:sendto actor /* aenum == ACTOR_NONE this invalid */
-		// # Arequestactorid: actorsend
+		// Write destination/source actor ids into the header.
 		static void head_set_actor(int32_t* abuff, i64_actorid aactor, i64_actorid arequestactorid);
 		static void head_set_actor(int32_t* abuff, i64_actorid aactor);
 		void		set_actor(i64_actorid aactor, i64_actorid arequestactorid);
 		void		set_requestactor(i64_actorid arequestactorid);
 
-		// # Getactor
+		// Read destination/source actor ids from the header.
 		i64_actorid		get_actor()const;
 		i64_actorid		get_request_actor()const;
 
-		// # Get sendto actor type
+		// Convenience accessors for the packed destination actor guid.
 		i16_actortype	get_actortype()const;
 
-		// # Get send actor type
+		// Convenience accessor for the packed source actor guid.
 		i16_actortype	get_request_actortype()const;
 
-		// # Get sendto actor area
+		// Destination actor area/shard.
 		i16_area		get_actorarea()const;
 
-		// # Get sendto actor dataid
+		// Destination actor-local numeric id.
 		i32_actordataid get_actordataid()const;
 
 		// Clears the partial read state and every header field.
 		void			reset();
 
-		// # GetEPHcorresponding
+		// Raw slot accessor used by framing code.
 		int32_t			getvalue(EPH aeph)const;
 
-		// # Getprotocol
+		// Declared payload byte count.
 		int32_t			get_bytes()const;
 
 		// Returns the fixed serialized header size in bytes.
@@ -96,13 +94,13 @@ namespace ngl
 		// Reports whether the mask/header is complete, still partial, or invalid.
 		EPH_HEAD_VAL	isready()const;
 
-		// # Getprotocol id
+		// Protocol number stored in the header.
 		i32_protocolnum protocolnum()const;
 
-		// # Getprotocol id
+		// Alias kept for older call sites.
 		i32_protocolnum get_protocolnumber()const;
 
-		// # Setprotocol id
+		// Set the protocol number stored in the header.
 		void set_protocol(i32_protocolnum aprotocolnum);
 		
 		EPH_HEAD_VAL push(const char*& abuff, int32_t& alen);

@@ -23,20 +23,13 @@
 
 extern "C"
 {
-	// # # Nguid (actortype#area#dataid)convert int64
-	// # parm 1 nguid(actor_type#areaid#dataid)
+	// Lua helper: convert `actor_type#area#dataid` text into packed nguid.
 	extern int nguidstr2int64(lua_State* L);
 
-	// # Luasendprotocoltoclient
-	// # parm 1 nguid(actor_type#areaid#dataid)
-	// # parm 2 msgname
-	// # parm 3 lua table
+	// Lua helper: send one protocol message to clients through the gateway path.
 	extern int send_client(lua_State* L);
 
-	// # Luasendprotocolto actor
-	// # parm 1 nguid(actor_type#areaid#dataid)
-	// # parm 2 msgname
-	// # parm 3 lua table
+	// Lua helper: send one protocol message to another actor.
 	extern int send_actor(lua_State* L);
 }
 
@@ -55,72 +48,72 @@ namespace ngl
 	class nscript
 	{
 	public:
-		// # Scripttype
+		// Compile-time script backend identifier.
 		static enscript type()
 		{
 			return ESCRIPT;
 		}
 
-		// # Initializescriptdata
+		// Push process/actor system data into the script runtime.
 		template <typename T>
 		bool init_sysdata(const T& asys)
 		{
 			return false;
 		}
 
-		// # Initializeloadscriptfile
+		// Create the runtime and load the backing script file.
 		bool init(const char* asubdirectory, const char* ascript)
 		{
 			return false;
 		}
 
-		// # Data
+		// Notify the script layer that one DB row was created/updated.
 		template <typename T>
 		bool data_push(const char* aname, const char* asource, const T& adata, bool aedit)
 		{
 			return false;
 		}
 
-		// # Dbmoduleloadcomplete,notifyscriptmodule
+		// Notify the script layer that the initial DB load is complete.
 		bool db_loadfinish()
 		{
 			return false;
 		}
 
-		// # Handledata
+		// Dispatch one actor message into the script layer.
 		template <typename T>
 		bool handle(const char* aname, const T& adata)
 		{
 			return false;
 		}
 
-		// # Data delete
+		// Notify the script layer that one row was deleted.
 		bool data_del(const char* aname, int64_t adataid)
 		{
 			return false;
 		}
 
-		// # Check whether the data has been modified
+		// Pull a possibly edited row back out of the script layer.
 		template <typename T>
 		bool data_checkout(const char* aname, i64_actorid adataid, T& adata)
 		{
 			return false;
 		}
 
-		// # Datastate
+		// Pull all edited rows of one table back from the script layer.
 		template <typename T>
 		bool data_checkout(const char* aname, std::map<int64_t, T>& adata)
 		{
 			return false;
 		}
 
-		// # Check whether the data has been deleted
+		// Check whether one row has been marked deleted in script state.
 		bool data_checkdel(const char* aname, int64_t adataid)
 		{
 			return false;
 		}
 
-		// # Check whether a group of data has been deleted
+		// Collect rows that were marked deleted in script state.
 		bool data_checkdel(const char* aname, std::vector<int64_t>& adataid)
 		{
 			return false;
@@ -156,6 +149,8 @@ namespace ngl
 
 		void setupluapaths()
 		{
+			// Register project-specific search paths and native helper functions
+			// before loading user scripts.
 			luaapi::add_package_path(L, sysconfig::lua().c_str());
 			luaapi::register_func(L, "nguidstr2int64", nguidstr2int64);
 			luaapi::register_func(L, "send_client", send_client);
@@ -170,7 +165,7 @@ namespace ngl
 			{
 				return false;
 			}
-			luaL_openlibs(L);  // Translated comment.
+			luaL_openlibs(L);  // Expose the standard Lua libraries.
 			setupluapaths();
 
 			if (luaL_loadfile(L, (sysconfig::lua() + "rfunction.lua").c_str()) || lua_pcall(L, 0, 0, 0))
@@ -223,7 +218,7 @@ namespace ngl
 			return lfun.call();
 		}
 
-		// # Check whether the data has been modified
+		// Call Lua `data_checkoutbyid` and read back a success flag plus row data.
 		template <typename T>
 		bool data_checkout(const char* aname, i64_actorid adataid, T& adata)
 		{
@@ -257,7 +252,7 @@ namespace ngl
 			return lfun.call();
 		}
 
-		// # Check whether the data has been deleted
+		// Call Lua `data_checkdelbyid` and return the boolean result.
 		bool data_checkdel(const char* aname, i64_actorid adataid)
 		{
 			luafunction lfun(L, m_scriptpath.c_str(), "data_checkdelbyid");
@@ -288,6 +283,7 @@ namespace ngl
 	class nscript_manage
 	{
 	public:
+		// Backend-neutral factory and dispatch helpers used by actor modules.
 		static void* malloc(enscript atype, const char* asubdirectory, const char* ascript)
 		{
 			if(atype == enscript_lua)

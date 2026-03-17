@@ -166,7 +166,7 @@ namespace ngl
 		return false;
 	}
 
-	// # Stmt related
+	// Prepared-statement execution path used when callers bind parameters explicitly.
 	bool nmysql::stmt_query(const char* asql, std::size_t alen, MYSQL_BIND* abind)
 	{
 		unsigned long lsqlen = 0;

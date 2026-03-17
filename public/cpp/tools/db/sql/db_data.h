@@ -36,31 +36,31 @@ namespace ngl
 		// loaded yet" from "definitely does not exist".
 		static std::set<int64_t>			m_idindex;
 	public:
-		// # Getdata allindex
+		// Read-only access to the known-id index.
 		static const std::set<int64_t>& const_id_index()
 		{
 			return m_idindex;
 		}
 
-		// # Getdata allindex
+		// Mutable access used during DB bootstrap and id preloading.
 		static std::set<int64_t>& id_index()
 		{
 			return m_idindex;
 		}
 
-		// # Setdataindex
+		// Mark one id as known to exist.
 		static void set_index(int64_t aid)
 		{
 			m_idindex.insert(aid);
 		}
 
-		// # Deletedataindex
+		// Remove one id from the known-id index.
 		static void erase_index(int64_t aid)
 		{
 			m_idindex.erase(aid);
 		}
 
-		// # Setdata
+		// Cache or replace one loaded row.
 		static bool set(i64_actorid aid, const T& adata)
 		{
 			m_data[aid] = adata;
@@ -68,14 +68,14 @@ namespace ngl
 			return true;		
 		}
 
-		// # Removedata
+		// Remove one row from both the loaded cache and the known-id index.
 		static void remove(i64_actorid aid)
 		{
 			m_data.erase(aid);
 			erase_index(aid);
 		}
 
-		// # Removea group ofdata
+		// Remove a batch of rows addressed as a set.
 		static void remove(const std::set<i64_actorid>& aid)
 		{
 			for (i64_actorid id : aid)
@@ -85,7 +85,7 @@ namespace ngl
 			}				
 		}
 
-		// # Removea group ofdata
+		// Remove a batch of rows addressed as a vector.
 		static void remove(const std::vector<i64_actorid>& aid)
 		{
 			for (i64_actorid id : aid)
@@ -98,9 +98,9 @@ namespace ngl
 		// Distinguishes cache miss, known-but-not-loaded, and fully loaded rows.
 		enum edbdata
 		{
-			edbdata_notload,	// Load
-			edbdata_load,		// Load
-			edbdata_notdata,	// Data
+			edbdata_notload,	// Id exists, but the full row is not loaded yet.
+			edbdata_load,		// Full row is loaded in memory.
+			edbdata_notdata,	// Id is unknown and treated as missing.
 		};
 		static edbdata data_stat(i64_actorid aid)
 		{
@@ -116,7 +116,7 @@ namespace ngl
 			return edbdata_load;
 		}
 
-		// # Findspecifieddata
+		// Find one loaded row without triggering a DB fetch.
 		static T* find(i64_actorid aid)
 		{
 			auto itor = m_data.find(aid);

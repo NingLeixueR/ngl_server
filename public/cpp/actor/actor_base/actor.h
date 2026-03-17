@@ -169,12 +169,10 @@ namespace ngl
 
 		bool ahandle(i32_threadid athreadid, handle_pram& aparm);
 
-		// ############# [Broadcast] #############
-		// Called from the shared broadcast event after DB state has been flushed.
+		// Called from the shared process-wide broadcast event after DB state has been flushed.
 		virtual void broadcast() {}
 		// Internal entry point for the synthetic broadcast message.
 		bool handle_broadcast(const message<np_actor_broadcast>& adata);
-		// ############# [Broadcast] #############
 		
 		// Internal entry point for the synthetic close message.
 		bool handle_close(const message<np_actor_close>&);

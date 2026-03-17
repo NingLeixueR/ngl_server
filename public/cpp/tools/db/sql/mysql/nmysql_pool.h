@@ -35,11 +35,10 @@ namespace ngl
 			static nmysql_pool ltemp;
 			return ltemp;
 		}
-		// # Initializedbconnection: beforeconnection support config,
-		// # This databaseconnectionconfig
+		// Create one DB connection per worker thread using the shared config.
 		void init(const xarg_db& adbarg);
 
-		// # Threadidget incorresponding connection
+		// Return the connection assigned to the calling/target worker thread.
 		nmysql* get(int32_t aindex);
 	};
 }// namespace ngl

@@ -254,37 +254,31 @@ namespace ngl
 		// Notify the script runtime that DB loading has finished.
 		bool nscript_db_loadfinish()const;
 
-		// # Toscript 1, csvdata 2, dbdata 3, nspdata)
-		// Parm aname dataname
-		// Parm asource datasource(csv,db,nsp)
-		// Parm adata data
-		// Parm aedit whethercan scriptin
+		// Push one CSV/DB/NSP dataset into the script runtime.
 		template <typename T>
 		bool nscript_data_push(const char* asource, const T& adata, bool aedit/* = false*/);
 
-		// # Notify the script that the data was deleted
-		// Parm aname dataname
-		// Parm adataid dataid
+		// Notify the script runtime that one row was deleted.
 		template <typename T>
 		bool nscript_data_del(int64_t adataid);
 
-		// # Check whether the data has been modified
+		// Read back one script-edited row.
 		template <typename T>
 		bool nscript_data_checkout(int64_t adataid, T& adata);
 
-		// # Check whether a group of data has been modified
+		// Read back all script-edited rows for one type.
 		template <typename T>
 		bool nscript_data_checkout(std::map<int64_t, T>& adata);
 
-		// # Check whether the data has been deleted
+		// Return whether one row is marked deleted in the script runtime.
 		template <typename T>
 		bool nscript_data_checkdel(int64_t adataid);
 
-		// # Check whether a group of data has been deleted
+		// Collect rows marked deleted in the script runtime.
 		template <typename T>
 		bool nscript_data_checkdel(std::vector<int64_t>& adeldata);
 
-		// # Scripthandlemessage
+		// Dispatch one actor message into the script runtime.
 		template <typename T>
 		bool nscript_handle(const T& adata);
 #pragma endregion
@@ -328,17 +322,17 @@ namespace ngl
 		// Initiate an outbound KCP connection, primarily used by robot actors.
 		bool kcp_connect(i16_port auport, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const;
 
-		// # Send a pack to the specified actor through UDP/KCP
+		// Send one already-built packet to a specific actor through UDP/KCP.
 		static bool kcp_sendpack(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport = 0);
 
-		// # Send a pack to a group of actors through UDP/KCP
+		// Send one already-built packet to multiple actors through UDP/KCP.
 		static bool kcp_sendpack(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport = 0);
 
-		// # Send data to the specified actor through UDP/KCP
+		// Serialize and send one payload to a specific actor through UDP/KCP.
 		template <typename T>
 		static bool kcp_send(i64_actorid aactorid, T& adata, i16_port auport = 0);
 
-		// # Send data to a group of actors through UDP/KCP
+		// Serialize and send one payload to multiple actors through UDP/KCP.
 		template <typename T>
 		static bool kcp_send(const std::set<i64_actorid>& aactorids, T& adata, i16_port auport = 0);
 #pragma endregion
@@ -347,44 +341,44 @@ namespace ngl
 		// Return the node-level routing actor (actor_client or actor_server).
 		static i64_actorid actorclient_guid();
 
-		// # Send data to a group of clients
+		// Send one payload to a set of role actors/clients.
 		template <typename T>
 		static void send_client(const std::set<i64_actorid>& aids, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP);
 
-		// # Actor_role.guididto clientsenddata
+		// Send one payload to one role actor/client.
 		template <typename T>
 		static void send_client(i64_actorid aid, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP);
 
-		// # Send data to a group of clients
+		// Send one payload to a vector of role actors/clients.
 		template <typename T>
 		static void send_client(const std::vector<i64_actorid>& aids, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP);
 
-		// # Send a message to all clients
+		// Broadcast one payload to every online client.
 		template <typename T>
 		static void send_client(const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP);
 
-		// # Specifiedareaallclientsendmessage
+		// Broadcast one payload to all clients in one area.
 		template <typename T>
 		static void send_clientbyarea(i16_area aarea, const T& adata, ENET_PROTOCOL aprotocol = ENET_TCP);
 #pragma endregion
 
 #pragma region send_actor
-		// # Sendpacktospecifiedactor
+		// Forward one already-built packet to a concrete actor.
 		static void send_actor(const nguid& aguid, const std::shared_ptr<pack>& adata);
 
-		// # SenddatatoallENUM_ACTORtype actor
+		// Broadcast one message to all actors of the given type.
 		template <typename T, bool IS_SEND = true>
 		static void send_actor(ENUM_ACTOR atype, const std::shared_ptr<T>& adata);
 
-		// # Send data to the specified actor
+		// Send one message to a concrete actor.
 		template <typename T, bool IS_SEND = true>
 		static void send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata);
 
-		// # Send data to the specified actor
+		// Send one message to a concrete actor with an explicit routing-failure callback.
 		template <typename T, bool IS_SEND = true>
 		static void send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun);
 
-		// # Send data to a group of actors
+		// Send one message to a batch of actors.
 		template <typename T, bool IS_SEND = true>
 		static void send_actor(const std::set<i64_actorid>& asetguid, const nguid& arequestguid, const std::shared_ptr<T>& adata);
 #pragma endregion

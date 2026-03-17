@@ -31,8 +31,8 @@ namespace ngl
 
 	struct nnode_session
 	{
-		i32_sessionid	m_session = -1;	// Serversession
-		nactornode		m_node;		    // Server info
+		i32_sessionid	m_session = -1;	// Connected session id.
+		nactornode		m_node;		    // Remote node metadata.
 
 		nnode_session() = default;
 		nnode_session(i32_sessionid asession, const nactornode& anode);
@@ -60,22 +60,22 @@ namespace ngl
 		handle_pram() = default;
 
 		i32_protocolnum			m_enum			= -1;				// Protocol id
-		std::shared_ptr<void>	m_data			= nullptr;			// Protocolstructure
-		std::shared_ptr<pack>	m_pack			= nullptr;			// If message packinfo
-		nguid					m_actor			= nguid::make();	// Sendto actor
-		nguid					m_requestactor	= nguid::make();	// Actorsend
-		std::set<i64_actorid>   m_massactors;						// List
+		std::shared_ptr<void>	m_data			= nullptr;			// Typed protocol payload.
+		std::shared_ptr<pack>	m_pack			= nullptr;			// Raw network packet when forwarding directly.
+		nguid					m_actor			= nguid::make();	// Target actor.
+		nguid					m_requestactor	= nguid::make();	// Original sender actor.
+		std::set<i64_actorid>   m_massactors;						// Batch targets for mass forwarding.
 
 		using forwardtype = std::function<void(handle_pram&)>;
 		using callfail = std::function<void()>;
 
-		forwardtype				m_forward		= nullptr;			// Forwardingfunction
-		bool					m_forwardtype	= false;			// Forwardingtoalltype
-		callfail				m_failfun		= nullptr;			// Actor_client to actor
-		bool					m_issend		= true;				// Whether sendto
+		forwardtype				m_forward		= nullptr;			// Transport callback used by remote forwarding.
+		bool					m_forwardtype	= false;			// Broadcast by actor type when no concrete guid exists.
+		callfail				m_failfun		= nullptr;			// Failure callback when routing cannot resolve a target.
+		bool					m_issend		= true;				// Whether this message should be sent remotely at all.
 
-		// # Copy: used to " handle_pram" tolocal actor data/forward info
-		// #: Copy m_massactors, local generate copy
+		// Build a lightweight copy for local fan-out without duplicating the
+		// potentially large mass-target set.
 		static handle_pram shallow_copy_without_massactors(const handle_pram& asrc)
 		{
 			handle_pram ldst;
@@ -91,23 +91,23 @@ namespace ngl
 			return ldst;
 		}
 
-		// # [Connection]get[id]
+		// Resolve an actor guid to the owning server id.
 		static i32_serverid		serverid(i64_actorid aactorid);
 
-		// # [Actorid]get[gatewayid]
+		// Resolve a role actor to the gateway server that currently owns it.
 		static i32_serverid		gatewayid(i64_actorid aactorid);
 
-		// # [Servertype]get[serverlist]
+		// Collect all server ids for a given singleton/system actor type.
 		static void				serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
 
-		// # Whether invalid actor guid
+		// True when the guid does not point to a concrete actor instance.
 		static bool				is_actoridnone(const nguid& aguid);
 
-		// # ThroughsessionsendmessageT
+		// Send one typed payload through an existing TCP session.
 		template <typename T>
 		static bool	send(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid);
 		
-		// # Toserversendpack
+		// Send one already-built packet to the server that owns the route.
 		static bool	send_pack(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 		static bool	send_pack(i32_serverid aserverid, std::shared_ptr<void>& apack);
 		
@@ -212,7 +212,9 @@ namespace ngl
 			if (lserverid == -1)
 			{
 				if (adata.m_forwardtype && handle_pram::is_actoridnone(aactorid))
-				{// # Forwardingtoalltype nguid::type(aactorid) actor
+				{
+					// Broadcast to every server that hosts the requested actor type
+					// when the sender intentionally omitted a concrete actor id.
 					std::set<i32_serverid> lserverids;
 					handle_pram::serveridlist(aactorid.type(), lserverids);
 					for (i32_serverid serverid : lserverids)

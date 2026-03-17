@@ -26,7 +26,7 @@ namespace ngl
 		m_dbclient = andbclient;
 	}
 
-	// # Get the ndbclient base class
+	// Expose the attached DB client so helper code can issue table-specific work.
 	ndbclient_base* ndb_component::get_dbclient()
 	{
 		return m_dbclient;

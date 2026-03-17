@@ -123,13 +123,13 @@ namespace ngl
 				return false;
 			}
 
-			// # encryption bytexor
+			// Apply the optional payload xor after serialization and before the header is emitted.
 			if (lpayloadbytes > 0 && encryption_bytexor::check_xor<T>())
 			{
 				ngl::tools::bytexor(lpair.first, lpayloadbytes, 0);
 			}
 			
-			// ### sethead start ###
+			// Finalize the header once payload size, routing, and protocol number are known.
 			apack->m_head.m_data[EPH_BYTES] = lpayloadbytes;
 			apack->m_head.set_mask();
 			apack->m_head.set_time();

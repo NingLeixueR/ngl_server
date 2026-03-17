@@ -79,22 +79,22 @@ namespace ngl
 		// Send raw UDP datagrams, KCP packs, or KCP-routed actor traffic.
 		bool sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len);
 
-		// # Send udppackand return
+		// Send one raw UDP datagram and wait for the first reply from the same endpoint.
 		bool sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun);
 
-		// # Send a pack through KCP
+		// Route one serialized pack through an existing KCP session id.
 		bool send_server(i32_sessionid asessionid, const std::shared_ptr<pack>& apack);
 
-		// # Throughkcptoallclientsendpack
+		// Broadcast one serialized pack to every active KCP session.
 		bool send_server(const std::shared_ptr<pack>& apack);
 
-		// # Throughkcptospecifiedareaallclientsendpack
+		// Broadcast one serialized pack only to sessions in the specified area.
 		bool sendpackbyarea(i16_area aarea, const std::shared_ptr<pack>& apack);
 
-		// # Send a pack through KCP
+		// Route one serialized pack by looking up the KCP session for a remote endpoint.
 		bool send_server(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack);
 
-		// # Send a pack through KCP
+		// Route one serialized pack to the session currently owned by `aactorid`.
 		bool sendpackbyactorid(i64_actorid aactorid, const std::shared_ptr<pack>& apack);
 
 		// Start an outbound KCP handshake toward a remote UDP endpoint.
@@ -107,7 +107,7 @@ namespace ngl
 			, const std::function<void(i32_session)>& afun
 		);
 
-		// # Connection
+		// Start an outbound KCP handshake toward a prebuilt UDP endpoint.
 		void connect(int32_t aconv
 			, std::string& akcpsess
 			, i64_actorid aserver
@@ -121,7 +121,7 @@ namespace ngl
 		i64_actorid find_client(i32_session asession);
 		bool find_actorid(i32_session asession, i64_actorid& aserver, i64_actorid& aclient);
 
-		// # Actoridgetsession
+		// Resolve an actor id back to its current KCP session id.
 		i32_session find_session(i64_actorid aclient);
 
 		// Remove a KCP session from the session table.
@@ -129,7 +129,7 @@ namespace ngl
 
 		void close_net(i32_session asession);
 
-		// # Connection
+		// Recreate the logical session mapping after reconnecting to the same peer.
 		void reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aserver, i64_actorid aclient);
 
 		// Feed one fully reconstructed KCP payload into the normal protocol pipeline.

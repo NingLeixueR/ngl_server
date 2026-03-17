@@ -28,7 +28,7 @@ namespace ngl
 		int32_t			m_tid = 0;
 		int32_t			m_count = 0;
 		int32_t			m_time = 0;
-		int32_t			m_adddec = 0;// Translated comment.
+		int32_t			m_adddec = 0; // Positive for gains, negative for consumption.
 		std::string		m_mask;
 
 		void print()

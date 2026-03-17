@@ -60,8 +60,7 @@ namespace ngl
 				larea = ttab_servers::instance().const_tab()->m_area;
 			}
 
-			// # INSERT INTO %s  (id,data)VALUES(%lld,'%s')  ON DUPLICATE KEY UPDATE %s
-			// # REPLACE INTO first deletedata, afterthen.
+			// Use an upsert so callers do not need separate insert/update paths.
 			std::string lsql = std::format(
 				"INSERT INTO {} (id, area, data)VALUES({}, {}, ?)  ON DUPLICATE KEY UPDATE data=values(data), area=values(area);"
 				, tools::type_name<T>().c_str(), adata->mid(), larea
@@ -108,7 +107,7 @@ namespace ngl
 			return true;
 		}
 
-		// # Loadlocalconfigarea all data
+		// Restrict table queries to the local area or merged-area visibility set.
 		static const char* where_area()
 		{
 			static std::string lareastr;
@@ -135,7 +134,7 @@ namespace ngl
 		template <typename T>
 		static bool select(nmysql* adb, i64_actorid aid)
 		{
-			// # Fromdatabaseinload
+			// Load one concrete row.
 			std::string lsql = std::format(
 				"SELECT id,data FROM {} WHERE id = '{}' AND ({});", tools::type_name<T>().c_str(), aid, where_area()
 			);
@@ -156,7 +155,7 @@ namespace ngl
 		template <typename T>
 		static bool select(nmysql* adb)
 		{
-			// # Fromdatabaseinload
+			// Load the full visible table.
 			std::string lsql = std::format(
 				"SELECT id,data FROM {} WHERE {};", tools::type_name<T>().c_str(), where_area()
 			);
@@ -175,11 +174,11 @@ namespace ngl
 			);
 		}
 
-		// # Load id preventcache penetration
+		// Load only ids so later point-lookups can avoid cache penetration.
 		template <typename T>
 		static bool select(nmysql* adb, std::set<int64_t>& aidset)
 		{
-			// # Fromdatabaseinload
+			// Load the visible id set only.
 			std::string lsql = std::format(
 				"SELECT id FROM {} WHERE {};", tools::type_name<T>().c_str(), where_area()
 			);

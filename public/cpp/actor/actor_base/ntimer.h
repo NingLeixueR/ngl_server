@@ -41,7 +41,8 @@ namespace ngl
 			return -1;
 		}
 
-		// ET_MONTH, //
+		// Build a monthly timer that fires on the requested day-of-month at the
+		// requested wall-clock time.
 		static bool parm_month(np_timerparm& aparm, int amonthday/*1-31*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_monthday(amonthday) && localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
@@ -58,7 +59,8 @@ namespace ngl
 			return false;			
 		}
 
-		// Translated comment.
+		// Build a weekly timer that fires on the requested weekday at the
+		// requested wall-clock time.
 		static bool parm_week(np_timerparm& aparm, int aweek/*1-7*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_week(aweek) && localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
@@ -77,7 +79,7 @@ namespace ngl
 			return false;
 		}
 
-		// Ahour amin asec
+		// Build a daily timer that repeats at the requested hour/minute/second.
 		static bool parm_day(np_timerparm& aparm, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
@@ -96,7 +98,7 @@ namespace ngl
 			return false;
 		}
 
-		// Amin asec
+		// Build an hourly timer that fires once per hour at minute/second.
 		static bool parm_hour(np_timerparm& aparm, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_minute(amin) && localtime::check_sec(asec))
@@ -115,7 +117,7 @@ namespace ngl
 			return false;
 		}
 
-		// Asec
+		// Build a per-minute timer that fires once per minute at second `asec`.
 		static bool parm_min(np_timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
 			if (localtime::check_sec(asec))
@@ -134,7 +136,7 @@ namespace ngl
 			return false;
 		}
 
-		// N
+		// Build a fixed-interval timer measured in seconds.
 		static bool make_interval(np_timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
 			if (asec >= 0)
@@ -160,7 +162,7 @@ namespace ngl
 		ntimer(const ntimer&) = delete;
 		ntimer& operator=(const ntimer&) = delete;
 	public:
-		// Timer
+		// Register one actor-owned timer and route expirations back as actor messages.
 		static int addtimer(actor_base* actor, const std::shared_ptr<np_timerparm>& aparm);
 	};
 }//namespace ngl

@@ -39,16 +39,16 @@ namespace ngl
 			return m_postgresql;
 		}
 
-		// # Connectiondatabase
+		// Open one PostgreSQL connection using the supplied XML config.
 		bool connectdb(const xarg_db& arg);
 
-		// # Closedatabase
+		// Close the live PostgreSQL connection if one exists.
 		void closedb();
 
-		// # Execute SQL statements
+		// Execute one SQL statement that does not return rows.
 		bool query(const char* asql);
 
-		// # Callbackin data
+		// Execute one query and pass the full PGresult into the callback.
 		using callback = std::function<bool(PGresult*)>;
 		bool select(const char* asql, int resultFormat, const callback& aback);
 

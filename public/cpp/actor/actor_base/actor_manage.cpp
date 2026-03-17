@@ -191,7 +191,7 @@ namespace ngl
 			}
 			lpactor = *lpactorptr;
 
-			// # Fromactor_manageinremove
+			// Remove the actor from all manager-side lookup tables before scheduling teardown.
 			m_actorbyid.erase(aguid);
 			auto type_it = m_actorbytype.find(aguid.type());
 			if (type_it != m_actorbytype.end())

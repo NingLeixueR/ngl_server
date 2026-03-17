@@ -40,16 +40,16 @@ namespace ngl
 {
 	enum ENUM_MODE
 	{
-		ENUM_MODE_NULL,		// Set
-		ENUM_MODE_HTTP,		// http
-		ENUM_MODE_HTTPS,	// https
+		ENUM_MODE_NULL,		// Uninitialized mode.
+		ENUM_MODE_HTTP,		// Plain HTTP.
+		ENUM_MODE_HTTPS,	// HTTPS over TLS.
 	};
 
 	enum ENUM_TYPE
 	{
-		ENUM_TYPE_NULL,		// Set
-		ENUM_TYPE_POST,		// POST
-		ENUM_TYPE_GET,		// GET
+		ENUM_TYPE_NULL,		// Uninitialized method.
+		ENUM_TYPE_POST,		// HTTP POST.
+		ENUM_TYPE_GET,		// HTTP GET.
 	};
 
 	struct http_parm
@@ -140,7 +140,7 @@ namespace ngl
 		std::string m_name;
 		std::string m_title;
 		std::string m_content;
-		std::vector<std::pair<std::string, std::string>> m_recvs;// key:mail value:name
+		std::vector<std::pair<std::string, std::string>> m_recvs; // recipient email -> display name
 
 		void wait()
 		{
@@ -188,23 +188,23 @@ namespace ngl
 
 		static size_t callback(void* buffer, size_t size, size_t nmemb, std::string* lpVoid);
 	public:
-		// # Sethttptype
+		// Select HTTP vs HTTPS.
 		static void set_mode(std::shared_ptr<http_parm>& ahttp, ENUM_MODE aval);
 
-		// # Setpost/gettype
+		// Select GET vs POST.
 		static void set_type(std::shared_ptr<http_parm>& ahttp, ENUM_TYPE aval);
 
-		// # Seturl
+		// Set the request URL.
 		static void set_url(std::shared_ptr<http_parm>& ahttp, const std::string& aurl);
 		static void set_url(std::shared_ptr<http_parm>& ahttp, const char* aurl);
 
 		// Appends `key=value` pairs into the request parameter string.
 		static void set_param(std::shared_ptr<http_parm>& ahttp, const std::string& aparam);
 
-		// # Sethttp
+		// Replace the full header list.
 		static void set_headers(std::shared_ptr<http_parm>& ahttp, const std::vector<std::string>& aheaders);
 
-		// # Setcallback
+		// Set the completion callback invoked on the worker thread.
 		static void set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback);
 
 		// Helper for building query strings from parallel key/value lists.

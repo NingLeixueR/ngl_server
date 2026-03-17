@@ -23,7 +23,7 @@
 
 namespace ngl
 {
-	// # Used to string
+	// Bidirectional enum <-> name registry with original/lower/upper variants.
 	template <typename ENUMT>
 	class enum2name
 	{
@@ -33,9 +33,9 @@ namespace ngl
 
 		struct data
 		{
-			std::string m_tolower;		// Convert
-			std::string m_toupper;		// Convert
-			std::string m_never;		// Translated comment.
+			std::string m_tolower;		// Lower-case lookup form.
+			std::string m_toupper;		// Upper-case lookup form.
+			std::string m_never;		// Original registration spelling.
 		};
 		static std::map<int, std::map<ENUMT, data>>			m_datae2n;
 		static std::map<int, std::map<std::string, ENUMT>>	m_datan2e;

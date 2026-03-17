@@ -40,8 +40,8 @@ namespace ngl
 {
 	namespace ser
 	{
-		// # TBUFF char* correspondingpush
-		// # TBUFF const char* correspondingpop
+		// `serialize<char*>` writes bytes into a mutable buffer, while
+		// `serialize<const char*>` reads bytes back out of an immutable buffer.
 		template <typename TBUFF>
 		class serialize
 		{

@@ -32,14 +32,14 @@ namespace ngl
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
 			}
 		);
-		// # Data
+		// Peer-to-peer data synchronization messages.
 		actor::register_actor_s<TDerived, np_channel_data<T>>(
 			e_ready_db, [](TDerived* aactor, const message<np_channel_data<T>>& adata)
 			{
 				nsp_server<ENUMDB, TDerived, T>::handle(aactor, adata);
 			}
 		);
-		// # Exit
+		// Peer disconnect notifications so subscription state can be cleaned up.
 		actor::register_actor_s<TDerived, np_channel_exit<T>>(
 			e_ready_db, [](TDerived* aactor, const message<np_channel_exit<T>>& adata)
 			{

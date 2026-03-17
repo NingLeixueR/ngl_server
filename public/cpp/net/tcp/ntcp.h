@@ -76,29 +76,26 @@ namespace ngl
 		// Connect to an endpoint or a server id, with optional wait/reconnect behavior.
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun);
 
-		// # Connectionspecifiedip/port
-		// # Aip/aport connection ip/port
-		// # Afun connectioncallback
-		// # Await whether connectionsuccessful
-		// # Areconnection whether
+		// Full connect API: optionally wait for success and optionally register
+		// automatic reconnect metadata.
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection);
 
-		// # Connectionspecifiedserver
+		// Resolve one configured server id and connect to its advertised address.
 		bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection);
 		
 		// Send raw text, typed packs, or typed payloads over TCP.
 		bool send_msg(i32_sessionid asession, const std::string& amsg);
 
-		// # Sendmessage
+		// Send one already-built typed packet.
 		bool send_pack(i32_sessionid asession, std::shared_ptr<pack>& lpack);
 
-		// # Sendmessage
+		// Type-erased overload used by generic forwarding paths.
 		bool send_pack(i32_sessionid asession, std::shared_ptr<void>& lpack);
 
 		// Convenience wrapper that resolves a server id to its session.
 		bool send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
-		// # Sendmessage
+		// Serialize and send one typed payload to a single session.
 		template <typename Y, typename T = Y>
 		bool send(i32_sessionid asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
@@ -108,7 +105,7 @@ namespace ngl
 		template <typename Y, typename T = Y>
 		bool send(const std::set<i32_sessionid>& asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// # Toserversendmessage
+		// Resolve the server session first, then serialize and send the payload.
 		template <typename Y, typename T = Y>
 		bool send_server(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
@@ -168,7 +165,7 @@ namespace ngl
 		return send(asession, aactorid, arequestactorid, lpack);
 	}
 
-	// # Toserversendmessage
+	// Resolve one server id to its live session before sending.
 	template <typename Y, typename T/* = Y*/>
 	bool ntcp::send_server(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
@@ -206,7 +203,8 @@ namespace ngl
 		return send_client(lvecs, agateway, adata);
 	}
 
-	// # Toclientsendmessage
+	// Wrap one payload into a gateway-forward packet and fan it out to the
+	// gateway sessions responsible for the target users.
 	template <typename T>
 	bool ntcp::send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
 	{

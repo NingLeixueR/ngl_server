@@ -286,25 +286,25 @@ namespace ngl
 		};
 		tcallback<T> m_call;
 	public:
-		// # Setdata or getdata callback
+		// Set the callback invoked when one row is created or updated.
 		inline void set_changedatafun(const std::function<void(int64_t, const T&, bool)>& afun)
 		{
 			m_call.m_changedatafun = afun;
 		}
 
-		// # Setdata delete callback
+		// Set the callback invoked when one row is deleted.
 		inline void set_deldatafun(const std::function<void(int64_t)>& afun)
 		{
 			m_call.m_deldatafun = afun;
 		}
 
-		// # Setdataloadcomplete callback
+		// Set the callback invoked when the first full sync finishes.
 		inline void set_loadfinishfun(const std::function<void()>& afun)
 		{
 			m_call.m_loadfinishfun = afun;
 		}
 
-		// # Data or getdata callback
+		// Invoke the row-created/updated callback when present.
 		inline void changedatafun(int64_t aid, const T& adata, bool afrist)
 		{
 			if (m_call.m_changedatafun != nullptr)
@@ -313,7 +313,7 @@ namespace ngl
 			}
 		}
 
-		// # Data delete callback
+		// Invoke the row-deleted callback when present.
 		inline void deldatafun(int64_t aid)
 		{
 			if (m_call.m_deldatafun != nullptr)
@@ -322,7 +322,7 @@ namespace ngl
 			}
 		}
 
-		// # Dataloadcomplete callback
+		// Invoke the initial-full-sync-complete callback when present.
 		inline void loadfinishfun()
 		{
 			if (m_call.m_loadfinishfun != nullptr)

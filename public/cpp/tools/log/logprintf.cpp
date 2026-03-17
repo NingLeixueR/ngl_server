@@ -226,7 +226,7 @@ namespace ngl
 		}
 	}
 
-	// # BI
+	// Dedicated logfile variant for BI/event streams.
 	struct logfile_bi : public logfile
 	{
 		logfile_bi(const config& aconfig);

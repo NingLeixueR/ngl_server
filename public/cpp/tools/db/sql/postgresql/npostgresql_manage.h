@@ -60,16 +60,16 @@ namespace ngl
 				, tools::type_name<T>().c_str(), adata->mid(), larea
 			);
 
-			// Parameters
+			// PostgreSQL receives the serialized row as one binary parameter.
 			const char* param_values[1];
 			int param_lengths[1];
-			int param_formats[1] = { 1 }; // 0=Text, 1=binary(data binary )
+			int param_formats[1] = { 1 }; // 0 = text, 1 = binary.
 
-			// data (binary)
+			// Bind the serialized blob payload.
 			param_values[0] = adb->m_malloc.buff();
 			param_lengths[0] = adb->m_malloc.pos();
 
-			// Executeparameters
+			// Execute the prepared parameterized statement.
 			PGresult* res = PQexecParams(
 				adb->postgresql(), lsql.c_str(), 1, nullptr, param_values, param_lengths, param_formats, 0
 			);
@@ -120,7 +120,7 @@ namespace ngl
 			return true;
 		}
 
-		// # Loadlocalconfigarea all data
+		// Restrict table queries to the local area or merged-area visibility set.
 		static const char* where_area()
 		{
 			static std::string lareastr;
@@ -147,7 +147,7 @@ namespace ngl
 		template <typename T>
 		static bool select(npostgresql* adb, i64_actorid aid)
 		{
-			// # Fromdatabaseinload
+			// Load one concrete row.
 			std::string lsql = std::format(
 				"SELECT id,data FROM {} WHERE id = {} AND ({})", tools::type_name<T>().c_str(), aid, where_area()
 			);
@@ -172,7 +172,7 @@ namespace ngl
 		template <typename T>
 		static bool select(npostgresql* adb)
 		{
-			// # Fromdatabaseinload
+			// Load the full visible table.
 			std::string lsql = std::format(
 				"SELECT id,data FROM {} WHERE {}", tools::type_name<T>().c_str(), where_area()
 			);
@@ -194,11 +194,11 @@ namespace ngl
 			);
 		}
 
-		// # Load id preventcache penetration
+		// Load only ids so later point-lookups can avoid cache penetration.
 		template <typename T>
 		static bool select(npostgresql* adb, std::set<int64_t>& aidset)
 		{
-			// # Fromdatabaseinload
+			// Load the visible id set only.
 			std::string lsql = std::format(
 				"SELECT id FROM {} WHERE {}", tools::type_name<T>().c_str(), where_area()
 			);

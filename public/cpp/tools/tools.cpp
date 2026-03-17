@@ -618,7 +618,7 @@ namespace ngl
 	int32_t tools::utf8firstbyte(uint8_t firstbyte)
 	{
 		int nCount = 0;
-		unsigned char mask = 0x80; // Translated comment.
+		unsigned char mask = 0x80; // Leading-one mask used to count UTF-8 prefix bits.
 		if ((firstbyte & mask) == 0)
 		{
 			return 1;

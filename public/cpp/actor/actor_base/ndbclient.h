@@ -434,7 +434,7 @@ namespace ngl
 				if (lpdata != nullptr && lpdata->is_modified())
 				{
 					pro.add(aid, *lpdata->getconst(false));
-					// # Clearflag bits
+					// The row has been copied into this save batch, so its dirty bit can be cleared now.
 					lpdata->clear_modified();
 				}			
 			}
@@ -446,7 +446,7 @@ namespace ngl
 					lpdata = tools::findmap(m_data, nguid(lactorid));
 					pro.add(lactorid, *lpdata->getconst(false));
 				}
-				// # Clearflag bits
+				// This batch consumed the current modified-id snapshot.
 				lmodified.clear();
 			}
 			if (!pro.empty())

@@ -28,7 +28,7 @@ namespace ngl
 {
 	using thread = std::thread;
 
-	// # Semaphore
+	// Small counting semaphore wrapper used by worker queues and callback threads.
 	class sem
 	{
 		sem(const sem&) = delete;
@@ -52,26 +52,26 @@ namespace ngl
 		}
 	};
 
-	// # Let currentthread
+	// Sleep helpers used to make call sites read like the intended unit.
 	class sleep
 	{
 		sleep() = delete;
 		sleep(const sleep&) = delete;
 		sleep& operator=(const sleep&) = delete;
 	public:
-		// # Thread [avalue]
+		// Sleep the current thread for the requested number of hours.
 		static void hours(int32_t avalue)
 		{
 			std::this_thread::sleep_for(std::chrono::hours(avalue));
 		}
 		
-		// # Thread [avalue]
+		// Sleep the current thread for the requested number of seconds.
 		static void seconds(int32_t avalue)
 		{
 			std::this_thread::sleep_for(std::chrono::seconds(avalue));
 		}
 
-		// # Thread [avalue]
+		// Sleep the current thread for the requested number of milliseconds.
 		static void milliseconds(int32_t avalue)
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(avalue));
@@ -85,8 +85,8 @@ namespace ngl
 #define lock_read(MUTEX)		std::shared_lock<std::shared_mutex> CONCAT(__read_lock_, __LINE__)(MUTEX) 
 #define lock_write(MUTEX)		std::lock_guard<std::shared_mutex> CONCAT(__write_lock_, __LINE__)(MUTEX)
 
-// Used to lock
-// Startlocklog, in DECHECK_LOCK_TAR
+// Optional debug lock macro that prints acquisition/release when
+// `DECHECK_LOCK_TAR` is enabled.
 #ifdef DECHECK_LOCK_TAR
 # define nlock(MUTEX) \
 	std::cout << std::format("lock_open:{},{}", __FILE__,__LINE__) << std::endl;	\

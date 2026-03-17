@@ -40,26 +40,26 @@ namespace ngl
 	public:
 		nmysql() = default;
 
-		// # Connectiondatabase
+		// Open one MySQL connection using the supplied XML config.
 		bool connectdb(const xarg_db& arg);
 
-		// # Closedatabase
+		// Close the live MySQL connection if one exists.
 		void closedb();
 
-		// # Database
+		// Switch the active schema on an existing connection.
 		bool changedb(MYSQL* amysql, std::string& adbname);
 
-		// # Execute SQL statements
+		// Execute one SQL statement that does not return rows.
 		bool query(const char* asql, std::size_t alen);
 
-		// # SQL in stringinspecial
+		// Escape arbitrary bytes before embedding them into SQL text.
 		void escape(const char* asql, std::size_t asqllen, std::string& aoutsql);
 
-		// # Callbackin data
+		// Execute one query and stream rows through the callback.
 		using callback = std::function<bool(MYSQL_ROW, unsigned long*, my_ulonglong, my_ulonglong)>;
 		bool select(const char* asql, std::size_t asqllen, const callback& aback);
 
-		// # Stmt related
+		// Execute one prepared statement with bound parameters.
 		bool stmt_query(const char* asql, std::size_t alen, MYSQL_BIND* abind);
 
 		db_buff m_malloc;

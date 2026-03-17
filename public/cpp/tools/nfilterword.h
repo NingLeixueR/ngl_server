@@ -50,7 +50,7 @@ namespace ngl
         static bool append_matches(int cur, int i, std::vector<std::pair<int, int>>& res);
         static bool match_exists(char c, int& cur);
 
-        // Create node
+        // Allocate one trie node for the Aho-Corasick automaton.
         static int newnode()
         {
             m_nodes.emplace_back();
@@ -64,7 +64,7 @@ namespace ngl
         // Build/reset the automaton, load patterns, and query/filter text.
         static void init();
 
-        // Cleanup.
+        // Release all trie and helper state.
         static void clear();
 
         // Insert one UTF-8 pattern into the trie.
@@ -81,25 +81,25 @@ namespace ngl
         // Replace each matched byte range with '*'.
         static std::string filter(const std::string& text);
 
-        // Function: 8convert 32
+        // Convert UTF-8 text into UTF-32 code points for character-level checks.
         static bool utf8to32(const std::string& text1, std::u32string& text2);
 
-        // Function: 32convert 8
+        // Convert UTF-32 code points back into UTF-8 text.
         static bool utf32to8(const std::u32string& text1, std::string& text2);
 
-        // Whether
+        // Return true when the text contains a configured sensitive-word match.
         static bool is_filter(const std::string& text);
 
-        // ASCII,
+        // Count display characters using the project's mixed-width naming rules.
         static int32_t charcount(const std::u32string& astr);
 
         enum enfilter
         {
-            enfilter_success,               // Successful
-            enfilter_invalid_utf8,          // :UTF-8
-            enfilter_emojispecial,          // : Special
-            enfilter_charcount,             // Translated comment.
-            enfilter_filter,                // Translated comment.
+            enfilter_success,               // Validation passed.
+            enfilter_invalid_utf8,          // Input is not valid UTF-8.
+            enfilter_emojispecial,          // Input contains disallowed emoji or symbol code points.
+            enfilter_charcount,             // Input length falls outside the configured character range.
+            enfilter_filter,                // Input matches a configured sensitive word.
         };
 
         static const char* enfilter_message(enfilter astat);
@@ -107,13 +107,13 @@ namespace ngl
         // Validate a user-facing name against UTF-8, special-character, length, and filter rules.
         static enfilter check_name(const std::string& astr, int32_t amincount, int32_t amaxcount);
 
-        // Function: check whether 「 」
+        // Return true for code points treated as normal language letters by name validation.
         static bool is_language_char(uint32_t codepoint);
 
-        // Function: check whether 「 」
+        // Return true when one code point belongs to a disallowed emoji/symbol block.
         static bool is_emojispecial(char32_t codepoint);
        
-        // Whetherpack special
+        // Scan a UTF-32 string and report whether any character is disallowed.
         static bool is_emojispecial(const std::u32string& astr);
     };
 

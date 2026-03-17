@@ -193,7 +193,7 @@ namespace ngl
 			nfree(abuff);
 		}
 
-		// # Initialize clear
+		// Periodically trim each bucket back toward its configured warm-cache size.
 		void time_free()
 		{
 			lock_write(m_mutex);

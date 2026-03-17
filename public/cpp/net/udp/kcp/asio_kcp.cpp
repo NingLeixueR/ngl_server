@@ -39,7 +39,7 @@ namespace ngl
 		}
 	}
 
-	//## udp_cmd::ecmd_connect
+	// Register the inbound KCP handshake request handler.
 	void asio_kcp::func_ecmd_connect()const
 	{
 		udp_cmd::register_fun(udp_cmd::ecmd_connect, [](asio_kcp* ap, ptr_se& apstruct, const std::string& ajson)
@@ -71,7 +71,7 @@ namespace ngl
 		);
 	}
 
-	//## udp_cmd::ecmd_connect_ret
+	// Register the handshake acknowledgement handler for outbound connect attempts.
 	void asio_kcp::func_ecmd_connect_ret()const
 	{
 		udp_cmd::register_fun(udp_cmd::ecmd_connect_ret, [](asio_kcp* ap, ptr_se& apstruct, const std::string&)
@@ -86,7 +86,7 @@ namespace ngl
 		);
 	}
 
-	//## udp_cmd::ecmd_close
+	// Register the peer-initiated close handler.
 	void asio_kcp::func_ecmd_close()const
 	{
 		udp_cmd::register_fun(udp_cmd::ecmd_close, [](asio_kcp* ap, ptr_se& apstruct, const std::string&)
@@ -320,7 +320,7 @@ namespace ngl
 			});
 	};
 
-	// ## Send udppack
+	// Send one raw UDP datagram without going through KCP session state.
 	bool asio_kcp::sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len)
 	{
 		return async_send_copy(aendpoint, buf, len, [](const basio_errorcode& ec)
@@ -372,7 +372,7 @@ namespace ngl
 		return true;
 	}
 
-	// ## Send a pack through KCP
+	// Route one serialized protocol pack to an existing KCP session.
 	bool asio_kcp::send_server(i32_sessionid asessionid, const std::shared_ptr<pack>& apack)
 	{
 		ptr_se lpstruct = m_session.find(asessionid);
@@ -405,7 +405,7 @@ namespace ngl
 		return true;
 	}
 
-	// ## Send a pack through KCP
+	// Route one serialized protocol pack by looking up the remote endpoint.
 	bool asio_kcp::send_server(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack)
 	{
 		send(aendpoint, apack->m_buff, apack->m_len);
@@ -447,7 +447,7 @@ namespace ngl
 		return ret;
 	}
 
-	// ## Kcpsendcallback
+	// KCP output callback: flush already-segmented UDP bytes through ASIO.
 	int asio_kcp::sendbuff(i32_session asession, const char* buf, int len)
 	{
 		ptr_se lpstruct = m_session.find(asession);

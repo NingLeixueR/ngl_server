@@ -31,7 +31,7 @@ namespace ngl
 			m_currentoffset(0)
 		{}
 
-		// # Create
+		// Create and return a new empty group id.
 		inline int create(ENUM_ACTOR atype = ACTOR_NONE)
 		{
 			auto& linfo = m_group[++m_currentoffset];
@@ -39,13 +39,13 @@ namespace ngl
 			return m_currentoffset;
 		}
 
-		// # Remove
+		// Remove a group and all of its members.
 		inline void remove(int agroupid)
 		{
 			m_group.erase(agroupid);
 		}
 
-		// # Inadd
+		// Add one actor id into an existing group.
 		inline bool add_member(int agroupid, i64_actorid amember)
 		{
 			std::set<i64_actorid>* lsets = tools::findmap(m_group, agroupid);
@@ -58,7 +58,7 @@ namespace ngl
 			return true;
 		}
 
-		// # Inremove
+		// Remove one actor id from an existing group.
 		inline void remove_member(int agroupid, i64_actorid amember)
 		{
 			std::set<i64_actorid>* lsets = tools::findmap(m_group, agroupid);
@@ -69,7 +69,7 @@ namespace ngl
 			lsets->erase(amember);
 		}
 
-		// # Get inall
+		// Return the full member set for one group.
 		inline const std::set<i64_actorid>* get_group(int agroupid)
 		{
 			std::set<i64_actorid>* lsets = tools::findmap(m_group, agroupid);

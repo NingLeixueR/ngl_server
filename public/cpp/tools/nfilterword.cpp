@@ -416,65 +416,64 @@ namespace ngl
 
     bool nfilterword::is_language_char(uint32_t codepoint)
     {
-        return (codepoint >= 0x0041 && codepoint <= 0x005A) ||  // Translated comment.
-            (codepoint >= 0x0061 && codepoint <= 0x007A) ||  // Translated comment.
-            (codepoint >= 0x4E00 && codepoint <= 0x9FFF) ||  // Translated comment.
-            (codepoint >= 0x3400 && codepoint <= 0x4DBF) ||  // A
-            (codepoint >= 0x20000 && codepoint <= 0x2A6DF) || // B
-            (codepoint >= 0x3040 && codepoint <= 0x309F) ||  // Translated comment.
-            (codepoint >= 0x30A0 && codepoint <= 0x30FF) ||  // Translated comment.
-            (codepoint >= 0xAC00 && codepoint <= 0xD7AF) ||  // Translated comment.
-            (codepoint >= 0x0400 && codepoint <= 0x04FF) ||  // Translated comment.
-            (codepoint >= 0x0370 && codepoint <= 0x03FF) ||  // Translated comment.
-            (codepoint >= 0x0600 && codepoint <= 0x06FF);    // Translated comment.
+        return (codepoint >= 0x0041 && codepoint <= 0x005A) ||   // Latin uppercase letters.
+            (codepoint >= 0x0061 && codepoint <= 0x007A) ||      // Latin lowercase letters.
+            (codepoint >= 0x4E00 && codepoint <= 0x9FFF) ||      // CJK Unified Ideographs.
+            (codepoint >= 0x3400 && codepoint <= 0x4DBF) ||      // CJK Extension A.
+            (codepoint >= 0x20000 && codepoint <= 0x2A6DF) ||    // CJK Extension B.
+            (codepoint >= 0x3040 && codepoint <= 0x309F) ||      // Hiragana.
+            (codepoint >= 0x30A0 && codepoint <= 0x30FF) ||      // Katakana.
+            (codepoint >= 0xAC00 && codepoint <= 0xD7AF) ||      // Hangul syllables.
+            (codepoint >= 0x0400 && codepoint <= 0x04FF) ||      // Cyrillic.
+            (codepoint >= 0x0370 && codepoint <= 0x03FF) ||      // Greek.
+            (codepoint >= 0x0600 && codepoint <= 0x06FF);        // Arabic.
     }
 
     bool nfilterword::is_emojispecial(char32_t codepoint)
     {
-        // : If, returnfalse
+        // Normal language letters are always allowed.
         if (is_language_char(codepoint))
         {
             return false;
         }
 
-        // : Checkwhether 「 」(newly added )
+        // Reject punctuation, emoji, and other symbol-heavy ranges that should not appear in names.
         return (
-            // ===== Newly added: ASCII (pack \n, \t, \r )=====
-            (codepoint >= 0x0000 && codepoint <= 0x001F) ||  // 0X0000-0x001F
-            (codepoint == 0x007F) ||                          // 0X7F delete
-            // 1. BaseASCII /
+            // ASCII control bytes and punctuation, including whitespace controls.
+            (codepoint >= 0x0000 && codepoint <= 0x001F) ||
+            (codepoint == 0x007F) ||
             (codepoint >= 0x0020 && codepoint <= 0x002F) ||
             (codepoint >= 0x003A && codepoint <= 0x0040) ||
             (codepoint >= 0x005B && codepoint <= 0x0060) ||
             (codepoint >= 0x007B && codepoint <= 0x007E) ||
-            // Translated comment.
+            // Full-width compatibility forms and punctuation.
             (codepoint >= 0xFF00 && codepoint <= 0xFFEF) ||
-            // 3. Emoji
+            // Emoji and pictograph blocks.
             (codepoint >= 0x2600 && codepoint <= 0x27BF) ||
             (codepoint >= 0x1F300 && codepoint <= 0x1F5FF) ||
             (codepoint >= 0x1F600 && codepoint <= 0x1F64F) ||
             (codepoint >= 0x1F680 && codepoint <= 0x1F6FF) ||
             (codepoint >= 0x1F900 && codepoint <= 0x1F9FF) ||
             (codepoint >= 0x1FA00 && codepoint <= 0x1FAFF) ||
-            // Translated comment.
+            // Math and technical symbol blocks.
             (codepoint >= 0x2200 && codepoint <= 0x22FF) ||
             (codepoint >= 0x2100 && codepoint <= 0x214F) ||
             (codepoint >= 0x2500 && codepoint <= 0x257F) ||
             (codepoint >= 0x1D400 && codepoint <= 0x1D7FF) ||
-            // Translated comment.
+            // Arrows and geometric symbol ranges.
             (codepoint >= 0x2190 && codepoint <= 0x21FF) ||
             (codepoint >= 0x2900 && codepoint <= 0x297F) ||
             (codepoint >= 0x2B00 && codepoint <= 0x2BFF) ||
-            // 6. /Special
+            // General punctuation and enclosed marks.
             (codepoint >= 0x2000 && codepoint <= 0x206F) ||
             (codepoint >= 0x2300 && codepoint <= 0x23FF) ||
             (codepoint >= 0x3200 && codepoint <= 0x32FF) ||
-            // Translated comment.
+            // Latin-1 supplement and currency symbol ranges.
             (codepoint >= 0x00A0 && codepoint <= 0x00FF) ||
             (codepoint >= 0x20A0 && codepoint <= 0x20CF) ||
-            // Translated comment.
+            // Common standalone symbol marks.
             (codepoint == 0x00A9 || codepoint == 0x00AE || codepoint == 0x2122 || codepoint == 0x2605) ||
-            // 9. Emoji /
+            // Emoji modifiers and joiners used to build composite emoji.
             (codepoint >= 0x1F3FB && codepoint <= 0x1F3FF) ||
             (codepoint == 0xFE0F || codepoint == 0x200D)
             );

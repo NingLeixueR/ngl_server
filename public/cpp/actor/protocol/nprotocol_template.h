@@ -468,7 +468,7 @@ namespace ngl
 		DPROTOCOL(msg_actor, m_actor_name, m_actor)
 	};
 
-	// # Getactor stat data
+	// Aggregated actor statistics returned to monitoring / GM callers.
 	struct msg_actor_stat
 	{
 		
