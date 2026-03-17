@@ -22,8 +22,25 @@ TEST(NFilterWordTest, test_nfilterword)
 
 	EXPECT_TRUE(ngl::nfilterword::is_filter("this text contains badword"));
 	EXPECT_TRUE(ngl::nfilterword::is_filter("b-a-d-w-o-r-d"));
+	EXPECT_TRUE(ngl::nfilterword::is_filter("b@a$d?w=o+r[d]"));
 	EXPECT_TRUE(ngl::nfilterword::is_filter("pin: 123456"));
 	EXPECT_FALSE(ngl::nfilterword::is_filter("this text is clean"));
+}
+
+TEST(NFilterWordTest, MatchPreservesSuffixOutputs)
+{
+	ngl::nfilterword::clear();
+	ngl::nfilterword::init();
+	ngl::nfilterword::load("abc");
+	ngl::nfilterword::load("bc");
+	ngl::nfilterword::build();
+
+	const auto matches = ngl::nfilterword::match("zabc");
+	ASSERT_EQ(matches.size(), 2U);
+	EXPECT_EQ(matches[0].first, 1);
+	EXPECT_EQ(matches[0].second, 3);
+	EXPECT_EQ(matches[1].first, 2);
+	EXPECT_EQ(matches[1].second, 2);
 }
 
 TEST(NFilterWordTest, OperationsAreSafeWithoutExplicitInit)

@@ -273,6 +273,88 @@ namespace ngl
 			std::string& lret = apair.m_data;
 			int& lpos = apair.m_pos;
 			const int lsize = static_cast<int>(lret.size());
+
+			auto consume_simple_terminator = [&](std::size_t astop) -> int
+			{
+				if (astop >= lret.size())
+				{
+					return static_cast<int>(astop);
+				}
+
+				const char lstop = lret[astop];
+				if (lstop == apair.m_fg || lstop == '\n')
+				{
+					return static_cast<int>(astop + 1);
+				}
+				if (lstop != '\r')
+				{
+					return -1;
+				}
+
+				std::size_t lnext = astop;
+				while (lnext < lret.size() && lret[lnext] == '\r')
+				{
+					++lnext;
+				}
+				if (lnext == lret.size())
+				{
+					return static_cast<int>(lnext);
+				}
+				if (lret[lnext] == apair.m_fg || lret[lnext] == '\n')
+				{
+					return static_cast<int>(lnext + 1);
+				}
+				return -1;
+			};
+
+			if (!apair.m_doublequotationmarks && lpos >= 0 && lpos < lsize)
+			{
+				const std::size_t lstart = static_cast<std::size_t>(lpos);
+				if (lret[lstart] == '"')
+				{
+					const std::size_t lclose = lret.find('"', lstart + 1);
+					if (lclose == std::string::npos)
+					{
+						return false;
+					}
+
+					const int lnext = consume_simple_terminator(lclose + 1);
+					if (lnext >= 0)
+					{
+						adata.assign(lret, lstart + 1, lclose - lstart - 1);
+						lpos = lnext;
+						return true;
+					}
+				}
+				else
+				{
+					std::size_t lstop = lstart;
+					for (; lstop < static_cast<std::size_t>(lsize); ++lstop)
+					{
+						const char lcurrent = lret[lstop];
+						if (lcurrent == '"' || lcurrent == apair.m_fg || lcurrent == '\n' || lcurrent == '\r')
+						{
+							break;
+						}
+					}
+
+					if (lstop == static_cast<std::size_t>(lsize))
+					{
+						adata.assign(lret, lstart, lstop - lstart);
+						lpos = static_cast<int>(lstop);
+						return true;
+					}
+
+					const int lnext = consume_simple_terminator(lstop);
+					if (lnext >= 0)
+					{
+						adata.assign(lret, lstart, lstop - lstart);
+						lpos = lnext;
+						return true;
+					}
+				}
+			}
+
 			std::string lvalue;
 			if (lpos >= 0 && lpos < lsize)
 			{

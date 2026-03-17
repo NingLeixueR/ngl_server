@@ -474,6 +474,39 @@ TEST(ToolsTest, CsvReadListParsesDelimitedItems)
 	EXPECT_EQ(values.back(), 3);
 }
 
+TEST(ToolsTest, CsvReadStringFastPathHandlesUnquotedField)
+{
+	ngl::csvpair pair;
+	pair.m_data = "alpha,tail";
+
+	std::string value = "keep";
+	ASSERT_TRUE((ngl::csv_read<std::string>::read(pair, value)));
+	EXPECT_EQ(value, "alpha");
+	EXPECT_EQ(pair.m_pos, 6);
+}
+
+TEST(ToolsTest, CsvReadStringFastPathHandlesQuotedField)
+{
+	ngl::csvpair pair;
+	pair.m_data = "\"alpha,beta\",tail";
+
+	std::string value;
+	ASSERT_TRUE((ngl::csv_read<std::string>::read(pair, value)));
+	EXPECT_EQ(value, "alpha,beta");
+	EXPECT_EQ(pair.m_pos, 13);
+}
+
+TEST(ToolsTest, CsvReadStringFallsBackForInterleavedQuotes)
+{
+	ngl::csvpair pair;
+	pair.m_data = "\"ab\"\"cd\",tail";
+
+	std::string value;
+	ASSERT_TRUE((ngl::csv_read<std::string>::read(pair, value)));
+	EXPECT_EQ(value, "abcd");
+	EXPECT_EQ(pair.m_pos, 9);
+}
+
 TEST(ToolsTest, CsvReaderSkipsCommentLinesWithoutPoisoningNextRow)
 {
 	const std::filesystem::path root = make_temp_test_dir("csv_reader");

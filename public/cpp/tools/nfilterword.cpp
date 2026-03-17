@@ -17,10 +17,37 @@
 #include "tools/nfilterword.h"
 #include "tools/enum2name.h"
 
+#include <array>
 #include <limits>
 
 namespace ngl
 {
+    namespace
+    {
+        std::array<int, 256> g_root_transitions{};
+        std::vector<int> g_output_links;
+
+        int find_child(const std::vector<nacnode>& anodes, int node, unsigned char c)
+        {
+            const auto& lchildren = anodes[node].m_children;
+            if (auto litor = lchildren.find(static_cast<char>(c)); litor != lchildren.end())
+            {
+                return litor->second;
+            }
+            return -1;
+        }
+
+        bool is_ascii_emojispecial(unsigned char c)
+        {
+            return c <= 0x1F ||
+                c == 0x7F ||
+                (c >= 0x20 && c <= 0x2F) ||
+                (c >= 0x3A && c <= 0x40) ||
+                (c >= 0x5B && c <= 0x60) ||
+                (c >= 0x7B && c <= 0x7E);
+        }
+    }
+
     std::vector<nacnode> nfilterword::m_nodes;
     int nfilterword::m_root = -1;
 
@@ -37,16 +64,21 @@ namespace ngl
     {
         m_nodes.clear();
         m_root = newnode();
+        g_output_links.assign(m_nodes.size(), -1);
+        g_root_transitions.fill(m_root);
     }
 
     void nfilterword::clear()
     {
         m_nodes.clear();
         m_root = -1;
+        g_output_links.clear();
+        g_root_transitions.fill(-1);
     }
 
     void nfilterword::advance_state(char c, int& cur)
     {
+        const unsigned char lbyte = static_cast<unsigned char>(c);
         if (m_root < 0 || static_cast<std::size_t>(m_root) >= m_nodes.size())
         {
             cur = -1;
@@ -56,19 +88,18 @@ namespace ngl
         {
             cur = m_root;
         }
+        if (cur == m_root)
+        {
+            cur = g_root_transitions[lbyte];
+            return;
+        }
 
         while (cur != m_root)
         {
-            if (cur < 0 || static_cast<std::size_t>(cur) >= m_nodes.size())
+            const int lnext = find_child(m_nodes, cur, lbyte);
+            if (lnext >= 0)
             {
-                cur = m_root;
-                break;
-            }
-
-            auto& lchildren = m_nodes[cur].m_children;
-            if (auto litor = lchildren.find(c); litor != lchildren.end())
-            {
-                cur = litor->second;
+                cur = lnext;
                 return;
             }
 
@@ -81,34 +112,27 @@ namespace ngl
             cur = lfail;
         }
 
-        auto& lroot_children = m_nodes[m_root].m_children;
-        if (auto litor = lroot_children.find(c); litor != lroot_children.end())
-        {
-            cur = litor->second;
-        }
-        else
-        {
-            cur = m_root;
-        }
+        cur = g_root_transitions[lbyte];
     }
 
     bool nfilterword::append_matches(int cur, int i, std::vector<std::pair<int, int>>& res)
     {
-        bool lmatched = false;
-        for (int temp = cur; temp >= 0 && static_cast<std::size_t>(temp) < m_nodes.size() && temp != m_root;)
+        if (cur < 0 || static_cast<std::size_t>(cur) >= m_nodes.size() || cur == m_root)
         {
-            if (m_nodes[temp].len > 0)
-            {
-                res.emplace_back(i - m_nodes[temp].len + 1, m_nodes[temp].len);
-                lmatched = true;
-            }
+            return false;
+        }
 
-            const int lfail = m_nodes[temp].m_fail;
-            if (lfail < 0 || static_cast<std::size_t>(lfail) >= m_nodes.size())
-            {
-                break;
-            }
-            temp = lfail;
+        bool lmatched = false;
+        if (m_nodes[cur].len > 0)
+        {
+            res.emplace_back(i - m_nodes[cur].len + 1, m_nodes[cur].len);
+            lmatched = true;
+        }
+
+        for (int temp = g_output_links[cur]; temp >= 0 && static_cast<std::size_t>(temp) < m_nodes.size() && temp != m_root; temp = g_output_links[temp])
+        {
+            res.emplace_back(i - m_nodes[temp].len + 1, m_nodes[temp].len);
+            lmatched = true;
         }
         return lmatched;
     }
@@ -121,7 +145,7 @@ namespace ngl
         }
 
         advance_state(c, cur);
-        return cur >= 0 && static_cast<std::size_t>(cur) < m_nodes.size() && m_nodes[cur].m_has_match;
+        return cur >= 0 && m_nodes[cur].m_has_match;
     }
 
     void nfilterword::load(const std::string& apattern)
@@ -133,13 +157,19 @@ namespace ngl
         ensure_initialized();
         int cur = m_root;
 
-        for (auto c : apattern)
+        for (char lraw : apattern)
         {
-            auto litor = m_nodes[cur].m_children.find(c);
+            const unsigned char c = static_cast<unsigned char>(lraw);
+            auto litor = m_nodes[cur].m_children.find(static_cast<char>(c));
             if (litor == m_nodes[cur].m_children.end())
             {
                 const int lnext = newnode();
-                litor = m_nodes[cur].m_children.emplace(c, lnext).first;
+                g_output_links.push_back(-1);
+                litor = m_nodes[cur].m_children.emplace(static_cast<char>(c), lnext).first;
+                if (cur == m_root)
+                {
+                    g_root_transitions[c] = lnext;
+                }
             }
             cur = litor->second;
         }
@@ -154,13 +184,19 @@ namespace ngl
     void nfilterword::build()
     {
         ensure_initialized();
+        if (g_output_links.size() < m_nodes.size())
+        {
+            g_output_links.resize(m_nodes.size(), -1);
+        }
+        g_output_links[m_root] = -1;
         m_nodes[m_root].m_has_match = m_nodes[m_root].len > 0;
         std::queue<int> q;
         for (auto& pair : m_nodes[m_root].m_children)
         {
             int child = pair.second;
             m_nodes[child].m_fail = m_root;
-            m_nodes[child].m_has_match = m_nodes[child].len > 0 || m_nodes[m_root].m_has_match;
+            g_output_links[child] = -1;
+            m_nodes[child].m_has_match = m_nodes[child].len > 0;
             q.push(child);
         }
 
@@ -188,7 +224,8 @@ namespace ngl
                 }
 
                 m_nodes[u].m_fail = lnext;
-                m_nodes[u].m_has_match = m_nodes[u].len > 0 || m_nodes[lnext].m_has_match;
+                g_output_links[u] = m_nodes[lnext].len > 0 ? lnext : g_output_links[lnext];
+                m_nodes[u].m_has_match = m_nodes[u].len > 0 || g_output_links[u] != -1;
                 q.push(u);
             }
         }
@@ -281,6 +318,23 @@ namespace ngl
             const auto lend = text.end();
             while (liter != lend)
             {
+                const unsigned char lfirst = static_cast<unsigned char>(*liter);
+                if (lfirst < 0x80)
+                {
+                    ++liter;
+                    if (is_ascii_emojispecial(lfirst))
+                    {
+                        continue;
+                    }
+
+                    advance_state(static_cast<char>(lfirst), cur);
+                    if (m_nodes[cur].m_has_match)
+                    {
+                        return true;
+                    }
+                    continue;
+                }
+
                 const auto lcode_begin = liter;
                 const char32_t lcodepoint = utf8::next(liter, lend);
                 if (is_emojispecial(lcodepoint))
@@ -289,7 +343,8 @@ namespace ngl
                 }
                 for (auto lbyte = lcode_begin; lbyte != liter; ++lbyte)
                 {
-                    if (match_exists(*lbyte, cur))
+                    advance_state(*lbyte, cur);
+                    if (m_nodes[cur].m_has_match)
                     {
                         return true;
                     }
