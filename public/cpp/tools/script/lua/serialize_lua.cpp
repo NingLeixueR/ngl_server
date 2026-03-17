@@ -176,7 +176,8 @@ namespace ngl
 		lua_getfield(L, -1, "path");
 		std::string lpath = lua_tostring(L, -1);
 
-		// Add path( path)
+		// Extend `package.path` so scripts can `require` files from the project
+		// script directory without editing global Lua installation paths.
 		lpath += std::format(";{}?.lua", apath);
 
 		lua_pop(L, 1);

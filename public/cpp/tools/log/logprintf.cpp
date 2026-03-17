@@ -135,6 +135,8 @@ namespace ngl
 
 	void logfile::create()
 	{	
+		// Logs are grouped by server name, stream type, and date so rotation
+		// stays human-readable even when multiple nodes run on one machine.
 		std::string lpath = std::format("./{}", m_config.m_dir);
 		if (create_dir(lpath) == false)
 		{
@@ -217,6 +219,8 @@ namespace ngl
 		++m_count;
 		if (flush_count())
 		{
+			// Rotation is size-based in terms of log lines rather than bytes,
+			// which keeps file boundaries predictable during debugging.
 			close_fstream();
 			create();
 		}
@@ -235,6 +239,8 @@ namespace ngl
 
 	void logfile_bi::printf(const np_logitem* alog)
 	{
+		// BI logs are already structured upstream, so they are written as
+		// one-line records without the verbose multiline wrapper.
 		m_stream << alog->m_data << std::endl;
 	}
 

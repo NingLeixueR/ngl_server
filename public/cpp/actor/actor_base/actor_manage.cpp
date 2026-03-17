@@ -47,6 +47,7 @@ namespace ngl
 		m_threadnum = apthreadnum;
 		for (int32_t i = 0; i < m_threadnum; ++i)
 		{
+			// Workers start idle and are handed actors only by the dispatcher thread.
 			m_workthreads.push_back(std::make_shared<nthread>(i));
 		}
 		m_workthreadscopy = m_workthreads;
@@ -341,6 +342,7 @@ namespace ngl
 	void actor_manage::push_task_id(const nguid& aguid, handle_pram& apram)
 	{
 		nlock(m_mutex);
+		// Lookup is done under the scheduler lock so actor removal and enqueue stay atomic.
 		auto lpactor = nosafe_get_actorbyid(aguid, apram);
 		if (lpactor == nullptr || actor_is_unavailable((*lpactor)->activity_stat()))
 		{
@@ -384,7 +386,7 @@ namespace ngl
 	void actor_manage::push_task_type(ENUM_ACTOR atype, handle_pram& apram)
 	{
 		nlock(m_mutex);
-		// 1.First to on atype
+		// 1. Deliver locally to every actor of the requested type on this node.
 		auto type_it = m_actorbytype.find(atype);
 		if (type_it != m_actorbytype.end())
 		{
@@ -398,7 +400,7 @@ namespace ngl
 		}
 		if (apram.m_issend)
 		{
-			// 2. After toactor_client, to server
+			// 2. Forward the same message to the route actor so remote nodes can receive it too.
 			nguid lguid = nodetypebyguid();
 			ptractor* lpactor = tools::findmap(m_actorbyid, lguid);
 			if (lpactor == nullptr)
@@ -414,6 +416,7 @@ namespace ngl
 		nlock(m_mutex);
 		for (auto& [_guid, _actor] : m_actorbroadcast)
 		{
+			// Broadcast ticks are opt-in and still respect the actor lifecycle state.
 			if (_actor->isbroadcast() && !actor_is_unavailable(_actor->activity_stat()))
 			{
 				nosafe_push_task_id(_actor, apram);
@@ -515,6 +518,7 @@ namespace ngl
 
 		while (!astop.stop_requested())
 		{
+			// The semaphore is posted whenever there may be at least one ready actor and one idle worker.
 			m_sem.wait();
 			if (astop.stop_requested())
 			{

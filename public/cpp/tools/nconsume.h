@@ -26,9 +26,10 @@ namespace ngl
 		nconsume(const nconsume&) = delete;
 		nconsume& operator=(const nconsume&) = delete;
 
-		std::string		m_name;
-		int64_t			m_beg;
+		std::string		m_name; // Diagnostic label for the measured scope.
+		int64_t			m_beg;  // Start time in milliseconds.
 	public:
+		// Lightweight RAII-style helper for logging slow operations.
 		nconsume(const std::string& aname);
 		void start();
 		void finish();

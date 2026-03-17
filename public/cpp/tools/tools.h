@@ -61,6 +61,8 @@ namespace ngl
 		constexpr std::string_view compiler_type_name() noexcept
 		{
 #if defined(_MSC_VER)
+			// Parse the instantiated type directly from the compiler signature so
+			// forward-declared types still produce stable names.
 			constexpr std::string_view signature = __FUNCSIG__;
 			constexpr std::string_view prefix = "compiler_type_name<";
 			const auto start = signature.find(prefix);
@@ -196,7 +198,7 @@ namespace ngl
 		}
 #pragma endregion 
 
-		// Whether address
+		// Checks whether an IPv4 address belongs to a private/LAN range.
 		static bool is_lanip(const std::string& aip);
 
 		template <typename T>
@@ -209,11 +211,12 @@ namespace ngl
 			return google::protobuf::util::MessageToJsonString(adata, &json, options).ok();		
 		}
 
-		// json pbdata
+		// Convenience logger for protobuf messages during debugging.
 		template <typename T>
 		static void print_json(const T& adata, bool aislog = false);
 
-		// Throughjsongetstructure
+		// Parses JSON into protobuf messages or custom types that implement the
+		// project `json_pop/json_push` contract.
 		template <typename T>
 		static bool json2proto(const std::string& json, T& adata)
 		{
@@ -303,13 +306,13 @@ namespace ngl
 		};
 
 #pragma region bytesorder
-		// # Whether little-endian?
+		// Whether the host platform uses little-endian byte order.
 		static constexpr bool islittle()
 		{
 			return std::endian::native == std::endian::little;
 		}
 
-		// # Convert little-endian
+		// Converts values read from little-endian wire/storage format.
 		static int16_t	transformlittle(parm<int16_t>& avalues);
 		static uint16_t transformlittle(parm<uint16_t>& avalues);
 		static int32_t	transformlittle(parm<int32_t>& avalues);
@@ -328,7 +331,7 @@ namespace ngl
 		static bool uuid_make(std::string& astr);
 
 #pragma region asscii_utf8
-		// Wide charactersandASCII convert utf8
+		// Locale-based ANSI/wide conversions and explicit UTF-8 helpers.
 		static bool wasscii2asscii(const std::wstring& awstr, std::string& astr);
 		static bool asscii2wasscii(const std::string& astr, std::wstring& awstr);
 		static bool wasscii2utf8(const std::wstring& awstr, std::string& astr);
@@ -338,9 +341,8 @@ namespace ngl
 		static bool to_utf8(const std::string& astr1, std::string& astr2);
 
 		static int32_t utf8firstbyte(uint8_t firstbyte);
-		// Whether utf8
+		// Validates UTF-8 and detects code points that require utf8mb4 storage.
 		static bool isutf8(const std::string& astr1);
-		// Utf8inwhetherpack mb4(utf8 mb3)
 		static bool isincludeutf8mb4(const std::string& astr);
 
 #pragma endregion
@@ -456,8 +458,8 @@ namespace ngl
 			return 	splite(std::make_index_sequence<sizeof...(ARGS)>{}, abuff, afg, args...);
 		}
 
-		// Special:similar" maillist[mailaddress1: 1]"
-		// [348634371@qq.com:libo][libo1@youxigu.com:libo1]
+		// Parses compact key/value collections such as
+		// "[mail@example.com:name][other@example.com:other]".
 		template <typename TFIRST = std::string, typename TSECOND = std::string>
 		static bool splite_special(const char* astr, const char* akey1, const char* akey2, std::vector<std::pair<TFIRST, TSECOND>>& avec)
 		{
@@ -653,13 +655,8 @@ namespace ngl
 #pragma endregion
 
 #pragma region varint
-		///////////////////////////////////////////////////////////////////////////////////////////////////////
-		// Varint or.
-		// 32 Data Varint afterneed to1~5,
-		// 1 Byte, 5 bytes.
-		// 64 Data after 1~10.
-		// In,
-		// This throughVarint partial can to.
+		// Varint helpers used by the custom serializer. `m_bytes` receives the
+		// number of encoded/decoded bytes when the caller needs it.
 	
 		static int varint_length(parm<int32_t>& avalue);
 		static int varint_length(parm<int64_t>& avalue);
@@ -726,34 +723,29 @@ namespace ngl
 
 		static int rand();
 
-		// String convert
+		// ASCII case conversion for configuration keys and protocol names.
 		static void transform_tolower(std::string& adata);
 		static void transform_toupper(std::string& adata);
 
-		// Checkdirectorywhether
+		// Filesystem helpers return false on errors instead of throwing.
 		static bool directories_exists(const std::string& apath);
-
-		// Checkfilewhether
 		static bool file_exists(const std::string& apath);
-
-		// Createdirectory
 		static bool create_dir(const std::string& apath);
-
-		// Removefile
 		static bool file_remove(const std::string& afilename);
-
-		// # Getdirunderallfile
-		// # Aiterationwhether dirunder alldirectory
+		// Enumerates regular files in one directory or recursively.
 		static void dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration = false);
 
-		// Unrecoverable exceptions, generate a core dump
+		// Intentionally crashes the process when the project treats the current
+		// state as unrecoverable.
 		static void no_core_dump(bool anocreate = false);
 
 		static std::function<void()> send_mail(const std::string& acontent);
 
-		// nguid str(actor_type#areaid#dataid) => nguid int64_t
+		// Converts `actor_type#area#dataid` text into the packed nguid format.
 		static int64_t nguidstr2int64(const char* anguidstr);
 
+		// Splits a mutable comma-separated buffer in place and returns pointers
+		// into the original storage.
 		static std::vector<const char*> split_str(char* apbuff, int32_t abuffcount);
 
 		template <std::size_t N>
@@ -771,7 +763,7 @@ namespace ngl
 			return (atype & acjsontype) != 0;
 		}
 
-		// Delete ach
+		// Collapses repeated copies of the same separator character.
 		static void erase_repeat(std::string& astrbuff, const char ach);
 
 		// Comparewhether

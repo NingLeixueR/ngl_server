@@ -46,10 +46,10 @@ namespace ngl
 				min_flush_time = 1000,
 			};
 
-			i32_actordataid m_id;					// nlogactor
-			std::string		m_dir;					// Directory
-			ELOG_TYPE		m_type = ELOG_DEFAULT;	// Logtype
-			int32_t			m_flush_time = 0;		// Writefile
+			i32_actordataid m_id;					// Log actor id that owns this file.
+			std::string		m_dir;					// Root log directory.
+			ELOG_TYPE		m_type = ELOG_DEFAULT;	// Logical stream: default log or BI log.
+			int32_t			m_flush_time = 0;		// Rotation/flush interval override.
 
 			int32_t flush()
 			{
@@ -57,31 +57,31 @@ namespace ngl
 			}
 		};
 		std::ofstream	m_stream;
-		config			m_config;		// Logconfig
-		int				m_count = 0;	// Translated comment.
-		int				m_fcount = 0;	// Translated comment.
+		config			m_config;		// Immutable file config.
+		int				m_count = 0;	// Number of records written into the current file.
+		int				m_fcount = 0;	// File sequence number for the same day/time bucket.
 
 		logfile(const config& aconfig);
 
-		// Translated comment.
+		// Returns true when the current file should be rotated.
 		bool flush_count()const;
 
-		// # Closefile
+		// Closes the current stream before recreating the next file.
 		void close_fstream();
 
-		// # Createdirectory
+		// Ensures the target directory exists.
 		bool create_dir(const std::string& apath);
 
-		// # Create
+		// Builds the directory tree and opens a new file.
 		void create();
 
-		// # Log
+		// Writes one formatted log item into the destination file.
 		virtual void printf(const np_logitem* alog) = 0;
 
-		// # Tofile
+		// Flushes the current stream explicitly.
 		void flush();
 
-		// # Createloginstance
+		// Factory that selects the concrete file formatter by log type.
 		static std::shared_ptr<logfile> create_make(const config& aconfig);
 	};
 }// namespace ngl

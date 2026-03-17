@@ -27,6 +27,7 @@ namespace ngl
 {
 	struct redis_cmd
 	{
+		// Small hiredis wrapper that standardizes error handling and key naming.
 		static redisReply* cmd(redisContext* arc, const char* format, ...);
 
 		template <typename T>
@@ -35,6 +36,7 @@ namespace ngl
 			redisReply* lreply = cmd(arc, "GET %s:%d", atab, akey);
 			if (lreply != nullptr)
 			{
+				// Values are stored as raw custom-serializer blobs.
 				ngl::ser::serialize_pop lserialize((const char*)lreply->str, (int32_t)lreply->len);
 				bool lsuccess =  ngl::ser::nserialize::pop(&lserialize, adata);
 				freeReplyObject(lreply);
@@ -49,6 +51,8 @@ namespace ngl
 			redisReply* lreply = cmd(arc, "KEYS %s:*", atab);
 			if (lreply != nullptr)
 			{
+				// This is a simple admin-style bulk read helper, not a streaming
+				// production scan.
 				for (int i = 0; i < lreply->elements; ++i)
 				{
 					if (lreply->element[i]->type != REDIS_REPLY_STRING)
@@ -95,6 +99,7 @@ namespace ngl
 	{
 		redisContext*		m_rc = nullptr;
 	public:
+		// Opens one authenticated redis connection using the XML config.
 		redis(const xarg_redis& aarg);
 
 		template <typename T>

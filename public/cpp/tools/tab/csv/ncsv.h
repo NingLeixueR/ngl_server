@@ -38,22 +38,22 @@ namespace ngl
 	public:
 		csv_base() = default;
 
-		// # Used to csvcontentwhether change
+		// Content hash used by reload endpoints to detect changes.
 		virtual const std::string& verify()const = 0;
 
-		// # Csvname
+		// Logical table name, normally derived from the C++ type.
 		virtual const char* csvname() = 0;
 
-		// # Loadcsvfile
+		// Loads or reloads the backing CSV file into memory.
 		virtual void load() = 0;
 
-		// # Csv idgetcsv
+		// Untyped access used by generic registries and reload helpers.
 		virtual void* find(int aid) = 0;
 
-		// # Loadcsvfile
+		// Optional post-load hook for derived table wrappers.
 		virtual void reload() = 0;
 
-		// # [Get/set] csvfilepath
+		// Shared root path used by every generated CSV table.
 		static std::string& path();
 
 		static void set_path(const std::string& apath, const std::string& aname);
@@ -134,6 +134,7 @@ namespace ngl
 
 		static nhashcode hash_code()
 		{
+			// Stable per-type hash used by reload/protocol metadata.
 			static nhashcode ltemp = nhash::code<T>();
 			return ltemp;
 		}
@@ -148,6 +149,7 @@ namespace ngl
 	{
 		static std::map<std::string, std::shared_ptr<csv_base>> m_csv; // key: TAB::name()
 	public:
+		// Central table registry used by generated accessors and reload endpoints.
 		static void add(const char* akey, std::shared_ptr<csv_base>& ap);
 
 		static csv_base* get_csvbase(const std::string& akey);
@@ -198,6 +200,8 @@ namespace ngl
 	{
 		struct trefun
 		{
+			// Save/read/reload hooks are registered per table type so the hot
+			// reload RPC layer does not need template knowledge.
 			std::function<void(const std::string&)>		m_save;
 			std::function<void()>						m_reload;
 			std::function<void(std::string&)>			m_readfile;

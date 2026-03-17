@@ -35,12 +35,14 @@ namespace ngl
 {
 	ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE)
 	{
+		// DB actors are laid out contiguously after ACTOR_DB.
 		return (ENUM_ACTOR)(ACTOR_DB + TDBTAB_TYPE);
 	}
 
 	template <pbdb::ENUM_DB DBTYPE, typename TDB>
 	void init_customs_db()
 	{
+		// Each DB table gets a load / response / save / delete / cache protocol family.
 		tprotocol::tp_customs<
 			np_actordb_load<DBTYPE, TDB>
 			, np_actordb_load_response<DBTYPE, TDB>
@@ -55,6 +57,7 @@ namespace ngl
 	{
 		if (ainit)
 		{
+			// First phase: define actor type metadata and protocol ids.
 			using type_actor_db = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
 			ENUM_ACTOR lenum = db_enum(TDBTAB_TYPE);
 			nactor_type<type_actor_db>::inits(lenum);
@@ -73,12 +76,14 @@ namespace ngl
 		}
 		else
 		{
+			// Second phase: force singleton initialization of the DB actor registration holder.
 			db_actor::instance();
 		}
 	}
 
 	void auto_actor()
 	{
+		// Generated actor enum/type registration lives in auto_*.cpp outputs.
 		auto_actor_enum();
 		autoactor::func<actor_events_logic, actor_events_map>(
 			{ em_events_null(actor_events_logic), em_events_null(actor_events_map) }
@@ -87,19 +92,21 @@ namespace ngl
 
 	void tprotocol_customs()
 	{
+		// Generated custom protocols reserve the 200000000 range.
 		tprotocol_customs_200000000();
 
 		tprotocol::set_customs_index(100000000);
-		// RegisterTandnp_mass_actor<T>
+		// Register script-visible GM protocols and their np_mass_actor<T> wrappers.
 		tprotocol::tp_customs_script<
 			/*100000001*/np_gm
 			/*100000003*/, np_gm_response
 		>();
 
-		// Translated comment.
+		// Register channel/DB helper protocols emitted by code generation.
 		register_channel_db();
 		
 		tprotocol::set_customs_index(120000000);
+		// Module-forwarding and process-switch helpers use a dedicated custom range.
 		tprotocol::tp_customs_script<
 			/*120000001*/ mforward<np_gm>
 			/*120000003*/, mforward<np_gm_response>
@@ -107,14 +114,14 @@ namespace ngl
 			/*120000007*/, np_testlua
 		>();
 
-		// ### Eventrelatedprotocol start ### //
+		// Event bus protocols are grouped into their own custom ranges.
 		tprotocol::set_customs_index(130000000);
 		tprotocol::tp_customs_script<
 			/*130000001*/ actor_events_logic::np_event_register
 			/*130000003*/, actor_events_map::np_event_register
 		>();
 
-		//# actor_events_logic
+		// actor_events_logic event payloads.
 		tprotocol::set_customs_index(130010000);
 		tprotocol::tp_customs_script<
 			/*130010001*/ np_eevents_logic_rolelogin
@@ -122,7 +129,7 @@ namespace ngl
 			/*130010005*/, np_eevents_logic_rolevaluechange
 		>();
 
-		//# actor_events_map
+		// actor_events_map event payloads.
 		tprotocol::set_customs_index(130020000);
 		tprotocol::tp_customs_script<
 			/*130020001*/ np_eevents_map_leaveview

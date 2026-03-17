@@ -54,6 +54,7 @@ namespace ngl
 		template <typename T>
 		bool pop_optional_any(tinyxml2::XMLElement* aroot, std::initializer_list<const char*> akeys, T& aout)
 		{
+			// Accept old and new key names while config files are migrating.
 			for (const char* key : akeys)
 			{
 				T parsed{};
@@ -281,6 +282,7 @@ namespace ngl
 		};
 
 		fs::path config_path;
+		// Probe the most specific file first, then fall back to generic config.xml.
 		for (const fs::path& candidate : candidates)
 		{
 			if (tools::file_exists(candidate.string()))

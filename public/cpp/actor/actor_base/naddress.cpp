@@ -33,6 +33,7 @@ namespace ngl
 		nnode_session* lpsession = tools::findmap(m_session, anode.m_serverid);
 		if (lpsession != nullptr)
 		{
+			// Reconnect/update path: keep the existing session slot and refresh node metadata.
 			lpsession->m_node = anode;
 			return false;
 		}
@@ -66,6 +67,7 @@ namespace ngl
 	{
 		if (apram.m_forward != nullptr)
 		{
+			// The forwarding target is encoded into handle_pram by the protocol layer.
 			apram.m_forward(apram);
 		}
 		return true;
@@ -74,6 +76,7 @@ namespace ngl
 	void naddress::nosafe_actor_address_add(i32_serverid aserverid, i64_actorid adataid)
 	{
 		nguid lguid(adataid);
+		// Maintain both direct lookup and reverse lookup by actor type.
 		m_actorserver.insert_or_assign(lguid, aserverid);
 		m_actortypeserver[lguid.type()].insert(adataid);
 #ifdef _DEBUG
@@ -138,6 +141,7 @@ namespace ngl
 			log_error()->print("set_session(serverid:{},sessionid:{}) fail", aserverid, asession);
 			return;
 		}
+		// Session ids are late-bound because the node record can exist before TCP connects.
 		lpsession->m_session = asession;
 	}
 
@@ -236,6 +240,7 @@ namespace ngl
 				log_error()->print("naddress::gatewayid [{}] fail", aguid);
 				continue;
 			}
+			// A set naturally de-duplicates gateways when many roles share one gateway process.
 			aserverset.insert(*lserverid);
 		}
 	}

@@ -27,6 +27,7 @@ namespace ngl
 	class bpool
 	{
 	public:
+		// Thin wrapper over the shared network buffer pool used by packet bodies.
 		char* malloc(int32_t alen);
 		void free(char* ap, int32_t alen);
 	};
@@ -41,6 +42,8 @@ namespace ngl
 		i32_session		m_id = 0;
 		pack_head		m_head;
 		bpool*			m_bpool = nullptr;
+		// Receive rate limiting is charged once per completed packet, not once
+		// per TCP fragment.
 		bool			m_rate_accounted = false;
 		char*			m_buff = nullptr;
 		int32_t			m_len = 0;
@@ -50,10 +53,13 @@ namespace ngl
 
 		void set(bpool& apool);
 		void reset();
+		// The pack becomes ready once the body size declared in the header has
+		// been fully received.
 		bool isready();
 		bool malloc(int32_t alen);
 		void set_actor(i64_actorid aactor, i64_actorid arequestactorid);
 
+		// Creates an empty pack or a pre-sized body buffer from the shared pool.
 		static std::shared_ptr<pack> make_pack(bpool* apool, int32_t alen);
 	};
 }// namespace ngl

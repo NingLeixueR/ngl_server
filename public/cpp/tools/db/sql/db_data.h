@@ -30,8 +30,10 @@ namespace ngl
 		db_data(const db_data&) = delete;
 		db_data& operator=(const db_data&) = delete;
 	private:
+		// Loaded rows currently kept in memory.
 		static std::map<i64_actorid, T>		m_data;
-		// # Load id preventcache penetration
+		// Known ids are tracked separately so callers can distinguish "not
+		// loaded yet" from "definitely does not exist".
 		static std::set<int64_t>			m_idindex;
 	public:
 		// # Getdata allindex
@@ -93,7 +95,7 @@ namespace ngl
 			}
 		}
 
-		// # Whetherload data
+		// Distinguishes cache miss, known-but-not-loaded, and fully loaded rows.
 		enum edbdata
 		{
 			edbdata_notload,	// Load
@@ -127,6 +129,7 @@ namespace ngl
 
 		static bool add(i64_actorid aid, T& adata)
 		{
+			// `mid` is normalized to the map key before the object is cached.
 			auto itor = m_data.find(aid);
 			if (itor != m_data.end())
 			{

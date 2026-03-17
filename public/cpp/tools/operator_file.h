@@ -29,28 +29,26 @@ namespace ngl
 		readfile& operator=(const readfile&) = delete;
 
 		std::ifstream m_file;
-		int m_cached_maxline = -1;
+		int m_cached_maxline = -1; // Lazily computed line count cache.
 	public:
 		explicit readfile(const std::string& filename);
 
 		~readfile();
 
-		// # Whethersuccessful file
+		// Query file state and support line-based or whole-file reads.
 		bool is_open()const;
 
-		// # Getfile
 		int get_maxline();
 
-		// # Beforeanum
+		// Skip the first anum logical lines; CSV mode respects quoted embedded newlines.
 		void jumpbegin(int anum, bool aiscsv);
 
-		// # Read
 		bool readline(std::string& aline);
 
-		// # Readcurrentposition after allcontent
+		// Append from the current read cursor to EOF.
 		bool readcurrent(std::string& astr);
 
-		// # Read file content
+		// Read the full file from the beginning.
 		void read(std::string& aneirong);
 	};
 
@@ -66,7 +64,7 @@ namespace ngl
 
 		~writefile();
 
-		// # Tofilewritecontent
+		// Write raw bytes to the file.
 		void write(const std::string& aneirong);
 	};
 }//namespace ngl

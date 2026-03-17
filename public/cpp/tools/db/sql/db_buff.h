@@ -67,7 +67,7 @@ namespace ngl
 
 		enum
 		{
-			e_buffsize = 10 * 1024 * 1024, // Blobon 10M
+			e_buffsize = 10 * 1024 * 1024, // Default inline buffer for common DB rows.
 		};
 		std::shared_ptr<dbuff> m_buff;
 		std::shared_ptr<dbuff> m_mallocbuff;
@@ -130,6 +130,8 @@ namespace ngl
 		{
 			if(isbinary)
 			{
+				// Try the shared inline buffer first; fall back to a right-sized
+				// heap buffer for unusually large blobs.
 				if (!do_binary(adata, m_buff.get()))
 				{
 					log_error()->print("do_binary fail T=[{}:{}]", tools::type_name<T>(), adata.mid());
@@ -145,6 +147,8 @@ namespace ngl
 			}
 			else
 			{
+				// Text mode keeps protobuf rows in JSON so they stay readable in
+				// external tools and manual SQL inspection.
 				std::string ltemp;
 				if constexpr (is_protobuf_message<T>::value)
 				{

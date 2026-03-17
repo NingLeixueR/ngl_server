@@ -29,9 +29,8 @@ namespace ngl
 		{
 			tools::no_core_dump();
 		}
-		// Database actorparmbase.m_manage_dbclient
-		// If database need tostart"whethersupportbroadcast"m_broadcast
-		// Save data
+		// DB-backed actors must be included in the broadcast tick so they can flush
+		// pending changes during the maintenance pass.
 		if (aparm.m_parm.m_manage_dbclient && !aparm.m_broadcast)
 		{
 			log_error()->print("actorparm fail [m_parm.m_manage_dbclient && !m_broadcast]");
@@ -51,6 +50,8 @@ namespace ngl
 			lock_write(m_mutex);
 			m_release = true;
 		}
+		// Drain the remaining queue synchronously before clearing containers so shutdown
+		// follows the same ordering rules as normal scheduling.
 		actor_handle(0x7fffffff);
 		save();
 		{
@@ -84,32 +85,31 @@ namespace ngl
 		lock_write(m_mutex);
 		if (highvalue <= 0)
 		{
+			// Default traffic is processed in FIFO order.
 			m_list.push_back(apram);
 		}
 		else
 		{
+			// High-priority traffic is grouped by protocol priority and handled first.
 			m_hightlist[highvalue].push_back(apram);
 		}
 	}
 
 	bool actor::ahandle(i32_threadid athreadid, handle_pram& aparm)
 	{
-		//Try
-		//{
-			nrfunbase* lprfun = m_actorfun;
-			if (lprfun == nullptr)
-			{
-				tools::no_core_dump();
-				return false;
-			}
-			if (lprfun->handle_switch(this, athreadid, aparm))
-			{
-				return true;
-			}
-			lprfun->notfindfun(this, athreadid, aparm);
+		nrfunbase* lprfun = m_actorfun;
+		if (lprfun == nullptr)
+		{
+			tools::no_core_dump();
+			return false;
+		}
+		if (lprfun->handle_switch(this, athreadid, aparm))
+		{
 			return true;
-		//}Catch
-		//return false;
+		}
+		// Report unknown messages through the registration layer so debugging stays centralized.
+		lprfun->notfindfun(this, athreadid, aparm);
+		return true;
 	}
 
 	void actor::actor_handle(i32_threadid athreadid)
@@ -118,6 +118,8 @@ namespace ngl
 		std::map<int32_t, std::list<handle_pram>> localhightlist;
 		{
 			lock_write(m_mutex);
+			// Move work out of the shared queues so handlers can enqueue more messages without
+			// holding the actor mutex for the whole batch.
 			m_hightlist.swap(localhightlist);
 			m_list.swap(locallist);
 		}
@@ -126,6 +128,7 @@ namespace ngl
 		{
 			for (auto& [_hight, _list] : localhightlist)
 			{
+				// Drain priority buckets before normal traffic.
 				for (auto& _harm : _list)
 				{
 					ahandle(athreadid, _harm);
@@ -143,6 +146,7 @@ namespace ngl
 		int32_t lweight = m_weight;
 		while (--lweight >= 0 && !locallist.empty())
 		{
+			// During shutdown we ignore the time budget and finish draining immediately.
 			if (!m_release && localtime::timeout(lbeg, m_timeout))
 			{
 				break;
@@ -153,19 +157,19 @@ namespace ngl
 		if (!locallist.empty())
 		{
 			lock_write(m_mutex);
+			// Unprocessed normal-priority messages go back to the front so ordering is preserved.
 			m_list.splice(m_list.begin(), locallist);
 		}
 	}
 
 	bool actor::handle_broadcast(const message<np_actor_broadcast>& adata)
 	{
-		// # Save data
+		// Persist first so broadcast() can assume DB-backed state is already synchronized.
 		if (manage_dbclient() != nullptr)
 		{
 			manage_dbclient()->save();
 			manage_dbclient()->del();
 		}
-		// # Actor handle
 		broadcast();
 		return true;
 	}

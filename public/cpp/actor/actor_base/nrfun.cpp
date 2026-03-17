@@ -54,9 +54,11 @@ namespace ngl
 		}
 		if (lpfun->m_ready != e_ready_null && !aactor->ready().is_ready(lpfun->m_ready))
 		{
+			// The message stays queued at the actor level until the relevant ready bits flip.
 			log_error()->print("{}::handle_switch isloadfinish() == {}", aactor->guid(), lpfun->m_ready);
 			return false;
 		}
+		// nconsume measures per-message dispatch latency for diagnostics.
 		nconsume lconsuming(std::format("{}-{}-{}", aactor->guid(), apram.m_enum, tprotocol::name(apram.m_enum)));
 		lconsuming.start();
 		lpfun->m_fun(aactor, athreadid, apram);

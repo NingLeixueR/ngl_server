@@ -66,6 +66,7 @@ namespace ngl
 		{
 			return false;
 		}
+		// Reset first so the new offset is measured against raw current time.
 		m_offset = 0;
 		lnow = gettime();
 		m_offset = (sti - lnow);
@@ -86,6 +87,7 @@ namespace ngl
 
 	time_t localtime::getms()
 	{
+		// Convenience helper for code that needs the sub-second portion only.
 		return gettimems() % MILLISECOND;
 	}
 
@@ -175,6 +177,7 @@ namespace ngl
 	{
 		time_t lnow = gettime();
 		time_t ltemp = getsecond2time(lnow, hour, minute, sec);
+		// If today's scheduled time already passed, roll forward to tomorrow.
 		return lnow > ltemp ? ltemp + DAY_SECOND : ltemp;
 	}
 
@@ -446,6 +449,7 @@ namespace ngl
 
 	bool localtime::issameweek(time_t timestamp1, time_t timestamp2)
 	{
+		// Normalize both timestamps to the start of their Monday-equivalent week window.
 		return (getweekday(timestamp1, 1, 0, 0, 0) == getweekday(timestamp2, 1, 0, 0, 0));
 	}
 

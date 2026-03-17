@@ -30,9 +30,9 @@ namespace ngl
 {
 	enum enscript
 	{
-		enscript_none = -1,		// Translated comment.
-		enscript_lua = 0,		// lua
-		enscript_count,			// Support scriptdata
+		enscript_none = -1,		// No scripting bridge.
+		enscript_lua = 0,		// Lua scripting bridge.
+		enscript_count,			// Number of supported scripting backends.
 	};
 
 	class tprotocol
@@ -47,12 +47,12 @@ namespace ngl
 			using funclientc = std::function<bool(int64_t, const char*, void*)>;
 
 			i32_protocolnum	m_protocol = 0;
-			int8_t			m_highvalue = 0; // Translated comment.
-			std::string		m_name;
+			int8_t			m_highvalue = 0; // Higher values are drained earlier by actor::push().
+			std::string		m_name;          // Debug/display name.
 
-			// # Toscript structure senddatatoclient
+			// Script bridge callbacks for sending the protocol to clients.
 			std::array<funclientc, enscript_count> m_toclient;
-			// # Toscript structure senddatato actor
+			// Script bridge callbacks for sending the protocol to actors.
 			std::array<func, enscript_count> m_toactor;
 
 			template <enscript SCRIPT>
@@ -87,7 +87,7 @@ namespace ngl
 		static std::map<std::string, info*>			m_nameprotocol;
 		static int32_t								m_customs;
 
-		//CUSTOM
+		// Register custom protocols that are not driven by protobuf xmlprotocol ids.
 		template <bool SCRIPT>
 		class tcustoms
 		{
@@ -105,7 +105,6 @@ namespace ngl
 				linfo.m_highvalue = ahigh;
 				m_protocol[linfo.m_protocol] = &linfo;
 				m_nameprotocol[linfo.m_name] = &linfo;
-				//log_error()->print("{}-{}", linfo.m_protocol, linfo.m_name);
 				return &linfo;
 			}
 
@@ -127,24 +126,28 @@ namespace ngl
 			static void func(int32_t aprotocolnum);
 		};
 	public:
+		// Set the next custom protocol id base before a registration block runs.
 		static bool set_customs_index(int32_t acustoms)
 		{
 			m_customs = acustoms;
 			return true;
 		}
 
+		// Register one or more custom C++ protocols.
 		template <typename ...ARGS>
 		static void tp_customs(int32_t aprotocolnum = -1, int8_t ahigh = 0)
 		{
 			(tcustoms<false>::func<ARGS>(aprotocolnum, ahigh), ...);
 		}
 
+		// Register one or more custom protocols and expose script send bridges for them.
 		template <typename ...ARGS>
 		static void tp_customs_script(int32_t aprotocolnum = -1, int8_t ahigh = 0)
 		{
 			(tcustoms<true>::func<ARGS>(aprotocolnum, ahigh), ...);
 		}
 
+		// Lazily resolve protobuf-backed protocol ids from xmlprotocol metadata.
 		template <typename T>
 		static bool init_protobufs()
 		{
@@ -161,6 +164,7 @@ namespace ngl
 			return true;
 		}
 
+		// Resolve the metadata block for a C++ type, creating it lazily if needed.
 		template <typename T>
 		static info* get()
 		{
@@ -190,7 +194,7 @@ namespace ngl
 			return *lpinfo;
 		}
 
-		// # Protocolgetprotocol id
+		// Return the protocol number for a C++ type.
 		template <typename T>
 		static i32_protocolnum protocol()
 		{
@@ -213,7 +217,7 @@ namespace ngl
 			return *linfo;
 		}
 
-		// # Protocol idgetprotocolname
+		// Return the registered display name for a protocol id.
 		static const char* name(i32_protocolnum aprotocol)
 		{
 			info* linfo = get(aprotocol);
@@ -224,6 +228,7 @@ namespace ngl
 			return linfo->m_name.c_str();
 		}
 
+		// Return the scheduler priority for a protocol id.
 		static int8_t highvalue(i32_protocolnum aprotocol)
 		{
 			info* linfo = get(aprotocol);
@@ -234,7 +239,7 @@ namespace ngl
 			return linfo->m_highvalue;
 		}
 
-		// # Getcurrent register allprotocol
+		// Dump all currently registered protocol ids and names.
 		static void allprotocol(std::map<i32_protocolnum, std::string>& amap)
 		{
 			for (auto& [_key, _value] : m_keyval)

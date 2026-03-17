@@ -38,19 +38,20 @@ namespace ngl
 
 	struct kcp_endpoint
 	{
-		asio_udp_endpoint	m_endpoint;
-		i32_sessionid		m_session = 0;
-		std::string			m_ip;
-		i16_port			m_port = 0;
-		asio_kcp*			m_asiokcp = nullptr;
-		ikcpcb*				m_kcp = nullptr;
-		bool				m_isconnect = false;		// Whether tokcp_cmd::ecmd_connect or ecmd_connect_ret
-		i64_actorid			m_client = 0;		// robot
-		i64_actorid			m_server = 0;		// server
-		int64_t				m_timerid = 0;
+		asio_udp_endpoint	m_endpoint;			// Remote UDP endpoint.
+		i32_sessionid		m_session = 0;		// Local synthetic session id.
+		std::string			m_ip;				// Cached remote IP string.
+		i16_port			m_port = 0;			// Cached remote port.
+		asio_kcp*			m_asiokcp = nullptr; // Owning asio_kcp transport.
+		ikcpcb*				m_kcp = nullptr;	// Underlying KCP control block.
+		bool				m_isconnect = false; // True after the logical KCP handshake completes.
+		i64_actorid			m_client = 0;		// Logical client actor id.
+		i64_actorid			m_server = 0;		// Logical server actor id.
+		int64_t				m_timerid = 0;		// Periodic ikcp_update timer id.
 
 		typedef int (*output)(const char* buf, int len, struct IKCPCB* kcp, void* user);
 
+		// Create/destroy the KCP control block and expose thin wrappers over ikcp_* APIs.
 		~kcp_endpoint();
 
 		static std::string ip(kcp_endpoint* ap);

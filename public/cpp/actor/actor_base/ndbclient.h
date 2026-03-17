@@ -34,11 +34,12 @@ namespace ngl
 	class ndbclient_base
 	{
 	protected:
-		pbdb::ENUM_DB m_type = pbdb::ENUM_DB::ENUM_DB_FAIL;
+		pbdb::ENUM_DB m_type = pbdb::ENUM_DB::ENUM_DB_FAIL; // Logical DB table/type served by this client.
 		explicit ndbclient_base(pbdb::ENUM_DB atype) :
 			m_type(atype)
 		{}
 	public:
+		// Loading, persistence, deletion, and script synchronization lifecycle.
 		virtual bool isload()	= 0;
 		virtual void load()		= 0;
 		virtual void savedb()	= 0;
@@ -60,25 +61,25 @@ namespace ngl
 	private:
 		std::set<i64_actorid> m_modified;
 	public:
-		// # Which
+		// Return the set of ids currently marked dirty.
 		std::set<i64_actorid>& which_modified()
 		{
 			return m_modified;
 		}
 
-		// # Whether
+		// Return whether one id is currently marked dirty.
 		bool is_modified(i64_actorid aidentifier)const
 		{
 			return m_modified.contains(aidentifier);
 		}
 
-		// # Set state
+		// Mark one id as dirty.
 		void modified(i64_actorid aidentifier)
 		{
 			m_modified.insert(aidentifier);
 		}
 
-		// # Clear state
+		// Clear the dirty flag for one id.
 		void clear_modified(i64_actorid aidentifier)
 		{
 			m_modified.erase(aidentifier);
@@ -92,10 +93,10 @@ namespace ngl
 		data_modified(const data_modified&) = delete;
 		data_modified& operator=(const data_modified&) = delete;
 
-		mutable TDBTAB		m_data;
-		mutable TDBTAB*		m_pdata		= nullptr;
-		actor_base*			m_actor		= nullptr;
-		nmodified<TDBTAB>*	m_modified	= nullptr;
+		mutable TDBTAB		m_data;					// Owned row storage when no external pointer is used.
+		mutable TDBTAB*		m_pdata		= nullptr;	// Optional external row storage.
+		actor_base*			m_actor		= nullptr;	// Actor used for script-side data reconciliation.
+		nmodified<TDBTAB>*	m_modified	= nullptr;	// Dirty-set tracker shared by the owning dbclient.
 	public:
 		data_modified() = default;
 
@@ -112,6 +113,7 @@ namespace ngl
 			}
 		}
 
+		// Use the external row when present, otherwise fall back to the owned row.
 		inline TDBTAB& data_ref() noexcept
 		{
 			return m_pdata == nullptr ? m_data : *m_pdata;
@@ -134,14 +136,14 @@ namespace ngl
 			return m_modified->is_modified(identifier());
 		}
 
-		// # Set state
+		// Mark this row as modified.
 		inline void modified()const
 		{
 			check_init();
 			m_modified->modified(identifier());
 		}
 
-		// # Clear state
+		// Clear the modified bit for this row.
 		inline void clear_modified()const
 		{
 			check_init();
@@ -159,7 +161,7 @@ namespace ngl
 			}
 		}
 
-		// # Get and getconst getdata before first " scripting languagein whether "
+		// Mutable access path that can pull pending script edits into the C++ row first.
 		TDBTAB* get(bool achange = true, bool anscript = true)
 		{
 			check_init();
@@ -173,7 +175,7 @@ namespace ngl
 			{
 				modified();
 			}
-			// # Scripting languagein whether
+			// Script runtimes can modify or delete rows before the next DB flush.
 			if (anscript && m_actor != nullptr)
 			{
 				if (m_actor->nscript_data_checkdel<TDBTAB>(ldata.mid()))
@@ -192,7 +194,7 @@ namespace ngl
 		{
 			check_init();
 			TDBTAB& ldata = const_cast<TDBTAB&>(data_ref());
-			// # Scripting languagein whether
+			// Const access still reconciles script-side edits so readers see the latest state.
 			if (anscript && m_actor != nullptr)
 			{
 				if (m_actor->nscript_data_checkdel<TDBTAB>(ldata.mid()))
@@ -219,22 +221,21 @@ namespace ngl
 
 		enum
 		{
-			e_default_tcount = 1,		// Defaulttcount
+			e_default_tcount = 1,		// Database server count used by node-id helpers.
 		};
 		
-		tab_dbload*									m_tab = nullptr;							// Load"tableconfigdataload"
-		nmodified<TDBTAB>							m_modified;									// Recordwhichdata
-		nguid										m_id = nguid::make();						// Dataid(m_id == nguid::make() loadalldata)
-		std::map<nguid, data_modified<TDBTAB>>		m_data;										// Data
-		data_modified<TDBTAB>*						m_dbdata = nullptr;							// M_id !=nguid::make() this
-		bool										m_load = false;								// Whetherloadcomplete
-		nmanage_dbclient*						m_manage_dbclient = nullptr;				// Translated comment.
-		actor_base*									m_actor = nullptr;							// Hostactor
-		std::vector<int64_t>						m_dellist;									// Deletelist
-		std::string									m_name = tools::type_name<type_ndbclient>();// Need to TACTOR
+		tab_dbload*									m_tab = nullptr;							// Table-load configuration row for this DB type.
+		nmodified<TDBTAB>							m_modified;									// Dirty-row tracker.
+		nguid										m_id = nguid::make();						// Target id; nguid::make() means "load all rows".
+		std::map<nguid, data_modified<TDBTAB>>		m_data;										// Loaded rows indexed by actor guid.
+		data_modified<TDBTAB>*						m_dbdata = nullptr;							// Cached row when m_id refers to one specific actor.
+		bool										m_load = false;								// Whether the asynchronous DB load has completed.
+		nmanage_dbclient*						m_manage_dbclient = nullptr;				// Owning DB manager used for load coordination.
+		actor_base*									m_actor = nullptr;							// Host actor that owns this dbclient.
+		std::vector<int64_t>						m_dellist;									// Rows queued for delete flush.
+		std::string									m_name = tools::type_name<type_ndbclient>();// Debug name for logs.
 	public:
-		// # Toactor_clientsetconnectionafterevent
-		// # Anddbserver connection loaddataevent
+		// Defer the actual DB request until actor_client confirms the DB node is connected.
 		void load() final
 		{
 			const tab_servers* tab = ttab_servers::instance().const_tab();
@@ -250,28 +251,28 @@ namespace ngl
 			actor::send_actor(lclientguid, m_actor->guid(), pro);
 		}
 	private:
-		// # Loaddata
+		// Start the asynchronous DB load sequence.
 		void init_load()
 		{
 			log_error()->print("ndbclient init_load [{}]", m_name);
 			load();
 		}
 
-		// # Dbnode id
+		// Resolve the configured DB server node id.
 		i32_actordataid dbnodeid()
 		{
 			const tab_servers* tab = ttab_servers::instance().const_tab();
 			return nnodeid::nodeid(tab->m_db, e_default_tcount);
 		}
 
-		// # Getdb actor guid
+		// Resolve the actor guid for the DB actor serving this table type.
 		inline i64_actorid dbguid()
 		{
 			ENUM_ACTOR ltype = nactor_type<actor_db<DBTYPE, TDBTAB>>::type();
 			return nguid::make(ltype, tab_self_area, nguid::none_actordataid());
 		}
 
-		// # Loaddata
+		// Send one DB load request to the remote DB actor.
 		void loaddb(const nguid& aid)
 		{
 			np_actordb_load<DBTYPE, TDBTAB> ldata;
@@ -306,14 +307,14 @@ namespace ngl
 			m_id = aid;
 		}
 
-		// # Set this data actor
+		// Bind this dbclient to its owning actor and manager.
 		void set_actor(actor_base* aactor)
 		{
 			m_manage_dbclient = aactor != nullptr ? aactor->manage_dbclient().get() : nullptr;
 			m_actor = aactor;
 		}
 
-		// # Getdata
+		// Return the full loaded dataset.
 		const std::map<nguid, data_modified<TDBTAB>>& get_data()
 		{ 
 			return m_data; 
@@ -324,7 +325,7 @@ namespace ngl
 			return m_data;
 		}
 
-		// # Getnguiddata
+		// Get or lazily create a row wrapper for the specified guid.
 		data_modified<TDBTAB>* get_data(const nguid& aid)
 		{
 			if (aid == m_id && m_id != nguid::make())
@@ -345,7 +346,7 @@ namespace ngl
 			return &ldata;
 		}
 
-		// # Getdata
+		// Return the primary row when this dbclient targets a single actor.
 		data_modified<TDBTAB>* get_dbdata()
 		{
 			return m_dbdata;
@@ -368,6 +369,7 @@ namespace ngl
 			static std::atomic lregister = true;
 			if (lregister.exchange(false))
 			{
+				// Register the DB load response handler only once per concrete actor/dbclient pair.
 				nrfun<TACTOR>::instance().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(
 					&actor_base::template handle_db<DBTYPE, TDBTAB, TACTOR>, e_ready_null
 				);
@@ -450,7 +452,7 @@ namespace ngl
 			if (!pro.empty())
 			{
 				log_error()->print("ndbclient<{}> save {}", m_name, aid);
-				// # Serialize first, then let actor_client confirm the position
+				// Serialize first so actor_client can forward a ready-made network pack.
 				i64_actorid lactorid = dbguid();
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
@@ -458,7 +460,7 @@ namespace ngl
 					log_error()->print("ndbclient<{}> actor_base::net_pack fail", m_name);
 					return;
 				}
-				// # Asynchronouslysendpack
+				// The DB actor request runs through the normal actor routing path.
 				actor::send_actor(lactorid, lpack);
 			}
 		}
@@ -509,7 +511,7 @@ namespace ngl
 			pro.m_data.swap(m_dellist);
 			if (pro.m_data.empty() == false)
 			{
-				// # Serialize first, then let actor_client confirm the position
+				// Serialize first so actor_client can forward a ready-made network pack.
 				i64_actorid lactorid = dbguid();
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
@@ -517,7 +519,7 @@ namespace ngl
 					log_error()->print("ndbclient<{}> actor_base::net_pack fail", m_name);
 					return;
 				}
-				// # Asynchronouslysendpack
+				// The DB actor request runs through the normal actor routing path.
 				actor::send_actor(lactorid, lpack);
 			}
 		}
@@ -552,6 +554,7 @@ namespace ngl
 			}
 			if (aloadfinish)
 			{
+				// Only the final chunk transitions the dbclient into the "loaded" state.
 				m_load = true;
 				m_manage_dbclient->on_load_finish(DBTYPE, astat);
 			}

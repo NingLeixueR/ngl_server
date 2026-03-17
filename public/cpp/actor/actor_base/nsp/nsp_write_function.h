@@ -48,6 +48,7 @@ namespace ngl
 		lpwrite->m_operator_field.init(false);
 		lpwrite->m_care.init(false);
 		
+		// Writer-side permissions include both readable fields and writable fields.
 		lpwrite->m_operator_field.template add_field<T>(nguid::type(aactor->id_guid()), areadfieldnumbers, awritefieldnumbers);
 
 		lpwrite->init();
@@ -72,7 +73,8 @@ namespace ngl
 		std::set<i64_actorid> lreadids;
 		std::ranges::for_each(areadids, [&lreadids](i64_actorid areadid)
 			{
-					lreadids.insert(nsp_write<TDerived, TACTOR, T>::to_actorid(areadid));
+				// Data ids are retagged with the DB owner actor type used by the NSP server.
+				lreadids.insert(nsp_write<TDerived, TACTOR, T>::to_actorid(areadid));
 			});
 		std::set<i64_actorid> lwriteids;
 		std::ranges::for_each(awriteids, [&lwriteids](i64_actorid areadid)
@@ -110,7 +112,8 @@ namespace ngl
 
 		if (m_isregister.exchange(false))
 		{
-			
+			// One registration per concrete writer type is enough because instances are
+			// keyed by actor id in nsp_instance<>.
 			nsp_instance<nsp_write<TDerived, TACTOR, T>>::template register_handle<
 				TDerived
 				, np_channel_data<T>					// Data
@@ -131,6 +134,7 @@ namespace ngl
 					.m_count = 0x7fffffff,
 					.m_fun = [aarea, lactorid](const wheel_node* anode)
 					{
+						// Periodically retry registration until the target NSP server replies.
 						auto pro = std::make_shared<np_channel_check<T>>(
 							np_channel_check<T>{
 								.m_timer = anode->m_timerid,
@@ -204,6 +208,7 @@ namespace ngl
 		{
 			i16_actortype ltype = nguid::type(m_actor->id_guid());
 			{
+				// First send a combined packet to peers that subscribe to all rows.
 				auto pro = std::make_shared<np_channel_data<T>>();
 				pro->m_actorid = m_actor->id_guid();
 				std::set<i64_nodeid> lnodes;
@@ -230,6 +235,7 @@ namespace ngl
 					{
 						continue;
 					}
+					// Field filtering happens here so each peer sees only allowed columns.
 					m_operator_field.field_copy(ltype, m_data[dataid], pro->m_data[dataid], true);
 				}
 
@@ -244,6 +250,7 @@ namespace ngl
 			}
 
 			{
+				// Then send per-row packets to peers that subscribe only to specific rows.
 				for (i64_dataid dataid : m_changeids)
 				{
 					std::set<i64_nodeid> lnodes;
@@ -339,10 +346,12 @@ namespace ngl
 				lchanged = true;
 				if (lfirstsynchronize)
 				{
+					// The first sync is already aligned to the writer's field layout.
 					m_operator_field.field_copy(ltypetarget, _tdata, m_data[_guid], true);
 				}
 				else
 				{
+					// Incremental updates may come from another node type, so remap fields.
 					m_operator_field.field_copy(ltypesource, ltypetarget, _tdata, m_data[_guid], true);
 				}
 				m_call.changedatafun(_guid, m_data[_guid], lfirstsynchronize);
@@ -366,6 +375,7 @@ namespace ngl
 		{
 			if (recv->m_recvfinish)
 			{
+				// Each area streams independently; load completion fires after all areas finish.
 				m_regload.set_loadfinish(nguid::area(recv->m_actorid));
 				if (m_regload.is_loadfinish())
 				{
@@ -421,6 +431,7 @@ namespace ngl
 		pro->m_field = *lmapfieldtype;
 
 		i64_actorid lnspserid = m_regload.nspserid(recv->m_area);
+		// Registration tells the NSP server which rows and which protobuf fields we want.
 		nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 		actor::send_actor(lnspserid, nguid::make(), pro);
 	}
@@ -433,6 +444,7 @@ namespace ngl
 		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
 
 		m_regload.set_register(nguid::area(recv->m_actorid));
+		// The reply carries other peers' subscription scopes so change() can target them.
 		m_operator_field.set_field(recv->m_node_fieldnumbers);
 
 		m_nodereadalls = recv->m_nodereadalls;
@@ -489,6 +501,7 @@ namespace ngl
 		const np_channel_exit<T>* recv = adata.get_data();
 		i64_actorid lactorid = recv->m_actorid;
 
+		// Once a peer exits, incremental broadcasts should stop targeting it.
 		m_nodewritealls.erase(lactorid);
 		m_nodereadalls.erase(lactorid);
 		m_othercare.erase(lactorid);

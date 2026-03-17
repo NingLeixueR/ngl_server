@@ -11,7 +11,7 @@
 * ︽ ?LICENSE?
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for tcp.
+// File overview: Compatibility header that re-exports the websocket transport.
 
 #pragma once
 

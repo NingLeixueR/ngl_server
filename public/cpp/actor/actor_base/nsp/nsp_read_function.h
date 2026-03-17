@@ -35,6 +35,7 @@ namespace ngl
 		lpread->m_operator_field.init(false);
 		lpread->m_care.init(true);
 		
+		// Reader-side permissions contain only fields that should be mirrored locally.
 		lpread->m_operator_field.template add_field<T>(nguid::type(aactor->id_guid()), epb_field_read, afieldnumbers);
 
 		lpread->init();
@@ -54,6 +55,7 @@ namespace ngl
 		std::set<i64_actorid> lids;
 		std::ranges::for_each(aids, [&lids](i64_actorid areadid)
 			{
+				// Data ids are retagged with the DB owner actor type used by the NSP server.
 				lids.insert(nsp_write<TDerived, TACTOR, T>::to_actorid(areadid));
 			}
 		);
@@ -104,6 +106,8 @@ namespace ngl
 
 		if (m_isregister.exchange(false))
 		{
+			// One registration per concrete reader type is enough because instances are
+			// keyed by actor id in nsp_instance<>.
 			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<
 				TDerived
 				, np_channel_data<T>				// Data
@@ -122,6 +126,7 @@ namespace ngl
 					.m_count = 0x7fffffff,
 					.m_fun = [aarea, lactorid](const wheel_node* anode)
 					{
+						// Periodically retry registration until the target NSP server replies.
 						auto pro = std::make_shared<np_channel_check<T>>(
 							np_channel_check<T>{
 								.m_timer = anode->m_timerid,
@@ -175,10 +180,12 @@ namespace ngl
 				lchanged = true;
 				if (lfirstsynchronize)
 				{
+					// The first sync is already aligned to the reader's field layout.
 					m_operator_field.field_copy(ltypetarget, _tdb, m_data[_guid], true);
 				}
 				else
 				{
+					// Incremental updates may come from another node type, so remap fields.
 					m_operator_field.field_copy(ltypesource, ltypetarget, _tdb, m_data[_guid], true);
 				}
 				m_call.changedatafun(_guid, m_data[_guid], lfirstsynchronize);
@@ -202,6 +209,7 @@ namespace ngl
 		{
 			if (recv->m_recvfinish)
 			{
+				// Each area streams independently; load completion fires after all areas finish.
 				m_regload.set_loadfinish(nguid::area(recv->m_actorid));
 				if (m_regload.is_loadfinish())
 				{
@@ -256,6 +264,7 @@ namespace ngl
 		pro->m_field = *lmapfieldtype;
 
 		i64_actorid lnspserid = m_regload.nspserid(recv->m_area);
+		// Registration tells the NSP server which rows and which protobuf fields we want.
 		log_error()->print("nsp_read register: {} -> {}", nguid(pro->m_actorid), nguid(lnspserid));
 		nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 		actor::send_actor(lnspserid, nguid::make(), pro);
@@ -269,6 +278,7 @@ namespace ngl
 		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
 		m_regload.set_register(nguid::area(recv->m_actorid));
+		// The reply may include field permissions learned from other peer node types.
 		m_operator_field.set_field(recv->m_node_fieldnumbers);
 
 		std::ranges::for_each(recv->m_care, [this](auto& apair)
@@ -286,6 +296,7 @@ namespace ngl
 		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
 		i16_actortype ltype = nguid::type(recv->m_actorid);
+		// Keep operator_field up to date as new peer node types join the channel.
 		m_operator_field.set_field(ltype, recv->m_field);
 	}
 }

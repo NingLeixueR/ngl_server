@@ -26,8 +26,8 @@ namespace ngl
 {
 	struct nhashcode
 	{
-		int64_t m_hashcode = 0;
-		int32_t m_index = 0;
+		int64_t m_hashcode = 0; // Raw typeid(T).hash_code().
+		int32_t m_index = 0;    // Collision-disambiguation index for identical hash_code() values.
 
 		nhashcode(int64_t ahashcode, int32_t aindex) :
 			m_hashcode(ahashcode),
@@ -42,7 +42,7 @@ namespace ngl
 
 	class nhash
 	{
-		static std::map<int64_t, std::map<std::string, int32_t>> m_hash;
+		static std::map<int64_t, std::map<std::string, int32_t>> m_hash; // hash_code -> type name -> stable index.
 		static std::shared_mutex m_mutex;
 	public:
 		template <typename T>
@@ -56,6 +56,7 @@ namespace ngl
 				auto itor = lmap.find(tools::type_name<T>());
 				if (itor != lmap.end())
 				{
+					// Reuse the previously assigned collision index for this exact type name.
 					return nhashcode(lcode, itor->second);
 				}
 				const auto lnext = lmap.size() + 1;

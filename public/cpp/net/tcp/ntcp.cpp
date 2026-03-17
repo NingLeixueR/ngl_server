@@ -24,17 +24,20 @@ namespace ngl
 	bool ntcp::socket_recv(service_io* ap, const char* abuff, int32_t abufflen)
 	{
 		if (abuff == nullptr && abufflen == 0)
-		{// # Connection in net -> application
+		{
+			// Upstream transport uses a null/zero callback to signal closure.
 			close(ap->m_sessionid);
 			return true;
 		}
 		if (m_outernet == false)
-		{// # Do not allow
+		{
 			if (ap->m_is_lanip == false)
-			{// Connection
+			{
+				// Internal-only deployments reject public-network peers at the socket layer.
 				return false;
 			}
 		}
+		// segpack turns the byte stream back into complete pack objects before protocol dispatch.
 		return m_segpackvec[ap->m_threadid]->push(ap->m_sessionid, abuff, abufflen, ap->m_is_lanip);
 	}
 
@@ -56,6 +59,7 @@ namespace ngl
 
 		for (int i = 0; i < asocketthreadnum; ++i)
 		{
+			// Each socket worker keeps its own stream reassembler state.
 			m_segpackvec.push_back(std::make_shared<segpack>());
 		}
 
@@ -63,9 +67,7 @@ namespace ngl
 
 		std::function<void(i32_sessionid)> lclose = [this](i32_sessionid asession)
 			{
-				// If connection dbserver
-				// Automaticallyclosethis
-				// Preventplayerdatacannotsave
+				// Losing the DB connection is fatal because gameplay state can no longer persist safely.
 				i32_serverid lserverid = server_session::serverid(asession);
 				if (lserverid != -1 && ttab_servers::instance().node_type(nnodeid::tid(lserverid)) == NODE_TYPE::DB)
 				{
@@ -105,6 +107,7 @@ namespace ngl
 			m_server->close_net(asession);
 		}
 
+		// Notify gateway-side actors so they can clean up player/session state.
 		auto pro = std::make_shared<np_actor_session_close>();
 		pro->m_sessionid = asession;
 		i64_actorid lactorid = actor_gateway::actorid(nconfig.tcount());
@@ -150,6 +153,7 @@ namespace ngl
 		std::shared_ptr<ngl::sem> lsem = nullptr;
 		if (await)
 		{
+			// Optional blocking wait is implemented with a small semaphore wrapper.
 			lsem = std::make_shared<ngl::sem>();
 		}
 		if (!connect(aip, aport, [this, afun, aip, aport, areconnection, lsem](i32_sessionid asession)
@@ -164,6 +168,7 @@ namespace ngl
 				}
 				if (areconnection && asession > 0)
 				{
+					// Re-register the reconnect hook only after a successful connect.
 					set_close(asession, aip, aport, afun);
 				}
 			}
@@ -208,6 +213,7 @@ namespace ngl
 			{
 				if (asession > 0)
 				{
+					// server_session is the canonical server id <-> TCP session map.
 					server_session::add(aserverid, asession);
 				}
 				if (afun != nullptr)
@@ -230,6 +236,7 @@ namespace ngl
 		lpack->m_buff[lcount] = '\0';
 		lpack->m_len = lcount + 1;
 		lpack->m_pos = lcount + 1;
+		// Telnet/admin traffic uses a raw text buffer instead of the binary pack header format.
 		return send_pack(asession, lpack);
 	}
 

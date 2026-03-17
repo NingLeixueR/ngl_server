@@ -24,27 +24,25 @@
 
 namespace ngl
 {
-	// # (Actor_client/actor_server) used tomanageactoraddress
-	// # (Actor_client/actor_server)
+	// Global routing table shared by actor_client / actor_server to resolve
+	// actor ids, server sessions, and role-to-gateway ownership.
 	class naddress
 	{
 		naddress() = delete;
 		naddress(const naddress&) = delete;
 		naddress& operator=(const naddress&) = delete;
 	public:
-		//# [ACTOR_ID] -> SERVER_ID
-		//# [ACTOR_TYPE + EARE_ID + DATA_ID] -> SERVER_ID
+		// Full actor guid -> owning server id.
 		using map_guidserver		= std::map<nguid, i32_serverid>;
-		//# [ACTOR_TYPE]  -> set<ACTOR_ID>
-		//# [ACTOR_TYPE]  -> set<ACTOR_TYPE + EARE_ID + DATA_ID>
+		// Actor type -> all known actor guids of that type.
 		using map_typeguid			= std::map<i16_actortype, std::set<nguid>>;
-		//# [SERVER_ID] -> [SESSION_ID]
+		// Server id -> live node/session metadata.
 		using map_servernode		= std::map<i32_serverid, nnode_session>;
-		//# [ACTOR_ID] -> [GATEWAY_SERVER_ID]
+		// Role actor guid -> gateway server currently serving that role.
 		using map_rolegateway		= std::map<nguid, i32_serverid>;
-		// # [Ergodic]callback
+		// Snapshot-style callback that can inspect all routing tables together.
 		using ergodic_callbackfun	= std::function<bool(const map_guidserver&, const map_servernode&, const map_rolegateway&)>;
-		// # [Foreach]callback
+		// Iteration callback over known server/session entries.
 		using foreach_callbackfun	= std::function<bool(const nnode_session&)>;
 
 		static naddress::map_guidserver		m_actorserver;
@@ -53,75 +51,73 @@ namespace ngl
 		static naddress::map_rolegateway	m_rolegateway;
 		static std::shared_mutex			m_mutex;
 
-		// # Debug
+		// Debug helpers for the actor -> server routing table.
 		static void print_address();
 		static void print_address(const char* ainfo, i32_serverid aserverid, const nguid& aguid);
-	public:
+public:
 #pragma region base
-		// # Setnode
+		// Register or update one node entry.
 		static bool set_node(const nactornode& anode);
 
 	private:
-		// # Nosafe_ function table" lock", do not allow
+		// Lock-free helper used only while m_mutex is already held.
 		static void nosafe_actor_address_add(i32_serverid aserverid, i64_actorid adataid);
 
-		// # Nosafe_ function table" lock", do not allow
+		// Lock-free helper used only while m_mutex is already held.
 		static void nosafe_actor_address_del(i64_actorid adataid);
 
 	public:
-		// # Addactor
+		// Add one actor -> server mapping.
 		static void actor_address_add(i32_serverid aserverid, i64_actorid adataid);
 
-		// # Adda group ofactor
+		// Add a batch of actor -> server mappings.
 		static void actor_address_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec);
 
-		// # Deleteactor
+		// Remove one actor -> server mapping.
 		static void actor_address_del(i64_actorid adataid);
 
-		// # Deletea group ofactor
+		// Remove a batch of actor -> server mappings.
 		static void actor_address_del(const std::vector<i64_actorid>& avec);
 
-		// # Setsession
+		// Attach the current TCP session id to a known server.
 		static void set_session(i32_serverid aserverid, i32_sessionid asession);
 
-		// # Getsession
+		// Resolve the TCP session id for a known server.
 		static i32_sessionid sessionid(i32_serverid aserverid);
 
-		// # Getserver id
+		// Resolve which server currently owns a specific actor.
 		static i32_serverid serverid(const nguid& aguid);
 
-		// # GetENUM_ACTOR corresponding server
+		// Collect every server that currently hosts at least one actor of the given type.
 		static void serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& aservers);
 #pragma endregion
 
 #pragma region gateway
-		// # Actor_role.actoridandgatewayid
+		// Track which gateway currently owns the specified role actor.
 		static void gatewayid_add(const nguid& aguid, i32_serverid aserverid);
 
-		// # Actor_role.actoridandgatewayid
+		// Remove the role -> gateway association.
 		static void gatewayid_del(const nguid& aguid);
 
-		// # [ACTOR_ID(ACTOR_ROLE actor)] -> [GATEWAY_SERVER_ID]
+		// Resolve the gateway server that owns the specified role actor.
 		static i32_serverid gatewayid(const nguid& aguid);
 
-		// # Geta group ofactor_role.actoridandgatewayid
+		// Resolve all distinct gateway servers serving the specified role set.
 		static void gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset);
 #pragma endregion
-		// # [Std::function<bool(const nnode_session&)>]
-		// # Ifreturn false
-		// Translated comment.
+		// Iterate over every known server/session entry until the callback returns false.
 		static void foreach(const foreach_callbackfun& afun);
 
-		//# [ergodic_callbackfun:std::function<bool(map_guidserver&, map_servernode&)>]
+		// Visit the three routing tables under a shared read lock.
 		static void ergodic(const ergodic_callbackfun& afun);
 
-		// # Getactor->server (thread )
+		// Return a copy of the actor -> server map for lock-free callers.
 		static map_guidserver get_actorserver_map();
 
-		// # Areaanddataidgetsession
+		// Resolve the gateway session that currently serves a role actor.
 		static i32_sessionid sessionbyrole(i16_area aarea, i32_actordataid aroleid);
 
-		// # Forwarding
+		// Invoke the forwarding callback embedded in a handle_pram, if present.
 		static bool forward(handle_pram& apram);
 	};
 }//namespace ngl

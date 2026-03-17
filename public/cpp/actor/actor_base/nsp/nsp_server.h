@@ -27,17 +27,17 @@ namespace ngl
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename T>
 	class nsp_server
 	{
-		// # "Datafield"
+		// Per-actor-type field permissions merged from every registered peer.
 		static operator_field						m_operator_field;
-		// # Whichnode whichdata
+		// Peer actor id -> subscribed row scope.
 		static std::map<i64_actorid, care_data>		m_care;
-		// # Alldata node
+		// Peers that subscribe read-only to all rows.
 		static std::set<i64_nodeid>					m_nodereadalls;
-		// # Alldata node
+		// Peers that subscribe read/write to all rows.
 		static std::set<i64_nodeid>					m_nodewritealls;
-		// # Partialdata node
+		// Peers with partial subscriptions.
 		static std::set<i64_nodeid>					m_nodepart;
-		// # Data
+		// DB module that owns the authoritative dataset.
 		static ndb_modular<ENUMDB, T, TDerived>*	m_dbmodule;
 	public:
 		using tnsp_server = nsp_server<ENUMDB, TDerived, T>;
@@ -47,25 +47,23 @@ namespace ngl
 			esend_maxcount = 100,
 		};
 
-		// # Registerhandle
+		// Bind the authoritative DB module and register channel handlers.
 		static void init(ndb_modular<ENUMDB, T, TDerived>* adbmodule);
 
-		// # Registerresponse
+		// Send the current peer/subscription snapshot back to a newly registered node.
 		static void channel_register_reply(i64_actorid aactorid);
 
-		// # Registerresponsedata
+		// Stream the initial row snapshot to a newly registered node.
 		static void channel_channel_data(i64_actorid aactorid, const np_channel_register<T>* recv);
 
-		// # Registersynchronize nodeinfo
+		// Broadcast the new node's subscription scope to existing peers.
 		static void channel_dataid_sync(i64_actorid aactorid, const np_channel_register<T>* recv);
 
-		// # Noderegister
+		// Handle peer registration, peer exit, and incremental writes from peers.
 		static void handle(TDerived*, const message<np_channel_register<T>>& adata);
 
-		// # Nodeexit
 		static void handle(TDerived*, const message<np_channel_exit<T>>& adata);
 
-		// # Node data
 		static void handle(TDerived*, const message<np_channel_data<T>>& adata);
 	};
 

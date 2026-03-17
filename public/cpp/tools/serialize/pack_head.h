@@ -33,12 +33,15 @@ namespace ngl
 	// # Packet header
 	struct pack_head
 	{
+		// The header is stored as raw int32 slots so it can be copied directly
+		// into network buffers without an extra serialization layer.
 		int32_t m_data[EPH_SUM] = {0};
 		int32_t m_wpos = 0;
 
 		pack_head();
 
-		// # Setmask
+		// A constant byte mask prefixes every packet and lets the receiver
+		// distinguish framed traffic from ad-hoc telnet commands.
 		static void				head_set_mask(int32_t* abuff);
 		void					set_mask();
 
@@ -78,7 +81,7 @@ namespace ngl
 		// # Get sendto actor dataid
 		i32_actordataid get_actordataid()const;
 
-		// # Head
+		// Clears the partial read state and every header field.
 		void			reset();
 
 		// # GetEPHcorresponding
@@ -87,10 +90,10 @@ namespace ngl
 		// # Getprotocol
 		int32_t			get_bytes()const;
 
-		// # Getpacket header
+		// Returns the fixed serialized header size in bytes.
 		static int32_t	size();
 
-		// # Packet headerwhether
+		// Reports whether the mask/header is complete, still partial, or invalid.
 		EPH_HEAD_VAL	isready()const;
 
 		// # Getprotocol id
@@ -106,6 +109,7 @@ namespace ngl
 
 		bool push_format(ngl::ser::serialize_push* aserialize)const;
 
+		// Skips the header prefix when callers need the writable payload span.
 		void reservebuff(char* abuff, int abufflen, std::pair<char*, int32_t>& apair);
 	};
 }// namespace ngl

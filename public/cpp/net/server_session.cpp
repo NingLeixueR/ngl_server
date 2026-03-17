@@ -148,6 +148,7 @@ namespace ngl
 
 	bool server_session::serverinfobysession(i32_sessionid asessionid, std::pair<str_servername, i32_serverid>& apair)
 	{
+		// Resolve the numeric server id first, then translate it through tab_servers for logging/UI.
 		apair.second = serverid(asessionid);
 		if (apair.second == -1)
 		{

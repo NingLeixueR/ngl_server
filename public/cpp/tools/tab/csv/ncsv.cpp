@@ -21,6 +21,8 @@ namespace ngl
 	void csv_base::set_path(const std::string& apath, const std::string& aname)
 	{
 		m_path = std::format("{}/{}", apath, aname);
+		// Some deployments keep CSV files directly under the root path, so fall
+		// back when the named subdirectory does not exist.
 		if (tools::directories_exists(m_path) == false)
 		{
 			m_path = apath;
@@ -104,6 +106,8 @@ namespace ngl
 
 	void ncsv::foreach_verify(std::map<std::string, std::string>& averify)
 	{
+		// Expose every table hash so remote reload tools can detect stale data
+		// before pushing replacements.
 		for (auto& [key, value] : m_csv)
 		{
 			averify.insert_or_assign(key, value->verify());

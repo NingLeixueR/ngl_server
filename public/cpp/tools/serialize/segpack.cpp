@@ -46,6 +46,8 @@ namespace ngl
 	{
 		if (auto itor = m_data.find(aid); itor != m_data.end())
 		{
+			// Continue filling the partially received packet from the previous
+			// socket read.
 			std::shared_ptr<pack> lpack = itor->second;
 			m_data.erase(itor);
 			return lpack;
@@ -70,6 +72,8 @@ namespace ngl
 			return edopush::e_error;
 		}
 
+		// A header mask mismatch on a LAN socket is treated as a plain-text
+		// telnet command instead of a binary packet framing error.
 		pack_head& lhead = apack->m_head;
 		if (apack->m_buff == nullptr)
 		{
@@ -108,6 +112,8 @@ namespace ngl
 		}
 		if (!aislanip && !apack->m_rate_accounted)
 		{
+			// Rate accounting is charged once per completed logical packet, even
+			// if the body arrives in many TCP segments.
 			if (!m_rate.add(aid))
 			{
 				return false;
@@ -140,6 +146,7 @@ namespace ngl
 			return false;
 		}
 
+		// Copy only the body bytes that are still missing from the packet.
 		int ltemp = len - apack->m_pos;
 		if (ltemp < 0)
 		{
@@ -197,6 +204,8 @@ namespace ngl
 		}
 		if (len == 0)
 		{
+			// Header-only packets still carry valid protocol numbers, which is
+			// how heartbeats are represented.
 			if (is_heartbeat(lpack))
 			{
 				return edopush::e_break;
@@ -216,6 +225,8 @@ namespace ngl
 
 		if (localtime::getsystime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
 		{
+			// Only dispatch packets that are still within the configured clock
+			// skew / timeout window.
 			protocol::push(lpack);
 		}
 		else
@@ -239,6 +250,7 @@ namespace ngl
 
 		do
 		{
+			// One receive buffer may contain multiple complete packets.
 			const edopush levalue = do_push(aid, ap, alen, aislanip);
 			if (levalue == edopush::e_error)
 			{

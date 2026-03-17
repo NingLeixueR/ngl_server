@@ -66,16 +66,16 @@ namespace ngl
 		http_parm(http_parm&&) = delete;
 		http_parm& operator=(http_parm&&) = delete;
 
-		ENUM_MODE			m_mode = ENUM_MODE_NULL;				// http
-		ENUM_TYPE			m_type = ENUM_TYPE_NULL;				// Httptype
-		CURL*				m_curl = nullptr;						// Curl
-		std::string			m_url;									// Request url
-		std::string			m_param;								// Requestparameters
-		int					m_timeout = 0;							// Time
-		std::string			m_cookies;								// cookie
-		curl_slist*			m_headers = nullptr;				// http
-		callback			m_callback = nullptr;					// Callback
-		std::string			m_recvdata;								// Data
+		ENUM_MODE			m_mode = ENUM_MODE_NULL;				// HTTP or HTTPS.
+		ENUM_TYPE			m_type = ENUM_TYPE_NULL;				// GET or POST.
+		CURL*				m_curl = nullptr;						// Reused easy handle.
+		std::string			m_url;									// Base request URL.
+		std::string			m_param;								// Query string or POST body.
+		int					m_timeout = 0;							// Request timeout in seconds.
+		std::string			m_cookies;								// Optional Cookie header.
+		curl_slist*			m_headers = nullptr;					// Optional request headers.
+		callback			m_callback = nullptr;					// Completion callback.
+		std::string			m_recvdata;								// Response body buffer.
 
 		~http_parm()
 		{
@@ -130,6 +130,8 @@ namespace ngl
 	struct mail_param
 	{
 	private:
+		// Optional synchronization primitive so callers can wait for a worker
+		// thread to finish sending the message.
 		std::shared_ptr<ngl::sem> m_sem = nullptr;								
 	public:
 		std::string m_smtp;
@@ -167,6 +169,7 @@ namespace ngl
 		ncurl(const ncurl&) = delete;
 		ncurl& operator=(const ncurl&) = delete;
 
+		// Background worker queue that runs blocking libcurl requests off-thread.
 		nwork<http_parm> m_works;
 
 		ncurl();
@@ -195,7 +198,7 @@ namespace ngl
 		static void set_url(std::shared_ptr<http_parm>& ahttp, const std::string& aurl);
 		static void set_url(std::shared_ptr<http_parm>& ahttp, const char* aurl);
 
-		// # Set parameters(parm xx=xx&xx=xx&xx=xx)
+		// Appends `key=value` pairs into the request parameter string.
 		static void set_param(std::shared_ptr<http_parm>& ahttp, const std::string& aparam);
 
 		// # Sethttp
@@ -204,7 +207,7 @@ namespace ngl
 		// # Setcallback
 		static void set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback);
 
-		// # Sethttp parameters
+		// Helper for building query strings from parallel key/value lists.
 		template <typename T>
 		static void param(std::string& aparam, const char* akey, const T& aval)
 		{
@@ -231,13 +234,14 @@ namespace ngl
 			param(aparam, std::make_index_sequence<sizeof...(TARGS)>{}, akeys, aargs...);
 		}
 		
-		// # Send
+		// Queues an HTTP request on the background worker.
 		static void send(std::shared_ptr<http_parm>& adata);
 
 		static std::shared_ptr<http_parm> http();
 
 		static std::shared_ptr<mail_param> mail();
 
+		// Queues an SMTP send and optionally blocks until completion.
 		static void sendemail(std::shared_ptr<mail_param>& aparm);
 	};
 

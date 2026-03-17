@@ -46,13 +46,13 @@ namespace ngl
 
 		static void read(const char* axml);
 	public:
-		// # Fromxmlinloaddata
+		// Loads protocol name -> number overrides from XML into a static map.
 		static void load();
 
-		// # Getprotocol id
+		// Looks up a protocol number by name.
 		static int32_t protocol(const std::string& aname);
 
-		// # Makeproto does not needindex
+		// Allocates a runtime-only protocol id outside the configured XML set.
 		static int32_t free_protocol();
 	};
 }// namespace ngl

@@ -33,6 +33,8 @@ namespace ngl
 		wheel* m_lastround = nullptr;
 		time_wheel* m_time_wheel = nullptr;
 
+		// Slot size and slot count define how much wall-clock time this wheel
+		// round covers.
 		int64_t m_slot_ms = 0;
 		int32_t m_slot_count = 0;
 		int32_t m_slot_less = 0;
@@ -62,6 +64,8 @@ namespace ngl
 		std::unique_ptr<std::jthread> m_threadcallback = nullptr;
 		std::shared_mutex m_mutexcallback;
 		ngl::sem m_sem;
+		// Ready callbacks live in a separate queue so the wheel thread keeps
+		// advancing even when user handlers are slow.
 		wheel_node* m_worldnodehead = nullptr;
 		wheel_node* m_worldnodetail = nullptr;
 		int64_t m_timerid = 1;
@@ -204,6 +208,9 @@ namespace ngl
 
 				if (lpnode->m_parm.m_ms < lduration)
 				{
+					// Already-due timers are delivered immediately. Repeating
+					// timers clone the next instance before the current callback
+					// is queued.
 					const int lintervalms = lpnode->m_parm.m_intervalms != nullptr
 						? lpnode->m_parm.m_intervalms(m_current_ms)
 						: 0;
@@ -226,6 +233,8 @@ namespace ngl
 
 				for (auto& item : m_wheel)
 				{
+					// Push into the first round whose coverage is large enough for
+					// the timer's target time.
 					if (!item->push(lpnode))
 					{
 						continue;
@@ -271,6 +280,8 @@ namespace ngl
 			wheel_node* ltailnode = nullptr;
 			if (m_isthreadcallback)
 			{
+				// In threaded mode the timer thread only enqueues completed
+				// nodes and wakes the callback worker.
 				lock_write(m_mutexcallback);
 				if (m_worldnodehead == nullptr)
 				{
@@ -335,6 +346,8 @@ namespace ngl
 				wheel_node* lpbnode = m_wheel[0]->shift_current_pos(nullptr);
 				if (lpbnode != nullptr)
 				{
+					// Periodic timers returned by the current slot are scheduled
+					// again on the same absolute timeline.
 					schedule_locked(lpbnode);
 				}
 				m_current_ms += m_config.m_time_wheel_precision;
@@ -354,6 +367,8 @@ namespace ngl
 					m_worldnodetail = nullptr;
 				}
 
+				// Execute outside the queue lock so callbacks can schedule or
+				// cancel other timers freely.
 				wheel_node* lnextnode = nullptr;
 				for (wheel_node* pnode = lpnode; pnode != nullptr; pnode = lnextnode)
 				{
@@ -407,6 +422,8 @@ namespace ngl
 			wheel_parm lparm = apram;
 			const int64_t lnow = getms();
 			lparm.m_timerstart = lnow;
+			// Convert the relative delay into the absolute timeline tracked by
+			// the hierarchical wheel.
 			lparm.m_ms += static_cast<int32_t>(lnow - m_server_start_ms);
 			if (lparm.m_ms < 0)
 			{
@@ -496,6 +513,9 @@ namespace ngl
 
 	bool wheel::push_slots(wheel_node* anode)
 	{
+		// Slot selection uses the absolute due time. If the slot is already
+		// behind the current cursor, the node is pushed down to the previous
+		// round to preserve timing precision.
 		int lcallcount = static_cast<int32_t>(anode->m_parm.m_ms / m_slot_ms);
 		lcallcount &= m_slot_less;
 		const int lcount = m_current_pos & m_slot_less;
@@ -551,6 +571,8 @@ namespace ngl
 			{
 				return nullptr;
 			}
+			// When the round wraps, pull one bucket from the next round back
+			// into this round before consuming the current slot.
 			m_nextround->shift_current_pos(this);
 			if (awheel != nullptr)
 			{
@@ -575,6 +597,8 @@ namespace ngl
 					--lpnode->m_parm.m_count;
 					if (lintervalms > 0 && lpnode->m_parm.m_count > 0)
 					{
+						// Queue the callback node now and keep a fresh copy for the
+						// next interval.
 						wheel_node* lpnewnode = new wheel_node(*lpnode);
 						m_time_wheel->m_impl_time_wheel()->push(lpnewnode);
 						lpnode->m_parm.m_ms += lintervalms;

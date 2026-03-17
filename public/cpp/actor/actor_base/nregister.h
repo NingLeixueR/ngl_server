@@ -30,14 +30,17 @@ namespace ngl
 	{	
 		register_logic(tprotocol::protocol<T>(), aready, [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
+				// Shared_ptr-backed messages are safe to hand directly to higher-level handlers.
 				message lmessage(athreadid, apram.m_pack, std::static_pointer_cast<T>(apram.m_data));
 				afun((TTTDerived*)aactor, lmessage);
 				if (aactor->ready().is_ready(e_ready_db))
 				{
+					// Post-handle hooks run only after DB-dependent state is ready.
 					((TTTDerived*)aactor)->handle_after(apram);
 				}
 			}
 		);
+		// Registry metadata is used by the protocol reflection / routing layers.
 		protocol::registry_actor<T>(nactor_type<TDerived>::type(), tools::type_name<T>().c_str());
 		if constexpr (!is_protobuf_message<T>::value)
 		{
@@ -52,6 +55,7 @@ namespace ngl
 	{
 		register_logic(tprotocol::protocol<T>(), aready, [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
+				// Non-network handlers still reuse the same message envelope and post-handle flow.
 				message lmessage(athreadid, apram.m_pack, std::static_pointer_cast<T>(apram.m_data));
 				(((TTTDerived*)(aactor))->*afun)(lmessage);
 				if (aactor->ready().is_ready(e_ready_db))
@@ -88,6 +92,7 @@ namespace ngl
 		register_logic(tprotocol::protocol<np_actor_forward<T, forward_c2g<forward>>>(), e_ready_null
 			, [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
+				// Forward packets already contain the wrapped payload, so no extra copy is needed.
 				message lmessage(athreadid, apram.m_pack, (type_forward_c2g*)apram.m_data.get());
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
@@ -104,6 +109,7 @@ namespace ngl
 		register_logic(tprotocol::protocol<np_actor_forward<T, forward_g2c<forward>>>(), e_ready_null
 			, [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
+				// Forward packets already contain the wrapped payload, so no extra copy is needed.
 				message lmessage(athreadid, apram.m_pack, (type_forward_g2c*)apram.m_data.get());
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}

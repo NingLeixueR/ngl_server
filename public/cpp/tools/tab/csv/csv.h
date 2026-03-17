@@ -38,10 +38,11 @@ namespace ngl
 {
 	struct csvpair
 	{
+		// Parser state for one CSV line or one nested collection field.
 		std::string m_data;
 		int m_pos = 0;
-		bool m_doublequotationmarks = false; // Translated comment.
-		char m_fg = ',';// Default','
+		bool m_doublequotationmarks = false; // Whether the current cursor is inside quotes.
+		char m_fg = ','; // Active field delimiter.
 
 		void clear()
 		{
@@ -158,6 +159,7 @@ namespace ngl
 				}
 				if (adata[apos] == '\"')
 				{
+					// Embedded newlines are allowed while quoted fields are open.
 					lbool = lbool ? false : true;
 				}
 				aline.push_back(adata[apos]);
@@ -309,6 +311,8 @@ namespace ngl
 
 			if (!apair.m_doublequotationmarks && lpos >= 0 && lpos < lsize)
 			{
+				// Fast path for the common case: an unquoted field or a quoted
+				// field that stays on the same line.
 				const std::size_t lstart = static_cast<std::size_t>(lpos);
 				if (lret[lstart] == '"')
 				{
@@ -405,6 +409,7 @@ namespace ngl
 			}
 			if (apair.m_doublequotationmarks)
 			{
+				// The caller must append another physical line and continue.
 				return false;
 			}
 			adata = std::move(lvalue);
@@ -520,6 +525,7 @@ namespace ngl
 			((args = std::move(std::get<INDEX>(avalues))), ...);
 		}
 	public:
+		// Loads the raw CSV file and returns its content hash for hot-reload checks.
 		bool read(const std::string& aname, std::string& averify);
 
 		rcsv() :
@@ -567,6 +573,7 @@ namespace ngl
 					}
 					if (ltemp.m_id != 0)
 					{
+						// CSV row ids are required to be unique and non-zero.
 						if (!lparsed.emplace(ltemp.m_id, std::move(ltemp)).second)
 						{
 							return false;

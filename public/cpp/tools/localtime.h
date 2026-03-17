@@ -27,25 +27,25 @@ namespace ngl
 		enum
 		{
 			MILLISECOND			= 1000,
-			MINUTES_SECOND		= 1 * 60,							// Translated comment.
-			MINUTES_MILLISECOND	= MINUTES_SECOND * MILLISECOND,		// Translated comment.
+			MINUTES_SECOND		= 1 * 60,							// Seconds per minute.
+			MINUTES_MILLISECOND	= MINUTES_SECOND * MILLISECOND,		// Milliseconds per minute.
 			
-			HOUR_MINUTES		= 1 * 60,							// Translated comment.
-			HOUR_SECOND			= MINUTES_SECOND * HOUR_MINUTES,	// Translated comment.
-			HOUR_MILLISECOND	= HOUR_SECOND * MILLISECOND,		// Translated comment.
+			HOUR_MINUTES		= 1 * 60,							// Minutes per hour.
+			HOUR_SECOND			= MINUTES_SECOND * HOUR_MINUTES,	// Seconds per hour.
+			HOUR_MILLISECOND	= HOUR_SECOND * MILLISECOND,		// Milliseconds per hour.
 
-			DAY_HOUR			= 24,								// Translated comment.
-			DAY_MINUTES			= DAY_HOUR * HOUR_MINUTES,			// Translated comment.
-			DAY_SECOND			= DAY_HOUR * HOUR_SECOND,			// Translated comment.
-			DAY_MILLISECOND		= DAY_SECOND * MILLISECOND,			// Translated comment.
+			DAY_HOUR			= 24,								// Hours per day.
+			DAY_MINUTES			= DAY_HOUR * HOUR_MINUTES,			// Minutes per day.
+			DAY_SECOND			= DAY_HOUR * HOUR_SECOND,			// Seconds per day.
+			DAY_MILLISECOND		= DAY_SECOND * MILLISECOND,			// Milliseconds per day.
 
-			WEEK_DAY			= 7,								// Translated comment.
-			WEEK_HOUR			= WEEK_DAY * DAY_HOUR,				// Translated comment.
-			WEEK_MINUTES		= WEEK_DAY * DAY_MINUTES,			// Translated comment.
-			WEEK_SECOND			= WEEK_DAY * DAY_SECOND,			// Translated comment.
-			WEEK_MILLISECOND	= WEEK_SECOND * MILLISECOND,		// Translated comment.
+			WEEK_DAY			= 7,								// Days per week.
+			WEEK_HOUR			= WEEK_DAY * DAY_HOUR,				// Hours per week.
+			WEEK_MINUTES		= WEEK_DAY * DAY_MINUTES,			// Minutes per week.
+			WEEK_SECOND			= WEEK_DAY * DAY_SECOND,			// Seconds per week.
+			WEEK_MILLISECOND	= WEEK_SECOND * MILLISECOND,		// Milliseconds per week.
 		};
-		// Translated comment.
+		// Validation helpers for calendar/time-of-day components.
 		static bool check_month(int amonth/*1-12*/);
 
 		// # In
@@ -63,13 +63,13 @@ namespace ngl
 		// Translated comment.
 		static bool check_sec(int sec/*0-59*/);
 
-		// # Checkwhether
+		// Return whether the elapsed wall-clock time exceeds atimeoutms.
 		static bool timeout(time_t abeg, int32_t atimeoutms);
 
-		// # Settime
+		// Apply a positive offset so localtime::gettime() can follow a server-synchronized clock.
 		static bool settime(time_t sti);
 
-		// # Gettime
+		// Return logical server time, raw system time, milliseconds, and millisecond remainder.
 		static time_t gettime();
 
 		// # Gettime
@@ -81,13 +81,13 @@ namespace ngl
 		// # Get
 		static time_t gettimems();
 
-		// # Utctimewhether
+		// Date-comparison helpers.
 		static bool issameday(time_t a1, time_t a2);
 
 		// # Currenttime parametersutctimewhether
 		static bool issameday(time_t autc);
 
-		// # Time
+		// Format time_t values into printable strings.
 		static void printf_time2str(time_t anow, const char* format = "%Y-%m-%d %H:%M:%S");
 
 		// # Utcconvert string
@@ -95,10 +95,10 @@ namespace ngl
 		static std::string time2str(time_t anow, const char* format = "%Y-%m-%d %H:%M:%S");
 		static std::string time2str(const char* format = "%Y-%m-%d %H:%M:%S");
 
-		// # Stringconvert utc
+		// Parse formatted local time strings back into time_t.
 		static time_t str2time(const char* astr, const char* format = "%Y-%m-%d %H:%M:%S");
 
-		// # Getutc that day utc
+		// Build the timestamp for a specific time-of-day on a given day or the next matching day.
 		static time_t getsecond2time(time_t utc, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
 		// # Get specified utc(iftime getunder specified utc)
@@ -110,13 +110,13 @@ namespace ngl
 		// # Getspecified utc(ifcurrent getunder )
 		static time_t getsecond2time(int sec/*0-59*/);
 
-		// # Getspecified
+		// Build timestamps for specific weekday/month-day schedules.
 		static time_t getweekday(time_t utc, int aweek/*1-7*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
 		// # Get specified utc(iftime getunder specified utc)
 		static time_t getweekday(int aweek/*0-6*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # Whether
+		// Calendar helpers.
 		static bool isleapyear(int year);
 
 		// # Whether
@@ -128,7 +128,7 @@ namespace ngl
 		// # Get specified utc
 		static std::pair<bool, time_t> getmothday(int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		// # Get time
+		// Return whole-day difference between two timestamps after truncating to midnight.
 		static time_t getspandays(time_t curr, time_t last);
 
 		// Translated comment.
@@ -181,7 +181,7 @@ namespace ngl
 
 		static bool issameweek(time_t timestamp1, time_t timestamp2);
 	private:
-		static time_t m_offset;		// Time
+		static time_t m_offset;		// Logical time offset applied on top of system time.
 	};
 
 	void test_isweek();

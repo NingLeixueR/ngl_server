@@ -25,7 +25,7 @@ namespace ngl
 		m_dbmodule = adbmodule;
 		m_operator_field.init(false);
 
-		// # Registerhandle
+		// The NSP server listens for peer registration, peer writes, and peer exit.
 		actor::register_actor_s<TDerived, np_channel_register<T>>(
 			e_ready_db, [](TDerived* aactor, const message<np_channel_register<T>>& adata)
 			{
@@ -63,6 +63,7 @@ namespace ngl
 			}
 			pro->m_care[_nodeid] = _care.get_core();
 		}
+		// Return both peer scopes and merged field rules so the new peer can participate immediately.
 		pro->m_node_fieldnumbers = m_operator_field.field_numbers();
 		actor::send_actor(aactorid, nguid::make(), pro);
 	}
@@ -83,6 +84,7 @@ namespace ngl
 		int32_t lindex = 0;
 		if (recv->m_all)
 		{
+			// Full subscribers receive the whole dataset in bounded chunks.
 			m_dbmodule->foreach([&pro, &lindex, &lmalloc, aactorid](const data_modified<T>& adata)
 				{
 					const T& ldata = *adata.getconst();
@@ -97,6 +99,7 @@ namespace ngl
 		}
 		else
 		{
+			// Partial subscribers receive only their declared read/write row sets.
 			auto lfun = [&pro, &lindex, &lmalloc, aactorid](const std::set<i64_actorid>& aids)
 				{
 					for (i64_actorid id : aids)
@@ -127,6 +130,7 @@ namespace ngl
 
 		if (lindex % esend_maxcount == 0)
 		{
+			// Finish with an empty tail packet when the last chunk landed exactly on the boundary.
 			pro = lmalloc();
 		}
 		pro->m_recvfinish = true;
@@ -150,6 +154,7 @@ namespace ngl
 		std::set<i64_nodeid> lnodes;
 		std::ranges::for_each(m_nodereadalls, [&lnodes](i64_nodeid aid) { lnodes.insert(aid); });
 		std::ranges::for_each(m_nodewritealls, [&lnodes](i64_nodeid aid) { lnodes.insert(aid); });
+		// Existing broad subscribers need the new peer's scope so they can route future deltas.
 		actor::send_actor(lnodes, nguid::make(), pro);
 	}
 
@@ -204,9 +209,11 @@ namespace ngl
 			}
 		}
 		
+		// Field permissions are merged by peer actor type, not by individual peer id.
 		m_operator_field.set_field(ltype, recv->m_field);
 		m_nodepart.insert(lactorid);
 
+		// Registration completes in three steps: reply with peer state, send snapshot, announce the new peer.
 		channel_register_reply(lactorid);
 		channel_channel_data(lactorid, recv);
 		channel_dataid_sync(lactorid, recv);
@@ -244,6 +251,7 @@ namespace ngl
 		{
 			if (!lcare.is_write(_dataid))
 			{
+				// Peers may only mutate rows they explicitly registered as writable.
 				tools::no_core_dump();
 				return;
 			}

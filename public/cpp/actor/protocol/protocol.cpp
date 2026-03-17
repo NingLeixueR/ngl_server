@@ -42,6 +42,7 @@ namespace ngl
 	)
 	{
 		lock_write(m_mutex);
+		// A protocol id may be shared by multiple actor types, but it uses one common decoder.
 		pfun& lprotocol = m_protocolfun[aprotocol];
 		lprotocol.m_packfun = apackfun;
 		lprotocol.m_runfun[aenumactor] = arunfun;
@@ -77,6 +78,7 @@ namespace ngl
 		auto lactortype = (ENUM_ACTOR)apack->m_head.get_actortype();
 		if (lactortype != nguid::none<ENUM_ACTOR>())
 		{
+			// Fast path: the sender already encoded the target actor type in the pack header.
 			auto lprun = tools::findmap(lpfun->m_runfun, lactortype);
 			if (lprun != nullptr)
 			{
@@ -89,9 +91,11 @@ namespace ngl
 				{
 					return;
 				}
+				// Robot traffic can fall back to fan-out dispatch when the header actor type is unset.
 				apack->m_head.set_actor(nguid::make(), nguid::make());
 			}
 		}
+		// Fallback path: run every actor-type binding registered for this protocol.
 		for (std::pair<const ENUM_ACTOR, protocol::fun_run>& item : lpfun->m_runfun)
 		{
 			item.second(apack, lptrpram);
@@ -146,6 +150,7 @@ namespace ngl
 		std::ranges::transform(lkey, lkey.begin(), tolower);
 		if (!telnet_cmd_admin::check(apack->m_id))
 		{
+			// Until login succeeds, only /login is accepted on this socket.
 			if (lvec[0] == "/login" && lvec.size() >= 3)
 			{
 				if (telnet_cmd_admin::login(apack->m_id, lvec[1], lvec[2]))
@@ -164,6 +169,7 @@ namespace ngl
 		using handle_cmd = ngl::cmd<protocol, std::string, const std::shared_ptr<pack>&, const std::vector<std::string>&>;
 		if (handle_cmd::empty())
 		{
+			// Command handlers are registered lazily on first use.
 			handle_cmd::add("/actor_count") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>&)
 				{
 					int32_t lcount = actor_manage::instance().actor_count();

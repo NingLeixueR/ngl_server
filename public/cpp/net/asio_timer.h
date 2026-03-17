@@ -19,7 +19,7 @@
 
 namespace ngl
 {
-	// # Event timer
+	// Process-wide timer wheel used by network code for lightweight recurring tasks.
 	class asio_timer
 	{
 		asio_timer(const asio_timer&) = delete;
@@ -28,6 +28,7 @@ namespace ngl
 
 		static time_wheel m_wheel;
 	public:
+		// Return the singleton timer wheel instance.
 		static time_wheel& wheel();
 	};
 }// namespace ngl

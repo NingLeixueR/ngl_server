@@ -59,14 +59,17 @@ namespace ngl
 	{
 		serviceio_info() = delete;
 
-		std::vector<tuple_ioservice>	m_ioservices;
-		int32_t							m_next_index = 0;
-		int32_t							m_recvthreadsize = 0;
-		int32_t							m_buffmaxsize = 0;
+		std::vector<tuple_ioservice>	m_ioservices;		// One io_context + work guard + thread per receive worker.
+		int32_t							m_next_index = 0;	// Round-robin index for new sessions.
+		int32_t							m_recvthreadsize = 0; // Number of receive io threads.
+		int32_t							m_buffmaxsize = 0;	// Per-session scratch buffer size.
 
+		// Resolve the io_context/work guard assigned to a specific receive thread.
 		basio_ioservice* get_ioservice(i32_threadid athreadid);
 		basio_ioservicework* get_ioservice_work(i32_threadid athreadid);
+		// Create the io_context thread pool used by TCP/WS sessions.
 		serviceio_info(i32_threadid athread, int32_t abuffmaxsize);
+		// Stop every io_context and join all worker threads.
 		void shutdown();
 		~serviceio_info();
 	};
@@ -83,15 +86,15 @@ namespace ngl
 		i32_threadid			m_threadid = 0;
 		i32_sessionid			m_sessionid = 0;
 		bool					m_is_lanip = false;
-		bool					m_issend = false;	// Whethersendstate
-		std::list<node_pack>	m_list;				// Sendqueue(becauseasioasynchronously, executecompletethen )
+		bool					m_issend = false;	// Whether one async send is currently in flight.
+		std::list<node_pack>	m_list;				// Pending send queue drained by async completion handlers.
 		std::shared_mutex		m_mutex;
 		basio_ioservice&		m_ioservice;
 
 		service_io(serviceio_info& amsi, i32_session asessionid);
 		virtual ~service_io() =default;
 
-		// # Buff
+		// Swap between two scratch buffers so one can be consumed while the other is reused.
 		char* buff();
 	};
 
@@ -109,9 +112,9 @@ namespace ngl
 	{
 		ws_send_node() = delete;
 
-		std::shared_ptr<pack> m_pack = nullptr;
-		std::shared_ptr<void> m_voidpack = nullptr;
-		std::shared_ptr<std::string> m_text = nullptr;
+		std::shared_ptr<pack> m_pack = nullptr;        // Binary pack with typed ownership.
+		std::shared_ptr<void> m_voidpack = nullptr;    // Binary pack with erased ownership.
+		std::shared_ptr<std::string> m_text = nullptr; // Text WebSocket payload.
 	public:
 		explicit ws_send_node(std::shared_ptr<pack>& apack) :
 			m_pack(apack)
@@ -178,21 +181,23 @@ namespace ngl
 
 		using ws_stream_variant = std::variant<basio_websocket, basio_websocket_tls>;
 
-		ws_stream_variant m_stream;
-		beast::flat_buffer m_read_buffer;
-		bool m_message_is_text = false;
-		bool m_use_tls = false;
+		ws_stream_variant m_stream;       // Plain or TLS websocket stream.
+		beast::flat_buffer m_read_buffer; // Owns websocket frame bytes between async reads.
+		bool m_message_is_text = false;   // Current outbound/inbound opcode mode.
+		bool m_use_tls = false;           // Whether the stream variant uses TLS.
 	public:
-		std::atomic_bool m_closing = false;
-		bool m_ws_sending = false;
-		std::list<ws_send_node> m_ws_send_list;
+		std::atomic_bool m_closing = false; // Prevent duplicate close sequences.
+		bool m_ws_sending = false;          // Whether one async WS write is currently in flight.
+		std::list<ws_send_node> m_ws_send_list; // Pending websocket sends.
 
 		service_ws(serviceio_info& amsi, i32_session asessionid);
 		service_ws(serviceio_info& amsi, i32_session asessionid, basio_sslcontext& acontext);
 		virtual ~service_ws() = default;
 
+		// Access the underlying TCP socket regardless of plain/TLS websocket mode.
 		basio_iptcpsocket& socket();
 		const basio_iptcpsocket& socket() const;
+		// Access per-connection websocket mode and read buffer state.
 		bool using_tls() const;
 		bool message_is_text() const;
 		void set_message_is_text(bool avalue);

@@ -27,6 +27,7 @@ namespace ngl
 			tools::no_core_dump();
 			return;
 		}
+		// Each dbclient starts in the "loading" map and migrates to m_dbclientmap once ready.
 		init(adbclient, m_actor, aid);
 	}
 
@@ -48,6 +49,7 @@ namespace ngl
 			return false;
 		}
 
+		// Notify the actor that one concrete DB table reported progress.
 		m_loadfinishfun(atype, astat);
 
 		for (auto itor = m_typedbclientmap.begin(); itor != m_typedbclientmap.end();)
@@ -57,6 +59,7 @@ namespace ngl
 				++itor;
 				continue;
 			}
+			// Loaded clients move into the stable map used by save()/del()/script sync.
 			m_dbclientmap.insert_or_assign(itor->first, itor->second);
 			itor = m_typedbclientmap.erase(itor);
 		}
@@ -69,22 +72,20 @@ namespace ngl
 
 		m_actor->db_component_init_data();
 
-		// 1, Data [ ]
+		// 1. Loading can mark rows dirty; clear those flags before gameplay starts mutating data.
 		for (auto& [_enumdb, _npdbclient] : m_dbclientmap)
 		{
 			_npdbclient->clear_modified();
 		}
 
-		// 2, Data scriptin
+		// 2. Mirror the freshly loaded state into the script runtime.
 		nscript_push_data();
 
-		// 3, Initialize,and need to sendtoclient
-		// 3.1 C++
+		// 3. Signal the "all DB ready" stage to both C++ and script callers.
 		if (m_loadfinishfun != nullptr)
 		{
 			m_loadfinishfun(pbdb::ENUM_DB_ALL, astat);
 		}
-		// 3.2 Notifyscript
 		m_actor->nscript_db_loadfinish();
 		return true;
 	}

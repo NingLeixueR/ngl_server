@@ -19,6 +19,8 @@ namespace ngl
 {
 	class xmlnode
 	{
+		// Runtime node configuration loaded once from XML and then exposed as a
+		// process-wide singleton through `nconfig`.
 		xarg_db		m_db;
 		xarg_db		m_dbcross;
 		xarg_info	m_public;
@@ -99,9 +101,9 @@ namespace ngl
 
 namespace ngl
 {
-	template <typename T>
-	bool xml::get(tinyxml2::XMLElement* aele, const char* akey, T& aval)
-	{
+template <typename T>
+bool xml::get(tinyxml2::XMLElement* aele, const char* akey, T& aval)
+{
 		if (aele == nullptr)
 		{
 			return false;
@@ -122,6 +124,8 @@ namespace ngl
 		}
 		try
 		{
+			// XML stores scalars as text, so parsing goes through the project
+			// lexical cast helper.
 			T lvalue = tools::lexical_cast<T>(val);
 			aval = std::move(lvalue);
 			return true;
@@ -138,9 +142,9 @@ namespace ngl
 		return get(aele, nullptr, aval);
 	}
 
-	template <typename T>
-	bool xml::set(tinyxml2::XMLElement* aele, const char* akey, const T& aval)
-	{
+template <typename T>
+bool xml::set(tinyxml2::XMLElement* aele, const char* akey, const T& aval)
+{
 		if (aele == nullptr)
 		{
 			return false;

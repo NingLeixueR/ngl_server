@@ -1819,6 +1819,8 @@ namespace ngl
 		}
 
 		std::size_t lline_count = 1;
+		// Count CRLF pairs first so the result vector can reserve enough space
+		// before creating string_view slices.
 		for (std::size_t i = 0; i + 1 < abuffsize; ++i)
 		{
 			if (apbuff[i] == '\r' && apbuff[i + 1] == '\n')
@@ -1869,7 +1871,8 @@ namespace ngl
 	}
 
 	namespace {
-		// 64-Bit splitmix64, used to 64-bit
+		// splitmix64 gives each thread a well-distributed seed without sharing
+		// a global RNG state.
 		static inline uint64_t splitmix64(uint64_t x) 
 		{
 			x += 0x9e3779b97f4a7c15ULL;
@@ -1883,7 +1886,8 @@ namespace ngl
 
 		static uint64_t make_global_seed() 
 		{
-			// From random_device get (if )
+			// Combine `random_device` entropy with the current clock so the seed
+			// still changes on platforms with deterministic random_device output.
 			std::random_device rd;
 			uint64_t a = static_cast<uint64_t>(rd());
 			uint64_t b = static_cast<uint64_t>(rd());
@@ -1896,9 +1900,9 @@ namespace ngl
 			std::call_once(g_seed_once, []() {
 				g_global_seed.store(make_global_seed(), std::memory_order_relaxed);
 			});
-			// , Thread to
 			uint64_t v = g_global_seed.fetch_add(0x9e3779b97f4a7c15ULL, std::memory_order_acq_rel);
-			// Thread id thread to
+			// Mix in the thread id so different workers do not walk identical
+			// pseudo-random sequences.
 			uint64_t tid_hash = std::hash<std::thread::id>()(std::this_thread::get_id());
 			return splitmix64(v ^ tid_hash);
 		}
@@ -2000,7 +2004,8 @@ namespace ngl
 		}
 	}
 
-	// Preventmail send, 10 send content mail
+	// Suppress duplicate alert emails for a short window so repeated failures
+	// do not flood operators.
 	std::map<std::string, int32_t> g_mailmap;
 	std::shared_mutex g_maillock;
 	int32_t g_mailinterval = localtime::MINUTES_SECOND * 10;
@@ -2042,6 +2047,8 @@ namespace ngl
 					g_mailmap[acontent] = lnow;
 				}				
 
+				// Callers usually dispatch this closure asynchronously, but the
+				// mail helper itself waits for completion so failures stay visible.
 				std::cout << "dump_logic()" << std::endl;
 				std::shared_ptr<ngl::mail_param> lparm = ngl::ncurl::mail();
 				lparm->m_smtp = nconfig.mail().m_smtp;

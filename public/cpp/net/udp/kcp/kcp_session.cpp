@@ -28,6 +28,7 @@ namespace ngl
 	int udp_output(const char* buf, int len, ikcpcb*, void* user)
 	{
 		const auto lpstruct = (kcp_endpoint*)user;
+		// KCP emits raw UDP datagrams through this callback.
 		lpstruct->m_asiokcp->sendbuff(lpstruct->m_endpoint, buf, len);
 		return len;
 	}
@@ -54,7 +55,7 @@ namespace ngl
 		ltemp->m_server = aactoridserver;
 		ltemp->create(aconv, m_sessionid, (void*)ltemp.get());
 		
-		// Setkcp callbackfunction
+		// Configure KCP for low-latency game traffic.
 		ltemp->setoutput(udp_output);
 		ltemp->nodelay(1, 10, 2, 1);
 		ltemp->wndsize(128, 128);
@@ -82,6 +83,7 @@ namespace ngl
 
 		m_actoridofsession.erase(lpse->m_client);
 		m_actoridofsession.erase(lpse->m_server);
+		// Returning the shared_ptr keeps the endpoint alive until the caller finishes any cleanup.
 		return lpse;
 	}
 
@@ -123,6 +125,7 @@ namespace ngl
 					}
 					if (lpse != nullptr)
 					{
+						// KCP's internal timers are driven by the shared wheel rather than a dedicated thread.
 						(*lpse)->update((IUINT32)(time_wheel::getms() - lcreatems));
 					}
 				}
@@ -221,6 +224,7 @@ namespace ngl
 		std::vector<ptr_se> lsessions;
 		{
 			lock_read(m_mutex);
+			// Copy out shared_ptrs first so callbacks can safely mutate session tables.
 			lsessions.reserve(m_dataofsession.size());
 			for (auto& [_session, _se] : m_dataofsession)
 			{
@@ -249,6 +253,7 @@ namespace ngl
 
 				if (!lvisited.insert(lpair.second).second)
 				{
+					// One session is indexed by both client and server actor ids; visit it only once.
 					continue;
 				}
 

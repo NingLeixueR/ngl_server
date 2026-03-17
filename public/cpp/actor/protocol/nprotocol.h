@@ -25,23 +25,23 @@ namespace ngl
 	enum E_ACTOR_TIMER
 	{
 		ET_NULL,
-		ET_MONTH,			// Translated comment.
-		ET_WEEK,			// Translated comment.
-		ET_DAY,				// Ahour amin asec
-		ET_HOUR,			// Amin asec
-		ET_MIN,				// Asec
-		ET_INTERVAL_SEC,	// N
+		ET_MONTH,			// Calendar-based monthly timer.
+		ET_WEEK,			// Calendar-based weekly timer.
+		ET_DAY,				// Daily timer at a fixed hour/minute/second.
+		ET_HOUR,			// Hourly timer at a fixed minute/second.
+		ET_MIN,				// Minute timer at a fixed second.
+		ET_INTERVAL_SEC,	// Fixed-interval timer in seconds.
 	};
 
 	struct np_timerparm
 	{
 		int								m_type = 0;
 		int								m_timerid = 0;
-		int64_t							m_ms = 0;					// Currenttime ms
-		int								m_count = 1;				// Translated comment.
-		std::function<int32_t(int64_t)> m_intervalms = nullptr;		// Translated comment.
-		std::shared_ptr<void>			m_parm = nullptr;			// Parameters
-		int64_t							m_triggerms = 0;			// Translated comment.
+		int64_t							m_ms = 0;					// Current wall-clock time in milliseconds.
+		int								m_count = 1;				// Remaining trigger count; <= 0 means infinite in some callers.
+		std::function<int32_t(int64_t)> m_intervalms = nullptr;		// Computes the next interval after one trigger.
+		std::shared_ptr<void>			m_parm = nullptr;			// Optional user payload.
+		int64_t							m_triggerms = 0;			// Absolute trigger time of the current firing.
 
 		DPROTOCOL(np_timerparm, m_type, m_timerid, m_ms, m_count, m_triggerms)
 	};
@@ -62,10 +62,10 @@ namespace ngl
 
 	struct nactornode
 	{
-		std::string		m_name;							// Servername
-		NODE_TYPE		m_nodetype = NODE_TYPE::FAIL;	// Servertype
-		i32_serverid	m_serverid = -1;				// Serverid
-		std::vector<i16_actortype>	m_actortype;		// ENUM_ACTOR_TYPE
+		std::string		m_name;							// Human-readable server name.
+		NODE_TYPE		m_nodetype = NODE_TYPE::FAIL;	// Logical node type.
+		i32_serverid	m_serverid = -1;				// Concrete server id.
+		std::vector<i16_actortype>	m_actortype;		// Actor types hosted by this server.
 
 		DPROTOCOL(nactornode, m_name, m_serverid, m_actortype)
 	};
@@ -83,8 +83,7 @@ namespace ngl
 		DPROTOCOL(np_connect_actor_server, m_serverid, m_session)
 	};
 
-	// [actor client -> actor server]
-	// Registernode
+	// actor_client -> actor_server: announce this node and its locally hosted actors.
 	struct np_actornode_register
 	{
 		nactornode m_node;
@@ -93,8 +92,7 @@ namespace ngl
 		DPROTOCOL(np_actornode_register, m_node, m_add)
 	};
 
-	// [actor_client -> actor_server]
-	// [Response]registernode
+	// actor_server -> actor_client: return the currently known node list.
 	struct np_actornode_register_response
 	{
 		std::vector<nactornode> m_vec;
@@ -111,11 +109,10 @@ namespace ngl
 		DPROTOCOL(np_actorclient_node_connect, m_id)
 	};
 
-	// [actor_server -> actor_client]	[actor_client -> actor_server] 
-	// Servertoclientsynchronizenodeinfo clienttoserversynchronizenodeinfo
+	// Bidirectional node-routing update shared between actor_server and actor_client.
 	struct np_actornode_update
 	{
-		i32_serverid m_id = -1;				// Serverid
+		i32_serverid m_id = -1;				// Server that owns the add/del sets.
 		std::vector<i64_actorid> m_add;
 		std::vector<i64_actorid> m_del;
 		std::map<nguid, i32_serverid> m_rolegateway;
@@ -139,8 +136,7 @@ namespace ngl
 		DPROTOCOL(np_actornode_update_mass_client, m_mass)
 	};
 
-	// Connectionsuccessfulafterexecutetask
-	// Taskaddtoactor_clientin, specifiedtype Actorconnectionsuccessfulafterexecutethis task
+	// Deferred task that should execute once actor_client confirms a node connection is live.
 	struct np_actornode_connect_task
 	{
 		i32_serverid m_serverid;
@@ -225,14 +221,13 @@ namespace ngl
 		DPROTOCOL(np_actor_gatewayid_updata, m_isremove, m_actorid, m_gatewayid)
 	};
 
-	// Time (allactor)broadcast
-	// Can this broadcast need tohandle task,for example save data
+	// Synthetic periodic maintenance event broadcast to actors that opted in.
 	struct np_actor_broadcast
 	{
 		DPROTOCOL(np_actor_broadcast)
 	};
 
-	// Loadcsv
+	// Request a CSV reload using externally supplied file contents.
 	struct np_actor_reloadcsv
 	{
 		std::map<std::string, std::string> m_csvcontent;
@@ -240,7 +235,7 @@ namespace ngl
 		DPROTOCOL(np_actor_reloadcsv, m_csvcontent)
 	};
 
-	// csv
+	// Verify CSV versions by file-type hash.
 	struct np_actor_csv_verify_version
 	{
 		std::map<std::string, std::string> m_verify; // key: tab typeid(TAB).hash_code() val:md5
@@ -312,7 +307,7 @@ namespace ngl
 		DPROTOCOL(ncalendar_info, m_time, m_calendarid, m_start)
 	};
 
-	// Notifykcpservercreateconnection
+	// Notify the KCP actor about a newly established KCP session.
 	struct np_actor_kcp
 	{
 		std::string			m_kcpsession;
@@ -347,7 +342,7 @@ namespace ngl
 		DPROTOCOL(np_actor_addnotice, m_notice, m_starttime, m_finishtime)
 	};
 
-	// Closespecifiedactor( closeactor_role)
+	// Synthetic close event targeted at a specific actor.
 	struct np_actor_close
 	{
 		DPROTOCOL(np_actor_close)
@@ -359,7 +354,7 @@ namespace ngl
 # define FindSrcPos(STR) STR.rfind("/")
 #endif
 
-	// Logsend
+	// Serialized log entry forwarded to the log actor.
 	struct np_logitem
 	{
 		int				m_serverid = -1;			// Serverid
@@ -499,10 +494,7 @@ namespace ngl
 		}
 	};
 
-	// Translated comment.
-	// Player
-	// 1, Get info
-	// 2, Info
+	// Request login-related summary information for one role.
 	struct np_login_request_info
 	{
 		i64_actorid m_roleid;

@@ -34,6 +34,7 @@ namespace ngl
 	{
 		int64_t lconsuming = time_wheel::getms() - m_beg;
 		bool lerror = lconsuming > sysconfig::consumings();
+		// Slow operations log at error level so they stand out in production traces.
 		(lerror ? log_error() : log_info())->print("time consuming [{}:{}]", m_name, lconsuming);
 	}
 }//namespace ngl

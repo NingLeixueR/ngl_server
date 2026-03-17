@@ -83,6 +83,7 @@ namespace ngl
 		{
 			return;
 		}
+		// Let the component decide its logical owner id before registering with actor_base.
 		related_actorid();
 		m_actor->add_dbclient(m_dbclient, m_id);
 	}
@@ -93,6 +94,7 @@ namespace ngl
 		{
 			return;
 		}
+		// Create uses the component's currently bound actor id.
 		m_dbclient->create(m_id);
 	}
 

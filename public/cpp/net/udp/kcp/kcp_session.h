@@ -37,14 +37,15 @@ namespace ngl
 		kcp_session(const kcp_session&) = delete;
 		kcp_session& operator=(const kcp_session&) = delete;
 
-		std::map<i32_sessionid, ptr_se>						m_dataofsession;
-		std::map<i64_actorid, i32_sessionid>				m_actoridofsession;		// Client/servercorresponding sessionid
+		std::map<i32_sessionid, ptr_se>						m_dataofsession;		// Session id -> endpoint.
+		std::map<i64_actorid, i32_sessionid>				m_actoridofsession;		// Actor id -> session id for both client and server ids.
 
-		std::map<std::string, std::map<i16_port, ptr_se>>	m_dataofendpoint;
-		int32_t												m_sessionid = 0;
-		std::shared_mutex									m_mutex;
-		asio_kcp*											m_asiokcp = nullptr;
+		std::map<std::string, std::map<i16_port, ptr_se>>	m_dataofendpoint;		// IP -> port -> endpoint.
+		int32_t												m_sessionid = 0;		// Monotonic session id allocator.
+		std::shared_mutex									m_mutex;				// Protects all lookup tables.
+		asio_kcp*											m_asiokcp = nullptr;	// Back-reference used by new endpoints.
 
+		// Internal helpers that assume the caller already holds m_mutex.
 		ptr_se erase_session_nolock(i32_sessionid asession);
 		ptr_se find_info(i32_sessionid asession);
 		ptr_se find_info(const asio_udp_endpoint& aendpoint);
@@ -56,6 +57,7 @@ namespace ngl
 
 		kcp_session(asio_kcp* asiokcp);
 
+		// Create, reset, erase, find, and iterate KCP session entries.
 		std::shared_ptr<kcp_endpoint> add_kcp_endpoint(
 			int32_t aconv
 			, const char* aip

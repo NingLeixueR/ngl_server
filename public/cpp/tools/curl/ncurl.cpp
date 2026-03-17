@@ -41,6 +41,8 @@ namespace ngl
 				return ahttp.m_url;
 			}
 
+			// GET parameters are appended onto the URL, while POST keeps them in
+			// the request body.
 			std::string lurl = ahttp.m_url;
 			if (lurl.empty())
 			{
@@ -122,6 +124,8 @@ namespace ngl
 
 		if (ahttp.m_mode == ENUM_MODE_HTTPS)
 		{
+			// This helper is primarily used in controlled deployments, so HTTPS
+			// verification can be relaxed for self-signed endpoints.
 			curl_easy_setopt(ahttp.m_curl, CURLOPT_SSL_VERIFYPEER, 0L);
 			curl_easy_setopt(ahttp.m_curl, CURLOPT_SSL_VERIFYHOST, 0L);
 		}
@@ -273,6 +277,7 @@ namespace ngl
 
 			const size_t lremaining = lstate->m_payload->size() - lstate->m_offset;
 			const size_t lto_copy = std::min(lremaining, size * nmemb);
+			// libcurl repeatedly pulls the payload until this callback returns 0.
 			memcpy(ptr, lstate->m_payload->data() + lstate->m_offset, lto_copy);
 			lstate->m_offset += lto_copy;
 			return lto_copy;
@@ -292,8 +297,6 @@ namespace ngl
 
 			CURL* curl = curl_easy_init();
 
-			// Initializelibcurl
-
 			if (curl == nullptr)
 			{
 				std::cerr << "curl_easy_init() failed" << std::endl;
@@ -302,20 +305,18 @@ namespace ngl
 
 				curl_slist* recipients = nullptr;
 
-				// SetSMTPserver,
+				// Configure the SMTP connection and sender credentials.
 				curl_easy_setopt(curl, CURLOPT_URL, aparm.m_smtp.c_str());
 				curl_easy_setopt(curl, CURLOPT_MAIL_FROM, aparm.m_email.c_str());
-				// SetSMTP info
 				curl_easy_setopt(curl, CURLOPT_USERNAME, aparm.m_email.c_str());
 				curl_easy_setopt(curl, CURLOPT_PASSWORD, aparm.m_password.c_str());
 
 				curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
-				// Whether info
 				curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L);
 				curl_easy_setopt(curl, CURLOPT_TIMEOUT, 60L);
 				curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30L);
 
-				// Set
+				// Build the SMTP recipient list.
 				for (const auto& [mailaddr, name] : aparm.m_recvs)
 				{
 					(void)name;
@@ -337,20 +338,18 @@ namespace ngl
 				}
 				payload += "\r\n";
 				payload += std::format("Subject: {}\r\n", aparm.m_title);
-				payload += "\r\n"; // Table headerpartialend
-				payload += std::format("{}\r\n", aparm.m_content); // Mailcontent
+				payload += "\r\n"; // End of mail headers.
+				payload += std::format("{}\r\n", aparm.m_content); // Mail body.
 
 				mail_payload_state lstate;
 				lstate.m_payload = &payload;
 				curl_easy_setopt(curl, CURLOPT_READDATA, &lstate);
 
-				curl_easy_setopt(curl, CURLOPT_READFUNCTION, &email_sender::callback); // Setreaddata callbackfunction
+				curl_easy_setopt(curl, CURLOPT_READFUNCTION, &email_sender::callback); // Stream the RFC822 payload.
 
 				curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, nullptr);
-				// Sendmail
 				const CURLcode res = curl_easy_perform(curl);
 
-				// Translated comment.
 				if (res != CURLE_OK)
 				{
 					std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
@@ -360,7 +359,6 @@ namespace ngl
 					std::cout << "email send successfully!" << std::endl;
 				}
 
-				// Cleanup.
 				curl_slist_free_all(recipients);
 				curl_easy_cleanup(curl);
 		}

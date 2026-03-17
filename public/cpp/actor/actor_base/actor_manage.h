@@ -86,7 +86,7 @@ namespace ngl
 		// Resolve the routing actor for this node type.
 		nguid nodetypebyguid();
 
-		// # MessageT after tospecifiedguid actor
+		// Build a handle_pram from a typed payload and enqueue it for the target actor.
 		template <typename T, bool IS_SEND = true>
 		inline void push_task_id(const nguid& aguid, std::shared_ptr<T>& apram)
 		{
@@ -120,6 +120,7 @@ namespace ngl
 		void broadcast_task(handle_pram& apram);
 
 		// Pause and resume dispatch while critical shared state is updated.
+		// Suspension intentionally leaves one worker outside the parked pool.
 		void statrt_suspend_thread();
 		void finish_suspend_thread();
 

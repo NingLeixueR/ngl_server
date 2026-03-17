@@ -23,10 +23,12 @@ namespace ngl
 {
 	class ukcp
 	{
-		asio_kcp	m_kcp;
-		bpool		m_pool;
+		asio_kcp	m_kcp;  // Transport implementation bound to one local UDP port.
+		bpool		m_pool; // Pack allocation pool for outbound traffic.
 
 	public:
+		// High-level KCP wrapper used by actor code: serialize payloads, resolve actors, and
+		// delegate actual transport to asio_kcp.
 		static const int32_t	m_conv = 1;
 		static std::string		m_localuip;
 
@@ -87,11 +89,11 @@ namespace ngl
 
 		bool sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len);
 
-		// ## Send udppackand return
+		// Send a raw UDP request and block the caller until the matching reply arrives.
 		bool sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun);
 #pragma endregion 
 
-		// ## Connection
+		// Connect and query actor/session relationships.
 		void connect(
 			std::string& akcpsess
 			, i64_actorid aserver
@@ -108,18 +110,16 @@ namespace ngl
 			, const std::function<void(i32_session)>& afun
 		);
 
-		// ## Findsessioncorresponding actorid
 		i64_actorid find_server(i32_session asession);
 		i64_actorid find_client(i32_session asession);
 		bool find_actorid(i32_session asession, i64_actorid& aserver, i64_actorid& aclient);
 
-		// ## Kcp-session connection
+		// Derive and verify the logical handshake token shared by client and server.
 		static bool session_create(i64_actorid aclient, i64_actorid aserver, std::string& asession);
 
-		// ## Kcp-session connection
 		static bool session_check(i64_actorid aclient, i64_actorid aserver, const std::string& asession);
 
-		// ## Connection
+		// Rebuild a session table entry for an already known remote endpoint.
 		void reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aserver, i64_actorid aclient);
 		void reset_add(const std::string& aip, i16_port aport, i64_actorid aserver, i64_actorid aclient);
 	};

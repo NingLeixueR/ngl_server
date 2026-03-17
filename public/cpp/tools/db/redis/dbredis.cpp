@@ -34,6 +34,8 @@ namespace ngl
 		va_end(lvalist);
 		if (lreply == nullptr || lreply->type == REDIS_REPLY_ERROR)
 		{
+			// A broken reply invalidates the current hiredis context; callers are
+			// expected to recreate the wrapper instead of reusing it.
 			if (lreply)
 			{
 				log_error()->print("[ERROR] Redis[{}] ", lreply->str);

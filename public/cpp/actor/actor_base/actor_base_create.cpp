@@ -22,7 +22,7 @@
 
 namespace ngl
 {
-	// Used tocreate singletonactor
+	// Factory entry used by generated registration code and one-off actor creation.
 	std::shared_ptr<actor_base> actor_base::create(ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm/* = nullptr*/)
 	{
 		i64_actorid lactorid = nguid::make(atype, aarea, aid);
@@ -33,10 +33,12 @@ namespace ngl
 		auto linitfun = []<typename TActorDerived, typename ...ARG>(ENUM_ACTOR actortype, ARG&... arg)->std::shared_ptr<actor_base>
 		{
 			std::shared_ptr<actor_base> pactor = std::make_shared<TActorDerived>(arg...);
+			// Wire the derived registration table before exposing the actor to the scheduler.
 			std::static_pointer_cast<TActorDerived>(pactor)->template init_rfun<TActorDerived>();
 			actor_base::first_nregister<TActorDerived>(actortype);
 			actor_manage::instance().add_actor(pactor, [pactor]()
 				{
+					// Route sync completes before the actor becomes runnable and initializes DB state.
 					pactor->set_activity_stat(actor_stat_free);
 					pactor->init();
 					pactor->init_db_component(false);

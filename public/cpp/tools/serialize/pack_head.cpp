@@ -29,6 +29,8 @@ namespace ngl
 		template <typename T>
 		void copy_to_head(int32_t* abuff, EPH aoffset, const T& avalue)
 		{
+			// The header layout is defined in 32-bit slots, but some logical
+			// fields span multiple slots and are copied as raw bytes.
 			memcpy(&abuff[aoffset], &avalue, sizeof(avalue));
 		}
 
@@ -233,6 +235,7 @@ namespace ngl
 			return isready();
 		}
 
+		// Headers can arrive fragmented across multiple socket reads.
 		char* lp = (char*)m_data;
 		memcpy(&lp[m_wpos], abuff, ltemp);
 		alen -= ltemp;
@@ -254,6 +257,7 @@ namespace ngl
 			apair.second = 0;
 			return;
 		}
+		// Reserve the body span behind the fixed-size packet header.
 		apair.first = &(abuff[size()]);
 		apair.second = abufflen - size();
 	}

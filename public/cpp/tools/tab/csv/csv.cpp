@@ -22,11 +22,10 @@ namespace ngl
 {
 	bool rcsv::read(const std::string& aname, std::string& averify)
 	{
-		// # Readfile
 		m_pos = 0;
 		m_data.clear();
 		readfile lrf(aname);
-		// # Before3 table
+		// Skip an optional UTF-8 BOM before parsing the first header row.
 		lrf.jumpbegin(3, true);
 
 		if (lrf.readcurrent(m_data) == false)

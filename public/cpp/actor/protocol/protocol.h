@@ -48,28 +48,29 @@ namespace ngl
 	private:
 		struct pfun
 		{
-			protocol::fun_pack								m_packfun = nullptr;		// Packcallback
-			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;					// Actortypecorresponding callback
+			protocol::fun_pack								m_packfun = nullptr;		// Deserializer from pack -> typed payload.
+			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;					// Dispatch entry points keyed by actor type.
 		};
-		static std::map<i32_protocolnum, protocol::pfun>	m_protocolfun;	// Protocol id pfun
-		static std::shared_mutex							m_mutex;		// Lock
+		static std::map<i32_protocolnum, protocol::pfun>	m_protocolfun;	// Protocol id -> deserializer + dispatch table.
+		static std::shared_mutex							m_mutex;		// Protects the protocol registry.
 
 	public:
+		// Find one registered protocol entry and resolve its display name for logging.
 		static pfun* find(i32_protocolnum aprotocol);
 
 		static const char* name(i32_protocolnum aprotocol);
 
 		static void print(const char* amsg, i32_protocolnum aprotocol);
 
-		// # Register protocol
+		// Register one protocol id for one actor type.
 		static void registers(
 			int aprotocol, ENUM_ACTOR aenumactor, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun, const char* aname
 		);
 
-		// # Datapack[net pack], toon
+		// Decode a network pack and route it to the matching actor dispatcher.
 		static void push(std::shared_ptr<pack>& apack);
 
-		// # ACTOR
+		// Register a normal actor message: deserialize T and enqueue it by actor guid/type.
 		template <typename T>
 		static void registry_actor(ENUM_ACTOR atype, const char* aname)
 		{
@@ -98,12 +99,14 @@ namespace ngl
 
 				if (nconfig.nodetype() == ROBOT && apack->m_head.get_actor() == nguid::make())
 				{
+					// Robot-originated packets can broadcast by actor type without a concrete target id.
 					lmanages.push_task_type(atype, lpram);
 					return true;
 				}
 
 				if (lactorguid.is_actortypenone() || lactorguid.is_moreactor(atype))
-				{// Actor type whetherinvalid || // to type allactor
+				{
+					// Missing type or "moreactor" means deliver to every local actor of this type.
 					lmanages.push_task_type(atype, lpram);
 					return true;
 				}
@@ -112,7 +115,8 @@ namespace ngl
 					if (lactorguid.type() == atype)
 					{
 						if (lactorguid.is_actoridnone())
-						{// Actor id whetherinvalid
+						{
+							// Type-only address means broadcast within the local process.
 							lmanages.push_task_type(atype, lpram);
 						}							
 						else
@@ -126,7 +130,7 @@ namespace ngl
 			registers(tprotocol::protocol<T>(), atype, lpackfun, lrunfun, aname);
 		}
 
-		// # Gatewayregister forwardingc2g( [client]>>[gateway]>>[server])
+		// Register a client -> gateway -> server forwarding protocol.
 		template <typename T>
 		static void registry_c2g(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
@@ -156,7 +160,7 @@ namespace ngl
 			registers(aprotocolnum, atype, lpackfun, lrunfun, aname);
 		}
 
-		// # Gatewayregister forwardingg2c( [server]->[client])
+		// Register a server -> gateway -> client forwarding protocol.
 		template <typename T>
 		static void registry_g2c(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
@@ -186,7 +190,7 @@ namespace ngl
 			registers(aprotocolnum, atype, lpackfun, lrunfun, aname);
 		}
 
-		// # Message( np_mass_actor<T> T tocorrespondingactor)
+		// Register the synthetic mass-send wrapper used to address many actors at once.
 		template <typename T>
 		static void registry_mass(int32_t aprotocolnum, const char* aname)
 		{
@@ -218,7 +222,7 @@ namespace ngl
 			registers(aprotocolnum, (ENUM_ACTOR)nguid::none_type(), lpackfun, lrunfun, aname);
 		}
 
-		// # Handletelnet
+		// Handle plain-text telnet admin commands.
 		static void telnet_cmd(const std::shared_ptr<pack>& apack);
 	};
 }// namespace ngl

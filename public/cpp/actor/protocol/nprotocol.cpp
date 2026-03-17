@@ -25,11 +25,12 @@ namespace ngl
 	{
 		if (aisnet)
 		{
-			// # ACTOR_TYPE # ELOG_TYPE
+			// Network logs are centralized on the configured log server for this cluster.
 			actor::send_actor(actor_log::actorid(ttab_servers::instance().const_tab()->m_log), nguid::make(), pro);
 		}
 		else
 		{
+			// Local logs stay on the log actor attached to the current node/shard.
 			actor::send_actor(actor_log::actorid(nconfig.tid()), nguid::make(), pro);
 		}
 	}

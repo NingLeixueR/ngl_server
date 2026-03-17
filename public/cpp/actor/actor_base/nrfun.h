@@ -24,13 +24,15 @@
 
 namespace ngl
 {
+	// Type-erased handler signature used inside the actor dispatch table.
 	using tlogicfun		= std::function<void(actor_base*, i32_threadid, handle_pram&)>;
+	// Fallback invoked when a protocol id is not registered for an actor type.
 	using tnotfindfun	= std::function<void(i32_threadid, handle_pram&)>;
 
 	struct nlogicfun
 	{
-		int32_t m_ready = e_ready_all;
-		tlogicfun m_fun = nullptr;
+		int32_t m_ready = e_ready_all; // Readiness mask that must pass before the handler can run.
+		tlogicfun m_fun = nullptr;     // Type-erased handler implementation.
 	};
 
 	class nrfunbase
@@ -38,20 +40,21 @@ namespace ngl
 		nrfunbase(const nrfunbase&) = delete;
 		nrfunbase& operator=(const nrfunbase&) = delete;
 
-		std::map<i32_protocolnum, nlogicfun>	m_fun;				// Key:protocol id value:handle
-		tnotfindfun								m_notfindfun;		// If m_fun findtohandle, handle
+		std::map<i32_protocolnum, nlogicfun>	m_fun;				// Protocol id -> registered handler metadata.
+		tnotfindfun								m_notfindfun;		// Optional fallback for unknown protocols.
 	protected:
+		// Insert or replace one protocol handler entry.
 		void register_logic(i32_protocolnum aprotocol, int32_t aready, const tlogicfun& afun);
 	public:
 		nrfunbase() = default;
 
-		// # Setprotocol handling
+		// Register the fallback used when no protocol handler matches.
 		nrfunbase& set_notfindfun(const tnotfindfun& afun);
 
-		// # Protocol
+		// Invoke the fallback for an unknown protocol.
 		void notfindfun(const actor_base* aactor, i32_threadid athreadid, handle_pram& apram)const;
 
-		// # Protocol handling
+		// Dispatch one queued handle_pram through the registration table.
 		bool handle_switch(actor_base* aactor, i32_threadid athreadid, handle_pram& apram);
 
 		template <typename T>
@@ -140,28 +143,27 @@ namespace ngl
 			return ltemp;
 		}
 
-		// # Std::function<void(TTTDerived*, T&)> tospecifiedactoron
+		// Register a std::function-based handler for a typed actor message.
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(const std::function<void(TTTDerived*, message<T>&)>& afun, int32_t aready = e_ready_all);
 
-		//# bool aisload = false 
-		// # Whether dbdataloadcomplete beforehandlethis message
+		// Register a member-function handler gated by the requested readiness mask.
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(const Tfun<TTTDerived, T> afun, int32_t aready = e_ready_all);
 
-		// # Actor messagehandle
+		// Register a handler but associate the protocol with an explicit actor type.
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, int32_t aready = e_ready_all);
 
-		// # Actor messagehandle, registernetwork layer
+		// Register a local-only handler that skips protocol registry metadata.
 		template <typename TTTDerived, typename T>
 		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun, int32_t aready = e_ready_all);
 
-		// # Gatewayregisterc2g forwardingprotocol handlingprotocol
+		// Register the synthetic protocol used for client-to-gateway forwarding.
 		template <typename T>
 		nrfun& rfun_c2g(const Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>> afun);
 
-		// # Gatewayregisterg2c forwardingprotocol handlingprotocol
+		// Register the synthetic protocol used for gateway-to-client forwarding.
 		template <typename T>
 		nrfun& rfun_g2c(const Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>> afun);		
 	};

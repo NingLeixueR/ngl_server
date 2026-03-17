@@ -32,6 +32,8 @@ namespace ngl
 	class luaapi
 	{
 	public:
+		// Thin wrappers over the Lua C API keep stack usage consistent across
+		// the serializer templates below.
 		static bool isnumber(lua_State* L);
 
 		static void pushnumber(lua_State* L, double adata);
@@ -74,6 +76,7 @@ namespace ngl
 	template <typename T>
 	struct serialize_lua
 	{
+		// Non-specialized types are expected to provide `nlua_push/nlua_pop`.
 		static void stack_push(lua_State* L, const T& adata);
 
 		static bool stack_pop(lua_State* L, T& adata, bool apop = true);
@@ -602,7 +605,7 @@ namespace ngl
 			{
 				KEY lkey;
 				VAL lvalue;
-				// Value, keyused tounder
+				// `lua_next` leaves value on top and key below it.
 				if (!(serialize_lua<VAL>::stack_pop(L, lvalue) && serialize_lua<KEY>::stack_pop(L, lkey, false)))
 				{
 					return false;
@@ -625,7 +628,7 @@ namespace ngl
 			{
 				KEY lkey;
 				VAL lvalue;
-				// Value, keyused tounder
+				// `lua_next` leaves value on top and key below it.
 				if (!(serialize_lua<VAL>::stack_pop(L, lvalue) && serialize_lua<KEY>::stack_pop(L, lkey, false)))
 				{
 					return false;
@@ -739,7 +742,7 @@ namespace ngl
 		}
 	};
 
-	// Int and string
+	// Array-like containers use integer keys, while maps may also use string keys.
 	template <typename T>
 	struct serialize_lua_table_key
 	{
@@ -956,6 +959,7 @@ namespace ngl
 	class nlua_stack
 	{
 	public:
+		// Variadic helpers mirror the natural left-to-right Lua stack order.
 		template <typename ...TARGS>
 		static void stack_push(lua_State* L, const TARGS&... aargs)
 		{
@@ -984,6 +988,7 @@ namespace ngl
 			return (serialize_lua<TARGS>::table_pop(L, akeys[sizeof ...(TARGS) - 1 - INDEX], args) && ...);
 		}
 	public:
+		// Builds or reads a Lua table from parallel field-name/value lists.
 		template <typename ...TARGS>
 		static void table_push(lua_State* L, const char* aname, const std::array<const char*, sizeof ...(TARGS)>& akeys, const TARGS&... args)
 		{

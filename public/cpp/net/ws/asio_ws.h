@@ -28,10 +28,10 @@ namespace ngl
 {
 	struct ws_tls_options
 	{
-		std::string m_certificate_chain;
-		std::string m_private_key;
-		std::string m_ca_certificates;
-		bool m_verify_peer = true;
+		std::string m_certificate_chain; // PEM certificate chain for server mode.
+		std::string m_private_key;       // PEM private key for server mode.
+		std::string m_ca_certificates;   // Optional CA bundle for client verification.
+		bool m_verify_peer = true;       // Whether TLS clients verify the remote certificate.
 	};
 
 	using ws_callback = std::function<bool(service_ws*, const char*, uint32_t)>;
@@ -49,22 +49,22 @@ namespace ngl
 		using map_ipport = std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>;
 		using map_close = std::unordered_map<i32_sessionid, std::function<void()>>;
 
-		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4 = nullptr;		// Used tosupportipv4
-		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6 = nullptr;		// Used tosupportipv6
-		i16_port							m_port = 0;						// Port
-		bool								m_use_tls = false;				// wss
-		ws_callback							m_fun = nullptr;				// Data callback
-		ws_closecallback					m_closefun = nullptr;			// Closeconnection callback
-		ws_sendfinishcallback				m_sendfinishfun = nullptr;		// Send callback
-		i32_sessionid						m_sessionid = 0;				// Session id
-		serviceio_info						m_service_ios;					// Asiosupport
-		std::shared_mutex					m_maplock;						// Used tolock "m_data,m_sessionid"
-		std::shared_mutex					m_ipportlock;					// Used tolock "m_ipport"
-		map_service_ws						m_data;							// Key:session id value:connectiondata
-		map_ipport							m_ipport;						// key:session id value:ipport
-		map_close							m_close;						// Closeconnectioncallback
-		std::unique_ptr<basio_sslcontext>	m_tls_context = nullptr;		// wss tls context
-		ws_tls_options						m_tls_options;					// M_use_tls==true,tlsconfig
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4 = nullptr;		// IPv4 listener for server mode.
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6 = nullptr;		// IPv6 listener for server mode.
+		i16_port							m_port = 0;						// Bound listen port, or 0 in client-only mode.
+		bool								m_use_tls = false;				// True for WSS, false for plain WS.
+		ws_callback							m_fun = nullptr;				// Read callback for received frames.
+		ws_closecallback					m_closefun = nullptr;			// Global close notification.
+		ws_sendfinishcallback				m_sendfinishfun = nullptr;		// Per-send completion notification.
+		i32_sessionid						m_sessionid = 0;				// Monotonic session id allocator.
+		serviceio_info						m_service_ios;					// io_context pool backing websocket sessions.
+		std::shared_mutex					m_maplock;						// Protects m_data, m_close, and m_sessionid.
+		std::shared_mutex					m_ipportlock;					// Protects m_ipport.
+		map_service_ws						m_data;							// Session id -> service_ws object.
+		map_ipport							m_ipport;						// Session id -> remote ip/port.
+		map_close							m_close;						// Session-local reconnect/cleanup callbacks.
+		std::unique_ptr<basio_sslcontext>	m_tls_context = nullptr;		// Shared TLS context when WSS is enabled.
+		ws_tls_options						m_tls_options;					// TLS configuration.
 	public:
 		enum
 		{
@@ -93,6 +93,7 @@ namespace ngl
 
 		~asio_ws();
 	private:
+		// Allocate/lookup sessions and run the TCP/TLS/WebSocket handshake pipeline.
 		std::shared_ptr<service_ws> create_service();
 		std::shared_ptr<service_ws> get_ws(i32_sessionid asessionid);
 		void prepare_tls_context(bool aserver);
@@ -117,6 +118,7 @@ namespace ngl
 			i16_port aport,
 			int acount
 		);
+		// Enqueue frames, drive the serialized async-write chain, and manage closure.
 		bool queue_send(i32_sessionid asessionid, const ws_send_node& anode);
 		void do_send(const std::shared_ptr<service_ws>& aservice, const std::shared_ptr<std::list<ws_send_node>>& alist);
 		void handle_write(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error, const ws_send_node& anode);
@@ -128,6 +130,7 @@ namespace ngl
 	public:
 		i16_port port() const;
 
+		// Start outbound connections, send frames, and inspect session metadata.
 		service_ws* connect(const str_host& ahost, i16_port aport, const std::string& atarget, const ws_connectcallback& afun, int acount = 5);
 		service_ws* connect(const str_host& ahost, i16_port aport, const ws_connectcallback& afun, int acount = 5);
 

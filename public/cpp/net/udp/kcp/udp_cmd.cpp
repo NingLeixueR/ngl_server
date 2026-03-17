@@ -31,6 +31,7 @@ namespace ngl
 		}
 		try
 		{
+			// Format: "ecmd*<number>*<json>".
 			std::string lecmd;
 			int32_t lnum = 0;
 			std::string ljson;

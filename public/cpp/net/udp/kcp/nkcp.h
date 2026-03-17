@@ -25,8 +25,8 @@ namespace ngl
 {
 	class nkcp
 	{
-		std::unordered_map<i16_port, std::shared_ptr<ukcp>> m_kcpnet;
-		int16_t m_kcpindex;
+		std::unordered_map<i16_port, std::shared_ptr<ukcp>> m_kcpnet; // UDP port -> ukcp instance.
+		int16_t m_kcpindex; // Running allocator for robot-side ephemeral KCP ports.
 	public:
 		enum
 		{
@@ -42,16 +42,16 @@ namespace ngl
 			return ltemp;
 		}
 
+		// Derive stable KCP ports for server-side listeners and manage ukcp instances.
 		i16_port kcp_port(int32_t atid, int16_t atcount, pbnet::ENUM_KCP aenum);
 
-		// # Getinstance
 		std::shared_ptr<ukcp> kcp(i16_port auport);
 		std::shared_ptr<ukcp> serkcp(pbnet::ENUM_KCP aenum, int16_t atcount);
 
-		// # Robot create port
+		// Robot-side clients allocate ephemeral local KCP ports on demand.
 		i16_port create_kcp();
 
-		// # Server createspecifiedport
+		// Server-side listeners use deterministic ports derived from node id and ENUM_KCP.
 		i16_port create_kcp(pbnet::ENUM_KCP aenum);
 	};
 }//namespace ngl

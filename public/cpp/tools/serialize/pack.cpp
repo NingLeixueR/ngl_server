@@ -73,6 +73,8 @@ namespace ngl
 		}
 		if (m_bpool == nullptr)
 		{
+			// Fallback allocation is only used outside the shared network pool,
+			// mainly in tests or standalone utility code.
 			m_buff = new(std::nothrow) char[alen];
 		}
 		else
@@ -118,6 +120,8 @@ namespace ngl
 		{
 			return;
 		}
+		// Rewrite the actor fields in-place after the packet body has already
+		// been serialized.
 		pack_head::head_set_actor((int32_t*)m_buff, aactor, arequestactorid);
 	}
 

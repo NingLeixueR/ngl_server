@@ -57,7 +57,8 @@ namespace ngl
 		m_recvthreadsize(std::max<int32_t>(1, athread)),
 		m_next_index(0)
 	{
-		// Ensure at least one io_service exists. create exactly m_recvthreadsize services.
+		// Keep one dedicated io_context per receive thread so session callbacks stay serialized
+		// on the thread chosen at accept/connect time.
 		for (int32_t i = 0; i < m_recvthreadsize; ++i)
 		{
 			auto lpioservice = std::make_shared<basio_ioservice>();
@@ -77,6 +78,7 @@ namespace ngl
 
 		for (auto& item : m_ioservices)
 		{
+			// Releasing the work guard lets run() exit once queued callbacks drain.
 			std::get<1>(item).reset();
 		}
 
@@ -98,6 +100,7 @@ namespace ngl
 
 			if (thread->get_id() == std::this_thread::get_id())
 			{
+				// Destructors may run on an io thread; detach to avoid self-join deadlock.
 				thread->detach();
 			}
 			else
@@ -131,6 +134,7 @@ namespace ngl
 
 	char* service_io::buff()
 	{
+		// Double-buffering avoids overwriting bytes that another async operation still needs.
 		std::swap(m_pbuff1, m_pbuff2);
 		return m_pbuff1;
 	}
@@ -148,6 +152,7 @@ namespace ngl
 	{
 		visit_stream([](auto& astream)
 			{
+				// Binary mode is the default transport for the project's serialized packs.
 				astream.binary(true);
 			}
 		);
@@ -160,6 +165,7 @@ namespace ngl
 	{
 		visit_stream([](auto& astream)
 			{
+				// Binary mode is the default transport for the project's serialized packs.
 				astream.binary(true);
 			}
 		);
@@ -221,6 +227,7 @@ namespace ngl
 
 	void service_ws::consume_read_buffer(std::size_t asize)
 	{
+		// Beast flat_buffer handles oversized consumes safely, but clamp anyway for clarity.
 		m_read_buffer.consume(std::min(asize, m_read_buffer.size()));
 	}
 }// namespace ngl

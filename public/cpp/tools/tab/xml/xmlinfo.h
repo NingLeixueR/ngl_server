@@ -112,6 +112,8 @@ namespace ngl
 			}
 			try
 			{
+				// Keep the conversion policy identical to the rest of the config
+				// system by routing everything through `tools::lexical_cast`.
 				TVALUE lvalue = tools::lexical_cast<TVALUE>(*lp);
 				adata = std::move(lvalue);
 			}

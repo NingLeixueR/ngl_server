@@ -26,15 +26,10 @@
 
 namespace ngl
 {
-	///////////////////////////////////
-	// Actor id(64bit) //
-	// 16 TypeENUM_ACTOR //
-	// 16 Areaid //
-	// 32 Dataid //
-	// ############ 64 bit ######### //
-	// #actor_type###areaid###id#### //
-	// #16bit########16bit####32bit# //
-	///////////////////////////////////
+	// Packed actor identifier:
+	// - 16 bits actor type
+	// - 16 bits area/shard
+	// - 32 bits actor-local data id
 	union nguid
 	{
 	private:
@@ -44,8 +39,8 @@ namespace ngl
 		}
 
 		int64_t m_id;
-		int32_t m_value1[2];// m_value1[0] = type+area  m_value1[1]=actordataid
-		int16_t m_value2[4];// m_value2[0] = type		m_value2[1] = area
+		int32_t m_value1[2]; // m_value1[0] stores type+area, m_value1[1] stores actordataid.
+		int16_t m_value2[4]; // m_value2[0] stores type, m_value2[1] stores area.
 	public:
 		inline nguid()
 		{
@@ -66,37 +61,37 @@ namespace ngl
 			m_value1[1] = aid;
 		}
 
-		// # Can union i64_actorid
+		// Allow nguid to be passed anywhere an i64_actorid is expected.
 		inline operator i64_actorid ()const
 		{
 			return m_id;
 		}
 
-		// # Getguidid
+		// Return the packed 64-bit representation.
 		inline i64_actorid id()const
 		{
 			return m_id;
 		}
 
-		// # GetENUM_ACTORtype
+		// Return the actor type portion.
 		inline ENUM_ACTOR type()const
 		{
 			return static_cast<ENUM_ACTOR>(m_value2[0]);
 		}
 
-		// # Getdataid
+		// Return the actor-local numeric id portion.
 		inline i32_actordataid actordataid()const
 		{
 			return m_value1[1];
 		}
 
-		// # Getarea
+		// Return the area/shard portion.
 		inline i16_area area()const
 		{
 			return m_value2[1];
 		}
 
-		// # Throughnactortype::enum2nameget correspondingstring
+		// Return a debug-friendly actor type name for a packed id.
 		static const char* name(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
@@ -104,113 +99,113 @@ namespace ngl
 			return em<ENUM_ACTOR>::name(ltype);
 		}
 
-		// # Type, area, dataidcreate i64_actorid
+		// Build a packed id from all three components.
 		static i64_actorid make(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid)
 		{
 			nguid lguid(atype, aareaid, aid);
 			return (i64_actorid)lguid;
 		}
 
-		// # Type, dataid, area none_area()create i64_actorid
+		// Build an id when the actor has no concrete area.
 		static i64_actorid make(ENUM_ACTOR atype, i32_actordataid aid)
 		{
 			nguid lguid(atype, none_area(), aid);
 			return (i64_actorid)lguid;
 		}
 
-		// # Type, dataid none_actordataid(), area none_area()create i64_actorid
+		// Build a type-only id used for singleton-style addressing.
 		static i64_actorid make(ENUM_ACTOR atype)
 		{
 			nguid lguid(atype, none_area(), none_actordataid());
 			return (i64_actorid)lguid;
 		}
 
-		// # Typenone_type(), area none_area()dataid none_actordataid()create i64_actorid
+		// Build the sentinel "invalid actor id" value.
 		static i64_actorid make()
 		{
 			nguid lguid(none_type(), none_area(), none_actordataid());
 			return (i64_actorid)lguid;
 		}
 
-		// # Type, area tab_self_area none_actordataid(), dataid none_actordataidcreate i64_actorid
+		// Build a type-only id in the local process area.
 		static i64_actorid make_self(ENUM_ACTOR atype);
 
-		// # Replacetype
+		// Return a copy with the type bits replaced.
 		static i64_actorid make_type(i64_actorid aactorid, ENUM_ACTOR atype)
 		{
 			nguid lguid(aactorid);
 			return lguid.make_type(atype);
 		}
 
-		// # Replacearea
+		// Return a copy with the area bits replaced.
 		static i64_actorid make_area(i64_actorid aactorid, i16_area aareaid)
 		{
 			nguid lguid(aactorid);
 			return lguid.make_area(aareaid);
 		}
 
-		// # Replaceactordataid
+		// Return a copy with the data-id bits replaced.
 		static i64_actorid make_actordataid(i64_actorid aactorid, i32_actordataid aid)
 		{
 			nguid lguid(aactorid);
 			return lguid.make_actordataid(aid);
 		}
 
-		// # Replacetype
+		// Mutate the type bits in place.
 		inline i64_actorid make_type(ENUM_ACTOR atype)
 		{
 			m_value2[0] = actor_value(atype);
 			return (i64_actorid)(*this);
 		}
 
-		// # Replacearea
+		// Mutate the area bits in place.
 		inline i64_actorid make_area(i16_area aareaid)
 		{
 			m_value2[1] = aareaid;
 			return (i64_actorid)(*this);
 		}
 
-		// # Replaceactordataid
+		// Mutate the data-id bits in place.
 		inline i64_actorid make_actordataid(i32_actordataid aid)
 		{
 			m_value1[1] = aid;
 			return (i64_actorid)(*this);
 		}
 
-		// # Getactordataid
+		// Extract the data-id portion from a packed id.
 		static i32_actordataid actordataid(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
 			return lguid.actordataid();
 		}
 
-		// # Gettype
+		// Extract the actor type portion from a packed id.
 		static i16_actortype type(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
 			return static_cast<i16_actortype>(lguid.type());
 		}
 
-		// # Getarea
+		// Extract the area portion from a packed id.
 		static i16_area area(i64_actorid aactorid)
 		{
 			nguid lguid(aactorid);
 			return lguid.area();
 		}
 
-		// # Send sendto type allactor
+		// Build the "all actors of this type" broadcast id.
 		static i64_actorid moreactor(ENUM_ACTOR atype)
 		{
 			return make(atype, none_area(), none_actordataid());
 		}
 
-		// # Make()consistent
+		// Build the sentinel broadcast id for "all actor types".
 		static i64_actorid moreactor()
 		{
 			return make(none_type(), none_area(), none_actordataid());
 		}
 
-		// # Make()consistent
+		// Reset this object to the invalid sentinel value.
 		inline void none()
 		{
 			m_value2[0] = actor_value(none_type());
@@ -218,7 +213,7 @@ namespace ngl
 			m_value1[1] = none_actordataid();
 		}
 
-		// # Whether to type allactor
+		// Return whether the packed id represents a type-wide broadcast target.
 		static bool is_moreactor(i64_actorid actorid, ENUM_ACTOR atype)
 		{
 			nguid lguid(actorid);
@@ -231,7 +226,7 @@ namespace ngl
 			return (i64_actorid)(lguid) == (i64_actorid)(*this);
 		}
 
-		// # Actor type whetherinvalid
+		// Return whether the type portion is the sentinel invalid value.
 		static bool is_actortypenone(i64_actorid actorid)
 		{
 			nguid lguid(actorid);
@@ -243,45 +238,45 @@ namespace ngl
 			return type() == none<i16_actortype>();
 		}
 
-		// # Actor area whetherinvalid
+		// Return whether the area portion is the sentinel invalid value.
 		static bool is_actorareanone(i64_actorid actorid)
 		{
 			nguid lguid(actorid);
 			return lguid.is_actorareanone();
 		}
 
-		// # Actor area whetherinvalid
+		// Return whether the area portion is the sentinel invalid value.
 		inline bool is_actorareanone()const
 		{
 			return area() == none<i16_area>();
 		}
 
-		// # Actor id whetherinvalid
+		// Return whether the data-id portion is the sentinel invalid value.
 		static bool is_actoridnone(i64_actorid actorid)
 		{
 			nguid lguid(actorid);
 			return lguid.is_actoridnone();
 		}
 
-		// # Actor id whetherinvalid
+		// Return whether the data-id portion is the sentinel invalid value.
 		inline bool is_actoridnone()const
 		{
 			return actordataid() == none<i32_actordataid>();
 		}
 
-		// # Invalidarea
+		// Sentinel area value.
 		static i16_area none_area()
 		{
 			return none<i16_area>();
 		}
 
-		// # Invalidtype
+		// Sentinel actor type value.
 		static ENUM_ACTOR none_type()
 		{
 			return none<ENUM_ACTOR>();
 		}
 
-		// # Invaliddataid
+		// Sentinel actor-local id value.
 		static i32_actordataid none_actordataid()
 		{
 			return none<i32_actordataid>();

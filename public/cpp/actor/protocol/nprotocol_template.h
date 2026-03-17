@@ -37,8 +37,7 @@
 
 namespace ngl
 {
-	// [db client -> db server]
-	// Fromdb serverloaddata
+	// Request one DB table or one DB row from the DB actor.
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_load
 	{
@@ -49,19 +48,19 @@ namespace ngl
 
 	enum enum_dbstat
 	{
-		enum_dbstat_fail = -1,		// Load
-		enum_dbstat_success,		// Databasein data,loadsuccessful
-		enum_dbstat_create,			// Databasein data, create data
+		enum_dbstat_fail = -1,		// Load failed.
+		enum_dbstat_success,		// Existing DB rows were loaded successfully.
+		enum_dbstat_create,			// No row existed, so a new default row was created.
 	};
 
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_load_response
 	{
-		nguid				m_id = -1;			// np_actordb_load.m_id 
+		nguid				m_id = -1;			// Mirrors np_actordb_load::m_id.
 		std::map<nguid, T>	m_data;
-		// If(m_id != nguid::make())m_stat.enum_dbstat_create
+		// For single-row loads, enum_dbstat_create means the row had to be created.
 		enum_dbstat			m_stat = enum_dbstat_fail;
-		bool				m_over = true;
+		bool				m_over = true;		// Final chunk flag for streamed responses.
 
 		const std::map<nguid, T>& data()const
 		{
@@ -71,8 +70,7 @@ namespace ngl
 		DEF_PROTOCOL(m_id, m_data, m_stat, m_over)
 	};
 
-	// [db client -> db server]
-	// Save data
+	// Batch-save one DB table's dirty rows.
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_save
 	{
@@ -91,7 +89,7 @@ namespace ngl
 		DEF_PROTOCOL(m_data)
 	};
 
-	// Deletedata
+	// Batch-delete rows from one DB table.
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_delete
 	{
@@ -100,7 +98,7 @@ namespace ngl
 		DPROTOCOL(actor_db_delete<T>, m_data)
 	};
 
-	// Save datacachelist
+	// Deferred DB cache maintenance operation.
 	enum enum_cache_list
 	{
 		enum_clist_save = 1,
@@ -115,7 +113,7 @@ namespace ngl
 		DPROTOCOL(actor_time_db_cache<T>, m_ls)
 	};
 
-	// Module forwarding
+	// Wrap a payload with an identifier so module-level routing can target one logical sub-object.
 	template <typename T>
 	struct np_actormodule_forward
 	{
@@ -173,8 +171,8 @@ namespace ngl
 
 	struct forward
 	{
-		int32_t m_bufflen = 0;
-		const char* m_buff = nullptr;
+		int32_t m_bufflen = 0;   // Serialized payload size.
+		const char* m_buff = nullptr; // Borrowed view into the serialized payload.
 	};
 
 	namespace ser
@@ -216,7 +214,7 @@ namespace ngl
 	template <typename T>
 	struct forward_c2g
 	{
-		T m_data;
+		T m_data; // Original client payload wrapped for gateway forwarding.
 	};
 
 	namespace ser
@@ -244,10 +242,10 @@ namespace ngl
 	template <typename T>
 	struct forward_g2c
 	{
-		std::vector<int16_t> m_area;
-		std::vector<int32_t> m_uid;
-		T m_data;
-		ENET_PROTOCOL m_protocol = ENET_TCP;
+		std::vector<int16_t> m_area;       // Target client areas.
+		std::vector<int32_t> m_uid;        // Target client actor ids within those areas.
+		T m_data;                          // Original server payload.
+		ENET_PROTOCOL m_protocol = ENET_TCP; // Preferred transport to the client.
 	};
 
 	namespace ser
@@ -280,7 +278,7 @@ namespace ngl
 		DPROTOCOL(np_actor_forward, m_data)
 	};
 	
-	// Datato actor
+	// Synthetic wrapper used to fan one payload out to many actors.
 	template <typename T>
 	struct np_mass_actor
 	{
@@ -322,8 +320,7 @@ namespace ngl
 	};
 
 
-	// Actor switch
-	//ACTOR_SPROCESS_ROLE
+	// Request that one actor/process migration step move an actor to another server.
 	template <typename T>
 	struct np_actorswitch_process
 	{
@@ -337,26 +334,23 @@ namespace ngl
 
 	enum epb_field
 	{
-		epb_field_read,		    // Translated comment.
-		epb_field_write,	    // Translated comment.
+		epb_field_read,		    // Field may be mirrored to the subscriber.
+		epb_field_write,	    // Field may be written back by the subscriber.
 	};
 
-	// Register
+	// NSP registration request describing row scope and field scope.
 	template <typename TDATA>
 	struct np_channel_register
 	{
 		using T = TDATA;
 		std::string		m_msg;									// Info
-		i64_actorid		m_actorid = nguid::make();				// Nodeid
-		// Nodewhether allnode
-		bool m_read = false;	// Node [ / ]
-		bool m_all = false;		// Whethercan allnode
-		// [[ M_all == false under data
-		std::set<i64_actorid> m_writeids;						// Whichdata
-		std::set<i64_actorid> m_readids;						// Whichdata
-		//]]
+		i64_actorid		m_actorid = nguid::make();				// Peer node/actor id.
+		bool m_read = false;									// True for read-only peers, false for read/write peers.
+		bool m_all = false;										// True when the peer subscribes to all rows.
+		std::set<i64_actorid> m_writeids;						// Writable rows when m_all == false and m_read == false.
+		std::set<i64_actorid> m_readids;						// Readable rows when m_all == false.
 
-		std::map<i32_fieldnumber, epb_field> m_field;			// / Whichfield
+		std::map<i32_fieldnumber, epb_field> m_field;			// Per-field read/write permissions.
 
 		DPROTOCOL(np_channel_register, m_msg, m_actorid, m_read, m_all, m_writeids, m_readids, m_field)
 	};
@@ -364,14 +358,15 @@ namespace ngl
 
 	struct nsp_care
 	{
-		bool m_read = false;
-		bool m_all = false;
-		std::set<i64_actorid> m_readids;
-		std::set<i64_actorid> m_writeids;
+		bool m_read = false;					// Read-only or read/write subscription.
+		bool m_all = false;						// Applies to all rows when true.
+		std::set<i64_actorid> m_readids;		// Explicit readable rows when m_all == false.
+		std::set<i64_actorid> m_writeids;		// Explicit writable rows when m_all == false and !m_read.
 
 		DPROTOCOL(nsp_care, m_read, m_all, m_readids, m_writeids)
 	};
 
+	// NSP registration reply containing known peer scopes and merged field rules.
 	template <typename TDATA>
 	struct np_channel_register_reply
 	{
@@ -379,41 +374,35 @@ namespace ngl
 		std::string m_msg;											// Info
 		i64_actorid m_actorid;										// Nodeid
 
-		std::set<i64_nodeid> m_nodereadalls;						// Alldata node
-		std::set<i64_nodeid> m_nodewritealls;						// Alldata node
+		std::set<i64_nodeid> m_nodereadalls;						// Peers that read all rows.
+		std::set<i64_nodeid> m_nodewritealls;						// Peers that write all rows.
 
 		std::map<i64_nodeid, nsp_care> m_care;
 
-		// Node whichfield
+		// Merged actor-type -> field-permission table known by the NSP server.
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>> m_node_fieldnumbers;
 
 		DPROTOCOL(np_channel_register_reply, m_msg, m_actorid, m_nodereadalls, m_nodewritealls, m_care, m_node_fieldnumbers)
 	};
 
+	// NSP incremental peer-scope announcement.
 	template <typename TDATA>
 	struct np_channel_dataid_sync
 	{
 		using T = TDATA;
 		std::string m_msg;										// Info
-		i64_actorid m_actorid = 0;								// Nodeid
-		bool		m_read = true;								// Node
-		bool		m_all = false;								// Node [ / ]alldata
-		//if (!m_all)
-		//{
-		// Partialread-only
-		std::set<i64_dataid> m_readpart;
-		//}
-		//if (!m_all && !m_read)
-		//{
-		// Partial[ / ]
-		std::set<i64_dataid> m_writepart;
-		//}
+		i64_actorid m_actorid = 0;								// Peer node/actor id.
+		bool		m_read = true;								// Read-only or read/write peer.
+		bool		m_all = false;								// True when the peer covers all rows.
+		std::set<i64_dataid> m_readpart;						// Explicit readable rows when m_all == false.
+		std::set<i64_dataid> m_writepart;						// Explicit writable rows when m_all == false and !m_read.
 
-		std::map<i32_fieldnumber, epb_field> m_field;			// / Whichfield
+		std::map<i32_fieldnumber, epb_field> m_field;			// Per-field read/write permissions.
 
 		DPROTOCOL(np_channel_dataid_sync, m_msg, m_actorid, m_read, m_all, m_readpart, m_writepart, m_field)
 	};
 
+	// NSP peer-exit notification.
 	template <typename TDATA>
 	struct np_channel_exit
 	{
@@ -423,20 +412,22 @@ namespace ngl
 		DPROTOCOL(np_channel_exit, m_msg, m_actorid)
 	};
 
+	// NSP data packet used for both initial full sync and incremental updates.
 	template <typename TDATA>
 	struct np_channel_data
 	{
 		using T = TDATA;
 		std::string m_msg;									// Info
-		i64_nodeid m_actorid = 0;							// Data
-		bool m_firstsynchronize = false;					// Synchronize
-		bool m_recvfinish = false;
-		std::map<int64_t, TDATA> m_data;					// 1, Datasynchronize2, data 3, data
-		std::vector<int64_t> m_deldata;						// Data delete
+		i64_nodeid m_actorid = 0;							// Source peer actor id.
+		bool m_firstsynchronize = false;					// True while streaming the initial full snapshot.
+		bool m_recvfinish = false;							// Final chunk flag for streamed snapshots.
+		std::map<int64_t, TDATA> m_data;					// Created/updated rows.
+		std::vector<int64_t> m_deldata;						// Deleted row ids.
 
 		DPROTOCOL(np_channel_data<TDATA>, m_msg, m_actorid, m_firstsynchronize, m_recvfinish, m_data, m_deldata)
 	};
 
+	// Periodic registration retry tick sent to local NSP helpers.
 	template <typename TDATA>
 	struct np_channel_check
 	{

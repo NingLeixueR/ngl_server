@@ -44,6 +44,7 @@ namespace ngl
 	{
 		udp_cmd::register_fun(udp_cmd::ecmd_connect, [](asio_kcp* ap, ptr_se& apstruct, const std::string& ajson)
 			{
+				// The first control packet authenticates the logical server/client pair.
 				apstruct->m_isconnect = true;
 				ncjson ltempjson(ajson.c_str());
 
@@ -64,6 +65,7 @@ namespace ngl
 
 				log_error()->print("kcp connect : {}@{}", kcp_endpoint::ip(apstruct.get()), kcp_endpoint::port(apstruct.get()));
 
+				// Acknowledge the handshake over the same KCP control channel.
 				udp_cmd::sendcmd(ap, apstruct->m_session, udp_cmd::ecmd_connect_ret, "{}");
 			}
 		);
@@ -77,6 +79,7 @@ namespace ngl
 				apstruct->m_isconnect = true;
 				if (ap->m_connectfun != nullptr)
 				{
+					// Outbound callers are released only after the remote side acknowledged the handshake.
 					ap->m_connectfun(apstruct->m_session);
 				}
 			}
@@ -97,6 +100,7 @@ namespace ngl
 					.m_count = 0x7fffffff,
 					.m_fun = [ap,lession](const wheel_node*)
 					{
+						// Defer actual teardown slightly so the close reply has time to flush out.
 						ap->close(lession);
 					}
 				};
@@ -116,6 +120,7 @@ namespace ngl
 		func_ecmd_connect_ret();
 		func_ecmd_close();
 
+		// Begin receiving immediately; the io_context thread starts right after.
 		start();
 		m_thread = std::jthread([this](std::stop_token)
 			{
@@ -168,7 +173,7 @@ namespace ngl
 		{
 			return false;
 		}
-		// Getpacket header
+		// Parse the serialized pack header first so we know the expected packet size.
 		std::shared_ptr<pack> lpack = pack::make_pack(&m_pool, 0);
 		if (lpack == nullptr)
 		{
@@ -193,12 +198,14 @@ namespace ngl
 		
 		if (nconfig.nodetype() != ROBOT)
 		{
+			// Server-side KCP traffic rewrites actor headers to the logical server/client pair.
 			lpack->m_head.set_actor(apstruct->m_server, apstruct->m_client);
 		}
 		
 		lpack->m_pos = len;
 		if (localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
 		{
+			// Valid KCP payloads re-enter the same protocol dispatch path as TCP payloads.
 			protocol::push(lpack);
 		}
 		else
@@ -230,6 +237,7 @@ namespace ngl
 
 					if (lwait != nullptr)
 					{
+						// Raw UDP request/response helpers bypass KCP session lookup entirely.
 						lwait(m_buff, static_cast<int>(bytes_received));
 					}
 					else
@@ -242,7 +250,7 @@ namespace ngl
 							{
 								while (true)
 								{
-									// From bufin data, return to data
+									// Drain every complete KCP message currently available after input().
 									int lrecv = lpstruct->recv(m_buffrecv, e_buffrecv_byte);
 									if (lrecv == -3)
 									{
@@ -255,7 +263,7 @@ namespace ngl
 										break;
 									}
 
-									// First checkunderwhetherkcp_cmd
+									// Control commands are sent through the same KCP stream with an "ecmd*" prefix.
 									if (udp_cmd::run_cmd(this, lpstruct, m_buffrecv, lrecv))
 									{
 										log_error()->print("kcp cmd [{}]", std::string(m_buffrecv, lrecv));
@@ -264,6 +272,7 @@ namespace ngl
 
 									if (lpstruct->m_isconnect == false)
 									{
+										// Drop data packets until the logical handshake finishes.
 										break;
 									}
 
@@ -278,6 +287,7 @@ namespace ngl
 							{
 								if (memcmp(m_buff, "GetIp", sizeof("GetIp") - 1) == 0)
 								{
+									// Debug helper used to learn the public UDP endpoint from the peer.
 									std::string lip = m_remoteport.address().to_string();
 									sendu(m_remoteport, lip.c_str(), (int)lip.size() + 1);
 								}
@@ -292,7 +302,7 @@ namespace ngl
 							}
 							else
 							{
-								//NFC = not find connect
+								// "NFC" means the peer has no known KCP session for this endpoint.
 								sendu(m_remoteport, "NFC", sizeof("NFC"));
 							}
 						}
@@ -327,6 +337,7 @@ namespace ngl
 	{
 		{
 			std::lock_guard<std::mutex> llock(m_waitmutex);
+			// Only one synchronous raw-UDP waiter is tracked at a time.
 			m_wait = afun;
 			m_waitendpoint = aendpoint;
 		}
@@ -350,6 +361,7 @@ namespace ngl
 						.m_count = 1,
 						.m_fun = [this, aendpoint, lpayload, afun](const wheel_node*)
 						{
+							// Retry the raw UDP request until one send actually leaves the socket.
 							sendu_waitrecv(aendpoint, lpayload->data(), static_cast<int>(lpayload->size()), afun);
 						}
 					};
@@ -430,7 +442,7 @@ namespace ngl
 			return -1;
 		}
 		int ret = lpstruct->send(buf, len);
-		// Flush let client todata
+		// Flush immediately so KCP emits UDP packets without waiting for the next update tick.
 		lpstruct->flush();
 		return ret;
 	}
@@ -488,7 +500,7 @@ namespace ngl
 		, const std::function<void(i32_session)>& afun
 	)
 	{
-		// #### Connection
+		// Build the local KCP session first, then send the logical handshake command over it.
 		ptr_se lpstruct = m_session.add(aconv, aendpoint, aserver, aclient);
 		ncjson ltempjson;
 		njson::push(ltempjson, { "actoridserver","actoridclient","session" }, aserver, aclient, akcpsess);

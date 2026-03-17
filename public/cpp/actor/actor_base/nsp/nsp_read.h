@@ -29,72 +29,66 @@ namespace ngl
 	private:
 		static std::atomic<bool>										m_isregister;
 				
-		// # This nspmodule actor
+		// Actor that owns this NSP reader instance.
 		TDerived*														m_actor = nullptr;
 
-		// # Automaticallyregisterhandleprotocol handling
+		// User callbacks for row changes / deletes / load completion.
 		nsp_callback<T>													m_call;
 
-		// # Responsible formanageto[nsp server]register node stateandmanagedataloadstate
+		// Tracks per-area NSP registration and first-sync state.
 		nsp_regload														m_regload;
 
-		// # Node "whichdata"
+		// Describes which rows this reader subscribes to.
 		care_data														m_care;
 
-		// # "Whichnode" "whichdatafield"
+		// Per-actor-type field permissions used when copying received rows.
 		operator_field													m_operator_field;
 
-		// # Node/ nodeexit() need tonotifywhichnode(1, allnsp_servernode.2, allnsp_writenode)
+		// Nodes that must receive a later np_channel_exit<T> when this reader goes away.
 		std::set<i64_actorid>											m_exit;
 
-		// # Data
+		// Local mirror of synchronized rows.
 		std::map<i64_actorid, T>										m_data;
 	public:
-		// # Getsingleton
+		// Fetch the per-actor reader singleton.
 		static nsp_read<TDerived, TACTOR, T>& instance(i64_actorid aactorid);
 
-		// # [ Alldata] getsingleton- createandinitialize
+		// Create a reader that subscribes to all rows.
 		static nsp_read<TDerived, TACTOR, T>& instance_readall(TDerived* aactor, const std::set<i32_fieldnumber>& afieldnumbers);
 
-		// # [ Partialdata] getsingleton- createandinitialize
+		// Create a reader that subscribes only to selected rows.
 		static nsp_read<TDerived, TACTOR, T>& instance_readpart(
 			TDerived* aactor, const std::set<i32_fieldnumber>& afieldnumbers, const std::set<i64_actorid>& aids
 		);
 
-		// # Replacedataguid [actor_type]
+		// Re-tag a row id with the owner actor type used by the backing NSP server.
 		static i64_actorid to_actorid(i64_actorid adataid);
 
-		// # Setdata change callback
+		// Register change / delete / load-complete callbacks.
 		void set_changedatafun(const std::function<void(int64_t, const T&, bool)>& afun);
 
-		// # Setdata delete callback
 		void set_deldatafun(const std::function<void(int64_t)>& afun);
 
-		// # Setdataallloadsuccessful callback
 		void set_loadfinishfun(const std::function<void()>& afun);
 
-		// # Initialize
+		// Start registration timers toward the target NSP servers.
 		void init();
 
-		// # This nspmodule
+		// Unregister from NSP servers and destroy the per-actor singleton.
 		void exit();
 
-		// # Getspecifieddata
+		// Read one mirrored row or the full mirrored map.
 		const T* getconst(i64_dataid adataid);
 
-		// # Get alldata
 		const std::map<i64_actorid, T>& get_mapconst();
 
-		// # Datasynchronizehandle
+		// Handle initial/incremental data sync, registration, and field updates.
 		void handle(TDerived* aactor, const message<np_channel_data<T>>& adata);
 
-		// # To[nsp server]registerthis module
 		void handle(TDerived* aactor, const message<np_channel_check<T>>& adata);
 
-		// # To[nsp server]registerthis module response
 		void handle(TDerived* aactor, const message<np_channel_register_reply<T>>& adata);
 
-		// # Synchronizenewly added [operator_field]
 		void handle(TDerived* aactor, const message<np_channel_dataid_sync<T>>& adata);
 	};
 

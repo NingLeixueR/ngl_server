@@ -31,6 +31,7 @@ namespace ngl
 	struct sysconfig
 	{
 	private:
+		// Static process-level settings mirrored out of `xarg_info`.
 		static ELOGLEVEL	m_logwritelevel;
 		static ELOGLEVEL	m_logconsolelevel;
 		static int32_t		m_logline;
@@ -64,6 +65,7 @@ namespace ngl
 		static std::set<i32_serverid> m_gatewayids;
 		static std::string m_lua;
 	public:
+		// Reads global runtime knobs from the already loaded XML node config.
 		static void init();
 
 		static int32_t logline() { return m_logline; }
@@ -92,6 +94,7 @@ namespace ngl
 		static int32_t node_count(const char* anodename);
 		static int32_t node_count(NODE_TYPE atype);
 
+		// Precomputes every gateway node id visible to the current area/merge group.
 		static void init_gatewayids(int atcout);
 		static const std::set<i32_serverid>& gatewayids();
 	};

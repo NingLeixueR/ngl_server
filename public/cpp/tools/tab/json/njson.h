@@ -91,6 +91,8 @@ namespace ngl
 
 		const char* nonformat_str()
 		{
+			// Cache the compact representation so callers can safely use the
+			// returned pointer until the next serialization.
 			rapidjson::StringBuffer buffer;
 			rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 			m_doc.Accept(writer);
@@ -100,6 +102,7 @@ namespace ngl
 
 		const char* str()
 		{
+			// Pretty output is mainly used for diagnostics and exported config.
 			rapidjson::StringBuffer buffer;
 			rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
 			m_doc.Accept(writer);
@@ -225,6 +228,8 @@ namespace ngl
 	class tool_rapidjson_value
 	{
 	public:
+		// Finds a child member when a key is provided, otherwise returns the
+		// input node itself.
 		static rapidjson::Value* find(rapidjson::Value* ajson, const char* akey)
 		{
 			if (ajson == nullptr)
@@ -275,6 +280,7 @@ namespace ngl
 		template <typename T>
 		bool assign_signed_integral(int64_t avalue, T& adata)
 		{
+			// Range checks prevent silent narrowing when reading JSON numbers.
 			if (avalue < static_cast<int64_t>(std::numeric_limits<T>::min()) || avalue > static_cast<int64_t>(std::numeric_limits<T>::max()))
 			{
 				return false;
@@ -962,6 +968,7 @@ namespace ngl
 			return (json_format<TARGS>::push(&ajson, aallocator, akeys[INDEX], aargs)&& ...);
 		}
 	public:
+		// Variadic front-end that maps parallel field-name arrays to values.
 		template <typename ...TARGS>
 		static bool pop(ncjson& ajson, const std::array<const char*, sizeof...(TARGS)>& akeys, TARGS&... aargs)
 		{

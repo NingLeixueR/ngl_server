@@ -22,9 +22,9 @@ namespace ngl
 	time_wheel asio_timer::m_wheel(
 		time_wheel_config
 		{ 
-			.m_time_wheel_precision = 1000,
-			.m_time_wheel_bit = 8,
-			.m_time_wheel_count = 4
+			.m_time_wheel_precision = 1000, // 1 ms precision bucket size.
+			.m_time_wheel_bit = 8,          // 256 slots per wheel level.
+			.m_time_wheel_count = 4         // Four cascading levels for a wide timer range.
 		}
 	);
 

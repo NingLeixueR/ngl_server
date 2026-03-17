@@ -24,6 +24,7 @@ namespace ngl
 		m_register.clear();
 		m_loadfinish.clear();
 
+		// One NSP server exists per area for a given actor type.
 		std::set<i16_area> lareaset;
 		ttab_servers::instance().get_arealist_nonrepet(nconfig.tid(), lareaset);
 		auto ltype = (ENUM_ACTOR)nguid::type(aactorid);
@@ -128,6 +129,7 @@ namespace ngl
 	{
 		if (m_node_fieldnumbers.contains(atype))
 		{
+			// Merge repeated announcements from multiple peers while keeping role consistency.
 			std::map<i32_fieldnumber, epb_field>& lmap = m_node_fieldnumbers[atype];
 			for (auto& [_fieldnumber, _fieldtype] : anode_fieldnumbers)
 			{
@@ -153,7 +155,7 @@ namespace ngl
 
 	void operator_field::set_field(const std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& anode_fieldnumbers)
 	{
-		// Andbefore, consistent field, handle
+		// Reuse the single-type merge path so conflict checks stay centralized.
 		std::ranges::for_each(anode_fieldnumbers, [this](auto& apair)
 			{
 				set_field(apair.first, apair.second);
@@ -168,6 +170,7 @@ namespace ngl
 			auto lpfield = tools::findmap(afieldmap, afieldnumber);
 			if (lpfield != nullptr && *lpfield == afieldtype)
 			{
+				// Server-side registration should not redundantly announce the same permission twice.
 				tools::no_core_dump();
 			}
 		}
@@ -181,6 +184,7 @@ namespace ngl
 			auto lpfield = tools::findmap(afieldmap, afieldnumber);
 			if (lpfield != nullptr && *lpfield == epb_field_write)
 			{
+				// Write permission already implies read visibility on the client side.
 				return;
 			}
 		}
@@ -218,6 +222,7 @@ namespace ngl
 	{
 		m_core = nsp_care{};
 		m_core.m_read = aread;
+		// "all" means the explicit id sets are ignored.
 		m_core.m_all = true;
 	}
 
@@ -256,10 +261,12 @@ namespace ngl
 	{
 		if (m_core.m_read)
 		{
+			// Read-only subscriptions care only about the read set.
 			return m_core.m_all || m_core.m_readids.contains(adataid);
 		}
 		else
 		{
+			// Read/write subscriptions care about both readable and writable rows.
 			return m_core.m_all || m_core.m_writeids.contains(adataid) || m_core.m_readids.contains(adataid);
 		}
 	}

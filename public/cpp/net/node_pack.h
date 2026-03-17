@@ -24,10 +24,10 @@ namespace ngl
 	{
 		node_pack() = delete;
 
-		std::shared_ptr<pack>	m_pack		= nullptr;
-		std::shared_ptr<void>	m_packvoid	= nullptr;
-		bool					m_ispack	= false;
-		i32_sessionid			m_sessionid = 0;
+		std::shared_ptr<pack>	m_pack		= nullptr; // Typed pack ownership.
+		std::shared_ptr<void>	m_packvoid	= nullptr; // Type-erased pack ownership.
+		bool					m_ispack	= false;  // True when m_pack is active, false when m_packvoid is active.
+		i32_sessionid			m_sessionid = 0;   // Target session for the queued send.
 	public:
 		node_pack(i32_sessionid asessionid, std::shared_ptr<pack>& apack) :
 			m_pack(apack),

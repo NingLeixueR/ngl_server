@@ -55,10 +55,12 @@ namespace ngl
 			}
 			if (nconfig.nodetype() != ROBOT)
 			{
+				// Server-side sends target the logical client actor and carry the server as requester.
 				pack_head::head_set_actor((int32_t*)apack->m_buff, lclient, lserver);
 			}
 			else
 			{
+				// Robot-side sends invert the header because the robot acts as the logical client.
 				pack_head::head_set_actor((int32_t*)apack->m_buff, lserver, lclient);
 			}
 			m_kcp.send_server(lsession, apack);
@@ -134,6 +136,7 @@ namespace ngl
 	// kcp-session connection
 	bool ukcp::session_create(i64_actorid aclient, i64_actorid aserver, std::string& asession)
 	{
+		// The logical session token is deterministic so both sides can validate the handshake.
 		std::string lkcpsession = std::format("{}&{}&{}", sysconfig::kcpsession(), aclient, aserver);
 		asession = tools::md5(lkcpsession);
 		log_error_net()->print("ukcp::session_create({}:{})", lkcpsession, asession);

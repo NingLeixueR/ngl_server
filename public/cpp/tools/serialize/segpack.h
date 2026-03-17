@@ -29,11 +29,14 @@ namespace ngl
 	class segpack_heartbeat
 	{
 	public:
+		// Heartbeat packets are handled locally and never enter the protocol queue.
 		static bool is_heartbeat(i32_protocolnum aprotocolnum);
 	};
 
 	class segpack
 	{
+		// Partially received packets are tracked per socket until both header and
+		// body are complete.
 		std::unordered_map<i32_socket, std::shared_ptr<pack>> m_data;
 		bpool m_pool;
 		nrate m_rate;
@@ -48,6 +51,8 @@ namespace ngl
 
 		segpack() = default;
 
+		// Pushes one receive fragment. Returns true only when the fragment has
+		// been fully consumed or safely buffered for later completion.
 		bool push(i32_socket aid, const char* ap, int alen, bool aislanip);
 		void close(i32_socket aid);
 

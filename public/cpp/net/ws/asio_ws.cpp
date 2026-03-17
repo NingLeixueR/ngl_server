@@ -63,6 +63,7 @@ namespace ngl
 			i16_port aport
 		)
 		{
+			// Build the acceptor step by step so errors can surface before async accept begins.
 			auto acceptor = std::make_shared<basio_tcpacceptor>(aioservice);
 			acceptor->open(aprotocol);
 			acceptor->set_option(basio::socket_base::reuse_address(true));
@@ -103,6 +104,7 @@ namespace ngl
 		{
 			aservice.visit_stream([](auto& astream)
 				{
+					// Try the websocket close handshake first before force-closing the TCP socket.
 					basio_errorcode ec;
 					astream.close(bwebsocket::close_code::normal, ec);
 					if (!should_ignore_ws_close_error(ec))
@@ -133,6 +135,7 @@ namespace ngl
 	{
 		if (m_use_tls)
 		{
+			// TLS setup is shared across all accepted/client sessions for this asio_ws instance.
 			prepare_tls_context(true);
 		}
 
@@ -165,6 +168,7 @@ namespace ngl
 	{
 		if (m_use_tls)
 		{
+			// TLS setup is shared across all accepted/client sessions for this asio_ws instance.
 			prepare_tls_context(false);
 		}
 	}
@@ -292,6 +296,7 @@ namespace ngl
 			}
 			else if (m_tls_options.m_verify_peer)
 			{
+				// Client mode can rely on system trust plus optional caller-supplied CA data.
 				m_tls_context->set_default_verify_paths();
 				m_tls_context->set_verify_mode(basio::ssl::verify_peer);
 				if (!m_tls_options.m_ca_certificates.empty())
@@ -321,6 +326,7 @@ namespace ngl
 
 		aservice->visit_stream([aserver](auto& astream)
 			{
+				// Beast timeout presets cover handshake, idle, and close timeouts.
 				astream.set_option(bwebsocket::stream_base::timeout::suggested(
 					aserver ? beast::role_type::server : beast::role_type::client
 				));
@@ -391,6 +397,7 @@ namespace ngl
 
 		if (acount > 0)
 		{
+			// Retry failures through the shared timer wheel rather than blocking socket threads.
 			wheel_parm lparm
 			{
 				.m_ms = ngl::ws::ws_connect_interval_ms,
@@ -424,6 +431,7 @@ namespace ngl
 					using stream_type = ngl::ws::remove_cvref_t<decltype(astream)>;
 					if constexpr (ngl::ws::is_tls_stream_v<stream_type>)
 					{
+						// Server-side WSS performs TLS handshake first, then websocket upgrade.
 						astream.next_layer().async_handshake(
 							basio::ssl::stream_base::server,
 							[this, aservice](const basio_errorcode& ec)
@@ -512,9 +520,11 @@ namespace ngl
 					{
 						if (!ahost.empty())
 						{
+							// SNI is required by many hosted TLS endpoints.
 							SSL_set_tlsext_host_name(astream.next_layer().native_handle(), ahost.c_str());
 						}
 
+						// Client-side WSS performs TCP connect -> TLS handshake -> websocket upgrade.
 						astream.next_layer().async_handshake(
 							basio::ssl::stream_base::client,
 							[this, aservice, ahost, atarget, afun, aport, acount](const basio_errorcode& ec)
@@ -617,6 +627,7 @@ namespace ngl
 			ws->m_ws_send_list.push_back(anode);
 			if (!ws->m_ws_sending)
 			{
+				// Only one async_write chain is allowed at a time per websocket session.
 				llist = std::make_shared<std::list<ws_send_node>>();
 				ws->m_ws_send_list.swap(*llist);
 				ws->m_ws_sending = true;
@@ -648,6 +659,7 @@ namespace ngl
 			lock_write(aservice->m_mutex);
 			if (!aservice->m_ws_send_list.empty())
 			{
+				// New writes arrived while the previous chain was in flight.
 				aservice->m_ws_send_list.swap(*alist);
 			}
 			else
@@ -719,6 +731,7 @@ namespace ngl
 			{
 				if (lis_text)
 				{
+					// Switch opcode based on payload kind before each write.
 					astream.text(true);
 				}
 				else
@@ -851,6 +864,7 @@ namespace ngl
 							std::string lpayload(lbegin, lbegin + bytes_transferred);
 							aservice->consume_read_buffer(bytes_transferred);
 
+							// m_fun owns framing/dispatch; false means the higher layer wants the session closed.
 							if (m_fun == nullptr || !m_fun(aservice.get(), lpayload.data(), static_cast<uint32_t>(lpayload.size())))
 							{
 								close(aservice.get());
@@ -997,6 +1011,7 @@ namespace ngl
 			{
 				if (agraceful)
 				{
+					// Graceful close performs a websocket close handshake before force-closing the socket.
 					basio::post(lservice->m_ioservice,
 						[lservice]()
 						{

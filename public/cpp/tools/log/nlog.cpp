@@ -53,6 +53,8 @@ namespace ngl
 
 	ptr_logitem get_log(const std::source_location& asource, ELOGLEVEL alevel, ELOG_TYPE atype, bool anet)
 	{
+		// When the level is filtered out, return a shared no-op log item so
+		// call sites can keep the same fluent API without branching.
 		if (nactor_logitem::check_level(alevel))
 		{
 			return std::make_shared<nactor_logitem>(alevel, ACTOR_NONE, atype, anet, asource);

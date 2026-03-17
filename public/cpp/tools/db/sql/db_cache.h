@@ -41,6 +41,8 @@ namespace ngl
 		inline void set_cachefun(const callback& afun, int32_t aintervalms)
 		{
 			m_fun = afun;
+			// Dirty ids are flushed in batches on the shared timer wheel so hot
+			// paths only need to enqueue ids and return.
 			twheel::wheel().addtimer(wheel_parm
 				{
 					.m_ms			= aintervalms,
@@ -72,6 +74,7 @@ namespace ngl
 			}
 			if (!m_copycachelist.empty())
 			{
+				// Run the callback outside the lock to avoid blocking producers.
 				m_fun(m_copycachelist);
 				m_copycachelist.clear();
 			}

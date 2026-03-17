@@ -33,47 +33,47 @@ namespace ngl
 {
 	class ntcp
 	{
-		std::shared_ptr<asio_tcp>				m_server = nullptr;			// asio
-		std::vector<std::shared_ptr<segpack>>	m_segpackvec;				// Pack
-		i16_port								m_port = 0;					// Server port
-		i32_threadsize							m_socketthreadnum = 0;		// Socket datathread
-		bool									m_outernet = false;			// Whether connection
-		bpool									m_pool;						// Send
-		std::shared_mutex						m_mutex;					// Translated comment.
-		std::list<pack>							m_packlist;					// Sendqueue
+		std::shared_ptr<asio_tcp>				m_server = nullptr;			// TCP transport implementation.
+		std::vector<std::shared_ptr<segpack>>	m_segpackvec;				// One frame reassembler per socket worker thread.
+		i16_port								m_port = 0;					// Bound listen port.
+		i32_threadsize							m_socketthreadnum = 0;		// Number of socket worker threads.
+		bool									m_outernet = false;			// Whether public-network clients are allowed.
+		bpool									m_pool;						// Shared pack allocation pool for outbound traffic.
+		std::shared_mutex						m_mutex;					// Reserved for higher-level coordination.
+		std::list<pack>							m_packlist;					// Reserved pack queue.
 	private:
+		// Pass raw socket bytes through LAN checks and the per-thread frame reassembler.
 		bool socket_recv(service_io* ap, const char* abuff, int32_t abufflen);
 	public:
-		// # And singleton, canaddinstance1....n
-		// # In port
+		// Singleton TCP service used by the actor/network layers.
 		static ntcp& instance()
 		{
 			static ntcp ltemp;
 			return ltemp;
 		}
 
+		// Access the shared outbound pack pool.
 		bpool& pool();
 
-		// # Port thread
+		// Start the TCP server/client service.
 		bool init(i16_port aport, i32_threadsize asocketthreadnum, bool	aouternet);
 
-		// # Port
+		// Return the bound listen port.
 		i16_port port();
 
-		// # Closesocketconnectionandload data
-		// # Notifyon
+		// Close a session and notify actor-level connection handlers.
 		void close(i32_sessionid asession);
 
-		// # Closesession
+		// Close a session without actor-level notifications.
 		void close_net(i32_sessionid asession);
 
-		// # Setsocketcloseafter,afun:connect parm3
+		// Register automatic reconnect behavior for a session.
 		void set_close(int asession, const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun);
 
-		// # Getserverip
+		// Pick public IP for robot nodes, private IP otherwise.
 		const std::string& ip(const net_works& anets);
 
-		// # Connectionip:aport
+		// Connect to an endpoint or a server id, with optional wait/reconnect behavior.
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun);
 
 		// # Connectionspecifiedip/port
@@ -86,7 +86,7 @@ namespace ngl
 		// # Connectionspecifiedserver
 		bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection);
 		
-		// # Sendmessage
+		// Send raw text, typed packs, or typed payloads over TCP.
 		bool send_msg(i32_sessionid asession, const std::string& amsg);
 
 		// # Sendmessage
@@ -95,7 +95,7 @@ namespace ngl
 		// # Sendmessage
 		bool send_pack(i32_sessionid asession, std::shared_ptr<void>& lpack);
 
-		// # To serversendpack
+		// Convenience wrapper that resolves a server id to its session.
 		bool send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
 		// # Sendmessage
@@ -115,15 +115,14 @@ namespace ngl
 		template <typename Y, typename T = Y>
 		bool send_server(const std::set<i32_serverid>& aserverids, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// # Toa group ofsesionsendmessage
+		// Broadcast an already-built pack to many sessions.
 		bool send(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack);
 		bool send(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack);
 
-		// # Toclientsendmessage
+		// Send a forward_g2c wrapper toward one gateway or one gateway/user batch.
 		template <typename T>
 		bool send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata);
 
-		// # Toclientsendmessage
 		template <typename T>
 		bool send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata);
 	};

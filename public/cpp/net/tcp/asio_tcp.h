@@ -37,19 +37,19 @@ namespace ngl
 		using map_ipport = std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>;
 		using map_close = std::unordered_map<i32_sessionid, std::function<void()>>;
 
-		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4	= nullptr;		// Used tosupportipv4
-		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6	= nullptr;		// Used tosupportipv6
-		i16_port							m_port			= 0;			// Port
-		tcp_callback						m_fun			= nullptr;		// Data callback
-		tcp_closecallback					m_closefun		= nullptr;		// Closeconnection callback
-		tcp_sendfinishcallback				m_sendfinishfun = nullptr;		// Send callback
-		i32_sessionid						m_sessionid		= 0;			// Session id
-		std::shared_mutex					m_maplock;						// Used tolock "m_data,m_sessionid"
-		serviceio_info						m_service_ios;					// Asiosupport
-		std::shared_mutex					m_ipportlock;					// Used tolock "m_ipport"
-		map_service_tcp						m_data;							// Key:session id value:connectiondata
-		map_ipport							m_ipport;						// key:session id value:ipport
-		map_close							m_close;						// Closeconnectioncallback
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4	= nullptr;		// IPv4 listener for server mode.
+		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6	= nullptr;		// IPv6 listener for server mode.
+		i16_port							m_port			= 0;			// Bound listen port, or 0 in client-only mode.
+		tcp_callback						m_fun			= nullptr;		// Read callback for received bytes.
+		tcp_closecallback					m_closefun		= nullptr;		// Global close notification.
+		tcp_sendfinishcallback				m_sendfinishfun = nullptr;		// Per-send completion notification.
+		i32_sessionid						m_sessionid		= 0;			// Monotonic session id allocator.
+		std::shared_mutex					m_maplock;						// Protects m_data, m_close, and m_sessionid.
+		serviceio_info						m_service_ios;					// io_context pool backing TCP sessions.
+		std::shared_mutex					m_ipportlock;					// Protects m_ipport.
+		map_service_tcp						m_data;							// Session id -> service_tcp object.
+		map_ipport							m_ipport;						// Session id -> remote ip/port.
+		map_close							m_close;						// Session-local reconnect/cleanup callbacks.
 	public:
 		enum
 		{
@@ -59,25 +59,26 @@ namespace ngl
 
 		friend class service_tcp;
 
-		// # Server server( port, connection)
+		// Construct a TCP server that listens on the given port.
 		asio_tcp(
-			i16_port aport										// Port
-			, i32_threadsize athread							// Thread
-			, const tcp_callback& acallfun						// Callback
-			, const tcp_closecallback& aclosefun				// Closecallback
-			, const tcp_sendfinishcallback& asendfinishfun		// Send callback
+			i16_port aport
+			, i32_threadsize athread
+			, const tcp_callback& acallfun
+			, const tcp_closecallback& aclosefun
+			, const tcp_sendfinishcallback& asendfinishfun
 		);
 
-		// # Client client(local port)
+		// Construct a TCP client pool with no listening socket.
 		asio_tcp(
-			i32_threadsize athread								// Thread
-			, const tcp_callback& acallfun						// Callback
-			, const tcp_closecallback& aclosefun				// Closecallback
-			, const tcp_sendfinishcallback& asendfinishfun		// Send callback
+			i32_threadsize athread
+			, const tcp_callback& acallfun
+			, const tcp_closecallback& aclosefun
+			, const tcp_sendfinishcallback& asendfinishfun
 		);
 
 		~asio_tcp();
 	private:
+		// Resolve a session object and manage the serialized async send queue.
 		std::shared_ptr<service_tcp> get_tcp(i32_sessionid asessionid);
 
 		template <typename T>
@@ -100,24 +101,23 @@ namespace ngl
 
 		void start(const std::shared_ptr<service_tcp>& aservice);
 	public:
-		// # Connection
+		// Start an outbound TCP connect with optional retry count.
 		service_tcp* connect(const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount = 5);
 
-		// # Sendpack
+		// Enqueue typed or type-erased packs for async send.
 		bool send(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
 		bool send(i32_sessionid asessionid, std::shared_ptr<void>& apack);
 
-		// # Closeconnection( notify )
+		// Close a session and optionally notify callbacks.
 		void close(i32_sessionid sessionid);
 		void close(service_tcp* atcp);
 
-		// # Closeconnection( notify )
+		// Close a session without firing higher-level callbacks.
 		void close_net(i32_sessionid sessionid);
 
-		// # Sessiongetipandport
+		// Inspect peer endpoint info and register one per-session close callback.
 		bool get_ipport(i32_sessionid assionid, std::pair<str_ip, i16_port>& apair);
 
-		// # Setconnectionclosecallback
 		void set_close(i32_sessionid asession, const std::function<void()>& afun);
 	};	
 }// namespace ngl

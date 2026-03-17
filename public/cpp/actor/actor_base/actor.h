@@ -29,10 +29,10 @@ namespace ngl
 {
 	struct actorparm
 	{
-		actorparmbase	m_parm;
-		int32_t			m_weight	= 0x7fffffff;	// : Getthreadafterhandlemessage
-		int32_t			m_timeout	= 0x7fffffff;	// :( Actorhandlemessage this time)
-		bool			m_broadcast	= false;		// Whethersupportbroadcast(ifneed toloaddbclient, need tosupportbroadcast)
+		actorparmbase	m_parm;							// Base identity plus DB/script options owned by actor_base.
+		int32_t			m_weight	= 0x7fffffff;	// Maximum number of normal-priority messages per scheduler slice.
+		int32_t			m_timeout	= 0x7fffffff;	// Soft time budget for one actor_handle() batch in milliseconds.
+		bool			m_broadcast	= false;		// Enable participation in the shared periodic broadcast tick.
 	};
 
 	template <typename T>
@@ -41,14 +41,14 @@ namespace ngl
 	class actor : 
 		public actor_base
 	{
-		std::list<handle_pram>						m_list;							// Pending message list
-		std::map<int32_t, std::list<handle_pram>>	m_hightlist;					// Pending message list(high priority)
-		actor_stat									m_stat = actor_stat_init;		// Actorstate
-		std::shared_mutex							m_mutex;						// Lock:[m_list:pending message list]
-		int32_t										m_weight = 0;					// Translated comment.
-		int32_t										m_timeout = 0;					// :( Actorhandlemessage this time)
-		bool										m_release = false;				// Translated comment.
-		nrfunbase*									m_actorfun = nullptr;			// Register handler
+		std::list<handle_pram>						m_list;							// FIFO queue for regular-priority messages.
+		std::map<int32_t, std::list<handle_pram>>	m_hightlist;					// Buckets for priority messages, keyed by protocol priority.
+		actor_stat									m_stat = actor_stat_init;		// Scheduler-visible actor state.
+		std::shared_mutex							m_mutex;						// Protects both pending-message queues and release state.
+		int32_t										m_weight = 0;					// Max number of regular messages handled in one batch.
+		int32_t										m_timeout = 0;					// Max wall-clock time for one actor_handle() batch.
+		bool										m_release = false;				// Signals that the actor is shutting down and should drain immediately.
+		nrfunbase*									m_actorfun = nullptr;			// Type-erased message dispatcher registered by init_rfun().
 	public:
 		template <typename TDerived>
 		void init_rfun()
@@ -56,12 +56,12 @@ namespace ngl
 			m_actorfun = &nrfun<TDerived>::instance();
 			if (isbroadcast())
 			{
-				// # Registerbroadcast handler
+				// Actors that opt into shared broadcasts receive a synthetic maintenance message.
 				register_actornonet<TDerived, np_actor_broadcast>(
 					e_ready_all, (Tfun<actor, np_actor_broadcast>) & actor::handle_broadcast
 				);
 			}
-			// # Registeractor closehandler
+			// Every actor handles the generic close event through the same local hook.
 			register_actornonet<TDerived, np_actor_close>(
 				e_ready_all, (Tfun<actor, np_actor_close>) & actor::handle_close
 			);
@@ -73,63 +73,63 @@ namespace ngl
 			return nrfun<TDerived>::instance();
 		}
 
-		// # Register a timer
+		// Register the timer callback used by ntimer for this actor type.
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, np_timerparm> afun = &TDerived::timer_handle)
 		{
 			nrf<TDerived>().template rfun_nonet<TDerived, np_timerparm>(afun, e_ready_all);
 		}
 
-		// # Used toregister function correspondingactoron
+		// Register one std::function-based message handler for this actor type.
 		template <typename TDerived, typename T>
 		static void register_actor_s(int32_t aready, const std::function<void(TDerived*, const message<T>&)>& afun)
 		{
 			nrf<TDerived>().template rfun<TDerived, T>(afun, aready);
 		}
 
-		// # Registeractor function(can handle)
+		// Register one or more strongly typed message handlers for this actor type.
 		template <typename TDerived, typename ...ARG>
 		static void register_actor(int32_t aready, ARG... afun)
 		{
 			(nrf<TDerived>().template rfun<TDerived, ARG>(afun, aready), ...);
 		}
 
-		// # Andregister_actorsimilar registernetwork layer
+		// Register one or more local-only handlers that do not come from network protocol dispatch.
 		template <typename TDerived, typename T>
 		static void register_actornonet(enum_ready aready, const Tfun<TDerived, T> afun)
 		{
 			nrf<TDerived>().template rfun_nonet<TDerived, T>(afun, aready);
 		}
 
-		// # Registeractor handlefunction
+		// Register TDerived::handle for every listed message type.
 		template <typename TDerived, typename ...ARG>
 		static void register_handle(enum_ready aready)
 		{
 			(nrf<TDerived>().template rfun<TDerived, ARG>((Tfun<TDerived, ARG>) & TDerived::handle, aready), ...);
 		}
 
-		// # Registeractor handlefunction
+		// Register script-backed handlers that forward messages into the actor's scripting runtime.
 		template <typename TDerived, typename ...ARG>
 		static void register_script_handle(enum_ready aready)
 		{
 			(nrf<TDerived>().template rfun<actor, ARG>((Tfun<actor, ARG>) & actor::handle_script<ARG>, aready), ...);
 		}
 
-		// # Actor_gateway_c2g register forwarding
+		// Register client-to-gateway forwarding handlers.
 		template <typename TDerived, typename ...ARG>
 		static void register_forward_c2g()
 		{
 			(nrf<TDerived>().template rfun_c2g<ARG>((Tfun<TDerived, np_actor_forward<ARG, forward_c2g<forward>>>) & TDerived::handle), ...);
 		}
 		
-		// # Register_forward_g2c register forwarding
+		// Register gateway-to-client forwarding handlers.
 		template <typename TDerived, typename ...ARG>
 		static void register_forward_g2c()
 		{
 			(nrf<TDerived>().template rfun_g2c<ARG>((Tfun<TDerived, np_actor_forward<ARG, forward_g2c<forward>>>) & TDerived::handle), ...);
 		}
 
-		// # Actor_role registersecondaryforwarding
+		// Register secondary forwarding helpers used by relay actors such as role actors.
 		template <typename TDerived, ENUM_ACTOR ACTOR, typename ...ARG>
 		static void register_secondary_forward_c2g()
 		{
@@ -138,22 +138,22 @@ namespace ngl
 
 		explicit actor(const actorparm& aparm);
 
-		// # Get the actor state
+		// Return the scheduler-visible lifecycle state.
 		actor_stat activity_stat() final;
 
-		// # Set the actor state
+		// Update the scheduler-visible lifecycle state.
 		void set_activity_stat(actor_stat astat) final;
 
-		// # Actormessage list
+		// Stop the actor, drain queued work, and persist any DB-backed state.
 		void release() final;
 
-		// # Message listwhether
+		// Return true when both normal and priority queues are empty.
 		bool list_empty() final;
 
-		// # Tomessage listinadd message
+		// Enqueue one incoming task into the appropriate priority queue.
 		void push(handle_pram& apram) final;
 
-		// # Thread message
+		// Run one scheduling slice on the specified worker thread id.
 		void actor_handle(i32_threadid athreadid) final;
 
 		template <typename T>
@@ -170,20 +170,16 @@ namespace ngl
 		bool ahandle(i32_threadid athreadid, handle_pram& aparm);
 
 		// ############# [Broadcast] #############
-		// # Time broadcast
-		// # 1, Save data
-		// # 2, Broadcastfunction
-		// # Andactor_base::start_broadcast()
-		// # This actor_base::m_broadcast event
+		// Called from the shared broadcast event after DB state has been flushed.
 		virtual void broadcast() {}
-		// # Broadcast handler
+		// Internal entry point for the synthetic broadcast message.
 		bool handle_broadcast(const message<np_actor_broadcast>& adata);
 		// ############# [Broadcast] #############
 		
-		// # Closethis actor
+		// Internal entry point for the synthetic close message.
 		bool handle_close(const message<np_actor_close>&);
 
-		// # Script-side message handling
+		// Forward a typed message into the attached scripting runtime.
 		template <typename TMESSAGE>
 		bool handle_script(const message<TMESSAGE>& adata);
 	};

@@ -99,6 +99,7 @@ namespace ngl
             const int lnext = find_child(m_nodes, cur, lbyte);
             if (lnext >= 0)
             {
+                // Fast path: follow the trie edge without touching fail links.
                 cur = lnext;
                 return;
             }
@@ -224,6 +225,7 @@ namespace ngl
                 }
 
                 m_nodes[u].m_fail = lnext;
+                // Output links chain together terminal nodes reachable through fail edges.
                 g_output_links[u] = m_nodes[lnext].len > 0 ? lnext : g_output_links[lnext];
                 m_nodes[u].m_has_match = m_nodes[u].len > 0 || g_output_links[u] != -1;
                 q.push(u);
@@ -264,7 +266,7 @@ namespace ngl
     {
         std::string result = text;
         std::vector<std::pair<int, int>> matches = match(text);
-        // Replaceall *
+        // Matches are byte ranges because the trie is built over UTF-8 bytes.
         for (auto& [start, len] : matches)
         {
             const std::size_t begin = start < 0 ? 0U : static_cast<std::size_t>(start);
@@ -339,6 +341,7 @@ namespace ngl
                 const char32_t lcodepoint = utf8::next(liter, lend);
                 if (is_emojispecial(lcodepoint))
                 {
+                    // Special characters do not participate in forbidden-word matching.
                     continue;
                 }
                 for (auto lbyte = lcode_begin; lbyte != liter; ++lbyte)

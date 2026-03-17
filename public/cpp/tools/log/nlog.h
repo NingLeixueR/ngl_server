@@ -41,6 +41,8 @@ namespace ngl
 
 	using ptr_logitem = std::shared_ptr<nactor_logitem>;
 
+	// Logging entry points capture the source location immediately so the
+	// eventual actor-side formatter can print the original call site.
 	extern ptr_logitem log_debug(const std::source_location& asource = std::source_location::current());
 	extern ptr_logitem log_debug_net(const std::source_location& asource = std::source_location::current());
 
@@ -56,9 +58,10 @@ namespace ngl
 	extern ptr_logitem log_bi(const std::source_location& asource = std::source_location::current());
 
 
-	template <typename T>
-	void tools::print_json(const T& adata, bool aislog/* = false*/)
-	{
+template <typename T>
+void tools::print_json(const T& adata, bool aislog/* = false*/)
+{
+		(void)aislog;
 		std::string ljson;
 		if (tools::proto2json(adata, ljson))
 		{

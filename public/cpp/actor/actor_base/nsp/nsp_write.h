@@ -26,51 +26,53 @@ namespace ngl
 	{
 		static std::atomic<bool>										m_isregister;
 
+		// Actor that owns this NSP writer instance.
 		TDerived*														m_actor = nullptr;
 		
-		// # Automaticallyregisterhandleprotocol handling
+		// User callbacks for row changes / deletes / load completion.
 		nsp_callback<T>													m_call;
 
-		// # Responsible formanageto[nsp server]register node stateandmanagedataloadstate
+		// Tracks per-area NSP registration and first-sync state.
 		nsp_regload														m_regload;
 
-		// # Node "whichdata"
+		// Describes which rows this writer reads and/or may modify.
 		care_data														m_care;
 
-		// # Node whichdata
+		// Per-peer subscription info learned from the NSP server.
 		std::map<i64_actorid, care_data>								m_othercare;
 
-		// # "Whichtype node" "whichdatafield"
+		// Per-actor-type field permissions used when copying synchronized rows.
 		operator_field													m_operator_field;
 
-		// # Alldata node
+		// Nodes that subscribe to all rows in read-only mode.
 		std::set<i64_nodeid>											m_nodereadalls;
 
-		// # Alldata node
+		// Nodes that subscribe to all rows in read/write mode.
 		std::set<i64_nodeid>											m_nodewritealls;		
 
+		// Local mirror of synchronized rows.
 		std::map<i64_actorid, T>										m_data;
 
-		// # Node/ nodeexit() need tonotifywhichnode(1, allnsp_servernode.2, allnsp_writenode)
+		// Nodes that must receive a later np_channel_exit<T> when this writer goes away.
 		std::set<i64_actorid>											m_exit;
 
-		// Datalist
+		// Rows changed since the last incremental broadcast.
 		std::set<i64_dataid>											m_changeids;
 
-		// Delete datalist
+		// Rows deleted since the last incremental broadcast.
 		std::set<i64_dataid>											m_delids;
 	public:
-		// # Getsingleton
+		// Fetch the per-actor writer singleton.
 		static nsp_write<TDerived, TACTOR, T>& instance(i64_actorid aactorid);
 
-		// # [ Alldata] andinitialize
+		// Create a writer that mirrors every row and may write every row.
 		static nsp_write<TDerived, TACTOR, T>& instance_writeall(
 			TDerived* aactor
 			, const std::set<i32_fieldnumber>& areadfieldnumbers  			/* Read-onlywhichfield */
 			, const std::set<i32_fieldnumber>& awritefieldnumbers			/* Read-onlywhichfield */
 		);
 
-		// # [ Partialdata]createandinitialize
+		// Create a writer with explicit read/write row and field scopes.
 		static nsp_write<TDerived, TACTOR, T>& instance_writepart(
 			TDerived* aactor
 			, const std::set<i32_fieldnumber>& areadfieldnumbers			/* Read-onlywhichfield */
@@ -79,28 +81,26 @@ namespace ngl
 			, const std::set<i64_actorid>& awriteids						/* / Whichdata */
 		);
 
-		// # Replacedataguid [actor_type]
+		// Re-tag a row id with the owner actor type used by the backing NSP server.
 		static i64_actorid to_actorid(i64_actorid adataid);
 
-		// # Initialize
+		// Start registration timers toward the target NSP servers.
 		void init();
 
-		// # Setdata change callback
+		// Register change / delete / load-complete callbacks.
 		void set_changedatafun(const std::function<void(int64_t, const T&, bool)>& afun);
 
-		// # Setdata delete callback
 		void set_deldatafun(const std::function<void(int64_t)>& afun);
 
-		// # Setdataallloadsuccessful callback
 		void set_loadfinishfun(const std::function<void()>& afun);
 
-		// # Adddata
+		// Add a new row and mark it dirty for the next incremental broadcast.
 		T* add(i64_dataid adataid);
 
-		// # Getspecifieddata(andautomaticallyset state )
+		// Get one row and mark it dirty for the next incremental broadcast.
 		T* get(i64_dataid adataid);
 
-		// # Getspecifieddata
+		// Read one row or the full mirrored map without marking it dirty.
 		const T* getconst(i64_dataid adataid);
 
 		// //////////////////// This this (prevent data) ////////////////////////
@@ -115,26 +115,23 @@ namespace ngl
 
 		const std::map<i64_actorid, T>& get_mapconst();
 
-		// # This nspmodule
+		// Unregister from NSP servers and destroy the per-actor singleton.
 		void exit();
 
-		// # Messageend
+		// Flush accumulated incremental changes to interested peers.
 		void change();
 		static void change(i64_actorid aactorid);
 
-		// # Datasynchronizehandle
+		// Handle initial/incremental data sync, registration, and field updates.
 		void handle(TDerived* aactor, const message<np_channel_data<T>>& adata);
 
-		// # To[nsp server]registerthis module
 		void handle(TDerived*, const message<np_channel_check<T>>& adata);
 
-		// # To[nsp server]registerthis module response
 		void handle(TDerived*, const message<np_channel_register_reply<T>>& adata);
 
-		// # Synchronizenewly added [operator_field]
 		void handle(TDerived*, const message<np_channel_dataid_sync<T>>& adata);
 
-		// # Nodeexit
+		// Remove one peer from the local subscription cache.
 		void handle(TDerived*, const message<np_channel_exit<T>>& adata);
 	};
 

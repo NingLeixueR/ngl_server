@@ -23,72 +23,77 @@
 
 namespace ngl
 {
-	// # Nsp client pack nsp_readandnsp_write
-	// # Nsp client load
+	// Tracks which NSP servers this actor must register with and whether the
+	// initial per-area synchronization has completed.
 	class nsp_regload
 	{
-		// # Need toconnection nspserverlist
+		// Area -> NSP server actor id for that area.
 		std::map<i16_area, i64_actorid>		m_nspserver;
-		// # Registerstate
+		// Area -> registration acknowledged.
 		std::map<i16_area, bool>			m_register;
-		// # Loadstate
+		// Area -> first full synchronization completed.
 		std::map<i16_area, bool>			m_loadfinish;
 	public:
+		// Build the area -> NSP server list based on the actor type encoded in aactorid.
 		void init(i64_actorid aactorid);
 
-		// # Set[area]completeregister
+		// Mark one area as registered.
 		void set_register(i16_area aarea);
 
-		// # [Area]whethercompleteregister
+		// Return whether one area has acknowledged registration.
 		bool is_register(i16_area aarea)const;
 
-		// # All[area]whether completeregister
+		// Return whether every target area has acknowledged registration.
 		bool is_register()const;
 
-		// # Set[area]loaddatacomplete
+		// Mark one area as fully synchronized.
 		void set_loadfinish(i16_area aarea);
 
-		// # [Area]whetherloaddatacomplete
+		// Return whether one area has completed the first full sync.
 		bool is_loadfinish(i16_area aarea)const;
 
-		// # All[area]whether loaddatacomplete
+		// Return whether every area has completed the first full sync.
 		bool is_loadfinish()const;
 
-		// # [Area]getnsp server
+		// Resolve the NSP server actor id for one area.
 		i64_actorid nspserid(i16_area aarea)const;
 
-		// # Allneed toconnection nsp server
+		// Iterate over every target NSP server.
 		void foreach_nspser(const std::function<void(i16_area, i64_actorid)>& afun)const;
 	};
 
-	// # "Datafield"
+	// Stores per-actor-type field permissions so NSP can copy only the allowed
+	// protobuf fields between reader/writer/server nodes.
 	class operator_field
 	{
-		// # Nep serverset "because fieldset /, first, "
+		// Server and client merge field permissions differently.
 		bool m_nspserver = false;
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>> m_node_fieldnumbers;
 	public:
-		// # Initialize
+		// Reset field rules and switch between server-side and client-side merge policy.
 		void init(bool anspserver);
 
-		// # Set"datafield"
+		// Merge one actor type's field permissions into the table.
 		void set_field(i16_actortype atype, const std::map<i32_fieldnumber, epb_field>& anode_fieldnumbers);
 
-		// # Set
+		// Merge a full actor-type -> field-permission table.
 		void set_field(const std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& anode_fieldnumbers);
 
-		// # Add
 	private:
+		// Server-side merge keeps strict field-role consistency.
 		void nspser_add_field(std::map<i32_fieldnumber, epb_field>& afieldmap, i32_fieldnumber afieldnumber, epb_field afieldtype);
+		// Client-side merge allows write permission to dominate read permission.
 		void nspcli_add_field(std::map<i32_fieldnumber, epb_field>& afieldmap, i32_fieldnumber afieldnumber, epb_field afieldtype);
 	public:
+		// Add one field permission for one actor type.
 		void add_field(i16_actortype atype, i32_fieldnumber afieldnumber, epb_field afieldtype);
 	
 		template <typename T>
 		void add_field(i16_actortype atype, epb_field afieldtype, const std::set<i32_fieldnumber>& afield)
 		{
 			if (afieldtype == epb_field_read && afield.empty())
-			{// [Awritefieldnumbers], allfield
+			{
+				// Empty read sets mean "subscribe to every protobuf field".
 				std::set<i32_fieldnumber> lreadfield;
 				pb_field::field_numbers<T>(lreadfield);
 				for (i32_fieldnumber field : lreadfield)
@@ -99,7 +104,8 @@ namespace ngl
 			else
 			{
 				if (afield.empty())
-				{// Afieldtype == epb_field_write do not allow[afield]
+				{
+					// Write permissions must be explicit.
 					tools::no_core_dump();
 				}
 				for (i32_fieldnumber field : afield)
@@ -114,7 +120,8 @@ namespace ngl
 		{
 			std::set<i32_fieldnumber> lreadfield;
 			if (areadfield.empty())
-			{// [Awritefieldnumbers], allfield
+			{
+				// Empty read sets mean "subscribe to every protobuf field".
 				pb_field::field_numbers<T>(lreadfield);
 			}
 			for (i32_fieldnumber field : awritefield)
@@ -127,10 +134,10 @@ namespace ngl
 			}
 		}
 
-		// # Typeget
+		// Return the field-permission table for one actor type.
 		std::map<i32_fieldnumber, epb_field>* get_field(i16_actortype atype);
 
-		// # Fieldtype datacopy
+		// Copy only the fields allowed by the source/target permission tables.
 		template <typename T>
 		bool field_copy(i16_actortype atypesource, i16_actortype atypetarget, const T& asource, T& atarget, bool amessage)
 		{
@@ -144,7 +151,7 @@ namespace ngl
 			return true;
 		}
 
-		// # Fieldtype datacopy
+		// Copy using one actor type's field-permission table.
 		template <typename T>
 		bool field_copy(i16_actortype atype, const T& asource, T& atarget, bool amessage)
 		{
@@ -157,52 +164,53 @@ namespace ngl
 			return true;
 		}
 
-		// # Getallarea datafield
+		// Expose the complete actor-type -> field-permission table.
 		std::map<i16_actortype, std::map<i32_fieldnumber, epb_field>>& field_numbers();
 	};
 
-	// # Whichdata
+	// Describes which rows a subscriber cares about and whether it is read-only
+	// or read/write for those rows.
 	class care_data
 	{
 		nsp_care m_core;
 	public:
-		// # "All,all "
+		// Subscribe to all rows as read-only or read/write.
 		void init(bool aread);
 
-		// # "Partial "
+		// Subscribe read-only to a specific set of rows.
 		void init(const std::set<i64_actorid>& aids);
 
-		// # "Partial,partial "
+		// Subscribe read-only/write to explicit row sets.
 		void init(const std::set<i64_actorid>& areadids, const std::set<i64_actorid>& awriteids);
 
-		// # "All,partial "
+		// Subscribe to all rows for reading but only a subset for writing.
 		void init(bool aread, const std::set<i64_actorid>& awriteids);
 
-		// # Nsp_caredatainitialize
+		// Copy from an existing wire-format care descriptor.
 		void init(const nsp_care& acore);
 
-		// # Whether
+		// Return whether the subscriber should receive this row at all.
 		bool is_care(i64_actorid adataid)const;
 
-		// # Whether
+		// Return whether the subscriber may read this row.
 		bool is_read(i64_actorid adataid)const;
 
-		// # Whether ( )
+		// Return whether the subscriber may write this row.
 		bool is_write(i64_actorid adataid)const;
 
-		// # Whether alldata
+		// Return whether reads cover all rows.
 		bool is_readall()const;
 
-		// # Whether alldata
+		// Return whether writes cover all rows.
 		bool is_writeall()const;
 
-		// # List
+		// Return the explicit read set.
 		std::set<i64_actorid>& readids();
 
-		// # List
+		// Return the explicit write set.
 		std::set<i64_actorid>& writeids();
 
-		// # Get data
+		// Expose the underlying wire-format descriptor.
 		const nsp_care& get_core()const;
 	};
 
@@ -248,6 +256,8 @@ namespace ngl
 		template <typename TDerived, typename ...TMESSAGES>
 		static void register_handle()
 		{
+			// Register once per concrete NSP helper type and forward all messages
+			// to the per-actor singleton instance.
 			(actor::register_actor_s<TDerived, TMESSAGES>(e_ready_db, [](TDerived* aacotor, const message<TMESSAGES>& adata)
 				{
 					T* lpclass = nclient(aacotor->id_guid(), true);
@@ -260,18 +270,18 @@ namespace ngl
 		}
 	};
 
-	// Nsp client registercallback
+	// Callback bundle used by NSP reader/writer helpers to notify higher-level code.
 	template <typename T>
 	class nsp_callback
 	{
 		template <typename TDATA>
 		struct tcallback
 		{
-			// [Callback] data change
+			// Data created/updated callback.
 			std::function<void(int64_t, const TDATA&, bool)>				m_changedatafun = nullptr;
-			// [Callback] data delete
+			// Data deleted callback.
 			std::function<void(int64_t)>									m_deldatafun = nullptr;
-			// [Callback] dataloadcomplete
+			// Initial full synchronization completed callback.
 			std::function<void()>											m_loadfinishfun = nullptr;
 		};
 		tcallback<T> m_call;

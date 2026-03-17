@@ -48,6 +48,7 @@ namespace ngl
 	{
 		if (m_kcpindex == 0)
 		{
+			// Keep robot-side ephemeral ports in a dedicated numeric range.
 			m_kcpindex = nconfig.tid() * enets_robot_tid + nconfig.tcount() * enets_robot_tcount;
 		}
 		++m_kcpindex;

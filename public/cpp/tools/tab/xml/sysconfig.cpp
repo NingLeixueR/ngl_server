@@ -217,6 +217,8 @@ namespace ngl
 
 		lpublicxml->foreach([&nodecountbyname, &nodecountbytype](const std::pair<const std::string, std::string>& apair)
 			{
+				// Keys like `game_count` describe how many node instances of one
+				// logical server type should exist.
 				std::string_view key(apair.first);
 				const std::size_t suffix_pos = key.rfind("_count");
 				if (suffix_pos == std::string_view::npos || suffix_pos + 6 != key.size())
@@ -280,6 +282,8 @@ namespace ngl
 		m_gmurl = std::move(gmurl);
 		m_lua = std::move(lua);
 
+		// Gateway ids depend on both the configured node count and the current
+		// merge-area topology.
 		init_gatewayids(node_count("gateway"));
 	}
 
@@ -324,6 +328,7 @@ namespace ngl
 		std::set<i32_serverid> lgatewayids;
 		if (std::set<i16_area>* lareas = ttab_mergearea::instance().mergelist(self_tab->m_area); lareas != nullptr)
 		{
+			// Gateways for merged areas are treated as one shared ingress pool.
 			for (i16_area aarea : *lareas)
 			{
 				ttab_servers::instance().serverid(GATEWAY, aarea, lgatewayids);

@@ -74,6 +74,7 @@ namespace ngl
 		m_file.clear();
 		if (lcurrent != std::streampos(-1))
 		{
+			// Restore the caller's original cursor so get_maxline() stays side-effect free.
 			m_file.seekg(lcurrent);
 		}
 		else
@@ -105,6 +106,7 @@ namespace ngl
 			{
 				if (std::getline(m_file, line))
 				{
+					// CSV logical rows can span multiple physical lines while inside quotes.
 					for (std::size_t i = 0; i < line.size(); ++i)
 					{
 						if (line[i] == '\"')

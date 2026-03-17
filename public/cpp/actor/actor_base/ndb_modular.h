@@ -28,52 +28,52 @@ namespace ngl
 		ndb_component& operator=(const ndb_component&) = delete;
 
 	private:
-		actor_base*				m_actor		= nullptr;							// Hostactor
-		ndbclient_base*			m_dbclient  = nullptr;							// Ndbclientbase class
-		i64_actorid				m_id		= 0;								// Hostactor id
-		pbdb::ENUM_DB			m_type		= pbdb::ENUM_DB::ENUM_DB_FAIL;		// Datatype
+		actor_base*				m_actor		= nullptr;							// Actor that owns this DB component.
+		ndbclient_base*			m_dbclient  = nullptr;							// Storage backend bound to this component.
+		i64_actorid				m_id		= 0;								// Actor id used as the primary DB key scope.
+		pbdb::ENUM_DB			m_type		= pbdb::ENUM_DB::ENUM_DB_FAIL;		// Logical DB table/type served by this component.
 
 	protected:
 		explicit ndb_component(pbdb::ENUM_DB aenum);
 
-		// # Setndbclientbase class
+		// Bind the concrete dbclient used by this component.
 		void set_dbclient(ndbclient_base* andbclient);
 
-		// # Get the ndbclient base class
+		// Access the bound dbclient without changing ownership.
 		inline ndbclient_base* get_dbclient();
 	public:
-		// # Sethostactor
+		// Attach this component to its host actor and register it for DB lifecycle callbacks.
 		void				set(actor_base* aactor);
 
-		// # Getactor
+		// Return the host actor.
 		actor_base*			get_actor();
 
-		// # Get the host actor id
+		// Return the actor id currently associated with this component.
 		i64_actorid			get_actorid()const;
 
-		// # Getdatatype
+		// Return the DB enum served by this component.
 		pbdb::ENUM_DB		type()const;
 
-		// # Get the host actor
+		// Convenience alias for get_actor().
 		actor_base*			actorbase();
 
-		// # Related_actorid,used to actor id
+		// Override the actor id used as the DB lookup key.
 		void				set_actorid(i64_actorid aactorid);
 
-		// # Setm_id m_actor
+		// Default actor-id binding: use the owning actor's guid.
 		virtual void		related_actorid();
 
-		// # Setm_actor m_dbclient
+		// Finalize actor/dbclient binding and register the dbclient with actor_base.
 		void				init();
 
-		// # Createdata
+		// Create initial DB records for the current actor id or an explicit id.
 		void				create();
 		void				create(const nguid& aid);
 
-		// # Getm_dbclient
+		// Return the raw dbclient pointer.
 		ndbclient_base*		dbclientbase();
 
-		// # Dataallloadafter
+		// Hook called after all DB tables have finished loading.
 		virtual void		init_data();
 	};
 
@@ -100,7 +100,7 @@ namespace ngl
 			return &m_data;
 		}
 
-		// # Data
+		// Iterate over every loaded row owned by this module.
 		inline void foreach(const std::function<void(const data_modified<TDATA>&)>& afun)
 		{
 			for (auto& [_guid, _datamodified] : data())
@@ -109,7 +109,7 @@ namespace ngl
 			}
 		}
 
-		// # Find specified data
+		// Find the first row that matches a custom predicate.
 		inline data_modified<TDATA>* find(const std::function<bool(const data_modified<TDATA>&)>& afun)
 		{
 			for(auto& [_guid, _datamodified] : data())
@@ -122,7 +122,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		// # Get all data
+		// Expose the full loaded dataset as a read-only map.
 		inline const std::map<nguid, data_modified<TDATA>>& data()
 		{
 			return m_data.get_data();
@@ -133,13 +133,13 @@ namespace ngl
 			return m_data.get_foreach_data();
 		}
 
-		// # Getm_idcorresponding data
+		// Return the row bound to the owning actor id.
 		inline data_modified<TDATA>& get()
 		{
 			return get(get_actorid());
 		}
 
-		// # Finds pecified data
+		// Find a specific row by actor guid.
 		inline data_modified<TDATA>* find(nguid aid)
 		{
 			auto itor = data().find(aid);
@@ -150,7 +150,7 @@ namespace ngl
 			return const_cast<data_modified<TDATA>*>(&itor->second);
 		}
 
-		// # And find similar( add)
+		// Get or lazily create one row by actor guid.
 		inline data_modified<TDATA>& get(nguid aid)
 		{
 			if (aid == nguid::make())
@@ -164,31 +164,31 @@ namespace ngl
 			return *m_data.get_data(aid);
 		}
 
-		// # Delete specified data
+		// Mark one row for deletion.
 		inline void erase(nguid aid)
 		{
 			get_actor_dbclient()->del(aid, true);
 		}
 
-		// # Return data
+		// Return the primary row when this module is bound to one actor id.
 		inline data_modified<TDATA>* db()
 		{ 
 			return m_data.get_dbdata();
 		}
 
-		// # Get the host actor
+		// Typed access to the owning actor.
 		inline TACTOR* nactor()
 		{ 
 			return (TACTOR*)get_actor();
 		}
 
-		// # Clear data
+		// Delete every row currently tracked by this module.
 		inline void clear()
 		{
 			get_actor_dbclient()->clear();
 		}
 
-		// # Data all loadafter
+		// Adapter hook from ndb_component into the derived initdata() implementation.
 		void init_data() final;
 
 		virtual void initdata() = 0;

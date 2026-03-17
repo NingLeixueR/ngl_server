@@ -57,6 +57,7 @@ namespace ngl
 		m_acceptor_v6(nullptr)
 	{
 		basio_ioservice& lioservice = *m_service_ios.get_ioservice(m_service_ios.m_recvthreadsize);
+		// One acceptor per address family keeps IPv4 and IPv6 accepts independent.
 		m_acceptor_v4 = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v4(), m_port));
 		if (m_port == 0)
 		{
@@ -158,7 +159,7 @@ namespace ngl
 					if (acount > 0)
 					{
 						log_error()->print("connect [{}:{}] fail [{}] add timer list! ", aip, aport, ec.message());
-						// Join queue
+						// Retry through the shared timer wheel instead of blocking a socket thread.
 						wheel_parm lparm
 						{
 							.m_ms = ngl::tcp::tcp_connect_interval_ms,
@@ -198,6 +199,7 @@ namespace ngl
 					m_ipport[lservice->m_sessionid] = std::make_pair(lip, lport);
 					lservice->m_is_lanip = llanip;
 				}
+				// Start the read loop only after peer metadata has been cached.
 				start(lservice);
 				if (afun != nullptr)
 				{
@@ -229,6 +231,7 @@ namespace ngl
 			tcp->m_list.push_back({ asessionid, apack });
 			if (tcp->m_issend == false)
 			{
+				// Only one async_write chain is allowed at a time per TCP session.
 				llist = std::make_shared<std::list<node_pack>>();
 				tcp->m_list.swap(*llist);
 				tcp->m_issend = true;
@@ -287,6 +290,7 @@ namespace ngl
 				lock_write(atcp->m_mutex);
 				if (atcp->m_list.empty() == false)
 				{
+					// New writes arrived while the previous chain was in flight.
 					atcp->m_list.swap(*alist);
 				}
 				else
@@ -318,6 +322,7 @@ namespace ngl
 				close(atcp.get());
 				return;
 			}
+			// Reuse the pack buffer directly; pack::m_pos/m_len tracks partial sends.
 			async_send(atcp, alist, lpack, &lpack->m_buff[lpos], lsize);
 		}
 		else
@@ -404,13 +409,14 @@ namespace ngl
 		basio_errorcode ec;
 
 		// 1: Cancelallasynchronously
+		// Cancel pending ops first so their handlers wake up promptly.
 		socket.cancel(ec);
 		if (!ngl::tcp::should_ignore_socket_close_error(ec))
 		{
 			log_error()->print("asio_tcp::close_socket cancel [{}]", ec.message());
 		}
 
-		// 2: Closeconnectiondirection( )
+		// Then shut down the full-duplex TCP stream.
 		if (socket.is_open())
 		{
 			socket.shutdown(basio_iptcpsocket::shutdown_both, ec);
@@ -421,7 +427,7 @@ namespace ngl
 			}
 		}
 
-		// 3: Closesocket
+		// Finally close the underlying descriptor.
 		if (socket.is_open())
 		{
 			socket.close(ec);
@@ -491,6 +497,7 @@ namespace ngl
 				m_ipport[aservice->m_sessionid] = std::make_pair(lip, lport);
 				aservice->m_is_lanip = llanip;
 			}
+			// Hand the accepted socket to the read loop after endpoint metadata is cached.
 			start(aservice);
 		}
 		accept(aisv4);
@@ -535,6 +542,7 @@ namespace ngl
 			{
 				if (!error)
 				{
+					// The callback owns framing; false means the higher layer wants the session closed.
 					if (m_fun == nullptr || !m_fun(aservice.get(), lbuff, static_cast<uint32_t>(bytes_transferred)))
 					{
 						close(aservice.get());
