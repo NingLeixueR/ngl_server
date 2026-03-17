@@ -57,6 +57,20 @@ namespace ngl
 			return !ec || ec == basio::error::operation_aborted || ec == basio::error::bad_descriptor;
 		}
 
+		std::shared_ptr<basio_tcpacceptor> create_acceptor(
+			basio_ioservice& aioservice,
+			const basio::ip::tcp& aprotocol,
+			i16_port aport
+		)
+		{
+			auto acceptor = std::make_shared<basio_tcpacceptor>(aioservice);
+			acceptor->open(aprotocol);
+			acceptor->set_option(basio::socket_base::reuse_address(true));
+			acceptor->bind(basio_iptcpendpoint(aprotocol, aport));
+			acceptor->listen(basio::socket_base::max_listen_connections);
+			return acceptor;
+		}
+
 		void force_close_socket(basio_iptcpsocket& asocket)
 		{
 			basio_errorcode ec;
@@ -123,10 +137,13 @@ namespace ngl
 		}
 
 		basio_ioservice& lioservice = *m_service_ios.get_ioservice(m_service_ios.m_recvthreadsize);
-		m_acceptor_v4 = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v4(), m_port));
-		m_acceptor_v6 = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v4(), m_port));
-		m_acceptor_v4->set_option(basio::socket_base::reuse_address(true));
-		m_acceptor_v6->set_option(basio::socket_base::reuse_address(true));
+		m_acceptor_v4 = ngl::ws::create_acceptor(lioservice, basio::ip::tcp::v4(), m_port);
+		if (m_port == 0)
+		{
+			m_port = m_acceptor_v4->local_endpoint().port();
+			log_error()->print("asio_ws prot preinstall/reality:0/{}", m_port);
+		}
+		m_acceptor_v6 = ngl::ws::create_acceptor(lioservice, basio::ip::tcp::v6(), m_port);
 		accept(true);
 		accept(false);
 	}
@@ -198,12 +215,14 @@ namespace ngl
 			service->m_closing.store(true, std::memory_order_release);
 		}
 
-		m_service_ios.shutdown();
-
 		for (auto& service : lservices)
 		{
 			ngl::ws::force_close_socket(service->socket());
 		}
+
+		// Release websocket stream objects before stopping their io threads.
+		lservices.clear();
+		m_service_ios.shutdown();
 	}
 
 	std::shared_ptr<service_ws> asio_ws::create_service()
@@ -976,16 +995,20 @@ namespace ngl
 		{
 			if (!lservice->m_closing.exchange(true, std::memory_order_acq_rel))
 			{
-				basio::post(lservice->m_ioservice,
-					[lservice, agraceful]()
-					{
-						if (agraceful)
+				if (agraceful)
+				{
+					basio::post(lservice->m_ioservice,
+						[lservice]()
 						{
 							ngl::ws::close_stream(*lservice);
+							ngl::ws::force_close_socket(lservice->socket());
 						}
-						ngl::ws::force_close_socket(lservice->socket());
-					}
-				);
+					);
+				}
+				else
+				{
+					ngl::ws::force_close_socket(lservice->socket());
+				}
 
 				if (anotifyclose && m_closefun != nullptr)
 				{

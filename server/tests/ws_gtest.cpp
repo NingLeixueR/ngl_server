@@ -142,10 +142,14 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 	auto server_received = std::make_shared<std::promise<std::string>>();
 	auto client_received = std::make_shared<std::promise<std::string>>();
 	auto connected = std::make_shared<std::promise<ngl::i32_sessionid>>();
+	auto server_closed = std::make_shared<std::promise<ngl::i32_sessionid>>();
+	auto client_closed = std::make_shared<std::promise<ngl::i32_sessionid>>();
 
 	std::future<std::string> server_received_future = server_received->get_future();
 	std::future<std::string> client_received_future = client_received->get_future();
 	std::future<ngl::i32_sessionid> connected_future = connected->get_future();
+	std::future<ngl::i32_sessionid> server_closed_future = server_closed->get_future();
+	std::future<ngl::i32_sessionid> client_closed_future = client_closed->get_future();
 
 	std::unique_ptr<ngl::asio_ws> server;
 	server = std::make_unique<ngl::asio_ws>(
@@ -158,7 +162,9 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 			EXPECT_TRUE(server->send_msg(asession->m_sessionid, "pong"));
 			return true;
 		},
-		[](ngl::i32_sessionid) {},
+		[server_closed](ngl::i32_sessionid asessionid) {
+			try_set_promise(server_closed, asessionid);
+		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
 
@@ -171,7 +177,9 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 			try_set_promise(client_received, std::string(abuff, abuff + alen));
 			return true;
 		},
-		[](ngl::i32_sessionid) {},
+		[client_closed](ngl::i32_sessionid asessionid) {
+			try_set_promise(client_closed, asessionid);
+		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
 
@@ -198,6 +206,11 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 
 	trace_step("text: close");
 	client->close(sessionid);
+	trace_step("text: wait close");
+	ASSERT_EQ(client_closed_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	ASSERT_EQ(client_closed_future.get(), sessionid);
+	ASSERT_EQ(server_closed_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	ASSERT_GT(server_closed_future.get(), 0);
 	trace_step("text: end");
 }
 
@@ -206,9 +219,13 @@ TEST(WsTest, AsioWsSendsPackPayloadAsBinaryFrame)
 	trace_step("binary: begin");
 	auto server_received = std::make_shared<std::promise<std::string>>();
 	auto connected = std::make_shared<std::promise<ngl::i32_sessionid>>();
+	auto server_closed = std::make_shared<std::promise<ngl::i32_sessionid>>();
+	auto client_closed = std::make_shared<std::promise<ngl::i32_sessionid>>();
 
 	std::future<std::string> server_received_future = server_received->get_future();
 	std::future<ngl::i32_sessionid> connected_future = connected->get_future();
+	std::future<ngl::i32_sessionid> server_closed_future = server_closed->get_future();
+	std::future<ngl::i32_sessionid> client_closed_future = client_closed->get_future();
 
 	ngl::asio_ws server(
 		0,
@@ -219,7 +236,9 @@ TEST(WsTest, AsioWsSendsPackPayloadAsBinaryFrame)
 			try_set_promise(server_received, std::string(abuff, abuff + alen));
 			return true;
 		},
-		[](ngl::i32_sessionid) {},
+		[server_closed](ngl::i32_sessionid asessionid) {
+			try_set_promise(server_closed, asessionid);
+		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
 
@@ -229,7 +248,9 @@ TEST(WsTest, AsioWsSendsPackPayloadAsBinaryFrame)
 		[](ngl::service_ws*, const char*, uint32_t) {
 			return true;
 		},
-		[](ngl::i32_sessionid) {},
+		[client_closed](ngl::i32_sessionid asessionid) {
+			try_set_promise(client_closed, asessionid);
+		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
 
@@ -256,6 +277,11 @@ TEST(WsTest, AsioWsSendsPackPayloadAsBinaryFrame)
 
 	trace_step("binary: close");
 	client.close(sessionid);
+	trace_step("binary: wait close");
+	ASSERT_EQ(client_closed_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	ASSERT_EQ(client_closed_future.get(), sessionid);
+	ASSERT_EQ(server_closed_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	ASSERT_GT(server_closed_future.get(), 0);
 	trace_step("binary: end");
 }
 

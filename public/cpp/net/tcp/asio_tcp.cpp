@@ -58,6 +58,11 @@ namespace ngl
 	{
 		basio_ioservice& lioservice = *m_service_ios.get_ioservice(m_service_ios.m_recvthreadsize);
 		m_acceptor_v4 = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v4(), m_port));
+		if (m_port == 0)
+		{
+			m_port = m_acceptor_v4->local_endpoint().port();
+			log_error()->print("asio_tcp prot preinstall/reality:0/{}", m_port);
+		}
 		m_acceptor_v6 = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v6(), m_port));
 		m_acceptor_v4->set_option(basio::socket_base::reuse_address(true));
 		m_acceptor_v6->set_option(basio::socket_base::reuse_address(true));
