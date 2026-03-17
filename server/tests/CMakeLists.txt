@@ -21,6 +21,10 @@ file(GLOB NGL_TEST_CASE_SRCS CONFIGURE_DEPENDS
 	${CMAKE_CURRENT_SOURCE_DIR}/*_gtest.cpp
 )
 list(SORT NGL_TEST_CASE_SRCS)
+set(NGL_AI_TEST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/ai_gtest.cpp)
+if(EXISTS ${NGL_AI_TEST_SRC})
+	list(REMOVE_ITEM NGL_TEST_CASE_SRCS ${NGL_AI_TEST_SRC})
+endif()
 source_group("Test Files" FILES ${NGL_TEST_CASE_SRCS})
 ngl_configure_vs_unity_filters()
 
@@ -59,3 +63,23 @@ gtest_discover_tests(ngl_test
 	DISCOVERY_TIMEOUT 30
 	PROPERTIES LABELS "unit"
 )
+
+if(EXISTS ${NGL_AI_TEST_SRC})
+	add_executable(ngl_ai_test
+		${NGL_AI_TEST_SRC}
+		${CMAKE_SOURCE_DIR}/public/cpp/tools/ai/behavior_tree.cpp
+	)
+
+	target_link_libraries(ngl_ai_test PRIVATE
+		ngl_build_options
+		${NGL_GTEST_MAIN_TARGET}
+	)
+	ngl_apply_runtime_deps(ngl_ai_test PRIVATE)
+	ngl_apply_msvc_defaults(ngl_ai_test)
+
+	add_test(NAME ngl_ai_test COMMAND ngl_ai_test)
+	set_tests_properties(ngl_ai_test PROPERTIES
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		LABELS "unit;ai"
+	)
+endif()

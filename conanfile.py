@@ -12,10 +12,16 @@ class MyProjectConan(ConanFile):
     
     # 3., Corresponding txt in [generators]
     generators = "CMakeDeps", "CMakeToolchain"
+    default_options = {
+        "behaviortree.cpp/*:enable_groot_interface": False,
+        "behaviortree.cpp/*:enable_sqlite_logging": False,
+        "behaviortree.cpp/*:with_tools": False,
+    }
 
     def requirements(self):
         # --- (All need to) ---
         self.requires("boost/1.86.0")
+        self.requires("behaviortree.cpp/4.9.0")
         self.requires("lua/5.4.6")
         self.requires("protobuf/3.21.12")
         self.requires("libcurl/8.9.1")

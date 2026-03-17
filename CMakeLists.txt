@@ -33,6 +33,7 @@ endif()
 
 include(${CMAKE_SOURCE_DIR}/cmake/NglBuild.cmake)
 find_package(Boost REQUIRED)
+find_package(behaviortree_cpp REQUIRED)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Keep predefined targets (ALL_BUILD / ZERO_CHECK / INSTALL) at solution top level.
@@ -40,12 +41,15 @@ set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "")
 
 add_library(ngl_build_options INTERFACE)
 if(TARGET Boost::headers)
-	target_link_libraries(ngl_build_options INTERFACE Boost::headers)
+target_link_libraries(ngl_build_options INTERFACE Boost::headers)
 elseif(TARGET Boost::boost)
 	target_link_libraries(ngl_build_options INTERFACE Boost::boost)
 else()
 	message(FATAL_ERROR "Unable to find a Boost headers target")
 endif()
+target_link_libraries(ngl_build_options INTERFACE
+	BT::behaviortree_cpp
+)
 target_include_directories(ngl_build_options INTERFACE
 	${CMAKE_SOURCE_DIR}/public/cpp
 )
