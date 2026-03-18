@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <atomic>
 #include <chrono>
+#include <string>
 #include <future>
 #include <memory>
 #include <thread>
@@ -276,6 +277,123 @@ TEST(NetTest, AsioTcpCloseDisconnectsPeerAndNotifiesOnce)
 	accept_work.reset();
 	accept_context.stop();
 	accept_thread.join();
+}
+
+TEST(NetTest, AsioTcpServerAndClientExchangePayloads)
+{
+	auto try_set_string = [](const std::shared_ptr<std::promise<std::string>>& promise, std::string value) {
+		try
+		{
+			promise->set_value(std::move(value));
+		}
+		catch (const std::future_error&)
+		{
+		}
+	};
+	auto try_set_session = [](const std::shared_ptr<std::promise<ngl::i32_sessionid>>& promise, ngl::i32_sessionid value) {
+		try
+		{
+			promise->set_value(value);
+		}
+		catch (const std::future_error&)
+		{
+		}
+	};
+	auto make_packet = [](const std::string& payload) {
+		auto packet = std::make_shared<ngl::pack>();
+		if (!packet->malloc(static_cast<int32_t>(payload.size())))
+		{
+			return std::shared_ptr<ngl::pack>{};
+		}
+		std::copy(payload.begin(), payload.end(), packet->m_buff);
+		packet->m_len = static_cast<int32_t>(payload.size());
+		packet->m_pos = static_cast<int32_t>(payload.size());
+		return packet;
+	};
+
+	basio::io_context probe_context;
+	basio::ip::tcp::acceptor probe_acceptor(probe_context, basio::ip::tcp::endpoint(basio::ip::tcp::v4(), 0));
+	const ngl::i16_port port = probe_acceptor.local_endpoint().port();
+	probe_acceptor.close();
+
+	auto server_received = std::make_shared<std::promise<std::string>>();
+	auto server_session = std::make_shared<std::promise<ngl::i32_sessionid>>();
+	auto client_received = std::make_shared<std::promise<std::string>>();
+	auto connected = std::make_shared<std::promise<ngl::i32_sessionid>>();
+	auto server_closed = std::make_shared<std::promise<ngl::i32_sessionid>>();
+	auto client_closed = std::make_shared<std::promise<ngl::i32_sessionid>>();
+
+	std::future<std::string> server_received_future = server_received->get_future();
+	std::future<ngl::i32_sessionid> server_session_future = server_session->get_future();
+	std::future<std::string> client_received_future = client_received->get_future();
+	std::future<ngl::i32_sessionid> connected_future = connected->get_future();
+	std::future<ngl::i32_sessionid> server_closed_future = server_closed->get_future();
+	std::future<ngl::i32_sessionid> client_closed_future = client_closed->get_future();
+
+	auto server = std::make_unique<ngl::asio_tcp>(
+		port,
+		1,
+		[server_received, server_session, &try_set_string, &try_set_session](ngl::service_tcp* asession, const char* buff, uint32_t bufflen) {
+			try_set_string(server_received, std::string(buff, buff + bufflen));
+			try_set_session(server_session, asession->m_sessionid);
+			return true;
+		},
+		[server_closed, &try_set_session](ngl::i32_sessionid sessionid) {
+			try_set_session(server_closed, sessionid);
+		},
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+	);
+
+	auto client = std::make_unique<ngl::asio_tcp>(
+		1,
+		[client_received, &try_set_string](ngl::service_tcp*, const char* buff, uint32_t bufflen) {
+			try_set_string(client_received, std::string(buff, buff + bufflen));
+			return true;
+		},
+		[client_closed, &try_set_session](ngl::i32_sessionid sessionid) {
+			try_set_session(client_closed, sessionid);
+		},
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+	);
+
+	client->connect("127.0.0.1", port, [connected, &try_set_session](ngl::i32_sessionid sessionid) {
+		try_set_session(connected, sessionid);
+	}, 0);
+
+	ASSERT_EQ(connected_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	const ngl::i32_sessionid client_sessionid = connected_future.get();
+	ASSERT_GT(client_sessionid, 0);
+
+	auto client_packet = make_packet("tcp-ping");
+	ASSERT_NE(client_packet, nullptr);
+	ASSERT_TRUE(client->send(client_sessionid, client_packet));
+
+	ASSERT_EQ(server_received_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	ASSERT_EQ(server_session_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	EXPECT_EQ(server_received_future.get(), "tcp-ping");
+	const ngl::i32_sessionid server_sessionid = server_session_future.get();
+	ASSERT_GT(server_sessionid, 0);
+
+	auto server_packet = make_packet("tcp-pong");
+	ASSERT_NE(server_packet, nullptr);
+	ASSERT_TRUE(server->send(server_sessionid, server_packet));
+
+	ASSERT_EQ(client_received_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	EXPECT_EQ(client_received_future.get(), "tcp-pong");
+
+	std::pair<ngl::str_ip, ngl::i16_port> endpoint;
+	EXPECT_TRUE(client->get_ipport(client_sessionid, endpoint));
+	EXPECT_EQ(endpoint.first, "127.0.0.1");
+
+	client->close(client_sessionid);
+
+	ASSERT_EQ(client_closed_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	ASSERT_EQ(client_closed_future.get(), client_sessionid);
+	ASSERT_EQ(server_closed_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	ASSERT_GT(server_closed_future.get(), 0);
+
+	client.reset();
+	server.reset();
 }
 
 TEST(NetTest, KcpSessionMaintainsActorIndexesAndAreaIteration)

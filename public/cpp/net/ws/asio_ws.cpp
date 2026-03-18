@@ -54,6 +54,7 @@ namespace ngl
 		{
 			return should_ignore_socket_close_error(ec)
 				|| ec == basio::error::eof
+				|| ec == basio::ssl::error::stream_truncated
 				|| ec == bwebsocket::error::closed;
 		}
 
@@ -953,9 +954,7 @@ namespace ngl
 						else
 						{
 							close(aservice.get());
-							if (error != basio::error::operation_aborted
-								&& error != basio::error::eof
-								&& error != bwebsocket::error::closed)
+							if (!ngl::ws::should_ignore_ws_close_error(error))
 							{
 								log_error()->print("asio_ws::handle_read [{}]", error.message());
 							}

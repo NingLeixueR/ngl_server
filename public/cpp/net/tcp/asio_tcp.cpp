@@ -31,7 +31,19 @@ namespace ngl
 
 		bool should_ignore_socket_close_error(const basio_errorcode& ec)
 		{
-			return !ec || ec == basio::error::not_connected || ec == basio::error::operation_aborted;
+			return !ec
+				|| ec == basio::error::not_connected
+				|| ec == basio::error::operation_aborted
+				|| ec == basio::error::bad_descriptor;
+		}
+
+		bool should_ignore_read_error(const basio_errorcode& ec)
+		{
+			return !ec
+				|| ec == basio::error::operation_aborted
+				|| ec == basio::error::eof
+				|| ec == basio::error::connection_reset
+				|| ec == basio::error::bad_descriptor;
 		}
 
 		bool should_ignore_acceptor_close_error(const basio_errorcode& ec)
@@ -419,7 +431,7 @@ namespace ngl
 
 		if (lpservice != nullptr)
 		{
-			log_error()->print("asio_tcp close sessionid [{}]", sessionid);
+			log_debug_net()->print("asio_tcp close sessionid [{}]", sessionid);
 			close_socket(lpservice->m_socket);
 			if (m_closefun != nullptr)
 			{
@@ -448,10 +460,13 @@ namespace ngl
 
 		// 1: Cancelallasynchronously
 		// Cancel pending ops first so their handlers wake up promptly.
-		socket.cancel(ec);
-		if (!ngl::tcp::should_ignore_socket_close_error(ec))
+		if (socket.is_open())
 		{
-			log_error()->print("asio_tcp::close_socket cancel [{}]", ec.message());
+			socket.cancel(ec);
+			if (!ngl::tcp::should_ignore_socket_close_error(ec))
+			{
+				log_error()->print("asio_tcp::close_socket cancel [{}]", ec.message());
+			}
 		}
 
 		// Then shut down the full-duplex TCP stream.
@@ -609,7 +624,7 @@ namespace ngl
 				{
 					// Closeconnection
 					close(aservice.get());
-					if (error != basio::error::operation_aborted)
+					if (!ngl::tcp::should_ignore_read_error(error))
 					{
 						log_error()->print("asio_tcp::handle_read[{}]", error.message().c_str());
 					}
