@@ -202,7 +202,7 @@ int main(int argc, char** argv)
 	foreach_map(lstream, lmap);
 	foreach_map(lstream, lmap2);
 	
-	*lstream << "extern \"C\"{\n";
+	/**lstream << "extern \"C\"{\n";
 	for (const auto& item : lvec5)
 	{
 		std::string litem = lfunksb(item.first);
@@ -213,7 +213,7 @@ int main(int argc, char** argv)
 	}
 		
 	*lstream << "}//extern \"C\"\n";
-	lsavefun(++lindex, *lstream);
+	lsavefun(++lindex, *lstream);*/
 
 	int32_t lsumline = 0;
 	std::ranges::for_each(lvec1, [&lsumline](const auto& apair)
