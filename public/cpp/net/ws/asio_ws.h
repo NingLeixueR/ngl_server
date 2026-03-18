@@ -65,6 +65,7 @@ namespace ngl
 		map_close							m_close;						// Session-local reconnect/cleanup callbacks.
 		std::unique_ptr<basio_sslcontext>	m_tls_context = nullptr;		// Shared TLS context when WSS is enabled.
 		ws_tls_options						m_tls_options;					// TLS configuration.
+		std::shared_ptr<std::atomic_bool>	m_alive = std::make_shared<std::atomic_bool>(true); // Shared liveness flag for async callbacks.
 	public:
 		enum
 		{

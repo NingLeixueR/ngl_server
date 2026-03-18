@@ -1,0 +1,10 @@
+165:			m_port = m_acceptor_v4->local_endpoint().port();
+207:	asio_ws::~asio_ws()
+209:		m_alive->store(false, std::memory_order_release);
+214:			m_acceptor_v4->close(ec);
+242:			m_data.clear();
+247:			m_ipport.clear();
+260:		lservices.clear();
+261:		m_service_ios.shutdown();
+869:			if (m_acceptor_v4 == nullptr || !m_acceptor_v4->is_open())
+890:			m_acceptor_v4->async_accept(lservice->socket(),

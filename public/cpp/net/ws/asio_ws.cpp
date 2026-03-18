@@ -37,6 +37,11 @@ namespace ngl
 		template <typename T>
 		constexpr bool is_tls_stream_v = std::is_same_v<remove_cvref_t<T>, basio_websocket_tls>;
 
+		bool is_alive(const std::shared_ptr<std::atomic_bool>& aalive)
+		{
+			return aalive != nullptr && aalive->load(std::memory_order_acquire);
+		}
+
 		bool should_ignore_socket_close_error(const basio_errorcode& ec)
 		{
 			return !ec
@@ -201,6 +206,8 @@ namespace ngl
 
 	asio_ws::~asio_ws()
 	{
+		m_alive->store(false, std::memory_order_release);
+
 		basio_errorcode ec;
 		if (m_acceptor_v4 != nullptr)
 		{
@@ -250,7 +257,6 @@ namespace ngl
 			ngl::ws::force_close_socket(service->socket());
 		}
 
-		// Release websocket stream objects before stopping their io threads.
 		lservices.clear();
 		m_service_ios.shutdown();
 	}
@@ -414,6 +420,12 @@ namespace ngl
 		const char* astage
 	)
 	{
+		const auto alive = m_alive;
+		if (!ngl::ws::is_alive(alive))
+		{
+			return;
+		}
+
 		if (aservice != nullptr)
 		{
 			close_net(aservice->m_sessionid);
@@ -429,8 +441,12 @@ namespace ngl
 				.m_ms = ngl::ws::ws_connect_interval_ms,
 				.m_intervalms = [](int64_t) { return  ngl::ws::ws_connect_interval_ms; },
 				.m_count = 1,
-				.m_fun = [this, ahost, aport, atarget, afun, acount](const wheel_node*)
+				.m_fun = [this, alive, ahost, aport, atarget, afun, acount](const wheel_node*)
 				{
+					if (!ngl::ws::is_alive(alive))
+					{
+						return;
+					}
 					connect(ahost, aport, atarget, afun, acount - 1);
 				}
 			};
@@ -444,6 +460,10 @@ namespace ngl
 
 	void asio_ws::begin_server_handshake(const std::shared_ptr<service_ws>& aservice)
 	{
+		if (!ngl::ws::is_alive(m_alive))
+		{
+			return;
+		}
 		if (aservice == nullptr)
 		{
 			return;
@@ -527,6 +547,10 @@ namespace ngl
 		int acount
 	)
 	{
+		if (!ngl::ws::is_alive(m_alive))
+		{
+			return;
+		}
 		if (aservice == nullptr)
 		{
 			if (afun != nullptr)
@@ -633,6 +657,11 @@ namespace ngl
 
 	bool asio_ws::queue_send(i32_sessionid asessionid, const ws_send_node& anode)
 	{
+		if (!ngl::ws::is_alive(m_alive))
+		{
+			return false;
+		}
+
 		const std::shared_ptr<service_ws> ws = get_ws(asessionid);
 		if (ws == nullptr)
 		{
@@ -668,6 +697,10 @@ namespace ngl
 
 	void asio_ws::do_send(const std::shared_ptr<service_ws>& aservice, const std::shared_ptr<std::list<ws_send_node>>& alist)
 	{
+		if (!ngl::ws::is_alive(m_alive))
+		{
+			return;
+		}
 		if (aservice == nullptr || alist == nullptr)
 		{
 			return;
@@ -784,6 +817,10 @@ namespace ngl
 
 	void asio_ws::handle_write(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error, const ws_send_node& anode)
 	{
+		if (!ngl::ws::is_alive(m_alive))
+		{
+			return;
+		}
 		if (error)
 		{
 			if (!aservice->m_closing.load(std::memory_order_acquire))
@@ -800,6 +837,10 @@ namespace ngl
 
 	void asio_ws::accept_handle(bool av4, const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error)
 	{
+		if (!ngl::ws::is_alive(m_alive))
+		{
+			return;
+		}
 		if (error)
 		{
 			close_net(aservice->m_sessionid);
@@ -818,6 +859,11 @@ namespace ngl
 
 	void asio_ws::accept(bool av4)
 	{
+		if (!ngl::ws::is_alive(m_alive))
+		{
+			return;
+		}
+
 		if (av4)
 		{
 			if (m_acceptor_v4 == nullptr || !m_acceptor_v4->is_open())
@@ -861,6 +907,10 @@ namespace ngl
 
 	void asio_ws::start(const std::shared_ptr<service_ws>& aservice)
 	{
+		if (!ngl::ws::is_alive(m_alive))
+		{
+			return;
+		}
 		if (aservice == nullptr)
 		{
 			return;
@@ -928,6 +978,15 @@ namespace ngl
 
 	service_ws* asio_ws::connect(const str_host& ahost, i16_port aport, const std::string& atarget, const ws_connectcallback& afun, int acount)
 	{
+		if (!ngl::ws::is_alive(m_alive))
+		{
+			if (afun != nullptr)
+			{
+				afun(-1);
+			}
+			return nullptr;
+		}
+
 		const std::shared_ptr<service_ws> lservice = create_service();
 		if (lservice == nullptr)
 		{
