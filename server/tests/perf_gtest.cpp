@@ -17,7 +17,7 @@
 #include "tools/tab/csv/csv.h"
 #include "tools/tab/xml/xmlinfo.h"
 
-namespace
+namespace perf_test_case
 {
 template <typename TFUN>
 long long benchmark_us(TFUN&& afun)
@@ -228,8 +228,6 @@ std::unique_ptr<ngl::ttab_servers> make_server_table(int count)
 	table->reload();
 	return table;
 }
-}
-
 TEST(TTabServersTest, ReloadClearsStaleIndexesAndCachedNetworks)
 {
 	ngl::ttab_servers table;
@@ -484,3 +482,5 @@ TEST(NFilterWordPerfTest, IsFilterBenchmark)
 	std::cout << "[perf] nfilterword_is_filter legacy_us=" << legacy_us
 		<< " optimized_us=" << optimized_us << std::endl;
 }
+
+} // namespace perf_test_case

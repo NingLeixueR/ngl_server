@@ -11,7 +11,7 @@
 #include "tools/tab/xml/xml.h"
 #include "tools/tools.h"
 
-namespace
+namespace xml_sysconfig_test_case
 {
 tinyxml2::XMLElement* legacy_get_child(tinyxml2::XMLElement* aele, const char* astr)
 {
@@ -70,8 +70,6 @@ long long benchmark_us(TFUN&& afun)
 	const auto finish = std::chrono::steady_clock::now();
 	return std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
 }
-}
-
 TEST(XmlNodeRuntimeTest, BootstrapConfigLoadsConfiguredWssSection)
 {
 	ASSERT_FALSE(nconfig.config_file().empty());
@@ -232,3 +230,5 @@ TEST(XmlPerfTest, ForeachNamedChildrenBenchmark)
 	std::cout << "[perf] xml_foreach_named legacy_us=" << legacy_us
 		<< " optimized_us=" << optimized_us << std::endl;
 }
+
+} // namespace xml_sysconfig_test_case

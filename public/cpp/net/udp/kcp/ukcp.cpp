@@ -128,6 +128,11 @@ namespace ngl
 		return m_kcp.find_client(asession);
 	}
 
+	i32_session ukcp::find_session(i64_actorid aactorid)
+	{
+		return m_kcp.find_session(aactorid);
+	}
+
 	bool ukcp::find_actorid(i32_session asession, i64_actorid& aserver, i64_actorid& aclient)
 	{
 		return m_kcp.find_actorid(asession, aserver, aclient);

@@ -101,12 +101,18 @@ namespace ngl
 			// Kcpconnection
 			handle_cmd::add("kcp") = [this](const std::vector<std::string>& avec)
 				{
-					foreach([this, &avec](_robot& arobot)
+					pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
+					int16_t lservertid = tools::lexical_cast<int16_t>(avec[2]);
+					int16_t ltcount = tools::lexical_cast<int16_t>(avec[3]);
+					int64_t lactorid = tools::lexical_cast<int64_t>(avec[4]);
+					if (avec.size() >= 6)
+					{
+						i64_actorid lrobotid = tools::lexical_cast<int64_t>(avec[5]);
+						kcp_connect(lrobotid, lkcpenum, lservertid, ltcount, lactorid);
+						return;
+					}
+					foreach([this, lkcpenum, lservertid, ltcount, lactorid](_robot& arobot)
 						{
-							pbnet::ENUM_KCP lkcpenum = (pbnet::ENUM_KCP)tools::lexical_cast<int32_t>(avec[1]);
-							int16_t lservertid = tools::lexical_cast<int16_t>(avec[2]);
-							int16_t ltcount = tools::lexical_cast<int16_t>(avec[3]);
-							int64_t lactorid = tools::lexical_cast<int64_t>(avec[4]);
 							kcp_connect(arobot.m_robot->id_guid(), lkcpenum, lservertid, ltcount, lactorid);
 							return true;
 						});

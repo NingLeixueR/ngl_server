@@ -28,7 +28,7 @@
 #include "tools/tab/xml/xml.h"
 #include "tools/tools.h"
 
-namespace
+namespace tools_test_case
 {
 int CountCurlHeaders(const curl_slist* headers)
 {
@@ -77,8 +77,6 @@ struct JsonCustomPayload
 		return ngl::njson::push(ajson, aallocator, { "m_value", "m_name" }, m_value, m_name);
 	}
 };
-}
-
 TEST(ToolsTest, CurlHttpFactoryInitializesHandle)
 {
 	auto http = ngl::ncurl::http();
@@ -800,3 +798,5 @@ TEST(XmlUtilsTest, XmlSetPopDoesNotMutateOutputOnFailure)
 	ASSERT_EQ(values.size(), 1u);
 	EXPECT_TRUE(values.contains(42));
 }
+
+} // namespace tools_test_case

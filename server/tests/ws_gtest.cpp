@@ -22,7 +22,7 @@
 
 #include "net/ws/asio_ws.h"
 
-namespace
+namespace ws_test_case
 {
 void trace_step(const char* alabel)
 {
@@ -134,8 +134,6 @@ tls_identity make_tls_identity()
 		.m_private_key = bio_to_string(lkey_bio.get()),
 	};
 }
-}
-
 TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 {
 	trace_step("text: begin");
@@ -355,3 +353,5 @@ TEST(WsTest, AsioWsSendsPackPayloadAsBinaryFrame)
 //	client->close(sessionid);
 //	trace_step("wss: end");
 //}
+
+} // namespace ws_test_case

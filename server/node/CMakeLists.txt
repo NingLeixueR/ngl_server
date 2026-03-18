@@ -20,10 +20,9 @@ ADD_EXECUTABLE(node
 )
 
 target_link_libraries(node
-	PRIVATE nglcore 
-	PRIVATE ngl_build_options
+	PRIVATE nglcore
 )
-target_include_directories(node PRIVATE ${CORE_LIST} ${PROJECT_SOURCE_DIR}/../libnglcore/core)
+target_include_directories(node PRIVATE ${CORE_LIST})
 
 ngl_apply_unity_build(node)
 ngl_apply_msvc_defaults(node)

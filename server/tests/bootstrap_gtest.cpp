@@ -12,7 +12,7 @@
 #include "tools/tab/csv/ncsv.h"
 #include "tools/tab/xml/xml.h"
 
-namespace
+namespace bootstrap_test_case
 {
 struct RuntimePaths
 {
@@ -155,7 +155,6 @@ public:
 
 ::testing::Environment* const kTestRuntimeEnv =
 	::testing::AddGlobalTestEnvironment(new TestRuntimeEnvironment());
-}
 
 TEST(A00Bootstrap, LoadConfigAndCsv)
 {
@@ -163,3 +162,5 @@ TEST(A00Bootstrap, LoadConfigAndCsv)
 	ASSERT_TRUE(ensure_runtime_ready(err)) << err;
 	ASSERT_NE(ngl::ttab_servers::instance().const_tab(), nullptr);
 }
+
+} // namespace bootstrap_test_case

@@ -8,7 +8,7 @@
 #include "runtime_helpers.h"
 #include "tools/tools.h"
 
-namespace
+namespace runtime_test_case
 {
 char kProgram[] = "ngl_test";
 char kRobot[] = "robot";
@@ -17,8 +17,6 @@ char kTcount[] = "1";
 char kAccount[] = "alice";
 char kBegin[] = "10";
 char kCount[] = "20";
-}
-
 TEST(RuntimeHelpersTest, RobotLaunchRequestSupportsInteractiveAndBatchModes)
 {
 	char* interactive_argv[] = { kProgram, kRobot, kArea, kTcount };
@@ -101,3 +99,5 @@ TEST(RuntimeHelpersTest, PushServerConfigParamRejectsUnknownNetworkType)
 	EXPECT_FALSE(ngl_runtime::build_push_server_config_param(server, param));
 	EXPECT_TRUE(param.empty());
 }
+
+} // namespace runtime_test_case

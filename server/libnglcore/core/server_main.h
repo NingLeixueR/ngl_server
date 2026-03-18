@@ -6,7 +6,9 @@
 #include <string>
 
 // Export symbols from the core library when building on Windows.
-#ifdef _WIN32
+#ifdef NGLCORE_STATIC
+#	define NGL_EXPORT
+#elif defined(_WIN32)
 #	ifdef NGLCORE_EXPORTS
 #		define NGL_EXPORT __declspec(dllexport)
 #	else

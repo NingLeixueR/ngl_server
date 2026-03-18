@@ -4,7 +4,7 @@
 
 #include "tools/nfilterword.h"
 
-namespace
+namespace nfilterword_test_case
 {
 void load_default_filter_words()
 {
@@ -14,8 +14,6 @@ void load_default_filter_words()
 	ngl::nfilterword::load("123456");
 	ngl::nfilterword::build();
 }
-}
-
 TEST(NFilterWordTest, test_nfilterword)
 {
 	load_default_filter_words();
@@ -61,3 +59,5 @@ TEST(NFilterWordTest, CheckNameRejectsInvalidUtf8)
 		ngl::nfilterword::enfilter_invalid_utf8
 	);
 }
+
+} // namespace nfilterword_test_case

@@ -9,7 +9,7 @@
 
 #include "tools/ai/behavior_tree.h"
 
-namespace
+namespace ai_test_case
 {
 std::filesystem::path make_ai_temp_dir(const std::string& test_name)
 {
@@ -21,8 +21,6 @@ std::filesystem::path make_ai_temp_dir(const std::string& test_name)
 	std::filesystem::create_directories(dir, ec);
 	return dir;
 }
-}
-
 TEST(AiTest, FactoryCreatesTreeFromTextWithGlobalBlackboard)
 {
 	ngl::ai::behavior_tree_factory factory;
@@ -114,3 +112,32 @@ TEST(AiTest, FactoryRegistersTreeFromFileAndCreatesById)
 	EXPECT_EQ(tree.tick_once(), BT::NodeStatus::SUCCESS);
 	EXPECT_EQ(call_count, 1);
 }
+
+TEST(AiTest, TickWhileRunningAdvancesUntilTreeCompletes)
+{
+	ngl::ai::behavior_tree_factory factory;
+	int call_count = 0;
+	factory.register_action("WaitForSecondTick",
+		[&call_count](BT::TreeNode&)
+		{
+			++call_count;
+			return call_count >= 2 ? BT::NodeStatus::SUCCESS : BT::NodeStatus::RUNNING;
+		}
+	);
+
+	const std::string xml = R"(
+<root BTCPP_format="4">
+    <BehaviorTree ID="RobotBootstrap">
+        <Sequence>
+            <WaitForSecondTick/>
+        </Sequence>
+    </BehaviorTree>
+</root>)";
+
+	auto tree = factory.create_from_text(xml);
+	ASSERT_FALSE(tree.empty());
+	EXPECT_EQ(tree.tick_while_running(), BT::NodeStatus::SUCCESS);
+	EXPECT_EQ(call_count, 2);
+}
+
+} // namespace ai_test_case

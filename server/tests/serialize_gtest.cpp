@@ -23,7 +23,7 @@
 #include "tools/serialize/segpack.h"
 #include "tools/serialize/structbytes.h"
 
-namespace
+namespace serialize_test_case
 {
 struct OverestimatedPayload
 {
@@ -53,8 +53,6 @@ void RegisterSerializeCustomTypes()
 	}();
 	(void)registered;
 }
-}
-
 TEST(SerializeTest, Uint32RoundTripsWithoutSignLoss)
 {
 	constexpr uint32_t kValue = 0xFEDCBA98u;
@@ -434,3 +432,5 @@ TEST(SerializeTest, DbBuffBinaryUnserializeRejectsOversizedLength)
 
 	EXPECT_FALSE(buffer.unserialize(true, value, data.data(), static_cast<std::size_t>(std::numeric_limits<int32_t>::max()) + 1u));
 }
+
+} // namespace serialize_test_case

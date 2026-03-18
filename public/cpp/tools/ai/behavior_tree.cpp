@@ -15,6 +15,8 @@
 
 #include "tools/ai/behavior_tree.h"
 
+#include <behaviortree_cpp/action_node.h>
+
 #include <stdexcept>
 #include <utility>
 
@@ -24,6 +26,27 @@ namespace ngl
 	{
 		namespace
 		{
+			class callback_action_node final :
+				public BT::ActionNodeBase
+			{
+				bt_action_callback m_fun;
+			public:
+				callback_action_node(const std::string& aname, const BT::NodeConfig& aconfig, bt_action_callback afun) :
+					BT::ActionNodeBase(aname, aconfig),
+					m_fun(std::move(afun))
+				{}
+
+				BT::NodeStatus tick() override
+				{
+					return m_fun(*this);
+				}
+
+				void halt() override
+				{
+					resetStatus();
+				}
+			};
+
 			BT::Tree& require_tree(std::unique_ptr<BT::Tree>& atree)
 			{
 				if (atree == nullptr)
@@ -119,7 +142,16 @@ namespace ngl
 
 		void behavior_tree_factory::register_action(const std::string& aid, const bt_action_callback& afun, const bt_ports& aports)
 		{
-			m_factory.registerSimpleAction(aid, afun, aports);
+			BT::TreeNodeManifest lmanifest;
+			lmanifest.type = BT::NodeType::ACTION;
+			lmanifest.registration_ID = aid;
+			lmanifest.ports = aports;
+			m_factory.registerBuilder(lmanifest,
+				[afun](const std::string& aname, const BT::NodeConfig& aconfig)
+				{
+					return std::make_unique<callback_action_node>(aname, aconfig, afun);
+				}
+			);
 		}
 
 		void behavior_tree_factory::register_condition(const std::string& aid, const bt_condition_callback& afun, const bt_ports& aports)

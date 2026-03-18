@@ -112,6 +112,7 @@ namespace ngl
 
 		i64_actorid find_server(i32_session asession);
 		i64_actorid find_client(i32_session asession);
+		i32_session find_session(i64_actorid aclient);
 		bool find_actorid(i32_session asession, i64_actorid& aserver, i64_actorid& aclient);
 
 		// Derive and verify the logical handshake token shared by client and server.

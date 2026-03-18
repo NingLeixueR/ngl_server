@@ -20,6 +20,7 @@
 #include "actor/actor_base/actor_manage.h"
 #include "actor/actor_base/ndbclient.h"
 #include "tools/db/sql/mysql/nmysql.h"
+#include "tools/ai/behavior_tree.h"
 #include "actor/protocol/nprotocol.h"
 #include "tools/db/sql/db_data.h"
 #include "actor/pb/example.pb.h"
@@ -93,11 +94,23 @@ namespace ngl
 	{
 		// ----- Data Begin -----
 		pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE	m_data;
+		ai::behavior_tree_factory				m_behavior_factory;
+		ai::behavior_tree						m_behavior_tree;
+		bool									m_gateway_kcp_requested = false;
+		bool									m_role_kcp_requested = false;
+		int64_t									m_gateway_kcp_request_ms = 0;
+		int64_t									m_role_kcp_request_ms = 0;
+		// ----- Data End   -----
+		void init_behavior_tree();
+		void sync_behavior_blackboard();
+		BT::Blackboard::Ptr behavior_blackboard();
+		bool is_kcp_connected(pbnet::ENUM_KCP akcpenum);
+		ai::bt_status ensure_kcp_connected(pbnet::ENUM_KCP akcpenum);
+		ai::bt_status tick_behavior_tree();
 	public:
 		i32_session								m_session = 0;
 		_robot*									m_robot = nullptr;
 		bool									m_firstsync = false;
-		// ----- Data End   -----
 	public:
 		actor_robot() = delete;
 		actor_robot(const actor_robot&) = delete;

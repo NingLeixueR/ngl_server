@@ -22,15 +22,31 @@ list(APPEND CORE_LIST_CSRC ${NGL_PUBLIC_CPP_CSRC})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-ADD_LIBRARY(nglcore SHARED 
+if(NGLCORE_BUILD_SHARED)
+	set(NGLCORE_LIBRARY_KIND SHARED)
+else()
+	set(NGLCORE_LIBRARY_KIND STATIC)
+endif()
+
+ADD_LIBRARY(nglcore ${NGLCORE_LIBRARY_KIND}
 	${CORE_LIST_INCLUDE}
 	${CORE_LIST_SRC}
 	${CORE_LIST_CSRC}
 	${CORE_PROTOBUF_LIST_CSRC}
 )
-target_compile_definitions(nglcore PRIVATE NGLCORE_EXPORTS)
-target_include_directories(nglcore PRIVATE ${CORE_LIST})
-target_link_libraries(nglcore PRIVATE ngl_build_options)
+message(STATUS "Building nglcore as a ${NGLCORE_LIBRARY_KIND} library")
+
+if(NGLCORE_BUILD_SHARED)
+	target_compile_definitions(nglcore PRIVATE NGLCORE_EXPORTS)
+	if(WIN32)
+		set_target_properties(nglcore PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+	endif()
+else()
+	target_compile_definitions(nglcore PUBLIC NGLCORE_STATIC)
+endif()
+
+target_include_directories(nglcore PUBLIC ${CORE_LIST})
+target_link_libraries(nglcore PUBLIC ngl_build_options)
 
 ngl_apply_runtime_deps(nglcore PRIVATE)
 ngl_apply_unity_build(nglcore)

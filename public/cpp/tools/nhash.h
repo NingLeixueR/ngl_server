@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include "tools/log/nlog.h"
 #include "tools/threadtools.h"
 #include "tools/tools.h"
 

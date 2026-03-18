@@ -10,7 +10,7 @@
 #include "actor/actor_base/actor_manage.h"
 #include "actor/protocol/nprotocol.h"
 
-namespace
+namespace actor_manage_test_case
 {
 constexpr ngl::ENUM_ACTOR kEphemeralActorType = ngl::ACTOR_EXAMPLE_GUESS_NUMBER;
 
@@ -87,8 +87,6 @@ bool contains_actor_name(const ngl::msg_actor_stat& data, ngl::ENUM_ACTOR type)
 		return item.m_actor_name == expected;
 	});
 }
-}
-
 TEST(ActorManageTest, EraseActorRemovesLastTypeFromIndex)
 {
 	ngl::actor_manage& manage = ngl::actor_manage::instance();
@@ -154,3 +152,5 @@ TEST(ActorManageTest, GetActorStatOverwritesCallerBuffer)
 		return item.m_actor_name == "stale";
 	}));
 }
+
+} // namespace actor_manage_test_case

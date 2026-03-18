@@ -215,10 +215,12 @@ namespace ngl
 		{
 			return false;
 		}
-		return kcp_connect(*luport
+		const bool lconnected = kcp_connect(*luport
 			, lpstructserver.m_ip, nkcp::instance().kcp_port(ltid, ltcount, lpram->m_kcpnum())
 			, lpram->mactoridserver(), lkcpsession
 		);
+		sync_behavior_blackboard();
+		return lconnected;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
 	{
@@ -313,9 +315,9 @@ namespace ngl
 		if (!m_firstsync)
 		{
 			m_firstsync = true;
-			ukcp_connect(pbnet::ENUM_KCP::KCP_GATEWAY);
-			ukcp_connect(pbnet::ENUM_KCP::KCP_ROLE);
 		}
+		sync_behavior_blackboard();
+		tick_behavior_tree();
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata)
