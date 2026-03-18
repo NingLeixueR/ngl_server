@@ -1011,30 +1011,33 @@ namespace ngl
 			m_ipport.erase(sessionid);
 		}
 
+		const ws_closecallback lnotifyclose = m_closefun;
+
 		if (lservice != nullptr)
 		{
 			if (!lservice->m_closing.exchange(true, std::memory_order_acq_rel))
 			{
-				if (agraceful)
-				{
-					// Graceful close performs a websocket close handshake before force-closing the socket.
-					basio::post(lservice->m_ioservice,
-						[lservice]()
+				basio::post(lservice->m_ioservice,
+					[lservice, agraceful, anotifyclose, anotifycallback, sessionid, lnotifyclose, lclosefun]()
+					{
+						if (agraceful)
 						{
+							// Graceful close performs a websocket close handshake before force-closing the TCP socket.
 							ngl::ws::close_stream(*lservice);
-							ngl::ws::force_close_socket(lservice->socket());
 						}
-					);
-				}
-				else
-				{
-					ngl::ws::force_close_socket(lservice->socket());
-				}
+						ngl::ws::force_close_socket(lservice->socket());
 
-				if (anotifyclose && m_closefun != nullptr)
-				{
-					m_closefun(sessionid);
-				}
+						if (anotifyclose && lnotifyclose != nullptr)
+						{
+							lnotifyclose(sessionid);
+						}
+						if (anotifycallback && lclosefun != nullptr)
+						{
+							lclosefun();
+						}
+					}
+				);
+				return;
 			}
 		}
 

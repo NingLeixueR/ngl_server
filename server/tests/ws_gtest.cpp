@@ -138,13 +138,19 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 {
 	trace_step("text: begin");
 	auto server_received = std::make_shared<std::promise<std::string>>();
+	auto server_text = std::make_shared<std::promise<bool>>();
+	auto server_session = std::make_shared<std::promise<ngl::i32_sessionid>>();
 	auto client_received = std::make_shared<std::promise<std::string>>();
+	auto client_text = std::make_shared<std::promise<bool>>();
 	auto connected = std::make_shared<std::promise<ngl::i32_sessionid>>();
 	auto server_closed = std::make_shared<std::promise<ngl::i32_sessionid>>();
 	auto client_closed = std::make_shared<std::promise<ngl::i32_sessionid>>();
 
 	std::future<std::string> server_received_future = server_received->get_future();
+	std::future<bool> server_text_future = server_text->get_future();
+	std::future<ngl::i32_sessionid> server_session_future = server_session->get_future();
 	std::future<std::string> client_received_future = client_received->get_future();
+	std::future<bool> client_text_future = client_text->get_future();
 	std::future<ngl::i32_sessionid> connected_future = connected->get_future();
 	std::future<ngl::i32_sessionid> server_closed_future = server_closed->get_future();
 	std::future<ngl::i32_sessionid> client_closed_future = client_closed->get_future();
@@ -154,10 +160,10 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 		0,
 		1,
 		false,
-		[&server, server_received](ngl::service_ws* asession, const char* abuff, uint32_t alen) {
+		[server_received, server_text, server_session](ngl::service_ws* asession, const char* abuff, uint32_t alen) {
 			try_set_promise(server_received, std::string(abuff, abuff + alen));
-			EXPECT_TRUE(asession->message_is_text());
-			EXPECT_TRUE(server->send_msg(asession->m_sessionid, "pong"));
+			try_set_promise(server_text, asession->message_is_text());
+			try_set_promise(server_session, asession->m_sessionid);
 			return true;
 		},
 		[server_closed](ngl::i32_sessionid asessionid) {
@@ -170,9 +176,9 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 	client = std::make_unique<ngl::asio_ws>(
 		1,
 		false,
-		[client_received](ngl::service_ws* asession, const char* abuff, uint32_t alen) {
-			EXPECT_TRUE(asession->message_is_text());
+		[client_received, client_text](ngl::service_ws* asession, const char* abuff, uint32_t alen) {
 			try_set_promise(client_received, std::string(abuff, abuff + alen));
+			try_set_promise(client_text, asession->message_is_text());
 			return true;
 		},
 		[client_closed](ngl::i32_sessionid asessionid) {
@@ -194,9 +200,17 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 
 	trace_step("text: wait recv");
 	ASSERT_EQ(server_received_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
-	ASSERT_EQ(client_received_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	ASSERT_EQ(server_text_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	ASSERT_EQ(server_session_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
 	EXPECT_EQ(server_received_future.get(), "ping");
+	EXPECT_TRUE(server_text_future.get());
+	const ngl::i32_sessionid server_sessionid = server_session_future.get();
+	ASSERT_GT(server_sessionid, 0);
+	ASSERT_TRUE(server->send_msg(server_sessionid, "pong"));
+	ASSERT_EQ(client_received_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	ASSERT_EQ(client_text_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
 	EXPECT_EQ(client_received_future.get(), "pong");
+	EXPECT_TRUE(client_text_future.get());
 
 	std::pair<ngl::str_ip, ngl::i16_port> endpoint;
 	EXPECT_TRUE(client->get_ipport(sessionid, endpoint));
