@@ -40,7 +40,7 @@ namespace ngl
 		void set_dbclient(ndbclient_base* andbclient);
 
 		// Access the bound dbclient without changing ownership.
-		inline ndbclient_base* get_dbclient();
+		ndbclient_base* get_dbclient();
 	public:
 		// Attach this component to its host actor and register it for DB lifecycle callbacks.
 		void				set(actor_base* aactor);
