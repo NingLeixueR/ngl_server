@@ -35,23 +35,39 @@ set(NGL_TEST_SUPPORT_SRCS
 	${NGL_PUBLIC_CPP_CSRC}
 )
 
-add_executable(ngl_test
-	${NGL_TEST_CASE_SRCS}
-	${NGL_TEST_SUPPORT_SRCS}
-	${NGL_TEST_CORE_PROTOBUF_CSRC}
-)
+if(NGLCORE_BUILD_SHARED)
+	add_executable(ngl_test
+		${NGL_TEST_CASE_SRCS}
+		${NGL_TEST_SUPPORT_SRCS}
+		${NGL_TEST_CORE_PROTOBUF_CSRC}
+	)
+else()
+	add_executable(ngl_test
+		${NGL_TEST_CASE_SRCS}
+	)
+endif()
 
 target_include_directories(ngl_test PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/../libnglcore/core
 )
-target_compile_definitions(ngl_test PRIVATE NGLCORE_EXPORTS)
 
-target_link_libraries(ngl_test PRIVATE
-	ngl_build_options
-	${NGL_GTEST_MAIN_TARGET}
-)
+if(NGLCORE_BUILD_SHARED)
+	target_compile_definitions(ngl_test PRIVATE NGLCORE_EXPORTS)
+	target_link_libraries(ngl_test PRIVATE
+		ngl_build_options
+		${NGL_GTEST_MAIN_TARGET}
+	)
+else()
+	target_link_libraries(ngl_test PRIVATE
+		nglcore
+		${NGL_GTEST_MAIN_TARGET}
+	)
+	set_target_properties(ngl_test PROPERTIES UNITY_BUILD OFF)
+endif()
 ngl_apply_runtime_deps(ngl_test PRIVATE)
-ngl_apply_unity_build(ngl_test)
+if(NGLCORE_BUILD_SHARED)
+	ngl_apply_unity_build(ngl_test)
+endif()
 ngl_apply_msvc_defaults(ngl_test)
 
 gtest_discover_tests(ngl_test
