@@ -224,6 +224,11 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 	ASSERT_EQ(server_closed_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
 	ASSERT_GT(server_closed_future.get(), 0);
 	trace_step("text: end");
+	trace_step("text: reset client");
+	client.reset();
+	trace_step("text: reset server");
+	server.reset();
+	trace_step("text: cleanup done");
 }
 
 TEST(WsTest, AsioWsSendsPackPayloadAsBinaryFrame)
