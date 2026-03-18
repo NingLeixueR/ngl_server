@@ -146,15 +146,13 @@ namespace ngl
 		}
 
 		basio_ioservice& lioservice = *m_service_ios.get_ioservice(m_service_ios.m_recvthreadsize);
-		m_acceptor_v4 = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v4(), m_port));
-		//m_acceptor_v4 = ngl::ws::create_acceptor(lioservice, basio::ip::tcp::v4(), m_port);
+		m_acceptor_v4 = ngl::ws::create_acceptor(lioservice, basio::ip::tcp::v4(), m_port);
 		if (m_port == 0)
 		{
 			m_port = m_acceptor_v4->local_endpoint().port();
 			log_error()->print("asio_ws prot preinstall/reality:0/{}", m_port);
 		}
-		m_acceptor_v6 = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v6(), m_port));
-		//m_acceptor_v6 = ngl::ws::create_acceptor(lioservice, basio::ip::tcp::v6(), m_port);
+		m_acceptor_v6 = ngl::ws::create_acceptor(lioservice, basio::ip::tcp::v6(), m_port);
 		accept(true);
 		accept(false);
 	}

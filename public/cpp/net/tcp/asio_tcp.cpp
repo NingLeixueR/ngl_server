@@ -38,6 +38,26 @@ namespace ngl
 		{
 			return !ec || ec == basio::error::operation_aborted || ec == basio::error::bad_descriptor;
 		}
+
+		std::shared_ptr<basio_tcpacceptor> create_acceptor(
+			basio_ioservice& aioservice,
+			const basio::ip::tcp& aprotocol,
+			i16_port aport
+		)
+		{
+			// Build the acceptor step by step so IPv6 socket options are applied
+			// before bind() on platforms where dual-stack is enabled by default.
+			auto acceptor = std::make_shared<basio_tcpacceptor>(aioservice);
+			acceptor->open(aprotocol);
+			if (aprotocol == basio::ip::tcp::v6())
+			{
+				acceptor->set_option(basio::ip::v6_only(true));
+			}
+			acceptor->set_option(basio::socket_base::reuse_address(true));
+			acceptor->bind(basio_iptcpendpoint(aprotocol, aport));
+			acceptor->listen(basio::socket_base::max_listen_connections);
+			return acceptor;
+		}
 	}
 
 	asio_tcp::asio_tcp(
@@ -58,15 +78,13 @@ namespace ngl
 	{
 		basio_ioservice& lioservice = *m_service_ios.get_ioservice(m_service_ios.m_recvthreadsize);
 		// One acceptor per address family keeps IPv4 and IPv6 accepts independent.
-		m_acceptor_v4 = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v4(), m_port));
+		m_acceptor_v4 = ngl::tcp::create_acceptor(lioservice, basio::ip::tcp::v4(), m_port);
 		if (m_port == 0)
 		{
 			m_port = m_acceptor_v4->local_endpoint().port();
 			log_error()->print("asio_tcp prot preinstall/reality:0/{}", m_port);
 		}
-		m_acceptor_v6 = std::make_shared<basio_tcpacceptor>(lioservice, basio_iptcpendpoint(basio::ip::tcp::v6(), m_port));
-		m_acceptor_v4->set_option(basio::socket_base::reuse_address(true));
-		m_acceptor_v6->set_option(basio::socket_base::reuse_address(true));
+		m_acceptor_v6 = ngl::tcp::create_acceptor(lioservice, basio::ip::tcp::v6(), m_port);
 		accept(true);
 		accept(false);
 	}
