@@ -20,6 +20,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 namespace ngl
 {
@@ -38,9 +39,10 @@ namespace ngl
 			std::unique_ptr<BT::Tree> m_tree;
 			BT::Blackboard::Ptr m_root_blackboard = nullptr;
 			BT::Blackboard::Ptr m_global_blackboard = nullptr;
+			std::shared_ptr<BT::BehaviorTreeFactory> m_factory_owner = nullptr;
 		public:
 			behavior_tree() = default;
-			behavior_tree(BT::Tree atree, const BT::Blackboard::Ptr& aroot_blackboard, const BT::Blackboard::Ptr& aglobal_blackboard);
+			behavior_tree(BT::Tree atree, const BT::Blackboard::Ptr& aroot_blackboard, const BT::Blackboard::Ptr& aglobal_blackboard, std::shared_ptr<BT::BehaviorTreeFactory> afactory_owner);
 
 			behavior_tree(const behavior_tree&) = delete;
 			behavior_tree& operator=(const behavior_tree&) = delete;
@@ -71,7 +73,8 @@ namespace ngl
 		// optional global blackboard.
 		class behavior_tree_factory
 		{
-			BT::BehaviorTreeFactory m_factory;
+			std::shared_ptr<BT::BehaviorTreeFactory> m_factory = std::make_shared<BT::BehaviorTreeFactory>();
+			std::unordered_map<std::string, std::string> m_registered_tree_xml;
 
 			static BT::Blackboard::Ptr ensure_global_blackboard(const BT::Blackboard::Ptr& aglobal_blackboard);
 			static BT::Blackboard::Ptr make_root_blackboard(const BT::Blackboard::Ptr& aglobal_blackboard);
