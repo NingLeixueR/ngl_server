@@ -39,6 +39,14 @@ namespace ngl
 			return !ec || ec == basio::error::operation_aborted || ec == basio::error::bad_descriptor;
 		}
 
+		bool is_optional_ipv6_acceptor_error(const basio_errorcode& ec)
+		{
+			return ec == basio::error::address_family_not_supported
+				|| ec == basio::error::protocol_not_supported
+				|| ec == basio::error::operation_not_supported
+				|| ec == basio::error::address_not_available;
+		}
+
 		std::shared_ptr<basio_tcpacceptor> create_acceptor(
 			basio_ioservice& aioservice,
 			const basio::ip::tcp& aprotocol,
@@ -84,7 +92,19 @@ namespace ngl
 			m_port = m_acceptor_v4->local_endpoint().port();
 			log_error()->print("asio_tcp prot preinstall/reality:0/{}", m_port);
 		}
-		m_acceptor_v6 = ngl::tcp::create_acceptor(lioservice, basio::ip::tcp::v6(), m_port);
+		try
+		{
+			m_acceptor_v6 = ngl::tcp::create_acceptor(lioservice, basio::ip::tcp::v6(), m_port);
+		}
+		catch (const boost::system::system_error& ex)
+		{
+			if (!ngl::tcp::is_optional_ipv6_acceptor_error(ex.code()))
+			{
+				throw;
+			}
+			log_warn()->print("asio_tcp ipv6 listener unavailable, continue with ipv4 only [{}]", ex.code().message());
+			m_acceptor_v6.reset();
+		}
 		accept(true);
 		accept(false);
 	}
@@ -523,6 +543,21 @@ namespace ngl
 
 	void asio_tcp::accept(bool av4)
 	{
+		if (av4)
+		{
+			if (m_acceptor_v4 == nullptr || !m_acceptor_v4->is_open())
+			{
+				return;
+			}
+		}
+		else
+		{
+			if (m_acceptor_v6 == nullptr || !m_acceptor_v6->is_open())
+			{
+				return;
+			}
+		}
+
 		std::shared_ptr<service_tcp> lservice = nullptr;
 		{
 			lock_write(m_maplock);

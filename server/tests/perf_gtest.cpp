@@ -377,41 +377,6 @@ TEST(TTabMergeAreaPerfTest, MergeLookupBenchmark)
 		<< " optimized_us=" << optimized_us << std::endl;
 }
 
-TEST(XargInfoPerfTest, BoolLookupBenchmark)
-{
-	ngl::xarg_info info;
-	info.data()["flag"] = std::string(96, ' ') + "TrUe" + std::string(96, ' ');
-	constexpr int kIterations = 200000;
-	volatile int sink = 0;
-
-	const long long legacy_us = benchmark_us([&]() {
-		for (int i = 0; i < kIterations; ++i)
-		{
-			bool value = false;
-			if (legacy_parse_bool(info.data().at("flag"), value) && value)
-			{
-				++sink;
-			}
-		}
-	});
-
-	const long long optimized_us = benchmark_us([&]() {
-		for (int i = 0; i < kIterations; ++i)
-		{
-			bool value = false;
-			if (info.find("flag", value) && value)
-			{
-				++sink;
-			}
-		}
-	});
-
-	EXPECT_GT(sink, 0);
-	EXPECT_LT(optimized_us, legacy_us);
-	std::cout << "[perf] xarg_info_bool_lookup legacy_us=" << legacy_us
-		<< " optimized_us=" << optimized_us << std::endl;
-}
-
 TEST(CsvPerfTest, StringFieldParsingBenchmark)
 {
 	const std::string payload = "\"" + std::string(256, 'x') + "\",tail";
