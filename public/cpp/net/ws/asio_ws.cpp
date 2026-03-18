@@ -70,7 +70,7 @@ namespace ngl
 			{
 				// Linux keeps IPv6 sockets dual-stack by default; force v6-only so v4/v6
 				// wildcard listeners can share the same port across platforms.
-				acceptor->set_option(basio::ip::v6_only(false));
+				acceptor->set_option(basio::ip::v6_only(true));
 			}
 			acceptor->set_option(basio::socket_base::reuse_address(true));
 			acceptor->bind(basio_iptcpendpoint(aprotocol, aport));
@@ -146,9 +146,15 @@ namespace ngl
 		}
 
 		basio_ioservice& lioservice = *m_service_ios.get_ioservice(m_service_ios.m_recvthreadsize);
-		m_acceptor = ngl::ws::create_acceptor(lioservice, basio::ip::tcp::v6(), m_port);
-		m_port = m_acceptor->local_endpoint().port();
-		accept();
+		m_acceptor_v4 = ngl::ws::create_acceptor(lioservice, basio::ip::tcp::v4(), m_port);
+		if (m_port == 0)
+		{
+			m_port = m_acceptor_v4->local_endpoint().port();
+			log_error()->print("asio_ws prot preinstall/reality:0/{}", m_port);
+		}
+		m_acceptor_v6 = ngl::ws::create_acceptor(lioservice, basio::ip::tcp::v6(), m_port);
+		accept(true);
+		accept(false);
 	}
 
 	asio_ws::asio_ws(
@@ -176,12 +182,24 @@ namespace ngl
 	asio_ws::~asio_ws()
 	{
 		basio_errorcode ec;
-		m_acceptor->close(ec);
-		if (!ngl::ws::should_ignore_acceptor_close_error(ec))
+		if (m_acceptor_v4 != nullptr)
 		{
-			log_error()->print("asio_ws::~asio_ws close acceptor [{}]", ec.message());
+			m_acceptor_v4->close(ec);
+			if (!ngl::ws::should_ignore_acceptor_close_error(ec))
+			{
+				log_error()->print("asio_ws::~asio_ws close v4 acceptor [{}]", ec.message());
+			}
+			m_acceptor_v4.reset();
 		}
-		m_acceptor.reset();
+		if (m_acceptor_v6 != nullptr)
+		{
+			m_acceptor_v6->close(ec);
+			if (!ngl::ws::should_ignore_acceptor_close_error(ec))
+			{
+				log_error()->print("asio_ws::~asio_ws close v6 acceptor [{}]", ec.message());
+			}
+			m_acceptor_v6.reset();
+		}
 
 		std::vector<std::shared_ptr<service_ws>> lservices;
 		{
@@ -212,6 +230,8 @@ namespace ngl
 			ngl::ws::force_close_socket(service->socket());
 		}
 
+		// Release websocket stream objects before stopping their io threads.
+		lservices.clear();
 		m_service_ios.shutdown();
 	}
 
@@ -758,7 +778,7 @@ namespace ngl
 		}
 	}
 
-	void asio_ws::accept_handle(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error)
+	void asio_ws::accept_handle(bool av4, const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error)
 	{
 		if (error)
 		{
@@ -773,14 +793,24 @@ namespace ngl
 			begin_server_handshake(aservice);
 		}
 
-		accept();
+		accept(av4);
 	}
 
-	void asio_ws::accept()
+	void asio_ws::accept(bool av4)
 	{
-		if (m_acceptor == nullptr || !m_acceptor->is_open())
+		if (av4)
 		{
-			return;
+			if (m_acceptor_v4 == nullptr || !m_acceptor_v4->is_open())
+			{
+				return;
+			}
+		}
+		else
+		{
+			if (m_acceptor_v6 == nullptr || !m_acceptor_v6->is_open())
+			{
+				return;
+			}
 		}
 
 		const std::shared_ptr<service_ws> lservice = create_service();
@@ -789,12 +819,24 @@ namespace ngl
 			return;
 		}
 
-		m_acceptor->async_accept(lservice->socket(),
-			[this, lservice](const basio_errorcode& error)
-			{
-				accept_handle(lservice, error);
-			}
-		);
+		if (av4)
+		{
+			m_acceptor_v4->async_accept(lservice->socket(),
+				[this, lservice, av4](const basio_errorcode& error)
+				{
+					accept_handle(av4, lservice, error);
+				}
+			);
+		}
+		else
+		{
+			m_acceptor_v6->async_accept(lservice->socket(),
+				[this, lservice, av4](const basio_errorcode& error)
+				{
+					accept_handle(av4, lservice, error);
+				}
+			);
+		}		
 	}
 
 	void asio_ws::start(const std::shared_ptr<service_ws>& aservice)
