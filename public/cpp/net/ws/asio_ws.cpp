@@ -60,9 +60,9 @@ namespace ngl
 		bool is_optional_ipv6_acceptor_error(const basio_errorcode& ec)
 		{
 			return ec == basio::error::address_family_not_supported
-				|| ec == basio::error::protocol_not_supported
+				|| ec == boost::system::errc::make_error_code(boost::system::errc::protocol_not_supported)
 				|| ec == basio::error::operation_not_supported
-				|| ec == basio::error::address_not_available;
+				|| ec == boost::system::errc::make_error_code(boost::system::errc::address_not_available);
 		}
 
 		std::shared_ptr<basio_tcpacceptor> create_acceptor(
