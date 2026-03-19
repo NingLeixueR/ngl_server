@@ -107,7 +107,7 @@ namespace ngl
 		if (m_port == 0)
 		{
 			m_port = m_acceptor_v4->local_endpoint().port();
-			log_error()->print("asio_tcp prot preinstall/reality:0/{}", m_port);
+			log_info_net()->print("asio_tcp bound ephemeral port {}", m_port);
 		}
 		try
 		{
@@ -145,7 +145,10 @@ namespace ngl
 
 	asio_tcp::~asio_tcp()
 	{
-		m_alive->store(false, std::memory_order_release);
+		{
+			std::unique_lock<std::shared_mutex> callback_guard(*m_callbacklock);
+			m_alive->store(false, std::memory_order_release);
+		}
 
 		basio_errorcode ec;
 		{
@@ -220,9 +223,11 @@ namespace ngl
 			}
 		}
 		const auto alive = m_alive;
+		const auto callback_lock = m_callbacklock;
 		lservice->m_socket.async_connect(basio_iptcpendpoint(basio_ipaddress::from_string(aip), aport), 
-			[this, alive, lservice, aip, aport, afun, acount](const basio_errorcode& ec)
+			[this, alive, callback_lock, lservice, aip, aport, afun, acount](const basio_errorcode& ec)
 			{
+				std::shared_lock<std::shared_mutex> callback_guard(*callback_lock);
 				if (!ngl::tcp::is_alive(alive))
 				{
 					return;
@@ -240,8 +245,9 @@ namespace ngl
 							.m_ms = ngl::tcp::tcp_connect_interval_ms,
 							.m_intervalms = [](int64_t) { return ngl::tcp::tcp_connect_interval_ms; },
 							.m_count = 1,
-							.m_fun = [this, alive, aip, aport, afun, acount](const wheel_node*)
+							.m_fun = [this, alive, callback_lock, aip, aport, afun, acount](const wheel_node*)
 							{
+								std::shared_lock<std::shared_mutex> callback_guard(*callback_lock);
 								if (!ngl::tcp::is_alive(alive))
 								{
 									return;
@@ -343,8 +349,10 @@ namespace ngl
 	)
 	{
 		const auto alive = m_alive;
-		atcp->m_socket.async_send(basio::buffer(abuff, abufflen), [this, alive, alist, atcp, apack](const basio_errorcode& ec, std::size_t /*length*/)
+		const auto callback_lock = m_callbacklock;
+		atcp->m_socket.async_send(basio::buffer(abuff, abufflen), [this, alive, callback_lock, alist, atcp, apack](const basio_errorcode& ec, std::size_t /*length*/)
 			{
+				std::shared_lock<std::shared_mutex> callback_guard(*callback_lock);
 				if (!ngl::tcp::is_alive(alive))
 				{
 					return;
@@ -609,6 +617,7 @@ namespace ngl
 			}
 		}
 		const auto alive = m_alive;
+		const auto callback_lock = m_callbacklock;
 		std::lock_guard<std::mutex> accept_lock(m_acceptorlock);
 		if (av4)
 		{
@@ -617,8 +626,9 @@ namespace ngl
 				close_net(lservice->m_sessionid);
 				return;
 			}
-			m_acceptor_v4->async_accept(lservice->m_socket, [this, alive, lservice](const basio_errorcode& error)
+			m_acceptor_v4->async_accept(lservice->m_socket, [this, alive, callback_lock, lservice](const basio_errorcode& error)
 				{
+					std::shared_lock<std::shared_mutex> callback_guard(*callback_lock);
 					if (!ngl::tcp::is_alive(alive))
 					{
 						return;
@@ -634,8 +644,9 @@ namespace ngl
 				close_net(lservice->m_sessionid);
 				return;
 			}
-			m_acceptor_v6->async_accept(lservice->m_socket, [this, alive, lservice](const basio_errorcode& error)
+			m_acceptor_v6->async_accept(lservice->m_socket, [this, alive, callback_lock, lservice](const basio_errorcode& error)
 				{
+					std::shared_lock<std::shared_mutex> callback_guard(*callback_lock);
 					if (!ngl::tcp::is_alive(alive))
 					{
 						return;
@@ -650,9 +661,11 @@ namespace ngl
 	{
 		char* lbuff = aservice->buff();
 		const auto alive = m_alive;
+		const auto callback_lock = m_callbacklock;
 		aservice->m_socket.async_read_some(basio::buffer(lbuff, m_service_ios.m_buffmaxsize)
-			, [this, alive, lbuff, aservice](const basio_errorcode& error, size_t bytes_transferred)
+			, [this, alive, callback_lock, lbuff, aservice](const basio_errorcode& error, size_t bytes_transferred)
 			{
+				std::shared_lock<std::shared_mutex> callback_guard(*callback_lock);
 				if (!ngl::tcp::is_alive(alive))
 				{
 					return;

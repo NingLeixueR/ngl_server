@@ -51,6 +51,7 @@ namespace ngl
 		map_service_tcp						m_data;							// Session id -> service_tcp object.
 		map_ipport							m_ipport;						// Session id -> remote ip/port.
 		map_close							m_close;						// Session-local reconnect/cleanup callbacks.
+		std::shared_ptr<std::shared_mutex>	m_callbacklock = std::make_shared<std::shared_mutex>(); // Gates async callbacks against teardown.
 		std::shared_ptr<std::atomic_bool>	m_alive = std::make_shared<std::atomic_bool>(true); // Shared liveness flag for async callbacks.
 	public:
 		enum
