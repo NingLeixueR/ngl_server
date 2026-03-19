@@ -23,6 +23,44 @@
 namespace basio = ngl::basio;
 using basio_errorcode = ngl::basio_errorcode;
 
+namespace
+{
+	void try_set_string_value(const std::shared_ptr<std::promise<std::string>>& promise, std::string value)
+	{
+		try
+		{
+			promise->set_value(std::move(value));
+		}
+		catch (const std::future_error&)
+		{
+		}
+	}
+
+	void try_set_session_value(const std::shared_ptr<std::promise<ngl::i32_sessionid>>& promise, ngl::i32_sessionid value)
+	{
+		try
+		{
+			promise->set_value(value);
+		}
+		catch (const std::future_error&)
+		{
+		}
+	}
+
+	std::shared_ptr<ngl::pack> make_test_packet(const std::string& payload)
+	{
+		auto packet = std::make_shared<ngl::pack>();
+		if (!packet->malloc(static_cast<int32_t>(payload.size())))
+		{
+			return {};
+		}
+		std::copy(payload.begin(), payload.end(), packet->m_buff);
+		packet->m_len = static_cast<int32_t>(payload.size());
+		packet->m_pos = static_cast<int32_t>(payload.size());
+		return packet;
+	}
+}
+
 TEST(NetTest, ServerSessionReplacesExistingMappingsBidirectionally)
 {
 	constexpr ngl::i32_serverid kServer1 = 91001;
@@ -281,35 +319,9 @@ TEST(NetTest, AsioTcpCloseDisconnectsPeerAndNotifiesOnce)
 
 TEST(NetTest, AsioTcpServerAndClientExchangePayloads)
 {
-	auto try_set_string = [](const std::shared_ptr<std::promise<std::string>>& promise, std::string value) {
-		try
-		{
-			promise->set_value(std::move(value));
-		}
-		catch (const std::future_error&)
-		{
-		}
-	};
-	auto try_set_session = [](const std::shared_ptr<std::promise<ngl::i32_sessionid>>& promise, ngl::i32_sessionid value) {
-		try
-		{
-			promise->set_value(value);
-		}
-		catch (const std::future_error&)
-		{
-		}
-	};
-	auto make_packet = [](const std::string& payload) {
-		auto packet = std::make_shared<ngl::pack>();
-		if (!packet->malloc(static_cast<int32_t>(payload.size())))
-		{
-			return std::shared_ptr<ngl::pack>{};
-		}
-		std::copy(payload.begin(), payload.end(), packet->m_buff);
-		packet->m_len = static_cast<int32_t>(payload.size());
-		packet->m_pos = static_cast<int32_t>(payload.size());
-		return packet;
-	};
+#if defined(_WIN32)
+	GTEST_SKIP() << "Windows coverage is provided by split server/client exchange tests to avoid flaky dual-asio_tcp in-process teardown.";
+#endif
 
 	auto server_received = std::make_shared<std::promise<std::string>>();
 	auto server_session = std::make_shared<std::promise<ngl::i32_sessionid>>();
@@ -328,13 +340,13 @@ TEST(NetTest, AsioTcpServerAndClientExchangePayloads)
 	auto server = std::make_unique<ngl::asio_tcp>(
 		0,
 		1,
-		[server_received, server_session, &try_set_string, &try_set_session](ngl::service_tcp* asession, const char* buff, uint32_t bufflen) {
-			try_set_string(server_received, std::string(buff, buff + bufflen));
-			try_set_session(server_session, asession->m_sessionid);
+		[server_received, server_session](ngl::service_tcp* asession, const char* buff, uint32_t bufflen) {
+			try_set_string_value(server_received, std::string(buff, buff + bufflen));
+			try_set_session_value(server_session, asession->m_sessionid);
 			return true;
 		},
-		[server_closed, &try_set_session](ngl::i32_sessionid sessionid) {
-			try_set_session(server_closed, sessionid);
+		[server_closed](ngl::i32_sessionid sessionid) {
+			try_set_session_value(server_closed, sessionid);
 		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
@@ -343,25 +355,25 @@ TEST(NetTest, AsioTcpServerAndClientExchangePayloads)
 
 	auto client = std::make_unique<ngl::asio_tcp>(
 		1,
-		[client_received, &try_set_string](ngl::service_tcp*, const char* buff, uint32_t bufflen) {
-			try_set_string(client_received, std::string(buff, buff + bufflen));
+		[client_received](ngl::service_tcp*, const char* buff, uint32_t bufflen) {
+			try_set_string_value(client_received, std::string(buff, buff + bufflen));
 			return true;
 		},
-		[client_closed, &try_set_session](ngl::i32_sessionid sessionid) {
-			try_set_session(client_closed, sessionid);
+		[client_closed](ngl::i32_sessionid sessionid) {
+			try_set_session_value(client_closed, sessionid);
 		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
 
-	client->connect("127.0.0.1", port, [connected, &try_set_session](ngl::i32_sessionid sessionid) {
-		try_set_session(connected, sessionid);
+	client->connect("127.0.0.1", port, [connected](ngl::i32_sessionid sessionid) {
+		try_set_session_value(connected, sessionid);
 	}, 0);
 
 	ASSERT_EQ(connected_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
 	const ngl::i32_sessionid client_sessionid = connected_future.get();
 	ASSERT_GT(client_sessionid, 0);
 
-	auto client_packet = make_packet("tcp-ping");
+	auto client_packet = make_test_packet("tcp-ping");
 	ASSERT_NE(client_packet, nullptr);
 	ASSERT_TRUE(client->send(client_sessionid, client_packet));
 
@@ -371,7 +383,7 @@ TEST(NetTest, AsioTcpServerAndClientExchangePayloads)
 	const ngl::i32_sessionid server_sessionid = server_session_future.get();
 	ASSERT_GT(server_sessionid, 0);
 
-	auto server_packet = make_packet("tcp-pong");
+	auto server_packet = make_test_packet("tcp-pong");
 	ASSERT_NE(server_packet, nullptr);
 	ASSERT_TRUE(server->send(server_sessionid, server_packet));
 
@@ -391,6 +403,150 @@ TEST(NetTest, AsioTcpServerAndClientExchangePayloads)
 
 	client.reset();
 	server.reset();
+}
+
+TEST(NetTest, AsioTcpServerExchangesPayloadsWithPlainAsioClient)
+{
+	auto server_received = std::make_shared<std::promise<std::string>>();
+	auto server_session = std::make_shared<std::promise<ngl::i32_sessionid>>();
+	auto server_closed = std::make_shared<std::promise<ngl::i32_sessionid>>();
+
+	std::future<std::string> server_received_future = server_received->get_future();
+	std::future<ngl::i32_sessionid> server_session_future = server_session->get_future();
+	std::future<ngl::i32_sessionid> server_closed_future = server_closed->get_future();
+
+	auto server = std::make_unique<ngl::asio_tcp>(
+		0,
+		1,
+		[server_received, server_session](ngl::service_tcp* asession, const char* buff, uint32_t bufflen) {
+			try_set_string_value(server_received, std::string(buff, buff + bufflen));
+			try_set_session_value(server_session, asession->m_sessionid);
+			return true;
+		},
+		[server_closed](ngl::i32_sessionid sessionid) {
+			try_set_session_value(server_closed, sessionid);
+		},
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+	);
+
+	const ngl::i16_port port = server->port();
+	ASSERT_GT(port, 0);
+
+	basio::io_context client_context;
+	basio::ip::tcp::socket client_socket(client_context);
+	client_socket.connect(basio::ip::tcp::endpoint(basio::ip::make_address("127.0.0.1"), port));
+
+	const std::string kPing = "tcp-ping";
+	const std::string kPong = "tcp-pong";
+	basio::write(client_socket, basio::buffer(kPing));
+
+	ASSERT_EQ(server_received_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	ASSERT_EQ(server_session_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	EXPECT_EQ(server_received_future.get(), kPing);
+
+	const ngl::i32_sessionid sessionid = server_session_future.get();
+	ASSERT_GT(sessionid, 0);
+
+	auto packet = make_test_packet(kPong);
+	ASSERT_NE(packet, nullptr);
+	ASSERT_TRUE(server->send(sessionid, packet));
+
+	std::array<char, 16> reply{};
+	const std::size_t reply_bytes = basio::read(client_socket, basio::buffer(reply.data(), kPong.size()));
+	ASSERT_EQ(reply_bytes, kPong.size());
+	EXPECT_EQ(std::string(reply.data(), reply.data() + reply_bytes), kPong);
+
+	basio_errorcode ec;
+	client_socket.shutdown(basio::ip::tcp::socket::shutdown_both, ec);
+	client_socket.close(ec);
+
+	ASSERT_EQ(server_closed_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	EXPECT_EQ(server_closed_future.get(), sessionid);
+}
+
+TEST(NetTest, AsioTcpClientExchangesPayloadsWithPlainAsioServer)
+{
+	basio::io_context accept_context;
+	auto accept_work = basio::make_work_guard(accept_context);
+	basio::ip::tcp::acceptor acceptor(accept_context, basio::ip::tcp::endpoint(basio::ip::tcp::v4(), 0));
+	const ngl::i16_port port = acceptor.local_endpoint().port();
+
+	auto accepted_socket = std::make_shared<basio::ip::tcp::socket>(accept_context);
+	auto accepted_result = std::make_shared<std::promise<void>>();
+	std::future<void> accepted_future = accepted_result->get_future();
+
+	acceptor.async_accept(*accepted_socket, [accepted_result](const basio_errorcode& ec) {
+		EXPECT_FALSE(ec);
+		try
+		{
+			accepted_result->set_value();
+		}
+		catch (const std::future_error&)
+		{
+		}
+	});
+
+	std::thread accept_thread([&accept_context]() {
+		accept_context.run();
+	});
+
+	auto client_received = std::make_shared<std::promise<std::string>>();
+	auto connected = std::make_shared<std::promise<ngl::i32_sessionid>>();
+	auto client_closed = std::make_shared<std::promise<ngl::i32_sessionid>>();
+
+	std::future<std::string> client_received_future = client_received->get_future();
+	std::future<ngl::i32_sessionid> connected_future = connected->get_future();
+	std::future<ngl::i32_sessionid> client_closed_future = client_closed->get_future();
+
+	auto client = std::make_unique<ngl::asio_tcp>(
+		1,
+		[client_received](ngl::service_tcp*, const char* buff, uint32_t bufflen) {
+			try_set_string_value(client_received, std::string(buff, buff + bufflen));
+			return true;
+		},
+		[client_closed](ngl::i32_sessionid sessionid) {
+			try_set_session_value(client_closed, sessionid);
+		},
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+	);
+
+	client->connect("127.0.0.1", port, [connected](ngl::i32_sessionid sessionid) {
+		try_set_session_value(connected, sessionid);
+	}, 0);
+
+	ASSERT_EQ(connected_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	ASSERT_EQ(accepted_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+
+	const ngl::i32_sessionid sessionid = connected_future.get();
+	ASSERT_GT(sessionid, 0);
+
+	const std::string kPing = "tcp-ping";
+	const std::string kPong = "tcp-pong";
+
+	auto packet = make_test_packet(kPing);
+	ASSERT_NE(packet, nullptr);
+	ASSERT_TRUE(client->send(sessionid, packet));
+
+	std::array<char, 16> request{};
+	const std::size_t request_bytes = basio::read(*accepted_socket, basio::buffer(request.data(), kPing.size()));
+	ASSERT_EQ(request_bytes, kPing.size());
+	EXPECT_EQ(std::string(request.data(), request.data() + request_bytes), kPing);
+
+	basio::write(*accepted_socket, basio::buffer(kPong));
+
+	ASSERT_EQ(client_received_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	EXPECT_EQ(client_received_future.get(), kPong);
+
+	client->close(sessionid);
+	ASSERT_EQ(client_closed_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	EXPECT_EQ(client_closed_future.get(), sessionid);
+
+	basio_errorcode ec;
+	accepted_socket->close(ec);
+	acceptor.close(ec);
+	accept_work.reset();
+	accept_context.stop();
+	accept_thread.join();
 }
 
 TEST(NetTest, KcpSessionMaintainsActorIndexesAndAreaIteration)
