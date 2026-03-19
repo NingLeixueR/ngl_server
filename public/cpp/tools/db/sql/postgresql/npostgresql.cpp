@@ -29,6 +29,8 @@ namespace ngl
             return false;
         }
 
+        m_arg = arg;
+
         std::string lconninfo = std::format(
             "host={} port={} dbname={} user={} password={}"
             , arg.m_ip, arg.m_port, arg.m_dbname, arg.m_account, arg.m_passworld
@@ -45,12 +47,18 @@ namespace ngl
         }
 
         log_error()->print("postgresql://{}:{}/{} success", arg.m_ip, arg.m_port, arg.m_dbname);
+        m_connectdb = true;
         return true;
 	}
 
     void npostgresql::closedb()
     {
-        PQfinish(m_postgresql);
+        if (m_postgresql != nullptr)
+        {
+            PQfinish(m_postgresql);
+            m_postgresql = nullptr;
+        }
+        m_connectdb = false;
     }
 
     bool npostgresql::query(const char* asql)
@@ -75,6 +83,8 @@ namespace ngl
             PQclear(result);
             return false;
         }
-        return aback(result);
+        const bool ok = aback(result);
+        PQclear(result);
+        return ok;
     }
 }//namespace ngl

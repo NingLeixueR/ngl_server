@@ -42,7 +42,7 @@ namespace ngl
 			return false;
 		}
 		m_arg = arg;
-		log_error()->print("[mysql] {}@{}:{} [password={}][dbname={}]", m_arg.m_account, m_arg.m_ip, m_arg.m_port, m_arg.m_passworld, m_arg.m_dbname);
+		log_error()->print("[mysql] {}@{}:{} [dbname={}]", m_arg.m_account, m_arg.m_ip, m_arg.m_port, m_arg.m_dbname);
 		m_mysql = mysql_init((MYSQL*)nullptr);
 		if (!m_mysql)
 		{
@@ -85,6 +85,7 @@ namespace ngl
 			mysql_close(m_mysql);
 			m_mysql = nullptr;
 		}
+		m_connectdb = false;
 	}
 
 	bool nmysql::changedb(MYSQL* amysql, std::string& adbname)
@@ -183,18 +184,21 @@ namespace ngl
 		if (err != 0)
 		{
 			log_error()->print("mysql_stmt_prepare fail [{}]", err);
+			mysql_stmt_close(lstmt);
 			return false;
 		}
 		err = mysql_stmt_bind_param(lstmt, abind);
 		if (err != 0)
 		{
 			log_error()->print("mysql_stmt_bind_param fail [{}]", err);
+			mysql_stmt_close(lstmt);
 			return false;
 		}
 		err = mysql_stmt_execute(lstmt);
 		if (err != 0)
 		{
 			log_error()->print("mysql_stmt_execute fail [{}]", err);
+			mysql_stmt_close(lstmt);
 			return false;
 		}
 		mysql_stmt_close(lstmt);

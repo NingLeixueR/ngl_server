@@ -43,6 +43,10 @@ namespace ngl
 		template <typename T>
 		static bool save(npostgresql* adb, T* adata)
 		{
+			if (adb == nullptr || adata == nullptr)
+			{
+				return false;
+			}
 			scope_guard lfree([adb]()noexcept { adb->m_malloc.reset(); });
 			if (!adb->m_malloc.serialize<T>(m_dbprotobinary, *adata))
 			{
@@ -100,7 +104,7 @@ namespace ngl
 		{
 			db_data<T>::foreach([adb](T& adata)
 				{
-					npostgresql_manage::save(adb, adata);
+					npostgresql_manage::save(adb, &adata);
 				}
 			);
 			return true;
@@ -109,6 +113,10 @@ namespace ngl
 		template <typename T>
 		static bool del(npostgresql* adb, i64_actorid aid)
 		{
+			if (adb == nullptr)
+			{
+				return false;
+			}
 			std::string lsql = std::format(
 				"DELETE FROM {} WHERE id={}", tools::type_name<T>().c_str(), aid
 			);
@@ -147,6 +155,10 @@ namespace ngl
 		template <typename T>
 		static bool select(npostgresql* adb, i64_actorid aid)
 		{
+			if (adb == nullptr)
+			{
+				return false;
+			}
 			// Load one concrete row.
 			std::string lsql = std::format(
 				"SELECT id,data FROM {} WHERE id = {} AND ({})", tools::type_name<T>().c_str(), aid, where_area()
@@ -172,6 +184,10 @@ namespace ngl
 		template <typename T>
 		static bool select(npostgresql* adb)
 		{
+			if (adb == nullptr)
+			{
+				return false;
+			}
 			// Load the full visible table.
 			std::string lsql = std::format(
 				"SELECT id,data FROM {} WHERE {}", tools::type_name<T>().c_str(), where_area()
@@ -198,6 +214,10 @@ namespace ngl
 		template <typename T>
 		static bool select(npostgresql* adb, std::set<int64_t>& aidset)
 		{
+			if (adb == nullptr)
+			{
+				return false;
+			}
 			// Load the visible id set only.
 			std::string lsql = std::format(
 				"SELECT id FROM {} WHERE {}", tools::type_name<T>().c_str(), where_area()

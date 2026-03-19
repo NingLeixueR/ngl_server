@@ -45,12 +45,12 @@ namespace ngl
 
 	nmysql* nmysql_pool::get(int32_t aindex)
 	{
-		if (aindex >= m_dbs.size() && aindex < 0)
+		if (aindex < 0 || static_cast<std::size_t>(aindex) >= m_dbs.size())
 		{
 			tools::no_core_dump();
 			return nullptr;
 		}
-		return m_dbs[aindex].get();
+		return m_dbs[aindex] == nullptr ? nullptr : m_dbs[aindex].get();
 	}
 
 }// namespace ngl

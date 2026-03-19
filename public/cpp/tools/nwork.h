@@ -35,15 +35,32 @@ namespace ngl
 	public:
 		nwork(const std::function<void(T&)>& afun) :
 			m_fun(afun),
-			m_thread(std::bind_front(&nwork::run, this))
+			m_thread([this](std::stop_token astop)
+				{
+					run(astop);
+				})
 		{
 		}
 
-		void run()
+		~nwork()
 		{
-			while (true)
+			m_thread.request_stop();
+			m_sem.post();
+			if (m_thread.joinable())
+			{
+				m_thread.join();
+			}
+		}
+
+		void run(std::stop_token astop)
+		{
+			while (!astop.stop_requested())
 			{
 				m_sem.wait();
+				if (astop.stop_requested())
+				{
+					break;
+				}
 				{
 					lock_write(m_mutex);
 					if (m_list.empty())

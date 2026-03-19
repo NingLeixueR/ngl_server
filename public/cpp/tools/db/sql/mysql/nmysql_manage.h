@@ -43,6 +43,10 @@ namespace ngl
 		template <typename T>
 		static bool save(nmysql* adb, T* adata)
 		{
+			if (adb == nullptr || adata == nullptr)
+			{
+				return false;
+			}
 			scope_guard lfree([adb]()noexcept { adb->m_malloc.reset(); });
 			if (!adb->m_malloc.serialize<T>(m_dbprotobinary, *adata))
 			{
@@ -65,7 +69,10 @@ namespace ngl
 				"INSERT INTO {} (id, area, data)VALUES({}, {}, ?)  ON DUPLICATE KEY UPDATE data=values(data), area=values(area);"
 				, tools::type_name<T>().c_str(), adata->mid(), larea
 			);
-			adb->stmt_query(lsql.c_str(), lsql.size(), lbind);
+			if (!adb->stmt_query(lsql.c_str(), lsql.size(), lbind))
+			{
+				return false;
+			}
 			log_error()->print(lsql);
 			return true;
 		}
@@ -87,7 +94,7 @@ namespace ngl
 		{
 			db_data<T>::foreach([adb](T& adata)
 				{
-					nmysql_manage::save(adb, adata);
+					nmysql_manage::save(adb, &adata);
 				}
 			);
 			return true;
@@ -96,6 +103,10 @@ namespace ngl
 		template <typename T>
 		static bool del(nmysql* adb, i64_actorid aid)
 		{
+			if (adb == nullptr)
+			{
+				return false;
+			}
 			std::string lsql = std::format(
 				"DELETE FROM {} WHERE id='{}';", tools::type_name<T>().c_str(), aid
 			);
@@ -134,6 +145,10 @@ namespace ngl
 		template <typename T>
 		static bool select(nmysql* adb, i64_actorid aid)
 		{
+			if (adb == nullptr)
+			{
+				return false;
+			}
 			// Load one concrete row.
 			std::string lsql = std::format(
 				"SELECT id,data FROM {} WHERE id = '{}' AND ({});", tools::type_name<T>().c_str(), aid, where_area()
@@ -155,6 +170,10 @@ namespace ngl
 		template <typename T>
 		static bool select(nmysql* adb)
 		{
+			if (adb == nullptr)
+			{
+				return false;
+			}
 			// Load the full visible table.
 			std::string lsql = std::format(
 				"SELECT id,data FROM {} WHERE {};", tools::type_name<T>().c_str(), where_area()
@@ -178,6 +197,10 @@ namespace ngl
 		template <typename T>
 		static bool select(nmysql* adb, std::set<int64_t>& aidset)
 		{
+			if (adb == nullptr)
+			{
+				return false;
+			}
 			// Load the visible id set only.
 			std::string lsql = std::format(
 				"SELECT id FROM {} WHERE {};", tools::type_name<T>().c_str(), where_area()

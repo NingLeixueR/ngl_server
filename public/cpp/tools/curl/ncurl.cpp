@@ -124,10 +124,8 @@ namespace ngl
 
 		if (ahttp.m_mode == ENUM_MODE_HTTPS)
 		{
-			// This helper is primarily used in controlled deployments, so HTTPS
-			// verification can be relaxed for self-signed endpoints.
-			curl_easy_setopt(ahttp.m_curl, CURLOPT_SSL_VERIFYPEER, 0L);
-			curl_easy_setopt(ahttp.m_curl, CURLOPT_SSL_VERIFYHOST, 0L);
+			curl_easy_setopt(ahttp.m_curl, CURLOPT_SSL_VERIFYPEER, ahttp.m_verify_peer ? 1L : 0L);
+			curl_easy_setopt(ahttp.m_curl, CURLOPT_SSL_VERIFYHOST, ahttp.m_verify_host);
 		}
 
 		if (!ahttp.m_cookies.empty())
@@ -180,6 +178,15 @@ namespace ngl
 		if (ahttp != nullptr)
 		{
 			ahttp->m_type = aval;
+		}
+	}
+
+	void ncurl::set_tls_verification(std::shared_ptr<http_parm>& ahttp, bool averify_peer, long averify_host)
+	{
+		if (ahttp != nullptr)
+		{
+			ahttp->m_verify_peer = averify_peer;
+			ahttp->m_verify_host = averify_host;
 		}
 	}
 
@@ -396,6 +403,8 @@ namespace ngl
 
 	void test_manage_curl()
 	{
+		constexpr const char* kExampleToken = "<replace-with-token>";
+
 		auto lhttp = ngl::ncurl::http();
 		ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTPS);
 		ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_POST);
@@ -405,12 +414,12 @@ namespace ngl
 		std::stringstream lstream;
 		lstream
 			<< "userID=" << 7709523
-			<< "token=" << "pU3T0Cq0mac3yUfLEf0jTFygIN8kGq8B"
+			<< "token=" << kExampleToken
 			<< "yWpx3hWQHFhSnTCj#311#6KuRKuaAjLJ5sYRy";
 
 		ngl::ncurl::param(lparm, "appid", 311);
 		ngl::ncurl::param(lparm, "userID", 7709523);
-		ngl::ncurl::param(lparm, "token", "pU3T0Cq0mac3yUfLEf0jTFygIN8kGq8B");
+		ngl::ncurl::param(lparm, "token", kExampleToken);
 		ngl::ncurl::param(lparm, "sign", tools::md5(lstream.str()).c_str());
 		ngl::ncurl::set_param(lhttp, lparm);
 		bool lbool = true;

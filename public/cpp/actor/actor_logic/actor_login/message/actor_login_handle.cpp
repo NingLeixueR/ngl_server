@@ -59,7 +59,7 @@ namespace ngl
 		log_info()->print("# Login[{}][{}][{}] #",
 			lparm->marea()
 			, lparm->maccount()
-			, lparm->mpassword()
+			, "<redacted>"
 		);
 		bool iscreate = false;
 
