@@ -50,13 +50,13 @@ namespace ngl
 
 		tinyxml2::XMLElement* current = aele;
 		std::string segment;
-		segment.reserve(std::strlen(astr));
+		segment.reserve(tools::strlen(astr));
 
 		const char* begin = astr;
 		while (current != nullptr && *begin != '\0')
 		{
 			const char* dot = std::strchr(begin, '.');
-			const std::size_t length = dot == nullptr ? std::strlen(begin) : static_cast<std::size_t>(dot - begin);
+			const std::size_t length = dot == nullptr ? tools::strlen(begin) : static_cast<std::size_t>(dot - begin);
 			if (length == 0)
 			{
 				return nullptr;

@@ -712,7 +712,7 @@ namespace ngl
 		{
 			return false;
 		}
-		const std::size_t lfglen = std::strlen(afg);
+		const std::size_t lfglen = tools::strlen(afg);
 		std::string_view lsource(abuff);
 		const std::string_view ldelimiter(afg, lfglen);
 		std::size_t lbegin = 0;
@@ -2154,5 +2154,14 @@ namespace ngl
 			avalue.remove_suffix(1);
 		}
 		return avalue;
+	}
+
+	std::size_t tools::strlen(const char* astr)
+	{
+		if (astr == nullptr)
+		{
+			return 0;
+		}
+		return std::string_view(astr).size();
 	}
 }//namespace ngl

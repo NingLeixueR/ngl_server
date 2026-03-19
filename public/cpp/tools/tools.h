@@ -533,7 +533,7 @@ namespace ngl
 
 		static bool splicing(const std::vector<std::string>& avec, const char* afg, std::string& astr)
 		{
-			const std::size_t lfglen = std::strlen(afg);
+			const std::size_t lfglen = tools::strlen(afg);
 			std::size_t lappend_size = avec.empty() ? 0 : lfglen * (avec.size() - 1);
 			for (const auto& item : avec)
 			{
@@ -598,7 +598,7 @@ namespace ngl
 		template <typename T>
 		static bool splicing(const std::set<std::string>& aset, const char* afg, std::string& astr)
 		{
-			const std::size_t lfglen = std::strlen(afg);
+			const std::size_t lfglen = tools::strlen(afg);
 			std::size_t lappend_size = aset.empty() ? 0 : lfglen * (aset.size() - 1);
 			for (const auto& item : aset)
 			{
@@ -800,6 +800,8 @@ namespace ngl
 		}
 
 		static std::string_view trim_ascii_spaces(std::string_view avalue);
+
+		static std::size_t strlen(const char*);
 	};
 
 	template <typename T>
