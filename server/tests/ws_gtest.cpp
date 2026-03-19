@@ -20,7 +20,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "net/ws/asio_ws.h"
+#include "net/tcp/ws/asio_ws.h"
 
 namespace ws_test_case
 {

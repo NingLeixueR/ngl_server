@@ -11,12 +11,12 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for ws.
+// File overview: Implements websocket transport logic built on TCP.
 
 
 #include "actor/protocol/nprotocol.h"
 #include "tools/localtime.h"
-#include "net/ws/asio_ws.h"
+#include "net/tcp/ws/asio_ws.h"
 #include "net/asio_timer.h"
 
 #include <boost/asio/buffers_iterator.hpp>
