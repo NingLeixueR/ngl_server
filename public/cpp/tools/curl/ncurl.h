@@ -72,6 +72,8 @@ namespace ngl
 		std::string			m_url;									// Base request URL.
 		std::string			m_param;								// Query string or POST body.
 		int					m_timeout = 0;							// Request timeout in seconds.
+		bool				m_verify_peer = true;					// Whether HTTPS verifies the peer certificate.
+		long				m_verify_host = 2L;						// libcurl host verification mode, 2 = strict CN/SAN match.
 		std::string			m_cookies;								// Optional Cookie header.
 		curl_slist*			m_headers = nullptr;					// Optional request headers.
 		callback			m_callback = nullptr;					// Completion callback.
@@ -117,7 +119,7 @@ namespace ngl
 				"param[{}]\n"
 				"mode[{}]\n"
 				"type[{}]\n"
-				"data[{}]\n"
+				"recv[{}]\n"
 				"********************************************************"
 				, aerror, m_url, m_param
 				, (m_mode == ENUM_MODE_HTTP ? "http" : "https")
@@ -193,6 +195,10 @@ namespace ngl
 
 		// Select GET vs POST.
 		static void set_type(std::shared_ptr<http_parm>& ahttp, ENUM_TYPE aval);
+
+		// Override HTTPS certificate/host verification. Defaults are strict and should
+		// only be relaxed in controlled test environments.
+		static void set_tls_verification(std::shared_ptr<http_parm>& ahttp, bool averify_peer, long averify_host = 2L);
 
 		// Set the request URL.
 		static void set_url(std::shared_ptr<http_parm>& ahttp, const std::string& aurl);

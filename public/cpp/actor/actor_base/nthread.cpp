@@ -22,8 +22,16 @@ namespace ngl
 		m_id(aid),
 		m_actor(nullptr),
 		m_isactivity(false),
-		m_thread(&nthread::run, this)
+		m_thread([this](std::stop_token astop)
+			{
+				run(astop);
+			})
 	{
+	}
+
+	nthread::~nthread()
+	{
+		shutdown();
 	}
 
 	i32_threadid nthread::id()
@@ -37,44 +45,83 @@ namespace ngl
 		return m_isactivity;
 	}
 
+	void nthread::shutdown()
+	{
+		bool lexpected = false;
+		if (!m_shutdown.compare_exchange_strong(lexpected, true, std::memory_order_relaxed))
+		{
+			return;
+		}
+
+		m_thread.request_stop();
+		m_sem.post();
+		if (m_thread.joinable())
+		{
+			m_thread.join();
+		}
+
+		lock_write(m_mutex);
+		m_actor = nullptr;
+		m_isactivity = false;
+	}
+
 	void nthread::push(ptractor aactor)
 	{
 		if (aactor == nullptr)
 		{
 			tools::no_core_dump();
+			return;
 		}
 		lock_write(m_mutex);
+		if (m_shutdown.load(std::memory_order_relaxed))
+		{
+			return;
+		}
 		m_actor = aactor;
-		m_isactivity = false;
+		m_isactivity = true;
 		m_sem.post();
 	}
 
-	void nthread::run()
+	void nthread::run(std::stop_token astop)
 	{
 		ptractor lpactor = nullptr;
-		while (true)
+		while (!astop.stop_requested())
 		{
 			m_sem.wait();
+			if (astop.stop_requested())
+			{
+				break;
+			}
 			{
 				lock_write(m_mutex);
 				lpactor = m_actor;
 			}
-			if (lpactor != nullptr)
+			if (lpactor == nullptr)
 			{
-				if (!lpactor->list_empty())
-				{
-					// An actor handles a batch of queued messages on exactly one worker at a time.
-					lpactor->actor_handle(m_id);
-					{
-						lock_write(m_mutex);
-						m_actor = nullptr;
-						m_isactivity = false;
-					}
-				}
-				// Return both the actor and this worker to actor_manage so it can decide
-				// whether the actor should be rescheduled immediately.
-				actor_manage::instance().push(lpactor, shared_from_this());
+				continue;
 			}
+
+			if (!lpactor->list_empty())
+			{
+				// An actor handles a batch of queued messages on exactly one worker at a time.
+				lpactor->actor_handle(m_id);
+			}
+
+			{
+				lock_write(m_mutex);
+				m_actor = nullptr;
+				m_isactivity = false;
+			}
+
+			if (astop.stop_requested())
+			{
+				break;
+			}
+
+			// Return both the actor and this worker to actor_manage so it can decide
+			// whether the actor should be rescheduled immediately.
+			actor_manage::instance().push(lpactor, shared_from_this());
+			lpactor = nullptr;
 		}
 	}
 }//namespace ngl

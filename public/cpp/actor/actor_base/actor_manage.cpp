@@ -36,6 +36,36 @@ namespace ngl
 	{
 		m_thread.request_stop();
 		m_sem.post();
+
+		if (m_thread.joinable())
+		{
+			m_thread.join();
+		}
+
+		std::deque<ptrnthread> lworkers;
+		{
+			nlock(m_mutex);
+			lworkers = m_workthreadscopy;
+		}
+
+		for (const ptrnthread& lworker : lworkers)
+		{
+			if (lworker != nullptr)
+			{
+				lworker->shutdown();
+			}
+		}
+
+		nlock(m_mutex);
+		m_workthreads.clear();
+		m_workthreadscopy.clear();
+		m_suspendthreads.clear();
+		m_actorlist.clear();
+		m_actorbroadcast.clear();
+		m_actorbyid.clear();
+		m_delactorfun.clear();
+		m_actorbytype.clear();
+		m_actortype.clear();
 	}
 
 	void actor_manage::init(i32_threadsize apthreadnum)
@@ -44,7 +74,7 @@ namespace ngl
 		{
 			return;
 		}
-		m_threadnum = apthreadnum;
+		m_threadnum = apthreadnum > 0 ? apthreadnum : 1;
 		for (int32_t i = 0; i < m_threadnum; ++i)
 		{
 			// Workers start idle and are handed actors only by the dispatcher thread.

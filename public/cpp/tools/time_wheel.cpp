@@ -397,24 +397,37 @@ namespace ngl
 
 		std::shared_ptr<wheel_node> pop_node()
 		{
-			lock_write(m_mutexcallback);
-			wheel_node* ret = nullptr;
-			if (m_worldnodehead == nullptr)
+			for (;;)
 			{
-				return nullptr;
-			}
-			if (m_worldnodehead == m_worldnodetail)
-			{
-				ret = m_worldnodehead;
-				m_worldnodehead = nullptr;
-				m_worldnodetail = nullptr;
+				wheel_node* ret = nullptr;
+				{
+					lock_write(m_mutexcallback);
+					if (m_worldnodehead == nullptr)
+					{
+						return nullptr;
+					}
+					if (m_worldnodehead == m_worldnodetail)
+					{
+						ret = m_worldnodehead;
+						m_worldnodehead = nullptr;
+						m_worldnodetail = nullptr;
+					}
+					else
+					{
+						ret = m_worldnodehead;
+						m_worldnodehead = m_worldnodehead->m_next;
+						ret->m_next = nullptr;
+					}
+				}
+
+				if (ret != nullptr && ret->removed())
+				{
+					delete ret;
+					continue;
+				}
+
 				return std::shared_ptr<wheel_node>(ret);
 			}
-
-			ret = m_worldnodehead;
-			m_worldnodehead = m_worldnodehead->m_next;
-			ret->m_next = nullptr;
-			return std::shared_ptr<wheel_node>(ret);
 		}
 
 		int64_t addtimer(const wheel_parm& apram)

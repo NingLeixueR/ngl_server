@@ -31,7 +31,7 @@ namespace ngl
 		std::string m_certificate_chain; // PEM certificate chain for server mode.
 		std::string m_private_key;       // PEM private key for server mode.
 		std::string m_ca_certificates;   // Optional CA bundle for client verification.
-		bool m_verify_peer = true;       // Whether TLS clients verify the remote certificate.
+		bool m_verify_peer = false;       // Whether TLS clients verify the remote certificate.
 	};
 
 	using ws_callback = std::function<bool(service_ws*, const char*, uint32_t)>;

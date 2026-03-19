@@ -756,6 +756,30 @@ TEST(ToolsTest, TimeWheelRecurringTimerStopsSoonAfterRemove)
 	EXPECT_LE(fired.load(std::memory_order_relaxed), before + 2);
 }
 
+TEST(ToolsTest, TimeWheelManualModeSkipsRemovedReadyCallbacks)
+{
+	ngl::time_wheel wheel(
+		ngl::time_wheel_config{
+			.m_time_wheel_precision = 5,
+			.m_time_wheel_bit = 4,
+			.m_time_wheel_count = 2,
+		},
+		false
+	);
+
+	const int64_t timerid = wheel.addtimer(ngl::wheel_parm{
+		.m_ms = 10,
+		.m_count = 1,
+		.m_fun = [](const ngl::wheel_node*) {},
+	});
+
+	ASSERT_GT(timerid, 0);
+	std::this_thread::sleep_for(std::chrono::milliseconds(40));
+	wheel.removetimer(timerid);
+
+	EXPECT_EQ(wheel.pop_node(), nullptr);
+}
+
 TEST(LocaltimeTest, GetMothdayValidatesCalendarDayAgainstTargetMonth)
 {
 	const time_t non_leap_february = ngl::localtime::str2time("2025-02-10 12:00:00");
