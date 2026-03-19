@@ -39,6 +39,7 @@ namespace ngl
 
 		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v4	= nullptr;		// IPv4 listener for server mode.
 		std::shared_ptr<basio_tcpacceptor>	m_acceptor_v6	= nullptr;		// IPv6 listener for server mode.
+		std::mutex							m_acceptorlock;					// Serializes acceptor close/reset against async_accept re-arming.
 		i16_port							m_port			= 0;			// Bound listen port, or 0 in client-only mode.
 		tcp_callback						m_fun			= nullptr;		// Read callback for received bytes.
 		tcp_closecallback					m_closefun		= nullptr;		// Global close notification.
@@ -50,6 +51,7 @@ namespace ngl
 		map_service_tcp						m_data;							// Session id -> service_tcp object.
 		map_ipport							m_ipport;						// Session id -> remote ip/port.
 		map_close							m_close;						// Session-local reconnect/cleanup callbacks.
+		std::shared_ptr<std::atomic_bool>	m_alive = std::make_shared<std::atomic_bool>(true); // Shared liveness flag for async callbacks.
 	public:
 		enum
 		{
@@ -101,6 +103,11 @@ namespace ngl
 
 		void start(const std::shared_ptr<service_tcp>& aservice);
 	public:
+		i16_port port() const
+		{
+			return m_port;
+		}
+
 		// Start an outbound TCP connect with optional retry count.
 		service_tcp* connect(const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount = 5);
 

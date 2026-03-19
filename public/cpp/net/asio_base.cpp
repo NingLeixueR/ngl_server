@@ -79,15 +79,9 @@ namespace ngl
 		for (auto& item : m_ioservices)
 		{
 			// Releasing the work guard lets run() exit once queued callbacks drain.
+			// Avoid stop() here so canceled socket/accept operations can deliver
+			// their completion handlers before the io_context is torn down.
 			std::get<1>(item).reset();
-		}
-
-		for (auto& item : m_ioservices)
-		{
-			if (auto& service = std::get<0>(item); service != nullptr)
-			{
-				service->stop();
-			}
 		}
 
 		for (auto& item : m_ioservices)

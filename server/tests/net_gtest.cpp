@@ -311,11 +311,6 @@ TEST(NetTest, AsioTcpServerAndClientExchangePayloads)
 		return packet;
 	};
 
-	basio::io_context probe_context;
-	basio::ip::tcp::acceptor probe_acceptor(probe_context, basio::ip::tcp::endpoint(basio::ip::tcp::v4(), 0));
-	const ngl::i16_port port = probe_acceptor.local_endpoint().port();
-	probe_acceptor.close();
-
 	auto server_received = std::make_shared<std::promise<std::string>>();
 	auto server_session = std::make_shared<std::promise<ngl::i32_sessionid>>();
 	auto client_received = std::make_shared<std::promise<std::string>>();
@@ -331,7 +326,7 @@ TEST(NetTest, AsioTcpServerAndClientExchangePayloads)
 	std::future<ngl::i32_sessionid> client_closed_future = client_closed->get_future();
 
 	auto server = std::make_unique<ngl::asio_tcp>(
-		port,
+		0,
 		1,
 		[server_received, server_session, &try_set_string, &try_set_session](ngl::service_tcp* asession, const char* buff, uint32_t bufflen) {
 			try_set_string(server_received, std::string(buff, buff + bufflen));
@@ -343,6 +338,8 @@ TEST(NetTest, AsioTcpServerAndClientExchangePayloads)
 		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
+	const ngl::i16_port port = server->port();
+	ASSERT_GT(port, 0);
 
 	auto client = std::make_unique<ngl::asio_tcp>(
 		1,
