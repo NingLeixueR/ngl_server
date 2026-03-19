@@ -12,7 +12,6 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // File overview: Implements message handlers for message.
-
 #include "actor/actor_logic/actor_activity_manage/actor_activity_manage.h"
 #include "actor/actor_logic/actor_activity_manage/activity_rank.h"
 #include "actor/actor_logic/actor_activity_manage/activity.h"

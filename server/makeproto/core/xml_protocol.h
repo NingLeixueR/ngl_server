@@ -1830,7 +1830,7 @@ namespace ngl
                     lcontent += "\n";
 					std::string ltemp = item1.first;
 					ngl::tools::transform_toupper(ltemp);
-                    lcontent += std::format("\t\t// {} 模块二次转发\n", item1.first);
+                    lcontent += std::format("\t\t// {} module secondary forwarding\n", item1.first);
                     lcontent += std::format("\t\tregister_c2g_2< {}\n", ltemp);
                     bool lfirst = true;
                     for (const auto& item2 : item1.second)

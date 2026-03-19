@@ -1,6 +1,4 @@
--- File overview: Defines SQL statements for create pgdb.
-
-/*Date:2026-03-14 11:11:12*/
+/*Date:2026-03-19 15:37:26*/
 
  DROP DATABASE IF EXISTS lbtest;
  CREATE DATABASE lbtest WITH ENCODING='UTF8' LC_COLLATE='zh_CN.UTF-8' LC_CTYPE='zh_CN.UTF-8' OWNER=lbtest_user;

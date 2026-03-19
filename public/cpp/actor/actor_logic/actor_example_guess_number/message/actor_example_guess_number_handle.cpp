@@ -12,7 +12,6 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // File overview: Implements message handlers for message.
-
 #include "actor/actor_logic/actor_example_guess_number/actor_example_guess_number.h"
 #include "actor/actor_logic/actor_brief/actor_brief.h"
 namespace ngl

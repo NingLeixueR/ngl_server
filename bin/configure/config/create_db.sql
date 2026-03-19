@@ -1,6 +1,4 @@
--- File overview: Defines SQL statements for create db.
-
-/*Date:2026-03-14 11:11:12*/
+/*Date:2026-03-19 15:37:26*/
 
  DROP Database IF EXISTS `lbtest`;
  CREATE DATABASE lbtest default charset utf8 COLLATE utf8_general_ci;

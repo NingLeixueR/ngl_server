@@ -12,7 +12,6 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // File overview: Implements message handlers for message.
-
 #include "actor/actor_logic/actor_login/actor_login.h"
 #include "actor/actor_base/nregister.h"
 namespace ngl
