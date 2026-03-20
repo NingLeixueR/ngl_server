@@ -24,6 +24,15 @@
 
 namespace ngl
 {
+	namespace actor_manage_detail
+	{
+		bool actor_is_unavailable(ngl::actor_stat astat) noexcept
+		{
+			// init/close states cannot accept new work and should never be queued.
+			return astat == ngl::actor_stat_close || astat == ngl::actor_stat_init;
+		}
+	} // namespace actor_manage_detail
+
 	actor_manage::actor_manage():
 		m_thread([this](std::stop_token astop)
 			{
@@ -90,18 +99,10 @@ namespace ngl
 		aactortype.swap(ltypes);
 	}
 
-	namespace
-	{
-		bool actor_is_unavailable(ngl::actor_stat astat) noexcept
-		{
-			// init/close states cannot accept new work and should never be queued.
-			return astat == ngl::actor_stat_close || astat == ngl::actor_stat_init;
-		}
-	}
 	void actor_manage::nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram)
 	{
 		const actor_stat lstat = lpactor->activity_stat();
-		if (actor_is_unavailable(lstat))
+		if (actor_manage_detail::actor_is_unavailable(lstat))
 		{
 			std::cout << std::format("actor_manage push task fail actor:{} stat:{}", lpactor->guid(), static_cast<int32_t>(lstat)) << std::endl;
 			return;
@@ -374,7 +375,7 @@ namespace ngl
 		nlock(m_mutex);
 		// Lookup is done under the scheduler lock so actor removal and enqueue stay atomic.
 		auto lpactor = nosafe_get_actorbyid(aguid, apram);
-		if (lpactor == nullptr || actor_is_unavailable((*lpactor)->activity_stat()))
+		if (lpactor == nullptr || actor_manage_detail::actor_is_unavailable((*lpactor)->activity_stat()))
 		{
 			std::cout << std::format("actor_manage push_task_id fail actor:{}", aguid) << std::endl;
 			return;
@@ -391,7 +392,7 @@ namespace ngl
 		for (i64_actorid actorid : asetguid)
 		{
 			auto lpactor = nosafe_get_actorbyid(actorid, apram);
-			if (lpactor == nullptr || actor_is_unavailable((*lpactor)->activity_stat()))
+			if (lpactor == nullptr || actor_manage_detail::actor_is_unavailable((*lpactor)->activity_stat()))
 			{
 				continue;
 			}
@@ -422,7 +423,7 @@ namespace ngl
 		{
 			for (auto& [_guid, _actor] : type_it->second)
 			{
-				if (!actor_is_unavailable(_actor->activity_stat()))
+				if (!actor_manage_detail::actor_is_unavailable(_actor->activity_stat()))
 				{
 					nosafe_push_task_id(_actor, apram);
 				}
@@ -447,7 +448,7 @@ namespace ngl
 		for (auto& [_guid, _actor] : m_actorbroadcast)
 		{
 			// Broadcast ticks are opt-in and still respect the actor lifecycle state.
-			if (_actor->isbroadcast() && !actor_is_unavailable(_actor->activity_stat()))
+			if (_actor->isbroadcast() && !actor_manage_detail::actor_is_unavailable(_actor->activity_stat()))
 			{
 				nosafe_push_task_id(_actor, apram);
 			}

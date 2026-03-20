@@ -19,7 +19,7 @@
 
 namespace ngl
 {
-	namespace
+	namespace xml_detail
 	{
 		bool parse_node_part(int avalue, int16_t& aout)
 		{
@@ -108,7 +108,7 @@ namespace ngl
 		{
 			return has_data(avalue) ? xml_serialize<false, T>::push(aroot, akey, avalue) : true;
 		}
-	}
+	} // namespace xml_detail
 
 	bool xmlnode::xml_pop(const char* axml)
 	{
@@ -151,18 +151,18 @@ namespace ngl
 		xarg_wss wss{};
 		xarg_redis redis{};
 
-		if (!pop_required(aele, "db", db) || !pop_required(aele, "public", publicinfo))
+		if (!xml_detail::pop_required(aele, "db", db) || !xml_detail::pop_required(aele, "public", publicinfo))
 		{
 			return false;
 		}
-		if (!pop_optional_any(aele, { "dbcross", "crossdb" }, dbcross))
+		if (!xml_detail::pop_optional_any(aele, { "dbcross", "crossdb" }, dbcross))
 		{
 			return false;
 		}
-		if (!pop_optional(aele, "mail", mail) ||
-			!pop_optional(aele, "telnet", telnet) ||
-			!pop_optional(aele, "wss", wss) ||
-			!pop_optional(aele, "redis", redis))
+		if (!xml_detail::pop_optional(aele, "mail", mail) ||
+			!xml_detail::pop_optional(aele, "telnet", telnet) ||
+			!xml_detail::pop_optional(aele, "wss", wss) ||
+			!xml_detail::pop_optional(aele, "redis", redis))
 		{
 			return false;
 		}
@@ -190,11 +190,11 @@ namespace ngl
 			return false;
 		}
 
-		return push_if_present(aele, "dbcross", m_dbcross) &&
-			push_if_present(aele, "mail", m_mail) &&
-			push_if_present(aele, "telnet", m_telnet) &&
-			push_if_present(aele, "wss", m_wss) &&
-			push_if_present(aele, "redis", m_redis);
+		return xml_detail::push_if_present(aele, "dbcross", m_dbcross) &&
+			xml_detail::push_if_present(aele, "mail", m_mail) &&
+			xml_detail::push_if_present(aele, "telnet", m_telnet) &&
+			xml_detail::push_if_present(aele, "wss", m_wss) &&
+			xml_detail::push_if_present(aele, "redis", m_redis);
 	}
 
 	void xmlnode::init()
@@ -246,7 +246,7 @@ namespace ngl
 	{
 		int16_t tid = -1;
 		int16_t tcount = -1;
-		if (!parse_node_part(atid, tid) || !parse_node_part(atcount, tcount))
+		if (!xml_detail::parse_node_part(atid, tid) || !xml_detail::parse_node_part(atcount, tcount))
 		{
 			m_nodeid = nnodeid::nodeid(static_cast<int16_t>(-1), static_cast<int16_t>(-1));
 			m_tid = -1;

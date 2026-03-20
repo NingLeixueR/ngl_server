@@ -14,14 +14,13 @@
 
 #include <algorithm>
 #include <charconv>
-#include <cctype>
 #include <cstdint>
 #include <limits>
 #include <string_view>
 
 namespace ngl
 {
-	namespace
+	namespace sysconfig_detail
 	{
 		template <typename T>
 		bool find_first(const xarg_info& ainfo, std::initializer_list<const char*> akeys, T& aout)
@@ -114,7 +113,7 @@ namespace ngl
 			}
 			return static_cast<int32_t>(akey.size());
 		}
-	}
+	} // namespace sysconfig_detail
 
 	ELOGLEVEL	sysconfig::m_logwritelevel = ELOG_ERROR;
 	ELOGLEVEL	sysconfig::m_logconsolelevel = ELOG_ERROR;
@@ -177,35 +176,37 @@ namespace ngl
 		std::map<std::string, int32_t, std::less<>> nodecountbyname;
 		std::map<NODE_TYPE, int32_t> nodecountbytype;
 
-		find_first(*lpublicxml, { "logline" }, logline);
-		find_first(*lpublicxml, { "logflushtime", "log_flushtime" }, logflushtime);
+		sysconfig_detail::find_first(*lpublicxml, { "logline" }, logline);
+		sysconfig_detail::find_first(*lpublicxml, { "logflushtime", "log_flushtime" }, logflushtime);
 
 		int32_t level = static_cast<int32_t>(logwritelevel);
-		if (find_first(*lpublicxml, { "logwritelevel" }, level))
+		if (sysconfig_detail::find_first(*lpublicxml, { "logwritelevel" }, level))
 		{
-			logwritelevel = sanitize_log_level(level, logwritelevel);
+			logwritelevel = sysconfig_detail::sanitize_log_level(level, logwritelevel);
 		}
 		level = static_cast<int32_t>(logconsolelevel);
-		if (find_first(*lpublicxml, { "logconsolelevel" }, level))
+		if (sysconfig_detail::find_first(*lpublicxml, { "logconsolelevel" }, level))
 		{
-			logconsolelevel = sanitize_log_level(level, logconsolelevel);
+			logconsolelevel = sysconfig_detail::sanitize_log_level(level, logconsolelevel);
 		}
 
-		find_first(*lpublicxml, { "consumings" }, consumings);
-		find_first(*lpublicxml, { "varint" }, varint);
-		find_first(*lpublicxml, { "robot_test" }, robot_test);
-		find_first(*lpublicxml, { "kcpping" }, kcpping);
-		find_first(*lpublicxml, { "kcppinginterval" }, kcppinginterval);
-		find_first(*lpublicxml, { "sessionewait" }, sessionewait);
-		find_first(*lpublicxml, { "kcpsession" }, kcpsession);
-		find_first(*lpublicxml, { "head_version" }, head_version);
-		find_first(*lpublicxml, { "gmurl" }, gmurl);
-		find_first(*lpublicxml, { "lua" }, lua);
-		open_servertime = parse_open_servertime(*lpublicxml, open_servertime);
+		sysconfig_detail::find_first(*lpublicxml, { "consumings" }, consumings);
+		sysconfig_detail::find_first(*lpublicxml, { "varint" }, varint);
+		sysconfig_detail::find_first(*lpublicxml, { "robot_test" }, robot_test);
+		sysconfig_detail::find_first(*lpublicxml, { "kcpping" }, kcpping);
+		sysconfig_detail::find_first(*lpublicxml, { "kcppinginterval" }, kcppinginterval);
+		sysconfig_detail::find_first(*lpublicxml, { "sessionewait" }, sessionewait);
+		sysconfig_detail::find_first(*lpublicxml, { "kcpsession" }, kcpsession);
+		sysconfig_detail::find_first(*lpublicxml, { "head_version" }, head_version);
+		sysconfig_detail::find_first(*lpublicxml, { "gmurl" }, gmurl);
+		sysconfig_detail::find_first(*lpublicxml, { "lua" }, lua);
+		open_servertime = sysconfig_detail::parse_open_servertime(*lpublicxml, open_servertime);
 
-		if (find_first(*lpublicxml, { "isxor" }, isxor) && isxor && find_first(*lpublicxml, { "xor_str" }, xorkey))
+		if (sysconfig_detail::find_first(*lpublicxml, { "isxor" }, isxor) &&
+			isxor &&
+			sysconfig_detail::find_first(*lpublicxml, { "xor_str" }, xorkey))
 		{
-			xorkeynum = xor_cycle_length(xorkey);
+			xorkeynum = sysconfig_detail::xor_cycle_length(xorkey);
 			isxor = xorkeynum > 0;
 		}
 		else
@@ -234,7 +235,7 @@ namespace ngl
 				}
 
 				int32_t count = 0;
-				if (!parse_int32(apair.second, count))
+				if (!sysconfig_detail::parse_int32(apair.second, count))
 				{
 					return;
 				}
@@ -244,17 +245,17 @@ namespace ngl
 			}
 		);
 
-		logline = sanitize_positive(logline, m_logline);
-		logflushtime = sanitize_positive(logflushtime, m_logflushtime);
-		consumings = sanitize_non_negative(consumings, m_consumings);
-		kcpping = sanitize_positive(kcpping, m_kcpping);
-		kcppinginterval = sanitize_positive(kcppinginterval, m_kcppinginterval);
-		sessionewait = sanitize_positive(sessionewait, m_sessionewait);
-		head_version = sanitize_positive(head_version, m_head_version);
-		rate_interval = sanitize_positive(rate_interval, m_rate_interval);
-		rate_count = sanitize_positive(rate_count, m_rate_count);
-		heart_beat_interval = sanitize_positive(heart_beat_interval, m_heart_beat_interval);
-		net_timeout = sanitize_positive(net_timeout, m_net_timeout);
+		logline = sysconfig_detail::sanitize_positive(logline, m_logline);
+		logflushtime = sysconfig_detail::sanitize_positive(logflushtime, m_logflushtime);
+		consumings = sysconfig_detail::sanitize_non_negative(consumings, m_consumings);
+		kcpping = sysconfig_detail::sanitize_positive(kcpping, m_kcpping);
+		kcppinginterval = sysconfig_detail::sanitize_positive(kcppinginterval, m_kcppinginterval);
+		sessionewait = sysconfig_detail::sanitize_positive(sessionewait, m_sessionewait);
+		head_version = sysconfig_detail::sanitize_positive(head_version, m_head_version);
+		rate_interval = sysconfig_detail::sanitize_positive(rate_interval, m_rate_interval);
+		rate_count = sysconfig_detail::sanitize_positive(rate_count, m_rate_count);
+		heart_beat_interval = sysconfig_detail::sanitize_positive(heart_beat_interval, m_heart_beat_interval);
+		net_timeout = sysconfig_detail::sanitize_positive(net_timeout, m_net_timeout);
 
 		m_logwritelevel = logwritelevel;
 		m_logconsolelevel = logconsolelevel;

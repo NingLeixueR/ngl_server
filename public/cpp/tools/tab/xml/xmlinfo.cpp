@@ -9,13 +9,11 @@
 
 #include "tools/tab/xml/xmlinfo.h"
 
-#include <algorithm>
-#include <cctype>
 #include <string_view>
 
 namespace ngl
 {
-	namespace
+	namespace xmlinfo_detail
 	{
 		constexpr char ascii_tolower(char avalue)
 		{
@@ -102,7 +100,7 @@ namespace ngl
 				return false;
 			}
 		}
-	}
+	} // namespace xmlinfo_detail
 
 	const std::string* xarg_info::find_raw(const char* akey) const
 	{
@@ -120,7 +118,7 @@ namespace ngl
 		{
 			return false;
 		}
-		if (parse_text_bool(*lp, adata))
+		if (xmlinfo_detail::parse_text_bool(*lp, adata))
 		{
 			return true;
 		}

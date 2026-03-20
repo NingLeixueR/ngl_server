@@ -329,7 +329,7 @@ void init_DB_ACCOUNT(const char* aname, int beg)
 		ltemp.set_mroleid(ltemp.mid());
 		ltemp.set_marea(tab_self_area);
 
-			seed_db_record<pbdb::ENUM_DB_ACCOUNT>(ltemp);
+		seed_db_record<pbdb::ENUM_DB_ACCOUNT>(ltemp);
 	}
 }
 
@@ -356,8 +356,8 @@ void init_DB_ROLE(const char* aname, int beg)
 		lrolebase.mutable_mbase()->set_mmoneysilver(0);
 		lrolebase.mutable_mbase()->set_mcreateutc((int32_t)ngl::localtime::gettime());
 
-			seed_db_record<pbdb::ENUM_DB_BRIEF>(lrolebase);
-			seed_db_record<pbdb::ENUM_DB_ROLE>(ltemp);
+		seed_db_record<pbdb::ENUM_DB_BRIEF>(lrolebase);
+		seed_db_record<pbdb::ENUM_DB_ROLE>(ltemp);
 	}
 }
 
@@ -380,7 +380,7 @@ void init_DB_BAG(const char* aname, int beg)
 		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		ltemp.set_mmaxid(1);
 
-			seed_db_record<pbdb::ENUM_DB_BAG>(ltemp);
+		seed_db_record<pbdb::ENUM_DB_BAG>(ltemp);
 	}
 }
 
@@ -409,7 +409,7 @@ void init_DB_TASK(const char* aname, int beg)
 		lschedulesnode->set_msumint(10);
 		(*lrundatas)[lpair.first] = lpair.second;
 
-			seed_db_record<pbdb::ENUM_DB_TASK>(ltemp);
+		seed_db_record<pbdb::ENUM_DB_TASK>(ltemp);
 	}
 }
 
@@ -427,7 +427,7 @@ void init_DB_MAIL(int beg)
 		pbdb::db_mail ltemp;
 		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 
-			seed_db_record<pbdb::ENUM_DB_MAIL>(ltemp);
+		seed_db_record<pbdb::ENUM_DB_MAIL>(ltemp);
 	}
 }
 
@@ -447,7 +447,7 @@ void init_DB_ROLEKEYVALUE(int beg)
 		(*ltemp.mutable_mdata())["test2"] = "2";
 		(*ltemp.mutable_mdata())["test3"] = "3";
 
-			seed_db_record<pbdb::ENUM_DB_ROLEKEYVALUE>(ltemp);
+		seed_db_record<pbdb::ENUM_DB_ROLEKEYVALUE>(ltemp);
 	}
 }
 
@@ -477,12 +477,14 @@ void init_DB_NOTICE()
 		pbdb::db_notice ltemp;
 		ltemp.set_mid((ngl::ttab_servers::instance().const_tab()->m_area * 100) + i);
 		if (ngl::tools::to_utf8(lvec[i], lvec[i]) == false)
+		{
 			continue;
-			ltemp.set_mnotice(lvec[i]);
-			const int32_t lnow = static_cast<int32_t>(time(nullptr));
-			ltemp.set_mstarttime(lnow);
-			ltemp.set_mfinishtime(lnow + 36000);
-			seed_db_record<pbdb::ENUM_DB_NOTICE>(ltemp);
+		}
+		ltemp.set_mnotice(lvec[i]);
+		const int32_t lnow = static_cast<int32_t>(time(nullptr));
+		ltemp.set_mstarttime(lnow);
+		ltemp.set_mfinishtime(lnow + 36000);
+		seed_db_record<pbdb::ENUM_DB_NOTICE>(ltemp);
 	}
 }
 
@@ -510,7 +512,7 @@ void init_DB_FAMILY()
 		ltemp.set_mleader(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		*ltemp.mutable_mmember()->Add() = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
 
-			seed_db_record<pbdb::ENUM_DB_FAMILY>(ltemp);
+		seed_db_record<pbdb::ENUM_DB_FAMILY>(ltemp);
 		
 		pbdb::db_familyer ltempfamilyer;
 		ltempfamilyer.set_mjoinutc((int32_t)ngl::localtime::gettime());
@@ -518,7 +520,7 @@ void init_DB_FAMILY()
 		ltempfamilyer.set_mposition(pbdb::db_familyer_eposition_leader);
 		ltempfamilyer.set_mlastsignutc((int32_t)ngl::localtime::gettime());
 
-			seed_db_record<pbdb::ENUM_DB_FAMILYER>(ltempfamilyer);
+		seed_db_record<pbdb::ENUM_DB_FAMILYER>(ltempfamilyer);
 	}
 }
 
@@ -912,11 +914,11 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 			ngl::actor_robot_manage::instance();
 
 			ngl::i32_serverid llogin = ngl::nnodeid::nodeid(static_cast<int16_t>(ngl::ttab_servers::instance().const_tab()->m_login), 1);
-				ngl::actor_robot_manage::instance().connect(llogin, ngl::ENET_TCP, [](int)
-					{
-						std::cout << "connected login server" << std::endl;
-					}
-				);
+			ngl::actor_robot_manage::instance().connect(llogin, ngl::ENET_TCP, [](int)
+				{
+					std::cout << "connected login server" << std::endl;
+				}
+			);
 
 			if (request.mode == ngl_runtime::robot_launch_mode::interactive)
 			{
@@ -984,6 +986,7 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 
 int ngl_main(int argc, char** argv)
 {
+#if 0
 	ngl::arg_options loptions("test");
 	
 	loptions.init_help(
@@ -1009,11 +1012,7 @@ int ngl_main(int argc, char** argv)
 			std::cout << "ok" << std::endl;
 		}
 	}
-	
-
-
-
-
+#endif
 	ngl_startup::context ctx{};
 	const ngl_startup::prepare_result lprepare = ngl_startup::prepare_context(argc, argv, ctx);
 	if (lprepare.code != startup_error::ok)
