@@ -2,17 +2,28 @@
 
 #include <gtest/gtest.h>
 
-#include <chrono>
 #include <iostream>
 #include <string>
 #include <vector>
 
+#include "runtime_test_support.h"
+#include "test_support.h"
 #include "tools/tab/xml/sysconfig.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/tools.h"
 
 namespace xml_sysconfig_test_case
 {
+class RuntimeConfigTest : public ::testing::Test
+{
+protected:
+	void SetUp() override
+	{
+		std::string err;
+		ASSERT_TRUE(ngl_test_support::reload_bootstrap_runtime(err)) << err;
+	}
+};
+
 tinyxml2::XMLElement* legacy_get_child(tinyxml2::XMLElement* aele, const char* astr)
 {
 	if (aele == nullptr || astr == nullptr)
@@ -62,20 +73,12 @@ bool legacy_foreach_named(
 	return true;
 }
 
-template <typename TFUN>
-long long benchmark_us(TFUN&& afun)
-{
-	const auto start = std::chrono::steady_clock::now();
-	afun();
-	const auto finish = std::chrono::steady_clock::now();
-	return std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
-}
-TEST(XmlNodeRuntimeTest, BootstrapConfigLoadsConfiguredWssSection)
+TEST_F(RuntimeConfigTest, BootstrapConfigKeepsDefaultWssValuesWhenPemFieldsAreBlank)
 {
 	ASSERT_FALSE(nconfig.config_file().empty());
-	EXPECT_FALSE(nconfig.wss().m_certificate_chain.empty());
-	EXPECT_FALSE(nconfig.wss().m_private_key.empty());
-	EXPECT_FALSE(nconfig.wss().m_ca_certificates.empty());
+	EXPECT_TRUE(nconfig.wss().m_certificate_chain.empty());
+	EXPECT_TRUE(nconfig.wss().m_private_key.empty());
+	EXPECT_TRUE(nconfig.wss().m_ca_certificates.empty());
 	EXPECT_EQ(nconfig.wss().m_verify_peer, true);
 }
 
@@ -104,7 +107,7 @@ TEST(XmlNodeRuntimeTest, XmlPopUsesDefaultsWhenOptionalWssSectionMissing)
 	EXPECT_EQ(config.wss().m_verify_peer, true);
 }
 
-TEST(XmlNodeRuntimeTest, CrossDbSettingsRemainAvailableAfterLoad)
+TEST_F(RuntimeConfigTest, CrossDbSettingsRemainAvailableAfterLoad)
 {
 	ASSERT_FALSE(nconfig.crossdb().m_ip.empty());
 	EXPECT_GT(nconfig.crossdb().m_port, 0u);
@@ -156,7 +159,7 @@ TEST(XmlPerfTest, GetChildPathBenchmark)
 	constexpr int kIterations = 300000;
 	volatile int sink = 0;
 
-	const long long legacy_us = benchmark_us([&]()
+	const long long legacy_us = ngl_test_support::benchmark_us([&]()
 		{
 			for (int i = 0; i < kIterations; ++i)
 			{
@@ -168,7 +171,7 @@ TEST(XmlPerfTest, GetChildPathBenchmark)
 			}
 		});
 
-	const long long optimized_us = benchmark_us([&]()
+	const long long optimized_us = ngl_test_support::benchmark_us([&]()
 		{
 			for (int i = 0; i < kIterations; ++i)
 			{
@@ -202,7 +205,7 @@ TEST(XmlPerfTest, ForeachNamedChildrenBenchmark)
 	volatile int legacy_count = 0;
 	volatile int optimized_count = 0;
 
-	const long long legacy_us = benchmark_us([&]()
+	const long long legacy_us = ngl_test_support::benchmark_us([&]()
 		{
 			for (int i = 0; i < kIterations; ++i)
 			{
@@ -214,7 +217,7 @@ TEST(XmlPerfTest, ForeachNamedChildrenBenchmark)
 			}
 		});
 
-	const long long optimized_us = benchmark_us([&]()
+	const long long optimized_us = ngl_test_support::benchmark_us([&]()
 		{
 			for (int i = 0; i < kIterations; ++i)
 			{

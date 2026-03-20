@@ -28,6 +28,7 @@
 #include "tools/tab/xml/sysconfig.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/tools.h"
+#include "test_support.h"
 
 namespace tools_test_case
 {
@@ -39,17 +40,6 @@ int CountCurlHeaders(const curl_slist* headers)
 		++count;
 	}
 	return count;
-}
-
-std::filesystem::path make_temp_test_dir(const std::string& test_name)
-{
-	const auto suffix = std::to_string(std::chrono::high_resolution_clock::now().time_since_epoch().count());
-	const std::filesystem::path dir =
-		std::filesystem::temp_directory_path() / ("ngl_tools_" + test_name + "_" + suffix);
-	std::error_code ec;
-	std::filesystem::remove_all(dir, ec);
-	std::filesystem::create_directories(dir, ec);
-	return dir;
 }
 
 struct CsvTestRow
@@ -478,7 +468,7 @@ TEST(ToolsTest, SpliteContainersDoNotMutateOutputsOnFailure)
 
 TEST(ToolsTest, DirectoryListingRecursesAndIgnoresMissingPaths)
 {
-	const std::filesystem::path root = make_temp_test_dir("dir");
+	const std::filesystem::path root = ngl_test_support::make_temp_test_dir("dir", "ngl_tools");
 	const std::filesystem::path nested = root / "nested" / "leaf";
 	std::filesystem::create_directories(nested);
 
@@ -509,7 +499,7 @@ TEST(ToolsTest, DirectoryListingRecursesAndIgnoresMissingPaths)
 
 TEST(ToolsTest, DirectoryHelpersDistinguishFilesAndDirectories)
 {
-	const std::filesystem::path root = make_temp_test_dir("path_helpers");
+	const std::filesystem::path root = ngl_test_support::make_temp_test_dir("path_helpers", "ngl_tools");
 	const std::filesystem::path file = root / "config.txt";
 	const std::filesystem::path nested = root / "nested" / "leaf";
 	{
@@ -610,7 +600,7 @@ TEST(ToolsTest, CsvReadStringFallsBackForInterleavedQuotes)
 
 TEST(ToolsTest, CsvReaderSkipsCommentLinesWithoutPoisoningNextRow)
 {
-	const std::filesystem::path root = make_temp_test_dir("csv_reader");
+	const std::filesystem::path root = ngl_test_support::make_temp_test_dir("csv_reader", "ngl_tools");
 	const std::filesystem::path file = root / "sample.csv";
 	{
 		std::ofstream(file) << "header1\nheader2\nheader3\n#comment\n1,alpha\n2,beta\n";
@@ -632,7 +622,7 @@ TEST(ToolsTest, CsvReaderSkipsCommentLinesWithoutPoisoningNextRow)
 
 TEST(ToolsTest, ReadFileGetMaxlinePreservesReadPosition)
 {
-	const std::filesystem::path root = make_temp_test_dir("readfile");
+	const std::filesystem::path root = ngl_test_support::make_temp_test_dir("readfile", "ngl_tools");
 	const std::filesystem::path file = root / "data.txt";
 	{
 		std::ofstream(file) << "line1\nline2\n";
@@ -656,7 +646,7 @@ TEST(ToolsTest, ReadFileGetMaxlinePreservesReadPosition)
 
 TEST(ToolsTest, ReadFileReadWorksAfterReachingEof)
 {
-	const std::filesystem::path root = make_temp_test_dir("read_after_eof");
+	const std::filesystem::path root = ngl_test_support::make_temp_test_dir("read_after_eof", "ngl_tools");
 	const std::filesystem::path file = root / "data.txt";
 	{
 		std::ofstream(file, std::ios::binary) << "line1\nline2\n";

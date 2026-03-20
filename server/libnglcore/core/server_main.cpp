@@ -1083,3 +1083,8 @@ int ngl_main(int argc, char** argv)
 	}
 	return static_cast<int>(startup_error::ok);
 }
+
+std::function<void()> dump_logic(const std::string& acontent)
+{
+	return ngl::tools::send_mail(acontent);
+}

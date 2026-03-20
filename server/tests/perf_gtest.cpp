@@ -2,7 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <chrono>
 #include <cctype>
 #include <cstdint>
 #include <format>
@@ -13,21 +12,13 @@
 #include <vector>
 
 #include "actor/tab/ttab_servers.h"
+#include "test_support.h"
 #include "tools/nfilterword.h"
 #include "tools/tab/csv/csv.h"
 #include "tools/tab/xml/xmlinfo.h"
 
 namespace perf_test_case
 {
-template <typename TFUN>
-long long benchmark_us(TFUN&& afun)
-{
-	const auto start = std::chrono::steady_clock::now();
-	afun();
-	const auto finish = std::chrono::steady_clock::now();
-	return std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
-}
-
 const ngl::tab_servers* legacy_find_server_by_name(const ngl::ttab_servers& atable, int area, const std::string& aname)
 {
 	for (const auto& [_, row] : atable.m_csv)
@@ -334,7 +325,7 @@ TEST(TTabServersPerfTest, IndexedLookupBenchmark)
 	constexpr int kIterations = 20000;
 	volatile int sink = 0;
 
-	const long long legacy_us = benchmark_us([&]() {
+	const long long legacy_us = ngl_test_support::benchmark_us([&]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			const auto* row = legacy_find_server_by_name(*table, 1, target);
@@ -345,7 +336,7 @@ TEST(TTabServersPerfTest, IndexedLookupBenchmark)
 		}
 	});
 
-	const long long optimized_us = benchmark_us([&]() {
+	const long long optimized_us = ngl_test_support::benchmark_us([&]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			const auto* row = table->const_tab(target, 1);
@@ -376,7 +367,7 @@ TEST(TTabMergeAreaPerfTest, MergeLookupBenchmark)
 	constexpr int kIterations = 200000;
 	volatile long long sink = 0;
 
-	const long long legacy_us = benchmark_us([&]() {
+	const long long legacy_us = ngl_test_support::benchmark_us([&]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			const ngl::i16_area larea = static_cast<ngl::i16_area>((i % kAreaCount) + 1);
@@ -388,7 +379,7 @@ TEST(TTabMergeAreaPerfTest, MergeLookupBenchmark)
 		}
 	});
 
-	const long long optimized_us = benchmark_us([&]() {
+	const long long optimized_us = ngl_test_support::benchmark_us([&]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			const ngl::i16_area larea = static_cast<ngl::i16_area>((i % kAreaCount) + 1);
@@ -408,7 +399,7 @@ TEST(CsvPerfTest, StringFieldParsingBenchmark)
 	constexpr int kIterations = 100000;
 	volatile int sink = 0;
 
-	const long long legacy_us = benchmark_us([&]() {
+	const long long legacy_us = ngl_test_support::benchmark_us([&]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			ngl::csvpair pair;
@@ -421,7 +412,7 @@ TEST(CsvPerfTest, StringFieldParsingBenchmark)
 		}
 	});
 
-	const long long optimized_us = benchmark_us([&]() {
+	const long long optimized_us = ngl_test_support::benchmark_us([&]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			ngl::csvpair pair;
@@ -447,7 +438,7 @@ TEST(NFilterWordPerfTest, IsFilterBenchmark)
 	constexpr int kIterations = 5000;
 	volatile int sink = 0;
 
-	const long long legacy_us = benchmark_us([&]() {
+	const long long legacy_us = ngl_test_support::benchmark_us([&]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			if (legacy_is_filter(payload))
@@ -457,7 +448,7 @@ TEST(NFilterWordPerfTest, IsFilterBenchmark)
 		}
 	});
 
-	const long long optimized_us = benchmark_us([&]() {
+	const long long optimized_us = ngl_test_support::benchmark_us([&]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			if (ngl::nfilterword::is_filter(payload))
