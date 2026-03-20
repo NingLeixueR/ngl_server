@@ -60,9 +60,9 @@ namespace ngl
 
 		void create_robot(const std::string& arobotname, ENET_PROTOCOL aprotocol = ENET_TCP) const;
 
-		void foreach(const std::function<bool(_robot&)>& afun);
+		void foreach(const std::function<void(_robot&)>& afun);
 
-		_robot* get_robot(std::string aacount);
+		_robot* get_robot(const std::string& aacount);
 		_robot* get_robot(i64_actorid aroleid);
 
 		template <typename T>

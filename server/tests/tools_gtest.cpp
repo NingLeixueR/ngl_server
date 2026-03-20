@@ -233,6 +233,17 @@ TEST(ToolsTest, LexicalCastRejectsIntegralOverflow)
 	EXPECT_THROW(ngl::tools::lexical_cast<int16_t>(std::string("40000")), boost::bad_lexical_cast);
 }
 
+TEST(ToolsTest, TryLexicalCastReportsSuccessAndFailureWithoutThrowing)
+{
+	int32_t parsed = 0;
+	EXPECT_TRUE(ngl::tools::try_lexical_cast("42", parsed));
+	EXPECT_EQ(parsed, 42);
+
+	parsed = 7;
+	EXPECT_FALSE(ngl::tools::try_lexical_cast("oops", parsed));
+	EXPECT_EQ(parsed, 7);
+}
+
 TEST(ToolsTest, NguidMakeActordataidUpdatesOnlyDataId)
 {
 	const ngl::i64_actorid actor = ngl::nguid::make(ngl::ACTOR_ROLE, 2, 11);

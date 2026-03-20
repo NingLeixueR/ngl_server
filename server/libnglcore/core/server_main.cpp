@@ -7,8 +7,6 @@
 #include "runtime_helpers.h"
 #include "tools/arg_options.h"
 
-#include <boost/program_options.hpp>
-
 #include <atomic>
 #include <cctype>
 #include <ctime>
@@ -16,7 +14,7 @@
 
 #define DEF_COUNT (2000)
 
-namespace
+namespace ngl_runtime::detail
 {
 	struct node_bootstrap_options
 	{
@@ -133,42 +131,6 @@ namespace
 		return argc >= 5 && argv != nullptr && argv[4] != nullptr && std::string_view(argv[4]) == "init";
 	}
 
-	bool equals_ignore_case_ascii(std::string_view lhs, std::string_view rhs)
-	{
-		if (lhs.size() != rhs.size())
-		{
-			return false;
-		}
-
-		for (std::size_t i = 0; i < lhs.size(); ++i)
-		{
-			const auto lchar = static_cast<unsigned char>(lhs[i]);
-			const auto rchar = static_cast<unsigned char>(rhs[i]);
-			if (std::tolower(lchar) != std::tolower(rchar))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-
-	bool try_parse_int(std::string_view text, int& value)
-	{
-		try
-		{
-			value = ngl::tools::lexical_cast<int>(std::string(text).c_str());
-			return true;
-		}
-		catch (const boost::bad_lexical_cast&)
-		{
-			return false;
-		}
-		catch (const std::string&)
-		{
-			return false;
-		}
-	}
-
 	std::string command_suffix(const std::string& line, std::size_t skip_tokens)
 	{
 		std::size_t lpos = 0;
@@ -195,44 +157,42 @@ namespace
 
 	bool apply_robot_control_command(const std::string& line, robot_test_state& state)
 	{
-		const std::vector<std::string> tokens = ngl_runtime::split_command_line(line);
+		const std::vector<std::string> tokens = ngl::arg_options::split_command_line(line);
 		if (tokens.empty())
 		{
 			return true;
 		}
 
-		if (equals_ignore_case_ascii(tokens[0], "test"))
+		std::string command = tokens.front();
+		ngl::tools::transform_tolower(command);
+
+		if (command == "test" || command == "tests")
 		{
-			// Replace the replay plan with a single repeating command.
 			int delay_ms = 0;
-			if (tokens.size() < 3 || !try_parse_int(tokens[1], delay_ms))
+			if (tokens.size() < 3 || !ngl::tools::try_lexical_cast(tokens[1], delay_ms))
 			{
 				return true;
 			}
 
+			const std::string replay_command = command_suffix(line, 2);
 			std::scoped_lock lock(state.m_mutex);
-			state.m_plan.m_interval_ms = { delay_ms };
-			state.m_plan.m_commands = { command_suffix(line, 2) };
-			state.m_enabled.store(true, std::memory_order_release);
-			return true;
-		}
-
-		if (equals_ignore_case_ascii(tokens[0], "tests"))
-		{
-			// Append one more delayed command to the current replay plan.
-			int delay_ms = 0;
-			if (tokens.size() < 3 || !try_parse_int(tokens[1], delay_ms))
+			if (command == "test")
 			{
-				return true;
+				// Replace the replay plan with a single repeating command.
+				state.m_plan.m_interval_ms = { delay_ms };
+				state.m_plan.m_commands = { replay_command };
+				state.m_enabled.store(true, std::memory_order_release);
 			}
-
-			std::scoped_lock lock(state.m_mutex);
-			state.m_plan.m_interval_ms.push_back(delay_ms);
-			state.m_plan.m_commands.push_back(command_suffix(line, 2));
+			else
+			{
+				// Append one more delayed command to the current replay plan.
+				state.m_plan.m_interval_ms.push_back(delay_ms);
+				state.m_plan.m_commands.push_back(replay_command);
+			}
 			return true;
 		}
 
-		if (equals_ignore_case_ascii(tokens[0], "notest"))
+		if (command == "notest")
 		{
 			// Clear the replay plan entirely.
 			std::scoped_lock lock(state.m_mutex);
@@ -241,7 +201,7 @@ namespace
 			return true;
 		}
 
-		if (equals_ignore_case_ascii(tokens[0], "start"))
+		if (command == "start")
 		{
 			// Resume replay without modifying the stored plan.
 			state.m_enabled.store(true, std::memory_order_release);
@@ -303,15 +263,7 @@ namespace ngl_runtime
 
 	std::vector<std::string> split_command_line(std::string line)
 	{
-		if (line.empty())
-		{
-			return {};
-		}
-#ifdef _WIN32
-		return boost::program_options::split_winmain(line);
-#else
-		return boost::program_options::split_unix(line);
-#endif
+		return ngl::arg_options::split_command_line(line);
 	}
 
 	bool build_push_server_config_param(const ngl::tab_servers& server, std::string& param)
@@ -356,6 +308,20 @@ namespace ngl_runtime
 		return true;
 	}
 }
+
+using ngl_runtime::detail::apply_robot_control_command;
+using ngl_runtime::detail::copy_robot_test_plan;
+using ngl_runtime::detail::create_default_log_actor;
+using ngl_runtime::detail::init_database_backend;
+using ngl_runtime::detail::make_node_options;
+using ngl_runtime::detail::read_console_line;
+using ngl_runtime::detail::robot_test_plan;
+using ngl_runtime::detail::robot_test_state;
+using ngl_runtime::detail::seed_db_record;
+using ngl_runtime::detail::should_seed_db_data;
+using ngl_runtime::detail::start_node;
+
+startup_error start_robot_safe(int argc, char** argv, int* tcp_port);
 
 void init_DB_ACCOUNT(const char* aname, int beg)
 {
@@ -814,15 +780,10 @@ startup_error start_csvserver(int* tcp_port)
 		});
 }
 
-std::string get_line()
-{
-	char lbuff[4096] = { 0 };
-	std::cin.getline(lbuff, 4096);
-	return lbuff;
-}
-
 startup_error start_robot(int argc, char** argv, int* tcp_port)
 {
+	return start_robot_safe(argc, argv, tcp_port);
+#if 0
 	ngl::log_error()->print("[{}] start", "ROBOT");
 
 	startup_error rc = init_server(nconfig.nodeid(), {}, tcp_port);
@@ -890,7 +851,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 						lms.clear();
 						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
 						lcmdvec.clear();
-						lcmdvec.push_back(command_suffix(lline, 2));
+						lcmdvec.push_back(ngl_runtime::detail::command_suffix(lline, 2));
 						ltest = true;
 						continue;
 					}
@@ -904,7 +865,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 					if (lvec[0] == "tests" || lvec[0] == "TESTS")
 					{
 						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
-						lcmdvec.push_back(command_suffix(lline, 2));
+						lcmdvec.push_back(ngl_runtime::detail::command_suffix(lline, 2));
 						continue;
 					}
 					if (lvec[0] == "start" || lvec[0] == "START")
@@ -930,7 +891,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 			}
 		}
 	}
-	return startup_error::ok;
+#endif
 }
 
 startup_error start_robot_safe(int argc, char** argv, int* tcp_port)

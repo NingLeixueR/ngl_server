@@ -56,79 +56,6 @@
 
 constexpr auto GUID_LEN = 64;
 
-namespace
-{
-	constexpr char G_HEX_DIGITS[] = "0123456789ABCDEF";
-
-	inline bool is_url_encode_passthrough(unsigned char achar)
-	{
-		return (achar >= '0' && achar <= '9')
-			|| (achar >= 'A' && achar <= 'Z')
-			|| (achar >= 'a' && achar <= 'z')
-			|| achar == '-'
-			|| achar == '_'
-			|| achar == '.';
-	}
-
-	inline int hex_value(char achar)
-	{
-		if (achar >= '0' && achar <= '9')
-		{
-			return achar - '0';
-		}
-		if (achar >= 'A' && achar <= 'F')
-		{
-			return achar - 'A' + 10;
-		}
-		if (achar >= 'a' && achar <= 'f')
-		{
-			return achar - 'a' + 10;
-		}
-		return -1;
-	}
-
-	inline bool should_preserve_percent_escape(unsigned char ahex)
-	{
-		return (ahex >= '0' && ahex <= '9')
-			|| (ahex >= 'a' && ahex <= 'z')
-			|| (ahex >= 'A' && ahex <= 'Z')
-			|| ahex == 0x21 || ahex == 0x24 || ahex == 0x26 || ahex == 0x27 || ahex == 0x28 || ahex == 0x29
-			|| ahex == 0x2a || ahex == 0x2b || ahex == 0x2c || ahex == 0x2d || ahex == 0x2e || ahex == 0x2f
-			|| ahex == 0x3A || ahex == 0x3B || ahex == 0x3D || ahex == 0x3F || ahex == 0x40 || ahex == 0x5F;
-	}
-
-	bool parse_ipv4_octets(std::string_view aip, std::array<int, 4>& aoctets)
-	{
-		std::size_t begin = 0;
-		for (std::size_t index = 0; index < aoctets.size(); ++index)
-		{
-			const bool is_last = index + 1 == aoctets.size();
-			const std::size_t dot = aip.find('.', begin);
-			if ((dot == std::string_view::npos) != is_last)
-			{
-				return false;
-			}
-
-			const std::size_t end = is_last ? aip.size() : dot;
-			if (end <= begin || end - begin > 3)
-			{
-				return false;
-			}
-
-			int value = 0;
-			const auto [ptr, ec] = std::from_chars(aip.data() + begin, aip.data() + end, value);
-			if (ec != std::errc() || ptr != aip.data() + end || value < 0 || value > 255)
-			{
-				return false;
-			}
-
-			aoctets[index] = value;
-			begin = end + 1;
-		}
-		return begin == aip.size() + 1;
-	}
-}
-
 namespace ngl
 { 
 	bool tools::is_lanip(const std::string& aip)
@@ -138,7 +65,7 @@ namespace ngl
 			return true;
 		}
 		std::array<int, 4> loctets{};
-		if (!parse_ipv4_octets(aip, loctets))
+		if (!detail::parse_ipv4_octets(aip, loctets))
 		{
 			return false;
 		}
@@ -738,8 +665,8 @@ namespace ngl
 	{
 		const unsigned char lvalue = static_cast<unsigned char>(dec);
 		std::string lret(2, '\0');
-		lret[0] = G_HEX_DIGITS[lvalue >> 4];
-		lret[1] = G_HEX_DIGITS[lvalue & 0x0F];
+		lret[0] = detail::url_hex_digits[lvalue >> 4];
+		lret[1] = detail::url_hex_digits[lvalue & 0x0F];
 		return lret;
 	}
 
@@ -749,15 +676,15 @@ namespace ngl
 		escaped.reserve(c.size() * 3);
 		for (unsigned char achar : c)
 		{
-			if (is_url_encode_passthrough(achar))
+			if (detail::is_url_encode_passthrough(achar))
 			{
 				escaped.push_back(static_cast<char>(achar));
 			}
 			else
 			{
 				escaped.push_back('%');
-				escaped.push_back(G_HEX_DIGITS[achar >> 4]);
-				escaped.push_back(G_HEX_DIGITS[achar & 0x0F]);
+				escaped.push_back(detail::url_hex_digits[achar >> 4]);
+				escaped.push_back(detail::url_hex_digits[achar & 0x0F]);
 			}
 		}
 		return escaped;
@@ -777,12 +704,12 @@ namespace ngl
 			case '%':
 				if (i + 2 < szToDecode.length())
 				{
-					const int high = hex_value(szToDecode[i + 1]);
-					const int low = hex_value(szToDecode[i + 2]);
+					const int high = detail::hex_value(szToDecode[i + 1]);
+					const int low = detail::hex_value(szToDecode[i + 2]);
 					if (high >= 0 && low >= 0)
 					{
 						const unsigned char decoded = static_cast<unsigned char>((high << 4) | low);
-						if (should_preserve_percent_escape(decoded))
+						if (detail::should_preserve_percent_escape(decoded))
 						{
 							result.push_back('%');
 						}

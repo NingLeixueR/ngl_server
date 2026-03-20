@@ -15,28 +15,23 @@
 
 #include "actor/actor_logic/actor_robot_manage/actor_robot_manage.h"
 #include "tools/arg_options.h"
+#include "tools/tools.h"
 
-#include <algorithm>
-#include <cctype>
-#include <sstream>
 #include <string_view>
 
 namespace ngl
 {
 	namespace robot_manage_cmd
 	{
-		std::string to_lower_ascii(std::string avalue)
+		std::string normalize_ascii_command(std::string avalue)
 		{
-			std::ranges::transform(avalue, avalue.begin(), [](unsigned char ach)
-				{
-					return static_cast<char>(std::tolower(ach));
-				});
+			tools::transform_tolower(avalue);
 			return avalue;
 		}
 
 		ENET_PROTOCOL parse_robot_protocol(std::string aprotocol)
 		{
-			aprotocol = to_lower_ascii(std::move(aprotocol));
+			aprotocol = normalize_ascii_command(std::move(aprotocol));
 			if (aprotocol == "ws" || aprotocol == "wss")
 			{
 				return ENET_WS;
@@ -52,34 +47,58 @@ namespace ngl
 
 		std::string join_with_space(const std::vector<std::string>& avalue)
 		{
-			std::ostringstream lstream;
-			for (std::size_t i = 0; i < avalue.size(); ++i)
-			{
-				if (i > 0)
-				{
-					lstream << ' ';
-				}
-				lstream << avalue[i];
-			}
-			return lstream.str();
+			std::string ljoined;
+			tools::splicing(avalue, " ", ljoined);
+			return ljoined;
 		}
 
 		std::string join_role_cmd(const std::vector<std::string>& avalue)
 		{
-			std::ostringstream lstream;
+			std::string ljoined;
 			for (std::size_t i = 0; i < avalue.size(); ++i)
 			{
 				if (i == 1)
 				{
-					lstream << '|';
+					ljoined.push_back('|');
 				}
 				else if (i >= 2)
 				{
-					lstream << '*';
+					ljoined.push_back('*');
 				}
-				lstream << avalue[i];
+				ljoined += avalue[i];
 			}
-			return lstream.str();
+			return ljoined;
+		}
+
+		pbnet::PROBUFF_NET_CMD make_role_net_cmd(const std::vector<std::string>& avalue)
+		{
+			pbnet::PROBUFF_NET_CMD lpro;
+			std::string lcmd = join_role_cmd(avalue);
+			if (!tools::isutf8(lcmd))
+			{
+				tools::to_utf8(lcmd, lcmd);
+			}
+			lpro.set_mcmd(lcmd);
+			return lpro;
+		}
+
+		bool resolve_kcp_target(const _robot& arobot, std::string_view aserver, pbnet::ENUM_KCP& akcpenum, int16_t& aservertid, int16_t& atcount)
+		{
+			if (aserver == "game")
+			{
+				akcpenum = pbnet::KCP_ROLE;
+				aservertid = nnodeid::tid(arobot.m_gameid);
+				atcount = nnodeid::tcount(arobot.m_gameid);
+				return true;
+			}
+			if (aserver == "gateway")
+			{
+				akcpenum = pbnet::KCP_GATEWAY;
+				aservertid = nnodeid::tid(arobot.m_gatewayid);
+				atcount = nnodeid::tcount(arobot.m_gatewayid);
+				return true;
+			}
+			return false;
 		}
 
 		void log_robot_cmd_overview()
@@ -117,7 +136,7 @@ namespace ngl
 			return true;
 		}
 
-		std::string lcmd = robot_manage_cmd::to_lower_ascii(ltokens[0]);
+		std::string lcmd = robot_manage_cmd::normalize_ascii_command(ltokens[0]);
 		std::vector<std::string> largs(ltokens.begin() + 1, ltokens.end());
 		bool lfrom_help_command = false;
 
@@ -144,7 +163,7 @@ namespace ngl
 				return true;
 			}
 			lfrom_help_command = true;
-			lcmd = robot_manage_cmd::to_lower_ascii(largs.front());
+			lcmd = robot_manage_cmd::normalize_ascii_command(largs.front());
 			largs = { "--help" };
 		}
 		if (lcmd == "login")
@@ -213,13 +232,7 @@ namespace ngl
 			loptions.value("robot", lrobot);
 			loptions.value("arguments", larguments);
 
-			pbnet::PROBUFF_NET_CMD lpro;
-			std::string lmcmd = robot_manage_cmd::join_role_cmd(larguments);
-			if (!tools::isutf8(lmcmd))
-			{
-				tools::to_utf8(lmcmd, lmcmd);
-			}
-			lpro.set_mcmd(lmcmd);
+			pbnet::PROBUFF_NET_CMD lpro = robot_manage_cmd::make_role_net_cmd(larguments);
 			send(get_robot(lrobot), lpro);
 			return true;
 		}
@@ -237,13 +250,7 @@ namespace ngl
 			std::vector<std::string> larguments;
 			loptions.value("arguments", larguments);
 
-			pbnet::PROBUFF_NET_CMD lpro;
-			std::string lmcmd = robot_manage_cmd::join_role_cmd(larguments);
-			if (!tools::isutf8(lmcmd))
-			{
-				tools::to_utf8(lmcmd, lmcmd);
-			}
-			lpro.set_mcmd(lmcmd);
+			pbnet::PROBUFF_NET_CMD lpro = robot_manage_cmd::make_role_net_cmd(larguments);
 			foreach([&lpro, this](_robot& arobot)
 				{
 					send(&arobot, lpro);
@@ -308,7 +315,7 @@ namespace ngl
 
 			std::string lserver;
 			loptions.value("server", lserver);
-			lserver = robot_manage_cmd::to_lower_ascii(std::move(lserver));
+			lserver = robot_manage_cmd::normalize_ascii_command(std::move(lserver));
 
 			pbnet::PROBUFF_NET_GET_TIME lpro;
 			foreach([&lpro, &lserver](_robot& arobot)
@@ -316,19 +323,7 @@ namespace ngl
 					pbnet::ENUM_KCP lkcpenum;
 					int16_t lservertid = 0;
 					int16_t ltcount = 0;
-					if (lserver == "game")
-					{
-						lkcpenum = pbnet::KCP_ROLE;
-						lservertid = nnodeid::tid(arobot.m_gameid);
-						ltcount = nnodeid::tcount(arobot.m_gameid);
-					}
-					else if (lserver == "gateway")
-					{
-						lkcpenum = pbnet::KCP_GATEWAY;
-						lservertid = nnodeid::tid(arobot.m_gatewayid);
-						ltcount = nnodeid::tcount(arobot.m_gatewayid);
-					}
-					else
+					if (!robot_manage_cmd::resolve_kcp_target(arobot, lserver, lkcpenum, lservertid, ltcount))
 					{
 						log_warn()->print("kcp_gettime server [{}] invalid", lserver);
 						return false;
@@ -365,26 +360,14 @@ namespace ngl
 			loptions.value("pbname", lpbname);
 			loptions.value("json", ljson_tokens);
 
-			lserver = robot_manage_cmd::to_lower_ascii(std::move(lserver));
+			lserver = robot_manage_cmd::normalize_ascii_command(std::move(lserver));
 			const std::string ljson = robot_manage_cmd::join_with_space(ljson_tokens);
 			foreach([&lserver, &lpbname, &ljson](_robot& arobot)
 				{
 					pbnet::ENUM_KCP lkcpenum;
 					int16_t lservertid = 0;
 					int16_t ltcount = 0;
-					if (lserver == "game")
-					{
-						lkcpenum = pbnet::KCP_ROLE;
-						lservertid = nnodeid::tid(arobot.m_gameid);
-						ltcount = nnodeid::tcount(arobot.m_gameid);
-					}
-					else if (lserver == "gateway")
-					{
-						lkcpenum = pbnet::KCP_GATEWAY;
-						lservertid = nnodeid::tid(arobot.m_gatewayid);
-						ltcount = nnodeid::tcount(arobot.m_gatewayid);
-					}
-					else
+					if (!robot_manage_cmd::resolve_kcp_target(arobot, lserver, lkcpenum, lservertid, ltcount))
 					{
 						log_warn()->print("kcp_protocol server [{}] invalid", lserver);
 						return false;

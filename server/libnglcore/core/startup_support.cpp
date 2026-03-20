@@ -10,30 +10,8 @@
 
 #include <format>
 
-namespace
+namespace ngl_startup::detail
 {
-	bool parse_startup_int(const char* text, int32_t& value)
-	{
-		if (text == nullptr)
-		{
-			return false;
-		}
-
-		try
-		{
-			value = ngl::tools::lexical_cast<int32_t>(text);
-			return true;
-		}
-		catch (const boost::bad_lexical_cast&)
-		{
-			return false;
-		}
-		catch (const std::string&)
-		{
-			return false;
-		}
-	}
-
 	void apply_server_identity(const ngl_startup::context& ctx, const ngl::tab_servers& tab)
 	{
 		// Compose the runtime node id and a readable process name from tab_servers metadata.
@@ -78,7 +56,7 @@ namespace ngl_startup
 
 		// Parse the minimal identity first so later failures can be logged with context.
 		ctx.node_name = argv[1] == nullptr ? "" : argv[1];
-		if (!parse_startup_int(argv[2], ctx.area) || !parse_startup_int(argv[3], ctx.tcount))
+		if (!ngl::tools::try_lexical_cast(argv[2], ctx.area) || !ngl::tools::try_lexical_cast(argv[3], ctx.tcount))
 		{
 			return { startup_error::invalid_args, "area/tcount parse failed" };
 		}
@@ -113,7 +91,7 @@ namespace ngl_startup
 			return { startup_error::tab_server_missing, "tab_servers missing" };
 		}
 
-		apply_server_identity(ctx, *tab);
+		detail::apply_server_identity(ctx, *tab);
 		return {};
 	}
 }

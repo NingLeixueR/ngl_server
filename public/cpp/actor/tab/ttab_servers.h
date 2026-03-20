@@ -318,6 +318,26 @@ namespace ngl
 			return get_nworks(atype, nconfig.tcount(), anetwork);
 		}
 
+		bool get_nworks(i32_serverid aserverid, int area, ENET_PROTOCOL atype, net_works& anetwork)
+		{
+			i16_area lquery_area = 0;
+			if (!normalize_area(area, lquery_area))
+			{
+				return false;
+			}
+			const tab_servers* ltab = csv<tab_servers>::tab(nnodeid::tid(aserverid));
+			if (ltab == nullptr)
+			{
+				return false;
+			}
+			return get_nworks(ltab->m_type, lquery_area, atype, nnodeid::tcount(aserverid), anetwork);
+		}
+
+		bool get_nworks(i32_serverid aserverid, ENET_PROTOCOL atype, net_works& anetwork)
+		{
+			return get_nworks(aserverid, nconfig.area(), atype, anetwork);
+		}
+
 		bool get_nworks(const std::string& aname, int area, int32_t atcount, ENET_PROTOCOL atype, net_works& anetwork)
 		{
 			const tab_servers* ltab = const_tab(aname, area);

@@ -54,6 +54,8 @@ namespace ngl
 
 	namespace detail
 	{
+		inline constexpr std::string_view url_hex_digits = "0123456789ABCDEF";
+
 		template <typename T>
 		using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
@@ -160,6 +162,74 @@ namespace ngl
 				return std::isspace(achar) != 0;
 			});
 			return liter == avalue.end() ? '\0' : *liter;
+		}
+
+		inline bool is_url_encode_passthrough(unsigned char achar)
+		{
+			return (achar >= '0' && achar <= '9')
+				|| (achar >= 'A' && achar <= 'Z')
+				|| (achar >= 'a' && achar <= 'z')
+				|| achar == '-'
+				|| achar == '_'
+				|| achar == '.';
+		}
+
+		inline int hex_value(char achar)
+		{
+			if (achar >= '0' && achar <= '9')
+			{
+				return achar - '0';
+			}
+			if (achar >= 'A' && achar <= 'F')
+			{
+				return achar - 'A' + 10;
+			}
+			if (achar >= 'a' && achar <= 'f')
+			{
+				return achar - 'a' + 10;
+			}
+			return -1;
+		}
+
+		inline bool should_preserve_percent_escape(unsigned char ahex)
+		{
+			return (ahex >= '0' && ahex <= '9')
+				|| (ahex >= 'a' && ahex <= 'z')
+				|| (ahex >= 'A' && ahex <= 'Z')
+				|| ahex == 0x21 || ahex == 0x24 || ahex == 0x26 || ahex == 0x27 || ahex == 0x28 || ahex == 0x29
+				|| ahex == 0x2a || ahex == 0x2b || ahex == 0x2c || ahex == 0x2d || ahex == 0x2e || ahex == 0x2f
+				|| ahex == 0x3A || ahex == 0x3B || ahex == 0x3D || ahex == 0x3F || ahex == 0x40 || ahex == 0x5F;
+		}
+
+		inline bool parse_ipv4_octets(std::string_view aip, std::array<int, 4>& aoctets)
+		{
+			std::size_t begin = 0;
+			for (std::size_t index = 0; index < aoctets.size(); ++index)
+			{
+				const bool is_last = index + 1 == aoctets.size();
+				const std::size_t dot = aip.find('.', begin);
+				if ((dot == std::string_view::npos) != is_last)
+				{
+					return false;
+				}
+
+				const std::size_t end = is_last ? aip.size() : dot;
+				if (end <= begin || end - begin > 3)
+				{
+					return false;
+				}
+
+				int value = 0;
+				const auto [ptr, ec] = std::from_chars(aip.data() + begin, aip.data() + end, value);
+				if (ec != std::errc() || ptr != aip.data() + end || value < 0 || value > 255)
+				{
+					return false;
+				}
+
+				aoctets[index] = value;
+				begin = end + 1;
+			}
+			return begin == aip.size() + 1;
 		}
 	}
 
@@ -288,6 +358,24 @@ namespace ngl
 			{
 				log_lexical_cast_error(typeid(To).name(), typeid(From).name(), aerror.what(), asource);
 				throw;
+			}
+		}
+
+		template <typename To, typename From>
+		static bool try_lexical_cast(const From& from, To& to, const std::source_location& asource = std::source_location::current())
+		{
+			try
+			{
+				to = lexical_cast<To>(from, asource);
+				return true;
+			}
+			catch (const boost::bad_lexical_cast&)
+			{
+				return false;
+			}
+			catch (const std::string&)
+			{
+				return false;
 			}
 		}
 		
