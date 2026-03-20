@@ -321,7 +321,7 @@ using ngl_runtime::detail::seed_db_record;
 using ngl_runtime::detail::should_seed_db_data;
 using ngl_runtime::detail::start_node;
 
-startup_error start_robot_safe(int argc, char** argv, int* tcp_port);
+startup_error start_robot(int argc, char** argv, int* tcp_port);
 
 void init_DB_ACCOUNT(const char* aname, int beg)
 {
