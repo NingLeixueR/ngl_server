@@ -24,15 +24,9 @@ namespace ngl
 {
 	namespace robot_manage_cmd
 	{
-		std::string normalize_ascii_command(std::string avalue)
-		{
-			tools::transform_tolower(avalue);
-			return avalue;
-		}
-
 		ENET_PROTOCOL parse_robot_protocol(std::string aprotocol)
 		{
-			aprotocol = normalize_ascii_command(std::move(aprotocol));
+			tools::transform_tolower(aprotocol);
 			if (aprotocol == "ws" || aprotocol == "wss")
 			{
 				return ENET_WS;
@@ -44,13 +38,6 @@ namespace ngl
 
 			log_warn()->print("robot login protocol [{}] invalid, fallback tcp", aprotocol);
 			return ENET_TCP;
-		}
-
-		std::string join_with_space(const std::vector<std::string>& avalue)
-		{
-			std::string ljoined;
-			tools::splicing(avalue, " ", ljoined);
-			return ljoined;
 		}
 
 		std::string join_role_cmd(const std::vector<std::string>& avalue)
@@ -135,11 +122,6 @@ namespace ngl
 			return arobot.m_robot->kcp_index(lservertid, ltcount, lkcpenum);
 		}
 
-		std::shared_ptr<pack> make_json_pack(const std::string& apbname, const std::string& ajson, i64_actorid aactor_roleid)
-		{
-			return actor_base::jsonpack(apbname, ajson, nguid::moreactor(), aactor_roleid);
-		}
-
 		void log_robot_cmd_overview()
 		{
 			log_info()->print(
@@ -175,7 +157,8 @@ namespace ngl
 			return true;
 		}
 
-		std::string lcmd = robot_manage_cmd::normalize_ascii_command(ltokens[0]);
+		std::string lcmd = ltokens[0];
+		tools::transform_tolower(lcmd);
 		std::vector<std::string> largs(ltokens.begin() + 1, ltokens.end());
 		bool lfrom_help_command = false;
 
@@ -187,7 +170,8 @@ namespace ngl
 				return true;
 			}
 			lfrom_help_command = true;
-			lcmd = robot_manage_cmd::normalize_ascii_command(largs.front());
+			lcmd = largs.front();
+			tools::transform_tolower(lcmd);
 			largs = { "--help" };
 		}
 		if (lcmd == "login")
@@ -337,7 +321,7 @@ namespace ngl
 
 			std::string lserver;
 			loptions.value("server", lserver);
-			lserver = robot_manage_cmd::normalize_ascii_command(std::move(lserver));
+			tools::transform_tolower(lserver);
 
 			pbnet::PROBUFF_NET_GET_TIME lpro;
 			foreach([&lpro, &lserver](_robot& arobot)
@@ -373,8 +357,9 @@ namespace ngl
 			loptions.value("pbname", lpbname);
 			loptions.value("json", ljson_tokens);
 
-			lserver = robot_manage_cmd::normalize_ascii_command(std::move(lserver));
-			const std::string ljson = robot_manage_cmd::join_with_space(ljson_tokens);
+			tools::transform_tolower(lserver);
+			std::string ljson;
+			tools::splicing(ljson_tokens, " ", ljson);
 			foreach([&lserver, &lpbname, &ljson](_robot& arobot)
 				{
 					const std::optional<i16_port> luport = robot_manage_cmd::resolve_kcp_uport(arobot, "kcp_protocol", lserver);
@@ -383,7 +368,7 @@ namespace ngl
 						return;
 					}
 
-					std::shared_ptr<pack> lpack = robot_manage_cmd::make_json_pack(lpbname, ljson, arobot.m_actor_roleid);
+					std::shared_ptr<pack> lpack = actor_base::jsonpack(lpbname, ljson, nguid::moreactor(), arobot.m_actor_roleid);
 					if (lpack != nullptr)
 					{
 						actor::kcp_sendpack(arobot.m_robot->id_guid(), lpack, *luport);
@@ -409,10 +394,11 @@ namespace ngl
 			loptions.value("pbname", lpbname);
 			loptions.value("json", ljson_tokens);
 
-			const std::string ljson = robot_manage_cmd::join_with_space(ljson_tokens);
+			std::string ljson;
+			tools::splicing(ljson_tokens, " ", ljson);
 			foreach([&lpbname, &ljson](_robot& arobot)
 				{
-					std::shared_ptr<pack> lpack = robot_manage_cmd::make_json_pack(lpbname, ljson, arobot.m_actor_roleid);
+					std::shared_ptr<pack> lpack = actor_base::jsonpack(lpbname, ljson, nguid::moreactor(), arobot.m_actor_roleid);
 					if (lpack != nullptr)
 					{
 						nnet::instance().send_pack(arobot.m_session, lpack);

@@ -261,11 +261,6 @@ namespace ngl_runtime
 		return request;
 	}
 
-	std::vector<std::string> split_command_line(std::string line)
-	{
-		return ngl::arg_options::split_command_line(line);
-	}
-
 	bool build_push_server_config_param(const ngl::tab_servers& server, std::string& param)
 	{
 		param.clear();
@@ -321,7 +316,7 @@ using ngl_runtime::detail::seed_db_record;
 using ngl_runtime::detail::should_seed_db_data;
 using ngl_runtime::detail::start_node;
 
-startup_error start_robot(int argc, char** argv, int* tcp_port);
+startup_error start_robot_safe(int argc, char** argv, int* tcp_port);
 
 void init_DB_ACCOUNT(const char* aname, int beg)
 {
@@ -841,7 +836,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 				while (true)
 				{
 					lline = get_line();
-					const std::vector<std::string> lvec = ngl_runtime::split_command_line(lline);
+					const std::vector<std::string> lvec = ngl::arg_options::split_command_line(lline);
 					if (lvec.empty())
 					{
 						continue;
@@ -1087,10 +1082,4 @@ int ngl_main(int argc, char** argv)
 		ngl::sleep::seconds(1);
 	}
 	return static_cast<int>(startup_error::ok);
-}
-
-
-std::function<void()> dump_logic(const std::string& acontent)
-{
-	return ngl::tools::send_mail(acontent);
 }

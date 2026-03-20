@@ -288,6 +288,31 @@ TEST(TTabServersTest, FindFirstKeepsLowestMatchingServerId)
 	EXPECT_EQ(first_game->m_id, 2);
 }
 
+TEST(TTabServersTest, GetNetworkByServerIdReusesTidAndTcount)
+{
+	ngl::ttab_servers table;
+
+	ngl::tab_servers game;
+	game.m_id = 7;
+	game.m_name = "game";
+	game.m_area = 1;
+	game.m_type = ngl::GAME;
+	game.m_tcount = 4;
+	ngl::net_works tcp;
+	tcp.m_type = ngl::ENET_TCP;
+	tcp.m_ip = "127.0.0.1";
+	tcp.m_port = 9200;
+	game.m_net.push_back(tcp);
+	table.m_csv.emplace(game.m_id, game);
+	table.reload();
+
+	const ngl::i32_serverid serverid = ngl::nnodeid::nodeid(static_cast<int16_t>(game.m_id), 3);
+	ngl::net_works network;
+	ASSERT_TRUE(table.get_nworks(serverid, 1, ngl::ENET_TCP, network));
+	EXPECT_EQ(network.m_ip, "127.0.0.1");
+	EXPECT_EQ(network.m_port, 9202);
+}
+
 TEST(TTabMergeAreaTest, ReloadResolvesLongChains)
 {
 	const auto table = make_mergearea_table(6);

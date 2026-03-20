@@ -5,7 +5,6 @@
 #include "actor/tab/ttab_servers.h"
 
 #include <string>
-#include <vector>
 
 namespace ngl_runtime
 {
@@ -26,9 +25,6 @@ namespace ngl_runtime
 
 	// Convert raw CLI arguments into a higher-level robot launch request.
 	robot_launch_request build_robot_launch_request(int argc, char** argv);
-
-	// Split a console command into tokens after normalizing repeated spaces.
-	std::vector<std::string> split_command_line(std::string line);
 
 	// Serialize a tab_servers row into the HTTP query string expected by the GM endpoint.
 	bool build_push_server_config_param(const ngl::tab_servers& server, std::string& param);

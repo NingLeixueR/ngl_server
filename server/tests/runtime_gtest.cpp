@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "runtime_helpers.h"
+#include "tools/arg_options.h"
 #include "tools/tools.h"
 
 namespace runtime_test_case
@@ -45,7 +46,7 @@ TEST(RuntimeHelpersTest, RobotLaunchRequestRejectsPartialBatchArgs)
 
 TEST(RuntimeHelpersTest, SplitCommandLineNormalizesRepeatedSpaces)
 {
-	const std::vector<std::string> tokens = ngl_runtime::split_command_line("test   1500   login alice");
+	const std::vector<std::string> tokens = ngl::arg_options::split_command_line("test   1500   login alice");
 	ASSERT_EQ(tokens.size(), 4u);
 	EXPECT_EQ(tokens[0], "test");
 	EXPECT_EQ(tokens[1], "1500");
