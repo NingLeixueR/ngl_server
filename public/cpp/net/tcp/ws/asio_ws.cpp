@@ -16,6 +16,7 @@
 
 #include "actor/protocol/nprotocol.h"
 #include "net/tcp/ws/asio_ws.h"
+#include "net/net_session.h"
 #include "tools/localtime.h"
 #include "net/asio_timer.h"
 
@@ -150,6 +151,7 @@ namespace ngl
 		m_fun(acallfun),
 		m_closefun(aclosefun),
 		m_sendfinishfun(asendfinishfun),
+		m_sessionid(net_session::begin(ENET_WS) - 1),
 		m_service_ios(athread, ews_default_recvbuff),
 		m_tls_options(atls_options)
 	{
@@ -195,6 +197,7 @@ namespace ngl
 		m_fun(acallfun),
 		m_closefun(aclosefun),
 		m_sendfinishfun(asendfinishfun),
+		m_sessionid(net_session::begin(ENET_WS) - 1),
 		m_service_ios(athread + 1, ews_default_recvbuff),
 		m_tls_options(atls_options)
 	{
@@ -267,6 +270,11 @@ namespace ngl
 		lock_write(m_maplock);
 
 		std::shared_ptr<service_ws> lservice = nullptr;
+		if (!net_session::next(m_sessionid, ENET_WS))
+		{
+			log_error()->print("asio_ws::create_service session id exhausted");
+			return nullptr;
+		}
 		if (m_use_tls)
 		{
 			if (m_tls_context == nullptr)
@@ -274,11 +282,11 @@ namespace ngl
 				log_error()->print("asio_ws::create_service missing tls context");
 				return nullptr;
 			}
-			lservice = std::make_shared<service_ws>(m_service_ios, ++m_sessionid, *m_tls_context);
+			lservice = std::make_shared<service_ws>(m_service_ios, m_sessionid, *m_tls_context);
 		}
 		else
 		{
-			lservice = std::make_shared<service_ws>(m_service_ios, ++m_sessionid);
+			lservice = std::make_shared<service_ws>(m_service_ios, m_sessionid);
 		}
 
 		auto [_, success] = m_data.insert(std::make_pair(lservice->m_sessionid, lservice));

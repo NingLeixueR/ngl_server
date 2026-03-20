@@ -33,7 +33,7 @@ else()
 endif()
 
 include(${CMAKE_SOURCE_DIR}/cmake/NglBuild.cmake)
-find_package(Boost REQUIRED)
+find_package(Boost REQUIRED COMPONENTS program_options)
 find_package(behaviortree_cpp REQUIRED)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -47,6 +47,11 @@ elseif(TARGET Boost::boost)
 	target_link_libraries(ngl_build_options INTERFACE Boost::boost)
 else()
 	message(FATAL_ERROR "Unable to find a Boost headers target")
+endif()
+if(TARGET Boost::program_options)
+	target_link_libraries(ngl_build_options INTERFACE Boost::program_options)
+else()
+	message(FATAL_ERROR "Unable to find Boost::program_options target")
 endif()
 target_link_libraries(ngl_build_options INTERFACE
 	BT::behaviortree_cpp
@@ -63,7 +68,7 @@ target_include_directories(ngl_build_options SYSTEM INTERFACE
 target_compile_definitions(ngl_build_options INTERFACE
 	_WEBSOCKETPP_CPP11_TYPE_TRAITS_
 	USE_BOOST_INTERPROCESS
-	$<$<PLATFORM_ID:Windows>:BOOST_ALL_NO_LIB;BOOST_THREAD_BUILD_DLL;BUILDING_LIBCURL;HTTP_ONLY;NOMINMAX;_WIN32_WINNT=0x0601;WINVER=0x0601>
+	$<$<PLATFORM_ID:Windows>:BOOST_ALL_NO_LIB;BOOST_ALL_STATIC_LINK;BOOST_PROGRAM_OPTIONS_STATIC_LINK;BOOST_THREAD_BUILD_DLL;BUILDING_LIBCURL;HTTP_ONLY;NOMINMAX;_WIN32_WINNT=0x0601;WINVER=0x0601>
 	$<$<PLATFORM_ID:Linux>:BOOST_HAS_PTHREADS;BOOST_SP_USE_PTHREADS;BOOST_AC_USE_PTHREADS>
 )
 target_compile_options(ngl_build_options INTERFACE

@@ -286,12 +286,7 @@ namespace ngl
 		break;
 		}
 		std::string lcmd = std::format("kcp {} {} {} {} {}", (int32_t)akcpenum, lservertid, ltcount, lactorid, id_guid());
-		std::vector<std::string> lvec;
-		if (!ngl::tools::splite(lcmd.c_str(), " ", lvec))
-		{
-			return;
-		}
-		ngl::actor_robot_manage::parse_command(lvec);
+		ngl::actor_robot_manage::parse_command(std::move(lcmd));
 	}
 
 	bool actor_robot::timer_handle(const message<np_timerparm>& adata)

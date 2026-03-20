@@ -16,6 +16,7 @@
 #pragma once
 
 #include "actor/actor_logic/actor_robot/actor_robot.h"
+#include "net/nnet.h"
 
 namespace ngl
 {
@@ -47,17 +48,17 @@ namespace ngl
 
 		std::shared_ptr<actor_robot> create(i16_area aarea, i32_actordataid aroleid);
 
-		static void login(const std::string& aaccount, const std::string& apasswold);
+		static void login(const std::string& aaccount, const std::string& apasswold, ENET_PROTOCOL aprotocol = ENET_TCP);
 
-		bool check_connect(i32_serverid aserverid)const;
+		bool check_connect(i32_serverid aserverid, ENET_PROTOCOL aprotocol) const;
 
-		void connect(i32_serverid aserverid, const std::function<void(i32_sessionid)>& afun) const;
+		void connect(i32_serverid aserverid, ENET_PROTOCOL aprotocol, const std::function<void(i32_sessionid)>& afun) const;
 
-		static bool parse_command(std::vector<std::string>& aparm);
+		static bool parse_command(std::string aparm);
 
-		void create_robots(const std::string& arobotname, int abeg, int aend)const;
+		void create_robots(const std::string& arobotname, int abeg, int aend, ENET_PROTOCOL aprotocol = ENET_TCP) const;
 
-		void create_robot(const std::string& arobotname)const;
+		void create_robot(const std::string& arobotname, ENET_PROTOCOL aprotocol = ENET_TCP) const;
 
 		void foreach(const std::function<bool(_robot&)>& afun);
 
@@ -65,16 +66,18 @@ namespace ngl
 		_robot* get_robot(i64_actorid aroleid);
 
 		template <typename T>
-		void send(_robot* arobot, T& adata)
+		void send(_robot* arobot, const T& adata)
 		{
-			ntcp::instance().send(arobot->m_session, adata, nguid::moreactor(), arobot->m_actor_roleid);
+			if (arobot == nullptr)
+			{
+				return;
+			}
+			nnet::instance().send(arobot->m_session, adata, nguid::moreactor(), arobot->m_actor_roleid);
 		}
 
 		bool getdata(_robot* arobot);
 
 		bool kcp_connect(i64_actorid arobotid, pbnet::ENUM_KCP akcpenum, int16_t aservertid, int16_t atcount, i64_actorid aseractorid);
-
-		using handle_cmd = cmd<actor_robot_manage, std::string, const std::vector<std::string>&>;
 
 		bool timer_handle(const message<np_timerparm>& adata);
 

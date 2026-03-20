@@ -15,10 +15,41 @@
 
 
 #include "actor/actor_logic/actor_robot_manage/actor_robot_manage.h"
+#include "net/tcp/ws/nws.h"
 #include "net/udp/kcp/nkcp.h"
 
 namespace ngl
 {
+	namespace
+	{
+		ENET_PROTOCOL normalize_robot_protocol(ENET_PROTOCOL aprotocol)
+		{
+			return aprotocol == ENET_WS ? ENET_WS : ENET_TCP;
+		}
+
+		bool robot_gateway_use_tls()
+		{
+			const xarg_wss& lwss = nconfig.wss();
+			return !lwss.m_certificate_chain.empty() ||
+				!lwss.m_private_key.empty() ||
+				!lwss.m_ca_certificates.empty() ||
+				lwss.m_verify_peer != 1;
+		}
+
+		ws_tls_options robot_gateway_tls_options()
+		{
+			const xarg_wss& lwss = nconfig.wss();
+			return ws_tls_options
+			{
+				.m_certificate_chain = lwss.m_certificate_chain,
+				.m_private_key = lwss.m_private_key,
+				.m_ca_certificates = lwss.m_ca_certificates,
+				.m_verify_peer = lwss.m_verify_peer != 0,
+			};
+		}
+
+	}
+
 	actor_robot_manage::actor_robot_manage() :
 		actor(
 			actorparm
@@ -87,8 +118,12 @@ namespace ngl
 		return std::dynamic_pointer_cast<actor_robot>(actor_base::create(ENUM_ACTOR::ACTOR_ROBOT, aarea, aroleid, nullptr));
 	}
 
-	void actor_robot_manage::login(const std::string& aaccount, const std::string& apasswold)
+	void actor_robot_manage::login(const std::string& aaccount, const std::string& apasswold, ENET_PROTOCOL aprotocol)
 	{
+		_robot& lrobot = instance().m_maprobot[aaccount];
+		lrobot.m_account = aaccount;
+		lrobot.m_protocol = normalize_robot_protocol(aprotocol);
+
 		pbnet::PROBUFF_NET_ACOUNT_LOGIN pro;
 		pro.set_marea(tab_self_area);
 		pro.set_maccount(aaccount);
@@ -103,43 +138,80 @@ namespace ngl
 		ntcp::instance().send_server(nnodeid::nodeid(tab->m_login, 1), pro, nguid::moreactor(), instance().id_guid());
 	}
 
-	bool actor_robot_manage::check_connect(i32_serverid aserverid)const
+	bool actor_robot_manage::check_connect(i32_serverid aserverid, ENET_PROTOCOL aprotocol) const
 	{
 		net_works lnets;
-		return ttab_servers::instance().tab(nnodeid::tid(aserverid)) != nullptr && ttab_servers::instance().connect(aserverid, lnets);
-	}
-
-	void actor_robot_manage::connect(i32_serverid aserverid, const std::function<void(i32_sessionid)>& afun) const
-	{
-		if (check_connect(aserverid))
+		const tab_servers* ltab = ttab_servers::instance().tab(nnodeid::tid(aserverid));
+		if (ltab == nullptr)
 		{
-			ntcp::instance().connect(aserverid, afun, true, false);
+			return false;
 		}
+
+		const ENET_PROTOCOL lprotocol = normalize_robot_protocol(aprotocol);
+		if (lprotocol == ENET_WS)
+		{
+			if (ltab->m_type != NODE_TYPE::GATEWAY)
+			{
+				log_warn()->print("robot ws connect only supports gateway, server[{}] type[{}]", aserverid, static_cast<int32_t>(ltab->m_type));
+				return false;
+			}
+			if (!ttab_servers::instance().get_nworks(ltab, ENET_WS, nnodeid::tcount(aserverid), lnets))
+			{
+				log_warn()->print("robot ws connect requested but gateway[{}] has no ws network", aserverid);
+				return false;
+			}
+			return true;
+		}
+
+		return ttab_servers::instance().connect(aserverid, lnets);
 	}
 
-	bool actor_robot_manage::parse_command(std::vector<std::string>& aparm)
+	void actor_robot_manage::connect(i32_serverid aserverid, ENET_PROTOCOL aprotocol, const std::function<void(i32_sessionid)>& afun) const
+	{
+		const ENET_PROTOCOL lprotocol = normalize_robot_protocol(aprotocol);
+		if (!check_connect(aserverid, lprotocol))
+		{
+			return;
+		}
+
+		if (lprotocol == ENET_WS)
+		{
+			const tab_servers* llocaltab = ttab_servers::instance().const_tab();
+			if (llocaltab == nullptr)
+			{
+				return;
+			}
+			nws::instance().init(0, llocaltab->m_threadnum, llocaltab->m_outernet, robot_gateway_use_tls(), robot_gateway_tls_options());
+			nws::instance().connect(aserverid, afun, true, false);
+			return;
+		}
+
+		ntcp::instance().connect(aserverid, afun, true, false);
+	}
+
+	bool actor_robot_manage::parse_command(std::string aparm)
 	{
 		auto ldata = std::make_shared<np_robot_pram>();
-		ldata->m_parm.swap(aparm);
+		ldata->m_cmd = std::move(aparm);
 		i64_actorid lid = ngl::nguid::make(ACTOR_ROBOT_MANAGE, tab_self_area, nconfig.tid());
 		handle_pram lparm = ngl::handle_pram::create<np_robot_pram, false, false>(lid, nguid::moreactor(), ldata);
 		actor_manage::instance().push_task_id(lid, lparm);
 		return true;
 	}
 
-	void actor_robot_manage::create_robot(const std::string& arobotname)const
+	void actor_robot_manage::create_robot(const std::string& arobotname, ENET_PROTOCOL aprotocol) const
 	{
-		ngl::actor_robot_manage::login(arobotname, "123456");
+		ngl::actor_robot_manage::login(arobotname, "123456", aprotocol);
 	}
 
-	void actor_robot_manage::create_robots(const std::string& arobotname, int abeg, int aend)const
+	void actor_robot_manage::create_robots(const std::string& arobotname, int abeg, int aend, ENET_PROTOCOL aprotocol) const
 	{
 		for (int i = abeg; i <= aend; ++i)
 		{
 			std::string lname(arobotname);
 			lname += "";
 			lname += tools::lexical_cast<std::string>(i);
-			ngl::actor_robot_manage::login(lname, "123456");
+			ngl::actor_robot_manage::login(lname, "123456", aprotocol);
 		}
 	}
 
@@ -240,7 +312,7 @@ namespace ngl
 				pro.set_mactoridclient(lprobot->m_robot->id_guid());
 				pro.set_mactoridserver(aseractorid);
 				pro.set_m_kcpnum(akcpenum);
-				ntcp::instance().send(lprobot->m_session, pro, nguid::moreactor(), lprobot->m_robot->id_guid());
+				nnet::instance().send(lprobot->m_session, pro, nguid::moreactor(), lprobot->m_robot->id_guid());
 			}
 		);
 		return true;

@@ -17,6 +17,7 @@
 #include "actor/actor_logic/actor_gateway/actor_gateway.h"
 #include "actor/protocol/protocol.h"
 #include "actor/actor_base/nguid.h"
+#include "net/nnet.h"
 #include "net/tcp/ntcp.h"
 
 namespace ngl
@@ -306,21 +307,11 @@ namespace ngl
 
 	bool handle_pram::send_pack(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
-		i32_session lsession = server_session::sessionid(aserverid);
-		if (lsession == -1)
-		{
-			return false;
-		}
-		return ntcp::instance().send_pack(lsession, apack);
+		return nnet::instance().send_server(aserverid, apack);
 	}
 
 	bool handle_pram::send_pack(i32_serverid aserverid, std::shared_ptr<void>& apack)
 	{
-		i32_session lsession = server_session::sessionid(aserverid);
-		if (lsession == -1)
-		{
-			return false;
-		}
-		return ntcp::instance().send_pack(lsession, apack);
+		return nnet::instance().send_server(aserverid, apack);
 	}
 }//namespace ngl

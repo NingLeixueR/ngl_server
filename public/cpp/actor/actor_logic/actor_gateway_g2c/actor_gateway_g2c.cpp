@@ -84,6 +84,10 @@ namespace ngl
 		{
 			for (auto& [_dataid, _socket] : _map)
 			{
+				if (_socket.m_socket <= 0)
+				{
+					continue;
+				}
 				i64_actorid lactorid = nguid::make(ACTOR_ROBOT, _socket.m_area, _socket.m_dataid);
 				amap.insert(std::make_pair(_socket.m_socket, lactorid));
 			}
@@ -100,6 +104,10 @@ namespace ngl
 		}
 		for (auto& [_dataid, _socket] : *lpmap)
 		{
+			if (_socket.m_socket <= 0)
+			{
+				continue;
+			}
 			i64_actorid lactorid = nguid::make(ACTOR_ROBOT, _socket.m_area, _socket.m_dataid);
 			amap.insert(std::make_pair(_socket.m_socket, lactorid));
 		}

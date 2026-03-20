@@ -61,7 +61,7 @@ namespace ngl
 		bpool& pool();
 
 		// Start the WebSocket server/client service.
-		bool init(i16_port aport, i32_threadsize asocketthreadnum, bool aouternet);
+		bool init(i16_port aport, i32_threadsize asocketthreadnum, bool aouternet, bool ause_tls = false, const ws_tls_options& atls_options = {});
 
 		// Return the bound listen port.
 		i16_port port();

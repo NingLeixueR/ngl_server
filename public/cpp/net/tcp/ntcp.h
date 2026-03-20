@@ -19,7 +19,6 @@
 #include "tools/serialize/netbuff_pool.h"
 #include "actor/actor_base/handle_pram.h"
 #include "tools/serialize/structbytes.h"
-#include "actor/actor_base/actor_base.h"
 #include "tools/serialize/segpack.h"
 #include "tools/serialize/pack.h"
 #include "net/server_session.h"
@@ -246,47 +245,3 @@ namespace ngl
 	}
 }
 
-namespace ngl
-{
-	template <typename T>
-	bool handle_send<T>::send_server(i32_serverid aserverid, const handle_pram& adata)
-	{
-		return ntcp::instance().send_server<T>(aserverid, *(T*)adata.m_data.get(), adata.m_actor, adata.m_requestactor);
-	}
-
-	template <typename T>
-	bool handle_send<T>::send_server(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const T& adata)
-	{
-		return ntcp::instance().send_server<T>(aserverid, adata, aactorid, arequestactorid);
-	}
-
-	template <typename T>
-	bool actor_base::send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-	{
-		return ntcp::instance().send_server<T>(aserverid, adata, aactorid, arequestactorid);
-	}
-
-	template <typename T>
-	bool actor_base::send_server(const std::set<i32_serverid>& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-	{
-		return ntcp::instance().send_server<T>(aserverids, adata, aactorid, arequestactorid);
-	}
-
-	template <typename T>
-	bool handle_pram::send(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid)
-	{
-		return ntcp::instance().send(asession, adata, aactorid.id(), arequestactorid.id());
-	}
-
-	template <typename T>
-	std::shared_ptr<pack> actor_base::net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-	{
-		return ::ngl::net_pack<T>::npack(&ntcp::instance().pool(), adata, aactorid, arequestactorid);
-	}
-
-	template <typename T>
-	bool actor_base::send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-	{
-		return ntcp::instance().send(asession, adata, aactorid, arequestactorid);
-	}
-}//namespace ngl

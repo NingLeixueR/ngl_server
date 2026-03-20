@@ -595,3 +595,5 @@ namespace ngl
 		return linfo;
 	}
 }//namespace ngl
+
+#include "net/nnet.h"

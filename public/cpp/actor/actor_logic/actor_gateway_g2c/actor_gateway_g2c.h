@@ -23,8 +23,8 @@
 #include "actor/actor_base/ndbclient.h"
 #include "tools/db/sql/mysql/nmysql.h"
 #include "tools/db/sql/db_data.h"
+#include "net/nnet.h"
 #include "net/udp/kcp/nkcp.h"
-#include "net/tcp/ntcp.h"
 
 namespace ngl
 {
@@ -65,7 +65,7 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		template <typename T>
-		bool handle_tcp(const np_actor_forward<T, forward_g2c<forward>>* aparm, const pack* apack)
+		bool handle_socket(const np_actor_forward<T, forward_g2c<forward>>* aparm, const pack* apack)
 		{
 			gateway_socket* info = nullptr;
 			std::map<i32_sessionid, i64_actorid> lmap;
@@ -91,7 +91,7 @@ namespace ngl
 					i16_area larea = aparm->m_data.m_area[i];
 					i32_actordataid ldataid = aparm->m_data.m_uid[i];
 					info = m_info.get(larea, ldataid);
-					if (info == nullptr)
+					if (info == nullptr || info->m_socket <= 0)
 					{
 						continue;
 					}
@@ -99,14 +99,13 @@ namespace ngl
 					lmap.insert(std::make_pair(info->m_socket, lactorid));
 				}
 			}
-			ntcp::instance().send<forward, T>(lmap, aparm->m_data.m_data, apack->m_head.get_request_actor());
-			return true;
+			return nnet::instance().send<forward, T>(lmap, aparm->m_data.m_data, apack->m_head.get_request_actor());
 		}
 
 		template <typename T>
 		bool handle_kcp(const np_actor_forward<T, forward_g2c<forward>>* aparm, const pack* apack)
 		{
-			std::shared_ptr<pack> lsendpack = ngl::net_pack<T>::npack(&ntcp::instance().pool(), aparm->m_data.m_data, apack->m_head.get_request_actor(), 0);
+			std::shared_ptr<pack> lsendpack = ngl::net_pack<T>::npack(&nnet::instance().pool(), aparm->m_data.m_data, apack->m_head.get_request_actor(), 0);
 			if (lsendpack == nullptr)
 			{
 				return true;
@@ -151,15 +150,11 @@ namespace ngl
 				return true;
 			}
 			// Game->Gate need tothis message toClientserver
-			if (lparm->m_data.m_protocol == ENET_TCP)
+			if (lparm->m_data.m_protocol == ENET_KCP)
 			{
-				return handle_tcp(lparm, lpack);
+				return handle_kcp(lparm, lpack);
 			}
-			else if (lparm->m_data.m_protocol == ENET_KCP)
-			{
-				return handle_kcp(lparm, lpack);				
-			}
-			return true;
+			return handle_socket(lparm, lpack);
 		}
 
 		bool handle(const message<np_actor_gatewayinfo_updata>& adata);

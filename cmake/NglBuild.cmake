@@ -122,6 +122,9 @@ endfunction()
 
 function(ngl_apply_msvc_defaults target_name)
 	if(MSVC)
+		if(CMAKE_GENERATOR MATCHES "Visual Studio")
+			set_property(TARGET ${target_name} PROPERTY VS_GLOBAL_VcpkgEnabled false)
+		endif()
 		target_compile_definitions(${target_name} PRIVATE WIN32_LEAN_AND_MEAN)
 		target_compile_options(${target_name} PRIVATE /EHa)
 		# Prevent parallel compilation from contending on a shared PDB file (/Zi).

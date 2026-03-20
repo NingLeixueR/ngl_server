@@ -1870,10 +1870,11 @@ namespace ngl
 		return tab->m_name;
 	}
 
-	namespace {
+	namespace tools_random_detail
+	{
 		// splitmix64 gives each thread a well-distributed seed without sharing
 		// a global RNG state.
-		static inline uint64_t splitmix64(uint64_t x) 
+		inline uint64_t splitmix64(uint64_t x) 
 		{
 			x += 0x9e3779b97f4a7c15ULL;
 			x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9ULL;
@@ -1881,10 +1882,10 @@ namespace ngl
 			return x ^ (x >> 31);
 		}
 
-		static std::once_flag g_seed_once;
-		static std::atomic<uint64_t> g_global_seed{ 0 };
+		std::once_flag g_seed_once;
+		std::atomic<uint64_t> g_global_seed{ 0 };
 
-		static uint64_t make_global_seed() 
+		uint64_t make_global_seed() 
 		{
 			// Combine `random_device` entropy with the current clock so the seed
 			// still changes on platforms with deterministic random_device output.
@@ -1895,7 +1896,7 @@ namespace ngl
 			return splitmix64(a ^ (b << 32) ^ t);
 		}
 
-		static uint64_t next_thread_seed() 
+		uint64_t next_thread_seed() 
 		{
 			std::call_once(g_seed_once, []() {
 				g_global_seed.store(make_global_seed(), std::memory_order_relaxed);
@@ -1906,12 +1907,12 @@ namespace ngl
 			uint64_t tid_hash = std::hash<std::thread::id>()(std::this_thread::get_id());
 			return splitmix64(v ^ tid_hash);
 		}
-	} // namespace
+	}
 
 	int tools::rand()
 	{
 		// If 32-bit mt19937, std::mt19937 and seed 32
-		thread_local std::mt19937_64 gen(static_cast<std::mt19937_64::result_type>(next_thread_seed()));
+		thread_local std::mt19937_64 gen(static_cast<std::mt19937_64::result_type>(tools_random_detail::next_thread_seed()));
 
 		// [0, RAND_MAX]. RAND_MAX C, numeric_limits<int>::max().
 		static thread_local std::uniform_int_distribution<int> dist(0, RAND_MAX);

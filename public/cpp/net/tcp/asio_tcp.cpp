@@ -17,6 +17,7 @@
 #include "actor/protocol/nprotocol.h"
 #include "tools/serialize/pack.h"
 #include "net/tcp/asio_tcp.h"
+#include "net/net_session.h"
 #include "net/asio_timer.h"
 #include "tools/log/nlog.h"
 
@@ -92,14 +93,14 @@ namespace ngl
 		, const tcp_closecallback& aclosefun
 		, const tcp_sendfinishcallback& asendfinishfun
 	) :
+		m_acceptor_v4(nullptr),
+		m_acceptor_v6(nullptr),
+		m_port(aport),
 		m_fun(acallfun),
 		m_closefun(aclosefun),
 		m_sendfinishfun(asendfinishfun),
-		m_port(aport),
-		m_service_ios(athread, etcp_buffmaxsize),
-		m_sessionid(0),
-		m_acceptor_v4(nullptr),
-		m_acceptor_v6(nullptr)
+		m_sessionid(net_session::begin(ENET_TCP) - 1),
+		m_service_ios(athread, etcp_buffmaxsize)
 	{
 		basio_ioservice& lioservice = *m_service_ios.get_ioservice(m_service_ios.m_recvthreadsize);
 		// One acceptor per address family keeps IPv4 and IPv6 accepts independent.
@@ -132,14 +133,14 @@ namespace ngl
 		, const tcp_closecallback& aclosefun
 		, const tcp_sendfinishcallback& asendfinishfun
 	) :
+		m_acceptor_v4(nullptr),
+		m_acceptor_v6(nullptr),
+		m_port(0),
 		m_fun(acallfun),
 		m_closefun(aclosefun),
 		m_sendfinishfun(asendfinishfun),
-		m_port(0),
-		m_service_ios(athread + 1, etcp_buffmaxsize),
-		m_sessionid(0),
-		m_acceptor_v4(nullptr),
-		m_acceptor_v6(nullptr)
+		m_sessionid(net_session::begin(ENET_TCP) - 1),
+		m_service_ios(athread + 1, etcp_buffmaxsize)
 	{
 	}
 
@@ -214,7 +215,12 @@ namespace ngl
 		std::shared_ptr<service_tcp> lservice = nullptr;
 		{
 			lock_write(m_maplock);
-			lservice = std::make_shared<service_tcp>(m_service_ios, ++m_sessionid);
+			if (!net_session::next(m_sessionid, ENET_TCP))
+			{
+				tools::send_mail("tcp session id exhausted")();
+				return nullptr;
+			}
+			lservice = std::make_shared<service_tcp>(m_service_ios, m_sessionid);
 			auto [_, success] = m_data.insert(std::make_pair(lservice->m_sessionid, lservice));
 			if (!success)
 			{
@@ -608,7 +614,12 @@ namespace ngl
 		std::shared_ptr<service_tcp> lservice = nullptr;
 		{
 			lock_write(m_maplock);
-			lservice = std::make_shared<service_tcp>(m_service_ios, ++m_sessionid);
+			if (!net_session::next(m_sessionid, ENET_TCP))
+			{
+				tools::send_mail("tcp session id exhausted")();
+				return;
+			}
+			lservice = std::make_shared<service_tcp>(m_service_ios, m_sessionid);
 			auto [_, success] = m_data.insert(std::make_pair(lservice->m_sessionid, lservice));
 			if (!success)
 			{

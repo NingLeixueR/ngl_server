@@ -57,8 +57,12 @@ namespace ngl
 		return m_pool;
 	}
 
-	bool nws::init(i16_port aport, i32_threadsize asocketthreadnum, bool aouternet)
+	bool nws::init(i16_port aport, i32_threadsize asocketthreadnum, bool aouternet, bool ause_tls, const ws_tls_options& atls_options)
 	{
+		if (m_server != nullptr)
+		{
+			return true;
+		}
 		if (asocketthreadnum > net_config_socket_pthread_max_size || asocketthreadnum <= 0)
 		{
 			asocketthreadnum = net_config_socket_pthread_max_size;
@@ -68,6 +72,7 @@ namespace ngl
 		m_port = aport;
 		m_socketthreadnum = asocketthreadnum;
 
+		m_segpackvec.clear();
 		for (int i = 0; i < asocketthreadnum; ++i)
 		{
 			// Each socket worker keeps its own packet reassembler state.
@@ -97,7 +102,14 @@ namespace ngl
 				}
 			};
 
-		m_server = std::make_shared<asio_ws>(port(), asocketthreadnum, false, lrecv, lclose, lsendfinish);
+		if (port() > 0)
+		{
+			m_server = std::make_shared<asio_ws>(port(), asocketthreadnum, ause_tls, lrecv, lclose, lsendfinish, atls_options);
+		}
+		else
+		{
+			m_server = std::make_shared<asio_ws>(asocketthreadnum, ause_tls, lrecv, lclose, lsendfinish, atls_options);
+		}
 		return true;
 	}
 

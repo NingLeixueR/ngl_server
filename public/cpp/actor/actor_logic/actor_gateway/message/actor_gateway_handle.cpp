@@ -20,6 +20,7 @@
 #include "actor/actor_logic/actor_kcp/actor_kcp.h"
 #include "actor/actor_logic/actor_server/actor_server.h"
 #include "actor/actor_base/nregister.h"
+#include "net/nnet.h"
 
 namespace ngl
 {
@@ -104,7 +105,7 @@ namespace ngl
 		pro.set_mactoridserver(lpram->m_actoridserver);
 		pro.set_mactoridclient(lpram->m_actoridclient);
 		
-		ntcp::instance().send(lpram->m_sessionid, pro, lpram->m_actoridclient, nguid::make());
+		nnet::instance().send(lpram->m_sessionid, pro, lpram->m_actoridclient, nguid::make());
 		return true;
 	}
 
@@ -193,7 +194,7 @@ namespace ngl
 		if (lpack->m_id != linfo->m_socket && linfo->m_socket > 0)
 		{
 			i32_socket loldsocket = linfo->m_socket;
-			ntcp::instance().close_net(linfo->m_socket);
+			nnet::instance().close_net(linfo->m_socket);
 			m_info.remove_socket(linfo->m_socket);
 			linfo->m_socket = 0;
 			if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))

@@ -44,6 +44,7 @@
 #include "tools/curl/ncurl.h"
 #include "actor/pb/db.pb.h"
 #include "tools/log/nlog.h"
+#include "net/tcp/ws/nws.h"
 #include "net/udp/kcp/nkcp.h"
 #include "tools/tab/csv/csv.h"
 #include "tools/tab/xml/xml.h"
@@ -99,6 +100,27 @@ startup_error init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {}, i
 			*atcp_port = lnwork.m_port;
 		}
 		ngl::ntcp::instance().init(lnwork.m_port, tab->m_threadnum, tab->m_outernet);
+	}
+
+	{
+		// Only gateway nodes accept websocket clients; other nodes stay on TCP-only listeners.
+		if (nconfig.nodetype() == ngl::NODE_TYPE::GATEWAY)
+		{
+			ngl::net_works lwswork;
+			if (ngl::ttab_servers::instance().get_nworks(ngl::ENET_PROTOCOL::ENET_WS, nconfig.tcount(), lwswork))
+			{
+				const ngl::xarg_wss& lwss = nconfig.wss();
+				const bool luse_tls = !lwss.m_certificate_chain.empty() && !lwss.m_private_key.empty();
+				ngl::ws_tls_options ltls_options
+				{
+					.m_certificate_chain = lwss.m_certificate_chain,
+					.m_private_key = lwss.m_private_key,
+					.m_ca_certificates = lwss.m_ca_certificates,
+					.m_verify_peer = lwss.m_verify_peer != 0,
+				};
+				ngl::nws::instance().init(lwswork.m_port, tab->m_threadnum, tab->m_outernet, luse_tls, ltls_options);
+			}
+		}
 	}
 
 	{

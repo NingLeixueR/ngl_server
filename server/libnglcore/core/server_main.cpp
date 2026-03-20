@@ -5,6 +5,9 @@
 #include "startup_support.h"
 #include "init_server.h"
 #include "runtime_helpers.h"
+#include "tools/arg_options.h"
+
+#include <boost/program_options.hpp>
 
 #include <atomic>
 #include <cctype>
@@ -26,9 +29,9 @@ namespace
 
 	struct robot_test_plan
 	{
-		// Parallel arrays: each delay is followed by one command token list.
+		// Parallel arrays: each delay is followed by one raw command line.
 		std::vector<int> m_interval_ms;
-		std::vector<std::vector<std::string>> m_commands;
+		std::vector<std::string> m_commands;
 	};
 
 	struct robot_test_state
@@ -166,17 +169,33 @@ namespace
 		}
 	}
 
-	std::vector<std::string> command_suffix(const std::vector<std::string>& tokens, std::size_t begin)
+	std::string command_suffix(const std::string& line, std::size_t skip_tokens)
 	{
-		if (begin >= tokens.size())
+		std::size_t lpos = 0;
+		std::size_t lcount = 0;
+		const std::size_t lsize = line.size();
+		while (lpos < lsize && lcount < skip_tokens)
 		{
-			return {};
+			while (lpos < lsize && std::isspace(static_cast<unsigned char>(line[lpos])))
+			{
+				++lpos;
+			}
+			while (lpos < lsize && !std::isspace(static_cast<unsigned char>(line[lpos])))
+			{
+				++lpos;
+			}
+			++lcount;
 		}
-		return std::vector<std::string>(tokens.begin() + static_cast<std::ptrdiff_t>(begin), tokens.end());
+		while (lpos < lsize && std::isspace(static_cast<unsigned char>(line[lpos])))
+		{
+			++lpos;
+		}
+		return lpos < lsize ? line.substr(lpos) : std::string();
 	}
 
-	bool apply_robot_control_command(const std::vector<std::string>& tokens, robot_test_state& state)
+	bool apply_robot_control_command(const std::string& line, robot_test_state& state)
 	{
+		const std::vector<std::string> tokens = ngl_runtime::split_command_line(line);
 		if (tokens.empty())
 		{
 			return true;
@@ -193,7 +212,7 @@ namespace
 
 			std::scoped_lock lock(state.m_mutex);
 			state.m_plan.m_interval_ms = { delay_ms };
-			state.m_plan.m_commands = { command_suffix(tokens, 2) };
+			state.m_plan.m_commands = { command_suffix(line, 2) };
 			state.m_enabled.store(true, std::memory_order_release);
 			return true;
 		}
@@ -209,7 +228,7 @@ namespace
 
 			std::scoped_lock lock(state.m_mutex);
 			state.m_plan.m_interval_ms.push_back(delay_ms);
-			state.m_plan.m_commands.push_back(command_suffix(tokens, 2));
+			state.m_plan.m_commands.push_back(command_suffix(line, 2));
 			return true;
 		}
 
@@ -238,14 +257,14 @@ namespace
 		return state.m_plan;
 	}
 
-	std::vector<std::string> read_console_tokens()
+	std::string read_console_line()
 	{
 		std::string line;
 		if (!std::getline(std::cin, line))
 		{
 			return {};
 		}
-		return ngl_runtime::split_command_line(std::move(line));
+		return line;
 	}
 }
 
@@ -288,12 +307,11 @@ namespace ngl_runtime
 		{
 			return {};
 		}
-
-		// The existing command parser expects single-space separators only.
-		ngl::tools::erase_repeat(line, ' ');
-		std::vector<std::string> tokens;
-		ngl::tools::splite(line.c_str(), " ", tokens);
-		return tokens;
+#ifdef _WIN32
+		return boost::program_options::split_winmain(line);
+#else
+		return boost::program_options::split_unix(line);
+#endif
 	}
 
 	bool build_push_server_config_param(const ngl::tab_servers& server, std::string& param)
@@ -796,18 +814,11 @@ startup_error start_csvserver(int* tcp_port)
 		});
 }
 
-std::vector<std::string> get_lines()
+std::string get_line()
 {
 	char lbuff[4096] = { 0 };
 	std::cin.getline(lbuff, 4096);
-	std::string lstrbuff = lbuff;
-	// [== Delete
-	ngl::tools::erase_repeat(lstrbuff, ' ');
-	// Delete ==]
-
-	std::vector<std::string> lvec;
-	ngl::tools::splite(lstrbuff.c_str(), " ", lvec);
-	return lvec;
+	return lbuff;
 }
 
 startup_error start_robot(int argc, char** argv, int* tcp_port)
@@ -831,7 +842,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 	ngl::actor_robot_manage::instance();
 
 	ngl::i32_serverid llogin = ngl::nnodeid::nodeid(static_cast<int16_t>(ngl::ttab_servers::instance().const_tab()->m_login), 1);
-	ngl::actor_robot_manage::instance().connect(llogin, [](int)
+	ngl::actor_robot_manage::instance().connect(llogin, ngl::ENET_TCP, [](int)
 		{
 			std::cout << "连接Login服务器成功" << std::endl;
 		}
@@ -840,8 +851,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 	{
 		while (1)
 		{
-			std::vector<std::string> lvec = get_lines();
-			ngl::actor_robot_manage::parse_command(lvec);
+			ngl::actor_robot_manage::parse_command(get_line());
 		}
 	}
 	else
@@ -860,21 +870,17 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 		{
 			lcmd = std::format("logins {} {} {}", argv[4], argv[5], argv[6]);
 		}
-		std::vector<std::string> lvec;
-		if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
-		{
-			return startup_error::node_start_failed;
-		}
-		ngl::actor_robot_manage::parse_command(lvec);
+		ngl::actor_robot_manage::parse_command(lcmd);
 		bool ltest = false;
 		std::vector<int> lms;
-		std::vector<std::vector<std::string>> lcmdvec;
+		std::vector<std::string> lcmdvec;
 		std::thread lthread([&ltest, &lms, &lcmdvec]()
 			{
-				std::vector<std::string> lvec;
+				std::string lline;
 				while (true)
 				{
-					lvec = get_lines();
+					lline = get_line();
+					const std::vector<std::string> lvec = ngl_runtime::split_command_line(lline);
 					if (lvec.empty())
 					{
 						continue;
@@ -884,11 +890,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 						lms.clear();
 						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
 						lcmdvec.clear();
-						lcmdvec.push_back(std::vector<std::string>());
-						for (std::size_t i = 2; i < lvec.size(); ++i)
-						{
-							lcmdvec.rbegin()->push_back(lvec[i]);
-						}
+						lcmdvec.push_back(command_suffix(lline, 2));
 						ltest = true;
 						continue;
 					}
@@ -902,11 +904,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 					if (lvec[0] == "tests" || lvec[0] == "TESTS")
 					{
 						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
-						lcmdvec.push_back(std::vector<std::string>());
-						for (std::size_t i = 2; i < lvec.size(); ++i)
-						{
-							lcmdvec.rbegin()->push_back(lvec[i]);
-						}
+						lcmdvec.push_back(command_suffix(lline, 2));
 						continue;
 					}
 					if (lvec[0] == "start" || lvec[0] == "START")
@@ -914,7 +912,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 						ltest = true;
 						continue;
 					}
-					ngl::actor_robot_manage::parse_command(lvec);
+					ngl::actor_robot_manage::parse_command(lline);
 				}
 			});
 
@@ -928,8 +926,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 			for (std::size_t j = 0; j < lcmdvec.size() && j < lms.size(); ++j)
 			{
 				ngl::sleep::milliseconds(lms[j]);
-				std::vector<std::string> lcmdvec2 = lcmdvec[j];
-				ngl::actor_robot_manage::parse_command(lcmdvec2);
+				ngl::actor_robot_manage::parse_command(lcmdvec[j]);
 			}
 		}
 	}
@@ -944,22 +941,22 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 		return startup_error::invalid_args;
 	}
 
-	std::vector<std::string> bootstrap_tokens;
+	std::string bootstrap_command;
 	if (request.mode != ngl_runtime::robot_launch_mode::interactive)
 	{
-		bootstrap_tokens = ngl_runtime::split_command_line(request.command);
-		if (bootstrap_tokens.empty())
+		bootstrap_command = request.command;
+		if (bootstrap_command.empty())
 		{
 			return startup_error::node_start_failed;
 		}
 	}
 
-	return start_node("ROBOT", tcp_port, make_node_options(), [request, bootstrap_tokens = std::move(bootstrap_tokens)]() mutable
+	return start_node("ROBOT", tcp_port, make_node_options(), [request, bootstrap_command = std::move(bootstrap_command)]() mutable
 		{
 			ngl::actor_robot_manage::instance();
 
 			ngl::i32_serverid llogin = ngl::nnodeid::nodeid(static_cast<int16_t>(ngl::ttab_servers::instance().const_tab()->m_login), 1);
-				ngl::actor_robot_manage::instance().connect(llogin, [](int)
+				ngl::actor_robot_manage::instance().connect(llogin, ngl::ENET_TCP, [](int)
 					{
 						std::cout << "connected login server" << std::endl;
 					}
@@ -970,10 +967,10 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 				// Pure interactive mode behaves like the legacy robot shell.
 				while (true)
 				{
-					std::vector<std::string> tokens = read_console_tokens();
-					if (!tokens.empty())
+					std::string line = read_console_line();
+					if (!line.empty())
 					{
-						ngl::actor_robot_manage::parse_command(tokens);
+						ngl::actor_robot_manage::parse_command(std::move(line));
 					}
 				}
 			}
@@ -984,7 +981,7 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 				std::cout << "---------------[" << i << "]---------------" << std::endl;
 			}
 
-			ngl::actor_robot_manage::parse_command(bootstrap_tokens);
+			ngl::actor_robot_manage::parse_command(std::move(bootstrap_command));
 
 			robot_test_state state;
 			std::thread([&state]()
@@ -992,14 +989,14 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 					// Console input can either mutate the replay plan or execute a normal command immediately.
 					while (true)
 					{
-						std::vector<std::string> tokens = read_console_tokens();
-						if (apply_robot_control_command(tokens, state))
+						std::string line = read_console_line();
+						if (apply_robot_control_command(line, state))
 						{
 							continue;
 						}
-						if (!tokens.empty())
+						if (!line.empty())
 						{
-							ngl::actor_robot_manage::parse_command(tokens);
+							ngl::actor_robot_manage::parse_command(std::move(line));
 						}
 					}
 				}).detach();
@@ -1023,8 +1020,7 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 				for (std::size_t i = 0; i < plan.m_commands.size() && i < plan.m_interval_ms.size(); ++i)
 				{
 					ngl::sleep::milliseconds(plan.m_interval_ms[i]);
-					std::vector<std::string> command = plan.m_commands[i];
-					ngl::actor_robot_manage::parse_command(command);
+					ngl::actor_robot_manage::parse_command(plan.m_commands[i]);
 				}
 			}
 		});
@@ -1032,6 +1028,36 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 
 int ngl_main(int argc, char** argv)
 {
+	ngl::arg_options loptions("test");
+	
+	loptions.init_help(
+		"--help --h  帮助\n"
+		"--input -i 输入\n"
+	);
+	loptions.init_options<int32_t>("input,i", "输入"
+		, 0
+	);
+	loptions.positional("input", 1);
+
+	{
+		loptions.parse("--help --input 123");
+		int32_t linput = 11111;
+
+		if (loptions.value("input", linput))
+		{
+			std::cout << "ok" << std::endl;
+		}
+		std::string lhelp;
+		if (loptions.value("help", lhelp))
+		{
+			std::cout << "ok" << std::endl;
+		}
+	}
+	
+
+
+
+
 	ngl_startup::context ctx{};
 	const ngl_startup::prepare_result lprepare = ngl_startup::prepare_context(argc, argv, ctx);
 	if (lprepare.code != startup_error::ok)

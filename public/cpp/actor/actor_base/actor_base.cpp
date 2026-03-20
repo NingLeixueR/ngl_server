@@ -21,7 +21,7 @@
 #include "tools/tab/xml/xml.h"
 #include "net/udp/kcp/nkcp.h"
 #include "tools/ngroup.h"
-#include "net/tcp/ntcp.h"
+#include "net/nnet.h"
 
 namespace ngl
 {
@@ -293,25 +293,12 @@ namespace ngl
 
 	bool actor_base::send_server(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
-		if (apack == nullptr)
-		{
-			return false;
-		}
-		i32_session lsession = server_session::sessionid(aserverid);
-		if (lsession == -1)
-		{
-			return false;
-		}
-		return ntcp::instance().send_pack(lsession, apack);
+		return apack != nullptr && nnet::instance().send_server(aserverid, apack);
 	}
 
 	bool actor_base::send_pack(i32_sessionid asession, std::shared_ptr<pack>& apack)
 	{
-		if (apack == nullptr)
-		{
-			return false;
-		}
-		return ntcp::instance().send_pack(asession, apack);
+		return apack != nullptr && nnet::instance().send_pack(asession, apack);
 	}
 
 	void actor_base::send_actor(const nguid& aguid, const std::shared_ptr<pack>& adata)

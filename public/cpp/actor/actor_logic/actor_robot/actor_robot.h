@@ -185,6 +185,7 @@ namespace ngl
 	struct _robot
 	{
 		i32_sessionid					m_session = -1;
+		ENET_PROTOCOL					m_protocol = ENET_TCP;
 		std::string						m_account;
 		std::shared_ptr<actor_robot>	m_robot = nullptr;
 		i64_actorid						m_actor_roleid = nguid::make();

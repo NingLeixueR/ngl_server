@@ -39,9 +39,12 @@
         <password>e10adc3949ba59abbe56e057f20f883e</password>
     </telnet>
 	<wss>
-		<certificate_chain>1</certificate_chain>
-		<private_key>1</private_key>
-		<ca_certificates>1</ca_certificates>
-		<verify_peer>1</verify_peer>
+		<!-- server certificate pem -->
+		<certificate_chain></certificate_chain>
+		<!-- private key pem -->
+		<private_key></private_key>
+		<!-- ca certificate pem -->
+		<ca_certificates></ca_certificates>
+		<verify_peer></verify_peer>
 	</wss>
 </xmlnode>

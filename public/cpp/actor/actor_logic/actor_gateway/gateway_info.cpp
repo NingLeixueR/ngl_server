@@ -15,7 +15,7 @@
 
 
 #include "actor/actor_logic/actor_gateway/gateway_info.h"
-#include "net/tcp/ntcp.h"
+#include "net/nnet.h"
 
 namespace ngl
 {
@@ -26,7 +26,7 @@ namespace ngl
 		{
 			if (lpgsocket->m_socket > 0 && lpgsocket->m_socket != ainfo.m_socket)
 			{
-				ntcp::instance().close(lpgsocket->m_socket);
+				nnet::instance().close(lpgsocket->m_socket);
 				remove_socket(lpgsocket->m_socket);
 			}
 		}

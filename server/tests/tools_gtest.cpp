@@ -17,6 +17,7 @@
 
 #include "actor/actor_base/nguid.h"
 #include "actor/tab/ttab_servers.h"
+#include "tools/arg_options.h"
 #include "tools/curl/ncurl.h"
 #include "tools/localtime.h"
 #include "tools/log/nlog.h"
@@ -251,6 +252,83 @@ TEST(ToolsTest, NodeIdPackingRoundTripsTidAndTcount)
 	const auto invalid = ngl::nnodeid::nodeid(-1, -1);
 	EXPECT_EQ(ngl::nnodeid::tid(invalid), -1);
 	EXPECT_EQ(ngl::nnodeid::tcount(invalid), -1);
+}
+
+TEST(ToolsTest, ArgOptionsParsesAliasesPositionalValuesAndHelp)
+{
+	ngl::arg_options options("test");
+	ASSERT_TRUE(options.init_help("custom help text"));
+	ASSERT_TRUE(options.init_options<int32_t>("input,i", "input value", 7));
+	options.positional("input", 1);
+
+	ASSERT_TRUE(options.parse("-h 123"));
+	EXPECT_TRUE(options.help_requested());
+	EXPECT_TRUE(options.has("help"));
+	EXPECT_TRUE(options.has("h"));
+
+	int32_t input = 0;
+	EXPECT_TRUE(options.value("input", input));
+	EXPECT_EQ(input, 123);
+	EXPECT_TRUE(options.value("i", input));
+	EXPECT_EQ(input, 123);
+
+	std::string help;
+	EXPECT_TRUE(options.value("help", help));
+	EXPECT_EQ(help, "custom help text");
+	EXPECT_EQ(options.help(), "custom help text");
+}
+
+TEST(ToolsTest, ArgOptionsClearsStateBetweenParsesAndAfterFailure)
+{
+	ngl::arg_options options("test");
+	ASSERT_TRUE(options.init_options<int32_t>("input,i", "input value", 7));
+	options.positional("input", 1);
+
+	ASSERT_TRUE(options.parse("--input 42"));
+	int32_t input = 0;
+	EXPECT_TRUE(options.value("input", input));
+	EXPECT_EQ(input, 42);
+
+	ASSERT_TRUE(options.parse("15"));
+	EXPECT_FALSE(options.has("help"));
+	EXPECT_TRUE(options.value("input", input));
+	EXPECT_EQ(input, 15);
+
+	ASSERT_FALSE(options.parse("--input nope"));
+	EXPECT_FALSE(options.has("input"));
+	EXPECT_FALSE(options.value("input", input));
+}
+
+TEST(ToolsTest, ArgOptionsSupportsStringLiteralDefaultValues)
+{
+	ngl::arg_options options("test");
+	ASSERT_TRUE(options.init_options("name,n", "robot name", "guest"));
+
+	ASSERT_TRUE(options.parse(""));
+	std::string name;
+	EXPECT_TRUE(options.value("name", name));
+	EXPECT_EQ(name, "guest");
+}
+
+TEST(ToolsTest, ArgOptionsSupportsRequiredAndMultitokenValues)
+{
+	ngl::arg_options options("test");
+	ASSERT_TRUE(options.init_flag("help,h", "show help"));
+	ASSERT_TRUE(options.init_required<std::string>("robot", "robot account"));
+	ASSERT_TRUE(options.init_multitoken<std::vector<std::string>>("arguments", "role command arguments", true));
+	options.positional("robot", 1);
+	options.positional("arguments", -1);
+
+	ASSERT_TRUE(options.parse("robot_1 role ping now"));
+	std::string robot;
+	std::vector<std::string> arguments;
+	EXPECT_TRUE(options.value("robot", robot));
+	EXPECT_EQ(robot, "robot_1");
+	EXPECT_TRUE(options.value("arguments", arguments));
+	EXPECT_EQ(arguments, (std::vector<std::string>{ "role", "ping", "now" }));
+
+	EXPECT_FALSE(options.parse(""));
+	EXPECT_FALSE(options.has("robot"));
 }
 
 TEST(ToolsTest, MapSplicingAppendsFormatterOutput)

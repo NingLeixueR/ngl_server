@@ -55,9 +55,9 @@ namespace ngl
 	// Test
 	struct np_robot_pram
 	{
-		std::vector<std::string> m_parm;
+		std::string m_cmd;
 
-		DPROTOCOL(np_robot_pram, m_parm)
+		DPROTOCOL(np_robot_pram, m_cmd)
 	};
 
 	struct nactornode
