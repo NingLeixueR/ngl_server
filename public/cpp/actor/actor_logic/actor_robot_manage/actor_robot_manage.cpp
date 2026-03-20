@@ -209,13 +209,12 @@ namespace ngl
 		for (int i = abeg; i <= aend; ++i)
 		{
 			std::string lname(arobotname);
-			lname += "";
 			lname += tools::lexical_cast<std::string>(i);
 			ngl::actor_robot_manage::login(lname, "123456", aprotocol);
 		}
 	}
 
-	void actor_robot_manage::foreach(const std::function<bool(_robot&)>& afun)
+	void actor_robot_manage::foreach(const std::function<void(_robot&)>& afun)
 	{
 		for (std::pair<const std::string, _robot>& item : m_maprobot)
 		{
@@ -223,7 +222,7 @@ namespace ngl
 		}
 	}
 
-	_robot* actor_robot_manage::get_robot(std::string aacount)
+	_robot* actor_robot_manage::get_robot(const std::string& aacount)
 	{
 		auto itor = m_maprobot.find(aacount);
 		if (itor == m_maprobot.end())
@@ -246,11 +245,7 @@ namespace ngl
 
 	bool actor_robot_manage::getdata(_robot* arobot)
 	{
-		if (arobot == nullptr)
-		{
-			return false;
-		}
-		return true;
+		return arobot != nullptr;
 	}
 
 
@@ -258,14 +253,8 @@ namespace ngl
 	{
 		int32_t lserverid = nnodeid::nodeid(aservertid, atcount);
 
-		const tab_servers* tabserver = ttab_servers::instance().tab(aservertid);
-		if (tabserver == nullptr)
-		{
-			return false;
-		}
-
 		net_works lpstructserver;
-		if (!ttab_servers::instance().get_nworks(tabserver->m_type, nconfig.area(), ENET_TCP, atcount, lpstructserver))
+		if (!ttab_servers::instance().get_nworks(lserverid, nconfig.area(), ENET_TCP, lpstructserver))
 		{
 			return false;
 		}

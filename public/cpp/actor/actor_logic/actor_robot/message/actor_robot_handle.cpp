@@ -196,14 +196,8 @@ namespace ngl
 		int16_t ltcount = nnodeid::tcount(lpram->mserverid());
 		int16_t ltid = nnodeid::tid(lpram->mserverid());
 
-		const tab_servers* tabserver = ttab_servers::instance().tab(ltid);
-		if (tabserver == nullptr)
-		{
-			return false;
-		}
-
 		net_works lpstructserver;
-		if (!ttab_servers::instance().get_nworks(tabserver->m_type, nconfig.area(), ENET_TCP, ltcount, lpstructserver))
+		if (!ttab_servers::instance().get_nworks(lserverid, nconfig.area(), ENET_TCP, lpstructserver))
 		{
 			return false;
 		}

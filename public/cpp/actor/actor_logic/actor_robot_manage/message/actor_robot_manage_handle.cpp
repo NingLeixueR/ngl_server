@@ -17,6 +17,7 @@
 #include "tools/arg_options.h"
 #include "tools/tools.h"
 
+#include <optional>
 #include <string_view>
 
 namespace ngl
@@ -82,6 +83,21 @@ namespace ngl
 			return lpro;
 		}
 
+		void log_cmd_help(std::string_view acmd, const arg_options& aoptions)
+		{
+			log_info()->print("robot cmd: {}\n{}", acmd, aoptions.help());
+		}
+
+		bool parse_cmd_arguments(std::string_view acmd, const std::vector<std::string>& aargs, arg_options& aoptions)
+		{
+			if (!aoptions.parse(aargs) || aoptions.help_requested())
+			{
+				log_cmd_help(acmd, aoptions);
+				return false;
+			}
+			return true;
+		}
+
 		bool resolve_kcp_target(const _robot& arobot, std::string_view aserver, pbnet::ENUM_KCP& akcpenum, int16_t& aservertid, int16_t& atcount)
 		{
 			if (aserver == "game")
@@ -99,6 +115,29 @@ namespace ngl
 				return true;
 			}
 			return false;
+		}
+
+		std::optional<i16_port> resolve_kcp_uport(const _robot& arobot, std::string_view acmd, std::string_view aserver)
+		{
+			if (arobot.m_robot == nullptr)
+			{
+				return std::nullopt;
+			}
+
+			pbnet::ENUM_KCP lkcpenum;
+			int16_t lservertid = 0;
+			int16_t ltcount = 0;
+			if (!resolve_kcp_target(arobot, aserver, lkcpenum, lservertid, ltcount))
+			{
+				log_warn()->print("{} server [{}] invalid", acmd, std::string(aserver));
+				return std::nullopt;
+			}
+			return arobot.m_robot->kcp_index(lservertid, ltcount, lkcpenum);
+		}
+
+		std::shared_ptr<pack> make_json_pack(const std::string& apbname, const std::string& ajson, i64_actorid aactor_roleid)
+		{
+			return actor_base::jsonpack(apbname, ajson, nguid::moreactor(), aactor_roleid);
 		}
 
 		void log_robot_cmd_overview()
@@ -140,21 +179,6 @@ namespace ngl
 		std::vector<std::string> largs(ltokens.begin() + 1, ltokens.end());
 		bool lfrom_help_command = false;
 
-		const auto log_cmd_help = [](std::string_view acmd, const arg_options& aoptions)
-			{
-				log_info()->print("robot cmd: {}\n{}", acmd, aoptions.help());
-			};
-
-		const auto parse_cmd = [&](std::string_view acmd, arg_options& aoptions)
-			{
-				if (!aoptions.parse(largs) || aoptions.help_requested())
-				{
-					log_cmd_help(acmd, aoptions);
-					return false;
-				}
-				return true;
-			};
-
 		if (lcmd == "help" || lcmd == "--help" || lcmd == "-h")
 		{
 			if (largs.empty())
@@ -174,7 +198,7 @@ namespace ngl
 			loptions.init_options("protocol", "robot transport: tcp or ws", std::string("tcp"));
 			loptions.positional("robot", 1);
 			loptions.positional("protocol", 1);
-			if (!parse_cmd("login", loptions))
+			if (!robot_manage_cmd::parse_cmd_arguments("login", largs, loptions))
 			{
 				return true;
 			}
@@ -198,7 +222,7 @@ namespace ngl
 			loptions.positional("beg", 1);
 			loptions.positional("end", 1);
 			loptions.positional("protocol", 1);
-			if (!parse_cmd("logins", loptions))
+			if (!robot_manage_cmd::parse_cmd_arguments("logins", largs, loptions))
 			{
 				return true;
 			}
@@ -222,7 +246,7 @@ namespace ngl
 			loptions.init_multitoken<std::vector<std::string>>("arguments", "role command and arguments", true);
 			loptions.positional("robot", 1);
 			loptions.positional("arguments", -1);
-			if (!parse_cmd("c", loptions))
+			if (!robot_manage_cmd::parse_cmd_arguments("c", largs, loptions))
 			{
 				return true;
 			}
@@ -242,7 +266,7 @@ namespace ngl
 			loptions.init_flag("help,h", "show help");
 			loptions.init_multitoken<std::vector<std::string>>("arguments", "broadcast command and arguments", true);
 			loptions.positional("arguments", -1);
-			if (!parse_cmd("d", loptions))
+			if (!robot_manage_cmd::parse_cmd_arguments("d", largs, loptions))
 			{
 				return true;
 			}
@@ -254,7 +278,6 @@ namespace ngl
 			foreach([&lpro, this](_robot& arobot)
 				{
 					send(&arobot, lpro);
-					return true;
 				});
 			return true;
 		}
@@ -272,7 +295,7 @@ namespace ngl
 			loptions.positional("tcount", 1);
 			loptions.positional("actorid", 1);
 			loptions.positional("robotid", 1);
-			if (!parse_cmd("kcp", loptions))
+			if (!robot_manage_cmd::parse_cmd_arguments("kcp", largs, loptions))
 			{
 				return true;
 			}
@@ -298,7 +321,6 @@ namespace ngl
 					{
 						kcp_connect(arobot.m_robot->id_guid(), (pbnet::ENUM_KCP)lkcpenum, lservertid, ltcount, lactorid);
 					}
-					return true;
 				});
 			return true;
 		}
@@ -308,7 +330,7 @@ namespace ngl
 			loptions.init_flag("help,h", "show help");
 			loptions.init_required<std::string>("server", "game or gateway");
 			loptions.positional("server", 1);
-			if (!parse_cmd("kcp_gettime", loptions))
+			if (!robot_manage_cmd::parse_cmd_arguments("kcp_gettime", largs, loptions))
 			{
 				return true;
 			}
@@ -320,21 +342,12 @@ namespace ngl
 			pbnet::PROBUFF_NET_GET_TIME lpro;
 			foreach([&lpro, &lserver](_robot& arobot)
 				{
-					pbnet::ENUM_KCP lkcpenum;
-					int16_t lservertid = 0;
-					int16_t ltcount = 0;
-					if (!robot_manage_cmd::resolve_kcp_target(arobot, lserver, lkcpenum, lservertid, ltcount))
-					{
-						log_warn()->print("kcp_gettime server [{}] invalid", lserver);
-						return false;
-					}
-					auto luport = arobot.m_robot->kcp_index(lservertid, ltcount, lkcpenum);
+					const std::optional<i16_port> luport = robot_manage_cmd::resolve_kcp_uport(arobot, "kcp_gettime", lserver);
 					if (!luport.has_value())
 					{
-						return false;
+						return;
 					}
 					actor::kcp_send(arobot.m_robot->id_guid(), lpro, *luport);
-					return true;
 				});
 			return true;
 		}
@@ -348,7 +361,7 @@ namespace ngl
 			loptions.positional("server", 1);
 			loptions.positional("pbname", 1);
 			loptions.positional("json", -1);
-			if (!parse_cmd("kcp_protocol", loptions))
+			if (!robot_manage_cmd::parse_cmd_arguments("kcp_protocol", largs, loptions))
 			{
 				return true;
 			}
@@ -364,25 +377,17 @@ namespace ngl
 			const std::string ljson = robot_manage_cmd::join_with_space(ljson_tokens);
 			foreach([&lserver, &lpbname, &ljson](_robot& arobot)
 				{
-					pbnet::ENUM_KCP lkcpenum;
-					int16_t lservertid = 0;
-					int16_t ltcount = 0;
-					if (!robot_manage_cmd::resolve_kcp_target(arobot, lserver, lkcpenum, lservertid, ltcount))
+					const std::optional<i16_port> luport = robot_manage_cmd::resolve_kcp_uport(arobot, "kcp_protocol", lserver);
+					if (!luport.has_value())
 					{
-						log_warn()->print("kcp_protocol server [{}] invalid", lserver);
-						return false;
+						return;
 					}
 
-					std::shared_ptr<pack> lpack = actor_base::jsonpack(lpbname, ljson, nguid::moreactor(), arobot.m_actor_roleid);
+					std::shared_ptr<pack> lpack = robot_manage_cmd::make_json_pack(lpbname, ljson, arobot.m_actor_roleid);
 					if (lpack != nullptr)
 					{
-						auto luport = arobot.m_robot->kcp_index(lservertid, ltcount, lkcpenum);
-						if (luport.has_value())
-						{
-							actor::kcp_sendpack(arobot.m_robot->id_guid(), lpack, *luport);
-						}
+						actor::kcp_sendpack(arobot.m_robot->id_guid(), lpack, *luport);
 					}
-					return true;
 				});
 			return true;
 		}
@@ -394,7 +399,7 @@ namespace ngl
 			loptions.init_multitoken<std::vector<std::string>>("json", "json payload", true);
 			loptions.positional("pbname", 1);
 			loptions.positional("json", -1);
-			if (!parse_cmd("protocol", loptions))
+			if (!robot_manage_cmd::parse_cmd_arguments("protocol", largs, loptions))
 			{
 				return true;
 			}
@@ -407,12 +412,11 @@ namespace ngl
 			const std::string ljson = robot_manage_cmd::join_with_space(ljson_tokens);
 			foreach([&lpbname, &ljson](_robot& arobot)
 				{
-					std::shared_ptr<pack> lpack = actor_base::jsonpack(lpbname, ljson, nguid::moreactor(), arobot.m_actor_roleid);
+					std::shared_ptr<pack> lpack = robot_manage_cmd::make_json_pack(lpbname, ljson, arobot.m_actor_roleid);
 					if (lpack != nullptr)
 					{
 						nnet::instance().send_pack(arobot.m_session, lpack);
 					}
-					return true;
 				});
 			return true;
 		}
@@ -426,7 +430,7 @@ namespace ngl
 			loptions.positional("rounds", 1);
 			loptions.positional("actorcount", 1);
 			loptions.positional("everycount", 1);
-			if (!parse_cmd("test_thruput", loptions))
+			if (!robot_manage_cmd::parse_cmd_arguments("test_thruput", largs, loptions))
 			{
 				return true;
 			}
@@ -447,7 +451,7 @@ namespace ngl
 		{
 			arg_options loptions("release_thruput options");
 			loptions.init_flag("help,h", "show help");
-			if (!parse_cmd("release_thruput", loptions))
+			if (!robot_manage_cmd::parse_cmd_arguments("release_thruput", largs, loptions))
 			{
 				return true;
 			}
