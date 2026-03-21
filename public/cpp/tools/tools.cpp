@@ -65,7 +65,7 @@ namespace ngl
 			return true;
 		}
 		std::array<int, 4> loctets{};
-		if (!detail::parse_ipv4_octets(aip, loctets))
+		if (!detail::parse_ip4(aip, loctets))
 		{
 			return false;
 		}
@@ -74,7 +74,7 @@ namespace ngl
 			|| (loctets[0] == 192 && loctets[1] == 168);
 	}
 
-	void tools::log_lexical_cast_error(
+	void tools::log_lex_err(
 		const char* atotype,
 		const char* afromtype,
 		const char* aerror,
@@ -676,7 +676,7 @@ namespace ngl
 		escaped.reserve(c.size() * 3);
 		for (unsigned char achar : c)
 		{
-			if (detail::is_url_encode_passthrough(achar))
+			if (detail::is_url_safe(achar))
 			{
 				escaped.push_back(static_cast<char>(achar));
 			}
@@ -709,7 +709,7 @@ namespace ngl
 					if (high >= 0 && low >= 0)
 					{
 						const unsigned char decoded = static_cast<unsigned char>((high << 4) | low);
-						if (detail::should_preserve_percent_escape(decoded))
+						if (detail::keep_pct(decoded))
 						{
 							result.push_back('%');
 						}

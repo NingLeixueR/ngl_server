@@ -18,8 +18,8 @@ class RuntimeConfigTest : public ::testing::Test
 protected:
 	void SetUp() override
 	{
-		std::string err;
-		ASSERT_TRUE(ngl_test_support::reload_bootstrap_runtime(err)) << err;
+		std::string lERR;
+		ASSERT_TRUE(ngl_test_support::RELOAD_RT(lERR)) << lERR;
 	}
 };
 

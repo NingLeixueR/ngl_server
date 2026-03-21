@@ -16,46 +16,46 @@
 
 namespace ngl_runtime::detail
 {
-	struct node_bootstrap_options
+	struct node_boot_opt
 	{
 		// Optional node-specific startup toggles used by start_node().
 		std::set<pbnet::ENUM_KCP> m_kcp_types;
 		bool m_use_actor_client = true;
-		bool m_create_default_log_actor = true;
-		bool m_register_actor_server = true;
+		bool m_make_log = true;
+		bool m_reg_actor = true;
 	};
 
-	struct robot_test_plan
+	struct robot_plan
 	{
 		// Parallel arrays: each delay is followed by one raw command line.
 		std::vector<int> m_interval_ms;
 		std::vector<std::string> m_commands;
 	};
 
-	struct robot_test_state
+	struct robot_state
 	{
 		// Console thread updates the plan while the main loop replays it.
 		std::atomic_bool m_enabled = false;
 		std::mutex m_mutex;
-		robot_test_plan m_plan;
+		robot_plan m_plan;
 	};
 
-	node_bootstrap_options make_node_options(
+	node_boot_opt make_node_opt(
 		std::initializer_list<pbnet::ENUM_KCP> kcp_types = {},
 		bool use_actor_client = true,
-		bool create_default_log_actor = true,
-		bool register_actor_server = true)
+		bool make_log = true,
+		bool reg_actor = true)
 	{
-		node_bootstrap_options options;
+		node_boot_opt options;
 		options.m_kcp_types.insert(kcp_types.begin(), kcp_types.end());
 		options.m_use_actor_client = use_actor_client;
-		options.m_create_default_log_actor = create_default_log_actor;
-		options.m_register_actor_server = register_actor_server;
+		options.m_make_log = make_log;
+		options.m_reg_actor = reg_actor;
 		return options;
 	}
 
 	template <pbdb::ENUM_DB TDbType, typename TRecord>
-	void seed_db_record(const TRecord& record)
+	void save_seed(const TRecord& record)
 	{
 		// Keep the seed helpers backend-agnostic so tests and bootstrap scripts work with
 		// either MySQL or PostgreSQL.
@@ -69,7 +69,7 @@ namespace ngl_runtime::detail
 		}
 	}
 
-	void create_default_log_actor()
+	void make_log_actor()
 	{
 		if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 		{
@@ -79,7 +79,7 @@ namespace ngl_runtime::detail
 	}
 
 	template <typename SetupFn>
-	startup_error start_node(const char* node_name, int* tcp_port, const node_bootstrap_options& options, SetupFn&& setup)
+	startup_error start_node(const char* node_name, int* tcp_port, const node_boot_opt& options, SetupFn&& setup)
 	{
 		ngl::log_error()->print("[{}] start", node_name);
 
@@ -95,14 +95,14 @@ namespace ngl_runtime::detail
 			ngl::actor_client::instance();
 		}
 
-		if (options.m_create_default_log_actor)
+		if (options.m_make_log)
 		{
-			create_default_log_actor();
+			make_log_actor();
 		}
 
 		setup();
 
-		if (options.m_register_actor_server && options.m_use_actor_client)
+		if (options.m_reg_actor && options.m_use_actor_client)
 		{
 			// Once all singleton actors exist locally, publish them to the route layer.
 			ngl::actor_client::instance().actor_server_register();
@@ -112,7 +112,7 @@ namespace ngl_runtime::detail
 	}
 
 	template <typename TDbConfig>
-	void init_database_backend(const TDbConfig& db_config)
+	void init_db_back(const TDbConfig& db_config)
 	{
 		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
 		{
@@ -126,7 +126,7 @@ namespace ngl_runtime::detail
 		}
 	}
 
-	bool should_seed_db_data(int argc, char** argv)
+	bool need_seed_db(int argc, char** argv)
 	{
 		return argc >= 5 && argv != nullptr && argv[4] != nullptr && std::string_view(argv[4]) == "init";
 	}
@@ -155,7 +155,7 @@ namespace ngl_runtime::detail
 		return lpos < lsize ? line.substr(lpos) : std::string();
 	}
 
-	bool apply_robot_control_command(const std::string& line, robot_test_state& state)
+	bool apply_robot_cmd(const std::string& line, robot_state& state)
 	{
 		const std::vector<std::string> tokens = ngl::arg_options::split_command_line(line);
 		if (tokens.empty())
@@ -211,13 +211,13 @@ namespace ngl_runtime::detail
 		return false;
 	}
 
-	robot_test_plan copy_robot_test_plan(robot_test_state& state)
+	robot_plan copy_plan(robot_state& state)
 	{
 		std::scoped_lock lock(state.m_mutex);
 		return state.m_plan;
 	}
 
-	std::string read_console_line()
+	std::string read_line()
 	{
 		std::string line;
 		if (!std::getline(std::cin, line))
@@ -230,7 +230,7 @@ namespace ngl_runtime::detail
 
 namespace ngl_runtime
 {
-	robot_launch_request build_robot_launch_request(int argc, char** argv)
+	robot_launch_request build_robot_req(int argc, char** argv)
 	{
 		robot_launch_request request;
 		if (argc <= 4)
@@ -261,9 +261,10 @@ namespace ngl_runtime
 		return request;
 	}
 
-	bool build_push_server_config_param(const ngl::tab_servers& server, std::string& param)
+	bool build_push_cfg(const ngl::tab_servers& server, std::string& param)
 	{
 		param.clear();
+		param.reserve(server.m_name.size() + (server.m_net.size() * 96) + 64);
 
 		// The endpoint expects the scalar fields as flat query params.
 		ngl::ncurl::param(param, "id", server.m_id);
@@ -304,16 +305,16 @@ namespace ngl_runtime
 	}
 }
 
-using ngl_runtime::detail::apply_robot_control_command;
-using ngl_runtime::detail::copy_robot_test_plan;
-using ngl_runtime::detail::create_default_log_actor;
-using ngl_runtime::detail::init_database_backend;
-using ngl_runtime::detail::make_node_options;
-using ngl_runtime::detail::read_console_line;
-using ngl_runtime::detail::robot_test_plan;
-using ngl_runtime::detail::robot_test_state;
-using ngl_runtime::detail::seed_db_record;
-using ngl_runtime::detail::should_seed_db_data;
+using ngl_runtime::detail::apply_robot_cmd;
+using ngl_runtime::detail::copy_plan;
+using ngl_runtime::detail::init_db_back;
+using ngl_runtime::detail::make_log_actor;
+using ngl_runtime::detail::make_node_opt;
+using ngl_runtime::detail::need_seed_db;
+using ngl_runtime::detail::read_line;
+using ngl_runtime::detail::robot_plan;
+using ngl_runtime::detail::robot_state;
+using ngl_runtime::detail::save_seed;
 using ngl_runtime::detail::start_node;
 
 startup_error start_robot_safe(int argc, char** argv, int* tcp_port);
@@ -329,7 +330,7 @@ void init_DB_ACCOUNT(const char* aname, int beg)
 		ltemp.set_mroleid(ltemp.mid());
 		ltemp.set_marea(tab_self_area);
 
-		seed_db_record<pbdb::ENUM_DB_ACCOUNT>(ltemp);
+		save_seed<pbdb::ENUM_DB_ACCOUNT>(ltemp);
 	}
 }
 
@@ -356,8 +357,8 @@ void init_DB_ROLE(const char* aname, int beg)
 		lrolebase.mutable_mbase()->set_mmoneysilver(0);
 		lrolebase.mutable_mbase()->set_mcreateutc((int32_t)ngl::localtime::gettime());
 
-		seed_db_record<pbdb::ENUM_DB_BRIEF>(lrolebase);
-		seed_db_record<pbdb::ENUM_DB_ROLE>(ltemp);
+		save_seed<pbdb::ENUM_DB_BRIEF>(lrolebase);
+		save_seed<pbdb::ENUM_DB_ROLE>(ltemp);
 	}
 }
 
@@ -380,7 +381,7 @@ void init_DB_BAG(const char* aname, int beg)
 		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		ltemp.set_mmaxid(1);
 
-		seed_db_record<pbdb::ENUM_DB_BAG>(ltemp);
+		save_seed<pbdb::ENUM_DB_BAG>(ltemp);
 	}
 }
 
@@ -409,7 +410,7 @@ void init_DB_TASK(const char* aname, int beg)
 		lschedulesnode->set_msumint(10);
 		(*lrundatas)[lpair.first] = lpair.second;
 
-		seed_db_record<pbdb::ENUM_DB_TASK>(ltemp);
+		save_seed<pbdb::ENUM_DB_TASK>(ltemp);
 	}
 }
 
@@ -427,7 +428,7 @@ void init_DB_MAIL(int beg)
 		pbdb::db_mail ltemp;
 		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 
-		seed_db_record<pbdb::ENUM_DB_MAIL>(ltemp);
+		save_seed<pbdb::ENUM_DB_MAIL>(ltemp);
 	}
 }
 
@@ -447,7 +448,7 @@ void init_DB_ROLEKEYVALUE(int beg)
 		(*ltemp.mutable_mdata())["test2"] = "2";
 		(*ltemp.mutable_mdata())["test3"] = "3";
 
-		seed_db_record<pbdb::ENUM_DB_ROLEKEYVALUE>(ltemp);
+		save_seed<pbdb::ENUM_DB_ROLEKEYVALUE>(ltemp);
 	}
 }
 
@@ -484,7 +485,7 @@ void init_DB_NOTICE()
 		const int32_t lnow = static_cast<int32_t>(time(nullptr));
 		ltemp.set_mstarttime(lnow);
 		ltemp.set_mfinishtime(lnow + 36000);
-		seed_db_record<pbdb::ENUM_DB_NOTICE>(ltemp);
+		save_seed<pbdb::ENUM_DB_NOTICE>(ltemp);
 	}
 }
 
@@ -496,7 +497,7 @@ void init_DB_KEYVAL()
 	std::string ltempstr = std::format("{}*{}", lnow, ngl::localtime::time2str(lnow, "%y/%m/%d %H:%M:%S"));
 	ltemp.set_mvalue(ltempstr);
 
-	seed_db_record<pbdb::ENUM_DB_KEYVALUE>(ltemp);
+	save_seed<pbdb::ENUM_DB_KEYVALUE>(ltemp);
 }
 
 void init_DB_FAMILY()
@@ -512,7 +513,7 @@ void init_DB_FAMILY()
 		ltemp.set_mleader(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		*ltemp.mutable_mmember()->Add() = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
 
-		seed_db_record<pbdb::ENUM_DB_FAMILY>(ltemp);
+		save_seed<pbdb::ENUM_DB_FAMILY>(ltemp);
 		
 		pbdb::db_familyer ltempfamilyer;
 		ltempfamilyer.set_mjoinutc((int32_t)ngl::localtime::gettime());
@@ -520,7 +521,7 @@ void init_DB_FAMILY()
 		ltempfamilyer.set_mposition(pbdb::db_familyer_eposition_leader);
 		ltempfamilyer.set_mlastsignutc((int32_t)ngl::localtime::gettime());
 
-		seed_db_record<pbdb::ENUM_DB_FAMILYER>(ltempfamilyer);
+		save_seed<pbdb::ENUM_DB_FAMILYER>(ltempfamilyer);
 	}
 }
 
@@ -535,7 +536,7 @@ void init_DB_RANKLIST()
 		lrankitem.set_mvalue(i);
 		(*ltemp.mutable_mitems())[(int)pbdb::eranklist::lv] = lrankitem;
 
-			seed_db_record<pbdb::ENUM_DB_RANKLIST>(ltemp);
+			save_seed<pbdb::ENUM_DB_RANKLIST>(ltemp);
 	}*/
 }
 
@@ -566,7 +567,7 @@ void init_DB_FRIENDS()
 
 	for (auto& apair : lmap)
 	{
-		seed_db_record<pbdb::ENUM_DB_FRIENDS>(apair.second);
+		save_seed<pbdb::ENUM_DB_FRIENDS>(apair.second);
 	}
 }
 
@@ -593,19 +594,19 @@ void init_DB_TESTLUA()
 
 	for (auto& apair : lmap)
 	{
-		seed_db_record<pbdb::ENUM_DB_TESTLUA>(apair.second);
+		save_seed<pbdb::ENUM_DB_TESTLUA>(apair.second);
 	}
 }
 
 startup_error start_db(int argc, char** argv, int* tcp_port)
 {
-	return start_node("DB", tcp_port, make_node_options(), [argc, argv]()
+	return start_node("DB", tcp_port, make_node_opt(), [argc, argv]()
 		{
-			init_database_backend(nconfig.db());
+			init_db_back(nconfig.db());
 			ngl::tdb::tdb_init(false);
 			ngl::actor_gmclient::instance();
 
-			if (should_seed_db_data(argc, argv))
+			if (need_seed_db(argc, argv))
 			{
 				init_DB_BAG();
 				init_DB_TASK();
@@ -624,9 +625,9 @@ startup_error start_db(int argc, char** argv, int* tcp_port)
 
 startup_error start_crossdb(int* tcp_port)
 {
-	return start_node("CROSSDB", tcp_port, make_node_options(), []()
+	return start_node("CROSSDB", tcp_port, make_node_opt(), []()
 		{
-			init_database_backend(nconfig.crossdb());
+			init_db_back(nconfig.crossdb());
 			ngl::tdb::tcrossdb_init(false);
 			ngl::actor_gmclient::instance();
 		});
@@ -634,7 +635,7 @@ startup_error start_crossdb(int* tcp_port)
 
 startup_error start_world(int* tcp_port)
 {
-	return start_node("WORLD", tcp_port, make_node_options(), []()
+	return start_node("WORLD", tcp_port, make_node_opt(), []()
 		{
 			ngl::actor_events_logic::instance();
 			ngl::actor_gm::instance();
@@ -657,7 +658,7 @@ startup_error start_world(int* tcp_port)
 
 startup_error start_login(int* tcp_port)
 {
-	return start_node("LOGIN", tcp_port, make_node_options(), []()
+	return start_node("LOGIN", tcp_port, make_node_opt(), []()
 		{
 			ngl::actor_login::instance();
 			ngl::actor_gmclient::instance();
@@ -666,7 +667,7 @@ startup_error start_login(int* tcp_port)
 
 startup_error start_gateway(int* tcp_port)
 {
-	return start_node("GATEWAY", tcp_port, make_node_options({ pbnet::KCP_GATEWAY }), []()
+	return start_node("GATEWAY", tcp_port, make_node_opt({ pbnet::KCP_GATEWAY }), []()
 		{
 			ngl::actor_gateway::instance();
 			ngl::actor_gateway_g2c::instance();
@@ -678,7 +679,7 @@ startup_error start_gateway(int* tcp_port)
 
 startup_error start_log(int* tcp_port)
 {
-	return start_node("LOG", tcp_port, make_node_options({}, true, false, true), []()
+	return start_node("LOG", tcp_port, make_node_opt({}, true, false, true), []()
 		{
 			if (ngl::sysconfig::logwritelevel() >= ngl::ELOG_MAX || ngl::sysconfig::logwritelevel() <= ngl::ELOG_NONE)
 			{
@@ -693,17 +694,17 @@ startup_error start_log(int* tcp_port)
 
 startup_error start_actor(int* tcp_port)
 {
-	return start_node("ACTORSERVER", tcp_port, make_node_options({}, false, false, false), []()
+	return start_node("ACTORSERVER", tcp_port, make_node_opt({}, false, false, false), []()
 		{
 			ngl::actor_server::instance();
-			create_default_log_actor();
+			make_log_actor();
 			ngl::actor_gmclient::instance();
 		});
 }
 
 startup_error start_game(int* tcp_port)
 {
-	return start_node("GAME", tcp_port, make_node_options({ pbnet::KCP_ROLE }), []()
+	return start_node("GAME", tcp_port, make_node_opt({ pbnet::KCP_ROLE }), []()
 		{
 			ngl::actor_role_manage::instance();
 			ngl::actor_create::instance();
@@ -714,7 +715,7 @@ startup_error start_game(int* tcp_port)
 
 startup_error start_cross(int* tcp_port)
 {
-	return start_node("CROSS", tcp_port, make_node_options(), []()
+	return start_node("CROSS", tcp_port, make_node_opt(), []()
 		{
 			ngl::actor_chat::instance();
 			ngl::actor_ranklist::instance();
@@ -722,55 +723,70 @@ startup_error start_cross(int* tcp_port)
 		});
 }
 
-startup_error start_pushserverconfig(int* tcp_port)
+startup_error start_pushcfg(int* tcp_port)
 {
 	(void)tcp_port;
 	// This process only pushes tab_servers data to the external GM service.
-	ngl::xarg_info* lpublicxml = nconfig.info();
-	std::string lgmurl;
-	if (!lpublicxml->find("gmurl", lgmurl))
+	ngl::xarg_info* lINFO = nconfig.info();
+	if (lINFO == nullptr)
 	{
 		return startup_error::node_start_failed;
 	}
-	std::string lpushserver;
-	if (!lpublicxml->find("push_server_config", lpushserver))
+
+	std::string lGM_URL;
+	if (!lINFO->find("gmurl", lGM_URL))
 	{
 		return startup_error::node_start_failed;
 	}
-	lpushserver = lgmurl + "/" + lpushserver;
-	bool lhas_invalid_network = false;
+
+	std::string lAPI;
+	if (!lINFO->find("push_server_config", lAPI))
+	{
+		return startup_error::node_start_failed;
+	}
+
+	std::string lURL;
+	lURL.reserve(lGM_URL.size() + lAPI.size() + 1);
+	lURL = lGM_URL;
+	lURL.push_back('/');
+	lURL += lAPI;
+
+	bool lHAS_BAD_NET = false;
 
 	// Push every configured server entry independently so one bad row does not block logging
 	// for the rest of the batch.
-	ngl::ttab_servers::instance().foreach_server([&lpushserver, &lhas_invalid_network](ngl::tab_servers* aserver)
+	ngl::ttab_servers::instance().foreach_server([&lURL, &lHAS_BAD_NET](ngl::tab_servers* aSERVER)
 		{
-			auto lhttp = ngl::ncurl::http();
-			ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
-			ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_GET);
-			ngl::ncurl::set_url(lhttp, lpushserver);
+			auto lHTTP = ngl::ncurl::http();
+			ngl::ncurl::set_mode(lHTTP, ngl::ENUM_MODE_HTTP);
+			ngl::ncurl::set_type(lHTTP, ngl::ENUM_TYPE_GET);
+			ngl::ncurl::set_url(lHTTP, lURL);
 
-			std::string lparam;
-			if (!ngl_runtime::build_push_server_config_param(*aserver, lparam))
+			std::string lPARAM;
+			if (!ngl_runtime::build_push_cfg(*aSERVER, lPARAM))
 			{
-				lhas_invalid_network = true;
-				ngl::log_error()->print("[pushserverconfig] invalid network type server:{} type:{}", aserver->m_id, static_cast<int32_t>(aserver->m_type));
+				lHAS_BAD_NET = true;
+				ngl::log_error()->print(
+					"[pushserverconfig] invalid network type server:{} type:{}",
+					aSERVER->m_id,
+					static_cast<int32_t>(aSERVER->m_type));
 				return;
 			}
 
-			ngl::ncurl::set_param(lhttp, lparam);
+			ngl::ncurl::set_param(lHTTP, lPARAM);
 
-			ngl::ncurl::set_callback(lhttp, [lparam](int, ngl::http_parm& ahttp)
+			ngl::ncurl::set_callback(lHTTP, [lSEND = std::move(lPARAM)](int, ngl::http_parm& aHTTP)
 				{
-					ngl::log_error()->print("[{}]->[{}]", lparam, ahttp.m_recvdata);
+					ngl::log_error()->print("[{}]->[{}]", lSEND, aHTTP.m_recvdata);
 				});
-			ngl::ncurl::send(lhttp);
+			ngl::ncurl::send(lHTTP);
 		});
-	return lhas_invalid_network ? startup_error::node_start_failed : startup_error::ok;
+	return lHAS_BAD_NET ? startup_error::node_start_failed : startup_error::ok;
 }
 
 startup_error start_csvserver(int* tcp_port)
 {
-	return start_node("RELOADCSV", tcp_port, make_node_options(), []()
+	return start_node("RELOADCSV", tcp_port, make_node_opt(), []()
 		{
 			ngl::actor_csvserver::instance();
 			ngl::actor_gmclient::instance();
@@ -893,7 +909,7 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 
 startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 {
-	const ngl_runtime::robot_launch_request request = ngl_runtime::build_robot_launch_request(argc, argv);
+	const ngl_runtime::robot_launch_request request = ngl_runtime::build_robot_req(argc, argv);
 	if (request.mode == ngl_runtime::robot_launch_mode::invalid)
 	{
 		return startup_error::invalid_args;
@@ -909,7 +925,7 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 		}
 	}
 
-	return start_node("ROBOT", tcp_port, make_node_options(), [request, bootstrap_command = std::move(bootstrap_command)]() mutable
+	return start_node("ROBOT", tcp_port, make_node_opt(), [request, bootstrap_command = std::move(bootstrap_command)]() mutable
 		{
 			ngl::actor_robot_manage::instance();
 
@@ -925,7 +941,7 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 				// Pure interactive mode behaves like the legacy robot shell.
 				while (true)
 				{
-					std::string line = read_console_line();
+					std::string line = read_line();
 					if (!line.empty())
 					{
 						ngl::actor_robot_manage::parse_command(std::move(line));
@@ -941,14 +957,14 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 
 			ngl::actor_robot_manage::parse_command(std::move(bootstrap_command));
 
-			robot_test_state state;
+			robot_state state;
 			std::thread([&state]()
 				{
 					// Console input can either mutate the replay plan or execute a normal command immediately.
 					while (true)
 					{
-						std::string line = read_console_line();
-						if (apply_robot_control_command(line, state))
+						std::string line = read_line();
+						if (apply_robot_cmd(line, state))
 						{
 							continue;
 						}
@@ -968,7 +984,7 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 				}
 
 				// Snapshot the replay plan so the console thread can keep editing the next iteration.
-				const robot_test_plan plan = copy_robot_test_plan(state);
+				const robot_plan plan = copy_plan(state);
 				if (plan.m_interval_ms.empty() || plan.m_commands.empty())
 				{
 					ngl::sleep::seconds(1);
@@ -1063,7 +1079,7 @@ int ngl_main(int argc, char** argv)
 		rc = start_crossdb(&ctx.tcp_port);
 		break;
 	case ngl::PUSHSERVERCONFIG:
-		rc = start_pushserverconfig(&ctx.tcp_port);
+		rc = start_pushcfg(&ctx.tcp_port);
 		break;
 	default:
 		rc = startup_error::invalid_node_type;

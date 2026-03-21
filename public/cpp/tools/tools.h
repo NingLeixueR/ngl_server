@@ -55,34 +55,34 @@ namespace ngl
 	namespace detail
 	{
 		inline constexpr std::string_view url_hex_digits = "0123456789ABCDEF";
-		inline constexpr std::size_t type_name_not_found = std::string_view::npos;
+		inline constexpr std::size_t g_TN_NPOS = std::string_view::npos;
 
 		template <typename T>
 		using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
-		constexpr std::string_view extract_compiler_type_name(
+		constexpr std::string_view ext_type(
 			std::string_view signature,
 			std::size_t prefix_start,
 			std::size_t prefix_size,
-			std::size_t type_end = type_name_not_found) noexcept
+			std::size_t type_end = g_TN_NPOS) noexcept
 		{
-			const std::size_t type_begin = prefix_start == type_name_not_found ? 0 : prefix_start + prefix_size;
-			const bool has_prefix = prefix_start != type_name_not_found;
-			const bool has_end = type_end != type_name_not_found && type_end > type_begin;
+			const std::size_t type_begin = prefix_start == g_TN_NPOS ? 0 : prefix_start + prefix_size;
+			const bool has_prefix = prefix_start != g_TN_NPOS;
+			const bool has_end = type_end != g_TN_NPOS && type_end > type_begin;
 			return !has_prefix ? signature : (has_end ? signature.substr(type_begin, type_end - type_begin) : signature.substr(type_begin));
 		}
 
-		constexpr std::size_t find_type_name_end(std::string_view signature, std::size_t type_begin, std::string_view suffix) noexcept
+		constexpr std::size_t find_tend(std::string_view signature, std::size_t type_begin, std::string_view suffix) noexcept
 		{
 			return signature.find(suffix, type_begin);
 		}
 
-		constexpr std::size_t find_type_name_end(std::string_view signature, std::size_t type_begin, char suffix) noexcept
+		constexpr std::size_t find_tend(std::string_view signature, std::size_t type_begin, char suffix) noexcept
 		{
 			return signature.find(suffix, type_begin);
 		}
 
-		constexpr std::size_t find_type_name_end(
+		constexpr std::size_t find_tend(
 			std::string_view signature,
 			std::size_t type_begin,
 			char first_suffix,
@@ -90,66 +90,66 @@ namespace ngl
 		{
 			const std::size_t first_end = signature.find(first_suffix, type_begin);
 			const std::size_t second_end = signature.find(second_suffix, type_begin);
-			return first_end == type_name_not_found ? second_end
-				: (second_end == type_name_not_found ? first_end : std::min(first_end, second_end));
+			return first_end == g_TN_NPOS ? second_end
+				: (second_end == g_TN_NPOS ? first_end : std::min(first_end, second_end));
 		}
 
 		template <typename T>
-		constexpr std::string_view compiler_type_name() noexcept
+		constexpr std::string_view comp_type() noexcept
 		{
 #if defined(_MSC_VER)
 			// Parse the instantiated type directly from the compiler signature so
 			// forward-declared types still produce stable names.
 			constexpr std::string_view signature = __FUNCSIG__;
-			constexpr std::string_view prefix = "compiler_type_name<";
+			constexpr std::string_view prefix = "comp_type<";
 			constexpr std::size_t prefix_start = signature.find(prefix);
-			constexpr std::size_t type_begin = prefix_start == type_name_not_found ? 0 : prefix_start + prefix.size();
-			constexpr std::size_t type_end = find_type_name_end(signature, type_begin, ">(void");
-			return extract_compiler_type_name(signature, prefix_start, prefix.size(), type_end);
+			constexpr std::size_t type_begin = prefix_start == g_TN_NPOS ? 0 : prefix_start + prefix.size();
+			constexpr std::size_t type_end = find_tend(signature, type_begin, ">(void");
+			return ext_type(signature, prefix_start, prefix.size(), type_end);
 #elif defined(__clang__)
 			constexpr std::string_view signature = __PRETTY_FUNCTION__;
 			constexpr std::string_view prefix = "T = ";
 			constexpr std::size_t prefix_start = signature.find(prefix);
-			constexpr std::size_t type_begin = prefix_start == type_name_not_found ? 0 : prefix_start + prefix.size();
-			constexpr std::size_t type_end = find_type_name_end(signature, type_begin, ']');
-			return extract_compiler_type_name(signature, prefix_start, prefix.size(), type_end);
+			constexpr std::size_t type_begin = prefix_start == g_TN_NPOS ? 0 : prefix_start + prefix.size();
+			constexpr std::size_t type_end = find_tend(signature, type_begin, ']');
+			return ext_type(signature, prefix_start, prefix.size(), type_end);
 #elif defined(__GNUC__)
 			constexpr std::string_view signature = __PRETTY_FUNCTION__;
 			constexpr std::string_view prefix = "with T = ";
 			constexpr std::size_t prefix_start = signature.find(prefix);
-			constexpr std::size_t type_begin = prefix_start == type_name_not_found ? 0 : prefix_start + prefix.size();
-			constexpr std::size_t type_end = find_type_name_end(signature, type_begin, ';', ']');
-			return extract_compiler_type_name(signature, prefix_start, prefix.size(), type_end);
+			constexpr std::size_t type_begin = prefix_start == g_TN_NPOS ? 0 : prefix_start + prefix.size();
+			constexpr std::size_t type_end = find_tend(signature, type_begin, ';', ']');
+			return ext_type(signature, prefix_start, prefix.size(), type_end);
 #else
 			return "unknown";
 #endif
 		}
 
 		template <typename T>
-		inline constexpr bool is_char_pointer_v =
+		inline constexpr bool is_char_ptr_v =
 			std::is_pointer_v<remove_cvref_t<T>> &&
 			std::is_same_v<std::remove_cv_t<std::remove_pointer_t<remove_cvref_t<T>>>, char>;
 
 		template <typename T>
-		inline constexpr bool is_char_array_v =
+		inline constexpr bool is_char_arr_v =
 			std::is_array_v<remove_cvref_t<T>> &&
 			std::is_same_v<std::remove_cv_t<std::remove_extent_t<remove_cvref_t<T>>>, char>;
 
 		template <typename T>
-		inline constexpr bool is_string_like_v =
+		inline constexpr bool is_str_v =
 			std::is_same_v<remove_cvref_t<T>, std::string> ||
 			std::is_same_v<remove_cvref_t<T>, std::string_view> ||
-			is_char_pointer_v<T> ||
-			is_char_array_v<T>;
+			is_char_ptr_v<T> ||
+			is_char_arr_v<T>;
 
 		template <typename T>
-		static std::string_view as_string_view(const T& avalue)
+		static std::string_view to_sv(const T& avalue)
 		{
 			if constexpr (std::is_same_v<remove_cvref_t<T>, std::string> || std::is_same_v<remove_cvref_t<T>, std::string_view>)
 			{
 				return std::string_view(avalue);
 			}
-			else if constexpr (is_char_pointer_v<T>)
+			else if constexpr (is_char_ptr_v<T>)
 			{
 				return avalue != nullptr ? std::string_view(avalue) : std::string_view{};
 			}
@@ -168,7 +168,7 @@ namespace ngl
 			return liter == avalue.end() ? '\0' : *liter;
 		}
 
-		inline bool is_url_encode_passthrough(unsigned char achar)
+		inline bool is_url_safe(unsigned char achar)
 		{
 			return (achar >= '0' && achar <= '9')
 				|| (achar >= 'A' && achar <= 'Z')
@@ -195,7 +195,7 @@ namespace ngl
 			return -1;
 		}
 
-		inline bool should_preserve_percent_escape(unsigned char ahex)
+		inline bool keep_pct(unsigned char ahex)
 		{
 			return (ahex >= '0' && ahex <= '9')
 				|| (ahex >= 'a' && ahex <= 'z')
@@ -205,7 +205,7 @@ namespace ngl
 				|| ahex == 0x3A || ahex == 0x3B || ahex == 0x3D || ahex == 0x3F || ahex == 0x40 || ahex == 0x5F;
 		}
 
-		inline bool parse_ipv4_octets(std::string_view aip, std::array<int, 4>& aoctets)
+		inline bool parse_ip4(std::string_view aip, std::array<int, 4>& aoctets)
 		{
 			std::size_t begin = 0;
 			for (std::size_t index = 0; index < aoctets.size(); ++index)
@@ -322,7 +322,7 @@ namespace ngl
 			}
 		}
 
-		static void log_lexical_cast_error(
+		static void log_lex_err(
 			const char* atotype,
 			const char* afromtype,
 			const char* aerror,
@@ -339,16 +339,16 @@ namespace ngl
 					if (from < 0)
 					{
 						const boost::bad_lexical_cast lerror(typeid(From), typeid(To));
-						log_lexical_cast_error(typeid(To).name(), typeid(From).name(), lerror.what(), asource);
+						log_lex_err(typeid(To).name(), typeid(From).name(), lerror.what(), asource);
 						throw lerror;
 					}
 				}
-				else if constexpr (detail::is_string_like_v<From>)
+				else if constexpr (detail::is_str_v<From>)
 				{
-					if (detail::first_non_space(detail::as_string_view(from)) == '-')
+					if (detail::first_non_space(detail::to_sv(from)) == '-')
 					{
 						const boost::bad_lexical_cast lerror(typeid(From), typeid(To));
-						log_lexical_cast_error(typeid(To).name(), typeid(From).name(), lerror.what(), asource);
+						log_lex_err(typeid(To).name(), typeid(From).name(), lerror.what(), asource);
 						throw lerror;
 					}
 				}
@@ -360,7 +360,7 @@ namespace ngl
 			}
 			catch (const boost::bad_lexical_cast& aerror)
 			{
-				log_lexical_cast_error(typeid(To).name(), typeid(From).name(), aerror.what(), asource);
+				log_lex_err(typeid(To).name(), typeid(From).name(), aerror.what(), asource);
 				throw;
 			}
 		}
@@ -784,7 +784,7 @@ namespace ngl
 		{
 			// Derive the name from the compiler signature so incomplete forward-declared
 			// types still work when unity builds change template instantiation order.
-			static std::string lname = std::string(detail::compiler_type_name<T>());
+			static std::string lname = std::string(detail::comp_type<T>());
 			static std::atomic lfirst = true;
 			if (lfirst.exchange(false))
 			{
@@ -904,20 +904,20 @@ namespace ngl
 
 
 	template <typename T, typename = void>
-	struct has_protobuf_descriptor;
+	struct has_pb_desc;
 
 	template <typename T>
-	struct has_protobuf_descriptor<T, std::void_t<decltype(T::descriptor())>> : std::is_same<
+	struct has_pb_desc<T, std::void_t<decltype(T::descriptor())>> : std::is_same<
 		decltype(T::descriptor()),
 		const google::protobuf::Descriptor*
 	> {};
 
 	template <typename T, typename>
-	struct has_protobuf_descriptor : std::false_type {};
+	struct has_pb_desc : std::false_type {};
 
 	template <typename T>
 	struct is_protobuf_message : std::conjunction<
 		std::is_base_of<google::protobuf::MessageLite, std::remove_cv_t<std::remove_reference_t<T>>>,
-		has_protobuf_descriptor<std::remove_cv_t<std::remove_reference_t<T>>>
+		has_pb_desc<std::remove_cv_t<std::remove_reference_t<T>>>
 	> {};
 }//namespace ngl
