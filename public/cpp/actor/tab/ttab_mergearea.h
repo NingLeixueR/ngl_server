@@ -55,76 +55,77 @@ namespace ngl
 			m_merge1.fill(nguid::none_area());
 			m_merge2.clear();
 
-			std::vector<i16_area> ldirect(m_merge_slot_count, nguid::none_area());
-			std::vector<i16_area> lresolved(m_merge_slot_count, nguid::none_area());
-			std::vector<std::uint32_t> lvisit_stamp(m_merge_slot_count, 0);
-			std::vector<i16_area> lpath;
-			lpath.reserve(m_csv.size());
-			std::uint32_t lcurrent_stamp = 0;
+			std::vector<i16_area> direct_merge(m_merge_slot_count, nguid::none_area());
+			std::vector<i16_area> resolved_merge(m_merge_slot_count, nguid::none_area());
+			std::vector<std::uint32_t> visit_stamp(m_merge_slot_count, 0);
+			std::vector<i16_area> visit_path;
+			visit_path.reserve(m_csv.size());
+			std::uint32_t current_stamp = 0;
 
-			foreach([&ldirect](tab_mergearea& atab)
+			foreach([&direct_merge](tab_mergearea& merge_row)
 				{
-					ldirect[merge_slot(static_cast<i16_area>(atab.m_id))] = static_cast<i16_area>(atab.m_mergeid);
+					direct_merge[merge_slot(static_cast<i16_area>(merge_row.m_id))] = static_cast<i16_area>(merge_row.m_mergeid);
 				}
 			);
 
-			auto next_visit_stamp = [&lvisit_stamp, &lcurrent_stamp]()
+			auto next_visit_stamp = [&visit_stamp, &current_stamp]()
 			{
-				++lcurrent_stamp;
-				if (lcurrent_stamp == 0)
+				++current_stamp;
+				if (current_stamp == 0)
 				{
-					std::fill(lvisit_stamp.begin(), lvisit_stamp.end(), 0);
-					lcurrent_stamp = 1;
+					std::fill(visit_stamp.begin(), visit_stamp.end(), 0);
+					current_stamp = 1;
 				}
-				return lcurrent_stamp;
+				return current_stamp;
 			};
 
 			auto resolve_mergeid = [&](i16_area aarea)
 			{
-				const std::uint32_t lstamp = next_visit_stamp();
-				lpath.clear();
-				i16_area lcurrent = aarea;
-				i16_area lroot = nguid::none_area();
+				const std::uint32_t stamp = next_visit_stamp();
+				visit_path.clear();
+				i16_area current_area = aarea;
+				i16_area root_area = nguid::none_area();
 				while (true)
 				{
-					const std::size_t lslot = merge_slot(lcurrent);
-					if (const i16_area lcached = lresolved[lslot]; lcached != nguid::none_area())
+					const std::size_t slot = merge_slot(current_area);
+					if (const i16_area cached_root = resolved_merge[slot]; cached_root != nguid::none_area())
 					{
-						lroot = lcached;
+						root_area = cached_root;
 						break;
 					}
-					if (lvisit_stamp[lslot] == lstamp)
+					if (visit_stamp[slot] == stamp)
 					{
-						lroot = *std::min_element(lpath.begin(), lpath.end());
-						log_error()->print("ttab_mergearea::reload cycle detected area:[{}] root:[{}]", aarea, lroot);
+						root_area = *std::min_element(visit_path.begin(), visit_path.end());
+						log_error()->print("ttab_mergearea::reload cycle detected area:[{}] root:[{}]", aarea, root_area);
 						break;
 					}
-					lvisit_stamp[lslot] = lstamp;
-					lpath.push_back(lcurrent);
+					visit_stamp[slot] = stamp;
+					visit_path.push_back(current_area);
 
-					const i16_area lnext = ldirect[lslot];
-					if (lnext == nguid::none_area() || lnext == lcurrent)
+					const i16_area next_area = direct_merge[slot];
+					if (next_area == nguid::none_area() || next_area == current_area)
 					{
-						lroot = lcurrent;
+						root_area = current_area;
 						break;
 					}
-					lcurrent = lnext;
+					current_area = next_area;
 				}
 
-				for (i16_area area : lpath)
+				for (i16_area area : visit_path)
 				{
-					lresolved[merge_slot(area)] = lroot;
+					resolved_merge[merge_slot(area)] = root_area;
 				}
-				return lroot;
+				return root_area;
 			};
 
-			foreach([&](tab_mergearea& atab)
+			foreach([&](tab_mergearea& merge_row)
 				{
-					const i16_area area = static_cast<i16_area>(atab.m_id);
-					const i16_area lroot = resolve_mergeid(area);
-					m_merge1[merge_slot(area)] = lroot;
-					m_merge2[lroot].insert(lroot);
-					m_merge2[lroot].insert(area);
+					const i16_area area = static_cast<i16_area>(merge_row.m_id);
+					const i16_area root_area = resolve_mergeid(area);
+					m_merge1[merge_slot(area)] = root_area;
+					auto& merged_areas = m_merge2[root_area];
+					merged_areas.insert(root_area);
+					merged_areas.insert(area);
 				}
 			);
 		}
@@ -152,12 +153,7 @@ namespace ngl
 		// Whicharea this area
 		std::set<i16_area>* mergelist(i16_area aarea)
 		{
-			const auto it = m_merge2.find(aarea);
-			if (it == m_merge2.end())
-			{
-				return nullptr;
-			}
-			return &it->second;
+			return tools::findmap(m_merge2, aarea);
 		}
 
 		i16_area mergeid(i16_area aarea)
@@ -167,9 +163,9 @@ namespace ngl
 
 		void for_each(const std::function<void(i16_area, std::set<i16_area>&)>& afun)
 		{
-			for (std::pair<const i16_area, std::set<i16_area>>& item : m_merge2)
+			for (std::pair<const i16_area, std::set<i16_area>>& merged_entry : m_merge2)
 			{
-				afun(item.first, item.second);
+				afun(merged_entry.first, merged_entry.second);
 			}
 		}
 	};

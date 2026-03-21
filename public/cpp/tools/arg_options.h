@@ -17,6 +17,7 @@
 
 #include <boost/program_options.hpp>
 
+#include <algorithm>
 #include <cstdint>
 #include <sstream>
 #include <string>
@@ -36,6 +37,37 @@ namespace ngl
 		template <typename T>
 		using option_value_t = std::conditional_t<std::is_convertible_v<T, std::string_view>, std::string, std::decay_t<T>>;
 
+		static std::string normalize_key(std::string_view akey)
+		{
+			const std::vector<std::string> option_names = split_option_names(akey);
+			if (option_names.empty())
+			{
+				return {};
+			}
+			if (option_names.size() == 1)
+			{
+				return option_names.front();
+			}
+
+			std::size_t total_size = option_names.size() - 1;
+			for (const std::string& option_name : option_names)
+			{
+				total_size += option_name.size();
+			}
+
+			std::string normalized_key;
+			normalized_key.reserve(total_size);
+			for (std::size_t index = 0; index < option_names.size(); ++index)
+			{
+				if (index != 0)
+				{
+					normalized_key.push_back(',');
+				}
+				normalized_key += option_names[index];
+			}
+			return normalized_key;
+		}
+
 		static std::string trim_copy(std::string_view avalue)
 		{
 			const std::size_t lbegin = avalue.find_first_not_of(" \t\r\n");
@@ -50,27 +82,27 @@ namespace ngl
 
 		static std::vector<std::string> split_option_names(std::string_view aspec)
 		{
-			std::vector<std::string> lnames;
-			std::size_t lbegin = 0;
-			while (lbegin <= aspec.size())
+			std::vector<std::string> option_names;
+			option_names.reserve(static_cast<std::size_t>(std::count(aspec.begin(), aspec.end(), ',')) + 1);
+
+			std::size_t token_begin = 0;
+			while (token_begin <= aspec.size())
 			{
-				const std::size_t lend = aspec.find(',', lbegin);
-				const std::string lname = trim_copy(aspec.substr(
-					lbegin,
-					lend == std::string_view::npos ? std::string_view::npos : lend - lbegin
-				));
-				if (!lname.empty())
+				const std::size_t delimiter = aspec.find(',', token_begin);
+				const std::size_t token_end = delimiter == std::string_view::npos ? aspec.size() : delimiter;
+				const std::string option_name = trim_copy(aspec.substr(token_begin, token_end - token_begin));
+				if (!option_name.empty())
 				{
-					lnames.push_back(lname);
+					option_names.push_back(option_name);
 				}
 
-				if (lend == std::string_view::npos)
+				if (delimiter == std::string_view::npos)
 				{
 					break;
 				}
-				lbegin = lend + 1;
+				token_begin = delimiter + 1;
 			}
-			return lnames;
+			return option_names;
 		}
 
 		template <typename T>
@@ -101,28 +133,28 @@ namespace ngl
 
 		void register_aliases(std::string_view aspec)
 		{
-			const std::vector<std::string> lnames = split_option_names(aspec);
-			if (lnames.empty())
+			const std::vector<std::string> option_names = split_option_names(aspec);
+			if (option_names.empty())
 			{
 				return;
 			}
 
-			const std::string& lcanonical = lnames.front();
-			for (const auto& lname : lnames)
+			const std::string& canonical_name = option_names.front();
+			for (const std::string& option_name : option_names)
 			{
-				m_alias_to_key[lname] = lcanonical;
+				m_alias_to_key[option_name] = canonical_name;
 			}
 		}
 
 		std::string resolve_key(std::string_view akey) const
 		{
-			const std::string lkey = trim_copy(akey);
-			const auto itor = m_alias_to_key.find(lkey);
+			const std::string normalized_key = normalize_key(akey);
+			const auto itor = m_alias_to_key.find(normalized_key);
 			if (itor != m_alias_to_key.end())
 			{
 				return itor->second;
 			}
-			return lkey;
+			return normalized_key;
 		}
 
 		template <typename TParser>
@@ -147,23 +179,23 @@ namespace ngl
 		template <typename T, typename TConfig>
 		bool bind_typed_option(std::string_view akey, TConfig&& aconfig)
 		{
-			const std::string lkey = trim_copy(akey);
-			auto itor = m_info.find(lkey);
+			const std::string normalized_key = normalize_key(akey);
+			auto itor = m_info.find(normalized_key);
 			if (itor == m_info.end())
 			{
 				return false;
 			}
 
-			if (!m_registered_specs.insert(lkey).second)
+			if (!m_registered_specs.insert(normalized_key).second)
 			{
 				return false;
 			}
 
-			register_aliases(lkey);
+			register_aliases(normalized_key);
 			using value_type = option_value_t<T>;
-			auto* lvalue = po::value<value_type>();
-			std::forward<TConfig>(aconfig)(lvalue);
-			m_options.add_options()(lkey.c_str(), lvalue, itor->second.c_str());
+			auto* value_semantic = po::value<value_type>();
+			std::forward<TConfig>(aconfig)(value_semantic);
+			m_options.add_options()(normalized_key.c_str(), value_semantic, itor->second.c_str());
 			return true;
 		}
 
@@ -200,17 +232,17 @@ namespace ngl
 		template <typename T>
 		bool init_options(std::string_view akey, std::string_view aremark, const T& adata)
 		{
-			const std::string lkey = trim_copy(akey);
-			m_info[lkey] = std::string(aremark);
-			return bind_options(lkey, adata);
+			const std::string normalized_key = normalize_key(akey);
+			m_info[normalized_key] = std::string(aremark);
+			return bind_options(normalized_key, adata);
 		}
 
 		template <typename T>
 		bool init_optional(std::string_view akey, std::string_view aremark)
 		{
-			const std::string lkey = trim_copy(akey);
-			m_info[lkey] = std::string(aremark);
-			return bind_typed_option<T>(lkey, [](auto*)
+			const std::string normalized_key = normalize_key(akey);
+			m_info[normalized_key] = std::string(aremark);
+			return bind_typed_option<T>(normalized_key, [](auto*)
 				{
 				});
 		}
@@ -218,9 +250,9 @@ namespace ngl
 		template <typename T>
 		bool init_required(std::string_view akey, std::string_view aremark)
 		{
-			const std::string lkey = trim_copy(akey);
-			m_info[lkey] = std::string(aremark);
-			return bind_typed_option<T>(lkey, [](auto* avalue)
+			const std::string normalized_key = normalize_key(akey);
+			m_info[normalized_key] = std::string(aremark);
+			return bind_typed_option<T>(normalized_key, [](auto* avalue)
 				{
 					avalue->required();
 				});
@@ -229,9 +261,9 @@ namespace ngl
 		template <typename T>
 		bool init_multitoken(std::string_view akey, std::string_view aremark, bool arequired = false)
 		{
-			const std::string lkey = trim_copy(akey);
-			m_info[lkey] = std::string(aremark);
-			return bind_typed_option<T>(lkey, [arequired](auto* avalue)
+			const std::string normalized_key = normalize_key(akey);
+			m_info[normalized_key] = std::string(aremark);
+			return bind_typed_option<T>(normalized_key, [arequired](auto* avalue)
 				{
 					avalue->multitoken();
 					if (arequired)
@@ -243,15 +275,15 @@ namespace ngl
 
 		bool init_flag(std::string_view akey, std::string_view aremark)
 		{
-			const std::string lkey = trim_copy(akey);
-			if (!m_registered_specs.insert(lkey).second)
+			const std::string normalized_key = normalize_key(akey);
+			if (!m_registered_specs.insert(normalized_key).second)
 			{
 				return false;
 			}
 
-			m_info[lkey] = std::string(aremark);
-			register_aliases(lkey);
-			m_options.add_options()(lkey.c_str(), m_info[lkey].c_str());
+			m_info[normalized_key] = std::string(aremark);
+			register_aliases(normalized_key);
+			m_options.add_options()(normalized_key.c_str(), m_info[normalized_key].c_str());
 			return true;
 		}
 
@@ -263,8 +295,8 @@ namespace ngl
 
 		void positional(std::string_view akey, int32_t acount)
 		{
-			const std::string lkey = resolve_key(akey);
-			m_positional.add(lkey.c_str(), acount);
+			const std::string normalized_key = resolve_key(akey);
+			m_positional.add(normalized_key.c_str(), acount);
 		}
 
 		bool parse(const char* aargs)

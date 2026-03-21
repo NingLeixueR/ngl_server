@@ -29,6 +29,8 @@
 #include "tools/db/sql/db_data.h"
 #include "net/tcp/ntcp.h"
 
+#include <limits>
+
 namespace ngl
 {
 	class ndbclient_base
@@ -223,6 +225,17 @@ namespace ngl
 		{
 			e_default_tcount = 1,		// Database server count used by node-id helpers.
 		};
+
+		static bool to_node_tid(int32_t aserver_tid, int16_t& aout) noexcept
+		{
+			if (aserver_tid < std::numeric_limits<int16_t>::min() ||
+				aserver_tid > std::numeric_limits<int16_t>::max())
+			{
+				return false;
+			}
+			aout = static_cast<int16_t>(aserver_tid);
+			return true;
+		}
 		
 		tab_dbload*									m_tab = nullptr;							// Table-load configuration row for this DB type.
 		nmodified<TDBTAB>							m_modified;									// Dirty-row tracker.
@@ -238,14 +251,15 @@ namespace ngl
 		// Defer the actual DB request until actor_client confirms the DB node is connected.
 		void load() final
 		{
-			const tab_servers* tab = ttab_servers::instance().const_tab();
-			if (tab == nullptr)
+			const tab_servers* server_tab = ttab_servers::instance().const_tab();
+			int16_t db_server_tid = 0;
+			if (server_tab == nullptr || !to_node_tid(server_tab->m_db, db_server_tid))
 			{
 				tools::no_core_dump();
 				return;
 			}
 			auto pro = std::make_shared<np_actornode_connect_task>();
-			pro->m_serverid = nnodeid::nodeid(tab->m_db, 1);
+			pro->m_serverid = nnodeid::nodeid(db_server_tid, e_default_tcount);
 			pro->m_fun = std::bind_front(&type_ndbclient::loaddb, this, m_id);
 			nguid lclientguid = actor_client::actorid();
 			actor::send_actor(lclientguid, m_actor->guid(), pro);
@@ -261,8 +275,14 @@ namespace ngl
 		// Resolve the configured DB server node id.
 		i32_actordataid dbnodeid()
 		{
-			const tab_servers* tab = ttab_servers::instance().const_tab();
-			return nnodeid::nodeid(tab->m_db, e_default_tcount);
+			const tab_servers* server_tab = ttab_servers::instance().const_tab();
+			int16_t db_server_tid = 0;
+			if (server_tab == nullptr || !to_node_tid(server_tab->m_db, db_server_tid))
+			{
+				tools::no_core_dump();
+				return -1;
+			}
+			return nnodeid::nodeid(db_server_tid, e_default_tcount);
 		}
 
 		// Resolve the actor guid for the DB actor serving this table type.
@@ -277,7 +297,13 @@ namespace ngl
 		{
 			np_actordb_load<DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
-			ntcp::instance().send_server(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
+			const i32_actordataid db_node_id = dbnodeid();
+			if (db_node_id == -1)
+			{
+				log_error()->print("ndbclient loaddb [{}] invalid db node", m_name);
+				return;
+			}
+			ntcp::instance().send_server(db_node_id, ldata, dbguid(), m_actor->id_guid());
 			log_error()->print("ndbclient loaddb [{}] [{}]", m_name, aid);
 		}
 	public:

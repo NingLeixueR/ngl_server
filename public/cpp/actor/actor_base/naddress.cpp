@@ -21,6 +21,14 @@
 
 namespace ngl
 {
+	namespace
+	{
+		i16_actortype address_actor_type(i64_actorid aactorid) noexcept
+		{
+			return nguid::type(aactorid);
+		}
+	}
+
 	naddress::map_guidserver	naddress::m_actorserver;
 	naddress::map_typeguid		naddress::m_actortypeserver;
 	naddress::map_servernode	naddress::m_session;
@@ -75,10 +83,11 @@ namespace ngl
 
 	void naddress::nosafe_actor_address_add(i32_serverid aserverid, i64_actorid adataid)
 	{
-		nguid lguid(adataid);
+		const nguid actor_guid(adataid);
+		const i16_actortype actor_type = address_actor_type(adataid);
 		// Maintain both direct lookup and reverse lookup by actor type.
-		m_actorserver.insert_or_assign(lguid, aserverid);
-		m_actortypeserver[lguid.type()].insert(adataid);
+		m_actorserver.insert_or_assign(actor_guid, aserverid);
+		m_actortypeserver[actor_type].insert(adataid);
 #ifdef _DEBUG
 		print_address("ADD", aserverid, adataid);
 #endif		
@@ -101,7 +110,8 @@ namespace ngl
 
 	void naddress::nosafe_actor_address_del(i64_actorid adataid)
 	{
-		nguid lguid(adataid);
+		const nguid actor_guid(adataid);
+		const i16_actortype actor_type = address_actor_type(adataid);
 #ifdef _DEBUG
 		auto lpserverid = tools::findmap(m_actorserver, adataid);
 		if (lpserverid != nullptr)
@@ -109,8 +119,8 @@ namespace ngl
 			print_address("DEL", *lpserverid, adataid);
 		}
 #endif
-		m_actorserver.erase(lguid);
-		auto itor = m_actortypeserver.find(lguid.type());
+		m_actorserver.erase(actor_guid);
+		auto itor = m_actortypeserver.find(actor_type);
 		if (itor != m_actortypeserver.end())
 		{
 			itor->second.erase(adataid);
@@ -172,12 +182,21 @@ namespace ngl
 	void naddress::serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& aservers)
 	{
 		lock_read(m_mutex);
-		std::set<nguid>* lguids = tools::findmap(m_actortypeserver, (i16_actortype)atype);
-		if (lguids != nullptr)
+		const i16_actortype actor_type = static_cast<i16_actortype>(atype);
+		std::set<nguid>* actor_guids = tools::findmap(m_actortypeserver, actor_type);
+		if (actor_guids == nullptr)
 		{
-			for (const nguid& aguid : *lguids)
+			return;
+		}
+
+		for (const nguid& actor_guid : *actor_guids)
+		{
+			// Stay on the already-held shared lock instead of re-entering
+			// serverid(), which would lock the same shared_mutex again.
+			const i32_serverid* server_id = tools::findmap(m_actorserver, actor_guid);
+			if (server_id != nullptr)
 			{
-				aservers.insert(serverid(aguid));
+				aservers.insert(*server_id);
 			}
 		}
 	}

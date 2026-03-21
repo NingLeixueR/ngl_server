@@ -55,9 +55,44 @@ namespace ngl
 	namespace detail
 	{
 		inline constexpr std::string_view url_hex_digits = "0123456789ABCDEF";
+		inline constexpr std::size_t type_name_not_found = std::string_view::npos;
 
 		template <typename T>
 		using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
+
+		constexpr std::string_view extract_compiler_type_name(
+			std::string_view signature,
+			std::size_t prefix_start,
+			std::size_t prefix_size,
+			std::size_t type_end = type_name_not_found) noexcept
+		{
+			const std::size_t type_begin = prefix_start == type_name_not_found ? 0 : prefix_start + prefix_size;
+			const bool has_prefix = prefix_start != type_name_not_found;
+			const bool has_end = type_end != type_name_not_found && type_end > type_begin;
+			return !has_prefix ? signature : (has_end ? signature.substr(type_begin, type_end - type_begin) : signature.substr(type_begin));
+		}
+
+		constexpr std::size_t find_type_name_end(std::string_view signature, std::size_t type_begin, std::string_view suffix) noexcept
+		{
+			return signature.find(suffix, type_begin);
+		}
+
+		constexpr std::size_t find_type_name_end(std::string_view signature, std::size_t type_begin, char suffix) noexcept
+		{
+			return signature.find(suffix, type_begin);
+		}
+
+		constexpr std::size_t find_type_name_end(
+			std::string_view signature,
+			std::size_t type_begin,
+			char first_suffix,
+			char second_suffix) noexcept
+		{
+			const std::size_t first_end = signature.find(first_suffix, type_begin);
+			const std::size_t second_end = signature.find(second_suffix, type_begin);
+			return first_end == type_name_not_found ? second_end
+				: (second_end == type_name_not_found ? first_end : std::min(first_end, second_end));
+		}
 
 		template <typename T>
 		constexpr std::string_view compiler_type_name() noexcept
@@ -67,55 +102,24 @@ namespace ngl
 			// forward-declared types still produce stable names.
 			constexpr std::string_view signature = __FUNCSIG__;
 			constexpr std::string_view prefix = "compiler_type_name<";
-			const auto start = signature.find(prefix);
-			if (start == std::string_view::npos)
-			{
-				return signature;
-			}
-
-			const auto type_begin = start + prefix.size();
-			const auto end = signature.find(">(void", type_begin);
-			if (end == std::string_view::npos || end <= type_begin)
-			{
-				return signature.substr(type_begin);
-			}
-			return signature.substr(type_begin, end - type_begin);
+			constexpr std::size_t prefix_start = signature.find(prefix);
+			constexpr std::size_t type_begin = prefix_start == type_name_not_found ? 0 : prefix_start + prefix.size();
+			constexpr std::size_t type_end = find_type_name_end(signature, type_begin, ">(void");
+			return extract_compiler_type_name(signature, prefix_start, prefix.size(), type_end);
 #elif defined(__clang__)
 			constexpr std::string_view signature = __PRETTY_FUNCTION__;
 			constexpr std::string_view prefix = "T = ";
-			const auto start = signature.find(prefix);
-			if (start == std::string_view::npos)
-			{
-				return signature;
-			}
-
-			const auto type_begin = start + prefix.size();
-			const auto end = signature.find(']', type_begin);
-			if (end == std::string_view::npos || end <= type_begin)
-			{
-				return signature.substr(type_begin);
-			}
-			return signature.substr(type_begin, end - type_begin);
+			constexpr std::size_t prefix_start = signature.find(prefix);
+			constexpr std::size_t type_begin = prefix_start == type_name_not_found ? 0 : prefix_start + prefix.size();
+			constexpr std::size_t type_end = find_type_name_end(signature, type_begin, ']');
+			return extract_compiler_type_name(signature, prefix_start, prefix.size(), type_end);
 #elif defined(__GNUC__)
 			constexpr std::string_view signature = __PRETTY_FUNCTION__;
 			constexpr std::string_view prefix = "with T = ";
-			const auto start = signature.find(prefix);
-			if (start == std::string_view::npos)
-			{
-				return signature;
-			}
-
-			const auto type_begin = start + prefix.size();
-			auto end = signature.find(';', type_begin);
-			if (end == std::string_view::npos)
-			{
-				end = signature.find(']', type_begin);
-			}
-			if (end == std::string_view::npos || end <= type_begin)
-			{
-				return signature.substr(type_begin);
-			}
-			return signature.substr(type_begin, end - type_begin);
+			constexpr std::size_t prefix_start = signature.find(prefix);
+			constexpr std::size_t type_begin = prefix_start == type_name_not_found ? 0 : prefix_start + prefix.size();
+			constexpr std::size_t type_end = find_type_name_end(signature, type_begin, ';', ']');
+			return extract_compiler_type_name(signature, prefix_start, prefix.size(), type_end);
 #else
 			return "unknown";
 #endif

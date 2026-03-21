@@ -11,11 +11,12 @@
 #include "tools/impl.h"
 #include "tools/threadtools.h"
 
+#include <algorithm>
 #include <array>
 #include <atomic>
-#include <cmath>
 #include <cstdint>
 #include <functional>
+#include <limits>
 #include <map>
 #include <memory>
 #include <mutex>
@@ -75,14 +76,26 @@ namespace ngl
 
 		int64_t max_time()
 		{
-			int64_t lsum = 0;
-			int64_t lprecision = m_time_wheel_precision;
-			for (int i = 0; i < m_time_wheel_count; ++i)
+			const int32_t precision_ms = std::max(m_time_wheel_precision, 0);
+			const int32_t wheel_bit = std::clamp(m_time_wheel_bit, 0, 30);
+			const int32_t wheel_count = std::max(m_time_wheel_count, 0);
+			const int64_t round_scale = int64_t{ 1 } << static_cast<std::uint32_t>(wheel_bit);
+			int64_t total_ms = 0;
+			int64_t round_ms = precision_ms;
+			for (int32_t index = 0; index < wheel_count; ++index)
 			{
-				lprecision *= static_cast<int64_t>(std::pow(2, m_time_wheel_bit));
-				lsum += lprecision;
+				if (round_ms > std::numeric_limits<int64_t>::max() / round_scale)
+				{
+					return std::numeric_limits<int64_t>::max();
+				}
+				round_ms *= round_scale;
+				if (total_ms > std::numeric_limits<int64_t>::max() - round_ms)
+				{
+					return std::numeric_limits<int64_t>::max();
+				}
+				total_ms += round_ms;
 			}
-			return lsum;
+			return total_ms;
 		}
 
 		double year()
@@ -92,9 +105,8 @@ namespace ngl
 
 		double day()
 		{
-			const double lnum = 24 * 60 * 60 * 1000;
-			const uint64_t lsum = max_time();
-			return lsum / lnum;
+			const double milliseconds_per_day = 24.0 * 60.0 * 60.0 * 1000.0;
+			return static_cast<double>(max_time()) / milliseconds_per_day;
 		}
 	};
 

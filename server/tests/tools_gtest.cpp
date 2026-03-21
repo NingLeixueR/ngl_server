@@ -9,6 +9,7 @@
 #include <filesystem>
 #include <fstream>
 #include <list>
+#include <limits>
 #include <map>
 #include <set>
 #include <string>
@@ -330,6 +331,23 @@ TEST(ToolsTest, ArgOptionsSupportsRequiredAndMultitokenValues)
 
 	EXPECT_FALSE(options.parse(""));
 	EXPECT_FALSE(options.has("robot"));
+}
+
+TEST(ToolsTest, ArgOptionsTrimsAliasSpecsBeforeRegistration)
+{
+	ngl::arg_options options("test");
+	ASSERT_TRUE(options.init_required<int32_t>(" input , i ", "input value"));
+	options.positional(" i ", 1);
+
+	ASSERT_TRUE(options.parse("42"));
+
+	int32_t input = 0;
+	EXPECT_TRUE(options.value("input", input));
+	EXPECT_EQ(input, 42);
+	EXPECT_TRUE(options.value(" i ", input));
+	EXPECT_EQ(input, 42);
+	EXPECT_TRUE(options.has("input"));
+	EXPECT_TRUE(options.has("i"));
 }
 
 TEST(ToolsTest, MapSplicingAppendsFormatterOutput)
@@ -771,6 +789,24 @@ TEST(ToolsTest, CollectionFormattersSupportListAndStableDelimiters)
 	);
 
 	EXPECT_EQ(formatted, "vector[1,2] list[3,4] set[5,6] map[(7:8),(9:10)]");
+}
+
+TEST(ToolsTest, TypeNameHandleRemovesKnownPrefixesAndSpaces)
+{
+	std::string type_name = "class ngl::pbnet::Demo Type";
+	EXPECT_EQ(ngl::tools::type_name_handle(type_name), "DemoType");
+}
+
+TEST(ToolsTest, TimeWheelConfigMaxTimeClampsOverflow)
+{
+	ngl::time_wheel_config config{
+		.m_time_wheel_precision = (std::numeric_limits<int32_t>::max)(),
+		.m_time_wheel_bit = 30,
+		.m_time_wheel_count = 8,
+	};
+
+	EXPECT_EQ(config.max_time(), (std::numeric_limits<int64_t>::max)());
+	EXPECT_GT(config.day(), 0.0);
 }
 
 TEST(ToolsTest, TimeWheelManualModePopsReadyCallbacks)

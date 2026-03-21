@@ -2047,6 +2047,29 @@ namespace ngl
 
 namespace ngl
 {
+	namespace type_name_detail
+	{
+		void erase_all_substrings(std::string& avalue, std::string_view aneedle)
+		{
+			if (aneedle.empty())
+			{
+				return;
+			}
+
+			std::size_t pos = avalue.find(aneedle);
+			while (pos != std::string::npos)
+			{
+				avalue.erase(pos, aneedle.size());
+				pos = avalue.find(aneedle, pos);
+			}
+		}
+
+		void erase_all_chars(std::string& avalue, char achar)
+		{
+			avalue.erase(std::remove(avalue.begin(), avalue.end(), achar), avalue.end());
+		}
+	}
+
 	std::string& tools::type_name_handle(std::string& aname)
 	{
 #if defined(__GNUC__) || defined(__clang__)
@@ -2061,13 +2084,13 @@ namespace ngl
 		}
 #endif
 
-		ngl::tools::replace("struct ", "", aname, aname);
-		ngl::tools::replace("class ", "", aname, aname);
-		ngl::tools::replace("ngl::", "", aname, aname);
-		ngl::tools::replace("pbdb::", "", aname, aname);
-		ngl::tools::replace("pbnet::", "", aname, aname);
-		ngl::tools::replace("pbexample::", "", aname, aname);
-		ngl::tools::replace(" ", "", aname, aname);
+		type_name_detail::erase_all_substrings(aname, "struct ");
+		type_name_detail::erase_all_substrings(aname, "class ");
+		type_name_detail::erase_all_substrings(aname, "ngl::");
+		type_name_detail::erase_all_substrings(aname, "pbdb::");
+		type_name_detail::erase_all_substrings(aname, "pbnet::");
+		type_name_detail::erase_all_substrings(aname, "pbexample::");
+		type_name_detail::erase_all_chars(aname, ' ');
 		return aname;
 	}
 

@@ -149,30 +149,69 @@ namespace ngl
 			}
 		}
 
-		void clear_callback_nodes()
+		static wheel_node* callback_tail(wheel_node* ahead)
 		{
-			wheel_node* lhead = nullptr;
+			wheel_node* tail = ahead;
+			while (tail != nullptr && tail->m_next != nullptr)
+			{
+				tail = tail->m_next;
+			}
+			return tail;
+		}
+
+		wheel_node* detach_callback_nodes()
+		{
+			wheel_node* head = nullptr;
 			{
 				lock_write(m_mutexcallback);
-				std::swap(lhead, m_worldnodehead);
+				std::swap(head, m_worldnodehead);
 				m_worldnodetail = nullptr;
 			}
-			while (lhead != nullptr)
+			return head;
+		}
+
+		void append_callback_nodes(wheel_node* ahead, bool anotify_worker)
+		{
+			if (ahead == nullptr)
 			{
-				wheel_node* lnext = lhead->m_next;
-				delete lhead;
-				lhead = lnext;
+				return;
+			}
+
+			lock_write(m_mutexcallback);
+			if (m_worldnodehead == nullptr)
+			{
+				m_worldnodehead = ahead;
+			}
+			else
+			{
+				m_worldnodetail->m_next = ahead;
+			}
+			m_worldnodetail = callback_tail(ahead);
+			if (anotify_worker)
+			{
+				m_sem.post();
+			}
+		}
+
+		void clear_callback_nodes()
+		{
+			wheel_node* callback_head = detach_callback_nodes();
+			while (callback_head != nullptr)
+			{
+				wheel_node* next_node = callback_head->m_next;
+				delete callback_head;
+				callback_head = next_node;
 			}
 		}
 
 		void remove(wheel_node* anode)
 		{
-			wheel_node* lpnextnode = nullptr;
-			for (wheel_node* lpnode = anode; lpnode != nullptr; lpnode = lpnextnode)
+			wheel_node* next_node = nullptr;
+			for (wheel_node* node = anode; node != nullptr; node = next_node)
 			{
-				std::unique_ptr<wheel_node> ltemp(lpnode);
-				lpnextnode = lpnode->m_next;
-				m_timer.erase(lpnode->m_timerid);
+				std::unique_ptr<wheel_node> node_owner(node);
+				next_node = node->m_next;
+				m_timer.erase(node->m_timerid);
 			}
 		}
 
@@ -188,75 +227,75 @@ namespace ngl
 
 		bool schedule_locked(wheel_node* apnode)
 		{
-			wheel_node* lpnextnode = nullptr;
-			wheel_node* removenode = nullptr;
-			const int64_t lduration = duration_ms();
-			const int64_t lallslot = all_slot_ms();
-			bool lscheduled = false;
+			wheel_node* next_node = nullptr;
+			wheel_node* expired_nodes = nullptr;
+			const int64_t elapsed_ms = duration_ms();
+			const int64_t wheel_span_ms = all_slot_ms();
+			bool scheduled = false;
 
-			for (wheel_node* lpnode = apnode; lpnode != nullptr; lpnode = lpnextnode)
+			for (wheel_node* node = apnode; node != nullptr; node = next_node)
 			{
-				lpnextnode = lpnode->m_next;
-				lpnode->m_next = nullptr;
+				next_node = node->m_next;
+				node->m_next = nullptr;
 
-				if (lpnode->m_parm.m_ms > lallslot)
+				if (node->m_parm.m_ms > wheel_span_ms)
 				{
-					lpnode->m_next = removenode;
-					removenode = lpnode;
+					node->m_next = expired_nodes;
+					expired_nodes = node;
 					continue;
 				}
 
-				if (lpnode->m_parm.m_ms < lduration)
+				if (node->m_parm.m_ms < elapsed_ms)
 				{
 					// Already-due timers are delivered immediately. Repeating
 					// timers clone the next instance before the current callback
 					// is queued.
-					const int lintervalms = lpnode->m_parm.m_intervalms != nullptr
-						? lpnode->m_parm.m_intervalms(m_current_ms)
+					const int interval_ms = node->m_parm.m_intervalms != nullptr
+						? node->m_parm.m_intervalms(m_current_ms)
 						: 0;
-					const bool lcopy = lintervalms > 0 && lpnode->m_parm.m_count - 1 > 0;
-					if (lcopy)
+					const bool should_repeat = interval_ms > 0 && node->m_parm.m_count - 1 > 0;
+					if (should_repeat)
 					{
-						wheel_node* lpnewnode = new wheel_node(*lpnode);
-						push(lpnewnode);
-						--lpnode->m_parm.m_count;
-						lpnode->m_parm.m_ms += lintervalms;
-						lscheduled = schedule_locked(lpnode) || lscheduled;
+						wheel_node* callback_copy = new wheel_node(*node);
+						push(callback_copy);
+						--node->m_parm.m_count;
+						node->m_parm.m_ms += interval_ms;
+						scheduled = schedule_locked(node) || scheduled;
 					}
 					else
 					{
-						push(lpnode);
-						lscheduled = true;
+						push(node);
+						scheduled = true;
 					}
 					continue;
 				}
 
-				for (auto& item : m_wheel)
+				for (auto& wheel_round : m_wheel)
 				{
 					// Push into the first round whose coverage is large enough for
 					// the timer's target time.
-					if (!item->push(lpnode))
+					if (!wheel_round->push(node))
 					{
 						continue;
 					}
-					m_timer.insert_or_assign(lpnode->m_timerid, lpnode->m_remove);
-					lscheduled = true;
-					lpnode = nullptr;
+					m_timer.insert_or_assign(node->m_timerid, node->m_remove);
+					scheduled = true;
+					node = nullptr;
 					break;
 				}
 
-				if (lpnode != nullptr)
+				if (node != nullptr)
 				{
-					lpnode->m_next = removenode;
-					removenode = lpnode;
+					node->m_next = expired_nodes;
+					expired_nodes = node;
 				}
 			}
 
-			if (removenode != nullptr)
+			if (expired_nodes != nullptr)
 			{
-				remove(removenode);
+				remove(expired_nodes);
 			}
-			return lscheduled;
+			return scheduled;
 		}
 
 		void removetimer(int64_t atimerid)
@@ -272,52 +311,10 @@ namespace ngl
 
 		void push(wheel_node* apnode)
 		{
-			if (apnode == nullptr)
-			{
-				return;
-			}
-
-			wheel_node* ltailnode = nullptr;
-			if (m_isthreadcallback)
-			{
-				// In threaded mode the timer thread only enqueues completed
-				// nodes and wakes the callback worker.
-				lock_write(m_mutexcallback);
-				if (m_worldnodehead == nullptr)
-				{
-					m_worldnodehead = apnode;
-					ltailnode = m_worldnodehead;
-				}
-				else
-				{
-					m_worldnodetail->m_next = apnode;
-					ltailnode = m_worldnodetail;
-				}
-				while (ltailnode->m_next != nullptr)
-				{
-					ltailnode = ltailnode->m_next;
-				}
-				m_worldnodetail = ltailnode;
-				m_sem.post();
-				return;
-			}
-
-			lock_write(m_mutexcallback);
-			if (m_worldnodehead == nullptr)
-			{
-				m_worldnodehead = apnode;
-				ltailnode = m_worldnodehead;
-			}
-			else
-			{
-				m_worldnodetail->m_next = apnode;
-				ltailnode = m_worldnodetail;
-			}
-			while (ltailnode->m_next != nullptr)
-			{
-				ltailnode = ltailnode->m_next;
-			}
-			m_worldnodetail = ltailnode;
+			// In threaded mode the timer thread wakes the dedicated callback
+			// worker; otherwise manual consumers drain the same queue through
+			// pop_node().
+			append_callback_nodes(apnode, m_isthreadcallback);
 		}
 
 		void stop()
@@ -328,13 +325,14 @@ namespace ngl
 
 		void run()
 		{
+			const int32_t tick_precision_ms = m_config.m_time_wheel_precision;
 			while (!m_stop.load(std::memory_order_relaxed))
 			{
-				const int32_t ltemp = static_cast<int32_t>(getms() - m_current_ms);
-				const int32_t ltempsleep = m_config.m_time_wheel_precision - ltemp;
-				if (ltempsleep > 0)
+				const int64_t elapsed_since_tick_ms = getms() - m_current_ms;
+				const int64_t sleep_ms = tick_precision_ms - elapsed_since_tick_ms;
+				if (sleep_ms > 0)
 				{
-					std::this_thread::sleep_for(std::chrono::milliseconds(ltempsleep));
+					std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
 				}
 
 				lock_write(m_mutex);
@@ -343,14 +341,14 @@ namespace ngl
 					continue;
 				}
 
-				wheel_node* lpbnode = m_wheel[0]->shift_current_pos(nullptr);
-				if (lpbnode != nullptr)
+				wheel_node* rescheduled_nodes = m_wheel[0]->shift_current_pos(nullptr);
+				if (rescheduled_nodes != nullptr)
 				{
 					// Periodic timers returned by the current slot are scheduled
 					// again on the same absolute timeline.
-					schedule_locked(lpbnode);
+					schedule_locked(rescheduled_nodes);
 				}
-				m_current_ms += m_config.m_time_wheel_precision;
+				m_current_ms += tick_precision_ms;
 			}
 		}
 
@@ -360,24 +358,19 @@ namespace ngl
 			{
 				m_sem.wait();
 
-				wheel_node* lpnode = nullptr;
-				{
-					lock_write(m_mutexcallback);
-					std::swap(lpnode, m_worldnodehead);
-					m_worldnodetail = nullptr;
-				}
+				wheel_node* callback_head = detach_callback_nodes();
 
 				// Execute outside the queue lock so callbacks can schedule or
 				// cancel other timers freely.
-				wheel_node* lnextnode = nullptr;
-				for (wheel_node* pnode = lpnode; pnode != nullptr; pnode = lnextnode)
+				wheel_node* next_node = nullptr;
+				for (wheel_node* node = callback_head; node != nullptr; node = next_node)
 				{
-					lnextnode = pnode->m_next;
-					if (!pnode->removed() && pnode->m_parm.m_fun != nullptr)
+					next_node = node->m_next;
+					if (!node->removed() && node->m_parm.m_fun != nullptr)
 					{
-						pnode->m_parm.m_fun(pnode);
+						node->m_parm.m_fun(node);
 					}
-					delete pnode;
+					delete node;
 				}
 
 				if (m_stop.load(std::memory_order_relaxed))
@@ -399,7 +392,7 @@ namespace ngl
 		{
 			for (;;)
 			{
-				wheel_node* ret = nullptr;
+				wheel_node* head_node = nullptr;
 				{
 					lock_write(m_mutexcallback);
 					if (m_worldnodehead == nullptr)
@@ -408,25 +401,25 @@ namespace ngl
 					}
 					if (m_worldnodehead == m_worldnodetail)
 					{
-						ret = m_worldnodehead;
+						head_node = m_worldnodehead;
 						m_worldnodehead = nullptr;
 						m_worldnodetail = nullptr;
 					}
 					else
 					{
-						ret = m_worldnodehead;
+						head_node = m_worldnodehead;
 						m_worldnodehead = m_worldnodehead->m_next;
-						ret->m_next = nullptr;
+						head_node->m_next = nullptr;
 					}
 				}
 
-				if (ret != nullptr && ret->removed())
+				if (head_node != nullptr && head_node->removed())
 				{
-					delete ret;
+					delete head_node;
 					continue;
 				}
 
-				return std::shared_ptr<wheel_node>(ret);
+				return std::shared_ptr<wheel_node>(head_node);
 			}
 		}
 
@@ -448,17 +441,17 @@ namespace ngl
 			}
 
 			lock_write(m_mutex);
-			const int64_t ltimerid = ++m_timerid;
-			auto lremove = std::make_shared<std::atomic_bool>(false);
-			std::unique_ptr<wheel_node> lpnode(new wheel_node(m_twheel, ltimerid, lremove, lparm));
-			m_timer.insert_or_assign(ltimerid, lremove);
-			if (!schedule_locked(lpnode.get()))
+			const int64_t timer_id = ++m_timerid;
+			auto removed_flag = std::make_shared<std::atomic_bool>(false);
+			std::unique_ptr<wheel_node> node(new wheel_node(m_twheel, timer_id, removed_flag, lparm));
+			m_timer.insert_or_assign(timer_id, removed_flag);
+			if (!schedule_locked(node.get()))
 			{
-				m_timer.erase(ltimerid);
+				m_timer.erase(timer_id);
 				return -1;
 			}
-			lpnode.release();
-			return ltimerid;
+			node.release();
+			return timer_id;
 		}
 	};
 
@@ -529,23 +522,23 @@ namespace ngl
 		// Slot selection uses the absolute due time. If the slot is already
 		// behind the current cursor, the node is pushed down to the previous
 		// round to preserve timing precision.
-		int lcallcount = static_cast<int32_t>(anode->m_parm.m_ms / m_slot_ms);
-		lcallcount &= m_slot_less;
-		const int lcount = m_current_pos & m_slot_less;
-		if (lcallcount <= lcount && m_current_pos != -1)
+		int slot_index = static_cast<int32_t>(anode->m_parm.m_ms / m_slot_ms);
+		slot_index &= m_slot_less;
+		const int current_slot_index = m_current_pos & m_slot_less;
+		if (slot_index <= current_slot_index && m_current_pos != -1)
 		{
 			if (m_lastround != nullptr)
 			{
 				m_lastround->push_slots(anode);
 				return true;
 			}
-			if (lcallcount != lcount)
+			if (slot_index != current_slot_index)
 			{
 				return true;
 			}
 		}
-		anode->m_next = m_slots[lcallcount];
-		m_slots[lcallcount] = anode;
+		anode->m_next = m_slots[slot_index];
+		m_slots[slot_index] = anode;
 		return true;
 	}
 
@@ -560,15 +553,16 @@ namespace ngl
 
 	wheel_node* wheel::shift_current_pos(int apos, wheel* awheel)
 	{
-		for (wheel_node* lpnode = m_slots[apos], *ltempnode = nullptr; lpnode != nullptr; lpnode = ltempnode)
+		auto& impl = m_time_wheel->m_impl_time_wheel();
+		for (wheel_node* node = m_slots[apos], *next_node = nullptr; node != nullptr; node = next_node)
 		{
-			ltempnode = lpnode->m_next;
-			lpnode->m_next = nullptr;
-			if (awheel->push_slots(lpnode))
+			next_node = node->m_next;
+			node->m_next = nullptr;
+			if (awheel->push_slots(node))
 			{
 				continue;
 			}
-			m_time_wheel->m_impl_time_wheel()->remove(lpnode);
+			impl->remove(node);
 		}
 		m_slots[apos] = nullptr;
 		return nullptr;
@@ -576,9 +570,10 @@ namespace ngl
 
 	wheel_node* wheel::shift_current_pos(wheel* awheel)
 	{
+		auto& impl = m_time_wheel->m_impl_time_wheel();
 		++m_current_pos;
-		const int lpos = m_current_pos & m_slot_less;
-		if (lpos == 0 && m_current_pos != 0)
+		const int slot_index = m_current_pos & m_slot_less;
+		if (slot_index == 0 && m_current_pos != 0)
 		{
 			if (m_nextround == nullptr)
 			{
@@ -589,44 +584,44 @@ namespace ngl
 			m_nextround->shift_current_pos(this);
 			if (awheel != nullptr)
 			{
-				return shift_current_pos(lpos, awheel);
+				return shift_current_pos(slot_index, awheel);
 			}
 		}
 		else if (awheel != nullptr)
 		{
-			return shift_current_pos(lpos, awheel);
+			return shift_current_pos(slot_index, awheel);
 		}
 
-		wheel_node* lpushnode = nullptr;
-		for (wheel_node* lpnode = m_slots[lpos], *ltempnode = nullptr; lpnode != nullptr; lpnode = ltempnode)
+		wheel_node* rescheduled_nodes = nullptr;
+		for (wheel_node* node = m_slots[slot_index], *next_node = nullptr; node != nullptr; node = next_node)
 		{
-			ltempnode = lpnode->m_next;
-			lpnode->m_next = nullptr;
-			if (!lpnode->removed())
+			next_node = node->m_next;
+			node->m_next = nullptr;
+			if (!node->removed())
 			{
-				if (lpnode->m_parm.m_intervalms != nullptr)
+				if (node->m_parm.m_intervalms != nullptr)
 				{
-					const int lintervalms = lpnode->m_parm.m_intervalms(m_time_wheel->m_impl_time_wheel()->m_current_ms);
-					--lpnode->m_parm.m_count;
-					if (lintervalms > 0 && lpnode->m_parm.m_count > 0)
+					const int interval_ms = node->m_parm.m_intervalms(impl->m_current_ms);
+					--node->m_parm.m_count;
+					if (interval_ms > 0 && node->m_parm.m_count > 0)
 					{
 						// Queue the callback node now and keep a fresh copy for the
 						// next interval.
-						wheel_node* lpnewnode = new wheel_node(*lpnode);
-						m_time_wheel->m_impl_time_wheel()->push(lpnewnode);
-						lpnode->m_parm.m_ms += lintervalms;
-						lpnode->m_next = lpushnode;
-						lpushnode = lpnode;
+						wheel_node* callback_copy = new wheel_node(*node);
+						impl->push(callback_copy);
+						node->m_parm.m_ms += interval_ms;
+						node->m_next = rescheduled_nodes;
+						rescheduled_nodes = node;
 						continue;
 					}
 				}
-				m_time_wheel->m_impl_time_wheel()->push(lpnode);
+				impl->push(node);
 				continue;
 			}
-			m_time_wheel->m_impl_time_wheel()->remove(lpnode);
+			impl->remove(node);
 		}
-		m_slots[lpos] = nullptr;
-		return lpushnode;
+		m_slots[slot_index] = nullptr;
+		return rescheduled_nodes;
 	}
 
 	int64_t time_wheel::getms()

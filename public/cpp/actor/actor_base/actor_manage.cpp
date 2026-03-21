@@ -31,6 +31,11 @@ namespace ngl
 			// init/close states cannot accept new work and should never be queued.
 			return astat == ngl::actor_stat_close || astat == ngl::actor_stat_init;
 		}
+
+		i16_actortype stored_actor_type(ENUM_ACTOR atype) noexcept
+		{
+			return static_cast<i16_actortype>(atype);
+		}
 	} // namespace actor_manage_detail
 
 	actor_manage::actor_manage():
@@ -123,32 +128,34 @@ namespace ngl
 
 	bool actor_manage::add_actor(const ptractor& apactor, const std::function<void()>& afun)
 	{
-		const nguid& guid = apactor->guid();
+		const nguid actor_guid = apactor->guid();
+		const ENUM_ACTOR actor_type = apactor->type();
 		// actor_client and actor_server are the routing actors themselves, so they do not
 		// announce their existence through the route actor.
-		const bool lneedsync = apactor->type() != ACTOR_CLIENT && apactor->type() != ACTOR_SERVER;
-		const nguid lrouteactor = nodetypebyguid();
-		bool lhasrouteactor = false;
+		const bool needs_route_sync = actor_type != ACTOR_CLIENT && actor_type != ACTOR_SERVER;
+		const nguid route_actor_guid = nodetypebyguid();
+		bool has_route_actor = false;
 		{
 			nlock(m_mutex);
-			if (m_actorbyid.contains(guid))
+			const auto [actor_it, inserted] = m_actorbyid.try_emplace(actor_guid, apactor);
+			if (!inserted)
 			{
-				std::cout << std::format("actor_manage add_actor duplicate guid:{}", guid) << std::endl;
+				std::cout << std::format("actor_manage add_actor duplicate guid:{}", actor_guid) << std::endl;
 				return false;
 			}
-			m_actorbyid[guid] = apactor;
-			m_actortype.insert(apactor->type());
-			m_actorbytype[apactor->type()][guid] = apactor;
+			(void)actor_it;
+			m_actortype.insert(actor_manage_detail::stored_actor_type(actor_type));
+			m_actorbytype[actor_type].try_emplace(actor_guid, apactor);
 			if (apactor->isbroadcast())
 			{
-				m_actorbroadcast[guid] = apactor;
+				m_actorbroadcast.try_emplace(actor_guid, apactor);
 			}
-			lhasrouteactor = lneedsync && m_actorbyid.contains(lrouteactor);
+			has_route_actor = needs_route_sync && m_actorbyid.contains(route_actor_guid);
 		}
-		if (lneedsync)
+		if (needs_route_sync)
 		{
 			// Notify the route actor so other nodes can discover the new actor location.
-			if (lhasrouteactor)
+			if (has_route_actor)
 			{
 				auto pro = std::make_shared<np_actornode_update_mass>(
 				np_actornode_update_mass
@@ -156,16 +163,16 @@ namespace ngl
 					.m_mass = np_actornode_update
 					{
 						.m_id = nconfig.nodeid(),
-						.m_add = {guid},
+						.m_add = {actor_guid},
 					},
 					.m_fun = afun
 				}
 			);
-				push_task_id<np_actornode_update_mass, false>(lrouteactor, pro);
+				push_task_id<np_actornode_update_mass, false>(route_actor_guid, pro);
 			}
 			else
 			{
-				std::cout << std::format("actor_manage add_actor skip route sync guid:{} route_actor:{}", guid, lrouteactor) << std::endl;
+				std::cout << std::format("actor_manage add_actor skip route sync guid:{} route_actor:{}", actor_guid, route_actor_guid) << std::endl;
 			}
 		}
 		else
@@ -182,20 +189,20 @@ namespace ngl
 		{
 			return false;
 		}
-		ptractor ltemp(apactor, [](actor_base*) {});
-		return add_actor(ltemp, afun);
+		ptractor actor_ref(apactor, [](actor_base*) {});
+		return add_actor(actor_ref, afun);
 	}
 
 	void actor_manage::erase_actor(const nguid& aguid, const std::function<void()>& afun /*= nullptr*/)
 	{
-		const nguid lrouteactor = nodetypebyguid();
-		bool lhasrouteactor = false;
+		const nguid route_actor_guid = nodetypebyguid();
+		bool has_route_actor = false;
 		{
 			nlock(m_mutex);
-			lhasrouteactor = m_actorbyid.contains(lrouteactor);
+			has_route_actor = m_actorbyid.contains(route_actor_guid);
 		}
 		// Inform the route actor first so remote nodes stop targeting this actor.
-		if (lhasrouteactor)
+		if (has_route_actor)
 		{
 			auto pro = std::make_shared<np_actornode_update_mass>(
 			np_actornode_update_mass
@@ -207,67 +214,68 @@ namespace ngl
 				}
 			}
 		);
-			push_task_id<np_actornode_update_mass, false>(lrouteactor, pro);
+			push_task_id<np_actornode_update_mass, false>(route_actor_guid, pro);
 		}
 
-		bool isrunfun = false;
-		ptractor lpactor = nullptr;
+		bool should_run_callback = false;
+		ptractor actor_ref = nullptr;
 		{
 			nlock(m_mutex);
-			const ptractor* lpactorptr = tools::findmap(m_actorbyid, aguid);
-			if (lpactorptr == nullptr)
+			const auto actor_it = m_actorbyid.find(aguid);
+			if (actor_it == m_actorbyid.end())
 			{
 				std::cout << std::format("actor_manage erase_actor missing guid:{}", aguid) << std::endl;
 				return;
 			}
-			lpactor = *lpactorptr;
+			actor_ref = actor_it->second;
 
 			// Remove the actor from all manager-side lookup tables before scheduling teardown.
-			m_actorbyid.erase(aguid);
-			auto type_it = m_actorbytype.find(aguid.type());
+			m_actorbyid.erase(actor_it);
+			const ENUM_ACTOR actor_type = actor_ref->type();
+			auto type_it = m_actorbytype.find(actor_type);
 			if (type_it != m_actorbytype.end())
 			{
 				type_it->second.erase(aguid);
 				if (type_it->second.empty())
 				{
 					m_actorbytype.erase(type_it);
-					m_actortype.erase(aguid.type());
+					m_actortype.erase(actor_manage_detail::stored_actor_type(actor_type));
 				}
 			}
 			m_actorbroadcast.erase(aguid);
 
-			if (lpactor->activity_stat() == actor_stat_list)
+			if (actor_ref->activity_stat() == actor_stat_list)
 			{
 				// If the actor is waiting in the scheduler queue, remove it immediately.
-				auto litorfind = std::find_if(m_actorlist.begin(), m_actorlist.end(), [&aguid](const ptractor& ap)->bool
+				const auto queued_actor_it = std::find_if(m_actorlist.begin(), m_actorlist.end(), [&aguid](const ptractor& actor)->bool
 					{
-						return aguid == ap->id_guid();
+						return aguid == actor->id_guid();
 					}
 				);
-				if (litorfind != m_actorlist.end())
+				if (queued_actor_it != m_actorlist.end())
 				{
-					m_actorlist.erase(litorfind);
+					m_actorlist.erase(queued_actor_it);
 				}
-				lpactor->set_activity_stat(actor_stat_close);
-				isrunfun = true;
+				actor_ref->set_activity_stat(actor_stat_close);
+				should_run_callback = true;
 			}
-			else if (lpactor->activity_stat() == actor_stat_free)
+			else if (actor_ref->activity_stat() == actor_stat_free)
 			{
-				isrunfun = true;
+				should_run_callback = true;
 			}
 			else
 			{
 				// The actor is currently running, so delay the callback until the worker returns it.
 				if (afun != nullptr)
 				{
-					m_delactorfun.try_emplace(lpactor->id_guid(), afun);
+					m_delactorfun.try_emplace(actor_ref->id_guid(), afun);
 				}
 			}
-			lpactor->set_activity_stat(actor_stat_close);
+			actor_ref->set_activity_stat(actor_stat_close);
 		}
-		if (isrunfun)
+		if (should_run_callback)
 		{
-			lpactor->release();
+			actor_ref->release();
 			if (afun != nullptr)
 			{
 				afun();
@@ -283,9 +291,10 @@ namespace ngl
 
 	void actor_manage::push(const ptractor& apactor, ptrnthread atorthread/* = nullptr*/)
 	{
-		std::function<void()> lfun = nullptr;
-		bool lrelease = false;
-		bool lneedpost = false;
+		std::function<void()> deferred_release_callback = nullptr;
+		bool should_release_actor = false;
+		bool should_wake_dispatcher = false;
+		const nguid actor_guid = apactor->id_guid();
 		{
 			nlock(m_mutex);
 			if (atorthread != nullptr)
@@ -300,21 +309,20 @@ namespace ngl
 					m_workthreads.push_back(atorthread);
 				}
 			}
-			if (!m_actorbyid.contains(apactor->id_guid()))
+			if (m_actorbyid.find(actor_guid) == m_actorbyid.end())
 			{//erase_actor
-				nguid leraseguid = apactor->id_guid();
-				std::function<void()>* lpfun = tools::findmap(m_delactorfun, leraseguid);
-				if (lpfun != nullptr)
+				std::function<void()>* deferred_callback = tools::findmap(m_delactorfun, actor_guid);
+				if (deferred_callback != nullptr)
 				{
-					lfun.swap(*lpfun);
-					m_delactorfun.erase(leraseguid);
+					deferred_release_callback.swap(*deferred_callback);
+					m_delactorfun.erase(actor_guid);
 					apactor->set_activity_stat(actor_stat_close);
-					lrelease = true;
+					should_release_actor = true;
 				}
 			}
 			else
 			{
-				if(!apactor->list_empty())
+				if (!apactor->list_empty())
 				{
 					// More messages arrived while the actor was running, so queue it again.
 					m_actorlist.push_back(apactor);
@@ -326,33 +334,28 @@ namespace ngl
 					apactor->set_activity_stat(actor_stat_free);
 				}
 			}
-			lneedpost = !m_suspend && !m_actorlist.empty() && !m_workthreads.empty();
+			should_wake_dispatcher = !m_suspend && !m_actorlist.empty() && !m_workthreads.empty();
 		}
-		if (lneedpost)
+		if (should_wake_dispatcher)
 		{
 			m_sem.post();
 		}
-		if (lrelease)
+		if (should_release_actor)
 		{
 			apactor->release();
-			lfun();
+			deferred_release_callback();
 		}
 	}
 
 	ptractor* actor_manage::nosafe_get_actor(const nguid& aguid)
 	{
-		auto lpactor = tools::findmap(m_actorbyid, aguid);
-		if (lpactor == nullptr)
-		{
-			return nullptr;
-		}
-		return lpactor;
+		return tools::findmap(m_actorbyid, aguid);
 	}
 
 	ptractor* actor_manage::nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram)
 	{
-		ptractor* lpactor = tools::findmap(m_actorbyid, aguid);
-		if (lpactor == nullptr)
+		ptractor* actor_ref = tools::findmap(m_actorbyid, aguid);
+		if (actor_ref == nullptr)
 		{
 			if (!apram.m_issend)
 			{
@@ -360,14 +363,14 @@ namespace ngl
 			}
 			// Forwarded messages fall back to the node-level routing actor when the target
 			// actor does not exist on this process.
-			nguid lguid = nodetypebyguid();
-			lpactor = tools::findmap(m_actorbyid, lguid);
-			if (lpactor == nullptr)
+			const nguid route_actor_guid = nodetypebyguid();
+			actor_ref = tools::findmap(m_actorbyid, route_actor_guid);
+			if (actor_ref == nullptr)
 			{
 				return nullptr;
 			}
 		}
-		return lpactor;
+		return actor_ref;
 	}
 
 	void actor_manage::push_task_id(const nguid& aguid, handle_pram& apram)
@@ -421,36 +424,36 @@ namespace ngl
 		auto type_it = m_actorbytype.find(atype);
 		if (type_it != m_actorbytype.end())
 		{
-			for (auto& [_guid, _actor] : type_it->second)
+			for (auto& [_guid, actor_ref] : type_it->second)
 			{
-				if (!actor_manage_detail::actor_is_unavailable(_actor->activity_stat()))
+				if (!actor_manage_detail::actor_is_unavailable(actor_ref->activity_stat()))
 				{
-					nosafe_push_task_id(_actor, apram);
+					nosafe_push_task_id(actor_ref, apram);
 				}
 			}
 		}
 		if (apram.m_issend)
 		{
 			// 2. Forward the same message to the route actor so remote nodes can receive it too.
-			nguid lguid = nodetypebyguid();
-			ptractor* lpactor = tools::findmap(m_actorbyid, lguid);
-			if (lpactor == nullptr)
+			const nguid route_actor_guid = nodetypebyguid();
+			ptractor* route_actor = tools::findmap(m_actorbyid, route_actor_guid);
+			if (route_actor == nullptr)
 			{
 				return;
 			}
-			nosafe_push_task_id(*lpactor, apram);
+			nosafe_push_task_id(*route_actor, apram);
 		}
 	}
 
 	void actor_manage::broadcast_task(handle_pram& apram)
 	{
 		nlock(m_mutex);
-		for (auto& [_guid, _actor] : m_actorbroadcast)
+		for (auto& [_guid, actor_ref] : m_actorbroadcast)
 		{
 			// Broadcast ticks are opt-in and still respect the actor lifecycle state.
-			if (_actor->isbroadcast() && !actor_manage_detail::actor_is_unavailable(_actor->activity_stat()))
+			if (actor_ref->isbroadcast() && !actor_manage_detail::actor_is_unavailable(actor_ref->activity_stat()))
 			{
-				nosafe_push_task_id(_actor, apram);
+				nosafe_push_task_id(actor_ref, apram);
 			}
 		}
 	}
@@ -497,23 +500,24 @@ namespace ngl
 	void actor_manage::get_actor_stat(msg_actor_stat& adata)
 	{
 		nlock(m_mutex);
-		std::vector<msg_actor> lactors;
-		lactors.reserve(m_actorbytype.size());
-		for (auto& [_type, _map] : m_actorbytype)
+		std::vector<msg_actor> actor_stats;
+		actor_stats.reserve(m_actorbytype.size());
+		for (auto& [actor_type, actors_by_guid] : m_actorbytype)
 		{
-			if (_map.empty())
+			if (actors_by_guid.empty())
 			{
 				continue;
 			}
-			msg_actor ltemp;
-			ltemp.m_actor_name = em<ENUM_ACTOR>::name(_type);
-			for (auto& [_guid, _actor] : _map)
+			msg_actor actor_stat_entry;
+			actor_stat_entry.m_actor_name = em<ENUM_ACTOR>::name(actor_type);
+			for (auto& [actor_guid, actor_ref] : actors_by_guid)
 			{
-				ltemp.m_actor[nguid::area(_guid)].push_back(nguid::actordataid(_guid));
+				(void)actor_ref;
+				actor_stat_entry.m_actor[nguid::area(actor_guid)].push_back(nguid::actordataid(actor_guid));
 			}
-			lactors.push_back(std::move(ltemp));
+			actor_stats.push_back(std::move(actor_stat_entry));
 		}
-		adata.m_vec = std::move(lactors);
+		adata.m_vec = std::move(actor_stats);
 	}
 
 	nguid actor_manage::nodetypebyguid()
@@ -544,8 +548,8 @@ namespace ngl
 
 	void actor_manage::run(std::stop_token astop)
 	{
-		ptrnthread lpthread = nullptr;
-		ptractor lpactor = nullptr;
+		ptrnthread worker_thread = nullptr;
+		ptractor ready_actor = nullptr;
 
 		while (!astop.stop_requested())
 		{
@@ -566,13 +570,13 @@ namespace ngl
 						}
 						// The scheduler is single-threaded: it pops one ready actor and one idle
 						// worker, then lets the worker run independently.
-						lpthread = m_workthreads.front();
-						lpactor = m_actorlist.front();
+						worker_thread = m_workthreads.front();
+						ready_actor = m_actorlist.front();
 						m_actorlist.pop_front();
 						m_workthreads.pop_front();
-						lpactor->set_activity_stat(actor_stat_run);
+						ready_actor->set_activity_stat(actor_stat_run);
 					}
-					lpthread->push(lpactor);
+					worker_thread->push(ready_actor);
 				}
 			}
 		}				
