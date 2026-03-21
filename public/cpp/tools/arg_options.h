@@ -18,6 +18,7 @@
 #include <boost/program_options.hpp>
 
 #include <algorithm>
+#include <cctype>
 #include <cstdint>
 #include <sstream>
 #include <string>
@@ -124,11 +125,73 @@ namespace ngl
 			{
 				return {};
 			}
-#ifdef _WIN32
-			return po::split_winmain(aargs);
-#else
-			return po::split_unix(aargs);
-#endif
+
+			std::vector<std::string> lTOKENS;
+			std::string lTOKEN;
+			bool lIN_Q = false;
+			char lQ_CH = '\0';
+			bool lESC = false;
+
+			auto lFLUSH = [&]()
+				{
+					if (!lTOKEN.empty())
+					{
+						lTOKENS.push_back(std::move(lTOKEN));
+						lTOKEN.clear();
+					}
+				};
+
+			for (const char lCH : aargs)
+			{
+				if (lESC)
+				{
+					lTOKEN.push_back(lCH);
+					lESC = false;
+					continue;
+				}
+
+				if (lCH == '\\')
+				{
+					lESC = true;
+					continue;
+				}
+
+				if (lIN_Q)
+				{
+					if (lCH == lQ_CH)
+					{
+						lIN_Q = false;
+						lQ_CH = '\0';
+						continue;
+					}
+
+					lTOKEN.push_back(lCH);
+					continue;
+				}
+
+				if (lCH == '"' || lCH == '\'')
+				{
+					lIN_Q = true;
+					lQ_CH = lCH;
+					continue;
+				}
+
+				if (std::isspace(static_cast<unsigned char>(lCH)))
+				{
+					lFLUSH();
+					continue;
+				}
+
+				lTOKEN.push_back(lCH);
+			}
+
+			if (lESC)
+			{
+				lTOKEN.push_back('\\');
+			}
+
+			lFLUSH();
+			return lTOKENS;
 		}
 
 		void register_aliases(std::string_view aspec)
@@ -312,13 +375,20 @@ namespace ngl
 
 		bool parse(const std::vector<std::string>& aargs)
 		{
-			return parse_with([&]()
-				{
-					return po::command_line_parser(aargs)
-						.options(m_options)
-						.positional(m_positional)
-						.run();
-				});
+			std::vector<std::string> lARGS;
+			lARGS.reserve(aargs.size() + 1);
+			lARGS.push_back(m_cmdname.empty() ? "options" : m_cmdname);
+			lARGS.insert(lARGS.end(), aargs.begin(), aargs.end());
+
+			std::vector<const char*> lARGV;
+			lARGV.reserve(lARGS.size() + 1);
+			for (const std::string& lARG : lARGS)
+			{
+				lARGV.push_back(lARG.c_str());
+			}
+			lARGV.push_back(nullptr);
+
+			return parse(static_cast<int>(lARGS.size()), lARGV.data());
 		}
 
 		bool parse(int argc, const char* const argv[])

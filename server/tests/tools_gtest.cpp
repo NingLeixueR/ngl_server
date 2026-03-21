@@ -350,6 +350,44 @@ TEST(ToolsTest, ArgOptionsTrimsAliasSpecsBeforeRegistration)
 	EXPECT_TRUE(options.has("i"));
 }
 
+TEST(ToolsTest, ArgOptionsStringParseMatchesArgvParse)
+{
+	ngl::arg_options lSTR("test");
+	ASSERT_TRUE(lSTR.init_help("custom help text"));
+	ASSERT_TRUE(lSTR.init_options<int32_t>("input,i", "input value", 7));
+	lSTR.positional("input", 1);
+
+	ngl::arg_options lARGV_OPT("test");
+	ASSERT_TRUE(lARGV_OPT.init_help("custom help text"));
+	ASSERT_TRUE(lARGV_OPT.init_options<int32_t>("input,i", "input value", 7));
+	lARGV_OPT.positional("input", 1);
+
+	char lPRG[] = "test";
+	char lHELP[] = "-h";
+	char lVAL[] = "123";
+	const char* lARGV[] = { lPRG, lHELP, lVAL, nullptr };
+
+	ASSERT_TRUE(lSTR.parse("-h 123"));
+	ASSERT_TRUE(lARGV_OPT.parse(3, lARGV));
+
+	int32_t lSTR_VAL = 0;
+	int32_t lARGV_VAL = 0;
+	ASSERT_TRUE(lSTR.value("input", lSTR_VAL));
+	ASSERT_TRUE(lARGV_OPT.value("input", lARGV_VAL));
+	EXPECT_EQ(lSTR_VAL, lARGV_VAL);
+	EXPECT_EQ(lSTR.help_requested(), lARGV_OPT.help_requested());
+	EXPECT_EQ(lSTR.help(), lARGV_OPT.help());
+}
+
+TEST(ToolsTest, SplitCommandLineKeepsQuotedSegments)
+{
+	const std::vector<std::string> lTOKENS = ngl::arg_options::split_command_line("protocol Demo \"{\\\"x\\\": 1, \\\"name\\\": \\\"alpha beta\\\"}\"");
+	ASSERT_EQ(lTOKENS.size(), 3u);
+	EXPECT_EQ(lTOKENS[0], "protocol");
+	EXPECT_EQ(lTOKENS[1], "Demo");
+	EXPECT_EQ(lTOKENS[2], "{\"x\": 1, \"name\": \"alpha beta\"}");
+}
+
 TEST(ToolsTest, MapSplicingAppendsFormatterOutput)
 {
 	const std::map<int, std::string> values = {
