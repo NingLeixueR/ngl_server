@@ -1,6 +1,17 @@
+*.bat text eol=crlf
+*.c text=auto charset=utf-8
 *.cpp text=auto charset=utf-8
 *.h text=auto charset=utf-8
-# 可选：禁止 Git 对二进制文件（如图片、库文件）做编码处理
+*.hpp text=auto charset=utf-8
+*.cmake text=auto charset=utf-8
+*.py text=auto charset=utf-8
+*.md text=auto charset=utf-8
+*.json text=auto charset=utf-8
+*.xml text=auto charset=utf-8
+*.yml text=auto charset=utf-8
+*.yaml text=auto charset=utf-8
+*.sh text eol=lf
+# Prevent Git from treating binary artifacts as text.
 *.png binary
 *.jpg binary
 *.so binary

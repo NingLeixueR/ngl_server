@@ -15,6 +15,7 @@
 
 
 #include "tools/operator_file.h"
+#include "tools/log/nlog.h"
 #include "tools/tab/csv/csv.h"
 #include "tools/tools.h"
 
@@ -30,11 +31,11 @@ namespace ngl
 
 		if (lrf.readcurrent(m_data) == false)
 		{
-			std::cout << std::format("loadcsv fail #{}", aname) << std::endl;
+			log_error()->print("loadcsv fail [{}]", aname);
 			return false;
 		}
 		averify = tools::md5(m_data);
-		std::cout << std::format("loadcsv#{}#{}", aname, averify) << std::endl;
+		log_info()->print("loadcsv [{}] verify={}", aname, averify);
 		return true;
 	}
 }// namespace ngl

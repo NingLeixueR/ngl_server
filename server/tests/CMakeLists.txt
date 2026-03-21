@@ -1,7 +1,6 @@
 # File overview: Defines CMake targets and build rules for tests.
 
 find_package(GTest REQUIRED)
-include(GoogleTest)
 
 if(TARGET GTest::gtest_main)
 	set(NGL_GTEST_MAIN_TARGET GTest::gtest_main)
@@ -70,8 +69,22 @@ if(NGLCORE_BUILD_SHARED)
 endif()
 ngl_apply_msvc_defaults(ngl_test)
 
-gtest_discover_tests(ngl_test
-	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	DISCOVERY_TIMEOUT 30
-	PROPERTIES LABELS "unit"
+add_test(NAME ngl_test_fast
+	COMMAND $<TARGET_FILE:ngl_test> --gtest_filter=-*Perf*
 )
+set_tests_properties(ngl_test_fast PROPERTIES
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	LABELS "unit;fast"
+	TIMEOUT 60
+)
+
+if(NGL_TEST_REGISTER_PERF)
+	add_test(NAME ngl_test_perf
+		COMMAND $<TARGET_FILE:ngl_test> --gtest_filter=*Perf*
+	)
+	set_tests_properties(ngl_test_perf PROPERTIES
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		LABELS "perf"
+		TIMEOUT 120
+	)
+endif()

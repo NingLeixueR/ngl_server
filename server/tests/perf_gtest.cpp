@@ -322,7 +322,7 @@ TEST(TTabServersPerfTest, IndexedLookupBenchmark)
 {
 	const auto table = make_server_table(2000);
 	const std::string target = "server_2000";
-	constexpr int kIterations = 20000;
+	const int kIterations = ngl_test_support::scaled_iterations(20000);
 	volatile int sink = 0;
 
 	const long long legacy_us = ngl_test_support::benchmark_us([&]() {
@@ -349,8 +349,7 @@ TEST(TTabServersPerfTest, IndexedLookupBenchmark)
 
 	EXPECT_GT(sink, 0);
 	EXPECT_LT(optimized_us, legacy_us);
-	std::cout << "[perf] ttab_servers_lookup legacy_us=" << legacy_us
-		<< " optimized_us=" << optimized_us << std::endl;
+	ngl_test_support::print_perf_result("ttab_servers_lookup", legacy_us, optimized_us);
 }
 
 TEST(TTabMergeAreaPerfTest, MergeLookupBenchmark)
@@ -364,7 +363,7 @@ TEST(TTabMergeAreaPerfTest, MergeLookupBenchmark)
 		legacy.m_merge1.emplace(area, static_cast<ngl::i16_area>(kAreaCount));
 		optimized_index[ngl::ttab_mergearea::merge_slot(area)] = static_cast<ngl::i16_area>(kAreaCount);
 	}
-	constexpr int kIterations = 200000;
+	const int kIterations = ngl_test_support::scaled_iterations(200000);
 	volatile long long sink = 0;
 
 	const long long legacy_us = ngl_test_support::benchmark_us([&]() {
@@ -389,14 +388,13 @@ TEST(TTabMergeAreaPerfTest, MergeLookupBenchmark)
 
 	EXPECT_EQ(optimized_index[ngl::ttab_mergearea::merge_slot(1)], kAreaCount);
 	EXPECT_LT(optimized_us, legacy_us);
-	std::cout << "[perf] ttab_mergearea_lookup legacy_us=" << legacy_us
-		<< " optimized_us=" << optimized_us << std::endl;
+	ngl_test_support::print_perf_result("ttab_mergearea_lookup", legacy_us, optimized_us);
 }
 
 TEST(CsvPerfTest, StringFieldParsingBenchmark)
 {
 	const std::string payload = "\"" + std::string(256, 'x') + "\",tail";
-	constexpr int kIterations = 100000;
+	const int kIterations = ngl_test_support::scaled_iterations(100000);
 	volatile int sink = 0;
 
 	const long long legacy_us = ngl_test_support::benchmark_us([&]() {
@@ -427,15 +425,14 @@ TEST(CsvPerfTest, StringFieldParsingBenchmark)
 
 	EXPECT_GT(sink, 0);
 	EXPECT_LT(optimized_us, legacy_us);
-	std::cout << "[perf] csv_string_parse legacy_us=" << legacy_us
-		<< " optimized_us=" << optimized_us << std::endl;
+	ngl_test_support::print_perf_result("csv_string_parse", legacy_us, optimized_us);
 }
 
 TEST(NFilterWordPerfTest, IsFilterBenchmark)
 {
 	load_perf_filter_words();
 	const std::string payload = std::string(2048, 'x') + "badword" + std::string(2048, 'y');
-	constexpr int kIterations = 5000;
+	const int kIterations = ngl_test_support::scaled_iterations(5000);
 	volatile int sink = 0;
 
 	const long long legacy_us = ngl_test_support::benchmark_us([&]() {
@@ -460,8 +457,7 @@ TEST(NFilterWordPerfTest, IsFilterBenchmark)
 
 	EXPECT_GT(sink, 0);
 	EXPECT_LT(optimized_us, legacy_us);
-	std::cout << "[perf] nfilterword_is_filter legacy_us=" << legacy_us
-		<< " optimized_us=" << optimized_us << std::endl;
+	ngl_test_support::print_perf_result("nfilterword_is_filter", legacy_us, optimized_us);
 }
 
 } // namespace perf_test_case

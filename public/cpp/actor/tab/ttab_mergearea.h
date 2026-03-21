@@ -52,7 +52,6 @@ namespace ngl
 
 		void reload()final
 		{
-			std::cout << "[ttab_mergearea] reload" << std::endl;
 			m_merge1.fill(nguid::none_area());
 			m_merge2.clear();
 

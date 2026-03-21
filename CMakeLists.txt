@@ -20,6 +20,7 @@ option(NGLCORE_BUILD_SHARED "Build nglcore as a shared library instead of a stat
 set(NGL_UNITY_BUILD_BATCH_SIZE 50 CACHE STRING "Maximum number of non-protobuf source files per native unity batch")
 
 option(BUILD_TESTING "Build and register tests" ON)
+option(NGL_TEST_REGISTER_PERF "Register performance-oriented GoogleTest suites with CTest" OFF)
 if(BUILD_TESTING)
 	enable_testing()
 endif()

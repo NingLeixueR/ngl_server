@@ -166,7 +166,7 @@ namespace ngl
 		if (m_port == 0)
 		{
 			m_port = m_acceptor_v4->local_endpoint().port();
-			log_error()->print("asio_ws prot preinstall/reality:0/{}", m_port);
+			log_info()->print("asio_ws port auto-assigned {}", m_port);
 		}
 		try
 		{

@@ -1,17 +1,15 @@
-# File overview: Declares Conan dependencies and generators for ngl_server.
-
 from conan import ConanFile
 
-class MyProjectConan(ConanFile):
-    # 1. Data (, )
-    name = "my_project"
-    version = "1.0"
-    
-    # 2. Settings, Conan current /
+class NglServerConan(ConanFile):
+    name = "ngl_server"
+    version = "0.1"
+    package_type = "application"
+    license = "MIT"
+    url = "https://github.com/NingLeixueR/ngl_server"
+    description = "Actor-model C++ game server framework"
     settings = "os", "compiler", "build_type", "arch"
-    
-    # 3., Corresponding txt in [generators]
     generators = "CMakeDeps", "CMakeToolchain"
+
     default_options = {
         "behaviortree.cpp/*:enable_groot_interface": False,
         "behaviortree.cpp/*:enable_sqlite_logging": False,
@@ -19,7 +17,6 @@ class MyProjectConan(ConanFile):
     }
 
     def requirements(self):
-        # --- (All need to) ---
         self.requires("boost/1.86.0")
         self.requires("behaviortree.cpp/4.9.0")
         self.requires("lua/5.4.6")
@@ -29,8 +26,7 @@ class MyProjectConan(ConanFile):
         self.requires("hiredis/1.2.0")
         self.requires("libpq/17.7")
         self.requires("rapidjson/1.1.0")
-        
-        # Translated comment.
+
         if self.settings.os == "Linux":
             self.requires("libuuid/1.0.3")
 

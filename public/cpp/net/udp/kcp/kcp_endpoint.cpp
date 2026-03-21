@@ -46,7 +46,7 @@ namespace ngl
 
 	void kcp_endpoint::create(int32_t aconv, uint32_t asessionid, void* auser)
 	{
-		log_error()->print("kcp_endpoint::create conv={} sessionid={}", aconv, asessionid);
+		log_info()->print("kcp_endpoint::create conv={} sessionid={}", aconv, asessionid);
 		// user points back to this kcp_endpoint so udp_output can route bytes to asio_kcp::sendbuff().
 		m_kcp = ikcp_create(aconv, auser);
 	}

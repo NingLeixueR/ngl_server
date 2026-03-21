@@ -135,7 +135,6 @@ namespace ngl
 
 		void reload()final
 		{
-			std::cout << "[ttab_servers] reload" << std::endl;
 			m_areaserver.clear();
 			m_coressserver.clear();
 			m_singleareas.clear();

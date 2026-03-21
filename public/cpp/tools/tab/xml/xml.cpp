@@ -300,9 +300,9 @@ namespace ngl
 		}
 
 		m_configfile = config_path.string();
-		log_error()->print("begin xmlnode read [{}]", m_configfile);
+		log_info()->print("begin xmlnode read [{}]", m_configfile);
 		const bool ok = xml_pop(m_configfile.c_str());
-		log_error()->print("finish xmlnode read [{}] ok={}", m_configfile, ok);
+		log_info()->print("finish xmlnode read [{}] ok={}", m_configfile, ok);
 		return ok;
 	}
 

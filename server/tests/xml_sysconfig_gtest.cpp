@@ -2,7 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -156,7 +155,7 @@ TEST(XmlPerfTest, GetChildPathBenchmark)
 	ASSERT_NE(value, nullptr);
 	ASSERT_TRUE(ngl::xml::set(value, "payload"));
 
-	constexpr int kIterations = 300000;
+	const int kIterations = ngl_test_support::scaled_iterations(300000);
 	volatile int sink = 0;
 
 	const long long legacy_us = ngl_test_support::benchmark_us([&]()
@@ -185,8 +184,7 @@ TEST(XmlPerfTest, GetChildPathBenchmark)
 
 	EXPECT_GT(sink, 0);
 	EXPECT_NE(ngl::xml::get_child(root, "level1.level2.value"), nullptr);
-	std::cout << "[perf] xml_get_child legacy_us=" << legacy_us
-		<< " optimized_us=" << optimized_us << std::endl;
+	ngl_test_support::print_perf_result("xml_get_child", legacy_us, optimized_us);
 }
 
 TEST(XmlPerfTest, ForeachNamedChildrenBenchmark)
@@ -201,7 +199,7 @@ TEST(XmlPerfTest, ForeachNamedChildrenBenchmark)
 		ASSERT_NE(ngl::xml::set_child(root, "other"), nullptr);
 	}
 
-	constexpr int kIterations = 20000;
+	const int kIterations = ngl_test_support::scaled_iterations(20000);
 	volatile int legacy_count = 0;
 	volatile int optimized_count = 0;
 
@@ -227,11 +225,10 @@ TEST(XmlPerfTest, ForeachNamedChildrenBenchmark)
 						return true;
 					}));
 			}
-		});
+	});
 
 	EXPECT_EQ(legacy_count, optimized_count);
-	std::cout << "[perf] xml_foreach_named legacy_us=" << legacy_us
-		<< " optimized_us=" << optimized_us << std::endl;
+	ngl_test_support::print_perf_result("xml_foreach_named", legacy_us, optimized_us);
 }
 
 } // namespace xml_sysconfig_test_case

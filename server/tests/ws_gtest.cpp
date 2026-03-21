@@ -27,7 +27,11 @@ namespace ws_test_case
 {
 void trace_step(const char* alabel)
 {
-	std::cout << "[ws-test] " << alabel << std::endl;
+	if (alabel == nullptr)
+	{
+		return;
+	}
+	ngl_test_support::trace(std::string("[ws-test] ") + alabel);
 }
 
 std::string bio_to_string(BIO* abio)
@@ -178,7 +182,7 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 
 	client->connect("127.0.0.1", server->port(), "/", [connected](ngl::i32_sessionid asession) {
 		ngl_test_support::try_set_promise_value(connected, asession);
-		std::cout << "ws client success!!!" << std::endl;
+		ngl_test_support::trace("ws client success!!!");
 	});
 
 	trace_step("text: wait connect");
