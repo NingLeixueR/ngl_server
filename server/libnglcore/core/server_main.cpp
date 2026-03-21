@@ -793,9 +793,6 @@ startup_error start_csvserver(int* tcp_port)
 		});
 }
 
-startup_error start_robot(int argc, char** argv, int* tcp_port)
-{
-	return start_robot_safe(argc, argv, tcp_port);
 #if 0
 	ngl::log_error()->print("[{}] start", "ROBOT");
 
@@ -905,7 +902,6 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 		}
 	}
 #endif
-}
 
 startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 {
@@ -1029,67 +1025,67 @@ int ngl_main(int argc, char** argv)
 		}
 	}
 #endif
-	ngl_startup::context ctx{};
-	const ngl_startup::prepare_result lprepare = ngl_startup::prepare_context(argc, argv, ctx);
-	if (lprepare.code != startup_error::ok)
+	ngl_startup::start_ctx lCTX{};
+	const ngl_startup::prep_res lPREP = ngl_startup::prep_ctx(argc, argv, lCTX);
+	if (lPREP.code != startup_error::ok)
 	{
-		ngl_startup::log_failure(lprepare.code, ctx, lprepare.reason);
-		return static_cast<int>(lprepare.code);
+		ngl_startup::log_failure(lPREP.code, lCTX, lPREP.reason);
+		return static_cast<int>(lPREP.code);
 	}
 
 #ifdef WIN32
 	SetConsoleTitle(nconfig.servername().c_str());
 #endif
 
-	startup_error rc = startup_error::ok;
+	startup_error lRC = startup_error::ok;
 	// Each node type shares the same bootstrap path but installs a different actor set.
 	switch (nconfig.nodetype())
 	{
 	case ngl::DB:
-		rc = start_db(argc, argv, &ctx.tcp_port);
+		lRC = start_db(argc, argv, &lCTX.tcp_port);
 		break;
 	case ngl::GAME:
-		rc = start_game(&ctx.tcp_port);
+		lRC = start_game(&lCTX.tcp_port);
 		break;
 	case ngl::ACTORSERVER:
-		rc = start_actor(&ctx.tcp_port);
+		lRC = start_actor(&lCTX.tcp_port);
 		break;
 	case ngl::LOG:
-		rc = start_log(&ctx.tcp_port);
+		lRC = start_log(&lCTX.tcp_port);
 		break;
 	case ngl::GATEWAY:
-		rc = start_gateway(&ctx.tcp_port);
+		lRC = start_gateway(&lCTX.tcp_port);
 		break;
 	case ngl::LOGIN:
-		rc = start_login(&ctx.tcp_port);
+		lRC = start_login(&lCTX.tcp_port);
 		break;
 	case ngl::WORLD:
-		rc = start_world(&ctx.tcp_port);
+		lRC = start_world(&lCTX.tcp_port);
 		break;
 	case ngl::RELOADCSV:
-		rc = start_csvserver(&ctx.tcp_port);
+		lRC = start_csvserver(&lCTX.tcp_port);
 		break;
 	case ngl::ROBOT:
-		rc = start_robot_safe(argc, argv, &ctx.tcp_port);
+		lRC = start_robot_safe(argc, argv, &lCTX.tcp_port);
 		break;
 	case ngl::CROSS:
-		rc = start_cross(&ctx.tcp_port);
+		lRC = start_cross(&lCTX.tcp_port);
 		break;
 	case ngl::CROSSDB:
-		rc = start_crossdb(&ctx.tcp_port);
+		lRC = start_crossdb(&lCTX.tcp_port);
 		break;
 	case ngl::PUSHSERVERCONFIG:
-		rc = start_pushcfg(&ctx.tcp_port);
+		lRC = start_pushcfg(&lCTX.tcp_port);
 		break;
 	default:
-		rc = startup_error::invalid_node_type;
+		lRC = startup_error::invalid_node_type;
 		break;
 	}
 
-	if (rc != startup_error::ok)
+	if (lRC != startup_error::ok)
 	{
-		ngl_startup::log_failure(rc, ctx, "node start failed");
-		return static_cast<int>(rc);
+		ngl_startup::log_failure(lRC, lCTX, "node start failed");
+		return static_cast<int>(lRC);
 	}
 
 	while (1)

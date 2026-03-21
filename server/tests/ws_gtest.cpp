@@ -154,13 +154,13 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 		1,
 		false,
 		[server_received, server_text, server_session](ngl::service_ws* asession, const char* abuff, uint32_t alen) {
-			ngl_test_support::try_set_promise_value(server_received, std::string(abuff, abuff + alen));
-			ngl_test_support::try_set_promise_value(server_text, asession->message_is_text());
-			ngl_test_support::try_set_promise_value(server_session, asession->m_sessionid);
+			ngl_test_support::try_set(server_received, std::string(abuff, abuff + alen));
+			ngl_test_support::try_set(server_text, asession->message_is_text());
+			ngl_test_support::try_set(server_session, asession->m_sessionid);
 			return true;
 		},
 		[server_closed](ngl::i32_sessionid asessionid) {
-			ngl_test_support::try_set_promise_value(server_closed, asessionid);
+			ngl_test_support::try_set(server_closed, asessionid);
 		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
@@ -170,18 +170,18 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 		1,
 		false,
 		[client_received, client_text](ngl::service_ws* asession, const char* abuff, uint32_t alen) {
-			ngl_test_support::try_set_promise_value(client_received, std::string(abuff, abuff + alen));
-			ngl_test_support::try_set_promise_value(client_text, asession->message_is_text());
+			ngl_test_support::try_set(client_received, std::string(abuff, abuff + alen));
+			ngl_test_support::try_set(client_text, asession->message_is_text());
 			return true;
 		},
 		[client_closed](ngl::i32_sessionid asessionid) {
-			ngl_test_support::try_set_promise_value(client_closed, asessionid);
+			ngl_test_support::try_set(client_closed, asessionid);
 		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
 
 	client->connect("127.0.0.1", server->port(), "/", [connected](ngl::i32_sessionid asession) {
-		ngl_test_support::try_set_promise_value(connected, asession);
+		ngl_test_support::try_set(connected, asession);
 		ngl_test_support::trace("ws client success!!!");
 	});
 
@@ -243,11 +243,11 @@ TEST(WsTest, AsioWsSendsPackPayloadAsBinaryFrame)
 		false,
 		[server_received](ngl::service_ws* asession, const char* abuff, uint32_t alen) {
 			EXPECT_FALSE(asession->message_is_text());
-			ngl_test_support::try_set_promise_value(server_received, std::string(abuff, abuff + alen));
+			ngl_test_support::try_set(server_received, std::string(abuff, abuff + alen));
 			return true;
 		},
 		[server_closed](ngl::i32_sessionid asessionid) {
-			ngl_test_support::try_set_promise_value(server_closed, asessionid);
+			ngl_test_support::try_set(server_closed, asessionid);
 		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
@@ -259,13 +259,13 @@ TEST(WsTest, AsioWsSendsPackPayloadAsBinaryFrame)
 			return true;
 		},
 		[client_closed](ngl::i32_sessionid asessionid) {
-			ngl_test_support::try_set_promise_value(client_closed, asessionid);
+			ngl_test_support::try_set(client_closed, asessionid);
 		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
 
 	client.connect("127.0.0.1", server.port(), "/", [connected](ngl::i32_sessionid asession) {
-		ngl_test_support::try_set_promise_value(connected, asession);
+		ngl_test_support::try_set(connected, asession);
 	});
 
 	trace_step("binary: wait connect");
@@ -331,13 +331,13 @@ TEST(WsTest, AsioWssServerAndClientExchangeTextFrames)
 		1,
 		true,
 		[server_received, server_text, server_session](ngl::service_ws* asession, const char* abuff, uint32_t alen) {
-			ngl_test_support::try_set_promise_value(server_received, std::string(abuff, abuff + alen));
-			ngl_test_support::try_set_promise_value(server_text, asession->message_is_text());
-			ngl_test_support::try_set_promise_value(server_session, asession->m_sessionid);
+			ngl_test_support::try_set(server_received, std::string(abuff, abuff + alen));
+			ngl_test_support::try_set(server_text, asession->message_is_text());
+			ngl_test_support::try_set(server_session, asession->m_sessionid);
 			return true;
 		},
 		[server_closed](ngl::i32_sessionid asessionid) {
-			ngl_test_support::try_set_promise_value(server_closed, asessionid);
+			ngl_test_support::try_set(server_closed, asessionid);
 		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {},
 		server_tls
@@ -348,19 +348,19 @@ TEST(WsTest, AsioWssServerAndClientExchangeTextFrames)
 		1,
 		true,
 		[client_received, client_text](ngl::service_ws* asession, const char* abuff, uint32_t alen) {
-			ngl_test_support::try_set_promise_value(client_received, std::string(abuff, abuff + alen));
-			ngl_test_support::try_set_promise_value(client_text, asession->message_is_text());
+			ngl_test_support::try_set(client_received, std::string(abuff, abuff + alen));
+			ngl_test_support::try_set(client_text, asession->message_is_text());
 			return true;
 		},
 		[client_closed](ngl::i32_sessionid asessionid) {
-			ngl_test_support::try_set_promise_value(client_closed, asessionid);
+			ngl_test_support::try_set(client_closed, asessionid);
 		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {},
 		client_tls
 	);
 
 	client->connect("127.0.0.1", server->port(), "/", [connected](ngl::i32_sessionid asession) {
-		ngl_test_support::try_set_promise_value(connected, asession);
+		ngl_test_support::try_set(connected, asession);
 	});
 
 	trace_step("wss: wait connect");

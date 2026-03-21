@@ -524,7 +524,7 @@ TEST(ToolsTest, SpliteContainersDoNotMutateOutputsOnFailure)
 
 TEST(ToolsTest, DirectoryListingRecursesAndIgnoresMissingPaths)
 {
-	const std::filesystem::path root = ngl_test_support::make_temp_test_dir("dir", "ngl_tools");
+	const std::filesystem::path root = ngl_test_support::make_tmp_dir("dir", "ngl_tools");
 	const std::filesystem::path nested = root / "nested" / "leaf";
 	std::filesystem::create_directories(nested);
 
@@ -555,7 +555,7 @@ TEST(ToolsTest, DirectoryListingRecursesAndIgnoresMissingPaths)
 
 TEST(ToolsTest, DirectoryHelpersDistinguishFilesAndDirectories)
 {
-	const std::filesystem::path root = ngl_test_support::make_temp_test_dir("path_helpers", "ngl_tools");
+	const std::filesystem::path root = ngl_test_support::make_tmp_dir("path_helpers", "ngl_tools");
 	const std::filesystem::path file = root / "config.txt";
 	const std::filesystem::path nested = root / "nested" / "leaf";
 	{
@@ -656,7 +656,7 @@ TEST(ToolsTest, CsvReadStringFallsBackForInterleavedQuotes)
 
 TEST(ToolsTest, CsvReaderSkipsCommentLinesWithoutPoisoningNextRow)
 {
-	const std::filesystem::path root = ngl_test_support::make_temp_test_dir("csv_reader", "ngl_tools");
+	const std::filesystem::path root = ngl_test_support::make_tmp_dir("csv_reader", "ngl_tools");
 	const std::filesystem::path file = root / "sample.csv";
 	{
 		std::ofstream(file) << "header1\nheader2\nheader3\n#comment\n1,alpha\n2,beta\n";
@@ -678,7 +678,7 @@ TEST(ToolsTest, CsvReaderSkipsCommentLinesWithoutPoisoningNextRow)
 
 TEST(ToolsTest, ReadFileGetMaxlinePreservesReadPosition)
 {
-	const std::filesystem::path root = ngl_test_support::make_temp_test_dir("readfile", "ngl_tools");
+	const std::filesystem::path root = ngl_test_support::make_tmp_dir("readfile", "ngl_tools");
 	const std::filesystem::path file = root / "data.txt";
 	{
 		std::ofstream(file) << "line1\nline2\n";
@@ -702,7 +702,7 @@ TEST(ToolsTest, ReadFileGetMaxlinePreservesReadPosition)
 
 TEST(ToolsTest, ReadFileReadWorksAfterReachingEof)
 {
-	const std::filesystem::path root = ngl_test_support::make_temp_test_dir("read_after_eof", "ngl_tools");
+	const std::filesystem::path root = ngl_test_support::make_tmp_dir("read_after_eof", "ngl_tools");
 	const std::filesystem::path file = root / "data.txt";
 	{
 		std::ofstream(file, std::ios::binary) << "line1\nline2\n";
@@ -868,9 +868,14 @@ TEST(ToolsTest, TimeWheelManualModePopsReadyCallbacks)
 	});
 
 	ASSERT_GT(timerid, 0);
-	std::this_thread::sleep_for(std::chrono::milliseconds(40));
 
-	auto node = wheel.pop_node();
+	std::shared_ptr<ngl::wheel_node> node;
+	for (int i = 0; i < 20 && node == nullptr; ++i)
+	{
+		std::this_thread::sleep_for(std::chrono::milliseconds(5));
+		node = wheel.pop_node();
+	}
+
 	ASSERT_NE(node, nullptr);
 	EXPECT_FALSE(node->removed());
 	ASSERT_NE(node->m_parm.m_fun, nullptr);

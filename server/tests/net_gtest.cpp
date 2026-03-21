@@ -42,7 +42,7 @@ namespace net_test_support
 }
 
 using net_test_support::make_test_packet;
-using ngl_test_support::try_set_promise_value;
+using ngl_test_support::try_set;
 
 TEST(NetTest, ServerSessionReplacesExistingMappingsBidirectionally)
 {
@@ -127,7 +127,7 @@ TEST(NetTest, AsioTcpConnectReportsFinalFailure)
 	);
 
 	client->connect("127.0.0.1", port, [result](ngl::i32_sessionid sessionid) {
-		try_set_promise_value(result, sessionid);
+		try_set(result, sessionid);
 	}, 0);
 
 	ASSERT_EQ(future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
@@ -146,7 +146,7 @@ TEST(NetTest, AsioTcpCloseNetRemovesIpPortEntry)
 
 	acceptor.async_accept(*accepted_socket, [accepted_result](const basio_errorcode& ec) {
 		EXPECT_FALSE(ec);
-		try_set_promise_value(accepted_result);
+		try_set(accepted_result);
 	});
 
 	std::thread accept_thread([&accept_context]() {
@@ -164,7 +164,7 @@ TEST(NetTest, AsioTcpCloseNetRemovesIpPortEntry)
 	);
 
 	client->connect("127.0.0.1", port, [result](ngl::i32_sessionid sessionid) {
-		try_set_promise_value(result, sessionid);
+		try_set(result, sessionid);
 	}, 0);
 
 	ASSERT_EQ(future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
@@ -199,7 +199,7 @@ TEST(NetTest, AsioTcpCloseDisconnectsPeerAndNotifiesOnce)
 
 	acceptor.async_accept(*accepted_socket, [accepted_result](const basio_errorcode& ec) {
 		EXPECT_FALSE(ec);
-		try_set_promise_value(accepted_result);
+		try_set(accepted_result);
 	});
 
 	std::thread accept_thread([&accept_context]() {
@@ -227,7 +227,7 @@ TEST(NetTest, AsioTcpCloseDisconnectsPeerAndNotifiesOnce)
 	);
 
 	client->connect("127.0.0.1", port, [result](ngl::i32_sessionid sessionid) {
-		try_set_promise_value(result, sessionid);
+		try_set(result, sessionid);
 	}, 0);
 
 	ASSERT_EQ(future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
@@ -242,7 +242,7 @@ TEST(NetTest, AsioTcpCloseDisconnectsPeerAndNotifiesOnce)
 
 	accepted_socket->async_read_some(basio::buffer(*peer_buffer), [peer_close_result](const basio_errorcode& ec, std::size_t bytes_transferred) {
 		EXPECT_EQ(bytes_transferred, 0U);
-		try_set_promise_value(peer_close_result, ec);
+		try_set(peer_close_result, ec);
 	});
 
 	client->close(sessionid);
@@ -287,12 +287,12 @@ TEST(NetTest, AsioTcpServerAndClientExchangePayloads)
 		0,
 		1,
 		[server_received, server_session](ngl::service_tcp* asession, const char* buff, uint32_t bufflen) {
-			try_set_promise_value(server_received, std::string(buff, buff + bufflen));
-			try_set_promise_value(server_session, asession->m_sessionid);
+			try_set(server_received, std::string(buff, buff + bufflen));
+			try_set(server_session, asession->m_sessionid);
 			return true;
 		},
 		[server_closed](ngl::i32_sessionid sessionid) {
-			try_set_promise_value(server_closed, sessionid);
+			try_set(server_closed, sessionid);
 		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
@@ -302,17 +302,17 @@ TEST(NetTest, AsioTcpServerAndClientExchangePayloads)
 	auto client = std::make_unique<ngl::asio_tcp>(
 		1,
 		[client_received](ngl::service_tcp*, const char* buff, uint32_t bufflen) {
-			try_set_promise_value(client_received, std::string(buff, buff + bufflen));
+			try_set(client_received, std::string(buff, buff + bufflen));
 			return true;
 		},
 		[client_closed](ngl::i32_sessionid sessionid) {
-			try_set_promise_value(client_closed, sessionid);
+			try_set(client_closed, sessionid);
 		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
 
 	client->connect("127.0.0.1", port, [connected](ngl::i32_sessionid sessionid) {
-		try_set_promise_value(connected, sessionid);
+		try_set(connected, sessionid);
 	}, 0);
 
 	ASSERT_EQ(connected_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
@@ -366,12 +366,12 @@ TEST(NetTest, AsioTcpServerExchangesPayloadsWithPlainAsioClient)
 		0,
 		1,
 		[server_received, server_session](ngl::service_tcp* asession, const char* buff, uint32_t bufflen) {
-			try_set_promise_value(server_received, std::string(buff, buff + bufflen));
-			try_set_promise_value(server_session, asession->m_sessionid);
+			try_set(server_received, std::string(buff, buff + bufflen));
+			try_set(server_session, asession->m_sessionid);
 			return true;
 		},
 		[server_closed](ngl::i32_sessionid sessionid) {
-			try_set_promise_value(server_closed, sessionid);
+			try_set(server_closed, sessionid);
 		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
@@ -432,7 +432,7 @@ TEST(NetTest, AsioTcpClientExchangesPayloadsWithPlainAsioServer)
 
 	acceptor.async_accept(*accepted_socket, [accepted_result](const basio_errorcode& ec) {
 		EXPECT_FALSE(ec);
-		try_set_promise_value(accepted_result);
+		try_set(accepted_result);
 	});
 
 	std::thread accept_thread([&accept_context]() {
@@ -450,17 +450,17 @@ TEST(NetTest, AsioTcpClientExchangesPayloadsWithPlainAsioServer)
 	auto client = std::make_unique<ngl::asio_tcp>(
 		1,
 		[client_received](ngl::service_tcp*, const char* buff, uint32_t bufflen) {
-			try_set_promise_value(client_received, std::string(buff, buff + bufflen));
+			try_set(client_received, std::string(buff, buff + bufflen));
 			return true;
 		},
 		[client_closed](ngl::i32_sessionid sessionid) {
-			try_set_promise_value(client_closed, sessionid);
+			try_set(client_closed, sessionid);
 		},
 		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
 	);
 
 	client->connect("127.0.0.1", port, [connected](ngl::i32_sessionid sessionid) {
-		try_set_promise_value(connected, sessionid);
+		try_set(connected, sessionid);
 	}, 0);
 
 	ASSERT_EQ(connected_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);

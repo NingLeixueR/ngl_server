@@ -55,8 +55,8 @@ TEST(A02Smoke, StartupRejectsNonNumericThreadCount)
 
 TEST(A03Smoke, StartupReturnsConfigNotFoundWhenConfigRootMissing)
 {
-	const std::filesystem::path temp_dir = ngl_test_support::make_temp_test_dir("config_missing", "ngl_test", false);
-	ngl_test_support::ScopedCurrentPath cwd_guard(temp_dir);
+	const std::filesystem::path temp_dir = ngl_test_support::make_tmp_dir("config_missing", "ngl_test", false);
+	ngl_test_support::ScopedPath cwd_guard(temp_dir);
 
 	char program_name[] = "ngl_test";
 	char db_node[] = "db";
@@ -70,10 +70,10 @@ TEST(A03Smoke, StartupReturnsConfigNotFoundWhenConfigRootMissing)
 
 TEST(A04Smoke, StartupReturnsConfigLoadFailedForMalformedConfig)
 {
-	const std::filesystem::path temp_dir = ngl_test_support::make_temp_test_dir("config_invalid", "ngl_test", false);
+	const std::filesystem::path temp_dir = ngl_test_support::make_tmp_dir("config_invalid", "ngl_test", false);
 	std::filesystem::create_directories(temp_dir / "config");
 	std::ofstream(temp_dir / "config" / "config.xml") << "<config>";
-	ngl_test_support::ScopedCurrentPath cwd_guard(temp_dir);
+	ngl_test_support::ScopedPath cwd_guard(temp_dir);
 
 	char program_name[] = "ngl_test";
 	char db_node[] = "db";

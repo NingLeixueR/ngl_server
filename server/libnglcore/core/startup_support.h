@@ -9,7 +9,7 @@
 
 namespace ngl_startup
 {
-	struct context
+	struct start_ctx
 	{
 		// Parsed runtime identity for the current process.
 		std::string node_name;
@@ -20,7 +20,7 @@ namespace ngl_startup
 		int node_type = -1;
 	};
 
-	struct prepare_result
+	struct prep_res
 	{
 		// Keep both a machine-friendly code and a short log-friendly reason.
 		startup_error code = startup_error::ok;
@@ -28,8 +28,8 @@ namespace ngl_startup
 	};
 
 	// Emit a uniform startup failure log that includes the resolved context.
-	void log_failure(startup_error code, const context& ctx, const char* reason);
+	void log_failure(startup_error code, const start_ctx& ctx, const char* reason);
 
 	// Parse CLI arguments, load config/csv metadata, and resolve the target server row.
-	prepare_result prepare_context(int argc, char** argv, context& ctx);
+	prep_res prep_ctx(int argc, char** argv, start_ctx& ctx);
 }

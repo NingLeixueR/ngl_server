@@ -12,24 +12,24 @@
 
 namespace ngl_startup::detail
 {
-	void apply_server_identity(const ngl_startup::context& ctx, const ngl::tab_servers& tab)
+	void apply_srv(const ngl_startup::start_ctx& aCTX, const ngl::tab_servers& aTAB)
 	{
 		// Compose the runtime node id and a readable process name from tab_servers metadata.
-		nconfig.set_nodeid(tab.m_id, ctx.tcount);
-		if (ctx.area < 0)
+		nconfig.set_nodeid(aTAB.m_id, aCTX.tcount);
+		if (aCTX.area < 0)
 		{
-			nconfig.set_servername(std::string(std::format("node_{}__{}_{}", ctx.node_name, -ctx.area, ctx.tcount)));
+			nconfig.set_servername(std::format("node_{}__{}_{}", aCTX.node_name, -aCTX.area, aCTX.tcount));
 		}
 		else
 		{
-			nconfig.set_servername(std::string(std::format("node_{}_{}_{}", ctx.node_name, tab.m_area, ctx.tcount)));
+			nconfig.set_servername(std::format("node_{}_{}_{}", aCTX.node_name, aTAB.m_area, aCTX.tcount));
 		}
 	}
 }
 
 namespace ngl_startup
 {
-	void log_failure(startup_error code, const context& ctx, const char* reason)
+	void log_failure(startup_error code, const start_ctx& ctx, const char* reason)
 	{
 		ngl::log_error()->print(
 			"[startup][code:{}] reason:{} node:{} type:{} area:{} tcount:{} config:{} port:{}"
@@ -44,9 +44,9 @@ namespace ngl_startup
 		);
 	}
 
-	prepare_result prepare_context(int argc, char** argv, context& ctx)
+	prep_res prep_ctx(int argc, char** argv, start_ctx& ctx)
 	{
-		ctx = context{};
+		ctx = start_ctx{};
 
 		// Expected CLI shape: <program> <node_name> <area> <tcount> [extra args...].
 		if (argc < 4 || argv == nullptr)
@@ -71,8 +71,8 @@ namespace ngl_startup
 		ctx.node_type = static_cast<int>(nconfig.nodetype());
 
 		// Each process reads its own config variant, for example "game_1".
-		const std::string config_name = std::format("{}_{}", ctx.node_name, ctx.tcount);
-		if (!nconfig.load("./config", config_name))
+		const std::string lCFG = std::format("{}_{}", ctx.node_name, ctx.tcount);
+		if (!nconfig.load("./config", lCFG))
 		{
 			ctx.config_file = nconfig.config_file();
 			const startup_error code = ngl::tools::file_exists(ctx.config_file) ?
@@ -85,13 +85,13 @@ namespace ngl_startup
 		ngl::csv_base::set_path("./csv", ctx.node_name);
 
 		// tab_servers is the authoritative source for network layout and thread counts.
-		const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab(ctx.node_name, ctx.area);
-		if (tab == nullptr)
+		const ngl::tab_servers* lTAB = ngl::ttab_servers::instance().const_tab(ctx.node_name, ctx.area);
+		if (lTAB == nullptr)
 		{
 			return { startup_error::tab_server_missing, "tab_servers missing" };
 		}
 
-		detail::apply_server_identity(ctx, *tab);
+		detail::apply_srv(ctx, *lTAB);
 		return {};
 	}
 }
