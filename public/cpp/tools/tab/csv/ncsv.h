@@ -26,6 +26,7 @@
 #include <functional>
 #include <iostream>
 #include <map>
+#include <string_view>
 
 namespace ngl
 {
@@ -211,16 +212,22 @@ namespace ngl
 		template <typename T>
 		static void register_csv()
 		{
-			trefun& ltemp = m_fun[tools::type_name<T>()];
-			ltemp.m_save = [](const std::string& acsvcontent)
+			auto [lit, lnew] = m_fun.try_emplace(tools::type_name<T>());
+			if (!lnew)
 			{
-				std::string lcsvname = csv<T>::path();
+				return;
+			}
+
+			trefun& lfun = lit->second;
+			lfun.m_save = [](const std::string& acsvcontent)
+			{
+				const std::string lcsvname = csv<T>::path();
 				tools::file_remove(lcsvname);
 				writefile lrf(lcsvname);
 				lrf.write(acsvcontent);
 			};
 
-			ltemp.m_reload = []()
+			lfun.m_reload = []()
 			{
 				csv_base* lpcsv = ncsv::get_csvbase(tools::type_name<T>());
 				if (lpcsv == nullptr)
@@ -231,10 +238,9 @@ namespace ngl
 				lpcsv->reload();
 			};
 
-			ltemp.m_readfile = [](std::string& acsvcontent)
+			lfun.m_readfile = [](std::string& acsvcontent)
 			{
-				std::string lcsvname = csv<T>::path();
-				readfile lfile(lcsvname);
+				readfile lfile(csv<T>::path());
 				lfile.read(acsvcontent);
 			};
 		}
