@@ -496,6 +496,7 @@ void init_db_note()
 	};
 	for (int li = 1; li < 10; ++li)
 	{
+		constexpr int32_t lkeep_sec = 36000;
 		pbdb::db_notice ltemp;
 		ltemp.set_mid((ngl::ttab_servers::instance().const_tab()->m_area * 100) + li);
 		if (!ngl::tools::to_utf8(lvec[li], lvec[li]))
@@ -505,7 +506,7 @@ void init_db_note()
 		ltemp.set_mnotice(lvec[li]);
 		const int32_t lnow = static_cast<int32_t>(time(nullptr));
 		ltemp.set_mstarttime(lnow);
-		ltemp.set_mfinishtime(lnow + 36000);
+		ltemp.set_mfinishtime(lnow + lkeep_sec);
 		save_seed<pbdb::ENUM_DB_NOTICE>(ltemp);
 	}
 }
@@ -525,9 +526,10 @@ void init_db_fam()
 {
 	for (int li = 1; li < 100; ++li)
 	{
+		const int32_t lnow = static_cast<int32_t>(ngl::localtime::gettime());
 		pbdb::db_family ltemp;
 		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_FAMILY, tab_self_area, li));
-		ltemp.set_mcreateutc((int32_t)ngl::localtime::gettime());
+		ltemp.set_mcreateutc(lnow);
 		ltemp.set_mexp(100);
 		ltemp.set_mlv(1);
 		ltemp.set_mname(std::format("FLIBO{}", li));
@@ -537,10 +539,10 @@ void init_db_fam()
 		save_seed<pbdb::ENUM_DB_FAMILY>(ltemp);
 		
 		pbdb::db_familyer ltempfamilyer;
-		ltempfamilyer.set_mjoinutc((int32_t)ngl::localtime::gettime());
+		ltempfamilyer.set_mjoinutc(lnow);
 		ltempfamilyer.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li));
 		ltempfamilyer.set_mposition(pbdb::db_familyer_eposition_leader);
-		ltempfamilyer.set_mlastsignutc((int32_t)ngl::localtime::gettime());
+		ltempfamilyer.set_mlastsignutc(lnow);
 
 		save_seed<pbdb::ENUM_DB_FAMILYER>(ltempfamilyer);
 	}
@@ -605,11 +607,12 @@ void init_db_tlua()
 			ltestlua.add_mvalue(li * 1000 + lj);
 		}
 		pbdb::db_testlua::luadata ltemp;
+		auto* ldata = ltestlua.mutable_mdatas();
 		for (int lidx = 0; lidx < 5; ++lidx)
 		{
 			ltemp.set_mkey(std::format("key_{}", lidx).c_str());
 			ltemp.set_mval(std::format("val_{}", lidx).c_str());
-			(*ltestlua.mutable_mdatas())[lidx] = ltemp;
+			(*ldata)[lidx] = ltemp;
 		}
 	}
 

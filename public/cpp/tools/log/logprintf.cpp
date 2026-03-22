@@ -165,7 +165,8 @@ namespace ngl
 			return;
 		}
 
-		std::string ltimestr = tools::time2str((int)localtime::gettime(), "%Y-%m-%d");
+		const int32_t lnow = static_cast<int32_t>(localtime::gettime());
+		std::string ltimestr = tools::time2str(lnow, "%Y-%m-%d");
 		lpath = std::format("{}/{}", lpath, ltimestr);
 		if (create_dir(lpath) == false)
 		{
@@ -175,7 +176,7 @@ namespace ngl
 
 		std::cout << "log dir:[" << lpath << "]" << std::endl;
 
-		std::string ldaytimestr = tools::time2str((int)localtime::gettime(), "%H-%M-%S");
+		std::string ldaytimestr = tools::time2str(lnow, "%H-%M-%S");
 		std::string lopfile = std::format("{}/{}_{}.log", lpath, ldaytimestr, m_fcount);
 		++m_fcount;
 		
