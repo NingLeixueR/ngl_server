@@ -856,11 +856,37 @@ namespace ngl
 		template <std::size_t N>
 		static void split_str(char* apbuff, int32_t abuffcount, std::array<const char*, N>& aarrays)
 		{
-			std::vector<const char*> lvec = split_str(apbuff, abuffcount);
 			aarrays.fill(nullptr);
-			const auto lcopy_count = std::min<std::size_t>(lvec.size(), aarrays.size());
-			std::copy_n(lvec.begin(), lcopy_count, aarrays.begin());
-			return;
+			if (apbuff == nullptr || abuffcount <= 0)
+			{
+				return;
+			}
+
+			std::size_t lidx = 0;
+			int32_t lbeg = 0;
+			for (int32_t li = 0; li < abuffcount; ++li)
+			{
+				if (apbuff[li] != ',')
+				{
+					continue;
+				}
+
+				apbuff[li] = '\0';
+				if (lidx < N)
+				{
+					aarrays[lidx++] = &apbuff[lbeg];
+				}
+				lbeg = li + 1;
+				if (lbeg < abuffcount && apbuff[lbeg] == ' ')
+				{
+					++lbeg;
+				}
+			}
+
+			if (lidx < N)
+			{
+				aarrays[lidx] = &apbuff[lbeg];
+			}
 		}
 		// Cjsontype
 		static bool bit(int32_t atype, int32_t acjsontype)

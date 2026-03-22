@@ -623,21 +623,35 @@ TEST(ToolsTest, SplitStrRejectsNullOrEmptyBuffers)
 {
 	EXPECT_TRUE(ngl::tools::split_str(nullptr, 0).empty());
 
-	char empty_buffer[] = "";
-	const auto values = ngl::tools::split_str(empty_buffer, 0);
-	EXPECT_TRUE(values.empty());
+	char lbuf[] = "";
+	const auto lvals = ngl::tools::split_str(lbuf, 0);
+	EXPECT_TRUE(lvals.empty());
 }
 
 TEST(ToolsTest, SplitStrArrayCopyDoesNotWritePastArrayBounds)
 {
-	char buffer[] = "one, two, three";
-	std::array<const char*, 2> values = {};
-	ngl::tools::split_str((char*)buffer, static_cast<int32_t>(sizeof(buffer) - 1), values);
+	char lbuf[] = "one, two, three";
+	std::array<const char*, 2> lvals = {};
+	ngl::tools::split_str(lbuf, static_cast<int32_t>(sizeof(lbuf) - 1), lvals);
 
-	ASSERT_NE(values[0], nullptr);
-	ASSERT_NE(values[1], nullptr);
-	EXPECT_STREQ(values[0], "one");
-	EXPECT_STREQ(values[1], "two");
+	ASSERT_NE(lvals[0], nullptr);
+	ASSERT_NE(lvals[1], nullptr);
+	EXPECT_STREQ(lvals[0], "one");
+	EXPECT_STREQ(lvals[1], "two");
+}
+
+TEST(ToolsTest, SplitStrArrayFillKeepsUnusedSlotsNull)
+{
+	char lbuf[] = "one, two";
+	std::array<const char*, 4> lvals = {};
+	ngl::tools::split_str(lbuf, static_cast<int32_t>(sizeof(lbuf) - 1), lvals);
+
+	ASSERT_NE(lvals[0], nullptr);
+	ASSERT_NE(lvals[1], nullptr);
+	EXPECT_STREQ(lvals[0], "one");
+	EXPECT_STREQ(lvals[1], "two");
+	EXPECT_EQ(lvals[2], nullptr);
+	EXPECT_EQ(lvals[3], nullptr);
 }
 
 TEST(ToolsTest, CsvReadVariadicDoesNotMutateOutputsOnFailure)

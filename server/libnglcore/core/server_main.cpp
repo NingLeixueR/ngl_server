@@ -280,10 +280,11 @@ namespace ngl_runtime
 	{
 		aparam.clear();
 		aparam.reserve(asrv.m_name.size() + (asrv.m_net.size() * 96) + 64);
+		const std::string lname = ngl::tools::url_encode(asrv.m_name);
 
 		// The endpoint expects the scalar fields as flat query params.
 		ngl::ncurl::param(aparam, "id", asrv.m_id);
-		ngl::ncurl::param(aparam, "name", ngl::tools::url_encode(asrv.m_name));
+		ngl::ncurl::param(aparam, "name", lname);
 		ngl::ncurl::param(aparam, "area", asrv.m_area);
 		ngl::ncurl::param(aparam, "type", static_cast<int32_t>(asrv.m_type));
 
@@ -312,10 +313,15 @@ namespace ngl_runtime
 			lnet_val.m_nip = lnet.m_nip;
 			lnet_val.m_port = lnet.m_port;
 			// The network list is encoded as a small JSON object and then URL-escaped.
-			ngl::njson::push(lnet_json, { knet_names[ltype_idx] }, lnet_val);
+			if (!ngl::njson::push(lnet_json, { knet_names[ltype_idx] }, lnet_val))
+			{
+				aparam.clear();
+				return false;
+			}
 		}
 
-		ngl::ncurl::param(aparam, "net", ngl::tools::url_encode(lnet_json.nonformat_str()));
+		const std::string lnet_txt = lnet_json.nonformat_str();
+		ngl::ncurl::param(aparam, "net", ngl::tools::url_encode(lnet_txt));
 		return true;
 	}
 }

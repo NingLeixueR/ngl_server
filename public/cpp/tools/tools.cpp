@@ -2028,7 +2028,7 @@ namespace ngl
 			if (apbuff[i] == ',')
 			{
 				apbuff[i] = '\0';
-				lpbuffs.push_back(&apbuff[lbegin]);
+				lpbuffs.emplace_back(&apbuff[lbegin]);
 				lbegin = i + 1;
 				if (lbegin < abuffcount && apbuff[lbegin] == ' ')
 				{
@@ -2036,7 +2036,7 @@ namespace ngl
 				}
 			}
 		}
-		lpbuffs.push_back(&apbuff[lbegin]);
+		lpbuffs.emplace_back(&apbuff[lbegin]);
 		return lpbuffs;
 	}
 
