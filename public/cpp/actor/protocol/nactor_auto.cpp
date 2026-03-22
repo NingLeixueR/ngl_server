@@ -36,7 +36,7 @@ namespace ngl
 	ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE)
 	{
 		// DB actors are laid out contiguously after ACTOR_DB.
-		return (ENUM_ACTOR)(ACTOR_DB + TDBTAB_TYPE);
+		return static_cast<ENUM_ACTOR>(static_cast<int>(ACTOR_DB) + static_cast<int>(TDBTAB_TYPE));
 	}
 
 	template <pbdb::ENUM_DB DBTYPE, typename TDB>

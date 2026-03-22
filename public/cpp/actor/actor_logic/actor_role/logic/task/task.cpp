@@ -59,7 +59,7 @@ namespace ngl
 	class taskcheck_rolelv : 
 		public task_check
 	{
-		virtual int32_t values(actor_role* arole, const task_condition& atab)
+			virtual int32_t values(actor_role* arole, [[maybe_unused]] const task_condition& atab)
 		{
 			return arole->m_info.lv();
 		}
@@ -69,7 +69,7 @@ namespace ngl
 	class taskcheck_rolevip : 
 		public task_check
 	{
-		virtual int32_t values(actor_role* arole, const task_condition& atab)
+			virtual int32_t values(actor_role* arole, [[maybe_unused]] const task_condition& atab)
 		{
 			return arole->m_info.vip();
 		}
@@ -255,8 +255,7 @@ namespace ngl
 
 	bool static_task::update_change(actor_role* arole, ETask atype, std::set<i32_taskid>* ataskset)
 	{
-		auto& lconst_complete = const_complete(arole);
-		auto& lconst_rundatas = const_run(arole);
+			auto& lconst_rundatas = const_run(arole);
 		for (i32_taskid taskid : *ataskset)
 		{
 			// ## Taskbeforefirst whether

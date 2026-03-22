@@ -15,7 +15,7 @@
 #include "actor/actor_logic/actor_testlua/actor_testlua.h"
 namespace ngl
 {
-	bool actor_testlua::handle(const message<mforward<pbnet::PROBUFF_NET_TESTLUA>>& adata)
+	bool actor_testlua::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_TESTLUA>>& adata)
 	{
 		return true;
 	}

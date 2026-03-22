@@ -127,7 +127,7 @@ namespace ngl
 		}
 
 		// Attribute
-		void change_attribute(EnumAttribute aattribute, int64_t avalue, bool adynamic)
+			void change_attribute(EnumAttribute aattribute, int64_t avalue, [[maybe_unused]] bool adynamic)
 		{
 			m_dynamic[aattribute] += avalue;
 			if (is_death())

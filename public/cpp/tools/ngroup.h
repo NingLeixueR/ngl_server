@@ -32,7 +32,7 @@ namespace ngl
 		{}
 
 		// Create and return a new empty group id.
-		inline int create(ENUM_ACTOR atype = ACTOR_NONE)
+		inline int create([[maybe_unused]] ENUM_ACTOR atype = ACTOR_NONE)
 		{
 			auto& linfo = m_group[++m_currentoffset];
 			linfo.clear();

@@ -285,7 +285,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_example_match::timer_handle(const message<np_timerparm>& adata)
+	bool actor_example_match::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		// Ready
 		for (std::pair<const pbexample::EPLAY_TYPE, room_index>& item : m_roomindex)

@@ -150,7 +150,7 @@ namespace ngl
 		send_actor(id_guid(), id_guid(), std::make_shared<np_actor_server_register>());
 	}
 
-	bool actor_client::handle(const message<np_actor_server_register>& adata)
+	bool actor_client::handle([[maybe_unused]] const message<np_actor_server_register>& adata)
 	{
 		// # Need to connectionActorServernode andto register
 		if (auto ltype = ttab_servers::instance().nodetype(); nconfig.nodetype() != ltype || ltype == ngl::ACTORSERVER || ltype == ngl::ROBOT)
@@ -160,7 +160,7 @@ namespace ngl
 		}
 		for (auto tab = ttab_servers::instance().const_tab(); int32_t id : tab->m_actorserver)
 		{
-			actor_server_register(nnodeid::nodeid(id, 1));
+				actor_server_register(nnodeid::nodeid(static_cast<int16_t>(id), 1));
 		}
 		return true;
 	}
@@ -284,8 +284,7 @@ namespace ngl
 	bool actor_client::handle(const message<np_actornode_update_mass>& adata)
 	{
 		auto lparm = adata.get_data();
-		auto lpack = adata.get_pack();
-		int32_t lthreadid = adata.thread();
+			int32_t lthreadid = adata.thread();
 
 		message lmessage(lthreadid, adata.get_shared_pack(), const_cast<np_actornode_update*>(&lparm->m_mass));
 		handle(lmessage);

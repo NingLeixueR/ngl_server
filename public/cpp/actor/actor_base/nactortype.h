@@ -71,7 +71,7 @@ namespace ngl
 		ACTOR_TESTLUA							= 56, // Testlua
 		ACTOR_TESTLUA2							= 57, // Testlua2
 		ACTOR_DB								= 1000, // After
-		ACTOR_SIGNLE_FINISH						= ACTOR_DB + pbdb::ENUM_DB_COUNT,
+		ACTOR_SIGNLE_FINISH						= static_cast<int>(ACTOR_DB) + static_cast<int>(pbdb::ENUM_DB_COUNT),
 		ACTOR_COUNT								= ACTOR_SIGNLE_FINISH,
 	};
 

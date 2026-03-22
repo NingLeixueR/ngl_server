@@ -251,10 +251,10 @@ namespace ngl
 		pro->m_actoridclient	= lpram->mactoridclient();
 		pro->m_actoridserver	= lpram->mactoridserver();
 		pro->m_uip				= lpram->muip();
-		pro->m_uport			= lpram->muport();
+			pro->m_uport			= static_cast<i16_port>(lpram->muport());
 		pro->m_conv				= lpram->mconv();
 		pro->m_kcpnum			= lpram->m_kcpnum();
-		pro->m_serverid			= lpram->mserverid();
+			pro->m_serverid			= static_cast<i32_serverid>(lpram->mserverid());
 
 		actor::send_actor(actor_kcp::actorid(pro->m_serverid), id_guid(), pro);
 		return true;

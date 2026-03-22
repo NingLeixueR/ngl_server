@@ -40,9 +40,9 @@ namespace ngl
 		return m_attribute;
 	}
 
-	bool unit::set_id(int32_t aid)
+	bool unit::set_id(i64_actorid aid)
 	{
-		if (m_id != nguid::none_actordataid())
+		if (m_id != nguid::make())
 		{
 			log_error()->print("unit::set_id fail [{}:{}]", m_id, aid);
 			return false;
@@ -51,7 +51,7 @@ namespace ngl
 		return true;
 	}
 
-	int32_t unit::id()
+	i64_actorid unit::id()
 	{
 		return m_id;
 	}
@@ -123,7 +123,7 @@ namespace ngl
 		return m_position.mspeed();
 	}
 
-	void unit::update(int64_t ams)
+	void unit::update([[maybe_unused]] int64_t ams)
 	{
 
 	}

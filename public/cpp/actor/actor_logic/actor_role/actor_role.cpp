@@ -372,13 +372,12 @@ namespace ngl
 		return lstat;
 	}
 
-	bool actor_role::is_first_recharge(int32_t arechargeid)
-	{
-		MODIFIED_RETURN_CONST(lpdinfoconst, m_info.get(), false);
-		int lcount = 0;
-		for (auto& recharge : lpdinfoconst->mrecharge())
+		bool actor_role::is_first_recharge(int32_t arechargeid)
 		{
-			if (recharge.mrechargeid() == arechargeid)
+			MODIFIED_RETURN_CONST(lpdinfoconst, m_info.get(), false);
+			for (auto& recharge : lpdinfoconst->mrecharge())
+			{
+				if (recharge.mrechargeid() == arechargeid)
 			{
 				return false;
 			}
@@ -386,7 +385,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_role::forward_before(const pbnet::PROBUFF_NET_FAMIL_CREATE& adata)
+		bool actor_role::forward_before([[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_CREATE& adata)
 	{
 		if (ttab_specialid::instance().m_createfamilconsume > m_info.gold())
 		{
@@ -403,10 +402,10 @@ namespace ngl
 		send_client(id_guid(), pro);
 	}
 
-	bool actor_role::timer_handle(const message<np_timerparm>& adata)
-	{
-		return true;
-	}
+		bool actor_role::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
+		{
+			return true;
+		}
 
 	void actor_role::create_init(const std::string& aname)
 	{
@@ -421,7 +420,7 @@ namespace ngl
 			return;
 		}
 		lpbriefbase->set_mlv(1);
-		lpbriefbase->set_mcreateutc(localtime::gettime());
+			lpbriefbase->set_mcreateutc(static_cast<int32_t>(localtime::gettime()));
 		lpbriefbase->set_mmoneygold(0);
 		lpbriefbase->set_mmoneysilver(0);
 		lpbriefbase->set_mname(aname);

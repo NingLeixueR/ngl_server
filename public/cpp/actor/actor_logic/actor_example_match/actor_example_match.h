@@ -45,7 +45,7 @@ namespace ngl
 
 		nroomid(pbexample::EPLAY_TYPE atype, int16_t aindex)
 		{
-			m_value[0] = atype;
+			m_value[0] = static_cast<int16_t>(atype);
 			m_value[1] = aindex;
 		}
 

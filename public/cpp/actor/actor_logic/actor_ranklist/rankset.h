@@ -160,7 +160,7 @@ namespace ngl
 			return lshow > lcount ? lcount : lshow;
 		}
 
-		virtual int32_t getpage(i64_actorid aroleid, int32_t apage, const std::function<void(int32_t, const rank_item*)>& afun)
+			virtual int32_t getpage([[maybe_unused]] i64_actorid aroleid, int32_t apage, const std::function<void(int32_t, const rank_item*)>& afun)
 		{
 			if (m_time != m_pagetime)
 			{
@@ -174,10 +174,9 @@ namespace ngl
 
 			int32_t leverypagecount = everypagecount();
 			int32_t lbegindex = (apage - 1) * leverypagecount;
-			int32_t lendindex = lbegindex + leverypagecount;
-			if (lbegindex < 0 || lbegindex > m_rankdata.size())
-			{
-				return get_showcount();
+				if (lbegindex < 0 || lbegindex > m_rankdata.size())
+				{
+					return get_showcount();
 			}
 			auto itor = m_page[apage - 1];
 			for (int lindex = 1; itor != m_rankdata.end() && lindex <= leverypagecount; ++lindex, ++itor)
@@ -208,17 +207,17 @@ namespace ngl
 	public:
 		static std::unique_ptr<rankset_base> make(pbdb::eranklist atype)
 		{
-			switch (atype)
-			{
-			case pbdb::eranklist::lv:
-				return std::make_unique<rankset<pbdb::eranklist::lv>>();
-			case pbdb::eranklist::gold:
-				return std::make_unique<rankset<pbdb::eranklist::gold>>();
-			case pbdb::eranklist::activity_lv + 1:
-				return create_activity_rank<pbdb::eranklist::activity_lv, 1>();
-			case pbdb::eranklist::activity_gold + 1:
-				return create_activity_rank<pbdb::eranklist::activity_gold, 1>();
-			}
+				switch (static_cast<int>(atype))
+				{
+				case static_cast<int>(pbdb::eranklist::lv):
+					return std::make_unique<rankset<pbdb::eranklist::lv>>();
+				case static_cast<int>(pbdb::eranklist::gold):
+					return std::make_unique<rankset<pbdb::eranklist::gold>>();
+				case static_cast<int>(pbdb::eranklist::activity_lv) + 1:
+					return create_activity_rank<pbdb::eranklist::activity_lv, 1>();
+				case static_cast<int>(pbdb::eranklist::activity_gold) + 1:
+					return create_activity_rank<pbdb::eranklist::activity_gold, 1>();
+				}
 			return nullptr;
 		}
 	};

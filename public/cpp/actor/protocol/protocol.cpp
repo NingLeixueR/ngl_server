@@ -216,7 +216,7 @@ namespace ngl
 
 			handle_cmd::add("/week") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
 				{
-					if (avec.size() < 2)
+						if (avec.size() < 3)
 					{
 						ntcp::instance().instance().send_msg(pack->m_id, "参数错误");
 						return;
@@ -245,8 +245,8 @@ namespace ngl
 						ntcp::instance().send_msg(pack->m_id, "参数错误");
 						return;
 					}
-					i32_serverid ltid = tools::lexical_cast<i32_serverid>(avec[1]);
-					i32_serverid ltcount = tools::lexical_cast<i32_serverid>(avec[2]);
+						const int16_t ltid = tools::lexical_cast<int16_t>(avec[1]);
+						const int16_t ltcount = tools::lexical_cast<int16_t>(avec[2]);
 					i32_session lsession = server_session::sessionid(nnodeid::nodeid(ltid, ltcount));
 					ntcp::instance().send_msg(lsession, "/login libo 123456");
 					wheel_parm lparm
@@ -254,7 +254,7 @@ namespace ngl
 						.m_ms = (int32_t)(2000),
 						.m_intervalms = [](int64_t) {return 2000; },
 						.m_count = 1,
-						.m_fun = [lsession](const wheel_node* anode)
+							.m_fun = [lsession](const wheel_node*)
 						{
 							ntcp::instance().send_msg(lsession, "/each china");
 						}

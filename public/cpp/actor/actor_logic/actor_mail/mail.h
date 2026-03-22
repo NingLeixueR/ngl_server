@@ -215,7 +215,7 @@ namespace ngl
 			return true;
 		}
 
-		bool sync_mail(i64_actorid aroleid, i64_actorid amailid, pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& apro)
+		bool sync_mail(i64_actorid aroleid, [[maybe_unused]] i64_actorid amailid, pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& apro)
 		{
 			data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
 			pbdb::db_mail* lpdbmail = lpdb_mail.get();

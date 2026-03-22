@@ -192,9 +192,9 @@ namespace ngl
 	{
 		auto lpram = adata.get_data();
 
-		i32_serverid lserverid = lpram->mserverid();
-		int16_t ltcount = nnodeid::tcount(lpram->mserverid());
-		int16_t ltid = nnodeid::tid(lpram->mserverid());
+		i32_serverid lserverid = static_cast<i32_serverid>(lpram->mserverid());
+		int16_t ltcount = static_cast<int16_t>(nnodeid::tcount(lserverid));
+		int16_t ltid = static_cast<int16_t>(nnodeid::tid(lserverid));
 
 		net_works lpstructserver;
 		if (!ttab_servers::instance().get_nworks(lserverid, nconfig.area(), ENET_TCP, lpstructserver))
@@ -203,7 +203,7 @@ namespace ngl
 		}
 		
 		std::string lkcpsession = lpram->mkcpsession();			
-		auto luport = kcp_index(lpram->mserverid(), lpram->m_kcpnum());
+		auto luport = kcp_index(lserverid, lpram->m_kcpnum());
 		if (!luport.has_value())
 		{
 			return false;

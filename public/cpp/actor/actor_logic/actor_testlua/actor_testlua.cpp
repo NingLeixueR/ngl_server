@@ -95,7 +95,7 @@ namespace ngl
 		>(e_ready_all);
 	}
 
-	bool actor_testlua::timer_handle(const message<np_timerparm>& adata)
+	bool actor_testlua::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		return true;
 	}

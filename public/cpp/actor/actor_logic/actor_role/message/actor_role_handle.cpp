@@ -132,7 +132,7 @@ namespace ngl
 		actor::send_actor(lactorid, id_guid(), pro);
 		return true;
 	}
-	bool actor_role::handle(const message<np_actor_disconnect_close>& adata)
+		bool actor_role::handle([[maybe_unused]] const message<np_actor_disconnect_close>& adata)
 	{
 		erase_actor();
 		return true;
@@ -144,7 +144,7 @@ namespace ngl
 		m_bag.add_item(lparm->m_item);
 		return true;
 	}
-	bool actor_role::handle(const message<np_eevents_logic_rolelogin>& adata)
+		bool actor_role::handle([[maybe_unused]] const message<np_eevents_logic_rolelogin>& adata)
 	{
 		return true;
 	}
@@ -154,11 +154,11 @@ namespace ngl
 		m_example.second = adata.get_data()->m_actorexampleid;
 		return true;
 	}
-	bool actor_role::handle(const message<pbnet::PROBUFF_NET_BAG_SYNC>& adata)
+		bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_BAG_SYNC>& adata)
 	{
 		return true;
 	}
-	bool actor_role::handle(const message<pbnet::PROBUFF_NET_CHANGE_ANGLE>& adata)
+		bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_CHANGE_ANGLE>& adata)
 	{
 		return true;
 	}
@@ -375,10 +375,9 @@ namespace ngl
 					bool liscross = true;
 					int32_t ltype = 0;
 					int32_t lpage = 0;
-					int32_t leverynum = 0;
-					if (tools::splite(aparm, "*", liscross, ltype, lpage) == false)
-					{
-						return;
+						if (tools::splite(aparm, "*", liscross, ltype, lpage) == false)
+						{
+							return;
 					}
 					pro->set_miscross(liscross);
 					pro->set_mtype((pbdb::eranklist)ltype);
@@ -432,8 +431,8 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_GET_TIME>& adata)
 	{
-		auto lpack = adata.get_pack();
-		i64_actorid lrequest = lpack->m_head.get_request_actor();
+			auto lpack = adata.get_pack();
+			[[maybe_unused]] i64_actorid lrequest = lpack->m_head.get_request_actor();
 		log_error()->print("{},NAME={}", guid(), m_info.name());
 		//if (lpack->m_protocol == ENET_KCP)
 		//{
@@ -446,7 +445,7 @@ namespace ngl
 		send_client(id_guid(), pro, ENET_KCP);
 		return true;
 	}
-	bool actor_role::handle(const message<pbnet::PROBUFF_NET_RECHARGE>& adata)
+		bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_RECHARGE>& adata)
 	{
 		return true;
 	}
@@ -455,7 +454,7 @@ namespace ngl
 		create_init(adata.get_data()->mname());
 		return true;
 	}
-	bool actor_role::handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
+		bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
 	{
 		sync_data_client();
 		log_error()->print("[sync]###[{}]", m_info.name());
@@ -469,7 +468,7 @@ namespace ngl
 			return false;
 		}
 		
-		int32_t lserverid = nnodeid::nodeid(tab->m_id, adata.get_data()->mline());
+			int32_t lserverid = nnodeid::nodeid(static_cast<int16_t>(tab->m_id), static_cast<int16_t>(adata.get_data()->mline()));
 		i32_sessionid lsession = server_session::sessionid(lserverid);
 		if (lsession == -1)
 		{

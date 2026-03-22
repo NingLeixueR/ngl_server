@@ -27,7 +27,7 @@ namespace ngl
 		return netbuff_pool::malloc(alen);
 	}
 
-	void bpool::free(char* ap, int32_t alen)
+	void bpool::free(char* ap, [[maybe_unused]] int32_t alen)
 	{
 		netbuff_pool::free(ap);
 		return;

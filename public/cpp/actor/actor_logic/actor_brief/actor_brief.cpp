@@ -82,7 +82,7 @@ namespace ngl
 		register_handle<actor_activity_manage>(e_ready_all);
 	}
 	
-	bool actor_brief::timer_handle(const message<np_timerparm>& adata)
+	bool actor_brief::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		return true;
 	}

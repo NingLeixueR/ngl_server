@@ -212,7 +212,7 @@ namespace ngl
 		virtual void handle_after(handle_pram&) {/* Function,if base class */ }
 
 		// Optional hook triggered when a DB table finishes loading.
-		virtual void loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat) {/* Function,if base class */ }
+		virtual void loaddb_finish([[maybe_unused]] pbdb::ENUM_DB atype, [[maybe_unused]] enum_dbstat astat) {/* Function,if base class */ }
 
 		// Destroy or recycle the actor implementation.
 		virtual void release() = 0;

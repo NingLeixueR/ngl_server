@@ -162,7 +162,7 @@ namespace ngl
 		}
 	}
 
-	bool actor::handle_broadcast(const message<np_actor_broadcast>& adata)
+	bool actor::handle_broadcast([[maybe_unused]] const message<np_actor_broadcast>& adata)
 	{
 		// Persist first so broadcast() can assume DB-backed state is already synchronized.
 		if (manage_dbclient() != nullptr)

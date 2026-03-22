@@ -152,19 +152,23 @@ namespace ngl
 			log_error()->print("drop:weight:{}", amap);
 		}
 
-		bool droplist(int aid, int acount, std::map<int, int>& amap)
-		{
-			for (int i = 0; i < acount; ++i)
+			bool droplist(int aid, int acount, std::map<int, int>& amap)
 			{
-				std::map<int, int> lmap;
+				for (int i = 0; i < acount; ++i)
+				{
+					std::map<int, int> lmap;
 				if (weight(aid, lmap) == false)
 				{
 					return false;
+					}
+					print_weight(lmap);
+					for (const auto& [litemid, lcount] : lmap)
+					{
+						amap[litemid] += lcount;
+					}
 				}
-				print_weight(lmap);
+				return true;
 			}
-			return true;
-		}
 
 		void map2goolemap(std::map<int, int>& amap1, google::protobuf::Map<int32_t, int32_t>& amap2)
 		{

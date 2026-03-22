@@ -289,7 +289,7 @@ namespace ngl
 		ngl::actor_robot_manage::parse_command(std::move(lcmd));
 	}
 
-	bool actor_robot::timer_handle(const message<np_timerparm>& adata)
+	bool actor_robot::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		tick_behavior_tree();
 		return true;

@@ -96,7 +96,6 @@ namespace ngl
 
 	void actor_gateway_g2c::get_allclientbyarea(std::map<i32_sessionid, i64_actorid>& amap, i16_area aarea)
 	{
-		auto& linfo = m_info.info();
 		auto lpmap = tools::findmap(m_info.info(), aarea);
 		if (lpmap == nullptr)
 		{
@@ -113,7 +112,7 @@ namespace ngl
 		}
 	}
 
-	bool actor_gateway_g2c::timer_handle(const message<np_timerparm>& adata)
+	bool actor_gateway_g2c::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		return true;
 	}

@@ -36,7 +36,7 @@ namespace ngl
 		for (auto itor = lmapdata.begin();itor!= lmapdata.end();++itor)
 		{
 			MODIFIED_RETUAN(lpdbaccount, itor->second);
-			i16_area larea = lpdbaccount->marea();
+				i16_area larea = static_cast<i16_area>(lpdbaccount->marea());
 			const std::string& laccount = lpdbaccount->maccount();
 			m_areaofaccount[larea].m_data[laccount] = &itor->second;
 			m_max_accountid = std::max(m_max_accountid, nguid::actordataid(lpdbaccount->mid()));
@@ -50,6 +50,6 @@ namespace ngl
 
 	std::map<std::string, data_modified<pbdb::db_account>*>& account::accountbyarea(int area)
 	{
-		return m_areaofaccount[area].m_data;
+		return m_areaofaccount[static_cast<i16_area>(area)].m_data;
 	}
 }//namespace ngl

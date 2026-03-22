@@ -100,7 +100,7 @@ namespace ngl
 		{
 			return 0;
 		}
-		return tab->m_fightcoefficient * avalues;
+		return static_cast<int64_t>(tab->m_fightcoefficient * avalues);
 	}
 }//namespace ngl
 
@@ -113,10 +113,10 @@ namespace ngl
 			auto itor = aattr.find(_eattr);
 			if (itor != aattr.end())
 			{
-				itor->second += itor->second * _value;
+				itor->second += static_cast<int64_t>(itor->second * _value);
 				if (m_module == EnumModule::E_ModuleRoot)
 				{
-					itor->second = ttab_attribute::instance().uplowlimit(_eattr, itor->second);
+					itor->second = ttab_attribute::instance().uplowlimit(_eattr, static_cast<int32_t>(itor->second));
 				}
 			}
 		}

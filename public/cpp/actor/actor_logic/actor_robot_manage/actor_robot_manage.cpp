@@ -135,7 +135,7 @@ namespace ngl
 			return;
 		}
 		
-		ntcp::instance().send_server(nnodeid::nodeid(tab->m_login, 1), pro, nguid::moreactor(), instance().id_guid());
+			ntcp::instance().send_server(nnodeid::nodeid(static_cast<int16_t>(tab->m_login), 1), pro, nguid::moreactor(), instance().id_guid());
 	}
 
 	bool actor_robot_manage::check_connect(i32_serverid aserverid, ENET_PROTOCOL aprotocol) const
@@ -283,7 +283,7 @@ namespace ngl
 			return false;
 		}
 
-		lpukcp->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp"), [this, &lprobot, lserverid, akcpenum, aseractorid](char* buff, int len)
+			lpukcp->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp"), [this, &lprobot, lserverid, akcpenum, aseractorid](char* buff, [[maybe_unused]] int len)
 			{
 				log_error()->print("Local GetIp Finish : {}", buff);
 				ukcp::m_localuip = buff;
@@ -308,7 +308,7 @@ namespace ngl
 	}
 
 
-	bool actor_robot_manage::timer_handle(const message<np_timerparm>& adata)
+	bool actor_robot_manage::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		return true;
 	}

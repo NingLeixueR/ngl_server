@@ -184,7 +184,7 @@ namespace ngl
 		brief_activityvalues(aroleid);
 	}
 
-	void activity::brief_activityvalues(i64_actorid aroleid)
+	void activity::brief_activityvalues([[maybe_unused]] i64_actorid aroleid)
 	{
 		tdb_brief::nsp_cwrite<actor_activity_manage>::instance(actor_activity_manage::actorid()).change();
 	}

@@ -135,7 +135,7 @@ namespace ngl
 	}
 
 
-	bool actor_example_guess_number::timer_handle(const message<np_timerparm>& adata)
+	bool actor_example_guess_number::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		int32_t lnow = (int32_t)localtime::gettime();
 		if (isfinish() == false)

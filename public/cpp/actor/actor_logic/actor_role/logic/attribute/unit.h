@@ -31,10 +31,11 @@ namespace ngl
 		dynamic_attribute			m_dynamic;
 		pbdb::POSITION				m_position;
 	public:
-		unit(i64_actorid aunitid, pbdb::EUNIT atype) :
-			m_type(atype),
-			m_dynamic(aunitid)
-		{}
+			unit(i64_actorid aunitid, pbdb::EUNIT atype) :
+				m_type(atype),
+				m_id(aunitid),
+				m_dynamic(aunitid)
+			{}
 
 		void init(attribute aattribute)
 		{
@@ -50,8 +51,8 @@ namespace ngl
 		attribute& get_attribute();
 
 		// # [Set/get]unit id
-		bool set_id(int32_t aid);
-		int32_t id();
+			bool set_id(i64_actorid aid);
+			i64_actorid id();
 
 		// # Getunit attribute
 		dynamic_attribute& dynamic();
@@ -72,7 +73,7 @@ namespace ngl
 		void set_speed(int32_t aspeed);
 		int32_t speed();
 
-		void update(int64_t ams);
+			void update([[maybe_unused]] int64_t ams);
 	};
 
 	class unit_role: public unit

@@ -148,10 +148,10 @@ namespace ngl
         template <typename T>
         static void field_numbers(std::set<i32_fieldnumber>& afieldset)
         {
-            field_numbers<T>([&afieldset](i32_fieldnumber afieldnumber, const std::string& afieldname)
-                {
-                    afieldset.insert(afieldnumber);
-                }
+	            field_numbers<T>([&afieldset](i32_fieldnumber afieldnumber, [[maybe_unused]] const std::string& afieldname)
+	                {
+	                    afieldset.insert(afieldnumber);
+	                }
             );
         }
     };

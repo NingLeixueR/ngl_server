@@ -116,7 +116,7 @@ namespace ngl
 		>(e_ready_all);
 	}
 
-	bool actor_role_manage::timer_handle(const message<np_timerparm>& adata)
+	bool actor_role_manage::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		return true;
 	}

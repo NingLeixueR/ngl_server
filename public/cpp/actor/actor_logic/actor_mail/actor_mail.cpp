@@ -103,7 +103,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_mail::timer_handle(const message<np_timerparm>& adata)
+	bool actor_mail::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		return true;
 	}

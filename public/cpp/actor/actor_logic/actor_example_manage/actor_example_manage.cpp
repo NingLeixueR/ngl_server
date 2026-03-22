@@ -118,7 +118,7 @@ namespace ngl
 		>(e_ready_all);
 	}
 
-	bool actor_example_manage::timer_handle(const message<np_timerparm>& adata)
+	bool actor_example_manage::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		int32_t lnow = (int32_t)localtime::gettime();
 		pbexample::ECROSS lecross = tab_self_area > 0 ? pbexample::ECROSS::ECROSS_ORDINARY : pbexample::ECROSS::ECROSS_CROSS_ORDINARY;

@@ -96,7 +96,7 @@ namespace ngl
 		for (int32_t tid : ttab_servers::instance().const_tab()->m_actorserver)
 		{
 			i64_actorid lactorserve = actor_server::actorid();
-			actor::send_server(nnodeid::nodeid(tid, 1), pro, lactorserve, nguid::make());
+			actor::send_server(nnodeid::nodeid(static_cast<int16_t>(tid), 1), pro, lactorserve, nguid::make());
 		}
 	}
 
@@ -123,9 +123,9 @@ namespace ngl
 			.m_ms = sysconfig::sessionwait() * localtime::MILLISECOND,
 			.m_intervalms = [](int64_t) {return sysconfig::sessionwait() * localtime::MILLISECOND; } ,
 			.m_count = 1,
-			.m_fun = [this, lroleid, larea](const wheel_node* anode)
-			{
-				auto pro = std::make_shared<np_gateway_close_session>(np_gateway_close_session
+				.m_fun = [this, lroleid, larea](const wheel_node*)
+				{
+					auto pro = std::make_shared<np_gateway_close_session>(np_gateway_close_session
 					{
 						.m_roleid = lroleid,
 						.m_area = larea,
@@ -139,7 +139,7 @@ namespace ngl
 		sync_actorserver_gatewayid(nguid::make(ACTOR_ROLE, larea, lroleid), true);
 	}	
 
-	bool actor_gateway::timer_handle(const message<np_timerparm>& adata)
+	bool actor_gateway::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		return true;
 	}

@@ -97,7 +97,7 @@ namespace ngl
 
 	void attribute::init_data(EnumModule aenum, attribute_value& avalue)
 	{
-		if (E_ModuleBuff)
+		if (aenum == E_ModuleBuff)
 		{
 			for (int i = E_ModuleBuffStart; i <= E_ModuleBuffFinish; ++i)
 			{

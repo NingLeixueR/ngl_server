@@ -424,7 +424,7 @@ namespace ngl
 		ngl::ncurl::set_param(lhttp, lparm);
 		bool lbool = true;
 
-		ngl::ncurl::set_callback(lhttp, [&lbool](int anum, ngl::http_parm& aparm)
+			ngl::ncurl::set_callback(lhttp, [&lbool]([[maybe_unused]] int anum, ngl::http_parm& aparm)
 			{
 				log_error()->print("curl callback [{}]", aparm.m_recvdata);
 				lbool = false;

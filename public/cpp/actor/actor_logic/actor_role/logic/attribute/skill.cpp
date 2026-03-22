@@ -56,8 +56,8 @@ namespace ngl
 		}
 
 		// Translated comment.
-		int32_t lcoolabsolute = ldynamic.get_attribute(E_CooldownAbsolute);
-		int32_t lcoolprop = ldynamic.get_attribute(E_CooldownProp);
+		int32_t lcoolabsolute = static_cast<int32_t>(ldynamic.get_attribute(E_CooldownAbsolute));
+		int32_t lcoolprop = static_cast<int32_t>(ldynamic.get_attribute(E_CooldownProp));
 
 		int32_t lcooldown = cooldown();
 
@@ -67,7 +67,7 @@ namespace ngl
 			lvalue = 0;
 		}
 
-		int32_t lnow = (int32_t)localtime::gettime();
+		int32_t lnow = static_cast<int32_t>(localtime::gettime());
 		if (m_cooldownutc + lvalue > lnow)
 		{
 			return false;

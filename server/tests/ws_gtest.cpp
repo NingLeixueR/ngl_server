@@ -53,29 +53,30 @@ struct tls_identity
 
 tls_identity make_tls_identity()
 {
-	std::unique_ptr<EVP_PKEY, decltype(&EVP_PKEY_free)> lpkey(EVP_PKEY_new(), EVP_PKEY_free);
-	std::unique_ptr<RSA, decltype(&RSA_free)> lrsa(RSA_new(), RSA_free);
-	std::unique_ptr<BIGNUM, decltype(&BN_free)> lbn(BN_new(), BN_free);
+	std::unique_ptr<EVP_PKEY, decltype(&EVP_PKEY_free)> lpkey(nullptr, EVP_PKEY_free);
+	std::unique_ptr<EVP_PKEY_CTX, decltype(&EVP_PKEY_CTX_free)> lctx(EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nullptr), EVP_PKEY_CTX_free);
 	std::unique_ptr<X509, decltype(&X509_free)> lcert(X509_new(), X509_free);
 	std::unique_ptr<BIO, decltype(&BIO_free)> lcert_bio(BIO_new(BIO_s_mem()), BIO_free);
 	std::unique_ptr<BIO, decltype(&BIO_free)> lkey_bio(BIO_new(BIO_s_mem()), BIO_free);
 
-	if (!lpkey || !lrsa || !lbn || !lcert || !lcert_bio || !lkey_bio)
+	if (!lctx || !lcert || !lcert_bio || !lkey_bio)
 	{
 		throw std::runtime_error("failed to allocate OpenSSL objects");
 	}
-	if (BN_set_word(lbn.get(), RSA_F4) != 1)
+	if (EVP_PKEY_keygen_init(lctx.get()) != 1)
 	{
-		throw std::runtime_error("failed to initialize RSA exponent");
+		throw std::runtime_error("failed to initialize RSA key generation");
 	}
-	if (RSA_generate_key_ex(lrsa.get(), 2048, lbn.get(), nullptr) != 1)
+	if (EVP_PKEY_CTX_set_rsa_keygen_bits(lctx.get(), 2048) != 1)
+	{
+		throw std::runtime_error("failed to set RSA key size");
+	}
+	EVP_PKEY* lraw_key = nullptr;
+	if (EVP_PKEY_keygen(lctx.get(), &lraw_key) != 1)
 	{
 		throw std::runtime_error("failed to generate RSA key");
 	}
-	if (EVP_PKEY_assign_RSA(lpkey.get(), lrsa.release()) != 1)
-	{
-		throw std::runtime_error("failed to assign RSA key");
-	}
+	lpkey.reset(lraw_key);
 
 	if (X509_set_version(lcert.get(), 2) != 1)
 	{

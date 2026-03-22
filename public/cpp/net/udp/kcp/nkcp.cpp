@@ -21,7 +21,7 @@ namespace ngl
 {
 	i16_port nkcp::kcp_port(int32_t atid, int16_t atcount, pbnet::ENUM_KCP aenum)
 	{
-		return (atid * enets_kcp_tid) + aenum + (atcount * enets_kcp_tcount);
+		return static_cast<i16_port>((atid * enets_kcp_tid) + static_cast<int32_t>(aenum) + (atcount * enets_kcp_tcount));
 	}
 
 	std::shared_ptr<ukcp> nkcp::kcp(i16_port auport)

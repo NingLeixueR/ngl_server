@@ -178,7 +178,7 @@ namespace ngl
 		log_error()->print("game[{}] \ngateway[{}]", m_game, m_gateway);
 	}
 
-	bool actor_login::timer_handle(const message<np_timerparm>& adata)
+	bool actor_login::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		return true;
 	}

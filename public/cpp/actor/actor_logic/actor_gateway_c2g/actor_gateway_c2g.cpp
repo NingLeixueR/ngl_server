@@ -78,7 +78,7 @@ namespace ngl
 		nforward::c2g();
 	}
 
-	bool actor_gateway_c2g::timer_handle(const message<np_timerparm>& adata)
+	bool actor_gateway_c2g::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		return true;
 	}

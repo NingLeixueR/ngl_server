@@ -84,10 +84,10 @@ namespace ngl
 		int32_t			m_cooldownutc;		// Timeutc
 		unit*			m_unit;				// Translated comment.
 	public:
-		static std::shared_ptr<skill> create(int32_t askillid, int32_t askilllv)
-		{
-			return nullptr;
-		}
+			static std::shared_ptr<skill> create([[maybe_unused]] int32_t askillid, [[maybe_unused]] int32_t askilllv)
+			{
+				return nullptr;
+			}
 
 		// # [Set/get] level
 		bool set_lv(int32_t askilllv);

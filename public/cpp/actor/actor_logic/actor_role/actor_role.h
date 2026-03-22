@@ -114,7 +114,7 @@ namespace ngl
 		
 		// # Forward_type specifiedforwardingtype
 		template <typename T>
-		ecross forward_type(const T& adata)
+			ecross forward_type([[maybe_unused]] const T& adata)
 		{
 			return ecross_ordinary;
 		}
@@ -172,27 +172,27 @@ namespace ngl
 			}
 		}
 
-		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER& adata)
-		{
-			return example_type();
-		}
+			ecross forward_type([[maybe_unused]] const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER& adata)
+			{
+				return example_type();
+			}
 
 		// # Forward_before specifiedforwardingbeforeevent
 		template <typename T>
-		bool forward_before(const T& adata)
-		{
-			return true;
-		}
+			bool forward_before([[maybe_unused]] const T& adata)
+			{
+				return true;
+			}
 
 		// # Forwarding"createguild"before
 		bool forward_before(const pbnet::PROBUFF_NET_FAMIL_CREATE& adata);
 
 		// # Dataid specifiedforwardingmodule dataid
 		template <typename T>
-		int32_t forward_dataid(const T& adata)
-		{
-			return nguid::none_actordataid();
-		}
+			int32_t forward_dataid([[maybe_unused]] const T& adata)
+			{
+				return nguid::none_actordataid();
+			}
 
 		template <typename T>
 		nguid forward_guid(ENUM_ACTOR aactor, ecross atype, nguid& aguid, const T& adata)

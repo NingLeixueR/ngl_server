@@ -25,7 +25,7 @@ namespace ngl
 	class item_create_material : 
 		public item_create
 	{
-		virtual bool mode(actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
+			virtual bool mode([[maybe_unused]] actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
 		{
 			pbdb::item litem;
 			litem.set_mid(-1);
@@ -44,7 +44,7 @@ namespace ngl
 	// Translated comment.
 	class item_create_money : public item_create
 	{
-		virtual bool mode(actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
+			virtual bool mode(actor_role* arole, int32_t atid, int32_t acount, [[maybe_unused]] std::vector<pbdb::item>& avec)
 		{
 			switch (atid)
 			{
@@ -67,7 +67,7 @@ namespace ngl
 	class item_create_equip : 
 		public item_create
 	{
-		virtual bool mode(actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
+			virtual bool mode([[maybe_unused]] actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
 		{
 			pbdb::item litem;
 			litem.set_mid(-1);
@@ -89,7 +89,7 @@ namespace ngl
 	class item_create_card : 
 		public item_create
 	{
-		virtual bool mode(actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
+			virtual bool mode([[maybe_unused]] actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
 		{
 			pbdb::item litem;
 			litem.set_mid(-1);

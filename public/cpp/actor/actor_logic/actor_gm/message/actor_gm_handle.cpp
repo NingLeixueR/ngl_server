@@ -38,7 +38,7 @@ namespace ngl
 				int32_t lcount = sysconfig::node_count(atype);
 				for (int i = 1;i <= lcount;++i)
 				{
-					i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, tab_self_area, nnodeid::nodeid(tab->m_id, i));
+						i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, tab_self_area, nnodeid::nodeid(static_cast<int16_t>(tab->m_id), static_cast<int16_t>(i)));
 					agm->sendbyactorid(lactorid, adata->get_pack(), *adata->get_data());
 				}				
 				return true;
@@ -83,7 +83,7 @@ namespace ngl
 				int32_t dataid = 0;
 				DPROTOCOL(gm_guid, actor_name, area, dataid)
 			};
-			handle_cmd::add("server_stat") = [this](ncjson& aos, const message<ngl::np_gm>* adata)
+				handle_cmd::add("server_stat") = [this]([[maybe_unused]] ncjson& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<msg_actor_stat> lpro(adata->get_pack()->m_id, "server_stat", this);
 					actor_manage::instance().get_actor_stat(lpro.m_data);
@@ -103,7 +103,7 @@ namespace ngl
 						lresponse.m_data = tools::lexical_cast<std::string>(nguid::make(ltype, lguid.area, lguid.dataid));
 					}
 				};
-			handle_cmd::add("all_protocol") = [this](ncjson& aos, const message<ngl::np_gm>* adata)
+				handle_cmd::add("all_protocol") = [this]([[maybe_unused]] ncjson& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<protocols> lresponse(adata->get_pack()->m_id, "all_protocol", this);
 					actor_gmclient::allprotocol(lresponse.m_data);
@@ -126,7 +126,7 @@ namespace ngl
 						lresponse.m_data = true;
 					}
 				};
-			handle_cmd::add("get_time") = [this](ncjson& aos, const message<ngl::np_gm>* adata)
+				handle_cmd::add("get_time") = [this]([[maybe_unused]] ncjson& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<std::string> lresponse(adata->get_pack()->m_id, "get_time", localtime::time2str("%Y-%m-%d %H:%M:%S"), this);
 					return;
@@ -186,12 +186,12 @@ namespace ngl
 			{
 				if (lactorname == "ACTOR_DB")
 				{
-					int32_t ltype = 0;
-					if (!njson::pop(lreadjson, { "db" }, ltype))
-					{
-						return true;
-					}
-					ENUM_ACTOR lactortype = db_enum((pbdb::ENUM_DB)(ltype));
+						int32_t ldbtype = 0;
+						if (!njson::pop(lreadjson, { "db" }, ldbtype))
+						{
+							return true;
+						}
+						ENUM_ACTOR lactortype = db_enum(static_cast<pbdb::ENUM_DB>(ldbtype));
 					i64_actorid ldbactorid = nguid::make(lactortype, tab_self_area, nguid::none_actordataid());
 					sendbyactorid(ldbactorid, adata.get_pack(), *adata.get_data());
 				}

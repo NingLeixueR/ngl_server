@@ -150,7 +150,6 @@ namespace ngl
 	bool actor_server::handle(const message<np_actornode_update_server>& adata)
 	{
 		auto lrecv = adata.get_data();
-		auto lpack = adata.get_pack();
 		
 		const i32_serverid lserverid = lrecv->m_data.m_id;
 		naddress::actor_address_add(lserverid, lrecv->m_data.m_add);
@@ -184,7 +183,6 @@ namespace ngl
 	bool actor_server::handle(const message<np_actornode_update_mass>& adata)
 	{
 		auto lparm = adata.get_data();
-		auto lpack = adata.get_pack();
 
 		auto pro = std::make_shared<np_actornode_update_server>();
 		pro->m_data = lparm->m_mass;

@@ -171,7 +171,7 @@ namespace ngl
 		const pbdb::db_keyvalue* lkeyvalue = tdb_keyvalue::nsp_cread<actor_activity_manage>::instance(id_guid()).getconst(pbdb::db_keyvalue::open_server);
 		if (lkeyvalue != nullptr)
 		{
-			int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->mvalue());
+			static_cast<void>(tools::lexical_cast<int32_t>(lkeyvalue->mvalue()));
 			ttab_activityopenserver::instance().foreach([&](tab_activityopenserver& atab)
 				{
 					if (!m_activitys.contains(atab.m_id))

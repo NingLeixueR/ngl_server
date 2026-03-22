@@ -95,24 +95,24 @@ namespace ngl
 
 		bool init(pbdb::eranklist atype, const pbdb::db_brief& abrief, data_modified<pbdb::db_ranklist>* aranklist)
 		{
-			switch (atype)
+			switch (static_cast<int>(atype))
 			{
-			case pbdb::eranklist::lv:
+			case static_cast<int>(pbdb::eranklist::lv):
 				return init(abrief, aranklist, pbdb::eranklist::lv, [](const pbdb::db_brief& abrief)
 					{
 						return abrief.mbase().mlv();
 					});
-			case pbdb::eranklist::gold:
+			case static_cast<int>(pbdb::eranklist::gold):
 				return init(abrief, aranklist, pbdb::eranklist::gold, [](const pbdb::db_brief& abrief)
 					{
 						return abrief.mbase().mmoneygold();
 					});
-			case pbdb::eranklist::activity_lv + 1:
-				return init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_lv + 1),
+			case static_cast<int>(pbdb::eranklist::activity_lv) + 1:
+				return init(abrief, aranklist, static_cast<pbdb::eranklist>(static_cast<int>(pbdb::eranklist::activity_lv) + 1),
 					std::bind(&rank_item::activitylv<1>, this, std::placeholders::_1)
 				);
-			case pbdb::eranklist::activity_gold + 1:
-				return init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_gold + 1),
+			case static_cast<int>(pbdb::eranklist::activity_gold) + 1:
+				return init(abrief, aranklist, static_cast<pbdb::eranklist>(static_cast<int>(pbdb::eranklist::activity_gold) + 1),
 					std::bind(&rank_item::activitygold<1>, this, std::placeholders::_1)
 				);
 			}

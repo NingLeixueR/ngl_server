@@ -46,7 +46,7 @@ namespace ngl
 					pro.m_data = true;
 				};
 
-			handle_cmd::add("get_openserver") = [this](int id, const ncjson& aos)
+				handle_cmd::add("get_openserver") = [this](int id, [[maybe_unused]] const ncjson& aos)
 				{
 					gcmd<std::string> pro(id, "get_openserver");
 					int32_t lopentime = 0;

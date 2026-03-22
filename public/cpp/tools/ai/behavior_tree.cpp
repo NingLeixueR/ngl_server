@@ -15,9 +15,16 @@
 
 #include "tools/ai/behavior_tree.h"
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4702)
+#endif
 #include <behaviortree_cpp/action_node.h>
 #include <behaviortree_cpp/control_node.h>
 #include <behaviortree_cpp/decorator_node.h>
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 #include <tinyxml2.h>
 
 #include <fstream>

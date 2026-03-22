@@ -747,20 +747,22 @@ namespace ngl
 			return (uint64_t)((n >> 63) ^ (n << 1));
 		}
 
-		static int64_t zigzag64decode(uint64_t n)
-		{
-			return (uint64_t)((n >> 1) ^ -(n & 1));
-		}
+			static int64_t zigzag64decode(uint64_t n)
+			{
+				const uint64_t lmask = 0ULL - (n & 1ULL);
+				return static_cast<int64_t>((n >> 1) ^ lmask);
+			}
 
 		static uint32_t zigzag32encode(int32_t n)
 		{
 			return (uint32_t)((n >> 31) ^ (n << 1));
 		}
 
-		static int32_t zigzag32decode(uint32_t n)
-		{
-			return (int32_t)((n >> 1) ^ -(n & 1));
-		}
+			static int32_t zigzag32decode(uint32_t n)
+			{
+				const uint32_t lmask = 0U - (n & 1U);
+				return static_cast<int32_t>((n >> 1) ^ lmask);
+			}
 	};
 
 	const int32_t varint_impl::m_64maxpos = 10;
@@ -1607,9 +1609,11 @@ namespace ngl
 		SHAPrintContext(context, "before");
 #endif
 
-		j = (context->count[0] >> 3) & 63;
-		if ((context->count[0] += len << 3) < (len << 3)) context->count[1]++;
-		context->count[1] += (len >> 29);
+			j = (context->count[0] >> 3) & 63;
+			const uint32_t llen_lo = static_cast<uint32_t>(len << 3);
+			const uint32_t llen_hi = static_cast<uint32_t>(len >> 29);
+			if ((context->count[0] += llen_lo) < llen_lo) context->count[1]++;
+			context->count[1] += llen_hi;
 		if ((j + len) > 63) {
 			memcpy(&context->buffer[j], data, (i = 64 - j));
 			SHA1_Transform(context->state, context->buffer);

@@ -280,9 +280,9 @@ namespace ngl
 		}
 		MODIFIED_RETURN_CONST(lpfamilyconst, *lpmodifiedfamily);
 		*pro.mutable_minfo() = *lpfamilyconst;
-		for (int64_t aroleid : lpfamilyconst->mmember())
+		for (int64_t lmemberid : lpfamilyconst->mmember())
 		{
-			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_family>::instance(get_actor()->id_guid()).getconst(aroleid);
+			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_family>::instance(get_actor()->id_guid()).getconst(lmemberid);
 			if (lpbrief != nullptr)
 			{
 				*pro.add_mmember() = *lpbrief;

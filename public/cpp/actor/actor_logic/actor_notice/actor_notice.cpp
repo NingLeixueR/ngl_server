@@ -92,7 +92,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_notice::timer_handle(const message<np_timerparm>& adata)
+	bool actor_notice::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		return true;
 	}

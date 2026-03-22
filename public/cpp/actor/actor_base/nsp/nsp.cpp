@@ -243,7 +243,7 @@ namespace ngl
 		m_core.m_writeids = awriteids;
 	}
 
-	void care_data::init(bool aread, const std::set<i64_actorid>& awriteids)
+	void care_data::init([[maybe_unused]] bool aread, const std::set<i64_actorid>& awriteids)
 	{
 		m_core = nsp_care{};
 		m_core.m_read = false;

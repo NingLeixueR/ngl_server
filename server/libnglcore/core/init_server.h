@@ -57,7 +57,7 @@
 #include <chrono>
 #include <thread>
 
-startup_error init_server(int aid, const std::set<pbnet::ENUM_KCP>& akcp = {}, int* atcp_port = nullptr)
+startup_error init_server([[maybe_unused]] int aid, const std::set<pbnet::ENUM_KCP>& akcp = {}, int* atcp_port = nullptr)
 {
 	if (atcp_port != nullptr)
 	{

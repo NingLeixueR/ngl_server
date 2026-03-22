@@ -35,7 +35,7 @@ namespace ngl
 
 		if (handle_cmd::empty())
 		{
-			handle_cmd::add("get_notice") = [this](int id, ncjson& aos)
+				handle_cmd::add("get_notice") = [this](int id, [[maybe_unused]] ncjson& aos)
 				{// Return {"notice":gm_notice[]}
 					gcmd<std::vector<std::string>> pro(id, "get_notice");
 					for (auto& [_guid, _data] : m_notice.data())
