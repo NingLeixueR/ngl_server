@@ -117,79 +117,84 @@ namespace ngl
 			}
 		}
 
-		static std::vector<std::string> split_args(const std::string& aargs)
+		static std::vector<std::string> split_args(std::string_view aargs)
 		{
 			if (aargs.empty())
 			{
 				return {};
 			}
 
-			std::vector<std::string> lTOKENS;
-			std::string lTOKEN;
-			bool lIN_Q = false;
-			char lQ_CH = '\0';
-			bool lESC = false;
-
-			auto lFLUSH = [&]()
+			std::vector<std::string> ltoks;
+			ltoks.reserve(static_cast<std::size_t>(std::count_if(aargs.begin(), aargs.end(),
+				[](char ach)
 				{
-					if (!lTOKEN.empty())
+					return std::isspace(static_cast<unsigned char>(ach)) != 0;
+				})) + 1);
+			std::string ltok;
+			bool lin_q = false;
+			char lq_ch = '\0';
+			bool lesc = false;
+
+			auto lflush = [&]()
+				{
+					if (!ltok.empty())
 					{
-						lTOKENS.push_back(std::move(lTOKEN));
-						lTOKEN.clear();
+						ltoks.emplace_back(std::move(ltok));
+						ltok.clear();
 					}
 				};
 
-			for (const char lCH : aargs)
+			for (const char lch : aargs)
 			{
-				if (lESC)
+				if (lesc)
 				{
-					lTOKEN.push_back(lCH);
-					lESC = false;
+					ltok.push_back(lch);
+					lesc = false;
 					continue;
 				}
 
-				if (lCH == '\\')
+				if (lch == '\\')
 				{
-					lESC = true;
+					lesc = true;
 					continue;
 				}
 
-				if (lIN_Q)
+				if (lin_q)
 				{
-					if (lCH == lQ_CH)
+					if (lch == lq_ch)
 					{
-						lIN_Q = false;
-						lQ_CH = '\0';
+						lin_q = false;
+						lq_ch = '\0';
 						continue;
 					}
 
-					lTOKEN.push_back(lCH);
+					ltok.push_back(lch);
 					continue;
 				}
 
-				if (lCH == '"' || lCH == '\'')
+				if (lch == '"' || lch == '\'')
 				{
-					lIN_Q = true;
-					lQ_CH = lCH;
+					lin_q = true;
+					lq_ch = lch;
 					continue;
 				}
 
-				if (std::isspace(static_cast<unsigned char>(lCH)))
+				if (std::isspace(static_cast<unsigned char>(lch)))
 				{
-					lFLUSH();
+					lflush();
 					continue;
 				}
 
-				lTOKEN.push_back(lCH);
+				ltok.push_back(lch);
 			}
 
-			if (lESC)
+			if (lesc)
 			{
-				lTOKEN.push_back('\\');
+				ltok.push_back('\\');
 			}
 
-			lFLUSH();
-			return lTOKENS;
+			lflush();
+			return ltoks;
 		}
 
 		static bool is_help_arg(std::string_view aarg)
@@ -439,8 +444,7 @@ namespace ngl
 
 		bool parse(std::string_view aargs)
 		{
-			const std::string largs(aargs);
-			return parse(split_args(largs));
+			return parse(split_args(aargs));
 		}
 
 		bool parse(const std::vector<std::string>& aargs)

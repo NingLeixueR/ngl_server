@@ -464,6 +464,31 @@ TEST(ToolsTest, SpliteSpecialMapDoesNotMutateOutputOnParseFailure)
 	EXPECT_EQ(values.at(99), 100);
 }
 
+TEST(ToolsTest, SpliteSpecialMapOverwritesExistingOutput)
+{
+	std::map<int32_t, int32_t> values = {
+		{ 99, 100 },
+	};
+
+	ASSERT_TRUE(ngl::tools::splite_special("[1:2][3:4]", "\\[", "]", values));
+	ASSERT_EQ(values.size(), 2u);
+	EXPECT_EQ(values.at(1), 2);
+	EXPECT_EQ(values.at(3), 4);
+	EXPECT_EQ(values.count(99), 0u);
+}
+
+TEST(ToolsTest, SpliteSpecialRejectsNullInputWithoutMutation)
+{
+	std::vector<std::pair<std::string, std::string>> values = {
+		{ "keep", "value" },
+	};
+
+	EXPECT_FALSE(ngl::tools::splite_special(static_cast<const char*>(nullptr), "\\[", "]", values));
+	ASSERT_EQ(values.size(), 1u);
+	EXPECT_EQ(values[0].first, "keep");
+	EXPECT_EQ(values[0].second, "value");
+}
+
 TEST(ToolsTest, UrlDecodeHandlesIncompletePercentSequences)
 {
 	EXPECT_EQ(ngl::tools::url_decode("value%"), "value%");

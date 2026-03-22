@@ -692,17 +692,18 @@ namespace ngl
 
 	std::string tools::url_decode(const std::string& szToDecode)
 	{
-		std::string result;
-		result.reserve(szToDecode.size());
-		for (size_t i = 0; i < szToDecode.length(); ++i)
+		std::string lret;
+		const std::size_t llen = szToDecode.size();
+		lret.reserve(llen);
+		for (std::size_t i = 0; i < llen; ++i)
 		{
 			switch (szToDecode[i])
 			{
 			case '+':
-				result.push_back(' ');
+				lret.push_back(' ');
 				break;
 			case '%':
-				if (i + 2 < szToDecode.length())
+				if (i + 2 < llen)
 				{
 					const int high = detail::hex_value(szToDecode[i + 1]);
 					const int low = detail::hex_value(szToDecode[i + 2]);
@@ -711,30 +712,30 @@ namespace ngl
 						const unsigned char decoded = static_cast<unsigned char>((high << 4) | low);
 						if (detail::keep_pct(decoded))
 						{
-							result.push_back('%');
+							lret.push_back('%');
 						}
 						else
 						{
-							result.push_back(static_cast<char>(decoded));
+							lret.push_back(static_cast<char>(decoded));
 							i += 2;
 						}
 					}
 					else
 					{
-						result.push_back('%');
+						lret.push_back('%');
 					}
 				}
 				else
 				{
-					result.push_back('%');
+					lret.push_back('%');
 				}
 				break;
 			default:
-				result.push_back(szToDecode[i]);
+				lret.push_back(szToDecode[i]);
 				break;
 			}
 		}
-		return result;
+		return lret;
 	}
 
 	struct varint_impl

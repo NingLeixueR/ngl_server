@@ -462,9 +462,9 @@ namespace ngl
 			lparsed.reserve(lvec.size());
 			try
 			{
-				for (auto& item : lvec)
+				for (const std::string& litem : lvec)
 				{
-					lparsed.emplace_back(tools::lexical_cast<T>(item.c_str()));
+					lparsed.emplace_back(tools::lexical_cast<T>(litem.c_str()));
 				}
 			}
 			catch (const boost::bad_lexical_cast&)
@@ -486,9 +486,9 @@ namespace ngl
 			std::set<T> lparsed;
 			try
 			{
-				for (auto& item : lvec)
+				for (const std::string& litem : lvec)
 				{
-					lparsed.emplace(tools::lexical_cast<T>(item.c_str()));
+					lparsed.emplace(tools::lexical_cast<T>(litem.c_str()));
 				}
 			}
 			catch (const boost::bad_lexical_cast&)
@@ -504,13 +504,18 @@ namespace ngl
 		template <typename T>
 		static bool splite(int32_t aindex, const std::vector<std::string>& avec, T& adata)
 		{
-			if (aindex >= avec.size())
+			if (aindex < 0)
+			{
+				return false;
+			}
+			const std::size_t lidx = static_cast<std::size_t>(aindex);
+			if (lidx >= avec.size())
 			{
 				return false;
 			}
 			try
 			{
-				adata = tools::lexical_cast<T>(avec[aindex].c_str());
+				adata = tools::lexical_cast<T>(avec[lidx].c_str());
 			}
 			catch (...)
 			{
@@ -555,6 +560,10 @@ namespace ngl
 		template <typename TFIRST = std::string, typename TSECOND = std::string>
 		static bool splite_special(const char* astr, const char* akey1, const char* akey2, std::vector<std::pair<TFIRST, TSECOND>>& avec)
 		{
+			if (astr == nullptr || akey1 == nullptr || akey2 == nullptr)
+			{
+				return false;
+			}
 			std::string ltemp = astr;
 			ngl::tools::replace_ret(akey1, "", ltemp, ltemp);
 			std::vector<std::string> lvec;
@@ -564,10 +573,10 @@ namespace ngl
 			}
 			std::vector<std::pair<TFIRST, TSECOND>> lmailvec;
 			lmailvec.reserve(lvec.size());
-			for (auto& item : lvec)
+			for (const std::string& litem : lvec)
 			{
 				std::pair<TFIRST, TSECOND> lpair;
-				if (ngl::tools::splite(item.c_str(), ":", lpair.first, lpair.second) == false)
+				if (ngl::tools::splite(litem.c_str(), ":", lpair.first, lpair.second) == false)
 				{
 					return false;
 				}
@@ -580,6 +589,10 @@ namespace ngl
 		template <typename TFIRST = std::string, typename TSECOND = std::string>
 		static bool splite_special(const char* astr, const char* akey1, const char* akey2, std::map<TFIRST, TSECOND>& amap)
 		{
+			if (astr == nullptr || akey1 == nullptr || akey2 == nullptr)
+			{
+				return false;
+			}
 			std::string ltemp = astr;
 			ngl::tools::replace_ret(akey1, "", ltemp, ltemp);
 			std::vector<std::string> lvec;
@@ -588,16 +601,16 @@ namespace ngl
 				return false;
 			}
 			std::map<TFIRST, TSECOND> lparsed;
-			for (auto& item : lvec)
+			for (const std::string& litem : lvec)
 			{
 				std::pair<TFIRST, TSECOND> lpair;
-				if (ngl::tools::splite(item.c_str(), ":", lpair.first, lpair.second) == false)
+				if (ngl::tools::splite(litem.c_str(), ":", lpair.first, lpair.second) == false)
 				{
 					return false;
 				}
 				lparsed.emplace(std::move(lpair));
 			}
-			amap.insert(lparsed.begin(), lparsed.end());
+			amap = std::move(lparsed);
 			return true;
 		}
 #pragma endregion
@@ -637,7 +650,7 @@ namespace ngl
 			{
 				if (i != 0)
 				{
-					astr += afg;
+					astr.append(afg, lfglen);
 				}
 				astr += avec[i];
 			}
@@ -702,7 +715,7 @@ namespace ngl
 			{
 				if (itor != aset.begin())
 				{
-					astr += afg;
+					astr.append(afg, lfglen);
 				}
 				astr += *itor;
 			}

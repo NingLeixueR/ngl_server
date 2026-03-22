@@ -11,6 +11,7 @@
 #include <cctype>
 #include <ctime>
 #include <mutex>
+#include <string_view>
 
 namespace
 {
@@ -134,7 +135,7 @@ namespace ngl_runtime::detail
 		return aargc >= 5 && aargv != nullptr && aargv[4] != nullptr && std::string_view(aargv[4]) == "init";
 	}
 
-	std::string command_suffix(const std::string& aline, std::size_t askip)
+	std::string_view command_suffix(const std::string& aline, std::size_t askip)
 	{
 		std::size_t lpos = 0;
 		std::size_t lcount = 0;
@@ -155,7 +156,7 @@ namespace ngl_runtime::detail
 		{
 			++lpos;
 		}
-		return lpos < lsize ? aline.substr(lpos) : std::string();
+		return lpos < lsize ? std::string_view(aline).substr(lpos) : std::string_view{};
 	}
 
 	bool apply_robot_cmd(const std::string& aline, robot_state& astate)
@@ -177,20 +178,20 @@ namespace ngl_runtime::detail
 				return true;
 			}
 
-			const std::string lreplay = command_suffix(aline, 2);
+			const std::string_view lreplay = command_suffix(aline, 2);
 			std::scoped_lock llock(astate.m_mutex);
 			if (lcmd == "test")
 			{
 				// Replace the replay plan with a single repeating command.
 				astate.m_plan.m_interval_ms = { ldelay };
-				astate.m_plan.m_commands = { lreplay };
+				astate.m_plan.m_commands = { std::string(lreplay) };
 				astate.m_enabled.store(true, std::memory_order_release);
 			}
 			else
 			{
 				// Append one more delayed command to the current replay plan.
 				astate.m_plan.m_interval_ms.push_back(ldelay);
-				astate.m_plan.m_commands.push_back(lreplay);
+				astate.m_plan.m_commands.emplace_back(lreplay);
 			}
 			return true;
 		}
@@ -251,7 +252,9 @@ namespace ngl_runtime
 		{
 			// One extra argument maps to the legacy "login <account>" shortcut.
 			lreq.mode = robot_launch_mode::login;
-			lreq.command = std::format("login {}", aargv[4]);
+			lreq.command.reserve(6 + std::char_traits<char>::length(aargv[4]));
+			lreq.command = "login ";
+			lreq.command += aargv[4];
 			return lreq;
 		}
 
@@ -259,7 +262,16 @@ namespace ngl_runtime
 		{
 			// Three extra arguments map to the legacy batched login flow.
 			lreq.mode = robot_launch_mode::logins;
-			lreq.command = std::format("logins {} {} {}", aargv[4], aargv[5], aargv[6]);
+			const std::size_t llen4 = std::char_traits<char>::length(aargv[4]);
+			const std::size_t llen5 = std::char_traits<char>::length(aargv[5]);
+			const std::size_t llen6 = std::char_traits<char>::length(aargv[6]);
+			lreq.command.reserve(10 + llen4 + llen5 + llen6);
+			lreq.command = "logins ";
+			lreq.command += aargv[4];
+			lreq.command.push_back(' ');
+			lreq.command += aargv[5];
+			lreq.command.push_back(' ');
+			lreq.command += aargv[6];
 		}
 		return lreq;
 	}
