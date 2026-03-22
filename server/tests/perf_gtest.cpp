@@ -323,9 +323,9 @@ TEST(TTabServersPerfTest, IndexedLookupBenchmark)
 	const auto table = make_server_table(2000);
 	const std::string target = "server_2000";
 	const int kIterations = ngl_test_support::scaled_iterations(20000);
-	volatile int sink = 0;
+	int sink = 0;
 
-	const long long legacy_us = ngl_test_support::benchmark_us([&]() {
+	const long long legacy_us = ngl_test_support::benchmark_us([&table, &target, kIterations, &sink]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			const auto* row = legacy_find_server_by_name(*table, 1, target);
@@ -336,7 +336,7 @@ TEST(TTabServersPerfTest, IndexedLookupBenchmark)
 		}
 	});
 
-	const long long optimized_us = ngl_test_support::benchmark_us([&]() {
+	const long long optimized_us = ngl_test_support::benchmark_us([&table, &target, kIterations, &sink]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			const auto* row = table->const_tab(target, 1);
@@ -364,9 +364,9 @@ TEST(TTabMergeAreaPerfTest, MergeLookupBenchmark)
 		optimized_index[ngl::ttab_mergearea::merge_slot(area)] = static_cast<ngl::i16_area>(kAreaCount);
 	}
 	const int kIterations = ngl_test_support::scaled_iterations(200000);
-	volatile long long sink = 0;
+	long long sink = 0;
 
-	const long long legacy_us = ngl_test_support::benchmark_us([&]() {
+	const long long legacy_us = ngl_test_support::benchmark_us([&legacy, kIterations, kAreaCount, &sink]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			const ngl::i16_area larea = static_cast<ngl::i16_area>((i % kAreaCount) + 1);
@@ -378,7 +378,7 @@ TEST(TTabMergeAreaPerfTest, MergeLookupBenchmark)
 		}
 	});
 
-	const long long optimized_us = ngl_test_support::benchmark_us([&]() {
+	const long long optimized_us = ngl_test_support::benchmark_us([&optimized_index, kIterations, kAreaCount, &sink]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			const ngl::i16_area larea = static_cast<ngl::i16_area>((i % kAreaCount) + 1);
@@ -395,9 +395,9 @@ TEST(CsvPerfTest, StringFieldParsingBenchmark)
 {
 	const std::string payload = "\"" + std::string(256, 'x') + "\",tail";
 	const int kIterations = ngl_test_support::scaled_iterations(100000);
-	volatile int sink = 0;
+	int sink = 0;
 
-	const long long legacy_us = ngl_test_support::benchmark_us([&]() {
+	const long long legacy_us = ngl_test_support::benchmark_us([&payload, kIterations, &sink]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			ngl::csvpair pair;
@@ -410,7 +410,7 @@ TEST(CsvPerfTest, StringFieldParsingBenchmark)
 		}
 	});
 
-	const long long optimized_us = ngl_test_support::benchmark_us([&]() {
+	const long long optimized_us = ngl_test_support::benchmark_us([&payload, kIterations, &sink]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			ngl::csvpair pair;
@@ -433,9 +433,9 @@ TEST(NFilterWordPerfTest, IsFilterBenchmark)
 	load_perf_filter_words();
 	const std::string payload = std::string(2048, 'x') + "badword" + std::string(2048, 'y');
 	const int kIterations = ngl_test_support::scaled_iterations(5000);
-	volatile int sink = 0;
+	int sink = 0;
 
-	const long long legacy_us = ngl_test_support::benchmark_us([&]() {
+	const long long legacy_us = ngl_test_support::benchmark_us([&payload, kIterations, &sink]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			if (legacy_is_filter(payload))
@@ -445,7 +445,7 @@ TEST(NFilterWordPerfTest, IsFilterBenchmark)
 		}
 	});
 
-	const long long optimized_us = ngl_test_support::benchmark_us([&]() {
+	const long long optimized_us = ngl_test_support::benchmark_us([&payload, kIterations, &sink]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
 			if (ngl::nfilterword::is_filter(payload))

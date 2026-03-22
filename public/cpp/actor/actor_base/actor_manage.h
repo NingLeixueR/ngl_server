@@ -54,7 +54,7 @@ namespace ngl
 		ngl::sem					m_sem;
 
 		actor_manage();
-		~actor_manage();
+		~actor_manage() noexcept;
 
 		// Internal helpers require the caller to already hold m_mutex.
 		ptractor* nosafe_get_actor(const nguid& aguid);

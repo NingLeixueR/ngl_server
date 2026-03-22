@@ -304,7 +304,7 @@ namespace ngl
 			}
 			largv.push_back(nullptr);
 
-			return parse_with([&]()
+			return parse_with([this, &largv, &largv_buf]()
 				{
 					return po::command_line_parser(static_cast<int>(largv_buf.size()), largv.data())
 						.options(m_options)
@@ -382,6 +382,7 @@ namespace ngl
 			m_info[normalized_key] = std::string(aremark);
 			return bind_typed_option<T>(normalized_key, [](auto*)
 				{
+					// Optional values intentionally keep Boost's default "value may be absent" behavior.
 				});
 		}
 

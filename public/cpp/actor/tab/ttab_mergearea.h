@@ -118,7 +118,7 @@ namespace ngl
 				return root_area;
 			};
 
-			foreach([&](tab_mergearea& merge_row)
+			foreach([this, &resolve_mergeid](tab_mergearea& merge_row)
 				{
 					const i16_area area = static_cast<i16_area>(merge_row.m_id);
 					const i16_area root_area = resolve_mergeid(area);
@@ -161,11 +161,12 @@ namespace ngl
 			return m_merge1[merge_slot(aarea)];
 		}
 
-		void for_each(const std::function<void(i16_area, std::set<i16_area>&)>& afun)
+		template <typename TFun>
+		void for_each(const TFun& afun)
 		{
-			for (std::pair<const i16_area, std::set<i16_area>>& merged_entry : m_merge2)
+			for (auto& lentry : m_merge2)
 			{
-				afun(merged_entry.first, merged_entry.second);
+				afun(lentry.first, lentry.second);
 			}
 		}
 	};

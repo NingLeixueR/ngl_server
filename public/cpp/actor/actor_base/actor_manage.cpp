@@ -46,40 +46,47 @@ namespace ngl
 	{
 	}
 
-	actor_manage::~actor_manage()
+	actor_manage::~actor_manage() noexcept
 	{
-		m_thread.request_stop();
-		m_sem.post();
-
-		if (m_thread.joinable())
+		try
 		{
-			m_thread.join();
-		}
+			m_thread.request_stop();
+			m_sem.post();
 
-		std::deque<ptrnthread> lworkers;
-		{
-			nlock(m_mutex);
-			lworkers = m_workthreadscopy;
-		}
-
-		for (const ptrnthread& lworker : lworkers)
-		{
-			if (lworker != nullptr)
+			if (m_thread.joinable())
 			{
-				lworker->shutdown();
+				m_thread.join();
 			}
-		}
 
-		nlock(m_mutex);
-		m_workthreads.clear();
-		m_workthreadscopy.clear();
-		m_suspendthreads.clear();
-		m_actorlist.clear();
-		m_actorbroadcast.clear();
-		m_actorbyid.clear();
-		m_delactorfun.clear();
-		m_actorbytype.clear();
-		m_actortype.clear();
+			std::deque<ptrnthread> lworkers;
+			{
+				nlock(m_mutex);
+				lworkers = m_workthreadscopy;
+			}
+
+			for (const ptrnthread& lworker : lworkers)
+			{
+				if (lworker != nullptr)
+				{
+					lworker->shutdown();
+				}
+			}
+
+			nlock(m_mutex);
+			m_workthreads.clear();
+			m_workthreadscopy.clear();
+			m_suspendthreads.clear();
+			m_actorlist.clear();
+			m_actorbroadcast.clear();
+			m_actorbyid.clear();
+			m_delactorfun.clear();
+			m_actorbytype.clear();
+			m_actortype.clear();
+		}
+		catch (...)
+		{
+			// Process teardown must not fail because actor cleanup raised an exception.
+		}
 	}
 
 	void actor_manage::init(i32_threadsize apthreadnum)
@@ -189,7 +196,10 @@ namespace ngl
 		{
 			return false;
 		}
-		ptractor actor_ref(apactor, [](actor_base*) {});
+		ptractor actor_ref(apactor, [](actor_base*)
+			{
+				// The raw pointer is only aliased long enough to forward into the shared_ptr overload.
+			});
 		return add_actor(actor_ref, afun);
 	}
 

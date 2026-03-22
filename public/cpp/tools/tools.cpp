@@ -697,43 +697,42 @@ namespace ngl
 		lret.reserve(llen);
 		for (std::size_t i = 0; i < llen; ++i)
 		{
-			switch (szToDecode[i])
+			const char lch = szToDecode[i];
+			if (lch == '+')
 			{
-			case '+':
 				lret.push_back(' ');
-				break;
-			case '%':
-				if (i + 2 < llen)
-				{
-					const int high = detail::hex_value(szToDecode[i + 1]);
-					const int low = detail::hex_value(szToDecode[i + 2]);
-					if (high >= 0 && low >= 0)
-					{
-						const unsigned char decoded = static_cast<unsigned char>((high << 4) | low);
-						if (detail::keep_pct(decoded))
-						{
-							lret.push_back('%');
-						}
-						else
-						{
-							lret.push_back(static_cast<char>(decoded));
-							i += 2;
-						}
-					}
-					else
-					{
-						lret.push_back('%');
-					}
-				}
-				else
-				{
-					lret.push_back('%');
-				}
-				break;
-			default:
-				lret.push_back(szToDecode[i]);
-				break;
+				continue;
 			}
+
+			if (lch != '%')
+			{
+				lret.push_back(lch);
+				continue;
+			}
+
+			if (i + 2 >= llen)
+			{
+				lret.push_back('%');
+				continue;
+			}
+
+			const int high = detail::hex_value(szToDecode[i + 1]);
+			const int low = detail::hex_value(szToDecode[i + 2]);
+			if (high < 0 || low < 0)
+			{
+				lret.push_back('%');
+				continue;
+			}
+
+			const unsigned char ldecoded = static_cast<unsigned char>((high << 4) | low);
+			if (detail::keep_pct(ldecoded))
+			{
+				lret.push_back('%');
+				continue;
+			}
+
+			lret.push_back(static_cast<char>(ldecoded));
+			i += 2;
 		}
 		return lret;
 	}
@@ -1814,8 +1813,17 @@ namespace ngl
 			return x ^ (x >> 31);
 		}
 
-		std::once_flag g_seed_once;
-		std::atomic<uint64_t> g_global_seed{ 0 };
+		std::once_flag& seed_once()
+		{
+			static std::once_flag g_seed_once;
+			return g_seed_once;
+		}
+
+		std::atomic<uint64_t>& seed_ctr()
+		{
+			static std::atomic<uint64_t> g_seed_ctr{ 0 };
+			return g_seed_ctr;
+		}
 
 		uint64_t make_global_seed() 
 		{
@@ -1830,10 +1838,10 @@ namespace ngl
 
 		uint64_t next_thread_seed() 
 		{
-			std::call_once(g_seed_once, []() {
-				g_global_seed.store(make_global_seed(), std::memory_order_relaxed);
+			std::call_once(seed_once(), []() {
+				seed_ctr().store(make_global_seed(), std::memory_order_relaxed);
 			});
-			uint64_t v = g_global_seed.fetch_add(0x9e3779b97f4a7c15ULL, std::memory_order_acq_rel);
+			uint64_t v = seed_ctr().fetch_add(0x9e3779b97f4a7c15ULL, std::memory_order_acq_rel);
 			// Mix in the thread id so different workers do not walk identical
 			// pseudo-random sequences.
 			uint64_t tid_hash = std::hash<std::thread::id>()(std::this_thread::get_id());
@@ -1844,7 +1852,7 @@ namespace ngl
 	int tools::rand()
 	{
 		// If 32-bit mt19937, std::mt19937 and seed 32
-		thread_local std::mt19937_64 gen(static_cast<std::mt19937_64::result_type>(tools_random_detail::next_thread_seed()));
+		thread_local std::mt19937_64 gen(tools_random_detail::next_thread_seed());
 
 		// [0, RAND_MAX]. RAND_MAX C, numeric_limits<int>::max().
 		static thread_local std::uniform_int_distribution<int> dist(0, RAND_MAX);
@@ -2081,7 +2089,10 @@ namespace ngl
 		int demangle_status = 0;
 		std::unique_ptr<char, void(*)(void*)> demangled_name(
 			abi::__cxa_demangle(aname.c_str(), nullptr, nullptr, &demangle_status),
-			std::free
+			[](void* aptr)
+			{
+				std::free(aptr);
+			}
 		);
 		if (demangle_status == 0 && demangled_name != nullptr)
 		{

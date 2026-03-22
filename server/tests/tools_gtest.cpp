@@ -987,7 +987,9 @@ TEST(ToolsTest, TimeWheelManualModeSkipsRemovedReadyCallbacks)
 	const int64_t timerid = wheel.addtimer(ngl::wheel_parm{
 		.m_ms = 10,
 		.m_count = 1,
-		.m_fun = [](const ngl::wheel_node*) {},
+		.m_fun = [](const ngl::wheel_node*) {
+			// This test only verifies that removed ready callbacks are skipped.
+		},
 	});
 
 	ASSERT_GT(timerid, 0);

@@ -53,11 +53,11 @@ struct tls_identity
 
 tls_identity make_tls_identity()
 {
-	std::unique_ptr<EVP_PKEY, decltype(&EVP_PKEY_free)> lpkey(nullptr, EVP_PKEY_free);
-	std::unique_ptr<EVP_PKEY_CTX, decltype(&EVP_PKEY_CTX_free)> lctx(EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nullptr), EVP_PKEY_CTX_free);
-	std::unique_ptr<X509, decltype(&X509_free)> lcert(X509_new(), X509_free);
-	std::unique_ptr<BIO, decltype(&BIO_free)> lcert_bio(BIO_new(BIO_s_mem()), BIO_free);
-	std::unique_ptr<BIO, decltype(&BIO_free)> lkey_bio(BIO_new(BIO_s_mem()), BIO_free);
+	std::unique_ptr<EVP_PKEY, decltype(&EVP_PKEY_free)> lpkey(nullptr, &EVP_PKEY_free);
+	std::unique_ptr<EVP_PKEY_CTX, decltype(&EVP_PKEY_CTX_free)> lctx(EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nullptr), &EVP_PKEY_CTX_free);
+	std::unique_ptr<X509, decltype(&X509_free)> lcert(X509_new(), &X509_free);
+	std::unique_ptr<BIO, decltype(&BIO_free)> lcert_bio(BIO_new(BIO_s_mem()), &BIO_free);
+	std::unique_ptr<BIO, decltype(&BIO_free)> lkey_bio(BIO_new(BIO_s_mem()), &BIO_free);
 
 	if (!lctx || !lcert || !lcert_bio || !lkey_bio)
 	{
@@ -163,7 +163,9 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 		[server_closed](ngl::i32_sessionid asessionid) {
 			ngl_test_support::try_set(server_closed, asessionid);
 		},
-		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {
+			// This text-frame exchange only asserts message delivery and close events.
+		}
 	);
 
 	std::unique_ptr<ngl::asio_ws> client;
@@ -178,7 +180,9 @@ TEST(WsTest, AsioWsServerAndClientExchangeTextFrames)
 		[client_closed](ngl::i32_sessionid asessionid) {
 			ngl_test_support::try_set(client_closed, asessionid);
 		},
-		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {
+			// This text-frame exchange only asserts message delivery and close events.
+		}
 	);
 
 	client->connect("127.0.0.1", server->port(), "/", [connected](ngl::i32_sessionid asession) {
@@ -250,7 +254,9 @@ TEST(WsTest, AsioWsSendsPackPayloadAsBinaryFrame)
 		[server_closed](ngl::i32_sessionid asessionid) {
 			ngl_test_support::try_set(server_closed, asessionid);
 		},
-		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {
+			// This binary-frame exchange only asserts payload transport.
+		}
 	);
 
 	ngl::asio_ws client(
@@ -262,7 +268,9 @@ TEST(WsTest, AsioWsSendsPackPayloadAsBinaryFrame)
 		[client_closed](ngl::i32_sessionid asessionid) {
 			ngl_test_support::try_set(client_closed, asessionid);
 		},
-		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {
+			// This binary-frame exchange only asserts payload transport.
+		}
 	);
 
 	client.connect("127.0.0.1", server.port(), "/", [connected](ngl::i32_sessionid asession) {
@@ -340,7 +348,9 @@ TEST(WsTest, AsioWssServerAndClientExchangeTextFrames)
 		[server_closed](ngl::i32_sessionid asessionid) {
 			ngl_test_support::try_set(server_closed, asessionid);
 		},
-		[](ngl::i32_sessionid, bool, const ngl::pack*) {},
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {
+			// This secure text-frame exchange only asserts message delivery and close events.
+		},
 		server_tls
 	);
 
@@ -356,7 +366,9 @@ TEST(WsTest, AsioWssServerAndClientExchangeTextFrames)
 		[client_closed](ngl::i32_sessionid asessionid) {
 			ngl_test_support::try_set(client_closed, asessionid);
 		},
-		[](ngl::i32_sessionid, bool, const ngl::pack*) {},
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {
+			// This secure text-frame exchange only asserts message delivery and close events.
+		},
 		client_tls
 	);
 

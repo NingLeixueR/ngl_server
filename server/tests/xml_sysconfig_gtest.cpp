@@ -48,10 +48,11 @@ tinyxml2::XMLElement* legacy_get_child(tinyxml2::XMLElement* aele, const char* a
 	return lcur;
 }
 
+template <typename TFun>
 bool legacy_foreach_named(
 	tinyxml2::XMLElement* aele,
 	const char* akey,
-	const std::function<bool(tinyxml2::XMLElement*)>& afun)
+	const TFun& afun)
 {
 	if (aele == nullptr || akey == nullptr)
 	{
@@ -156,9 +157,9 @@ TEST(XmlPerfTest, GetChildPathBenchmark)
 	ASSERT_TRUE(ngl::xml::set(lval, "payload"));
 
 	const int lk_iter = ngl_test_support::scaled_iterations(300000);
-	volatile int lsink = 0;
+	int lsink = 0;
 
-	const long long legacy_us = ngl_test_support::benchmark_us([&]()
+	const long long legacy_us = ngl_test_support::benchmark_us([lroot, lk_iter, &lsink]()
 		{
 			for (int li = 0; li < lk_iter; ++li)
 			{
@@ -170,7 +171,7 @@ TEST(XmlPerfTest, GetChildPathBenchmark)
 			}
 		});
 
-	const long long optimized_us = ngl_test_support::benchmark_us([&]()
+	const long long optimized_us = ngl_test_support::benchmark_us([lroot, lk_iter, &lsink]()
 		{
 			for (int li = 0; li < lk_iter; ++li)
 			{
@@ -200,10 +201,10 @@ TEST(XmlPerfTest, ForeachNamedChildrenBenchmark)
 	}
 
 	const int lk_iter = ngl_test_support::scaled_iterations(20000);
-	volatile int llegacy_cnt = 0;
-	volatile int lopt_cnt = 0;
+	int llegacy_cnt = 0;
+	int lopt_cnt = 0;
 
-	const long long legacy_us = ngl_test_support::benchmark_us([&]()
+	const long long legacy_us = ngl_test_support::benchmark_us([lroot, lk_iter, &llegacy_cnt]()
 		{
 			for (int li = 0; li < lk_iter; ++li)
 			{
@@ -215,7 +216,7 @@ TEST(XmlPerfTest, ForeachNamedChildrenBenchmark)
 			}
 		});
 
-	const long long optimized_us = ngl_test_support::benchmark_us([&]()
+	const long long optimized_us = ngl_test_support::benchmark_us([lroot, lk_iter, &lopt_cnt]()
 		{
 			for (int li = 0; li < lk_iter; ++li)
 			{

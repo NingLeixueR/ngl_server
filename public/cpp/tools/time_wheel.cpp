@@ -199,7 +199,7 @@ namespace ngl
 			while (callback_head != nullptr)
 			{
 				wheel_node* next_node = callback_head->m_next;
-				delete callback_head;
+				std::unique_ptr<wheel_node> node_owner(callback_head);
 				callback_head = next_node;
 			}
 		}
@@ -256,8 +256,8 @@ namespace ngl
 					const bool should_repeat = interval_ms > 0 && node->m_parm.m_count - 1 > 0;
 					if (should_repeat)
 					{
-						wheel_node* callback_copy = new wheel_node(*node);
-						push(callback_copy);
+						auto callback_copy = std::make_unique<wheel_node>(*node);
+						push(callback_copy.release());
 						--node->m_parm.m_count;
 						node->m_parm.m_ms += interval_ms;
 						scheduled = schedule_locked(node) || scheduled;
@@ -366,11 +366,11 @@ namespace ngl
 				for (wheel_node* node = callback_head; node != nullptr; node = next_node)
 				{
 					next_node = node->m_next;
+					std::unique_ptr<wheel_node> node_owner(node);
 					if (!node->removed() && node->m_parm.m_fun != nullptr)
 					{
 						node->m_parm.m_fun(node);
 					}
-					delete node;
 				}
 
 				if (m_stop.load(std::memory_order_relaxed))
@@ -415,7 +415,7 @@ namespace ngl
 
 				if (head_node != nullptr && head_node->removed())
 				{
-					delete head_node;
+					std::unique_ptr<wheel_node> node_owner(head_node);
 					continue;
 				}
 
@@ -443,7 +443,7 @@ namespace ngl
 			lock_write(m_mutex);
 			const int64_t timer_id = ++m_timerid;
 			auto removed_flag = std::make_shared<std::atomic_bool>(false);
-			std::unique_ptr<wheel_node> node(new wheel_node(m_twheel, timer_id, removed_flag, lparm));
+			auto node = std::make_unique<wheel_node>(m_twheel, timer_id, removed_flag, lparm);
 			m_timer.insert_or_assign(timer_id, removed_flag);
 			if (!schedule_locked(node.get()))
 			{
@@ -597,28 +597,32 @@ namespace ngl
 		{
 			next_node = node->m_next;
 			node->m_next = nullptr;
-			if (!node->removed())
+			if (node->removed())
 			{
-				if (node->m_parm.m_intervalms != nullptr)
-				{
-					const int interval_ms = node->m_parm.m_intervalms(impl->m_current_ms);
-					--node->m_parm.m_count;
-					if (interval_ms > 0 && node->m_parm.m_count > 0)
-					{
-						// Queue the callback node now and keep a fresh copy for the
-						// next interval.
-						wheel_node* callback_copy = new wheel_node(*node);
-						impl->push(callback_copy);
-						node->m_parm.m_ms += interval_ms;
-						node->m_next = rescheduled_nodes;
-						rescheduled_nodes = node;
-						continue;
-					}
-				}
+				impl->remove(node);
+				continue;
+			}
+
+			if (node->m_parm.m_intervalms == nullptr)
+			{
 				impl->push(node);
 				continue;
 			}
-			impl->remove(node);
+
+			const int interval_ms = node->m_parm.m_intervalms(impl->m_current_ms);
+			--node->m_parm.m_count;
+			if (interval_ms <= 0 || node->m_parm.m_count <= 0)
+			{
+				impl->push(node);
+				continue;
+			}
+
+			// Queue the callback node now and keep a fresh copy for the next interval.
+			auto callback_copy = std::make_unique<wheel_node>(*node);
+			impl->push(callback_copy.release());
+			node->m_parm.m_ms += interval_ms;
+			node->m_next = rescheduled_nodes;
+			rescheduled_nodes = node;
 		}
 		m_slots[slot_index] = nullptr;
 		return rescheduled_nodes;

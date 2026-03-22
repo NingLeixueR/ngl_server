@@ -230,6 +230,78 @@ namespace ngl_runtime::detail
 		}
 		return lline;
 	}
+
+	void run_shell()
+	{
+		while (true)
+		{
+			std::string lline = read_line();
+			if (!lline.empty())
+			{
+				ngl::actor_robot_manage::parse_command(std::move(lline));
+			}
+		}
+	}
+
+	void wait_boot()
+	{
+		for (int li = 0; li < 5; ++li)
+		{
+			ngl::sleep::seconds(1);
+			std::cout << "---------------[" << li << "]---------------" << std::endl;
+		}
+	}
+
+	void run_console(robot_state& astate)
+	{
+		std::thread([&astate]()
+			{
+				// Console input can either mutate the replay plan or execute a normal command immediately.
+				while (true)
+				{
+					std::string lline = read_line();
+					if (apply_robot_cmd(lline, astate))
+					{
+						continue;
+					}
+					if (!lline.empty())
+					{
+						ngl::actor_robot_manage::parse_command(std::move(lline));
+					}
+				}
+			}).detach();
+	}
+
+	bool has_plan(const robot_plan& aplan)
+	{
+		return !aplan.m_interval_ms.empty() && !aplan.m_commands.empty();
+	}
+
+	void replay_loop(robot_state& astate)
+	{
+		for (;;)
+		{
+			if (!astate.m_enabled.load(std::memory_order_acquire))
+			{
+				ngl::sleep::seconds(1);
+				continue;
+			}
+
+			// Snapshot the replay plan so the console thread can keep editing the next iteration.
+			const robot_plan lplan = copy_plan(astate);
+			if (!has_plan(lplan))
+			{
+				ngl::sleep::seconds(1);
+				continue;
+			}
+
+			for (std::size_t li = 0; li < lplan.m_commands.size() && li < lplan.m_interval_ms.size(); ++li)
+			{
+				ngl::sleep::milliseconds(lplan.m_interval_ms[li]);
+				ngl::actor_robot_manage::parse_command(lplan.m_commands[li]);
+			}
+		}
+	}
 }
 
 namespace ngl_runtime
@@ -333,10 +405,14 @@ using ngl_runtime::detail::make_log_actor;
 using ngl_runtime::detail::make_node_opt;
 using ngl_runtime::detail::need_seed_db;
 using ngl_runtime::detail::read_line;
+using ngl_runtime::detail::replay_loop;
 using ngl_runtime::detail::robot_plan;
 using ngl_runtime::detail::robot_state;
+using ngl_runtime::detail::run_console;
+using ngl_runtime::detail::run_shell;
 using ngl_runtime::detail::save_seed;
 using ngl_runtime::detail::start_node;
+using ngl_runtime::detail::wait_boot;
 
 startup_error start_robot(int aargc, char** aargv, int* atcp_port);
 
@@ -563,6 +639,21 @@ void init_db_rank()
 	}*/
 }
 
+void seed_frd(pbdb::db_friends& afriends, int abeg, int aend, int aidx)
+{
+	for (int lidx = abeg; lidx < aend; ++lidx)
+	{
+		if (aidx == lidx)
+		{
+			continue;
+		}
+		ngl::i64_actorid lactor2 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, lidx);
+		ngl::i64_actorid lactor3 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, lidx + 10);
+		afriends.add_mfriends(lactor2);
+		afriends.add_mapplyfriends(lactor3);
+	}
+}
+
 void init_db_frd()
 {
 	std::map<ngl::i64_actorid, pbdb::db_friends> lmap;
@@ -575,16 +666,7 @@ void init_db_frd()
 			ngl::i64_actorid lactor1 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, lj1);
 			pbdb::db_friends& lfriends = lmap[lactor1];
 			lfriends.set_mid(lactor1);
-			for (int lj2 = lbeg; lj2 < lend; ++lj2)
-			{
-				if (lj1 != lj2)
-				{
-					ngl::i64_actorid lactor2 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, lj2);
-					ngl::i64_actorid lactor3 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, lj2 + 10);
-					lfriends.add_mfriends(lactor2);
-					lfriends.add_mapplyfriends(lactor3);
-				}
-			}
+			seed_frd(lfriends, lbeg, lend, lj1);
 		}
 	}
 
@@ -849,64 +931,15 @@ startup_error start_robot(int aargc, char** aargv, int* atcp_port)
 			if (lreq.mode == ngl_runtime::robot_launch_mode::interactive)
 			{
 				// Pure interactive mode behaves like the legacy robot shell.
-				while (true)
-				{
-					std::string lline = read_line();
-					if (!lline.empty())
-					{
-						ngl::actor_robot_manage::parse_command(std::move(lline));
-					}
-				}
+				run_shell();
 			}
 
-			for (int li = 0; li < 5; ++li)
-			{
-				ngl::sleep::seconds(1);
-				std::cout << "---------------[" << li << "]---------------" << std::endl;
-			}
-
+			wait_boot();
 			ngl::actor_robot_manage::parse_command(std::move(lboot_cmd));
 
 			robot_state lstate;
-			std::thread([&lstate]()
-				{
-					// Console input can either mutate the replay plan or execute a normal command immediately.
-					while (true)
-					{
-						std::string lline = read_line();
-						if (apply_robot_cmd(lline, lstate))
-						{
-							continue;
-						}
-						if (!lline.empty())
-						{
-							ngl::actor_robot_manage::parse_command(std::move(lline));
-						}
-					}
-				}).detach();
-
-			for (;;)
-			{
-				if (!lstate.m_enabled.load(std::memory_order_acquire))
-				{
-					ngl::sleep::seconds(1);
-					continue;
-				}
-
-				// Snapshot the replay plan so the console thread can keep editing the next iteration.
-				const robot_plan lplan = copy_plan(lstate);
-				if (lplan.m_interval_ms.empty() || lplan.m_commands.empty())
-				{
-					ngl::sleep::seconds(1);
-					continue;
-				}
-
-				for (std::size_t li = 0; li < lplan.m_commands.size() && li < lplan.m_interval_ms.size(); ++li)
-				{
-					ngl::sleep::milliseconds(lplan.m_interval_ms[li]);
-					ngl::actor_robot_manage::parse_command(lplan.m_commands[li]);
-				}
-			}
+			run_console(lstate);
+			replay_loop(lstate);
 		});
 }
 

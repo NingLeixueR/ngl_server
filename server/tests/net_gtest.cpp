@@ -122,8 +122,12 @@ TEST(NetTest, AsioTcpConnectReportsFinalFailure)
 	auto client = std::make_unique<ngl::asio_tcp>(
 		1,
 		[](ngl::service_tcp*, const char*, uint32_t) { return true; },
-		[](ngl::i32_sessionid) {},
-		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+		[](ngl::i32_sessionid) {
+			// This connection-failure path only verifies the connect result.
+		},
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {
+			// This connection-failure path does not exercise outbound pack forwarding.
+		}
 	);
 
 	client->connect("127.0.0.1", port, [result](ngl::i32_sessionid sessionid) {
@@ -159,8 +163,12 @@ TEST(NetTest, AsioTcpCloseNetRemovesIpPortEntry)
 	auto client = std::make_unique<ngl::asio_tcp>(
 		1,
 		[](ngl::service_tcp*, const char*, uint32_t) { return true; },
-		[](ngl::i32_sessionid) {},
-		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+		[](ngl::i32_sessionid) {
+			// This close_net test asserts endpoint cleanup rather than close callback delivery.
+		},
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {
+			// This close_net test does not send packed payloads.
+		}
 	);
 
 	client->connect("127.0.0.1", port, [result](ngl::i32_sessionid sessionid) {
@@ -223,7 +231,9 @@ TEST(NetTest, AsioTcpCloseDisconnectsPeerAndNotifiesOnce)
 		[close_count](ngl::i32_sessionid) {
 			close_count->fetch_add(1, std::memory_order_relaxed);
 		},
-		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {
+			// This peer-close test only checks disconnect notifications.
+		}
 	);
 
 	client->connect("127.0.0.1", port, [result](ngl::i32_sessionid sessionid) {
@@ -294,7 +304,9 @@ TEST(NetTest, AsioTcpServerAndClientExchangePayloads)
 		[server_closed](ngl::i32_sessionid sessionid) {
 			try_set(server_closed, sessionid);
 		},
-		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {
+			// This exchange test validates payload delivery through the byte path only.
+		}
 	);
 	const ngl::i16_port port = server->port();
 	ASSERT_GT(port, 0);
@@ -308,7 +320,9 @@ TEST(NetTest, AsioTcpServerAndClientExchangePayloads)
 		[client_closed](ngl::i32_sessionid sessionid) {
 			try_set(client_closed, sessionid);
 		},
-		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {
+			// This exchange test validates payload delivery through the byte path only.
+		}
 	);
 
 	client->connect("127.0.0.1", port, [connected](ngl::i32_sessionid sessionid) {
@@ -373,7 +387,9 @@ TEST(NetTest, AsioTcpServerExchangesPayloadsWithPlainAsioClient)
 		[server_closed](ngl::i32_sessionid sessionid) {
 			try_set(server_closed, sessionid);
 		},
-		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {
+			// This plain-client test only checks server payload forwarding.
+		}
 	);
 
 	const ngl::i16_port port = server->port();
@@ -456,7 +472,9 @@ TEST(NetTest, AsioTcpClientExchangesPayloadsWithPlainAsioServer)
 		[client_closed](ngl::i32_sessionid sessionid) {
 			try_set(client_closed, sessionid);
 		},
-		[](ngl::i32_sessionid, bool, const ngl::pack*) {}
+		[](ngl::i32_sessionid, bool, const ngl::pack*) {
+			// This plain-server test only checks client payload forwarding.
+		}
 	);
 
 	client->connect("127.0.0.1", port, [connected](ngl::i32_sessionid sessionid) {

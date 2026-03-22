@@ -214,14 +214,6 @@ namespace ngl
 		}
 	}
 
-	void actor_robot_manage::foreach(const std::function<void(_robot&)>& afun)
-	{
-		for (std::pair<const std::string, _robot>& item : m_maprobot)
-		{
-			afun(item.second);
-		}
-	}
-
 	_robot* actor_robot_manage::get_robot(const std::string& aacount)
 	{
 		auto itor = m_maprobot.find(aacount);
