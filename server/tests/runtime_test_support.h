@@ -15,145 +15,145 @@
 
 namespace ngl_test_support
 {
-	namespace RT_DTL
+	namespace rt_dtl
 	{
-		struct RT_PATH
+		struct rt_path
 		{
 			std::string_view m_cfg_root;
 			std::string_view m_csv_root;
 		};
 
-		inline bool CAN_USE(
-			const RT_PATH& aPATH,
-			std::string& aCFG_ROOT,
-			std::string& aCSV_ROOT)
+		inline bool can_use(
+			const rt_path& apath,
+			std::string& acfg_root,
+			std::string& acsv_root)
 		{
 			namespace fs = std::filesystem;
 
-			std::error_code lEC;
-			const fs::path lCFG_PATH(aPATH.m_cfg_root);
-			if (!fs::is_directory(lCFG_PATH, lEC))
+			std::error_code lec;
+			const fs::path lcfg_path(apath.m_cfg_root);
+			if (!fs::is_directory(lcfg_path, lec))
 			{
 				return false;
 			}
 
-			fs::path lCSV_PATH(aPATH.m_csv_root);
-			if (!fs::is_directory(lCSV_PATH, lEC))
+			fs::path lcsv_path(apath.m_csv_root);
+			if (!fs::is_directory(lcsv_path, lec))
 			{
-				lCSV_PATH = lCFG_PATH / "csv";
+				lcsv_path = lcfg_path / "csv";
 			}
 
-			const bool lHAS_CFG =
-				fs::is_regular_file(lCFG_PATH / "config.xml", lEC) ||
-				fs::is_regular_file(lCFG_PATH / "config" / "config.xml", lEC);
-			const bool lHAS_CSV =
-				fs::is_directory(lCSV_PATH, lEC) &&
-				fs::is_regular_file(lCSV_PATH / "tab_servers.csv", lEC);
-			if (!lHAS_CFG || !lHAS_CSV)
+			const bool lhas_cfg =
+				fs::is_regular_file(lcfg_path / "config.xml", lec) ||
+				fs::is_regular_file(lcfg_path / "config" / "config.xml", lec);
+			const bool lhas_csv =
+				fs::is_directory(lcsv_path, lec) &&
+				fs::is_regular_file(lcsv_path / "tab_servers.csv", lec);
+			if (!lhas_cfg || !lhas_csv)
 			{
 				return false;
 			}
 
-			aCFG_ROOT = lCFG_PATH.string();
-			aCSV_ROOT = lCSV_PATH.string();
+			acfg_root = lcfg_path.string();
+			acsv_root = lcsv_path.string();
 			return true;
 		}
-	} // namespace RT_DTL
+	} // namespace rt_dtl
 
-	inline bool FIND_RT(std::string& aCFG_ROOT, std::string& aCSV_ROOT, std::string& aERR)
+	inline bool find_rt(std::string& acfg_root, std::string& acsv_root, std::string& aerr)
 	{
 		namespace fs = std::filesystem;
 
-		static constexpr std::array<RT_DTL::RT_PATH, 2> g_RT_PATHS = {{
+		static constexpr std::array<rt_dtl::rt_path, 2> g_rt_paths = {{
 			{ "./config", "./csv" },
 			{ "./bin/configure/config", "./bin/configure/csv" },
 		}};
 
-		for (const auto& lPATH : g_RT_PATHS)
+		for (const auto& lpath : g_rt_paths)
 		{
-			if (RT_DTL::CAN_USE(lPATH, aCFG_ROOT, aCSV_ROOT))
+			if (rt_dtl::can_use(lpath, acfg_root, acsv_root))
 			{
-				aERR.clear();
+				aerr.clear();
 				return true;
 			}
 		}
 
-		std::error_code lEC;
-		const fs::path lCWD = fs::current_path(lEC);
-		const std::string lCWD_TXT = lEC ? "<unknown>" : lCWD.string();
-		aERR = std::format("unable to locate config/csv directories from cwd={}", lCWD_TXT);
+		std::error_code lec;
+		const fs::path lcwd = fs::current_path(lec);
+		const std::string lcwd_txt = lec ? "<unknown>" : lcwd.string();
+		aerr = std::format("unable to locate config/csv directories from cwd={}", lcwd_txt);
 		return false;
 	}
 
-	inline bool RELOAD_RT(
-		std::string& aERR,
-		std::string_view aNODE = "db",
-		int aAREA = 1,
-		int aTCOUNT = 1)
+	inline bool reload_rt(
+		std::string& aerr,
+		std::string_view anode = "db",
+		int aarea = 1,
+		int atcount = 1)
 	{
-		static std::mutex g_RT_MUTEX;
-		std::lock_guard<std::mutex> lGUARD(g_RT_MUTEX);
+		static std::mutex g_rt_mutex;
+		std::scoped_lock lguard(g_rt_mutex);
 
-		if (aNODE.empty())
+		if (anode.empty())
 		{
-			aERR = "runtime bootstrap node_name is empty";
+			aerr = "runtime bootstrap node_name is empty";
 			return false;
 		}
 
-		std::string lCFG_ROOT;
-		std::string lCSV_ROOT;
-		if (!FIND_RT(lCFG_ROOT, lCSV_ROOT, aERR))
+		std::string lcfg_root;
+		std::string lcsv_root;
+		if (!find_rt(lcfg_root, lcsv_root, aerr))
 		{
 			return false;
 		}
 
-		const std::string lSRV(aNODE);
+		const std::string lnode(anode);
 		nconfig.init();
-		if (!nconfig.set_server(lSRV.c_str()))
+		if (!nconfig.set_server(lnode.c_str()))
 		{
-			aERR = std::format("nconfig.set_server({}) failed", lSRV);
+			aerr = std::format("nconfig.set_server({}) failed", lnode);
 			return false;
 		}
 
-		if (!nconfig.load(lCFG_ROOT, std::format("{}_{}", lSRV, aTCOUNT)))
+		if (!nconfig.load(lcfg_root, std::format("{}_{}", lnode, atcount)))
 		{
-			aERR = std::format("nconfig.load failed: {}", nconfig.config_file());
+			aerr = std::format("nconfig.load failed: {}", nconfig.config_file());
 			return false;
 		}
 
-		ngl::csv_base::set_path(lCSV_ROOT, lSRV);
-		const ngl::tab_servers* lTAB = ngl::ttab_servers::instance().const_tab(lSRV, aAREA);
-		if (lTAB == nullptr)
+		ngl::csv_base::set_path(lcsv_root, lnode);
+		const ngl::tab_servers* ltab = ngl::ttab_servers::instance().const_tab(lnode, aarea);
+		if (ltab == nullptr)
 		{
-			aERR = std::format("ttab_servers::const_tab({}, {}) returned nullptr", lSRV, aAREA);
+			aerr = std::format("ttab_servers::const_tab({}, {}) returned nullptr", lnode, aarea);
 			return false;
 		}
 
-		nconfig.set_nodeid(lTAB->m_id, aTCOUNT);
-		nconfig.set_servername(std::format("node_{}_{}_{}", lSRV, lTAB->m_area, aTCOUNT));
-		aERR.clear();
+		nconfig.set_nodeid(ltab->m_id, atcount);
+		nconfig.set_servername(std::format("node_{}_{}_{}", lnode, ltab->m_area, atcount));
+		aerr.clear();
 		return true;
 	}
 
-	inline bool ENSURE_RT(std::string& aERR)
+	inline bool ensure_rt(std::string& aerr)
 	{
-		static std::once_flag g_RT_ONCE;
-		static bool g_RT_OK = false;
-		static std::string g_RT_ERR;
+		static std::once_flag g_rt_once;
+		static bool g_rt_ok = false;
+		static std::string g_rt_err;
 
-		std::call_once(g_RT_ONCE, []() {
-			std::string lERR;
-			g_RT_OK = RELOAD_RT(lERR);
-			g_RT_ERR = std::move(lERR);
+		std::call_once(g_rt_once, []() {
+			std::string lerr;
+			g_rt_ok = reload_rt(lerr);
+			g_rt_err = std::move(lerr);
 		});
 
-		if (!g_RT_OK)
+		if (!g_rt_ok)
 		{
-			aERR = g_RT_ERR;
+			aerr = g_rt_err;
 			return false;
 		}
 
-		aERR.clear();
+		aerr.clear();
 		return true;
 	}
 }

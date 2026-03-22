@@ -18,8 +18,8 @@ class RuntimeConfigTest : public ::testing::Test
 protected:
 	void SetUp() override
 	{
-		std::string lERR;
-		ASSERT_TRUE(ngl_test_support::RELOAD_RT(lERR)) << lERR;
+		std::string lerr;
+		ASSERT_TRUE(ngl_test_support::reload_rt(lerr)) << lerr;
 	}
 };
 
@@ -30,22 +30,22 @@ tinyxml2::XMLElement* legacy_get_child(tinyxml2::XMLElement* aele, const char* a
 		return nullptr;
 	}
 
-	std::vector<std::string> parts;
-	if (!ngl::tools::splite(astr, ".", parts))
+	std::vector<std::string> lparts;
+	if (!ngl::tools::splite(astr, ".", lparts))
 	{
 		return nullptr;
 	}
 
-	tinyxml2::XMLElement* current = aele;
-	for (const std::string& part : parts)
+	tinyxml2::XMLElement* lcur = aele;
+	for (const std::string& lpart : lparts)
 	{
-		current = current->FirstChildElement(part.c_str());
-		if (current == nullptr)
+		lcur = lcur->FirstChildElement(lpart.c_str());
+		if (lcur == nullptr)
 		{
 			return nullptr;
 		}
 	}
-	return current;
+	return lcur;
 }
 
 bool legacy_foreach_named(
@@ -58,12 +58,12 @@ bool legacy_foreach_named(
 		return false;
 	}
 
-	for (tinyxml2::XMLNode* child = aele->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
+	for (tinyxml2::XMLNode* lchild = aele->FirstChildElement(); lchild != nullptr; lchild = lchild->NextSiblingElement())
 	{
-		tinyxml2::XMLElement* element = child->ToElement();
-		if (element != nullptr && std::string(element->Name()) == akey)
+		tinyxml2::XMLElement* lele = lchild->ToElement();
+		if (lele != nullptr && std::string(lele->Name()) == akey)
 		{
-			if (!afun(element))
+			if (!afun(lele))
 			{
 				return false;
 			}
@@ -83,7 +83,7 @@ TEST_F(RuntimeConfigTest, BootstrapConfigKeepsDefaultWssValuesWhenPemFieldsAreBl
 
 TEST(XmlNodeRuntimeTest, XmlPopUsesDefaultsWhenOptionalWssSectionMissing)
 {
-	static constexpr char kXml[] = R"xml(
+	static constexpr char kxml[] = R"xml(
 <xmlnode>
 	<db db="1" ip="127.0.0.1" port="5432" account="postgres" passworld="123456" dbname="lbtest"/>
 	<public>
@@ -92,18 +92,18 @@ TEST(XmlNodeRuntimeTest, XmlPopUsesDefaultsWhenOptionalWssSectionMissing)
 </xmlnode>
 )xml";
 
-	tinyxml2::XMLDocument document;
-	ASSERT_EQ(document.Parse(kXml), tinyxml2::XML_SUCCESS);
+	tinyxml2::XMLDocument ldoc;
+	ASSERT_EQ(ldoc.Parse(kxml), tinyxml2::XML_SUCCESS);
 
-	auto* root = document.FirstChildElement("xmlnode");
-	ASSERT_NE(root, nullptr);
+	auto* lroot = ldoc.FirstChildElement("xmlnode");
+	ASSERT_NE(lroot, nullptr);
 
-	ngl::xmlnode config;
-	ASSERT_TRUE(config.xml_pop(root));
-	EXPECT_TRUE(config.wss().m_certificate_chain.empty());
-	EXPECT_TRUE(config.wss().m_private_key.empty());
-	EXPECT_TRUE(config.wss().m_ca_certificates.empty());
-	EXPECT_EQ(config.wss().m_verify_peer, true);
+	ngl::xmlnode lcfg;
+	ASSERT_TRUE(lcfg.xml_pop(lroot));
+	EXPECT_TRUE(lcfg.wss().m_certificate_chain.empty());
+	EXPECT_TRUE(lcfg.wss().m_private_key.empty());
+	EXPECT_TRUE(lcfg.wss().m_ca_certificates.empty());
+	EXPECT_EQ(lcfg.wss().m_verify_peer, true);
 }
 
 TEST_F(RuntimeConfigTest, CrossDbSettingsRemainAvailableAfterLoad)
@@ -127,89 +127,89 @@ TEST(SysconfigRuntimeTest, ByteXorUsesCompleteConfiguredKeyStream)
 {
 	ngl::sysconfig::init();
 
-	const std::string original = "abcdefghijklmnopqrstuvwxyz0123456789";
-	std::string encrypted = original;
-	std::string expected = original;
-	const std::string& key = ngl::sysconfig::xorkey();
+	const std::string lorig = "abcdefghijklmnopqrstuvwxyz0123456789";
+	std::string lenc = lorig;
+	std::string lexp = lorig;
+	const std::string& lkey = ngl::sysconfig::xorkey();
 
 	ASSERT_TRUE(ngl::sysconfig::isxor());
-	ASSERT_FALSE(key.empty());
+	ASSERT_FALSE(lkey.empty());
 
-	for (std::size_t i = 0; i < expected.size(); ++i)
+	for (std::size_t li = 0; li < lexp.size(); ++li)
 	{
-		expected[i] = expected[i] ^ key[i % key.size()];
+		lexp[li] = lexp[li] ^ lkey[li % lkey.size()];
 	}
 
-	ngl::tools::bytexor(encrypted.data(), static_cast<int32_t>(encrypted.size()), 0);
-	EXPECT_EQ(encrypted, expected);
+	ngl::tools::bytexor(lenc.data(), static_cast<int32_t>(lenc.size()), 0);
+	EXPECT_EQ(lenc, lexp);
 }
 
 TEST(XmlPerfTest, GetChildPathBenchmark)
 {
-	tinyxml2::XMLDocument document;
-	auto* root = ngl::xml::set_child(document, "root");
-	ASSERT_NE(root, nullptr);
-	auto* level1 = ngl::xml::set_child(root, "level1");
-	auto* level2 = ngl::xml::set_child(level1, "level2");
-	auto* value = ngl::xml::set_child(level2, "value");
-	ASSERT_NE(value, nullptr);
-	ASSERT_TRUE(ngl::xml::set(value, "payload"));
+	tinyxml2::XMLDocument ldoc;
+	auto* lroot = ngl::xml::set_child(ldoc, "root");
+	ASSERT_NE(lroot, nullptr);
+	auto* llv1 = ngl::xml::set_child(lroot, "level1");
+	auto* llv2 = ngl::xml::set_child(llv1, "level2");
+	auto* lval = ngl::xml::set_child(llv2, "value");
+	ASSERT_NE(lval, nullptr);
+	ASSERT_TRUE(ngl::xml::set(lval, "payload"));
 
-	const int kIterations = ngl_test_support::scaled_iterations(300000);
-	volatile int sink = 0;
+	const int lk_iter = ngl_test_support::scaled_iterations(300000);
+	volatile int lsink = 0;
 
 	const long long legacy_us = ngl_test_support::benchmark_us([&]()
 		{
-			for (int i = 0; i < kIterations; ++i)
+			for (int li = 0; li < lk_iter; ++li)
 			{
-				auto* node = legacy_get_child(root, "level1.level2.value");
-				if (node != nullptr && node->GetText() != nullptr)
+				auto* lnode = legacy_get_child(lroot, "level1.level2.value");
+				if (lnode != nullptr && lnode->GetText() != nullptr)
 				{
-					sink += node->GetText()[0];
+					lsink += lnode->GetText()[0];
 				}
 			}
 		});
 
 	const long long optimized_us = ngl_test_support::benchmark_us([&]()
 		{
-			for (int i = 0; i < kIterations; ++i)
+			for (int li = 0; li < lk_iter; ++li)
 			{
-				auto* node = ngl::xml::get_child(root, "level1.level2.value");
-				if (node != nullptr && node->GetText() != nullptr)
+				auto* lnode = ngl::xml::get_child(lroot, "level1.level2.value");
+				if (lnode != nullptr && lnode->GetText() != nullptr)
 				{
-					sink += node->GetText()[0];
+					lsink += lnode->GetText()[0];
 				}
 			}
 		});
 
-	EXPECT_GT(sink, 0);
-	EXPECT_NE(ngl::xml::get_child(root, "level1.level2.value"), nullptr);
+	EXPECT_GT(lsink, 0);
+	EXPECT_NE(ngl::xml::get_child(lroot, "level1.level2.value"), nullptr);
 	ngl_test_support::print_perf_result("xml_get_child", legacy_us, optimized_us);
 }
 
 TEST(XmlPerfTest, ForeachNamedChildrenBenchmark)
 {
-	tinyxml2::XMLDocument document;
-	auto* root = ngl::xml::set_child(document, "root");
-	ASSERT_NE(root, nullptr);
+	tinyxml2::XMLDocument ldoc;
+	auto* lroot = ngl::xml::set_child(ldoc, "root");
+	ASSERT_NE(lroot, nullptr);
 
-	for (int i = 0; i < 64; ++i)
+	for (int li = 0; li < 64; ++li)
 	{
-		ASSERT_NE(ngl::xml::set_child(root, "item"), nullptr);
-		ASSERT_NE(ngl::xml::set_child(root, "other"), nullptr);
+		ASSERT_NE(ngl::xml::set_child(lroot, "item"), nullptr);
+		ASSERT_NE(ngl::xml::set_child(lroot, "other"), nullptr);
 	}
 
-	const int kIterations = ngl_test_support::scaled_iterations(20000);
-	volatile int legacy_count = 0;
-	volatile int optimized_count = 0;
+	const int lk_iter = ngl_test_support::scaled_iterations(20000);
+	volatile int llegacy_cnt = 0;
+	volatile int lopt_cnt = 0;
 
 	const long long legacy_us = ngl_test_support::benchmark_us([&]()
 		{
-			for (int i = 0; i < kIterations; ++i)
+			for (int li = 0; li < lk_iter; ++li)
 			{
-				ASSERT_TRUE(legacy_foreach_named(root, "item", [&legacy_count](tinyxml2::XMLElement*)
+				ASSERT_TRUE(legacy_foreach_named(lroot, "item", [&llegacy_cnt](tinyxml2::XMLElement*)
 					{
-						++legacy_count;
+						++llegacy_cnt;
 						return true;
 					}));
 			}
@@ -217,17 +217,17 @@ TEST(XmlPerfTest, ForeachNamedChildrenBenchmark)
 
 	const long long optimized_us = ngl_test_support::benchmark_us([&]()
 		{
-			for (int i = 0; i < kIterations; ++i)
+			for (int li = 0; li < lk_iter; ++li)
 			{
-				ASSERT_TRUE(ngl::xml::foreach(root, "item", [&optimized_count](tinyxml2::XMLElement*)
+				ASSERT_TRUE(ngl::xml::foreach(lroot, "item", [&lopt_cnt](tinyxml2::XMLElement*)
 					{
-						++optimized_count;
+						++lopt_cnt;
 						return true;
 					}));
 			}
 	});
 
-	EXPECT_EQ(legacy_count, optimized_count);
+	EXPECT_EQ(llegacy_cnt, lopt_cnt);
 	ngl_test_support::print_perf_result("xml_foreach_named", legacy_us, optimized_us);
 }
 

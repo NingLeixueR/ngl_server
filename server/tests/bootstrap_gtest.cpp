@@ -8,26 +8,26 @@
 
 namespace bootstrap_test_case
 {
-class TEST_RT_ENV : public ::testing::Environment
+class test_rt_env : public ::testing::Environment
 {
 public:
 	void SetUp() override
 	{
-		std::string lERR;
-		if (!ngl_test_support::ENSURE_RT(lERR))
+		std::string lerr;
+		if (!ngl_test_support::ensure_rt(lerr))
 		{
-			FAIL() << "test runtime bootstrap failed: " << lERR;
+			FAIL() << "test runtime bootstrap failed: " << lerr;
 		}
 	}
 };
 
-::testing::Environment* const g_RT_ENV =
-	::testing::AddGlobalTestEnvironment(new TEST_RT_ENV());
+::testing::Environment* const g_rt_env =
+	::testing::AddGlobalTestEnvironment(new test_rt_env());
 
 TEST(A00Bootstrap, LoadConfigAndCsv)
 {
-	std::string lERR;
-	ASSERT_TRUE(ngl_test_support::ENSURE_RT(lERR)) << lERR;
+	std::string lerr;
+	ASSERT_TRUE(ngl_test_support::ensure_rt(lerr)) << lerr;
 	ASSERT_NE(ngl::ttab_servers::instance().const_tab(), nullptr);
 }
 

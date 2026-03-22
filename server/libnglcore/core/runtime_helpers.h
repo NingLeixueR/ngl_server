@@ -24,8 +24,8 @@ namespace ngl_runtime
 	};
 
 	// Convert raw CLI arguments into a higher-level robot launch request.
-	robot_launch_request build_robot_req(int argc, char** argv);
+	robot_launch_request build_robot_req(int aargc, char** aargv);
 
 	// Serialize a tab_servers row into the HTTP query string expected by the GM endpoint.
-	bool build_push_cfg(const ngl::tab_servers& server, std::string& param);
+	bool build_push_cfg(const ngl::tab_servers& aserver, std::string& aparam);
 }
