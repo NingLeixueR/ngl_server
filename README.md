@@ -49,7 +49,6 @@ Linux 下额外依赖 `libuuid/1.0.3`。
 
 ### 仓库内嵌
 
-- `asio`
 - `kcp`
 - `tinyxml2`
 - `utf8cpp`
