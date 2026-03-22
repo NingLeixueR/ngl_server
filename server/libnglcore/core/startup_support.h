@@ -28,8 +28,8 @@ namespace ngl_startup
 	};
 
 	// Emit a uniform startup failure log that includes the resolved context.
-	void log_failure(startup_error code, const start_ctx& ctx, const char* reason);
+	void log_failure(startup_error acode, const start_ctx& actx, const char* areason);
 
 	// Parse CLI arguments, load config/csv metadata, and resolve the target server row.
-	prep_res prep_ctx(int argc, char** argv, start_ctx& ctx);
+	prep_res prep_ctx(int aargc, char** aargv, start_ctx& actx);
 }

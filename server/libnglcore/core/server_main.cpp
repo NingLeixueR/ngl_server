@@ -12,7 +12,10 @@
 #include <ctime>
 #include <mutex>
 
-#define DEF_COUNT (2000)
+namespace
+{
+	constexpr int def_count = 2000;
+}
 
 namespace ngl_runtime::detail
 {
@@ -41,31 +44,31 @@ namespace ngl_runtime::detail
 	};
 
 	node_boot_opt make_node_opt(
-		std::initializer_list<pbnet::ENUM_KCP> kcp_types = {},
-		bool use_actor_client = true,
-		bool make_log = true,
-		bool reg_actor = true)
+		std::initializer_list<pbnet::ENUM_KCP> akcp_types = {},
+		bool ause_actor = true,
+		bool amake_log = true,
+		bool areg_actor = true)
 	{
-		node_boot_opt options;
-		options.m_kcp_types.insert(kcp_types.begin(), kcp_types.end());
-		options.m_use_actor_client = use_actor_client;
-		options.m_make_log = make_log;
-		options.m_reg_actor = reg_actor;
-		return options;
+		node_boot_opt lopts;
+		lopts.m_kcp_types.insert(akcp_types.begin(), akcp_types.end());
+		lopts.m_use_actor_client = ause_actor;
+		lopts.m_make_log = amake_log;
+		lopts.m_reg_actor = areg_actor;
+		return lopts;
 	}
 
-	template <pbdb::ENUM_DB TDbType, typename TRecord>
-	void save_seed(const TRecord& record)
+	template <pbdb::ENUM_DB tdb, typename trec>
+	void save_seed(const trec& arec)
 	{
 		// Keep the seed helpers backend-agnostic so tests and bootstrap scripts work with
 		// either MySQL or PostgreSQL.
 		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
 		{
-			ngl::ndbtab<TDbType, TRecord, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, record);
+			ngl::ndbtab<tdb, trec, ngl::nmysql_manage, ngl::nmysql_pool>::save(0, arec);
 		}
 		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
 		{
-			ngl::ndbtab<TDbType, TRecord, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, record);
+			ngl::ndbtab<tdb, trec, ngl::npostgresql_manage, ngl::npostgresql_pool>::save(0, arec);
 		}
 	}
 
@@ -78,31 +81,31 @@ namespace ngl_runtime::detail
 		}
 	}
 
-	template <typename SetupFn>
-	startup_error start_node(const char* node_name, int* tcp_port, const node_boot_opt& options, SetupFn&& setup)
+	template <typename tsetup>
+	startup_error start_node(const char* anode_name, int* atcp_port, const node_boot_opt& aopts, tsetup&& asetup)
 	{
-		ngl::log_error()->print("[{}] start", node_name);
+		ngl::log_error()->print("[{}] start", anode_name);
 
 		// init_server wires up protocols, networking and the actor scheduler.
-		startup_error rc = init_server(nconfig.nodeid(), options.m_kcp_types, tcp_port);
-		if (rc != startup_error::ok)
+		startup_error lrc = init_server(nconfig.nodeid(), aopts.m_kcp_types, atcp_port);
+		if (lrc != startup_error::ok)
 		{
-			return rc;
+			return lrc;
 		}
 
-		if (options.m_use_actor_client)
+		if (aopts.m_use_actor_client)
 		{
 			ngl::actor_client::instance();
 		}
 
-		if (options.m_make_log)
+		if (aopts.m_make_log)
 		{
 			make_log_actor();
 		}
 
-		setup();
+		asetup();
 
-		if (options.m_reg_actor && options.m_use_actor_client)
+		if (aopts.m_reg_actor && aopts.m_use_actor_client)
 		{
 			// Once all singleton actors exist locally, publish them to the route layer.
 			ngl::actor_client::instance().actor_server_register();
@@ -111,166 +114,166 @@ namespace ngl_runtime::detail
 		return startup_error::ok;
 	}
 
-	template <typename TDbConfig>
-	void init_db_back(const TDbConfig& db_config)
+	template <typename tdb_cfg>
+	void init_db_back(const tdb_cfg& adb_cfg)
 	{
 		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
 		{
-			ngl::nmysql_pool::instance().init(db_config);
+			ngl::nmysql_pool::instance().init(adb_cfg);
 			ngl::nmysql_manage::init();
 		}
 		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
 		{
-			ngl::npostgresql_pool::instance().init(db_config);
+			ngl::npostgresql_pool::instance().init(adb_cfg);
 			ngl::npostgresql_manage::init();
 		}
 	}
 
-	bool need_seed_db(int argc, char** argv)
+	bool need_seed_db(int aargc, char** aargv)
 	{
-		return argc >= 5 && argv != nullptr && argv[4] != nullptr && std::string_view(argv[4]) == "init";
+		return aargc >= 5 && aargv != nullptr && aargv[4] != nullptr && std::string_view(aargv[4]) == "init";
 	}
 
-	std::string command_suffix(const std::string& line, std::size_t skip_tokens)
+	std::string command_suffix(const std::string& aline, std::size_t askip)
 	{
 		std::size_t lpos = 0;
 		std::size_t lcount = 0;
-		const std::size_t lsize = line.size();
-		while (lpos < lsize && lcount < skip_tokens)
+		const std::size_t lsize = aline.size();
+		while (lpos < lsize && lcount < askip)
 		{
-			while (lpos < lsize && std::isspace(static_cast<unsigned char>(line[lpos])))
+			while (lpos < lsize && std::isspace(static_cast<unsigned char>(aline[lpos])))
 			{
 				++lpos;
 			}
-			while (lpos < lsize && !std::isspace(static_cast<unsigned char>(line[lpos])))
+			while (lpos < lsize && !std::isspace(static_cast<unsigned char>(aline[lpos])))
 			{
 				++lpos;
 			}
 			++lcount;
 		}
-		while (lpos < lsize && std::isspace(static_cast<unsigned char>(line[lpos])))
+		while (lpos < lsize && std::isspace(static_cast<unsigned char>(aline[lpos])))
 		{
 			++lpos;
 		}
-		return lpos < lsize ? line.substr(lpos) : std::string();
+		return lpos < lsize ? aline.substr(lpos) : std::string();
 	}
 
-	bool apply_robot_cmd(const std::string& line, robot_state& state)
+	bool apply_robot_cmd(const std::string& aline, robot_state& astate)
 	{
-		const std::vector<std::string> tokens = ngl::arg_options::split_command_line(line);
-		if (tokens.empty())
+		const std::vector<std::string> ltokens = ngl::arg_options::split_command_line(aline);
+		if (ltokens.empty())
 		{
 			return true;
 		}
 
-		std::string command = tokens.front();
-		ngl::tools::transform_tolower(command);
+		std::string lcmd = ltokens.front();
+		ngl::tools::transform_tolower(lcmd);
 
-		if (command == "test" || command == "tests")
+		if (lcmd == "test" || lcmd == "tests")
 		{
-			int delay_ms = 0;
-			if (tokens.size() < 3 || !ngl::tools::try_lexical_cast(tokens[1], delay_ms))
+			int ldelay = 0;
+			if (ltokens.size() < 3 || !ngl::tools::try_lexical_cast(ltokens[1], ldelay))
 			{
 				return true;
 			}
 
-			const std::string replay_command = command_suffix(line, 2);
-			std::scoped_lock lock(state.m_mutex);
-			if (command == "test")
+			const std::string lreplay = command_suffix(aline, 2);
+			std::scoped_lock llock(astate.m_mutex);
+			if (lcmd == "test")
 			{
 				// Replace the replay plan with a single repeating command.
-				state.m_plan.m_interval_ms = { delay_ms };
-				state.m_plan.m_commands = { replay_command };
-				state.m_enabled.store(true, std::memory_order_release);
+				astate.m_plan.m_interval_ms = { ldelay };
+				astate.m_plan.m_commands = { lreplay };
+				astate.m_enabled.store(true, std::memory_order_release);
 			}
 			else
 			{
 				// Append one more delayed command to the current replay plan.
-				state.m_plan.m_interval_ms.push_back(delay_ms);
-				state.m_plan.m_commands.push_back(replay_command);
+				astate.m_plan.m_interval_ms.push_back(ldelay);
+				astate.m_plan.m_commands.push_back(lreplay);
 			}
 			return true;
 		}
 
-		if (command == "notest")
+		if (lcmd == "notest")
 		{
 			// Clear the replay plan entirely.
-			std::scoped_lock lock(state.m_mutex);
-			state.m_plan = {};
-			state.m_enabled.store(false, std::memory_order_release);
+			std::scoped_lock llock(astate.m_mutex);
+			astate.m_plan = {};
+			astate.m_enabled.store(false, std::memory_order_release);
 			return true;
 		}
 
-		if (command == "start")
+		if (lcmd == "start")
 		{
 			// Resume replay without modifying the stored plan.
-			state.m_enabled.store(true, std::memory_order_release);
+			astate.m_enabled.store(true, std::memory_order_release);
 			return true;
 		}
 
 		return false;
 	}
 
-	robot_plan copy_plan(robot_state& state)
+	robot_plan copy_plan(robot_state& astate)
 	{
-		std::scoped_lock lock(state.m_mutex);
-		return state.m_plan;
+		std::scoped_lock llock(astate.m_mutex);
+		return astate.m_plan;
 	}
 
 	std::string read_line()
 	{
-		std::string line;
-		if (!std::getline(std::cin, line))
+		std::string lline;
+		if (!std::getline(std::cin, lline))
 		{
 			return {};
 		}
-		return line;
+		return lline;
 	}
 }
 
 namespace ngl_runtime
 {
-	robot_launch_request build_robot_req(int argc, char** argv)
+	robot_launch_request build_robot_req(int aargc, char** aargv)
 	{
-		robot_launch_request request;
-		if (argc <= 4)
+		robot_launch_request lreq;
+		if (aargc <= 4)
 		{
 			// No account arguments means the robot will read commands interactively.
-			request.mode = robot_launch_mode::interactive;
-			return request;
+			lreq.mode = robot_launch_mode::interactive;
+			return lreq;
 		}
-		if (argv == nullptr || argv[4] == nullptr)
+		if (aargv == nullptr || aargv[4] == nullptr)
 		{
-			return request;
+			return lreq;
 		}
 
-		if (argc == 5)
+		if (aargc == 5)
 		{
 			// One extra argument maps to the legacy "login <account>" shortcut.
-			request.mode = robot_launch_mode::login;
-			request.command = std::format("login {}", argv[4]);
-			return request;
+			lreq.mode = robot_launch_mode::login;
+			lreq.command = std::format("login {}", aargv[4]);
+			return lreq;
 		}
 
-		if (argc >= 7 && argv[5] != nullptr && argv[6] != nullptr)
+		if (aargc >= 7 && aargv[5] != nullptr && aargv[6] != nullptr)
 		{
 			// Three extra arguments map to the legacy batched login flow.
-			request.mode = robot_launch_mode::logins;
-			request.command = std::format("logins {} {} {}", argv[4], argv[5], argv[6]);
+			lreq.mode = robot_launch_mode::logins;
+			lreq.command = std::format("logins {} {} {}", aargv[4], aargv[5], aargv[6]);
 		}
-		return request;
+		return lreq;
 	}
 
-	bool build_push_cfg(const ngl::tab_servers& server, std::string& param)
+	bool build_push_cfg(const ngl::tab_servers& asrv, std::string& aparam)
 	{
-		param.clear();
-		param.reserve(server.m_name.size() + (server.m_net.size() * 96) + 64);
+		aparam.clear();
+		aparam.reserve(asrv.m_name.size() + (asrv.m_net.size() * 96) + 64);
 
 		// The endpoint expects the scalar fields as flat query params.
-		ngl::ncurl::param(param, "id", server.m_id);
-		ngl::ncurl::param(param, "name", ngl::tools::url_encode(server.m_name));
-		ngl::ncurl::param(param, "area", server.m_area);
-		ngl::ncurl::param(param, "type", static_cast<int32_t>(server.m_type));
+		ngl::ncurl::param(aparam, "id", asrv.m_id);
+		ngl::ncurl::param(aparam, "name", ngl::tools::url_encode(asrv.m_name));
+		ngl::ncurl::param(aparam, "area", asrv.m_area);
+		ngl::ncurl::param(aparam, "type", static_cast<int32_t>(asrv.m_type));
 
 		struct json_net
 		{
@@ -281,26 +284,26 @@ namespace ngl_runtime
 			DPROTOCOL(json_net, m_ip, m_nip, m_port)
 		};
 
-		constexpr std::array<const char*, ngl::ENET_COUNT> kNetNames = { "tcp", "ws", "kcp" };
-		ngl::ncjson net_json;
-		for (const ngl::net_works& item : server.m_net)
+		constexpr std::array<const char*, ngl::ENET_COUNT> knet_names = { "tcp", "ws", "kcp" };
+		ngl::ncjson lnet_json;
+		for (const ngl::net_works& lnet : asrv.m_net)
 		{
-			const auto type_index = static_cast<std::size_t>(item.m_type);
-			if (type_index >= kNetNames.size())
+			const auto ltype_idx = static_cast<std::size_t>(lnet.m_type);
+			if (ltype_idx >= knet_names.size())
 			{
-				param.clear();
+				aparam.clear();
 				return false;
 			}
 
-			json_net net_value;
-			net_value.m_ip = item.m_ip;
-			net_value.m_nip = item.m_nip;
-			net_value.m_port = item.m_port;
+			json_net lnet_val;
+			lnet_val.m_ip = lnet.m_ip;
+			lnet_val.m_nip = lnet.m_nip;
+			lnet_val.m_port = lnet.m_port;
 			// The network list is encoded as a small JSON object and then URL-escaped.
-			ngl::njson::push(net_json, { kNetNames[type_index] }, net_value);
+			ngl::njson::push(lnet_json, { knet_names[ltype_idx] }, lnet_val);
 		}
 
-		ngl::ncurl::param(param, "net", ngl::tools::url_encode(net_json.nonformat_str()));
+		ngl::ncurl::param(aparam, "net", ngl::tools::url_encode(lnet_json.nonformat_str()));
 		return true;
 	}
 }
@@ -317,15 +320,15 @@ using ngl_runtime::detail::robot_state;
 using ngl_runtime::detail::save_seed;
 using ngl_runtime::detail::start_node;
 
-startup_error start_robot_safe(int argc, char** argv, int* tcp_port);
+startup_error start_robot(int aargc, char** aargv, int* atcp_port);
 
-void init_DB_ACCOUNT(const char* aname, int beg)
+void init_db_acc(const char* aname, int abeg)
 {
-	for (int i = beg; i < beg + DEF_COUNT; ++i)
+	for (int li = abeg; li < abeg + def_count; ++li)
 	{
 		pbdb::db_account ltemp;
-		ltemp.set_maccount(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
-		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		ltemp.set_maccount(std::string(aname) + ngl::tools::lexical_cast<std::string>(li % def_count));
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li));
 		ltemp.set_mpassworld("123456");
 		ltemp.set_mroleid(ltemp.mid());
 		ltemp.set_marea(tab_self_area);
@@ -334,25 +337,25 @@ void init_DB_ACCOUNT(const char* aname, int beg)
 	}
 }
 
-void init_DB_ACCOUNT()
+void init_db_acc()
 {
-	init_DB_ACCOUNT("libo", (0 * DEF_COUNT) + 1);
-	init_DB_ACCOUNT("wac", (1 * DEF_COUNT) + 1);
+	init_db_acc("libo", 1);
+	init_db_acc("wac", def_count + 1);
 }
 
 // Seed demo role records.
-void init_DB_ROLE(const char* aname, int beg)
+void init_db_role(const char* aname, int abeg)
 {
-	for (int i = beg; i < beg + DEF_COUNT; ++i)
+	for (int li = abeg; li < abeg + def_count; ++li)
 	{
 		pbdb::db_role ltemp;
 
-		ngl::i64_actorid lid = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
-		ltemp.set_mid(lid);
+		ngl::i64_actorid lrole_id = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li);
+		ltemp.set_mid(lrole_id);
 		pbdb::db_brief lrolebase;
-		lrolebase.set_mid(ngl::nguid::make(ngl::ACTOR_BRIEF, tab_self_area, i));
-		lrolebase.mutable_mbase()->set_mname(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
-		lrolebase.mutable_mbase()->set_mlv(i);
+		lrolebase.set_mid(ngl::nguid::make(ngl::ACTOR_BRIEF, tab_self_area, li));
+		lrolebase.mutable_mbase()->set_mname(std::string(aname) + ngl::tools::lexical_cast<std::string>(li % def_count));
+		lrolebase.mutable_mbase()->set_mlv(li);
 		lrolebase.mutable_mbase()->set_mmoneygold(0);
 		lrolebase.mutable_mbase()->set_mmoneysilver(0);
 		lrolebase.mutable_mbase()->set_mcreateutc((int32_t)ngl::localtime::gettime());
@@ -362,88 +365,88 @@ void init_DB_ROLE(const char* aname, int beg)
 	}
 }
 
-void init_DB_ROLE()
+void init_db_role()
 {
-	std::cout << "#########init_DB_ROLE()#############" << std::endl;
-	std::string lstr = std::format("{}_zone{}_", "libo", nconfig.area());
-	init_DB_ROLE(lstr.c_str(), (0 * DEF_COUNT) + 1);
-	lstr = std::format("{}_zone{}_", "wac", nconfig.area());
-	init_DB_ROLE(lstr.c_str(), (1 * DEF_COUNT) + 1);
+	std::cout << "#########init_db_role()#############" << std::endl;
+	std::string lname = std::format("{}_zone{}_", "libo", nconfig.area());
+	init_db_role(lname.c_str(), 1);
+	lname = std::format("{}_zone{}_", "wac", nconfig.area());
+	init_db_role(lname.c_str(), def_count + 1);
 }
 
 // Seed demo bag records.
-void init_DB_BAG(const char* aname, int beg)
+void init_db_bag(const char* aname, int abeg)
 {
 	(void)aname;
-	for (int i = beg; i < beg + DEF_COUNT; ++i)
+	for (int li = abeg; li < abeg + def_count; ++li)
 	{
 		pbdb::db_bag ltemp;
-		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li));
 		ltemp.set_mmaxid(1);
 
 		save_seed<pbdb::ENUM_DB_BAG>(ltemp);
 	}
 }
 
-void init_DB_BAG()
+void init_db_bag()
 {
-	init_DB_BAG("libo", (0 * DEF_COUNT) + 1);
-	init_DB_BAG("wac", (1 * DEF_COUNT) + 1);
+	init_db_bag("libo", 1);
+	init_db_bag("wac", def_count + 1);
 }
 
-void init_DB_TASK(const char* aname, int beg)
+void init_db_task(const char* aname, int abeg)
 {
 	(void)aname;
-	for (int i = beg; i < beg + DEF_COUNT; ++i)
+	for (int li = abeg; li < abeg + def_count; ++li)
 	{
 		pbdb::db_task ltemp;
-		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
-		auto lrundatas = ltemp.mutable_mrundatas();
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li));
+		auto lrundata = ltemp.mutable_mrundatas();
 		std::pair<int32_t, pbdb::db_task::data> lpair;
 		lpair.first = 1;
 		lpair.second.set_mtaskid(1);
 		lpair.second.set_mreceiveutc(0);
 		lpair.second.set_mfinshutc(0);
-		auto lschedules = lpair.second.mutable_mschedules();
-		auto lschedulesnode = lschedules->Add();
-		lschedulesnode->set_mvalue(1);
-		lschedulesnode->set_msumint(10);
-		(*lrundatas)[lpair.first] = lpair.second;
+		auto lscheds = lpair.second.mutable_mschedules();
+		auto lsch_node = lscheds->Add();
+		lsch_node->set_mvalue(1);
+		lsch_node->set_msumint(10);
+		(*lrundata)[lpair.first] = lpair.second;
 
 		save_seed<pbdb::ENUM_DB_TASK>(ltemp);
 	}
 }
 
-void init_DB_TASK()
+void init_db_task()
 {
-	init_DB_TASK("libo", (0 * DEF_COUNT) + 1);
-	init_DB_TASK("wac", (1 * DEF_COUNT) + 1);
+	init_db_task("libo", 1);
+	init_db_task("wac", def_count + 1);
 }
 
 // Seed demo mailbox records.
-void init_DB_MAIL(int beg)
+void init_db_mail(int abeg)
 {
-	for (int i = beg; i < beg + DEF_COUNT; ++i)
+	for (int li = abeg; li < abeg + def_count; ++li)
 	{
 		pbdb::db_mail ltemp;
-		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li));
 
 		save_seed<pbdb::ENUM_DB_MAIL>(ltemp);
 	}
 }
 
-void init_DB_MAIL()
+void init_db_mail()
 {
-	init_DB_MAIL((0 * DEF_COUNT) + 1);
-	init_DB_MAIL((1 * DEF_COUNT) + 1);
+	init_db_mail(1);
+	init_db_mail(def_count + 1);
 }
 
-void init_DB_ROLEKEYVALUE(int beg)
+void init_db_rkv(int abeg)
 {
-	for (int i = beg; i < beg + DEF_COUNT; ++i)
+	for (int li = abeg; li < abeg + def_count; ++li)
 	{
 		pbdb::db_rolekeyvalue ltemp;
-		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li));
 		(*ltemp.mutable_mdata())["test1"] = "1";
 		(*ltemp.mutable_mdata())["test2"] = "2";
 		(*ltemp.mutable_mdata())["test3"] = "3";
@@ -452,13 +455,13 @@ void init_DB_ROLEKEYVALUE(int beg)
 	}
 }
 
-void init_DB_ROLEKEYVALUE()
+void init_db_rkv()
 {
-	init_DB_ROLEKEYVALUE((0 * DEF_COUNT) + 1);
-	init_DB_ROLEKEYVALUE((1 * DEF_COUNT) + 1);
+	init_db_rkv(1);
+	init_db_rkv(def_count + 1);
 }
 
-void init_DB_NOTICE()
+void init_db_note()
 {
 	std::vector<std::string> lvec =
 	{
@@ -473,15 +476,15 @@ void init_DB_NOTICE()
 		"妖植为何", // 9
 		"银月32城", // 10
 	};
-	for (int i = 1; i < 10; ++i)
+	for (int li = 1; li < 10; ++li)
 	{
 		pbdb::db_notice ltemp;
-		ltemp.set_mid((ngl::ttab_servers::instance().const_tab()->m_area * 100) + i);
-		if (ngl::tools::to_utf8(lvec[i], lvec[i]) == false)
+		ltemp.set_mid((ngl::ttab_servers::instance().const_tab()->m_area * 100) + li);
+		if (!ngl::tools::to_utf8(lvec[li], lvec[li]))
 		{
 			continue;
 		}
-		ltemp.set_mnotice(lvec[i]);
+		ltemp.set_mnotice(lvec[li]);
 		const int32_t lnow = static_cast<int32_t>(time(nullptr));
 		ltemp.set_mstarttime(lnow);
 		ltemp.set_mfinishtime(lnow + 36000);
@@ -489,35 +492,35 @@ void init_DB_NOTICE()
 	}
 }
 
-void init_DB_KEYVAL()
+void init_db_kv()
 {
 	pbdb::db_keyvalue ltemp;
 	ltemp.set_mid(pbdb::db_keyvalue_ekv_none);
-	int32_t lnow = (int32_t)ngl::localtime::gettime();
-	std::string ltempstr = std::format("{}*{}", lnow, ngl::localtime::time2str(lnow, "%y/%m/%d %H:%M:%S"));
-	ltemp.set_mvalue(ltempstr);
+	const int32_t lnow = (int32_t)ngl::localtime::gettime();
+	std::string lval = std::format("{}*{}", lnow, ngl::localtime::time2str(lnow, "%y/%m/%d %H:%M:%S"));
+	ltemp.set_mvalue(lval);
 
 	save_seed<pbdb::ENUM_DB_KEYVALUE>(ltemp);
 }
 
-void init_DB_FAMILY()
+void init_db_fam()
 {
-	for (int i = 1; i < 100; ++i)
+	for (int li = 1; li < 100; ++li)
 	{
 		pbdb::db_family ltemp;
-		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_FAMILY, tab_self_area, i));
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_FAMILY, tab_self_area, li));
 		ltemp.set_mcreateutc((int32_t)ngl::localtime::gettime());
 		ltemp.set_mexp(100);
 		ltemp.set_mlv(1);
-		ltemp.set_mname(std::format("FLIBO{}", i));
-		ltemp.set_mleader(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
-		*ltemp.mutable_mmember()->Add() = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
+		ltemp.set_mname(std::format("FLIBO{}", li));
+		ltemp.set_mleader(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li));
+		*ltemp.mutable_mmember()->Add() = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li);
 
 		save_seed<pbdb::ENUM_DB_FAMILY>(ltemp);
 		
 		pbdb::db_familyer ltempfamilyer;
 		ltempfamilyer.set_mjoinutc((int32_t)ngl::localtime::gettime());
-		ltempfamilyer.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		ltempfamilyer.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li));
 		ltempfamilyer.set_mposition(pbdb::db_familyer_eposition_leader);
 		ltempfamilyer.set_mlastsignutc((int32_t)ngl::localtime::gettime());
 
@@ -525,39 +528,39 @@ void init_DB_FAMILY()
 	}
 }
 
-void init_DB_RANKLIST()
+void init_db_rank()
 {
-	/*for (int i = 1; i < 100; ++i)
+	/*for (int li = 1; li < 100; ++li)
 	{
 		pbdb::db_ranklist ltemp;
-		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li));
 		pbdb::rankitem lrankitem;
 		lrankitem.set_mtime((int32_t)ngl::localtime::gettime());
-		lrankitem.set_mvalue(i);
+		lrankitem.set_mvalue(li);
 		(*ltemp.mutable_mitems())[(int)pbdb::eranklist::lv] = lrankitem;
 
 			save_seed<pbdb::ENUM_DB_RANKLIST>(ltemp);
 	}*/
 }
 
-void init_DB_FRIENDS()
+void init_db_frd()
 {
 	std::map<ngl::i64_actorid, pbdb::db_friends> lmap;
-	for (int i = 0; i < 10; ++i)
+	for (int li = 0; li < 10; ++li)
 	{
-		int lbeg = i * 10;
-		int lend = lbeg + 10;
-		for (int j1 = lbeg; j1 < lend; ++j1)
+		const int lbeg = li * 10;
+		const int lend = lbeg + 10;
+		for (int lj1 = lbeg; lj1 < lend; ++lj1)
 		{
-			ngl::i64_actorid lactor1 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, j1);
+			ngl::i64_actorid lactor1 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, lj1);
 			pbdb::db_friends& lfriends = lmap[lactor1];
 			lfriends.set_mid(lactor1);
-			for (int j2 = lbeg; j2 < lend; ++j2)
+			for (int lj2 = lbeg; lj2 < lend; ++lj2)
 			{
-				if (j1 != j2)
+				if (lj1 != lj2)
 				{
-					ngl::i64_actorid lactor2 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, j2);
-					ngl::i64_actorid lactor3 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, j2 + 10);
+					ngl::i64_actorid lactor2 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, lj2);
+					ngl::i64_actorid lactor3 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, lj2 + 10);
 					lfriends.add_mfriends(lactor2);
 					lfriends.add_mapplyfriends(lactor3);
 				}
@@ -571,24 +574,24 @@ void init_DB_FRIENDS()
 	}
 }
 
-void init_DB_TESTLUA()
+void init_db_tlua()
 {
 	std::map<ngl::i64_actorid, pbdb::db_testlua> lmap;
-	for (int i = 0; i < 10; ++i)
+	for (int li = 0; li < 10; ++li)
 	{
-		ngl::i64_actorid lactor1 = ngl::nguid::make(ngl::ACTOR_TESTLUA, tab_self_area, i);
+		ngl::i64_actorid lactor1 = ngl::nguid::make(ngl::ACTOR_TESTLUA, tab_self_area, li);
 		pbdb::db_testlua& ltestlua = lmap[lactor1];
 		ltestlua.set_mid(lactor1);
-		for (int j = 0; j < 10; ++j)
+		for (int lj = 0; lj < 10; ++lj)
 		{
-			ltestlua.add_mvalue(i * 1000 + j);
+			ltestlua.add_mvalue(li * 1000 + lj);
 		}
 		pbdb::db_testlua::luadata ltemp;
-		for (int index = 0; index < 5; ++index)
+		for (int lidx = 0; lidx < 5; ++lidx)
 		{
-			ltemp.set_mkey(std::format("key_{}", index).c_str());
-			ltemp.set_mval(std::format("val_{}", index).c_str());
-			(*ltestlua.mutable_mdatas())[index] = ltemp;
+			ltemp.set_mkey(std::format("key_{}", lidx).c_str());
+			ltemp.set_mval(std::format("val_{}", lidx).c_str());
+			(*ltestlua.mutable_mdatas())[lidx] = ltemp;
 		}
 	}
 
@@ -598,34 +601,34 @@ void init_DB_TESTLUA()
 	}
 }
 
-startup_error start_db(int argc, char** argv, int* tcp_port)
+startup_error start_db(int aargc, char** aargv, int* atcp_port)
 {
-	return start_node("DB", tcp_port, make_node_opt(), [argc, argv]()
+	return start_node("DB", atcp_port, make_node_opt(), [aargc, aargv]()
 		{
 			init_db_back(nconfig.db());
 			ngl::tdb::tdb_init(false);
 			ngl::actor_gmclient::instance();
 
-			if (need_seed_db(argc, argv))
+			if (need_seed_db(aargc, aargv))
 			{
-				init_DB_BAG();
-				init_DB_TASK();
-				init_DB_ROLE();
-				init_DB_NOTICE();
-				init_DB_FAMILY();
-				init_DB_KEYVAL();
-				init_DB_ACCOUNT();
-				init_DB_ROLEKEYVALUE();
-				init_DB_RANKLIST();
-				init_DB_FRIENDS();
-				init_DB_TESTLUA();
+				init_db_bag();
+				init_db_task();
+				init_db_role();
+				init_db_note();
+				init_db_fam();
+				init_db_kv();
+				init_db_acc();
+				init_db_rkv();
+				init_db_rank();
+				init_db_frd();
+				init_db_tlua();
 			}
 		});
 }
 
-startup_error start_crossdb(int* tcp_port)
+startup_error start_crossdb(int* atcp_port)
 {
-	return start_node("CROSSDB", tcp_port, make_node_opt(), []()
+	return start_node("CROSSDB", atcp_port, make_node_opt(), []()
 		{
 			init_db_back(nconfig.crossdb());
 			ngl::tdb::tcrossdb_init(false);
@@ -633,9 +636,9 @@ startup_error start_crossdb(int* tcp_port)
 		});
 }
 
-startup_error start_world(int* tcp_port)
+startup_error start_world(int* atcp_port)
 {
-	return start_node("WORLD", tcp_port, make_node_opt(), []()
+	return start_node("WORLD", atcp_port, make_node_opt(), []()
 		{
 			ngl::actor_events_logic::instance();
 			ngl::actor_gm::instance();
@@ -656,18 +659,18 @@ startup_error start_world(int* tcp_port)
 		});
 }
 
-startup_error start_login(int* tcp_port)
+startup_error start_login(int* atcp_port)
 {
-	return start_node("LOGIN", tcp_port, make_node_opt(), []()
+	return start_node("LOGIN", atcp_port, make_node_opt(), []()
 		{
 			ngl::actor_login::instance();
 			ngl::actor_gmclient::instance();
 		});
 }
 
-startup_error start_gateway(int* tcp_port)
+startup_error start_gateway(int* atcp_port)
 {
-	return start_node("GATEWAY", tcp_port, make_node_opt({ pbnet::KCP_GATEWAY }), []()
+	return start_node("GATEWAY", atcp_port, make_node_opt({ pbnet::KCP_GATEWAY }), []()
 		{
 			ngl::actor_gateway::instance();
 			ngl::actor_gateway_g2c::instance();
@@ -677,9 +680,9 @@ startup_error start_gateway(int* tcp_port)
 		});
 }
 
-startup_error start_log(int* tcp_port)
+startup_error start_log(int* atcp_port)
 {
-	return start_node("LOG", tcp_port, make_node_opt({}, true, false, true), []()
+	return start_node("LOG", atcp_port, make_node_opt({}, true, false, true), []()
 		{
 			if (ngl::sysconfig::logwritelevel() >= ngl::ELOG_MAX || ngl::sysconfig::logwritelevel() <= ngl::ELOG_NONE)
 			{
@@ -692,9 +695,9 @@ startup_error start_log(int* tcp_port)
 		});
 }
 
-startup_error start_actor(int* tcp_port)
+startup_error start_actor(int* atcp_port)
 {
-	return start_node("ACTORSERVER", tcp_port, make_node_opt({}, false, false, false), []()
+	return start_node("ACTORSERVER", atcp_port, make_node_opt({}, false, false, false), []()
 		{
 			ngl::actor_server::instance();
 			make_log_actor();
@@ -702,9 +705,9 @@ startup_error start_actor(int* tcp_port)
 		});
 }
 
-startup_error start_game(int* tcp_port)
+startup_error start_game(int* atcp_port)
 {
-	return start_node("GAME", tcp_port, make_node_opt({ pbnet::KCP_ROLE }), []()
+	return start_node("GAME", atcp_port, make_node_opt({ pbnet::KCP_ROLE }), []()
 		{
 			ngl::actor_role_manage::instance();
 			ngl::actor_create::instance();
@@ -713,9 +716,9 @@ startup_error start_game(int* tcp_port)
 		});
 }
 
-startup_error start_cross(int* tcp_port)
+startup_error start_cross(int* atcp_port)
 {
-	return start_node("CROSS", tcp_port, make_node_opt(), []()
+	return start_node("CROSS", atcp_port, make_node_opt(), []()
 		{
 			ngl::actor_chat::instance();
 			ngl::actor_ranklist::instance();
@@ -723,205 +726,95 @@ startup_error start_cross(int* tcp_port)
 		});
 }
 
-startup_error start_pushcfg(int* tcp_port)
+startup_error start_pushcfg(int* atcp_port)
 {
-	(void)tcp_port;
+	(void)atcp_port;
 	// This process only pushes tab_servers data to the external GM service.
-	ngl::xarg_info* lINFO = nconfig.info();
-	if (lINFO == nullptr)
+	ngl::xarg_info* linfo = nconfig.info();
+	if (linfo == nullptr)
 	{
 		return startup_error::node_start_failed;
 	}
 
-	std::string lGM_URL;
-	if (!lINFO->find("gmurl", lGM_URL))
+	std::string lgm_url;
+	if (!linfo->find("gmurl", lgm_url))
 	{
 		return startup_error::node_start_failed;
 	}
 
-	std::string lAPI;
-	if (!lINFO->find("push_server_config", lAPI))
+	std::string lapi;
+	if (!linfo->find("push_server_config", lapi))
 	{
 		return startup_error::node_start_failed;
 	}
 
-	std::string lURL;
-	lURL.reserve(lGM_URL.size() + lAPI.size() + 1);
-	lURL = lGM_URL;
-	lURL.push_back('/');
-	lURL += lAPI;
+	std::string lurl;
+	lurl.reserve(lgm_url.size() + lapi.size() + 1);
+	lurl = lgm_url;
+	lurl.push_back('/');
+	lurl += lapi;
 
-	bool lHAS_BAD_NET = false;
+	bool lbad_net = false;
 
 	// Push every configured server entry independently so one bad row does not block logging
 	// for the rest of the batch.
-	ngl::ttab_servers::instance().foreach_server([&lURL, &lHAS_BAD_NET](ngl::tab_servers* aSERVER)
+	ngl::ttab_servers::instance().foreach_server([&lurl, &lbad_net](ngl::tab_servers* aserver)
 		{
-			auto lHTTP = ngl::ncurl::http();
-			ngl::ncurl::set_mode(lHTTP, ngl::ENUM_MODE_HTTP);
-			ngl::ncurl::set_type(lHTTP, ngl::ENUM_TYPE_GET);
-			ngl::ncurl::set_url(lHTTP, lURL);
+			auto lhttp = ngl::ncurl::http();
+			ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
+			ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_GET);
+			ngl::ncurl::set_url(lhttp, lurl);
 
-			std::string lPARAM;
-			if (!ngl_runtime::build_push_cfg(*aSERVER, lPARAM))
+			std::string lparam;
+			if (!ngl_runtime::build_push_cfg(*aserver, lparam))
 			{
-				lHAS_BAD_NET = true;
+				lbad_net = true;
 				ngl::log_error()->print(
 					"[pushserverconfig] invalid network type server:{} type:{}",
-					aSERVER->m_id,
-					static_cast<int32_t>(aSERVER->m_type));
+					aserver->m_id,
+					static_cast<int32_t>(aserver->m_type));
 				return;
 			}
 
-			ngl::ncurl::set_param(lHTTP, lPARAM);
+			ngl::ncurl::set_param(lhttp, lparam);
 
-			ngl::ncurl::set_callback(lHTTP, [lSEND = std::move(lPARAM)](int, ngl::http_parm& aHTTP)
+			ngl::ncurl::set_callback(lhttp, [lsend = std::move(lparam)](int, ngl::http_parm& ahttp)
 				{
-					ngl::log_error()->print("[{}]->[{}]", lSEND, aHTTP.m_recvdata);
+					ngl::log_error()->print("[{}]->[{}]", lsend, ahttp.m_recvdata);
 				});
-			ngl::ncurl::send(lHTTP);
+			ngl::ncurl::send(lhttp);
 		});
-	return lHAS_BAD_NET ? startup_error::node_start_failed : startup_error::ok;
+	return lbad_net ? startup_error::node_start_failed : startup_error::ok;
 }
 
-startup_error start_csvserver(int* tcp_port)
+startup_error start_csvserver(int* atcp_port)
 {
-	return start_node("RELOADCSV", tcp_port, make_node_opt(), []()
+	return start_node("RELOADCSV", atcp_port, make_node_opt(), []()
 		{
 			ngl::actor_csvserver::instance();
 			ngl::actor_gmclient::instance();
 		});
 }
 
-#if 0
-	ngl::log_error()->print("[{}] start", "ROBOT");
-
-	startup_error rc = init_server(nconfig.nodeid(), {}, tcp_port);
-	if (rc != startup_error::ok)
-	{
-		return rc;
-	}
-
-	ngl::actor_client::instance();
-
-	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
-	{
-		int32_t llogtype = ngl::ELOG_DEFAULT;
-		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, nconfig.nodeid(), (void*)&llogtype);
-	}
-
-	ngl::actor_robot_manage::instance();
-
-	ngl::i32_serverid llogin = ngl::nnodeid::nodeid(static_cast<int16_t>(ngl::ttab_servers::instance().const_tab()->m_login), 1);
-	ngl::actor_robot_manage::instance().connect(llogin, ngl::ENET_TCP, [](int)
-		{
-			std::cout << "连接Login服务器成功" << std::endl;
-		}
-	);
-	if (argc < 4)
-	{
-		while (1)
-		{
-			ngl::actor_robot_manage::parse_command(get_line());
-		}
-	}
-	else
-	{
-		for (int i = 0; i < 5; ++i)
-		{
-			ngl::sleep::seconds(1);
-			std::cout << "---------------[" << i << "]---------------" << std::endl;
-		}
-		std::string lcmd;
-		if (argc < 6)
-		{
-			lcmd = std::format("login {}", argv[4]);
-		}
-		else
-		{
-			lcmd = std::format("logins {} {} {}", argv[4], argv[5], argv[6]);
-		}
-		ngl::actor_robot_manage::parse_command(lcmd);
-		bool ltest = false;
-		std::vector<int> lms;
-		std::vector<std::string> lcmdvec;
-		std::thread lthread([&ltest, &lms, &lcmdvec]()
-			{
-				std::string lline;
-				while (true)
-				{
-					lline = get_line();
-					const std::vector<std::string> lvec = ngl::arg_options::split_command_line(lline);
-					if (lvec.empty())
-					{
-						continue;
-					}
-					if (lvec[0] == "test" || lvec[0] == "TEST")
-					{
-						lms.clear();
-						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
-						lcmdvec.clear();
-						lcmdvec.push_back(ngl_runtime::detail::command_suffix(lline, 2));
-						ltest = true;
-						continue;
-					}
-					if (lvec[0] == "notest" || lvec[0] == "NOTEST")
-					{
-						lms.clear();
-						lcmdvec.clear();
-						ltest = false;
-						continue;
-					}
-					if (lvec[0] == "tests" || lvec[0] == "TESTS")
-					{
-						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
-						lcmdvec.push_back(ngl_runtime::detail::command_suffix(lline, 2));
-						continue;
-					}
-					if (lvec[0] == "start" || lvec[0] == "START")
-					{
-						ltest = true;
-						continue;
-					}
-					ngl::actor_robot_manage::parse_command(lline);
-				}
-			});
-
-		for (int i = 0;; ++i)
-		{
-			if (!ltest)
-			{
-				ngl::sleep::seconds(1);
-				continue;
-			}
-			for (std::size_t j = 0; j < lcmdvec.size() && j < lms.size(); ++j)
-			{
-				ngl::sleep::milliseconds(lms[j]);
-				ngl::actor_robot_manage::parse_command(lcmdvec[j]);
-			}
-		}
-	}
-#endif
-
-startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
+startup_error start_robot(int aargc, char** aargv, int* atcp_port)
 {
-	const ngl_runtime::robot_launch_request request = ngl_runtime::build_robot_req(argc, argv);
-	if (request.mode == ngl_runtime::robot_launch_mode::invalid)
+	const ngl_runtime::robot_launch_request lreq = ngl_runtime::build_robot_req(aargc, aargv);
+	if (lreq.mode == ngl_runtime::robot_launch_mode::invalid)
 	{
 		return startup_error::invalid_args;
 	}
 
-	std::string bootstrap_command;
-	if (request.mode != ngl_runtime::robot_launch_mode::interactive)
+	std::string lboot_cmd;
+	if (lreq.mode != ngl_runtime::robot_launch_mode::interactive)
 	{
-		bootstrap_command = request.command;
-		if (bootstrap_command.empty())
+		lboot_cmd = lreq.command;
+		if (lboot_cmd.empty())
 		{
 			return startup_error::node_start_failed;
 		}
 	}
 
-	return start_node("ROBOT", tcp_port, make_node_opt(), [request, bootstrap_command = std::move(bootstrap_command)]() mutable
+	return start_node("ROBOT", atcp_port, make_node_opt(), [lreq, lboot_cmd = std::move(lboot_cmd)]() mutable
 		{
 			ngl::actor_robot_manage::instance();
 
@@ -932,160 +825,133 @@ startup_error start_robot_safe(int argc, char** argv, int* tcp_port)
 				}
 			);
 
-			if (request.mode == ngl_runtime::robot_launch_mode::interactive)
+			if (lreq.mode == ngl_runtime::robot_launch_mode::interactive)
 			{
 				// Pure interactive mode behaves like the legacy robot shell.
 				while (true)
 				{
-					std::string line = read_line();
-					if (!line.empty())
+					std::string lline = read_line();
+					if (!lline.empty())
 					{
-						ngl::actor_robot_manage::parse_command(std::move(line));
+						ngl::actor_robot_manage::parse_command(std::move(lline));
 					}
 				}
 			}
 
-			for (int i = 0; i < 5; ++i)
+			for (int li = 0; li < 5; ++li)
 			{
 				ngl::sleep::seconds(1);
-				std::cout << "---------------[" << i << "]---------------" << std::endl;
+				std::cout << "---------------[" << li << "]---------------" << std::endl;
 			}
 
-			ngl::actor_robot_manage::parse_command(std::move(bootstrap_command));
+			ngl::actor_robot_manage::parse_command(std::move(lboot_cmd));
 
-			robot_state state;
-			std::thread([&state]()
+			robot_state lstate;
+			std::thread([&lstate]()
 				{
 					// Console input can either mutate the replay plan or execute a normal command immediately.
 					while (true)
 					{
-						std::string line = read_line();
-						if (apply_robot_cmd(line, state))
+						std::string lline = read_line();
+						if (apply_robot_cmd(lline, lstate))
 						{
 							continue;
 						}
-						if (!line.empty())
+						if (!lline.empty())
 						{
-							ngl::actor_robot_manage::parse_command(std::move(line));
+							ngl::actor_robot_manage::parse_command(std::move(lline));
 						}
 					}
 				}).detach();
 
 			for (;;)
 			{
-				if (!state.m_enabled.load(std::memory_order_acquire))
+				if (!lstate.m_enabled.load(std::memory_order_acquire))
 				{
 					ngl::sleep::seconds(1);
 					continue;
 				}
 
 				// Snapshot the replay plan so the console thread can keep editing the next iteration.
-				const robot_plan plan = copy_plan(state);
-				if (plan.m_interval_ms.empty() || plan.m_commands.empty())
+				const robot_plan lplan = copy_plan(lstate);
+				if (lplan.m_interval_ms.empty() || lplan.m_commands.empty())
 				{
 					ngl::sleep::seconds(1);
 					continue;
 				}
 
-				for (std::size_t i = 0; i < plan.m_commands.size() && i < plan.m_interval_ms.size(); ++i)
+				for (std::size_t li = 0; li < lplan.m_commands.size() && li < lplan.m_interval_ms.size(); ++li)
 				{
-					ngl::sleep::milliseconds(plan.m_interval_ms[i]);
-					ngl::actor_robot_manage::parse_command(plan.m_commands[i]);
+					ngl::sleep::milliseconds(lplan.m_interval_ms[li]);
+					ngl::actor_robot_manage::parse_command(lplan.m_commands[li]);
 				}
 			}
 		});
 }
 
-int ngl_main(int argc, char** argv)
+int ngl_main(int aargc, char** aargv)
 {
-#if 0
-	ngl::arg_options loptions("test");
-	
-	loptions.init_help(
-		"--help --h  帮助\n"
-		"--input -i 输入\n"
-	);
-	loptions.init_options<int32_t>("input,i", "输入"
-		, 0
-	);
-	loptions.positional("input", 1);
-
+ngl_startup::start_ctx lctx{};
+	const ngl_startup::prep_res lprep = ngl_startup::prep_ctx(aargc, aargv, lctx);
+	if (lprep.code != startup_error::ok)
 	{
-		loptions.parse("--help --input 123");
-		int32_t linput = 11111;
-
-		if (loptions.value("input", linput))
-		{
-			std::cout << "ok" << std::endl;
-		}
-		std::string lhelp;
-		if (loptions.value("help", lhelp))
-		{
-			std::cout << "ok" << std::endl;
-		}
-	}
-#endif
-	ngl_startup::start_ctx lCTX{};
-	const ngl_startup::prep_res lPREP = ngl_startup::prep_ctx(argc, argv, lCTX);
-	if (lPREP.code != startup_error::ok)
-	{
-		ngl_startup::log_failure(lPREP.code, lCTX, lPREP.reason);
-		return static_cast<int>(lPREP.code);
+		ngl_startup::log_failure(lprep.code, lctx, lprep.reason);
+		return static_cast<int>(lprep.code);
 	}
 
 #ifdef WIN32
 	SetConsoleTitle(nconfig.servername().c_str());
 #endif
 
-	startup_error lRC = startup_error::ok;
+	startup_error lrc = startup_error::ok;
 	// Each node type shares the same bootstrap path but installs a different actor set.
 	switch (nconfig.nodetype())
 	{
 	case ngl::DB:
-		lRC = start_db(argc, argv, &lCTX.tcp_port);
+		lrc = start_db(aargc, aargv, &lctx.tcp_port);
 		break;
 	case ngl::GAME:
-		lRC = start_game(&lCTX.tcp_port);
+		lrc = start_game(&lctx.tcp_port);
 		break;
 	case ngl::ACTORSERVER:
-		lRC = start_actor(&lCTX.tcp_port);
+		lrc = start_actor(&lctx.tcp_port);
 		break;
 	case ngl::LOG:
-		lRC = start_log(&lCTX.tcp_port);
+		lrc = start_log(&lctx.tcp_port);
 		break;
 	case ngl::GATEWAY:
-		lRC = start_gateway(&lCTX.tcp_port);
+		lrc = start_gateway(&lctx.tcp_port);
 		break;
 	case ngl::LOGIN:
-		lRC = start_login(&lCTX.tcp_port);
+		lrc = start_login(&lctx.tcp_port);
 		break;
 	case ngl::WORLD:
-		lRC = start_world(&lCTX.tcp_port);
+		lrc = start_world(&lctx.tcp_port);
 		break;
 	case ngl::RELOADCSV:
-		lRC = start_csvserver(&lCTX.tcp_port);
+		lrc = start_csvserver(&lctx.tcp_port);
 		break;
 	case ngl::ROBOT:
-		lRC = start_robot_safe(argc, argv, &lCTX.tcp_port);
+		lrc = start_robot(aargc, aargv, &lctx.tcp_port);
 		break;
 	case ngl::CROSS:
-		lRC = start_cross(&lCTX.tcp_port);
+		lrc = start_cross(&lctx.tcp_port);
 		break;
 	case ngl::CROSSDB:
-		lRC = start_crossdb(&lCTX.tcp_port);
+		lrc = start_crossdb(&lctx.tcp_port);
 		break;
 	case ngl::PUSHSERVERCONFIG:
-		lRC = start_pushcfg(&lCTX.tcp_port);
+		lrc = start_pushcfg(&lctx.tcp_port);
 		break;
 	default:
-		lRC = startup_error::invalid_node_type;
+		lrc = startup_error::invalid_node_type;
 		break;
 	}
 
-	if (lRC != startup_error::ok)
+	if (lrc != startup_error::ok)
 	{
-		ngl_startup::log_failure(lRC, lCTX, "node start failed");
-		return static_cast<int>(lRC);
+		ngl_startup::log_failure(lrc, lctx, "node start failed");
+		return static_cast<int>(lrc);
 	}
 
 	while (1)

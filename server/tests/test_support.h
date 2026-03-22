@@ -40,43 +40,43 @@ namespace ngl_test_support
 #endif
 	}
 
-	inline bool env_flag(const char* name)
+	inline bool env_flag(const char* aname)
 	{
-		const std::string lVALUE = read_env(name);
-		if (lVALUE.empty())
+		const std::string lvalue = read_env(aname);
+		if (lvalue.empty())
 		{
 			return false;
 		}
 
-		const std::string_view lVIEW(lVALUE);
-		return lVIEW == "1" || lVIEW == "true" || lVIEW == "TRUE" || lVIEW == "yes" || lVIEW == "on";
+		const std::string_view lview(lvalue);
+		return lview == "1" || lview == "true" || lview == "TRUE" || lview == "yes" || lview == "on";
 	}
 
 	inline bool test_verbose()
 	{
-		static const bool g_TEST_VERBOSE = env_flag("NGL_TEST_VERBOSE");
-		return g_TEST_VERBOSE;
+		static const bool g_test_verbose = env_flag("NGL_TEST_VERBOSE");
+		return g_test_verbose;
 	}
 
 	inline int perf_scale()
 	{
-		static const int g_PERF_SCALE = []()
+		static const int g_perf_scale = []()
 		{
-			const std::string lVALUE = read_env("NGL_TEST_PERF_SCALE");
-			if (lVALUE.empty())
+			const std::string lvalue = read_env("NGL_TEST_PERF_SCALE");
+			if (lvalue.empty())
 			{
 				return 100;
 			}
 
-			char* lEND = nullptr;
-			const long lPARSED = std::strtol(lVALUE.c_str(), &lEND, 10);
-			if (lEND == lVALUE.c_str() || lPARSED <= 0)
+			char* lend = nullptr;
+			const long lparsed = std::strtol(lvalue.c_str(), &lend, 10);
+			if (lend == lvalue.c_str() || lparsed <= 0)
 			{
 				return 100;
 			}
-			return static_cast<int>(std::clamp(lPARSED, 1L, 1000L));
+			return static_cast<int>(std::clamp(lparsed, 1L, 1000L));
 		}();
-		return g_PERF_SCALE;
+		return g_perf_scale;
 	}
 
 	inline int scaled_iterations(int base_iterations)
@@ -113,29 +113,29 @@ namespace ngl_test_support
 		}
 	}
 
-	class ScopedPath
+	class scoped_path
 	{
 	public:
-		explicit ScopedPath(const std::filesystem::path& aTARGET)
-			: m_ORI(std::filesystem::current_path())
+		explicit scoped_path(const std::filesystem::path& atarget)
+			: m_ori(std::filesystem::current_path())
 		{
-			std::filesystem::current_path(aTARGET);
+			std::filesystem::current_path(atarget);
 		}
 
-		ScopedPath(const ScopedPath&) = delete;
-		ScopedPath& operator=(const ScopedPath&) = delete;
+		scoped_path(const scoped_path&) = delete;
+		scoped_path& operator=(const scoped_path&) = delete;
 
-		~ScopedPath()
+		~scoped_path()
 		{
-			std::filesystem::current_path(m_ORI);
+			std::filesystem::current_path(m_ori);
 		}
 
 	private:
-		std::filesystem::path m_ORI;
+		std::filesystem::path m_ori;
 	};
 
-	template <typename TFUN>
-	long long benchmark_us(TFUN&& afun)
+	template <typename tfun>
+	long long benchmark_us(tfun&& afun)
 	{
 		const auto start = std::chrono::steady_clock::now();
 		afun();
@@ -144,51 +144,52 @@ namespace ngl_test_support
 	}
 
 	inline std::filesystem::path make_tmp_dir(
-		const std::string& test_name,
-		std::string_view prefix = "ngl_test",
-		bool unique_suffix = true)
+		const std::string& atest_name,
+		std::string_view aprefix = "ngl_test",
+		bool aunique_suffix = true)
 	{
-		std::string dir_name(prefix);
-		dir_name.push_back('_');
-		dir_name += test_name;
-		if (unique_suffix)
+		std::string ldir_name(aprefix);
+		ldir_name.push_back('_');
+		ldir_name += atest_name;
+		if (aunique_suffix)
 		{
-			dir_name.push_back('_');
-			dir_name += std::to_string(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+			ldir_name.push_back('_');
+			ldir_name += std::to_string(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 		}
 
-		const std::filesystem::path dir = std::filesystem::temp_directory_path() / std::filesystem::path(dir_name);
-		std::error_code ec;
-		std::filesystem::remove_all(dir, ec);
-		std::filesystem::create_directories(dir, ec);
-		return dir;
+		const std::filesystem::path ldir =
+			std::filesystem::temp_directory_path() / std::filesystem::path(ldir_name);
+		std::error_code lec;
+		std::filesystem::remove_all(ldir, lec);
+		std::filesystem::create_directories(ldir, lec);
+		return ldir;
 	}
 
-	template <typename T>
-	void try_set(const std::shared_ptr<std::promise<T>>& aPROMISE, T aVALUE)
+	template <typename tval>
+	void try_set(const std::shared_ptr<std::promise<tval>>& apromise, tval avalue)
 	{
-		if (aPROMISE == nullptr)
+		if (apromise == nullptr)
 		{
 			return;
 		}
 		try
 		{
-			aPROMISE->set_value(std::move(aVALUE));
+			apromise->set_value(std::move(avalue));
 		}
 		catch (const std::future_error&)
 		{
 		}
 	}
 
-	inline void try_set(const std::shared_ptr<std::promise<void>>& aPROMISE)
+	inline void try_set(const std::shared_ptr<std::promise<void>>& apromise)
 	{
-		if (aPROMISE == nullptr)
+		if (apromise == nullptr)
 		{
 			return;
 		}
 		try
 		{
-			aPROMISE->set_value();
+			apromise->set_value();
 		}
 		catch (const std::future_error&)
 		{
