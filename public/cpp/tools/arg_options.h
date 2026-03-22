@@ -13,8 +13,6 @@
 */
 #pragma once
 
-#include "tools/log/nlog.h"
-
 #include <boost/program_options.hpp>
 
 #include <algorithm>
@@ -194,6 +192,11 @@ namespace ngl
 			return lTOKENS;
 		}
 
+		static bool is_help_arg(std::string_view aarg)
+		{
+			return aarg == "-h" || aarg == "--help";
+		}
+
 		void register_aliases(std::string_view aspec)
 		{
 			const std::vector<std::string> option_names = split_option_names(aspec);
@@ -220,23 +223,89 @@ namespace ngl
 			return normalized_key;
 		}
 
+		bool help_enabled() const
+		{
+			return m_alias_to_key.contains("help");
+		}
+
+		std::vector<std::string> strip_help(const std::vector<std::string>& aargs, bool& ahelp_req) const
+		{
+			ahelp_req = false;
+			if (!help_enabled())
+			{
+				return aargs;
+			}
+
+			std::vector<std::string> largs;
+			largs.reserve(aargs.size());
+			bool lend_opt = false;
+			for (const std::string& larg : aargs)
+			{
+				if (!lend_opt && larg == "--")
+				{
+					lend_opt = true;
+					largs.push_back(larg);
+					continue;
+				}
+
+				if (!lend_opt && is_help_arg(larg))
+				{
+					ahelp_req = true;
+					continue;
+				}
+
+				largs.push_back(larg);
+			}
+			return largs;
+		}
+
 		template <typename TParser>
-		bool parse_with(TParser&& aparser)
+		bool parse_with(TParser&& aparser, bool ahelp_req)
 		{
 			try
 			{
 				po::variables_map lvm;
 				po::store(std::forward<TParser>(aparser)(), lvm);
-				po::notify(lvm);
+				if (!ahelp_req)
+				{
+					po::notify(lvm);
+				}
 				m_vm = std::move(lvm);
+				m_help_req = ahelp_req;
 				return true;
 			}
-			catch (const std::exception& ex)
+			catch (const std::exception&)
 			{
-				m_vm.clear();
-				log_warn()->print("arg_options [{}] parse fail [{}]", m_cmdname, ex.what());
+				clear();
 				return false;
 			}
+		}
+
+		bool parse_args(const std::vector<std::string>& aargs)
+		{
+			bool lhelp_req = false;
+			const std::vector<std::string> largs = strip_help(aargs, lhelp_req);
+
+			std::vector<std::string> largv_buf;
+			largv_buf.reserve(largs.size() + 1);
+			largv_buf.push_back(m_cmdname.empty() ? "options" : m_cmdname);
+			largv_buf.insert(largv_buf.end(), largs.begin(), largs.end());
+
+			std::vector<const char*> largv;
+			largv.reserve(largv_buf.size() + 1);
+			for (const std::string& larg : largv_buf)
+			{
+				largv.push_back(larg.c_str());
+			}
+			largv.push_back(nullptr);
+
+			return parse_with([&]()
+				{
+					return po::command_line_parser(static_cast<int>(largv_buf.size()), largv.data())
+						.options(m_options)
+						.positional(m_positional)
+						.run();
+				}, lhelp_req);
 		}
 
 		template <typename T, typename TConfig>
@@ -270,6 +339,7 @@ namespace ngl
 		std::string										m_cmdname;
 		std::string										m_help_text;
 		po::variables_map								m_vm;
+		bool											m_help_req = false;
 	public:
 		explicit arg_options(std::string_view acmdname) :
 			m_options(acmdname.empty() ? "options" : std::string(acmdname)),
@@ -375,31 +445,25 @@ namespace ngl
 
 		bool parse(const std::vector<std::string>& aargs)
 		{
-			std::vector<std::string> lARGS;
-			lARGS.reserve(aargs.size() + 1);
-			lARGS.push_back(m_cmdname.empty() ? "options" : m_cmdname);
-			lARGS.insert(lARGS.end(), aargs.begin(), aargs.end());
-
-			std::vector<const char*> lARGV;
-			lARGV.reserve(lARGS.size() + 1);
-			for (const std::string& lARG : lARGS)
-			{
-				lARGV.push_back(lARG.c_str());
-			}
-			lARGV.push_back(nullptr);
-
-			return parse(static_cast<int>(lARGS.size()), lARGV.data());
+			return parse_args(aargs);
 		}
 
 		bool parse(int argc, const char* const argv[])
 		{
-			return parse_with([&]()
+			std::vector<std::string> largs;
+			if (argc > 1 && argv != nullptr)
+			{
+				largs.reserve(static_cast<std::size_t>(argc - 1));
+				for (int largi = 1; largi < argc; ++largi)
 				{
-					return po::command_line_parser(argc, argv)
-						.options(m_options)
-						.positional(m_positional)
-						.run();
-				});
+					if (argv[largi] == nullptr)
+					{
+						break;
+					}
+					largs.emplace_back(argv[largi]);
+				}
+			}
+			return parse_args(largs);
 		}
 
 		template <typename T>
@@ -408,9 +472,9 @@ namespace ngl
 			const std::string lkey = resolve_key(akey);
 			if constexpr (std::is_same_v<std::decay_t<T>, std::string>)
 			{
-				if ((lkey == "help") && has(lkey) && !m_help_text.empty())
+				if ((lkey == "help") && has(lkey))
 				{
-					adata = m_help_text;
+					adata = help();
 					return true;
 				}
 			}
@@ -427,12 +491,17 @@ namespace ngl
 
 		bool has(std::string_view akey) const
 		{
-			return m_vm.count(resolve_key(akey)) > 0;
+			const std::string lkey = resolve_key(akey);
+			if (lkey == "help")
+			{
+				return m_help_req;
+			}
+			return m_vm.count(lkey) > 0;
 		}
 
 		bool help_requested() const
 		{
-			return has("help");
+			return m_help_req;
 		}
 
 		std::string help() const
@@ -450,6 +519,7 @@ namespace ngl
 		void clear()
 		{
 			m_vm.clear();
+			m_help_req = false;
 		}
 	};
 

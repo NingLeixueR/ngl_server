@@ -280,6 +280,26 @@ TEST(ToolsTest, ArgOptionsParsesAliasesPositionalValuesAndHelp)
 	EXPECT_EQ(options.help(), "custom help text");
 }
 
+TEST(ToolsTest, ArgOptionsHelpSkipsRequiredValidation)
+{
+	ngl::arg_options loptions("test");
+	ASSERT_TRUE(loptions.init_help("custom help text"));
+	ASSERT_TRUE(loptions.init_required<std::string>("robot", "robot account"));
+	loptions.positional("robot", 1);
+
+	ASSERT_TRUE(loptions.parse("--help"));
+	EXPECT_TRUE(loptions.help_requested());
+	EXPECT_TRUE(loptions.has("help"));
+
+	std::string lhelp;
+	EXPECT_TRUE(loptions.value("help", lhelp));
+	EXPECT_EQ(lhelp, "custom help text");
+
+	std::string lrobot = "keep";
+	EXPECT_FALSE(loptions.value("robot", lrobot));
+	EXPECT_EQ(lrobot, "keep");
+}
+
 TEST(ToolsTest, ArgOptionsClearsStateBetweenParsesAndAfterFailure)
 {
 	ngl::arg_options options("test");
