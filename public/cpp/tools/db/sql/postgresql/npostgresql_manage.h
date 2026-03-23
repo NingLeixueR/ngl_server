@@ -31,13 +31,20 @@ namespace ngl
 	{
 		static bool m_dbprotobinary;
 	public:
-		static void init()
+		static bool init()
 		{
-			if (nconfig.info()->find("dbprotobinary", m_dbprotobinary) == false)
+			xarg_info* linfo = nconfig.info();
+			if (linfo == nullptr)
 			{
-				std::cout << "db xml config dbprotobinary falile" << std::endl;
-				tools::no_core_dump();
+				log_error()->print("npostgresql_manage::init missing public config");
+				return false;
 			}
+			if (!linfo->find("dbprotobinary", m_dbprotobinary))
+			{
+				log_error()->print("npostgresql_manage::init missing dbprotobinary");
+				return false;
+			}
+			return true;
 		}
 
 		template <typename T>

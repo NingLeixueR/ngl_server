@@ -18,40 +18,46 @@
 
 namespace ngl
 {
-	void npostgresql_pool::init(const xarg_db& adbarg)
+	bool npostgresql_pool::init(const xarg_db& adbarg)
 	{
 		if (!m_dbs.empty())
 		{
-			tools::no_core_dump();
-			return;
+			log_error()->print("npostgresql_pool::init repeated");
+			return false;
 		}
 		const tab_servers* tab = ttab_servers::instance().const_tab();
 		if (tab == nullptr)
 		{
-			tools::no_core_dump();
-			return;
+			log_error()->print("npostgresql_pool::init missing tab_servers");
+			return false;
 		}
 		m_dbs.resize(tab->m_threadnum);
-		for (int i = 0; i < tab->m_threadnum; ++i)
+		for (int32_t li = 0; li < tab->m_threadnum; ++li)
 		{
-			m_dbs[i] = std::make_shared<npostgresql>();
-			if (!m_dbs[i]->connectdb(adbarg))
+			m_dbs[li] = std::make_shared<npostgresql>();
+			if (!m_dbs[li]->connectdb(adbarg))
 			{
-				tools::no_core_dump();
-				continue;
+				log_error()->print("npostgresql_pool::init connect fail idx:{}", li);
+				m_dbs.clear();
+				return false;
 			}
 		}
-		return;
+		return true;
 	}
 
 	npostgresql* npostgresql_pool::get(int32_t aindex)
 	{
 		if (aindex < 0 || static_cast<std::size_t>(aindex) >= m_dbs.size())
 		{
-			tools::no_core_dump();
+			log_error()->print("npostgresql_pool::get invalid idx:{} size:{}", aindex, m_dbs.size());
 			return nullptr;
 		}
-		return m_dbs[aindex] == nullptr ? nullptr : m_dbs[aindex].get();
+		if (m_dbs[aindex] == nullptr)
+		{
+			log_error()->print("npostgresql_pool::get null db idx:{}", aindex);
+			return nullptr;
+		}
+		return m_dbs[aindex].get();
 	}
 
 }// namespace ngl

@@ -12,6 +12,7 @@
 #include <ctime>
 #include <mutex>
 #include <string_view>
+#include <type_traits>
 
 namespace
 {
@@ -104,7 +105,18 @@ namespace ngl_runtime::detail
 			make_log_actor();
 		}
 
-		asetup();
+		using lsetup_ret = std::invoke_result_t<tsetup&>;
+		if constexpr (std::is_same_v<lsetup_ret, bool>)
+		{
+			if (!asetup())
+			{
+				return startup_error::node_start_failed;
+			}
+		}
+		else
+		{
+			asetup();
+		}
 
 		if (aopts.m_reg_actor && aopts.m_use_actor_client)
 		{
@@ -116,18 +128,17 @@ namespace ngl_runtime::detail
 	}
 
 	template <typename tdb_cfg>
-	void init_db_back(const tdb_cfg& adb_cfg)
+	bool init_db_back(const tdb_cfg& adb_cfg)
 	{
 		if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
 		{
-			ngl::nmysql_pool::instance().init(adb_cfg);
-			ngl::nmysql_manage::init();
+			return ngl::nmysql_manage::init() && ngl::nmysql_pool::instance().init(adb_cfg);
 		}
-		else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+		if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
 		{
-			ngl::npostgresql_pool::instance().init(adb_cfg);
-			ngl::npostgresql_manage::init();
+			return ngl::npostgresql_manage::init() && ngl::npostgresql_pool::instance().init(adb_cfg);
 		}
+		return false;
 	}
 
 	bool need_seed_db(int aargc, char** aargv)
@@ -706,9 +717,12 @@ void init_db_tlua()
 
 startup_error start_db(int aargc, char** aargv, int* atcp_port)
 {
-	return start_node("DB", atcp_port, make_node_opt(), [aargc, aargv]()
+	return start_node("DB", atcp_port, make_node_opt(), [aargc, aargv]() -> bool
 		{
-			init_db_back(nconfig.db());
+			if (!init_db_back(nconfig.db()))
+			{
+				return false;
+			}
 			ngl::tdb::tdb_init(false);
 			ngl::actor_gmclient::instance();
 
@@ -726,16 +740,21 @@ startup_error start_db(int aargc, char** aargv, int* atcp_port)
 				init_db_frd();
 				init_db_tlua();
 			}
+			return true;
 		});
 }
 
 startup_error start_crossdb(int* atcp_port)
 {
-	return start_node("CROSSDB", atcp_port, make_node_opt(), []()
+	return start_node("CROSSDB", atcp_port, make_node_opt(), []() -> bool
 		{
-			init_db_back(nconfig.crossdb());
+			if (!init_db_back(nconfig.crossdb()))
+			{
+				return false;
+			}
 			ngl::tdb::tcrossdb_init(false);
 			ngl::actor_gmclient::instance();
+			return true;
 		});
 }
 

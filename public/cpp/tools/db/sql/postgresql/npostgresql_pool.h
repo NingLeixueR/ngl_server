@@ -36,7 +36,7 @@ namespace ngl
 			return ltemp;
 		}
 		// Create one DB connection per worker thread using the shared config.
-		void init(const xarg_db& adbarg);
+		bool init(const xarg_db& adbarg);
 
 		// Return the connection assigned to the calling/target worker thread.
 		npostgresql* get(int32_t aindex);

@@ -3,15 +3,36 @@
 #include <gtest/gtest.h>
 
 #include <array>
+#include <filesystem>
+#include <fstream>
 #include <string>
 #include <vector>
 
 #include "runtime_helpers.h"
+#include "test_support.h"
+#include "tools/db/sql/mysql/nmysql_manage.h"
+#include "tools/db/sql/postgresql/npostgresql_manage.h"
+#include "tools/tab/xml/xml.h"
 #include "tools/arg_options.h"
 #include "tools/tools.h"
 
 namespace runtime_test_case
 {
+std::filesystem::path write_cfg(std::string_view apublic)
+{
+	const std::filesystem::path ldir = ngl_test_support::make_tmp_dir("db_cfg", "ngl_test", true);
+	std::filesystem::create_directories(ldir / "config");
+	std::ofstream lfile(ldir / "config" / "config.xml");
+	lfile
+		<< "<xmlnode>\n"
+		<< "  <db db=\"0\" ip=\"127.0.0.1\" port=\"3306\" account=\"root\" passworld=\"123456\" dbname=\"lbtest\"/>\n"
+		<< "  <public>\n"
+		<< apublic
+		<< "  </public>\n"
+		<< "</xmlnode>\n";
+	return ldir;
+}
+
 template <std::size_t tcount>
 struct argv_buf
 {
@@ -126,6 +147,30 @@ TEST(RuntimeHelpersTest, PushServerConfigParamRejectsUnknownNetworkType)
 	std::string lparam = "preset";
 	EXPECT_FALSE(ngl_runtime::build_push_cfg(lsrv, lparam));
 	EXPECT_TRUE(lparam.empty());
+}
+
+TEST(RuntimeHelpersTest, DbManageInitRejectsMissingDbProtoBinary)
+{
+	const std::filesystem::path ldir = write_cfg("    <data key=\"consumings\">100</data>\n");
+	nconfig.init();
+	ASSERT_TRUE(nconfig.set_server("db"));
+	ASSERT_TRUE(nconfig.load(ldir.string(), "db_1"));
+
+	EXPECT_FALSE(ngl::nmysql_manage::init());
+	EXPECT_FALSE(ngl::npostgresql_manage::init());
+}
+
+TEST(RuntimeHelpersTest, DbManageInitAcceptsDbProtoBinary)
+{
+	const std::filesystem::path ldir = write_cfg(
+		"    <data key=\"consumings\">100</data>\n"
+		"    <data key=\"dbprotobinary\">true</data>\n");
+	nconfig.init();
+	ASSERT_TRUE(nconfig.set_server("db"));
+	ASSERT_TRUE(nconfig.load(ldir.string(), "db_1"));
+
+	EXPECT_TRUE(ngl::nmysql_manage::init());
+	EXPECT_TRUE(ngl::npostgresql_manage::init());
 }
 
 } // namespace runtime_test_case
