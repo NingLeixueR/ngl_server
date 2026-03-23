@@ -17,10 +17,23 @@
 
 #include "tools/pb_field.h"
 
-#ifdef GetMessage
-// Windows headers define GetMessage as a macro, which breaks protobuf Reflection::GetMessage.
-#undef GetMessage
-#endif
+namespace ngl::msg
+{
+	const google::protobuf::Message& get(
+		const google::protobuf::Reflection* arefl,
+		const google::protobuf::Message& asrc,
+		const google::protobuf::FieldDescriptor* afield
+	)
+	{
+		using get_msg_fn = const google::protobuf::Message& (google::protobuf::Reflection::*)(
+			const google::protobuf::Message&,
+			const google::protobuf::FieldDescriptor*,
+			google::protobuf::MessageFactory*
+			) const;
+		const auto lget_msg = static_cast<get_msg_fn>(&google::protobuf::Reflection::GetMessage);
+		return (arefl->*lget_msg)(asrc, afield, nullptr);
+	}
+}
 
 namespace ngl
 {
@@ -187,7 +200,7 @@ namespace ngl
             break;
         case google::protobuf::FieldDescriptor::CPPTYPE_MESSAGE:
         {
-            const google::protobuf::Message& src_msg = src_refl->GetMessage(src, field);
+            const google::protobuf::Message& src_msg = msg::get(src_refl, src, field);
             google::protobuf::Message* dst_msg = dst_refl->MutableMessage(dst, field);
             dst_msg->CopyFrom(src_msg); // Message
             break;
