@@ -220,13 +220,14 @@ namespace ngl
 		ngl::ser::nserialize::bytes(&lserializebyte, adata);
 
 		lforward.m_bufflen = lserializebyte.pos();
-		lforward.m_buff = netbuff_pool::instance().malloc_private(lforward.m_bufflen);
-		if (lforward.m_buff == nullptr && lforward.m_bufflen > 0)
+		char* lbuf = netbuff_pool::malloc(lforward.m_bufflen);
+		lforward.m_buff = lbuf;
+		if (lbuf == nullptr && lforward.m_bufflen > 0)
 		{
 			return false;
 		}
 
-		ngl::ser::serialize_push lserializepush(const_cast<char*>(lforward.m_buff), lforward.m_bufflen);
+		ngl::ser::serialize_push lserializepush(lbuf, lforward.m_bufflen);
 		if (ngl::ser::nserialize::push(&lserializepush, adata))
 		{
 			if (agateway != 0)
@@ -235,12 +236,12 @@ namespace ngl
 				if (lsession > 0)
 				{
 					const bool lsent = send(lsession, pro, nguid::make(), nguid::make());
-					netbuff_pool::instance().free((char*)lforward.m_buff);
+					netbuff_pool::free(lbuf);
 					return lsent;
 				}
 			}
 		}
-		netbuff_pool::instance().free((char*)lforward.m_buff);
+		netbuff_pool::free(lbuf);
 		return false;
 	}
 }
