@@ -75,7 +75,15 @@ namespace ngl
 		{
 			// Fallback allocation is only used outside the shared network pool,
 			// mainly in tests or standalone utility code.
-			m_buff = new(std::nothrow) char[alen];
+			try
+			{
+				m_auto.resize(static_cast<size_t>(alen));
+			}
+			catch (const std::bad_alloc&)
+			{
+				m_auto.clear();
+			}
+			m_buff = m_auto.empty() ? nullptr : m_auto.data();
 		}
 		else
 		{
@@ -106,7 +114,8 @@ namespace ngl
 		}
 		else
 		{
-			delete[] m_buff;
+			m_auto.clear();
+			m_auto.shrink_to_fit();
 		}
 		m_buff = nullptr;
 		m_len = 0;

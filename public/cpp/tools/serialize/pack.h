@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include <vector>
 
 namespace ngl
 {
@@ -38,16 +39,17 @@ namespace ngl
 
 		void free();
 	public:
-		ENET_PROTOCOL	m_protocol = ENET_TCP;
-		i32_session		m_id = 0;
-		pack_head		m_head;
-		bpool*			m_bpool = nullptr;
+		ENET_PROTOCOL		m_protocol = ENET_TCP;
+		i32_session			m_id = 0;
+		pack_head			m_head;
+		bpool*				m_bpool = nullptr;
 		// Receive rate limiting is charged once per completed packet, not once
 		// per TCP fragment.
-		bool			m_rate_accounted = false;
-		char*			m_buff = nullptr;
-		int32_t			m_len = 0;
-		int32_t			m_pos = 0;
+		bool				m_rate_accounted = false;
+		std::vector<char>	m_auto;
+		char*				m_buff = nullptr;
+		int32_t				m_len = 0;
+		int32_t				m_pos = 0;
 
 		~pack();
 
