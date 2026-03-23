@@ -129,19 +129,26 @@ namespace ngl
 		);
 	}
 
-	asio_kcp::~asio_kcp()
+	asio_kcp::~asio_kcp() noexcept
 	{
+		try
 		{
-			std::lock_guard<std::mutex> llock(m_waitmutex);
-			m_wait = nullptr;
-			m_waitendpoint = asio_udp_endpoint();
-		}
+			{
+				std::scoped_lock llock(m_waitmutex);
+				m_wait = nullptr;
+				m_waitendpoint = asio_udp_endpoint();
+			}
 
-		basio_errorcode ec;
-		m_socket.cancel(ec);
-		m_socket.close(ec);
-		m_work_guard.reset();
-		m_context.stop();
+			basio_errorcode ec;
+			m_socket.cancel(ec);
+			m_socket.close(ec);
+			m_work_guard.reset();
+			m_context.stop();
+		}
+		catch (...)
+		{
+			// UDP/KCP teardown should never propagate exceptions during destruction.
+		}
 	}
 
 	bool asio_kcp::async_send_copy(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(const basio_errorcode&)>& aerrorfun)

@@ -22,30 +22,32 @@ public:
 	{
 	}
 
-	ngl::actor_stat activity_stat() final
+	ngl::actor_stat activity_stat() override
 	{
 		return m_stat;
 	}
 
-	void set_activity_stat(ngl::actor_stat astat) final
+	void set_activity_stat(ngl::actor_stat astat) override
 	{
 		m_stat = astat;
 	}
 
-	bool list_empty() final
+	bool list_empty() override
 	{
 		return true;
 	}
 
-	void actor_handle(ngl::i32_threadid) final
+	void actor_handle(ngl::i32_threadid) override
 	{
+		// Test double: scheduling behavior is validated elsewhere in these tests.
 	}
 
-	void push(ngl::handle_pram&) final
+	void push(ngl::handle_pram&) override
 	{
+		// Test double: no queueing is needed for the metadata-only assertions below.
 	}
 
-	void release() final
+	void release() override
 	{
 		++m_release_count;
 	}

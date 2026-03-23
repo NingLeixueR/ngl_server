@@ -92,7 +92,7 @@ namespace ngl
 			const ws_tls_options& atls_options = {}
 		);
 
-		~asio_ws();
+		~asio_ws() noexcept;
 	private:
 		// Allocate/lookup sessions and run the TCP/TLS/WebSocket handshake pipeline.
 		std::shared_ptr<service_ws> create_service();

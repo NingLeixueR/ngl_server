@@ -54,7 +54,7 @@ namespace ngl
 			return true;
 		}
 	public:
-		ncjson(const char* ajsonstr)
+		explicit ncjson(const char* ajsonstr)
 		{
 			m_allocator = &m_doc.GetAllocator();
 			if (!parse(ajsonstr))

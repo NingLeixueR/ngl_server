@@ -79,7 +79,7 @@ namespace ngl
 			, const tcp_sendfinishcallback& asendfinishfun
 		);
 
-		~asio_tcp();
+		~asio_tcp() noexcept;
 	private:
 		// Resolve a session object and manage the serialized async send queue.
 		std::shared_ptr<service_tcp> get_tcp(i32_sessionid asessionid);

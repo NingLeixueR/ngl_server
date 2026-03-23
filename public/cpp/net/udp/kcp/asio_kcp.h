@@ -65,7 +65,7 @@ namespace ngl
 	public:
 		explicit asio_kcp(i16_port port);
 
-		~asio_kcp();
+		~asio_kcp() noexcept;
 	private:
 		// Register built-in control commands used during KCP handshake/close.
 		bool async_send_copy(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(const basio_errorcode&)>& aerrorfun = {});

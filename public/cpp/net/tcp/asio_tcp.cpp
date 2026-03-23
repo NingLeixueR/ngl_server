@@ -144,61 +144,68 @@ namespace ngl
 	{
 	}
 
-	asio_tcp::~asio_tcp()
+	asio_tcp::~asio_tcp() noexcept
 	{
+		try
 		{
-			std::unique_lock<std::shared_mutex> callback_guard(*m_callbacklock);
-			m_alive->store(false, std::memory_order_release);
-		}
-
-		basio_errorcode ec;
-		{
-			std::lock_guard<std::mutex> accept_lock(m_acceptorlock);
-			if (m_acceptor_v4 != nullptr)
 			{
-				m_acceptor_v4->close(ec);
-				if (!ngl::tcp::should_ignore_acceptor_close_error(ec))
-				{
-					log_error()->print("asio_tcp::~asio_tcp close v4 acceptor [{}]", ec.message());
-				}
-				m_acceptor_v4.reset();
+				std::unique_lock<std::shared_mutex> callback_guard(*m_callbacklock);
+				m_alive->store(false, std::memory_order_release);
 			}
-			if (m_acceptor_v6 != nullptr)
-			{
-				m_acceptor_v6->close(ec);
-				if (!ngl::tcp::should_ignore_acceptor_close_error(ec))
-				{
-					log_error()->print("asio_tcp::~asio_tcp close v6 acceptor [{}]", ec.message());
-				}
-				m_acceptor_v6.reset();
-			}
-		}
 
-		std::vector<std::shared_ptr<service_tcp>> lservices;
-		{
-			lock_write(m_maplock);
-			lservices.reserve(m_data.size());
-			for (auto& [_, service] : m_data)
+			basio_errorcode ec;
 			{
-				if (service != nullptr)
+				std::scoped_lock accept_lock(m_acceptorlock);
+				if (m_acceptor_v4 != nullptr)
 				{
-					lservices.push_back(service);
+					m_acceptor_v4->close(ec);
+					if (!ngl::tcp::should_ignore_acceptor_close_error(ec))
+					{
+						log_error()->print("asio_tcp::~asio_tcp close v4 acceptor [{}]", ec.message());
+					}
+					m_acceptor_v4.reset();
+				}
+				if (m_acceptor_v6 != nullptr)
+				{
+					m_acceptor_v6->close(ec);
+					if (!ngl::tcp::should_ignore_acceptor_close_error(ec))
+					{
+						log_error()->print("asio_tcp::~asio_tcp close v6 acceptor [{}]", ec.message());
+					}
+					m_acceptor_v6.reset();
 				}
 			}
-			m_data.clear();
-			m_close.clear();
-		}
-		{
-			lock_write(m_ipportlock);
-			m_ipport.clear();
-		}
 
-		for (auto& service : lservices)
-		{
-			close_socket(service->m_socket);
-		}
+			std::vector<std::shared_ptr<service_tcp>> lservices;
+			{
+				lock_write(m_maplock);
+				lservices.reserve(m_data.size());
+				for (auto& [_, service] : m_data)
+				{
+					if (service != nullptr)
+					{
+						lservices.push_back(service);
+					}
+				}
+				m_data.clear();
+				m_close.clear();
+			}
+			{
+				lock_write(m_ipportlock);
+				m_ipport.clear();
+			}
 
-		m_service_ios.shutdown();
+			for (auto& service : lservices)
+			{
+				close_socket(service->m_socket);
+			}
+
+			m_service_ios.shutdown();
+		}
+		catch (...)
+		{
+			// Destruction is best-effort only; shutdown must not leak exceptions.
+		}
 	}
 
 	service_tcp* asio_tcp::connect(const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount)

@@ -244,10 +244,10 @@ namespace ngl
 			@return The number of characters written to `out`. This
 			will exclude any null termination.
 		*/
-		static std::size_t encode(void* dest, void const* src, std::size_t len)
+		static std::size_t encode(char* adest, char const* asrc, std::size_t len)
 		{
-			char* out = static_cast<char*>(dest);
-			char const* in = static_cast<char const*>(src);
+			char* out = adest;
+			char const* in = asrc;
 			auto const tab = get_alphabet();
 
 			for (auto n = len / 3; n--;)
@@ -279,7 +279,7 @@ namespace ngl
 				break;
 			}
 
-			return out - static_cast<char*>(dest);
+			return static_cast<std::size_t>(out - adest);
 		}
 
 		/** Decode a padded base64 string into a series of octets.
@@ -293,9 +293,9 @@ namespace ngl
 			the number of characters read from the input string,
 			expressed as a pair.
 		*/
-		static std::pair<std::size_t, std::size_t> decode(void* dest, char const* src, std::size_t len)
+		static std::pair<std::size_t, std::size_t> decode(char* adest, char const* src, std::size_t len)
 		{
-			char* out = static_cast<char*>(dest);
+			char* out = adest;
 			auto in = reinterpret_cast<unsigned char const*>(src);
 			unsigned char c3[3], c4[4];
 			int i = 0;
@@ -332,8 +332,10 @@ namespace ngl
 					*out++ = c3[j];
 			}
 
-			return { out - static_cast<char*>(dest),
-					in - reinterpret_cast<unsigned char const*>(src) };
+			return {
+				static_cast<std::size_t>(out - adest),
+				static_cast<std::size_t>(in - reinterpret_cast<unsigned char const*>(src))
+			};
 		}
 
 	};
@@ -1518,13 +1520,13 @@ namespace ngl
 	/* I got the idea of expanding during the round	function from SSLeay */
 	/* FIXME: can we do	this in	an endian-proof	way? */
 #ifdef WORDS_BIGENDIAN
-#define	blk0(i)	block.l[i]
+#define	blk0(i)	block[i]
 #else
-#define	blk0(i)	(block.l[i]	= (rol(block.l[i],24)&0xFF00FF00) \
-	|(rol(block.l[i],8)&0x00FF00FF))
+#define	blk0(i)	(block[i]	= (rol(block[i],24)&0xFF00FF00) \
+	|(rol(block[i],8)&0x00FF00FF))
 #endif
-#define	blk(i) (block.l[i&15] =	rol(block.l[(i+13)&15]^block.l[(i+8)&15] \
-	^block.l[(i+2)&15]^block.l[i&15],1))
+#define	blk(i) (block[i&15] =	rol(block[(i+13)&15]^block[(i+8)&15] \
+	^block[(i+2)&15]^block[i&15],1))
 
 /* (R0+R1),	R2,	R3,	R4 are the different operations	used in	SHA1 */
 #define	R0(v,w,x,y,z,i)	z+=((w&(x^y))^y)+blk0(i)+0x5A827999+rol(v,5);w=rol(w,30);
@@ -1538,13 +1540,9 @@ namespace ngl
 	static void	SHA1_Transform(uint32_t	state[5], const	uint8_t	buffer[64])
 	{
 		uint32_t a, b, c, d, e;
-		typedef	union {
-			uint8_t	c[64];
-			uint32_t l[16];
-		} CHAR64LONG16;
-		CHAR64LONG16 block;
+		std::array<uint32_t, 16> block{};
 
-		memcpy(&block, buffer, 64);
+		memcpy(block.data(), buffer, 64);
 
 		/* Copy	context->state[] to	working	vars */
 		a = state[0];
@@ -1626,7 +1624,7 @@ namespace ngl
 		memcpy(&context->buffer[j], &data[i], len - i);
 
 #ifdef VERBOSE
-		SHAPrintContext(context, "after	");
+		SHAPrintContext(context, "after\t");
 #endif
 	}
 
@@ -1636,14 +1634,16 @@ namespace ngl
 	{
 		uint32_t i;
 		uint8_t	 finalcount[8];
+		const uint8_t lpad_80[1] = { 0x80 };
+		const uint8_t lpad_00[1] = { 0x00 };
 
 		for (i = 0; i < 8; i++) {
 			finalcount[i] = (unsigned char)((context->count[(i >= 4 ? 0 : 1)]
 				>> ((3 - (i & 3)) * 8)) & 255);	 /*	Endian independent */
 		}
-		sat_SHA1_Update(context, (uint8_t*)"\200", 1);
+		sat_SHA1_Update(context, lpad_80, 1);
 		while ((context->count[0] & 504) != 448) {
-			sat_SHA1_Update(context, (uint8_t*)"\0", 1);
+			sat_SHA1_Update(context, lpad_00, 1);
 		}
 		sat_SHA1_Update(context, finalcount, 8);  /* Should	cause a	SHA1_Transform() */
 		for (i = 0; i < SHA1_DIGEST_SIZE; i++) {
@@ -2087,9 +2087,9 @@ namespace ngl
 	{
 #if defined(__GNUC__) || defined(__clang__)
 		int demangle_status = 0;
-		std::unique_ptr<char, void(*)(void*)> demangled_name(
+		std::unique_ptr<char, void(*)(char*)> demangled_name(
 			abi::__cxa_demangle(aname.c_str(), nullptr, nullptr, &demangle_status),
-			[](void* aptr)
+			[](char* aptr)
 			{
 				std::free(aptr);
 			}

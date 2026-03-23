@@ -21,7 +21,7 @@ public:
 	}
 };
 
-::testing::Environment* const g_rt_env =
+[[maybe_unused]] const ::testing::Environment* const g_rt_env =
 	::testing::AddGlobalTestEnvironment(new test_rt_env());
 
 TEST(A00Bootstrap, LoadConfigAndCsv)

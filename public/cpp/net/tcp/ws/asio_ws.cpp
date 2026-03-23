@@ -208,61 +208,68 @@ namespace ngl
 		}
 	}
 
-	asio_ws::~asio_ws()
+	asio_ws::~asio_ws() noexcept
 	{
-		m_alive->store(false, std::memory_order_release);
+		try
+		{
+			m_alive->store(false, std::memory_order_release);
 
-		basio_errorcode ec;
-		if (m_acceptor_v4 != nullptr)
-		{
-			m_acceptor_v4->close(ec);
-			if (!ngl::ws::should_ignore_acceptor_close_error(ec))
+			basio_errorcode ec;
+			if (m_acceptor_v4 != nullptr)
 			{
-				log_error()->print("asio_ws::~asio_ws close v4 acceptor [{}]", ec.message());
-			}
-			m_acceptor_v4.reset();
-		}
-		if (m_acceptor_v6 != nullptr)
-		{
-			m_acceptor_v6->close(ec);
-			if (!ngl::ws::should_ignore_acceptor_close_error(ec))
-			{
-				log_error()->print("asio_ws::~asio_ws close v6 acceptor [{}]", ec.message());
-			}
-			m_acceptor_v6.reset();
-		}
-
-		std::vector<std::shared_ptr<service_ws>> lservices;
-		{
-			lock_write(m_maplock);
-			lservices.reserve(m_data.size());
-			for (auto& [_, service] : m_data)
-			{
-				if (service != nullptr)
+				m_acceptor_v4->close(ec);
+				if (!ngl::ws::should_ignore_acceptor_close_error(ec))
 				{
-					lservices.push_back(service);
+					log_error()->print("asio_ws::~asio_ws close v4 acceptor [{}]", ec.message());
 				}
+				m_acceptor_v4.reset();
 			}
-			m_data.clear();
-			m_close.clear();
-		}
-		{
-			lock_write(m_ipportlock);
-			m_ipport.clear();
-		}
+			if (m_acceptor_v6 != nullptr)
+			{
+				m_acceptor_v6->close(ec);
+				if (!ngl::ws::should_ignore_acceptor_close_error(ec))
+				{
+					log_error()->print("asio_ws::~asio_ws close v6 acceptor [{}]", ec.message());
+				}
+				m_acceptor_v6.reset();
+			}
 
-		for (auto& service : lservices)
-		{
-			service->m_closing.store(true, std::memory_order_release);
-		}
+			std::vector<std::shared_ptr<service_ws>> lservices;
+			{
+				lock_write(m_maplock);
+				lservices.reserve(m_data.size());
+				for (auto& [_, service] : m_data)
+				{
+					if (service != nullptr)
+					{
+						lservices.push_back(service);
+					}
+				}
+				m_data.clear();
+				m_close.clear();
+			}
+			{
+				lock_write(m_ipportlock);
+				m_ipport.clear();
+			}
 
-		for (auto& service : lservices)
-		{
-			ngl::ws::force_close_socket(service->socket());
-		}
+			for (auto& service : lservices)
+			{
+				service->m_closing.store(true, std::memory_order_release);
+			}
 
-		lservices.clear();
-		m_service_ios.shutdown();
+			for (auto& service : lservices)
+			{
+				ngl::ws::force_close_socket(service->socket());
+			}
+
+			lservices.clear();
+			m_service_ios.shutdown();
+		}
+		catch (...)
+		{
+			// WebSocket teardown is best-effort during destruction.
+		}
 	}
 
 	std::shared_ptr<service_ws> asio_ws::create_service()
