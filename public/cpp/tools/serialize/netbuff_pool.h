@@ -222,12 +222,13 @@ namespace ngl
 		netbuff_pool():
 			netbuff<enum_pool_buff_bytes, enum_pool_count>({50, 50, 40, 30, 20, 20, 20, 10, 10, 10})
 		{}
-	public:
+
 		static netbuff_pool& instance()
 		{
 			static netbuff_pool lnet;
 			return lnet;
 		}
+	public:
 
 		static char* malloc(int abytes)
 		{
