@@ -144,25 +144,20 @@ namespace ngl
 			// so scripts can address their owner without extra plumbing.
 			m_enscript = aparm.m_enscript;
 			const char* lactorname = em<ENUM_ACTOR>::name(type());
-			m_script = nscript_manage::malloc(m_enscript, lactorname, std::format("{}.lua", lactorname).c_str());
+			m_script = nscript_manage::make(m_enscript, lactorname, std::format("{}.lua", lactorname).c_str());
 			if (m_script != nullptr)
 			{
 				nscript_sysdata lsysdata
 				{
 					.m_nguid = id_guid()
 				};
-				nscript_manage::init_sysdata(m_enscript, m_script, lsysdata);
+				nscript_manage::init_sysdata(m_enscript, m_script.get(), lsysdata);
 			}
 		}
 	}
 
 	actor_base::~actor_base()
 	{
-		if (m_script != nullptr)
-		{
-			nscript_manage::release(m_enscript, m_script);
-			m_script = nullptr;
-		}
 	}
 
 	nready& actor_base::ready()
@@ -232,7 +227,7 @@ namespace ngl
 		{
 			return false;
 		}
-		return nscript_manage::db_loadfinish(m_enscript, m_script);
+		return nscript_manage::db_loadfinish(m_enscript, m_script.get());
 	}
 
 	void actor_base::save()

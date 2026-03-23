@@ -37,6 +37,13 @@ namespace ngl
 {
 	class actor_base;
 
+	class nscript_obj
+	{
+	public:
+		virtual ~nscript_obj() = default;
+		virtual enscript type() const noexcept = 0;
+	};
+
 	struct nscript_sysdata
 	{
 		i64_actorid m_nguid = nguid::make();
@@ -45,11 +52,11 @@ namespace ngl
 	};
 
 	template <enscript ESCRIPT>
-	class nscript
+	class nscript :
+		public nscript_obj
 	{
 	public:
-		// Compile-time script backend identifier.
-		static enscript type()
+		enscript type() const noexcept override
 		{
 			return ESCRIPT;
 		}
@@ -122,7 +129,14 @@ namespace ngl
 
 	template <>
 	class nscript<enscript_lua>
+		:
+		public nscript_obj
 	{
+		nscript(const nscript&) = delete;
+		nscript& operator=(const nscript&) = delete;
+		nscript(nscript&&) = delete;
+		nscript& operator=(nscript&&) = delete;
+
 		lua_State* L = nullptr;
 		std::string m_scriptpath;
 
@@ -135,6 +149,13 @@ namespace ngl
 			}
 		}
 	public:
+		nscript() = default;
+
+		enscript type() const noexcept override
+		{
+			return enscript_lua;
+		}
+
 		~nscript()
 		{
 			close_state();
@@ -282,9 +303,23 @@ namespace ngl
 
 	class nscript_manage
 	{
+		static nscript<enscript_lua>* lua_ptr(enscript atype, nscript_obj* ascript)
+		{
+			if (atype != enscript_lua || ascript == nullptr)
+			{
+				return nullptr;
+			}
+			if (ascript->type() == enscript_lua)
+			{
+				return static_cast<nscript<enscript_lua>*>(ascript);
+			}
+			return nullptr;
+		}
 	public:
+		using script_ptr = std::unique_ptr<nscript_obj>;
+
 		// Backend-neutral factory and dispatch helpers used by actor modules.
-		static void* malloc(enscript atype, const char* asubdirectory, const char* ascript)
+		static script_ptr make(enscript atype, const char* asubdirectory, const char* ascript)
 		{
 			if(atype == enscript_lua)
 			{
@@ -293,154 +328,104 @@ namespace ngl
 				{
 					return nullptr;
 				}
-				return lpnscript.release();
+				return lpnscript;
 			}
 			return nullptr;
 		}
 
-		static void release(enscript atype, void* anscript)
+		template <typename T>
+		static bool init_sysdata(enscript atype, nscript_obj* anscript, const T& asys)
 		{
-			if (anscript == nullptr)
+			auto* lptr = lua_ptr(atype, anscript);
+			if (lptr == nullptr)
 			{
-				return;
+				return false;
 			}
-
-			if (atype == enscript_lua)
-			{
-				delete (nscript<enscript_lua>*)(anscript);
-				return;
-			}
+			return lptr->init_sysdata(asys);
 		}
 
 		template <typename T>
-		static bool init_sysdata(enscript atype, void* anscript, const T& asys)
+		static bool data_push(enscript atype, nscript_obj* anscript, const char* aname, const char* asource, const T& ajson, bool aedit)
 		{
-			if (anscript == nullptr)
+			auto* lptr = lua_ptr(atype, anscript);
+			if (lptr == nullptr)
 			{
 				return false;
 			}
-			if (atype == enscript_lua)
+			return lptr->data_push(aname, asource, ajson, aedit);
+		}
+
+		static bool db_loadfinish(enscript atype, nscript_obj* anscript)
+		{
+			auto* lptr = lua_ptr(atype, anscript);
+			if (lptr == nullptr)
 			{
-				auto lpnscript = (nscript<enscript_lua>*)(anscript);
-				return lpnscript->init_sysdata(asys);
+				return false;
 			}
-			return false;
+			return lptr->db_loadfinish();
 		}
 
 		template <typename T>
-		static bool data_push(enscript atype, void* anscript, const char* aname, const char* asource, const T& ajson, bool aedit)
+		static bool handle(enscript atype, nscript_obj* anscript, const char* aname, const T& adata)
 		{
-			if (anscript == nullptr)
+			auto* lptr = lua_ptr(atype, anscript);
+			if (lptr == nullptr)
 			{
 				return false;
 			}
-			if (atype == enscript_lua)
-			{
-				auto lpnscript = (nscript<enscript_lua>*)(anscript);
-				return lpnscript->data_push(aname, asource, ajson, aedit);
-			}
-			return false;
+			return lptr->handle(aname, adata);
 		}
 
-		static bool db_loadfinish(enscript atype, void* anscript)
+		static bool data_del(enscript atype, nscript_obj* anscript, const char* aname, int64_t adataid)
 		{
-			if (anscript == nullptr)
+			auto* lptr = lua_ptr(atype, anscript);
+			if (lptr == nullptr)
 			{
 				return false;
 			}
-			if (atype == enscript_lua)
-			{
-				auto lpnscript = (nscript<enscript_lua>*)(anscript);
-				return lpnscript->db_loadfinish();
-			}
-			return false;
+			return lptr->data_del(aname, adataid);
 		}
 
 		template <typename T>
-		static bool handle(enscript atype, void* anscript, const char* aname, const T& adata)
+		static bool data_checkout(enscript atype, nscript_obj* anscript, const char* aname, i64_actorid adataid, T& adata)
 		{
-			if (anscript == nullptr)
+			auto* lptr = lua_ptr(atype, anscript);
+			if (lptr == nullptr)
 			{
 				return false;
 			}
-			if (atype == enscript_lua)
-			{
-				auto lpnscript = (nscript<enscript_lua>*)(anscript);
-				return lpnscript->handle(aname, adata);
-			}
-			return false;
-		}
-
-		static bool data_del(enscript atype, void* anscript, const char* aname, int64_t adataid)
-		{
-			if (anscript == nullptr)
-			{
-				return false;
-			}
-			if (atype == enscript_lua)
-			{
-				auto lpnscript = (nscript<enscript_lua>*)(anscript);
-				return lpnscript->data_del(aname, adataid);
-			}
-			return false;
+			return lptr->data_checkout(aname, adataid, adata);
 		}
 
 		template <typename T>
-		static bool data_checkout(enscript atype, void* anscript, const char* aname, i64_actorid adataid, T& adata)
+		static bool data_checkout(enscript atype, nscript_obj* anscript, const char* aname, std::map<int64_t,T>& adata)
 		{
-			if (anscript == nullptr)
+			auto* lptr = lua_ptr(atype, anscript);
+			if (lptr == nullptr)
 			{
 				return false;
 			}
-			if (atype == enscript_lua)
-			{
-				auto lpnscript = (nscript<enscript_lua>*)(anscript);
-				return lpnscript->data_checkout(aname, adataid, adata);
-			}
-			return false;
+			return lptr->data_checkout(aname, adata);
 		}
 
-		template <typename T>
-		static bool data_checkout(enscript atype, void* anscript, const char* aname, std::map<int64_t,T>& adata)
+		static bool data_checkdel(enscript atype, nscript_obj* anscript, const char* aname, int64_t adataid)
 		{
-			if (anscript == nullptr)
+			auto* lptr = lua_ptr(atype, anscript);
+			if (lptr == nullptr)
 			{
 				return false;
 			}
-			if (atype == enscript_lua)
-			{
-				auto lpnscript = (nscript<enscript_lua>*)(anscript);
-				return lpnscript->data_checkout(aname, adata);
-			}
-			return false;
+			return lptr->data_checkdel(aname, adataid);
 		}
 
-		static bool data_checkdel(enscript atype, void* anscript, const char* aname, int64_t adataid)
+		static bool data_checkdel(enscript atype, nscript_obj* anscript, const char* aname, std::vector<int64_t>& adelids)
 		{
-			if (anscript == nullptr)
+			auto* lptr = lua_ptr(atype, anscript);
+			if (lptr == nullptr)
 			{
 				return false;
 			}
-			if (atype == enscript_lua)
-			{
-				auto lpnscript = (nscript<enscript_lua>*)(anscript);
-				return lpnscript->data_checkdel(aname, adataid);
-			}
-			return false;
-		}
-
-		static bool data_checkdel(enscript atype, void* anscript, const char* aname, std::vector<int64_t>& adelids)
-		{
-			if (anscript == nullptr)
-			{
-				return false;
-			}
-			if (atype == enscript_lua)
-			{
-				auto lpnscript = (nscript<enscript_lua>*)(anscript);
-				return lpnscript->data_checkdel(aname, adelids);
-			}
-			return false;
+			return lptr->data_checkdel(aname, adelids);
 		}
 	};
 }//namespace ngl

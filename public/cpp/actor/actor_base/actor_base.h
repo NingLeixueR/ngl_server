@@ -159,7 +159,7 @@ namespace ngl
 		bool										m_isbroadcast = false;			// Whether this actor receives broadcast ticks.
 				
 		nready										m_ready;						// Readiness gate collection.
-		void*										m_script = nullptr;				// Script runtime instance, if enabled.
+		nscript_manage::script_ptr				m_script = nullptr;				// Backend-neutral script runtime handle, if enabled.
 		enscript									m_enscript = enscript_none;		// Active scripting backend.
 
 		std::map<i32_serverid, kcpport>				m_kcpindex;					// Cached KCP routing metadata by server.
@@ -424,7 +424,7 @@ namespace ngl
 		{
 			return false;
 		}
-		return nscript_manage::data_push(m_enscript, m_script, tools::type_name<typename T::TDATA>().c_str(), asource, adata, aedit);
+		return nscript_manage::data_push(m_enscript, m_script.get(), tools::type_name<typename T::TDATA>().c_str(), asource, adata, aedit);
 	}
 
 	template <typename T>
@@ -434,7 +434,7 @@ namespace ngl
 		{
 			return false;
 		}
-		return nscript_manage::data_del(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
+		return nscript_manage::data_del(m_enscript, m_script.get(), tools::type_name<T>().c_str(), adataid);
 	}
 
 	template <typename T>
@@ -444,7 +444,7 @@ namespace ngl
 		{
 			return false;
 		}
-		return nscript_manage::data_checkout(m_enscript, m_script, tools::type_name<T>().c_str(), adataid, adata);
+		return nscript_manage::data_checkout(m_enscript, m_script.get(), tools::type_name<T>().c_str(), adataid, adata);
 	}
 
 	template <typename T>
@@ -454,7 +454,7 @@ namespace ngl
 		{
 			return false;
 		}
-		return nscript_manage::data_checkout(m_enscript, m_script, tools::type_name<T>().c_str(), adata);
+		return nscript_manage::data_checkout(m_enscript, m_script.get(), tools::type_name<T>().c_str(), adata);
 	}
 
 	template <typename T>
@@ -464,7 +464,7 @@ namespace ngl
 		{
 			return false;
 		}
-		return nscript_manage::data_checkdel(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
+		return nscript_manage::data_checkdel(m_enscript, m_script.get(), tools::type_name<T>().c_str(), adataid);
 	}
 
 	template <typename T>
@@ -474,7 +474,7 @@ namespace ngl
 		{
 			return false;
 		}
-		return nscript_manage::data_checkdel(m_enscript, m_script, tools::type_name<T>().c_str(), adeldata);
+		return nscript_manage::data_checkdel(m_enscript, m_script.get(), tools::type_name<T>().c_str(), adeldata);
 	}
 
 	template <typename T>
@@ -484,7 +484,7 @@ namespace ngl
 		{
 			return false;
 		}
-		return nscript_manage::handle(m_enscript, m_script, tools::type_name<T>().c_str(), adata);
+		return nscript_manage::handle(m_enscript, m_script.get(), tools::type_name<T>().c_str(), adata);
 	}
 
 	template <typename T>
