@@ -28,10 +28,10 @@ namespace ngl
 
 		std::list<std::shared_ptr<T>>	m_list;
 		std::list<std::shared_ptr<T>>	m_copylist;
-		std::jthread					m_thread;
 		std::function<void(T&)>			m_fun = nullptr;
 		std::shared_mutex				m_mutex;
 		ngl::sem						m_sem;
+		std::jthread					m_thread;		// Start last so queue state exists before run().
 	public:
 		nwork(const std::function<void(T&)>& afun) :
 			m_fun(afun),

@@ -41,7 +41,6 @@ namespace ngl
 		std::deque<ptrnthread>		m_workthreadscopy;	// Full worker set kept for bookkeeping/debugging.
 		bool						m_suspend = false;	// Freeze dispatch while world-state critical sections run.
 		std::deque<ptrnthread>		m_suspendthreads;	// Workers parked during suspension.
-		std::jthread				m_thread;			// Dispatcher thread that matches actors to workers.
 		i32_threadsize				m_threadnum = -1;	// Configured worker count.
 		std::map<nguid, ptractor>	m_actorbyid;		// Fast lookup by full actor guid.
 		std::map<nguid, ptractor>	m_actorbroadcast;	// Actors that receive periodic broadcast ticks.
@@ -52,6 +51,7 @@ namespace ngl
 
 		std::shared_mutex			m_mutex;
 		ngl::sem					m_sem;
+		std::jthread				m_thread;			// Start last so the dispatcher sees initialized state.
 
 		actor_manage();
 		~actor_manage() noexcept;

@@ -22,6 +22,7 @@
 #include "tools/curl/ncurl.h"
 #include "tools/localtime.h"
 #include "tools/log/nlog.h"
+#include "tools/nwork.h"
 #include "tools/operator_file.h"
 #include "tools/time_wheel.h"
 #include "tools/tab/csv/csv.h"
@@ -69,6 +70,12 @@ struct JsonCustomPayload
 		return ngl::njson::push(ajson, aallocator, { "m_value", "m_name" }, m_value, m_name);
 	}
 };
+
+struct work_item
+{
+	int32_t m_value = 0;
+};
+
 TEST(ToolsTest, CurlHttpFactoryInitializesHandle)
 {
 	auto http = ngl::ncurl::http();
@@ -116,6 +123,29 @@ TEST(ToolsTest, CurlParamSkipsNullKeysAndBuildsQuery)
 	ngl::ncurl::param(query, "b", "x");
 
 	EXPECT_EQ(query, "a=1&b=x");
+}
+
+TEST(ToolsTest, NworkRunsQueuedItem)
+{
+	std::atomic_int lsum = 0;
+	{
+		ngl::nwork<work_item> lwork([&lsum](work_item& aitem)
+			{
+				lsum.fetch_add(aitem.m_value, std::memory_order_relaxed);
+			}
+		);
+		auto litem = std::make_shared<work_item>();
+		litem->m_value = 7;
+		lwork.push_back(litem);
+
+		const auto ldeadline = std::chrono::steady_clock::now() + std::chrono::seconds(1);
+		while (lsum.load(std::memory_order_relaxed) != 7 && std::chrono::steady_clock::now() < ldeadline)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		}
+	}
+
+	EXPECT_EQ(lsum.load(std::memory_order_relaxed), 7);
 }
 
 TEST(ToolsTest, CurlHeadersReplaceExistingList)
