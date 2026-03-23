@@ -375,20 +375,23 @@ namespace ngl
 		{
 			if (alocalserver == aotherserver)
 			{
-				tools::no_core_dump();
+				log_error()->print("ttab_servers::connect same server [{}]", alocalserver);
 				return false;
 			}
 
-			const bool has_local_server = csv<tab_servers>::tab(nnodeid::tid(alocalserver)) != nullptr;
-			const tab_servers* remote_server_tab = csv<tab_servers>::tab(nnodeid::tid(aotherserver));
-			if (!has_local_server || remote_server_tab == nullptr)
+			const bool lhas_local = csv<tab_servers>::tab(nnodeid::tid(alocalserver)) != nullptr;
+			const tab_servers* lother_tab = csv<tab_servers>::tab(nnodeid::tid(aotherserver));
+			if (!lhas_local || lother_tab == nullptr)
 			{
-				tools::no_core_dump();
+				log_error()->print(
+					"ttab_servers::connect missing server local:[{}] remote:[{}]",
+					alocalserver,
+					aotherserver);
 				return false;
 			}
-			if (!get_nworks(remote_server_tab->m_type, remote_server_tab->m_area, ENET_TCP, nnodeid::tcount(aotherserver), anetwork))
+			if (!get_nworks(lother_tab->m_type, lother_tab->m_area, ENET_TCP, nnodeid::tcount(aotherserver), anetwork))
 			{
-				tools::no_core_dump();
+				log_error()->print("ttab_servers::connect missing tcp remote:[{}]", aotherserver);
 				return false;
 			}
 			return true;
@@ -404,7 +407,7 @@ namespace ngl
 			const tab_servers* ltab = csv<tab_servers>::tab(atid);
 			if (ltab == nullptr)
 			{
-				tools::no_core_dump();
+				log_error()->print("ttab_servers::node_type missing tid [{}]", atid);
 				return FAIL;
 			}
 			return ltab->m_type;

@@ -147,7 +147,7 @@ namespace ngl
 		xarg_info* lpublicxml = nconfig.info();
 		if (lpublicxml == nullptr)
 		{
-			tools::no_core_dump();
+			log_error()->print("sysconfig::init missing public config");
 			return;
 		}
 
@@ -343,7 +343,7 @@ namespace ngl
 			if (ltabid < static_cast<i32_serverid>(std::numeric_limits<int16_t>::min()) ||
 				ltabid > static_cast<i32_serverid>(std::numeric_limits<int16_t>::max()))
 			{
-				tools::no_core_dump();
+				log_error()->print("sysconfig invalid gateway id [{}]", ltabid);
 				continue;
 			}
 

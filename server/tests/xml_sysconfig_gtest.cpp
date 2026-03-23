@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
 #include <string>
 #include <vector>
 
@@ -105,6 +106,23 @@ TEST(XmlNodeRuntimeTest, XmlPopUsesDefaultsWhenOptionalWssSectionMissing)
 	EXPECT_TRUE(lcfg.wss().m_private_key.empty());
 	EXPECT_TRUE(lcfg.wss().m_ca_certificates.empty());
 	EXPECT_EQ(lcfg.wss().m_verify_peer, true);
+}
+
+TEST(XmlNodeEdgeTest, SetNodeIdRejectsOutOfRangeParts)
+{
+	ngl::xmlnode lcfg;
+	lcfg.set_nodeid(static_cast<int>(std::numeric_limits<int16_t>::max()) + 1, 1);
+
+	EXPECT_EQ(lcfg.tid(), -1);
+	EXPECT_EQ(lcfg.tcount(), -1);
+}
+
+TEST(XmlNodeEdgeTest, AreaReturnsMinusOneWhenTabMissing)
+{
+	ngl::xmlnode lcfg;
+	lcfg.set_nodeid(static_cast<int>(std::numeric_limits<int16_t>::max()) + 1, 1);
+
+	EXPECT_EQ(lcfg.area(), -1);
 }
 
 TEST_F(RuntimeConfigTest, CrossDbSettingsRemainAvailableAfterLoad)

@@ -166,13 +166,12 @@ namespace ngl
 		template <typename TTAB>
 		static TTAB* get()
 		{
-			auto lp = tools::findmap(m_csv, tools::type_name<TTAB>());
-			if (lp == nullptr)
+			csv_base* lcsv = get_csvbase(tools::type_name<TTAB>());
+			if (lcsv == nullptr)
 			{
-				tools::no_core_dump();
 				return nullptr;
 			}
-			return (TTAB*)(lp->get());
+			return static_cast<TTAB*>(lcsv);
 		}
 
 		template <typename TAB>

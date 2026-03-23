@@ -26,7 +26,7 @@ namespace ngl
 			if (avalue < static_cast<int>(std::numeric_limits<int16_t>::min()) ||
 				avalue > static_cast<int>(std::numeric_limits<int16_t>::max()))
 			{
-				tools::no_core_dump();
+				log_error()->print("xmlnode invalid node part [{}]", avalue);
 				return false;
 			}
 			aout = static_cast<int16_t>(avalue);
@@ -218,7 +218,7 @@ namespace ngl
 		auto ltab = ttab_servers::instance().tab(m_tid);
 		if (ltab == nullptr)
 		{
-			tools::no_core_dump();
+			log_error()->print("xmlnode area missing tab tid [{}]", m_tid);
 			return -1;
 		}
 		return ltab->m_area;

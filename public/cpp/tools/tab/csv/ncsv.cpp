@@ -15,6 +15,7 @@
 
 
 #include "tools/tab/csv/ncsv.h"
+#include "tools/log/nlog.h"
 
 namespace ngl
 {
@@ -99,6 +100,7 @@ namespace ngl
 		std::shared_ptr<csv_base>* lp = tools::findmap(m_csv, akey);
 		if (lp == nullptr)
 		{
+			log_error()->print("ncsv::get_csvbase missing table [{}]", akey);
 			return nullptr;
 		}
 		return lp->get();

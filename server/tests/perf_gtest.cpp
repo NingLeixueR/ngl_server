@@ -19,6 +19,21 @@
 
 namespace perf_test_case
 {
+struct csv_miss_row
+{
+	int32_t m_id = 0;
+
+	bool rcsv(ngl::csvpair&)
+	{
+		return false;
+	}
+};
+
+struct csv_miss_tab :
+	public ngl::csv<csv_miss_row>
+{
+};
+
 const ngl::tab_servers* legacy_find_server_by_name(const ngl::ttab_servers& atable, int area, const std::string& aname)
 {
 	for (const auto& [_, row] : atable.m_csv)
@@ -302,6 +317,66 @@ TEST(TTabServersTest, GetNetworkByServerIdReusesTidAndTcount)
 	ASSERT_TRUE(table.get_nworks(serverid, 1, ngl::ENET_TCP, network));
 	EXPECT_EQ(network.m_ip, "127.0.0.1");
 	EXPECT_EQ(network.m_port, 9202);
+}
+
+TEST(NcsvEdgeTest, GetMissingTabReturnsNullptr)
+{
+	EXPECT_EQ(ngl::ncsv::get<csv_miss_tab>(), nullptr);
+}
+
+TEST(TTabServersTest, ConnectRejectsInvalidTargetsWithoutCrash)
+{
+	const int lold_tid = nconfig.tid();
+	const int lold_cnt = nconfig.tcount();
+
+	ngl::ttab_servers ltable;
+
+	ngl::tab_servers llocal;
+	llocal.m_id = 5;
+	llocal.m_name = "login";
+	llocal.m_area = 1;
+	llocal.m_type = ngl::LOGIN;
+	llocal.m_tcount = 1;
+	ngl::net_works llocal_tcp;
+	llocal_tcp.m_type = ngl::ENET_TCP;
+	llocal_tcp.m_ip = "127.0.0.1";
+	llocal_tcp.m_port = 9300;
+	llocal.m_net.push_back(llocal_tcp);
+
+	ngl::tab_servers lother;
+	lother.m_id = 7;
+	lother.m_name = "game";
+	lother.m_area = 1;
+	lother.m_type = ngl::GAME;
+	lother.m_tcount = 1;
+	ngl::net_works lother_ws;
+	lother_ws.m_type = ngl::ENET_WS;
+	lother_ws.m_ip = "127.0.0.1";
+	lother_ws.m_port = 9400;
+	lother.m_net.push_back(lother_ws);
+
+	ltable.m_csv.emplace(llocal.m_id, llocal);
+	ltable.m_csv.emplace(lother.m_id, lother);
+	ltable.reload();
+
+	ngl::net_works lnet;
+
+	nconfig.set_nodeid(llocal.m_id, 1);
+	EXPECT_FALSE(ltable.connect(ngl::nnodeid::nodeid(static_cast<int16_t>(llocal.m_id), 1), lnet));
+	EXPECT_FALSE(ltable.connect(ngl::nnodeid::nodeid(8, 1), lnet));
+	EXPECT_FALSE(ltable.connect(ngl::nnodeid::nodeid(static_cast<int16_t>(lother.m_id), 1), lnet));
+
+	nconfig.set_nodeid(9, 1);
+	EXPECT_FALSE(ltable.connect(ngl::nnodeid::nodeid(static_cast<int16_t>(lother.m_id), 1), lnet));
+
+	nconfig.set_nodeid(lold_tid, lold_cnt);
+}
+
+TEST(TTabServersTest, NodeTypeMissingTidReturnsFail)
+{
+	ngl::ttab_servers ltable;
+
+	EXPECT_EQ(ltable.node_type(77), ngl::FAIL);
 }
 
 TEST(TTabMergeAreaTest, ReloadResolvesLongChains)
