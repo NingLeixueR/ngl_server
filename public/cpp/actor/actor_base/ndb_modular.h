@@ -84,9 +84,9 @@ namespace ngl
 		ndb_modular(const ndb_modular&) = delete;
 		ndb_modular& operator=(const ndb_modular&) = delete;
 
-	protected:
+	private:
 		ndbclient<ENUM, TDATA, TACTOR> m_data;
-
+	protected:
 		inline ndb_modular():
 			ndb_component(ENUM)
 		{
@@ -123,7 +123,12 @@ namespace ngl
 		}
 
 		// Expose the full loaded dataset as a read-only map.
-		inline const std::map<nguid, data_modified<TDATA>>& data()
+		inline std::map<nguid, data_modified<TDATA>>& data()
+		{
+			return m_data.get_data();
+		}
+
+		inline const std::map<nguid, data_modified<TDATA>>& data() const
 		{
 			return m_data.get_data();
 		}
@@ -147,7 +152,7 @@ namespace ngl
 			{
 				return nullptr;
 			}
-			return const_cast<data_modified<TDATA>*>(&itor->second);
+			return &itor->second;
 		}
 
 		// Get or lazily create one row by actor guid.

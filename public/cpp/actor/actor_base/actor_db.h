@@ -232,6 +232,9 @@ namespace ngl
 		actor_db(const actor_db&) = delete;
 		actor_db& operator=(const actor_db&) = delete;
 
+		template <typename TSQL, typename TSQLPOOL>
+		using tndbtab = ndbtab<TDBTAB_TYPE, TDBTAB, TSQL, TSQLPOOL>;
+
 		actor_db() :
 			actor(
 				actorparm
@@ -246,12 +249,43 @@ namespace ngl
 		{
 			if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
 			{
-				ndbtab<TDBTAB_TYPE, TDBTAB, nmysql_manage, nmysql_pool>::init();
+				tndbtab<nmysql_manage, nmysql_pool>::init();
 			}
 			else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
 			{
-				ndbtab<TDBTAB_TYPE, TDBTAB, npostgresql_manage, npostgresql_pool>::init();
+				tndbtab<npostgresql_manage, npostgresql_pool>::init();
 			}			
+		}
+
+		static void save(int athread, i64_actorid aid)
+		{
+			if (ngl::db_data<TDBTAB>::find(aid) == nullptr)
+			{
+				return;
+			}
+			if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+			{
+				nmysql_manage::save<TDBTAB>(nmysql_pool::instance().get(athread), aid);
+				return;
+			}
+			if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+			{
+				npostgresql_manage::save<TDBTAB>(npostgresql_pool::instance().get(athread), aid);
+			}
+		}
+
+		static void del(int athread, i64_actorid aid)
+		{
+			ngl::db_data<TDBTAB>::remove(aid);
+			if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
+			{
+				nmysql_manage::del<TDBTAB>(nmysql_pool::instance().get(athread), aid);
+				return;
+			}
+			if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
+			{
+				npostgresql_manage::del<TDBTAB>(npostgresql_pool::instance().get(athread), aid);
+			}
 		}
 	public:
 		friend class actor_instance<tactor_db>;
@@ -279,11 +313,11 @@ namespace ngl
 			log_error()->print("load: np_actordb_load<{}> id:{}", tools::type_name<TDBTAB>(), adata.get_data()->m_id);
 			if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
 			{
-				ndbtab<TDBTAB_TYPE, TDBTAB, nmysql_manage, nmysql_pool>::load(adata.thread(), adata.get_pack(), *adata.get_data());
+				tndbtab<nmysql_manage, nmysql_pool>::load(adata.thread(), adata.get_pack(), *adata.get_data());
 			}
 			else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
 			{
-				ndbtab<TDBTAB_TYPE, TDBTAB, npostgresql_manage, npostgresql_pool>::load(adata.thread(), adata.get_pack(), *adata.get_data());
+				tndbtab<npostgresql_manage, npostgresql_pool>::load(adata.thread(), adata.get_pack(), *adata.get_data());
 			}			
 			return true;
 		}
@@ -293,11 +327,11 @@ namespace ngl
 		{
 			if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
 			{
-				ndbtab<TDBTAB_TYPE, TDBTAB, nmysql_manage, nmysql_pool>::save(adata.thread(), adata.get_pack(), *adata.get_data());
+				tndbtab<nmysql_manage, nmysql_pool>::save(adata.thread(), adata.get_pack(), *adata.get_data());
 			}
 			else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
 			{
-				ndbtab<TDBTAB_TYPE, TDBTAB, npostgresql_manage, npostgresql_pool>::save(adata.thread(), adata.get_pack(), *adata.get_data());
+				tndbtab<npostgresql_manage, npostgresql_pool>::save(adata.thread(), adata.get_pack(), *adata.get_data());
 			}
 			return true;
 		}
@@ -308,11 +342,11 @@ namespace ngl
 			log_error()->print("load: np_actordb_delete<{}> id:{}", tools::type_name<TDBTAB>(), adata.get_data()->m_data);
 			if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
 			{
-				ndbtab<TDBTAB_TYPE, TDBTAB, nmysql_manage, nmysql_pool>::del(adata.thread(), adata.get_data()->m_data);
+				tndbtab<nmysql_manage, nmysql_pool>::del(adata.thread(), adata.get_data()->m_data);
 			}
 			else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
 			{
-				ndbtab<TDBTAB_TYPE, TDBTAB, npostgresql_manage, npostgresql_pool>::del(adata.thread(), adata.get_data()->m_data);
+				tndbtab<npostgresql_manage, npostgresql_pool>::del(adata.thread(), adata.get_data()->m_data);
 			}
 			return true;
 		}
@@ -321,38 +355,16 @@ namespace ngl
 		bool handle(const message<np_actortime_db_cache<TDBTAB>>& adata)
 		{
 			enum_cache_list ltype = adata.get_data()->m_type;
-			for (i64_actorid id : adata.get_data()->m_ls)
+			for (i64_actorid lid : adata.get_data()->m_ls)
 			{
 				switch (ltype)
 				{
 				case enum_clist_save:
-				{
-					if (ngl::db_data<TDBTAB>::find(id) != nullptr)
-					{
-						if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
-						{
-							nmysql_manage::save<TDBTAB>(nmysql_pool::instance().get(adata.thread()), id);
-						}
-						else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
-						{
-							npostgresql_manage::save<TDBTAB>(npostgresql_pool::instance().get(adata.thread()), id);
-						}
-					}
-				}
-				break;
+					save(adata.thread(), lid);
+					break;
 				case enum_clist_del:
-				{
-					ngl::db_data<TDBTAB>::remove(id);
-					if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
-					{
-						nmysql_manage::del<TDBTAB>(nmysql_pool::instance().get(adata.thread()), id);
-					}
-					else if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
-					{
-						npostgresql_manage::del<TDBTAB>(npostgresql_pool::instance().get(adata.thread()), id);
-					}					
-				}
-				break;
+					del(adata.thread(), lid);
+					break;
 				default:
 					break;
 				}
@@ -394,7 +406,7 @@ namespace ngl
 
 			if (handle_cmd::empty())
 			{
-				handle_cmd::add("query") = [&](int athread, int id, ncjson& aos)
+				handle_cmd::add("query") = [](int athread, int id, ncjson& aos)
 					{
 						gcmd<std::string> pro(id, "query");
 						int64_t lid = 0;
@@ -445,7 +457,7 @@ namespace ngl
 
 					DPROTOCOL(query_page, m_everypagecount, m_page)
 				};
-				handle_cmd::add("queryall") = [&](int athread, int id, ncjson& aos)
+				handle_cmd::add("queryall") = [this](int athread, int id, ncjson& aos)
 					{
 						gcmd<std::vector<std::string>> pro(id, "queryall");
 						query_page lpage;
@@ -466,7 +478,7 @@ namespace ngl
 						}						
 					};
 
-				handle_cmd::add("change") = [&](int athread, int id, ncjson& aos)
+				handle_cmd::add("change") = [](int athread, int id, ncjson& aos)
 					{
 						gcmd<bool> pro(id, "change", false);
 						std::string ljson;

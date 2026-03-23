@@ -35,8 +35,9 @@ namespace ngl
 {
 	class ndbclient_base
 	{
-	protected:
+	private:
 		pbdb::ENUM_DB m_type = pbdb::ENUM_DB::ENUM_DB_FAIL; // Logical DB table/type served by this client.
+	protected:
 		explicit ndbclient_base(pbdb::ENUM_DB atype) :
 			m_type(atype)
 		{}
@@ -126,6 +127,11 @@ namespace ngl
 			return m_pdata == nullptr ? m_data : *m_pdata;
 		}
 
+		inline TDBTAB& data_mut() const noexcept
+		{
+			return m_pdata == nullptr ? m_data : *m_pdata;
+		}
+
 		inline i64_actorid identifier()const
 		{
 			check_init();
@@ -195,7 +201,7 @@ namespace ngl
 		const TDBTAB* getconst(bool anscript = true)const
 		{
 			check_init();
-			TDBTAB& ldata = const_cast<TDBTAB&>(data_ref());
+			TDBTAB& ldata = data_mut();
 			// Const access still reconciles script-side edits so readers see the latest state.
 			if (anscript && m_actor != nullptr)
 			{
@@ -341,9 +347,14 @@ namespace ngl
 		}
 
 		// Return the full loaded dataset.
-		const std::map<nguid, data_modified<TDBTAB>>& get_data()
-		{ 
-			return m_data; 
+		std::map<nguid, data_modified<TDBTAB>>& get_data()
+		{
+			return m_data;
+		}
+
+		const std::map<nguid, data_modified<TDBTAB>>& get_data() const
+		{
+			return m_data;
 		}
 
 		std::map<nguid, data_modified<TDBTAB>>& get_foreach_data()
