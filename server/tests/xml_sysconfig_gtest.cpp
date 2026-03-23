@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include <filesystem>
+#include <fstream>
 #include <limits>
 #include <string>
 #include <vector>
@@ -9,6 +11,7 @@
 #include "runtime_test_support.h"
 #include "test_support.h"
 #include "tools/tab/xml/sysconfig.h"
+#include "tools/tab/xml/xmlprotocol.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/tools.h"
 
@@ -161,6 +164,22 @@ TEST(SysconfigRuntimeTest, ByteXorUsesCompleteConfiguredKeyStream)
 
 	ngl::tools::bytexor(lenc.data(), static_cast<int32_t>(lenc.size()), 0);
 	EXPECT_EQ(lenc, lexp);
+}
+
+TEST(XmlProtocolEdgeTest, LoadSkipsMalformedProtocolFilesWithoutCrash)
+{
+	const std::filesystem::path ldir = ngl_test_support::make_tmp_dir("xmlprotocol_bad", "ngl_test", true);
+	std::filesystem::create_directories(ldir / "config");
+	std::ofstream(ldir / "config" / "net_protocol.xml") << "<con>";
+	std::ofstream(ldir / "config" / "example_protocol.xml") << "<con>";
+
+	{
+		ngl_test_support::scoped_path lpath(ldir);
+		ngl::xmlprotocol::load();
+		EXPECT_EQ(ngl::xmlprotocol::protocol("missing_proto"), -1);
+	}
+
+	ngl::xmlprotocol::load();
 }
 
 TEST(XmlPerfTest, GetChildPathBenchmark)

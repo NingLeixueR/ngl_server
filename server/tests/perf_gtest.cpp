@@ -11,7 +11,10 @@
 #include <string_view>
 #include <vector>
 
+#include "actor/actor_logic/actor_role/actor_role.h"
+#include "actor/tab/ttab_random.h"
 #include "actor/tab/ttab_servers.h"
+#include "actor/tab/ttab_task.h"
 #include "test_support.h"
 #include "tools/nfilterword.h"
 #include "tools/tab/csv/csv.h"
@@ -377,6 +380,87 @@ TEST(TTabServersTest, NodeTypeMissingTidReturnsFail)
 	ngl::ttab_servers ltable;
 
 	EXPECT_EQ(ltable.node_type(77), ngl::FAIL);
+}
+
+TEST(TTabTaskTest, EqualCompleteConditionIndexesCompleteSet)
+{
+	ngl::ttab_task ltable;
+
+	ngl::task_condition lcond{};
+	lcond.m_type = ngl::ETaskTaskId;
+	lcond.m_condition = ngl::ETaskConditionEqual;
+	lcond.m_parmint = 42;
+
+	ltable.set_data(9, lcond, ltable.m_map[lcond.m_type], false);
+
+	const std::set<ngl::i32_taskid>* lrecv = ltable.check(lcond.m_type, lcond.m_parmint, true);
+	const std::set<ngl::i32_taskid>* ldone = ltable.check(lcond.m_type, lcond.m_parmint, false);
+
+	ASSERT_NE(lrecv, nullptr);
+	EXPECT_TRUE(lrecv->empty());
+	ASSERT_NE(ldone, nullptr);
+	EXPECT_TRUE(ldone->contains(9));
+}
+
+TEST(TTabTaskTest, UnsupportedMoreTypeIsIgnoredWithoutCrash)
+{
+	ngl::ttab_task ltable;
+
+	ngl::task_condition lcond{};
+	lcond.m_type = static_cast<ngl::ETask>(ngl::ETaskCount + 1);
+	lcond.m_condition = ngl::ETaskConditionMore;
+	lcond.m_parmint = 3;
+
+	std::map<int32_t, ngl::ttab_task::receive_complete> lrc;
+	ltable.set_data(11, lcond, lrc, true);
+
+	EXPECT_TRUE(lrc.empty());
+	EXPECT_EQ(ltable.check(lcond.m_type, lcond.m_parmint, true), nullptr);
+}
+
+TEST(TTabRandomTest, ReloadAcceptsAcyclicGraph)
+{
+	ngl::ttab_random ltable;
+
+	ngl::tab_random lroot{};
+	lroot.m_id = 1;
+	lroot.m_name = "root";
+	lroot.m_childrandomids.push_back(2);
+
+	ngl::tab_random lchild{};
+	lchild.m_id = 2;
+	lchild.m_name = "child";
+
+	ltable.m_csv.emplace(lroot.m_id, lroot);
+	ltable.m_csv.emplace(lchild.m_id, lchild);
+
+	std::set<int32_t> lseen;
+	EXPECT_TRUE(ltable.is_loop(lroot.m_id, lseen));
+
+	ltable.reload();
+}
+
+TEST(TTabRandomTest, ReloadRejectsCycleWithoutCrash)
+{
+	ngl::ttab_random ltable;
+
+	ngl::tab_random lroot{};
+	lroot.m_id = 1;
+	lroot.m_name = "root";
+	lroot.m_childrandomids.push_back(2);
+
+	ngl::tab_random lchild{};
+	lchild.m_id = 2;
+	lchild.m_name = "child";
+	lchild.m_childrandomids.push_back(1);
+
+	ltable.m_csv.emplace(lroot.m_id, lroot);
+	ltable.m_csv.emplace(lchild.m_id, lchild);
+
+	std::set<int32_t> lseen;
+	EXPECT_FALSE(ltable.is_loop(lroot.m_id, lseen));
+
+	ltable.reload();
 }
 
 TEST(TTabMergeAreaTest, ReloadResolvesLongChains)

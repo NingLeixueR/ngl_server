@@ -30,7 +30,7 @@ namespace ngl
 		xarg_protocols ltemps;
 		if (!ltemps.xml_pop(axml))
 		{
-			tools::no_core_dump();
+			log_error()->print("xmlprotocol::read parse failed [{}]", axml);
 			return;
 		}
 

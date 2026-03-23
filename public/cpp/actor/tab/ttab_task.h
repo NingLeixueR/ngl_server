@@ -16,6 +16,7 @@
 #pragma once
 
 #include "actor/tab/ttab_specialid.h"
+#include "tools/log/nlog.h"
 #include "tools/tab/csv/ncsv.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/type.h"
@@ -81,17 +82,27 @@ namespace ngl
 		{
 			if (aitem.m_condition == ETaskConditionEqual)
 			{
-				arc[aitem.m_parmint].first.insert(ataskid);
+				if (areceive)
+				{
+					arc[aitem.m_parmint].first.insert(ataskid);
+				}
+				else
+				{
+					arc[aitem.m_parmint].second.insert(ataskid);
+				}
 			}
 			else if (aitem.m_condition == ETaskConditionMore)
 			{//>=
-				auto itor = m_maxval.find(aitem.m_type);
-				if (itor == m_maxval.end())
+				auto litor = m_maxval.find(aitem.m_type);
+				if (litor == m_maxval.end())
 				{
-					tools::no_core_dump();
+					log_error()->print(
+						"ttab_task::set_data invalid type [{}] task [{}]",
+						static_cast<int32_t>(aitem.m_type),
+						ataskid);
 					return;
 				}
-				for (int i = aitem.m_parmint; i <= itor->second; ++i)
+				for (int i = aitem.m_parmint; i <= litor->second; ++i)
 				{
 					if (areceive)
 					{

@@ -18,7 +18,6 @@
 #include "tools/tab/csv/ncsv.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/log/nlog.h"
-#include "tools/log/nlog.h"
 #include "tools/type.h"
 
 namespace ngl
@@ -36,9 +35,9 @@ namespace ngl
 			foreach([&](tab_random& atab)
 				{
 					std::set<int32_t> lset;
-					if (is_loop(atab.m_id, lset))
+					if (!is_loop(atab.m_id, lset))
 					{
-						tools::no_core_dump();
+						log_error()->print("ttab_random::reload invalid chain [{}]", atab.m_id);
 					}
 				});
 		}
