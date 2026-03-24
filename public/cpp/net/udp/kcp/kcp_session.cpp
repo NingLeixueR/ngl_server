@@ -20,7 +20,7 @@
 #include "net/udp/kcp/asio_kcp.h"
 #include "tools/log/nlog.h"
 
-#include <set>
+#include <unordered_set>
 #include <vector>
 
 namespace ngl
@@ -243,7 +243,9 @@ namespace ngl
 		std::vector<ptr_se> lsessions;
 		{
 			lock_read(m_mutex);
-			std::set<i32_sessionid> lvisited;
+			lsessions.reserve(m_dataofsession.size());
+			std::unordered_set<i32_sessionid> lvisited;
+			lvisited.reserve(m_dataofsession.size());
 			for (const std::pair<const i64_actorid, i32_sessionid>& lpair : m_actoridofsession)
 			{
 				if (nguid::area(lpair.first) != aarea)

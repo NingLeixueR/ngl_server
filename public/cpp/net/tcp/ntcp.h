@@ -35,11 +35,8 @@ namespace ngl
 		std::shared_ptr<asio_tcp>				m_server = nullptr;			// TCP transport implementation.
 		std::vector<std::shared_ptr<segpack>>	m_segpackvec;				// One frame reassembler per socket worker thread.
 		i16_port								m_port = 0;					// Bound listen port.
-		i32_threadsize							m_socketthreadnum = 0;		// Number of socket worker threads.
 		bool									m_outernet = false;			// Whether public-network clients are allowed.
 		bpool									m_pool;						// Shared pack allocation pool for outbound traffic.
-		std::shared_mutex						m_mutex;					// Reserved for higher-level coordination.
-		std::list<pack>							m_packlist;					// Reserved pack queue.
 	private:
 		// Pass raw socket bytes through LAN checks and the per-thread frame reassembler.
 		bool socket_recv(service_io* ap, const char* abuff, int32_t abufflen);

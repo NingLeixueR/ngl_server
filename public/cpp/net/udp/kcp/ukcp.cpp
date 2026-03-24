@@ -40,38 +40,38 @@ namespace ngl
 
 	bool ukcp::send_server(const std::set<i64_actorid>& aactors, const std::shared_ptr<pack>& apack)
 	{
-		for (i64_actorid lactorcliend : aactors)
+		for (i64_actorid lactorid : aactors)
 		{
-			i32_session lsession = m_kcp.find_session(lactorcliend);
-			if (lsession == -1)
-			{
-				continue;
-			}
-			i64_actorid lserver = 0;
-			i64_actorid lclient = 0;
-			if (!m_kcp.find_actorid(lsession, lserver, lclient))
-			{
-				continue;
-			}
-			if (nconfig.nodetype() != ROBOT)
-			{
-				// Server-side sends target the logical client actor and carry the server as requester.
-				pack_head::head_set_actor((int32_t*)apack->m_buff, lclient, lserver);
-			}
-			else
-			{
-				// Robot-side sends invert the header because the robot acts as the logical client.
-				pack_head::head_set_actor((int32_t*)apack->m_buff, lserver, lclient);
-			}
-			m_kcp.send_server(lsession, apack);
+			send_server(lactorid, apack);
 		}
 		return true;
 	}
 
 	bool ukcp::send_server(i64_actorid aactor, const std::shared_ptr<pack>& apack)
 	{
-		std::set<i64_actorid> lactors = { aactor };
-		return send_server(lactors, apack);
+		i32_session lsession = m_kcp.find_session(aactor);
+		if (lsession == -1)
+		{
+			return true;
+		}
+		i64_actorid lserver = 0;
+		i64_actorid lclient = 0;
+		if (!m_kcp.find_actorid(lsession, lserver, lclient))
+		{
+			return true;
+		}
+		if (nconfig.nodetype() != ROBOT)
+		{
+			// Server-side sends target the logical client actor and carry the server as requester.
+			pack_head::head_set_actor((int32_t*)apack->m_buff, lclient, lserver);
+		}
+		else
+		{
+			// Robot-side sends invert the header because the robot acts as the logical client.
+			pack_head::head_set_actor((int32_t*)apack->m_buff, lserver, lclient);
+		}
+		m_kcp.send_server(lsession, apack);
+		return true;
 	}
 
 	bool ukcp::sendpackbyarea(i16_area aarea, const std::shared_ptr<pack>& apack)

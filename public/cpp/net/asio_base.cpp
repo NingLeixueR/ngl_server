@@ -39,19 +39,6 @@ namespace ngl
 		return std::get<0>(m_ioservices[athreadid]).get();
 	}
 
-	basio_ioservicework* serviceio_info::get_ioservice_work(i32_threadid athreadid)
-	{
-		if (m_ioservices.empty())
-		{
-			return nullptr;
-		}
-		if (athreadid < 0 || static_cast<size_t>(athreadid) >= m_ioservices.size())
-		{
-			return std::get<1>(m_ioservices[0]).get();
-		}
-		return std::get<1>(m_ioservices[athreadid]).get();
-	}
-
 	serviceio_info::serviceio_info(i32_threadid athread, int32_t abuffmaxsize) :
 		m_buffmaxsize(abuffmaxsize),
 		m_recvthreadsize(std::max<int32_t>(1, athread)),

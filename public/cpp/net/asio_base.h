@@ -66,7 +66,6 @@ namespace ngl
 
 		// Resolve the io_context/work guard assigned to a specific receive thread.
 		basio_ioservice* get_ioservice(i32_threadid athreadid);
-		basio_ioservicework* get_ioservice_work(i32_threadid athreadid);
 		// Create the io_context thread pool used by TCP/WS sessions.
 		serviceio_info(i32_threadid athread, int32_t abuffmaxsize);
 		// Stop every io_context and join all worker threads.

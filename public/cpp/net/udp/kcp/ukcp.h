@@ -51,8 +51,12 @@ namespace ngl
 		template <typename T>
 		bool send(i64_actorid aactoridclient, T& adata)
 		{
-			std::set<i64_actorid> lactors = { aactoridclient };
-			return send(lactors, adata);
+			auto lpack = net_pack<T>::npack(&m_pool, adata, 0, 0);
+			if (lpack == nullptr)
+			{
+				return false;
+			}
+			return send_server(aactoridclient, lpack);
 		}
 
 		bool send_server(std::shared_ptr<pack>& apack);

@@ -61,8 +61,12 @@ namespace ngl
 	template <typename T>
 	bool actor_base::kcp_send(i64_actorid aactorid, T& adata, i16_port auport/* = 0*/)
 	{
-		std::set<i64_actorid> lactorids = { aactorid };
-		return kcp_send(lactorids, adata, auport);
+		auto lpukcp = nkcp::instance().kcp(auport);
+		if (lpukcp == nullptr)
+		{
+			return false;
+		}
+		return lpukcp->send(aactorid, adata);
 	}
 
 	template <typename T>

@@ -25,11 +25,9 @@
 #include "net/tcp/ws/asio_ws.h"
 #include "net/net_pack.h"
 
-#include <list>
 #include <map>
 #include <memory>
 #include <set>
-#include <shared_mutex>
 #include <vector>
 
 namespace ngl
@@ -40,11 +38,8 @@ namespace ngl
 		std::shared_ptr<asio_ws>				m_server = nullptr;			// WebSocket transport implementation.
 		std::vector<std::shared_ptr<segpack>>	m_segpackvec;				// One packet reassembler per socket worker thread.
 		i16_port								m_port = 0;					// Bound listen port.
-		i32_threadsize							m_socketthreadnum = 0;		// Number of socket worker threads.
 		bool									m_outernet = false;			// Whether public-network clients are allowed.
 		bpool									m_pool;						// Shared pack allocation pool for outbound traffic.
-		std::shared_mutex						m_mutex;					// Reserved for higher-level coordination.
-		std::list<pack>							m_packlist;					// Reserved pack queue.
 	private:
 		// WebSocket text frames are not mapped into actor protocol dispatch here;
 		// binary frames still reuse the existing pack/segpack pipeline.

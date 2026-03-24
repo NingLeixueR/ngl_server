@@ -52,17 +52,16 @@ namespace ngl
 			m_kcpindex = nconfig.tid() * enets_robot_tid + nconfig.tcount() * enets_robot_tcount;
 		}
 		++m_kcpindex;
-		m_kcpnet[m_kcpindex] = ukcp::create(m_kcpindex);
+		m_kcpnet.insert_or_assign(m_kcpindex, ukcp::create(m_kcpindex));
 		return m_kcpindex;
 	}
 
 	i16_port nkcp::create_kcp(pbnet::ENUM_KCP aenum)
 	{
 		i16_port luport = kcp_port(nconfig.tid(), nconfig.tcount(), aenum);
-		if (!m_kcpnet.contains(luport))
+		if (m_kcpnet.find(luport) == m_kcpnet.end())
 		{
-			m_kcpnet[luport] = ukcp::create(luport);
-			return luport;
+			m_kcpnet.emplace(luport, ukcp::create(luport));
 		}
 		return luport;
 	}

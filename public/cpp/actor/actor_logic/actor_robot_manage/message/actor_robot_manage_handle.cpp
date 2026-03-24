@@ -331,7 +331,7 @@ namespace ngl
 		auto recv = adata.get_data();
 		pbnet::PROBUFF_NET_ROLE_CREATE pro;
 		std::string lname = std::format("role_{}", recv->mroleid());
-		log_error()->print("鍒涘缓瑙掕壊[{}]", lname);
+		log_error()->print("PROBUFF_NET_ROLE_NOT_CREATE[{}]", lname);
 		pro.set_mname(lname);
 		send(get_robot(recv->mroleid()), pro);
 		return true;

@@ -60,7 +60,6 @@ namespace ngl
 
 		m_outernet = aouternet;
 		m_port = aport;
-		m_socketthreadnum = asocketthreadnum;
 
 		m_segpackvec.clear();
 		m_segpackvec.reserve(static_cast<std::size_t>(asocketthreadnum));

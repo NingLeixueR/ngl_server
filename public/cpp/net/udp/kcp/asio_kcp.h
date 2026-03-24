@@ -54,7 +54,6 @@ namespace ngl
 		asio_udp::socket					m_socket;			// Shared UDP socket bound to m_port.
 		asio_udp_endpoint					m_remoteport;		// Source endpoint of the last received datagram.
 		char								m_buff[e_buff_byte] = { 0 }; // Raw UDP receive buffer.
-		std::size_t							m_bytes_received = 0;
 		char								m_buffrecv[e_buffrecv_byte] = { 0 }; // Buffer for packets popped out of KCP.
 		std::mutex							m_waitmutex;		// Protects synchronous wait-recv helper state.
 		std::function<void(char*, int)>		m_wait = nullptr;	// Optional one-shot raw UDP reply callback.

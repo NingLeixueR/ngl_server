@@ -228,7 +228,6 @@ namespace ngl
 		m_socket.async_receive_from(basio::buffer(m_buff, e_buff_byte), m_remoteport,
 			[this](const basio_errorcode& ec, std::size_t bytes_received)
 			{
-				m_bytes_received = bytes_received;
 				if (!ec && bytes_received > 0)
 				{
 					std::function<void(char*, int)> lwait = nullptr;
