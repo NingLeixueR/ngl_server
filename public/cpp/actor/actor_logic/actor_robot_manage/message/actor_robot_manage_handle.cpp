@@ -44,7 +44,6 @@ namespace ngl
 
 	bool actor_robot_manage::handle(const message<np_robot_pram>& adata)
 	{
-		
 		auto lrecv = adata.get_data();
 		if (lrecv == nullptr || lrecv->m_cmd.empty())
 		{
@@ -57,9 +56,9 @@ namespace ngl
 			std::vector<std::string>	m_args;
 		};
 		cmd_ctx lctx;
-		std::string lcmd(lrecv->m_cmd);
-		tools::transform_tolower(lcmd);
-		if (!tools::splite(lcmd.c_str(), " ", lctx.m_cmd, lctx.m_args))
+		std::string lstrcmd(lrecv->m_cmd);
+		tools::transform_tolower(lstrcmd);
+		if (!tools::splite(lstrcmd.c_str(), " ", lctx.m_cmd, lctx.m_args))
 		{
 			help();
 			return true;
@@ -86,17 +85,17 @@ namespace ngl
 			const std::string& lprotocol = lctx.m_args[1];
 			if (lprotocol == "ws" || lprotocol == "wss")
 			{
-				create_robot(lctx.m_args[0], ENET_PROTOCOL::ENET_WS);
+				create_robot(lrobot, ENET_PROTOCOL::ENET_WS);
 			}
 			else if(lprotocol == "tcp")
 			{
-				create_robot(lctx.m_args[0], ENET_PROTOCOL::ENET_TCP);
+				create_robot(lrobot, ENET_PROTOCOL::ENET_TCP);
 			}
 			return true;
 		}
 		if (lctx.m_cmd == "logins")
 		{// logins <robot> <beg> <end> [protocol]
-			if (!lcheck(lctx, 3, 4))
+			if (!lcheck(lctx, 4))
 			{
 				return true;
 			}
@@ -143,7 +142,7 @@ namespace ngl
 			pbnet::PROBUFF_NET_CMD lpro;
 			std::string& lcmd = *lpro.mutable_mcmd();
 
-			lcmd = std::format("{}|", lctx.m_args[1]);
+			lcmd = std::format("{}|", lctx.m_args[0]);
 			std::vector<std::string> lvals(lctx.m_args.begin() + 1, lctx.m_args.end());
 			tools::splicing(lvals, "*", lcmd);
 

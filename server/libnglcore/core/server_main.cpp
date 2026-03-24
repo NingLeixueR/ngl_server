@@ -326,18 +326,11 @@ namespace ngl_runtime
 			lreq.mode = robot_launch_mode::interactive;
 			return lreq;
 		}
-		if (aargv == nullptr || aargv[4] == nullptr)
-		{
-			return lreq;
-		}
-
 		if (aargc == 5)
 		{
 			// One extra argument maps to the legacy "login <account>" shortcut.
 			lreq.mode = robot_launch_mode::login;
-			lreq.command.reserve(6 + std::char_traits<char>::length(aargv[4]));
-			lreq.command = "login ";
-			lreq.command += aargv[4];
+			std::format("login {} {}", aargv[4], aargv[5]);
 			return lreq;
 		}
 
@@ -345,16 +338,7 @@ namespace ngl_runtime
 		{
 			// Three extra arguments map to the legacy batched login flow.
 			lreq.mode = robot_launch_mode::logins;
-			const std::size_t llen4 = std::char_traits<char>::length(aargv[4]);
-			const std::size_t llen5 = std::char_traits<char>::length(aargv[5]);
-			const std::size_t llen6 = std::char_traits<char>::length(aargv[6]);
-			lreq.command.reserve(10 + llen4 + llen5 + llen6);
-			lreq.command = "logins ";
-			lreq.command += aargv[4];
-			lreq.command.push_back(' ');
-			lreq.command += aargv[5];
-			lreq.command.push_back(' ');
-			lreq.command += aargv[6];
+			lreq.command = std::format("logins {} {} {} {}", aargv[4], aargv[5], aargv[6], aargv[7]);
 		}
 		return lreq;
 	}
