@@ -135,36 +135,71 @@ namespace ngl
 
 	bool nnet::send(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::shared_ptr<pack>& apack)
 	{
-		std::map<i32_sessionid, i64_actorid> ltcpmap;
-		std::map<i32_sessionid, i64_actorid> lwsmap;
-		split_sessions(asession, ltcpmap, lwsmap);
-
-		bool lret = true;
-		if (!ltcpmap.empty() && !ntcp::instance().send(ltcpmap, aactorid, apack))
+		if (asession.empty())
 		{
-			lret = false;
+			return true;
 		}
-		if (!lwsmap.empty() && !nws::instance().send(lwsmap, aactorid, apack))
+		if (apack == nullptr)
 		{
-			lret = false;
+			return false;
+		}
+		bool lret = true;
+		for (const auto& [lsessionid, lactorid] : asession)
+		{
+			switch (protocol(lsessionid))
+			{
+			case ENET_TCP:
+				apack->set_actor(lactorid, aactorid);
+				if (!ntcp::instance().send_pack(lsessionid, apack))
+				{
+					lret = false;
+				}
+				break;
+			case ENET_WS:
+				apack->set_actor(lactorid, aactorid);
+				if (!nws::instance().send_pack(lsessionid, apack))
+				{
+					lret = false;
+				}
+				break;
+			default:
+				break;
+			}
 		}
 		return lret;
 	}
 
 	bool nnet::send(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::shared_ptr<pack>& apack)
 	{
-		std::set<i32_sessionid> ltcpset;
-		std::set<i32_sessionid> lwsset;
-		split_sessions(asession, ltcpset, lwsset);
-
-		bool lret = true;
-		if (!ltcpset.empty() && !ntcp::instance().send(ltcpset, aactorid, arequestactorid, apack))
+		if (asession.empty())
 		{
-			lret = false;
+			return true;
 		}
-		if (!lwsset.empty() && !nws::instance().send(lwsset, aactorid, arequestactorid, apack))
+		if (apack == nullptr)
 		{
-			lret = false;
+			return false;
+		}
+		bool lret = true;
+		apack->set_actor(aactorid, arequestactorid);
+		for (i32_sessionid lsessionid : asession)
+		{
+			switch (protocol(lsessionid))
+			{
+			case ENET_TCP:
+				if (!ntcp::instance().send_pack(lsessionid, apack))
+				{
+					lret = false;
+				}
+				break;
+			case ENET_WS:
+				if (!nws::instance().send_pack(lsessionid, apack))
+				{
+					lret = false;
+				}
+				break;
+			default:
+				break;
+			}
 		}
 		return lret;
 	}

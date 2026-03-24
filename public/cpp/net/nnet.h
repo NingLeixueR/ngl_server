@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include "net/net_pack.h"
 #include "net/net_session.h"
 #include "net/tcp/ntcp.h"
 #include "net/tcp/ws/nws.h"
@@ -72,39 +73,31 @@ namespace ngl
 		template <typename Y, typename T = Y>
 		bool send(const std::map<i32_sessionid, i64_actorid>& asession, const Y& adata, i64_actorid aactorid)
 		{
-			std::map<i32_sessionid, i64_actorid> ltcpmap;
-			std::map<i32_sessionid, i64_actorid> lwsmap;
-			split_sessions(asession, ltcpmap, lwsmap);
-
-			bool lret = true;
-			if (!ltcpmap.empty() && !ntcp::instance().send<Y, T>(ltcpmap, adata, aactorid))
+			if (asession.empty())
 			{
-				lret = false;
+				return true;
 			}
-			if (!lwsmap.empty() && !nws::instance().send<Y, T>(lwsmap, adata, aactorid))
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, 0);
+			if (lpack == nullptr)
 			{
-				lret = false;
+				return false;
 			}
-			return lret;
+			return send(asession, aactorid, lpack);
 		}
 
 		template <typename Y, typename T = Y>
 		bool send(const std::set<i32_sessionid>& asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			std::set<i32_sessionid> ltcpset;
-			std::set<i32_sessionid> lwsset;
-			split_sessions(asession, ltcpset, lwsset);
-
-			bool lret = true;
-			if (!ltcpset.empty() && !ntcp::instance().send<Y, T>(ltcpset, adata, aactorid, arequestactorid))
+			if (asession.empty())
 			{
-				lret = false;
+				return true;
 			}
-			if (!lwsset.empty() && !nws::instance().send<Y, T>(lwsset, adata, aactorid, arequestactorid))
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, 0);
+			if (lpack == nullptr)
 			{
-				lret = false;
+				return false;
 			}
-			return lret;
+			return send(asession, aactorid, arequestactorid, lpack);
 		}
 
 		template <typename Y, typename T = Y>
@@ -121,64 +114,53 @@ namespace ngl
 		template <typename Y, typename T = Y>
 		bool send_server(const std::set<i32_serverid>& aserverids, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			std::set<i32_sessionid> lsessions;
+			if (aserverids.empty())
+			{
+				return false;
+			}
+			bool lfound = false;
+			bool lret = true;
+			std::shared_ptr<pack> lpack = nullptr;
 			for (i32_serverid lserverid : aserverids)
 			{
 				i32_sessionid lsession = server_session::sessionid(lserverid);
 				if (lsession > 0)
 				{
-					lsessions.insert(lsession);
+					if (lpack == nullptr)
+					{
+						lpack = net_pack<T>::npack(&pool(), adata, aactorid, 0);
+						if (lpack == nullptr)
+						{
+							return false;
+						}
+					}
+					lfound = true;
+					switch (protocol(lsession))
+					{
+					case ENET_TCP:
+						lpack->set_actor(aactorid, arequestactorid);
+						if (!ntcp::instance().send_pack(lsession, lpack))
+						{
+							lret = false;
+						}
+						break;
+					case ENET_WS:
+						lpack->set_actor(aactorid, arequestactorid);
+						if (!nws::instance().send_pack(lsession, lpack))
+						{
+							lret = false;
+						}
+						break;
+					default:
+						break;
+					}
 				}
 			}
-			if (lsessions.empty())
+			if (!lfound)
 			{
 				return false;
 			}
-			return send<Y, T>(lsessions, adata, aactorid, arequestactorid);
-		}
-	private:
-		static void split_sessions(
-			const std::map<i32_sessionid, i64_actorid>& asession,
-			std::map<i32_sessionid, i64_actorid>& atcpmap,
-			std::map<i32_sessionid, i64_actorid>& awsmap
-		)
-		{
-			for (const auto& [lsessionid, lactorid] : asession)
-			{
-				switch (net_session::protocol(lsessionid))
-				{
-				case ENET_TCP:
-					atcpmap.emplace(lsessionid, lactorid);
-					break;
-				case ENET_WS:
-					awsmap.emplace(lsessionid, lactorid);
-					break;
-				default:
-					break;
-				}
-			}
-		}
-
-		static void split_sessions(
-			const std::set<i32_sessionid>& asession,
-			std::set<i32_sessionid>& atcpset,
-			std::set<i32_sessionid>& awsset
-		)
-		{
-			for (i32_sessionid lsessionid : asession)
-			{
-				switch (net_session::protocol(lsessionid))
-				{
-				case ENET_TCP:
-					atcpset.insert(lsessionid);
-					break;
-				case ENET_WS:
-					awsset.insert(lsessionid);
-					break;
-				default:
-					break;
-				}
-			}
+			return lret;
 		}
 	};
 }//namespace ngl
