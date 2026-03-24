@@ -137,7 +137,7 @@ namespace ngl
 		{
 			return;
 		}
-		m_server->set_close(asession, [this, aip, aport, afun, asession]()
+		m_server->set_close(asession, [this, aip, aport, afun]()
 			{
 				connect(aip, aport, afun);
 			}
@@ -212,10 +212,11 @@ namespace ngl
 			return false;
 		}
 
-		std::tuple<ENET_PROTOCOL, str_ip, i16_port> lpair = std::make_tuple(lnets.m_type, ip(lnets), lnets.m_port);
+		const std::string& lip = ip(lnets);
+		const i16_port lport = lnets.m_port;
 
-		log_info()->print("Connect Server {}@{}:{}", aserverid, std::get<1>(lpair), std::get<2>(lpair));
-		return connect(std::get<1>(lpair), std::get<2>(lpair), [aserverid, afun](i32_session asession)
+		log_info()->print("Connect Server {}@{}:{}", aserverid, lip, lport);
+		return connect(lip, lport, [aserverid, afun](i32_session asession)
 			{
 				if (asession > 0)
 				{
@@ -232,9 +233,9 @@ namespace ngl
 
 	bool ntcp::send_msg(i32_sessionid asession, const std::string& amsg)
 	{
-		auto lcount = (int)amsg.size();
-		auto lpack = std::make_shared<pack>();
-		if (!lpack->malloc(lcount + 1) || lpack->m_buff == nullptr)
+		const int lcount = static_cast<int>(amsg.size());
+		auto lpack = pack::make_pack(&m_pool, lcount + 1);
+		if (lpack == nullptr || lpack->m_buff == nullptr)
 		{
 			return false;
 		}
@@ -300,9 +301,9 @@ namespace ngl
 		}
 		bool lret = true;
 		apack->set_actor(aactorid, arequestactorid);
-		for (i32_sessionid session : asession)
+		for (i32_sessionid lsession : asession)
 		{
-			if (!send_pack(session, apack))
+			if (!send_pack(lsession, apack))
 			{
 				lret = false;
 			}

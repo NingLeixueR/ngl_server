@@ -128,7 +128,7 @@ namespace ngl
 				{
 					if (lpack == nullptr)
 					{
-						lpack = net_pack<T>::npack(&pool(), adata, aactorid, 0);
+						lpack = net_pack<T>::npack(&pool(), adata, aactorid, arequestactorid);
 						if (lpack == nullptr)
 						{
 							return false;
@@ -138,14 +138,12 @@ namespace ngl
 					switch (protocol(lsession))
 					{
 					case ENET_TCP:
-						lpack->set_actor(aactorid, arequestactorid);
 						if (!ntcp::instance().send_pack(lsession, lpack))
 						{
 							lret = false;
 						}
 						break;
 					case ENET_WS:
-						lpack->set_actor(aactorid, arequestactorid);
 						if (!nws::instance().send_pack(lsession, lpack))
 						{
 							lret = false;

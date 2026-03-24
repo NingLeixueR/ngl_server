@@ -171,20 +171,38 @@ namespace ngl
 	template <typename Y, typename T/* = Y*/>
 	bool nws::send_server(const std::set<i32_serverid>& aserverids, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		std::set<i32_session> lsessions;
+		if (aserverids.empty())
+		{
+			return false;
+		}
+		bool lfound = false;
+		bool lret = true;
+		std::shared_ptr<pack> lpack = nullptr;
 		for (i32_serverid iserverid : aserverids)
 		{
 			i32_session lsession = server_session::sessionid(iserverid);
-			if (lsession != -1)
+			if (lsession > 0)
 			{
-				lsessions.insert(lsession);
+				if (lpack == nullptr)
+				{
+					lpack = net_pack<T>::npack(&pool(), adata, aactorid, arequestactorid);
+					if (lpack == nullptr)
+					{
+						return false;
+					}
+				}
+				lfound = true;
+				if (!send_pack(lsession, lpack))
+				{
+					lret = false;
+				}
 			}
 		}
-		if (!lsessions.empty())
+		if (!lfound)
 		{
-			return send<Y, T>(lsessions, adata, aactorid, arequestactorid);
+			return false;
 		}
-		return false;
+		return lret;
 	}
 
 	template <typename T>
@@ -212,10 +230,10 @@ namespace ngl
 		np_actor_forward<T, forward_g2c<forward>> pro;
 		pro.m_data.m_uid.reserve(avec.size());
 		pro.m_data.m_area.reserve(avec.size());
-		for (std::size_t i = 0; i < avec.size(); ++i)
+		for (const auto& [luid, larea] : avec)
 		{
-			pro.m_data.m_uid.push_back(avec[i].first);
-			pro.m_data.m_area.push_back(avec[i].second);
+			pro.m_data.m_uid.emplace_back(luid);
+			pro.m_data.m_area.emplace_back(larea);
 		}
 
 		forward& lforward = pro.m_data.m_data;

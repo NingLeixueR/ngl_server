@@ -25,27 +25,27 @@ namespace ngl
 {
 	namespace
 	{
-		constexpr std::size_t G_SERVER_SESSION_RESERVE = 64;
+		constexpr std::size_t g_sess_resv = 64;
 
-		void ensure_server_session_capacity(
+		void grow_maps(
 			std::unordered_map<i32_serverid, i32_sessionid>& aserver_map,
 			std::unordered_map<i32_sessionid, i32_serverid>& asession_map)
 		{
 			// Reserve both maps together so the bi-directional update stays cheap and avoids
 			// rehash churn during bursts of reconnects.
 			const std::size_t ltarget_size = aserver_map.size() + 1;
-			const std::size_t lreserve_threshold = static_cast<std::size_t>(aserver_map.bucket_count() * aserver_map.max_load_factor());
-			if (ltarget_size <= lreserve_threshold)
+			const std::size_t lresv_limit = static_cast<std::size_t>(aserver_map.bucket_count() * aserver_map.max_load_factor());
+			if (ltarget_size <= lresv_limit)
 			{
 				return;
 			}
 
-			const std::size_t lnew_capacity = std::max<std::size_t>(G_SERVER_SESSION_RESERVE, ltarget_size * 2);
-			aserver_map.reserve(lnew_capacity);
-			asession_map.reserve(lnew_capacity);
+			const std::size_t lnew_cap = std::max<std::size_t>(g_sess_resv, ltarget_size * 2);
+			aserver_map.reserve(lnew_cap);
+			asession_map.reserve(lnew_cap);
 		}
 
-		const tab_servers* find_server_tab(i32_serverid aserverid)
+		const tab_servers* find_tab(i32_serverid aserverid)
 		{
 			return ttab_servers::instance().tab(nnodeid::tid(aserverid));
 		}
@@ -61,12 +61,12 @@ namespace ngl
 			lock_write(m_mutex);
 			if (m_server.empty())
 			{
-				m_server.reserve(G_SERVER_SESSION_RESERVE);
-				m_session.reserve(G_SERVER_SESSION_RESERVE);
+				m_server.reserve(g_sess_resv);
+				m_session.reserve(g_sess_resv);
 			}
 			else
 			{
-				ensure_server_session_capacity(m_server, m_session);
+				grow_maps(m_server, m_session);
 			}
 
 			if (const auto lserver_it = m_server.find(aserverid); lserver_it != m_server.end())
@@ -86,7 +86,7 @@ namespace ngl
 			m_server.emplace(aserverid, asession);
 			m_session.emplace(asession, aserverid);
 		}
-		if (auto tab = find_server_tab(aserverid); tab != nullptr)
+		if (auto tab = find_tab(aserverid); tab != nullptr)
 		{
 			log_error()->print("server_session::add [{}:{}_{}]", nnodeid::tid(aserverid), tab->m_name, nnodeid::tcount(aserverid));
 		}
@@ -94,7 +94,7 @@ namespace ngl
 
 	void server_session::remove(i32_sessionid asession)
 	{
-		i32_serverid lserverid = 0;
+		i32_serverid lserverid = -1;
 		{
 			lock_write(m_mutex);
 			if (const auto lsession_it = m_session.find(asession); lsession_it != m_session.end())
@@ -105,9 +105,12 @@ namespace ngl
 				m_session.erase(lsession_it);
 			}
 		}
-		if (auto tab = find_server_tab(lserverid); tab != nullptr)
+		if (lserverid != -1)
 		{
-			log_error()->print("server_session::remove [{}:{}_{}]", nnodeid::tid(lserverid), tab->m_name, nnodeid::tcount(lserverid));
+			if (auto tab = find_tab(lserverid); tab != nullptr)
+			{
+				log_error()->print("server_session::remove [{}:{}_{}]", nnodeid::tid(lserverid), tab->m_name, nnodeid::tcount(lserverid));
+			}
 		}
 	}
 
@@ -137,7 +140,7 @@ namespace ngl
 	{
 		if (aserverid != -1)
 		{
-			if (const tab_servers* tab = find_server_tab(aserverid); tab != nullptr)
+			if (const tab_servers* tab = find_tab(aserverid); tab != nullptr)
 			{
 				asername = tab->m_name;
 				return true;
@@ -149,15 +152,18 @@ namespace ngl
 	bool server_session::serverinfobysession(i32_sessionid asessionid, std::pair<str_servername, i32_serverid>& apair)
 	{
 		// Resolve the numeric server id first, then translate it through tab_servers for logging/UI.
-		apair.second = serverid(asessionid);
-		if (apair.second == -1)
+		const i32_serverid lserverid = serverid(asessionid);
+		if (lserverid == -1)
 		{
 			return false;
 		}
-		if (serverinfo(apair.second, apair.first) == false)
+		const tab_servers* ltab = find_tab(lserverid);
+		if (ltab == nullptr)
 		{
 			return false;
 		}
+		apair.second = lserverid;
+		apair.first = ltab->m_name;
 		return true;
 	}
 }//namespace ngl

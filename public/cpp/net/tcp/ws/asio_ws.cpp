@@ -691,7 +691,7 @@ namespace ngl
 
 		bool lstart = false;
 		{
-			lock_write(ws->m_mutex);
+			std::lock_guard<std::mutex> llock(ws->m_mutex);
 			if (ws->m_closing.load(std::memory_order_relaxed))
 			{
 				return false;
@@ -723,7 +723,7 @@ namespace ngl
 		}
 		if (aservice->m_closing.load(std::memory_order_acquire))
 		{
-			lock_write(aservice->m_mutex);
+			std::lock_guard<std::mutex> llock(aservice->m_mutex);
 			aservice->m_ws_send_list.clear();
 			aservice->m_ws_sending = false;
 			return;
@@ -732,7 +732,7 @@ namespace ngl
 		std::shared_ptr<std::string> ltext = nullptr;
 		ws_send_node lnode(ltext);
 		{
-			lock_write(aservice->m_mutex);
+			std::lock_guard<std::mutex> llock(aservice->m_mutex);
 			if (aservice->m_ws_send_list.empty())
 			{
 				aservice->m_ws_sending = false;
@@ -751,7 +751,7 @@ namespace ngl
 			if (ltext == nullptr)
 			{
 				{
-					lock_write(aservice->m_mutex);
+					std::lock_guard<std::mutex> llock(aservice->m_mutex);
 					if (!aservice->m_ws_send_list.empty())
 					{
 						aservice->m_ws_send_list.pop_front();
@@ -769,7 +769,7 @@ namespace ngl
 			if (lpack == nullptr)
 			{
 				{
-					lock_write(aservice->m_mutex);
+					std::lock_guard<std::mutex> llock(aservice->m_mutex);
 					if (!aservice->m_ws_send_list.empty())
 					{
 						aservice->m_ws_send_list.pop_front();
@@ -802,7 +802,7 @@ namespace ngl
 			if (lpack == nullptr)
 			{
 				{
-					lock_write(aservice->m_mutex);
+					std::lock_guard<std::mutex> llock(aservice->m_mutex);
 					if (!aservice->m_ws_send_list.empty())
 					{
 						aservice->m_ws_send_list.pop_front();
@@ -833,7 +833,7 @@ namespace ngl
 					[this, aservice, lnode](const basio_errorcode& ec, std::size_t)
 					{
 						{
-							lock_write(aservice->m_mutex);
+							std::lock_guard<std::mutex> llock(aservice->m_mutex);
 							if (!aservice->m_ws_send_list.empty())
 							{
 								aservice->m_ws_send_list.pop_front();

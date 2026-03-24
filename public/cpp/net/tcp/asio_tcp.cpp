@@ -326,7 +326,7 @@ namespace ngl
 		}
 		bool lstart = false;
 		{
-			lock_write(tcp->m_mutex);
+			std::lock_guard<std::mutex> llock(tcp->m_mutex);
 			tcp->m_list.emplace_back(apack);
 			if (tcp->m_issend == false)
 			{
@@ -370,7 +370,7 @@ namespace ngl
 					return;
 				}
 				{
-					lock_write(atcp->m_mutex);
+					std::lock_guard<std::mutex> llock(atcp->m_mutex);
 					if (!atcp->m_list.empty())
 					{
 						atcp->m_list.pop_front();
@@ -397,7 +397,7 @@ namespace ngl
 		std::shared_ptr<pack> lpack = nullptr;
 		std::shared_ptr<void> lvoidpack = nullptr;
 		{
-			lock_write(atcp->m_mutex);
+			std::lock_guard<std::mutex> llock(atcp->m_mutex);
 			if (atcp->m_list.empty())
 			{
 				atcp->m_issend = false;
@@ -441,7 +441,7 @@ namespace ngl
 		if (lvoidpack == nullptr)
 		{
 			{
-				lock_write(atcp->m_mutex);
+				std::lock_guard<std::mutex> llock(atcp->m_mutex);
 				if (!atcp->m_list.empty())
 				{
 					atcp->m_list.pop_front();
@@ -455,7 +455,7 @@ namespace ngl
 		if (lpackptr == nullptr)
 		{
 			{
-				lock_write(atcp->m_mutex);
+				std::lock_guard<std::mutex> llock(atcp->m_mutex);
 				if (!atcp->m_list.empty())
 				{
 					atcp->m_list.pop_front();

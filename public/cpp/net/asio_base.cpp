@@ -51,8 +51,10 @@ namespace ngl
 		{
 			auto lpioservice = std::make_shared<basio_ioservice>();
 			auto lpwork = std::make_shared<basio_ioservicework>(basio::make_work_guard(*lpioservice));
-			m_ioservices.push_back(
-				std::make_tuple(lpioservice, lpwork, std::make_shared<std::thread>([lpioservice]() {lpioservice->run(); }))
+			m_ioservices.emplace_back(
+				lpioservice,
+				lpwork,
+				std::make_shared<std::thread>([lpioservice]() {lpioservice->run(); })
 			);
 		}
 	}

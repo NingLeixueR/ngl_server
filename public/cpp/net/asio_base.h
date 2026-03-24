@@ -88,7 +88,7 @@ namespace ngl
 		bool					m_is_lanip = false;
 		bool					m_issend = false;	// Whether one async send is currently in flight.
 		std::deque<node_pack>	m_list;				// Pending send queue drained by async completion handlers.
-		std::shared_mutex		m_mutex;
+		std::mutex				m_mutex;
 		basio_ioservice&		m_ioservice;
 
 		service_io(serviceio_info& amsi, i32_session asessionid);

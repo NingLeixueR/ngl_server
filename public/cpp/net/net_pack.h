@@ -27,12 +27,12 @@ namespace ngl
 		net_pack& operator=(const net_pack&) = delete;
 	public:
 		template <typename Y>
-		static std::shared_ptr<pack> npack(bpool* apool, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static std::shared_ptr<pack> npack(bpool* apool, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			// Compute the serialized payload size first so pack::make_pack() can allocate once.
 			ngl::ser::serialize_byte lserialize;
 			ngl::ser::nserialize::bytes(&lserialize, adata);
-			int lbuffbyte = lserialize.pos() + pack_head::size();
+			const int lbuffbyte = lserialize.pos() + pack_head::size();
 			if (lbuffbyte <= 0)
 			{
 				return nullptr;

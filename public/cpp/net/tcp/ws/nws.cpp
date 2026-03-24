@@ -230,10 +230,11 @@ namespace ngl
 			return false;
 		}
 
-		std::tuple<ENET_PROTOCOL, str_ip, i16_port> lpair = std::make_tuple(lnets.m_type, ip(lnets), lnets.m_port);
+		const std::string& lip = ip(lnets);
+		const i16_port lport = lnets.m_port;
 
-		log_info()->print("Connect WS Server {}@{}:{}", aserverid, std::get<1>(lpair), std::get<2>(lpair));
-		return connect(std::get<1>(lpair), std::get<2>(lpair), [aserverid, afun](i32_session asession)
+		log_info()->print("Connect WS Server {}@{}:{}", aserverid, lip, lport);
+		return connect(lip, lport, [aserverid, afun](i32_session asession)
 			{
 				if (asession > 0)
 				{
@@ -311,9 +312,9 @@ namespace ngl
 		}
 		bool lret = true;
 		apack->set_actor(aactorid, arequestactorid);
-		for (i32_sessionid session : asession)
+		for (i32_sessionid lsession : asession)
 		{
-			if (!send_pack(session, apack))
+			if (!send_pack(lsession, apack))
 			{
 				lret = false;
 			}

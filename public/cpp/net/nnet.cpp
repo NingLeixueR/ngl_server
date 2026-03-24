@@ -146,17 +146,16 @@ namespace ngl
 		bool lret = true;
 		for (const auto& [lsessionid, lactorid] : asession)
 		{
+			apack->set_actor(lactorid, aactorid);
 			switch (protocol(lsessionid))
 			{
 			case ENET_TCP:
-				apack->set_actor(lactorid, aactorid);
 				if (!ntcp::instance().send_pack(lsessionid, apack))
 				{
 					lret = false;
 				}
 				break;
 			case ENET_WS:
-				apack->set_actor(lactorid, aactorid);
 				if (!nws::instance().send_pack(lsessionid, apack))
 				{
 					lret = false;
