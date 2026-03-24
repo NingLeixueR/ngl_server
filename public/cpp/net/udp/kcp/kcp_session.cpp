@@ -106,11 +106,11 @@ namespace ngl
 				erase_session_nolock(*lsessionid);
 			}
 			i32_sessionid lsessionid = ++m_sessionid;
-			m_dataofsession[lsessionid] = ltemp;
+			m_dataofsession.insert_or_assign(lsessionid, ltemp);
 			ltemp->m_session = lsessionid;
-			m_actoridofsession[aactoridclient] = lsessionid;
-			m_actoridofsession[aactoridserver] = lsessionid;
-			m_dataofendpoint[lip][lport] = ltemp;
+			m_actoridofsession.insert_or_assign(aactoridclient, lsessionid);
+			m_actoridofsession.insert_or_assign(aactoridserver, lsessionid);
+			m_dataofendpoint[lip].insert_or_assign(lport, ltemp);
 			wheel_parm lparm
 			{
 				.m_ms = ekcp_update_intervalms,

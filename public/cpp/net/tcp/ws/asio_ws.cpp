@@ -22,6 +22,7 @@
 
 #include <openssl/ssl.h>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 namespace ngl
@@ -241,7 +242,7 @@ namespace ngl
 				{
 					if (service != nullptr)
 					{
-						lservices.push_back(service);
+						lservices.emplace_back(service);
 					}
 				}
 				m_data.clear();
@@ -295,7 +296,7 @@ namespace ngl
 			lservice = std::make_shared<service_ws>(m_service_ios, m_sessionid);
 		}
 
-		auto [_, success] = m_data.insert(std::make_pair(lservice->m_sessionid, lservice));
+		auto [_, success] = m_data.emplace(lservice->m_sessionid, lservice);
 		if (!success)
 		{
 			log_error()->print("asio_ws::create_service session id repeat [{}]", lservice->m_sessionid);
@@ -415,11 +416,12 @@ namespace ngl
 			return false;
 		}
 
-		const std::string lip = endpoint.address().to_string();
+		std::string lip = endpoint.address().to_string();
+		const bool llanip = tools::is_lanip(lip);
 		{
 			lock_write(m_ipportlock);
-			m_ipport[aservice->m_sessionid] = std::make_pair(lip, endpoint.port());
-			aservice->m_is_lanip = tools::is_lanip(lip);
+			m_ipport.insert_or_assign(aservice->m_sessionid, std::make_pair(std::move(lip), endpoint.port()));
+			aservice->m_is_lanip = llanip;
 		}
 		return true;
 	}
@@ -670,7 +672,7 @@ namespace ngl
 		);
 	}
 
-	bool asio_ws::queue_send(i32_sessionid asessionid, const ws_send_node& anode)
+	bool asio_ws::queue_send(i32_sessionid asessionid, ws_send_node anode)
 	{
 		if (!ngl::ws::is_alive(m_alive))
 		{
@@ -687,36 +689,35 @@ namespace ngl
 			return false;
 		}
 
-		std::shared_ptr<std::list<ws_send_node>> llist = nullptr;
+		bool lstart = false;
 		{
 			lock_write(ws->m_mutex);
 			if (ws->m_closing.load(std::memory_order_relaxed))
 			{
 				return false;
 			}
-			ws->m_ws_send_list.push_back(anode);
+			ws->m_ws_send_list.push_back(std::move(anode));
 			if (!ws->m_ws_sending)
 			{
 				// Only one async_write chain is allowed at a time per websocket session.
-				llist = std::make_shared<std::list<ws_send_node>>();
-				ws->m_ws_send_list.swap(*llist);
 				ws->m_ws_sending = true;
+				lstart = true;
 			}
 		}
-		if (llist != nullptr && !llist->empty())
+		if (lstart)
 		{
-			do_send(ws, llist);
+			do_send(ws);
 		}
 		return true;
 	}
 
-	void asio_ws::do_send(const std::shared_ptr<service_ws>& aservice, const std::shared_ptr<std::list<ws_send_node>>& alist)
+	void asio_ws::do_send(const std::shared_ptr<service_ws>& aservice)
 	{
 		if (!ngl::ws::is_alive(m_alive))
 		{
 			return;
 		}
-		if (aservice == nullptr || alist == nullptr)
+		if (aservice == nullptr)
 		{
 			return;
 		}
@@ -728,22 +729,18 @@ namespace ngl
 			return;
 		}
 
-		if (alist->empty())
+		std::shared_ptr<std::string> ltext = nullptr;
+		ws_send_node lnode(ltext);
 		{
 			lock_write(aservice->m_mutex);
-			if (!aservice->m_ws_send_list.empty())
-			{
-				// New writes arrived while the previous chain was in flight.
-				aservice->m_ws_send_list.swap(*alist);
-			}
-			else
+			if (aservice->m_ws_send_list.empty())
 			{
 				aservice->m_ws_sending = false;
 				return;
 			}
+			lnode = aservice->m_ws_send_list.front();
 		}
 
-		const ws_send_node lnode = alist->front();
 		const char* ldata = nullptr;
 		int32_t llen = 0;
 		bool lis_text = lnode.is_text();
@@ -753,8 +750,14 @@ namespace ngl
 			const auto& ltext = lnode.get_text();
 			if (ltext == nullptr)
 			{
-				alist->pop_front();
-				do_send(aservice, alist);
+				{
+					lock_write(aservice->m_mutex);
+					if (!aservice->m_ws_send_list.empty())
+					{
+						aservice->m_ws_send_list.pop_front();
+					}
+				}
+				do_send(aservice);
 				return;
 			}
 			ldata = ltext->data();
@@ -765,8 +768,14 @@ namespace ngl
 			std::shared_ptr<pack> lpack = lnode.get_pack();
 			if (lpack == nullptr)
 			{
-				alist->pop_front();
-				do_send(aservice, alist);
+				{
+					lock_write(aservice->m_mutex);
+					if (!aservice->m_ws_send_list.empty())
+					{
+						aservice->m_ws_send_list.pop_front();
+					}
+				}
+				do_send(aservice);
 				return;
 			}
 			lpack->m_protocol = ENET_WS;
@@ -792,8 +801,14 @@ namespace ngl
 			pack* lpack = lnode.get();
 			if (lpack == nullptr)
 			{
-				alist->pop_front();
-				do_send(aservice, alist);
+				{
+					lock_write(aservice->m_mutex);
+					if (!aservice->m_ws_send_list.empty())
+					{
+						aservice->m_ws_send_list.pop_front();
+					}
+				}
+				do_send(aservice);
 				return;
 			}
 			lpack->m_protocol = ENET_WS;
@@ -801,7 +816,7 @@ namespace ngl
 			llen = lpack->m_pos;
 		}
 
-		aservice->visit_stream([this, aservice, alist, lnode, ldata, llen, lis_text](auto& astream)
+		aservice->visit_stream([this, aservice, lnode, ldata, llen, lis_text](auto& astream)
 			{
 				if (lis_text)
 				{
@@ -815,15 +830,21 @@ namespace ngl
 
 				astream.async_write(
 					basio::buffer(ldata, llen),
-					[this, aservice, alist, lnode](const basio_errorcode& ec, std::size_t)
+					[this, aservice, lnode](const basio_errorcode& ec, std::size_t)
 					{
-						alist->pop_front();
+						{
+							lock_write(aservice->m_mutex);
+							if (!aservice->m_ws_send_list.empty())
+							{
+								aservice->m_ws_send_list.pop_front();
+							}
+						}
 						handle_write(aservice, ec, lnode);
 						if (ec)
 						{
 							return;
 						}
-						do_send(aservice, alist);
+						do_send(aservice);
 					}
 				);
 			}

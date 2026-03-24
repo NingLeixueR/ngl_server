@@ -19,6 +19,7 @@
 #include "net/node_pack.h"
 #include "tools/type.h"
 
+#include <deque>
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
@@ -86,7 +87,7 @@ namespace ngl
 		i32_sessionid			m_sessionid = 0;
 		bool					m_is_lanip = false;
 		bool					m_issend = false;	// Whether one async send is currently in flight.
-		std::list<node_pack>	m_list;				// Pending send queue drained by async completion handlers.
+		std::deque<node_pack>	m_list;				// Pending send queue drained by async completion handlers.
 		std::shared_mutex		m_mutex;
 		basio_ioservice&		m_ioservice;
 
@@ -187,7 +188,7 @@ namespace ngl
 	public:
 		std::atomic_bool m_closing = false; // Prevent duplicate close sequences.
 		bool m_ws_sending = false;          // Whether one async WS write is currently in flight.
-		std::list<ws_send_node> m_ws_send_list; // Pending websocket sends.
+		std::deque<ws_send_node> m_ws_send_list; // Pending websocket sends.
 
 		service_ws(serviceio_info& amsi, i32_session asessionid);
 		service_ws(serviceio_info& amsi, i32_session asessionid, basio_sslcontext& acontext);

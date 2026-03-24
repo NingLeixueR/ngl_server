@@ -88,9 +88,9 @@ namespace ngl
 		bool spack(i32_sessionid asessionid, std::shared_ptr<T>& apack);
 
 		template <typename TPACK>
-		void async_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<std::list<node_pack>>& alist, std::shared_ptr<TPACK>& apack, char* abuff, int32_t abufflen);
+		void async_send(const std::shared_ptr<service_tcp>& atcp, std::shared_ptr<TPACK> apack, char* abuff, int32_t abufflen);
 
-		void do_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<std::list<node_pack>>& alist);
+		void do_send(const std::shared_ptr<service_tcp>& atcp);
 
 		void handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, std::shared_ptr<pack> apack);
 

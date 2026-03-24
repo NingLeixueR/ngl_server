@@ -21,6 +21,7 @@
 #include "net/asio_timer.h"
 #include "tools/log/nlog.h"
 
+#include <utility>
 #include <vector>
 
 namespace ngl
@@ -184,7 +185,7 @@ namespace ngl
 				{
 					if (service != nullptr)
 					{
-						lservices.push_back(service);
+						lservices.emplace_back(service);
 					}
 				}
 				m_data.clear();
@@ -228,7 +229,7 @@ namespace ngl
 				return nullptr;
 			}
 			lservice = std::make_shared<service_tcp>(m_service_ios, m_sessionid);
-			auto [_, success] = m_data.insert(std::make_pair(lservice->m_sessionid, lservice));
+			auto [_, success] = m_data.emplace(lservice->m_sessionid, lservice);
 			if (!success)
 			{
 				tools::send_mail("session id repeat")();
@@ -294,7 +295,7 @@ namespace ngl
 				bool llanip = tools::is_lanip(lip);
 				{
 					lock_write(m_ipportlock);
-					m_ipport[lservice->m_sessionid] = std::make_pair(lip, lport);
+					m_ipport.insert_or_assign(lservice->m_sessionid, std::make_pair(std::move(lip), lport));
 					lservice->m_is_lanip = llanip;
 				}
 				// Start the read loop only after peer metadata has been cached.
@@ -323,21 +324,20 @@ namespace ngl
 		{
 			return false;
 		}
-		std::shared_ptr<std::list<node_pack>> llist = nullptr;
+		bool lstart = false;
 		{
 			lock_write(tcp->m_mutex);
-			tcp->m_list.push_back({ asessionid, apack });
+			tcp->m_list.emplace_back(apack);
 			if (tcp->m_issend == false)
 			{
 				// Only one async_write chain is allowed at a time per TCP session.
-				llist = std::make_shared<std::list<node_pack>>();
-				tcp->m_list.swap(*llist);
 				tcp->m_issend = true;
+				lstart = true;
 			}
 		}
-		if (llist != nullptr && llist->empty() == false)
+		if (lstart)
 		{
-			do_send(tcp, llist);
+			do_send(tcp);
 		}
 		return true;
 	}
@@ -355,61 +355,67 @@ namespace ngl
 	template <typename TPACK>
 	void asio_tcp::async_send(
 		const std::shared_ptr<service_tcp>& atcp
-		, const std::shared_ptr<std::list<node_pack>>& alist
-		, std::shared_ptr<TPACK>& apack
+		, std::shared_ptr<TPACK> apack
 		, char* abuff
 		, int32_t abufflen
 	)
 	{
 		const auto alive = m_alive;
 		const auto callback_lock = m_callbacklock;
-		atcp->m_socket.async_send(basio::buffer(abuff, abufflen), [this, alive, callback_lock, alist, atcp, apack](const basio_errorcode& ec, std::size_t /*length*/)
+		atcp->m_socket.async_send(basio::buffer(abuff, abufflen), [this, alive, callback_lock, atcp, apack](const basio_errorcode& ec, std::size_t /*length*/)
 			{
 				std::shared_lock<std::shared_mutex> callback_guard(*callback_lock);
 				if (!ngl::tcp::is_alive(alive))
 				{
 					return;
 				}
-				alist->pop_front();
+				{
+					lock_write(atcp->m_mutex);
+					if (!atcp->m_list.empty())
+					{
+						atcp->m_list.pop_front();
+					}
+				}
 				handle_write(atcp, ec, apack);
 				if (ec)
 				{
 					log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
 					return;
 				}
-				do_send(atcp, alist);
+				do_send(atcp);
 			}
 		);
 	}
 
-	void asio_tcp::do_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<std::list<node_pack>>& alist)
+	void asio_tcp::do_send(const std::shared_ptr<service_tcp>& atcp)
 	{
 		if (atcp == nullptr)
 		{
 			return;
 		}
 
-		if (alist->empty())
+		std::shared_ptr<pack> lpack = nullptr;
+		std::shared_ptr<void> lvoidpack = nullptr;
 		{
+			lock_write(atcp->m_mutex);
+			if (atcp->m_list.empty())
 			{
-				lock_write(atcp->m_mutex);
-				if (atcp->m_list.empty() == false)
-				{
-					// New writes arrived while the previous chain was in flight.
-					atcp->m_list.swap(*alist);
-				}
-				else
-				{
-					atcp->m_issend = false;
-					return;
-				}
+				atcp->m_issend = false;
+				return;
+			}
+			node_pack& litem = atcp->m_list.front();
+			if (litem.is_pack())
+			{
+				lpack = litem.get_pack();
+			}
+			else
+			{
+				lvoidpack = litem.get_voidpack();
 			}
 		}
 
-		node_pack& item = *alist->begin();
-		if (item.is_pack())
+		if (lpack != nullptr)
 		{
-			std::shared_ptr<pack>& lpack = item.get_pack();
 			int32_t lsize = 0;
 			int32_t lpos = 0;
 			if (lpack->m_pos != lpack->m_len)
@@ -428,14 +434,37 @@ namespace ngl
 				return;
 			}
 			// Reuse the pack buffer directly; pack::m_pos/m_len tracks partial sends.
-			async_send(atcp, alist, lpack, &lpack->m_buff[lpos], lsize);
+			async_send(atcp, lpack, &lpack->m_buff[lpos], lsize);
+			return;
 		}
-		else
+
+		if (lvoidpack == nullptr)
 		{
-			std::shared_ptr<void>& lpack = item.get_voidpack();
-			pack* lpackptr = static_cast<pack*>(lpack.get());
-			async_send(atcp, alist, lpack, lpackptr->m_buff, lpackptr->m_pos);
+			{
+				lock_write(atcp->m_mutex);
+				if (!atcp->m_list.empty())
+				{
+					atcp->m_list.pop_front();
+				}
+			}
+			do_send(atcp);
+			return;
 		}
+
+		pack* lpackptr = static_cast<pack*>(lvoidpack.get());
+		if (lpackptr == nullptr)
+		{
+			{
+				lock_write(atcp->m_mutex);
+				if (!atcp->m_list.empty())
+				{
+					atcp->m_list.pop_front();
+				}
+			}
+			do_send(atcp);
+			return;
+		}
+		async_send(atcp, lvoidpack, lpackptr->m_buff, lpackptr->m_pos);
 	}
 
 	void asio_tcp::handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, std::shared_ptr<pack> apack)
@@ -602,7 +631,7 @@ namespace ngl
 			bool llanip = tools::is_lanip(lip);
 			{
 				lock_write(m_ipportlock);
-				m_ipport[aservice->m_sessionid] = std::make_pair(lip, lport);
+				m_ipport.insert_or_assign(aservice->m_sessionid, std::make_pair(std::move(lip), lport));
 				aservice->m_is_lanip = llanip;
 			}
 			// Hand the accepted socket to the read loop after endpoint metadata is cached.
@@ -627,7 +656,7 @@ namespace ngl
 				return;
 			}
 			lservice = std::make_shared<service_tcp>(m_service_ios, m_sessionid);
-			auto [_, success] = m_data.insert(std::make_pair(lservice->m_sessionid, lservice));
+			auto [_, success] = m_data.emplace(lservice->m_sessionid, lservice);
 			if (!success)
 			{
 				tools::send_mail("session id repeat")();

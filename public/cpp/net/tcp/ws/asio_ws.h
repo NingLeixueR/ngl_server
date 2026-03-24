@@ -120,8 +120,8 @@ namespace ngl
 			int acount
 		);
 		// Enqueue frames, drive the serialized async-write chain, and manage closure.
-		bool queue_send(i32_sessionid asessionid, const ws_send_node& anode);
-		void do_send(const std::shared_ptr<service_ws>& aservice, const std::shared_ptr<std::list<ws_send_node>>& alist);
+		bool queue_send(i32_sessionid asessionid, ws_send_node anode);
+		void do_send(const std::shared_ptr<service_ws>& aservice);
 		void handle_write(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error, const ws_send_node& anode);
 		void accept_handle(bool av4, const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error);
 		void accept(bool av4);

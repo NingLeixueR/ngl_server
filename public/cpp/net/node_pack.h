@@ -26,41 +26,33 @@ namespace ngl
 
 		std::shared_ptr<pack>	m_pack		= nullptr; // Typed pack ownership.
 		std::shared_ptr<void>	m_packvoid	= nullptr; // Type-erased pack ownership.
-		i32_sessionid			m_sessionid = 0;   // Target session for the queued send.
 	public:
-		node_pack(i32_sessionid asessionid, std::shared_ptr<pack>& apack) :
-			m_pack(apack),
-			m_sessionid(asessionid)
+		explicit node_pack(std::shared_ptr<pack>& apack) :
+			m_pack(apack)
 		{}
 
-		node_pack(i32_sessionid asessionid, std::shared_ptr<void>& apack) :
-			m_packvoid(apack),
-			m_sessionid(asessionid)
+		explicit node_pack(std::shared_ptr<void>& apack) :
+			m_packvoid(apack)
 		{}
 
 		~node_pack() = default;
 
-		inline bool is_pack()
+		inline bool is_pack() const
 		{
 			return m_pack != nullptr;
 		}
 
-		inline i32_sessionid sessionid()
-		{
-			return m_sessionid;
-		}
-
-		inline std::shared_ptr<pack>& get_pack()
+		inline const std::shared_ptr<pack>& get_pack() const
 		{
 			return m_pack;
 		}
 
-		inline std::shared_ptr<void>& get_voidpack()
+		inline const std::shared_ptr<void>& get_voidpack() const
 		{
 			return m_packvoid;
 		}
 
-		inline pack* get()
+		inline pack* get() const
 		{
 			if (is_pack())
 			{
