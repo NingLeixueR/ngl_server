@@ -73,6 +73,7 @@ namespace ngl
 		m_socketthreadnum = asocketthreadnum;
 
 		m_segpackvec.clear();
+		m_segpackvec.reserve(static_cast<std::size_t>(asocketthreadnum));
 		for (int i = 0; i < asocketthreadnum; ++i)
 		{
 			// Each socket worker keeps its own packet reassembler state.
@@ -292,10 +293,10 @@ namespace ngl
 			return false;
 		}
 		bool lret = true;
-		for (auto [_session, actorid] : asession)
+		for (const auto& [lsession, lactorid] : asession)
 		{
-			apack->set_actor(actorid, aactorid);
-			if (!send_pack(_session, apack))
+			apack->set_actor(lactorid, aactorid);
+			if (!send_pack(lsession, apack))
 			{
 				lret = false;
 			}
@@ -310,9 +311,9 @@ namespace ngl
 			return false;
 		}
 		bool lret = true;
+		apack->set_actor(aactorid, arequestactorid);
 		for (i32_sessionid session : asession)
 		{
-			apack->set_actor(aactorid, arequestactorid);
 			if (!send_pack(session, apack))
 			{
 				lret = false;

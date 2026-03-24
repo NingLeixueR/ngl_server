@@ -59,6 +59,7 @@ namespace ngl
 	{
 		// Keep one dedicated io_context per receive thread so session callbacks stay serialized
 		// on the thread chosen at accept/connect time.
+		m_ioservices.reserve(static_cast<std::size_t>(m_recvthreadsize));
 		for (int32_t i = 0; i < m_recvthreadsize; ++i)
 		{
 			auto lpioservice = std::make_shared<basio_ioservice>();

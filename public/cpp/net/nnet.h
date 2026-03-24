@@ -148,10 +148,10 @@ namespace ngl
 				switch (net_session::protocol(lsessionid))
 				{
 				case ENET_TCP:
-					atcpmap.insert(std::make_pair(lsessionid, lactorid));
+					atcpmap.emplace(lsessionid, lactorid);
 					break;
 				case ENET_WS:
-					awsmap.insert(std::make_pair(lsessionid, lactorid));
+					awsmap.emplace(lsessionid, lactorid);
 					break;
 				default:
 					break;

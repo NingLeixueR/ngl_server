@@ -49,6 +49,10 @@ namespace ngl
 
 	bool ntcp::init(i16_port aport, i32_threadsize asocketthreadnum, bool aouternet)
 	{
+		if (m_server != nullptr)
+		{
+			return true;
+		}
 		if (asocketthreadnum > net_config_socket_pthread_max_size || asocketthreadnum <= 0)
 		{
 			asocketthreadnum = net_config_socket_pthread_max_size;
@@ -58,6 +62,8 @@ namespace ngl
 		m_port = aport;
 		m_socketthreadnum = asocketthreadnum;
 
+		m_segpackvec.clear();
+		m_segpackvec.reserve(static_cast<std::size_t>(asocketthreadnum));
 		for (int i = 0; i < asocketthreadnum; ++i)
 		{
 			// Each socket worker keeps its own stream reassembler state.
@@ -276,10 +282,10 @@ namespace ngl
 			return false;
 		}
 		bool lret = true;
-		for (auto [_session, actorid] : asession)
+		for (const auto& [lsession, lactorid] : asession)
 		{
-			apack->set_actor(actorid, aactorid);
-			if (!send_pack(_session, apack))
+			apack->set_actor(lactorid, aactorid);
+			if (!send_pack(lsession, apack))
 			{
 				lret = false;
 			}
@@ -294,9 +300,9 @@ namespace ngl
 			return false;
 		}
 		bool lret = true;
+		apack->set_actor(aactorid, arequestactorid);
 		for (i32_sessionid session : asession)
 		{
-			apack->set_actor(aactorid, arequestactorid);
 			if (!send_pack(session, apack))
 			{
 				lret = false;

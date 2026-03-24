@@ -204,7 +204,19 @@ namespace ngl
 	template <typename T>
 	bool nws::send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
 	{
+		if (agateway == 0)
+		{
+			return false;
+		}
+		i32_session lsession = server_session::sessionid(agateway);
+		if (lsession <= 0)
+		{
+			return false;
+		}
+
 		np_actor_forward<T, forward_g2c<forward>> pro;
+		pro.m_data.m_uid.reserve(avec.size());
+		pro.m_data.m_area.reserve(avec.size());
 		for (std::size_t i = 0; i < avec.size(); ++i)
 		{
 			pro.m_data.m_uid.push_back(avec[i].first);
@@ -227,16 +239,9 @@ namespace ngl
 		ngl::ser::serialize_push lserializepush(lbuf, lforward.m_bufflen);
 		if (ngl::ser::nserialize::push(&lserializepush, adata))
 		{
-			if (agateway != 0)
-			{
-				i32_session lsession = server_session::sessionid(agateway);
-				if (lsession > 0)
-				{
-					const bool lsent = send(lsession, pro, nguid::make(), nguid::make());
-					netbuff_pool::free(lbuf);
-					return lsent;
-				}
-			}
+			const bool lsent = send(lsession, pro, nguid::make(), nguid::make());
+			netbuff_pool::free(lbuf);
+			return lsent;
 		}
 		netbuff_pool::free(lbuf);
 		return false;

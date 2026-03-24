@@ -20,7 +20,6 @@
 #include "tools/localtime.h"
 #include "net/asio_timer.h"
 
-#include <boost/asio/buffers_iterator.hpp>
 #include <openssl/ssl.h>
 #include <type_traits>
 #include <vector>
@@ -951,13 +950,14 @@ namespace ngl
 							);
 							aservice->set_message_is_text(lis_text);
 
-							const auto ldata = aservice->read_buffer().data();
-							const auto lbegin = basio::buffers_begin(ldata);
-							std::string lpayload(lbegin, lbegin + bytes_transferred);
+							const beast::flat_buffer::const_buffers_type ldata = aservice->read_buffer().cdata();
+							const char* lbuf = static_cast<const char*>(ldata.data());
+							const uint32_t llen = static_cast<uint32_t>(bytes_transferred);
+							const bool lkeep = m_fun != nullptr && m_fun(aservice.get(), lbuf, llen);
 							aservice->consume_read_buffer(bytes_transferred);
 
 							// m_fun owns framing/dispatch; false means the higher layer wants the session closed.
-							if (m_fun == nullptr || !m_fun(aservice.get(), lpayload.data(), static_cast<uint32_t>(lpayload.size())))
+							if (!lkeep)
 							{
 								close(aservice.get());
 							}
