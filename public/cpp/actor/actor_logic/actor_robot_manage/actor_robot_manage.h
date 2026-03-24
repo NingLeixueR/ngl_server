@@ -88,6 +88,8 @@ namespace ngl
 
 		bool timer_handle(const message<np_timerparm>& adata);
 
+		void help();
+
 		bool handle(const message<np_robot_pram>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>& adata);

@@ -91,6 +91,11 @@ namespace ngl
 #endif
 		}
 		break;
+		default:
+		{
+			::printf("[%s][%s][%s]	%s\n", atimestr, apos, elog_name::get(acolor), amsg);
+		}
+		break;
 		}
 		::printf("\n");
 	}

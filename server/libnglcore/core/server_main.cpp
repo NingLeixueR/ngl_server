@@ -361,8 +361,10 @@ namespace ngl_runtime
 
 	bool build_push_cfg(const ngl::tab_servers& asrv, std::string& aparam)
 	{
+		constexpr std::size_t lnet_res = 96;
+		constexpr std::size_t lbase_res = 64;
 		aparam.clear();
-		aparam.reserve(asrv.m_name.size() + (asrv.m_net.size() * 96) + 64);
+		aparam.reserve(asrv.m_name.size() + (asrv.m_net.size() * lnet_res) + lbase_res);
 		const std::string lname = ngl::tools::url_encode(asrv.m_name);
 
 		// The endpoint expects the scalar fields as flat query params.
@@ -453,17 +455,18 @@ void init_db_role(const char* aname, int abeg)
 {
 	for (int li = abeg; li < abeg + def_count; ++li)
 	{
+		const int32_t lnow = static_cast<int32_t>(ngl::localtime::gettime());
 		pbdb::db_role ltemp;
-
 		ngl::i64_actorid lrole_id = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li);
 		ltemp.set_mid(lrole_id);
 		pbdb::db_brief lrolebase;
 		lrolebase.set_mid(ngl::nguid::make(ngl::ACTOR_BRIEF, tab_self_area, li));
-		lrolebase.mutable_mbase()->set_mname(std::string(aname) + ngl::tools::lexical_cast<std::string>(li % def_count));
-		lrolebase.mutable_mbase()->set_mlv(li);
-		lrolebase.mutable_mbase()->set_mmoneygold(0);
-		lrolebase.mutable_mbase()->set_mmoneysilver(0);
-		lrolebase.mutable_mbase()->set_mcreateutc((int32_t)ngl::localtime::gettime());
+		auto* lbase = lrolebase.mutable_mbase();
+		lbase->set_mname(std::string(aname) + ngl::tools::lexical_cast<std::string>(li % def_count));
+		lbase->set_mlv(li);
+		lbase->set_mmoneygold(0);
+		lbase->set_mmoneysilver(0);
+		lbase->set_mcreateutc(lnow);
 
 		save_seed<pbdb::ENUM_DB_BRIEF>(lrolebase);
 		save_seed<pbdb::ENUM_DB_ROLE>(ltemp);
@@ -507,16 +510,14 @@ void init_db_task(const char* aname, int abeg)
 		pbdb::db_task ltemp;
 		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li));
 		auto lrundata = ltemp.mutable_mrundatas();
-		std::pair<int32_t, pbdb::db_task::data> lpair;
-		lpair.first = 1;
-		lpair.second.set_mtaskid(1);
-		lpair.second.set_mreceiveutc(0);
-		lpair.second.set_mfinshutc(0);
-		auto lscheds = lpair.second.mutable_mschedules();
-		auto lsch_node = lscheds->Add();
-		lsch_node->set_mvalue(1);
-		lsch_node->set_msumint(10);
-		(*lrundata)[lpair.first] = lpair.second;
+		pbdb::db_task::data& ldata = (*lrundata)[1];
+		ldata.set_mtaskid(1);
+		ldata.set_mreceiveutc(0);
+		ldata.set_mfinshutc(0);
+		auto* lscheds = ldata.mutable_mschedules();
+		auto* lnode = lscheds->Add();
+		lnode->set_mvalue(1);
+		lnode->set_msumint(10);
 
 		save_seed<pbdb::ENUM_DB_TASK>(ltemp);
 	}
@@ -552,9 +553,10 @@ void init_db_rkv(int abeg)
 	{
 		pbdb::db_rolekeyvalue ltemp;
 		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li));
-		(*ltemp.mutable_mdata())["test1"] = "1";
-		(*ltemp.mutable_mdata())["test2"] = "2";
-		(*ltemp.mutable_mdata())["test3"] = "3";
+		auto* ldata = ltemp.mutable_mdata();
+		(*ldata)["test1"] = "1";
+		(*ldata)["test2"] = "2";
+		(*ldata)["test3"] = "3";
 
 		save_seed<pbdb::ENUM_DB_ROLEKEYVALUE>(ltemp);
 	}
@@ -568,6 +570,7 @@ void init_db_rkv()
 
 void init_db_note()
 {
+	const int32_t larea = ngl::ttab_servers::instance().const_tab()->m_area * 100;
 	std::vector<std::string> lvec =
 	{
 		"一句话", // 1
@@ -585,7 +588,7 @@ void init_db_note()
 	{
 		constexpr int32_t lkeep_sec = 36000;
 		pbdb::db_notice ltemp;
-		ltemp.set_mid((ngl::ttab_servers::instance().const_tab()->m_area * 100) + li);
+		ltemp.set_mid(larea + li);
 		if (!ngl::tools::to_utf8(lvec[li], lvec[li]))
 		{
 			continue;
@@ -621,7 +624,8 @@ void init_db_fam()
 		ltemp.set_mlv(1);
 		ltemp.set_mname(std::format("FLIBO{}", li));
 		ltemp.set_mleader(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li));
-		*ltemp.mutable_mmember()->Add() = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li);
+		auto* lmembers = ltemp.mutable_mmember();
+		*lmembers->Add() = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li);
 
 		save_seed<pbdb::ENUM_DB_FAMILY>(ltemp);
 		

@@ -524,6 +524,31 @@ namespace ngl
 			return true;
 		}
 
+		template <typename T>
+		static bool splite(int32_t aindex, const std::vector<std::string>& avec, std::vector<T>& adata)
+		{
+			if (aindex < 0)
+			{
+				return false;
+			}
+			for (int32_t i = aindex;i< avec.size();++i)
+			{
+				adata.push_back(tools::lexical_cast<T>(avec[i].c_str()));
+			}
+			return true;
+		}
+
+		template <typename T>
+		static bool splite(int32_t aindex, const std::vector<std::string>& avec, std::vector<std::string>& adata)
+		{
+			if (aindex < 0)
+			{
+				return false;
+			}
+			adata.insert(adata.end(), avec.begin() + aindex, avec.end());
+			return true;
+		}
+
 		template <std::size_t... INDEX, typename TTUPLE>
 		static bool splite_tuple(std::index_sequence<INDEX...>, const std::vector<std::string>& avec, TTUPLE& atuple)
 		{
@@ -639,13 +664,6 @@ namespace ngl
 		static bool splicing(const std::vector<std::string>& avec, const char* afg, std::string& astr)
 		{
 			const std::size_t lfglen = tools::strlen(afg);
-			std::size_t lappend_size = avec.empty() ? 0 : lfglen * (avec.size() - 1);
-			for (const auto& item : avec)
-			{
-				lappend_size += item.size();
-			}
-			astr.reserve(astr.size() + lappend_size);
-
 			for (std::size_t i = 0; i < avec.size(); ++i)
 			{
 				if (i != 0)

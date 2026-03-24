@@ -16,6 +16,12 @@
 #include "tools/arg_options.h"
 #include "tools/tools.h"
 
+namespace ngl::robot_manage_cmd
+{
+	std::vector<std::string> split_cmd(std::string_view aargs);
+	bool strip_help(std::vector<std::string>& aargs);
+}
+
 namespace runtime_test_case
 {
 std::filesystem::path write_cfg(std::string_view apublic)
@@ -100,6 +106,26 @@ TEST(RuntimeHelpersTest, SplitCommandLineNormalizesRepeatedSpaces)
 	EXPECT_EQ(ltokens[1], "1500");
 	EXPECT_EQ(ltokens[2], "login");
 	EXPECT_EQ(ltokens[3], "alice");
+}
+
+TEST(RuntimeHelpersTest, RobotManageSplitCommandKeepsQuotedPayload)
+{
+	const std::vector<std::string> ltokens =
+		ngl::robot_manage_cmd::split_cmd("protocol Demo \"{\\\"x\\\": 1, \\\"name\\\": \\\"alpha beta\\\"}\"");
+	ASSERT_EQ(ltokens.size(), 3u);
+	EXPECT_EQ(ltokens[0], "protocol");
+	EXPECT_EQ(ltokens[1], "Demo");
+	EXPECT_EQ(ltokens[2], "{\"x\": 1, \"name\": \"alpha beta\"}");
+}
+
+TEST(RuntimeHelpersTest, RobotManageStripHelpRemovesHelpFlags)
+{
+	std::vector<std::string> largs = { "alice", "--help", "tcp", "-h" };
+
+	EXPECT_TRUE(ngl::robot_manage_cmd::strip_help(largs));
+	ASSERT_EQ(largs.size(), 2u);
+	EXPECT_EQ(largs[0], "alice");
+	EXPECT_EQ(largs[1], "tcp");
 }
 
 TEST(RuntimeHelpersTest, PushServerConfigParamEncodesStructuredNetPayload)

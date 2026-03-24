@@ -104,16 +104,16 @@ namespace ngl
 		{
 			m_page.clear();
 			int32_t leverypagecount = everypagecount();
-			int pagesize = showitem() / leverypagecount;
-			m_page.resize(pagesize);
+			int32_t lpage_cnt = showitem() / leverypagecount;
+			m_page.resize(static_cast<std::size_t>(lpage_cnt));
 
-			auto itor = m_rankdata.begin();
-			for (int i = 0; i < pagesize; ++i)
+			auto litor = m_rankdata.begin();
+			for (int32_t i = 0; i < lpage_cnt; ++i)
 			{
-				m_page[i] = itor;
-				for (int j = 1; itor != m_rankdata.end() && j <= leverypagecount; ++itor,++j)
+				m_page[static_cast<std::size_t>(i)] = litor;
+				for (int32_t j = 1; litor != m_rankdata.end() && j <= leverypagecount; ++litor, ++j)
 				{
-					m_rolerank[(*itor)->m_actorid] = i * leverypagecount + j;
+					m_rolerank[(*litor)->m_actorid] = i * leverypagecount + j;
 				}
 			}
 			m_pagetime = m_time;
@@ -136,7 +136,8 @@ namespace ngl
 				return;
 			}
 			m_rankdata.insert(aitem);
-			while (m_rankdata.size() > maxitem())
+			const int32_t lmaxitem = maxitem();
+			while (lmaxitem >= 0 && m_rankdata.size() > static_cast<std::size_t>(lmaxitem))
 			{
 				auto itor = std::prev(m_rankdata.end());
 				m_rankdata.erase(itor);
@@ -167,18 +168,24 @@ namespace ngl
 				init();
 			}
 
-			if (apage - 1 >= m_page.size())
+			if (apage <= 0)
+			{
+				return get_showcount();
+			}
+
+			const std::size_t lpage_idx = static_cast<std::size_t>(apage - 1);
+			if (lpage_idx >= m_page.size())
 			{
 				return get_showcount();
 			}
 
 			int32_t leverypagecount = everypagecount();
 			int32_t lbegindex = (apage - 1) * leverypagecount;
-				if (lbegindex < 0 || lbegindex > m_rankdata.size())
-				{
-					return get_showcount();
+			if (lbegindex < 0 || static_cast<std::size_t>(lbegindex) >= m_rankdata.size())
+			{
+				return get_showcount();
 			}
-			auto itor = m_page[apage - 1];
+			auto itor = m_page[lpage_idx];
 			for (int lindex = 1; itor != m_rankdata.end() && lindex <= leverypagecount; ++lindex, ++itor)
 			{
 				afun(lindex, *itor);

@@ -134,8 +134,7 @@ namespace ngl
 			tools::no_core_dump();
 			return;
 		}
-		
-			ntcp::instance().send_server(nnodeid::nodeid(static_cast<int16_t>(tab->m_login), 1), pro, nguid::moreactor(), instance().id_guid());
+		ntcp::instance().send_server(nnodeid::nodeid(static_cast<int16_t>(tab->m_login), 1), pro, nguid::moreactor(), instance().id_guid());
 	}
 
 	bool actor_robot_manage::check_connect(i32_serverid aserverid, ENET_PROTOCOL aprotocol) const

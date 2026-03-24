@@ -29,6 +29,10 @@ namespace ngl
 	{
 		switch (atype)
 		{
+			case ELOG_NONE:
+			{
+				return "none";
+			}
 			case ELOG_DEBUG:
 			{
 				return "debug";
@@ -45,8 +49,12 @@ namespace ngl
 			{
 				return "error";
 			}
+			case ELOG_MAX:
+			default:
+			{
+				return "none";
+			}
 		}
-		return "none";
 	}
 
 	ptr_logitem g_nonelog = std::make_shared<nactor_logitem>();

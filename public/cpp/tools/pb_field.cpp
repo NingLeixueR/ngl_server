@@ -62,10 +62,12 @@ namespace ngl
             copyfield(src, dst, src_refl, dst_refl, dst_field);
         }
 
-        for (auto [_fieldnumber, _fieldtype] : fieldsrc)
+        for (const auto& litem : fieldsrc)
         {
-            const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(_fieldnumber);
-            const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(_fieldnumber);
+            const i32_fieldnumber lfield_num = litem.first;
+            const epb_field lfield_type = litem.second;
+            const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(lfield_num);
+            const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(lfield_num);
             if (src_field == nullptr || dst_field == nullptr)
             {
                 continue;
@@ -74,15 +76,11 @@ namespace ngl
             {
                 continue;
             }
-            
-            auto itor = fieldsrc.find(_fieldnumber);
-            if (itor != fieldsrc.end() && fielddst.contains(_fieldnumber))
+
+            if (lfield_type == epb_field_write && fielddst.contains(lfield_num))
             {
-                if (itor->second == epb_field_write)
-                {
-                    copyfield(src, dst, src_refl, dst_refl, dst_field);
-                }
-            }           
+                copyfield(src, dst, src_refl, dst_refl, dst_field);
+            }
         }
     }
 
@@ -110,10 +108,11 @@ namespace ngl
             copyfield(src, dst, src_refl, dst_refl, dst_field);
         }
 
-        for (auto [_fieldnumber, _fieldtype] : fieldsrc)
+        for (const auto& litem : fieldsrc)
         {
-            const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(_fieldnumber);
-            const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(_fieldnumber);
+            const i32_fieldnumber lfield_num = litem.first;
+            const google::protobuf::FieldDescriptor* src_field = dsrc->FindFieldByNumber(lfield_num);
+            const google::protobuf::FieldDescriptor* dst_field = desc->FindFieldByNumber(lfield_num);
             if (src_field == nullptr || dst_field == nullptr)
             {
                 continue;
