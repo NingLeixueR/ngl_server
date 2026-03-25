@@ -661,12 +661,12 @@ namespace ngl
 			return true;
 		}
 
-		static bool splicing(const std::vector<std::string>& avec, const char* afg, std::string& astr)
+		static bool splicing(const std::vector<std::string>& avec, const char* afg, std::string& astr, int32_t apos = 0)
 		{
 			const std::size_t lfglen = tools::strlen(afg);
-			for (std::size_t i = 0; i < avec.size(); ++i)
+			for (std::size_t i = apos; i < avec.size(); ++i)
 			{
-				if (i != 0)
+				if (i != apos)
 				{
 					astr.append(afg, lfglen);
 				}

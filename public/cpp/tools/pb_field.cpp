@@ -17,6 +17,10 @@
 
 #include "tools/pb_field.h"
 
+#ifdef GetMessage
+#undef GetMessage
+#endif
+
 namespace ngl::msg
 {
 	const google::protobuf::Message& get(
