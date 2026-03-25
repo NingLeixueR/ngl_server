@@ -464,7 +464,7 @@ namespace ngl
 		for (const auto& [lnodeid, lcare] : recv->m_care)
 		{
 			m_exit.insert(lnodeid);
-			m_othercare[_nodeid].init(lcare);
+			m_othercare[lnodeid].init(lcare);
 		}
 		return;
 	}

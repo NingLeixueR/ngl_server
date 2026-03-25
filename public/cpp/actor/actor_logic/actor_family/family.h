@@ -107,7 +107,7 @@ namespace ngl
 
 				for (i64_actorid lroleid : lpdbfamilyconst->mapplylist())
 				{
-					m_applylist[roleid].insert(_guid);
+					m_applylist[lroleid].insert(lguid);
 				}
 			}
 		}

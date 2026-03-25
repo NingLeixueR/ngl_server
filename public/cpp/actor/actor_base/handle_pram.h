@@ -246,12 +246,12 @@ namespace ngl
 		else if (lactorid == nguid::make() && !lmassactors.empty())
 		{
 			std::map<i32_serverid, std::set<i64_actorid>> lservers;
-			for (const i64_actorid lactorid : lmassactors)
+			for (const i64_actorid lmassactorid : lmassactors)
 			{
-				i32_serverid lserverid = handle_pram::serverid(lactorid);
+				i32_serverid lserverid = handle_pram::serverid(lmassactorid);
 				if (lserverid != -1 && lserverid != nconfig.nodeid())
 				{
-					lservers[lserverid].insert(actorid);
+					lservers[lserverid].insert(lmassactorid);
 				}
 			}
 			std::shared_ptr<T> ldata = std::static_pointer_cast<T>(adata.m_data);

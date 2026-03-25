@@ -204,9 +204,7 @@ namespace ngl
 			{
 				return false;
 			}
-			const auto& lfriends = lpfriendsconst->mfriends();
-			afriends.reserve(afriends.size() + lfriends.size());
-			for (const i64_actorid lactorid : lfriends)
+			for (const i64_actorid lactorid : lpfriendsconst->mfriends())
 			{
 				afriends.emplace_back(lactorid);
 			}
