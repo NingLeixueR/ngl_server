@@ -99,7 +99,7 @@ namespace ngl
 		for (int32_t i = 0; i < m_threadnum; ++i)
 		{
 			// Workers start idle and are handed actors only by the dispatcher thread.
-			m_workthreads.push_back(std::make_shared<nthread>(i));
+			m_workthreads.emplace_back(std::make_shared<nthread>(i));
 		}
 		m_workthreadscopy = m_workthreads;
 	}
@@ -124,7 +124,7 @@ namespace ngl
 		{
 			// Only transition free actors into the ready queue. Running/list actors will be
 			// rescheduled by the worker thread once they finish the current batch.
-			m_actorlist.push_back(lpactor);
+			m_actorlist.emplace_back(lpactor);
 			lpactor->set_activity_stat(actor_stat_list);
 			if (!m_suspend && !m_workthreads.empty())
 			{
@@ -209,7 +209,7 @@ namespace ngl
 		bool has_route_actor = false;
 		{
 			nlock(m_mutex);
-			has_route_actor = m_actorbyid.contains(route_actor_guid);
+			has_route_actor =m_actorbyid.contains(route_actor_guid);
 		}
 		// Inform the route actor first so remote nodes stop targeting this actor.
 		if (has_route_actor)
@@ -312,11 +312,11 @@ namespace ngl
 				// Workers return themselves here after finishing an actor batch.
 				if (m_suspend)
 				{
-					m_suspendthreads.push_back(atorthread);
+					m_suspendthreads.emplace_back(atorthread);
 				}
 				else
 				{
-					m_workthreads.push_back(atorthread);
+					m_workthreads.emplace_back(atorthread);
 				}
 			}
 			if (m_actorbyid.find(actor_guid) == m_actorbyid.end())
@@ -335,7 +335,7 @@ namespace ngl
 				if (!apactor->list_empty())
 				{
 					// More messages arrived while the actor was running, so queue it again.
-					m_actorlist.push_back(apactor);
+					m_actorlist.emplace_back(apactor);
 					apactor->set_activity_stat(actor_stat_list);
 				}
 				else
@@ -434,8 +434,9 @@ namespace ngl
 		auto type_it = m_actorbytype.find(atype);
 		if (type_it != m_actorbytype.end())
 		{
-			for (auto& [_guid, actor_ref] : type_it->second)
+			for (const auto& lpair : type_it->second)
 			{
+				const ptractor& actor_ref = lpair.second;
 				if (!actor_manage_detail::actor_is_unavailable(actor_ref->activity_stat()))
 				{
 					nosafe_push_task_id(actor_ref, apram);
@@ -458,8 +459,9 @@ namespace ngl
 	void actor_manage::broadcast_task(handle_pram& apram)
 	{
 		nlock(m_mutex);
-		for (auto& [_guid, actor_ref] : m_actorbroadcast)
+		for (const auto& lpair : m_actorbroadcast)
 		{
+			const ptractor& actor_ref = lpair.second;
 			// Broadcast ticks are opt-in and still respect the actor lifecycle state.
 			if (actor_ref->isbroadcast() && !actor_manage_detail::actor_is_unavailable(actor_ref->activity_stat()))
 			{
@@ -520,12 +522,11 @@ namespace ngl
 			}
 			msg_actor actor_stat_entry;
 			actor_stat_entry.m_actor_name = em<ENUM_ACTOR>::name(actor_type);
-			for (auto& [actor_guid, actor_ref] : actors_by_guid)
+			for (auto& [actor_guid, _] : actors_by_guid)
 			{
-				(void)actor_ref;
 				actor_stat_entry.m_actor[nguid::area(actor_guid)].push_back(nguid::actordataid(actor_guid));
 			}
-			actor_stats.push_back(std::move(actor_stat_entry));
+			actor_stats.emplace_back(std::move(actor_stat_entry));
 		}
 		adata.m_vec = std::move(actor_stats);
 	}

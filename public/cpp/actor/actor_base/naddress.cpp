@@ -84,10 +84,10 @@ namespace ngl
 	void naddress::nosafe_actor_address_add(i32_serverid aserverid, i64_actorid adataid)
 	{
 		const nguid actor_guid(adataid);
-		const i16_actortype actor_type = address_actor_type(adataid);
+		const i16_actortype ltype = address_actor_type(adataid);
 		// Maintain both direct lookup and reverse lookup by actor type.
 		m_actorserver.insert_or_assign(actor_guid, aserverid);
-		m_actortypeserver[actor_type].insert(adataid);
+		m_actortypeserver[ltype].insert(adataid);
 #ifdef _DEBUG
 		print_address("ADD", aserverid, adataid);
 #endif		
@@ -102,16 +102,16 @@ namespace ngl
 	void naddress::actor_address_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
 	{
 		lock_write(m_mutex);
-		for (auto actorid : avec)
+		for (const i64_actorid lactorid : avec)
 		{
-			nosafe_actor_address_add(aserverid, actorid);
+			nosafe_actor_address_add(aserverid, lactorid);
 		}
 	}
 
 	void naddress::nosafe_actor_address_del(i64_actorid adataid)
 	{
 		const nguid actor_guid(adataid);
-		const i16_actortype actor_type = address_actor_type(adataid);
+		const i16_actortype ltype = address_actor_type(adataid);
 #ifdef _DEBUG
 		auto lpserverid = tools::findmap(m_actorserver, adataid);
 		if (lpserverid != nullptr)
@@ -120,7 +120,7 @@ namespace ngl
 		}
 #endif
 		m_actorserver.erase(actor_guid);
-		auto itor = m_actortypeserver.find(actor_type);
+		auto itor = m_actortypeserver.find(ltype);
 		if (itor != m_actortypeserver.end())
 		{
 			itor->second.erase(adataid);
@@ -136,9 +136,9 @@ namespace ngl
 	void naddress::actor_address_del(const std::vector<i64_actorid>& avec)
 	{
 		lock_write(m_mutex);
-		for (i64_actorid actorid : avec)
+		for (const i64_actorid lactorid : avec)
 		{
-			nosafe_actor_address_del(actorid);
+			nosafe_actor_address_del(lactorid);
 		}
 	}
 
@@ -182,8 +182,8 @@ namespace ngl
 	void naddress::serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& aservers)
 	{
 		lock_read(m_mutex);
-		const i16_actortype actor_type = static_cast<i16_actortype>(atype);
-		std::set<nguid>* actor_guids = tools::findmap(m_actortypeserver, actor_type);
+		const i16_actortype ltype = static_cast<i16_actortype>(atype);
+		std::set<nguid>* actor_guids = tools::findmap(m_actortypeserver, ltype);
 		if (actor_guids == nullptr)
 		{
 			return;
@@ -204,9 +204,9 @@ namespace ngl
 	void naddress::foreach(const foreach_callbackfun& afun)
 	{
 		lock_read(m_mutex);
-		for (auto& apair : m_session)
+		for (const auto& lpair : m_session)
 		{
-			if (afun(apair.second) == false)
+			if (afun(lpair.second) == false)
 			{
 				break;
 			}
@@ -239,7 +239,7 @@ namespace ngl
 	void naddress::gatewayid_add(const nguid& aguid, i32_serverid aserverid)
 	{
 		lock_write(m_mutex);
-		m_rolegateway[aguid] = aserverid;
+		m_rolegateway.insert_or_assign(aguid, aserverid);
 	}
 
 	void naddress::gatewayid_del(const nguid& aguid)
@@ -251,12 +251,12 @@ namespace ngl
 	void naddress::gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
 	{
 		lock_read(m_mutex);
-		for (auto& aguid : aactorset)
+		for (const nguid& lguid : aactorset)
 		{
-			const i32_serverid* lserverid = tools::findmap(m_rolegateway, aguid);
+			const i32_serverid* lserverid = tools::findmap(m_rolegateway, lguid);
 			if (lserverid == nullptr)
 			{
-				log_error()->print("naddress::gatewayid [{}] fail", aguid);
+				log_error()->print("naddress::gatewayid [{}] fail", lguid);
 				continue;
 			}
 			// A set naturally de-duplicates gateways when many roles share one gateway process.

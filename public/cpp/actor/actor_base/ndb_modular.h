@@ -103,20 +103,20 @@ namespace ngl
 		// Iterate over every loaded row owned by this module.
 		inline void foreach(const std::function<void(const data_modified<TDATA>&)>& afun)
 		{
-			for (auto& [_guid, _datamodified] : data())
+			for (const auto& lpair : data())
 			{
-				afun(_datamodified);
+				afun(lpair.second);
 			}
 		}
 
 		// Find the first row that matches a custom predicate.
 		inline data_modified<TDATA>* find(const std::function<bool(const data_modified<TDATA>&)>& afun)
 		{
-			for(auto& [_guid, _datamodified] : data())
+			for (auto& lpair : data())
 			{
-				if (afun(_datamodified))
+				if (afun(lpair.second))
 				{
-					return &_datamodified;
+					return &lpair.second;
 				}
 			}
 			return nullptr;

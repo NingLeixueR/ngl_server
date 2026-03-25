@@ -324,11 +324,12 @@ namespace ngl
 			{
 				return false;
 			}
-			if (m_data.contains(aid))
+			auto [litor, lnew] = m_data.try_emplace(aid);
+			if (!lnew)
 			{
 				return false;
 			}
-			m_dbdata = &m_data[aid];
+			m_dbdata = &litor->second;
 			m_dbdata->init(&m_modified);
 			m_dbdata->get()->set_mid(aid);
 			return true;
@@ -374,8 +375,8 @@ namespace ngl
 			{
 				return &it->second;
 			}
-			auto [insert_it, _] = m_data.try_emplace(aid);
-			data_modified<TDBTAB>& ldata = insert_it->second;
+			auto [litor, _] = m_data.try_emplace(aid);
+			data_modified<TDBTAB>& ldata = litor->second;
 			TDBTAB lTDBTAB;
 			lTDBTAB.set_mid(aid);
 			ldata.set(m_actor, lTDBTAB);
@@ -445,14 +446,14 @@ namespace ngl
 			std::map<int64_t, TDBTAB> ldata;
 			if (m_actor->nscript_data_checkout<TDBTAB>(ldata))
 			{
-				for (auto& [_actorid, _tdb] : ldata)
+				for (const auto& [lactorid, ltdb] : ldata)
 				{
-					lpdata = tools::findmap(m_data, nguid(_actorid));
+					lpdata = tools::findmap(m_data, nguid(lactorid));
 					if (lpdata == nullptr)
 					{
 						continue;
 					}
-					*lpdata->get(true, false) = _tdb;
+					*lpdata->get(true, false) = ltdb;
 				}
 			}
 
@@ -481,6 +482,10 @@ namespace ngl
 				for (i64_actorid lactorid : lmodified)
 				{
 					lpdata = tools::findmap(m_data, nguid(lactorid));
+					if (lpdata == nullptr)
+					{
+						continue;
+					}
 					pro.add(lactorid, *lpdata->getconst(false));
 				}
 				// This batch consumed the current modified-id snapshot.
@@ -504,10 +509,17 @@ namespace ngl
 
 		void clear()
 		{
-			for (const std::pair<const nguid, data_modified<TDBTAB>>& item : m_data)
+			if (m_data.empty())
 			{
-				del(item.first);
+				return;
 			}
+			std::vector<int64_t> lidvec;
+			lidvec.reserve(m_data.size());
+			for (const auto& [lguid, _data] : m_data)
+			{
+				lidvec.emplace_back((int64_t)lguid);
+			}
+			del(lidvec);
 		}
 
 		void del(const nguid& aid, bool ascript = false)
@@ -516,7 +528,7 @@ namespace ngl
 			{
 				m_actor->nscript_data_del<TDBTAB>(aid);
 			}
-			m_dellist.push_back((int64_t)aid);
+			m_dellist.emplace_back((int64_t)aid);
 			m_data.erase((int64_t)aid);
 			if (aid == m_id)
 			{
@@ -526,9 +538,9 @@ namespace ngl
 
 		void del(std::vector<int64_t>& adelvec, bool ascript = false)
 		{
-			for (int64_t dataid : adelvec)
+			for (const int64_t ldataid : adelvec)
 			{
-				del(dataid, ascript);
+				del(ldataid, ascript);
 			}
 		}
 
@@ -569,19 +581,19 @@ namespace ngl
 			}
 
 			nscript_data_db<TDBTAB> ltemp;
-			for (std::pair<const nguid, data_modified<TDBTAB>>& item : m_data)
+			for (auto& [lguid, ldata] : m_data)
 			{
-				ltemp.data.insert(std::make_pair((int64_t)item.first, item.second.get(false, false)));
+				ltemp.data.emplace((int64_t)lguid, ldata.get(false, false));
 			}
 			m_actor->nscript_data_push("db", ltemp, true);
 		}
 	public:
 		bool loadfinish(const std::map<nguid, TDBTAB>& adata, enum_dbstat astat, bool aloadfinish)
 		{
-			for (auto& [_guid, _tdb] : adata)
+			for (const auto& [lguid, ltdb] : adata)
 			{
-				data_modified<TDBTAB>& ldata = m_data[_guid];
-				ldata.set(m_actor, _tdb);
+				auto& ldata = m_data[lguid];
+				ldata.set(m_actor, ltdb);
 				ldata.init(&m_modified);
 			}
 			auto lpmodified = tools::findmap(m_data, m_id);
@@ -608,9 +620,9 @@ namespace ngl
 
 		void clear_modified() final
 		{
-			for(auto& [_guid, _data] : m_data)
+			for (auto& lpair : m_data)
 			{
-				_data.clear_modified();
+				lpair.second.clear_modified();
 			}
 		}
 	};

@@ -105,7 +105,7 @@ namespace ngl
 			ngl::db_data<TDBTAB>::foreach_index([lrequestactor, lmaxcount, apack, &pro](int aindex, TDBTAB& atab)
 				{
 					nguid lguid(atab.mid());
-					pro.m_data.insert(std::make_pair(lguid, atab));
+					pro.m_data.emplace(lguid, atab);
 					if (aindex % lmaxcount == 0)
 					{
 						ntcp::instance().send(apack->m_id, pro, lrequestactor, nguid::make());
@@ -170,7 +170,7 @@ namespace ngl
 				TDBTAB* ldata = ngl::db_data<TDBTAB>::find(lid);
 				if (ldata != nullptr)
 				{
-					(pro.m_data)[adata.m_id] = *ldata;
+					pro.m_data.insert({ adata.m_id, *ldata });
 				}
 
 				i64_actorid lrequestactor = apack->m_head.get_request_actor();
@@ -205,9 +205,9 @@ namespace ngl
 		// Save a batch payload received from another actor.
 		static void save(i32_threadid athreadid, const pack*, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata)
 		{
-			for (auto& [_guid, _tdb] : adata.m_data)
+			for (const auto& lpair : adata.m_data)
 			{
-				save(athreadid, _tdb);
+				save(athreadid, lpair.second);
 			}
 		}
 	};
@@ -387,7 +387,7 @@ namespace ngl
 				{
 					if (ldb->m_malloc.serialize(false, aitem))
 					{
-						pro.m_data.push_back(ldb->m_malloc.buff());
+						pro.m_data.emplace_back(ldb->m_malloc.buff());
 					}
 				}
 			);

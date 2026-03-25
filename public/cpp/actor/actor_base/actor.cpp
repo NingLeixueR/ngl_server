@@ -86,12 +86,12 @@ namespace ngl
 		if (highvalue <= 0)
 		{
 			// Default traffic is processed in FIFO order.
-			m_list.push_back(apram);
+			m_list.emplace_back(apram);
 		}
 		else
 		{
 			// High-priority traffic is grouped by protocol priority and handled first.
-			m_hightlist[highvalue].push_back(apram);
+			m_hightlist[highvalue].emplace_back(apram);
 		}
 	}
 
@@ -126,12 +126,12 @@ namespace ngl
 
 		if (!localhightlist.empty())
 		{
-			for (auto& [_hight, _list] : localhightlist)
+			for (auto& lpair : localhightlist)
 			{
 				// Drain priority buckets before normal traffic.
-				for (auto& _harm : _list)
+				for (auto& lharm : lpair.second)
 				{
-					ahandle(athreadid, _harm);
+					ahandle(athreadid, lharm);
 				}
 			}
 			localhightlist.clear();

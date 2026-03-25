@@ -73,9 +73,9 @@ namespace ngl
 		m_actor->db_component_init_data();
 
 		// 1. Loading can mark rows dirty; clear those flags before gameplay starts mutating data.
-		for (auto& [_enumdb, _npdbclient] : m_dbclientmap)
+		for (const auto& lpair : m_dbclientmap)
 		{
-			_npdbclient->clear_modified();
+			lpair.second->clear_modified();
 		}
 
 		// 2. Mirror the freshly loaded state into the script runtime.
@@ -97,25 +97,25 @@ namespace ngl
 
 	void nmanage_dbclient::save()
 	{
-		for (auto& [_enumdb, _npdbclient] : m_dbclientmap)
+		for (const auto& lpair : m_dbclientmap)
 		{
-			_npdbclient->savedb();
+			lpair.second->savedb();
 		}
 	}
 
 	void nmanage_dbclient::del()
 	{
-		for (auto& [_enumdb, _npdbclient] : m_dbclientmap)
+		for (const auto& lpair : m_dbclientmap)
 		{
-			_npdbclient->deldb();
+			lpair.second->deldb();
 		}
 	}
 
 	void nmanage_dbclient::nscript_push_data()
 	{
-		for (auto& [_enumdb, _npdbclient] : m_dbclientmap)
+		for (const auto& lpair : m_dbclientmap)
 		{
-			_npdbclient->nscript_push_data();
+			lpair.second->nscript_push_data();
 		}
 	}
 }//namespace ngl

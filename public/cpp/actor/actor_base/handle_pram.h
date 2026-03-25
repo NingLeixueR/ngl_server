@@ -246,20 +246,20 @@ namespace ngl
 		else if (lactorid == nguid::make() && !lmassactors.empty())
 		{
 			std::map<i32_serverid, std::set<i64_actorid>> lservers;
-			for (i64_actorid actorid : lmassactors)
+			for (const i64_actorid lactorid : lmassactors)
 			{
-				i32_serverid lserverid = handle_pram::serverid(actorid);
+				i32_serverid lserverid = handle_pram::serverid(lactorid);
 				if (lserverid != -1 && lserverid != nconfig.nodeid())
 				{
 					lservers[lserverid].insert(actorid);
 				}
 			}
 			std::shared_ptr<T> ldata = std::static_pointer_cast<T>(adata.m_data);
-			for (auto& [_serverid, _actorids] : lservers)
+			for (auto& lpair : lservers)
 			{
 				np_mass_actor<T> pro(ldata);
-				pro.m_actorids.swap(_actorids);
-				handle_send<np_mass_actor<T>>::send_server(_serverid, nguid::make(), lrequestactor, pro);
+				pro.m_actorids.swap(lpair.second);
+				handle_send<np_mass_actor<T>>::send_server(lpair.first, nguid::make(), lrequestactor, pro);
 			}
 			return true;
 		}
@@ -292,9 +292,10 @@ namespace ngl
 		std::vector<i32_actordataid>& luid = ldata->m_data.m_uid;
 		std::vector<i16_area>& lareas = ldata->m_data.m_area;
 		std::set<i32_serverid> lgateways;
-		for (std::size_t i = 0; i < luid.size() && i < lareas.size(); ++i)
+		const std::size_t lcount = luid.size() < lareas.size() ? luid.size() : lareas.size();
+		for (std::size_t li = 0; li < lcount; ++li)
 		{
-			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lareas[i], luid[i]);
+			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lareas[li], luid[li]);
 			i32_serverid lserverid = handle_pram::gatewayid(lroleactor);
 			if (lserverid > 0)
 			{

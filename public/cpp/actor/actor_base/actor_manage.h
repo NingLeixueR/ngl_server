@@ -204,11 +204,13 @@ namespace ngl
 		auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();
 		pro->m_data.m_protocol = aprotocol;
 		pro->m_data.m_data = adata;
+		pro->m_data.m_uid.reserve(aids.size());
+		pro->m_data.m_area.reserve(aids.size());
 		for (i64_actorid aactorid : aids)
 		{
 			nguid lguid(aactorid);
-			pro->m_data.m_uid.push_back(lguid.actordataid());
-			pro->m_data.m_area.push_back(lguid.area());
+			pro->m_data.m_uid.emplace_back(lguid.actordataid());
+			pro->m_data.m_area.emplace_back(lguid.area());
 		}
 		handle_pram lpram = handle_pram::create<T>(nguid::make(), nguid::make(), pro);
 		actor_manage::instance().push_task_id(actorclient_guid(), lpram);
@@ -238,8 +240,8 @@ namespace ngl
 			pro->m_data.m_protocol = aprotocol;
 			pro->m_data.m_data = adata;
 			nguid lguid(nguid::make());
-			pro->m_data.m_uid.push_back(lguid.actordataid());
-			pro->m_data.m_area.push_back(lguid.area());
+			pro->m_data.m_uid.emplace_back(lguid.actordataid());
+			pro->m_data.m_area.emplace_back(lguid.area());
 			send_server(lgatewayids, *pro, nguid::make(), nguid::make());
 		}
 	}

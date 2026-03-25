@@ -100,13 +100,13 @@ namespace ngl
 			log_error()->print("set_readybycustom fail [{}]", m_custom);
 			return;
 		}
-		auto lvalue = (enum_ready)(e_ready_custom << m_custom);
-		if (m_readyfun.contains(lvalue))
+		const enum_ready lvalue = static_cast<enum_ready>(e_ready_custom << m_custom);
+		auto [_, lnew] = m_readyfun.try_emplace(lvalue, afun);
+		if (!lnew)
 		{
 			log_error()->print("set_readybycustom fail [{}:{}]", m_custom, (int32_t)lvalue);
 			return;
 		}
-		m_readyfun.insert_or_assign(lvalue, afun);
 		++m_custom;
 	}
 
@@ -255,13 +255,13 @@ namespace ngl
 
 	void actor_base::db_component_init_data()
 	{
-		for (auto& [_, _dbcomponent] : m_dbcomponent)
+		for (const auto& lpair : m_dbcomponent)
 		{
-			if (_dbcomponent == nullptr)
+			if (lpair.second == nullptr)
 			{
 				continue;
 			}
-			_dbcomponent->init_data();
+			lpair.second->init_data();
 		}
 	}
 
@@ -269,19 +269,19 @@ namespace ngl
 	{
 		log_error()->print("[{}] init_db_component [{}]", (nguid)id_guid(), acreate?"true":"false");
 
-		for (auto& [_, _dbcomponent] : m_dbcomponent)
+		for (const auto& lpair : m_dbcomponent)
 		{
-			if (_dbcomponent == nullptr)
+			if (lpair.second == nullptr)
 			{
 				continue;
 			}
 			if (acreate)
 			{
-				_dbcomponent->create();
+				lpair.second->create();
 			}
 			else
 			{
-				_dbcomponent->init();
+				lpair.second->init();
 			}
 		}
 	}
