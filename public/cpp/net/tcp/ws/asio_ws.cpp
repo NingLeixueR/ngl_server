@@ -747,8 +747,8 @@ namespace ngl
 
 		if (lnode.is_text())
 		{
-			const auto& ltext = lnode.get_text();
-			if (ltext == nullptr)
+			const auto& ltemptext = lnode.get_text();
+			if (ltemptext == nullptr)
 			{
 				{
 					std::lock_guard<std::mutex> llock(aservice->m_mutex);
