@@ -115,6 +115,16 @@ namespace ngl
 		return m_rolesds[m_index % m_rolesds.size()];
 	}
 
+	i64_actorid actor_example_guess_number::cur_guess_role()
+	{
+		if (isfinish() || m_rolesds.empty())
+		{
+			return nguid::make();
+		}
+		int32_t lindex = m_index == 0 ? 0 : m_index - 1;
+		return m_rolesds[lindex % m_rolesds.size()];
+	}
+
 	void actor_example_guess_number::send_error(i64_actorid aroleid, pbexample::E_GUESS_NUMBER_ERROR aerr)
 	{
 		pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR pro;
@@ -147,7 +157,7 @@ namespace ngl
 			// Current time
 			if (m_setputc + guess_number_esetp_maxtime <= lnow)
 			{
-				i64_actorid roleid = next_guess_role();
+				i64_actorid roleid = cur_guess_role();
 				pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER lPROBUFF_EXAMPLE_GUESS_NUMBER;
 				lPROBUFF_EXAMPLE_GUESS_NUMBER.set_mguessnumber(m_minnumber + 1);
 				mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER> pro(roleid, lPROBUFF_EXAMPLE_GUESS_NUMBER);

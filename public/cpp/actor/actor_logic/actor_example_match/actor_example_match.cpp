@@ -213,6 +213,25 @@ namespace ngl
 		return &lroom;
 	}
 
+	void actor_example_match::erase_ready(pbexample::EPLAY_TYPE atype, int32_t aroomid)
+	{
+		auto lidx_it = m_roomindex.find(atype);
+		if (lidx_it == m_roomindex.end())
+		{
+			return;
+		}
+
+		std::list<int32_t>& lready = lidx_it->second.m_readyroomlist;
+		for (auto litor = lready.begin(); litor != lready.end(); ++litor)
+		{
+			if (*litor == aroomid)
+			{
+				lready.erase(litor);
+				break;
+			}
+		}
+	}
+
 	void actor_example_match::erase_room(room* aroom, pbexample::PLAY_MATCHING_EERROR_CODE aerrorcode /*= pbexample::PLAY_MATCHING_EERROR_CODE::EERROR_CODE_ROOM_DESTORY*/)
 	{
 		log_error()->print("erase room [{}]", aroom->m_roomid);
@@ -222,6 +241,7 @@ namespace ngl
 		}
 		send_error(aerrorcode, &aroom->m_playersset, aroom->m_roomid);
 		room_index& lroomindex = m_roomindex[aroom->m_type];
+		erase_ready(aroom->m_type, aroom->m_roomid);
 		lroomindex.m_roomlist.erase(aroom->m_roomid);
 		auto lroom_it = m_room.find(aroom->m_type);
 		if (lroom_it != m_room.end())
@@ -232,6 +252,8 @@ namespace ngl
 
 	void actor_example_match::erase_player_room(room* aroom, i64_actorid aroleid)
 	{
+		bool lready = aroom->m_roomready != 0;
+		m_matching.erase(aroleid);
 		aroom->m_players.erase(aroleid);
 		aroom->m_playersset.erase(aroleid);
 		aroom->m_roomready = 0;
@@ -241,6 +263,12 @@ namespace ngl
 		}
 		else
 		{
+			if (lready)
+			{
+				erase_ready(aroom->m_type, aroom->m_roomid);
+			}
+			room_index& lroomindex = m_roomindex[aroom->m_type];
+			lroomindex.m_roomlist.insert_or_assign(aroom->m_roomid, room_index::eroom_matching);
 			for (auto& lpair : aroom->m_players)
 			{
 				lpair.second.m_isconfirm = false;
@@ -292,13 +320,15 @@ namespace ngl
 	bool actor_example_match::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		// Ready
-		for (const auto& lpair : m_roomindex)
+		for (auto& lpair : m_roomindex)
 		{
-			for (const int32_t lroomid : lpair.second.m_readyroomlist)
+			std::list<int32_t> lreadyids = lpair.second.m_readyroomlist;
+			for (const int32_t lroomid : lreadyids)
 			{
 				room* lproom = find_room(lpair.first, lroomid);
 				if (lproom == nullptr)
 				{
+					erase_ready(lpair.first, lroomid);
 					continue;
 				}
 				if (check_timeout(lproom->m_roomready, ttab_specialid::instance().m_example_room_readytime))
@@ -314,19 +344,24 @@ namespace ngl
 
 		for (const auto& lpair : m_roomindex)
 		{
+			std::list<int32_t> lroomids;
 			for (const auto& litem : lpair.second.m_roomlist)
 			{
 				if (litem.second == room_index::eroom_matching)
 				{
-					room* lproom = find_room(lpair.first, litem.first);
-					if (lproom == nullptr)
-					{
-						continue;
-					}
-					if (check_timeout(lproom->m_roomcreate, ttab_specialid::instance().m_example_room_maxtime))
-					{
-						erase_room(lproom, pbexample::PLAY_MATCHING_EERROR_CODE::EERROR_CODE_TIMEOUT);
-					}
+					lroomids.push_back(litem.first);
+				}
+			}
+			for (const int32_t lroomid : lroomids)
+			{
+				room* lproom = find_room(lpair.first, lroomid);
+				if (lproom == nullptr)
+				{
+					continue;
+				}
+				if (check_timeout(lproom->m_roomcreate, ttab_specialid::instance().m_example_room_maxtime))
+				{
+					erase_room(lproom, pbexample::PLAY_MATCHING_EERROR_CODE::EERROR_CODE_TIMEOUT);
 				}
 			}
 		}

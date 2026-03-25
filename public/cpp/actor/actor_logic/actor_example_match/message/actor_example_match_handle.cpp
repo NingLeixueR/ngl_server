@@ -34,8 +34,19 @@ namespace ngl
 			send_error(pbexample::EERROR_CODE_NOTFINDROOM, nullptr, 0, lroleid);
 			return true;
 		}
+		if (tools::findmap(lproom->m_players, lroleid) == nullptr)
+		{
+			m_matching.erase(lroleid);
+			send_error(pbexample::EERROR_CODE_NOTMATCH, nullptr, *lproomid, lroleid);
+			return true;
+		}
 
+		bool lsync = lproom->m_players.size() > 1;
 		erase_player_room(lproom, lroleid);
+		if (lsync)
+		{
+			sync_match_info(lproom);
+		}
 		return true;
 	}
 	bool actor_example_match::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>>& adata)
@@ -86,10 +97,15 @@ namespace ngl
 			send_error(pbexample::EERROR_CODE_NOTFINDROOM, nullptr, 0, lroleid);
 			return true;
 		}
+		player* lpplayer = tools::findmap(lproom->m_players, lroleid);
+		if (lpplayer == nullptr)
+		{
+			send_error(pbexample::EERROR_CODE_NOTMATCH, nullptr, ldata->mroomid(), lroleid);
+			return true;
+		}
 
 		if (ldata->misconfirm())
 		{
-			player* lpplayer = tools::findmap(lproom->m_players, lroleid);
 			lpplayer->m_isconfirm = true;
 			sync_match_info(lproom);
 			if (check_ready(lproom))
@@ -99,31 +115,10 @@ namespace ngl
 		}
 		else
 		{
-			lproom->m_players.erase(lroleid);
-			lproom->m_playersset.erase(lroleid);
-			if (lproom->m_players.empty() || lproom->m_playersset.empty())
+			bool lsync = lproom->m_players.size() > 1;
+			erase_player_room(lproom, lroleid);
+			if (lsync)
 			{
-				erase_room(lproom);
-			}
-			else
-			{
-				// Exitready
-				if (room_count_ready(lproom) == false)
-				{
-					auto lidx_it = m_roomindex.try_emplace(lproom->m_type).first;
-					room_index& lroomidx = lidx_it->second;
-					lproom->m_roomready = 0;
-					lroomidx.m_roomlist.insert_or_assign(lproom->m_roomid, room_index::eroom_matching);
-					std::list<int32_t>& lready = lroomidx.m_readyroomlist;
-					for (auto itor = lready.begin(); itor != lready.end(); ++itor)
-					{
-						if (lproom->m_roomid == *itor)
-						{
-							lready.erase(itor);
-							break;
-						}
-					}
-				}
 				sync_match_info(lproom);
 			}
 		}

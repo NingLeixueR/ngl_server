@@ -104,7 +104,7 @@ namespace ngl
 				if (!m_moduledata.contains((EnumModule)i))
 				{
 					m_moduledata[(EnumModule)i] = avalue;
-					m_moduledata[(EnumModule)i].m_module = aenum;
+					m_moduledata[(EnumModule)i].m_module = (EnumModule)i;
 				}
 			}
 		}

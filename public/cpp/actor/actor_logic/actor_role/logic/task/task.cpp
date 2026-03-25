@@ -275,16 +275,16 @@ namespace ngl
 			{
 				// ## Task
 				auto& lrun = run(arole);
-				const task_condition* lpcond = ttab_task::instance().condition_complete(ltaskid, atype);
 				for (auto itor = lrun.begin(); itor != lrun.end(); ++itor)
 				{
+					const task_condition* lruncond = ttab_task::instance().condition_complete(itor->first, atype);
 					for (pbdb::db_task::data_schedule& lschedule : *itor->second.mutable_mschedules())
 					{
 						if (lschedule.mtype() == atype)
 						{
-							if (lpcond != nullptr)
+							if (lruncond != nullptr)
 							{
-								task_check::schedules(arole, lschedule, *lpcond);
+								task_check::schedules(arole, lschedule, *lruncond);
 							}
 							break;
 						}

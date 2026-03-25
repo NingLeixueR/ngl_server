@@ -27,7 +27,7 @@ namespace ngl
 			bomb();
 			return true;
 		}
-		if (lroleid != next_guess_role())
+		if (lroleid != cur_guess_role())
 		{
 			send_error(lroleid, pbexample::E_GUESS_NUMBER_ERROR_NOT_GUESS);
 			return true;

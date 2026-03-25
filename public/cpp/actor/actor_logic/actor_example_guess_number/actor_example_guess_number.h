@@ -77,6 +77,7 @@ namespace ngl
 		void set_finish(i64_actorid abombrole);
 
 		i64_actorid next_guess_role();
+		i64_actorid cur_guess_role();
 
 		void send_error(i64_actorid aroleid, pbexample::E_GUESS_NUMBER_ERROR aerr);
 

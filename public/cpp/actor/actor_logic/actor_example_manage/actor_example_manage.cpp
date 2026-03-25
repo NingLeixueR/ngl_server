@@ -18,6 +18,8 @@
 #include "actor/actor_logic/actor_example_match/actor_example_match.h"
 #include "actor/actor_logic/actor_brief/actor_brief.h"
 
+#include <list>
+
 namespace ngl
 {
 	actor_example_manage::actor_example_manage() :
@@ -98,7 +100,7 @@ namespace ngl
 				auto pro = std::make_shared<np_example_actorid>();
 				pro->m_type = ltype;
 				pro->m_actorexampleid = lactorexampleid;
-				send_actor(lactorexampleid, id_guid(), pro);
+				send_actor(applayinfo->m_roles, id_guid(), pro);
 			}
 			m_finishinfo[ltype][lactorexampleid] = *applayinfo;
 			m_info[ltype].erase(lactorexampleid);
@@ -125,18 +127,39 @@ namespace ngl
 		pbexample::ECROSS lecross = tab_self_area > 0 ? pbexample::ECROSS::ECROSS_ORDINARY : pbexample::ECROSS::ECROSS_CROSS_ORDINARY;
 		for (auto& [ltype, lplaymap] : m_info)
 		{
-			for (auto& lpair : lplaymap)
+			std::list<i64_actorid> lexampleids;
+			for (const auto& lpair : lplaymap)
 			{
-				playinfo& lplayinfo = lpair.second;
-				if (lplayinfo.m_createexample + example_waittime <= lnow)
+				if (lpair.second.m_createexample + example_waittime <= lnow)
 				{
-					for (i64_actorid lroleid : lplayinfo.m_roles)
+					lexampleids.push_back(lpair.first);
+				}
+			}
+			for (i64_actorid lexampleid : lexampleids)
+			{
+				auto lplay_it = lplaymap.find(lexampleid);
+				if (lplay_it == lplaymap.end())
+				{
+					continue;
+				}
+
+				std::list<i64_actorid> lroleids;
+				for (i64_actorid lroleid : lplay_it->second.m_roles)
+				{
+					if (lplay_it->second.m_role_enter_example.find(lroleid) == lplay_it->second.m_role_enter_example.end())
 					{
-						if (lplayinfo.m_role_enter_example.find(lroleid) == lplayinfo.m_role_enter_example.end())
-						{
-							enter_game(&lplayinfo, lroleid, lecross, ltype);
-						}
+						lroleids.push_back(lroleid);
 					}
+				}
+
+				for (i64_actorid lroleid : lroleids)
+				{
+					auto lcur_it = lplaymap.find(lexampleid);
+					if (lcur_it == lplaymap.end())
+					{
+						break;
+					}
+					enter_game(&lcur_it->second, lroleid, lecross, ltype);
 				}
 			}
 		}

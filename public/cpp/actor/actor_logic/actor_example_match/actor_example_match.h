@@ -31,6 +31,8 @@
 #include "actor/pb/net.pb.h"
 #include "net/tcp/ntcp.h"
 
+#include <list>
+
 namespace ngl
 {
 	union nroomid
@@ -110,6 +112,7 @@ namespace ngl
 		/////////roomid////////
 		std::map<pbexample::EPLAY_TYPE, std::map<int32_t, room>>		m_room;
 		std::map<i64_actorid, int32_t>									m_matching;				// key:roleid value:room id
+		void erase_ready(pbexample::EPLAY_TYPE atype, int32_t aroomid);
 
 		actor_example_match();
 	public:
