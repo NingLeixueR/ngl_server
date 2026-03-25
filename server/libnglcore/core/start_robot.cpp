@@ -7,25 +7,34 @@
 #include "start_node.h"
 #include "start_db.h"
 
+#include <string_view>
+#include <thread>
+#include <vector>
+
+static std::string make_cmd(const std::vector<std::string>& avec, std::size_t abeg)
+{
+	std::string lcmd;
+	ngl::tools::splicing(avec, " ", lcmd, abeg);
+	return lcmd;
+}
+
 std::string get_lines()
 {
 	char lbuff[4096] = { 0 };
 	std::cin.getline(lbuff, 4096);
 	std::string lstrbuff = lbuff;
-	//[== 删除多余空格
 	ngl::tools::erase_repeat(lstrbuff, ' ');
-	//删除多余空格 ==]
 	return lstrbuff;
 }
 
-startup_error start_robot(int argc, char** argv, int* tcp_port)
+startup_error start_robot(int aargc, char** aargv, int* atcp_port)
 {
 	ngl::log_error()->print("[{}] start", "ROBOT");
 
-	startup_error rc = init_server(nconfig.nodeid(), {}, tcp_port);
-	if (rc != startup_error::ok)
+	startup_error lrc = init_server(nconfig.nodeid(), {}, atcp_port);
+	if (lrc != startup_error::ok)
 	{
-		return rc;
+		return lrc;
 	}
 
 	ngl::actor_client::instance();
@@ -38,90 +47,95 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 
 	ngl::actor_robot_manage::instance();
 
-	ngl::i32_serverid llogin = ngl::nnodeid::nodeid(ngl::ttab_servers::instance().const_tab()->m_login, 1);
-	std::string_view lprotocol(argv[7]);
+	const ngl::i32_serverid llogin = ngl::nnodeid::nodeid(
+		static_cast<int16_t>(ngl::ttab_servers::instance().const_tab()->m_login), 1);
+	const std::string_view lprotocol =
+		(aargc > 7 && aargv[7] != nullptr) ? std::string_view(aargv[7]) : std::string_view("tcp");
 	if (lprotocol == "ws" || lprotocol == "wss")
 	{
-		ngl::actor_robot_manage::instance().connect(llogin, ngl::ENET_PROTOCOL::ENET_WS, [](int asession)
+		ngl::actor_robot_manage::instance().connect(llogin, ngl::ENET_PROTOCOL::ENET_WS, []([[maybe_unused]] int asession)
 			{
-				std::cout << "连接Login服务器成功" << std::endl;
+				std::cout << "connect login ok" << std::endl;
 			}
 		);
 	}
 	else
 	{
-		ngl::actor_robot_manage::instance().connect(llogin, ngl::ENET_PROTOCOL::ENET_TCP, [](int asession)
+		ngl::actor_robot_manage::instance().connect(llogin, ngl::ENET_PROTOCOL::ENET_TCP, []([[maybe_unused]] int asession)
 			{
-				std::cout << "连接Login服务器成功" << std::endl;
+				std::cout << "connect login ok" << std::endl;
 			}
 		);
 	}
-	
-	if (argc < 4)
+
+	if (aargc < 7)
 	{
 		while (1)
 		{
-			ngl::actor_robot_manage::parse_command(get_lines());
+			const std::string lline = get_lines();
+			if (!lline.empty())
+			{
+				ngl::actor_robot_manage::parse_command(lline);
+			}
 		}
 	}
 	else
 	{
-		for (int i = 0; i < 5; ++i)
+		for (int li = 0; li < 5; ++li)
 		{
 			ngl::sleep::seconds(1);
-			std::cout << "---------------[" << i << "]---------------" << std::endl;
+			std::cout << "---------------[" << li << "]---------------" << std::endl;
 		}
-		std::string lcmd;
-		lcmd = std::format("logins {} {} {}", argv[4], argv[5], argv[6]);
-		std::vector<std::string> lvec;
-		if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
-		{
-			return startup_error::node_start_failed;
-		}
-		ngl::actor_robot_manage::parse_command(lvec);
-		int lnum = 10000;
+		const std::string lcmd = std::format("logins {} {} {}", aargv[4], aargv[5], aargv[6]);
+		ngl::actor_robot_manage::parse_command(lcmd);
 
 		bool ltest = false;
 		std::vector<int> lms;
-		std::vector<std::vector<std::string>> lcmdvec;
-		std::thread lthread([&ltest, &lms, &lcmdvec]()
+		std::vector<std::string> lcmds;
+		std::thread lthread([&ltest, &lms, &lcmds]()
 			{
-				std::vector<std::string> lvec;
 				while (true)
 				{
-					lvec = get_lines();
-					if (lvec.empty())
+					const std::string lline = get_lines();
+					if (lline.empty())
 					{
 						continue;
 					}
+
+					std::vector<std::string> lvec;
+					if (!ngl::tools::splite(lline.c_str(), " ", lvec) || lvec.empty())
+					{
+						continue;
+					}
+
 					if (lvec[0] == "test" || lvec[0] == "TEST")
 					{
+						if (lvec.size() < 3)
+						{
+							continue;
+						}
 						lms.clear();
 						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
-						lcmdvec.clear();
-						lcmdvec.push_back(std::vector<std::string>());
-						for (int i = 2; i < lvec.size(); ++i)
-						{
-							lcmdvec.rbegin()->push_back(lvec[i]);
-						}
+						lcmds.clear();
+						lcmds.push_back(make_cmd(lvec, 2));
 						ltest = true;
 						continue;
 					}
 					if (lvec[0] == "notest" || lvec[0] == "NOTEST")
 					{
 						lms.clear();
-						lcmdvec.clear();
+						lcmds.clear();
 						ltest = false;
 						continue;
 					}
 					if (lvec[0] == "tests" || lvec[0] == "TESTS")
 					{
-						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
-						lcmdvec.push_back(std::vector<std::string>());
-						for (int i = 2; i < lvec.size(); ++i)
+						if (lvec.size() < 3)
 						{
-							lcmdvec.rbegin()->push_back(lvec[i]);
+							continue;
 						}
+						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
+						lcmds.push_back(make_cmd(lvec, 2));
 						continue;
 					}
 					if (lvec[0] == "start" || lvec[0] == "START")
@@ -129,22 +143,22 @@ startup_error start_robot(int argc, char** argv, int* tcp_port)
 						ltest = true;
 						continue;
 					}
-					ngl::actor_robot_manage::parse_command(lvec);
+					ngl::actor_robot_manage::parse_command(lline);
 				}
 			});
+		lthread.detach();
 
-		for (int i = 0;; ++i)
+		while (true)
 		{
 			if (!ltest)
 			{
 				ngl::sleep::seconds(1);
 				continue;
 			}
-			for (int j = 0; j < lcmdvec.size() && j < lms.size(); ++j)
+			for (std::size_t li = 0; li < lcmds.size() && li < lms.size(); ++li)
 			{
-				ngl::sleep::milliseconds(lms[j]);
-				std::vector<std::string> lcmdvec2 = lcmdvec[j];
-				ngl::actor_robot_manage::parse_command(lcmdvec2);
+				ngl::sleep::milliseconds(lms[li]);
+				ngl::actor_robot_manage::parse_command(lcmds[li]);
 			}
 		}
 	}

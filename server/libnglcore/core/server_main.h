@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "start_node.h"
+
 #include <functional>
 #include <string>
 

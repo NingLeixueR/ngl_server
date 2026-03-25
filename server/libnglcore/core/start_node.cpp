@@ -48,93 +48,6 @@
 #include "server_main.h"
 #include "start_node.h"
 
-startup_error init_server([[maybe_unused]] int aid, const std::set<pbnet::ENUM_KCP>& akcp /*= {}*/, int* atcp_port/* = nullptr*/)
-{
-	if (atcp_port != nullptr)
-	{
-		*atcp_port = -1;
-	}
-
-	// Load generated protocol ids before any actor or network code starts using them.
-	ngl::xmlprotocol::load();
-
-	// Register generated actor factories and protocol handlers.
-	ngl::auto_actor();
-	ngl::tprotocol_customs();
-	ngl::tprotocol_forward_pb();
-	ngl::event_register();
-	ngl::tdb::tdb_init(true);
-
-	// Start the shared broadcast timer used by actors that opt into periodic ticks.
-	ngl::actor_base::start_broadcast();
-
-	// Load XML-driven runtime settings after the protocol system is ready.
-	ngl::sysconfig::init();
-
-	const ngl::tab_servers* tab = ngl::ttab_servers::instance().const_tab();
-	if (tab == nullptr)
-	{
-		ngl::tools::no_core_dump();
-		return startup_error::tab_server_missing;
-	}
-
-	{
-		// Bring up the TCP listener first. Most nodes use TCP even if they also open KCP ports.
-		ngl::net_works lnwork;
-		if (!ngl::ttab_servers::instance().get_nworks(ngl::ENET_PROTOCOL::ENET_TCP, nconfig.tcount(), lnwork))
-		{
-			ngl::tools::no_core_dump();
-			return startup_error::net_config_missing;
-		}
-		if (atcp_port != nullptr)
-		{
-			*atcp_port = lnwork.m_port;
-		}
-		ngl::ntcp::instance().init(lnwork.m_port, tab->m_threadnum, tab->m_outernet);
-	}
-
-	{
-		// Only gateway nodes accept websocket clients; other nodes stay on TCP-only listeners.
-		if (nconfig.nodetype() == ngl::NODE_TYPE::GATEWAY)
-		{
-			ngl::net_works lwswork;
-			if (ngl::ttab_servers::instance().get_nworks(ngl::ENET_PROTOCOL::ENET_WS, nconfig.tcount(), lwswork))
-			{
-				const ngl::xarg_wss& lwss = nconfig.wss();
-				const bool luse_tls = !lwss.m_certificate_chain.empty() && !lwss.m_private_key.empty();
-				ngl::ws_tls_options ltls_options
-				{
-					.m_certificate_chain = lwss.m_certificate_chain,
-					.m_private_key = lwss.m_private_key,
-					.m_ca_certificates = lwss.m_ca_certificates,
-					.m_verify_peer = lwss.m_verify_peer != 0,
-				};
-				ngl::nws::instance().init(lwswork.m_port, tab->m_threadnum, tab->m_outernet, luse_tls, ltls_options);
-			}
-		}
-	}
-
-	{
-		// Only create the KCP endpoints explicitly requested by the current node type.
-		if (!akcp.empty())
-		{
-			for (pbnet::ENUM_KCP kcptype : akcp)
-			{
-				ngl::nkcp::instance().create_kcp(kcptype);
-			}
-		}
-	}
-
-	// Worker threads must exist before singleton actors start registering themselves.
-	ngl::actor_manage::instance().init(tab->m_actorthreadnum);
-
-	// Logging can be forwarded to the log actor once the actor scheduler is alive.
-	ngl::nactor_logitem::m_init = true;
-
-	ngl::log_error()->print("ngl::actor_manage::instance().init({})", tab->m_actorthreadnum);
-	return startup_error::ok;
-}
-
 void make_log_actor()
 {
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
@@ -145,10 +58,10 @@ void make_log_actor()
 }
 
 node_boot_opt make_node_opt(
-	std::initializer_list<pbnet::ENUM_KCP> akcp_types = {},
-	bool ause_actor = true,
-	bool amake_log = true,
-	bool areg_actor = true
+	std::initializer_list<pbnet::ENUM_KCP> akcp_types,
+	bool ause_actor,
+	bool amake_log,
+	bool areg_actor
 )
 {
 	node_boot_opt lopts;

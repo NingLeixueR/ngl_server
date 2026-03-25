@@ -43,6 +43,20 @@ struct prep_res
 	const char* reason = "";
 };
 
+namespace detail
+{
+	void apply_srv(start_ctx& actx, const ngl::tab_servers& asrv)
+	{
+		actx.node_type = static_cast<int>(asrv.m_type);
+
+		ngl::net_works lnet;
+		if (ngl::ttab_servers::instance().get_nworks(&asrv, ngl::ENET_PROTOCOL::ENET_TCP, actx.tcount, lnet))
+		{
+			actx.tcp_port = lnet.m_port;
+		}
+	}
+}
+
 prep_res prep_ctx(int aargc, char** aargv, start_ctx& actx)
 {
 	actx = start_ctx{};

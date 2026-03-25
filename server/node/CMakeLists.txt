@@ -24,5 +24,6 @@ target_link_libraries(node
 )
 target_include_directories(node PRIVATE ${CORE_LIST})
 
+ngl_apply_runtime_deps(node PRIVATE)
 ngl_apply_unity_build(node)
 ngl_apply_msvc_defaults(node)

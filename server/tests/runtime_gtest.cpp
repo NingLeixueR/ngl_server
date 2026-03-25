@@ -71,32 +71,6 @@ argv_buf<tcount> make_argv(const std::array<std::string, tcount>& aargs)
 	return argv_buf<tcount>(aargs);
 }
 
-TEST(RuntimeHelpersTest, RobotLaunchRequestSupportsInteractiveAndBatchModes)
-{
-	auto linter_argv = make_argv<4>({ "ngl_test", "robot", "1", "1" });
-	const auto linter = ngl_runtime::build_robot_req(linter_argv.argc(), linter_argv.argv());
-	EXPECT_EQ(linter.mode, ngl_runtime::robot_launch_mode::interactive);
-	EXPECT_TRUE(linter.command.empty());
-
-	auto llogin_argv = make_argv<5>({ "ngl_test", "robot", "1", "1", "alice" });
-	const auto llogin = ngl_runtime::build_robot_req(llogin_argv.argc(), llogin_argv.argv());
-	EXPECT_EQ(llogin.mode, ngl_runtime::robot_launch_mode::login);
-	EXPECT_EQ(llogin.command, "login alice");
-
-	auto llogins_argv = make_argv<7>({ "ngl_test", "robot", "1", "1", "alice", "10", "20" });
-	const auto llogins = ngl_runtime::build_robot_req(llogins_argv.argc(), llogins_argv.argv());
-	EXPECT_EQ(llogins.mode, ngl_runtime::robot_launch_mode::logins);
-	EXPECT_EQ(llogins.command, "logins alice 10 20");
-}
-
-TEST(RuntimeHelpersTest, RobotLaunchRequestRejectsPartialBatchArgs)
-{
-	auto largv = make_argv<6>({ "ngl_test", "robot", "1", "1", "alice", "10" });
-	const auto lreq = ngl_runtime::build_robot_req(largv.argc(), largv.argv());
-	EXPECT_EQ(lreq.mode, ngl_runtime::robot_launch_mode::invalid);
-	EXPECT_TRUE(lreq.command.empty());
-}
-
 TEST(RuntimeHelpersTest, SplitCommandLineNormalizesRepeatedSpaces)
 {
 	const std::vector<std::string> ltokens =
