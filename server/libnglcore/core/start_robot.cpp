@@ -11,7 +11,7 @@
 #include <thread>
 #include <vector>
 
-static std::string make_cmd(const std::vector<std::string>& avec, std::size_t abeg)
+static std::string make_cmd(const std::vector<std::string>& avec, int32_t abeg)
 {
 	std::string lcmd;
 	ngl::tools::splicing(avec, " ", lcmd, abeg);
