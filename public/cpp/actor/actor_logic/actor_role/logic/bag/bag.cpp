@@ -29,10 +29,10 @@ namespace ngl
 	void bag::initdata()
 	{
 		data_modified<pbdb::db_bag>& lbag = get();
-		MODIFIED_RETURN_CONST(lpdbbag, lbag);
-		const auto& lpmap = lpdbbag->mitems();
+		MODIFIED_RETUAN(lpdbbag, lbag, );
+		auto* lpmap = lpdbbag->mutable_mitems();
 		
-		for (const auto& lpair : lpmap)
+		for (auto& lpair : *lpmap)
 		{
 			const int32_t ltid = lpair.second.mtid();
 			const tab_item* ltab = ttab_item::instance().tab(ltid);

@@ -192,7 +192,7 @@ namespace ngl
 		auto lit = m_ranks.try_emplace((pbdb::eranklist)arankid).first;
 		lit->second = std::move(ltemp);
 		rankset_base* lrank = lit->second.get();
-		for (const auto& lpair : m_maprankitem)
+		for (auto& lpair : m_maprankitem)
 		{
 			lrank->insert(&lpair.second);
 		}
