@@ -206,7 +206,7 @@ namespace ngl
 	{
 		if (!m_changeids.empty())
 		{
-			i16_actortype ltype = nguid::type(m_actor->id_guid());
+			const i16_actortype ltype = nguid::type(m_actor->id_guid());
 			{
 				// First send a combined packet to peers that subscribe to all rows.
 				auto pro = std::make_shared<np_channel_data<T>>();
@@ -229,19 +229,21 @@ namespace ngl
 				);
 				pro->m_firstsynchronize = false;
 				pro->m_recvfinish = true;
-				for (i64_dataid dataid : m_changeids)
+				for (const i64_dataid ldataid : m_changeids)
 				{
-					if (!m_data.contains(dataid))
+					const T* lpdata = tools::findmap(m_data, ldataid);
+					if (lpdata == nullptr)
 					{
 						continue;
 					}
 					// Field filtering happens here so each peer sees only allowed columns.
-					m_operator_field.field_copy(ltype, m_data[dataid], pro->m_data[dataid], true);
+					T& ldst = pro->m_data[ldataid];
+					m_operator_field.field_copy(ltype, *lpdata, ldst, true);
 				}
 
-				for (i64_dataid dataid : m_delids)
+				for (const i64_dataid ldataid : m_delids)
 				{
-					pro->m_deldata.push_back(dataid);
+					pro->m_deldata.emplace_back(ldataid);
 				}
 
 				nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
@@ -251,38 +253,44 @@ namespace ngl
 
 			{
 				// Then send per-row packets to peers that subscribe only to specific rows.
-				for (i64_dataid dataid : m_changeids)
+				for (const i64_dataid ldataid : m_changeids)
 				{
+					T* lpdata = tools::findmap(m_data, ldataid);
+					if (lpdata == nullptr)
+					{
+						continue;
+					}
 					std::set<i64_nodeid> lnodes;
 					auto pro = std::make_shared<np_channel_data<T>>();
 					pro->m_actorid = m_actor->id_guid();
 					pro->m_firstsynchronize = false;
 					pro->m_recvfinish = true;
-					m_operator_field.field_copy(ltype, m_data[dataid], pro->m_data[dataid], true);
-					for (auto& [_nodeid, _caredata] : m_othercare)
+					T& ldst = pro->m_data[ldataid];
+					m_operator_field.field_copy(ltype, *lpdata, ldst, true);
+					for (const auto& [lnodeid, lcare] : m_othercare)
 					{
-						if (_caredata.is_care(dataid))
+						if (lcare.is_care(ldataid))
 						{
-							lnodes.insert(_nodeid);
+							lnodes.insert(lnodeid);
 						}
 					}
 					lnodes.erase(m_actor->id_guid());
 					actor::send_actor(lnodes, nguid::make(), pro);
 				}
 
-				for (i64_dataid dataid : m_delids)
+				for (const i64_dataid ldataid : m_delids)
 				{
 					std::set<i64_nodeid> lnodes;
 					auto pro = std::make_shared<np_channel_data<T>>();
 					pro->m_actorid = m_actor->id_guid();
 					pro->m_firstsynchronize = false;
 					pro->m_recvfinish = true;
-					pro->m_deldata.push_back(dataid);
-					for (auto& [_nodeid, _caredata] : m_othercare)
+					pro->m_deldata.emplace_back(ldataid);
+					for (const auto& [lnodeid, lcare] : m_othercare)
 					{
-						if (_caredata.is_care(dataid))
+						if (lcare.is_care(ldataid))
 						{
-							lnodes.insert(_nodeid);
+							lnodes.insert(lnodeid);
 						}
 					}
 					lnodes.erase(m_actor->id_guid());
@@ -336,38 +344,39 @@ namespace ngl
 		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;
-		i16_actortype ltypesource = nguid::type(recv->m_actorid);
-		i16_actortype ltypetarget = nguid::type(m_actor->id_guid());
+		const i16_actortype ltypesource = nguid::type(recv->m_actorid);
+		const i16_actortype ltypetarget = nguid::type(m_actor->id_guid());
 		bool lchanged = false;
-		for (auto& [_guid, _tdata] : recv->m_data)
+		for (const auto& [lguid, lsrc] : recv->m_data)
 		{
-			if (m_care.is_care(_guid))
+			if (m_care.is_care(lguid))
 			{
 				lchanged = true;
+				T& ldst = m_data[lguid];
 				if (lfirstsynchronize)
 				{
 					// The first sync is already aligned to the writer's field layout.
-					m_operator_field.field_copy(ltypetarget, _tdata, m_data[_guid], true);
+					m_operator_field.field_copy(ltypetarget, lsrc, ldst, true);
 				}
 				else
 				{
 					// Incremental updates may come from another node type, so remap fields.
-					m_operator_field.field_copy(ltypesource, ltypetarget, _tdata, m_data[_guid], true);
+					m_operator_field.field_copy(ltypesource, ltypetarget, lsrc, ldst, true);
 				}
-				m_call.changedatafun(_guid, m_data[_guid], lfirstsynchronize);
+				m_call.changedatafun(lguid, ldst, lfirstsynchronize);
 			}
 		}
 
-		for (int64_t dataid : recv->m_deldata)
+		for (const int64_t ldataid : recv->m_deldata)
 		{
-			if (m_care.is_care(dataid))
+			if (m_care.is_care(ldataid))
 			{
 				if (m_actor->nscript_using())
 				{
-					m_actor->template nscript_data_del<T>(dataid);
+					m_actor->template nscript_data_del<T>(ldataid);
 				}
-				m_data.erase(dataid);
-				m_call.deldatafun(dataid);
+				m_data.erase(ldataid);
+				m_call.deldatafun(ldataid);
 			}
 		}
 
@@ -452,10 +461,10 @@ namespace ngl
 
 		m_exit.insert(recv->m_nodewritealls.begin(), recv->m_nodewritealls.end());
 
-		for (auto& [_nodeid, _care] : recv->m_care)
+		for (const auto& [lnodeid, lcare] : recv->m_care)
 		{
-			m_exit.insert(_nodeid);
-			m_othercare[_nodeid].init(_care);
+			m_exit.insert(lnodeid);
+			m_othercare[_nodeid].init(lcare);
 		}
 		return;
 	}

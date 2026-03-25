@@ -55,13 +55,13 @@ namespace ngl
 		pro->m_actorid = m_dbmodule->get_actor()->id_guid();
 		pro->m_nodereadalls = m_nodereadalls;
 		pro->m_nodewritealls = m_nodewritealls;
-		for (auto& [_nodeid, _care] : m_care)
+		for (const auto& [lnodeid, lcare] : m_care)
 		{
-			if (aactorid == _nodeid)
+			if (aactorid == lnodeid)
 			{
 				continue;
 			}
-			pro->m_care[_nodeid] = _care.get_core();
+			pro->m_care.emplace(lnodeid, lcare.get_core());
 		}
 		// Return both peer scopes and merged field rules so the new peer can participate immediately.
 		pro->m_node_fieldnumbers = m_operator_field.field_numbers();
@@ -88,7 +88,7 @@ namespace ngl
 			m_dbmodule->foreach([&pro, &lindex, &lmalloc, aactorid](const data_modified<T>& adata)
 				{
 					const T& ldata = *adata.getconst();
-					pro->m_data[ldata.mid()] = ldata;
+					pro->m_data.emplace(ldata.mid(), ldata);
 					++lindex;
 					if (lindex % esend_maxcount == 0)
 					{
@@ -114,7 +114,7 @@ namespace ngl
 						{
 							continue;
 						}
-						pro->m_data[lpdata->mid()] = *lpdata;
+						pro->m_data.emplace(lpdata->mid(), *lpdata);
 						++lindex;
 						if (lindex % esend_maxcount == 0)
 						{
@@ -164,33 +164,33 @@ namespace ngl
 		const np_channel_register<T>* recv = adata.get_data();
 		i64_actorid lactorid = recv->m_actorid;
 
-		if (m_care.contains(lactorid))
+		if (m_care.find(lactorid) != m_care.end())
 		{
 			return;
 		}
 
-		if (m_nodewritealls.contains(lactorid))
+		if (m_nodewritealls.find(lactorid) != m_nodewritealls.end())
 		{
 			return;
 		}
 
-		if (m_nodereadalls.contains(lactorid))
+		if (m_nodereadalls.find(lactorid) != m_nodereadalls.end())
 		{
 			return;
 		}
 
-		i16_actortype ltype = nguid::type(lactorid);
+		const i16_actortype ltype = nguid::type(lactorid);
+		auto [lcare_it, _] = m_care.try_emplace(lactorid);
+		care_data& lcare = lcare_it->second;
 		if (recv->m_read)
 		{
 			if (recv->m_all)
 			{
-				care_data& lcare = m_care[lactorid];
 				lcare.init(true);
 				m_nodereadalls.insert(lactorid);
 			}
 			else
 			{
-				care_data& lcare = m_care[lactorid];
 				lcare.init(recv->m_readids);
 			}
 		}
@@ -198,13 +198,11 @@ namespace ngl
 		{
 			if (recv->m_all)
 			{
-				care_data& lcare = m_care[lactorid];
 				lcare.init(false);
 				m_nodewritealls.insert(lactorid);
 			}
 			else
 			{
-				care_data& lcare = m_care[lactorid];
 				lcare.init(recv->m_readids, recv->m_writeids);
 			}
 		}
@@ -238,34 +236,34 @@ namespace ngl
 		i64_actorid lactorid = recv->m_actorid;
 
 		nsp_handle_print<TDerived>::print("nsp_server", m_dbmodule->nactor(), recv);
-		if (!m_care.contains(lactorid))
+		care_data* lcare = tools::findmap(m_care, lactorid);
+		if (lcare == nullptr)
 		{
 			tools::no_core_dump();
 			return;
 		}
-		care_data& lcare = m_care[lactorid];
 
 		i16_actortype ltype = nguid::type(lactorid);
 
-		for (auto& [ _dataid, _data] : recv->m_data)
+		for (const auto& [ldataid, lsrc] : recv->m_data)
 		{
-			if (!lcare.is_write(_dataid))
+			if (!lcare->is_write(ldataid))
 			{
 				// Peers may only mutate rows they explicitly registered as writable.
 				tools::no_core_dump();
 				return;
 			}
-			data_modified<T>& ldata = m_dbmodule->get(_dataid);
-			m_operator_field.field_copy(ltype, _data, *ldata.get(), true);
+			data_modified<T>& ldata = m_dbmodule->get(ldataid);
+			m_operator_field.field_copy(ltype, lsrc, *ldata.get(), true);
 		}
-		for (i64_actorid dataid : recv->m_deldata)
+		for (const i64_actorid ldataid : recv->m_deldata)
 		{
-			if (!lcare.is_write(dataid))
+			if (!lcare->is_write(ldataid))
 			{
 				tools::no_core_dump();
 				return;
 			}
-			m_dbmodule->erase(dataid);
+			m_dbmodule->erase(ldataid);
 		}
 	}
 }//namespace ngl

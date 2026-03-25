@@ -170,38 +170,40 @@ namespace ngl
 		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
 		bool lfirstsynchronize = recv->m_firstsynchronize;
-		i16_actortype ltypesource = nguid::type(recv->m_actorid);
-		i16_actortype ltypetarget = nguid::type(m_actor->id_guid());
+		const i16_actortype ltypesource = nguid::type(recv->m_actorid);
+		const i16_actortype ltypetarget = nguid::type(m_actor->id_guid());
 		bool lchanged = false;
-		for (auto& [_guid, _tdb] : recv->m_data)
+		for (const auto& [lguid, lsrc] : recv->m_data)
 		{
-			if (m_care.is_care(_guid))
+			if (m_care.is_care(lguid))
 			{
 				lchanged = true;
+				auto [lit, _] = m_data.try_emplace(lguid);
+				T& ldst = lit->second;
 				if (lfirstsynchronize)
 				{
 					// The first sync is already aligned to the reader's field layout.
-					m_operator_field.field_copy(ltypetarget, _tdb, m_data[_guid], true);
+					m_operator_field.field_copy(ltypetarget, lsrc, ldst, true);
 				}
 				else
 				{
 					// Incremental updates may come from another node type, so remap fields.
-					m_operator_field.field_copy(ltypesource, ltypetarget, _tdb, m_data[_guid], true);
+					m_operator_field.field_copy(ltypesource, ltypetarget, lsrc, ldst, true);
 				}
-				m_call.changedatafun(_guid, m_data[_guid], lfirstsynchronize);
+				m_call.changedatafun(lguid, ldst, lfirstsynchronize);
 			}
 		}
 
-		for (int64_t dataid : recv->m_deldata)
+		for (const int64_t ldataid : recv->m_deldata)
 		{
-			if (m_care.is_care(dataid))
+			if (m_care.is_care(ldataid))
 			{
 				if (m_actor->nscript_using())
 				{
-					m_actor->template nscript_data_del<T>(dataid);
+					m_actor->template nscript_data_del<T>(ldataid);
 				}
-				m_data.erase(dataid);
-				m_call.deldatafun(dataid);
+				m_data.erase(ldataid);
+				m_call.deldatafun(ldataid);
 			}
 		}
 
@@ -281,7 +283,7 @@ namespace ngl
 		// The reply may include field permissions learned from other peer node types.
 		m_operator_field.set_field(recv->m_node_fieldnumbers);
 
-		std::ranges::for_each(recv->m_care, [this](auto& apair)
+		std::ranges::for_each(recv->m_care, [this](const auto& apair)
 			{
 				m_exit.insert(apair.first);
 			}
