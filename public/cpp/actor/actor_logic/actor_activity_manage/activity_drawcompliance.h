@@ -65,28 +65,31 @@ namespace ngl
 			{
 				return;
 			}
-			auto lmap = lpdbactivity->mutable_mdrawcompliance();
-			auto itor = lmap->find(aroleid);
-			if (itor == lmap->end())
+			auto* lmap = lpdbactivity->mutable_mdrawcompliance();
+			auto lit = lmap->find(aroleid);
+			if (lit == lmap->end())
 			{
 				pbdb::activity_drawcompliance ltemp;
 				ltemp.set_mcount(acount);
-				itor = lmap->insert({ aroleid, ltemp }).first;
+				lit = lmap->insert({ aroleid, ltemp }).first;
 			}
+			auto& ldraw = lit->second;
+			auto* lreward = ldraw.mutable_mreward();
+			const int lcount = ldraw.mcount();
 
 			ttab_activity_drawcompliance::instance().foreach([&](tab_activity_drawcompliance& atab)
 				{
-					if (itor->second.mcount() > atab.m_id)
+					if (lcount > atab.m_id)
 					{
-						auto itorreward = itor->second.mutable_mreward()->find(atab.m_id);
-						if (itorreward == itor->second.mutable_mreward()->end())
+						auto litreward = lreward->find(atab.m_id);
+						if (litreward == lreward->end())
 						{
 							// Send
 							std::string lsrc = std::format("activity_drawcompliance role=[{}] mail=[{}] drop=[{}]", aroleid, atab.m_mailid, atab.m_dropid);
 							if (actor_activity_manage::get_drop().use(atab.m_dropid, 1, aroleid, lsrc, nullptr, atab.m_mailid))
 							{
 								// Record claim
-								itor->second.mutable_mreward()->insert({ atab.m_id, true });
+								lreward->insert({ atab.m_id, true });
 							}
 						}
 					}

@@ -55,26 +55,26 @@ namespace ngl
 		{
 			// Client->Gate need tothis message toGameserver
 			//adata.m_uid == socket id
-			auto lpram = adata.get_data();
-			auto lpack = adata.get_pack();
-			gateway_socket* info = nullptr;
+			const auto* lpram = adata.get_data();
+			const pack* lpack = adata.get_pack();
+			gateway_socket* linfo = nullptr;
 			if (sysconfig::robot_test())
 			{
 				i64_actorid lactorid = lpack->m_head.get_request_actor();
 				nguid lguid(lactorid);
-				info = m_info.get(lguid.area(), lguid.actordataid());
+				linfo = m_info.get(lguid.area(), lguid.actordataid());
 			}
 			else
 			{
-				info = m_info.get(lpack->m_id);//m_info.get(adata.m_uid[0]);
+				linfo = m_info.get(lpack->m_id);//m_info.get(adata.m_uid[0]);
 			}
-			if (info == nullptr)
+			if (linfo == nullptr)
 			{
 				log_error()->print("actor_gateway_c2g fail info == nullptr");
 				return false;
 			}
 
-			ntcp::instance().send_server<forward, T>(info->m_gameid, lpram->m_data.m_data, nguid::make(ACTOR_ROLE, info->m_area, info->m_dataid), lpack->m_head.get_request_actor());
+			ntcp::instance().send_server<forward, T>(linfo->m_gameid, lpram->m_data.m_data, nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpack->m_head.get_request_actor());
 			return true;
 		}
 

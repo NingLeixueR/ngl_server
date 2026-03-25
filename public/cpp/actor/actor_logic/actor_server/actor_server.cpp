@@ -72,7 +72,7 @@ namespace ngl
 		{
 			{
 				np_actornode_register_response pro;
-				pro.m_vec.push_back(anode);
+				pro.m_vec.emplace_back(anode);
 				ntcp::instance().send(lsessions, pro, nguid::moreactor(), id_guid());
 			}
 			{
@@ -93,7 +93,7 @@ namespace ngl
 			{
 				if (apack->m_id != anode.m_session)
 				{
-					lpram.m_vec.push_back(anode.m_node);
+					lpram.m_vec.emplace_back(anode.m_node);
 				}
 				return true;
 			}
@@ -104,33 +104,34 @@ namespace ngl
 		naddress::ergodic(
 			[aserverid, &lprotocols](const naddress::map_guidserver& amap, const naddress::map_servernode&, const naddress::map_rolegateway& arolegateway)
 			{
-				for (auto& [_guid, _serverid] : amap)
+				for (const auto& [lguid, lserverid] : amap)
 				{
-					if (aserverid == _serverid)
+					if (aserverid == lserverid)
 					{
 						continue;
 					}
-					np_actornode_update& pro = lprotocols[_serverid];
-					pro.m_id = _serverid;
-					pro.m_add.push_back(_guid.id());
-					if (pro.m_rolegateway.empty())
+					auto lit = lprotocols.try_emplace(lserverid).first;
+					np_actornode_update& lpro = lit->second;
+					lpro.m_id = lserverid;
+					lpro.m_add.emplace_back(lguid.id());
+					if (lpro.m_rolegateway.empty())
 					{
-						pro.m_rolegateway = arolegateway;
+						lpro.m_rolegateway = arolegateway;
 					}
 				}
 				return true;
 			}
 		);
-		for (const auto& [_serverid, _pro]: lprotocols)
+		for (const auto& lpair : lprotocols)
 		{
-			ntcp::instance().send(apack->m_id, _pro, nguid::moreactor(), id_guid());
+			ntcp::instance().send(apack->m_id, lpair.second, nguid::moreactor(), id_guid());
 		}
 	}
 
 	bool actor_server::handle(const message<np_actornode_register>& adata)
 	{
-		auto lrecv = adata.get_data();
-		auto lpack = adata.get_pack();
+		const auto* lrecv = adata.get_data();
+		const pack* lpack = adata.get_pack();
 
 		naddress::set_node(lrecv->m_node);
 
@@ -149,7 +150,7 @@ namespace ngl
 
 	bool actor_server::handle(const message<np_actornode_update_server>& adata)
 	{
-		auto lrecv = adata.get_data();
+		const auto* lrecv = adata.get_data();
 		
 		const i32_serverid lserverid = lrecv->m_data.m_id;
 		naddress::actor_address_add(lserverid, lrecv->m_data.m_add);
@@ -174,15 +175,15 @@ namespace ngl
 
 	void actor_server::print(const std::vector<i64_actorid>& avec)const
 	{
-		for (i64_actorid aactorid : avec)
+		for (const i64_actorid lactorid : avec)
 		{
-			log_error()->print("np_actornode_update_mass guid:{}", nguid(aactorid));
+			log_error()->print("np_actornode_update_mass guid:{}", nguid(lactorid));
 		}
 	}
 
 	bool actor_server::handle(const message<np_actornode_update_mass>& adata)
 	{
-		auto lparm = adata.get_data();
+		const auto* lparm = adata.get_data();
 
 		auto pro = std::make_shared<np_actornode_update_server>();
 		pro->m_data = lparm->m_mass;
@@ -200,8 +201,8 @@ namespace ngl
 
 	bool actor_server::handle(const message<np_actor_gatewayid_updata>& adata)
 	{
-		auto lrecv = adata.get_data();
-		auto lpack = adata.get_pack();
+		const auto* lrecv = adata.get_data();
+		const pack* lpack = adata.get_pack();
 		if (lrecv->m_isremove)
 		{
 			naddress::gatewayid_del(lrecv->m_actorid);
@@ -210,19 +211,19 @@ namespace ngl
 		{
 			naddress::gatewayid_add(lrecv->m_actorid, lrecv->m_gatewayid);
 		}
-		std::set<i32_sessionid> lsessionvec;
-		naddress::foreach([&lsessionvec, lpack](const nnode_session& anode)
+		std::set<i32_sessionid> lsess;
+		naddress::foreach([&lsess, lpack](const nnode_session& anode)
 			{
 				if (lpack->m_id != anode.m_session)
 				{
-					lsessionvec.insert(anode.m_session);
+					lsess.insert(anode.m_session);
 				}
 				return true;
 			}
 		);
-		if (!lsessionvec.empty())
+		if (!lsess.empty())
 		{
-			ntcp::instance().send(lsessionvec, *lrecv, nguid::moreactor(), id_guid());
+			ntcp::instance().send(lsess, *lrecv, nguid::moreactor(), id_guid());
 		}
 		return true;
 	}

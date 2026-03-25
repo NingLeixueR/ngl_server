@@ -106,17 +106,17 @@ namespace ngl
 		pro.add_munits(aunit->id());
 		std::set<i64_actorid> lview;
 		// Leave leaveview range
-		for (int32_t id : lgrids1)
+		for (int32_t lid : lgrids1)
 		{
-			if (lgrids2.contains(id))
+			if (lgrids2.find(lid) != lgrids2.end())
 			{
-				grid* lpgrid = m_grids.get_grid(id);
+				grid* lpgrid = m_grids.get_grid(lid);
 				if (lpgrid != nullptr)
 				{
-					const std::set<i64_actorid> lpset = lpgrid->get_unitlist();
-					for (i64_actorid item : lpset)
+					const std::set<i64_actorid>& lpset = lpgrid->get_unitlist();
+					for (const i64_actorid litem : lpset)
 					{
-						lview.insert(item);
+						lview.insert(litem);
 					}
 				}
 			}
@@ -134,17 +134,17 @@ namespace ngl
 
 		lview.clear();
 		// Enter view range
-		for (int32_t id : lgrids2)
+		for (int32_t lid : lgrids2)
 		{
-			if (lgrids1.contains(id) == false)
+			if (lgrids1.find(lid) == lgrids1.end())
 			{
-				grid* lpgrid = m_grids.get_grid(id);
+				grid* lpgrid = m_grids.get_grid(lid);
 				if (lpgrid != nullptr)
 				{
 					const std::set<i64_actorid>& lpset = lpgrid->get_unitlist();
-					for (i64_actorid item : lpset)
+					for (const i64_actorid litem : lpset)
 					{
-						lview.insert(item);
+						lview.insert(litem);
 					}
 				}
 			}
@@ -254,15 +254,15 @@ namespace ngl
 	void aoimap::update(int64_t ams)
 	{
 		pbdb::VECTOR2 lpos;
-		for (std::pair<const i64_actorid, unit_role*>& item : m_roleunit)
+		for (const auto& lpair : m_roleunit)
 		{
-			move(item.second, lpos.mx(), lpos.my());
-			item.second->update(ams);
+			move(lpair.second, lpos.mx(), lpos.my());
+			lpair.second->update(ams);
 		}
-		for (std::pair<const i64_actorid, unit_monster*>& item : m_monster)
+		for (const auto& lpair : m_monster)
 		{
-			move(item.second, lpos.mx(), lpos.my());
-			item.second->update(ams);
+			move(lpair.second, lpos.mx(), lpos.my());
+			lpair.second->update(ams);
 		}
 	}
 }// namespace ngl

@@ -43,17 +43,19 @@ namespace ngl
 
 	void activity_rank::handle(const np_get_rank_response& aresponse)
 	{
-		for (std::size_t i = 0; i < aresponse.m_rolerank.size(); ++i)
+		int32_t lrank = 0;
+		for (i64_actorid lroleid : aresponse.m_rolerank)
 		{
+			++lrank;
 			int32_t lmailid = 0;
 			int32_t lreward = 0;
-			if (ttab_activity_toprank::instance().rankreward(m_tab->m_id, static_cast<int32_t>(i + 1), lmailid, lreward))
+			if (ttab_activity_toprank::instance().rankreward(m_tab->m_id, lrank, lmailid, lreward))
 			{
 				continue;
 			}
 			// Sendmail
-			std::string lsrc = std::format("activity_rank activityid=[{}] role=[{}] mail=[{}] drop=[{}]", activityid(), nguid(aresponse.m_rolerank[i]), lmailid, lreward);
-			if (!actor_activity_manage::get_drop().use(lreward, 1, aresponse.m_rolerank[i], lsrc, nullptr, lmailid))
+			std::string lsrc = std::format("activity_rank activityid=[{}] role=[{}] mail=[{}] drop=[{}]", activityid(), nguid(lroleid), lmailid, lreward);
+			if (!actor_activity_manage::get_drop().use(lreward, 1, lroleid, lsrc, nullptr, lmailid))
 			{
 				log_error()->print("activity_rank fail [{}]", lsrc);
 			}

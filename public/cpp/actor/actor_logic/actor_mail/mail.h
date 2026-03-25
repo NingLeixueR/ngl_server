@@ -47,21 +47,16 @@ namespace ngl
 
 		int32_t& maxid(i64_actorid aroleid)
 		{
-			auto itor = m_maxid.find(aroleid);
-			if (itor == m_maxid.end())
-			{
-				m_maxid[aroleid] = 1;
-				return m_maxid[aroleid];
-			}
-			return itor->second;
+			auto [litor, _] = m_maxid.try_emplace(aroleid, 1);
+			return litor->second;
 		}
 
 		bool addmail(i64_actorid aroleid, int atid, const std::map<int32_t, int32_t>& aitem, const std::string& acontent, const std::string& aparm)
 		{
 			if (atid != -1)
 			{
-				tab_mail* tab = ttab_mail::instance().tab(atid);
-				if (tab == nullptr)
+				const tab_mail* ltab = ttab_mail::instance().tab(atid);
+				if (ltab == nullptr)
 				{
 					log_error()->print("addmail tab id[{}] not find!!!", atid);
 					return false;
@@ -77,11 +72,11 @@ namespace ngl
 			lmail.set_mread(false);
 			lmail.set_mprams(aparm);
 			lmail.set_mcontent(acontent);
-			for (auto& [itemid, count] : aitem)
+			for (const auto& [litemid, lcount] : aitem)
 			{
 				pbdb::mailitem* lpmailitem = lmail.add_mitems();
-				lpmailitem->set_mitemtid(itemid);
-				lpmailitem->set_mcount(count);
+				lpmailitem->set_mitemtid(litemid);
+				lpmailitem->set_mcount(lcount);
 			}
 			data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
 			pbdb::db_mail* lpdbmail = lpdb_mail.get();
@@ -117,35 +112,38 @@ namespace ngl
 				return nullptr;
 			}
 
-			auto itor = lpdbmail->mutable_mmail()->find((int32_t)aid);
-			if (itor == lpdbmail->mutable_mmail()->end())
+			auto* lmailmap = lpdbmail->mutable_mmail();
+			auto lit = lmailmap->find((int32_t)aid);
+			if (lit == lmailmap->end())
 			{
 				return nullptr;
 			}
-			return &itor->second;
+			return &lit->second;
 		}
 
 		// Translated comment.
 		void one_touch(i64_actorid aroleid, std::function<bool(const pbdb::mail&)> acheck, const std::function<void(int32_t)>& afun)
 		{
 			data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
-			std::vector<int32_t> ldellist;
 			pbdb::db_mail* lpdbmail = lpdb_mail.get();
 			if (lpdbmail == nullptr)
 			{
 				return;
 			}
-			for (auto& [_id, _mail] : *lpdbmail->mutable_mmail())
+			const auto& lmailmap = lpdbmail->mmail();
+			std::vector<int32_t> ldellist;
+			ldellist.reserve(lmailmap.size());
+			for (const auto& [lmailid, lmail] : lmailmap)
 			{
-				if (_id != -1 && acheck(_mail))
+				if (lmailid != -1 && acheck(lmail))
 				{
-					ldellist.push_back(_mail.mid());
+					ldellist.emplace_back(lmail.mid());
 				}
 			}
 
-			for (int32_t _id : ldellist)
+			for (const int32_t lid : ldellist)
 			{
-				afun(_id);
+				afun(lid);
 			}
 		}
 
@@ -199,7 +197,8 @@ namespace ngl
 				{
 					return false;
 				}
-				lpdbmail->mutable_mmail()->erase((int32_t)aid);
+				auto* lmailmap = lpdbmail->mutable_mmail();
+				lmailmap->erase((int32_t)aid);
 			}
 			else
 			{
@@ -223,9 +222,11 @@ namespace ngl
 			{
 				return false;
 			}
-			for (auto& [_mailid, _mails] : *lpdbmail->mutable_mmail())
+			const auto& lmailmap = lpdbmail->mmail();
+			auto* lrespmap = apro.mutable_mmail();
+			for (const auto& [lmailid, lmails] : lmailmap)
 			{
-				apro.mutable_mmail()->insert({ _mailid, _mails });
+				lrespmap->insert({ lmailid, lmails });
 			}
 			return true;
 		}

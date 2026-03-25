@@ -39,7 +39,7 @@ namespace ngl
 
 	std::pair<const char*, const char*> enum_attr_name::name(EnumAttribute atype)
 	{
-		return std::make_pair(em<EnumAttribute>::name(atype), em<EnumAttribute>::name(atype, 1));
+		return { em<EnumAttribute>::name(atype), em<EnumAttribute>::name(atype, 1) };
 	}
 
 	EnumAttribute enum_attr_name::type(const char* aname)
@@ -63,33 +63,33 @@ namespace ngl
 {
 	void tools_attribute::add(std::map<EnumAttribute, int64_t>& al, const std::map<EnumAttribute, int64_t>& ar)
 	{
-		for (auto [_eattr, _value] : ar)
+		for (const auto& [lattr, lvalue] : ar)
 		{
-			al[_eattr] += _value;
+			al[lattr] += lvalue;
 		}
 	}
 
 	void tools_attribute::add(std::map<EnumAttribute, float>& al, const std::map<EnumAttribute, float>& ar)
 	{
-		for (auto [_eattr, _value] : ar)
+		for (const auto& [lattr, lvalue] : ar)
 		{
-			al[_eattr] += _value;
+			al[lattr] += lvalue;
 		}
 	}
 
 	void tools_attribute::dec(std::map<EnumAttribute, int64_t>& al, const std::map<EnumAttribute, int64_t>& ar)
 	{
-		for (auto [_eattr, _value] : ar)
+		for (const auto& [lattr, lvalue] : ar)
 		{
-			al[_eattr] -= _value;
+			al[lattr] -= lvalue;
 		}
 	}
 
 	void tools_attribute::dec(std::map<EnumAttribute, float>& al, const std::map<EnumAttribute, float>& ar)
 	{
-		for (auto [_eattr, _value] : ar)
+		for (const auto& [lattr, lvalue] : ar)
 		{
-			al[_eattr] -= _value;
+			al[lattr] -= lvalue;
 		}
 	}
 
@@ -108,15 +108,15 @@ namespace ngl
 {
 	void attribute_value::update(std::map<EnumAttribute, int64_t>& aattr, const std::map<EnumAttribute, float>& amr)
 	{
-		for (auto [_eattr, _value] : amr)
+		for (const auto& [lattr, lvalue] : amr)
 		{
-			auto itor = aattr.find(_eattr);
-			if (itor != aattr.end())
+			auto lit = aattr.find(lattr);
+			if (lit != aattr.end())
 			{
-				itor->second += static_cast<int64_t>(itor->second * _value);
+				lit->second += static_cast<int64_t>(lit->second * lvalue);
 				if (m_module == EnumModule::E_ModuleRoot)
 				{
-					itor->second = ttab_attribute::instance().uplowlimit(_eattr, static_cast<int32_t>(itor->second));
+					lit->second = ttab_attribute::instance().uplowlimit(lattr, static_cast<int32_t>(lit->second));
 				}
 			}
 		}
@@ -125,9 +125,9 @@ namespace ngl
 	int64_t attribute_value::fight()
 	{
 		m_fightscore = 0;
-		for (auto [_eattr, _value] : m_fight)
+		for (const auto& [lattr, lvalue] : m_fight)
 		{
-			m_fightscore += tools_attribute::fight(_eattr, (double)_value);
+			m_fightscore += tools_attribute::fight(lattr, static_cast<double>(lvalue));
 		}
 		return m_fightscore;
 	}
@@ -139,9 +139,8 @@ namespace ngl
 
 	int64_t attribute_value::update()
 	{
-		m_fight.clear();
 		m_fight = m_attr;
-		std::map<EnumAttribute, float> lrattr(m_rattr);
+		std::map<EnumAttribute, float> lrattr = m_rattr;
 		tools_attribute::add(lrattr, m_orattr);
 		update(m_fight, lrattr);
 		return fight();
@@ -181,7 +180,8 @@ namespace ngl
 
 	void attribute_value::set_father_rattr(EnumModule amodule, EnumAttribute atype, double avalues)
 	{
-		m_crattr[amodule][atype] = (float)avalues;
+		auto& lrattr = m_crattr[amodule];
+		lrattr[atype] = static_cast<float>(avalues);
 	}
 
 	double attribute_value::get_father_rattr(EnumModule amodule, EnumAttribute atype)
@@ -197,11 +197,11 @@ namespace ngl
 	void attribute_value::topb(pbdb::UNIT_MODULE& aunitmodule)
 	{
 		aunitmodule.set_mmtype(m_module);
-		for (std::pair<const EnumAttribute, int64_t>& item : m_fight)
+		for (const auto& litem : m_fight)
 		{
 			pbdb::ATTRIBUTE* lptemp = aunitmodule.add_mmodules();
-			lptemp->set_mtype(item.first);
-			lptemp->set_mvalue(item.second);
+			lptemp->set_mtype(litem.first);
+			lptemp->set_mvalue(litem.second);
 		}
 	}
 }//namespace ngl

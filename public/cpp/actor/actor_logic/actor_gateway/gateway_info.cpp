@@ -21,30 +21,30 @@ namespace ngl
 {
 	void gateway_info::updata(const gateway_socket& ainfo)
 	{
-		gateway_socket* lpgsocket = tools::findmap(m_info[ainfo.m_area], ainfo.m_dataid);
-		if (lpgsocket != nullptr)
+		auto lmap_it = m_info.try_emplace(ainfo.m_area).first;
+		auto& lmap = lmap_it->second;
+		auto [litor, _] = lmap.try_emplace(ainfo.m_dataid);
+		gateway_socket* lpgsock = &litor->second;
+		if (lpgsock->m_socket > 0 && lpgsock->m_socket != ainfo.m_socket)
 		{
-			if (lpgsocket->m_socket > 0 && lpgsocket->m_socket != ainfo.m_socket)
-			{
-				nnet::instance().close(lpgsocket->m_socket);
-				remove_socket(lpgsocket->m_socket);
-			}
-		}
-		else
-		{
-			lpgsocket = &m_info[ainfo.m_area][ainfo.m_dataid];
+			nnet::instance().close(lpgsock->m_socket);
+			remove_socket(lpgsock->m_socket);
 		}
 
-		*lpgsocket = ainfo;
+		*lpgsock = ainfo;
 		if (ainfo.m_socket != 0)
 		{
-			m_sockinfo[ainfo.m_socket] = lpgsocket;
+			m_sockinfo.insert_or_assign(ainfo.m_socket, lpgsock);
 		}
 	}
 
 	bool gateway_info::updata_socket(i16_area aarea, i32_actordataid aactordataid, i32_socket asocket)
 	{
 		gateway_socket* ltemp = get(aarea, aactordataid);
+		if (ltemp == nullptr)
+		{
+			return false;
+		}
 		if (ltemp->m_socket != 0 && ltemp->m_socket != asocket)
 		{
 			remove_socket(ltemp->m_socket);
@@ -52,7 +52,7 @@ namespace ngl
 		ltemp->m_socket = asocket;
 		if (asocket != 0)
 		{
-			m_sockinfo[asocket] = ltemp;
+			m_sockinfo.insert_or_assign(asocket, ltemp);
 		}
 		return true;
 	}
@@ -100,12 +100,7 @@ namespace ngl
 		{
 			return nullptr;
 		}
-		auto lpsocket = tools::findmap(*lpmap, aroleid);
-		if(lpsocket == nullptr)
-		{
-			return nullptr;
-		}
-		return lpsocket;
+		return tools::findmap(*lpmap, aroleid);
 	}
 
 	gateway_socket* gateway_info::get(i32_socket asocket)
@@ -135,28 +130,28 @@ namespace ngl
 
 	void gateway_info::foreach(const std::function<void(gateway_socket*)>& afun)
 	{
-		for (auto& [_area, _map] : m_info)
+		for (auto& lpair : m_info)
 		{
-			for (auto& [_dataid, _socket] : _map)
+			for (auto& litem : lpair.second)
 			{
-				afun(&_socket);
+				afun(&litem.second);
 			}
 		}
 	}
 
 	void gateway_info::updata(const np_actor_gatewayinfo_updata& adata)
 	{
-		for (i32_socket asocket : adata.m_delsocket)
+		for (const i32_socket lsock : adata.m_delsocket)
 		{
-			remove_socket(asocket);
+			remove_socket(lsock);
 		}
-		for (i64_actorid aactorid : adata.m_delactorid)
+		for (const i64_actorid lactorid : adata.m_delactorid)
 		{
-			remove_actorid(aactorid);
+			remove_actorid(lactorid);
 		}
-		for (const gateway_socket& agetway : adata.m_add)
+		for (const gateway_socket& lgate : adata.m_add)
 		{
-			updata(agetway);
+			updata(lgate);
 		}
 	}
 }//namespace ngl

@@ -126,8 +126,9 @@ namespace ngl
 		{
 			auto pro = std::make_shared<np_event_register>();
 			pro->m_actorid = aactorid;
+			pro->m_events.reserve(sizeof...(ARGS));
 
-			(pro->m_events.push_back(atypes), ...);
+			(pro->m_events.emplace_back(atypes), ...);
 
 			actor::send_actor(actorid(), aactorid, pro);
 		}
@@ -165,7 +166,7 @@ namespace ngl
 		bool handle(const message<np_event_register>& adata)
 		{
 			const np_event_register& pro = *adata.get_data();
-			for (auto ltype : pro.m_events)
+			for (const E_EVENTS ltype : pro.m_events)
 			{
 				m_eventmember[ltype].insert(pro.m_actorid);
 			}

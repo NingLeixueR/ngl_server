@@ -145,15 +145,15 @@ namespace ngl
 
 	room* actor_example_match::matching_room(i64_actorid aroleid, pbexample::EPLAY_TYPE atype)
 	{
-		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_example_match>::instance(id_guid()).getconst(aroleid);
-		if (lpbrief == nullptr)
+		if (tdb_brief::nsp_cread<actor_example_match>::instance(id_guid()).getconst(aroleid) == nullptr)
 		{
 			return nullptr;
 		}
-		std::map<int32_t, room>& lmap = m_room[atype];
+		auto lmap_it = m_room.try_emplace(atype).first;
+		std::map<int32_t, room>& lmap = lmap_it->second;
 		if ((atype & pbexample::EPLAY_TYPE::EPLAY_GUESS_NUMBER) != 0)
 		{
-			for (std::pair<const int32_t, room>& lpair : lmap)
+			for (auto& lpair : lmap)
 			{
 				if (room_count_ready(&lpair.second) == false)
 				{
@@ -169,7 +169,7 @@ namespace ngl
 	{
 		for (auto& [type, rindex] : m_roomindex)
 		{
-			if (rindex.m_roomlist.contains(aroomid))
+			if (tools::findmap(rindex.m_roomlist, aroomid) != nullptr)
 			{
 				std::map<int32_t, room>* lmap = tools::findmap(m_room, type);
 				if (lmap != nullptr)
@@ -201,7 +201,7 @@ namespace ngl
 
 		room_index& lroomindex = m_roomindex[atype];
 		int32_t lroomid = ++lroomindex.m_index;
-		lroomindex.m_roomlist.insert(std::make_pair(lroomid, room_index::eroom_matching));
+		lroomindex.m_roomlist.emplace(lroomid, room_index::eroom_matching);
 		room& lroom = m_room[atype][lroomid];
 		lroom.m_type = atype;
 		lroom.m_roomcreate = localtime::gettime();
@@ -216,14 +216,18 @@ namespace ngl
 	void actor_example_match::erase_room(room* aroom, pbexample::PLAY_MATCHING_EERROR_CODE aerrorcode /*= pbexample::PLAY_MATCHING_EERROR_CODE::EERROR_CODE_ROOM_DESTORY*/)
 	{
 		log_error()->print("erase room [{}]", aroom->m_roomid);
-		for (i64_actorid roleid : aroom->m_playersset)
+		for (const i64_actorid lroleid : aroom->m_playersset)
 		{
-			m_matching.erase(roleid);
+			m_matching.erase(lroleid);
 		}
 		send_error(aerrorcode, &aroom->m_playersset, aroom->m_roomid);
 		room_index& lroomindex = m_roomindex[aroom->m_type];
 		lroomindex.m_roomlist.erase(aroom->m_roomid);
-		m_room[aroom->m_type].erase(aroom->m_roomid);
+		auto lroom_it = m_room.find(aroom->m_type);
+		if (lroom_it != m_room.end())
+		{
+			lroom_it->second.erase(aroom->m_roomid);
+		}
 	}
 
 	void actor_example_match::erase_player_room(room* aroom, i64_actorid aroleid)
@@ -237,9 +241,9 @@ namespace ngl
 		}
 		else
 		{
-			for (std::pair<const i64_actorid, player>& item : aroom->m_players)
+			for (auto& lpair : aroom->m_players)
 			{
-				item.second.m_isconfirm = false;
+				lpair.second.m_isconfirm = false;
 			}
 		}
 	}
@@ -263,7 +267,7 @@ namespace ngl
 	{
 		// ### Notifygameplaymanage createcorrespondinggameplayactor
 		auto pro = std::make_shared<np_create_example>();
-		for (const std::pair<const i64_actorid, player>& lpair : aroom->m_players)
+		for (const auto& lpair : aroom->m_players)
 		{
 			pro->m_roleids[lpair.second.m_index] = lpair.second.m_roleid;
 		}
@@ -275,9 +279,9 @@ namespace ngl
 
 	bool actor_example_match::check_ready(room* aroom)
 	{
-		for (const std::pair<const i64_actorid, player>& apair : aroom->m_players)
+		for (const auto& lpair : aroom->m_players)
 		{
-			if (apair.second.m_isconfirm == false)
+			if (lpair.second.m_isconfirm == false)
 			{
 				return false;
 			}
@@ -288,11 +292,11 @@ namespace ngl
 	bool actor_example_match::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		// Ready
-		for (std::pair<const pbexample::EPLAY_TYPE, room_index>& item : m_roomindex)
+		for (const auto& lpair : m_roomindex)
 		{
-			for (int32_t roomid : item.second.m_readyroomlist)
+			for (const int32_t lroomid : lpair.second.m_readyroomlist)
 			{
-				room* lproom = find_room(item.first, roomid);
+				room* lproom = find_room(lpair.first, lroomid);
 				if (lproom == nullptr)
 				{
 					continue;
@@ -308,13 +312,13 @@ namespace ngl
 			}
 		}
 
-		for (std::pair<const pbexample::EPLAY_TYPE, room_index>& item : m_roomindex)
+		for (const auto& lpair : m_roomindex)
 		{
-			for (auto [roomid, type] : item.second.m_roomlist)
+			for (const auto& litem : lpair.second.m_roomlist)
 			{
-				if (type == room_index::eroom_matching)
+				if (litem.second == room_index::eroom_matching)
 				{
-					room* lproom = find_room(item.first, roomid);
+					room* lproom = find_room(lpair.first, litem.first);
 					if (lproom == nullptr)
 					{
 						continue;

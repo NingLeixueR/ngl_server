@@ -28,18 +28,18 @@ namespace ngl
 		{
 			return false;
 		}
-		for (std::size_t i = 0; i < tab->m_consumeitems.size(); ++i)
+		for (const auto& litem : tab->m_consumeitems)
 		{
-			amap[tab->m_consumeitems[i].m_tid] += tab->m_consumeitems[i].m_count * acount;
+			amap[litem.m_tid] += litem.m_count * acount;
 		}
 		return true;
 	}
 
 	bool consume::check(actor_role* arole, std::map<int32_t, int32_t>& amap)
 	{
-		for (auto [tid, count] : amap)
+		for (const auto& [ltid, lcount] : amap)
 		{
-			if (arole->m_bag.checkbytid(tid, count) == false)
+			if (arole->m_bag.checkbytid(ltid, lcount) == false)
 			{
 				return false;
 			}
@@ -72,9 +72,9 @@ namespace ngl
 		{
 			return false;
 		}
-		for (auto [tid, count] : lmap)
+		for (const auto& [ltid, lcount] : lmap)
 		{
-			arole->m_bag.add_item(tid, count);
+			arole->m_bag.add_item(ltid, lcount);
 		}
 		return true;
 	}

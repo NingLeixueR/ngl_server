@@ -33,10 +33,9 @@ namespace ngl
 				return false;
 			}
 			auto pro = std::make_shared<np_actor_senditem>();
-			for (int i = 0; i < ltemp->mitems_size(); ++i)
+			for (const pbdb::mailitem& lmailitem : ltemp->mitems())
 			{
-				const pbdb::mailitem&  lmailitem = ltemp->mitems()[i];
-				pro->m_item.insert({ lmailitem.mitemtid(),lmailitem.mcount() });
+				pro->m_item.emplace(lmailitem.mitemtid(), lmailitem.mcount());
 			}
 			actor::send_actor(aroleid, get_actor()->id_guid(), pro);
 		}

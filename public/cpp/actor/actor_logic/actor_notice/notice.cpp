@@ -20,32 +20,32 @@
 
 namespace ngl
 {
-		bool notice::sync_notice(i64_actorid aactorid, pbnet::PROBUFF_NET_NOTICE_RESPONSE& apro)
+	bool notice::sync_notice(i64_actorid aactorid, pbnet::PROBUFF_NET_NOTICE_RESPONSE& apro)
+	{
+		if (aactorid == nguid::make())
 		{
-			if (aactorid == nguid::make())
+			for (auto& lpair : data())
 			{
-				for (auto& [_guid, _modified] : data())
-				{
-					MODIFIED_CONTINUE_CONST(lpdbnotice, _modified);
-					*apro.add_mnotices() = *lpdbnotice;
-				}
-				return true;
+				MODIFIED_CONTINUE_CONST(lpdbnotice, lpair.second);
+				*apro.add_mnotices() = *lpdbnotice;
 			}
-		data_modified<pbdb::db_notice>* lpdb_notice = find(aactorid);
-		if (lpdb_notice == nullptr)
-			{
-				return false;
-			}
-			MODIFIED_RETURN_CONST(lpdbnotice, *lpdb_notice, false);
-			*apro.add_mnotices() = *lpdbnotice;
 			return true;
 		}
+		data_modified<pbdb::db_notice>* lpdb_notice = find(aactorid);
+		if (lpdb_notice == nullptr)
+		{
+			return false;
+		}
+		MODIFIED_RETURN_CONST(lpdbnotice, *lpdb_notice, false);
+		*apro.add_mnotices() = *lpdbnotice;
+		return true;
+	}
 
 	void notice::remove_notice()
 	{
-			for (auto& [_guid, _modified] : data())
-			{
-			MODIFIED_CONTINUE_CONST(lpnotice, _modified);
+		for (auto& lpair : data())
+		{
+			MODIFIED_CONTINUE_CONST(lpnotice, lpair.second);
 			if (lpnotice->mfinishtime() != -1)
 			{
 				continue;

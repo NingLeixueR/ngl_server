@@ -18,7 +18,9 @@ namespace ngl
 {
 	bool actor_ranklist::handle(const message<mforward<np_gm>>& adata)
 	{
-		ncjson lojson(adata.get_data()->data()->m_json.c_str());
+		const auto* lparm = adata.get_data();
+		const auto* lrecv = lparm->data();
+		ncjson lojson(lrecv->m_json.c_str());
 		std::string loperator;
 		if (!njson::pop(lojson, { "operator" }, loperator))
 		{
@@ -51,7 +53,7 @@ namespace ngl
 				};
 		}
 
-		if (handle_cmd::function(loperator, (int32_t)adata.get_data()->identifier(), lojson) == false)
+		if (handle_cmd::function(loperator, (int32_t)lparm->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_mail operator[{}] ERROR", loperator);
 		}
@@ -59,13 +61,14 @@ namespace ngl
 	}
 	bool actor_ranklist::handle(const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata)
 	{
-		auto lrecv = adata.get_data()->data();
-		m_ranklist.ranklist_sync(adata.get_data()->identifier(), lrecv->mtype(), lrecv->mactivityid(), lrecv->mpage());
+		const auto* lparm = adata.get_data();
+		const auto* lrecv = lparm->data();
+		m_ranklist.ranklist_sync(lparm->identifier(), lrecv->mtype(), lrecv->mactivityid(), lrecv->mpage());
 		return true;
 	}
 	bool actor_ranklist::handle(const message<np_activityrank_operator>& adata)
 	{
-		auto lrecv = adata.get_data();
+		const auto* lrecv = adata.get_data();
 		int32_t lrankid = lrecv->m_rankid;
 		m_ranklist.rank_remove(lrankid);
 		if (lrecv->m_iscreate)
@@ -76,7 +79,7 @@ namespace ngl
 	}
 	bool actor_ranklist::handle(const message<np_get_rank>& adata)
 	{
-		auto lrecv = adata.get_data();
+		const auto* lrecv = adata.get_data();
 		auto pro = std::make_shared<np_get_rank_response>();
 		pro->m_rankid = lrecv->m_rankid;
 		m_ranklist.rank_get(lrecv->m_rankid, pro->m_rolerank);

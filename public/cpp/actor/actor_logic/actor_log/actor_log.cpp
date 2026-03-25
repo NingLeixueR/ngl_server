@@ -43,7 +43,7 @@ namespace ngl
 					.m_flush_time = 10,
 				};
 				nconfig.info()->find("log_flushtime", lconfig.m_flush_time);
-				m_logarr[(ELOG_TYPE)i] = logfile::create_make(lconfig);
+				m_logarr.emplace((ELOG_TYPE)i, logfile::create_make(lconfig));
 			}
 		}
 	}
@@ -112,18 +112,18 @@ namespace ngl
 		std::shared_ptr<log_timerparm> lparm = std::static_pointer_cast<log_timerparm>(adata.get_data()->m_parm);
 		if (lparm->m_type == log_timerparm::e_logflush)
 		{
-			for (std::pair<const ELOG_TYPE, std::shared_ptr<logfile>>& item : m_logarr)
+			for (const auto& lpair : m_logarr)
 			{
-				item.second->flush();
+				lpair.second->flush();
 			}
 			return true;
 		}
 		if (lparm->m_type == log_timerparm::e_create)
 		{
-			for (std::pair<const ELOG_TYPE, std::shared_ptr<logfile>>& item : m_logarr)
+			for (const auto& lpair : m_logarr)
 			{
-				item.second->close_fstream();
-				item.second->create();
+				lpair.second->close_fstream();
+				lpair.second->create();
 			}
 			return true;
 		}

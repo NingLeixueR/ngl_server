@@ -30,23 +30,23 @@ namespace ngl
 	{
 		data_modified<pbdb::db_bag>& lbag = get();
 		MODIFIED_RETURN_CONST(lpdbbag, lbag);
-		auto lpmap = lpdbbag->mitems();
+		const auto& lpmap = lpdbbag->mitems();
 		
-		for (auto itor = lpmap.begin(); itor != lpmap.end(); ++itor)
+		for (const auto& lpair : lpmap)
 		{
-			int32_t tid = itor->second.mtid();
-			tab_item* tab = ttab_item::instance().tab(tid);
-			if (tab == nullptr)
+			const int32_t ltid = lpair.second.mtid();
+			const tab_item* ltab = ttab_item::instance().tab(ltid);
+			if (ltab == nullptr)
 			{
 				continue;
 			}
-			if (tab->m_isstack)
+			if (ltab->m_isstack)
 			{
-				m_stackitems.insert(std::make_pair(tid, &itor->second));
+				m_stackitems.emplace(ltid, &lpair.second);
 			}
 			else
 			{
-				m_nostackitems.insert(std::make_pair(tid, &itor->second));
+				m_nostackitems.emplace(ltid, &lpair.second);
 			}
 		}
 	}
@@ -58,8 +58,8 @@ namespace ngl
 		int32_t lindexid = lpdbbag->mmaxid();
 		aitem.set_mid(++lindexid);
 		
-		auto lpair = lpdbbag->mutable_mitems()->insert({ aitem.mid(), aitem });
-		if (lpair.second == false)
+		auto [lit, lnew] = lpdbbag->mutable_mitems()->insert({ aitem.mid(), aitem });
+		if (!lnew)
 		{
 			log_error()->print("add_item roleid=[{}] tid=[{}] mutable_mitems()->insert({}) == false", get_actor()->id_guid(), aitem.mtid(), aitem.mid());
 			return nullptr;
@@ -67,7 +67,7 @@ namespace ngl
 		lpdbbag->set_mmaxid(lindexid);
 
 		print_bi(aitem.mid(), aitem.mtid(), aitem.mcount());
-		return &lpair.first->second;
+		return &lit->second;
 	}
 
 	void bag::print_bi(int32_t aitemid, int32_t atid, int32_t acount, bool aisadd /*= true*/)
@@ -108,7 +108,7 @@ namespace ngl
 					{
 						continue;
 					}
-					m_stackitems.insert({ item.mtid(), lpitem });
+					m_stackitems.emplace(item.mtid(), lpitem);
 				}
 				else
 				{
@@ -125,7 +125,7 @@ namespace ngl
 				{
 					continue;
 				}
-				m_nostackitems.insert({ item.mid(), lpitem });
+				m_nostackitems.emplace(item.mid(), lpitem);
 				m_autoitem->add(item.mid());
 			}
 		}
@@ -134,9 +134,9 @@ namespace ngl
 
 	bool bag::add_item(const std::map<int32_t, int32_t>& amap)
 	{
-		for (auto [_tid, _count] : amap)
+		for (const auto& [ltid, lcount] : amap)
 		{
-			add_item(_tid, _count);
+			add_item(ltid, lcount);
 		}
 		return true;
 	}
@@ -227,28 +227,28 @@ namespace ngl
 		}
 		pbnet::PROBUFF_NET_BAG_UPDATE pro;
 		auto ladditems = pro.mutable_madditems();
-		for (auto [_id, _count] : m_autoitem->addstackitems())
+		for (const auto& [lid, lcount] : m_autoitem->addstackitems())
 		{
 			auto ladditem = ladditems->Add();
-			ladditem->set_mid(_id);
-			ladditem->set_mcount(_count);
+			ladditem->set_mid(lid);
+			ladditem->set_mcount(lcount);
 		}
 		auto laddnostackitems = pro.mutable_maddnostackitems();
-		for (int32_t itemid : m_autoitem->addnostackitems())
+		for (const int32_t litemid : m_autoitem->addnostackitems())
 		{
-			laddnostackitems->Add(itemid);
+			laddnostackitems->Add(litemid);
 		}
 		auto ldelitems = pro.mutable_mdelitems();
-		for (auto [_id, _count] : m_autoitem->delstackitems())
+		for (const auto& [lid, lcount] : m_autoitem->delstackitems())
 		{
 			auto ldelitem = ldelitems->Add();
-			ldelitem->set_mid(_id);
-			ldelitem->set_mcount(_count);
+			ldelitem->set_mid(lid);
+			ldelitem->set_mcount(lcount);
 		}
 		auto ldelnostackitems = pro.mutable_mdelnostackitems();
-		for (int32_t itemid : m_autoitem->delnostackitems())
+		for (const int32_t litemid : m_autoitem->delnostackitems())
 		{
-			ldelnostackitems->Add(itemid);
+			ldelnostackitems->Add(litemid);
 		}
 		nactor()->send_client(get_actor()->id_guid(), pro);
 		m_autoitem->clear();

@@ -44,7 +44,7 @@ namespace ngl
 
 	bool actor_robot_manage::handle(const message<np_robot_pram>& adata)
 	{
-		auto lrecv = adata.get_data();
+		const auto* lrecv = adata.get_data();
 		if (lrecv == nullptr || lrecv->m_cmd.empty())
 		{
 			help();
@@ -276,7 +276,7 @@ namespace ngl
 			const int32_t lrounds = tools::lexical_cast<int32_t>(lctx.m_args[0]);
 			const int32_t lactorcount = tools::lexical_cast<int32_t>(lctx.m_args[1]);
 			const int32_t leverycount = tools::lexical_cast<int32_t>(lctx.m_args[2]);
-			for (int i = 0; i < lrounds; ++i)
+			for (int li = 0; li < lrounds; ++li)
 			{
 				test_thruput::instance().add_rounds(lactorcount, leverycount);
 			}
@@ -295,9 +295,10 @@ namespace ngl
 
 	bool actor_robot_manage::handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
 	{
-		auto lrecv = adata.get_data();
-		_robot& lrobot = m_maprobot[lrecv->maccount()];
-		m_maprobotbyactorid[lrecv->mroleid()] = &lrobot;
+		const auto* lrecv = adata.get_data();
+		auto lrobot_it = m_maprobot.try_emplace(lrecv->maccount()).first;
+		_robot& lrobot = lrobot_it->second;
+		m_maprobotbyactorid.insert_or_assign(lrecv->mroleid(), &lrobot);
 		lrobot.m_robot = create((i16_area)lrecv->marea(), nguid::actordataid(lrecv->mroleid()));
 		lrobot.m_robot->m_robot = &lrobot;
 		lrobot.m_account = lrecv->maccount();
@@ -328,12 +329,12 @@ namespace ngl
 
 	bool actor_robot_manage::handle(const message<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>& adata)
 	{
-		auto recv = adata.get_data();
+		const auto* lrecv = adata.get_data();
 		pbnet::PROBUFF_NET_ROLE_CREATE pro;
-		std::string lname = std::format("role_{}", recv->mroleid());
+		std::string lname = std::format("role_{}", lrecv->mroleid());
 		log_error()->print("PROBUFF_NET_ROLE_NOT_CREATE[{}]", lname);
 		pro.set_mname(lname);
-		send(get_robot(recv->mroleid()), pro);
+		send(get_robot(lrecv->mroleid()), pro);
 		return true;
 	}
 }//namespace ngl

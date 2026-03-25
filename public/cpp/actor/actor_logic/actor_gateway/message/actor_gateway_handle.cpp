@@ -26,8 +26,9 @@ namespace ngl
 {
 	bool actor_gateway::handle(const message<np_gateway_close_session>& adata)
 	{
-		i32_actordataid lroleid = adata.get_data()->m_roleid;
-		i16_area larea = adata.get_data()->m_area;
+		const auto* lrecv = adata.get_data();
+		i32_actordataid lroleid = lrecv->m_roleid;
+		i16_area larea = lrecv->m_area;
 		gateway_socket* linfo = m_info.get(larea, lroleid);
 		if (linfo == nullptr)
 		{
@@ -41,7 +42,7 @@ namespace ngl
 
 		{
 			auto pro = std::make_shared<np_actor_gatewayinfo_updata>();
-			pro->m_delactorid.push_back(nguid::make(ACTOR_NONE, larea, lroleid));
+			pro->m_delactorid.emplace_back(nguid::make(ACTOR_NONE, larea, lroleid));
 			update_gateway_info(pro);
 		}
 
@@ -62,7 +63,7 @@ namespace ngl
 
 	bool actor_gateway::handle(const message<np_actorrole_login>& adata)
 	{// LoginservernotifyGateWayserver playeraccount successful
-		auto lparm = adata.get_data();
+		const auto* lparm = adata.get_data();
 		nguid lguid(lparm->m_roleid);
 
 		const auto linfo = m_info.get(lguid.area(), lguid.actordataid());
@@ -97,7 +98,7 @@ namespace ngl
 
 	bool actor_gateway::handle(const message<np_actor_kcp>& adata)
 	{
-		auto lpram = adata.get_data();
+		const auto* lpram = adata.get_data();
 		pbnet::PROBUFF_NET_KCPSESSION_RESPONSE pro;
 		pro.set_mkcpsession(lpram->m_kcpsession);
 		pro.set_m_kcpnum(lpram->m_kcpnum);
@@ -111,7 +112,7 @@ namespace ngl
 
 	bool actor_gateway::handle(const message<np_actorswitch_process<np_actorswitch_process_role>>& adata)
 	{
-		auto lpram = adata.get_data();
+		const auto* lpram = adata.get_data();
 		nguid lguid(lpram->m_actor);
 
 		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
@@ -137,7 +138,7 @@ namespace ngl
 
 	bool actor_gateway::handle(const message<np_actor_session_close>& adata)
 	{
-		auto lpram = adata.get_data();
+		const auto* lpram = adata.get_data();
 		if (sysconfig::robot_test())
 		{
 			std::vector<gateway_socket*> lvec;
@@ -145,7 +146,7 @@ namespace ngl
 				{
 					if (lpram->m_sessionid == agetway->m_socket)
 					{
-						lvec.push_back(agetway);
+						lvec.emplace_back(agetway);
 					}
 				}
 			);
@@ -179,8 +180,8 @@ namespace ngl
 
 	bool actor_gateway::handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
-		auto lpram = adata.get_data();
-		auto lpack = adata.get_pack();
+		const auto* lpram = adata.get_data();
+		const pack* lpack = adata.get_pack();
 
 		log_error()->print("# GateWay Login[{}][{}][{}] #", lpack->m_id, nguid(lpram->mroleid()), lpram->msession());
 		nguid lguid(lpram->mroleid());
@@ -235,8 +236,8 @@ namespace ngl
 
 	bool actor_gateway::handle(const message<pbnet::PROBUFF_NET_KCPSESSION>& adata)
 	{
-		auto lpram = adata.get_data();
-		auto lpack = adata.get_pack();
+		const auto* lpram = adata.get_data();
+		const pack* lpack = adata.get_pack();
 
 		std::string lkcpsession;
 		if (ukcp::session_create(lpram->mactoridserver(), lpram->mactoridclient(), lkcpsession) == false)
@@ -251,10 +252,10 @@ namespace ngl
 		pro->m_actoridclient	= lpram->mactoridclient();
 		pro->m_actoridserver	= lpram->mactoridserver();
 		pro->m_uip				= lpram->muip();
-			pro->m_uport			= static_cast<i16_port>(lpram->muport());
+		pro->m_uport			= static_cast<i16_port>(lpram->muport());
 		pro->m_conv				= lpram->mconv();
 		pro->m_kcpnum			= lpram->m_kcpnum();
-			pro->m_serverid			= static_cast<i32_serverid>(lpram->mserverid());
+		pro->m_serverid			= static_cast<i32_serverid>(lpram->mserverid());
 
 		actor::send_actor(actor_kcp::actorid(pro->m_serverid), id_guid(), pro);
 		return true;

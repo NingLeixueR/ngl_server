@@ -56,7 +56,7 @@ namespace ngl
 		lpfamilyer->set_mposition(pbdb::db_familyer_eposition_leader);
 		
 		add(lfamilyid, ldbfamily);
-		m_rolefamily[aroleid] = lfamilyid;
+		m_rolefamily.insert_or_assign(aroleid, lfamilyid);
 		sync_family(aroleid);
 		return 0;
 	}
@@ -135,9 +135,9 @@ namespace ngl
 			ngl::data_modified<pbdb::db_family>& lpmodifiedfamily = get(lfamilyid);
 			MODIFIED_RETUAN(lpfamily, lpmodifiedfamily, 3);
 			lpfamily->mutable_mmember()->Add(ajoinroleid);
-			for (int64_t item : lset)
+			for (int64_t litem : lset)
 			{
-				erase_applylist(ajoinroleid, item);
+				erase_applylist(ajoinroleid, litem);
 			}
 			lset.clear();
 		}
@@ -229,9 +229,9 @@ namespace ngl
 		if (afamilyid == -1)
 		{
 			apro.set_mfamilid(afamilyid);
-			for (auto& [_guid, _modified] : data())
+			for (auto& lpair : data())
 			{
-				MODIFIED_CONTINUE_CONST(lpfamilyconst, _modified);
+				MODIFIED_CONTINUE_CONST(lpfamilyconst, lpair.second);
 				*apro.add_mfamily() = *lpfamilyconst;
 			}
 			return true;
@@ -280,9 +280,10 @@ namespace ngl
 		}
 		MODIFIED_RETURN_CONST(lpfamilyconst, *lpmodifiedfamily);
 		*pro.mutable_minfo() = *lpfamilyconst;
-		for (int64_t lmemberid : lpfamilyconst->mmember())
+		const i64_actorid lselfid = get_actor()->id_guid();
+		for (const int64_t lmemberid : lpfamilyconst->mmember())
 		{
-			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_family>::instance(get_actor()->id_guid()).getconst(lmemberid);
+			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_family>::instance(lselfid).getconst(lmemberid);
 			if (lpbrief != nullptr)
 			{
 				*pro.add_mmember() = *lpbrief;
@@ -336,14 +337,14 @@ namespace ngl
 			return 3;
 		}
 
-		auto lnow = (int32_t)localtime::gettime();
+		const int32_t lnow = (int32_t)localtime::gettime();
 		MODIFIED_RETUAN(lpfamilyer, lpmodifiedfamilyer, 4);
 		if (localtime::getspandays(lnow, lpfamilyer->mlastsignutc()) == 0)
 		{
 			return 4;
 		}
 
-		lpfamilyer->set_mlastsignutc((int32_t)localtime::gettime());
+		lpfamilyer->set_mlastsignutc(lnow);
 
 		// Toguild
 		MODIFIED_RETURN_CONST(lpfamilyconst, *lpmodifiedfamily, 5);
@@ -382,13 +383,14 @@ namespace ngl
 			return false;
 		}
 		MODIFIED_RETURN_CONST(lpfamilyconst, *lpmodifiedfamily, false);
+		afamilyers.reserve(afamilyers.size() + lpfamilyconst->mmember_size());
 		for (const int64_t afamilyer : lpfamilyconst->mmember())
 		{
 			if (afamilyer == aroleid)
 			{
 				continue;
 			}
-			afamilyers.push_back(afamilyer);
+			afamilyers.emplace_back(afamilyer);
 		}
 		return !afamilyers.empty();
 	}

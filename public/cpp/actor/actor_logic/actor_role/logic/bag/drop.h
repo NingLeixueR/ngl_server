@@ -87,9 +87,10 @@ namespace ngl
 			}
 
 			int lweight = 0;
-			for (std::size_t i = 0; i < ltab->m_randomdatas.size(); ++i)
+			const auto& lrand = ltab->m_randomdatas;
+			for (const auto& ldata : lrand)
 			{
-				lweight += ltab->m_randomdatas[i].m_weight;
+				lweight += ldata.m_weight;
 			}
 
 			if (lweight <= 0)
@@ -100,39 +101,37 @@ namespace ngl
 			int lcount = ltab->m_count;
 			bool lexclusive = ltab->m_exclusive;
 			std::set<std::size_t> lset;
-			for (int i = 0; i < lcount; ++i)
+			for (int li = 0; li < lcount; ++li)
 			{
 				int lweightval = tools::rand() % lweight;
 				int ltempweight = 0;
-				for (std::size_t j = 0; j < ltab->m_randomdatas.size(); ++j)
+				for (std::size_t lj = 0; lj < lrand.size(); ++lj)
 				{
-					if (lexclusive)
+					if (lexclusive && lset.find(lj) != lset.end())
 					{
-						if (lset.find(j) != lset.end())
-						{
-							continue;
-						}
+						continue;
 					}
-					ltempweight += ltab->m_randomdatas[j].m_weight;
+					const auto& ldata = lrand[lj];
+					ltempweight += ldata.m_weight;
 					if (lweightval <= ltempweight)
 					{
 						if (lexclusive)
 						{
-							lset.insert(j);
-							lweight -= ltab->m_randomdatas[j].m_weight;
+							lset.insert(lj);
+							lweight -= ldata.m_weight;
 							if (lweight <= 0)
 							{
 								return true;
 							}
 						}
-						int lmin = ltab->m_randomdatas[j].m_min;
-						int lmax = ltab->m_randomdatas[j].m_max;
+						int lmin = ldata.m_min;
+						int lmax = ldata.m_max;
 						int ltemp = lmax - lmin;
 						if (ltemp <= 0)
 						{
 							return false;
 						}
-						amap[ltab->m_randomdatas[j].m_id] += lmin + tools::rand() % ltemp;
+						amap[ldata.m_id] += lmin + tools::rand() % ltemp;
 						break;
 					}
 				}
@@ -152,29 +151,29 @@ namespace ngl
 			log_error()->print("drop:weight:{}", amap);
 		}
 
-			bool droplist(int aid, int acount, std::map<int, int>& amap)
+		bool droplist(int aid, int acount, std::map<int, int>& amap)
+		{
+			for (int li = 0; li < acount; ++li)
 			{
-				for (int i = 0; i < acount; ++i)
-				{
-					std::map<int, int> lmap;
+				std::map<int, int> lmap;
 				if (weight(aid, lmap) == false)
 				{
 					return false;
-					}
-					print_weight(lmap);
-					for (const auto& [litemid, lcount] : lmap)
-					{
-						amap[litemid] += lcount;
-					}
 				}
-				return true;
+				print_weight(lmap);
+				for (const auto& [litemid, lcount] : lmap)
+				{
+					amap[litemid] += lcount;
+				}
 			}
+			return true;
+		}
 
 		void map2goolemap(std::map<int, int>& amap1, google::protobuf::Map<int32_t, int32_t>& amap2)
 		{
-			for (const std::pair<const int, int>& item : amap1)
+			for (const auto& [lkey, lval] : amap1)
 			{
-				amap2.insert({ item.first, item.second });
+				amap2.insert({ lkey, lval });
 			}
 		}
 

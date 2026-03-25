@@ -17,7 +17,9 @@ namespace ngl
 {
 	bool actor_keyvalue::handle(const message<mforward<np_gm>>& adata)
 	{
-		ncjson lojson(adata.get_data()->data()->m_json.c_str());
+		const auto* lparm = adata.get_data();
+		const auto* lrecv = lparm->data();
+		ncjson lojson(lrecv->m_json.c_str());
 		std::string loperator;
 		if (!njson::pop(lojson, { "operator" }, loperator))
 		{
@@ -59,7 +61,7 @@ namespace ngl
 				};
 		}
 
-		if (handle_cmd::function(loperator, (int32_t)adata.get_data()->identifier(), lojson) == false)
+		if (handle_cmd::function(loperator, (int32_t)lparm->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_mail operator[{}] ERROR", loperator);
 		}

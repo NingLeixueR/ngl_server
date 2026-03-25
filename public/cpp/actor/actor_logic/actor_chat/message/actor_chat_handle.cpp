@@ -19,22 +19,25 @@ namespace ngl
 {
 	bool actor_chat::handle(const message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
 	{
-		const pbnet::PROBUFF_NET_CHAT& recv = *adata.get_data()->data();
-		if (recv.mtype() == pbnet::ENUM_CHAT_SPEAK)
+		const auto* lparm = adata.get_data();
+		const pbnet::PROBUFF_NET_CHAT& lrecv = *lparm->data();
+		const i64_actorid lroleid = lparm->identifier();
+		if (lrecv.mtype() == pbnet::ENUM_CHAT_SPEAK)
 		{
 			pbnet::PROBUFF_NET_CHAT_RESPONSE pro;
 			pro.set_mtype(pbnet::ENUM_CHAT_SPEAK);
-			pro.set_mchannelid(recv.mchannelid());
+			pro.set_mchannelid(lrecv.mchannelid());
 			pro.set_mstat(false);
 
-			const tab_chat* ltab = ttab_chat::instance().tab(recv.mchannelid());
+			const tab_chat* ltab = ttab_chat::instance().tab(lrecv.mchannelid());
 			if (ltab == nullptr)
 			{
-				send_client(adata.get_data()->identifier(), pro);
+				send_client(lroleid, pro);
 				return true;
 			}
 
-			int& llastspeakutc = m_lastspeakutc[adata.get_data()->identifier()];
+			auto llast_it = m_lastspeakutc.try_emplace(lroleid, 0).first;
+			int& llastspeakutc = llast_it->second;
 			//int ltemputc = localtime::gettime() - llastspeakutc;
 			//if (ltemputc < ltab->m_time)
 			//{
@@ -43,50 +46,52 @@ namespace ngl
 			//}
 			llastspeakutc = (int)localtime::gettime();
 
-			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_chat>::instance(id_guid()).getconst(adata.get_data()->identifier());
+			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_chat>::instance(id_guid()).getconst(lroleid);
 			if (lpbrief == nullptr)
 			{
 				return true;
 			}
 
-			std::list<pbnet::chatitem>& lvec = m_update_chatitem[recv.mchannelid()];
-			lvec.push_back(pbnet::chatitem());
-			pbnet::chatitem& lchatitem = *lvec.rbegin();
+			auto lvec_it = m_update_chatitem.try_emplace(lrecv.mchannelid()).first;
+			std::list<pbnet::chatitem>& lvec = lvec_it->second;
+			lvec.emplace_back();
+			pbnet::chatitem& lchatitem = lvec.back();
 
 			lchatitem.set_mrolename(lpbrief->mbase().mname());
 			lchatitem.set_mutc((int)localtime::gettime());
-			lchatitem.set_mcontent(recv.mcontent());
+			lchatitem.set_mcontent(lrecv.mcontent());
 			lchatitem.set_mroleid(lpbrief->mid());
 
-			std::list<pbnet::chatitem>& lschatitem = m_chatitem[recv.mchannelid()];
-			lschatitem.push_back(lchatitem);
+			auto lchat_it = m_chatitem.try_emplace(lrecv.mchannelid()).first;
+			std::list<pbnet::chatitem>& lschatitem = lchat_it->second;
+			lschatitem.emplace_back(lchatitem);
 			if (lschatitem.size() > ltab->m_count)
 			{
 				lschatitem.pop_front();
 			}
 
 			pro.set_mstat(true);
-			send_client(adata.get_data()->identifier(), pro);
+			send_client(lroleid, pro);
 		}
-		else if (recv.mtype() == pbnet::ENUM_GET_CHAT_LIST)
+		else if (lrecv.mtype() == pbnet::ENUM_GET_CHAT_LIST)
 		{
 			pbnet::PROBUFF_NET_CHAT_RESPONSE pro;
 			pro.set_mstat(false);
 			pro.set_mtype(pbnet::ENUM_GET_CHAT_LIST);
-			pro.set_mchannelid(recv.mchannelid());
+			pro.set_mchannelid(lrecv.mchannelid());
 
-			auto lpchanne = tools::findmap(m_chatitem, recv.mchannelid());
-			if (lpchanne == nullptr)
+			const auto* lpchan = tools::findmap(m_chatitem, lrecv.mchannelid());
+			if (lpchan == nullptr)
 			{
-				send_client(adata.get_data()->identifier(), pro);
+				send_client(lroleid, pro);
 				return true;
 			}
-			for (pbnet::chatitem& item : *lpchanne)
+			for (const pbnet::chatitem& litem : *lpchan)
 			{
-				*pro.add_mchatlist() = item;
+				*pro.add_mchatlist() = litem;
 			}
 			pro.set_mstat(true);
-			send_client(adata.get_data()->identifier(), pro);
+			send_client(lroleid, pro);
 			return true;
 		}
 		return true;

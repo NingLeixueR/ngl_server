@@ -60,9 +60,9 @@ namespace ngl
 			m_playertype(aplayertype)
 		{
 			m_rolesds.reserve(aroleids.size());
-			for (auto& [_, _actorid] : aroleids)
+			for (const auto& lpair : aroleids)
 			{
-				m_rolesds.push_back(_actorid);
+				m_rolesds.emplace_back(lpair.second);
 			}
 		}
 

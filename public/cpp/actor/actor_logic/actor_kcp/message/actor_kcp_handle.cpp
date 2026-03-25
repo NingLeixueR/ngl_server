@@ -18,8 +18,8 @@ namespace ngl
 {
 	bool actor_kcp::handle(const message<np_actor_kcp>& adata)
 	{
-		auto lpram = adata.get_shared_data();
-		auto lpack = adata.get_pack();
+		const auto& lpram = adata.get_shared_data();
+		const pack* lpack = adata.get_pack();
 		
 		if (lpram->m_actoridserver != nguid::make() && !actor_manage::instance().is_have_actor(lpram->m_actoridserver))
 		{

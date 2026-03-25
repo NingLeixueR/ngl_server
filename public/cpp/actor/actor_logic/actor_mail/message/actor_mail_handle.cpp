@@ -17,7 +17,9 @@ namespace ngl
 {
 	bool actor_mail::handle(const message<mforward<np_gm>>& adata)
 	{
-		ncjson lojson(adata.get_data()->data()->m_json.c_str());
+		const auto* lparm = adata.get_data();
+		const auto* lrecv = lparm->data();
+		ncjson lojson(lrecv->m_json.c_str());
 		std::string loperator;
 		if (!njson::pop(lojson, { "operator" }, loperator))
 		{
@@ -61,9 +63,9 @@ namespace ngl
 						return;
 					}
 					std::map<int32_t, int32_t> litem;
-					for (gm_mailitem& gmailitem : recv.m_items)
+					for (const gm_mailitem& lmailitem : recv.m_items)
 					{
-						litem[gmailitem.m_itemtid] += gmailitem.m_count;
+						litem[lmailitem.m_itemtid] += lmailitem.m_count;
 					}
 					if (m_mails.addmail(recv.m_roleid, litem, recv.m_content) == false)
 					{
@@ -90,7 +92,7 @@ namespace ngl
 					pro.m_data = true;
 				};
 		}
-		if (handle_cmd::function(loperator, (int)adata.get_data()->identifier(), lojson) == false)
+		if (handle_cmd::function(loperator, (int)lparm->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_mail operator[{}] ERROR", loperator);
 		}
@@ -98,7 +100,7 @@ namespace ngl
 	}
 	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DEL>>& adata)
 	{
-		auto lparm = adata.get_data();
+		const auto* lparm = adata.get_data();
 		if (lparm == nullptr)
 		{
 			return true;
@@ -115,7 +117,7 @@ namespace ngl
 	}
 	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata)
 	{
-		auto lparm = adata.get_data();
+		const auto* lparm = adata.get_data();
 		if (lparm == nullptr)
 		{
 			return true;
@@ -132,7 +134,7 @@ namespace ngl
 	}
 	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata)
 	{
-		auto lparm = adata.get_data();
+		const auto* lparm = adata.get_data();
 		if (lparm == nullptr)
 		{
 			return true;
@@ -142,18 +144,18 @@ namespace ngl
 		{
 			return true;
 		}
-		i64_actorid roleid = lparm->identifier();
+		i64_actorid lroleid = lparm->identifier();
 		pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE pro;
-		if (!m_mails.sync_mail(roleid, -1, pro))
+		if (!m_mails.sync_mail(lroleid, -1, pro))
 		{
 			return true;
 		}
-		send_client(roleid, pro);
+		send_client(lroleid, pro);
 		return true;
 	}
 	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata)
 	{
-		auto lparm = adata.get_data();
+		const auto* lparm = adata.get_data();
 		if (lparm == nullptr)
 		{
 			return true;
@@ -170,7 +172,7 @@ namespace ngl
 	}
 	bool actor_mail::handle(const message<np_actor_addmail>& adata)
 	{
-		auto lparm = adata.get_data();
+		const auto* lparm = adata.get_data();
 
 		std::map<int32_t, int32_t> litems;
 		if (instance().get_drop().droplist(lparm->m_dropid, 1, litems) == false)

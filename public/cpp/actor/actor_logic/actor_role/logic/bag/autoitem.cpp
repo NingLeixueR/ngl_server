@@ -26,7 +26,7 @@ namespace ngl
 
 	void autoitem::add(int32_t aid)
 	{
-		m_addnostackitems.push_back(aid);
+		m_addnostackitems.emplace_back(aid);
 	}
 
 	void autoitem::del(int32_t aid, int32_t acount)
@@ -36,7 +36,7 @@ namespace ngl
 
 	void autoitem::del(int32_t aid)
 	{
-		m_addnostackitems.push_back(aid);
+		m_addnostackitems.emplace_back(aid);
 	}
 
 	bool autoitem::empty()

@@ -160,13 +160,17 @@ namespace ngl
 			{
 				return;
 			}
+			auto* ltaskmap = lpdata->mutable_mtask();
+			pbdb::activity_task& ltask = (*ltaskmap)[aroleid];
 			if (aisreceive)
 			{
-				(*(*lpdata->mutable_mtask())[aroleid].mutable_mopen())[aindex] = true;
+				auto* lopen = ltask.mutable_mopen();
+				(*lopen)[aindex] = true;
 			}
 			else
 			{
-				(*(*lpdata->mutable_mtask())[aroleid].mutable_mclose())[aindex] = true;
+				auto* lclose = ltask.mutable_mclose();
+				(*lclose)[aindex] = true;
 			}
 		}
 

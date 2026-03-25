@@ -63,7 +63,7 @@ namespace ngl
 			lpthruput->m_maxcount = aactorcount * aeverycount;
 			lpthruput->m_beg = ngl::time_wheel::getms();
 			lpthruput->m_end = 0;
-			m_rounds.push_back(lpthruput);
+			m_rounds.emplace_back(lpthruput);
 
 			auto pro = std::make_shared<np_thruput_test>();
 			pro->m_rounds = (int32_t)m_rounds.size() - 1;

@@ -103,6 +103,7 @@ namespace ngl
 		void init()
 		{
 			m_page.clear();
+			m_rolerank.clear();
 			int32_t leverypagecount = everypagecount();
 			int32_t lpage_cnt = showitem() / leverypagecount;
 			m_page.resize(static_cast<std::size_t>(lpage_cnt));

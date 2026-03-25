@@ -95,7 +95,7 @@ namespace ngl
 		template <typename T>
 		bool handle(const message<np_actorswitch_process<T>>& adata)
 		{
-			auto lparm = adata.get_data();
+			const auto* lparm = adata.get_data();
 			if (lparm->m_toserverid == nconfig.nodeid())
 			{
 				nguid lguid(lparm->m_actor);

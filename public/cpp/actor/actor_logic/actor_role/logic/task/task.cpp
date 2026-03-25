@@ -30,26 +30,36 @@ namespace ngl
 		// Conditionwhether
 		static bool check(actor_role* arole, const task_condition& atab)
 		{
+			task_check* lcheck = m_data[atab.m_type].get();
+			if (lcheck == nullptr)
+			{
+				return false;
+			}
 			if (atab.m_condition == ETaskConditionMore)
 			{
-				return m_data[atab.m_type]->values(arole, atab) >= atab.m_parmint;
+				return lcheck->values(arole, atab) >= atab.m_parmint;
 			}
 			else if (atab.m_condition == ETaskConditionLess)
 			{
-				return m_data[atab.m_type]->values(arole, atab) <= atab.m_parmint;
+				return lcheck->values(arole, atab) <= atab.m_parmint;
 			}
 			else if (atab.m_condition == ETaskConditionEqual)
 			{
-				return m_data[atab.m_type]->values(arole, atab) == atab.m_parmint;
+				return lcheck->values(arole, atab) == atab.m_parmint;
 			}
 			return false;
 		}
 
 		static void schedules(actor_role* arole, pbdb::db_task::data_schedule& adata, const task_condition& atab)
 		{
+			task_check* lcheck = m_data[atab.m_type].get();
+			if (lcheck == nullptr)
+			{
+				return;
+			}
 			adata.set_mtype(atab.m_type);
 			adata.set_msumint(atab.m_parmint);
-			adata.set_mvalue(m_data[atab.m_type]->values(arole, atab));
+			adata.set_mvalue(lcheck->values(arole, atab));
 		}
 
 		virtual int32_t values(actor_role* arole, const task_condition& atab) = 0;
@@ -96,9 +106,9 @@ namespace ngl
 
 	bool static_task::check_condition(actor_role* arole, const std::vector<task_condition>& acondition)
 	{
-		for (const task_condition& item : acondition)
+		for (const task_condition& litem : acondition)
 		{
-			if (task_check::check(arole, item) == false)
+			if (task_check::check(arole, litem) == false)
 			{
 				return false;
 			}
@@ -132,13 +142,13 @@ namespace ngl
 
 	bool static_task::isfinish_task(actor_role* arole, i32_taskid ataskid)
 	{
-		auto& lcomplete = const_complete(arole);
+		const auto& lcomplete = const_complete(arole);
 		return lcomplete.find(ataskid) != lcomplete.end();
 	}
 
 	bool static_task::isreceive_task(actor_role* arole, i32_taskid ataskid)
 	{
-		auto& lrun = const_run(arole);
+		const auto& lrun = const_run(arole);
 		return lrun.find(ataskid) != lrun.end();
 	}
 
@@ -174,9 +184,9 @@ namespace ngl
 		ltemp.set_mtaskid(ataskid);
 		ltemp.set_mreceiveutc((int32_t)localtime::gettime());
 		ltemp.set_mfinshutc(-1);
-		for (auto& item : *lvec)
+		for (const task_condition& litem : *lvec)
 		{
-			task_check::schedules(arole, *ltemp.mutable_mschedules()->Add(), item);
+			task_check::schedules(arole, *ltemp.mutable_mschedules()->Add(), litem);
 		}
 		MODIFIED_RETUAN(lptask, arole->m_task.get(), false);
 		lptask->mutable_mrundatas()->insert({ ataskid, ltemp });
@@ -245,8 +255,9 @@ namespace ngl
 				}
 			}
 			itor->second.set_mfinshutc((int32_t)localtime::gettime());
-			*complete(arole)[ataskid].add_mhistory() = itor->second;
-			run(arole).erase(itor);
+			auto& lcomplete = complete(arole);
+			*lcomplete[ataskid].add_mhistory() = itor->second;
+			lruntask.erase(itor);
 			update_change(arole, ETaskTaskId, ataskid);
 			return true;
 		}
@@ -255,38 +266,35 @@ namespace ngl
 
 	bool static_task::update_change(actor_role* arole, ETask atype, std::set<i32_taskid>* ataskset)
 	{
-			auto& lconst_rundatas = const_run(arole);
-		for (i32_taskid taskid : *ataskset)
+		const auto& lconstrun = const_run(arole);
+		for (const i32_taskid ltaskid : *ataskset)
 		{
 			// ## Taskbeforefirst whether
-			auto itorrun = lconst_rundatas.find(taskid);
-			if (itorrun != lconst_rundatas.end())
+			auto litrun = lconstrun.find(ltaskid);
+			if (litrun != lconstrun.end())
 			{
 				// ## Task
-				for (int i = 0; i < itorrun->second.mschedules_size(); ++i)
+				auto& lrun = run(arole);
+				const task_condition* lpcond = ttab_task::instance().condition_complete(ltaskid, atype);
+				for (auto itor = lrun.begin(); itor != lrun.end(); ++itor)
 				{
-					auto& lcomplete = run(arole);
-					for (auto itor = lcomplete.begin(); itor != lcomplete.end(); ++itor)
+					for (pbdb::db_task::data_schedule& lschedule : *itor->second.mutable_mschedules())
 					{
-						for (pbdb::db_task::data_schedule& lschedule : *itor->second.mutable_mschedules())
+						if (lschedule.mtype() == atype)
 						{
-							if (lschedule.mtype() == atype)
+							if (lpcond != nullptr)
 							{
-								const task_condition* lpcondition = ttab_task::instance().condition_complete(taskid, atype);
-								if (lpcondition != nullptr)
-								{
-									task_check::schedules(arole, lschedule, *lpcondition);
-								}
-								break;
+								task_check::schedules(arole, lschedule, *lpcond);
 							}
+							break;
 						}
 					}
 				}
-				finish_task(arole, taskid);
+				finish_task(arole, ltaskid);
 				continue;
 			}
 			
-			receive_task(arole, taskid);
+			receive_task(arole, ltaskid);
 		}
 		return true;
 	}

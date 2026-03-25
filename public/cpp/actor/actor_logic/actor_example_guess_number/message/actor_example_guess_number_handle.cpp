@@ -18,29 +18,30 @@ namespace ngl
 {
 	bool actor_example_guess_number::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>>& adata)
 	{
-		const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER* lpdata = adata.get_data()->data();
-		i64_actorid roleid = adata.get_data()->identifier();
+		const auto* lparm = adata.get_data();
+		const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER* lrecv = lparm->data();
+		i64_actorid lroleid = lparm->identifier();
 
 		if (isfinish())
 		{// End
 			bomb();
 			return true;
 		}
-		if (roleid != next_guess_role())
+		if (lroleid != next_guess_role())
 		{
-			send_error(roleid, pbexample::E_GUESS_NUMBER_ERROR_NOT_GUESS);
+			send_error(lroleid, pbexample::E_GUESS_NUMBER_ERROR_NOT_GUESS);
 			return true;
 		}
-		int32_t lnumber = lpdata->mguessnumber();
+		int32_t lnumber = lrecv->mguessnumber();
 		if (lnumber >= m_maxnumber || lnumber <= m_minnumber)
 		{
-			send_error(roleid, pbexample::E_GUESS_NUMBER_ERROR_VALUE);
+			send_error(lroleid, pbexample::E_GUESS_NUMBER_ERROR_VALUE);
 			return true;
 		}
 
 		if (lnumber == m_bombvalues)
 		{// End
-			set_finish(roleid);
+			set_finish(lroleid);
 			bomb();
 			return true;
 		}

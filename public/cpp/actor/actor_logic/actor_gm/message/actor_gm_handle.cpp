@@ -28,25 +28,26 @@ namespace ngl
 		}
 		bool sendtogmclient(NODE_TYPE atype, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
-			const tab_servers* tab = ttab_servers::instance().const_tab(atype, nconfig.area());
-			if (tab == nullptr)
+			const tab_servers* ltab = ttab_servers::instance().const_tab(atype, nconfig.area());
+			if (ltab == nullptr)
 			{
 				return false;
 			}
-			if (ttab_servers::instance().const_tab()->m_id != tab->m_id)
+			const tab_servers* lself = ttab_servers::instance().const_tab();
+			if (lself->m_id != ltab->m_id)
 			{
-				int32_t lcount = sysconfig::node_count(atype);
-				for (int i = 1;i <= lcount;++i)
+				const int32_t lcount = sysconfig::node_count(atype);
+				for (int32_t li = 1; li <= lcount; ++li)
 				{
-						i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, tab_self_area, nnodeid::nodeid(static_cast<int16_t>(tab->m_id), static_cast<int16_t>(i)));
+					i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, tab_self_area, nnodeid::nodeid(static_cast<int16_t>(ltab->m_id), static_cast<int16_t>(li)));
 					agm->sendbyactorid(lactorid, adata->get_pack(), *adata->get_data());
-				}				
+				}
 				return true;
 			}
 			return false;
 		}
 		// Return:whether need toactor_gmhandle
-		bool distribute(std::string akey, ncjson& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
+		bool distribute([[maybe_unused]] std::string akey, ncjson& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
 			struct servertype
 			{
@@ -57,9 +58,9 @@ namespace ngl
 			if (njson::pop(aos, { "data" }, lservertype))
 			{
 				bool lret = false;
-				for (std::size_t i = 0; i < lservertype.servertype.size(); ++i)
+				for (int32_t lstypeid : lservertype.servertype)
 				{
-					NODE_TYPE lstype = (NODE_TYPE)lservertype.servertype[i];
+					NODE_TYPE lstype = (NODE_TYPE)lstypeid;
 					if (actor_gm::checklocalbytype(lstype))
 					{
 						lret = true;
@@ -150,12 +151,15 @@ namespace ngl
 	}
 	bool actor_gm::handle(const message<mforward<ngl::np_gm_response>>& adata)
 	{
-		return sendtophp((i32_sessionid)adata.get_data()->identifier(), *adata.get_data()->data());
+		const auto* lparm = adata.get_data();
+		return sendtophp((i32_sessionid)lparm->identifier(), *lparm->data());
 	}
 	bool actor_gm::handle(const message<ngl::np_gm>& adata)
 	{
-		log_error()->print("php2gm [{}]", adata.get_data()->m_json);
-		ncjson lreadjson(adata.get_data()->m_json.c_str());
+		const auto* lparm = adata.get_data();
+		const pack* lpack = adata.get_pack();
+		log_error()->print("php2gm [{}]", lparm->m_json);
+		ncjson lreadjson(lparm->m_json.c_str());
 
 		std::string lactorname;
 		i64_actorid lactorid = -1;
@@ -193,17 +197,17 @@ namespace ngl
 						}
 						ENUM_ACTOR lactortype = db_enum(static_cast<pbdb::ENUM_DB>(ldbtype));
 					i64_actorid ldbactorid = nguid::make(lactortype, tab_self_area, nguid::none_actordataid());
-					sendbyactorid(ldbactorid, adata.get_pack(), *adata.get_data());
+					sendbyactorid(ldbactorid, lpack, *lparm);
 				}
 				return true;
 			}
 
-			sendbytype(ltype, adata.get_pack(), *adata.get_data());
+			sendbytype(ltype, lpack, *lparm);
 			return true;
 		}
 		else if (njson::pop(lreadjson, { "actor_id" }, lactorid))
 		{// ### Singleton
-			sendbyactorid(lactorid, adata.get_pack(), *adata.get_data());
+			sendbyactorid(lactorid, lpack, *lparm);
 			return true;
 		}
 

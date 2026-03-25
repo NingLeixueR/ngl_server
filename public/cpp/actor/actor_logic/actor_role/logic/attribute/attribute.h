@@ -88,10 +88,10 @@ namespace ngl
 		template <typename T>
 		void topb(T& apro)
 		{
-			for (std::pair<const EnumModule, attribute_value>& item : m_moduledata)
+			for (auto& lpair : m_moduledata)
 			{
 				pbdb::UNIT_MODULE* lpmodule = apro.add_mmodules();
-				item.second.topb(*lpmodule);
+				lpair.second.topb(*lpmodule);
 			}
 		}
 	};

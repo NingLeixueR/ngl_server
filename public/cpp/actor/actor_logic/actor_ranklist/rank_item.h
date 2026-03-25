@@ -34,7 +34,8 @@ namespace ngl
 
 		bool init(const pbdb::db_brief& abrief, data_modified<pbdb::db_ranklist>* aranklist, pbdb::eranklist atype, const std::function<int64_t(const pbdb::db_brief&)>& avalfun)
 		{
-			m_data[atype].m_value = avalfun(abrief);
+			rank_pair& lpair = m_data[atype];
+			lpair.m_value = avalfun(abrief);
 
 			const pbdb::db_ranklist* lpconstdata = aranklist->getconst();
 			if (lpconstdata == nullptr)
@@ -46,7 +47,7 @@ namespace ngl
 			auto itor = lmap.find(atype);
 			if (itor != lmap.end())
 			{
-				if (itor->second.mvalue() != m_data[atype].m_value)
+				if (itor->second.mvalue() != lpair.m_value)
 				{
 					pbdb::db_ranklist* lpdata = aranklist->get();
 					if (lpdata == nullptr)
@@ -58,7 +59,7 @@ namespace ngl
 				}
 				else
 				{
-					m_data[atype].m_time = itor->second.mtime();
+					lpair.m_time = itor->second.mtime();
 					return false;
 				}				
 			}
@@ -74,8 +75,9 @@ namespace ngl
 		template <int ACTIVITYID>
 		int64_t activitylv(const pbdb::db_brief& abrief)
 		{
-			auto itor = abrief.mactivityvalues().mactivity_rolelv().find(pbdb::eranklist::activity_lv + ACTIVITYID);
-			if (itor == abrief.mactivityvalues().mactivity_rolelv().end())
+			const auto& lmap = abrief.mactivityvalues().mactivity_rolelv();
+			auto itor = lmap.find(pbdb::eranklist::activity_lv + ACTIVITYID);
+			if (itor == lmap.end())
 			{
 				return -1;
 			}
@@ -85,8 +87,9 @@ namespace ngl
 		template <int ACTIVITYID>
 		int64_t activitygold(const pbdb::db_brief& abrief)
 		{
-			auto itor = abrief.mactivityvalues().mactivity_rolegold().find(pbdb::eranklist::activity_gold + ACTIVITYID);
-			if (itor == abrief.mactivityvalues().mactivity_rolegold().end())
+			const auto& lmap = abrief.mactivityvalues().mactivity_rolegold();
+			auto itor = lmap.find(pbdb::eranklist::activity_gold + ACTIVITYID);
+			if (itor == lmap.end())
 			{
 				return -1;
 			}
@@ -122,9 +125,10 @@ namespace ngl
 		void change(pbdb::eranklist atype, pbdb::db_ranklist& aranklist)
 		{
 			pbdb::rankitem& ltemp = (*aranklist.mutable_mitems())[atype];
-			m_data[atype].m_time = (int32_t)localtime::gettime();
-			ltemp.set_mtime(m_data[atype].m_time);
-			ltemp.set_mvalue(m_data[atype].m_value);
+			rank_pair& lpair = m_data[atype];
+			lpair.m_time = (int32_t)localtime::gettime();
+			ltemp.set_mtime(lpair.m_time);
+			ltemp.set_mvalue(lpair.m_value);
 		}
 
 		enum ecompare
@@ -150,8 +154,9 @@ namespace ngl
 		// Compare
 		ecompare value_compare(pbdb::eranklist atype, rank_item& ar)
 		{
-			auto itor = ar.m_data.find(atype);
-			ecompare ltype = value_compare(m_data[atype].m_value, ar.m_data[atype].m_value);
+			rank_pair& lself = m_data[atype];
+			rank_pair& lother = ar.m_data[atype];
+			ecompare ltype = value_compare(lself.m_value, lother.m_value);
 			if (atype == pbdb::eranklist::lv 
 				|| atype == pbdb::eranklist::gold
 				|| atype == pbdb::eranklist::activity_lv + 1
@@ -168,7 +173,9 @@ namespace ngl
 
 		ecompare time_compare(pbdb::eranklist atype, rank_item& ar)
 		{
-			ecompare ltype = value_compare(m_data[atype].m_time, ar.m_data[atype].m_time);
+			rank_pair& lself = m_data[atype];
+			rank_pair& lother = ar.m_data[atype];
+			ecompare ltype = value_compare(lself.m_time, lother.m_time);
 			return (ecompare)(-(int32_t)ltype);
 		}
 
@@ -188,12 +195,15 @@ namespace ngl
 
 		bool equal_value(pbdb::eranklist atype, rank_item& ar)
 		{
-			return m_data[atype].m_value == ar.m_data[atype].m_value;
+			rank_pair& lself = m_data[atype];
+			rank_pair& lother = ar.m_data[atype];
+			return lself.m_value == lother.m_value;
 		}
 
 		int64_t value(pbdb::eranklist atype)
 		{
-			return m_data[atype].m_value;
+			const rank_pair& lpair = m_data[atype];
+			return lpair.m_value;
 		}
 	};
 }//namespace ngl

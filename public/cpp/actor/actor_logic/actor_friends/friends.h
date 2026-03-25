@@ -71,8 +71,8 @@ namespace ngl
 			{
 				return 3;
 			}
-			auto& lfriendslist = lpfriendsconst->mfriends();
-			auto& lapplyfriends = lpfriendsconst->mapplyfriends();
+			const auto& lfriendslist = lpfriendsconst->mfriends();
+			const auto& lapplyfriends = lpfriendsconst->mapplyfriends();
 			if (check_friends(lfriendslist, lapplyfriends, afriends))
 			{
 				return 4;
@@ -204,9 +204,11 @@ namespace ngl
 			{
 				return false;
 			}
-			for (i64_actorid aactorid : lpfriendsconst->mfriends())
+			const auto& lfriends = lpfriendsconst->mfriends();
+			afriends.reserve(afriends.size() + lfriends.size());
+			for (const i64_actorid lactorid : lfriends)
 			{
-				afriends.push_back(aactorid);
+				afriends.emplace_back(lactorid);
 			}
 			return !afriends.empty();
 		}

@@ -120,7 +120,7 @@ namespace ngl
 
 	void actor_robot_manage::login(const std::string& aaccount, const std::string& apasswold, ENET_PROTOCOL aprotocol)
 	{
-		_robot& lrobot = instance().m_maprobot[aaccount];
+		auto& lrobot = instance().m_maprobot[aaccount];
 		lrobot.m_account = aaccount;
 		lrobot.m_protocol = normalize_robot_protocol(aprotocol);
 

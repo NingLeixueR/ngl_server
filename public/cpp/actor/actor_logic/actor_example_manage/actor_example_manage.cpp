@@ -73,19 +73,20 @@ namespace ngl
 	void actor_example_manage::enter_game(playinfo* applayinfo, i64_actorid aroleid, pbexample::ECROSS across, pbexample::EPLAY_TYPE atype)
 	{
 		log_error()->print("actor_example_manage enter_game role[{}]", aroleid);
-		applayinfo->m_role_enter_example[aroleid] = true;
+		auto& lenter = applayinfo->m_role_enter_example;
+		lenter.insert_or_assign(aroleid, true);
 		{
 			pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE lresponse;
 			lresponse.set_mcross(across);
 			lresponse.set_mtype(atype);
 			lresponse.set_mexampleactorid(applayinfo->m_actorexampleid);
-			for (auto& [_actorid, _] : applayinfo->m_role_enter_example)
+			for (const auto& [lactorid, _] : lenter)
 			{
-				lresponse.add_mplayers(_actorid);
+				lresponse.add_mplayers(lactorid);
 			}
 			send_client(applayinfo->m_roles, lresponse);
 		}
-		if (applayinfo->m_role_enter_example.size() >= applayinfo->m_roles.size())
+		if (lenter.size() >= applayinfo->m_roles.size())
 		{
 			i64_actorid lactorexampleid = applayinfo->m_actorexampleid;
 			pbexample::EPLAY_TYPE ltype = applayinfo->m_type;
@@ -122,17 +123,18 @@ namespace ngl
 	{
 		int32_t lnow = (int32_t)localtime::gettime();
 		pbexample::ECROSS lecross = tab_self_area > 0 ? pbexample::ECROSS::ECROSS_ORDINARY : pbexample::ECROSS::ECROSS_CROSS_ORDINARY;
-		for (std::pair<const pbexample::EPLAY_TYPE, std::map<i64_actorid, playinfo>>& item1 : m_info)
+		for (auto& [ltype, lplaymap] : m_info)
 		{
-			for (std::pair<const i64_actorid, playinfo>& item2 : item1.second)
+			for (auto& lpair : lplaymap)
 			{
-				if (item2.second.m_createexample + example_waittime <= lnow)
+				playinfo& lplayinfo = lpair.second;
+				if (lplayinfo.m_createexample + example_waittime <= lnow)
 				{
-					for (i64_actorid roleid : item2.second.m_roles)
+					for (i64_actorid lroleid : lplayinfo.m_roles)
 					{
-						if (item2.second.m_role_enter_example.contains(roleid) == false)
+						if (lplayinfo.m_role_enter_example.find(lroleid) == lplayinfo.m_role_enter_example.end())
 						{
-							enter_game(&item2.second, roleid, lecross, item1.first);
+							enter_game(&lplayinfo, lroleid, lecross, ltype);
 						}
 					}
 				}

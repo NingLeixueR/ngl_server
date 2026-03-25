@@ -18,18 +18,18 @@ namespace ngl
 	bool actor_csvserver::handle(const message<np_actor_csv_verify_version>& adata)
 	{
 		log_error()->print("############actor_reloadcsv_distribute::handle###########");
-		auto lparm = adata.get_data();
-		auto lpack = adata.get_pack();
+		const auto* lparm = adata.get_data();
+		const pack* lpack = adata.get_pack();
 		np_actor_reloadcsv pro;
 		const auto& lversion = ncsv::all();
-		for (auto& [_key, _csv] : lversion)
+		for (const auto& lpair : lversion)
 		{
-			auto lpverify = tools::findmap(lparm->m_verify, _key);
-			if (lpverify != nullptr && *lpverify != _csv->verify())
+			auto lpverify = tools::findmap(lparm->m_verify, lpair.first);
+			if (lpverify != nullptr && *lpverify != lpair.second->verify())
 			{
 				continue;
 			}
-			reload_csv::readcsv(_key, pro.m_csvcontent[_key]);
+			reload_csv::readcsv(lpair.first, pro.m_csvcontent[lpair.first]);
 		}
 		if (pro.m_csvcontent.empty() == false)
 		{

@@ -59,7 +59,7 @@ namespace ngl
 
 	activity::activity(EActivity atype)
 	{
-		m_activityall[atype] = this;
+		m_activityall.insert_or_assign(atype, this);
 	}
 
 	void activity::rolelogin(i64_actorid aroleid)
@@ -72,52 +72,57 @@ namespace ngl
 		{
 			return;
 		}
-		auto itor = lpdbactivityconst->mtask().find(aroleid);
-		if (itor == lpdbactivityconst->mtask().end())
+		const pbdb::activity_task* lptask = tools::findmap(lpdbactivityconst->mtask(), aroleid);
+		if (lptask == nullptr)
 		{
 			pbdb::db_activity* lpdbactivity = m_activity->get();
 			if (lpdbactivity == nullptr)
 			{
 				return;
 			}
-			(*lpdbactivity->mutable_mtask())[aroleid];
-			itor = lpdbactivityconst->mtask().find(aroleid);
+			auto* ltaskmap = lpdbactivity->mutable_mtask();
+			(*ltaskmap)[aroleid];
+			lptask = tools::findmap(*ltaskmap, aroleid);
+			if (lptask == nullptr)
+			{
+				return;
+			}
 		}
 
-		const pbdb::activity_task& ltask = itor->second;
-		for (std::size_t i = 0; i < ltab->m_taskday.size(); ++i)
+		const pbdb::activity_task& ltask = *lptask;
+		int32_t ltaskidx = 0;
+		for (const auto& litem : ltab->m_taskday)
 		{
-			const int32_t ltask_index = static_cast<int32_t>(i);
-			auto& item = ltab->m_taskday[i];
 			// Starttask
-			if (lday >= item.m_begday && lday < item.m_endday)
+			if (lday >= litem.m_begday && lday < litem.m_endday)
 			{
-				auto itoropen = ltask.mopen().find(ltask_index);
+				auto itoropen = ltask.mopen().find(ltaskidx);
 				if (itoropen == ltask.mopen().end())
 				{
 					auto pro = std::make_shared<mforward<np_operator_task>>(actor_activity_manage::actorid());
 					np_operator_task* lnp = pro->data();
 					lnp->m_isreceive = true;
-					lnp->m_taskids = item.m_taskids;
-					lnp->m_msg = std::format("{}:{}", activityid(), ltask_index);
+					lnp->m_taskids = litem.m_taskids;
+					lnp->m_msg = std::format("{}:{}", activityid(), ltaskidx);
 					actor::send_actor(aroleid, nguid::make(), pro);
 				}
 			}
 			// Closetask
-			if (lday >= item.m_endday)
+			if (lday >= litem.m_endday)
 			{
-				auto itoropen = ltask.mopen().find(ltask_index);
-				auto itorclose = ltask.mclose().find(ltask_index);
+				auto itoropen = ltask.mopen().find(ltaskidx);
+				auto itorclose = ltask.mclose().find(ltaskidx);
 				if (itoropen != ltask.mopen().end() && itorclose == ltask.mclose().end())
 				{
 					auto pro = std::make_shared<mforward<np_operator_task>>(actor_activity_manage::actorid());
 					np_operator_task* lnp = pro->data();
 					lnp->m_isreceive = false;
-					lnp->m_taskids = item.m_taskids;
-					lnp->m_msg = std::format("{}:{}", activityid(), ltask_index);
+					lnp->m_taskids = litem.m_taskids;
+					lnp->m_msg = std::format("{}:{}", activityid(), ltaskidx);
 					actor::send_actor(aroleid, nguid::make(), pro);
 				}
 			}
+			++ltaskidx;
 		}
 	}
 

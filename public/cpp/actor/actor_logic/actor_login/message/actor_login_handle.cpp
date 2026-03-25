@@ -18,7 +18,8 @@ namespace ngl
 {
 	bool actor_login::handle(const message<np_actor_disconnect_close>& adata)
 	{
-		auto itor = m_actorbyserver.find(adata.get_data()->m_actorid);
+		const auto* lrecv = adata.get_data();
+		auto itor = m_actorbyserver.find(lrecv->m_actorid);
 		if (itor == m_actorbyserver.end())
 		{
 			return true;
@@ -32,7 +33,7 @@ namespace ngl
 	}
 	bool actor_login::handle(const message<np_actorserver_connect>& adata)
 	{
-		auto lparm = adata.get_data();
+		const auto* lparm = adata.get_data();
 		server_info ltemp
 		{
 			.m_id = lparm->m_serverid,
@@ -41,10 +42,10 @@ namespace ngl
 		switch (ttab_servers::instance().node_type(nnodeid::tid(lparm->m_serverid)))
 		{
 		case ngl::NODE_TYPE::GAME:
-			m_game.insert(std::make_pair(lparm->m_serverid, ltemp));
+			m_game.try_emplace(lparm->m_serverid, ltemp);
 			break;
 		case ngl::NODE_TYPE::GATEWAY:
-			m_gateway.insert(std::make_pair(lparm->m_serverid, ltemp));
+			m_gateway.try_emplace(lparm->m_serverid, ltemp);
 			break;
 		}
 		log_error()->print("message<np_actorserver_connect>:{}", lparm->m_serverid);
@@ -52,8 +53,8 @@ namespace ngl
 	}
 	bool actor_login::handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata)
 	{
-		auto lparm = adata.get_data();
-		auto lpack = adata.get_pack();
+		const auto* lparm = adata.get_data();
+		const pack* lpack = adata.get_pack();
 
 		log_info()->print("# Login[{}][{}][{}] #",
 			lparm->marea()
@@ -68,14 +69,15 @@ namespace ngl
 			return true;
 		}
 		
-		const pair_account* lppair_account = nullptr;
+		pair_account* lppair_account = nullptr;
 		MODIFIED_RETURN_CONST(lpdbaccount, *lpaccount, false);
-		auto itor = m_actorbyserver.find(lpdbaccount->mid());
-		if (itor == m_actorbyserver.end())
+		const i64_actorid laccid = lpdbaccount->mid();
+		auto [lpair_it, lcreated] = m_actorbyserver.try_emplace(laccid);
+		lppair_account = &lpair_it->second;
+		if (lcreated)
 		{
-			pair_account ltempaccount;
 			// Session key
-			tools::uuid_make(ltempaccount.m_session);
+			tools::uuid_make(lppair_account->m_session);
 
 			std::pair<int32_t, int32_t> lpairgame;
 			std::pair<int32_t, int32_t> lpairgateway;
@@ -85,14 +87,8 @@ namespace ngl
 				return true;
 			}
 
-			ltempaccount.m_gameserverid = lpairgame.first;
-			ltempaccount.m_gatewayserverid = lpairgateway.first;
-			m_actorbyserver[lpdbaccount->mid()] = ltempaccount;
-			lppair_account = &m_actorbyserver[lpdbaccount->mid()];
-		}
-		else
-		{
-			lppair_account = &itor->second;
+			lppair_account->m_gameserverid = lpairgame.first;
+			lppair_account->m_gatewayserverid = lpairgateway.first;
 		}
 
 		// # Notifygatewayserver
@@ -107,7 +103,7 @@ namespace ngl
 				.m_gatewayid	= lppair_account->m_gatewayserverid,
 				.m_area			= (i16_area)lpdbaccount->marea(),
 				.m_iscreate		= iscreate,
-				.m_socketid		= adata.get_pack()->m_id,
+				.m_socketid		= lpack->m_id,
 				.m_request_actor = lpack->m_head.get_request_actor(),
 			};
 			ntcp::instance().send_server(pro.m_gatewayid, pro, nguid::moreactor(), id_guid());
@@ -122,7 +118,7 @@ namespace ngl
 			pro.set_maccount(lparm->maccount());
 			pro.set_mgatewayid(lppair_account->m_gatewayserverid);
 			pro.set_mgameid(lppair_account->m_gameserverid);
-			ntcp::instance().send(adata.get_pack()->m_id, pro, lpack->m_head.get_request_actor(), id_guid());
+			ntcp::instance().send(lpack->m_id, pro, lpack->m_head.get_request_actor(), id_guid());
 		}
 		
 		return true;

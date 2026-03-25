@@ -19,7 +19,8 @@ namespace ngl
 {
 	bool actor_example_match::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>>& adata)
 	{
-		i64_actorid lroleid = adata.get_data()->identifier();
+		const auto* lparm = adata.get_data();
+		i64_actorid lroleid = lparm->identifier();
 		int32_t* lproomid = tools::findmap(m_matching, lroleid);
 		if (lproomid == nullptr)
 		{
@@ -39,14 +40,15 @@ namespace ngl
 	}
 	bool actor_example_match::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>>& adata)
 	{
-		i64_actorid lroleid = adata.get_data()->identifier();
-		if (m_matching.contains(lroleid))
+		const auto* lparm = adata.get_data();
+		i64_actorid lroleid = lparm->identifier();
+		if (tools::findmap(m_matching, lroleid) != nullptr)
 		{
 			send_error(pbexample::EERROR_CODE_NOTMATCH, nullptr, 0, lroleid);
 			return true;
 		}
-		const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN* ldata = adata.get_data()->data();
-		pbexample::EPLAY_TYPE ltype = ldata->mtype();
+		const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN* lrecv = lparm->data();
+		pbexample::EPLAY_TYPE ltype = lrecv->mtype();
 		room* lproom = matching_room(lroleid, ltype);
 		if (lproom == nullptr)
 		{
@@ -57,13 +59,14 @@ namespace ngl
 		lplayer.m_isconfirm = false;
 		lplayer.m_roleid = lroleid;
 		lplayer.m_index = ++lproom->m_index;
-		lproom->m_playersset.insert(lroleid);
-		m_matching[lroleid] = lproom->m_roomid;
+		lproom->m_playersset.emplace(lroleid);
+		m_matching.emplace(lroleid, lproom->m_roomid);
 		if (room_count_ready(lproom))
 		{
+			auto& lroomidx = m_roomindex[lproom->m_type];
 			lproom->m_roomready = localtime::gettime();
-			m_roomindex[lproom->m_type].m_readyroomlist.push_back(lproom->m_roomid);
-			m_roomindex[lproom->m_type].m_roomlist[lproom->m_roomid] = room_index::eroom_ready;
+			lroomidx.m_readyroomlist.push_back(lproom->m_roomid);
+			lroomidx.m_roomlist[lproom->m_roomid] = room_index::eroom_ready;
 		}
 
 		pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE pro;
@@ -76,7 +79,7 @@ namespace ngl
 	bool actor_example_match::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
-		const pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM* ldata = adata.get_data()->data();
+		auto ldata = adata.get_data()->data();
 		room* lproom = find_room(ldata->mroomid());
 		if (lproom == nullptr)
 		{
@@ -107,9 +110,11 @@ namespace ngl
 				// Exitready
 				if (room_count_ready(lproom) == false)
 				{
+					auto lidx_it = m_roomindex.try_emplace(lproom->m_type).first;
+					room_index& lroomidx = lidx_it->second;
 					lproom->m_roomready = 0;
-					m_roomindex[lproom->m_type].m_roomlist[lproom->m_roomid] = room_index::eroom_matching;
-					std::list<int32_t>& lready = m_roomindex[lproom->m_type].m_readyroomlist;
+					lroomidx.m_roomlist.insert_or_assign(lproom->m_roomid, room_index::eroom_matching);
+					std::list<int32_t>& lready = lroomidx.m_readyroomlist;
 					for (auto itor = lready.begin(); itor != lready.end(); ++itor)
 					{
 						if (lproom->m_roomid == *itor)
@@ -126,7 +131,8 @@ namespace ngl
 	}
 	bool actor_example_match::handle(const message<np_login_request_info>& adata)
 	{
-		i64_actorid lroleid = adata.get_data()->m_roleid;
+		const auto* lrecv = adata.get_data();
+		i64_actorid lroleid = lrecv->m_roleid;
 		int32_t* lproomid = tools::findmap(m_matching, lroleid);
 		if (lproomid == nullptr)
 		{
@@ -138,7 +144,7 @@ namespace ngl
 			m_matching.erase(lroleid);
 			return true;
 		}
-		sync_match_info(lproom, adata.get_data()->m_roleid);
+		sync_match_info(lproom, lrecv->m_roleid);
 		return true;
 	}
 }//namespace ngl

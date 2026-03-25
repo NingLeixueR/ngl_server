@@ -22,43 +22,45 @@ namespace ngl
 {
 	bool actor_activity_manage::handle(const message<mforward<np_operator_task_response>>& adata)
 	{
-		i64_actorid roleid = adata.get_data()->identifier();
-		const np_operator_task_response* lrecv = adata.get_data()->data();
-		int32_t activityid = 0;
+		const auto* lparm = adata.get_data();
+		const i64_actorid lroleid = lparm->identifier();
+		const np_operator_task_response* lrecv = lparm->data();
+		int32_t lactid = 0;
 		int32_t lindex = 0;
-		if (!tools::splite(lrecv->m_msg.c_str(), ":", activityid, lindex))
+		if (!tools::splite(lrecv->m_msg.c_str(), ":", lactid, lindex))
 		{
 			return true;
 		}
-		auto& lactivity = get_activity(activityid);
+		auto& lactivity = get_activity(lactid);
 		if (lactivity == nullptr)
 		{
 			return true;
 		}
-		lactivity->recv_task_response(roleid, lindex, lrecv->m_isreceive);
+		lactivity->recv_task_response(lroleid, lindex, lrecv->m_isreceive);
 		return true;
 	}
 	bool actor_activity_manage::handle(const message<np_eevents_logic_rolelogin>& adata)
 	{
 		const np_eevents_logic_rolelogin* lrecv = adata.get_data();
-		for (auto itor = m_activitys.begin(); itor != m_activitys.end(); ++itor)
+		for (const auto& lpair : m_activitys)
 		{
-			itor->second->rolelogin(lrecv->m_actorid);
+			lpair.second->rolelogin(lrecv->m_actorid);
 		}
 		return true;
 	}
 	bool actor_activity_manage::handle(const message<np_eevents_logic_rolevaluechange>& adata)
 	{
 		const np_eevents_logic_rolevaluechange* lrecv = adata.get_data();
-		for (auto itor = m_activitys.begin(); itor != m_activitys.end(); ++itor)
+		for (const auto& lpair : m_activitys)
 		{
+			const auto& lact = lpair.second;
 			switch (lrecv->m_type)
 			{
 			case eevents_logic::eevents_logic_rolelevelchange:
-				itor->second->rolelevelchange(lrecv->m_actorid, lrecv->m_beforevalue, lrecv->m_nowvalue);
+				lact->rolelevelchange(lrecv->m_actorid, lrecv->m_beforevalue, lrecv->m_nowvalue);
 				break;
 			case eevents_logic::eevents_logic_rolegoldchange:
-				itor->second->rolegoldchange(lrecv->m_actorid, lrecv->m_beforevalue, lrecv->m_nowvalue);
+				lact->rolegoldchange(lrecv->m_actorid, lrecv->m_beforevalue, lrecv->m_nowvalue);
 				break;
 			}
 		}

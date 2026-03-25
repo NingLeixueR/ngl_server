@@ -115,7 +115,7 @@ namespace ngl
 			laccount.set_mroleid(lid);
 
 			data_modified<pbdb::db_account>& lpaccount = m_account.add(lid, laccount);
-			lmap[account] = &lpaccount;
+			lmap.emplace(account, &lpaccount);
 			aiscreate = true;
 			return &lpaccount;
 		}
@@ -126,7 +126,7 @@ namespace ngl
 		apair.first = -1;
 		apair.second = -1;
 		server_info* lpinfo = nullptr;
-		for (std::pair<const i32_serverid, server_info>& lpair : amap)
+		for (auto& lpair : amap)
 		{
 			if (apair.second == -1 || apair.second > lpair.second.m_rolesize)
 			{

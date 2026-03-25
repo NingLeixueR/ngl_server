@@ -67,75 +67,91 @@ namespace ngl
 		template <typename T>
 		bool handle_socket(const np_actor_forward<T, forward_g2c<forward>>* aparm, const pack* apack)
 		{
-			gateway_socket* info = nullptr;
-			std::map<i32_sessionid, i64_actorid> lmap;
-			if (aparm->m_data.m_area[0] == nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
+			const auto& ldata = aparm->m_data;
+			const auto& luids = ldata.m_uid;
+			const auto& lareas = ldata.m_area;
+			const std::size_t luid_size = luids.size();
+			if (luid_size != lareas.size())
 			{
-				get_allclient(lmap);
+				log_error()->print("actor_gatewayg2c uidsize[{}]!=areasize[{}]", luid_size, lareas.size());
+				return true;
 			}
-			else if (aparm->m_data.m_area[0] != nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
+			std::map<i32_sessionid, i64_actorid> lmap;
+			const i16_area larea0 = lareas[0];
+			const i32_actordataid ldata0 = luids[0];
+			if (ldata0 == nguid::none_actordataid())
 			{
-				get_allclientbyarea(lmap, aparm->m_data.m_area[0]);
+				if (larea0 == nguid::none_area())
+				{
+					get_allclient(lmap);
+				}
+				else
+				{// if(larea0 != nguid::none_area())
+					get_allclientbyarea(lmap, larea0);
+				}
 			}
 			else
 			{
-				auto luidsize = (int32_t)aparm->m_data.m_uid.size();
-				auto lareasize = (int32_t)aparm->m_data.m_area.size();
-				if (luidsize != lareasize)
+				for (std::size_t lidx = 0; lidx < luid_size; ++lidx)
 				{
-					log_error()->print("actor_gatewayg2c uidsize[{}]!=areasize[{}]", luidsize, lareasize);
-					return true;
-				}
-				for (int i = 0; i < luidsize; ++i)
-				{
-					i16_area larea = aparm->m_data.m_area[i];
-					i32_actordataid ldataid = aparm->m_data.m_uid[i];
-					info = m_info.get(larea, ldataid);
-					if (info == nullptr || info->m_socket <= 0)
+					const i16_area larea = lareas[lidx];
+					const i32_actordataid ldataid = luids[lidx];
+					gateway_socket* linfo = m_info.get(larea, ldataid);
+					if (linfo == nullptr || linfo->m_socket <= 0)
 					{
 						continue;
 					}
-					i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea, ldataid);
-					lmap.insert(std::make_pair(info->m_socket, lactorid));
+					const i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea, ldataid);
+					lmap.emplace(linfo->m_socket, lactorid);
 				}
-			}
-			return nnet::instance().send<forward, T>(lmap, aparm->m_data.m_data, apack->m_head.get_request_actor());
+			}			
+			return nnet::instance().send<forward, T>(lmap, ldata.m_data, apack->m_head.get_request_actor());
 		}
 
 		template <typename T>
 		bool handle_kcp(const np_actor_forward<T, forward_g2c<forward>>* aparm, const pack* apack)
 		{
-			std::shared_ptr<pack> lsendpack = ngl::net_pack<T>::npack(&nnet::instance().pool(), aparm->m_data.m_data, apack->m_head.get_request_actor(), 0);
+			const auto& ldata = aparm->m_data;
+			const auto& luids = ldata.m_uid;
+			const auto& lareas = ldata.m_area;
+			const std::size_t luid_size = luids.size();
+			if (luids.empty() || lareas.empty() || luid_size != lareas.size())
+			{
+				log_error()->print("actor_gatewayg2c uidsize[{}]!=areasize[{}]", luid_size, lareas.size());
+				return true;
+			}
+			auto lkcp = nkcp::instance().serkcp(pbnet::KCP_GATEWAY, nconfig.tcount());
+			std::shared_ptr<pack> lsendpack = ngl::net_pack<T>::npack(&nnet::instance().pool(), ldata.m_data, apack->m_head.get_request_actor(), 0);
 			if (lsendpack == nullptr)
 			{
 				return true;
 			}
-			if (aparm->m_data.m_area[0] == nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
+			const i16_area larea0 = lareas[0];
+			const i32_actordataid ldata0 = luids[0];
+			if (ldata0 == nguid::none_actordataid())
 			{
-				nkcp::instance().serkcp(pbnet::KCP_GATEWAY, nconfig.tcount())->send_server(lsendpack);
+				if (larea0 == nguid::none_area())
+				{
+					lkcp->send_server(lsendpack);
+				}
+				else
+				{// if(larea0 != nguid::none_area())
+					lkcp->sendpackbyarea(larea0, lsendpack);
+				}
 			}
-			else if (aparm->m_data.m_area[0] != nguid::none_area() && aparm->m_data.m_uid[0] == nguid::none_actordataid())
+			else if (luid_size == 1)
 			{
-				nkcp::instance().serkcp(pbnet::KCP_GATEWAY, nconfig.tcount())->sendpackbyarea(aparm->m_data.m_area[0], lsendpack);
+				const i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea0, ldata0);
+				lkcp->send_server(lactorid, lsendpack);
 			}
 			else
 			{
-				auto luidsize = (int32_t)aparm->m_data.m_uid.size();
-				auto lareasize = (int32_t)aparm->m_data.m_area.size();
-				if (luidsize != lareasize)
-				{
-					log_error()->print("actor_gatewayg2c uidsize[{}]!=areasize[{}]", luidsize, lareasize);
-					return true;
-				}
 				std::set<i64_actorid> lids;
-				for (int i = 0; i < luidsize; ++i)
+				for (std::size_t lidx = 0; lidx < luid_size; ++lidx)
 				{
-					i16_area larea = aparm->m_data.m_area[i];
-					i32_actordataid ldataid = aparm->m_data.m_uid[i];
-					i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea, ldataid);
-					lids.insert(lactorid);
+					lids.emplace(nguid::make(ACTOR_ROBOT, lareas[lidx], luids[lidx]));
 				}
-				nkcp::instance().serkcp(pbnet::KCP_GATEWAY, nconfig.tcount())->send_server(lids, lsendpack);
+				lkcp->send_server(lids, lsendpack);
 			}
 			return true;
 		}
@@ -143,8 +159,8 @@ namespace ngl
 		template <typename T>
 		bool handle(const message<np_actor_forward<T, forward_g2c<forward>>>& adata)
 		{
-			auto lparm = adata.get_data();
-			auto lpack = adata.get_pack();
+			const auto* lparm = adata.get_data();
+			const pack* lpack = adata.get_pack();
 			if (lparm->m_data.m_uid.empty())
 			{
 				return true;

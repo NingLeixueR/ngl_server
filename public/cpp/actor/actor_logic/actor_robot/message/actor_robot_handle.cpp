@@ -259,15 +259,15 @@ namespace ngl
 		notices lnotices;
 		char lbuffstart[1024] = { 0 };
 		char lbufffinish[1024] = { 0 };
-		for (auto& notices : adata.get_data()->mnotices())
+		for (const auto& lnotice : adata.get_data()->mnotices())
 		{
-			ngl::localtime::time2str(lbuffstart, 1024, notices.mstarttime(), "%Y/%m/%d %H:%M:%S");
-			ngl::localtime::time2str(lbufffinish, 1024, notices.mfinishtime(), "%Y/%m/%d %H:%M:%S");
-			lnotices.m_notices.push_back(
+			ngl::localtime::time2str(lbuffstart, 1024, lnotice.mstarttime(), "%Y/%m/%d %H:%M:%S");
+			ngl::localtime::time2str(lbufffinish, 1024, lnotice.mfinishtime(), "%Y/%m/%d %H:%M:%S");
+			lnotices.m_notices.emplace_back(
 				noticeitem
 				{
-					.m_id = notices.mid(),
-					.m_notice = notices.mnotice(),
+					.m_id = lnotice.mid(),
+					.m_notice = lnotice.mnotice(),
 					.m_starttime = lbuffstart,
 					.m_finishtime = lbufffinish,
 				}

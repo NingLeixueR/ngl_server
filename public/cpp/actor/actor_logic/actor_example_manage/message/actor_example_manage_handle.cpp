@@ -18,23 +18,30 @@ namespace ngl
 {
 	bool actor_example_manage::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>>& adata)
 	{
-		const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE* lpdata = adata.get_data()->data();
-		i64_actorid roleid = adata.get_data()->identifier();
+		const auto* lparm = adata.get_data();
+		const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE* lrecv = lparm->data();
+		const i64_actorid lroleid = lparm->identifier();
 
-		playinfo* lpplayinfo = tools::findmap(m_info[lpdata->mtype()], lpdata->mexampleactorid());
+		auto* ltypeinfo = tools::findmap(m_info, lrecv->mtype());
+		if (ltypeinfo == nullptr)
+		{
+			actor_example_match::send_error(pbexample::EERROR_CODE_NOTFIND, nullptr, 0, lroleid);
+			return true;
+		}
+		playinfo* lpplayinfo = tools::findmap(*ltypeinfo, lrecv->mexampleactorid());
 		if (lpplayinfo == nullptr)
 		{
-			actor_example_match::send_error(pbexample::EERROR_CODE_NOTFIND, nullptr, 0, roleid);
+			actor_example_match::send_error(pbexample::EERROR_CODE_NOTFIND, nullptr, 0, lroleid);
 			return true;
 		}
 
-		if (lpplayinfo->m_roles.contains(roleid) == false)
+		if (!lpplayinfo->m_roles.contains(lroleid))
 		{
-			actor_example_match::send_error(pbexample::EERROR_CODE_NOTFIND, nullptr, 0, roleid);
+			actor_example_match::send_error(pbexample::EERROR_CODE_NOTFIND, nullptr, 0, lroleid);
 			return true;
 		}
 
-		enter_game(lpplayinfo, roleid, lpdata->mcross(), lpdata->mtype());
+		enter_game(lpplayinfo, lroleid, lrecv->mcross(), lrecv->mtype());
 
 		return true;
 	}
@@ -61,11 +68,11 @@ namespace ngl
 			playinfo& lplayinfo = m_info[lprecv->m_type][lpactor->id_guid()];
 			lplayinfo.m_createexample = (int32_t)localtime::gettime();
 			lplayinfo.m_actorexampleid = lpactor->id_guid();
-			for (auto& [_, actorid] : lprecv->m_roleids)
+			for (const auto& [_, lactorid] : lprecv->m_roleids)
 			{
-				lplayinfo.m_roles.insert(actorid);
-				std::get<0>(m_playerexample[actorid]) = lprecv->m_type;
-				std::get<1>(m_playerexample[actorid]) = lpactor->id_guid();
+				lplayinfo.m_roles.insert(lactorid);
+				std::get<0>(m_playerexample[lactorid]) = lprecv->m_type;
+				std::get<1>(m_playerexample[lactorid]) = lpactor->id_guid();
 			}
 
 			pbexample::PROBUFF_EXAMPLE_PLAY_CREATE pro;
@@ -76,9 +83,9 @@ namespace ngl
 		}
 		else
 		{
-			for (auto& [_, actorid] : lprecv->m_roleids)
+			for (const auto& [_, lactorid] : lprecv->m_roleids)
 			{
-				actor_example_match::send_error(pbexample::EERROR_CODE_CREATEGAME_FAIL, nullptr, 0, actorid);
+				actor_example_match::send_error(pbexample::EERROR_CODE_CREATEGAME_FAIL, nullptr, 0, lactorid);
 			}
 		}
 		return true;
@@ -86,7 +93,7 @@ namespace ngl
 	bool actor_example_manage::handle(const message<np_example_equit>& adata)
 	{
 		const np_example_equit* lprecv = adata.get_data();
-		auto lpdata = tools::findmap(m_finishinfo, adata.get_data()->m_type);
+		auto lpdata = tools::findmap(m_finishinfo, lprecv->m_type);
 		if (lpdata == nullptr)
 		{
 			return true;
@@ -96,13 +103,13 @@ namespace ngl
 		{
 			return true;
 		}
-		for (i64_actorid player : lpexample->m_roles)
+		for (const i64_actorid lplayer : lpexample->m_roles)
 		{
-			m_playerexample.erase(player);
+			m_playerexample.erase(lplayer);
 		}
 
 		auto pro = std::make_shared<np_example_actorid>();
-		pro->m_type = adata.get_data()->m_type;
+		pro->m_type = lprecv->m_type;
 		pro->m_actorexampleid = 0;
 		actor::send_actor(lpexample->m_roles, id_guid(), pro);
 
@@ -111,7 +118,8 @@ namespace ngl
 	}
 	bool actor_example_manage::handle(const message<np_login_request_info>& adata)
 	{
-		type_tuple* lptuple = tools::findmap(m_playerexample, adata.get_data()->m_roleid);
+		const np_login_request_info* lprecv = adata.get_data();
+		type_tuple* lptuple = tools::findmap(m_playerexample, lprecv->m_roleid);
 		if (lptuple == nullptr)
 		{
 			return true;
@@ -120,7 +128,7 @@ namespace ngl
 		auto pro = std::make_shared<np_example_actorid>();
 		pro->m_type = std::get<0>(*lptuple);
 		pro->m_actorexampleid = std::get<1>(*lptuple);
-		actor::send_actor(adata.get_data()->m_roleid, id_guid(), pro);
+		actor::send_actor(lprecv->m_roleid, id_guid(), pro);
 		return true;
 	}
 }//namespace ngl

@@ -25,7 +25,9 @@ namespace ngl
 	};
 	bool actor_notice::handle(const message<mforward<np_gm>>& adata)
 	{
-		ncjson lojson(adata.get_data()->data()->m_json.c_str());
+		const auto* lparm = adata.get_data();
+		const auto* lrecv = lparm->data();
+		ncjson lojson(lrecv->m_json.c_str());
 
 		std::string loperator;
 		if (!njson::pop(lojson, { "operator" }, loperator))
@@ -38,11 +40,11 @@ namespace ngl
 				handle_cmd::add("get_notice") = [this](int id, [[maybe_unused]] ncjson& aos)
 				{// Return {"notice":gm_notice[]}
 					gcmd<std::vector<std::string>> pro(id, "get_notice");
-					for (auto& [_guid, _data] : m_notice.data())
+					for (auto& lpair : m_notice.data())
 					{
-						pro.m_data.resize(pro.m_data.size() + 1);
-						MODIFIED_CONTINUE_CONST(lpdbnoticeconst, _data);
-						tools::proto2json(*lpdbnoticeconst, *pro.m_data.rbegin());
+						pro.m_data.emplace_back();
+						MODIFIED_CONTINUE_CONST(lpdbnoticeconst, lpair.second);
+						tools::proto2json(*lpdbnoticeconst, pro.m_data.back());
 					}
 					pro.m_istoutf8 = false;
 				};
@@ -71,7 +73,7 @@ namespace ngl
 					m_notice.notice_del(lid);
 				};
 		}
-		if (handle_cmd::function(loperator, (int32_t)adata.get_data()->identifier(), lojson) == false)
+		if (handle_cmd::function(loperator, (int32_t)lparm->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_notice operator[{}] ERROR", loperator);
 		}
@@ -79,15 +81,17 @@ namespace ngl
 	}
 	bool actor_notice::handle(const message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata)
 	{
+		const auto* lparm = adata.get_data();
+		const i64_actorid lroleid = lparm->identifier();
 		pbnet::PROBUFF_NET_NOTICE_RESPONSE pro;
 		m_notice.sync_notice(-1, pro);
-		send_client(adata.get_data()->identifier(), pro);
+		send_client(lroleid, pro);
 		return true;
 	}
 	bool actor_notice::handle(const message<np_actor_addnotice>& adata)
 	{
-		auto& recv = *adata.get_data();
-		m_notice.notice_add(recv.m_notice, recv.m_starttime, recv.m_finishtime);
+		const auto* lrecv = adata.get_data();
+		m_notice.notice_add(lrecv->m_notice, lrecv->m_starttime, lrecv->m_finishtime);
 		return true;
 	}
 }//namespace ngl

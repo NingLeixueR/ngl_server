@@ -94,17 +94,18 @@ namespace ngl
 		// Loadinitializeactivity
 		int32_t lnow = (int32_t)localtime::gettime();
 		//std::map<nguid, data_modified<TDATA>>&
-		for (auto& [_guid, _modified] : m_activitytimedb.data())
+		for (auto& lpair : m_activitytimedb.data())
 		{
-			const tab_activity* ltab = ttab_activity::instance().tab(nguid::actordataid(_guid));
+			const nguid& lguid = lpair.first;
+			const tab_activity* ltab = ttab_activity::instance().tab(nguid::actordataid(lguid));
 			if (ltab == nullptr)
 			{
 				continue;
 			}
-			MODIFIED_CONTINUE_CONST(lpactivitytimesconst, _modified);
+			MODIFIED_CONTINUE_CONST(lpactivitytimesconst, lpair.second);
 			int32_t lbeg = lpactivitytimesconst->mbeg();
 			int32_t lduration = lpactivitytimesconst->mduration();
-			start_activity(_guid, lbeg, lduration);
+			start_activity(lguid, lbeg, lduration);
 		}
 
 		ttab_activity::instance().foreach([&](tab_activity& atab)
@@ -236,17 +237,19 @@ namespace ngl
 		}
 		if (lnow >= atime + aduration && aduration != -1)
 		{// Closeactivity
-			m_activitys[aactivityid] = activity::make(nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb);
-			m_activitys[aactivityid]->init();
-			m_activitys[aactivityid]->finish();
-			m_activitys[aactivityid] = nullptr;
+			std::shared_ptr<activity>& lact = m_activitys.try_emplace(aactivityid).first->second;
+			lact = activity::make(nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb);
+			lact->init();
+			lact->finish();
+			lact = nullptr;
 			return;
 		}
 		if ((lnow >= atime && lnow < atime + aduration) || (lnow >= atime && aduration == -1))
 		{// Startactivity
-			m_activitys[aactivityid] = activity::make(nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb);
-			m_activitys[aactivityid]->start();
-			m_activitys[aactivityid]->init();
+			std::shared_ptr<activity>& lact = m_activitys.try_emplace(aactivityid).first->second;
+			lact = activity::make(nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb);
+			lact->start();
+			lact->init();
 			if (aduration > 0)
 			{
 				post_timer(aactivityid, eactivity_close, atime, aduration);
@@ -295,12 +298,12 @@ namespace ngl
 
 	bool actor_activity_manage::timer_handle(const message<np_timerparm>& adata)
 	{
-		if (adata.get_data()->m_type != E_ACTOR_TIMER::ET_INTERVAL_SEC)
+		const np_timerparm* lrecv = adata.get_data();
+		if (lrecv->m_type != E_ACTOR_TIMER::ET_INTERVAL_SEC)
 		{
 			return false;
 		}
-		const np_timerparm* lpparm = adata.get_data();
-		std::shared_ptr<timerparm_activity> lpvparm = std::static_pointer_cast<timerparm_activity>(lpparm->m_parm);
+		std::shared_ptr<timerparm_activity> lpvparm = std::static_pointer_cast<timerparm_activity>(lrecv->m_parm);
 		if (lpvparm == nullptr)
 		{
 			return false;

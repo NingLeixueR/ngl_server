@@ -96,13 +96,13 @@ namespace ngl
 		pro.set_mstat(true);
 		pro.set_mtype(pbnet::ENUM_UPDATA_SPEAK);
 
-		for (auto& [_channelid, _update] : m_update_chatitem)
+		for (const auto& lpair : m_update_chatitem)
 		{
-			pro.set_mchannelid(_channelid);
+			pro.set_mchannelid(lpair.first);
 			pro.clear_mchatlist();
-			for (const pbnet::chatitem& item : _update)
+			for (const pbnet::chatitem& litem : lpair.second)
 			{
-				*pro.add_mchatlist() = item;
+				*pro.add_mchatlist() = litem;
 			}
 			send_client(pro, ENET_KCP);
 		}

@@ -21,7 +21,9 @@ namespace ngl
 {
 	bool actor_role_manage::handle(const message<mforward<np_gm>>& adata)
 	{
-		ncjson lojson(adata.get_data()->data()->m_json.c_str());
+		const auto* lparm = adata.get_data();
+		const auto* lrecv = lparm->data();
+		ncjson lojson(lrecv->m_json.c_str());
 		std::string loperator;
 		if (!njson::pop(lojson, { "operator" }, loperator))
 		{
@@ -70,7 +72,7 @@ namespace ngl
 					tools::splicing(m_roleban, "*", pro.m_data);
 				};
 		}
-		if (handle_gm::function(loperator, (int)adata.get_data()->identifier(), lojson) == false)
+		if (handle_gm::function(loperator, (int)lparm->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_role php operator[{}] ERROR", loperator);
 		}
@@ -78,20 +80,20 @@ namespace ngl
 	}
 	bool actor_role_manage::handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
-		auto recv = adata.get_data();
+		const auto* lrecv = adata.get_data();
 
-		if (m_roleban.contains(recv->mroleid()))
+		if (m_roleban.find(lrecv->mroleid()) != m_roleban.end())
 		{
 			return true;
 		}
 
-		nguid lguid(recv->mroleid());
-		log_error()->print("actor_manage_role roleid:{}", recv->mroleid());
+		nguid lguid(lrecv->mroleid());
+		log_error()->print("actor_manage_role roleid:{}", lrecv->mroleid());
 		np_actorswitch_process_role pro
 		{
-			.m_gatewayid = recv->mgatewayid(),
+			.m_gatewayid = lrecv->mgatewayid(),
 		};
-		actor_create::switch_process(recv->mroleid(), 0, nconfig.nodeid(), pro);
+		actor_create::switch_process(lrecv->mroleid(), 0, nconfig.nodeid(), pro);
 		return true;
 	}
 }//namespace ngl

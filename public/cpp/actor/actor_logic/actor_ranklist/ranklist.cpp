@@ -16,12 +16,14 @@
 
 #include "actor/actor_logic/actor_ranklist/ranklist.h"
 
+#include <set>
+
 namespace ngl
 {
 	ranklist::ranklist()
 	{
-		m_ranks[pbdb::eranklist::lv] = make_rank::make(pbdb::eranklist::lv);
-		m_ranks[pbdb::eranklist::gold] = make_rank::make(pbdb::eranklist::gold);
+		m_ranks.emplace(pbdb::eranklist::lv, make_rank::make(pbdb::eranklist::lv));
+		m_ranks.emplace(pbdb::eranklist::gold, make_rank::make(pbdb::eranklist::gold));
 	}
 
 	void ranklist::related_actorid()
@@ -29,7 +31,7 @@ namespace ngl
 		set_actorid(nguid::make());
 	}
 
-		bool ranklist::update_value(pbdb::eranklist atype, rank_item& litem, const pbdb::db_brief& abrief, [[maybe_unused]] bool afirstsynchronize)
+	bool ranklist::update_value(pbdb::eranklist atype, rank_item& litem, const pbdb::db_brief& abrief, [[maybe_unused]] bool afirstsynchronize)
 	{
 		return litem.init(atype, abrief, &get(abrief.mid()));
 	}
@@ -38,29 +40,36 @@ namespace ngl
 	{
 		rank_item litem;
 		litem.m_actorid = abrief.mid();
-		std::map<pbdb::eranklist, bool> lupdatearr;
+		std::set<pbdb::eranklist> lchangeds;
 		bool lupdate = false;
-		for (auto& [_ranktype, _] : m_ranks)
+		for (const auto& lpair : m_ranks)
 		{
-			lupdatearr[_ranktype] = update_value(_ranktype, litem, abrief, afirstsynchronize);
-			lupdate = lupdate || lupdatearr[_ranktype];
+			const bool lchanged = update_value(lpair.first, litem, abrief, afirstsynchronize);
+			if (lchanged)
+			{
+				lchangeds.emplace(lpair.first);
+				lupdate = true;
+			}
 		}
 		if (lupdate)
 		{
-			rank_item& ldata = m_maprankitem[abrief.mid()];
-			for (auto& [_ranktype, _] : m_ranks)
+			auto lit = m_maprankitem.try_emplace(abrief.mid()).first;
+			rank_item& ldata = lit->second;
+			for (const pbdb::eranklist ltype : lchangeds)
 			{
-				if (lupdatearr[_ranktype])
+				auto lrank_it = m_ranks.find(ltype);
+				if (lrank_it != m_ranks.end())
 				{
-					m_ranks[_ranktype]->erase(&ldata);
+					lrank_it->second->erase(&ldata);
 				}
 			}
 			ldata = litem;
-			for (auto& [_ranktype, _] : m_ranks)
+			for (const pbdb::eranklist ltype : lchangeds)
 			{
-				if (lupdatearr[_ranktype])
+				auto lrank_it = m_ranks.find(ltype);
+				if (lrank_it != m_ranks.end())
 				{
-					m_ranks[_ranktype]->insert(&ldata);
+					lrank_it->second->insert(&ldata);
 				}
 			}
 		}
@@ -69,19 +78,20 @@ namespace ngl
 
 	void ranklist::add_data(const pbdb::db_ranklist& aitem)
 	{
-		rank_item& ltempitem = m_maprankitem[aitem.mid()];
+		auto lit = m_maprankitem.try_emplace(aitem.mid()).first;
+		rank_item& ltempitem = lit->second;
 		ltempitem.m_actorid = aitem.mid();
 
-		for (const std::pair<const int32_t, pbdb::rankitem>& ritem : aitem.mitems())
+		for (const auto& lritem : aitem.mitems())
 		{
-			rank_pair& lpair = ltempitem.m_data[(pbdb::eranklist)ritem.first];
-			lpair.m_time = ritem.second.mtime();
-			lpair.m_value = ritem.second.mvalue();
+			rank_pair& lpair = ltempitem.m_data[static_cast<pbdb::eranklist>(lritem.first)];
+			lpair.m_time = lritem.second.mtime();
+			lpair.m_value = lritem.second.mvalue();
 		}
 
-		for (auto& [_ranktype, _rank] : m_ranks)
+		for (const auto& lpair : m_ranks)
 		{
-			rankset_base& lrank = *_rank.get();
+			rankset_base& lrank = *lpair.second.get();
 			lrank.insert(&ltempitem);
 		}
 	}
@@ -89,9 +99,9 @@ namespace ngl
 	void ranklist::initdata()
 	{
 		log_error()->print("actor_ranklist###loaddb_finish {}", data());
-		for (auto& [_guid, _modified] : data())
+		for (auto& lpair : data())
 		{
-			MODIFIED_CONTINUE_CONST(lpdbranklist, _modified);
+			MODIFIED_CONTINUE_CONST(lpdbranklist, lpair.second);
 			add_data(*lpdbranklist);
 		}
 
@@ -115,9 +125,11 @@ namespace ngl
 	{
 		apro.set_mtype(atype);
 		apro.set_mpage(apage);
-		if (m_ranks.contains(atype))
+		auto litor = m_ranks.find(atype);
+		if (litor != m_ranks.end())
 		{
-				int32_t lcount = m_ranks[atype]->getpage(aroleid, apage, [&apro,this]([[maybe_unused]] int32_t aindex, const rank_item* aitem)
+			rankset_base* lrank = litor->second.get();
+			int32_t lcount = lrank->getpage(aroleid, apage, [&apro, this]([[maybe_unused]] int32_t aindex, const rank_item* aitem)
 				{
 					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_ranklist>::instance(get_actor()->id_guid()).getconst(aitem->m_actorid);
 					if (lpbrief != nullptr)
@@ -126,7 +138,7 @@ namespace ngl
 					}
 				});
 			apro.set_mcount(lcount);
-			apro.set_mrolerank(m_ranks[atype]->role_rank(aroleid));
+			apro.set_mrolerank(lrank->role_rank(aroleid));
 		}
 		else
 		{
@@ -136,7 +148,7 @@ namespace ngl
 		return true;
 	}
 
-		void ranklist::ranklist_sync(i64_actorid aroleid, pbdb::eranklist atype, [[maybe_unused]] int32_t aactivityid, int32_t apage)
+	void ranklist::ranklist_sync(i64_actorid aroleid, pbdb::eranklist atype, [[maybe_unused]] int32_t aactivityid, int32_t apage)
 	{
 		pbnet::PROBUFF_NET_RANKLIST_RESPONSE pro;
 		i64_actorid lbriefroleid = nguid::make_type(aroleid, ACTOR_BRIEF);
@@ -149,11 +161,12 @@ namespace ngl
 
 	void ranklist::rank_get(int32_t arankid, std::vector<int64_t>& arolerank)
 	{
-		if (m_ranks.contains((pbdb::eranklist)arankid))
+		auto litor = m_ranks.find((pbdb::eranklist)arankid);
+		if (litor != m_ranks.end())
 		{
-				m_ranks[(pbdb::eranklist)arankid]->foreach([&arolerank]([[maybe_unused]] int32_t aindex, const rank_item* aitem)
+			litor->second->foreach([&arolerank]([[maybe_unused]] int32_t aindex, const rank_item* aitem)
 				{
-					arolerank.push_back(aitem->m_actorid);
+					arolerank.emplace_back(aitem->m_actorid);
 				});
 		}
 	}
@@ -165,7 +178,7 @@ namespace ngl
 		{
 			return;
 		}
-		m_ranks.erase((pbdb::eranklist)arankid);
+		m_ranks.erase(itor);
 		erase(arankid);
 	}
 
@@ -176,11 +189,12 @@ namespace ngl
 		{
 			return;
 		}
-		m_ranks[(pbdb::eranklist)arankid] = std::move(ltemp);
-		auto& lrank = m_ranks[(pbdb::eranklist)arankid];
-		for (auto itor = m_maprankitem.begin(); itor != m_maprankitem.end(); ++itor)
+		auto lit = m_ranks.try_emplace((pbdb::eranklist)arankid).first;
+		lit->second = std::move(ltemp);
+		rankset_base* lrank = lit->second.get();
+		for (const auto& lpair : m_maprankitem)
 		{
-			lrank->insert(&itor->second);
+			lrank->insert(&lpair.second);
 		}
 	}
 }//namespace ngl

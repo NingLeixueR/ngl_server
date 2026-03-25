@@ -80,35 +80,37 @@ namespace ngl
 
 	void actor_gateway_g2c::get_allclient(std::map<i32_sessionid, i64_actorid>& amap)
 	{
-		for (auto& [_area, _map] : m_info.info())
+		for (const auto& lpair : m_info.info())
 		{
-			for (auto& [_dataid, _socket] : _map)
+			for (const auto& litem : lpair.second)
 			{
-				if (_socket.m_socket <= 0)
+				const gateway_socket& lsocket = litem.second;
+				if (lsocket.m_socket <= 0)
 				{
 					continue;
 				}
-				i64_actorid lactorid = nguid::make(ACTOR_ROBOT, _socket.m_area, _socket.m_dataid);
-				amap.insert(std::make_pair(_socket.m_socket, lactorid));
+				const i64_actorid lactorid = nguid::make(ACTOR_ROBOT, lsocket.m_area, lsocket.m_dataid);
+				amap.emplace(lsocket.m_socket, lactorid);
 			}
 		}
 	}
 
 	void actor_gateway_g2c::get_allclientbyarea(std::map<i32_sessionid, i64_actorid>& amap, i16_area aarea)
 	{
-		auto lpmap = tools::findmap(m_info.info(), aarea);
+		const auto* lpmap = tools::findmap(m_info.info(), aarea);
 		if (lpmap == nullptr)
 		{
 			return;
 		}
-		for (auto& [_dataid, _socket] : *lpmap)
+		for (const auto& litem : *lpmap)
 		{
-			if (_socket.m_socket <= 0)
+			const gateway_socket& lsocket = litem.second;
+			if (lsocket.m_socket <= 0)
 			{
 				continue;
 			}
-			i64_actorid lactorid = nguid::make(ACTOR_ROBOT, _socket.m_area, _socket.m_dataid);
-			amap.insert(std::make_pair(_socket.m_socket, lactorid));
+			const i64_actorid lactorid = nguid::make(ACTOR_ROBOT, lsocket.m_area, lsocket.m_dataid);
+			amap.emplace(lsocket.m_socket, lactorid);
 		}
 	}
 

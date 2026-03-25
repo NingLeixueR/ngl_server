@@ -85,9 +85,10 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_connect_actor_server>& adata)
 	{
-		i32_serverid lserverid = adata.get_data()->m_serverid;
-		auto tab = ttab_servers::instance().const_tab();
-		if (tab == nullptr || ttab_servers::instance().tab(nnodeid::tid(lserverid)) == nullptr)
+		const auto* lparm = adata.get_data();
+		const i32_serverid lserverid = lparm->m_serverid;
+		const tab_servers* ltab = ttab_servers::instance().const_tab();
+		if (ltab == nullptr || ttab_servers::instance().tab(nnodeid::tid(lserverid)) == nullptr)
 		{
 			tools::no_core_dump();
 			return true;
@@ -95,7 +96,7 @@ namespace ngl
 
 		i64_actorid	lactorid = id_guid();
 		i64_actorid lactorserve = actor_server::actorid();
-		set_node(lserverid, adata.get_data()->m_session);
+		set_node(lserverid, lparm->m_session);
 		naddress::actor_address_add(lserverid, lactorserve);
 
 		// Registernode
@@ -105,9 +106,9 @@ namespace ngl
 			{
 				.m_name = std::format(
 					"node<id:{},type:{},name:{},tcount:{},area:{}>"
-					, tab->m_id, em<NODE_TYPE>::name(tab->m_type), tab->m_name, tab->m_tcount, tab->m_area
+					, ltab->m_id, em<NODE_TYPE>::name(ltab->m_type), ltab->m_name, ltab->m_tcount, ltab->m_area
 				),
-				.m_nodetype = tab->m_type,
+				.m_nodetype = ltab->m_type,
 				.m_serverid = nconfig.nodeid(),
 			}
 		};
@@ -115,17 +116,18 @@ namespace ngl
 
 		naddress::ergodic([&lpram](const naddress::map_guidserver& aactorserver, const naddress::map_servernode&, const naddress::map_rolegateway&)
 			{
-				for (auto& [_guid, _serverid] : aactorserver)
+				lpram.m_add.reserve(aactorserver.size());
+				for (const auto& [lguid, lserverid] : aactorserver)
 				{
-					if (lpram.m_node.m_serverid == _serverid)
+					if (lpram.m_node.m_serverid == lserverid)
 					{
-						lpram.m_add.push_back(_guid);
+						lpram.m_add.emplace_back(lguid);
 					}
 				}
 				return true;
 			}
 		);
-		ntcp::instance().send(adata.get_data()->m_session, lpram, lactorserve, lactorid);
+		ntcp::instance().send(lparm->m_session, lpram, lactorserve, lactorid);
 		return true;
 	}
 
@@ -191,18 +193,18 @@ namespace ngl
 		{
 			return true;
 		}
-		auto lparm = adata.get_data();
-		if (const tab_servers* tab = ttab_servers::instance().const_tab(); tab == nullptr)
+		const auto* lparm = adata.get_data();
+		if (ttab_servers::instance().const_tab() == nullptr)
 		{
 			tools::no_core_dump();
 			return true;
 		}
-		for (auto& node : lparm->m_vec)
+		for (const auto& lnode : lparm->m_vec)
 		{
-			if (nconfig.nodeid() != node.m_serverid && server_session::sessionid(node.m_serverid) == -1)
+			if (nconfig.nodeid() != lnode.m_serverid && server_session::sessionid(lnode.m_serverid) == -1)
 			{
 				// # Compareid( connection )
-				activ_connect(node.m_serverid);
+				activ_connect(lnode.m_serverid);
 			}
 		}
 		return true;
@@ -212,13 +214,19 @@ namespace ngl
 	{
 		np_actornode_update lpro;
 		lpro.m_id = alocalserverid;
-		for(auto& [_guid, _serverid]: naddress::get_actorserver_map())
-		{
-			if (alocalserverid == _serverid)
+		naddress::ergodic([&lpro, alocalserverid](const naddress::map_guidserver& aactorserver, const naddress::map_servernode&, const naddress::map_rolegateway&)
 			{
-				lpro.m_add.push_back(_guid);
+				lpro.m_add.reserve(aactorserver.size());
+				for (const auto& [lguid, lserverid] : aactorserver)
+				{
+					if (alocalserverid == lserverid)
+					{
+						lpro.m_add.emplace_back(lguid);
+					}
+				}
+				return true;
 			}
-		}
+		);
 		ntcp::instance().send(asession, lpro, nguid::moreactor(), aclient->id_guid());
 	}
 
@@ -228,8 +236,8 @@ namespace ngl
 		{
 			return true;
 		}
-		auto lparm = adata.get_data();
-		auto lpack = adata.get_pack();
+		const auto* lparm = adata.get_data();
+		const pack* lpack = adata.get_pack();
 
 		i32_serverid lserverid = lparm->m_id;
 
@@ -244,7 +252,6 @@ namespace ngl
 		server_session::add(lserverid, lpack->m_id);
 
 		set_node(lserverid, lpack->m_id);
-		naddress::set_session(lserverid, lpack->m_id);
 
 		// Connection
 		if (isactiv_connect(lserverid) == false)
@@ -254,7 +261,7 @@ namespace ngl
 			ntcp::instance().send(lpack->m_id, pro, nguid::moreactor(), id_guid());
 		}
 
-		set_connect_fnish(lparm->m_id);
+		set_connect_fnish(lserverid);
 		connect_fnish();
 
 		// Currentnodetypeif server, connection node [GAME/GATEWAY]
@@ -271,20 +278,20 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_actornode_update>& adata)
 	{
-		auto lparm = adata.get_data();
+		const auto* lparm = adata.get_data();
 		naddress::actor_address_add(lparm->m_id, lparm->m_add);
 		naddress::actor_address_del(lparm->m_del);
-		for (auto& [_guid, _serverid] : lparm->m_rolegateway)
+		for (const auto& [lguid, lserverid] : lparm->m_rolegateway)
 		{
-			naddress::gatewayid_add(_guid, _serverid);
+			naddress::gatewayid_add(lguid, lserverid);
 		}		
 		return true;
 	}
 	
 	bool actor_client::handle(const message<np_actornode_update_mass>& adata)
 	{
-		auto lparm = adata.get_data();
-			int32_t lthreadid = adata.thread();
+		const auto* lparm = adata.get_data();
+		const int32_t lthreadid = adata.thread();
 
 		message lmessage(lthreadid, adata.get_shared_pack(), const_cast<np_actornode_update*>(&lparm->m_mass));
 		handle(lmessage);
@@ -310,14 +317,13 @@ namespace ngl
 
 	void actor_client::connect_fnish()
 	{
-		const std::set<i32_serverid>& lserverids = m_connectserverid;
 		if (m_connectfun.empty())
 		{
 			return;
 		}
 		for (auto itor = m_connectfun.begin(); itor != m_connectfun.end(); )
 		{
-			if (!lserverids.contains(itor->first))
+			if (m_connectserverid.find(itor->first) == m_connectserverid.end())
 			{
 				++itor;
 				continue;
@@ -336,14 +342,13 @@ namespace ngl
 		{
 			return true;
 		}
-		auto lparm = adata.get_data();
-		const std::set<i32_serverid>& lserverids = m_connectserverid;
-		if (lserverids.contains(lparm->m_serverid))
+		const auto* lparm = adata.get_data();
+		if (m_connectserverid.find(lparm->m_serverid) != m_connectserverid.end())
 		{
 			lparm->m_fun();
 			return true;
 		}
-		m_connectfun[lparm->m_serverid].push_back(lparm->m_fun);
+		m_connectfun.try_emplace(lparm->m_serverid).first->second.emplace_back(lparm->m_fun);
 		return true;
 	}
 	
@@ -353,7 +358,7 @@ namespace ngl
 		{
 			return true;
 		}
-		const auto lparm = adata.get_data();
+		const auto* lparm = adata.get_data();
 		if (lparm->m_isremove)
 		{
 			naddress::gatewayid_del(lparm->m_actorid);

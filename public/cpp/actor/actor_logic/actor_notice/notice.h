@@ -41,9 +41,9 @@ namespace ngl
 			log_error()->print("actor_notice###loaddb_finish {}", data());
 			m_maxid = 0;
 
-			for (auto& [_guid, _modified] : data())
+			for (auto& lpair : data())
 			{
-				MODIFIED_CONTINUE_CONST(lpdata, _modified);
+				MODIFIED_CONTINUE_CONST(lpdata, lpair.second);
 				m_maxid = std::max(m_maxid, lpdata->mid());
 			}
 

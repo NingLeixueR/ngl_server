@@ -27,7 +27,9 @@ namespace ngl
 {
 	bool actor_role::handle(const message<mforward<np_gm>>& adata)
 	{
-		ncjson lojson(adata.get_data()->data()->m_json.c_str());
+		const auto* lparm = adata.get_data();
+		const auto* lrecv = lparm->data();
+		ncjson lojson(lrecv->m_json.c_str());
 		std::string loperator;
 		if (!njson::pop(lojson, { "operator" }, loperator))
 		{
@@ -95,7 +97,7 @@ namespace ngl
 				};
 		}
 
-		if (handle_gm::function(loperator, (int)adata.get_data()->identifier(), lojson) == false)
+		if (handle_gm::function(loperator, (int)lparm->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_role php operator[{}] ERROR", loperator);
 		}
@@ -103,32 +105,33 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<mforward<np_operator_task>>& adata)
 	{
-		i64_actorid lactorid = adata.get_data()->identifier();
-		const np_operator_task* recv = adata.get_data()->data();
-		if (recv == nullptr)
+		const auto* lrecv = adata.get_data();
+		i64_actorid lactorid = lrecv->identifier();
+		const np_operator_task* lparm = lrecv->data();
+		if (lparm == nullptr)
 		{
 			return true;
 		}
-		if (recv->m_isreceive)
+		if (lparm->m_isreceive)
 		{
-			for (i64_actorid taskid : recv->m_taskids)
+			for (i64_actorid ltaskid : lparm->m_taskids)
 			{
-				static_task::receive_task(this, (int32_t)taskid);
+				static_task::receive_task(this, (int32_t)ltaskid);
 			}
 		}
 		else
 		{
-			for (i64_actorid taskid : recv->m_taskids)
+			for (i64_actorid ltaskid : lparm->m_taskids)
 			{
-				static_task::finish_task(this, (int32_t)taskid);
-				static_task::erase_task(this, (int32_t)taskid);
+				static_task::finish_task(this, (int32_t)ltaskid);
+				static_task::erase_task(this, (int32_t)ltaskid);
 			}
 		}
 		log_error()->print("actor_role.np_operator_task {}:{}:{}:{}", 
-			nguid(id_guid()), recv->m_msg, recv->m_isreceive?"receive":"remove", recv->m_taskids
+			nguid(id_guid()), lparm->m_msg, lparm->m_isreceive?"receive":"remove", lparm->m_taskids
 		);
 		auto pro = std::make_shared<mforward<np_operator_task_response>>();
-		pro->data()->m_msg = recv->m_msg;
+		pro->data()->m_msg = lparm->m_msg;
 		actor::send_actor(lactorid, id_guid(), pro);
 		return true;
 	}
@@ -139,7 +142,7 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<np_actor_senditem>& adata)
 	{
-		auto lparm = adata.get_data();
+		const auto* lparm = adata.get_data();
 		local_remakes(this, lparm->m_src);
 		m_bag.add_item(lparm->m_item);
 		return true;
@@ -150,8 +153,9 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<np_example_actorid>& adata)
 	{
-		m_example.first = adata.get_data()->m_type;
-		m_example.second = adata.get_data()->m_actorexampleid;
+		const auto* lparm = adata.get_data();
+		m_example.first = lparm->m_type;
+		m_example.second = lparm->m_actorexampleid;
 		return true;
 	}
 		bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_BAG_SYNC>& adata)
@@ -431,8 +435,8 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_GET_TIME>& adata)
 	{
-			auto lpack = adata.get_pack();
-			[[maybe_unused]] i64_actorid lrequest = lpack->m_head.get_request_actor();
+		const pack* lpack = adata.get_pack();
+		[[maybe_unused]] i64_actorid lrequest = lpack->m_head.get_request_actor();
 		log_error()->print("{},NAME={}", guid(), m_info.name());
 		//if (lpack->m_protocol == ENET_KCP)
 		//{
@@ -451,7 +455,8 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_ROLE_CREATE>& adata)
 	{
-		create_init(adata.get_data()->mname());
+		const auto* lrecv = adata.get_data();
+		create_init(lrecv->mname());
 		return true;
 	}
 		bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
@@ -462,17 +467,18 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata)
 	{
+		const auto* lrecv = adata.get_data();
 		const tab_servers* tab = ttab_servers::instance().const_tab("game", nconfig.area());
 		if (tab == nullptr)
 		{
 			return false;
 		}
 		
-			int32_t lserverid = nnodeid::nodeid(static_cast<int16_t>(tab->m_id), static_cast<int16_t>(adata.get_data()->mline()));
+		int32_t lserverid = nnodeid::nodeid(static_cast<int16_t>(tab->m_id), static_cast<int16_t>(lrecv->mline()));
 		i32_sessionid lsession = server_session::sessionid(lserverid);
 		if (lsession == -1)
 		{
-			log_error()->print("PROBUFF_NET_SWITCH_LINE ERROR line[{}] severid[{}]", adata.get_data()->mline(), tab->m_id);
+			log_error()->print("PROBUFF_NET_SWITCH_LINE ERROR line[{}] severid[{}]", lrecv->mline(), tab->m_id);
 			return false;
 		}
 		np_actorswitch_process_role pro;
@@ -483,20 +489,21 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata)
 	{
-		const tab_task* tab = ttab_task::instance().tab(adata.get_data()->mtaskid());
+		const auto* lrecv = adata.get_data();
+		const tab_task* tab = ttab_task::instance().tab(lrecv->mtaskid());
 		if (tab == nullptr)
 		{
 			return true;
 		}
 
 		pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE pro;
-		pro.set_mtaskid(adata.get_data()->mtaskid());
+		pro.set_mtaskid(lrecv->mtaskid());
 
 		std::map<int, int> ldrop;
 		std::string lsrc = std::format("task receive award");		
 		if (!get_drop().use(tab->m_dropid, 1, id_guid(), lsrc, &ldrop))
 		{
-			log_error()->print("task:{} drop:{} fail!!!", adata.get_data()->mtaskid(), tab->m_dropid);
+			log_error()->print("task:{} drop:{} fail!!!", lrecv->mtaskid(), tab->m_dropid);
 			return true;
 		}
 		tools::copy(ldrop, *pro.mutable_mdrop());

@@ -317,18 +317,18 @@ namespace ngl
 	{
 		int32_t lstat = 0;
 		int32_t lgold = 0;
-		tab_recharge* tab = ttab_recharge::instance().tab(arechargeid);
+		const tab_recharge* ltab = ttab_recharge::instance().tab(arechargeid);
 		std::map<int, int> litems;
-		if (tab != nullptr)
+		if (ltab != nullptr)
 		{
 			std::string lsrc = std::format("recharge orderid={} rechargeid={}", aorderid, arechargeid);
-			if(get_drop().use(tab->m_dropid, 1, id_guid(), lsrc, &litems))
+			if (get_drop().use(ltab->m_dropid, 1, id_guid(), lsrc, &litems))
 			{
-				lgold += tab->m_gold;
-				lgold += tab->m_bonus;
+				lgold += ltab->m_gold;
+				lgold += ltab->m_bonus;
 				if (is_first_recharge(arechargeid))
 				{
-					lgold += tab->m_firstbonus;
+					lgold += ltab->m_firstbonus;
 				}
 				m_info.change_gold(lgold);
 			}
@@ -362,9 +362,10 @@ namespace ngl
 			cpro.set_mrechargeid(arechargeid);
 			cpro.set_morderid(aorderid);
 			cpro.set_mgold(lgold);
-			for (auto itor = litems.begin(); itor != litems.end(); ++itor)
+			auto* litemmap = cpro.mutable_mitems();
+			for (const auto& lpair : litems)
 			{
-				(*cpro.mutable_mitems())[itor->first] = itor->second;
+				(*litemmap)[lpair.first] = lpair.second;
 			}
 			send_client(id_guid(), cpro);
 		}	
