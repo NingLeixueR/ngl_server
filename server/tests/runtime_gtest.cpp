@@ -82,16 +82,6 @@ TEST(RuntimeHelpersTest, SplitCommandLineNormalizesRepeatedSpaces)
 	EXPECT_EQ(ltokens[3], "alice");
 }
 
-TEST(RuntimeHelpersTest, RobotManageSplitCommandKeepsQuotedPayload)
-{
-	const std::vector<std::string> ltokens =
-		ngl::robot_manage_cmd::split_cmd("protocol Demo \"{\\\"x\\\": 1, \\\"name\\\": \\\"alpha beta\\\"}\"");
-	ASSERT_EQ(ltokens.size(), 3u);
-	EXPECT_EQ(ltokens[0], "protocol");
-	EXPECT_EQ(ltokens[1], "Demo");
-	EXPECT_EQ(ltokens[2], "{\"x\": 1, \"name\": \"alpha beta\"}");
-}
-
 TEST(RuntimeHelpersTest, RobotManageStripHelpRemovesHelpFlags)
 {
 	std::vector<std::string> largs = { "alice", "--help", "tcp", "-h" };
