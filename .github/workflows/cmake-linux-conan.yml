@@ -9,10 +9,17 @@ on:
 
 jobs:
   build:
+    name: build (${{ matrix.ljob }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        include:
+        - ljob: unity
+          lunity: 'ON'
+          ltest: 'ON'
+        - ljob: no_unity
+          lunity: 'OFF'
+          ltest: 'OFF'
     env:
       CONAN_HOME: ${{ github.workspace }}/.conan2
 
@@ -73,10 +80,11 @@ jobs:
         conan install . -s build_type=Release -s compiler.cppstd=20 --build=missing
 
     - name: Configure with CMake
-      run: cmake --preset conan-release
+      run: cmake --preset conan-release -DNGL_ENABLE_NATIVE_UNITY_BUILD=${{ matrix.lunity }}
 
     - name: Build project
       run: cmake --build --preset conan-release
 
     - name: Run tests
+      if: ${{ matrix.ltest == 'ON' }}
       run: ctest --preset conan-release --output-on-failure
