@@ -46,10 +46,7 @@ namespace ngl
 			return ltemp;
 		}
 
-		bool xml_pop(const char* axml);
-		bool xml_push(const char* axml) const;
-		bool xml_pop(tinyxml2::XMLElement* aele);
-		bool xml_push(tinyxml2::XMLElement* aele) const;
+		DXMLSERIALIZE(xmlnode, false, m_db, m_dbcross, m_public, m_mail, m_telnet, m_wss)
 
 		void init();
 
@@ -57,7 +54,7 @@ namespace ngl
 
 		bool set_server(const char* aservertypename);
 
-		void set_nodeid(int atid, int atcount);
+		void set_nodeid(int16_t atid, int16_t atcount);
 
 		void set_servername(const std::string& asername);
 
