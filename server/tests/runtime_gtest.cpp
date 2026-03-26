@@ -1,13 +1,5 @@
 // File overview: Implements GoogleTest coverage for runtime.
 
-#include <gtest/gtest.h>
-
-#include <array>
-#include <filesystem>
-#include <fstream>
-#include <string>
-#include <vector>
-
 #include "tools/db/sql/postgresql/npostgresql_manage.h"
 #include "tools/db/sql/mysql/nmysql_manage.h"
 #include "tools/tab/xml/xml.h"
@@ -15,6 +7,13 @@
 #include "runtime_helpers.h"
 #include "test_support.h"
 #include "tools/tools.h"
+
+#include <gtest/gtest.h>
+#include <filesystem>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <array>
 
 namespace ngl::robot_manage_cmd
 {
