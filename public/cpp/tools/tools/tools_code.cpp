@@ -13,7 +13,7 @@
 */
 // File overview: Implements binary codec helpers for tools.
 
-#include "tools/tools_code.h"
+#include "tools_code.h"
 
 #include "tools/tab/xml/sysconfig.h"
 

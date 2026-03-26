@@ -15,8 +15,8 @@
 
 #pragma once
 
-#include "tools/tools_text.h"
-#include "tools/tools_misc.h"
+#include "tools_text.h"
+#include "tools_misc.h"
 
 namespace ngl
 {
@@ -125,7 +125,7 @@ namespace ngl
 		template <std::size_t... INDEX, typename TTUPLE>
 		bool splite_tuple(std::index_sequence<INDEX...>, const std::vector<std::string>& avec, TTUPLE& atup)
 		{
-			return (splite<std::tuple_element_t<INDEX, TTUPLE>>(static_cast<int32_t>(INDEX), avec, std::get<INDEX>(atup)) && ...);
+			return (splite(static_cast<int32_t>(INDEX), avec, std::get<INDEX>(atup)) && ...);
 		}
 
 		template <std::size_t... INDEX, typename... ARGS>

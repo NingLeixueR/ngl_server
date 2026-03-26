@@ -13,7 +13,7 @@
 */
 // File overview: Implements shared non-template helpers for tools.
 
-#include "tools/tools_core.h"
+#include "tools_core.h"
 #include "tools/log/nlog.h"
 
 namespace ngl

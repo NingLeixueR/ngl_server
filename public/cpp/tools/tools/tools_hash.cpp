@@ -13,7 +13,7 @@
 */
 // File overview: Implements hashing helpers for tools.
 
-#include "tools/tools_hash.h"
+#include "tools_hash.h"
 
 #include <cstdio>
 

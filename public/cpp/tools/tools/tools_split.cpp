@@ -13,7 +13,7 @@
 */
 // File overview: Implements split and splice helpers for tools.
 
-#include "tools/tools_split.h"
+#include "tools_split.h"
 
 namespace ngl
 {

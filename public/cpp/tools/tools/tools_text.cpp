@@ -13,7 +13,7 @@
 */
 // File overview: Implements text, regex, url, and casing helpers for tools.
 
-#include "tools/tools_text.h"
+#include "tools_text.h"
 
 #include "utf8cpp/utf8.h"
 

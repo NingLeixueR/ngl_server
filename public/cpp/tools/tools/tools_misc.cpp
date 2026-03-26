@@ -13,7 +13,7 @@
 */
 // File overview: Implements misc helpers for tools.
 
-#include "tools/tools_misc.h"
+#include "tools_misc.h"
 
 #include <memory>
 

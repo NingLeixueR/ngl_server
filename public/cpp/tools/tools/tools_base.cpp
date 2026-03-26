@@ -13,7 +13,7 @@
 */
 // File overview: Implements base, endian, and base64 helpers for tools.
 
-#include "tools/tools_base.h"
+#include "tools_base.h"
 
 #include <cstdio>
 
@@ -180,9 +180,12 @@ namespace ngl
 			{
 				return avalues.m_value;
 			}
-			auto* lbuf = reinterpret_cast<unsigned char*>(&avalues.m_value);
-			avalues.m_value = static_cast<int16_t>((static_cast<int16_t>(lbuf[0]) << 8) | static_cast<int16_t>(lbuf[1]));
-			return avalues.m_value;
+			else
+			{
+				auto* lbuf = reinterpret_cast<unsigned char*>(&avalues.m_value);
+				avalues.m_value = static_cast<int16_t>((static_cast<int16_t>(lbuf[0]) << 8) | static_cast<int16_t>(lbuf[1]));
+				return avalues.m_value;
+			}
 		}
 
 		uint16_t transformlittle(parm<uint16_t>& avalues)
@@ -191,9 +194,12 @@ namespace ngl
 			{
 				return avalues.m_value;
 			}
-			auto* lbuf = reinterpret_cast<unsigned char*>(&avalues.m_value);
-			avalues.m_value = static_cast<uint16_t>((static_cast<uint16_t>(lbuf[0]) << 8) | static_cast<uint16_t>(lbuf[1]));
-			return avalues.m_value;
+			else
+			{
+				auto* lbuf = reinterpret_cast<unsigned char*>(&avalues.m_value);
+				avalues.m_value = static_cast<uint16_t>((static_cast<uint16_t>(lbuf[0]) << 8) | static_cast<uint16_t>(lbuf[1]));
+				return avalues.m_value;
+			}
 		}
 
 		int32_t transformlittle(parm<int32_t>& avalues)
@@ -202,12 +208,15 @@ namespace ngl
 			{
 				return avalues.m_value;
 			}
-			auto* lbuf = reinterpret_cast<unsigned char*>(&avalues.m_value);
-			avalues.m_value = (static_cast<int32_t>(lbuf[0]) << 24)
-				| (static_cast<int32_t>(lbuf[1]) << 16)
-				| (static_cast<int32_t>(lbuf[2]) << 8)
-				| static_cast<int32_t>(lbuf[3]);
-			return avalues.m_value;
+			else
+			{
+				auto* lbuf = reinterpret_cast<unsigned char*>(&avalues.m_value);
+				avalues.m_value = (static_cast<int32_t>(lbuf[0]) << 24)
+					| (static_cast<int32_t>(lbuf[1]) << 16)
+					| (static_cast<int32_t>(lbuf[2]) << 8)
+					| static_cast<int32_t>(lbuf[3]);
+				return avalues.m_value;
+			}
 		}
 
 		uint32_t transformlittle(parm<uint32_t>& avalues)
@@ -216,12 +225,15 @@ namespace ngl
 			{
 				return avalues.m_value;
 			}
-			auto* lbuf = reinterpret_cast<unsigned char*>(&avalues.m_value);
-			avalues.m_value = (static_cast<uint32_t>(lbuf[0]) << 24)
-				| (static_cast<uint32_t>(lbuf[1]) << 16)
-				| (static_cast<uint32_t>(lbuf[2]) << 8)
-				| static_cast<uint32_t>(lbuf[3]);
-			return avalues.m_value;
+			else
+			{
+				auto* lbuf = reinterpret_cast<unsigned char*>(&avalues.m_value);
+				avalues.m_value = (static_cast<uint32_t>(lbuf[0]) << 24)
+					| (static_cast<uint32_t>(lbuf[1]) << 16)
+					| (static_cast<uint32_t>(lbuf[2]) << 8)
+					| static_cast<uint32_t>(lbuf[3]);
+				return avalues.m_value;
+			}
 		}
 
 		int64_t transformlittle(parm<int64_t>& avalues)
@@ -230,17 +242,20 @@ namespace ngl
 			{
 				return avalues.m_value;
 			}
-			auto* lbuf = reinterpret_cast<unsigned char*>(&avalues.m_value);
-			avalues.m_value = static_cast<int64_t>(
-				(static_cast<uint64_t>(lbuf[0]) << 56)
-				| (static_cast<uint64_t>(lbuf[1]) << 48)
-				| (static_cast<uint64_t>(lbuf[2]) << 40)
-				| (static_cast<uint64_t>(lbuf[3]) << 32)
-				| (static_cast<uint64_t>(lbuf[4]) << 24)
-				| (static_cast<uint64_t>(lbuf[5]) << 16)
-				| (static_cast<uint64_t>(lbuf[6]) << 8)
-				| static_cast<uint64_t>(lbuf[7]));
-			return avalues.m_value;
+			else
+			{
+				auto* lbuf = reinterpret_cast<unsigned char*>(&avalues.m_value);
+				avalues.m_value = static_cast<int64_t>(
+					(static_cast<uint64_t>(lbuf[0]) << 56)
+					| (static_cast<uint64_t>(lbuf[1]) << 48)
+					| (static_cast<uint64_t>(lbuf[2]) << 40)
+					| (static_cast<uint64_t>(lbuf[3]) << 32)
+					| (static_cast<uint64_t>(lbuf[4]) << 24)
+					| (static_cast<uint64_t>(lbuf[5]) << 16)
+					| (static_cast<uint64_t>(lbuf[6]) << 8)
+					| static_cast<uint64_t>(lbuf[7]));
+				return avalues.m_value;
+			}
 		}
 
 		uint64_t transformlittle(parm<uint64_t>& avalues)
@@ -249,16 +264,19 @@ namespace ngl
 			{
 				return avalues.m_value;
 			}
-			auto* lbuf = reinterpret_cast<unsigned char*>(&avalues.m_value);
-			avalues.m_value = (static_cast<uint64_t>(lbuf[0]) << 56)
-				| (static_cast<uint64_t>(lbuf[1]) << 48)
-				| (static_cast<uint64_t>(lbuf[2]) << 40)
-				| (static_cast<uint64_t>(lbuf[3]) << 32)
-				| (static_cast<uint64_t>(lbuf[4]) << 24)
-				| (static_cast<uint64_t>(lbuf[5]) << 16)
-				| (static_cast<uint64_t>(lbuf[6]) << 8)
-				| static_cast<uint64_t>(lbuf[7]);
-			return avalues.m_value;
+			else
+			{
+				auto* lbuf = reinterpret_cast<unsigned char*>(&avalues.m_value);
+				avalues.m_value = (static_cast<uint64_t>(lbuf[0]) << 56)
+					| (static_cast<uint64_t>(lbuf[1]) << 48)
+					| (static_cast<uint64_t>(lbuf[2]) << 40)
+					| (static_cast<uint64_t>(lbuf[3]) << 32)
+					| (static_cast<uint64_t>(lbuf[4]) << 24)
+					| (static_cast<uint64_t>(lbuf[5]) << 16)
+					| (static_cast<uint64_t>(lbuf[6]) << 8)
+					| static_cast<uint64_t>(lbuf[7]);
+				return avalues.m_value;
+			}
 		}
 
 		std::string base64_encode(const char* adata, std::size_t alen)

@@ -1,7 +1,6 @@
 // File overview: Implements logic for core.
 
 #include "tools/tab/xml/xml_serialize.h"
-#include "tools/arg_options.h"
 #include "start_csvserver.h"
 #include "start_crossdb.h"
 #include "start_pushcfg.h"

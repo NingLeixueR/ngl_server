@@ -13,7 +13,7 @@
 */
 // File overview: Implements system and filesystem helpers for tools.
 
-#include "tools/tools_sys.h"
+#include "tools_sys.h"
 
 #include "actor/actor_base/core/nguid.h"
 #include "actor/tab/ttab_servers.h"
@@ -21,7 +21,7 @@
 #include "tools/localtime.h"
 #include "tools/tab/xml/sysconfig.h"
 #include "tools/threadtools.h"
-#include "tools/tools_split.h"
+#include "tools_split.h"
 
 #include <chrono>
 #include <filesystem>

@@ -18,6 +18,7 @@
 #include "tools/tools.h"
 
 #include <algorithm>
+#include <format>
 #include <string>
 #include <map>
 
