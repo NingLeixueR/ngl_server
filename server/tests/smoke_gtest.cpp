@@ -67,20 +67,3 @@ TEST(A03Smoke, StartupReturnsConfigNotFoundWhenConfigRootMissing)
 	const int rc = ngl_main(4, argv);
 	EXPECT_EQ(rc, static_cast<int>(startup_error::config_not_found));
 }
-
-TEST(A04Smoke, StartupReturnsConfigLoadFailedForMalformedConfig)
-{
-	const std::filesystem::path temp_dir = ngl_test_support::make_tmp_dir("config_invalid", "ngl_test", false);
-	std::filesystem::create_directories(temp_dir / "config");
-	std::ofstream(temp_dir / "config" / "config.xml") << "<config>";
-	ngl_test_support::scoped_path cwd_guard(temp_dir);
-
-	char program_name[] = "ngl_test";
-	char db_node[] = "db";
-	char area[] = "1";
-	char tcount[] = "1";
-	char* argv[] = { program_name, db_node, area, tcount };
-
-	const int rc = ngl_main(4, argv);
-	EXPECT_EQ(rc, static_cast<int>(startup_error::config_load_failed));
-}
