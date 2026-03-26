@@ -20,7 +20,7 @@
 #include "actor/generated/pb/net.pb.h"
 namespace ngl
 {
-	bool actor_activity_manage::handle(const message<mforward<np_operator_task_response>>& adata)
+	bool actor_activity_manage::handle([[maybe_unused]] const message<mforward<np_operator_task_response>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const i64_actorid lroleid = lparm->identifier();
@@ -39,7 +39,7 @@ namespace ngl
 		lactivity->recv_task_response(lroleid, lindex, lrecv->m_isreceive);
 		return true;
 	}
-	bool actor_activity_manage::handle(const message<np_eevents_logic_rolelogin>& adata)
+	bool actor_activity_manage::handle([[maybe_unused]] const message<np_eevents_logic_rolelogin>& adata)
 	{
 		const np_eevents_logic_rolelogin* lrecv = adata.get_data();
 		for (const auto& lpair : m_activitys)
@@ -48,7 +48,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_activity_manage::handle(const message<np_eevents_logic_rolevaluechange>& adata)
+	bool actor_activity_manage::handle([[maybe_unused]] const message<np_eevents_logic_rolevaluechange>& adata)
 	{
 		const np_eevents_logic_rolevaluechange* lrecv = adata.get_data();
 		for (const auto& lpair : m_activitys)
@@ -66,7 +66,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_activity_manage::handle(const message<np_get_rank_response>& adata)
+	bool actor_activity_manage::handle([[maybe_unused]] const message<np_get_rank_response>& adata)
 	{
 		const np_get_rank_response* lrecv = adata.get_data();
 		auto itor = m_activitys.find(lrecv->m_rankid);

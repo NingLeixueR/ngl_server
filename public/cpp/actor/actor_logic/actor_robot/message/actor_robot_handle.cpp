@@ -19,62 +19,62 @@
 #include "net/udp/kcp/nkcp.h"
 namespace ngl
 {
-	bool actor_robot::handle(const message<np_thruput_test>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<np_thruput_test>& adata)
 	{
 		test_thruput::instance().change_rounds(adata.get_data()->m_rounds);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_CREATE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbexample::PROBUFF_EXAMPLE_PLAY_CREATE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_BAG_UPDATE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_BAG_UPDATE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata)
 	{
 		auto lrecv = adata.get_data();
 		if (lrecv->mtype() == pbnet::ENUM_GET_CHAT_LIST)
@@ -101,94 +101,94 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ERROR>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ERROR>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_FRIEND_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata)
 	{
 		char lbuff[1024] = { 0 };
 		ngl::localtime::time2str(lbuff, 1024, adata.get_data()->mutc(), "%y/%m/%d %H:%M:%S");
 		log_error()->print("[{}][{}]", m_data.mbrief().mbase().mname(), lbuff);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
 	{
 		auto lpram = adata.get_data();
 
@@ -215,32 +215,32 @@ namespace ngl
 		sync_behavior_blackboard();
 		return lconnected;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MSG_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_MSG_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_NOTICE_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_NOTICE_RESPONSE>& adata)
 	{
 		struct noticeitem
 		{
@@ -280,27 +280,27 @@ namespace ngl
 		log_error()->print("[{}:{}] {}",area(), m_data.mbrief().mbase().mname(), lstrasscii);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RECHARGE_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_RECHARGE_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLESTAT>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLESTAT>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata)
 	{
 		log_error()->print("[LOGIC_ROLE_SYNC:{}:{}]", adata.get_data()->mbrief().mbase().mname(), adata.get_data()->mbrief().mbase().mlv());
 		m_data = *adata.get_data();
@@ -313,27 +313,27 @@ namespace ngl
 		tick_behavior_tree();
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SYNC_POSITION>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_SYNC_POSITION>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SYNC_UNIT>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_SYNC_UNIT>& adata)
 	{
 		handle_print(adata);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>& adata)
+	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>& adata)
 	{
 		handle_print(adata);
 		return true;

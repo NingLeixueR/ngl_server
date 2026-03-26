@@ -24,7 +24,7 @@
 
 namespace ngl
 {
-	bool actor_gateway::handle(const message<np_gateway_close_session>& adata)
+	bool actor_gateway::handle([[maybe_unused]] const message<np_gateway_close_session>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		i32_actordataid lroleid = lrecv->m_roleid;
@@ -61,7 +61,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_gateway::handle(const message<np_actorrole_login>& adata)
+	bool actor_gateway::handle([[maybe_unused]] const message<np_actorrole_login>& adata)
 	{// LoginservernotifyGateWayserver playeraccount successful
 		const auto* lparm = adata.get_data();
 		nguid lguid(lparm->m_roleid);
@@ -96,7 +96,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_gateway::handle(const message<np_actor_kcp>& adata)
+	bool actor_gateway::handle([[maybe_unused]] const message<np_actor_kcp>& adata)
 	{
 		const auto* lpram = adata.get_data();
 		pbnet::PROBUFF_NET_KCPSESSION_RESPONSE pro;
@@ -110,7 +110,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_gateway::handle(const message<np_actorswitch_process<np_actorswitch_process_role>>& adata)
+	bool actor_gateway::handle([[maybe_unused]] const message<np_actorswitch_process<np_actorswitch_process_role>>& adata)
 	{
 		const auto* lpram = adata.get_data();
 		nguid lguid(lpram->m_actor);
@@ -136,7 +136,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_gateway::handle(const message<np_actor_session_close>& adata)
+	bool actor_gateway::handle([[maybe_unused]] const message<np_actor_session_close>& adata)
 	{
 		const auto* lpram = adata.get_data();
 		if (sysconfig::robot_test())
@@ -178,7 +178,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_gateway::handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
+	bool actor_gateway::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
 		const auto* lpram = adata.get_data();
 		const pack* lpack = adata.get_pack();
@@ -234,7 +234,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_gateway::handle(const message<pbnet::PROBUFF_NET_KCPSESSION>& adata)
+	bool actor_gateway::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_KCPSESSION>& adata)
 	{
 		const auto* lpram = adata.get_data();
 		const pack* lpack = adata.get_pack();

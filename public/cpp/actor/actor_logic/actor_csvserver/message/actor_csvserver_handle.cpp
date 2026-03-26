@@ -15,7 +15,7 @@
 #include "actor/actor_logic/actor_csvserver/actor_csvserver.h"
 namespace ngl
 {
-	bool actor_csvserver::handle(const message<np_actor_csv_verify_version>& adata)
+	bool actor_csvserver::handle([[maybe_unused]] const message<np_actor_csv_verify_version>& adata)
 	{
 		log_error()->print("############actor_reloadcsv_distribute::handle###########");
 		const auto* lparm = adata.get_data();

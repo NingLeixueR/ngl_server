@@ -25,7 +25,7 @@
 #include "actor/generated/pb/net.pb.h"
 namespace ngl
 {
-	bool actor_role::handle(const message<mforward<np_gm>>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<mforward<np_gm>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -103,7 +103,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_role::handle(const message<mforward<np_operator_task>>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<mforward<np_operator_task>>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		i64_actorid lactorid = lrecv->identifier();
@@ -135,38 +135,37 @@ namespace ngl
 		actor::send_actor(lactorid, id_guid(), pro);
 		return true;
 	}
-		bool actor_role::handle([[maybe_unused]] const message<np_actor_disconnect_close>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<np_actor_disconnect_close>& adata)
 	{
-		erase_actor();
 		return true;
 	}
-	bool actor_role::handle(const message<np_actor_senditem>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<np_actor_senditem>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		local_remakes(this, lparm->m_src);
 		m_bag.add_item(lparm->m_item);
 		return true;
 	}
-		bool actor_role::handle([[maybe_unused]] const message<np_eevents_logic_rolelogin>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<np_eevents_logic_rolelogin>& adata)
 	{
 		return true;
 	}
-	bool actor_role::handle(const message<np_example_actorid>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<np_example_actorid>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		m_example.first = lparm->m_type;
 		m_example.second = lparm->m_actorexampleid;
 		return true;
 	}
-		bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_BAG_SYNC>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_BAG_SYNC>& adata)
 	{
 		return true;
 	}
-		bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_CHANGE_ANGLE>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_CHANGE_ANGLE>& adata)
 	{
 		return true;
 	}
-	bool actor_role::handle(const message<pbnet::PROBUFF_NET_CMD>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_CMD>& adata)
 	{
 		const pbnet::PROBUFF_NET_CMD& lparm = *adata.get_data();
 		log_info()->print("cmd [{}]", lparm.mcmd());
@@ -433,7 +432,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_role::handle(const message<pbnet::PROBUFF_NET_GET_TIME>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_GET_TIME>& adata)
 	{
 		const pack* lpack = adata.get_pack();
 		[[maybe_unused]] i64_actorid lrequest = lpack->m_head.get_request_actor();
@@ -449,23 +448,21 @@ namespace ngl
 		send_client(id_guid(), pro, ENET_KCP);
 		return true;
 	}
-		bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_RECHARGE>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_RECHARGE>& adata)
 	{
 		return true;
 	}
-	bool actor_role::handle(const message<pbnet::PROBUFF_NET_ROLE_CREATE>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_CREATE>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		create_init(lrecv->mname());
 		return true;
 	}
-		bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
 	{
-		sync_data_client();
-		log_error()->print("[sync]###[{}]", m_info.name());
 		return true;
 	}
-	bool actor_role::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		const tab_servers* tab = ttab_servers::instance().const_tab("game", nconfig.area());
@@ -487,7 +484,7 @@ namespace ngl
 		actor_create::switch_process(id_guid(), nconfig.nodeid(), lserverid, pro);
 		return true;
 	}
-	bool actor_role::handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata)
+	bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		const tab_task* tab = ttab_task::instance().tab(lrecv->mtaskid());

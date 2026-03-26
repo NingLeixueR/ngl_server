@@ -36,52 +36,52 @@ namespace ngl
 			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD
 		>();
 
-		// actor_chat 模块二次转发
+		// actor_chat module secondary forwarding
 		register_c2g_2< ACTOR_CHAT
 			, pbnet::PROBUFF_NET_CHAT
 		>();
 
-		// actor_example_guess_number 模块二次转发
+		// actor_example_guess_number module secondary forwarding
 		register_c2g_2< ACTOR_EXAMPLE_GUESS_NUMBER
 			, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER
 		>();
 
-		// actor_example_manage 模块二次转发
+		// actor_example_manage module secondary forwarding
 		register_c2g_2< ACTOR_EXAMPLE_MANAGE
 			, pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE
 		>();
 
-		// actor_example_match 模块二次转发
+		// actor_example_match module secondary forwarding
 		register_c2g_2< ACTOR_EXAMPLE_MATCH
 			, pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL
 		>();
 
-		// actor_family 模块二次转发
+		// actor_family module secondary forwarding
 		register_c2g_2< ACTOR_FAMILY
 			, pbnet::PROBUFF_NET_FAMIL_CEDE
 		>();
 
-		// actor_friends 模块二次转发
+		// actor_friends module secondary forwarding
 		register_c2g_2< ACTOR_FRIENDS
 			, pbnet::PROBUFF_NET_FRIEND
 		>();
 
-		// actor_mail 模块二次转发
+		// actor_mail module secondary forwarding
 		register_c2g_2< ACTOR_MAIL
 			, pbnet::PROBUFF_NET_MAIL_DEL
 		>();
 
-		// actor_notice 模块二次转发
+		// actor_notice module secondary forwarding
 		register_c2g_2< ACTOR_NOTICE
 			, pbnet::PROBUFF_NET_NOTICE
 		>();
 
-		// actor_ranklist 模块二次转发
+		// actor_ranklist module secondary forwarding
 		register_c2g_2< ACTOR_RANKLIST
 			, pbnet::PROBUFF_NET_RANKLIST
 		>();
 
-		// actor_testlua 模块二次转发
+		// actor_testlua module secondary forwarding
 		register_c2g_2< ACTOR_TESTLUA
 			, pbnet::PROBUFF_NET_TESTLUA
 		>();

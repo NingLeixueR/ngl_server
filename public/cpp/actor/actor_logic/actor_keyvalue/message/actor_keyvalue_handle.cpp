@@ -15,7 +15,7 @@
 #include "actor/actor_logic/actor_keyvalue/actor_keyvalue.h"
 namespace ngl
 {
-	bool actor_keyvalue::handle(const message<mforward<np_gm>>& adata)
+	bool actor_keyvalue::handle([[maybe_unused]] const message<mforward<np_gm>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();

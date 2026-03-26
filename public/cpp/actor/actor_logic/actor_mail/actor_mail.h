@@ -72,13 +72,13 @@ namespace ngl
 
 		using handle_cmd = cmd<actor_mail, std::string, int, ncjson&>;
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<mforward<np_gm>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DEL>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata);
-		bool handle(const message<np_actor_addmail>& adata);
+		bool handle([[maybe_unused]] const message<mforward<np_gm>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_MAIL_DEL>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata);
+		bool handle([[maybe_unused]] const message<np_actor_addmail>& adata);
 	};
 }// namespace ngl

@@ -86,11 +86,11 @@ namespace ngl
 
 		void enter_game(playinfo* applayinfo, i64_actorid aroleid, pbexample::ECROSS across, pbexample::EPLAY_TYPE atype);
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>>& adata);
-		bool handle(const message<np_create_example>& adata);
-		bool handle(const message<np_example_equit>& adata);
-		bool handle(const message<np_login_request_info>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>>& adata);
+		bool handle([[maybe_unused]] const message<np_create_example>& adata);
+		bool handle([[maybe_unused]] const message<np_example_equit>& adata);
+		bool handle([[maybe_unused]] const message<np_login_request_info>& adata);
 	};
 }//namespace ngl

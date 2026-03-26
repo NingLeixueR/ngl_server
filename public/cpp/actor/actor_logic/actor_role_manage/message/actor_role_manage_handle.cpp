@@ -19,7 +19,7 @@
 #include "actor/actor_base/core/ntimer.h"
 namespace ngl
 {
-	bool actor_role_manage::handle(const message<mforward<np_gm>>& adata)
+	bool actor_role_manage::handle([[maybe_unused]] const message<mforward<np_gm>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -78,7 +78,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_role_manage::handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
+	bool actor_role_manage::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 

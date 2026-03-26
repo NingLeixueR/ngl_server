@@ -17,7 +17,7 @@
 #include "actor/actor_logic/actor_brief/actor_brief.h"
 namespace ngl
 {
-	bool actor_example_match::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>>& adata)
+	bool actor_example_match::handle([[maybe_unused]] const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		i64_actorid lroleid = lparm->identifier();
@@ -49,7 +49,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_example_match::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>>& adata)
+	bool actor_example_match::handle([[maybe_unused]] const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		i64_actorid lroleid = lparm->identifier();
@@ -87,7 +87,7 @@ namespace ngl
 		sync_match_info(lproom);
 		return true;
 	}
-	bool actor_example_match::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>>& adata)
+	bool actor_example_match::handle([[maybe_unused]] const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		auto ldata = adata.get_data()->data();
@@ -124,7 +124,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_example_match::handle(const message<np_login_request_info>& adata)
+	bool actor_example_match::handle([[maybe_unused]] const message<np_login_request_info>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		i64_actorid lroleid = lrecv->m_roleid;

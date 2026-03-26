@@ -48,10 +48,10 @@ namespace ngl
 
 		static void nregister();
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
 		template <typename T>
-		bool handle(const message<np_actor_forward<T, forward_c2g<forward>>>& adata)
+		bool handle([[maybe_unused]] const message<np_actor_forward<T, forward_c2g<forward>>>& adata)
 		{
 			// Client->Gate need tothis message toGameserver
 			//adata.m_uid == socket id
@@ -78,6 +78,6 @@ namespace ngl
 			return true;
 		}
 
-		bool handle(const message<np_actor_gatewayinfo_updata>& adata);
+		bool handle([[maybe_unused]] const message<np_actor_gatewayinfo_updata>& adata);
 	};
 }//namespace ngl

@@ -16,14 +16,14 @@
 #include "actor/actor_logic/actor_brief/actor_brief.h"
 namespace ngl
 {
-	bool actor_friends::handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND>>& adata)
+	bool actor_friends::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FRIEND>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		i64_actorid lroleid = lparm->identifier();
 		m_friends.syncfriends(lroleid);
 		return true;
 	}
-	bool actor_friends::handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND_ADD>>& adata)
+	bool actor_friends::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FRIEND_ADD>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -36,7 +36,7 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_friends::handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND_ERASE>>& adata)
+	bool actor_friends::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FRIEND_ERASE>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -50,7 +50,7 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_friends::handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD>>& adata)
+	bool actor_friends::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -66,7 +66,7 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_friends::handle(const message<np_eevents_logic_rolelogin>& adata)
+	bool actor_friends::handle([[maybe_unused]] const message<np_eevents_logic_rolelogin>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		std::vector<i64_actorid> lfriends;
@@ -80,7 +80,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_friends::handle(const message<np_eevents_logic_roleoffline>& adata)
+	bool actor_friends::handle([[maybe_unused]] const message<np_eevents_logic_roleoffline>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		std::vector<i64_actorid> lfriends;

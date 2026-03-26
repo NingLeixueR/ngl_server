@@ -77,19 +77,19 @@ namespace ngl
 		// # GM
 		using handle_cmd = cmd<actor_mail, std::string, int, ncjson&>;
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<mforward<np_gm>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_CEDE>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_CHANGENAME>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_CREATE>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_INFO>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_JOIN>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LEAVE>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_SIGN>>& adata);
-		bool handle(const message<np_eevents_logic_rolelogin>& adata);
-		bool handle(const message<np_eevents_logic_roleoffline>& adata);
+		bool handle([[maybe_unused]] const message<mforward<np_gm>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_CEDE>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_CHANGENAME>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_CREATE>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_INFO>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_JOIN>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_LEAVE>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_SIGN>>& adata);
+		bool handle([[maybe_unused]] const message<np_eevents_logic_rolelogin>& adata);
+		bool handle([[maybe_unused]] const message<np_eevents_logic_roleoffline>& adata);
 	};
 }// namespace ngl

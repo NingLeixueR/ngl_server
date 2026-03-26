@@ -49,15 +49,15 @@ namespace ngl
 
 		// # [actor client -> actor server] register
 		// # Registernode
-		bool handle(const message<np_actornode_register>& adata);
+		bool handle([[maybe_unused]] const message<np_actornode_register>& adata);
 
 		// # Nodeinactor
-		bool handle(const message<np_actornode_update_server>& adata);
+		bool handle([[maybe_unused]] const message<np_actornode_update_server>& adata);
 
 		// # Toactorclientsynchronizenodeinfo( )
-		bool handle(const message<np_actornode_update_mass>& adata);
+		bool handle([[maybe_unused]] const message<np_actornode_update_mass>& adata);
 
 		// # Gatewaytable actor_role.guididandgateway server idcorresponding
-		bool handle(const message<np_actor_gatewayid_updata>& adata);
+		bool handle([[maybe_unused]] const message<np_actor_gatewayid_updata>& adata);
 	};
 }//namespace ngl

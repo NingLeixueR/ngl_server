@@ -172,11 +172,11 @@ namespace ngl
 		// # Ready
 		bool check_ready(room* aroom);
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>>& adata);
-		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>>& adata);
-		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>>& adata);
-		bool handle(const message<np_login_request_info>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>>& adata);
+		bool handle([[maybe_unused]] const message<np_login_request_info>& adata);
 	};
 }//namespace ngl

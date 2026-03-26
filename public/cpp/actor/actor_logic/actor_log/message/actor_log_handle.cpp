@@ -15,7 +15,7 @@
 #include "actor/actor_logic/actor_log/actor_log.h"
 namespace ngl
 {
-	bool actor_log::handle(const message<np_logitem>& adata)
+	bool actor_log::handle([[maybe_unused]] const message<np_logitem>& adata)
 	{
 		const np_logitem* ldata = adata.get_data();
 		auto lplog = tools::findmap(m_logarr, ldata->m_type);

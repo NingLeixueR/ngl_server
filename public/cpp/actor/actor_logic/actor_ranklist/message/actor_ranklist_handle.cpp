@@ -16,7 +16,7 @@
 #include "actor/actor_logic/actor_brief/actor_brief.h"
 namespace ngl
 {
-	bool actor_ranklist::handle(const message<mforward<np_gm>>& adata)
+	bool actor_ranklist::handle([[maybe_unused]] const message<mforward<np_gm>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -59,14 +59,14 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_ranklist::handle(const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata)
+	bool actor_ranklist::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
 		m_ranklist.ranklist_sync(lparm->identifier(), lrecv->mtype(), lrecv->mactivityid(), lrecv->mpage());
 		return true;
 	}
-	bool actor_ranklist::handle(const message<np_activityrank_operator>& adata)
+	bool actor_ranklist::handle([[maybe_unused]] const message<np_activityrank_operator>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		int32_t lrankid = lrecv->m_rankid;
@@ -77,7 +77,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_ranklist::handle(const message<np_get_rank>& adata)
+	bool actor_ranklist::handle([[maybe_unused]] const message<np_get_rank>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		auto pro = std::make_shared<np_get_rank_response>();

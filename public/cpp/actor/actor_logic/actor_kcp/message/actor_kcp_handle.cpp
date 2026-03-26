@@ -16,7 +16,7 @@
 #include "net/udp/kcp/nkcp.h"
 namespace ngl
 {
-	bool actor_kcp::handle(const message<np_actor_kcp>& adata)
+	bool actor_kcp::handle([[maybe_unused]] const message<np_actor_kcp>& adata)
 	{
 		const auto& lpram = adata.get_shared_data();
 		const pack* lpack = adata.get_pack();

@@ -15,7 +15,7 @@
 #include "actor/actor_logic/actor_gmclient/actor_gmclient.h"
 namespace ngl
 {
-	bool actor_gmclient::handle(const message<mforward<np_gm>>& adata)
+	bool actor_gmclient::handle([[maybe_unused]] const message<mforward<np_gm>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();

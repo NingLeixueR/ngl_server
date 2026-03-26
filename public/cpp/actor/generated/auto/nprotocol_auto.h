@@ -1,17 +1,5 @@
-/*
-* Copyright (c) [2020-2025] NingLeixueR
-*
-* Project name: ngl_server
-* Project URL: https://github.com/NingLeixueR/ngl_server
-*
-* This file is part of the ngl_server project and is distributed under the MIT License.
-* You may use, modify, and distribute this project under the license, including commercial use,
-* but you must retain the original copyright and license notice.
-*
-* For license details, see the LICENSE file in the project root:
-* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
-*/
-
+// 注意【IDL 工具生成文件，不要手动修改】
+// 创建时间 // 创建时间 26-03-26 16:39:03
 #pragma once
 
 #include "actor/actor_base/core/ndb_modular.h"

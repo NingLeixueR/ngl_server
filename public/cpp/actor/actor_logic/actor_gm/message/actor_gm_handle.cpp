@@ -149,12 +149,12 @@ namespace ngl
 				};
 		}
 	}
-	bool actor_gm::handle(const message<mforward<ngl::np_gm_response>>& adata)
+	bool actor_gm::handle([[maybe_unused]] const message<mforward<ngl::np_gm_response>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		return sendtophp((i32_sessionid)lparm->identifier(), *lparm->data());
 	}
-	bool actor_gm::handle(const message<ngl::np_gm>& adata)
+	bool actor_gm::handle([[maybe_unused]] const message<ngl::np_gm>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const pack* lpack = adata.get_pack();

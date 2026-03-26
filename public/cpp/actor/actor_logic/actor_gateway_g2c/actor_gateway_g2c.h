@@ -62,7 +62,7 @@ namespace ngl
 		// # Getspecifiedarea allclient
 		void get_allclientbyarea(std::map<i32_sessionid, i64_actorid>& amap, i16_area aarea);
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
 		template <typename T>
 		bool handle_socket(const np_actor_forward<T, forward_g2c<forward>>* aparm, const pack* apack)
@@ -157,7 +157,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool handle(const message<np_actor_forward<T, forward_g2c<forward>>>& adata)
+		bool handle([[maybe_unused]] const message<np_actor_forward<T, forward_g2c<forward>>>& adata)
 		{
 			const auto* lparm = adata.get_data();
 			const pack* lpack = adata.get_pack();
@@ -173,6 +173,6 @@ namespace ngl
 			return handle_socket(lparm, lpack);
 		}
 
-		bool handle(const message<np_actor_gatewayinfo_updata>& adata);
+		bool handle([[maybe_unused]] const message<np_actor_gatewayinfo_updata>& adata);
 	};
 }//namespace ngl

@@ -58,6 +58,6 @@ namespace ngl
 
 		static void nregister();
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 	};
 }// namespace ngl

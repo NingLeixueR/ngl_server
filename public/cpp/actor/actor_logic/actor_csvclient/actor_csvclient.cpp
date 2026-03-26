@@ -78,7 +78,7 @@ namespace ngl
 		>(e_ready_all);
 	}
 
-	bool actor_csvclient::timer_handle(const message<np_timerparm>&)
+	bool actor_csvclient::timer_handle([[maybe_unused]] const message<np_timerparm>&)
 	{
 		log_error()->print("############actor_csvclient::timer_handle###########");
 		auto pro = std::make_shared<np_actor_csv_verify_version>();

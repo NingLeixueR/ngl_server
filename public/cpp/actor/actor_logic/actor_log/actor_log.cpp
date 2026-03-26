@@ -107,7 +107,7 @@ namespace ngl
 		>(e_ready_all);
 	}
 	
-	bool actor_log::timer_handle(const message<np_timerparm>& adata)
+	bool actor_log::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		std::shared_ptr<log_timerparm> lparm = std::static_pointer_cast<log_timerparm>(adata.get_data()->m_parm);
 		if (lparm->m_type == log_timerparm::e_logflush)

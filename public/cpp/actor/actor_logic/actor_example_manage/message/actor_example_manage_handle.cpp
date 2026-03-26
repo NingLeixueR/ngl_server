@@ -16,7 +16,7 @@
 #include "actor/actor_logic/actor_example_match/actor_example_match.h"
 namespace ngl
 {
-	bool actor_example_manage::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>>& adata)
+	bool actor_example_manage::handle([[maybe_unused]] const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE* lrecv = lparm->data();
@@ -45,7 +45,7 @@ namespace ngl
 
 		return true;
 	}
-	bool actor_example_manage::handle(const message<np_create_example>& adata)
+	bool actor_example_manage::handle([[maybe_unused]] const message<np_create_example>& adata)
 	{
 		const np_create_example* lprecv = adata.get_data();
 		if (lprecv == nullptr)
@@ -90,7 +90,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_example_manage::handle(const message<np_example_equit>& adata)
+	bool actor_example_manage::handle([[maybe_unused]] const message<np_example_equit>& adata)
 	{
 		const np_example_equit* lprecv = adata.get_data();
 		auto lpdata = tools::findmap(m_finishinfo, lprecv->m_type);
@@ -116,7 +116,7 @@ namespace ngl
 		lpdata->erase(lprecv->m_exampleid);
 		return true;
 	}
-	bool actor_example_manage::handle(const message<np_login_request_info>& adata)
+	bool actor_example_manage::handle([[maybe_unused]] const message<np_login_request_info>& adata)
 	{
 		const np_login_request_info* lprecv = adata.get_data();
 		type_tuple* lptuple = tools::findmap(m_playerexample, lprecv->m_roleid);

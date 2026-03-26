@@ -17,7 +17,7 @@
 #include "actor/tab/ttab_chat.h"
 namespace ngl
 {
-	bool actor_chat::handle(const message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
+	bool actor_chat::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const pbnet::PROBUFF_NET_CHAT& lrecv = *lparm->data();

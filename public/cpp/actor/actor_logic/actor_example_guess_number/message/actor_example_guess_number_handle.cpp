@@ -16,7 +16,12 @@
 #include "actor/actor_logic/actor_brief/actor_brief.h"
 namespace ngl
 {
-	bool actor_example_guess_number::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>>& adata)
+	bool actor_example_guess_number::handle([[maybe_unused]] const message<np_example_entergame_ready>& adata)
+	{
+		next_setp();
+		return true;
+	}
+	bool actor_example_guess_number::handle([[maybe_unused]] const message<mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER* lrecv = lparm->data();
@@ -68,7 +73,6 @@ namespace ngl
 	}
 	bool actor_example_guess_number::handle([[maybe_unused]] const message<np_example_entergame_ready>& adata)
 	{
-		next_setp();
 		return true;
 	}
 }//namespace ngl

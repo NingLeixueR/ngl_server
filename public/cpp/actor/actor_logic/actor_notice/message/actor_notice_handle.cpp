@@ -23,7 +23,7 @@ namespace ngl
 		int32_t		m_finishtime = 0;// Endtime
 		DPROTOCOL(gm_notice, m_id, m_notice, m_starttime, m_finishtime)
 	};
-	bool actor_notice::handle(const message<mforward<np_gm>>& adata)
+	bool actor_notice::handle([[maybe_unused]] const message<mforward<np_gm>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -79,7 +79,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_notice::handle(const message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata)
+	bool actor_notice::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const i64_actorid lroleid = lparm->identifier();
@@ -88,7 +88,7 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_notice::handle(const message<np_actor_addnotice>& adata)
+	bool actor_notice::handle([[maybe_unused]] const message<np_actor_addnotice>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		m_notice.notice_add(lrecv->m_notice, lrecv->m_starttime, lrecv->m_finishtime);

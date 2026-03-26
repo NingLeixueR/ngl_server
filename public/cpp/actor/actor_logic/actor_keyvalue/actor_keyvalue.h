@@ -63,8 +63,8 @@ namespace ngl
 		// # GM
 		using handle_cmd = cmd<actor_keyvalue, std::string, int, ncjson&>;
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<mforward<np_gm>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<np_gm>>& adata);
 	};
 }//namespace ngl

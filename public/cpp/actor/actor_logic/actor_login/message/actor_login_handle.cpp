@@ -16,7 +16,7 @@
 #include "actor/actor_base/core/nregister.h"
 namespace ngl
 {
-	bool actor_login::handle(const message<np_actor_disconnect_close>& adata)
+	bool actor_login::handle([[maybe_unused]] const message<np_actor_disconnect_close>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		auto itor = m_actorbyserver.find(lrecv->m_actorid);
@@ -31,7 +31,7 @@ namespace ngl
 		printf_freeserver();
 		return true;
 	}
-	bool actor_login::handle(const message<np_actorserver_connect>& adata)
+	bool actor_login::handle([[maybe_unused]] const message<np_actorserver_connect>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		server_info ltemp
@@ -51,7 +51,7 @@ namespace ngl
 		log_error()->print("message<np_actorserver_connect>:{}", lparm->m_serverid);
 		return true;
 	}
-	bool actor_login::handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata)
+	bool actor_login::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const pack* lpack = adata.get_pack();

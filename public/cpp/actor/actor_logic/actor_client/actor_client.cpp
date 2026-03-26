@@ -83,7 +83,7 @@ namespace ngl
 		naddress::set_session(aserverid, asession);
 	}
 
-	bool actor_client::handle(const message<np_connect_actor_server>& adata)
+	bool actor_client::handle([[maybe_unused]] const message<np_connect_actor_server>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const i32_serverid lserverid = lparm->m_serverid;
@@ -187,7 +187,7 @@ namespace ngl
 		}
 	}
 
-	bool actor_client::handle(const message<np_actornode_register_response>& adata)
+	bool actor_client::handle([[maybe_unused]] const message<np_actornode_register_response>& adata)
 	{
 		if (nconfig.nodetype() == NODE_TYPE::ROBOT)
 		{
@@ -230,7 +230,7 @@ namespace ngl
 		ntcp::instance().send(asession, lpro, nguid::moreactor(), aclient->id_guid());
 	}
 
-	bool actor_client::handle(const message<np_actorclient_node_connect>& adata)
+	bool actor_client::handle([[maybe_unused]] const message<np_actorclient_node_connect>& adata)
 	{
 		if (nconfig.nodetype() == NODE_TYPE::ROBOT)
 		{
@@ -276,7 +276,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_client::handle(const message<np_actornode_update>& adata)
+	bool actor_client::handle([[maybe_unused]] const message<np_actornode_update>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		naddress::actor_address_add(lparm->m_id, lparm->m_add);
@@ -288,7 +288,7 @@ namespace ngl
 		return true;
 	}
 	
-	bool actor_client::handle(const message<np_actornode_update_mass>& adata)
+	bool actor_client::handle([[maybe_unused]] const message<np_actornode_update_mass>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const int32_t lthreadid = adata.thread();
@@ -336,7 +336,7 @@ namespace ngl
 		}
 	}
 	
-	bool actor_client::handle(const message<np_actornode_connect_task>& adata)
+	bool actor_client::handle([[maybe_unused]] const message<np_actornode_connect_task>& adata)
 	{
 		if (nconfig.nodetype() == NODE_TYPE::ROBOT)
 		{
@@ -352,7 +352,7 @@ namespace ngl
 		return true;
 	}
 	
-	bool actor_client::handle(const message<np_actor_gatewayid_updata>& adata)
+	bool actor_client::handle([[maybe_unused]] const message<np_actor_gatewayid_updata>& adata)
 	{
 		if (nconfig.nodetype() == NODE_TYPE::ROBOT)
 		{

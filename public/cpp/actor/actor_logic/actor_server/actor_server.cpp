@@ -128,7 +128,7 @@ namespace ngl
 		}
 	}
 
-	bool actor_server::handle(const message<np_actornode_register>& adata)
+	bool actor_server::handle([[maybe_unused]] const message<np_actornode_register>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		const pack* lpack = adata.get_pack();
@@ -148,7 +148,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_server::handle(const message<np_actornode_update_server>& adata)
+	bool actor_server::handle([[maybe_unused]] const message<np_actornode_update_server>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		
@@ -181,7 +181,7 @@ namespace ngl
 		}
 	}
 
-	bool actor_server::handle(const message<np_actornode_update_mass>& adata)
+	bool actor_server::handle([[maybe_unused]] const message<np_actornode_update_mass>& adata)
 	{
 		const auto* lparm = adata.get_data();
 
@@ -199,7 +199,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_server::handle(const message<np_actor_gatewayid_updata>& adata)
+	bool actor_server::handle([[maybe_unused]] const message<np_actor_gatewayid_updata>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		const pack* lpack = adata.get_pack();

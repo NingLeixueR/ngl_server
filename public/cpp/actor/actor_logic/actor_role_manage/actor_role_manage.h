@@ -63,9 +63,9 @@ namespace ngl
 		// # Gmrequest
 		using handle_gm = cmd<actor_role, std::string, int, ncjson&>;
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<mforward<np_gm>>& adata);
-		bool handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
+		bool handle([[maybe_unused]] const message<mforward<np_gm>>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 	};
 }//namespace ngl

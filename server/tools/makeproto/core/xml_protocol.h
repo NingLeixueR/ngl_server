@@ -1107,7 +1107,7 @@ namespace ngl
 
 		static void nregister();
 
-        bool timer_handle(const message<np_timerparm>& adata);
+        bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 	}};
 }}//namespace ngl)", ltolower);
         lfileH.write(lnrh);
@@ -1185,7 +1185,7 @@ namespace ngl
 		>(false);
 	}}
 
-    bool {0}::timer_handle(const message<np_timerparm>& adata)
+    bool {0}::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
     {{
         return true;
     }}
@@ -1414,15 +1414,15 @@ namespace ngl
                             }
                         }
 
-                        size_t lpos = lnr.find("handle(const message<");
-                        size_t lpos2 = lnr.find("timer_handle(const message<");
+                        size_t lpos = lnr.find("handle([[maybe_unused]] const message<");
+                        size_t lpos2 = lnr.find("timer_handle([[maybe_unused]] const message<");
                         if (lpos != std::string::npos && lpos2 == std::string::npos)
                         {
                             llastnr = "";
                            // *lpnr += std::format("{}\n", lnr);
                             std::string lstrhandl;
                             int lcout = 0;
-                            for (size_t i = lpos + sizeof("handle(const message<") - 1; i < lnr.size(); ++i)
+                            for (size_t i = lpos + sizeof("handle([[maybe_unused]] const message<") - 1; i < lnr.size(); ++i)
                             {
                                 if (lcout == 0 && lnr[i] == '>')
                                 {
@@ -1519,12 +1519,12 @@ namespace ngl
                     {
                         if (ismessage == false)
                         {
-                            size_t lpos = lnr.find("handle(const message<");
+                            size_t lpos = lnr.find("handle([[maybe_unused]] const message<");
                             if (lpos != std::string::npos)
                             {
                                 // Getmessage
                                 int lcout = 0;
-                                for (size_t i = lpos + sizeof("handle(const message<") - 1; i < lnr.size(); ++i)
+                                for (size_t i = lpos + sizeof("handle([[maybe_unused]] const message<") - 1; i < lnr.size(); ++i)
                                 {
                                     if (lnr[i] == '>' && lcout == 0)
                                     {
@@ -1593,9 +1593,9 @@ namespace ngl
                 {
                     lstream << std::format(R"(		{})", itme2.second.m_zhushi) << std::endl;
                 }
-                lstream << std::format(R"(		bool handle(const message<{}>& adata);)", lmessage) << std::endl;
+                lstream << std::format(R"(		bool handle([[maybe_unused]] const message<{}>& adata);)", lmessage) << std::endl;
 
-                lstreamcpp << std::format("\tbool {}::handle(const message<{}>& adata)", actorname, lmessage) << std::endl;
+                lstreamcpp << std::format("\tbool {}::handle([[maybe_unused]] const message<{}>& adata)", actorname, lmessage) << std::endl;
                 lstreamcpp << "\t{" << std::endl;
                 if (itme2.second.m_content.empty())
                 {

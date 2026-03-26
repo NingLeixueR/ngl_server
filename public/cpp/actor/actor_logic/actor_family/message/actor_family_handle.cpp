@@ -15,7 +15,7 @@
 #include "actor/actor_logic/actor_family/actor_family.h"
 namespace ngl
 {
-	bool actor_family::handle(const message<mforward<np_gm>>& adata)
+	bool actor_family::handle([[maybe_unused]] const message<mforward<np_gm>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -67,7 +67,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_CEDE>>& adata)
+	bool actor_family::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_CEDE>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -79,7 +79,7 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_CHANGENAME>>& adata)
+	bool actor_family::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_CHANGENAME>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -92,7 +92,7 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_CREATE>>& adata)
+	bool actor_family::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_CREATE>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -103,14 +103,14 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_INFO>>& adata)
+	bool actor_family::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_INFO>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		i64_actorid lroleid = lparm->identifier();
 		m_family.sync_family(lroleid);
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_JOIN>>& adata)
+	bool actor_family::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_JOIN>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -132,7 +132,7 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LEAVE>>& adata)
+	bool actor_family::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_LEAVE>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -145,13 +145,13 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata)
+	bool actor_family::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		m_family.sync_familylist(lparm->identifier(), lparm->data()->mfamilid());
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN>>& adata)
+	bool actor_family::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -164,7 +164,7 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_SIGN>>& adata)
+	bool actor_family::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FAMIL_SIGN>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -177,7 +177,7 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_family::handle(const message<np_eevents_logic_rolelogin>& adata)
+	bool actor_family::handle([[maybe_unused]] const message<np_eevents_logic_rolelogin>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		std::vector<i64_actorid> lfamilyers;
@@ -191,7 +191,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_family::handle(const message<np_eevents_logic_roleoffline>& adata)
+	bool actor_family::handle([[maybe_unused]] const message<np_eevents_logic_roleoffline>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		std::vector<i64_actorid> lfamilyers;

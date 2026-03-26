@@ -298,7 +298,6 @@ namespace ngl
 		return true;
 	}
 
-
 	bool actor_robot_manage::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		return true;

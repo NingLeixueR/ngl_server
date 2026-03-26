@@ -63,10 +63,10 @@ namespace ngl
 
 		using handle_cmd = cmd<actor_notice, std::string, int, ncjson&>;
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<mforward<np_gm>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata);
-		bool handle(const message<np_actor_addnotice>& adata);
+		bool handle([[maybe_unused]] const message<mforward<np_gm>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata);
+		bool handle([[maybe_unused]] const message<np_actor_addnotice>& adata);
 	};
 }//namespace ngl

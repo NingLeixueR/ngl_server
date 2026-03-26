@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 26-03-19 15:36:56
+// 创建时间 // 创建时间 26-03-26 16:38:22
 #pragma once
 
 #include "tools/serialize/ndefine.h"

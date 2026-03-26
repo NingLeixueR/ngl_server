@@ -83,9 +83,9 @@ namespace ngl
 
 		static void nregister();
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>>& adata);
-		bool handle(const message<np_example_entergame_ready>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>>& adata);
+		bool handle([[maybe_unused]] const message<np_example_entergame_ready>& adata);
 	};
 }//namespace ngl

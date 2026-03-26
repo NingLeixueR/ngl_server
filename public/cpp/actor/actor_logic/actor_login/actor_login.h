@@ -102,11 +102,11 @@ namespace ngl
 		// # Serverdata
 		void printf_freeserver();
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<np_actor_disconnect_close>& adata);
-		bool handle(const message<np_actorserver_connect>& adata);
-		bool handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata);
+		bool handle([[maybe_unused]] const message<np_actor_disconnect_close>& adata);
+		bool handle([[maybe_unused]] const message<np_actorserver_connect>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata);
 	};
 }//namespace ngl
 

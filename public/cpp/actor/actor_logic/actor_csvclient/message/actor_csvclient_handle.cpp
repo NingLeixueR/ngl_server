@@ -17,7 +17,7 @@
 #include "actor/actor_base/core/actor_manage.h"
 namespace ngl
 {
-	bool actor_csvclient::handle(const message<np_actor_reloadcsv>& adata)
+	bool actor_csvclient::handle([[maybe_unused]] const message<np_actor_reloadcsv>& adata)
 	{
 		for (auto& [key, value] : adata.get_data()->m_csvcontent)
 		{

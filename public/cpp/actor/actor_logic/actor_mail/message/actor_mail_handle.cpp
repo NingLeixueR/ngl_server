@@ -15,7 +15,7 @@
 #include "actor/actor_logic/actor_mail/actor_mail.h"
 namespace ngl
 {
-	bool actor_mail::handle(const message<mforward<np_gm>>& adata)
+	bool actor_mail::handle([[maybe_unused]] const message<mforward<np_gm>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		const auto* lrecv = lparm->data();
@@ -98,7 +98,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DEL>>& adata)
+	bool actor_mail::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_MAIL_DEL>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		if (lparm == nullptr)
@@ -115,7 +115,7 @@ namespace ngl
 		pro.set_mstat(m_mails.delmail(lparm->identifier(), lpdata->mmailid()));
 		return true;
 	}
-	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata)
+	bool actor_mail::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		if (lparm == nullptr)
@@ -132,7 +132,7 @@ namespace ngl
 		pro.set_mstat(m_mails.drawmail(lparm->identifier(), lpdata->mmailid()));
 		return true;
 	}
-	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata)
+	bool actor_mail::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		if (lparm == nullptr)
@@ -153,7 +153,7 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata)
+	bool actor_mail::handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata)
 	{
 		const auto* lparm = adata.get_data();
 		if (lparm == nullptr)
@@ -170,7 +170,7 @@ namespace ngl
 		pro.set_mstat(m_mails.readmail(lparm->identifier(), lpdata->mmailid()));
 		return true;
 	}
-	bool actor_mail::handle(const message<np_actor_addmail>& adata)
+	bool actor_mail::handle([[maybe_unused]] const message<np_actor_addmail>& adata)
 	{
 		const auto* lparm = adata.get_data();
 

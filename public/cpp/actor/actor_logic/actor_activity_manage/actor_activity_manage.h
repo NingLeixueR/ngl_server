@@ -100,10 +100,10 @@ namespace ngl
 			return instance().m_drop;
 		}
 
-		bool timer_handle(const message<np_timerparm>& adata);
-		bool handle(const message<mforward<np_operator_task_response>>& adata);
-		bool handle(const message<np_eevents_logic_rolelogin>& adata);
-		bool handle(const message<np_eevents_logic_rolevaluechange>& adata);
-		bool handle(const message<np_get_rank_response>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
+		bool handle([[maybe_unused]] const message<mforward<np_operator_task_response>>& adata);
+		bool handle([[maybe_unused]] const message<np_eevents_logic_rolelogin>& adata);
+		bool handle([[maybe_unused]] const message<np_eevents_logic_rolevaluechange>& adata);
+		bool handle([[maybe_unused]] const message<np_get_rank_response>& adata);
 	};
 }//namespace ngl

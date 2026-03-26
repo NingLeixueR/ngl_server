@@ -61,8 +61,8 @@ namespace ngl
 
 		static void nregister();
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_TESTLUA>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_TESTLUA>>& adata);
 	};
 }// namespace ngl

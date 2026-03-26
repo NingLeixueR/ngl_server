@@ -55,26 +55,26 @@ namespace ngl
 
 		void session_close(gateway_socket* ainfo);
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<np_gateway_close_session>& adata);
+		bool handle([[maybe_unused]] const message<np_gateway_close_session>& adata);
 
 		// # Actor_loginnotifygatewayplayer login(and session corresponding gameserver)
-		bool handle(const message<np_actorrole_login>& adata);
+		bool handle([[maybe_unused]] const message<np_actorrole_login>& adata);
 
 		// # Getkcp-session
-		bool handle(const message<np_actor_kcp>& adata);
+		bool handle([[maybe_unused]] const message<np_actor_kcp>& adata);
 
 		// # Playerswitchgame
-		bool handle(const message<np_actorswitch_process<np_actorswitch_process_role>>& adata);
+		bool handle([[maybe_unused]] const message<np_actorswitch_process<np_actorswitch_process_role>>& adata);
 
 		// # Connection
-		bool handle(const message<np_actor_session_close>& adata);
+		bool handle([[maybe_unused]] const message<np_actor_session_close>& adata);
 		
 		// # Player
-		bool handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 
 		// # Getkcp-session
-		bool handle(const message<pbnet::PROBUFF_NET_KCPSESSION>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_KCPSESSION>& adata);
 	};
 }//namespace ngl

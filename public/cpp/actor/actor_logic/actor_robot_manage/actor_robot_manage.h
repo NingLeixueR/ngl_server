@@ -86,12 +86,12 @@ namespace ngl
 
 		bool kcp_connect(i64_actorid arobotid, pbnet::ENUM_KCP akcpenum, int16_t aservertid, int16_t atcount, i64_actorid aseractorid);
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
 		void help();
 
-		bool handle(const message<np_robot_pram>& adata);
-		bool handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata);
-		bool handle(const message<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>& adata);
+		bool handle([[maybe_unused]] const message<np_robot_pram>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>& adata);
 	};
 }//namespace ngl

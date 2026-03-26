@@ -20,7 +20,7 @@
 
 namespace ngl
 {
-	bool actor_gateway_g2c::handle(const message<np_actor_gatewayinfo_updata>& adata)
+	bool actor_gateway_g2c::handle([[maybe_unused]] const message<np_actor_gatewayinfo_updata>& adata)
 	{
 		m_info.updata(*adata.get_data());
 		return true;

@@ -73,9 +73,9 @@ namespace ngl
 
 		using handle_cmd = cmd<actor_gm, std::string, ncjson&, const message<ngl::np_gm>*>;
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<mforward<ngl::np_gm_response>>& adata);
-		bool handle(const message<ngl::np_gm>& adata);
+		bool handle([[maybe_unused]] const message<mforward<ngl::np_gm_response>>& adata);
+		bool handle([[maybe_unused]] const message<ngl::np_gm>& adata);
 	};
 }// namespace ngl

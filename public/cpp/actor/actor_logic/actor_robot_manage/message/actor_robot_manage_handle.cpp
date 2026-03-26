@@ -12,16 +12,13 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // File overview: Implements message handlers for message.
-
 #include "actor/actor_logic/actor_robot_manage/actor_robot_manage.h"
 #include "tools/tools.h"
-
 #include <string_view>
 #include <charconv>
 #include <limits>
 #include <vector>
 #include <cctype>
-
 namespace ngl
 {
 	void actor_robot_manage::help()
@@ -41,8 +38,7 @@ namespace ngl
 			"  help [command]"
 		);
 	}
-
-	bool actor_robot_manage::handle(const message<np_robot_pram>& adata)
+	bool actor_robot_manage::handle([[maybe_unused]] const message<np_robot_pram>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		if (lrecv == nullptr || lrecv->m_cmd.empty())
@@ -292,8 +288,7 @@ namespace ngl
 		help();
 		return true;
 	}
-
-	bool actor_robot_manage::handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
+	bool actor_robot_manage::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		auto lrobot_it = m_maprobot.try_emplace(lrecv->maccount()).first;
@@ -326,8 +321,7 @@ namespace ngl
 
 		return true;
 	}
-
-	bool actor_robot_manage::handle(const message<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>& adata)
+	bool actor_robot_manage::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>& adata)
 	{
 		const auto* lrecv = adata.get_data();
 		pbnet::PROBUFF_NET_ROLE_CREATE pro;

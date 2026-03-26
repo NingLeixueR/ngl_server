@@ -163,7 +163,7 @@ namespace ngl
 			}
 		}
 
-		bool handle(const message<np_event_register>& adata)
+		bool handle([[maybe_unused]] const message<np_event_register>& adata)
 		{
 			const np_event_register& pro = *adata.get_data();
 			for (const E_EVENTS ltype : pro.m_events)

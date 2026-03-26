@@ -63,13 +63,13 @@ namespace ngl
 
 		static void nregister();
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND_ADD>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND_ERASE>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD>>& adata);
-		bool handle(const message<np_eevents_logic_rolelogin>& adata);
-		bool handle(const message<np_eevents_logic_roleoffline>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FRIEND>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FRIEND_ADD>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FRIEND_ERASE>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD>>& adata);
+		bool handle([[maybe_unused]] const message<np_eevents_logic_rolelogin>& adata);
+		bool handle([[maybe_unused]] const message<np_eevents_logic_roleoffline>& adata);
 	};
 }// namespace ngl

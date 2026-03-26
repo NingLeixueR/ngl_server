@@ -74,27 +74,27 @@ namespace ngl
 		static i64_actorid actorid();
 
 		// # Netconnectionactor serversuccessful
-		bool handle(const message<np_connect_actor_server>& adata);
+		bool handle([[maybe_unused]] const message<np_connect_actor_server>& adata);
 
 		// # Registernode
-		bool handle(const message<np_actor_server_register>& adata);
+		bool handle([[maybe_unused]] const message<np_actor_server_register>& adata);
 
 		// # Actor_serverresponseregisternode
-		bool handle(const message<np_actornode_register_response>& adata);
+		bool handle([[maybe_unused]] const message<np_actornode_register_response>& adata);
 
 		// # Actorclient connection
-		bool handle(const message<np_actorclient_node_connect>& adata);
+		bool handle([[maybe_unused]] const message<np_actorclient_node_connect>& adata);
 
 		// # Servertoactorclientsynchronizenodeinfo
-		bool handle(const message<np_actornode_update>& adata);
+		bool handle([[maybe_unused]] const message<np_actornode_update>& adata);
 
 		// # Toactorclientsynchronizenodeinfo( )
-		bool handle(const message<np_actornode_update_mass>& adata);
+		bool handle([[maybe_unused]] const message<np_actornode_update_mass>& adata);
 
 		// # Connectionsuccessfulafterexecutetask
-		bool handle(const message<np_actornode_connect_task>& adata);
+		bool handle([[maybe_unused]] const message<np_actornode_connect_task>& adata);
 
 		// # Synchronizeactor_rolecorresponding gateway
-		bool handle(const message<np_actor_gatewayid_updata>& adata);
+		bool handle([[maybe_unused]] const message<np_actor_gatewayid_updata>& adata);
 	};
 }//namespace ngl

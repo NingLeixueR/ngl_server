@@ -64,11 +64,11 @@ namespace ngl
 
 		using handle_cmd = cmd<actor_ranklist, std::string, int, ncjson&>;
 
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		bool handle(const message<mforward<np_gm>>& adata);
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata);
-		bool handle(const message<np_activityrank_operator>& adata);
-		bool handle(const message<np_get_rank>& adata);
+		bool handle([[maybe_unused]] const message<mforward<np_gm>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata);
+		bool handle([[maybe_unused]] const message<np_activityrank_operator>& adata);
+		bool handle([[maybe_unused]] const message<np_get_rank>& adata);
 	};
 }// namespace ngl

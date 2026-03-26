@@ -86,7 +86,7 @@ namespace ngl
 		>(e_ready_all);
 	}
 	
-	bool actor_chat::timer_handle(const message<np_timerparm>& adata)
+	bool actor_chat::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		if (adata.get_data()->m_type != E_ACTOR_TIMER::ET_INTERVAL_SEC)
 		{

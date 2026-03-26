@@ -296,7 +296,7 @@ namespace ngl
 		ntimer::addtimer(this, ltimerparm);
 	}
 
-	bool actor_activity_manage::timer_handle(const message<np_timerparm>& adata)
+	bool actor_activity_manage::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		const np_timerparm* lrecv = adata.get_data();
 		if (lrecv->m_type != E_ACTOR_TIMER::ET_INTERVAL_SEC)

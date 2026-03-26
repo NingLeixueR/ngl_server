@@ -265,25 +265,25 @@ namespace ngl
 		using handle_gm = cmd<actor_role, std::string, int, ncjson&>;
 
 		// # Timer
-		bool timer_handle(const message<np_timerparm>& adata);
+		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
 		// # Rolecreateinitialize
 		void create_init(const std::string& aname);
 
-		bool handle(const message<mforward<np_gm>>& adata);
-		bool handle(const message<mforward<np_operator_task>>& adata);
-		bool handle(const message<np_actor_disconnect_close>& adata);
-		bool handle(const message<np_actor_senditem>& adata);
-		bool handle(const message<np_eevents_logic_rolelogin>& adata);
-		bool handle(const message<np_example_actorid>& adata);
-		bool handle(const message<pbnet::PROBUFF_NET_BAG_SYNC>& adata);
-		bool handle(const message<pbnet::PROBUFF_NET_CHANGE_ANGLE>& adata);
-		bool handle(const message<pbnet::PROBUFF_NET_CMD>& adata);
-		bool handle(const message<pbnet::PROBUFF_NET_GET_TIME>& adata);
-		bool handle(const message<pbnet::PROBUFF_NET_RECHARGE>& adata);
-		bool handle(const message<pbnet::PROBUFF_NET_ROLE_CREATE>& adata);
-		bool handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata);
-		bool handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata);
-		bool handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata);
+		bool handle([[maybe_unused]] const message<mforward<np_gm>>& adata);
+		bool handle([[maybe_unused]] const message<mforward<np_operator_task>>& adata);
+		bool handle([[maybe_unused]] const message<np_actor_disconnect_close>& adata);
+		bool handle([[maybe_unused]] const message<np_actor_senditem>& adata);
+		bool handle([[maybe_unused]] const message<np_eevents_logic_rolelogin>& adata);
+		bool handle([[maybe_unused]] const message<np_example_actorid>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_BAG_SYNC>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_CHANGE_ANGLE>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_CMD>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_GET_TIME>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_RECHARGE>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_CREATE>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata);
+		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata);
 	};
 }//namespace ngl
