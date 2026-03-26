@@ -11,15 +11,22 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Aggregates the split tools headers.
-
-#pragma once
+// File overview: Implements shared non-template helpers for tools.
 
 #include "tools/tools_core.h"
-#include "tools/tools_base.h"
-#include "tools/tools_text.h"
-#include "tools/tools_split.h"
-#include "tools/tools_code.h"
-#include "tools/tools_hash.h"
-#include "tools/tools_sys.h"
-#include "tools/tools_misc.h"
+#include "tools/log/nlog.h"
+
+namespace ngl
+{
+	namespace tools
+	{
+		void log_lex_err(
+			const char* atotype,
+			const char* afromtype,
+			const char* aerror,
+			const std::source_location& asource)
+		{
+			log_error(asource)->print("tools::lexical_cast<{}> failed from <{}> : {}", atotype, afromtype, aerror);
+		}
+	}
+}

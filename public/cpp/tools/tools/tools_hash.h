@@ -11,15 +11,18 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Aggregates the split tools headers.
+// File overview: Declares hashing helpers for tools.
 
 #pragma once
 
 #include "tools/tools_core.h"
-#include "tools/tools_base.h"
-#include "tools/tools_text.h"
-#include "tools/tools_split.h"
-#include "tools/tools_code.h"
-#include "tools/tools_hash.h"
-#include "tools/tools_sys.h"
-#include "tools/tools_misc.h"
+
+namespace ngl
+{
+	namespace tools
+	{
+		std::string md5(const std::string& atext);
+		std::string sh1(std::string_view atext);
+		std::string hmac_sha1(const std::string& akey, const std::string& atext);
+	}
+}

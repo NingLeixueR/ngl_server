@@ -8,20 +8,20 @@
 
 #pragma once
 
-#include "tools/impl.h"
 #include "tools/threadtools.h"
+#include "tools/impl.h"
 
-#include <algorithm>
-#include <array>
-#include <atomic>
-#include <cstdint>
 #include <functional>
+#include <algorithm>
+#include <cstdint>
 #include <limits>
-#include <map>
+#include <atomic>
 #include <memory>
-#include <mutex>
 #include <thread>
 #include <vector>
+#include <array>
+#include <mutex>
+#include <map>
 
 namespace ngl
 {
