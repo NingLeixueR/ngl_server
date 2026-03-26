@@ -19,11 +19,12 @@
 ## 目录结构
 
 - `public/cpp`：公共 C++ 源码，包含网络、序列化、日志、配置、Actor 基础设施等
-- `server/libnglcore`：服务端核心运行时库
-- `server/node`：服务端进程入口
+- `server/runtime/libnglcore`：服务端核心运行时库
+- `server/runtime/node`：服务端进程入口
 - `server/tests`：GoogleTest 测试集
-- `server/idl`：IDL 相关工具与生成入口
-- `server/makeproto`：协议与 SQL 生成工具
+- `server/tools/idl`：IDL 相关工具与生成入口
+- `server/tools/makeproto`：协议与 SQL 生成工具
+- `server/tools/rebuild`：本地维护工具
 - `bin/configure`：运行配置、CSV 表和脚本
 
 更细的服务端子目录说明见 [server/README.md](./server/README.md)。
