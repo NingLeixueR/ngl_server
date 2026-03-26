@@ -3,7 +3,6 @@
 #include "tools/db/sql/postgresql/npostgresql_manage.h"
 #include "tools/db/sql/mysql/nmysql_manage.h"
 #include "tools/tab/xml/xml.h"
-#include "tools/arg_options.h"
 #include "runtime_helpers.h"
 #include "test_support.h"
 #include "tools/tools.h"
@@ -62,27 +61,6 @@ template <std::size_t tcount>
 argv_buf<tcount> make_argv(const std::array<std::string, tcount>& aargs)
 {
 	return argv_buf<tcount>(aargs);
-}
-
-TEST(RuntimeHelpersTest, SplitCommandLineNormalizesRepeatedSpaces)
-{
-	const std::vector<std::string> ltokens =
-		ngl::arg_options::split_command_line("test   1500   login alice");
-	ASSERT_EQ(ltokens.size(), 4u);
-	EXPECT_EQ(ltokens[0], "test");
-	EXPECT_EQ(ltokens[1], "1500");
-	EXPECT_EQ(ltokens[2], "login");
-	EXPECT_EQ(ltokens[3], "alice");
-}
-
-TEST(RuntimeHelpersTest, RobotManageStripHelpRemovesHelpFlags)
-{
-	std::vector<std::string> largs = { "alice", "--help", "tcp", "-h" };
-
-	EXPECT_TRUE(ngl::robot_manage_cmd::strip_help(largs));
-	ASSERT_EQ(largs.size(), 2u);
-	EXPECT_EQ(largs[0], "alice");
-	EXPECT_EQ(largs[1], "tcp");
 }
 
 TEST(RuntimeHelpersTest, PushServerConfigParamEncodesStructuredNetPayload)

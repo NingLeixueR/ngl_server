@@ -129,7 +129,7 @@ namespace ngl_test_support
 			return false;
 		}
 
-		nconfig.set_nodeid(ltab->m_id, atcount);
+		nconfig.set_nodeid(static_cast<int16_t>(ltab->m_id), static_cast<int16_t>(atcount));
 		nconfig.set_servername(std::format("node_{}_{}_{}", lnode, ltab->m_area, atcount));
 		aerr.clear();
 		return true;

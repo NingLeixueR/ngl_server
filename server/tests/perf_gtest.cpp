@@ -363,8 +363,8 @@ TEST(TTabServersTest, ConnectRejectsInvalidTargetsWithoutCrash)
 	ltable.reload();
 
 	ngl::net_works lnet;
-
-	nconfig.set_nodeid(llocal.m_id, 1);
+	
+	nconfig.set_nodeid(static_cast<int16_t>(llocal.m_id), 1);
 	EXPECT_FALSE(ltable.connect(ngl::nnodeid::nodeid(static_cast<int16_t>(llocal.m_id), 1), lnet));
 	EXPECT_FALSE(ltable.connect(ngl::nnodeid::nodeid(8, 1), lnet));
 	EXPECT_FALSE(ltable.connect(ngl::nnodeid::nodeid(static_cast<int16_t>(lother.m_id), 1), lnet));
