@@ -70,6 +70,21 @@ namespace ngl
 			return true;
 		}
 
+		bool splite(int32_t aindex, const std::vector<std::string>& avec, std::vector<std::string>& adata)
+		{
+			if (aindex < 0)
+			{
+				return false;
+			}
+			const std::size_t lpos = static_cast<std::size_t>(aindex);
+			if (lpos > avec.size())
+			{
+				return false;
+			}
+			adata.insert(adata.end(), avec.begin() + lpos, avec.end());
+			return true;
+		}
+
 		bool splicing(const std::set<std::string>& aset, const char* afg, std::string& astr)
 		{
 			if (afg == nullptr)

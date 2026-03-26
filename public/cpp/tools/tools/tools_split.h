@@ -112,15 +112,7 @@ namespace ngl
 			return true;
 		}
 
-		bool splite(int32_t aindex, const std::vector<std::string>& avec, std::vector<std::string>& adata)
-		{
-			if (aindex < 0)
-			{
-				return false;
-			}
-			adata.insert(adata.end(), avec.begin() + aindex, avec.end());
-			return true;
-		}
+		bool splite(int32_t aindex, const std::vector<std::string>& avec, std::vector<std::string>& adata);
 
 		template <std::size_t... INDEX, typename TTUPLE>
 		bool splite_tuple(std::index_sequence<INDEX...>, const std::vector<std::string>& avec, TTUPLE& atup)
