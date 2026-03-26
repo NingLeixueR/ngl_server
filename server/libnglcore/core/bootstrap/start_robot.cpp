@@ -86,7 +86,7 @@ startup_error start_robot(int aargc, char** aargv, int* atcp_port)
 			ngl::sleep::seconds(1);
 			std::cout << "---------------[" << li << "]---------------" << std::endl;
 		}
-		const std::string lcmd = std::format("logins {} {} {}", aargv[4], aargv[5], aargv[6]);
+		const std::string lcmd = std::format("logins {} {} {} {}", aargv[4], aargv[5], aargv[6], aargv[7]);
 		ngl::actor_robot_manage::parse_command(lcmd);
 
 		bool ltest = false;
