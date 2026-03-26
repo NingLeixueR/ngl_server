@@ -5,7 +5,10 @@
 #include <filesystem>
 #include <fstream>
 
+#include "../libnglcore/core/bootstrap/startup_support.h"
 #include "../libnglcore/core/bootstrap/server_main.h"
+#include "actor/protocol/nprotocol.h"
+#include "actor/tab/ttab_servers.h"
 #include "test_support.h"
 
 TEST(A01Smoke, StartupInvalidArgs)
@@ -66,4 +69,30 @@ TEST(A03Smoke, StartupReturnsConfigNotFoundWhenConfigRootMissing)
 
 	const int rc = ngl_main(4, argv);
 	EXPECT_EQ(rc, static_cast<int>(startup_error::config_not_found));
+}
+
+TEST(A03Smoke, PrepCtxRestoresXmlNodeRuntimeState)
+{
+	ngl_test_support::scoped_path lcwd_guard(std::filesystem::path("bin/configure"));
+
+	char lprog[] = "ngl_test";
+	char lnode[] = "db";
+	char larea[] = "1";
+	char ltcount[] = "1";
+	char* largv[] = { lprog, lnode, larea, ltcount };
+
+	start_ctx lctx{};
+	const prep_res lres = prep_ctx(4, largv, lctx);
+	ASSERT_EQ(lres.code, startup_error::ok) << lres.reason;
+
+	const ngl::tab_servers* ltab = ngl::ttab_servers::instance().const_tab("db", 1);
+	ASSERT_NE(ltab, nullptr);
+	EXPECT_EQ(lctx.node_type, static_cast<int>(ngl::DB));
+	EXPECT_EQ(nconfig.nodename(), "db");
+	EXPECT_EQ(nconfig.nodetype(), ngl::DB);
+	EXPECT_EQ(nconfig.config_name(), "db_1");
+	EXPECT_EQ(nconfig.tid(), ltab->m_id);
+	EXPECT_EQ(nconfig.tcount(), 1);
+	EXPECT_EQ(nconfig.nodeid(), ngl::nnodeid::nodeid(ltab->m_id, 1));
+	EXPECT_EQ(nconfig.servername(), std::format("node_db_{}_1", ltab->m_area));
 }

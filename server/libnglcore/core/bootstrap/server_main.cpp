@@ -43,11 +43,26 @@ struct prep_res
 	const char* reason = "";
 };
 
+// Emit a uniform startup failure log that includes the resolved context.
+void log_failure(startup_error acode, const start_ctx& actx, const char* areason);
+
+// Parse CLI arguments, load config/csv metadata, and resolve the target server row.
+prep_res prep_ctx(int aargc, char** aargv, start_ctx& actx);
+
 namespace detail
 {
 	void apply_srv(start_ctx& actx, const ngl::tab_servers& asrv)
 	{
 		actx.node_type = static_cast<int>(asrv.m_type);
+		nconfig.set_nodeid(static_cast<int16_t>(asrv.m_id), static_cast<int16_t>(actx.tcount));
+		if (actx.area < 0)
+		{
+			nconfig.set_servername(std::format("node_{}__{}_{}", actx.node_name, -actx.area, actx.tcount));
+		}
+		else
+		{
+			nconfig.set_servername(std::format("node_{}_{}_{}", actx.node_name, asrv.m_area, actx.tcount));
+		}
 
 		ngl::net_works lnet;
 		if (ngl::ttab_servers::instance().get_nworks(&asrv, ngl::ENET_PROTOCOL::ENET_TCP, actx.tcount, lnet))
