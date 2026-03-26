@@ -1,47 +1,19 @@
-# idl 代码生成工具
+# idl 模块
 
-`server/idl` 是本地工具模块，用于基于 IDL 定义生成相关代码和辅助产物。
+`server/tools/idl` 是本地工具模块，用于基于 IDL 定义生成相关代码和辅助产物。
 
-## 构建方式
+## 关键目录
 
-该模块默认只在“本地 Windows 构建”中启用，不属于当前 CI 的主链路模块。
+- `server/tools/idl/core`
 
 ## 主要文件
 
-- `core/main.cpp`
-  工具入口
-- `core/idl.h`
-  核心处理逻辑
-- `core/idl.cpp`
-  实现入口
-- `core/idlcpp_protocol.h`
-  协议相关生成辅助
+- `server/tools/idl/core/idl.h`
+- `server/tools/idl/core/idl.cpp`
+- `server/tools/idl/core/idlcpp_protocol.h`
+- `server/tools/idl/core/main.cpp`
 
-## 模块职责
+## 定位
 
-- 处理 IDL 输入
-- 生成项目所需的中间代码或协议辅助文件
-- 为协议开发和自动化生成链路提供支撑
-
-## 依赖关系
-
-- 依赖 `nglcore` 或 `ngl_build_options`
-- 间接复用 `public/cpp` 中的工具、配置和协议相关能力
-
-## 适合的改动
-
-- 调整 IDL 输入格式到输出格式的映射
-- 补生成代码模板
-- 修正工具侧解析逻辑
-
-## 不适合的改动
-
-- 在线运行时业务逻辑
-- 节点启动逻辑
-- 只为测试临时方便而写进工具主流程的逻辑
-
-## 维护建议
-
-- 保持“工具逻辑”和“运行时逻辑”边界清晰。
-- 如果生成产物会被手工修改，应在文档里明确说明是否允许。
-- 若后续希望跨平台持续使用，建议把工具执行链路纳入至少一个 CI job。
+- 这是开发工具，不属于运行时主链路。
+- 应该和 `runtime/` 目标隔离维护。
