@@ -15,9 +15,9 @@
 
 #pragma once
 
-#include "actor/actor_base/naddress.h"
+#include "actor/actor_base/core/naddress.h"
 #include "actor/protocol/nprotocol.h"
-#include "actor/actor_base/actor.h"
+#include "actor/actor_base/core/actor.h"
 #include <unordered_map>
 
 namespace ngl

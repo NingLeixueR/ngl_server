@@ -15,18 +15,18 @@
 
 #pragma once
 
-#include "actor/actor_base/nactortype.h"
+#include "actor/actor_base/core/nactortype.h"
 #include "tools/serialize/nserialize.h"
 #include "tools/tab/xml/sysconfig.h"
 #include "tools/serialize/ndefine.h"
-#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/core/nguid.h"
 #include "tools/serialize/pack.h"
-#include "actor/pb/example.pb.h"
+#include "actor/generated/pb/example.pb.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/threadtools.h"
 #include "tools/localtime.h"
-#include "actor/pb/net.pb.h"
-#include "actor/pb/db.pb.h"
+#include "actor/generated/pb/net.pb.h"
+#include "actor/generated/pb/db.pb.h"
 #include "tools/tools.h"
 #include "tools/type.h"
 

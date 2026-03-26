@@ -18,12 +18,12 @@
 #include "actor/actor_logic/actor_role/logic/bag/drop.h"
 #include "actor/actor_logic/actor_role/actor_role.h"
 #include "actor/actor_logic/actor_gm/gcmd.h"
-#include "actor/actor_base/nregister.h"
+#include "actor/actor_base/core/nregister.h"
 #include "actor/actor_logic/nforward.h"
 #include "actor/tab/ttab_specialid.h"
 #include "actor/tab/ttab_recharge.h"
 #include "tools/curl/ncurl.h"
-#include "actor/pb/net.pb.h"
+#include "actor/generated/pb/net.pb.h"
 
 namespace ngl
 {

@@ -16,9 +16,9 @@
 #pragma once
 
 #include "tools/serialize/netbuff_pool.h"
-#include "actor/actor_base/handle_pram.h"
+#include "actor/actor_base/core/handle_pram.h"
 #include "tools/serialize/structbytes.h"
-#include "actor/actor_base/actor_base.h"
+#include "actor/actor_base/core/actor_base.h"
 #include "tools/serialize/segpack.h"
 #include "tools/serialize/pack.h"
 #include "net/server_session.h"

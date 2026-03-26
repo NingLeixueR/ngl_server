@@ -16,7 +16,7 @@
 #pragma once
 
 #include "actor/protocol/nprotocol_template.h"
-#include "actor/pb/net.pb.h"
+#include "actor/generated/pb/net.pb.h"
 
 #include <limits>
 

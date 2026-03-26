@@ -13,7 +13,7 @@
 */
 // File overview: Implements message handlers for message.
 #include "actor/actor_logic/actor_login/actor_login.h"
-#include "actor/actor_base/nregister.h"
+#include "actor/actor_base/core/nregister.h"
 namespace ngl
 {
 	bool actor_login::handle(const message<np_actor_disconnect_close>& adata)

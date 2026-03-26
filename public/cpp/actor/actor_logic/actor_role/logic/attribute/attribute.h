@@ -17,10 +17,10 @@
 
 #include "actor/actor_logic/actor_role/logic/attribute/attribute_value.h"
 #include "actor/actor_logic/actor_events/events_map.h"
-#include "actor/actor_base/actor_base.h"
+#include "actor/actor_base/core/actor_base.h"
 #include "actor/tab/ttab_attribute.h"
 #include "tools/tab/csv/ncsv.h"
-#include "actor/pb/net.pb.h"
+#include "actor/generated/pb/net.pb.h"
 #include "tools/log/nlog.h"
 #include "net/tcp/ntcp.h"
 

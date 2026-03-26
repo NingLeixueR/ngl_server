@@ -21,7 +21,7 @@
 #include "actor/actor_logic/actor_brief/actor_brief.h"
 #include "actor/tab/ttab_activityopenserver.h"
 #include "actor/tab/ttab_activityalways.h"
-#include "actor/pb/net.pb.h"
+#include "actor/generated/pb/net.pb.h"
 
 namespace ngl
 {

@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "actor/pb/net.pb.h"
+#include "actor/generated/pb/net.pb.h"
 #include "tools/tools.h"
 
 #include <google/protobuf/util/json_util.h>

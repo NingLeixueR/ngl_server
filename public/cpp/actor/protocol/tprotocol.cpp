@@ -16,9 +16,9 @@
 
 #include "actor/protocol/tprotocol.h"
 #include "actor/protocol/nprotocol.h"
-#include "actor/actor_base/ntimer.h"
-#include "actor/actor_base/actor.h"
-#include "actor/pb/net.pb.h"
+#include "actor/actor_base/core/ntimer.h"
+#include "actor/actor_base/core/actor.h"
+#include "actor/generated/pb/net.pb.h"
 
 namespace ngl
 {

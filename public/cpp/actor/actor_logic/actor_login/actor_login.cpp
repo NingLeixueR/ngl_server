@@ -15,7 +15,7 @@
 
 
 #include "actor/actor_logic/actor_login/actor_login.h"
-#include "actor/actor_base/nregister.h"
+#include "actor/actor_base/core/nregister.h"
 
 namespace ngl
 {

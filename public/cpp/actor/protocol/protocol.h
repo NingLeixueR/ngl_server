@@ -15,13 +15,13 @@
 
 #pragma once
 
-#include "actor/actor_base/actor_manage.h"
-#include "actor/actor_base/handle_pram.h"
+#include "actor/actor_base/core/actor_manage.h"
+#include "actor/actor_base/core/handle_pram.h"
 #include "tools/serialize/structbytes.h"
-#include "actor/actor_base/nactortype.h"
+#include "actor/actor_base/core/nactortype.h"
 #include "actor/protocol/nprotocol.h"
 #include "actor/protocol/tprotocol.h"
-#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/core/nguid.h"
 #include "tools/serialize/pack.h"
 #include "tools/threadtools.h"
 #include "tools/log/nlog.h"

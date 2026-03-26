@@ -16,7 +16,7 @@
 
 #include "tools/tab/xml/sysconfig.h"
 #include "actor/tab/ttab_servers.h"
-#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/core/nguid.h"
 #include "tools/curl/ncurl.h"
 #include "tools/log/nlog.h"
 #include "tools/localtime.h"

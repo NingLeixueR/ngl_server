@@ -17,8 +17,8 @@
 #include "actor/actor_logic/actor_role_manage/actor_role_manage.h"
 #include "actor/actor_logic/actor_keyvalue/actor_keyvalue.h"
 #include "actor/actor_logic/actor_create/actor_create.h"
-#include "actor/actor_base/nregister.h"
-#include "actor/actor_base/ntimer.h"
+#include "actor/actor_base/core/nregister.h"
+#include "actor/actor_base/core/ntimer.h"
 
 namespace ngl
 {

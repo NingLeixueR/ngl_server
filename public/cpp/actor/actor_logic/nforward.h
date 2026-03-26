@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor logic.
+// File overview: Declares actor forward-registration entry points.
 
 #pragma once
 
@@ -20,7 +20,7 @@
 #include "actor/actor_logic/actor_gateway/actor_gateway.h"
 #include "actor/actor_logic/actor_robot/actor_robot.h"
 #include "actor/actor_logic/actor_role/actor_role.h"
-#include "actor/actor_base/actor.h"
+#include "actor/actor_base/core/actor.h"
 #include "tools/template_arg.h"
 #include "tools/tab/xml/xml.h"
 

@@ -15,7 +15,7 @@
 
 
 #include "actor/actor_logic/actor_gateway/actor_gateway.h"
-#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/core/nguid.h"
 #include "actor/tab/ttab_servers.h"
 #include "actor/protocol/protocol.h"
 #include "net/tcp/ws/nws.h"

@@ -17,8 +17,8 @@
 
 #include "actor/protocol/nprotocol_template.h"
 #include "actor/tab/ttab_servers.h"
-#include "actor/actor_base/nguid.h"
-#include "actor/actor_base/actor.h"
+#include "actor/actor_base/core/nguid.h"
+#include "actor/actor_base/core/actor.h"
 #include "tools/pb_field.h"
 
 namespace ngl

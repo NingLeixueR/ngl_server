@@ -19,7 +19,7 @@
 #include "actor/actor_logic/actor_role/logic/nmap/grid.h"
 #include "actor/actor_logic/actor_role/logic/nmap/aoi.h"
 #include "actor/tab/csvtable.h"
-#include "actor/pb/net.pb.h"
+#include "actor/generated/pb/net.pb.h"
 #include "tools/type.h"
 
 #include <vector>
@@ -206,7 +206,7 @@ namespace ngl
 			if (apath.empty())
 			{
 				(*lstream) << "[" << printf_point(aid1) << "->" << printf_point(aid2) << "]" << std::endl;
-				(*lstream) << "path:" << "路径不通" << std::endl;
+				(*lstream) << "path:" << "not_found" << std::endl;
 			}
 			else
 			{

@@ -16,7 +16,7 @@
 #pragma once
 
 #include "actor/actor_logic/actor_role/logic/nmap/grids.h"
-#include "actor/actor_base/actor.h"
+#include "actor/actor_base/core/actor.h"
 
 namespace ngl
 {

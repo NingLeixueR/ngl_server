@@ -11,12 +11,12 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor logic.
+// File overview: Registers client-to-game forwarding handlers.
 
 
 #include "actor/actor_logic/nforward.h"
-#include "actor/pb/example.pb.h"
-#include "actor/pb/net.pb.h"
+#include "actor/generated/pb/example.pb.h"
+#include "actor/generated/pb/net.pb.h"
 
 namespace ngl
 {

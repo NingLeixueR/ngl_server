@@ -15,8 +15,8 @@
 
 #pragma once
 
-#include "actor/auto/nactor_auto.h"
-#include "actor/actor_base/actor.h"
+#include "actor/generated/auto/nactor_auto.h"
+#include "actor/actor_base/core/actor.h"
 #include "tools/tab/csv/ncsv.h"
 #include "tools/localtime.h"
 

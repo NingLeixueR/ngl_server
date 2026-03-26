@@ -14,7 +14,7 @@
 // File overview: Implements logic for actor server.
 
 #include "actor/actor_logic/actor_server/actor_server.h"
-#include "actor/actor_base/nregister.h"
+#include "actor/actor_base/core/nregister.h"
 
 namespace ngl
 {

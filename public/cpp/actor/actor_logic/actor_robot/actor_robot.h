@@ -17,14 +17,14 @@
 
 #include "tools/db/sql/mysql/nmysql_manage.h"
 #include "tools/db/sql/mysql/nmysql_pool.h"
-#include "actor/actor_base/actor_manage.h"
-#include "actor/actor_base/ndbclient.h"
+#include "actor/actor_base/core/actor_manage.h"
+#include "actor/actor_base/core/ndbclient.h"
 #include "tools/db/sql/mysql/nmysql.h"
 #include "tools/ai/behavior_tree.h"
 #include "actor/protocol/nprotocol.h"
 #include "tools/db/sql/db_data.h"
-#include "actor/pb/example.pb.h"
-#include "actor/pb/net.pb.h"
+#include "actor/generated/pb/example.pb.h"
+#include "actor/generated/pb/net.pb.h"
 #include "net/tcp/ntcp.h"
 
 namespace ngl

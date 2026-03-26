@@ -16,7 +16,7 @@
 #pragma once
 
 #include "tools/serialize/nserialize.h"
-#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/core/nguid.h"
 #include "actor/tab/csvtable.h"
 #include "tools/localtime.h"
 #include "tools/tools.h"

@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "actor/pb/net.pb.h"
+#include "actor/generated/pb/net.pb.h"
 
 #include <functional>
 #include <iostream>

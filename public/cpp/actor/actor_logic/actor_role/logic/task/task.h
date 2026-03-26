@@ -15,8 +15,8 @@
 
 #pragma once
 
-#include "actor/auto/nactor_auto.h"
-#include "actor/pb/db.pb.h"
+#include "actor/generated/auto/nactor_auto.h"
+#include "actor/generated/pb/db.pb.h"
 #include "tools/type.h"
 
 namespace ngl

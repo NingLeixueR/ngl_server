@@ -16,7 +16,7 @@
 
 #include "actor/actor_logic/actor_brief/actor_brief.h"
 #include "actor/actor_logic/actor_chat/actor_chat.h"
-#include "actor/pb/net.pb.h"
+#include "actor/generated/pb/net.pb.h"
 
 namespace ngl
 {

@@ -16,7 +16,7 @@
 
 #include "actor/protocol/nprotocol.h"
 #include "tools/tab/xml/sysconfig.h"
-#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/core/nguid.h"
 #include "net/udp/kcp/ukcp.h"
 #include "tools/log/nlog.h"
 

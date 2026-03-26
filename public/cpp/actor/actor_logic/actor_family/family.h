@@ -16,7 +16,7 @@
 #pragma once
 
 #include "actor/tab/ttab_specialid.h"
-#include "actor/auto/nactor_auto.h"
+#include "actor/generated/auto/nactor_auto.h"
 #include "tools/tab/csv/ncsv.h"
 #include "tools/localtime.h"
 

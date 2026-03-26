@@ -15,7 +15,7 @@
 
 
 #include "actor/actor_logic/actor_log/actor_log.h"
-#include "actor/actor_base/actor_base.h"
+#include "actor/actor_base/core/actor_base.h"
 #include "actor/protocol/nprotocol.h"
 #include "tools/log/logprintf.h"
 #include "tools/tab/xml/xml.h"

@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "actor/actor_base/actor_base.h"
+#include "actor/actor_base/core/actor_base.h"
 #include "net/udp/kcp/asio_kcp.h"
 #include "net/udp/kcp/ukcp.h"
 

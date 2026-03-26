@@ -14,7 +14,7 @@
 // File overview: Implements message handlers for message.
 #include "actor/actor_logic/actor_robot_manage/actor_robot_manage.h"
 #include "actor/actor_logic/actor_robot/actor_robot.h"
-#include "actor/actor_base/nregister.h"
+#include "actor/actor_base/core/nregister.h"
 #include "actor/actor_logic/nforward.h"
 #include "net/udp/kcp/nkcp.h"
 namespace ngl

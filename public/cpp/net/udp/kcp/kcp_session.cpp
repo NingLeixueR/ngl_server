@@ -16,7 +16,7 @@
 
 #include "actor/protocol/nprotocol.h"
 #include "net/udp/kcp/kcp_session.h"
-#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/core/nguid.h"
 #include "net/udp/kcp/asio_kcp.h"
 #include "tools/log/nlog.h"
 

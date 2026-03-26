@@ -16,7 +16,7 @@
 #pragma once
 
 #include "actor/protocol/nprotocol.h"
-#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/core/nguid.h"
 
 #include <map>
 

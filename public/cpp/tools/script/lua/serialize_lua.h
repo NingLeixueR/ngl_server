@@ -1090,6 +1090,6 @@ namespace ngl
 
 }//namespace ngl
 
-#include "actor/auto/nscript_pbexample.h"
-#include "actor/auto/nscript_pbnet.h"
-#include "actor/auto/nscript_pbdb.h"
+#include "actor/generated/auto/nscript_pbexample.h"
+#include "actor/generated/auto/nscript_pbnet.h"
+#include "actor/generated/auto/nscript_pbdb.h"

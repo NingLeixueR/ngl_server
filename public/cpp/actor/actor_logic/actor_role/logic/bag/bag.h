@@ -17,8 +17,8 @@
 
 #include "actor/actor_logic/actor_role/logic/bag/itme.h"
 #include "actor/actor_logic/actor_role/logic/remakes.h"
-#include "actor/auto/nactor_auto.h"
-#include "actor/pb/db.pb.h"
+#include "actor/generated/auto/nactor_auto.h"
+#include "actor/generated/pb/db.pb.h"
 
 namespace ngl
 {

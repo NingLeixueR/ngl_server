@@ -28,13 +28,13 @@ namespace ngl
 		em<EnumAttribute>::set(E_CooldownAbsolute, "cooldownabsolute");
 		em<EnumAttribute>::set(E_CooldownProp, "cooldownprop");
 
-		em<EnumAttribute>::set(E_Attack, "攻击", 1);
-		em<EnumAttribute>::set(E_Defense, "防御", 1);
-		em<EnumAttribute>::set(E_Hp, "血量", 1);
-		em<EnumAttribute>::set(E_Anger, "怒气", 1);
-		em<EnumAttribute>::set(E_Speed, "速度", 1);
-		em<EnumAttribute>::set(E_CooldownAbsolute, "冷却缩减-绝对值", 1);
-		em<EnumAttribute>::set(E_CooldownProp, "冷却缩减-万分比", 1);
+		em<EnumAttribute>::set(E_Attack, "attack_name", 1);
+		em<EnumAttribute>::set(E_Defense, "defense_name", 1);
+		em<EnumAttribute>::set(E_Hp, "hp_name", 1);
+		em<EnumAttribute>::set(E_Anger, "anger_name", 1);
+		em<EnumAttribute>::set(E_Speed, "speed_name", 1);
+		em<EnumAttribute>::set(E_CooldownAbsolute, "cooldown_abs_name", 1);
+		em<EnumAttribute>::set(E_CooldownProp, "cooldown_prop_name", 1);
 	}
 
 	std::pair<const char*, const char*> enum_attr_name::name(EnumAttribute atype)

@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "actor/actor_base/ndb_modular.h"
+#include "actor/actor_base/core/ndb_modular.h"
 #include "actor/actor_base/nsp/nsp.h"
 #include "tools/threadtools.h"
 #include "tools/pb_field.h"

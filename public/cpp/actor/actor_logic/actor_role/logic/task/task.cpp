@@ -19,7 +19,7 @@
 #include "actor/actor_logic/actor_role/actor_role.h"
 #include "actor/actor_logic/actor_mail/actor_mail.h"
 #include "actor/tab/ttab_task.h"
-#include "actor/pb/db.pb.h"
+#include "actor/generated/pb/db.pb.h"
 
 namespace ngl
 {

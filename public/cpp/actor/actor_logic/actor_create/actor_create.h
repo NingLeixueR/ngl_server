@@ -16,11 +16,11 @@
 #pragma once
 
 #include "tools/db/sql/mysql/nmysql_pool.h"
-#include "actor/actor_base/actor_manage.h"
-#include "actor/actor_base/nactortype.h"
-#include "actor/actor_base/ndbclient.h"
+#include "actor/actor_base/core/actor_manage.h"
+#include "actor/actor_base/core/nactortype.h"
+#include "actor/actor_base/core/ndbclient.h"
 #include "tools/db/sql/mysql/nmysql.h"
-#include "actor/actor_base/ntimer.h"
+#include "actor/actor_base/core/ntimer.h"
 #include "tools/db/sql/db_data.h"
 #include "net/tcp/ntcp.h"
 

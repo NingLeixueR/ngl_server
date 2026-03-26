@@ -16,7 +16,7 @@
 
 #include "actor/actor_logic/actor_csvclient/actor_csvclient.h"
 #include "actor/actor_logic/actor_csvserver/actor_csvserver.h"
-#include "actor/actor_base/actor_manage.h"
+#include "actor/actor_base/core/actor_manage.h"
 
 namespace ngl
 {

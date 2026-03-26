@@ -15,7 +15,7 @@
 
 
 #include "actor/actor_logic/actor_keyvalue/actor_keyvalue.h"
-#include "actor/pb/net.pb.h"
+#include "actor/generated/pb/net.pb.h"
 
 namespace ngl
 {

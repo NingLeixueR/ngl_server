@@ -18,12 +18,12 @@
 #include "actor/actor_logic/actor_login/account.h"
 #include "tools/db/sql/mysql/nmysql_manage.h"
 #include "tools/db/sql/mysql/nmysql_pool.h"
-#include "actor/actor_base/actor_manage.h"
-#include "actor/actor_base/ndbclient.h"
+#include "actor/actor_base/core/actor_manage.h"
+#include "actor/actor_base/core/ndbclient.h"
 #include "tools/db/sql/mysql/nmysql.h"
 #include "tools/db/sql/db_data.h"
-#include "actor/pb/net.pb.h"
-#include "actor/pb/db.pb.h"
+#include "actor/generated/pb/net.pb.h"
+#include "actor/generated/pb/db.pb.h"
 #include "net/tcp/ntcp.h"
 
 #include <format>

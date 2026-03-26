@@ -17,7 +17,7 @@
 
 #include "actor/tab/ttab_item.h"
 #include "tools/tab/csv/ncsv.h"
-#include "actor/pb/db.pb.h"
+#include "actor/generated/pb/db.pb.h"
 
 namespace ngl
 {

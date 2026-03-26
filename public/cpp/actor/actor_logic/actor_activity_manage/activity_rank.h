@@ -17,7 +17,7 @@
 
 #include "actor/actor_logic/actor_activity_manage/activity.h"
 #include "actor/tab/ttab_activity_toprank.h"
-#include "actor/actor_base/actor.h"
+#include "actor/actor_base/core/actor.h"
 
 namespace ngl
 {

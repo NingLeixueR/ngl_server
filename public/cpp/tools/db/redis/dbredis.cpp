@@ -16,7 +16,7 @@
 
 #include "actor/protocol/nprotocol.h"
 #include "tools/db/redis/dbredis.h"
-#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/core/nguid.h"
 #include "tools/tab/xml/xml.h"
 
 namespace ngl

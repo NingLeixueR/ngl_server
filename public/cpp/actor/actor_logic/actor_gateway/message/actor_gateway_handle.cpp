@@ -19,7 +19,7 @@
 #include "actor/actor_logic/actor_gateway/actor_gateway.h"
 #include "actor/actor_logic/actor_kcp/actor_kcp.h"
 #include "actor/actor_logic/actor_server/actor_server.h"
-#include "actor/actor_base/nregister.h"
+#include "actor/actor_base/core/nregister.h"
 #include "net/nnet.h"
 
 namespace ngl

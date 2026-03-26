@@ -15,7 +15,7 @@
 
 
 #include "tools/serialize/pack_head.h"
-#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/core/nguid.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/log/nlog.h"
 

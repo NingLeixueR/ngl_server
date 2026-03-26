@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "actor/actor_base/actor.h"
+#include "actor/actor_base/core/actor.h"
 #include "tools/type.h"
 #include "tools/cmd.h"
 

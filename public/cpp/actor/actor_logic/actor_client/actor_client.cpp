@@ -15,9 +15,9 @@
 
 #include "actor/actor_logic/actor_client/actor_client.h"
 #include "actor/actor_logic/actor_server/actor_server.h"
-#include "actor/actor_base/actor_manage.h"
-#include "actor/actor_base/nregister.h"
-#include "actor/actor_base/naddress.h"
+#include "actor/actor_base/core/actor_manage.h"
+#include "actor/actor_base/core/nregister.h"
+#include "actor/actor_base/core/naddress.h"
 #include "net/server_session.h"
 #include "net/tcp/ntcp.h"
 
