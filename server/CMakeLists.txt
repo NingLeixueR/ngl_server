@@ -7,14 +7,11 @@ if(NOT DEFINED NGL_IS_LOCAL_BUILD)
 endif()
 
 add_subdirectory(libnglcore)
+add_subdirectory(node)
 
 if(NGL_IS_LOCAL_BUILD AND CMAKE_SYSTEM_NAME MATCHES "Windows")
-	add_subdirectory(rebuild)
-	add_subdirectory(makeproto)
-	add_subdirectory(idl)
+	add_subdirectory(tools)
 endif()
-
-add_subdirectory(node)
 
 if(BUILD_TESTING)
 	add_subdirectory(tests)

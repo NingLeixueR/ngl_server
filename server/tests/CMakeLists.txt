@@ -28,8 +28,8 @@ if(NOT NGL_TEST_CASE_SRCS)
 endif()
 
 set(NGL_TEST_SUPPORT_SRCS
-	${CMAKE_SOURCE_DIR}/server/libnglcore/core/server_main.cpp
-	${CMAKE_SOURCE_DIR}/server/libnglcore/core/startup_support.cpp
+	${CMAKE_SOURCE_DIR}/server/libnglcore/core/bootstrap/server_main.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/startup_support.cpp
 	${NGL_PUBLIC_CPP_SRC}
 	${NGL_PUBLIC_CPP_CSRC}
 )
@@ -45,10 +45,6 @@ else()
 		${NGL_TEST_CASE_SRCS}
 	)
 endif()
-
-target_include_directories(ngl_test PRIVATE
-	${CMAKE_CURRENT_SOURCE_DIR}/../libnglcore/core
-)
 
 if(NGLCORE_BUILD_SHARED)
 	target_compile_definitions(ngl_test PRIVATE NGLCORE_EXPORTS)

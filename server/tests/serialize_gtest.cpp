@@ -12,8 +12,8 @@
 #include <string>
 #include <vector>
 
-#include "actor/actor_base/actor_base.h"
-#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/core/actor_base.h"
+#include "actor/actor_base/core/nguid.h"
 #include "actor/protocol/tprotocol.h"
 #include "tools/db/sql/db_buff.h"
 #include "tools/serialize/nserialize.h"

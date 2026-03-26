@@ -1,6 +1,6 @@
 // File overview: Implements the entry point for the node target.
 
-#include "server_main.h"
+#include "bootstrap/server_main.h"
 #include "dumper.h"
 #include "tools/type.h"
 

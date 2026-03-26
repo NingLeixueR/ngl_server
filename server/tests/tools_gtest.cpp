@@ -16,7 +16,7 @@
 #include <thread>
 #include <vector>
 
-#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/core/nguid.h"
 #include "actor/tab/ttab_servers.h"
 #include "tools/arg_options.h"
 #include "tools/curl/ncurl.h"

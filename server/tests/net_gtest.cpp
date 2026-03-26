@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#include "actor/actor_base/nguid.h"
+#include "actor/actor_base/core/nguid.h"
 #include "actor/protocol/nprotocol.h"
 #include "net/server_session.h"
 #include "net/tcp/asio_tcp.h"

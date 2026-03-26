@@ -12,6 +12,7 @@
 #include "tools/db/sql/mysql/nmysql_manage.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/arg_options.h"
+#include "runtime_helpers.h"
 #include "test_support.h"
 #include "tools/tools.h"
 

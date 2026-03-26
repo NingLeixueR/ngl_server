@@ -1,1 +1,0 @@
-// File overview: Implements logic for core.

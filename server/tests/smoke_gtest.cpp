@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <fstream>
 
-#include "server_main.h"
+#include "../libnglcore/core/bootstrap/server_main.h"
 #include "test_support.h"
 
 TEST(A01Smoke, StartupInvalidArgs)

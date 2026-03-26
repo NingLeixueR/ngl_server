@@ -4,11 +4,11 @@ cmake_minimum_required(VERSION 3.16)
 
 PROJECT (nglcore)
 
-SET(CORE_LIST ${PROJECT_SOURCE_DIR}/core)
+SET(CORE_LIST ${CMAKE_CURRENT_SOURCE_DIR}/core)
 FILE(GLOB_RECURSE CORE_LIST_INCLUDE CONFIGURE_DEPENDS ${CORE_LIST}/*.h )
 FILE(GLOB_RECURSE CORE_LIST_SRC CONFIGURE_DEPENDS ${CORE_LIST}/*.cpp)
 FILE(GLOB_RECURSE CORE_LIST_CSRC CONFIGURE_DEPENDS ${CORE_LIST}/*.c)
-FILE(GLOB_RECURSE CORE_PROTOBUF_LIST_CSRC CONFIGURE_DEPENDS ${CORE_LIST}/../../../public/*.cc)
+FILE(GLOB_RECURSE CORE_PROTOBUF_LIST_CSRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/public/*.cc)
 SOURCE_GROUP("Header Files" FILES ${CORE_LIST_INCLUDE})
 SOURCE_GROUP("Source Files" FILES ${CORE_LIST_SRC})
 SOURCE_GROUP("Source Files" FILES ${CORE_LIST_CSRC})
@@ -42,7 +42,9 @@ else()
 	target_compile_definitions(nglcore PUBLIC NGLCORE_STATIC)
 endif()
 
-target_include_directories(nglcore PUBLIC ${CORE_LIST})
+target_include_directories(nglcore PUBLIC
+	${CORE_LIST}
+)
 target_link_libraries(nglcore PUBLIC ngl_build_options)
 
 ngl_apply_runtime_deps(nglcore PRIVATE)

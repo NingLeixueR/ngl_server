@@ -6,8 +6,8 @@
 #include <atomic>
 #include <vector>
 
-#include "actor/actor_base/actor_base.h"
-#include "actor/actor_base/actor_manage.h"
+#include "actor/actor_base/core/actor_base.h"
+#include "actor/actor_base/core/actor_manage.h"
 #include "actor/protocol/nprotocol.h"
 
 namespace actor_manage_test_case
