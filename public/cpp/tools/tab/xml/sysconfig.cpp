@@ -1,120 +1,26 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 *
-* Project: ngl_server
-* License: MIT
+* 项目名称：ngl_server
+* 项目地址：https://github.com/NingLeixueR/ngl_server
+*
+* 本文件是 ngl_server 项目的一部分，遵循 MIT 开源协议发布。
+* 您可以按照协议规定自由使用、修改和分发本项目，包括商业用途，
+* 但需保留原始版权和许可声明。
+*
+* 许可详情参见项目根目录下的 LICENSE 文件：
+* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for xml.
-
 
 #include "actor/tab/ttab_mergearea.h"
-#include "actor/tab/ttab_servers.h"
 #include "tools/tab/xml/sysconfig.h"
+#include "actor/tab/ttab_servers.h"
 #include "tools/tab/xml/xml.h"
 
-#include <algorithm>
-#include <charconv>
 #include <cstdint>
-#include <limits>
-#include <string_view>
 
 namespace ngl
 {
-	namespace sysconfig_detail
-	{
-		template <typename T>
-		bool find_first(const xarg_info& ainfo, std::initializer_list<const char*> akeys, T& aout)
-		{
-			for (const char* key : akeys)
-			{
-				if (ainfo.find(key, aout))
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-
-		bool find_first_view(const xarg_info& ainfo, std::initializer_list<const char*> akeys, std::string_view& aout)
-		{
-			for (const char* key : akeys)
-			{
-				if (ainfo.find_view(key, aout))
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-
-		bool parse_int32(std::string_view avalue, int32_t& aout)
-		{
-			avalue = tools::trim_ascii_spaces(avalue);
-			if (avalue.empty())
-			{
-				return false;
-			}
-
-			int32_t parsed = 0;
-			const auto [ptr, ec] = std::from_chars(avalue.data(), avalue.data() + avalue.size(), parsed);
-			if (ec != std::errc() || ptr != avalue.data() + avalue.size())
-			{
-				return false;
-			}
-			aout = parsed;
-			return true;
-		}
-
-		ELOGLEVEL sanitize_log_level(int32_t alevel, ELOGLEVEL afallback)
-		{
-			if (alevel < ELOG_NONE || alevel >= ELOG_MAX)
-			{
-				return afallback;
-			}
-			return static_cast<ELOGLEVEL>(alevel);
-		}
-
-		int32_t sanitize_positive(int32_t avalue, int32_t afallback)
-		{
-			return avalue > 0 ? avalue : afallback;
-		}
-
-		int32_t sanitize_non_negative(int32_t avalue, int32_t afallback)
-		{
-			return avalue >= 0 ? avalue : afallback;
-		}
-
-		int32_t parse_open_servertime(const xarg_info& ainfo, int32_t afallback)
-		{
-			std::string_view text;
-			if (!find_first_view(ainfo, { "open_servertime" }, text))
-			{
-				return afallback;
-			}
-			text = tools::trim_ascii_spaces(text);
-			if (text.empty())
-			{
-				return afallback;
-			}
-
-			const std::string parsed(text);
-			return static_cast<int32_t>(localtime::str2time(parsed.c_str(), "%Y/%m/%d %H:%M:%S"));
-		}
-
-		int32_t xor_cycle_length(const std::string& akey)
-		{
-			if (akey.empty())
-			{
-				return 0;
-			}
-			if (akey.size() > static_cast<std::size_t>(std::numeric_limits<int32_t>::max()))
-			{
-				return 0;
-			}
-			return static_cast<int32_t>(akey.size());
-		}
-	} // namespace sysconfig_detail
-
 	ELOGLEVEL	sysconfig::m_logwritelevel = ELOG_ERROR;
 	ELOGLEVEL	sysconfig::m_logconsolelevel = ELOG_ERROR;
 	int32_t		sysconfig::m_logline = 10000;
@@ -135,165 +41,96 @@ namespace ngl
 	int32_t		sysconfig::m_rate_count = 20;
 	int32_t		sysconfig::m_heart_beat_interval = 10;
 	int32_t		sysconfig::m_net_timeout = 600000;
-	std::map<std::string, int32_t, std::less<>> sysconfig::m_nodecountbyname;
-	std::map<NODE_TYPE, int32_t> sysconfig::m_nodecountbytype;
-	int32_t		sysconfig::m_gamecount = 0;
+	std::map<std::string, int32_t>	sysconfig::m_nodecountbyname;
+	std::map<NODE_TYPE, int32_t>	sysconfig::m_nodecountbytype;
 	std::string	sysconfig::m_gmurl;
 	std::set<i32_serverid> sysconfig::m_gatewayids;
 	std::string	sysconfig::m_lua;
 
 	void sysconfig::init()
 	{
-		xarg_info* lpublicxml = nconfig.info();
-		if (lpublicxml == nullptr)
+		ngl::xarg_info* lpublicxml = nconfig.info();
+		lpublicxml->find("logflushtime", m_logflushtime);
+		lpublicxml->find("logline", m_logline);
 		{
-			log_error()->print("sysconfig::init missing public config");
-			return;
+			int llevel = 0;
+			lpublicxml->find("logwritelevel", llevel);
+			m_logwritelevel = (ELOGLEVEL)llevel;
+			lpublicxml->find("logconsolelevel", llevel);
+			m_logconsolelevel = (ELOGLEVEL)llevel;
 		}
 
-		ELOGLEVEL logwritelevel = m_logwritelevel;
-		ELOGLEVEL logconsolelevel = m_logconsolelevel;
-		int32_t logline = m_logline;
-		int32_t logflushtime = m_logflushtime;
-		int32_t consumings = m_consumings;
-		std::string xorkey;
-		int32_t xorkeynum = 0;
-		bool isxor = false;
-		bool varint = m_varint;
-		bool robot_test = m_robot_test;
-		int32_t kcpping = m_kcpping;
-		int32_t kcppinginterval = m_kcppinginterval;
-		int32_t sessionewait = m_sessionewait;
-		std::string kcpsession = m_kcpsession;
-		int32_t open_servertime = m_open_servertime;
-		int32_t head_version = m_head_version;
-		int32_t rate_interval = m_rate_interval;
-		int32_t rate_count = m_rate_count;
-		int32_t heart_beat_interval = m_heart_beat_interval;
-		int32_t net_timeout = m_net_timeout;
-		std::string gmurl = m_gmurl;
-		std::string lua = m_lua;
-		std::map<std::string, int32_t, std::less<>> nodecountbyname;
-		std::map<NODE_TYPE, int32_t> nodecountbytype;
+		lpublicxml->find("consumings", m_consumings);
 
-		sysconfig_detail::find_first(*lpublicxml, { "logline" }, logline);
-		sysconfig_detail::find_first(*lpublicxml, { "logflushtime", "log_flushtime" }, logflushtime);
-
-		int32_t level = static_cast<int32_t>(logwritelevel);
-		if (sysconfig_detail::find_first(*lpublicxml, { "logwritelevel" }, level))
+		do
 		{
-			logwritelevel = sysconfig_detail::sanitize_log_level(level, logwritelevel);
-		}
-		level = static_cast<int32_t>(logconsolelevel);
-		if (sysconfig_detail::find_first(*lpublicxml, { "logconsolelevel" }, level))
-		{
-			logconsolelevel = sysconfig_detail::sanitize_log_level(level, logconsolelevel);
-		}
-
-		sysconfig_detail::find_first(*lpublicxml, { "consumings" }, consumings);
-		sysconfig_detail::find_first(*lpublicxml, { "varint" }, varint);
-		sysconfig_detail::find_first(*lpublicxml, { "robot_test" }, robot_test);
-		sysconfig_detail::find_first(*lpublicxml, { "kcpping" }, kcpping);
-		sysconfig_detail::find_first(*lpublicxml, { "kcppinginterval" }, kcppinginterval);
-		sysconfig_detail::find_first(*lpublicxml, { "sessionewait" }, sessionewait);
-		sysconfig_detail::find_first(*lpublicxml, { "kcpsession" }, kcpsession);
-		sysconfig_detail::find_first(*lpublicxml, { "head_version" }, head_version);
-		sysconfig_detail::find_first(*lpublicxml, { "gmurl" }, gmurl);
-		sysconfig_detail::find_first(*lpublicxml, { "lua" }, lua);
-		open_servertime = sysconfig_detail::parse_open_servertime(*lpublicxml, open_servertime);
-
-		if (sysconfig_detail::find_first(*lpublicxml, { "isxor" }, isxor) &&
-			isxor &&
-			sysconfig_detail::find_first(*lpublicxml, { "xor_str" }, xorkey))
-		{
-			xorkeynum = sysconfig_detail::xor_cycle_length(xorkey);
-			isxor = xorkeynum > 0;
-		}
-		else
-		{
-			xorkey.clear();
-			xorkeynum = 0;
-			isxor = false;
-		}
-
-		lpublicxml->foreach([&nodecountbyname, &nodecountbytype](const std::pair<const std::string, std::string>& apair)
+			if (!lpublicxml->find("isxor", m_isxor))
 			{
-				// Keys like `game_count` describe how many node instances of one
-				// logical server type should exist.
-				std::string_view key(apair.first);
-				const std::size_t suffix_pos = key.rfind("_count");
-				if (suffix_pos == std::string_view::npos || suffix_pos + 6 != key.size())
-				{
-					return;
-				}
+				break;
+			}
+			if (!lpublicxml->find("xor_str", m_xorkey))
+			{
+				break;
+			}
+			int32_t lxorkeylen = (int32_t)m_xorkey.size();
+			std::uint64_t lxorkeylenadd = static_cast<std::uint64_t>(lxorkeylen) + 1u;
+			m_xorkeynum = 0;
+			while (lxorkeylenadd > 1u)
+			{
+				lxorkeylenadd >>= 1u;
+				++m_xorkeynum;
+			}
+			if (m_xorkeynum <= 0)
+			{
+				m_isxor = false;
+			}
+		} while (false);
 
-				std::string nodename(key.substr(0, suffix_pos));
-				NODE_TYPE type = em<NODE_TYPE>::get_enum(nodename.c_str());
-				if (type == em<NODE_TYPE>::enum_null())
-				{
-					return;
-				}
+		lpublicxml->find("varint", m_varint);
 
-				int32_t count = 0;
-				if (!sysconfig_detail::parse_int32(apair.second, count))
+		lpublicxml->find("robot_test", m_robot_test);
+		lpublicxml->find("kcpping", m_kcpping);
+		lpublicxml->find("kcppinginterval", m_kcppinginterval);
+		lpublicxml->find("sessionewait", m_sessionewait);
+		lpublicxml->find("kcpsession", m_kcpsession);
+
+		std::string lopen_servertime;
+		lpublicxml->find("open_servertime", lopen_servertime);
+		m_open_servertime = (int32_t)localtime::str2time(lopen_servertime.c_str(), "%Y/%m/%d %H:%M:%S");
+
+		lpublicxml->find("head_version", m_head_version);
+
+		lpublicxml->find("gmurl", m_gmurl);
+		lpublicxml->find("lua", m_lua);
+
+
+		lpublicxml->foreach([](const std::pair<const std::string, std::string>& apair)
+			{
+				std::string lname;
+				std::string lvalue;
+				if (!tools::splite(apair.first.c_str(), "_", lname, lvalue))
 				{
 					return;
 				}
-				count = std::max<int32_t>(1, count);
-				nodecountbyname[nodename] = count;
-				nodecountbytype[type] = count;
+				if (lvalue != "count")
+				{
+					return;
+				}
+				NODE_TYPE ltype = em<NODE_TYPE>::get_enum(lname.c_str());
+				if (ltype == em<NODE_TYPE>::enum_null())
+				{
+					return;
+				}
+				m_nodecountbyname[lname] = tools::lexical_cast<int32_t>(apair.second);
+				m_nodecountbytype[ltype] = tools::lexical_cast<int32_t>(apair.second);
 			}
 		);
 
-		logline = sysconfig_detail::sanitize_positive(logline, m_logline);
-		logflushtime = sysconfig_detail::sanitize_positive(logflushtime, m_logflushtime);
-		consumings = sysconfig_detail::sanitize_non_negative(consumings, m_consumings);
-		kcpping = sysconfig_detail::sanitize_positive(kcpping, m_kcpping);
-		kcppinginterval = sysconfig_detail::sanitize_positive(kcppinginterval, m_kcppinginterval);
-		sessionewait = sysconfig_detail::sanitize_positive(sessionewait, m_sessionewait);
-		head_version = sysconfig_detail::sanitize_positive(head_version, m_head_version);
-		rate_interval = sysconfig_detail::sanitize_positive(rate_interval, m_rate_interval);
-		rate_count = sysconfig_detail::sanitize_positive(rate_count, m_rate_count);
-		heart_beat_interval = sysconfig_detail::sanitize_positive(heart_beat_interval, m_heart_beat_interval);
-		net_timeout = sysconfig_detail::sanitize_positive(net_timeout, m_net_timeout);
-
-		m_logwritelevel = logwritelevel;
-		m_logconsolelevel = logconsolelevel;
-		m_logline = logline;
-		m_logflushtime = logflushtime;
-		m_consumings = consumings;
-		m_xorkey = std::move(xorkey);
-		m_xorkeynum = xorkeynum;
-		m_isxor = isxor;
-		m_varint = varint;
-		m_robot_test = robot_test;
-		m_kcpping = kcpping;
-		m_kcppinginterval = kcppinginterval;
-		m_sessionewait = sessionewait;
-		m_kcpsession = std::move(kcpsession);
-		m_open_servertime = open_servertime;
-		m_head_version = head_version;
-		m_rate_interval = rate_interval;
-		m_rate_count = rate_count;
-		m_heart_beat_interval = heart_beat_interval;
-		m_net_timeout = net_timeout;
-		m_nodecountbyname = std::move(nodecountbyname);
-		m_nodecountbytype = std::move(nodecountbytype);
-		m_gamecount = node_count("game");
-		m_gmurl = std::move(gmurl);
-		m_lua = std::move(lua);
-
-		// Gateway ids depend on both the configured node count and the current
-		// merge-area topology.
 		init_gatewayids(node_count("gateway"));
 	}
 
 	int32_t sysconfig::node_count(const char* anodename)
 	{
-		if (anodename == nullptr || *anodename == '\0')
-		{
-			return 1;
-		}
 		auto itor = m_nodecountbyname.find(anodename);
 		if (itor == m_nodecountbyname.end())
 		{
@@ -315,46 +152,27 @@ namespace ngl
 	void sysconfig::init_gatewayids(int atcout)
 	{
 		m_gatewayids.clear();
-		if (atcout <= 0)
-		{
-			return;
-		}
-
-		const tab_servers* self_tab = ttab_servers::instance().const_tab();
-		if (self_tab == nullptr)
-		{
-			return;
-		}
-
 		std::set<i32_serverid> lgatewayids;
-		if (std::set<i16_area>* lareas = ttab_mergearea::instance().mergelist(self_tab->m_area); lareas != nullptr)
+		std::set<i16_area>* lareas = ttab_mergearea::instance().mergelist(tab_self_area);
+		if (lareas != nullptr)
 		{
-			// Gateways for merged areas are treated as one shared ingress pool.
 			for (i16_area aarea : *lareas)
 			{
 				ttab_servers::instance().serverid(GATEWAY, aarea, lgatewayids);
 			}
 		}
-		ttab_servers::instance().serverid(GATEWAY, self_tab->m_area, lgatewayids);
+		ttab_servers::instance().serverid(GATEWAY, tab_self_area, lgatewayids);
 
-		const int max_tcount = std::min<int>(atcout, static_cast<int>(std::numeric_limits<int16_t>::max()));
 		for (i32_serverid ltabid : lgatewayids)
 		{
-			if (ltabid < static_cast<i32_serverid>(std::numeric_limits<int16_t>::min()) ||
-				ltabid > static_cast<i32_serverid>(std::numeric_limits<int16_t>::max()))
+			for (int16_t i = 1; i <= atcout; ++i)
 			{
-				log_error()->print("sysconfig invalid gateway id [{}]", ltabid);
-				continue;
-			}
-
-			for (int i = 1; i <= max_tcount; ++i)
-			{
-				m_gatewayids.insert(nnodeid::nodeid(static_cast<int16_t>(ltabid), static_cast<int16_t>(i)));
+				m_gatewayids.insert(nnodeid::nodeid(static_cast<int16_t>(ltabid), i));
 			}
 		}
 	}
 
-	const std::set<i32_serverid>& sysconfig::gatewayids()
+	std::set<i32_serverid>& sysconfig::gatewayids()
 	{
 		return m_gatewayids;
 	}
