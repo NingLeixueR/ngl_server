@@ -15,12 +15,6 @@
 #include <vector>
 #include <array>
 
-namespace ngl::robot_manage_cmd
-{
-	std::vector<std::string> split_cmd(std::string_view aargs);
-	bool strip_help(std::vector<std::string>& aargs);
-}
-
 namespace runtime_test_case
 {
 std::filesystem::path write_cfg(std::string_view apublic)

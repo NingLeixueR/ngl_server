@@ -71,8 +71,4 @@ namespace ngl
 		next_setp();
 		return true;
 	}
-	bool actor_example_guess_number::handle([[maybe_unused]] const message<np_example_entergame_ready>& adata)
-	{
-		return true;
-	}
 }//namespace ngl

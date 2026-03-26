@@ -237,31 +237,28 @@ namespace ngl
 		}
 	}
 
-	class tools
+	namespace tools
 	{
-		tools() = delete;
-		tools(const tools&) = delete;
-		tools& operator=(const tools&) = delete;
+		std::size_t strlen(const char*);
 
-	public:
 #pragma region map
 		// Map
 		template <typename TMAP, typename TKEY>
-		static auto findmap(TMAP& amap, const TKEY& akey)
+		auto findmap(TMAP& amap, const TKEY& akey)
 		{
 			auto itor = amap.find(akey);
 			return itor == amap.end() ? nullptr : &itor->second;
 		}
 
 		template <typename TMAP, typename TKEY>
-		static auto insertmap(TMAP& amap, const TKEY& akey, const typename TMAP::value_type::second& avalue)
+		auto insertmap(TMAP& amap, const TKEY& akey, const typename TMAP::value_type::second& avalue)
 		{
 			auto lpair = amap.try_emplace(akey, avalue);
 			return lpair.second ? &(lpair.first->second) : nullptr;
 		}
 
 		template <typename TMAP, typename TKEY>
-		static bool erasemap(TMAP& amap, const TKEY& akey, typename TMAP::value_type::second_type& adata)
+		bool erasemap(TMAP& amap, const TKEY& akey, typename TMAP::value_type::second_type& adata)
 		{
 			if (auto node = amap.extract(akey); node)
 			{
@@ -273,10 +270,10 @@ namespace ngl
 #pragma endregion 
 
 		// Checks whether an IPv4 address belongs to a private/LAN range.
-		static bool is_lanip(const std::string& aip);
+		bool is_lanip(const std::string& aip);
 
 		template <typename T>
-		static bool proto2json(const T& adata, std::string& json)
+		bool proto2json(const T& adata, std::string& json)
 		{
 			google::protobuf::util::JsonPrintOptions options;
 			options.add_whitespace = false;
@@ -287,25 +284,25 @@ namespace ngl
 
 		// Convenience logger for protobuf messages during debugging.
 		template <typename T>
-		static void print_json(const T& adata, bool aislog = false);
+		void print_json(const T& adata, bool aislog = false);
 
 		// Parses JSON into protobuf messages or custom types that implement the
 		// project `json_pop/json_push` contract.
 		template <typename T>
-		static bool json2proto(const std::string& json, T& adata)
+		bool json2proto(const std::string& json, T& adata)
 		{
 			google::protobuf::util::Status status = google::protobuf::util::JsonStringToMessage(json, &adata);
 			return status.ok();
 		}
 
 		template <typename T>
-		static bool json2custom(const std::string& json, T& adata);
+		bool json2custom(const std::string& json, T& adata);
 
 		template <typename T>
-		static bool custom2json(const T& adata, std::string& json);
+		bool custom2json(const T& adata, std::string& json);
 
 		template <typename TKEY, typename TVAL>
-		static void copy(const std::map<TKEY, TVAL>& asource, google::protobuf::Map<TKEY, TVAL>& atarget)
+		void copy(const std::map<TKEY, TVAL>& asource, google::protobuf::Map<TKEY, TVAL>& atarget)
 		{
 			for(auto& [_key, _value] : asource)
 			{
@@ -314,7 +311,7 @@ namespace ngl
 		}
 
 		template <typename TKEY, typename TVAL>
-		static void copy(const google::protobuf::Map<TKEY, TVAL>& asource, std::map<TKEY, TVAL>& atarget)
+		void copy(const google::protobuf::Map<TKEY, TVAL>& asource, std::map<TKEY, TVAL>& atarget)
 		{
 			for (auto& [_key, _value] : asource)
 			{
@@ -322,7 +319,7 @@ namespace ngl
 			}
 		}
 
-		static void log_lex_err(
+		void log_lex_err(
 			const char* atotype,
 			const char* afromtype,
 			const char* aerror,
@@ -330,7 +327,7 @@ namespace ngl
 		);
 
 		template <typename To, typename From>
-		static To lexical_cast(const From& from, const std::source_location& asource = std::source_location::current())
+		To lexical_cast(const From& from, const std::source_location& asource = std::source_location::current())
 		{
 			if constexpr (std::is_integral_v<To> && std::is_unsigned_v<To>)
 			{
@@ -366,7 +363,7 @@ namespace ngl
 		}
 
 		template <typename To, typename From>
-		static bool try_lexical_cast(const From& from, To& to, const std::source_location& asource = std::source_location::current())
+		bool try_lexical_cast(const From& from, To& to, const std::source_location& asource = std::source_location::current())
 		{
 			try
 			{
@@ -399,59 +396,59 @@ namespace ngl
 
 #pragma region bytesorder
 		// Whether the host platform uses little-endian byte order.
-		static constexpr bool islittle()
+		constexpr bool islittle()
 		{
 			return std::endian::native == std::endian::little;
 		}
 
 		// Converts values read from little-endian wire/storage format.
-		static int16_t	transformlittle(parm<int16_t>& avalues);
-		static uint16_t transformlittle(parm<uint16_t>& avalues);
-		static int32_t	transformlittle(parm<int32_t>& avalues);
-		static uint32_t transformlittle(parm<uint32_t>& avalues);
-		static int64_t	transformlittle(parm<int64_t>& avalues);
-		static uint64_t	transformlittle(parm<uint64_t>& avalues);
+		int16_t	transformlittle(parm<int16_t>& avalues);
+		uint16_t transformlittle(parm<uint16_t>& avalues);
+		int32_t	transformlittle(parm<int32_t>& avalues);
+		uint32_t transformlittle(parm<uint32_t>& avalues);
+		int64_t	transformlittle(parm<int64_t>& avalues);
+		uint64_t	transformlittle(parm<uint64_t>& avalues);
 #pragma endregion
 
 #pragma region base64
-		static std::string base64_encode(const char* data, std::size_t len);
-		static std::string base64_encode(std::string const& s);
-		static std::string base64_decode(char const* data, std::size_t len);
-		static std::string base64_decode(std::string const& data);
+		std::string base64_encode(const char* data, std::size_t len);
+		std::string base64_encode(std::string const& s);
+		std::string base64_decode(char const* data, std::size_t len);
+		std::string base64_decode(std::string const& data);
 #pragma endregion
 
-		static bool uuid_make(std::string& astr);
+		bool uuid_make(std::string& astr);
 
 #pragma region asscii_utf8
 		// Locale-based ANSI/wide conversions and explicit UTF-8 helpers.
-		static bool wasscii2asscii(const std::wstring& awstr, std::string& astr);
-		static bool asscii2wasscii(const std::string& astr, std::wstring& awstr);
-		static bool wasscii2utf8(const std::wstring& awstr, std::string& astr);
-		static bool utf82wasscii(const std::string& astr, std::wstring& awstr);
+		bool wasscii2asscii(const std::wstring& awstr, std::string& astr);
+		bool asscii2wasscii(const std::string& astr, std::wstring& awstr);
+		bool wasscii2utf8(const std::wstring& awstr, std::string& astr);
+		bool utf82wasscii(const std::string& astr, std::wstring& awstr);
 
-		static bool to_asscii(const std::string& astr1, std::string& astr2);
-		static bool to_utf8(const std::string& astr1, std::string& astr2);
+		bool to_asscii(const std::string& astr1, std::string& astr2);
+		bool to_utf8(const std::string& astr1, std::string& astr2);
 
-		static int32_t utf8firstbyte(uint8_t firstbyte);
+		int32_t utf8firstbyte(uint8_t firstbyte);
 		// Validates UTF-8 and detects code points that require utf8mb4 storage.
-		static bool isutf8(const std::string& astr1);
-		static bool isincludeutf8mb4(const std::string& astr);
+		bool isutf8(const std::string& astr1);
+		bool isincludeutf8mb4(const std::string& astr);
 
 #pragma endregion
 
 #pragma region regular
-		static void sregex(const std::string& apattern, const std::string& adata, const std::function<void(std::string&)>& afun);
+		void sregex(const std::string& apattern, const std::string& adata, const std::function<void(std::string&)>& afun);
 
-		static void smatch(const std::string& aexpression, const std::string& adata, const std::function<void(std::smatch&)>& afun);
+		void smatch(const std::string& aexpression, const std::string& adata, const std::function<void(std::smatch&)>& afun);
 
-		static void replace(const std::string& aexpression, const std::string& areleace, const std::string& adata, std::string& aret);
+		void replace(const std::string& aexpression, const std::string& areleace, const std::string& adata, std::string& aret);
 
-		static void replace_ret(const std::string& aexpression, const std::string& areleace, std::string& adata, std::string& aret);
+		void replace_ret(const std::string& aexpression, const std::string& areleace, std::string& adata, std::string& aret);
 #pragma endregion
 
 #pragma region splite
 		template <typename T>
-		static bool splite(const char* abuff, const char* afg, std::vector<T>& avec)
+		bool splite(const char* abuff, const char* afg, std::vector<T>& avec)
 		{
 			std::vector<std::string> lvec;
 			if (splite(abuff, afg, lvec) == false)
@@ -476,7 +473,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool splite(const char* abuff, const char* afg, std::set<T>& aset)
+		bool splite(const char* abuff, const char* afg, std::set<T>& aset)
 		{
 			std::vector<std::string> lvec;
 			if (splite(abuff, afg, lvec) == false)
@@ -499,10 +496,10 @@ namespace ngl
 			return true;
 		}
 
-		static bool splite(const char* abuff, const char* afg, std::vector<std::string>& avec);
+		bool splite(const char* abuff, const char* afg, std::vector<std::string>& avec);
 
 		template <typename T>
-		static bool splite(int32_t aindex, const std::vector<std::string>& avec, T& adata)
+		bool splite(int32_t aindex, const std::vector<std::string>& avec, T& adata)
 		{
 			if (aindex < 0)
 			{
@@ -525,7 +522,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool splite(int32_t aindex, const std::vector<std::string>& avec, std::vector<T>& adata)
+		bool splite(int32_t aindex, const std::vector<std::string>& avec, std::vector<T>& adata)
 		{
 			if (aindex < 0)
 			{
@@ -539,7 +536,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool splite(int32_t aindex, const std::vector<std::string>& avec, std::vector<std::string>& adata)
+		bool splite(int32_t aindex, const std::vector<std::string>& avec, std::vector<std::string>& adata)
 		{
 			if (aindex < 0)
 			{
@@ -550,13 +547,13 @@ namespace ngl
 		}
 
 		template <std::size_t... INDEX, typename TTUPLE>
-		static bool splite_tuple(std::index_sequence<INDEX...>, const std::vector<std::string>& avec, TTUPLE& atuple)
+		bool splite_tuple(std::index_sequence<INDEX...>, const std::vector<std::string>& avec, TTUPLE& atuple)
 		{
 			return (splite<std::tuple_element_t<INDEX, TTUPLE>>(static_cast<int32_t>(INDEX), avec, std::get<INDEX>(atuple)) && ...);
 		}
 
 		template <std::size_t... INDEX, typename ...ARGS>
-		static bool splite(std::index_sequence<INDEX...>, const char* abuff, const char* afg, ARGS&... args)
+		bool splite(std::index_sequence<INDEX...>, const char* abuff, const char* afg, ARGS&... args)
 		{
 			std::vector<std::string> lvec;
 			if (splite(abuff, afg, lvec) == false)
@@ -575,7 +572,7 @@ namespace ngl
 		}
 
 		template <typename ...ARGS>
-		static bool splite(const char* abuff, const char* afg, ARGS&... args)
+		bool splite(const char* abuff, const char* afg, ARGS&... args)
 		{
 			return 	splite(std::make_index_sequence<sizeof...(ARGS)>{}, abuff, afg, args...);
 		}
@@ -583,7 +580,7 @@ namespace ngl
 		// Parses compact key/value collections such as
 		// "[mail@example.com:name][other@example.com:other]".
 		template <typename TFIRST = std::string, typename TSECOND = std::string>
-		static bool splite_special(const char* astr, const char* akey1, const char* akey2, std::vector<std::pair<TFIRST, TSECOND>>& avec)
+		bool splite_special(const char* astr, const char* akey1, const char* akey2, std::vector<std::pair<TFIRST, TSECOND>>& avec)
 		{
 			if (astr == nullptr || akey1 == nullptr || akey2 == nullptr)
 			{
@@ -612,7 +609,7 @@ namespace ngl
 		}
 
 		template <typename TFIRST = std::string, typename TSECOND = std::string>
-		static bool splite_special(const char* astr, const char* akey1, const char* akey2, std::map<TFIRST, TSECOND>& amap)
+		bool splite_special(const char* astr, const char* akey1, const char* akey2, std::map<TFIRST, TSECOND>& amap)
 		{
 			if (astr == nullptr || akey1 == nullptr || akey2 == nullptr)
 			{
@@ -643,12 +640,21 @@ namespace ngl
 #pragma region splicing
 
 		template <typename T>
-		static std::function<std::string(const T&)> m_splicing;
+		inline std::function<std::string(const T&)> m_splicing = [](const T& adata)
+		{
+			return tools::lexical_cast<std::string>(adata);
+		};
 		template <typename TKEY,typename TVALUE>
-		static std::function<std::string(const TKEY&, const TVALUE&)> m_splicingmap;
+		inline std::function<std::string(const TKEY&, const TVALUE&)> m_splicingmap = [](const TKEY& akey, const TVALUE& avalue)
+		{
+			std::string lret = tools::lexical_cast<std::string>(akey);
+			lret += ':';
+			lret += tools::lexical_cast<std::string>(avalue);
+			return lret;
+		};
 
 		template <typename T>
-		static bool splicing(const std::vector<T>& avec, const char* afg, std::string& astr, const std::function<std::string(const T&)> afunction = m_splicing<T>)
+		bool splicing(const std::vector<T>& avec, const char* afg, std::string& astr, const std::function<std::string(const T&)> afunction = m_splicing<T>)
 		{
 			for (std::size_t i = 0; i < avec.size(); ++i)
 			{
@@ -661,7 +667,7 @@ namespace ngl
 			return true;
 		}
 
-		static bool splicing(const std::vector<std::string>& avec, const char* afg, std::string& astr, int32_t apos = 0)
+		bool splicing(const std::vector<std::string>& avec, const char* afg, std::string& astr, int32_t apos = 0)
 		{
 			const std::size_t lfglen = tools::strlen(afg);
 			for (std::size_t i = apos; i < avec.size(); ++i)
@@ -676,7 +682,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool splicing(const std::set<T>& avec, const char* afg, std::string& astr, const std::function<std::string(const T&)> afunction = m_splicing<T>)
+		bool splicing(const std::set<T>& avec, const char* afg, std::string& astr, const std::function<std::string(const T&)> afunction = m_splicing<T>)
 		{
 			for (auto itor = avec.begin(); itor != avec.end(); ++itor)
 			{
@@ -691,7 +697,7 @@ namespace ngl
 		}
 
 		template <typename TKEY, typename TVALUE>
-		static bool splicing(const std::map<TKEY, TVALUE>& amap, const char* afg, std::string& astr, const std::function<std::string(const TKEY&, const TVALUE&)> afunction = m_splicingmap<TKEY,TVALUE>)
+		bool splicing(const std::map<TKEY, TVALUE>& amap, const char* afg, std::string& astr, const std::function<std::string(const TKEY&, const TVALUE&)> afunction = m_splicingmap<TKEY,TVALUE>)
 		{
 			for(auto itor = amap.begin(); itor != amap.end();++itor)
 			{
@@ -705,7 +711,7 @@ namespace ngl
 		}
 
 		template <typename TKEY, typename TVALUE>
-		static bool splicing(const google::protobuf::Map<TKEY, TVALUE>& amap, const char* afg, std::string& astr,const std::function<std::string(const TKEY&,const TVALUE&)> afunction = m_splicingmap<TKEY, TVALUE>)
+		bool splicing(const google::protobuf::Map<TKEY, TVALUE>& amap, const char* afg, std::string& astr,const std::function<std::string(const TKEY&,const TVALUE&)> afunction = m_splicingmap<TKEY, TVALUE>)
 		{
 			for (auto itor = amap.begin(); itor != amap.end(); ++itor)
 			{
@@ -719,7 +725,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool splicing(const std::set<std::string>& aset, const char* afg, std::string& astr)
+		bool splicing(const std::set<std::string>& aset, const char* afg, std::string& astr)
 		{
 			const std::size_t lfglen = tools::strlen(afg);
 			std::size_t lappend_size = aset.empty() ? 0 : lfglen * (aset.size() - 1);
@@ -741,7 +747,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool splicing(int32_t aindex, const char* afg, std::string& astr, T& adata)
+		bool splicing(int32_t aindex, const char* afg, std::string& astr, T& adata)
 		{
 			try
 			{
@@ -757,32 +763,32 @@ namespace ngl
 			}
 			return true;
 		}
-		
+
 		template <std::size_t... INDEX, typename ...ARGS>
-		static bool splicing(std::index_sequence<INDEX...>, const char* afg, std::string& astr, ARGS&... args)
+		bool splicing(std::index_sequence<INDEX...>, const char* afg, std::string& astr, ARGS&... args)
 		{
 			return ((splicing<ARGS>(INDEX, afg, astr, args)) && ...);
 		}
 
 		template <typename ...ARGS>
-		static bool splicing(const char* afg, std::string& astr, ARGS&... args)
+		bool splicing(const char* afg, std::string& astr, ARGS&... args)
 		{
 			return splicing(std::make_index_sequence<sizeof...(ARGS)>{}, afg, astr, args...);
 		}
 #pragma endregion
 
 #pragma region url
-		static std::string char2hex(char dec);
-		static std::string url_encode(const std::string& c);
-		static std::string url_decode(const std::string& c);
+		std::string char2hex(char dec);
+		std::string url_encode(const std::string& c);
+		std::string url_decode(const std::string& c);
 #pragma endregion
 
 #pragma region varint
 		// Varint helpers used by the custom serializer. `m_bytes` receives the
 		// number of encoded/decoded bytes when the caller needs it.
 	
-		static int varint_length(parm<int32_t>& avalue);
-		static int varint_length(parm<int64_t>& avalue);
+		int varint_length(parm<int32_t>& avalue);
+		int varint_length(parm<int64_t>& avalue);
 
 		template <typename T>
 		struct varint_parm
@@ -792,26 +798,26 @@ namespace ngl
 			int m_len = 0;
 			int32_t* m_bytes = 0;
 		};
-		static bool varint_encode(varint_parm<int64_t>& aparm);
-		static bool	varint_decode(varint_parm<int64_t>& aparm);
-		static bool	varint_encode(varint_parm<int32_t>& aparm);
-		static bool	varint_decode(varint_parm<int32_t>& aparm);
+		bool varint_encode(varint_parm<int64_t>& aparm);
+		bool	varint_decode(varint_parm<int64_t>& aparm);
+		bool	varint_encode(varint_parm<int32_t>& aparm);
+		bool	varint_decode(varint_parm<int32_t>& aparm);
 
 	#pragma endregion
 
 #pragma region hexbytes
-		static int	to_hex(void* apso, int alen, void* apto);
-		static bool to_bytes(void* apso, int alen, void* apto, int& apotlen);
+		int	to_hex(void* apso, int alen, void* apto);
+		bool to_bytes(void* apso, int alen, void* apto, int& apotlen);
 #pragma endregion
 
 #pragma region encryption
-		static void bytexor(char* ap, int32_t aplen, int apos);
+		void bytexor(char* ap, int32_t aplen, int apos);
 #pragma endregion
 
-		static std::string& type_name_handle(std::string& aname);
+		std::string& type_name_handle(std::string& aname);
 
 		template <typename T>
-		static std::string& type_name()
+		std::string& type_name()
 		{
 			// Derive the name from the compiler signature so incomplete forward-declared
 			// types still work when unity builds change template instantiation order.
@@ -825,54 +831,54 @@ namespace ngl
 		}
 
 		template <typename T>
-		static std::string& type_name(const T*)
+		std::string& type_name(const T*)
 		{
 			return type_name<T>();
 		}
 
-		static std::string md5(const std::string& text);
+		std::string md5(const std::string& text);
 
-		static std::string sh1(std::string_view text);
+		std::string sh1(std::string_view text);
 
-		static std::string hmac_sha1(const std::string& key, const std::string& text);
+		std::string hmac_sha1(const std::string& key, const std::string& text);
 
-		static std::string time2str(int autc, const char* aformat = "%y/%m/%d %H:%M:%S");
+		std::string time2str(int autc, const char* aformat = "%y/%m/%d %H:%M:%S");
 
-		static std::vector<std::string_view> get_line(const char* apbuff, size_t abuffsize);
+		std::vector<std::string_view> get_line(const char* apbuff, size_t abuffsize);
 
-		static bool isnumber(const std::string& anumber);
+		bool isnumber(const std::string& anumber);
 
-		static const std::string& server_name();
+		const std::string& server_name();
 
-		static int rand();
+		int rand();
 
 		// ASCII case conversion for configuration keys and protocol names.
-		static void transform_tolower(std::string& adata);
-		static void transform_toupper(std::string& adata);
+		void transform_tolower(std::string& adata);
+		void transform_toupper(std::string& adata);
 
 		// Filesystem helpers return false on errors instead of throwing.
-		static bool directories_exists(const std::string& apath);
-		static bool file_exists(const std::string& apath);
-		static bool create_dir(const std::string& apath);
-		static bool file_remove(const std::string& afilename);
+		bool directories_exists(const std::string& apath);
+		bool file_exists(const std::string& apath);
+		bool create_dir(const std::string& apath);
+		bool file_remove(const std::string& afilename);
 		// Enumerates regular files in one directory or recursively.
-		static void dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration = false);
+		void dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration = false);
 
 		// Intentionally crashes the process when the project treats the current
 		// state as unrecoverable.
-		static void no_core_dump(bool anocreate = false);
+		void no_core_dump(bool anocreate = false);
 
-		static std::function<void()> send_mail(const std::string& acontent);
+		std::function<void()> send_mail(const std::string& acontent);
 
 		// Converts `actor_type#area#dataid` text into the packed nguid format.
-		static int64_t nguidstr2int64(const char* anguidstr);
+		int64_t nguidstr2int64(const char* anguidstr);
 
 		// Splits a mutable comma-separated buffer in place and returns pointers
 		// into the original storage.
-		static std::vector<const char*> split_str(char* apbuff, int32_t abuffcount);
+		std::vector<const char*> split_str(char* apbuff, int32_t abuffcount);
 
 		template <std::size_t N>
-		static void split_str(char* apbuff, int32_t abuffcount, std::array<const char*, N>& aarrays)
+		void split_str(char* apbuff, int32_t abuffcount, std::array<const char*, N>& aarrays)
 		{
 			aarrays.fill(nullptr);
 			if (apbuff == nullptr || abuffcount <= 0)
@@ -907,17 +913,17 @@ namespace ngl
 			}
 		}
 		// Cjsontype
-		static bool bit(int32_t atype, int32_t acjsontype)
+		bool bit(int32_t atype, int32_t acjsontype)
 		{
 			return (atype & acjsontype) != 0;
 		}
 
 		// Collapses repeated copies of the same separator character.
-		static void erase_repeat(std::string& astrbuff, const char ach);
+		void erase_repeat(std::string& astrbuff, const char ach);
 
 		// Comparewhether
 		template <typename ETYPE>
-		static bool equal(ETYPE avalue1, ETYPE avalue2)
+		bool equal(ETYPE avalue1, ETYPE avalue2)
 		{
 			if (avalue1 == avalue2)
 			{
@@ -927,19 +933,19 @@ namespace ngl
 		}
 
 
-		static int32_t less_member()
+		int32_t less_member()
 		{
 			return 0;
 		}
 
 		template <typename T>
-		static auto less_member(const T& lhs, const T& rhs)
+		auto less_member(const T& lhs, const T& rhs)
 		{
 			return lhs <=> rhs;
 		}
 
 		template <typename T, typename... TARGS>
-		static auto less_member(const T& lhs, const T& rhs, const TARGS&... members)
+		auto less_member(const T& lhs, const T& rhs, const TARGS&... members)
 		{
 			if (lhs != rhs)
 			{
@@ -948,16 +954,9 @@ namespace ngl
 			return less_member(members...);
 		}
 
-		static std::string_view trim_ascii_spaces(std::string_view avalue);
+		std::string_view trim_ascii_spaces(std::string_view avalue);
 
-		static std::size_t strlen(const char*);
-	};
-
-	template <typename T>
-	std::function<std::string(const T&)> tools::m_splicing = [](const T& adata)
-		{
-			return tools::lexical_cast<std::string>(adata);
-		};
+	} // namespace tools
 
 
 	template <typename T, typename = void>
