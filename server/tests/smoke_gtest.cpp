@@ -5,7 +5,6 @@
 #include <filesystem>
 #include <fstream>
 
-#include "../libnglcore/core/bootstrap/startup_support.h"
 #include "../libnglcore/core/bootstrap/server_main.h"
 #include "actor/protocol/nprotocol.h"
 #include "actor/tab/ttab_servers.h"
