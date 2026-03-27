@@ -26,7 +26,6 @@
 #include "actor/tab/ttab_servers.h"
 #include "net/udp/kcp/ukcp.h"
 #include "tools/type.h"
-#include "net/nnet.h"
 
 #include <functional>
 #include <optional>
@@ -597,3 +596,4 @@ namespace ngl
 	}
 }//namespace ngl
 
+#include "net/nnet.h"

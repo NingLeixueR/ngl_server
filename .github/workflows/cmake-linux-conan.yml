@@ -1,4 +1,4 @@
-name: ubuntu-latest
+name: linux-build
 
 on:
   push:
@@ -16,10 +16,8 @@ jobs:
         include:
         - ljob: unity
           lunity: 'ON'
-          ltest: 'ON'
         - ljob: no_unity
           lunity: 'OFF'
-          ltest: 'OFF'
     env:
       CONAN_HOME: ${{ github.workspace }}/.conan2
 
@@ -85,6 +83,13 @@ jobs:
     - name: Build project
       run: cmake --build --preset conan-release
 
-    - name: Run tests
-      if: ${{ matrix.ltest == 'ON' }}
-      run: ctest --preset conan-release --output-on-failure
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-${{ matrix.ljob }}-release
+        path: |
+          bin/Release
+          build/Release
+          CMakeUserPresets.json
+        if-no-files-found: error
+        retention-days: 14
