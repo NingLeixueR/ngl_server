@@ -17,7 +17,7 @@ option(NGL_ENABLE_STRONG_WARNINGS "Enable stronger compiler warnings for project
 option(NGL_ENABLE_SANITIZERS "Enable AddressSanitizer and UndefinedBehaviorSanitizer on supported toolchains" OFF)
 option(NGL_ENABLE_NATIVE_UNITY_BUILD "Enable CMake native unity build for large targets" ON)
 option(NGLCORE_BUILD_SHARED "Build nglcore as a shared library instead of a static library" OFF)
-set(NGL_UNITY_BUILD_BATCH_SIZE 50 CACHE STRING "Maximum number of non-protobuf source files per native unity batch")
+set(NGL_UNITY_BUILD_BATCH_SIZE 100 CACHE STRING "Maximum number of non-protobuf source files per native unity batch")
 
 option(BUILD_TESTING "Build and register tests" ON)
 option(NGL_TEST_REGISTER_PERF "Register performance-oriented GoogleTest suites with CTest" OFF)
