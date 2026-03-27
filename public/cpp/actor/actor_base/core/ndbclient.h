@@ -21,7 +21,6 @@
 #include "actor/actor_base/core/actor_manage.h"
 #include "actor/actor_base/core/nactortype.h"
 #include "actor/actor_base/core/nregister.h"
-#include "actor/actor_base/core/actor_db.h"
 #include "tools/db/sql/mysql/nmysql.h"
 #include "actor/actor_base/core/nscript.h"
 #include "actor/actor_base/core/actor.h"
@@ -33,6 +32,9 @@
 
 namespace ngl
 {
+	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
+	class actor_db;
+
 	class ndbclient_base
 	{
 	private:
