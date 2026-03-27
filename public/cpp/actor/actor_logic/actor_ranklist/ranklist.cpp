@@ -14,6 +14,7 @@
 // File overview: Implements logic for actor ranklist.
 
 
+#include "actor/actor_logic/actor_ranklist/actor_ranklist.h"
 #include "actor/actor_logic/actor_ranklist/ranklist.h"
 
 #include <set>
