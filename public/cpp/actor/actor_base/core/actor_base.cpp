@@ -20,7 +20,7 @@
 #include "actor/actor_base/core/ndbclient.h"
 #include "tools/tab/xml/xml.h"
 #include "net/udp/kcp/nkcp.h"
-#include "tools/ngroup.h"
+#include "tools/tools/tools_group.h"
 #include "net/nnet.h"
 
 namespace ngl
@@ -110,7 +110,7 @@ namespace ngl
 		++m_custom;
 	}
 
-	int actor_base::m_broadcast = 10 * localtime::MILLISECOND;
+	int actor_base::m_broadcast = 10 * tools::localtime::MILLISECOND;
 	int actor_base::m_broadcasttimer = -1;
 
 	i64_actorid actor_base::actorclient_guid()

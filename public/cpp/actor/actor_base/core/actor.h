@@ -17,9 +17,9 @@
 
 #include "actor/actor_base/core/nactortype.h"
 #include "actor/actor_base/core/actor_base.h"
-#include "actor/protocol/tprotocol.h"
+#include "tools/tools/tools_template_arg.h"
 #include "actor/actor_base/core/nrfun.h"
-#include "tools/template_arg.h"
+#include "actor/protocol/tprotocol.h"
 #include "tools/log/nlog.h"
 
 #include <deque>

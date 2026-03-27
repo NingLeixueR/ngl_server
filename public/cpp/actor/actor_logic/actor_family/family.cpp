@@ -38,7 +38,7 @@ namespace ngl
 		}
 
 		pbdb::db_family ldbfamily;
-		int32_t lnow = (int32_t)localtime::gettime();
+		int32_t lnow = (int32_t)tools::localtime::gettime();
 		i64_actorid lfamilyid = nguid::make(ACTOR_FAMILY, tab_self_area, ++m_maxid);
 		ldbfamily.set_mid(lfamilyid);
 		ldbfamily.set_mcreateutc(lnow);
@@ -219,7 +219,7 @@ namespace ngl
 			return 8;
 		}
 		lpfamilyer->set_mposition(pbdb::db_familyer_eposition_none);
-		lpfamilyer->set_mlastleaveutc((int32_t)localtime::gettime());
+		lpfamilyer->set_mlastleaveutc((int32_t)tools::localtime::gettime());
 		lmember.erase(itor);
 		return 0;
 	}
@@ -337,9 +337,9 @@ namespace ngl
 			return 3;
 		}
 
-		const int32_t lnow = (int32_t)localtime::gettime();
+		const int32_t lnow = (int32_t)tools::localtime::gettime();
 		MODIFIED_RETUAN(lpfamilyer, lpmodifiedfamilyer, 4);
-		if (localtime::getspandays(lnow, lpfamilyer->mlastsignutc()) == 0)
+		if (tools::localtime::getspandays(lnow, lpfamilyer->mlastsignutc()) == 0)
 		{
 			return 4;
 		}

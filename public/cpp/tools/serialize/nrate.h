@@ -47,7 +47,7 @@ namespace ngl
 	public:
 		bool add(i32_socket aid)
 		{
-			const int lnow = (int)localtime::gettime();
+			const int lnow = (int)tools::localtime::gettime();
 			auto [itor, inserted] = m_data.try_emplace(aid, interval(lnow));
 			if (inserted)
 			{

@@ -24,7 +24,7 @@
 #include <mutex>
 #include <list>
 
-namespace ngl
+namespace ngl::tools
 {
 	using thread = std::thread;
 

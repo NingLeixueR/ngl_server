@@ -142,12 +142,12 @@ namespace ngl
 		{
 			log_error()->print("actor::actor_handle({}) {}:[weight:{}/count:{}]", athreadid, nguid(id_guid()), m_weight, locallist.size());
 		}
-		const time_t lbeg = localtime::gettimems();
+		const time_t lbeg = tools::localtime::gettimems();
 		int32_t lweight = m_weight;
 		while (--lweight >= 0 && !locallist.empty())
 		{
 			// During shutdown we ignore the time budget and finish draining immediately.
-			if (!m_release && localtime::timeout(lbeg, m_timeout))
+			if (!m_release && tools::localtime::timeout(lbeg, m_timeout))
 			{
 				break;
 			}

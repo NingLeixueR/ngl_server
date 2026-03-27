@@ -50,7 +50,7 @@ void init_db_role(const char* aname, int abeg)
 {
 	for (int li = abeg; li < abeg + def_count; ++li)
 	{
-		const int32_t lnow = static_cast<int32_t>(ngl::localtime::gettime());
+		const int32_t lnow = static_cast<int32_t>(ngl::tools::localtime::gettime());
 		pbdb::db_role ltemp;
 		ngl::i64_actorid lrole_id = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li);
 		ltemp.set_mid(lrole_id);
@@ -200,8 +200,8 @@ void init_db_kv()
 {
 	pbdb::db_keyvalue ltemp;
 	ltemp.set_mid(pbdb::db_keyvalue_ekv_none);
-	const int32_t lnow = (int32_t)ngl::localtime::gettime();
-	std::string lval = std::format("{}*{}", lnow, ngl::localtime::time2str(lnow, "%y/%m/%d %H:%M:%S"));
+	const int32_t lnow = (int32_t)ngl::tools::localtime::gettime();
+	std::string lval = std::format("{}*{}", lnow, ngl::tools::localtime::time2str(lnow, "%y/%m/%d %H:%M:%S"));
 	ltemp.set_mvalue(lval);
 
 	save_seed<pbdb::ENUM_DB_KEYVALUE>(ltemp);
@@ -211,7 +211,7 @@ void init_db_fam()
 {
 	for (int li = 1; li < 100; ++li)
 	{
-		const int32_t lnow = static_cast<int32_t>(ngl::localtime::gettime());
+		const int32_t lnow = static_cast<int32_t>(ngl::tools::localtime::gettime());
 		pbdb::db_family ltemp;
 		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_FAMILY, tab_self_area, li));
 		ltemp.set_mcreateutc(lnow);
@@ -241,7 +241,7 @@ void init_db_rank()
 		pbdb::db_ranklist ltemp;
 		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, li));
 		pbdb::rankitem lrankitem;
-		lrankitem.set_mtime((int32_t)ngl::localtime::gettime());
+		lrankitem.set_mtime((int32_t)ngl::tools::localtime::gettime());
 		lrankitem.set_mvalue(li);
 		(*ltemp.mutable_mitems())[(int)pbdb::eranklist::lv] = lrankitem;
 

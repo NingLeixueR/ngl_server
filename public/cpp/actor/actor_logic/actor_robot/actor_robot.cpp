@@ -25,7 +25,7 @@ namespace ngl
 	namespace
 	{
 		constexpr int32_t erobot_bt_tick_interval_sec = 1;
-		constexpr int64_t erobot_kcp_retry_interval_ms = 3 * localtime::MILLISECOND;
+		constexpr int64_t erobot_kcp_retry_interval_ms = 3 * tools::localtime::MILLISECOND;
 
 		const char* robot_behavior_tree_xml()
 		{

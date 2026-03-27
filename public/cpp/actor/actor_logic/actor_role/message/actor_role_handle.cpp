@@ -90,7 +90,7 @@ namespace ngl
 						return;
 					}
 
-					int lnow = (int)localtime::gettime();
+					int lnow = (int)tools::localtime::gettime();
 					m_info.change_notalkutc(lnow + lduration);
 					pro.m_data = true;
 					log_error()->print("[{}] bantalk [{}]", id_guid(), tools::time2str(lnow + lduration));
@@ -440,11 +440,11 @@ namespace ngl
 		//if (lpack->m_protocol == ENET_KCP)
 		//{
 		//	pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
-		//	pro.set_mutc((int32_t)localtime::gettime());
+		//	pro.set_mutc((int32_t)tools::localtime::gettime());
 		//	kcp_send(lpack, pro);
 		//}
 		pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
-		pro.set_mutc((int32_t)localtime::gettime());
+		pro.set_mutc((int32_t)tools::localtime::gettime());
 		send_client(id_guid(), pro, ENET_KCP);
 		return true;
 	}

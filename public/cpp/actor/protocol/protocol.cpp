@@ -222,7 +222,7 @@ namespace ngl
 						return;
 					}
 					time_t ltime = tools::lexical_cast<time_t>(avec[1]);
-					if (ngl::localtime::issameweek(ngl::localtime::gettime(), ltime))
+					if (tools::localtime::issameweek(tools::localtime::gettime(), ltime))
 					{
 						std::cout << "同一周" << std::endl;
 						ntcp::instance().send_msg(pack->m_id, "同一周");

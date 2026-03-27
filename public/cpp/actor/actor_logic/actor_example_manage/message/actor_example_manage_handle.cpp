@@ -66,7 +66,7 @@ namespace ngl
 		if (lpactor != nullptr)
 		{
 			playinfo& lplayinfo = m_info[lprecv->m_type][lpactor->id_guid()];
-			lplayinfo.m_createexample = (int32_t)localtime::gettime();
+			lplayinfo.m_createexample = (int32_t)tools::localtime::gettime();
 			lplayinfo.m_actorexampleid = lpactor->id_guid();
 			for (const auto& [_, lactorid] : lprecv->m_roleids)
 			{

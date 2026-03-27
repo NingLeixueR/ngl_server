@@ -23,7 +23,7 @@
 #include <limits>
 #include <string>
 
-namespace ngl
+namespace ngl::tools
 {
 	readfile::readfile(const std::string& filename)
 	{

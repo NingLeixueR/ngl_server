@@ -1,13 +1,13 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
-* 
+*
 * Project name: ngl_server
 * Project URL: https://github.com/NingLeixueR/ngl_server
-* 
+*
 * This file is part of the ngl_server project and is distributed under the MIT License.
 * You may use, modify, and distribute this project under the license, including commercial use,
 * but you must retain the original copyright and license notice.
-* 
+*
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
@@ -15,25 +15,24 @@
 
 #pragma once
 
-#include "tools/serialize/ndefine.h"
-#include "tools/tools.h"
-#include "tools/type.h"
+#include "tools/tools/tools_time_wheel.h"
+#include "tools/log/nlog.h"
 
-#include <iostream>
-
-namespace ngl
+namespace ngl::tools
 {
-	/*
-		Parameters: template_arg<TF,TARG...>
-		TFneed to static func<T>(TARG...)
-	*/
-	template <typename TF, typename ...TARG>
-	struct template_arg
+	class consume
 	{
-		template <typename ...ARG>
-		static void func(TARG... args)
-		{
-			(TF::template func<ARG>(args...), ...);
-		}
+		consume() = delete;
+		consume(const consume&) = delete;
+		consume& operator=(const consume&) = delete;
+
+		std::string		m_name; // Diagnostic label for the measured scope.
+		int64_t			m_beg;  // Start time in milliseconds.
+	public:
+		// Light weight RAII-style helper for logging slow operations.
+		consume(std::string&& aname);
+		consume(const std::string& aname);
+		void start();
+		void finish();
 	};
 }//namespace ngl

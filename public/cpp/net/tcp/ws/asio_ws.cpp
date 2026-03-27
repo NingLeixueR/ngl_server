@@ -17,7 +17,7 @@
 #include "actor/protocol/nprotocol.h"
 #include "net/tcp/ws/asio_ws.h"
 #include "net/net_session.h"
-#include "tools/localtime.h"
+#include "tools/tools/tools_localtime.h"
 #include "net/asio_timer.h"
 
 #include <openssl/ssl.h>
@@ -30,7 +30,7 @@ namespace ngl
 	namespace ws
 	{
 		constexpr int32_t ws_connect_interval_ms =
-			asio_ws::ews_connect_interval * static_cast<int32_t>(localtime::MILLISECOND);
+			asio_ws::ews_connect_interval * static_cast<int32_t>(tools::localtime::MILLISECOND);
 
 		template <typename T>
 		using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;

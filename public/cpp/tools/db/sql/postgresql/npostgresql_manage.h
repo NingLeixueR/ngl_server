@@ -19,10 +19,10 @@
 #include "tools/db/sql/postgresql/npostgresql.h"
 #include "tools/serialize/nserialize.h"
 #include "actor/tab/ttab_mergearea.h"
+#include "tools/db/sql/scope_guard.h"
 #include "actor/tab/ttab_servers.h"
 #include "tools/db/sql/db_data.h"
 #include "tools/db/sql/db_buff.h"
-#include "tools/scope_guard.h"
 #include "tools/tools.h"
 
 namespace ngl

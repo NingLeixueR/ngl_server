@@ -38,13 +38,13 @@ namespace ngl
 
 			auto llast_it = m_lastspeakutc.try_emplace(lroleid, 0).first;
 			int& llastspeakutc = llast_it->second;
-			//int ltemputc = localtime::gettime() - llastspeakutc;
+			//int ltemputc = tools::localtime::gettime() - llastspeakutc;
 			//if (ltemputc < ltab->m_time)
 			//{
 			//	send_client(adata.m_data->identifier(), pro);
 			//	return true;
 			//}
-			llastspeakutc = (int)localtime::gettime();
+			llastspeakutc = (int)tools::localtime::gettime();
 
 			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cread<actor_chat>::instance(id_guid()).getconst(lroleid);
 			if (lpbrief == nullptr)
@@ -58,7 +58,7 @@ namespace ngl
 			pbnet::chatitem& lchatitem = lvec.back();
 
 			lchatitem.set_mrolename(lpbrief->mbase().mname());
-			lchatitem.set_mutc((int)localtime::gettime());
+			lchatitem.set_mutc((int)tools::localtime::gettime());
 			lchatitem.set_mcontent(lrecv.mcontent());
 			lchatitem.set_mroleid(lpbrief->mid());
 

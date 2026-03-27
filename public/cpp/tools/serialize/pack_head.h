@@ -15,10 +15,10 @@
 
 #pragma once
 
-#include "tools/serialize/nserialize.h"
 #include "actor/actor_base/core/nguid.h"
+#include "tools/tools/tools_localtime.h"
+#include "tools/serialize/nserialize.h"
 #include "actor/tab/csvtable.h"
-#include "tools/localtime.h"
 #include "tools/tools.h"
 #include "tools/type.h"
 
@@ -144,7 +144,7 @@ HEAD[
 ])"
 			/*mask*/			, ss
 			/*bytes*/			, val.m_data[ngl::EPH_BYTES]
-			/*time*/			, ngl::localtime::time2str(val.m_data[ngl::EPH_TIME], "%y/%m/%d %H:%M:%S")
+			/*time*/			, tools::localtime::time2str(val.m_data[ngl::EPH_TIME], "%y/%m/%d %H:%M:%S")
 			/*protocol*/		, val.m_data[ngl::EPH_PROTOCOLNUM]
 			/*actor*/			, lactor
 			/*request_actor*/	, lrequestactor

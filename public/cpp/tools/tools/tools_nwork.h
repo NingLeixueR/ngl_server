@@ -17,7 +17,7 @@
 
 #include "tools/threadtools.h"
 
-namespace ngl
+namespace ngl::tools
 {
 	template <typename T>
 	class nwork

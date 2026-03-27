@@ -21,26 +21,28 @@
 #undef GetMessage
 #endif
 
-namespace ngl::msg
-{
-	const google::protobuf::Message& get(
-		const google::protobuf::Reflection* arefl,
-		const google::protobuf::Message& asrc,
-		const google::protobuf::FieldDescriptor* afield
-	)
-	{
-		using get_msg_fn = const google::protobuf::Message& (google::protobuf::Reflection::*)(
-			const google::protobuf::Message&,
-			const google::protobuf::FieldDescriptor*,
-			google::protobuf::MessageFactory*
-			) const;
-		const auto lget_msg = static_cast<get_msg_fn>(&google::protobuf::Reflection::GetMessage);
-		return (arefl->*lget_msg)(asrc, afield, nullptr);
-	}
-}
 
-namespace ngl
+namespace ngl::tools
 {
+	namespace
+	{
+		const google::protobuf::Message& get(
+			const google::protobuf::Reflection* arefl,
+			const google::protobuf::Message& asrc,
+			const google::protobuf::FieldDescriptor* afield
+		)
+		{
+			using get_msg_fn = const google::protobuf::Message& (google::protobuf::Reflection::*)(
+				const google::protobuf::Message&,
+				const google::protobuf::FieldDescriptor*,
+				google::protobuf::MessageFactory*
+				) const;
+			const auto lget_msg = static_cast<get_msg_fn>(&google::protobuf::Reflection::GetMessage);
+			return (arefl->*lget_msg)(asrc, afield, nullptr);
+		}
+	}
+
+
     void pb_field::copy(
         const google::protobuf::Message& src
         , google::protobuf::Message* dst

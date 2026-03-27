@@ -26,7 +26,7 @@
 #include <unordered_set>
 #include <vector>
 
-namespace ngl
+namespace ngl::tools
 {
     enum
     {

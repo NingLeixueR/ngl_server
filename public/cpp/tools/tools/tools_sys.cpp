@@ -18,7 +18,7 @@
 #include "actor/actor_base/core/nguid.h"
 #include "actor/tab/ttab_servers.h"
 #include "tools/curl/ncurl.h"
-#include "tools/localtime.h"
+#include "tools/tools/tools_localtime.h"
 #include "tools/tab/xml/sysconfig.h"
 #include "tools/threadtools.h"
 #include "tools_split.h"
@@ -82,7 +82,7 @@ namespace ngl
 	{
 		std::map<std::string, int32_t> g_mailmap;
 		std::shared_mutex g_maillock;
-		int32_t g_mail_int = localtime::MINUTES_SECOND * 10;
+		int32_t g_mail_int = tools::localtime::MINUTES_SECOND * 10;
 		constexpr std::size_t g_mail_lim = 1024;
 
 		void prune_mail(int32_t anow)
@@ -108,7 +108,7 @@ namespace ngl
 		std::string time2str(int autc, const char* aformat)
 		{
 			char lbuf[1024] = { 0 };
-			ngl::localtime::time2str(lbuf, 1024, autc, aformat);
+			tools::localtime::time2str(lbuf, 1024, autc, aformat);
 			return lbuf;
 		}
 
@@ -208,7 +208,7 @@ namespace ngl
 		{
 			return [acontent]()
 			{
-				const int32_t lnow = static_cast<int32_t>(localtime::gettime());
+				const int32_t lnow = static_cast<int32_t>(tools::localtime::gettime());
 				{
 					lock_write(mail_detail::g_maillock);
 					if (mail_detail::g_mailmap.size() >= mail_detail::g_mail_lim)

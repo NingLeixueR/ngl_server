@@ -16,14 +16,14 @@
 
 #pragma once
 
-#include "tools/log/nlog.h"
 #include "tools/threadtools.h"
+#include "tools/log/nlog.h"
 #include "tools/tools.h"
 
 #include <limits>
 #include <map>
 
-namespace ngl
+namespace ngl::tools
 {
 	struct nhashcode
 	{

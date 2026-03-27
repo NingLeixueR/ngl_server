@@ -50,13 +50,13 @@ namespace ngl
 			{
 				continue;
 			}
-			if (localtime::checkutc(lpnotice->mfinishtime()) == false)
+			if (tools::localtime::checkutc(lpnotice->mfinishtime()) == false)
 			{
 				log_error()->print(
 					"remove_notice {}:{}-{}:{}"
 					, lpnotice->mid()
-					, localtime::time2str(lpnotice->mstarttime(), "%Y-%m-%d %H:%M:%S")
-					, localtime::time2str(lpnotice->mfinishtime(), "%Y-%m-%d %H:%M:%S")
+					, tools::localtime::time2str(lpnotice->mstarttime(), "%Y-%m-%d %H:%M:%S")
+					, tools::localtime::time2str(lpnotice->mfinishtime(), "%Y-%m-%d %H:%M:%S")
 					, lpnotice->mnotice()
 				);
 				remove(lpnotice->mid());

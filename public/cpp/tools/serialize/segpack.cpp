@@ -16,7 +16,7 @@
 
 #include "actor/protocol/protocol.h"
 #include "tools/serialize/segpack.h"
-#include "tools/localtime.h"
+#include "tools/tools/tools_localtime.h"
 #include "tools/log/nlog.h"
 
 namespace ngl
@@ -223,7 +223,7 @@ namespace ngl
 			return edopush::e_break;
 		}
 
-		if (localtime::getsystime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
+		if (tools::localtime::getsystime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
 		{
 			// Only dispatch packets that are still within the configured clock
 			// skew / timeout window.
@@ -231,7 +231,7 @@ namespace ngl
 		}
 		else
 		{
-			log_error()->print("segpack time[{} < {} + {} ]", localtime::getsystime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout());
+			log_error()->print("segpack time[{} < {} + {} ]", tools::localtime::getsystime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout());
 		}
 		return edopush::e_continue;
 	}

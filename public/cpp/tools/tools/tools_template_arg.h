@@ -11,13 +11,29 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for tools.
+// File overview: Declares interfaces for tools.
 
+#pragma once
 
-#include "tools/nhash.h"
+#include "tools/serialize/ndefine.h"
+#include "tools/tools.h"
+#include "tools/type.h"
 
-namespace ngl
+#include <iostream>
+
+namespace ngl::tools
 {
-	std::map<int64_t, std::map<std::string, int32_t>> nhash::m_hash;
-	std::shared_mutex nhash::m_mutex;
+	/*
+		Parameters: template_arg<TF,TARG...>
+		TFneed to static func<T>(TARG...)
+	*/
+	template <typename TF, typename ...TARG>
+	struct template_arg
+	{
+		template <typename ...ARG>
+		static void func(TARG... args)
+		{
+			(TF::template func<ARG>(args...), ...);
+		}
+	};
 }//namespace ngl

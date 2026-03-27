@@ -15,24 +15,36 @@
 
 #pragma once
 
-#include "tools/time_wheel.h"
-#include "tools/log/nlog.h"
-
 namespace ngl
 {
-	class nconsume
+	template <typename F>
+	class scope_guard
 	{
-		nconsume() = delete;
-		nconsume(const nconsume&) = delete;
-		nconsume& operator=(const nconsume&) = delete;
+		scope_guard() = delete;
+		scope_guard(const scope_guard&) = delete;
+		scope_guard(const scope_guard&&) = delete;
 
-		std::string		m_name; // Diagnostic label for the measured scope.
-		int64_t			m_beg;  // Start time in milliseconds.
+		F m_fun;
 	public:
-		// Light weight RAII-style helper for logging slow operations.
-		nconsume(std::string&& aname);
-		nconsume(const std::string& aname);
-		void start();
-		void finish();
+		template <typename Func>
+		requires (!std::same_as<std::remove_cvref_t<Func>, scope_guard<F>>)
+		explicit scope_guard(Func&& fun) noexcept
+			: m_fun(std::forward<Func>(fun))
+		{}
+
+		~scope_guard() noexcept
+		{
+			try
+			{
+				m_fun();
+			}
+			catch (...)
+			{
+			}
+		}
 	};
+
+	template <typename Func>
+	scope_guard(Func&&) -> scope_guard<std::decay_t<Func>>;
+
 }//namespace ngl

@@ -20,14 +20,14 @@
 #include <map>
 #include <set>
 
-namespace ngl
+namespace ngl::tools
 {
-	class ngroup
+	class group
 	{
 		std::map<int, std::set<i64_actorid>>		m_group;
 		int											m_currentoffset = 0;
 	public:
-		inline ngroup() :
+		inline group() :
 			m_currentoffset(0)
 		{}
 

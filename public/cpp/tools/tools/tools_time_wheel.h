@@ -8,8 +8,8 @@
 
 #pragma once
 
+#include "tools/tools/tools_threadtools.h"
 #include "tools/tools/tools_impl.h"
-#include "tools/threadtools.h"
 
 #include <functional>
 #include <algorithm>
@@ -23,7 +23,7 @@
 #include <mutex>
 #include <map>
 
-namespace ngl
+namespace ngl::tools
 {
 	struct wheel_node;
 	class time_wheel;

@@ -210,14 +210,14 @@ namespace ngl
 		}
 		
 		lpack->m_pos = len;
-		if (localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
+		if (tools::localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
 		{
 			// Valid KCP payloads re-enter the same protocol dispatch path as TCP payloads.
 			protocol::push(lpack);
 		}
 		else
 		{
-			log_error()->print("time[{} < {} + {} ]", localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout());
+			log_error()->print("time[{} < {} + {} ]", tools::localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout());
 		}
 
 		return true;

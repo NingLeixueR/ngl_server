@@ -18,7 +18,7 @@
 #include <limits>
 #include <memory>
 
-namespace ngl
+namespace ngl::tools
 {
 	class wheel
 	{

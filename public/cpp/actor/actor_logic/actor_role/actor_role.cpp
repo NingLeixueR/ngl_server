@@ -39,7 +39,7 @@ namespace ngl
 					.m_manage_dbclient = true
 				},
 				.m_weight = 0x7fffffff,
-				.m_timeout = 1 * localtime::MILLISECOND,
+				.m_timeout = 1 * tools::localtime::MILLISECOND,
 				.m_broadcast = true,
 			})
 		, m_gatewayid(((np_actorswitch_process_role*)(adata))->m_gatewayid)
@@ -87,11 +87,11 @@ namespace ngl
 	void actor_role::reset_logintime()
 	{
 		time_t lloginutc = 0;
-		time_t lnow = localtime::gettime();
+		time_t lnow = tools::localtime::gettime();
 		bool isloginutc = false;
 		if (m_rolekv.get_value("base", { "loginutc" }, lloginutc))
 		{
-			if (localtime::issameday(lnow, lloginutc) == false)
+			if (tools::localtime::issameday(lnow, lloginutc) == false)
 			{
 				isloginutc = true;
 			}
@@ -310,7 +310,7 @@ namespace ngl
 	void actor_role::createorder(std::string& aorder, int32_t arechargeid)
 	{
 		static std::atomic<int32_t> billnoindex = 0;
-		aorder = std::format("{:05d}{:010d}{:010d}{:010d}{:02d}",area(), id(), arechargeid, localtime::gettime(), billnoindex.fetch_add(1));
+		aorder = std::format("{:05d}{:010d}{:010d}{:010d}{:02d}",area(), id(), arechargeid, tools::localtime::gettime(), billnoindex.fetch_add(1));
 	}
 
 	int32_t actor_role::rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting)
@@ -421,7 +421,7 @@ namespace ngl
 			return;
 		}
 		lpbriefbase->set_mlv(1);
-			lpbriefbase->set_mcreateutc(static_cast<int32_t>(localtime::gettime()));
+			lpbriefbase->set_mcreateutc(static_cast<int32_t>(tools::localtime::gettime()));
 		lpbriefbase->set_mmoneygold(0);
 		lpbriefbase->set_mmoneysilver(0);
 		lpbriefbase->set_mname(aname);

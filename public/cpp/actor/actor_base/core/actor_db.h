@@ -29,7 +29,6 @@
 #include "actor/tab/ttab_dbload.h"
 #include "tools/db/sql/db_cache.h"
 #include "tools/db/sql/db_data.h"
-#include "tools/scope_guard.h"
 #include "net/tcp/ntcp.h"
 
 namespace ngl

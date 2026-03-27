@@ -29,7 +29,7 @@ namespace ngl
 	namespace tcp
 	{
 		constexpr int32_t tcp_connect_interval_ms =
-			asio_tcp::etcp_connect_interval * static_cast<int32_t>(localtime::MILLISECOND);
+			asio_tcp::etcp_connect_interval * static_cast<int32_t>(tools::localtime::MILLISECOND);
 
 		bool is_alive(const std::shared_ptr<std::atomic_bool>& aalive)
 		{

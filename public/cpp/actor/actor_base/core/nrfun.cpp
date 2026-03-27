@@ -15,7 +15,7 @@
 
 #include "tools/tab/xml/sysconfig.h"
 #include "actor/actor_base/core/nrfun.h"
-#include "tools/nconsume.h"
+#include "tools/tools/tools_consume.h"
 
 namespace ngl
 {
@@ -58,8 +58,8 @@ namespace ngl
 			log_error()->print("{}::handle_switch isloadfinish() == {}", aactor->guid(), lpfun->m_ready);
 			return false;
 		}
-		// nconsume measures per-message dispatch latency for diagnostics.
-		nconsume lconsuming(std::format("{}-{}-{}", aactor->guid(), apram.m_enum, tprotocol::name(apram.m_enum)));
+		// tools::consume measures per-message dispatch latency for diagnostics.
+		tools::consume lconsuming(std::format("{}-{}-{}", aactor->guid(), apram.m_enum, tprotocol::name(apram.m_enum)));
 		lconsuming.start();
 		lpfun->m_fun(aactor, athreadid, apram);
 		if (aactor->type() != ACTOR_LOG)

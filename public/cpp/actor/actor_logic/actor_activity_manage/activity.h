@@ -107,7 +107,7 @@ namespace ngl
 		// # This activity
 		int32_t day()
 		{
-			return (int32_t)localtime::getspandays(localtime::gettime(), start_utc());
+			return (int32_t)tools::localtime::getspandays(tools::localtime::gettime(), start_utc());
 		}
 
 		// # Getactivitytable

@@ -19,7 +19,7 @@
 #include "actor/actor_base/core/nguid.h"
 #include "actor/tab/ttab_servers.h"
 #include "tools/curl/ncurl.h"
-#include "tools/localtime.h"
+#include "tools/tools/tools_localtime.h"
 #include "tools/log/nlog.h"
 #include "tools/nwork.h"
 #include "tools/operator_file.h"
@@ -878,15 +878,15 @@ TEST(ToolsTest, TimeWheelManualModeSkipsRemovedReadyCallbacks)
 
 TEST(LocaltimeTest, GetMothdayValidatesCalendarDayAgainstTargetMonth)
 {
-	const time_t non_leap_february = ngl::localtime::str2time("2025-02-10 12:00:00");
-	const auto invalid = ngl::localtime::getmothday(non_leap_february, 29, 8, 30, 0);
+	const time_t non_leap_february = ngl::tools::localtime::str2time("2025-02-10 12:00:00");
+	const auto invalid = ngl::tools::localtime::getmothday(non_leap_february, 29, 8, 30, 0);
 	EXPECT_FALSE(invalid.first);
 	EXPECT_EQ(invalid.second, -1);
 
-	const time_t leap_february = ngl::localtime::str2time("2024-02-10 12:00:00");
-	const auto valid = ngl::localtime::getmothday(leap_february, 29, 8, 30, 0);
+	const time_t leap_february = ngl::tools::localtime::str2time("2024-02-10 12:00:00");
+	const auto valid = ngl::tools::localtime::getmothday(leap_february, 29, 8, 30, 0);
 	ASSERT_TRUE(valid.first);
-	EXPECT_EQ(ngl::localtime::time2str(valid.second, "%Y-%m-%d %H:%M:%S"), "2024-02-29 08:30:00");
+	EXPECT_EQ(ngl::tools::localtime::time2str(valid.second, "%Y-%m-%d %H:%M:%S"), "2024-02-29 08:30:00");
 }
 
 TEST(XmlUtilsTest, NullElementApisFailGracefully)

@@ -204,7 +204,7 @@ namespace ngl
 		lroomindex.m_roomlist.emplace(lroomid, room_index::eroom_matching);
 		room& lroom = m_room[atype][lroomid];
 		lroom.m_type = atype;
-		lroom.m_roomcreate = localtime::gettime();
+		lroom.m_roomcreate = tools::localtime::gettime();
 		lroom.m_roomid = lroomid;
 		lroom.m_totalnumber = ltotalnumber;
 
@@ -278,7 +278,7 @@ namespace ngl
 
 	bool actor_example_match::check_timeout(time_t atime, int32_t ainterval)
 	{
-		time_t lnow = localtime::gettime();
+		time_t lnow = tools::localtime::gettime();
 		if (lnow < atime)
 		{
 			return false;

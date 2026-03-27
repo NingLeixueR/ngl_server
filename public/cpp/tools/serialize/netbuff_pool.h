@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "tools/localtime.h"
+#include "tools/tools/tools_localtime.h"
 #include "tools/threadtools.h"
 #include "tools/time_wheel.h"
 
@@ -152,8 +152,8 @@ namespace ngl
 
 			wheel_parm lparm
 			{
-				.m_ms = 10 * localtime::MILLISECOND,
-				.m_intervalms = [](int64_t) {return 10 * localtime::MILLISECOND; } ,
+				.m_ms = 10 * tools::localtime::MILLISECOND,
+				.m_intervalms = [](int64_t) {return 10 * tools::localtime::MILLISECOND; } ,
 				.m_count = 0x7fffffff,
 				.m_fun = [this](const wheel_node*)
 				{

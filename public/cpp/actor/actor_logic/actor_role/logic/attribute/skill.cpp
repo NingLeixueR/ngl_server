@@ -67,7 +67,7 @@ namespace ngl
 			lvalue = 0;
 		}
 
-		int32_t lnow = static_cast<int32_t>(localtime::gettime());
+		int32_t lnow = static_cast<int32_t>(tools::localtime::gettime());
 		if (m_cooldownutc + lvalue > lnow)
 		{
 			return false;

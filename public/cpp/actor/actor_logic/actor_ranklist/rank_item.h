@@ -126,7 +126,7 @@ namespace ngl
 		{
 			pbdb::rankitem& ltemp = (*aranklist.mutable_mitems())[atype];
 			rank_pair& lpair = m_data[atype];
-			lpair.m_time = (int32_t)localtime::gettime();
+			lpair.m_time = (int32_t)tools::localtime::gettime();
 			ltemp.set_mtime(lpair.m_time);
 			ltemp.set_mvalue(lpair.m_value);
 		}

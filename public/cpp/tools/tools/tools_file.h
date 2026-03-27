@@ -20,7 +20,7 @@
 #include <memory>
 #include <vector>
 
-namespace ngl
+namespace ngl::tools
 {
 	class readfile
 	{

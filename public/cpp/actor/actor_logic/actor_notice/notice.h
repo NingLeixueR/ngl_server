@@ -51,10 +51,10 @@ namespace ngl
 
 			wheel_parm lparm
 			{
-				.m_ms = 10* localtime::MINUTES_SECOND,
+				.m_ms = 10* tools::localtime::MINUTES_SECOND,
 				.m_intervalms = [](int64_t)
 				{
-					return 10 * localtime::MINUTES_SECOND;
+					return 10 * tools::localtime::MINUTES_SECOND;
 				} ,
 				.m_count = 0x7fffffff,
 				.m_fun = [this](const wheel_node*)

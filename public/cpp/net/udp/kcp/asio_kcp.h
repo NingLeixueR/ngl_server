@@ -42,8 +42,8 @@ namespace ngl
 		{
 			e_buff_byte = 1500,
 			e_buffrecv_byte = 10240,
-			e_close_intervalms = 1* localtime::MILLISECOND,
-			e_waitrecv_intervalms = 1* localtime::MILLISECOND,
+			e_close_intervalms = 1* tools::localtime::MILLISECOND,
+			e_waitrecv_intervalms = 1* tools::localtime::MILLISECOND,
 		};
 	private:
 		kcp_session							m_session;			// Session table keyed by KCP session id / actor id / endpoint.
