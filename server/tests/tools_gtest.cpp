@@ -18,7 +18,7 @@
 
 #include "actor/actor_base/core/nguid.h"
 #include "actor/tab/ttab_servers.h"
-#include "tools/curl/ncurl.h"
+#include "tools/tools/tools_curl.h"
 #include "tools/tools/tools_time.h"
 #include "tools/log/nlog.h"
 #include "tools/tools/tools_nwork.h"
@@ -77,38 +77,38 @@ struct work_item
 
 TEST(ToolsTest, CurlHttpFactoryInitializesHandle)
 {
-	auto http = ngl::ncurl::http();
+	auto http = ngl::tools::curl::http();
 	ASSERT_NE(http, nullptr);
 	EXPECT_NE(http->m_curl, nullptr);
 }
 
 TEST(ToolsTest, CurlSettersHandleNullAndNullUrl)
 {
-	std::shared_ptr<ngl::http_parm> http;
-	EXPECT_NO_THROW(ngl::ncurl::set_mode(http, ngl::ENUM_MODE_HTTP));
-	EXPECT_NO_THROW(ngl::ncurl::set_type(http, ngl::ENUM_TYPE_GET));
-	EXPECT_NO_THROW(ngl::ncurl::set_tls_verification(http, false, 0L));
-	EXPECT_NO_THROW(ngl::ncurl::set_url(http, static_cast<const char*>(nullptr)));
-	EXPECT_NO_THROW(ngl::ncurl::set_param(http, "a=1"));
-	EXPECT_NO_THROW(ngl::ncurl::set_headers(http, std::vector<std::string>{ "A: 1" }));
-	EXPECT_NO_THROW(ngl::ncurl::set_callback(http, [](int, ngl::http_parm&) {}));
+	std::shared_ptr<ngl::tools::http_parm> http;
+	EXPECT_NO_THROW(ngl::tools::curl::set_mode(http, ngl::tools::ENUM_MODE_HTTP));
+	EXPECT_NO_THROW(ngl::tools::curl::set_type(http, ngl::tools::ENUM_TYPE_GET));
+	EXPECT_NO_THROW(ngl::tools::curl::set_tls_verification(http, false, 0L));
+	EXPECT_NO_THROW(ngl::tools::curl::set_url(http, static_cast<const char*>(nullptr)));
+	EXPECT_NO_THROW(ngl::tools::curl::set_param(http, "a=1"));
+	EXPECT_NO_THROW(ngl::tools::curl::set_headers(http, std::vector<std::string>{ "A: 1" }));
+	EXPECT_NO_THROW(ngl::tools::curl::set_callback(http, [](int, ngl::tools::http_parm&) {}));
 
-	auto http2 = ngl::ncurl::http();
+	auto http2 = ngl::tools::curl::http();
 	ASSERT_NE(http2, nullptr);
-	ngl::ncurl::set_url(http2, "abc");
-	ngl::ncurl::set_url(http2, static_cast<const char*>(nullptr));
+	ngl::tools::curl::set_url(http2, "abc");
+	ngl::tools::curl::set_url(http2, static_cast<const char*>(nullptr));
 	EXPECT_TRUE(http2->m_url.empty());
 }
 
 TEST(ToolsTest, CurlHttpsVerificationDefaultsToStrictAndCanBeOverridden)
 {
-	auto http = ngl::ncurl::http();
+	auto http = ngl::tools::curl::http();
 	ASSERT_NE(http, nullptr);
 
 	EXPECT_TRUE(http->m_verify_peer);
 	EXPECT_EQ(http->m_verify_host, 2L);
 
-	ngl::ncurl::set_tls_verification(http, false, 0L);
+	ngl::tools::curl::set_tls_verification(http, false, 0L);
 	EXPECT_FALSE(http->m_verify_peer);
 	EXPECT_EQ(http->m_verify_host, 0L);
 }
@@ -116,10 +116,10 @@ TEST(ToolsTest, CurlHttpsVerificationDefaultsToStrictAndCanBeOverridden)
 TEST(ToolsTest, CurlParamSkipsNullKeysAndBuildsQuery)
 {
 	std::string query;
-	ngl::ncurl::param(query, nullptr, 1);
-	ngl::ncurl::param(query, "", 2);
-	ngl::ncurl::param(query, "a", 1);
-	ngl::ncurl::param(query, "b", "x");
+	ngl::tools::curl::param(query, nullptr, 1);
+	ngl::tools::curl::param(query, "", 2);
+	ngl::tools::curl::param(query, "a", 1);
+	ngl::tools::curl::param(query, "b", "x");
 
 	EXPECT_EQ(query, "a=1&b=x");
 }
@@ -149,7 +149,7 @@ TEST(ToolsTest, NworkRunsQueuedItem)
 
 TEST(ToolsTest, CurlHeadersReplaceExistingList)
 {
-	auto http = ngl::ncurl::http();
+	auto http = ngl::tools::curl::http();
 	ASSERT_NE(http, nullptr);
 
 	const std::vector<std::string> first = {
@@ -171,8 +171,8 @@ TEST(ToolsTest, CurlHeadersReplaceExistingList)
 
 TEST(ToolsTest, CurlSendEmailHandlesNullMailParam)
 {
-	std::shared_ptr<ngl::mail_param> mail;
-	EXPECT_NO_THROW(ngl::ncurl::sendemail(mail));
+	std::shared_ptr<ngl::tools::mail_param> mail;
+	EXPECT_NO_THROW(ngl::tools::curl::sendemail(mail));
 }
 
 TEST(ToolsTest, Utf8ValidationRejectsBrokenSequences)
