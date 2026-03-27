@@ -13,9 +13,9 @@
 */
 // File overview: Implements actor dispatch registration tables.
 
-#include "tools/tab/xml/sysconfig.h"
 #include "actor/actor_base/core/nrfun.h"
 #include "tools/tools/tools_consume.h"
+#include "tools/tab/xml/sysconfig.h"
 
 namespace ngl
 {

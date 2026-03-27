@@ -15,8 +15,8 @@
 
 #include "actor/actor_base/core/actor_manage.h"
 #include "actor/actor_base/core/actor_base.h"
-#include "actor/protocol/tprotocol.h"
 #include "actor/actor_base/core/nscript.h"
+#include "actor/protocol/tprotocol.h"
 
 extern "C"
 {

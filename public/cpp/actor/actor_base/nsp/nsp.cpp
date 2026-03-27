@@ -13,8 +13,8 @@
 */
 // File overview: Implements logic for nsp.
 
-#include "actor/actor_base/nsp/nsp.h"
 #include "tools/tools/tools_pb_field.h"
+#include "actor/actor_base/nsp/nsp.h"
 
 namespace ngl
 {

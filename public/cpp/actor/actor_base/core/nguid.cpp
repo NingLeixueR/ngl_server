@@ -13,8 +13,8 @@
 */
 // File overview: Implements logic for actor base.
 
-#include "actor/tab/ttab_servers.h"
 #include "actor/actor_base/core/nguid.h"
+#include "actor/tab/ttab_servers.h"
 
 namespace ngl
 {

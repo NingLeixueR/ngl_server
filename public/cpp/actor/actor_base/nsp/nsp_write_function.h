@@ -17,7 +17,6 @@
 
 #include "actor/actor_base/nsp/nsp_write.h"
 
-
 namespace ngl
 {
 	template <typename TDerived, typename TACTOR, typename T>

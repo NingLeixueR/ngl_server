@@ -19,7 +19,6 @@
 #include "actor/generated/pb/db.pb.h"
 #include "tools/tools.h"
 
-#
 #include <map>
 
 namespace ngl

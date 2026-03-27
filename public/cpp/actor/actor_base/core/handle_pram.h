@@ -15,9 +15,9 @@
 
 #pragma once
 
+#include "actor/actor_base/core/nguid.h"
 #include "actor/protocol/tprotocol.h"
 #include "actor/protocol/nprotocol.h"
-#include "actor/actor_base/core/nguid.h"
 #include "net/server_session.h"
 #include "tools/type.h"
 

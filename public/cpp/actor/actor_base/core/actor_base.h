@@ -20,12 +20,13 @@
 #include "actor/actor_base/core/nactortype.h"
 #include "actor/actor_base/core/nscript.h"
 #include "actor/actor_base/core/ntimer.h"
-#include "actor/tab/ttab_servers.h"
 #include "actor/actor_base/core/nguid.h"
-#include "net/udp/kcp/ukcp.h"
-#include "tools/tools/tools_time.h"
 #include "tools/tools/tools_group.h"
+#include "tools/tools/tools_time.h"
+#include "actor/tab/ttab_servers.h"
+#include "net/udp/kcp/ukcp.h"
 #include "tools/type.h"
+#include "net/nnet.h"
 
 #include <functional>
 #include <optional>
@@ -596,4 +597,3 @@ namespace ngl
 	}
 }//namespace ngl
 
-#include "net/nnet.h"

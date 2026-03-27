@@ -16,10 +16,10 @@
 #pragma once
 
 #include "actor/actor_base/core/nactortype.h"
-#include "tools/serialize/ndefine.h"
-#include "actor/tab/csvtable.h"
 #include "actor/generated/pb/net.pb.h"
 #include "actor/generated/pb/db.pb.h"
+#include "tools/serialize/ndefine.h"
+#include "actor/tab/csvtable.h"
 #include "tools/log/nlog.h"
 
 #include <cstdint>

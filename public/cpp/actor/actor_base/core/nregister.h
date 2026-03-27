@@ -17,10 +17,10 @@
 
 #include "actor/actor_base/core/nactortype.h"
 #include "actor/actor_base/core/actor_base.h"
+#include "actor/actor_base/core/actor.h"
 #include "actor/protocol/tprotocol.h"
 #include "actor/protocol/nprotocol.h"
 #include "actor/protocol/protocol.h"
-#include "actor/actor_base/core/actor.h"
 
 namespace ngl
 {
