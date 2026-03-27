@@ -15,36 +15,37 @@
 
 #pragma once
 
+#include <source_location>
+#include <unordered_map>
+#include <type_traits>
+#include <string_view>
+#include <functional>
 #include <algorithm>
-#include <array>
-#include <atomic>
-#include <bit>
+#include <stdexcept>
+#include <typeinfo>
 #include <charconv>
-#include <compare>
-#include <cctype>
+#include <utility>
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
-#include <functional>
-#include <map>
-#include <regex>
-#include <set>
-#include <source_location>
-#include <stdexcept>
-#include <string>
-#include <string_view>
-#include <tuple>
-#include <type_traits>
-#include <typeinfo>
-#include <unordered_map>
-#include <utility>
+#include <compare>
 #include <vector>
+#include <string>
+#include <format>
+#include <atomic>
+#include <cctype>
+#include <tuple>
+#include <regex>
+#include <array>
+#include <bit>
+#include <map>
+#include <set>
 
-#include <boost/lexical_cast.hpp>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/map.h>
-#include <google/protobuf/message_lite.h>
 #include <google/protobuf/util/json_util.h>
+#include <google/protobuf/message_lite.h>
+#include <google/protobuf/descriptor.h>
+#include <boost/lexical_cast.hpp>
+#include <google/protobuf/map.h>
 
 namespace ngl
 {
