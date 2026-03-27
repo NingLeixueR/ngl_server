@@ -83,36 +83,9 @@ namespace ngl
 
 	bool xmlnode::load(const std::string& axmlpath, const std::string& aname)
 	{
-		namespace fs = std::filesystem;
-
 		m_configname = aname;
-		const fs::path base(axmlpath);
-		const std::array<fs::path, 4> candidates = {
-			base / "config" / std::format("config_{}.xml", aname),
-			base / std::format("config_{}.xml", aname),
-			base / "config" / "config.xml",
-			base / "config.xml",
-		};
+		m_configfile = std::format("{}/config/{}.xml", axmlpath, aname);
 
-		fs::path config_path;
-		// Probe the most specific file first, then fall back to generic config.xml.
-		for (const fs::path& candidate : candidates)
-		{
-			if (tools::file_exists(candidate.string()))
-			{
-				config_path = candidate;
-				break;
-			}
-		}
-
-		if (config_path.empty())
-		{
-			m_configfile = candidates.front().string();
-			log_error()->print("xmlnode config file not found [{}]", m_configfile);
-			return false;
-		}
-
-		m_configfile = config_path.string();
 		log_info()->print("begin xmlnode read [{}]", m_configfile);
 		const bool ok = xml_pop(m_configfile.c_str());
 		log_info()->print("finish xmlnode read [{}] ok={}", m_configfile, ok);

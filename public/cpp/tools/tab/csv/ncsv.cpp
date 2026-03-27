@@ -19,15 +19,9 @@
 
 namespace ngl
 {
-	void csv_base::set_path(const std::string& apath, const std::string& aname)
+	void csv_base::set_path(const std::string& apath)
 	{
-		m_path = std::format("{}/{}", apath, aname);
-		// Some deployments keep CSV files directly under the root path, so fall
-		// back when the named subdirectory does not exist.
-		if (tools::directories_exists(m_path) == false)
-		{
-			m_path = apath;
-		}
+		m_path = apath;
 	}
 
 	std::string& csv_base::path()

@@ -56,7 +56,7 @@ namespace ngl
 		// Shared root path used by every generated CSV table.
 		static std::string& path();
 
-		static void set_path(const std::string& apath, const std::string& aname);
+		static void set_path(const std::string& apath);
 	};
 
 	template <typename T>

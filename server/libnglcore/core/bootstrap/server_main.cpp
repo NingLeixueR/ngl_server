@@ -98,18 +98,28 @@ prep_res prep_ctx(int aargc, char** aargv, start_ctx& actx)
 	actx.node_type = static_cast<int>(nconfig.nodetype());
 
 	// Each process reads its own config variant, for example "game_1".
-	const std::string lcfg = std::format("{}_{}", actx.node_name, actx.tcount);
+	std::string lcfg = std::format("{}_{}", actx.node_name, actx.tcount);
 	if (!nconfig.load("./config", lcfg))
 	{
-		actx.config_file = nconfig.config_file();
-		const startup_error lcode = ngl::tools::file_exists(actx.config_file) ?
-			startup_error::config_load_failed : startup_error::config_not_found;
-		return { lcode, "config load failed" };
+		lcfg = "config";
+		if (!nconfig.load("./config", lcfg))
+		{
+			return { startup_error::config_load_failed, "config xml load failed" };
+		}
 	}
 	actx.config_file = nconfig.config_file();
 
 	// CSV tables are namespaced by node name so test and tool processes can load different views.
-	ngl::csv_base::set_path("./csv", actx.node_name);
+	std::string lcsvpath = std::format("./config/csv/{}", actx.node_name);
+	if (!ngl::tools::directories_exists(lcsvpath))
+	{
+		lcsvpath = "./config/csv";
+		if (!ngl::tools::directories_exists(lcsvpath))
+		{
+			return { startup_error::config_load_failed, "config csv load failed" };
+		}
+	}
+	ngl::csv_base::set_path(lcsvpath);
 
 	// tab_servers is the authoritative source for network layout and thread counts.
 	const ngl::tab_servers* ltab = ngl::ttab_servers::instance().const_tab(actx.node_name, actx.area);
