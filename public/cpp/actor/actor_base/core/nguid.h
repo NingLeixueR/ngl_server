@@ -17,12 +17,12 @@
 
 #include "actor/actor_base/core/nactortype.h"
 #include "tools/serialize/ndefine.h"
-#include "tools/enum2name.h"
+#include "tools/tools/tools_enum.h"
 #include "tools/type.h"
 
-#include <format>
 #include <istream>
 #include <ostream>
+#include <format>
 
 namespace ngl
 {
@@ -96,7 +96,7 @@ namespace ngl
 		{
 			nguid lguid(aactorid);
 			const auto ltype = static_cast<ENUM_ACTOR>(lguid.type());
-			return em<ENUM_ACTOR>::name(ltype);
+			return tools::em<ENUM_ACTOR>::name(ltype);
 		}
 
 		// Build a packed id from all three components.
@@ -326,7 +326,7 @@ struct std::formatter<ngl::nguid>
 
 	auto format(const ngl::nguid& aval, std::format_context& ctx)const
 	{
-		const char* lanme = ngl::em<ngl::ENUM_ACTOR>::name(aval.type());
+		const char* lanme = ngl::tools::em<ngl::ENUM_ACTOR>::name(aval.type());
 		if (lanme == nullptr)
 		{
 			return std::format_to(ctx.out(), "guid<type:{} area:{} id:{}>", (int)aval.type(), aval.area(), aval.actordataid());

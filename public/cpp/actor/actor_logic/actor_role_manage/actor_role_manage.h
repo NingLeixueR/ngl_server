@@ -61,7 +61,7 @@ namespace ngl
 		virtual void handle_after(handle_pram&);
 
 		// # Gmrequest
-		using handle_gm = cmd<actor_role, std::string, int, ncjson&>;
+		using handle_gm = tools::cmd<actor_role, std::string, int, ncjson&>;
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 

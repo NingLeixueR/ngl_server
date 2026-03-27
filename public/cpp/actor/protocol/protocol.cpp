@@ -16,10 +16,10 @@
 
 #include "actor/protocol/protocol.h"
 #include "tools/tab/xml/xmlinfo.h"
+#include "tools/tools/tools_cmd.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/curl/ncurl.h"
 #include "net/tcp/ntcp.h"
-#include "tools/cmd.h"
 
 namespace ngl
 {
@@ -28,7 +28,7 @@ namespace ngl
 
 	const char* protocol::name(i32_protocolnum aprotocol/* Protocol id */)
 	{
-		const char* lname = em<eprotocol_tar>::name((eprotocol_tar)(aprotocol));
+		const char* lname = tools::em<eprotocol_tar>::name((eprotocol_tar)(aprotocol));
 		return lname != nullptr ? lname : "none";
 	}
 
@@ -46,7 +46,7 @@ namespace ngl
 		pfun& lprotocol = m_protocolfun[aprotocol];
 		lprotocol.m_packfun = apackfun;
 		lprotocol.m_runfun[aenumactor] = arunfun;
-		em<eprotocol_tar>::set((eprotocol_tar)aprotocol, aname);
+		tools::em<eprotocol_tar>::set((eprotocol_tar)aprotocol, aname);
 	}
 
 	protocol::pfun* protocol::find(i32_protocolnum aprotocol)
@@ -166,7 +166,7 @@ namespace ngl
 			}
 			return;
 		}
-		using handle_cmd = ngl::cmd<protocol, std::string, const std::shared_ptr<pack>&, const std::vector<std::string>&>;
+		using handle_cmd = tools::cmd<protocol, std::string, const std::shared_ptr<pack>&, const std::vector<std::string>&>;
 		if (handle_cmd::empty())
 		{
 			// Command handlers are registered lazily on first use.
@@ -179,8 +179,8 @@ namespace ngl
 
 			handle_cmd::add("/print_guid") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
 				{
-					ENUM_ACTOR ltype = em<ENUM_ACTOR>::get_enum(avec[1].c_str());
-					if (ltype == em<ENUM_ACTOR>::enum_null())
+					ENUM_ACTOR ltype = tools::em<ENUM_ACTOR>::get_enum(avec[1].c_str());
+					if (ltype == tools::em<ENUM_ACTOR>::enum_null())
 					{
 						return;
 					}

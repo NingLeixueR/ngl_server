@@ -15,11 +15,11 @@
 
 #pragma once
 
+#include "tools/tools/tools_enum.h"
 #include "tools/operator_file.h"
 #include "actor/tab/csvtable.h"
 #include "tools/threadtools.h"
 #include "tools/tab/csv/csv.h"
-#include "tools/enum2name.h"
 #include "tools/nhash.h"
 #include "tools/tools.h"
 

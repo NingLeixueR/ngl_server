@@ -521,7 +521,7 @@ namespace ngl
 				continue;
 			}
 			msg_actor actor_stat_entry;
-			actor_stat_entry.m_actor_name = em<ENUM_ACTOR>::name(actor_type);
+			actor_stat_entry.m_actor_name = tools::em<ENUM_ACTOR>::name(actor_type);
 			for (auto& [actor_guid, _] : actors_by_guid)
 			{
 				actor_stat_entry.m_actor[nguid::area(actor_guid)].push_back(nguid::actordataid(actor_guid));

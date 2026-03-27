@@ -62,7 +62,7 @@ namespace ngl
 
 		static void nregister();
 
-		using handle_cmd = cmd<actor_ranklist, std::string, int, ncjson&>;
+		using handle_cmd = tools::cmd<actor_ranklist, std::string, int, ncjson&>;
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 

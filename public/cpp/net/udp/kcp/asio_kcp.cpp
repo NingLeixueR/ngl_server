@@ -15,9 +15,9 @@
 
 #include "tools/tab/xml/sysconfig.h"
 #include "actor/protocol/protocol.h"
+#include "tools/tools/tools_cmd.h"
 #include "net/udp/kcp/asio_kcp.h"
 #include "net/udp/kcp/ukcp.h"
-#include "tools/cmd.h"
 
 #include <vector>
 

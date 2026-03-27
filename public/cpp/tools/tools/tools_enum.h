@@ -1,13 +1,13 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
-* 
+*
 * Project name: ngl_server
 * Project URL: https://github.com/NingLeixueR/ngl_server
-* 
+*
 * This file is part of the ngl_server project and is distributed under the MIT License.
 * You may use, modify, and distribute this project under the license, including commercial use,
 * but you must retain the original copyright and license notice.
-* 
+*
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
@@ -15,14 +15,14 @@
 
 #pragma once
 
-#include "tools/tools.h"
+#include "tools/tools/tools_text.h"
 
 #include <algorithm>
 #include <format>
 #include <string>
 #include <map>
 
-namespace ngl
+namespace ngl::tools
 {
 	// Bidirectional enum <-> name registry with original/lower/upper variants.
 	template <typename ENUMT>
@@ -130,7 +130,7 @@ namespace ngl
 			}
 			return ltempdata->m_toupper.c_str();
 		}
-		
+
 		static void print()
 		{
 			for (auto& [_num, _map] : m_datae2n)
@@ -152,5 +152,5 @@ namespace ngl
 	template <typename ENUMT>
 	using em = enum2name<ENUMT>;
 
-	#define em_pram(NAME) NAME,#NAME
+#define em_pram(NAME) NAME,#NAME
 }// namespace ngl

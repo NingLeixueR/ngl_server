@@ -106,7 +106,7 @@ namespace ngl
 			{
 				.m_name = std::format(
 					"node<id:{},type:{},name:{},tcount:{},area:{}>"
-					, ltab->m_id, em<NODE_TYPE>::name(ltab->m_type), ltab->m_name, ltab->m_tcount, ltab->m_area
+					, ltab->m_id, tools::em<NODE_TYPE>::name(ltab->m_type), ltab->m_name, ltab->m_tcount, ltab->m_area
 				),
 				.m_nodetype = ltab->m_type,
 				.m_serverid = nconfig.nodeid(),

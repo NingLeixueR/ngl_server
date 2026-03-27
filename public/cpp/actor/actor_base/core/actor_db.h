@@ -18,19 +18,19 @@
 #include "tools/db/sql/postgresql/npostgresql_manage.h"
 #include "tools/db/sql/postgresql/npostgresql_pool.h"
 #include "actor/actor_base/core/actor_manage.h"
+#include "tools/db/sql/mysql/nmysql_manage.h"
 #include "actor/actor_base/core/nregister.h"
 #include "actor/actor_logic/actor_gm/gcmd.h"
-#include "tools/db/sql/mysql/nmysql_manage.h"
-#include "tools/db/sql/mysql/nmysql_pool.h"
 #include "actor/actor_base/core/ndbclient.h"
+#include "tools/db/sql/mysql/nmysql_pool.h"
 #include "tools/db/sql/mysql/nmysql.h"
 #include "actor/protocol/nprotocol.h"
+#include "tools/tools/tools_cmd.h"
 #include "actor/tab/ttab_dbload.h"
 #include "tools/db/sql/db_cache.h"
 #include "tools/db/sql/db_data.h"
 #include "tools/scope_guard.h"
 #include "net/tcp/ntcp.h"
-#include "tools/cmd.h"
 
 namespace ngl
 {
@@ -373,7 +373,7 @@ namespace ngl
 		}
 
 		// GM endpoint for manual inspection and edits of cached DB rows.
-		using handle_cmd = cmd<tactor_db, std::string, int, int, ncjson&>;
+		using handle_cmd = tools::cmd<tactor_db, std::string, int, int, ncjson&>;
 
 		template <typename TSQLPOOL>
 		void gpage(int athread, int abegindex, int aendindex, gcmd<std::vector<std::string>>& pro)

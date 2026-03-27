@@ -19,7 +19,6 @@
 #include "tools/threadtools.h"
 #include "tools/log/nlog.h"
 #include "tools/nwork.h"
-#include "tools/impl.h"
 
 #include <curl/curl.h>
 #include <array>

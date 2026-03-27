@@ -28,7 +28,7 @@
 #include "actor/generated/auto/nactor_auto.h"
 #include "actor/generated/auto/nactor_auto.h"
 #include "actor/actor_base/core/actor.h"
-#include "tools/enum2name.h"
+#include "tools/tools/tools_enum.h"
 #include "actor/generated/pb/net.pb.h"
 
 namespace ngl
@@ -71,7 +71,7 @@ namespace ngl
 			{
 				ldbname += ltemp;
 			}
-			em<ENUM_ACTOR>::set(lenum, ldbname.c_str());
+			tools::em<ENUM_ACTOR>::set(lenum, ldbname.c_str());
 			init_customs_db<TDBTAB_TYPE, TDBTAB>();
 		}
 		else

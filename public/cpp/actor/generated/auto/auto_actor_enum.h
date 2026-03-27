@@ -16,7 +16,7 @@ namespace ngl
 			template <typename TACTOR>
 			static void f(ENUM_ACTOR ENUM)
 			{
-				em<ENUM_ACTOR>::set(ENUM, tools::type_name<TACTOR>().c_str());
+				tools::em<ENUM_ACTOR>::set(ENUM, tools::type_name<TACTOR>().c_str());
 				nactor_type<TACTOR>::inits(ENUM);
 			}
 

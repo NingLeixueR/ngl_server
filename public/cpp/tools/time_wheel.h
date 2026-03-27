@@ -8,8 +8,8 @@
 
 #pragma once
 
+#include "tools/tools/tools_impl.h"
 #include "tools/threadtools.h"
-#include "tools/impl.h"
 
 #include <functional>
 #include <algorithm>
@@ -118,7 +118,7 @@ namespace ngl
 		time_wheel& operator=(const time_wheel&) = delete;
 
 		struct impl_time_wheel;
-		ngl::impl<impl_time_wheel> m_impl_time_wheel;
+		tools::impl<impl_time_wheel> m_impl_time_wheel;
 	public:
 		static int64_t getms();
 		time_wheel(const time_wheel_config& aconfig = time_wheel_config(), bool aisthreadcallback = true);

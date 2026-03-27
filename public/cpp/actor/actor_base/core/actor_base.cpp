@@ -143,7 +143,7 @@ namespace ngl
 			// Script-enabled actors allocate a per-actor VM object and inject the actor guid
 			// so scripts can address their owner without extra plumbing.
 			m_enscript = aparm.m_enscript;
-			const char* lactorname = em<ENUM_ACTOR>::name(type());
+			const char* lactorname = tools::em<ENUM_ACTOR>::name(type());
 			m_script = nscript_manage::make(m_enscript, lactorname, std::format("{}.lua", lactorname).c_str());
 			if (m_script != nullptr)
 			{

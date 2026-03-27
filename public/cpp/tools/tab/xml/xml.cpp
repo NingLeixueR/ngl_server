@@ -21,18 +21,18 @@ namespace ngl
 {
 	void xmlnode::init()
 	{
-		em<NODE_TYPE>::set(DB, "db");
-		em<NODE_TYPE>::set(ACTORSERVER, "actor");
-		em<NODE_TYPE>::set(GAME, "game");
-		em<NODE_TYPE>::set(GATEWAY, "gateway");
-		em<NODE_TYPE>::set(LOGIN, "login");
-		em<NODE_TYPE>::set(ROBOT, "robot");
-		em<NODE_TYPE>::set(WORLD, "world");
-		em<NODE_TYPE>::set(LOG, "log");
-		em<NODE_TYPE>::set(RELOADCSV, "reloadcsv");
-		em<NODE_TYPE>::set(CROSS, "cross");
-		em<NODE_TYPE>::set(PUSHSERVERCONFIG, "pushserverconfig");
-		em<NODE_TYPE>::set(CROSSDB, "crossdb");
+		tools::em<NODE_TYPE>::set(DB, "db");
+		tools::em<NODE_TYPE>::set(ACTORSERVER, "actor");
+		tools::em<NODE_TYPE>::set(GAME, "game");
+		tools::em<NODE_TYPE>::set(GATEWAY, "gateway");
+		tools::em<NODE_TYPE>::set(LOGIN, "login");
+		tools::em<NODE_TYPE>::set(ROBOT, "robot");
+		tools::em<NODE_TYPE>::set(WORLD, "world");
+		tools::em<NODE_TYPE>::set(LOG, "log");
+		tools::em<NODE_TYPE>::set(RELOADCSV, "reloadcsv");
+		tools::em<NODE_TYPE>::set(CROSS, "cross");
+		tools::em<NODE_TYPE>::set(PUSHSERVERCONFIG, "pushserverconfig");
+		tools::em<NODE_TYPE>::set(CROSSDB, "crossdb");
 	}
 
 	i16_area xmlnode::area()
@@ -53,8 +53,8 @@ namespace ngl
 			log_error()->print("xmlnode invalid server type [null]");
 			return false;
 		}
-		NODE_TYPE lnodetype = em<NODE_TYPE>::get_enum(aservertypename);
-		if (lnodetype == em<NODE_TYPE>::enum_null())
+		NODE_TYPE lnodetype = tools::em<NODE_TYPE>::get_enum(aservertypename);
+		if (lnodetype == tools::em<NODE_TYPE>::enum_null())
 		{
 			log_error()->print("xmlnode invalid server type [{}]", aservertypename);
 			return false;

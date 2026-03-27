@@ -70,7 +70,7 @@ namespace ngl
 		// # Sendmail, id, position
 		static bool sendmail(i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm);
 
-		using handle_cmd = cmd<actor_mail, std::string, int, ncjson&>;
+		using handle_cmd = tools::cmd<actor_mail, std::string, int, ncjson&>;
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 

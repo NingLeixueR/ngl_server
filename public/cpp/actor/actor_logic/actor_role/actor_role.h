@@ -25,19 +25,19 @@
 #include "actor/actor_logic/actor_role/logic/remakes.h"
 #include "actor/actor_logic/actor_role/logic/bag/bag.h"
 #include "actor/actor_logic/actor_role/logic/rolekv.h"
-#include "tools/db/sql/mysql/nmysql_manage.h"
-#include "tools/db/sql/mysql/nmysql_pool.h"
 #include "actor/actor_base/core/actor_manage.h"
+#include "tools/db/sql/mysql/nmysql_manage.h"
 #include "actor/actor_base/core/ndbclient.h"
+#include "tools/db/sql/mysql/nmysql_pool.h"
+#include "actor/generated/pb/example.pb.h"
+#include "actor/actor_base/core/ntimer.h"
+#include "actor/generated/pb/net.pb.h"
 #include "tools/db/sql/mysql/nmysql.h"
 #include "actor/protocol/nprotocol.h"
-#include "actor/actor_base/core/ntimer.h"
+#include "tools/tools/tools_cmd.h"
 #include "tools/db/sql/db_data.h"
-#include "actor/generated/pb/example.pb.h"
 #include "tools/curl/ncurl.h"
-#include "actor/generated/pb/net.pb.h"
 #include "net/tcp/ntcp.h"
-#include "tools/cmd.h"
 
 namespace ngl
 {
@@ -260,9 +260,9 @@ namespace ngl
 		bool is_first_recharge(int32_t arechargeid);
 
 		// # CMDprotocol
-		using handle_cmd = cmd<actor_role, std::string, const std::shared_ptr<pack>&, actor_role*, const char*>;
+		using handle_cmd = tools::cmd<actor_role, std::string, const std::shared_ptr<pack>&, actor_role*, const char*>;
 		// # GMprotocol
-		using handle_gm = cmd<actor_role, std::string, int, ncjson&>;
+		using handle_gm = tools::cmd<actor_role, std::string, int, ncjson&>;
 
 		// # Timer
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);

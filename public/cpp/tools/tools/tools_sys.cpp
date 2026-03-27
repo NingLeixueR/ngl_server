@@ -244,16 +244,16 @@ namespace ngl
 				return ngl::nguid::make();
 			}
 
-			ngl::ENUM_ACTOR lact_type{};
+			ENUM_ACTOR lact_type{};
 			std::string ltype_str;
-			ngl::i16_area larea = nguid::none_area();
-			ngl::i32_actordataid ldataid = nguid::none_actordataid();
-			if (!ngl::tools::splite(anguid, "#", ltype_str, larea, ldataid))
+			i16_area larea = nguid::none_area();
+			i32_actordataid ldataid = nguid::none_actordataid();
+			if (!tools::splite(anguid, "#", ltype_str, larea, ldataid))
 			{
-				return ngl::nguid::make();
+				return nguid::make();
 			}
-			lact_type = ngl::em<ngl::ENUM_ACTOR>::get_enum(ltype_str.c_str());
-			return ngl::nguid::make(lact_type, larea, ldataid);
+			lact_type = tools::em<ngl::ENUM_ACTOR>::get_enum(ltype_str.c_str());
+			return nguid::make(lact_type, larea, ldataid);
 		}
 	}
 }

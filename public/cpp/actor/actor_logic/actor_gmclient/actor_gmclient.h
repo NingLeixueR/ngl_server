@@ -69,7 +69,7 @@ namespace ngl
 		static void allprotocol(protocols& apro);
 
 		// # GM
-		using handle_cmd = cmd<actor_gmclient, std::string, int, ncjson&>;
+		using handle_cmd = tools::cmd<actor_gmclient, std::string, int, ncjson&>;
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 

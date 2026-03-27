@@ -20,41 +20,41 @@ namespace ngl
 {
 	void enum_attr_name::init()
 	{
-		em<EnumAttribute>::set(E_Attack, "attack");
-		em<EnumAttribute>::set(E_Defense, "defense");
-		em<EnumAttribute>::set(E_Hp, "hp");
-		em<EnumAttribute>::set(E_Anger, "anger");
-		em<EnumAttribute>::set(E_Speed, "speed");
-		em<EnumAttribute>::set(E_CooldownAbsolute, "cooldownabsolute");
-		em<EnumAttribute>::set(E_CooldownProp, "cooldownprop");
+		tools::em<EnumAttribute>::set(E_Attack, "attack");
+		tools::em<EnumAttribute>::set(E_Defense, "defense");
+		tools::em<EnumAttribute>::set(E_Hp, "hp");
+		tools::em<EnumAttribute>::set(E_Anger, "anger");
+		tools::em<EnumAttribute>::set(E_Speed, "speed");
+		tools::em<EnumAttribute>::set(E_CooldownAbsolute, "cooldownabsolute");
+		tools::em<EnumAttribute>::set(E_CooldownProp, "cooldownprop");
 
-		em<EnumAttribute>::set(E_Attack, "attack_name", 1);
-		em<EnumAttribute>::set(E_Defense, "defense_name", 1);
-		em<EnumAttribute>::set(E_Hp, "hp_name", 1);
-		em<EnumAttribute>::set(E_Anger, "anger_name", 1);
-		em<EnumAttribute>::set(E_Speed, "speed_name", 1);
-		em<EnumAttribute>::set(E_CooldownAbsolute, "cooldown_abs_name", 1);
-		em<EnumAttribute>::set(E_CooldownProp, "cooldown_prop_name", 1);
+		tools::em<EnumAttribute>::set(E_Attack, "attack_name", 1);
+		tools::em<EnumAttribute>::set(E_Defense, "defense_name", 1);
+		tools::em<EnumAttribute>::set(E_Hp, "hp_name", 1);
+		tools::em<EnumAttribute>::set(E_Anger, "anger_name", 1);
+		tools::em<EnumAttribute>::set(E_Speed, "speed_name", 1);
+		tools::em<EnumAttribute>::set(E_CooldownAbsolute, "cooldown_abs_name", 1);
+		tools::em<EnumAttribute>::set(E_CooldownProp, "cooldown_prop_name", 1);
 	}
 
 	std::pair<const char*, const char*> enum_attr_name::name(EnumAttribute atype)
 	{
-		return { em<EnumAttribute>::name(atype), em<EnumAttribute>::name(atype, 1) };
+		return { tools::em<EnumAttribute>::name(atype), tools::em<EnumAttribute>::name(atype, 1) };
 	}
 
 	EnumAttribute enum_attr_name::type(const char* aname)
 	{
-		EnumAttribute lvalue = em<EnumAttribute>::get_enum(aname);
+		EnumAttribute lvalue = tools::em<EnumAttribute>::get_enum(aname);
 		if (lvalue != null_type())
 		{
 			return lvalue;
 		}
-		return em<EnumAttribute>::get_enum(aname, 1);
+		return tools::em<EnumAttribute>::get_enum(aname, 1);
 	}
 
 	EnumAttribute enum_attr_name::null_type()
 	{
-		return em<EnumAttribute>::enum_null();
+		return tools::em<EnumAttribute>::enum_null();
 	}
 
 }// namespace ngl

@@ -75,7 +75,7 @@ namespace ngl
 		}
 		
 		// # GM
-		using handle_cmd = cmd<actor_mail, std::string, int, ncjson&>;
+		using handle_cmd = tools::cmd<actor_mail, std::string, int, ncjson&>;
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 

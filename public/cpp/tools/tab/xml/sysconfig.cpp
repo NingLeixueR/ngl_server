@@ -116,8 +116,8 @@ namespace ngl
 				{
 					return;
 				}
-				NODE_TYPE ltype = em<NODE_TYPE>::get_enum(lname.c_str());
-				if (ltype == em<NODE_TYPE>::enum_null())
+				NODE_TYPE ltype = tools::em<NODE_TYPE>::get_enum(lname.c_str());
+				if (ltype == tools::em<NODE_TYPE>::enum_null())
 				{
 					return;
 				}

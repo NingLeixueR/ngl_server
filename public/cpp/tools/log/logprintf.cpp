@@ -15,15 +15,15 @@
 
 
 #include "actor/actor_logic/actor_log/actor_log.h"
+#include "actor/actor_base/core/actor.h"
 #include "actor/protocol/nprotocol.h"
 #include "actor/tab/ttab_servers.h"
-#include "actor/actor_base/core/actor.h"
+#include "tools/tools/tools_enum.h"
 #include "tools/tab/xml/xmlinfo.h"
 #include "tools/log/logprintf.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/time_wheel.h"
 #include "tools/localtime.h"
-#include "tools/enum2name.h"
 #include "tools/log/nlog.h"
 
 #ifdef WIN32
@@ -103,10 +103,10 @@ namespace ngl
 	logfile::logfile(const config& aconfig) :
 		m_config(aconfig)
 	{
-		if (em<ELOG_TYPE>::empty())
+		if (tools::em<ELOG_TYPE>::empty())
 		{
-			em<ELOG_TYPE>::set(em_pram(ELOG_DEFAULT));
-			em<ELOG_TYPE>::set(em_pram(ELOG_BI));
+			tools::em<ELOG_TYPE>::set(em_pram(ELOG_DEFAULT));
+			tools::em<ELOG_TYPE>::set(em_pram(ELOG_BI));
 		}
 		create();
 	}
@@ -163,7 +163,7 @@ namespace ngl
 			return;
 		}
 
-		lpath = std::format("{}/{}", lpath, em<ELOG_TYPE>::tolower_name(m_config.m_type));
+		lpath = std::format("{}/{}", lpath, tools::em<ELOG_TYPE>::tolower_name(m_config.m_type));
 		if (create_dir(lpath) == false)
 		{
 			tools::no_core_dump();

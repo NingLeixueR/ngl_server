@@ -61,7 +61,7 @@ namespace ngl
 
 		static bool sendnotice(const std::string& anotice, int32_t astarttime, int32_t afinishtime);
 
-		using handle_cmd = cmd<actor_notice, std::string, int, ncjson&>;
+		using handle_cmd = tools::cmd<actor_notice, std::string, int, ncjson&>;
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 

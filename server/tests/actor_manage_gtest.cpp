@@ -84,7 +84,7 @@ bool contains_type(const std::vector<ngl::i16_actortype>& types, ngl::ENUM_ACTOR
 
 bool contains_actor_name(const ngl::msg_actor_stat& data, ngl::ENUM_ACTOR type)
 {
-	const char* expected = ngl::em<ngl::ENUM_ACTOR>::name(type);
+	const char* expected = ngl::tools::em<ngl::ENUM_ACTOR>::name(type);
 	return std::any_of(data.m_vec.begin(), data.m_vec.end(), [expected](const ngl::msg_actor& item) {
 		return item.m_actor_name == expected;
 	});

@@ -16,7 +16,7 @@
 #include "actor/tab/ttab_servers.h"
 #include "actor/tab/ttab_task.h"
 #include "test_support.h"
-#include "tools/nfilterword.h"
+#include "tools/tools/tools_filterword.h"
 #include "tools/tab/csv/csv.h"
 #include "tools/tab/xml/xmlinfo.h"
 
@@ -117,7 +117,7 @@ bool legacy_is_filter(const std::string& atext)
 	}
 
 	std::u32string decoded;
-	if (!ngl::nfilterword::utf8to32(atext, decoded))
+	if (!ngl::tools::filterword::utf8to32(atext, decoded))
 	{
 		return false;
 	}
@@ -126,14 +126,14 @@ bool legacy_is_filter(const std::string& atext)
 	normalized.reserve(decoded.size());
 	for (char32_t codepoint : decoded)
 	{
-		if (!ngl::nfilterword::is_emojispecial(codepoint))
+		if (!ngl::tools::filterword::is_emojispecial(codepoint))
 		{
 			normalized.push_back(codepoint);
 		}
 	}
 
 	std::string filtered;
-	if (!ngl::nfilterword::utf32to8(normalized, filtered))
+	if (!ngl::tools::filterword::utf32to8(normalized, filtered))
 	{
 		return false;
 	}
@@ -142,7 +142,7 @@ bool legacy_is_filter(const std::string& atext)
 	std::vector<std::pair<int, int>> matches;
 	for (std::string::size_type i = 0; i < filtered.size(); ++i)
 	{
-		if (ngl::nfilterword::match(filtered[i], state, static_cast<int>(i), matches))
+		if (ngl::tools::filterword::match(filtered[i], state, static_cast<int>(i), matches))
 		{
 			return true;
 		}
@@ -152,12 +152,12 @@ bool legacy_is_filter(const std::string& atext)
 
 void load_perf_filter_words()
 {
-	ngl::nfilterword::clear();
-	ngl::nfilterword::init();
-	ngl::nfilterword::load("badword");
-	ngl::nfilterword::load("unsafe");
-	ngl::nfilterword::load("123456");
-	ngl::nfilterword::build();
+	ngl::tools::filterword::clear();
+	ngl::tools::filterword::init();
+	ngl::tools::filterword::load("badword");
+	ngl::tools::filterword::load("unsafe");
+	ngl::tools::filterword::load("123456");
+	ngl::tools::filterword::build();
 }
 
 struct legacy_mergearea_indexes
@@ -607,7 +607,7 @@ TEST(NFilterWordPerfTest, IsFilterBenchmark)
 	const long long optimized_us = ngl_test_support::benchmark_us([&payload, kIterations, &sink]() {
 		for (int i = 0; i < kIterations; ++i)
 		{
-			if (ngl::nfilterword::is_filter(payload))
+			if (ngl::tools::filterword::is_filter(payload))
 			{
 				++sink;
 			}
