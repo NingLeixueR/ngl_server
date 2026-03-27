@@ -124,6 +124,12 @@ function(ngl_apply_msvc_defaults target_name)
 	if(MSVC)
 		if(CMAKE_GENERATOR MATCHES "Visual Studio")
 			set_property(TARGET ${target_name} PROPERTY VS_GLOBAL_VcpkgEnabled false)
+			if(NOT NGL_ENABLE_NATIVE_UNITY_BUILD)
+				# Non-unity Visual Studio builds can batch many large translation units into
+				# one cl invocation, which triggers C1060 on this codebase. Compile one file
+				# at a time so CI can catch include issues without exhausting compiler heap.
+				set_property(TARGET ${target_name} PROPERTY VS_NO_COMPILE_BATCHING ON)
+			endif()
 		endif()
 		target_compile_definitions(${target_name} PRIVATE WIN32_LEAN_AND_MEAN)
 		target_compile_options(${target_name} PRIVATE /EHa)
