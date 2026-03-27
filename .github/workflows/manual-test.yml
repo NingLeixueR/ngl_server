@@ -86,8 +86,14 @@ jobs:
         conan profile detect --force
         conan install . -s build_type=Release -s compiler.cppstd=20 --build=missing
 
+    - name: Sync runtime config
+      run: |
+        cmake -E remove_directory "${{ github.workspace }}/bin/Release/config"
+        cmake -E copy_directory "${{ github.workspace }}/bin/configure/config" "${{ github.workspace }}/bin/Release/config"
+
     - name: Run tests
-      run: ctest --preset conan-release --output-on-failure
+      working-directory: ${{ github.workspace }}/bin/Release
+      run: ctest --test-dir ../../build/Release --output-on-failure
 
   test_windows:
     if: ${{ inputs.artifact_name == 'windows-release' }}

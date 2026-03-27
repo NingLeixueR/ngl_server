@@ -65,11 +65,19 @@ if(NGLCORE_BUILD_SHARED)
 endif()
 ngl_apply_msvc_defaults(ngl_test)
 
+add_custom_command(TARGET ngl_test POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E remove_directory $<TARGET_FILE_DIR:ngl_test>/config
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+		${CMAKE_SOURCE_DIR}/bin/configure/config
+		$<TARGET_FILE_DIR:ngl_test>/config
+	COMMENT "Sync test runtime config"
+)
+
 add_test(NAME ngl_test_fast
 	COMMAND $<TARGET_FILE:ngl_test> --gtest_filter=-*Perf*
 )
 set_tests_properties(ngl_test_fast PROPERTIES
-	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	WORKING_DIRECTORY $<TARGET_FILE_DIR:ngl_test>
 	LABELS "unit;fast"
 	TIMEOUT 60
 )
@@ -79,7 +87,7 @@ if(NGL_TEST_REGISTER_PERF)
 		COMMAND $<TARGET_FILE:ngl_test> --gtest_filter=*Perf*
 	)
 	set_tests_properties(ngl_test_perf PROPERTIES
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		WORKING_DIRECTORY $<TARGET_FILE_DIR:ngl_test>
 		LABELS "perf"
 		TIMEOUT 120
 	)

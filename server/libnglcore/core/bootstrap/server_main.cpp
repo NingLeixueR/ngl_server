@@ -97,27 +97,17 @@ prep_res prep_ctx(int aargc, char** aargv, start_ctx& actx)
 	}
 	actx.node_type = static_cast<int>(nconfig.nodetype());
 
-	// Each process reads its own config variant, for example "game_1".
-	std::string lcfg = std::format("{}_{}", actx.node_name, actx.tcount);
-	if (!nconfig.load("./config", lcfg))
+	// Runtime bootstrap now reads a single config tree from ./config.
+	if (!nconfig.load("./config", "config"))
 	{
-		lcfg = "config";
-		if (!nconfig.load("./config", lcfg))
-		{
-			return { startup_error::config_load_failed, "config xml load failed" };
-		}
+		return { startup_error::config_load_failed, "config xml load failed" };
 	}
 	actx.config_file = nconfig.config_file();
 
-	// CSV tables are namespaced by node name so test and tool processes can load different views.
-	std::string lcsvpath = std::format("./config/csv/{}", actx.node_name);
+	const std::string lcsvpath = "./config/csv";
 	if (!ngl::tools::directories_exists(lcsvpath))
 	{
-		lcsvpath = "./config/csv";
-		if (!ngl::tools::directories_exists(lcsvpath))
-		{
-			return { startup_error::config_load_failed, "config csv load failed" };
-		}
+		return { startup_error::config_load_failed, "config csv load failed" };
 	}
 	ngl::csv_base::set_path(lcsvpath);
 

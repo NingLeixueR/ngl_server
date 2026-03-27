@@ -16,6 +16,8 @@
 
 #include "actor/actor_logic/actor_role/logic/nmap/aoi.h"
 
+#include <cmath>
+
 namespace ngl
 {
 	void aoi::init(int32_t aw, int32_t al, int32_t anx, int32_t any)
