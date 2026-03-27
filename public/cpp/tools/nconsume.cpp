@@ -19,6 +19,11 @@
 
 namespace ngl
 {
+	nconsume::nconsume(std::string&& aname) :
+		m_name(std::move(aname)),
+		m_beg(0)
+	{}
+
 	nconsume::nconsume(const std::string& aname):
 		m_name(aname),
 		m_beg(0)

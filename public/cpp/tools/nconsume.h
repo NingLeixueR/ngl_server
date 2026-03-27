@@ -29,7 +29,8 @@ namespace ngl
 		std::string		m_name; // Diagnostic label for the measured scope.
 		int64_t			m_beg;  // Start time in milliseconds.
 	public:
-		// Lightweight RAII-style helper for logging slow operations.
+		// Light weight RAII-style helper for logging slow operations.
+		nconsume(std::string&& aname);
 		nconsume(const std::string& aname);
 		void start();
 		void finish();
