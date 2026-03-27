@@ -2,8 +2,9 @@
 
 基于 Actor 模型的 C++ 游戏服务器框架。
 
-[![Windows Server 2022](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-windows-conan.yml/badge.svg)](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-windows-conan.yml)
-[![Ubuntu 22.04](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-linux-conan.yml/badge.svg)](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-linux-conan.yml)
+[![Windows Build](https://github.com/NingLeixueR/ngl_server/actions/workflows/cmake-windows-conan.yml/badge.svg)](https://github.com/NingLeixueR/ngl_server/actions/workflows/cmake-windows-conan.yml)
+[![Linux Build](https://github.com/NingLeixueR/ngl_server/actions/workflows/cmake-linux-conan.yml/badge.svg)](https://github.com/NingLeixueR/ngl_server/actions/workflows/cmake-linux-conan.yml)
+[![Manual Test](https://github.com/NingLeixueR/ngl_server/actions/workflows/manual-test.yml/badge.svg)](https://github.com/NingLeixueR/ngl_server/actions/workflows/manual-test.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NingLeixueR_ngl&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=NingLeixueR_ngl)
 
 ## 项目简介
