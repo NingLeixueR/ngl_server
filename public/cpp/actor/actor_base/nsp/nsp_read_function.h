@@ -119,12 +119,12 @@ namespace ngl
 		i64_actorid lactorid = m_actor->id_guid();
 			m_regload.foreach_nspser([lactorid](i16_area aarea, i64_actorid)
 				{
-					wheel_parm lparm
+					tools::wheel_parm lparm
 					{
 					.m_ms = 1000,
 					.m_intervalms = [](int64_t) {return 10000; } ,
 					.m_count = 0x7fffffff,
-					.m_fun = [aarea, lactorid](const wheel_node* anode)
+					.m_fun = [aarea, lactorid](const tools::wheel_node* anode)
 					{
 						// Periodically retry registration until the target NSP server replies.
 						auto pro = std::make_shared<np_channel_check<T>>(
@@ -136,7 +136,7 @@ namespace ngl
 						actor::send_actor(lactorid, nguid::make(), pro);
 					}
 				};
-				twheel::wheel().addtimer(lparm);
+				tools::twheel::wheel().addtimer(lparm);
 			}
 		);
 	}
@@ -246,7 +246,7 @@ namespace ngl
 
 		if (m_regload.is_register(recv->m_area))
 		{
-			twheel::wheel().removetimer(recv->m_timer);
+			tools::twheel::wheel().removetimer(recv->m_timer);
 			return;
 		}
 		auto pro = std::make_shared<np_channel_register<T>>();

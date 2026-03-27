@@ -16,7 +16,7 @@
 #pragma once
 
 #include "tools/serialize/pack.h"
-#include "tools/threadtools.h"
+#include "tools/tools/tools_thread.h"
 #include "tools/log/nlog.h"
 #include "net/asio_base.h"
 

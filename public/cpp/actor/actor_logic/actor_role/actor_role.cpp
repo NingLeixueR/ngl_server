@@ -20,10 +20,10 @@
 #include "actor/actor_logic/actor_gm/gcmd.h"
 #include "actor/actor_base/core/nregister.h"
 #include "actor/actor_logic/nforward.h"
+#include "actor/generated/pb/net.pb.h"
 #include "actor/tab/ttab_specialid.h"
 #include "actor/tab/ttab_recharge.h"
-#include "tools/curl/ncurl.h"
-#include "actor/generated/pb/net.pb.h"
+#include "tools/tools/tools_curl.h"
 
 namespace ngl
 {
@@ -39,7 +39,7 @@ namespace ngl
 					.m_manage_dbclient = true
 				},
 				.m_weight = 0x7fffffff,
-				.m_timeout = 1 * tools::localtime::MILLISECOND,
+				.m_timeout = 1 * tools::time::MILLISECOND,
 				.m_broadcast = true,
 			})
 		, m_gatewayid(((np_actorswitch_process_role*)(adata))->m_gatewayid)
@@ -87,11 +87,11 @@ namespace ngl
 	void actor_role::reset_logintime()
 	{
 		time_t lloginutc = 0;
-		time_t lnow = tools::localtime::gettime();
+		time_t lnow = tools::time::gettime();
 		bool isloginutc = false;
 		if (m_rolekv.get_value("base", { "loginutc" }, lloginutc))
 		{
-			if (tools::localtime::issameday(lnow, lloginutc) == false)
+			if (tools::time::issameday(lnow, lloginutc) == false)
 			{
 				isloginutc = true;
 			}
@@ -118,7 +118,7 @@ namespace ngl
 		if (atype == pbdb::ENUM_DB_ALL)
 		{
 			std::set<i32_fieldnumber> lfieldset;
-			tdb_brief::nsp_cwrite<actor_role>::instance_writepart(this, {}, pb_field::field_number<pbdb::db_brief>(lfieldset, "mbase"), {}, { id_guid() });
+			tdb_brief::nsp_cwrite<actor_role>::instance_writepart(this, {}, tools::pb_field::field_number<pbdb::db_brief>(lfieldset, "mbase"), {}, { id_guid() });
 			tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).set_changedatafun([this, astat](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 				{
 					if (afirstsynchronize && astat == enum_dbstat_success)
@@ -188,20 +188,20 @@ namespace ngl
 		return m_gatewayid;
 	}
 
-	void actor_role::requestgm(const char* aurl, const std::string& aparm, const std::function<void(int, http_parm&)>& acall)
+	void actor_role::requestgm(const char* aurl, const std::string& aparm, const std::function<void(int, tools::http_parm&)>& acall)
 	{
-		auto lhttp = ngl::ncurl::http();
-		ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
-		ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_GET);
-		ngl::ncurl::set_url(lhttp, aurl);
-		ngl::ncurl::set_param(lhttp, aparm);
-		ngl::ncurl::set_callback(lhttp, acall);
-		ngl::ncurl::send(lhttp);
+		auto lhttp = tools::curl::http();
+		tools::curl::set_mode(lhttp, tools::ENUM_MODE_HTTP);
+		tools::curl::set_type(lhttp, tools::ENUM_TYPE_GET);
+		tools::curl::set_url(lhttp, aurl);
+		tools::curl::set_param(lhttp, aparm);
+		tools::curl::set_callback(lhttp, acall);
+		tools::curl::send(lhttp);
 	}
 
 	void actor_role::loginpay()
 	{
-		requestgm(std::format("{}/pay/pay_login.php", sysconfig::gmurl()).c_str(), std::format("roleid={}", id_guid()), [this](int, http_parm& ahttp)
+		requestgm(std::format("{}/pay/pay_login.php", sysconfig::gmurl()).c_str(), std::format("roleid={}", id_guid()), [this](int, tools::http_parm& ahttp)
 			{
 				if (ahttp.m_recvdata.empty())
 				{
@@ -224,13 +224,13 @@ namespace ngl
 						return;
 					}
 
-					auto lpayhttp = ngl::ncurl::http();
+					auto lpayhttp = tools::curl::http();
 
 					std::string lquestparm;
-					ngl::ncurl::param(lquestparm, "orderid", lorderid.c_str());
-					ngl::ncurl::param(lquestparm, "rechargeid", lrechargeid);
-					ngl::ncurl::param(lquestparm, "roleid", lroleid);
-					requestgm((std::format("{}/pay/pay_login_stat.php", sysconfig::gmurl())).c_str(), lquestparm, [this](int32_t, http_parm& ahttp)
+					tools::curl::param(lquestparm, "orderid", lorderid.c_str());
+					tools::curl::param(lquestparm, "rechargeid", lrechargeid);
+					tools::curl::param(lquestparm, "roleid", lroleid);
+					requestgm((std::format("{}/pay/pay_login_stat.php", sysconfig::gmurl())).c_str(), lquestparm, [this](int32_t, tools::http_parm& ahttp)
 						{
 							log_error()->print("actor_role::loginpay curl callback [{}]", ahttp.m_recvdata);
 
@@ -310,7 +310,7 @@ namespace ngl
 	void actor_role::createorder(std::string& aorder, int32_t arechargeid)
 	{
 		static std::atomic<int32_t> billnoindex = 0;
-		aorder = std::format("{:05d}{:010d}{:010d}{:010d}{:02d}",area(), id(), arechargeid, tools::localtime::gettime(), billnoindex.fetch_add(1));
+		aorder = std::format("{:05d}{:010d}{:010d}{:010d}{:02d}",area(), id(), arechargeid, tools::time::gettime(), billnoindex.fetch_add(1));
 	}
 
 	int32_t actor_role::rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting)
@@ -344,16 +344,16 @@ namespace ngl
 		
 		if (areporting && lstat == 0)
 		{
-			auto lhttp = ngl::ncurl::http();
-			ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
-			ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_GET);
+			auto lhttp = tools::curl::http();
+			tools::curl::set_mode(lhttp, tools::ENUM_MODE_HTTP);
+			tools::curl::set_type(lhttp, tools::ENUM_TYPE_GET);
 			std::string lurl = std::format("{}/pay/pay_update.php", sysconfig::gmurl());
-			ngl::ncurl::set_url(lhttp, lurl);
+			tools::curl::set_url(lhttp, lurl);
 
 			std::string lparm = std::format("orderid={}&gm={}&roleid={}&stat={}",aorderid, (agm ? 1 : 0), id_guid(), lstat);
 
-			ngl::ncurl::set_param(lhttp, lparm.c_str());
-			ngl::ncurl::send(lhttp);
+			tools::curl::set_param(lhttp, lparm.c_str());
+			tools::curl::send(lhttp);
 		}
 
 		if (lgold > 0 || lstat == 0)
@@ -421,7 +421,7 @@ namespace ngl
 			return;
 		}
 		lpbriefbase->set_mlv(1);
-			lpbriefbase->set_mcreateutc(static_cast<int32_t>(tools::localtime::gettime()));
+			lpbriefbase->set_mcreateutc(static_cast<int32_t>(tools::time::gettime()));
 		lpbriefbase->set_mmoneygold(0);
 		lpbriefbase->set_mmoneysilver(0);
 		lpbriefbase->set_mname(aname);

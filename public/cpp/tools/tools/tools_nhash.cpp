@@ -14,7 +14,7 @@
 // File overview: Implements logic for tools.
 
 
-#include "tools/nhash.h"
+#include "tools/tools/tools_nhash.h"
 
 namespace ngl::tools
 {

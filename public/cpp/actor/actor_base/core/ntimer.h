@@ -19,7 +19,7 @@
 #include "actor/protocol/nprotocol.h"
 #include "tools/serialize/ndefine.h"
 #include "tools/serialize/pack.h"
-#include "tools/time_wheel.h"
+#include "tools/tools/tools_time_wheel.h"
 
 #include <memory>
 
@@ -33,10 +33,10 @@ namespace ngl
 	public:
 		static time_t month_ms(time_t anow, int amonthday/*1-31*/, int ahour, int amin, int asec)
 		{
-			std::pair<bool, time_t> lpair = tools::localtime::getmothday(anow, amonthday, ahour, amin, asec);
+			std::pair<bool, time_t> lpair = tools::time::getmothday(anow, amonthday, ahour, amin, asec);
 			if (lpair.first)
 			{
-				return (lpair.second - anow) * tools::localtime::MILLISECOND;
+				return (lpair.second - anow) * tools::time::MILLISECOND;
 			}
 			return -1;
 		}
@@ -45,10 +45,10 @@ namespace ngl
 		// requested wall-clock time.
 		static bool parm_month(np_timerparm& aparm, int amonthday/*1-31*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
-			if (tools::localtime::check_monthday(amonthday) && tools::localtime::check_hour(ahour) && tools::localtime::check_minute(amin) && tools::localtime::check_sec(asec))
+			if (tools::time::check_monthday(amonthday) && tools::time::check_hour(ahour) && tools::time::check_minute(amin) && tools::time::check_sec(asec))
 			{
 				aparm.m_type = E_ACTOR_TIMER::ET_WEEK;
-				aparm.m_ms = month_ms(tools::localtime::gettime(), amonthday, ahour, amin, asec);
+				aparm.m_ms = month_ms(tools::time::gettime(), amonthday, ahour, amin, asec);
 				aparm.m_intervalms = [amonthday, ahour, amin, asec](int64_t ams)
 					{
 						return (int32_t)make_timerparm::month_ms(ams / 1000 + 1, amonthday, ahour, amin, asec);
@@ -63,15 +63,15 @@ namespace ngl
 		// requested wall-clock time.
 		static bool parm_week(np_timerparm& aparm, int aweek/*1-7*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
-			if (tools::localtime::check_week(aweek) && tools::localtime::check_hour(ahour) && tools::localtime::check_minute(amin) && tools::localtime::check_sec(asec))
+			if (tools::time::check_week(aweek) && tools::time::check_hour(ahour) && tools::time::check_minute(amin) && tools::time::check_sec(asec))
 			{
 				aparm.m_type = E_ACTOR_TIMER::ET_WEEK;
-				time_t lnow = tools::localtime::gettime();
-				time_t lfirst = tools::localtime::getweekday(aweek >= 7 ? 0 : aweek, ahour, amin, asec);
-				aparm.m_ms = (lfirst - lnow) * tools::localtime::MILLISECOND;
+				time_t lnow = tools::time::gettime();
+				time_t lfirst = tools::time::getweekday(aweek >= 7 ? 0 : aweek, ahour, amin, asec);
+				aparm.m_ms = (lfirst - lnow) * tools::time::MILLISECOND;
 				aparm.m_intervalms = [](int64_t)
 					{
-						return tools::localtime::WEEK_MILLISECOND;
+						return tools::time::WEEK_MILLISECOND;
 					};
 				aparm.m_count = acount;
 				return true;
@@ -82,15 +82,15 @@ namespace ngl
 		// Build a daily timer that repeats at the requested hour/minute/second.
 		static bool parm_day(np_timerparm& aparm, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
-			if (tools::localtime::check_hour(ahour) && tools::localtime::check_minute(amin) && tools::localtime::check_sec(asec))
+			if (tools::time::check_hour(ahour) && tools::time::check_minute(amin) && tools::time::check_sec(asec))
 			{
 				aparm.m_type = E_ACTOR_TIMER::ET_DAY;
-				time_t lnow = tools::localtime::gettime();
-				time_t lfirst = tools::localtime::getsecond2time(ahour, amin, asec);
-				aparm.m_ms = (lfirst - lnow) * tools::localtime::MILLISECOND;
+				time_t lnow = tools::time::gettime();
+				time_t lfirst = tools::time::getsecond2time(ahour, amin, asec);
+				aparm.m_ms = (lfirst - lnow) * tools::time::MILLISECOND;
 				aparm.m_intervalms = [](int64_t)
 					{
-						return tools::localtime::DAY_MILLISECOND;
+						return tools::time::DAY_MILLISECOND;
 					};
 				aparm.m_count = acount;
 				return true;
@@ -101,15 +101,15 @@ namespace ngl
 		// Build an hourly timer that fires once per hour at minute/second.
 		static bool parm_hour(np_timerparm& aparm, int amin, int asec, int acount = 0x7fffffff)
 		{
-			if (tools::localtime::check_minute(amin) && tools::localtime::check_sec(asec))
+			if (tools::time::check_minute(amin) && tools::time::check_sec(asec))
 			{
 				aparm.m_type = E_ACTOR_TIMER::ET_HOUR;
-				time_t lnow = tools::localtime::gettime();
-				time_t lfirst = tools::localtime::getsecond2time(amin, asec);
-				aparm.m_ms = (lfirst - lnow) * tools::localtime::MILLISECOND;
+				time_t lnow = tools::time::gettime();
+				time_t lfirst = tools::time::getsecond2time(amin, asec);
+				aparm.m_ms = (lfirst - lnow) * tools::time::MILLISECOND;
 				aparm.m_intervalms = [](int64_t)
 					{
-						return tools::localtime::HOUR_MILLISECOND;
+						return tools::time::HOUR_MILLISECOND;
 					};
 				aparm.m_count = acount;
 				return true;
@@ -120,15 +120,15 @@ namespace ngl
 		// Build a per-minute timer that fires once per minute at second `asec`.
 		static bool parm_min(np_timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
-			if (tools::localtime::check_sec(asec))
+			if (tools::time::check_sec(asec))
 			{
 				aparm.m_type = E_ACTOR_TIMER::ET_MIN;
-				time_t lnow = tools::localtime::gettime();
-				time_t lfirst = tools::localtime::getsecond2time(asec);
-				aparm.m_ms = (lfirst - lnow) * tools::localtime::MILLISECOND;
+				time_t lnow = tools::time::gettime();
+				time_t lfirst = tools::time::getsecond2time(asec);
+				aparm.m_ms = (lfirst - lnow) * tools::time::MILLISECOND;
 				aparm.m_intervalms = [](int64_t)
 					{
-						return tools::localtime::MINUTES_MILLISECOND;
+						return tools::time::MINUTES_MILLISECOND;
 					};
 				aparm.m_count = acount;
 				return true;
@@ -142,10 +142,10 @@ namespace ngl
 			if (asec >= 0)
 			{
 				aparm.m_type = E_ACTOR_TIMER::ET_INTERVAL_SEC;
-				aparm.m_ms = asec * tools::localtime::MILLISECOND;
+				aparm.m_ms = asec * tools::time::MILLISECOND;
 				aparm.m_intervalms = [asec](int64_t)
 					{
-						return asec * tools::localtime::MILLISECOND;
+						return asec * tools::time::MILLISECOND;
 					};
 				aparm.m_count = acount;
 				return true;

@@ -65,7 +65,7 @@ namespace ngl
 		tdb_keyvalue::nsp_cwrite<actor_role_manage>::instance_writepart(
 			this
 			, { }
-			, pb_field::field_number<pbdb::db_keyvalue>(lfieldset, "mvalue")
+			, tools::pb_field::field_number<pbdb::db_keyvalue>(lfieldset, "mvalue")
 			, { }
 			, { pbdb::db_keyvalue_ekv_account_ban }		
 		);

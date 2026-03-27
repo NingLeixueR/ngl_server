@@ -15,9 +15,9 @@
 
 #pragma once
 
-#include "tools/tools/tools_localtime.h"
-#include "tools/threadtools.h"
-#include "tools/time_wheel.h"
+#include "tools/tools/tools_time.h"
+#include "tools/tools/tools_thread.h"
+#include "tools/tools/tools_time_wheel.h"
 
 #include <algorithm>
 #include <array>
@@ -150,17 +150,17 @@ namespace ngl
 				}
 			}
 
-			wheel_parm lparm
+			tools::wheel_parm lparm
 			{
-				.m_ms = 10 * tools::localtime::MILLISECOND,
-				.m_intervalms = [](int64_t) {return 10 * tools::localtime::MILLISECOND; } ,
+				.m_ms = 10 * tools::time::MILLISECOND,
+				.m_intervalms = [](int64_t) {return 10 * tools::time::MILLISECOND; } ,
 				.m_count = 0x7fffffff,
-				.m_fun = [this](const wheel_node*)
+				.m_fun = [this](const tools::wheel_node*)
 				{
 					time_free(); 
 				},
 			};
-			twheel::wheel().addtimer(lparm);
+			tools::twheel::wheel().addtimer(lparm);
 		}
 
 		char* malloc_private(int32_t abytes)

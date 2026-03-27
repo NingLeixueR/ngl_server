@@ -110,7 +110,7 @@ namespace ngl
 		++m_custom;
 	}
 
-	int actor_base::m_broadcast = 10 * tools::localtime::MILLISECOND;
+	int actor_base::m_broadcast = 10 * tools::time::MILLISECOND;
 	int actor_base::m_broadcasttimer = -1;
 
 	i64_actorid actor_base::actorclient_guid()
@@ -312,7 +312,7 @@ namespace ngl
 		{
 			return;
 		}
-		wheel_parm lparm
+		tools::wheel_parm lparm
 		{
 			.m_ms = m_broadcast,
 			.m_intervalms = [](int64_t)
@@ -320,7 +320,7 @@ namespace ngl
 				return actor_base::m_broadcast;
 			} ,
 			.m_count = 0x7fffffff,
-			.m_fun = [](const wheel_node*)
+			.m_fun = [](const tools::wheel_node*)
 			{
 				// Broadcast is implemented as a synthetic actor message so regular actor
 				// sequencing rules still apply.
@@ -329,7 +329,7 @@ namespace ngl
 				actor_manage::instance().broadcast_task(lpram);
 			}
 		};
-		m_broadcasttimer = (int32_t)twheel::wheel().addtimer(lparm);
+		m_broadcasttimer = (int32_t)tools::twheel::wheel().addtimer(lparm);
 	}
 
 	int32_t actor_base::set_timer(const np_timerparm& aparm)

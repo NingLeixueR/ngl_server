@@ -15,7 +15,7 @@
 
 
 #include "actor/protocol/nprotocol.h"
-#include "tools/curl/ncurl.h"
+#include "tools/tools/tools_curl.h"
 
 #include <algorithm>
 #include <cstring>
@@ -24,7 +24,7 @@
 #include <sstream>
 #include <thread>
 
-namespace ngl
+namespace ngl::tools
 {
 	namespace
 	{
@@ -61,11 +61,11 @@ namespace ngl
 		}
 	}
 
-	ncurl::ncurl() :
-		m_works(std::bind_front(&ncurl::work, this))
+	curl::curl() :
+		m_works(std::bind_front(&curl::work, this))
 	{}
 
-	void ncurl::send(std::shared_ptr<http_parm>& adata)
+	void curl::send(std::shared_ptr<http_parm>& adata)
 	{
 		if (adata == nullptr)
 		{
@@ -74,7 +74,7 @@ namespace ngl
 		instance().m_works.push_back(adata);
 	}
 
-	void ncurl::work(http_parm& ahttp)
+	void curl::work(http_parm& ahttp)
 	{
 		CURLcode lretvalue = visit(ahttp);
 		if (CURLE_OK != lretvalue)
@@ -88,7 +88,7 @@ namespace ngl
 		}
 	}
 
-	CURLcode ncurl::visit(http_parm& ahttp)
+	CURLcode curl::visit(http_parm& ahttp)
 	{
 		if (ahttp.m_curl == nullptr)
 		{
@@ -118,7 +118,7 @@ namespace ngl
 			curl_easy_setopt(ahttp.m_curl, CURLOPT_HTTPGET, 1L);
 			curl_easy_setopt(ahttp.m_curl, CURLOPT_URL, lrequest_url.c_str());
 		}
-		curl_easy_setopt(ahttp.m_curl, CURLOPT_WRITEFUNCTION, &ncurl::callback);
+		curl_easy_setopt(ahttp.m_curl, CURLOPT_WRITEFUNCTION, &curl::callback);
 		curl_easy_setopt(ahttp.m_curl, CURLOPT_WRITEDATA, &ahttp.m_recvdata);
 		curl_easy_setopt(ahttp.m_curl, CURLOPT_HTTPHEADER, ahttp.m_headers);
 
@@ -149,7 +149,7 @@ namespace ngl
 		return curl_easy_perform(ahttp.m_curl);
 	}
 
-	size_t ncurl::callback(void* buffer, size_t size, size_t nmemb, std::string* lpVoid)
+	size_t curl::callback(void* buffer, size_t size, size_t nmemb, std::string* lpVoid)
 	{
 		const size_t lbytes = size * nmemb;
 		if (buffer == nullptr)
@@ -165,7 +165,7 @@ namespace ngl
 		return lbytes;
 	}
 
-	void ncurl::set_mode(std::shared_ptr<http_parm>& ahttp, ENUM_MODE aval)
+	void curl::set_mode(std::shared_ptr<http_parm>& ahttp, ENUM_MODE aval)
 	{ 
 		if (ahttp != nullptr)
 		{
@@ -173,7 +173,7 @@ namespace ngl
 		}
 	}
 
-	void ncurl::set_type(std::shared_ptr<http_parm>& ahttp, ENUM_TYPE aval)
+	void curl::set_type(std::shared_ptr<http_parm>& ahttp, ENUM_TYPE aval)
 	{ 
 		if (ahttp != nullptr)
 		{
@@ -181,7 +181,7 @@ namespace ngl
 		}
 	}
 
-	void ncurl::set_tls_verification(std::shared_ptr<http_parm>& ahttp, bool averify_peer, long averify_host)
+	void curl::set_tls_verification(std::shared_ptr<http_parm>& ahttp, bool averify_peer, long averify_host)
 	{
 		if (ahttp != nullptr)
 		{
@@ -190,7 +190,7 @@ namespace ngl
 		}
 	}
 
-	void ncurl::set_url(std::shared_ptr<http_parm>& ahttp, const std::string& aurl)
+	void curl::set_url(std::shared_ptr<http_parm>& ahttp, const std::string& aurl)
 	{ 
 		if (ahttp != nullptr)
 		{
@@ -198,7 +198,7 @@ namespace ngl
 		}
 	}
 
-	void ncurl::set_url(std::shared_ptr<http_parm>& ahttp, const char* aurl)
+	void curl::set_url(std::shared_ptr<http_parm>& ahttp, const char* aurl)
 	{ 
 		if (ahttp != nullptr)
 		{
@@ -206,7 +206,7 @@ namespace ngl
 		}
 	}
 
-	void ncurl::set_param(std::shared_ptr<http_parm>& ahttp, const std::string& aparam)
+	void curl::set_param(std::shared_ptr<http_parm>& ahttp, const std::string& aparam)
 	{ 
 		if (ahttp != nullptr)
 		{
@@ -214,7 +214,7 @@ namespace ngl
 		}
 	}
 
-	void ncurl::set_headers(std::shared_ptr<http_parm>& ahttp, const std::vector<std::string>& aheaders)
+	void curl::set_headers(std::shared_ptr<http_parm>& ahttp, const std::vector<std::string>& aheaders)
 	{ 
 		if (ahttp != nullptr)
 		{
@@ -222,7 +222,7 @@ namespace ngl
 		}
 	}
 
-	void ncurl::set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback)
+	void curl::set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback)
 	{ 
 		if (ahttp != nullptr)
 		{
@@ -230,21 +230,21 @@ namespace ngl
 		}
 	}
 
-	std::shared_ptr<http_parm> ncurl::http()
+	std::shared_ptr<http_parm> curl::http()
 	{
-		return nwork<http_parm>::make_shared();
+		return tools::nwork<http_parm>::make_shared();
 	}
 
-	std::shared_ptr<mail_param> ncurl::mail()
+	std::shared_ptr<mail_param> curl::mail()
 	{
-		return nwork<mail_param>::make_shared();
+		return tools::nwork<mail_param>::make_shared();
 	}
 
 	class email_sender
 	{
 		~email_sender() = default;
 
-		nwork<mail_param> m_works;
+		tools::nwork<mail_param> m_works;
 
 		email_sender() :
 			m_works(std::bind_front(&email_sender::work, this))
@@ -302,9 +302,9 @@ namespace ngl
 				}
 			} lguard{ aparm };
 
-			CURL* curl = curl_easy_init();
+			CURL* lcurl = curl_easy_init();
 
-			if (curl == nullptr)
+			if (lcurl == nullptr)
 			{
 				std::cerr << "curl_easy_init() failed" << std::endl;
 				return;
@@ -313,15 +313,15 @@ namespace ngl
 				curl_slist* recipients = nullptr;
 
 				// Configure the SMTP connection and sender credentials.
-				curl_easy_setopt(curl, CURLOPT_URL, aparm.m_smtp.c_str());
-				curl_easy_setopt(curl, CURLOPT_MAIL_FROM, aparm.m_email.c_str());
-				curl_easy_setopt(curl, CURLOPT_USERNAME, aparm.m_email.c_str());
-				curl_easy_setopt(curl, CURLOPT_PASSWORD, aparm.m_password.c_str());
+				curl_easy_setopt(lcurl, CURLOPT_URL, aparm.m_smtp.c_str());
+				curl_easy_setopt(lcurl, CURLOPT_MAIL_FROM, aparm.m_email.c_str());
+				curl_easy_setopt(lcurl, CURLOPT_USERNAME, aparm.m_email.c_str());
+				curl_easy_setopt(lcurl, CURLOPT_PASSWORD, aparm.m_password.c_str());
 
-				curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
-				curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L);
-				curl_easy_setopt(curl, CURLOPT_TIMEOUT, 60L);
-				curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30L);
+				curl_easy_setopt(lcurl, CURLOPT_SSL_VERIFYPEER, 1L);
+				curl_easy_setopt(lcurl, CURLOPT_VERBOSE, 0L);
+				curl_easy_setopt(lcurl, CURLOPT_TIMEOUT, 60L);
+				curl_easy_setopt(lcurl, CURLOPT_CONNECTTIMEOUT, 30L);
 
 				// Build the SMTP recipient list.
 				for (const auto& [mailaddr, name] : aparm.m_recvs)
@@ -329,9 +329,9 @@ namespace ngl
 					(void)name;
 					recipients = curl_slist_append(recipients, std::format("<{}>", mailaddr).c_str());
 				}
-				curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
+				curl_easy_setopt(lcurl, CURLOPT_MAIL_RCPT, recipients);
 
-				curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+				curl_easy_setopt(lcurl, CURLOPT_UPLOAD, 1L);
 
 				std::string payload = std::format("From: {}<{}>\r\n", aparm.m_name, aparm.m_email);
 				payload += "To: ";
@@ -350,12 +350,12 @@ namespace ngl
 
 				mail_payload_state lstate;
 				lstate.m_payload = &payload;
-				curl_easy_setopt(curl, CURLOPT_READDATA, &lstate);
+				curl_easy_setopt(lcurl, CURLOPT_READDATA, &lstate);
 
-				curl_easy_setopt(curl, CURLOPT_READFUNCTION, &email_sender::callback); // Stream the RFC822 payload.
+				curl_easy_setopt(lcurl, CURLOPT_READFUNCTION, &email_sender::callback); // Stream the RFC822 payload.
 
-				curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, nullptr);
-				const CURLcode res = curl_easy_perform(curl);
+				curl_easy_setopt(lcurl, CURLOPT_DEBUGFUNCTION, nullptr);
+				const CURLcode res = curl_easy_perform(lcurl);
 
 				if (res != CURLE_OK)
 				{
@@ -367,11 +367,11 @@ namespace ngl
 				}
 
 				curl_slist_free_all(recipients);
-				curl_easy_cleanup(curl);
+				curl_easy_cleanup(lcurl);
 		}
 	};
 
-	void ncurl::sendemail(std::shared_ptr<mail_param>& aparm)
+	void curl::sendemail(std::shared_ptr<mail_param>& aparm)
 	{
 		if (aparm == nullptr)
 		{
@@ -383,7 +383,7 @@ namespace ngl
 
 	void test_mail(const char* atitle, const char* acontent, const std::vector<std::pair<std::string, std::string>>& amailvec/* = {}*/)
 	{
-		auto lparm = ncurl::mail();
+		auto lparm = curl::mail();
 
 		lparm->m_smtp = nconfig.mail().m_smtp;
 		lparm->m_email = nconfig.mail().m_email;
@@ -398,17 +398,17 @@ namespace ngl
 			lparm->m_recvs.emplace_back(std::make_pair("libo1@youxigu.com", "李博"));
 			lparm->m_recvs.emplace_back(std::make_pair("348634371@qq.com", "李博QQ"));
 		}
-		ncurl::sendemail(lparm);
+		curl::sendemail(lparm);
 	}
 
 	void test_manage_curl()
 	{
 		constexpr const char* kExampleToken = "<replace-with-token>";
 
-		auto lhttp = ngl::ncurl::http();
-		ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTPS);
-		ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_POST);
-		ngl::ncurl::set_url(lhttp, "xxx");
+		auto lhttp = curl::http();
+		curl::set_mode(lhttp, ENUM_MODE_HTTPS);
+		curl::set_type(lhttp, ENUM_TYPE_POST);
+		curl::set_url(lhttp, "xxx");
 
 		std::string lparm;
 		std::stringstream lstream;
@@ -417,20 +417,20 @@ namespace ngl
 			<< "token=" << kExampleToken
 			<< "yWpx3hWQHFhSnTCj#311#6KuRKuaAjLJ5sYRy";
 
-		ngl::ncurl::param(lparm, "appid", 311);
-		ngl::ncurl::param(lparm, "userID", 7709523);
-		ngl::ncurl::param(lparm, "token", kExampleToken);
-		ngl::ncurl::param(lparm, "sign", tools::md5(lstream.str()).c_str());
-		ngl::ncurl::set_param(lhttp, lparm);
+		curl::param(lparm, "appid", 311);
+		curl::param(lparm, "userID", 7709523);
+		curl::param(lparm, "token", kExampleToken);
+		curl::param(lparm, "sign", tools::md5(lstream.str()).c_str());
+		curl::set_param(lhttp, lparm);
 		bool lbool = true;
 
-			ngl::ncurl::set_callback(lhttp, [&lbool]([[maybe_unused]] int anum, ngl::http_parm& aparm)
+			curl::set_callback(lhttp, [&lbool]([[maybe_unused]] int anum, http_parm& aparm)
 			{
 				log_error()->print("curl callback [{}]", aparm.m_recvdata);
 				lbool = false;
 			}
 		);
-		ngl::ncurl::send(lhttp);
+		curl::send(lhttp);
 		while (lbool)
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(3000));

@@ -17,8 +17,8 @@
 
 #include "tools/serialize/nrate.h"
 #include "tools/serialize/pack.h"
-#include "tools/threadtools.h"
-#include "tools/time_wheel.h"
+#include "tools/tools/tools_thread.h"
+#include "tools/tools/tools_time_wheel.h"
 #include "tools/log/nlog.h"
 #include "net/asio_base.h"
 #include "tools/type.h"
@@ -34,7 +34,7 @@ namespace ngl
 
 	class asio_kcp;
 
-	extern time_wheel m_kcptimer;
+	extern tools::time_wheel m_kcptimer;
 
 	struct kcp_endpoint
 	{

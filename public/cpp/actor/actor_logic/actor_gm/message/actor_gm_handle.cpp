@@ -129,7 +129,7 @@ namespace ngl
 				};
 				handle_cmd::add("get_time") = [this]([[maybe_unused]] ncjson& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<std::string> lresponse(adata->get_pack()->m_id, "get_time", tools::localtime::time2str("%Y-%m-%d %H:%M:%S"), this);
+					gcmd<std::string> lresponse(adata->get_pack()->m_id, "get_time", tools::time::time2str("%Y-%m-%d %H:%M:%S"), this);
 					return;
 				};
 			handle_cmd::add("set_time") = [this](ncjson& aos, const message<ngl::np_gm>* adata)
@@ -143,7 +143,7 @@ namespace ngl
 					operator_set_time ltime;
 					if (njson::pop(aos, { "data" }, ltime))
 					{
-						tools::localtime::settime(ltime.time);
+						tools::time::settime(ltime.time);
 						lresponse.m_data = true;
 					}
 				};

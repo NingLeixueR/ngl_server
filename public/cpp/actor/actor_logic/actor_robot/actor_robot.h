@@ -51,7 +51,7 @@ namespace ngl
 			m_rounds[arounds]->m_count.fetch_add(1, std::memory_order_relaxed);
 			if (m_rounds[arounds]->m_count >= m_rounds[arounds]->m_maxcount)
 			{
-				m_rounds[arounds]->m_end = ngl::time_wheel::getms();
+				m_rounds[arounds]->m_end = ngl::tools::time_wheel::getms();
 				test_thruput::instance().print(arounds);
 			}
 		}
@@ -61,7 +61,7 @@ namespace ngl
 			auto lpthruput = std::make_shared<thruput>();
 			lpthruput->m_count = 0;
 			lpthruput->m_maxcount = aactorcount * aeverycount;
-			lpthruput->m_beg = ngl::time_wheel::getms();
+			lpthruput->m_beg = ngl::tools::time_wheel::getms();
 			lpthruput->m_end = 0;
 			m_rounds.emplace_back(lpthruput);
 

@@ -49,20 +49,20 @@ namespace ngl
 
 			remove_notice();
 
-			wheel_parm lparm
+			tools::wheel_parm lparm
 			{
-				.m_ms = 10* tools::localtime::MINUTES_SECOND,
+				.m_ms = 10* tools::time::MINUTES_SECOND,
 				.m_intervalms = [](int64_t)
 				{
-					return 10 * tools::localtime::MINUTES_SECOND;
+					return 10 * tools::time::MINUTES_SECOND;
 				} ,
 				.m_count = 0x7fffffff,
-				.m_fun = [this](const wheel_node*)
+				.m_fun = [this](const tools::wheel_node*)
 				{
 					remove_notice();
 				}
 			};
-			m_removetimer = (int32_t)twheel::wheel().addtimer(lparm);
+			m_removetimer = (int32_t)tools::twheel::wheel().addtimer(lparm);
 		}
 
 		void notice_add(const std::string& anotice, int32_t abeg, int32_t aend)

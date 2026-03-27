@@ -60,7 +60,7 @@ namespace ngl
 		set_timer(tparm);
 		*/
 		std::set<i32_fieldnumber> lfieldset;
-		tdb_brief::nsp_cread<actor_family>::instance_readall(this, pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mbase"));
+		tdb_brief::nsp_cread<actor_family>::instance_readall(this, tools::pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mbase"));
 		m_drop.init(this, {});
 
 	}

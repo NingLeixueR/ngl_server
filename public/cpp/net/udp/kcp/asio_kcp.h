@@ -19,8 +19,8 @@
 #include "net/udp/kcp/kcp_session.h"
 #include "tools/serialize/pack.h"
 #include "net/udp/kcp/udp_cmd.h"
-#include "tools/threadtools.h"
-#include "tools/time_wheel.h"
+#include "tools/tools/tools_thread.h"
+#include "tools/tools/tools_time_wheel.h"
 #include "tools/log/nlog.h"
 #include "net/asio_base.h"
 #include "tools/type.h"
@@ -42,8 +42,8 @@ namespace ngl
 		{
 			e_buff_byte = 1500,
 			e_buffrecv_byte = 10240,
-			e_close_intervalms = 1* tools::localtime::MILLISECOND,
-			e_waitrecv_intervalms = 1* tools::localtime::MILLISECOND,
+			e_close_intervalms = 1* tools::time::MILLISECOND,
+			e_waitrecv_intervalms = 1* tools::time::MILLISECOND,
 		};
 	private:
 		kcp_session							m_session;			// Session table keyed by KCP session id / actor id / endpoint.

@@ -83,7 +83,7 @@ startup_error start_robot(int aargc, char** aargv, int* atcp_port)
 	{
 		for (int li = 0; li < 5; ++li)
 		{
-			ngl::sleep::seconds(1);
+			ngl::tools::sleep::seconds(1);
 			std::cout << "---------------[" << li << "]---------------" << std::endl;
 		}
 		const std::string lcmd = std::format("logins {} {} {} {}", aargv[4], aargv[5], aargv[6], aargv[7]);
@@ -152,12 +152,12 @@ startup_error start_robot(int aargc, char** aargv, int* atcp_port)
 		{
 			if (!ltest)
 			{
-				ngl::sleep::seconds(1);
+				ngl::tools::sleep::seconds(1);
 				continue;
 			}
 			for (std::size_t li = 0; li < lcmds.size() && li < lms.size(); ++li)
 			{
-				ngl::sleep::milliseconds(lms[li]);
+				ngl::tools::sleep::milliseconds(lms[li]);
 				ngl::actor_robot_manage::parse_command(lcmds[li]);
 			}
 		}

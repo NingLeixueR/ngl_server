@@ -18,7 +18,7 @@
 
 #include "actor/generated/pb/net.pb.h"
 
-#include "tools/operator_file.h"
+#include "tools/tools/tools_file.h"
 #include "xml_protocol.h"
 #include "tools/tools.h"
 
@@ -36,14 +36,14 @@ int main(int argc, char** argv)
 
     xml_protocol::nactor_auto(sourceTree, "db");
 
-    xml_protocol::g_stream_sql << "/*Date:" << ngl::tools::localtime::time2str("%Y-%m-%d %H:%M:%S")<< "*/" << std::endl;
+    xml_protocol::g_stream_sql << "/*Date:" << ngl::tools::time::time2str("%Y-%m-%d %H:%M:%S")<< "*/" << std::endl;
     xml_protocol::g_stream_sql << std::endl;
     xml_protocol::g_stream_sql << " DROP Database IF EXISTS `lbtest`;" << std::endl;
     xml_protocol::g_stream_sql << " CREATE DATABASE lbtest default charset utf8 COLLATE utf8_general_ci;" << std::endl;
     xml_protocol::g_stream_sql << " use lbtest;" << std::endl;
     xml_protocol::g_stream_sql << std::endl;
 
-    xml_protocol::g_stream_pgsql << "/*Date:" << ngl::tools::localtime::time2str("%Y-%m-%d %H:%M:%S") << "*/" << std::endl;
+    xml_protocol::g_stream_pgsql << "/*Date:" << ngl::tools::time::time2str("%Y-%m-%d %H:%M:%S") << "*/" << std::endl;
     xml_protocol::g_stream_pgsql << std::endl;
     xml_protocol::g_stream_pgsql << " DROP DATABASE IF EXISTS lbtest;" << std::endl;
     xml_protocol::g_stream_pgsql << " CREATE DATABASE lbtest WITH ENCODING='UTF8' LC_COLLATE='zh_CN.UTF-8' LC_CTYPE='zh_CN.UTF-8' OWNER=lbtest_user;" << std::endl;
@@ -53,11 +53,11 @@ int main(int argc, char** argv)
 
     {
         {
-            ngl::writefile lsql("../configure/config/create_db.sql");
+            ngl::tools::writefile lsql("../configure/config/create_db.sql");
             lsql.write(xml_protocol::g_stream_sql.str());
         }
         {
-            ngl::writefile lsql("../configure/config/create_pgdb.sql");
+            ngl::tools::writefile lsql("../configure/config/create_pgdb.sql");
             lsql.write(xml_protocol::g_stream_pgsql.str());
         }
     }    

@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "tools/time_wheel.h"
+#include "tools/tools/tools_time_wheel.h"
 
 namespace ngl
 {
@@ -26,9 +26,9 @@ namespace ngl
 		asio_timer& operator=(const asio_timer&) = delete;
 		asio_timer() = delete;
 
-		static time_wheel m_wheel;
+		static tools::time_wheel m_wheel;
 	public:
 		// Return the singleton timer wheel instance.
-		static time_wheel& wheel();
+		static tools::time_wheel& wheel();
 	};
 }// namespace ngl

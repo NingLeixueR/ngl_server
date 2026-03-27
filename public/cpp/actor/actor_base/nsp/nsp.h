@@ -19,7 +19,7 @@
 #include "actor/tab/ttab_servers.h"
 #include "actor/actor_base/core/nguid.h"
 #include "actor/actor_base/core/actor.h"
-#include "tools/pb_field.h"
+#include "tools/tools/tools_pb_field.h"
 
 namespace ngl
 {
@@ -95,7 +95,7 @@ namespace ngl
 			{
 				// Empty read sets mean "subscribe to every protobuf field".
 				std::set<i32_fieldnumber> lreadfield;
-				pb_field::field_numbers<T>(lreadfield);
+				tools::pb_field::field_numbers<T>(lreadfield);
 				for (i32_fieldnumber field : lreadfield)
 				{
 					add_field(atype, field, afieldtype);
@@ -122,7 +122,7 @@ namespace ngl
 			if (areadfield.empty())
 			{
 				// Empty read sets mean "subscribe to every protobuf field".
-				pb_field::field_numbers<T>(lreadfield);
+				tools::pb_field::field_numbers<T>(lreadfield);
 			}
 			for (i32_fieldnumber field : awritefield)
 			{
@@ -147,7 +147,7 @@ namespace ngl
 			{
 				return false;
 			}
-			pb_field::copy(asource, &atarget, *lpsource, *lptarget, amessage);
+			tools::pb_field::copy(asource, &atarget, *lpsource, *lptarget, amessage);
 			return true;
 		}
 
@@ -160,7 +160,7 @@ namespace ngl
 			{
 				return false;
 			}
-			pb_field::copy(asource, &atarget, *lp, amessage);
+			tools::pb_field::copy(asource, &atarget, *lp, amessage);
 			return true;
 		}
 

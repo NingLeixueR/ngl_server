@@ -17,8 +17,8 @@
 
 #include "net/udp/kcp/kcp_endpoint.h"
 #include "tools/serialize/pack.h"
-#include "tools/threadtools.h"
-#include "tools/time_wheel.h"
+#include "tools/tools/tools_thread.h"
+#include "tools/tools/tools_time_wheel.h"
 #include "tools/log/nlog.h"
 #include "net/asio_base.h"
 #include "tools/type.h"

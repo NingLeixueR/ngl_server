@@ -3,7 +3,7 @@
 #ifndef _IDLCPP_PROTOCOL_H_
 #define _IDLCPP_PROTOCOL_H_
 
-#include "tools/tools/tools_localtime.h"
+#include "tools/tools/tools_time.h"
 #include "tools/tools.h"
 #include "idl.h"
 
@@ -21,7 +21,7 @@ class idlcppprotocol
 idlcppprotocol() 
 	{
 		char ltmbuff[1024] = { 0 };
-		ngl::tools::localtime::time2str(ltmbuff, 1024, ngl::tools::localtime::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
+		ngl::tools::time::time2str(ltmbuff, 1024, ngl::tools::time::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
 		m_tit = "// 注意【IDL 工具生成文件，不要手动修改】\n";
 		m_tit += "// 创建时间 ";
 		m_tit += ltmbuff;
@@ -58,7 +58,7 @@ public:
 				lStruct._h_protocol();
 			}
 			delete lpInamespace;
-			ngl::writefile lfile("..\\compile_befor\\idl\\idlfile\\" + item.first + ".h");
+			ngl::tools::writefile lfile("..\\compile_befor\\idl\\idlfile\\" + item.first + ".h");
 			lfile.write(lstr);
 		}
 	}
@@ -90,7 +90,7 @@ public:
 			}
 
 			
-			ngl::writefile lfile("..\\compile_befor\\idl\\idlfile\\" + item.first + ".cpp");
+			ngl::tools::writefile lfile("..\\compile_befor\\idl\\idlfile\\" + item.first + ".cpp");
 			lfile.write(lstr);
 		}
 	}
@@ -254,7 +254,7 @@ public:
 				m_stream << "	}" << std::endl;
 			}
 			m_stream << "}" << std::endl;
-			ngl::writefile lfile("..\\compile_befor\\idl\\idlfile\\" + item.first + ".cs");
+			ngl::tools::writefile lfile("..\\compile_befor\\idl\\idlfile\\" + item.first + ".cs");
 			lfile.write(m_stream.str());
 		}
 	}
@@ -262,7 +262,7 @@ public:
 
 	void _nprotocol_auto()
 	{
-		ngl::writefile lfile("nprotocol_auto.h");
+		ngl::tools::writefile lfile("nprotocol_auto.h");
 		std::stringstream m_stream;
 		m_stream << m_tit;
 		m_stream << R"(#pragma once
@@ -339,7 +339,7 @@ namespace ngl
 
 	void _auto_actor_enum()
 	{
-		ngl::writefile lfile("auto_actor_enum.h");
+		ngl::tools::writefile lfile("auto_actor_enum.h");
 		std::stringstream m_stream;
 		m_stream << m_tit;
 		m_stream << R"(#pragma once
@@ -511,7 +511,7 @@ namespace ngl
 					if (ngl::tools::file_exists(std::format("../../public/cpp/actor/template_tab/t{}.h", struc.name)) == false)
 					{
 						lset.insert(struc.name);
-						ngl::writefile lfile(std::format("../../public/cpp/actor/template_tab/t{}.h", struc.name));
+						ngl::tools::writefile lfile(std::format("../../public/cpp/actor/template_tab/t{}.h", struc.name));
 
 						std::string format_str_part1 = R"(#pragma once
 

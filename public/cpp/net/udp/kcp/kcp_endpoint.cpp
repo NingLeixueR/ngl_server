@@ -20,7 +20,7 @@
 
 namespace ngl
 {
-	time_wheel m_kcptimer(time_wheel_config
+	tools::time_wheel m_kcptimer(tools::time_wheel_config
 		{
 			.m_time_wheel_precision = 5,
 			.m_time_wheel_bit = 8,

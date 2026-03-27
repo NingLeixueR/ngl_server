@@ -82,7 +82,7 @@ namespace ngl
 			char lbuff[1024] = { 0 };
 			for (auto& chatitem : lrecv->mchatlist())
 			{
-				tools::localtime::time2str(lbuff, 1024, chatitem.mutc(), "%y/%m/%d %H:%M:%S");
+				tools::time::time2str(lbuff, 1024, chatitem.mutc(), "%y/%m/%d %H:%M:%S");
 				log_error()->print("[{}:{}:{}] {}", nguid::area(chatitem.mroleid()), chatitem.mrolename(), lbuff, chatitem.mcontent());
 			}
 		}
@@ -95,7 +95,7 @@ namespace ngl
 			char lbuff[1024] = { 0 };
 			for (auto& chatitem : lrecv->mchatlist())
 			{
-				tools::localtime::time2str(lbuff, 1024, chatitem.mutc(), "%y/%m/%d %H:%M:%S");
+				tools::time::time2str(lbuff, 1024, chatitem.mutc(), "%y/%m/%d %H:%M:%S");
 				log_error()->print("[{}:{}:{}] {}", nguid::area(chatitem.mroleid()), chatitem.mrolename(), lbuff, chatitem.mcontent());
 			}
 		}
@@ -184,7 +184,7 @@ namespace ngl
 	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata)
 	{
 		char lbuff[1024] = { 0 };
-		tools::localtime::time2str(lbuff, 1024, adata.get_data()->mutc(), "%y/%m/%d %H:%M:%S");
+		tools::time::time2str(lbuff, 1024, adata.get_data()->mutc(), "%y/%m/%d %H:%M:%S");
 		log_error()->print("[{}][{}]", m_data.mbrief().mbase().mname(), lbuff);
 		return true;
 	}
@@ -261,8 +261,8 @@ namespace ngl
 		char lbufffinish[1024] = { 0 };
 		for (const auto& lnotice : adata.get_data()->mnotices())
 		{
-			tools::localtime::time2str(lbuffstart, 1024, lnotice.mstarttime(), "%Y/%m/%d %H:%M:%S");
-			tools::localtime::time2str(lbufffinish, 1024, lnotice.mfinishtime(), "%Y/%m/%d %H:%M:%S");
+			tools::time::time2str(lbuffstart, 1024, lnotice.mstarttime(), "%Y/%m/%d %H:%M:%S");
+			tools::time::time2str(lbufffinish, 1024, lnotice.mfinishtime(), "%Y/%m/%d %H:%M:%S");
 			lnotices.m_notices.emplace_back(
 				noticeitem
 				{

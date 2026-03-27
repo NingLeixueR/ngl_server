@@ -18,7 +18,7 @@
 #include "actor/generated/auto/nactor_auto.h"
 #include "actor/tab/ttab_mail.h"
 #include "tools/tab/csv/ncsv.h"
-#include "tools/tools/tools_localtime.h"
+#include "tools/tools/tools_time.h"
 
 #include <string>
 #include <map>
@@ -67,7 +67,7 @@ namespace ngl
 			int32_t& lid = maxid(aroleid);
 			lmail.set_mid(++lid);
 			lmail.set_mtid(atid);
-			lmail.set_mcreateutc((int32_t)tools::localtime::gettime());
+			lmail.set_mcreateutc((int32_t)tools::time::gettime());
 			lmail.set_mdraw(false);
 			lmail.set_mread(false);
 			lmail.set_mprams(aparm);

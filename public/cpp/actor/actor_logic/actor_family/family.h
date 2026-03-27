@@ -18,7 +18,7 @@
 #include "actor/tab/ttab_specialid.h"
 #include "actor/generated/auto/nactor_auto.h"
 #include "tools/tab/csv/ncsv.h"
-#include "tools/tools/tools_localtime.h"
+#include "tools/tools/tools_time.h"
 
 #include <string>
 #include <map>
@@ -48,7 +48,7 @@ namespace ngl
 		bool check_createfamily(i64_actorid aroleid)
 		{
 			data_modified<pbdb::db_familyer>& lpdbfamilyer = get(aroleid);
-			auto lnow = (int32_t)tools::localtime::gettime();
+			auto lnow = (int32_t)tools::time::gettime();
 			const pbdb::db_familyer* lpdbfamilyerconst = lpdbfamilyer.getconst();
 			if (lpdbfamilyerconst == nullptr)
 			{

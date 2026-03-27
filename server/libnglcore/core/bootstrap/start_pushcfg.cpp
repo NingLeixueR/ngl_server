@@ -1,6 +1,7 @@
 #include "actor/actor_logic/actor_gmclient/actor_gmclient.h"
 #include "actor/generated/auto/nactor_auto.h"
 #include "tools/tab/xml/xml.h"
+#include "tools/log/nlog.h"
 #include "init_dbdata.h"
 #include "start_node.h"
 #include "start_db.h"
@@ -20,10 +21,10 @@ bool build_push_cfg(const ngl::tab_servers& asrv, std::string& aparam)
 	const std::string lname = ngl::tools::url_encode(asrv.m_name);
 
 	// The endpoint expects the scalar fields as flat query params.
-	ngl::ncurl::param(aparam, "id", asrv.m_id);
-	ngl::ncurl::param(aparam, "name", lname);
-	ngl::ncurl::param(aparam, "area", asrv.m_area);
-	ngl::ncurl::param(aparam, "type", static_cast<int32_t>(asrv.m_type));
+	ngl::tools::curl::param(aparam, "id", asrv.m_id);
+	ngl::tools::curl::param(aparam, "name", lname);
+	ngl::tools::curl::param(aparam, "area", asrv.m_area);
+	ngl::tools::curl::param(aparam, "type", static_cast<int32_t>(asrv.m_type));
 
 	constexpr std::array<const char*, ngl::ENET_COUNT> knet_names = { "tcp", "ws", "kcp" };
 	ngl::ncjson lnet_json;
@@ -49,7 +50,7 @@ bool build_push_cfg(const ngl::tab_servers& asrv, std::string& aparam)
 	}
 
 	const std::string lnet_txt = lnet_json.nonformat_str();
-	ngl::ncurl::param(aparam, "net", ngl::tools::url_encode(lnet_txt));
+	ngl::tools::curl::param(aparam, "net", ngl::tools::url_encode(lnet_txt));
 	return true;
 }
 
@@ -81,10 +82,10 @@ startup_error start_pushcfg([[maybe_unused]] int* atcp_port)
 	// for the rest of the batch.
 	ngl::ttab_servers::instance().foreach_server([&lurl, &lbad_net](ngl::tab_servers* aserver)
 		{
-			auto lhttp = ngl::ncurl::http();
-			ngl::ncurl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
-			ngl::ncurl::set_type(lhttp, ngl::ENUM_TYPE_GET);
-			ngl::ncurl::set_url(lhttp, lurl);
+			auto lhttp = ngl::tools::curl::http();
+			ngl::tools::curl::set_mode(lhttp, ngl::tools::ENUM_MODE_HTTP);
+			ngl::tools::curl::set_type(lhttp, ngl::tools::ENUM_TYPE_GET);
+			ngl::tools::curl::set_url(lhttp, lurl);
 
 			std::string lparam;
 			if (!build_push_cfg(*aserver, lparam))
@@ -97,13 +98,13 @@ startup_error start_pushcfg([[maybe_unused]] int* atcp_port)
 				return;
 			}
 
-			ngl::ncurl::set_param(lhttp, lparam);
+			ngl::tools::curl::set_param(lhttp, lparam);
 
-			ngl::ncurl::set_callback(lhttp, [lsend = std::move(lparam)](int, ngl::http_parm& ahttp)
+			ngl::tools::curl::set_callback(lhttp, [lsend = std::move(lparam)](int, ngl::tools::http_parm& ahttp)
 				{
 					ngl::log_error()->print("[{}]->[{}]", lsend, ahttp.m_recvdata);
 				});
-			ngl::ncurl::send(lhttp);
+			ngl::tools::curl::send(lhttp);
 		});
 	return lbad_net ? startup_error::node_start_failed : startup_error::ok;
 }

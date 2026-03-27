@@ -50,14 +50,14 @@ namespace ngl
 					operator_set_time ltime;
 					if (njson::pop(aos, { "data" }, ltime))
 					{
-						bool lbool = tools::localtime::settime(ltime.m_time);
-						lpro.m_data = std::format("set time {} # {}", tools::localtime::time2str("%Y-%m-%d %H:%M:%S"), lbool ? "success" : "fail");
+						bool lbool = tools::time::settime(ltime.m_time);
+						lpro.m_data = std::format("set time {} # {}", tools::time::time2str("%Y-%m-%d %H:%M:%S"), lbool ? "success" : "fail");
 					}
 				};
 
 				handle_cmd::add("get_time") = [this](int id, [[maybe_unused]] ncjson& aos)
 				{
-					gcmd<std::string> lpro(id, "get_time", tools::localtime::time2str("%Y-%m-%d %H:%M:%S"));
+					gcmd<std::string> lpro(id, "get_time", tools::time::time2str("%Y-%m-%d %H:%M:%S"));
 				};
 		}
 

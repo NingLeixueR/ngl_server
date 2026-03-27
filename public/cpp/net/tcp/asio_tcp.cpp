@@ -29,7 +29,7 @@ namespace ngl
 	namespace tcp
 	{
 		constexpr int32_t tcp_connect_interval_ms =
-			asio_tcp::etcp_connect_interval * static_cast<int32_t>(tools::localtime::MILLISECOND);
+			asio_tcp::etcp_connect_interval * static_cast<int32_t>(tools::time::MILLISECOND);
 
 		bool is_alive(const std::shared_ptr<std::atomic_bool>& aalive)
 		{
@@ -254,12 +254,12 @@ namespace ngl
 					{
 						log_error()->print("connect [{}:{}] fail [{}] add timer list! ", aip, aport, ec.message());
 						// Retry through the shared timer wheel instead of blocking a socket thread.
-						wheel_parm lparm
+						tools::wheel_parm lparm
 						{
 							.m_ms = ngl::tcp::tcp_connect_interval_ms,
 							.m_intervalms = [](int64_t) { return ngl::tcp::tcp_connect_interval_ms; },
 							.m_count = 1,
-							.m_fun = [this, alive, callback_lock, aip, aport, afun, acount](const wheel_node*)
+							.m_fun = [this, alive, callback_lock, aip, aport, afun, acount](const tools::wheel_node*)
 							{
 								std::shared_lock<std::shared_mutex> callback_guard(*callback_lock);
 								if (!ngl::tcp::is_alive(alive))

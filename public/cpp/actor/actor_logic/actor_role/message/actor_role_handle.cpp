@@ -19,10 +19,10 @@
 #include "actor/actor_logic/actor_gm/gcmd.h"
 #include "actor/actor_base/core/nregister.h"
 #include "actor/actor_logic/nforward.h"
-#include "actor/tab/ttab_specialid.h"
-#include "actor/tab/ttab_task.h"
-#include "tools/curl/ncurl.h"
 #include "actor/generated/pb/net.pb.h"
+#include "actor/tab/ttab_specialid.h"
+#include "tools/tools/tools_curl.h"
+#include "actor/tab/ttab_task.h"
 namespace ngl
 {
 	bool actor_role::handle([[maybe_unused]] const message<mforward<np_gm>>& adata)
@@ -90,7 +90,7 @@ namespace ngl
 						return;
 					}
 
-					int lnow = (int)tools::localtime::gettime();
+					int lnow = (int)tools::time::gettime();
 					m_info.change_notalkutc(lnow + lduration);
 					pro.m_data = true;
 					log_error()->print("[{}] bantalk [{}]", id_guid(), tools::time2str(lnow + lduration));
@@ -440,11 +440,11 @@ namespace ngl
 		//if (lpack->m_protocol == ENET_KCP)
 		//{
 		//	pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
-		//	pro.set_mutc((int32_t)tools::localtime::gettime());
+		//	pro.set_mutc((int32_t)tools::time::gettime());
 		//	kcp_send(lpack, pro);
 		//}
 		pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
-		pro.set_mutc((int32_t)tools::localtime::gettime());
+		pro.set_mutc((int32_t)tools::time::gettime());
 		send_client(id_guid(), pro, ENET_KCP);
 		return true;
 	}

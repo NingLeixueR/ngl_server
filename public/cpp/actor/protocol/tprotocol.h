@@ -17,10 +17,10 @@
 
 #include "actor/protocol/nprotocol_template.h"
 #include "tools/tab/xml/xmlprotocol.h"
-#include "tools/template_arg.h"
+#include "tools/tools/tools_template_arg.h"
 #include "actor/generated/pb/net.pb.h"
 #include "tools/tools.h"
-#include "tools/nhash.h"
+#include "tools/tools/tools_nhash.h"
 #include "lua.hpp"
 
 #include <array>
@@ -82,7 +82,7 @@ namespace ngl
 			}
 		};
 	private:
-		static std::map<nhashcode, info>			m_keyval;
+		static std::map<tools::nhashcode, info>			m_keyval;
 		static std::map<i32_protocolnum, info*>		m_protocol;
 		static std::map<std::string, info*>			m_nameprotocol;
 		static int32_t								m_customs;
@@ -94,7 +94,7 @@ namespace ngl
 			template <typename T>
 			static info* func_base(int32_t aprotocolnum = -1, int8_t ahigh = 0)
 			{
-				nhashcode lcode = nhash::code<T>();
+				tools::nhashcode lcode = tools::nhash::code<T>();
 				if (m_keyval.contains(lcode))
 				{
 					return nullptr;
@@ -157,7 +157,7 @@ namespace ngl
 			{
 				return false;
 			}
-			info& linfo = m_keyval[nhash::code<T>()];
+			info& linfo = m_keyval[tools::nhash::code<T>()];
 			linfo.m_name = lname;
 			linfo.m_protocol = lprotocol;
 			m_protocol[linfo.m_protocol] = &linfo;
@@ -169,7 +169,7 @@ namespace ngl
 		static info* get()
 		{
 			using TRC = std::remove_const<T>::type;
-			nhashcode lcode = nhash::code<T>();
+			tools::nhashcode lcode = tools::nhash::code<T>();
 			tprotocol::info* lpinfo = tools::findmap(m_keyval, lcode);
 			if (lpinfo == nullptr)
 			{

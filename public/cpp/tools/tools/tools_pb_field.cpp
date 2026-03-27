@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "tools/pb_field.h"
+#include "tools/tools/tools_pb_field.h"
 
 #ifdef GetMessage
 #undef GetMessage
@@ -43,7 +43,7 @@ namespace ngl::tools
 	}
 
 
-    void pb_field::copy(
+    void tools::pb_field::copy(
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
         , const std::map<i32_fieldnumber, epb_field>& fieldsrc
@@ -90,7 +90,7 @@ namespace ngl::tools
         }
     }
 
-    void pb_field::copy(
+    void tools::pb_field::copy(
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
         , const std::map<i32_fieldnumber, epb_field>& fieldsrc
@@ -131,7 +131,7 @@ namespace ngl::tools
         }
     }
 
-    void pb_field::copyfield(
+    void tools::pb_field::copyfield(
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
         , const google::protobuf::Reflection* src_refl
@@ -163,7 +163,7 @@ namespace ngl::tools
     }
 
     // Copy a single non-repeated field
-    void pb_field::copy_single_field(
+    void tools::pb_field::copy_single_field(
         const google::protobuf::Message& src
         , google::protobuf::Message* dst
         , const google::protobuf::Reflection* src_refl
@@ -205,7 +205,7 @@ namespace ngl::tools
             break;
         case google::protobuf::FieldDescriptor::CPPTYPE_MESSAGE:
         {
-            const google::protobuf::Message& src_msg = msg::get(src_refl, src, field);
+            const google::protobuf::Message& src_msg = get(src_refl, src, field);
             google::protobuf::Message* dst_msg = dst_refl->MutableMessage(dst, field);
             dst_msg->CopyFrom(src_msg); // Message
             break;
@@ -217,7 +217,7 @@ namespace ngl::tools
     }
 
     // Repeated fieldin
-    void pb_field::copy_repeated_field(const google::protobuf::Message& src,
+    void tools::pb_field::copy_repeated_field(const google::protobuf::Message& src,
         google::protobuf::Message* dst,
         const google::protobuf::Reflection* src_refl,
         const google::protobuf::Reflection* dst_refl,

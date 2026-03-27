@@ -15,10 +15,10 @@
 
 
 #include "actor/protocol/protocol.h"
+#include "tools/tools/tools_curl.h"
 #include "tools/tab/xml/xmlinfo.h"
 #include "tools/tools/tools_cmd.h"
 #include "tools/tab/xml/xml.h"
-#include "tools/curl/ncurl.h"
 #include "net/tcp/ntcp.h"
 
 namespace ngl
@@ -211,7 +211,7 @@ namespace ngl
 						ntcp::instance().send_msg(pack->m_id, "参数错误");
 						return;
 					}
-					ngl::test_mail(avec[2].c_str(), avec[3].c_str(), lmail);
+					ngl::tools::test_mail(avec[2].c_str(), avec[3].c_str(), lmail);
 				};
 
 			handle_cmd::add("/week") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
@@ -222,7 +222,7 @@ namespace ngl
 						return;
 					}
 					time_t ltime = tools::lexical_cast<time_t>(avec[1]);
-					if (tools::localtime::issameweek(tools::localtime::gettime(), ltime))
+					if (tools::time::issameweek(tools::time::gettime(), ltime))
 					{
 						std::cout << "同一周" << std::endl;
 						ntcp::instance().send_msg(pack->m_id, "同一周");
@@ -249,17 +249,17 @@ namespace ngl
 						const int16_t ltcount = tools::lexical_cast<int16_t>(avec[2]);
 					i32_session lsession = server_session::sessionid(nnodeid::nodeid(ltid, ltcount));
 					ntcp::instance().send_msg(lsession, "/login libo 123456");
-					wheel_parm lparm
+					tools::wheel_parm lparm
 					{
 						.m_ms = (int32_t)(2000),
 						.m_intervalms = [](int64_t) {return 2000; },
 						.m_count = 1,
-							.m_fun = [lsession](const wheel_node*)
+							.m_fun = [lsession](const tools::wheel_node*)
 						{
 							ntcp::instance().send_msg(lsession, "/each china");
 						}
 					};
-					twheel::wheel().addtimer(lparm);
+					tools::twheel::wheel().addtimer(lparm);
 				};
 
 			handle_cmd::add("/echo") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)

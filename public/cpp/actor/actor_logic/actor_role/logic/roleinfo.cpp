@@ -198,7 +198,7 @@ namespace ngl
 			log_error()->print("roleinfo::bantalk fail role[{}]", nguid(get_actor()->id_guid()));
 			return false;
 		}
-		int32_t lnow = (int32_t)tools::localtime::gettime();
+		int32_t lnow = (int32_t)tools::time::gettime();
 		return lnow < lrb->mbase().mnotalkutc();
 	}
 

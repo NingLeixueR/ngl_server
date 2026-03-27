@@ -16,22 +16,22 @@
 #include "tools_sys.h"
 
 #include "actor/actor_base/core/nguid.h"
-#include "actor/tab/ttab_servers.h"
-#include "tools/curl/ncurl.h"
-#include "tools/tools/tools_localtime.h"
+#include "tools/tools/tools_thread.h"
 #include "tools/tab/xml/sysconfig.h"
-#include "tools/threadtools.h"
+#include "actor/tab/ttab_servers.h"
+#include "tools/tools/tools_curl.h"
+#include "tools/tools/tools_time.h"
 #include "tools_split.h"
 
-#include <chrono>
-#include <filesystem>
-#include <iostream>
-#include <memory>
-#include <mutex>
-#include <random>
 #include <shared_mutex>
 #include <system_error>
+#include <filesystem>
+#include <iostream>
+#include <random>
 #include <thread>
+#include <chrono>
+#include <memory>
+#include <mutex>
 
 namespace ngl
 {
@@ -82,7 +82,7 @@ namespace ngl
 	{
 		std::map<std::string, int32_t> g_mailmap;
 		std::shared_mutex g_maillock;
-		int32_t g_mail_int = tools::localtime::MINUTES_SECOND * 10;
+		int32_t g_mail_int = tools::time::MINUTES_SECOND * 10;
 		constexpr std::size_t g_mail_lim = 1024;
 
 		void prune_mail(int32_t anow)
@@ -108,7 +108,7 @@ namespace ngl
 		std::string time2str(int autc, const char* aformat)
 		{
 			char lbuf[1024] = { 0 };
-			tools::localtime::time2str(lbuf, 1024, autc, aformat);
+			tools::time::time2str(lbuf, 1024, autc, aformat);
 			return lbuf;
 		}
 
@@ -208,7 +208,7 @@ namespace ngl
 		{
 			return [acontent]()
 			{
-				const int32_t lnow = static_cast<int32_t>(tools::localtime::gettime());
+				const int32_t lnow = static_cast<int32_t>(tools::time::gettime());
 				{
 					lock_write(mail_detail::g_maillock);
 					if (mail_detail::g_mailmap.size() >= mail_detail::g_mail_lim)
@@ -224,7 +224,7 @@ namespace ngl
 				}
 
 				std::cout << "dump_logic()" << std::endl;
-				std::shared_ptr<ngl::mail_param> lparm = ngl::ncurl::mail();
+				std::shared_ptr<tools::mail_param> lparm = tools::curl::mail();
 				lparm->m_smtp = nconfig.mail().m_smtp;
 				lparm->m_email = nconfig.mail().m_email;
 				lparm->m_password = nconfig.mail().m_password;
@@ -233,7 +233,7 @@ namespace ngl
 				lparm->m_content = acontent;
 				lparm->m_recvs.emplace_back(std::make_pair("348634371@qq.com", "QQ"));
 				lparm->set_wait();
-				ngl::ncurl::sendemail(lparm);
+				tools::curl::sendemail(lparm);
 			};
 		}
 

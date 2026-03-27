@@ -19,8 +19,8 @@
 
 namespace ngl
 {
-	time_wheel asio_timer::m_wheel(
-		time_wheel_config
+	tools::time_wheel asio_timer::m_wheel(
+		tools::time_wheel_config
 		{ 
 			.m_time_wheel_precision = 1000, // 1 ms precision bucket size.
 			.m_time_wheel_bit = 8,          // 256 slots per wheel level.
@@ -28,7 +28,7 @@ namespace ngl
 		}
 	);
 
-	time_wheel& asio_timer::wheel()
+	tools::time_wheel& asio_timer::wheel()
 	{
 		return m_wheel;
 	}

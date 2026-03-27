@@ -80,7 +80,7 @@ namespace ngl
 			return;
 		}
 		std::set<i32_fieldnumber> lfieldset;
-		pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mactivityvalues");
+		tools::pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mactivityvalues");
 		tdb_brief::nsp_cwrite<actor_activity_manage>::instance_writeall(this, {}, lfieldset);
 
 		tdb_keyvalue::nsp_cread<actor_activity_manage>::instance_readall(this, {});
@@ -92,7 +92,7 @@ namespace ngl
 		actor_events_logic::event_func(actorid(), eevents_logic_rolelogin, eevents_logic_rolelevelchange, eevents_logic_rolegoldchange);
 
 		// Loadinitializeactivity
-		int32_t lnow = (int32_t)tools::localtime::gettime();
+		int32_t lnow = (int32_t)tools::time::gettime();
 		//std::map<nguid, data_modified<TDATA>>&
 		for (auto& lpair : m_activitytimedb.data())
 		{
@@ -123,14 +123,14 @@ namespace ngl
 						}
 						if (ltabalways->m_type == EActivityAlways::EActivityAlwaysWeek)
 						{
-							int32_t lbeg = (int32_t)tools::localtime::getweekday(lnow, ltabalways->m_wbday == 7 ? 0 : ltabalways->m_wbday, ltabalways->m_wbhour, ltabalways->m_wbminute, ltabalways->m_wbsecond);
-							int32_t lend = (int32_t)tools::localtime::getweekday(lnow, ltabalways->m_weday == 7 ? 0 : ltabalways->m_weday, ltabalways->m_wehour, ltabalways->m_weminute, ltabalways->m_wesecond);
+							int32_t lbeg = (int32_t)tools::time::getweekday(lnow, ltabalways->m_wbday == 7 ? 0 : ltabalways->m_wbday, ltabalways->m_wbhour, ltabalways->m_wbminute, ltabalways->m_wbsecond);
+							int32_t lend = (int32_t)tools::time::getweekday(lnow, ltabalways->m_weday == 7 ? 0 : ltabalways->m_weday, ltabalways->m_wehour, ltabalways->m_weminute, ltabalways->m_wesecond);
 							start_activity(atab.m_id, lbeg, lend - lbeg);
 							return;
 						}
 						else if (ltabalways->m_type == EActivityAlways::EActivityAlwaysMonth)
 						{
-							std::pair<bool, time_t> lbeg = tools::localtime::getmothday(lnow, ltabalways->m_mbday, ltabalways->m_mbhour, ltabalways->m_mbminute, ltabalways->m_mbsecond);
+							std::pair<bool, time_t> lbeg = tools::time::getmothday(lnow, ltabalways->m_mbday, ltabalways->m_mbhour, ltabalways->m_mbminute, ltabalways->m_mbsecond);
 							if (lbeg.second)
 							{
 								return;
@@ -145,7 +145,7 @@ namespace ngl
 										{
 											return false;
 										}
-										lend = tools::localtime::getmothday(lnow, lmeday, ltabalways->m_mehour, ltabalways->m_meminute, ltabalways->m_mesecond);
+										lend = tools::time::getmothday(lnow, lmeday, ltabalways->m_mehour, ltabalways->m_meminute, ltabalways->m_mesecond);
 										--lmeday;
 									} while (!lend.first);
 									return true;
@@ -159,8 +159,8 @@ namespace ngl
 						}
 						else if (ltabalways->m_type == EActivityAlways::EActivityAlwaysFixed)
 						{
-							int32_t lbeg = (int32_t)tools::localtime::getsecond2time(lnow, ltabalways->m_fbhour, ltabalways->m_fbminute, ltabalways->m_fbsecond);
-							int32_t lend = (int32_t)tools::localtime::getsecond2time(lnow + ltabalways->m_fixedday * tools::localtime::DAY_SECOND, ltabalways->m_fbhour, ltabalways->m_fbminute, ltabalways->m_fbsecond);
+							int32_t lbeg = (int32_t)tools::time::getsecond2time(lnow, ltabalways->m_fbhour, ltabalways->m_fbminute, ltabalways->m_fbsecond);
+							int32_t lend = (int32_t)tools::time::getsecond2time(lnow + ltabalways->m_fixedday * tools::time::DAY_SECOND, ltabalways->m_fbhour, ltabalways->m_fbminute, ltabalways->m_fbsecond);
 							start_activity(lactoractivityid, lbeg, lend - lbeg);
 							return;
 						}
@@ -178,8 +178,8 @@ namespace ngl
 					if (!m_activitys.contains(atab.m_id))
 					{
 						//lopenserver
-						int32_t lbeg = (atab.m_openday - 1) * tools::localtime::DAY_SECOND + atab.m_openhour * tools::localtime::HOUR_SECOND + atab.m_openminute * tools::localtime::MINUTES_SECOND + atab.m_opensecond;
-						int32_t lend = (atab.m_closeday - 1) * tools::localtime::DAY_SECOND + atab.m_closehour * tools::localtime::HOUR_SECOND + atab.m_closeminute * tools::localtime::MINUTES_SECOND + atab.m_closesecond;
+						int32_t lbeg = (atab.m_openday - 1) * tools::time::DAY_SECOND + atab.m_openhour * tools::time::HOUR_SECOND + atab.m_openminute * tools::time::MINUTES_SECOND + atab.m_opensecond;
+						int32_t lend = (atab.m_closeday - 1) * tools::time::DAY_SECOND + atab.m_closehour * tools::time::HOUR_SECOND + atab.m_closeminute * tools::time::MINUTES_SECOND + atab.m_closesecond;
 						start_activity(atab.m_id, lbeg, lend - lbeg);
 					}
 				}
@@ -229,7 +229,7 @@ namespace ngl
 		{
 			return;
 		}
-		int32_t lnow = (int32_t)tools::localtime::gettime();
+		int32_t lnow = (int32_t)tools::time::gettime();
 		if (lnow < atime)
 		{// Time startactivity
 			post_timer(aactivityid, eactivity_start, atime, aduration);
@@ -274,11 +274,11 @@ namespace ngl
 		int32_t lduration = 0;
 		if (atype == eactivity_close)
 		{
-			lduration = (abeg + aduration) - (int32_t)tools::localtime::gettime();
+			lduration = (abeg + aduration) - (int32_t)tools::time::gettime();
 		}
 		else if (atype == eactivity_start)
 		{
-			lduration = abeg - (int32_t)tools::localtime::gettime();
+			lduration = abeg - (int32_t)tools::time::gettime();
 		}
 
 		if (lduration < 0)

@@ -17,7 +17,7 @@
 
 #include "actor/actor_base/core/handle_pram.h"
 #include "actor/actor_base/core/actor_base.h"
-#include "tools/threadtools.h"
+#include "tools/tools/tools_thread.h"
 
 #include <atomic>
 
@@ -34,7 +34,7 @@ namespace ngl
 		bool				m_isactivity = false;	// Legacy activity flag preserved for diagnostics/API compatibility.
 		std::atomic_bool	m_shutdown = false;		// Prevents double-stop races during teardown.
 		std::shared_mutex	m_mutex;				// Protects the current actor pointer and activity flag.
-		ngl::sem			m_sem;					// Wakes the worker when a new actor is assigned.
+		ngl::tools::sem			m_sem;					// Wakes the worker when a new actor is assigned.
 		std::jthread		m_thread;				// Start last so synchronization members already exist.
 
 		void run(std::stop_token astop);

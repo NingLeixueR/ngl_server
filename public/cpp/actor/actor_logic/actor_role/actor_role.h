@@ -34,9 +34,9 @@
 #include "actor/generated/pb/net.pb.h"
 #include "tools/db/sql/mysql/nmysql.h"
 #include "actor/protocol/nprotocol.h"
+#include "tools/tools/tools_curl.h"
 #include "tools/tools/tools_cmd.h"
 #include "tools/db/sql/db_data.h"
-#include "tools/curl/ncurl.h"
 #include "net/tcp/ntcp.h"
 
 namespace ngl
@@ -251,7 +251,7 @@ namespace ngl
 		// # Loginrequest
 		void loginpay();
 
-		void requestgm(const char* aurl, const std::string& aparm, const std::function<void(int32_t, http_parm&)>& acall);
+		void requestgm(const char* aurl, const std::string& aparm, const std::function<void(int32_t, tools::http_parm&)>& acall);
 
 		// # Requestcreate
 		void createorder(std::string& aorder, int32_t arechargeid);

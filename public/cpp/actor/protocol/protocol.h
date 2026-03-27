@@ -23,7 +23,7 @@
 #include "actor/protocol/tprotocol.h"
 #include "actor/actor_base/core/nguid.h"
 #include "tools/serialize/pack.h"
-#include "tools/threadtools.h"
+#include "tools/tools/tools_thread.h"
 #include "tools/log/nlog.h"
 #include "net/tcp/ntcp.h"
 #include "tools/type.h"

@@ -19,11 +19,11 @@
 #include "actor/actor_base/core/nguid.h"
 #include "actor/tab/ttab_servers.h"
 #include "tools/curl/ncurl.h"
-#include "tools/tools/tools_localtime.h"
+#include "tools/tools/tools_time.h"
 #include "tools/log/nlog.h"
-#include "tools/nwork.h"
-#include "tools/operator_file.h"
-#include "tools/time_wheel.h"
+#include "tools/tools/tools_nwork.h"
+#include "tools/tools/tools_file.h"
+#include "tools/tools/tools_time_wheel.h"
 #include "tools/tab/csv/csv.h"
 #include "tools/tab/json/njson.h"
 #include "tools/tab/xml/sysconfig.h"
@@ -128,7 +128,7 @@ TEST(ToolsTest, NworkRunsQueuedItem)
 {
 	std::atomic_int lsum = 0;
 	{
-		ngl::nwork<work_item> lwork([&lsum](work_item& aitem)
+		ngl::tools::nwork<work_item> lwork([&lsum](work_item& aitem)
 			{
 				lsum.fetch_add(aitem.m_value, std::memory_order_relaxed);
 			}
@@ -620,7 +620,7 @@ TEST(ToolsTest, ReadFileGetMaxlinePreservesReadPosition)
 		std::ofstream(file) << "line1\nline2\n";
 	}
 
-	ngl::readfile reader(file.string());
+	ngl::tools::readfile reader(file.string());
 	ASSERT_TRUE(reader.is_open());
 
 	std::string line;
@@ -644,7 +644,7 @@ TEST(ToolsTest, ReadFileReadWorksAfterReachingEof)
 		std::ofstream(file, std::ios::binary) << "line1\nline2\n";
 	}
 
-	ngl::readfile reader(file.string());
+	ngl::tools::readfile reader(file.string());
 	ASSERT_TRUE(reader.is_open());
 
 	std::string line;
@@ -773,7 +773,7 @@ TEST(ToolsTest, TypeNameHandleRemovesKnownPrefixesAndSpaces)
 
 TEST(ToolsTest, TimeWheelConfigMaxTimeClampsOverflow)
 {
-	ngl::time_wheel_config config{
+	ngl::tools::time_wheel_config config{
 		.m_time_wheel_precision = (std::numeric_limits<int32_t>::max)(),
 		.m_time_wheel_bit = 30,
 		.m_time_wheel_count = 8,
@@ -785,8 +785,8 @@ TEST(ToolsTest, TimeWheelConfigMaxTimeClampsOverflow)
 
 TEST(ToolsTest, TimeWheelManualModePopsReadyCallbacks)
 {
-	ngl::time_wheel wheel(
-		ngl::time_wheel_config{
+	ngl::tools::time_wheel wheel(
+		ngl::tools::time_wheel_config{
 			.m_time_wheel_precision = 5,
 			.m_time_wheel_bit = 4,
 			.m_time_wheel_count = 2,
@@ -795,17 +795,17 @@ TEST(ToolsTest, TimeWheelManualModePopsReadyCallbacks)
 	);
 
 	std::atomic_bool fired = false;
-	const int64_t timerid = wheel.addtimer(ngl::wheel_parm{
+	const int64_t timerid = wheel.addtimer(ngl::tools::wheel_parm{
 		.m_ms = 10,
 		.m_count = 1,
-		.m_fun = [&fired](const ngl::wheel_node*) {
+		.m_fun = [&fired](const ngl::tools::wheel_node*) {
 			fired.store(true, std::memory_order_relaxed);
 		},
 	});
 
 	ASSERT_GT(timerid, 0);
 
-	std::shared_ptr<ngl::wheel_node> node;
+	std::shared_ptr<ngl::tools::wheel_node> node;
 	for (int i = 0; i < 20 && node == nullptr; ++i)
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
@@ -821,8 +821,8 @@ TEST(ToolsTest, TimeWheelManualModePopsReadyCallbacks)
 
 TEST(ToolsTest, TimeWheelRecurringTimerStopsSoonAfterRemove)
 {
-	ngl::time_wheel wheel(
-		ngl::time_wheel_config{
+	ngl::tools::time_wheel wheel(
+		ngl::tools::time_wheel_config{
 			.m_time_wheel_precision = 5,
 			.m_time_wheel_bit = 4,
 			.m_time_wheel_count = 2,
@@ -831,13 +831,13 @@ TEST(ToolsTest, TimeWheelRecurringTimerStopsSoonAfterRemove)
 	);
 
 	std::atomic_int fired = 0;
-	const int64_t timerid = wheel.addtimer(ngl::wheel_parm{
+	const int64_t timerid = wheel.addtimer(ngl::tools::wheel_parm{
 		.m_ms = 5,
 		.m_intervalms = [](int64_t) {
 			return 5;
 		},
 		.m_count = 100,
-		.m_fun = [&fired](const ngl::wheel_node*) {
+		.m_fun = [&fired](const ngl::tools::wheel_node*) {
 			fired.fetch_add(1, std::memory_order_relaxed);
 		},
 	});
@@ -852,8 +852,8 @@ TEST(ToolsTest, TimeWheelRecurringTimerStopsSoonAfterRemove)
 
 TEST(ToolsTest, TimeWheelManualModeSkipsRemovedReadyCallbacks)
 {
-	ngl::time_wheel wheel(
-		ngl::time_wheel_config{
+	ngl::tools::time_wheel wheel(
+		ngl::tools::time_wheel_config{
 			.m_time_wheel_precision = 5,
 			.m_time_wheel_bit = 4,
 			.m_time_wheel_count = 2,
@@ -861,10 +861,10 @@ TEST(ToolsTest, TimeWheelManualModeSkipsRemovedReadyCallbacks)
 		false
 	);
 
-	const int64_t timerid = wheel.addtimer(ngl::wheel_parm{
+	const int64_t timerid = wheel.addtimer(ngl::tools::wheel_parm{
 		.m_ms = 10,
 		.m_count = 1,
-		.m_fun = [](const ngl::wheel_node*) {
+		.m_fun = [](const ngl::tools::wheel_node*) {
 			// This test only verifies that removed ready callbacks are skipped.
 		},
 	});
@@ -878,15 +878,15 @@ TEST(ToolsTest, TimeWheelManualModeSkipsRemovedReadyCallbacks)
 
 TEST(LocaltimeTest, GetMothdayValidatesCalendarDayAgainstTargetMonth)
 {
-	const time_t non_leap_february = ngl::tools::localtime::str2time("2025-02-10 12:00:00");
-	const auto invalid = ngl::tools::localtime::getmothday(non_leap_february, 29, 8, 30, 0);
+	const time_t non_leap_february = ngl::tools::time::str2time("2025-02-10 12:00:00");
+	const auto invalid = ngl::tools::time::getmothday(non_leap_february, 29, 8, 30, 0);
 	EXPECT_FALSE(invalid.first);
 	EXPECT_EQ(invalid.second, -1);
 
-	const time_t leap_february = ngl::tools::localtime::str2time("2024-02-10 12:00:00");
-	const auto valid = ngl::tools::localtime::getmothday(leap_february, 29, 8, 30, 0);
+	const time_t leap_february = ngl::tools::time::str2time("2024-02-10 12:00:00");
+	const auto valid = ngl::tools::time::getmothday(leap_february, 29, 8, 30, 0);
 	ASSERT_TRUE(valid.first);
-	EXPECT_EQ(ngl::tools::localtime::time2str(valid.second, "%Y-%m-%d %H:%M:%S"), "2024-02-29 08:30:00");
+	EXPECT_EQ(ngl::tools::time::time2str(valid.second, "%Y-%m-%d %H:%M:%S"), "2024-02-29 08:30:00");
 }
 
 TEST(XmlUtilsTest, NullElementApisFailGracefully)

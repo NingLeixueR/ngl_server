@@ -95,7 +95,7 @@ namespace ngl
 		}
 		std::string lip = aendpoint.address().to_string();
 		i16_port lport = aendpoint.port();
-		int64_t lcreatems = time_wheel::getms();
+		int64_t lcreatems = tools::time_wheel::getms();
 		auto ltemp = add_kcp_endpoint(aconv, lip.c_str(), lport, aactoridserver, aactoridclient);
 		ltemp->m_endpoint = aendpoint;
 
@@ -111,12 +111,12 @@ namespace ngl
 			m_actoridofsession.insert_or_assign(aactoridclient, lsessionid);
 			m_actoridofsession.insert_or_assign(aactoridserver, lsessionid);
 			m_dataofendpoint[lip].insert_or_assign(lport, ltemp);
-			wheel_parm lparm
+			tools::wheel_parm lparm
 			{
 				.m_ms = ekcp_update_intervalms,
 				.m_intervalms = [](int64_t) {return ekcp_update_intervalms; } ,
 				.m_count = 0x7fffffff,
-				.m_fun = [this, lsessionid, lcreatems](const wheel_node*)
+				.m_fun = [this, lsessionid, lcreatems](const tools::wheel_node*)
 				{
 					ptr_se* lpse = nullptr;
 					{
@@ -126,7 +126,7 @@ namespace ngl
 					if (lpse != nullptr)
 					{
 						// KCP's internal timers are driven by the shared wheel rather than a dedicated thread.
-						(*lpse)->update((IUINT32)(time_wheel::getms() - lcreatems));
+						(*lpse)->update((IUINT32)(tools::time_wheel::getms() - lcreatems));
 					}
 				}
 			};

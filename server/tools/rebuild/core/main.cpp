@@ -15,8 +15,8 @@
 #include <set>
 #include <map>
 
-#include "tools/operator_file.h"
-#include "tools/tools/tools_localtime.h"
+#include "tools/tools/tools_file.h"
+#include "tools/tools/tools_time.h"
 #include "tools/tools.h"
 
 bool is_sname(const std::string& astrname, const std::string& akey)
@@ -85,7 +85,7 @@ void find(
 			if (is_sname(fileName, atxt))
 			{
 				// Record the line count so the generated unity-build file can order includes.
-				ngl::readfile lrf(fullPath);
+				ngl::tools::readfile lrf(fullPath);
 				int lmaxline = lrf.get_maxline();
 
 				// Use either the full path or the plain file name as the aggregation key.
@@ -144,7 +144,7 @@ int main(int argc, char** argv)
 	auto lsavefun = [&argv](int aindex, std::stringstream& astream)
 	{
 			std::string cname = std::format("{}_{}.cpp", argv[1], aindex);
-			ngl::writefile lfile(cname);
+			ngl::tools::writefile lfile(cname);
 			lfile.write(astream.str());
 	};
 	// Build the generated unity-build source body and stamp it with a small header.
@@ -153,9 +153,9 @@ int main(int argc, char** argv)
 			std::stringstream* m_stream = new std::stringstream();
 			*m_stream << "// 注意【rebuild.bat 工具生成文件，不要手动修改】" << std::endl;
 			char ltmbuff[1024] = { 0 };
-			ngl::tools::localtime::time2str(ltmbuff, 1024, ngl::tools::localtime::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
+			ngl::tools::time::time2str(ltmbuff, 1024, ngl::tools::time::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
 			*m_stream << ltmbuff << std::endl;
-			*m_stream << "#include \"tools/pb_field.cpp\"" << std::endl;
+			*m_stream << "#include \"tools/tools/tools_pb_field.cpp\"" << std::endl;
 			return m_stream;
 		};
 
@@ -248,7 +248,7 @@ int main(int argc, char** argv)
 	lhead += "\r\n";
 	for (const std::string& item : lset_head)
 	{
-		ngl::readfile lfiletxt(item);
+		ngl::tools::readfile lfiletxt(item);
 		std::string lneirong;
 		lfiletxt.read(lneirong);
 
@@ -267,7 +267,7 @@ int main(int argc, char** argv)
 				continue;
 			}
 			std::cout << "+head [" << item << std::endl;
-			ngl::writefile lwritetxt(item);
+			ngl::tools::writefile lwritetxt(item);
 			lwritetxt.write(lhead);
 			lwritetxt.write(lneirong);
 		}
@@ -279,13 +279,13 @@ int main(int argc, char** argv)
 	{
 		std::string lneirong;
 		{
-			ngl::readfile lfiletxt(item);
+			ngl::tools::readfile lfiletxt(item);
 			lfiletxt.read(lneirong);
 			ngl::tools::to_utf8(lneirong, lneirong);
 		}
 		if(!lneirong.empty())
 		{
-			ngl::writefile lwritetxt(item);
+			ngl::tools::writefile lwritetxt(item);
 			lwritetxt.write(lneirong);
 		}
 		std::cout << item << ":fnish" << std::endl;
@@ -303,7 +303,7 @@ int main(int argc, char** argv)
 	{
 		std::string lneirong;
 		{
-			ngl::readfile lfiletxt(item);
+			ngl::tools::readfile lfiletxt(item);
 			lfiletxt.read(lneirong);
 			if (ngl::tools::isutf8(lneirong))
 			{
@@ -313,7 +313,7 @@ int main(int argc, char** argv)
 		}		
 		if (!lneirong.empty())
 		{
-			ngl::writefile lwritetxt(item);
+			ngl::tools::writefile lwritetxt(item);
 			lwritetxt.write(lneirong);
 		}
 		std::cout << item << ":fnish" << std::endl;

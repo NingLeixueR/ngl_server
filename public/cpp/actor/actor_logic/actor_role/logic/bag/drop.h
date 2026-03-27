@@ -57,7 +57,7 @@ namespace ngl
 			{
 				return true;
 			}
-			int32_t lnow = (int32_t)tools::localtime::gettime();
+			int32_t lnow = (int32_t)tools::time::gettime();
 			for (int32_t activityid : tab->m_activityids)
 			{
 				const pbdb::db_activitytimes* lpactivitytimes = tdb_activitytimes::nsp_cread<TACTOR>::instance(m_actor->id_guid()).getconst(activityid);

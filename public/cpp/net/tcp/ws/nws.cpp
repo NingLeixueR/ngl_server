@@ -173,11 +173,11 @@ namespace ngl
 
 	bool nws::connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection /* Whether */)
 	{
-		std::shared_ptr<ngl::sem> lsem = nullptr;
+		std::shared_ptr<ngl::tools::sem> lsem = nullptr;
 		if (await)
 		{
 			// Optional blocking wait is implemented with a small semaphore wrapper.
-			lsem = std::make_shared<ngl::sem>();
+			lsem = std::make_shared<ngl::tools::sem>();
 		}
 		if (!connect(aip, aport, [this, afun, aip, aport, areconnection, lsem](i32_sessionid asession)
 			{

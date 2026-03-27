@@ -21,7 +21,7 @@
 #include "actor/actor_logic/actor_robot/actor_robot.h"
 #include "actor/actor_logic/actor_role/actor_role.h"
 #include "actor/actor_base/core/actor.h"
-#include "tools/template_arg.h"
+#include "tools/tools/tools_template_arg.h"
 #include "tools/tab/xml/xml.h"
 
 namespace ngl

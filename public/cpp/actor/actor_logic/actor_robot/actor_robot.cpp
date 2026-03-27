@@ -25,7 +25,7 @@ namespace ngl
 	namespace
 	{
 		constexpr int32_t erobot_bt_tick_interval_sec = 1;
-		constexpr int64_t erobot_kcp_retry_interval_ms = 3 * tools::localtime::MILLISECOND;
+		constexpr int64_t erobot_kcp_retry_interval_ms = 3 * tools::time::MILLISECOND;
 
 		const char* robot_behavior_tree_xml()
 		{
@@ -235,7 +235,7 @@ namespace ngl
 			return BT::NodeStatus::FAILURE;
 		}
 
-		const int64_t lnow = time_wheel::getms();
+		const int64_t lnow = tools::time_wheel::getms();
 		if (*lrequested && lnow - *lrequestms < erobot_kcp_retry_interval_ms)
 		{
 			sync_behavior_blackboard();

@@ -228,7 +228,7 @@ namespace ngl
 					for (auto& item : itor->second.mhistory())
 					{
 						item.mfinshutc();
-						if (tools::localtime::issameday(item.mfinshutc()))
+						if (tools::time::issameday(item.mfinshutc()))
 						{
 							++lcount;
 						}

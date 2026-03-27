@@ -21,7 +21,7 @@
 #include "actor/actor_base/core/nthread.h"
 #include "tools/serialize/ndefine.h"
 #include "tools/serialize/pack.h"
-#include "tools/threadtools.h"
+#include "tools/tools/tools_thread.h"
 
 #include <deque>
 #include <atomic>
@@ -50,7 +50,7 @@ namespace ngl
 		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;	// Lookup by actor type, then guid.
 
 		std::shared_mutex			m_mutex;
-		ngl::sem					m_sem;
+		ngl::tools::sem					m_sem;
 		std::jthread				m_thread;			// Start last so the dispatcher sees initialized state.
 
 		actor_manage();

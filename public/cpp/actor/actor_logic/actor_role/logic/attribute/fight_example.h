@@ -95,7 +95,7 @@ namespace ngl
 		{
 			if (amilliseconds > 0)
 			{
-				wheel_parm lparm
+				tools::wheel_parm lparm
 				{
 					.m_ms = amilliseconds,
 					.m_intervalms = [amilliseconds](int64_t)
@@ -103,12 +103,12 @@ namespace ngl
 						return amilliseconds;
 					} ,
 					.m_count = 1,
-					.m_fun = [this,aparm](const wheel_node*)
+					.m_fun = [this,aparm](const tools::wheel_node*)
 					{
 						actor::send_actor(m_actor->id_guid(), nguid::make(), aparm);
 					}
 				};
-				twheel::wheel().addtimer(lparm);
+				tools::twheel::wheel().addtimer(lparm);
 			}
 			else
 			{

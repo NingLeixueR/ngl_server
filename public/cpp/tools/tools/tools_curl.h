@@ -16,9 +16,9 @@
 #pragma once
 
 #include "actor/protocol/nprotocol.h"
-#include "tools/threadtools.h"
+#include "tools/tools/tools_thread.h"
+#include "tools/tools/tools_nwork.h"
 #include "tools/log/nlog.h"
-#include "tools/nwork.h"
 
 #include <curl/curl.h>
 #include <array>
@@ -35,7 +35,7 @@
 #pragma comment ( lib, "Crypt32.lib" )
 #endif //WIN32
 
-namespace ngl
+namespace ngl::tools
 {
 	enum ENUM_MODE
 	{
@@ -133,7 +133,7 @@ namespace ngl
 	private:
 		// Optional synchronization primitive so callers can wait for a worker
 		// thread to finish sending the message.
-		std::shared_ptr<ngl::sem> m_sem = nullptr;								
+		std::shared_ptr<ngl::tools::sem> m_sem = nullptr;								
 	public:
 		std::string m_smtp;
 		std::string m_email;
@@ -153,7 +153,7 @@ namespace ngl
 
 		void set_wait()
 		{
-			m_sem = std::make_shared<ngl::sem>();
+			m_sem = std::make_shared<ngl::tools::sem>();
 		}
 		
 		void post()
@@ -165,21 +165,21 @@ namespace ngl
 		}
 	};
 
-	class ncurl
+	class curl
 	{
-		ncurl(const ncurl&) = delete;
-		ncurl& operator=(const ncurl&) = delete;
+		curl(const curl&) = delete;
+		curl& operator=(const curl&) = delete;
 
 		// Background worker queue that runs blocking libcurl requests off-thread.
-		nwork<http_parm> m_works;
+		tools::nwork<http_parm> m_works;
 
-		ncurl();
+		curl();
 
-		~ncurl() = default;
+		~curl() = default;
 
-		static ncurl& instance()
+		static curl& instance()
 		{
-			static ncurl temp;
+			static curl temp;
 			return temp;
 		}
 

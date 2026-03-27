@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "tools/threadtools.h"
+#include "tools/tools/tools_thread.h"
 
 namespace ngl::tools
 {
@@ -30,7 +30,7 @@ namespace ngl::tools
 		std::list<std::shared_ptr<T>>	m_copylist;
 		std::function<void(T&)>			m_fun = nullptr;
 		std::shared_mutex				m_mutex;
-		ngl::sem						m_sem;
+		ngl::tools::sem						m_sem;
 		std::jthread					m_thread;		// Start last so queue state exists before run().
 	public:
 		nwork(const std::function<void(T&)>& afun) :

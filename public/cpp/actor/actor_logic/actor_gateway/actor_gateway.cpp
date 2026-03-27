@@ -118,12 +118,12 @@ namespace ngl
 		i32_actordataid lroleid = ainfo->m_dataid;
 		i16_area larea = ainfo->m_area;
 
-		wheel_parm lparm
+		tools::wheel_parm lparm
 		{
-			.m_ms = sysconfig::sessionwait() * tools::localtime::MILLISECOND,
-			.m_intervalms = [](int64_t) {return sysconfig::sessionwait() * tools::localtime::MILLISECOND; } ,
+			.m_ms = sysconfig::sessionwait() * tools::time::MILLISECOND,
+			.m_intervalms = [](int64_t) {return sysconfig::sessionwait() * tools::time::MILLISECOND; } ,
 			.m_count = 1,
-				.m_fun = [this, lroleid, larea](const wheel_node*)
+				.m_fun = [this, lroleid, larea](const tools::wheel_node*)
 				{
 					auto pro = std::make_shared<np_gateway_close_session>(np_gateway_close_session
 					{
@@ -134,7 +134,7 @@ namespace ngl
 				actor::send_actor(id_guid(), nguid::make(), pro);
 			}
 		};
-		twheel::wheel().addtimer(lparm);
+		tools::twheel::wheel().addtimer(lparm);
 
 		sync_actorserver_gatewayid(nguid::make(ACTOR_ROLE, larea, lroleid), true);
 	}	

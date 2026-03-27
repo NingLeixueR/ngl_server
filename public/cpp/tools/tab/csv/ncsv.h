@@ -16,11 +16,11 @@
 #pragma once
 
 #include "tools/tools/tools_enum.h"
-#include "tools/operator_file.h"
+#include "tools/tools/tools_file.h"
 #include "actor/tab/csvtable.h"
-#include "tools/threadtools.h"
+#include "tools/tools/tools_thread.h"
 #include "tools/tab/csv/csv.h"
-#include "tools/nhash.h"
+#include "tools/tools/tools_nhash.h"
 #include "tools/tools.h"
 
 #include <functional>
@@ -132,10 +132,10 @@ namespace ngl
 			return &itor->second;
 		}
 
-		static nhashcode hash_code()
+		static tools::nhashcode hash_code()
 		{
 			// Stable per-type hash used by reload/protocol metadata.
-			static nhashcode ltemp = nhash::code<T>();
+			static tools::nhashcode ltemp = tools::nhash::code<T>();
 			return ltemp;
 		}
 
@@ -215,7 +215,7 @@ namespace ngl
 			{
 				std::string lcsvname = csv<T>::path();
 				tools::file_remove(lcsvname);
-				writefile lrf(lcsvname);
+				tools::writefile lrf(lcsvname);
 				lrf.write(acsvcontent);
 			};
 
@@ -233,7 +233,7 @@ namespace ngl
 			lfun.m_readfile = [](std::string& acsvcontent)
 			{
 				std::string lcsvname = csv<T>::path();
-				readfile lfile(lcsvname);
+				tools::readfile lfile(lcsvname);
 				lfile.read(acsvcontent);
 			};
 		}

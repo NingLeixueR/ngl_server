@@ -440,13 +440,13 @@ namespace ngl
 			std::string ldata = m_stream.str();
 			ldata += std::vformat(aformat.get(), std::make_format_args(aargs...));
 
-			int32_t ltime = (int32_t)tools::localtime::gettime();
+			int32_t ltime = (int32_t)tools::time::gettime();
 			set_source();
 
 			if (m_level >= ngl::sysconfig::logconsolelevel())
 			{
 				char ltimebuff[1024];
-				tools::localtime::time2str(ltimebuff, 1024, ltime, "%Y/%m/%d %H:%M:%S");
+				tools::time::time2str(ltimebuff, 1024, ltime, "%Y/%m/%d %H:%M:%S");
 				logprintf::printf(m_level, m_src.c_str(), ltimebuff, ldata.c_str());
 			}
 

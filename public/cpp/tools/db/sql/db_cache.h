@@ -15,8 +15,8 @@
 
 #pragma once
 
-#include "tools/threadtools.h"
-#include "tools/time_wheel.h"
+#include "tools/tools/tools_thread.h"
+#include "tools/tools/tools_time_wheel.h"
 #include "tools/type.h"
 
 #include <functional>
@@ -43,7 +43,7 @@ namespace ngl
 			m_fun = afun;
 			// Dirty ids are flushed in batches on the shared timer wheel so hot
 			// paths only need to enqueue ids and return.
-			twheel::wheel().addtimer(wheel_parm
+			tools::twheel::wheel().addtimer(tools::wheel_parm
 				{
 					.m_ms			= aintervalms,
 					.m_intervalms	= [aintervalms](int64_t) {return aintervalms; } ,
@@ -66,7 +66,7 @@ namespace ngl
 			m_cachelist.insert(aidlist.begin(), aidlist.end());
 		}
 
-		inline void execute(const wheel_node*)
+		inline void execute(const tools::wheel_node*)
 		{
 			{
 				lock_write(m_mutex);

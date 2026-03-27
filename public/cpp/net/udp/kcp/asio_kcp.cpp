@@ -93,12 +93,12 @@ namespace ngl
 			{
 				udp_cmd::sendcmd(ap, apstruct->m_session, udp_cmd::ecmd_close_ret, "");
 				int lession = apstruct->m_session;
-				wheel_parm lparm
+				tools::wheel_parm lparm
 				{
 					.m_ms = e_close_intervalms,
 					.m_intervalms = [](int64_t) {return e_close_intervalms; },
 					.m_count = 0x7fffffff,
-					.m_fun = [ap,lession](const wheel_node*)
+					.m_fun = [ap,lession](const tools::wheel_node*)
 					{
 						// Defer actual teardown slightly so the close reply has time to flush out.
 						ap->close(lession);
@@ -210,14 +210,14 @@ namespace ngl
 		}
 		
 		lpack->m_pos = len;
-		if (tools::localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
+		if (tools::time::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
 		{
 			// Valid KCP payloads re-enter the same protocol dispatch path as TCP payloads.
 			protocol::push(lpack);
 		}
 		else
 		{
-			log_error()->print("time[{} < {} + {} ]", tools::localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout());
+			log_error()->print("time[{} < {} + {} ]", tools::time::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout());
 		}
 
 		return true;
@@ -360,12 +360,12 @@ namespace ngl
 				{
 					log_error()->print("async_send_to err [{}]", ec.message());
 					
-					wheel_parm lparm
+					tools::wheel_parm lparm
 					{
 						.m_ms = e_waitrecv_intervalms,
 						.m_intervalms = [](int64_t) {return e_waitrecv_intervalms; } ,
 						.m_count = 1,
-						.m_fun = [this, aendpoint, lpayload, afun](const wheel_node*)
+						.m_fun = [this, aendpoint, lpayload, afun](const tools::wheel_node*)
 						{
 							// Retry the raw UDP request until one send actually leaves the socket.
 							sendu_waitrecv(aendpoint, lpayload->data(), static_cast<int>(lpayload->size()), afun);

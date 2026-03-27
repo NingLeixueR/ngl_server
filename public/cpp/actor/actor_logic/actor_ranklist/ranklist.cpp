@@ -109,7 +109,7 @@ namespace ngl
 		std::set<i32_fieldnumber> lfieldset;
 		tdb_brief::nsp_cread<actor_ranklist>::instance_readall(
 			(actor_ranklist*)get_actor(), 
-			pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mbase", "mactivityvalues")
+			tools::pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mbase", "mactivityvalues")
 		);
 
 		tdb_brief::nsp_cread<actor_ranklist>::instance(get_actor()->id_guid()).set_changedatafun(

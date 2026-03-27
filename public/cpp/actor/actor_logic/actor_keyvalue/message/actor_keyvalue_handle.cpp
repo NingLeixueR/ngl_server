@@ -35,12 +35,12 @@ namespace ngl
 					{
 						return;
 					}
-					log_error()->print("set server time = [{}]", tools::localtime::time2str(ltime));
+					log_error()->print("set server time = [{}]", tools::time::time2str(ltime));
 					
 					int32_t lopentime = 0;
 					if (m_keyvaluedb.keyvalue(pbdb::db_keyvalue::open_server, lopentime) && lopentime != 0)
 					{
-						log_error()->print("set server fail time = [{}]", tools::localtime::time2str(lopentime));
+						log_error()->print("set server fail time = [{}]", tools::time::time2str(lopentime));
 						return;
 					}
 
@@ -57,7 +57,7 @@ namespace ngl
 						pro.m_data = "fail";
 						return;
 					}
-					pro.m_data = tools::localtime::time2str(lopentime);
+					pro.m_data = tools::time::time2str(lopentime);
 				};
 		}
 

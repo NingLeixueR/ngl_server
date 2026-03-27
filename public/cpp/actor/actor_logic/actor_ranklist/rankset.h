@@ -127,7 +127,7 @@ namespace ngl
 		virtual void erase(rank_item* aitem)
 		{
 			m_rankdata.erase(aitem);
-			m_time = tools::localtime::gettime();
+			m_time = tools::time::gettime();
 		}
 
 		virtual void insert(rank_item* aitem)
@@ -143,7 +143,7 @@ namespace ngl
 				auto itor = std::prev(m_rankdata.end());
 				m_rankdata.erase(itor);
 			}
-			m_time = tools::localtime::gettime();
+			m_time = tools::time::gettime();
 		}
 
 		virtual void foreach(const std::function<void(int32_t, const rank_item*)>& afun)

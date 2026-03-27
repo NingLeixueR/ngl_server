@@ -75,7 +75,7 @@ namespace ngl
 		if (room_count_ready(lproom))
 		{
 			auto& lroomidx = m_roomindex[lproom->m_type];
-			lproom->m_roomready = tools::localtime::gettime();
+			lproom->m_roomready = tools::time::gettime();
 			lroomidx.m_readyroomlist.push_back(lproom->m_roomid);
 			lroomidx.m_roomlist[lproom->m_roomid] = room_index::eroom_ready;
 		}

@@ -17,7 +17,7 @@
 #include "actor/protocol/nprotocol.h"
 #include "net/tcp/ws/asio_ws.h"
 #include "net/net_session.h"
-#include "tools/tools/tools_localtime.h"
+#include "tools/tools/tools_time.h"
 #include "net/asio_timer.h"
 
 #include <openssl/ssl.h>
@@ -30,7 +30,7 @@ namespace ngl
 	namespace ws
 	{
 		constexpr int32_t ws_connect_interval_ms =
-			asio_ws::ews_connect_interval * static_cast<int32_t>(tools::localtime::MILLISECOND);
+			asio_ws::ews_connect_interval * static_cast<int32_t>(tools::time::MILLISECOND);
 
 		template <typename T>
 		using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
@@ -453,12 +453,12 @@ namespace ngl
 		if (acount > 0)
 		{
 			// Retry failures through the shared timer wheel rather than blocking socket threads.
-			wheel_parm lparm
+			tools::wheel_parm lparm
 			{
 				.m_ms = ngl::ws::ws_connect_interval_ms,
 				.m_intervalms = [](int64_t) { return  ngl::ws::ws_connect_interval_ms; },
 				.m_count = 1,
-				.m_fun = [this, alive, ahost, aport, atarget, afun, acount](const wheel_node*)
+				.m_fun = [this, alive, ahost, aport, atarget, afun, acount](const tools::wheel_node*)
 				{
 					if (!ngl::ws::is_alive(alive))
 					{

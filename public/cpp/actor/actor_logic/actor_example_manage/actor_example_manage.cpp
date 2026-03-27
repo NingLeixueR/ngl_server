@@ -123,7 +123,7 @@ namespace ngl
 
 	bool actor_example_manage::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
-		int32_t lnow = (int32_t)tools::localtime::gettime();
+		int32_t lnow = (int32_t)tools::time::gettime();
 		pbexample::ECROSS lecross = tab_self_area > 0 ? pbexample::ECROSS::ECROSS_ORDINARY : pbexample::ECROSS::ECROSS_CROSS_ORDINARY;
 		for (auto& [ltype, lplaymap] : m_info)
 		{

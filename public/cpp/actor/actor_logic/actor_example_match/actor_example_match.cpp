@@ -58,7 +58,7 @@ namespace ngl
 		set_timer(tparm);
 
 		std::set<i32_fieldnumber> lfieldset;
-		tdb_brief::nsp_cread<actor_example_match>::instance_readall(this, pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mbase"));
+		tdb_brief::nsp_cread<actor_example_match>::instance_readall(this, tools::pb_field::field_number<pbdb::db_brief>(lfieldset, "mid", "mbase"));
 	}
 
 	void actor_example_match::erase_actor_before()
@@ -204,7 +204,7 @@ namespace ngl
 		lroomindex.m_roomlist.emplace(lroomid, room_index::eroom_matching);
 		room& lroom = m_room[atype][lroomid];
 		lroom.m_type = atype;
-		lroom.m_roomcreate = tools::localtime::gettime();
+		lroom.m_roomcreate = tools::time::gettime();
 		lroom.m_roomid = lroomid;
 		lroom.m_totalnumber = ltotalnumber;
 
@@ -278,7 +278,7 @@ namespace ngl
 
 	bool actor_example_match::check_timeout(time_t atime, int32_t ainterval)
 	{
-		time_t lnow = tools::localtime::gettime();
+		time_t lnow = tools::time::gettime();
 		if (lnow < atime)
 		{
 			return false;

@@ -14,13 +14,13 @@
 // File overview: Implements logic for tools.
 
 
-#include "tools/tools/tools_localtime.h"
+#include "tools/tools/tools_time.h"
 
 #include <iostream>
 #include <chrono>
 #include <ctime>
 
-namespace ngl::tools::localtime
+namespace ngl::tools::time
 {
 	time_t m_offset = 0;
 
@@ -75,13 +75,13 @@ namespace ngl::tools::localtime
 
 	time_t gettime()
 	{
-		time_t lnow = time(nullptr);
+		time_t lnow = std::time(nullptr);
 		return m_offset + lnow;
 	}
 
 	time_t getsystime()
 	{
-		time_t lnow = time(nullptr);
+		time_t lnow = std::time(nullptr);
 		return lnow;
 	}
 

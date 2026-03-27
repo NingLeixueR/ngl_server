@@ -22,8 +22,8 @@
 #include "tools/tab/xml/xmlinfo.h"
 #include "tools/log/logprintf.h"
 #include "tools/tab/xml/xml.h"
-#include "tools/time_wheel.h"
-#include "tools/tools/tools_localtime.h"
+#include "tools/tools/tools_time_wheel.h"
+#include "tools/tools/tools_time.h"
 #include "tools/log/nlog.h"
 
 #ifdef WIN32
@@ -170,7 +170,7 @@ namespace ngl
 			return;
 		}
 
-		const int32_t lnow = static_cast<int32_t>(tools::localtime::gettime());
+		const int32_t lnow = static_cast<int32_t>(tools::time::gettime());
 		std::string ltimestr = tools::time2str(lnow, "%Y-%m-%d");
 		lpath = std::format("{}/{}", lpath, ltimestr);
 		if (create_dir(lpath) == false)
@@ -215,7 +215,7 @@ namespace ngl
 {}
 ]
 )"
-				, tools::localtime::time2str(alog->m_time, "%H:%M:%S")
+				, tools::time::time2str(alog->m_time, "%H:%M:%S")
 				, tab->m_name
 				, tab->m_id
 				, tab->m_tcount

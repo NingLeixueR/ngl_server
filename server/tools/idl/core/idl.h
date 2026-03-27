@@ -3,7 +3,7 @@
 #ifndef _IDL_H_
 #define _IDL_H_
 
-#include "tools/operator_file.h"
+#include "tools/tools/tools_file.h"
 #include "tools/tools.h"
 
 #include <algorithm>
@@ -245,7 +245,7 @@ public:
 		lstreamcsv << std::endl;
 		//lstreamcsv << "version:0";
 
-		ngl::writefile lfilecsv("./idlfile/"+ astruct.name + ".csv");
+		ngl::tools::writefile lfilecsv("./idlfile/"+ astruct.name + ".csv");
 
 		// ## Convert utf8
 		std::string lstr;
@@ -433,7 +433,7 @@ public:
 		m_data[lname].m_fname = lname;
 
 		// // ---- Readfile
-		ngl::readfile lfile(apth);
+		ngl::tools::readfile lfile(apth);
 		string ldata;
 		lfile.read(ldata);
 

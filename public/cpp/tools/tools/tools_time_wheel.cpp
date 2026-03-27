@@ -7,8 +7,8 @@
 // File overview: Implements logic for tools.
 
 
-#include "tools/threadtools.h"
-#include "tools/time_wheel.h"
+#include "tools/tools/tools_thread.h"
+#include "tools/tools/tools_time_wheel.h"
 
 #include <unordered_map>
 #include <algorithm>
@@ -63,7 +63,7 @@ namespace ngl::tools
 		bool m_isthreadcallback = false;
 		std::unique_ptr<std::jthread> m_threadcallback = nullptr;
 		std::shared_mutex m_mutexcallback;
-		ngl::sem m_sem;
+		ngl::tools::sem m_sem;
 		// Ready callbacks live in a separate queue so the wheel thread keeps
 		// advancing even when user handlers are slow.
 		wheel_node* m_worldnodehead = nullptr;

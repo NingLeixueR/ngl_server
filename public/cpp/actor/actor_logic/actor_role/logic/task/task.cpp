@@ -182,7 +182,7 @@ namespace ngl
 
 		pbdb::db_task::data ltemp;
 		ltemp.set_mtaskid(ataskid);
-		ltemp.set_mreceiveutc((int32_t)tools::localtime::gettime());
+		ltemp.set_mreceiveutc((int32_t)tools::time::gettime());
 		ltemp.set_mfinshutc(-1);
 		for (const task_condition& litem : *lvec)
 		{
@@ -254,7 +254,7 @@ namespace ngl
 					itor->second.set_mreceive(true);
 				}
 			}
-			itor->second.set_mfinshutc((int32_t)tools::localtime::gettime());
+			itor->second.set_mfinshutc((int32_t)tools::time::gettime());
 			auto& lcomplete = complete(arole);
 			*lcomplete[ataskid].add_mhistory() = itor->second;
 			lruntask.erase(itor);

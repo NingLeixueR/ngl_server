@@ -14,7 +14,7 @@
 // File overview: Implements logic for csv.
 
 
-#include "tools/operator_file.h"
+#include "tools/tools/tools_file.h"
 #include "tools/log/nlog.h"
 #include "tools/tab/csv/csv.h"
 #include "tools/tools.h"
@@ -25,7 +25,7 @@ namespace ngl
 	{
 		m_pos = 0;
 		m_data.clear();
-		readfile lrf(aname);
+		tools::readfile lrf(aname);
 		// Skip an optional UTF-8 BOM before parsing the first header row.
 		lrf.jumpbegin(3, true);
 

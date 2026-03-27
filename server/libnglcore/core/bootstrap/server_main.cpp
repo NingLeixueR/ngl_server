@@ -198,7 +198,7 @@ int ngl_main(int aargc, char** aargv)
 
 	while (1)
 	{
-		ngl::sleep::seconds(1);
+		ngl::tools::sleep::seconds(1);
 	}
 	return static_cast<int>(startup_error::ok);
 }
