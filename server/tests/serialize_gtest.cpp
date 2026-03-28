@@ -367,7 +367,7 @@ TEST(SerializeTest, PackCloneActorLeavesSourceUntouched)
 	const ngl::i64_actorid lsrc_actor = ngl::nguid::make(ngl::ACTOR_ROLE, 2, 11);
 	const ngl::i64_actorid lsrc_req = ngl::nguid::make(ngl::ACTOR_GATEWAY, 3, 22);
 	const ngl::i64_actorid ldst_actor = ngl::nguid::make(ngl::ACTOR_LOGIN, 4, 33);
-	const ngl::i64_actorid ldst_req = ngl::nguid::make(ngl::ACTOR_ROLE, 5, 44);
+	const ngl::i64_actorid ldst_req = ngl::nguid::make(ngl::ACTOR_WORLD, 5, 44);
 	const int32_t lpayload = 0x12345678;
 
 	auto lsrc = ngl::pack::make_pack(nullptr, static_cast<int32_t>(sizeof(lpayload)));
