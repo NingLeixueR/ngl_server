@@ -435,7 +435,7 @@ namespace ngl
 	bool actor_role::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_GET_TIME>& adata)
 	{
 		const pack* lpack = adata.get_pack();
-		[[maybe_unused]] i64_actorid lrequest = lpack->m_head->get_request_actor();
+		[[maybe_unused]] i64_actorid lrequest = lpack->m_head.get_request_actor();
 		log_error()->print("{},NAME={}", guid(), m_info.name());
 		//if (lpack->m_protocol == ENET_KCP)
 		//{

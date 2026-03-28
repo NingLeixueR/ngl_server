@@ -105,7 +105,7 @@ namespace ngl
 					lmap.emplace(linfo->m_socket, lactorid);
 				}
 			}			
-			return nnet::instance().send<forward, T>(lmap, ldata.m_data, apack->m_head->get_request_actor());
+			return nnet::instance().send<forward, T>(lmap, ldata.m_data, apack->m_head.get_request_actor());
 		}
 
 		template <typename T>
@@ -121,7 +121,7 @@ namespace ngl
 				return true;
 			}
 			auto lkcp = nkcp::instance().serkcp(pbnet::KCP_GATEWAY, nconfig.tcount());
-			std::shared_ptr<pack> lsendpack = ngl::net_pack<T>::npack(&nnet::instance().pool(), ldata.m_data, apack->m_head->get_request_actor(), 0);
+			std::shared_ptr<pack> lsendpack = ngl::net_pack<T>::npack(&nnet::instance().pool(), ldata.m_data, apack->m_head.get_request_actor(), 0);
 			if (lsendpack == nullptr)
 			{
 				return true;

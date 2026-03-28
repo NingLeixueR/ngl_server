@@ -89,15 +89,15 @@ namespace ngl
 			};
 			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 			{
-				nguid lactorguid(apack->m_head->get_actor());
-				nguid lrequestactorguid(apack->m_head->get_request_actor());
+				nguid lactorguid(apack->m_head.get_actor());
+				nguid lrequestactorguid(apack->m_head.get_request_actor());
 				std::shared_ptr<T> ldatapack = std::static_pointer_cast<T>(aptrpram);
 				handle_pram lpram = handle_pram::create<T, false, false>(lactorguid, lrequestactorguid, ldatapack);
 				lpram.m_pack = apack;
 
 				actor_manage& lmanages = actor_manage::instance();
 
-				if (nconfig.nodetype() == ROBOT && apack->m_head->get_actor() == nguid::make())
+				if (nconfig.nodetype() == ROBOT && apack->m_head.get_actor() == nguid::make())
 				{
 					// Robot-originated packets can broadcast by actor type without a concrete target id.
 					lmanages.push_task_type(atype, lpram);
@@ -151,7 +151,7 @@ namespace ngl
 				{
 					auto ldatapack = std::static_pointer_cast<np_actor_forward<T, forward_c2g<forward>>>(aptrpram);
 					nguid lguid(atype, tab_self_area, nconfig.tcount());
-					nguid lrequestguid(apack->m_head->get_request_actor());
+					nguid lrequestguid(apack->m_head.get_request_actor());
 					handle_pram lpram = handle_pram::create<T, forward>(lguid, lrequestguid, ldatapack);
 					lpram.m_pack = apack;
 					actor_manage::instance().push_task_id(lguid, lpram);
@@ -181,7 +181,7 @@ namespace ngl
 				{
 					auto ldatapack = std::static_pointer_cast<np_actor_forward<T, forward_g2c<forward>>>(aptrpram);
 					nguid lguid(atype, tab_self_area, nconfig.tcount());
-					nguid lrequestguid(apack->m_head->get_request_actor());
+					nguid lrequestguid(apack->m_head.get_request_actor());
 					handle_pram lpram = handle_pram::create<np_actor_forward<T, forward_g2c<forward>>>(lguid, lrequestguid, ldatapack);
 					lpram.m_pack = apack;
 					actor_manage::instance().push_task_id(lguid, lpram);
@@ -211,7 +211,7 @@ namespace ngl
 				{
 					std::shared_ptr<np_mass_actor<T>> ldatapack = std::static_pointer_cast<np_mass_actor<T>>(aptrpram);
 					std::set<i64_actorid>& lactorids = ldatapack->m_actorids;
-					nguid lrequestguid(apack->m_head->get_request_actor());
+					nguid lrequestguid(apack->m_head.get_request_actor());
 
 					std::shared_ptr<T> ldata = ldatapack->shared_data();
 					

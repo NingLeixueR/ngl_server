@@ -63,7 +63,7 @@ namespace ngl
 
 	void protocol::push(std::shared_ptr<pack>& apack)
 	{
-		i32_protocolnum lprotocolnum = apack->m_head->get_protocolnumber();
+		i32_protocolnum lprotocolnum = apack->m_head.get_protocolnumber();
 		pfun* lpfun = find(lprotocolnum);
 		if (lpfun == nullptr)
 		{
@@ -75,7 +75,7 @@ namespace ngl
 			return;
 		}
 
-		auto lactortype = (ENUM_ACTOR)apack->m_head->get_actortype();
+		auto lactortype = (ENUM_ACTOR)apack->m_head.get_actortype();
 		if (lactortype != nguid::none<ENUM_ACTOR>())
 		{
 			// Fast path: the sender already encoded the target actor type in the pack header.
@@ -92,7 +92,7 @@ namespace ngl
 					return;
 				}
 				// Robot traffic can fall back to fan-out dispatch when the header actor type is unset.
-				apack->copy_head(nguid::make(), nguid::make());
+				apack->m_head.set_actor(nguid::make(), nguid::make());
 			}
 		}
 		// Fallback path: run every actor-type binding registered for this protocol.

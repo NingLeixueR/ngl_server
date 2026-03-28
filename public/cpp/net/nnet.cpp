@@ -146,22 +146,17 @@ namespace ngl
 		bool lret = true;
 		for (const auto& [lsessionid, lactorid] : asession)
 		{
-			std::shared_ptr<pack> lpack = apack->clone_actor(lactorid, aactorid);
-			if (lpack == nullptr)
-			{
-				lret = false;
-				continue;
-			}
+			apack->set_actor(lactorid, aactorid);
 			switch (protocol(lsessionid))
 			{
 			case ENET_TCP:
-				if (!ntcp::instance().send_pack(lsessionid, lpack))
+				if (!ntcp::instance().send_pack(lsessionid, apack))
 				{
 					lret = false;
 				}
 				break;
 			case ENET_WS:
-				if (!nws::instance().send_pack(lsessionid, lpack))
+				if (!nws::instance().send_pack(lsessionid, apack))
 				{
 					lret = false;
 				}
@@ -184,23 +179,19 @@ namespace ngl
 			return false;
 		}
 		bool lret = true;
-		std::shared_ptr<pack> lpack = apack->clone_actor(aactorid, arequestactorid);
-		if (lpack == nullptr)
-		{
-			return false;
-		}
+		apack->set_actor(aactorid, arequestactorid);
 		for (i32_sessionid lsessionid : asession)
 		{
 			switch (protocol(lsessionid))
 			{
 			case ENET_TCP:
-				if (!ntcp::instance().send_pack(lsessionid, lpack))
+				if (!ntcp::instance().send_pack(lsessionid, apack))
 				{
 					lret = false;
 				}
 				break;
 			case ENET_WS:
-				if (!nws::instance().send_pack(lsessionid, lpack))
+				if (!nws::instance().send_pack(lsessionid, apack))
 				{
 					lret = false;
 				}

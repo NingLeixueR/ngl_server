@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include <vector>
 
 namespace ngl
 {
@@ -40,12 +41,12 @@ namespace ngl
 	public:
 		ENET_PROTOCOL		m_protocol = ENET_TCP;
 		i32_session			m_id = 0;
-		std::shared_ptr<pack_head> m_head = std::make_shared<pack_head>();
+		pack_head			m_head;
 		bpool*				m_bpool = nullptr;
 		// Receive rate limiting is charged once per completed packet, not once
 		// per TCP fragment.
 		bool				m_rate_accounted = false;
-		std::shared_ptr<char[]> m_hold = nullptr;
+		std::vector<char>	m_auto;
 		char*				m_buff = nullptr;
 		int32_t				m_len = 0;
 		int32_t				m_pos = 0;
@@ -59,13 +60,6 @@ namespace ngl
 		bool isready();
 		bool malloc(int32_t alen);
 		void set_actor(i64_actorid aactor, i64_actorid arequestactorid);
-		void copy_head(i64_actorid aactor, i64_actorid arequestactorid);
-		bool has_head() const;
-		const char* body_ptr() const;
-		int32_t body_len() const;
-		void head_copy(char* abuff) const;
-		std::shared_ptr<pack> clone() const;
-		std::shared_ptr<pack> clone_actor(i64_actorid aactor, i64_actorid arequestactorid) const;
 
 		// Creates an empty pack or a pre-sized body buffer from the shared pool.
 		static std::shared_ptr<pack> make_pack(bpool* apool, int32_t alen);

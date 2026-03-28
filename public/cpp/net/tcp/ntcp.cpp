@@ -284,13 +284,8 @@ namespace ngl
 		bool lret = true;
 		for (const auto& [lsession, lactorid] : asession)
 		{
-			std::shared_ptr<pack> lpack = apack->clone_actor(lactorid, aactorid);
-			if (lpack == nullptr)
-			{
-				lret = false;
-				continue;
-			}
-			if (!send_pack(lsession, lpack))
+			apack->set_actor(lactorid, aactorid);
+			if (!send_pack(lsession, apack))
 			{
 				lret = false;
 			}
@@ -305,14 +300,10 @@ namespace ngl
 			return false;
 		}
 		bool lret = true;
-		std::shared_ptr<pack> lpack = apack->clone_actor(aactorid, arequestactorid);
-		if (lpack == nullptr)
-		{
-			return false;
-		}
+		apack->set_actor(aactorid, arequestactorid);
 		for (i32_sessionid lsession : asession)
 		{
-			if (!send_pack(lsession, lpack))
+			if (!send_pack(lsession, apack))
 			{
 				lret = false;
 			}
