@@ -18,10 +18,20 @@
 #include "actor/protocol/nprotocol.h"
 #include "tools/serialize/pack.h"
 
+#include <cstring>
 #include <new>
+#include <utility>
 
 namespace ngl
 {
+	namespace pack_detail
+	{
+		static std::shared_ptr<pack_head> make_head()
+		{
+			return std::make_shared<pack_head>();
+		}
+	}
+
 	char* bpool::malloc(int32_t alen)
 	{
 		return netbuff_pool::malloc(alen);
@@ -46,14 +56,16 @@ namespace ngl
 		m_len = 0;
 		m_pos = 0;
 		m_rate_accounted = false;
-		m_head.reset();
+		// clone() shares the header pointer, so reset() must replace it instead
+		// of mutating a header that may still be owned by another pack.
+		m_head = pack_detail::make_head();
 	}
 
 	bool pack::isready()
 	{
-		if (m_head.isready() == EPH_HEAD_SUCCESS)
+		if (m_head != nullptr && m_head->isready() == EPH_HEAD_SUCCESS)
 		{
-			return m_pos >= m_head.get_bytes();
+			return m_pos >= m_head->get_bytes();
 		}
 		return false;
 	}
@@ -71,24 +83,33 @@ namespace ngl
 			m_rate_accounted = false;
 			return false;
 		}
+		std::shared_ptr<char[]> lhold = nullptr;
 		if (m_bpool == nullptr)
 		{
-			// Fallback allocation is only used outside the shared network pool,
-			// mainly in tests or standalone utility code.
-			try
+			char* lbuf = new (std::nothrow) char[alen];
+			if (lbuf != nullptr)
 			{
-				m_auto.resize(static_cast<size_t>(alen));
+				lhold = std::shared_ptr<char[]>(lbuf, std::default_delete<char[]>());
 			}
-			catch (const std::bad_alloc&)
-			{
-				m_auto.clear();
-			}
-			m_buff = m_auto.empty() ? nullptr : m_auto.data();
 		}
 		else
 		{
-			m_buff = m_bpool->malloc(alen);
+			char* lbuf = m_bpool->malloc(alen);
+			if (lbuf != nullptr)
+			{
+				bpool* lpool = m_bpool;
+				lhold = std::shared_ptr<char[]>(lbuf, [lpool, alen](char* ap)
+					{
+						if (ap != nullptr && lpool != nullptr)
+						{
+							lpool->free(ap, alen);
+						}
+					}
+				);
+			}
 		}
+		m_hold = std::move(lhold);
+		m_buff = m_hold.get();
 		if (m_buff == nullptr)
 		{
 			m_len = 0;
@@ -108,15 +129,7 @@ namespace ngl
 		{
 			return;
 		}
-		if (m_bpool != nullptr)
-		{
-			m_bpool->free(m_buff, m_len);
-		}
-		else
-		{
-			m_auto.clear();
-			m_auto.shrink_to_fit();
-		}
+		m_hold.reset();
 		m_buff = nullptr;
 		m_len = 0;
 		m_pos = 0;
@@ -125,13 +138,77 @@ namespace ngl
 
 	void pack::set_actor(i64_actorid aactor, i64_actorid arequestactorid)
 	{
-		if (m_buff == nullptr || m_len < pack_head::size())
+		copy_head(aactor, arequestactorid);
+	}
+
+	void pack::copy_head(i64_actorid aactor, i64_actorid arequestactorid)
+	{
+		std::shared_ptr<pack_head> lhead = m_head != nullptr ? std::make_shared<pack_head>(*m_head) : pack_detail::make_head();
+		lhead->set_actor(aactor, arequestactorid);
+		m_head = lhead;
+	}
+
+	bool pack::has_head() const
+	{
+		return m_head != nullptr && pack_head::head_check_mask(m_head->m_data, pack_head::size()) == EPH_HEAD_MASK_SUCCESS;
+	}
+
+	const char* pack::body_ptr() const
+	{
+		if (m_buff == nullptr)
+		{
+			return nullptr;
+		}
+		return m_buff;
+	}
+
+	int32_t pack::body_len() const
+	{
+		return m_len;
+	}
+
+	void pack::head_copy(char* abuff) const
+	{
+		if (abuff == nullptr)
 		{
 			return;
 		}
-		// Rewrite the actor fields in-place after the packet body has already
-		// been serialized.
-		pack_head::head_set_actor((int32_t*)m_buff, aactor, arequestactorid);
+		if (m_head == nullptr)
+		{
+			memset(abuff, 0, static_cast<std::size_t>(pack_head::size()));
+			return;
+		}
+		memcpy(abuff, m_head->m_data, static_cast<std::size_t>(pack_head::size()));
+	}
+
+	std::shared_ptr<pack> pack::clone() const
+	{
+		std::shared_ptr<pack> lpack = make_pack(m_bpool, 0);
+		if (lpack == nullptr)
+		{
+			return nullptr;
+		}
+
+		lpack->m_protocol = m_protocol;
+		lpack->m_id = m_id;
+		lpack->m_head = m_head;
+		lpack->m_rate_accounted = m_rate_accounted;
+		lpack->m_hold = m_hold;
+		lpack->m_buff = lpack->m_hold.get();
+		lpack->m_len = m_len;
+		lpack->m_pos = m_pos;
+		return lpack;
+	}
+
+	std::shared_ptr<pack> pack::clone_actor(i64_actorid aactor, i64_actorid arequestactorid) const
+	{
+		std::shared_ptr<pack> lpack = clone();
+		if (lpack == nullptr)
+		{
+			return nullptr;
+		}
+		lpack->set_actor(aactor, arequestactorid);
+		return lpack;
 	}
 
 	pack::~pack()

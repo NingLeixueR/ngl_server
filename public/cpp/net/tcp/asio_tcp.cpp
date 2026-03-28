@@ -21,6 +21,7 @@
 #include "net/asio_timer.h"
 #include "tools/log/nlog.h"
 
+#include <array>
 #include <utility>
 #include <vector>
 
@@ -352,17 +353,65 @@ namespace ngl
 		return spack(asessionid, apack);
 	}
 
-	template <typename TPACK>
+	void asio_tcp::async_pack(
+		const std::shared_ptr<service_tcp>& atcp,
+		const std::shared_ptr<pack>& apack
+	)
+	{
+		const char* lbody = apack != nullptr ? apack->body_ptr() : nullptr;
+		const int32_t lbodylen = apack != nullptr ? apack->body_len() : 0;
+		if (lbodylen < 0 || (lbodylen > 0 && lbody == nullptr))
+		{
+			close(atcp.get());
+			return;
+		}
+		const bool lhashead = apack->has_head();
+		const std::shared_ptr<pack_head> lhead = lhashead ? apack->m_head : nullptr;
+		const char* lheadptr = lhead != nullptr ? reinterpret_cast<const char*>(lhead->m_data) : "";
+		const std::size_t lheadlen = lhashead ? static_cast<std::size_t>(pack_head::size()) : 0;
+
+		std::array<basio::const_buffer, 2> lbuffs
+		{
+			basio::buffer(lheadptr, lheadlen),
+			basio::buffer(lbody, static_cast<std::size_t>(lbodylen))
+		};
+		const auto alive = m_alive;
+		const auto callback_lock = m_callbacklock;
+		basio::async_write(atcp->m_socket, lbuffs, [this, alive, callback_lock, atcp, apack, lhead](const basio_errorcode& ec, std::size_t /*length*/)
+			{
+				std::shared_lock<std::shared_mutex> callback_guard(*callback_lock);
+				if (!ngl::tcp::is_alive(alive))
+				{
+					return;
+				}
+				{
+					std::lock_guard<std::mutex> llock(atcp->m_mutex);
+					if (!atcp->m_list.empty())
+					{
+						atcp->m_list.pop_front();
+					}
+				}
+				handle_write(atcp, ec, apack);
+				if (ec)
+				{
+					log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
+					return;
+				}
+				do_send(atcp);
+			}
+		);
+	}
+
 	void asio_tcp::async_send(
-		const std::shared_ptr<service_tcp>& atcp
-		, std::shared_ptr<TPACK> apack
-		, char* abuff
-		, int32_t abufflen
+		const std::shared_ptr<service_tcp>& atcp,
+		std::shared_ptr<void> apack,
+		const char* abuff,
+		int32_t abufflen
 	)
 	{
 		const auto alive = m_alive;
 		const auto callback_lock = m_callbacklock;
-		atcp->m_socket.async_send(basio::buffer(abuff, abufflen), [this, alive, callback_lock, atcp, apack](const basio_errorcode& ec, std::size_t /*length*/)
+		atcp->m_socket.async_send(basio::buffer(abuff, static_cast<std::size_t>(abufflen)), [this, alive, callback_lock, atcp, apack](const basio_errorcode& ec, std::size_t /*length*/)
 			{
 				std::shared_lock<std::shared_mutex> callback_guard(*callback_lock);
 				if (!ngl::tcp::is_alive(alive))
@@ -396,6 +445,7 @@ namespace ngl
 
 		std::shared_ptr<pack> lpack = nullptr;
 		std::shared_ptr<void> lvoidpack = nullptr;
+		node_pack lnode(lpack);
 		{
 			std::lock_guard<std::mutex> llock(atcp->m_mutex);
 			if (atcp->m_list.empty())
@@ -403,38 +453,21 @@ namespace ngl
 				atcp->m_issend = false;
 				return;
 			}
-			node_pack& litem = atcp->m_list.front();
-			if (litem.is_pack())
+			lnode = atcp->m_list.front();
+			if (lnode.is_pack())
 			{
-				lpack = litem.get_pack();
+				lpack = lnode.get_pack();
 			}
 			else
 			{
-				lvoidpack = litem.get_voidpack();
+				lvoidpack = lnode.get_voidpack();
 			}
 		}
 
 		if (lpack != nullptr)
 		{
-			int32_t lsize = 0;
-			int32_t lpos = 0;
-			if (lpack->m_pos != lpack->m_len)
-			{
-				lsize = lpack->m_len - lpack->m_pos;
-				lpos = lpack->m_pos;
-			}
-			else
-			{
-				lsize = lpack->m_pos;
-				lpos = 0;
-			}
-			if (lsize < 0)
-			{
-				close(atcp.get());
-				return;
-			}
-			// Reuse the pack buffer directly; pack::m_pos/m_len tracks partial sends.
-			async_send(atcp, lpack, &lpack->m_buff[lpos], lsize);
+			lpack->m_protocol = ENET_TCP;
+			async_pack(atcp, lpack);
 			return;
 		}
 

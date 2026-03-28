@@ -74,7 +74,7 @@ namespace ngl
 
 		// A header mask mismatch on a LAN socket is treated as a plain-text
 		// telnet command instead of a binary packet framing error.
-		pack_head& lhead = apack->m_head;
+		pack_head& lhead = *apack->m_head;
 		if (apack->m_buff == nullptr)
 		{
 			if (!apack->malloc(segpack_telnet_limit) || apack->m_buff == nullptr)
@@ -107,7 +107,7 @@ namespace ngl
 		if (!aislanip && nconfig.nodetype() != ROBOT && alen >= net_config_recv_buff_maxbyte)
 		{
 			erase(aid);
-			log_error()->print("sockect recv {} len >= SOCKECT_MAX_BUFF_SIZE({})", apack->m_head, (int)net_config_recv_buff_maxbyte);
+			log_error()->print("sockect recv {} len >= SOCKECT_MAX_BUFF_SIZE({})", *apack->m_head, (int)net_config_recv_buff_maxbyte);
 			return false;
 		}
 		if (!aislanip && !apack->m_rate_accounted)
@@ -125,7 +125,7 @@ namespace ngl
 
 	bool segpack::is_heartbeat(std::shared_ptr<pack>& apack)
 	{
-		return apack != nullptr && segpack_heartbeat::is_heartbeat(apack->m_head.get_protocolnumber());
+		return apack != nullptr && apack->m_head != nullptr && segpack_heartbeat::is_heartbeat(apack->m_head->get_protocolnumber());
 	}
 
 	bool segpack::fill_pack(std::shared_ptr<pack>& apack, const char*& ap, int& alen, int& len)
@@ -182,7 +182,7 @@ namespace ngl
 			return edopush::e_error;
 		}
 
-		const EPH_HEAD_VAL lval = lpack->m_head.push(ap, alen);
+		const EPH_HEAD_VAL lval = lpack->m_head->push(ap, alen);
 		if (lval == EPH_HEAD_MASK_FAIL)
 		{
 			return telnet_cmd(lpack, ap, alen, aislanip);
@@ -197,7 +197,7 @@ namespace ngl
 			return edopush::e_break;
 		}
 
-		int len = lpack->m_head.getvalue(EPH_BYTES);
+		int len = lpack->m_head->getvalue(EPH_BYTES);
 		if (!check_recv(lpack, aid, len, aislanip))
 		{
 			return edopush::e_error;
@@ -223,7 +223,7 @@ namespace ngl
 			return edopush::e_break;
 		}
 
-		if (tools::time::getsystime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
+		if (tools::time::getsystime() < lpack->m_head->getvalue(EPH_TIME) + sysconfig::net_timeout())
 		{
 			// Only dispatch packets that are still within the configured clock
 			// skew / timeout window.
@@ -231,7 +231,7 @@ namespace ngl
 		}
 		else
 		{
-			log_error()->print("segpack time[{} < {} + {} ]", tools::time::getsystime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout());
+			log_error()->print("segpack time[{} < {} + {} ]", tools::time::getsystime(), lpack->m_head->getvalue(EPH_TIME), sysconfig::net_timeout());
 		}
 		return edopush::e_continue;
 	}

@@ -60,7 +60,7 @@ namespace ngl
 			gateway_socket* linfo = nullptr;
 			if (sysconfig::robot_test())
 			{
-				i64_actorid lactorid = lpack->m_head.get_request_actor();
+				i64_actorid lactorid = lpack->m_head->get_request_actor();
 				nguid lguid(lactorid);
 				linfo = m_info.get(lguid.area(), lguid.actordataid());
 			}
@@ -74,7 +74,7 @@ namespace ngl
 				return false;
 			}
 
-			ntcp::instance().send_server<forward, T>(linfo->m_gameid, lpram->m_data.m_data, nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpack->m_head.get_request_actor());
+			ntcp::instance().send_server<forward, T>(linfo->m_gameid, lpram->m_data.m_data, nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpack->m_head->get_request_actor());
 			return true;
 		}
 

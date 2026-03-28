@@ -307,7 +307,7 @@ TEST(SerializeTest, PackResetClearsAllocatedState)
 	packet.m_id = 99;
 	packet.m_pos = 12;
 	packet.m_rate_accounted = true;
-	packet.m_head.m_data[ngl::EPH_BYTES] = 7;
+	packet.m_head->m_data[ngl::EPH_BYTES] = 7;
 
 	packet.reset();
 
@@ -317,12 +317,39 @@ TEST(SerializeTest, PackResetClearsAllocatedState)
 	EXPECT_EQ(packet.m_len, 0);
 	EXPECT_EQ(packet.m_pos, 0);
 	EXPECT_FALSE(packet.m_rate_accounted);
-	EXPECT_EQ(packet.m_head.getvalue(ngl::EPH_BYTES), 0);
+	EXPECT_EQ(packet.m_head->getvalue(ngl::EPH_BYTES), 0);
 }
 
-TEST(SerializeTest, PackSetActorSkipsShortBuffer)
+TEST(SerializeTest, PackResetDoesNotMutateClonedHead)
 {
-	auto packet = ngl::pack::make_pack(nullptr, ngl::pack_head::size() - 1);
+	const ngl::i64_actorid lsrc_actor = ngl::nguid::make(ngl::ACTOR_ROLE, 2, 11);
+	const ngl::i64_actorid lsrc_req = ngl::nguid::make(ngl::ACTOR_GATEWAY, 3, 22);
+
+	auto lsrc = ngl::pack::make_pack(nullptr, static_cast<int32_t>(sizeof(int32_t)));
+	ASSERT_NE(lsrc, nullptr);
+	ASSERT_NE(lsrc->m_buff, nullptr);
+
+	lsrc->m_head->set_mask();
+	lsrc->m_head->set_actor(lsrc_actor, lsrc_req);
+	lsrc->m_head->m_data[ngl::EPH_BYTES] = static_cast<int32_t>(sizeof(int32_t));
+
+	auto lclone = lsrc->clone();
+	ASSERT_NE(lclone, nullptr);
+	ASSERT_EQ(lclone->m_head, lsrc->m_head);
+
+	lsrc->reset();
+
+	ASSERT_NE(lclone->m_head, nullptr);
+	EXPECT_NE(lclone->m_head, lsrc->m_head);
+	EXPECT_EQ(lclone->m_head->get_actor(), lsrc_actor);
+	EXPECT_EQ(lclone->m_head->get_request_actor(), lsrc_req);
+	EXPECT_EQ(lclone->m_head->getvalue(ngl::EPH_BYTES), static_cast<int32_t>(sizeof(int32_t)));
+	EXPECT_EQ(lsrc->m_head->getvalue(ngl::EPH_BYTES), 0);
+}
+
+TEST(SerializeTest, PackSetActorKeepsBodyUntouched)
+{
+	auto packet = ngl::pack::make_pack(nullptr, static_cast<int32_t>(sizeof(int32_t) - 1));
 	ASSERT_NE(packet, nullptr);
 	ASSERT_NE(packet->m_buff, nullptr);
 
@@ -333,6 +360,51 @@ TEST(SerializeTest, PackSetActorSkipsShortBuffer)
 
 	ASSERT_EQ(original.size(), static_cast<size_t>(packet->m_len));
 	EXPECT_EQ(std::memcmp(packet->m_buff, original.data(), original.size()), 0);
+}
+
+TEST(SerializeTest, PackCloneActorLeavesSourceUntouched)
+{
+	const ngl::i64_actorid lsrc_actor = ngl::nguid::make(ngl::ACTOR_ROLE, 2, 11);
+	const ngl::i64_actorid lsrc_req = ngl::nguid::make(ngl::ACTOR_GATEWAY, 3, 22);
+	const ngl::i64_actorid ldst_actor = ngl::nguid::make(ngl::ACTOR_LOGIN, 4, 33);
+	const ngl::i64_actorid ldst_req = ngl::nguid::make(ngl::ACTOR_WORLD, 5, 44);
+	const int32_t lpayload = 0x12345678;
+
+	auto lsrc = ngl::pack::make_pack(nullptr, static_cast<int32_t>(sizeof(lpayload)));
+	ASSERT_NE(lsrc, nullptr);
+	ASSERT_NE(lsrc->m_buff, nullptr);
+
+	lsrc->m_head->reset();
+	lsrc->m_head->set_mask();
+	lsrc->m_head->set_actor(lsrc_actor, lsrc_req);
+	lsrc->m_head->set_protocol(77);
+	lsrc->m_head->m_data[ngl::EPH_BYTES] = static_cast<int32_t>(sizeof(lpayload));
+	std::memcpy(lsrc->m_buff, &lpayload, sizeof(lpayload));
+	lsrc->m_pos = lsrc->m_len;
+
+	auto ldst = lsrc->clone_actor(ldst_actor, ldst_req);
+	ASSERT_NE(ldst, nullptr);
+	ASSERT_NE(ldst->m_buff, nullptr);
+	ASSERT_EQ(ldst->m_buff, lsrc->m_buff);
+
+	ngl::pack_head lsrc_head;
+	ngl::pack_head ldst_head;
+	lsrc->head_copy(reinterpret_cast<char*>(lsrc_head.m_data));
+	ldst->head_copy(reinterpret_cast<char*>(ldst_head.m_data));
+
+	EXPECT_EQ(lsrc_head.get_actor(), lsrc_actor);
+	EXPECT_EQ(lsrc_head.get_request_actor(), lsrc_req);
+	EXPECT_EQ(ldst_head.get_actor(), ldst_actor);
+	EXPECT_EQ(ldst_head.get_request_actor(), ldst_req);
+	EXPECT_EQ(lsrc->m_head->get_actor(), lsrc_actor);
+	EXPECT_EQ(lsrc->m_head->get_request_actor(), lsrc_req);
+	EXPECT_EQ(ldst->m_head->get_actor(), ldst_actor);
+	EXPECT_EQ(ldst->m_head->get_request_actor(), ldst_req);
+	EXPECT_EQ(std::memcmp(
+		lsrc->body_ptr(),
+		ldst->body_ptr(),
+		sizeof(lpayload)),
+		0);
 }
 
 TEST(SerializeTest, PackHeadRoundTripsActorIdsWithoutAliasCasts)
@@ -373,7 +445,7 @@ TEST(SerializeTest, StructbytesRejectsPositiveLengthWithoutBuffer)
 
 	auto packet = ngl::pack::make_pack(nullptr, 0);
 	ASSERT_NE(packet, nullptr);
-	packet->m_head.m_data[ngl::EPH_BYTES] = sizeof(int32_t);
+	packet->m_head->m_data[ngl::EPH_BYTES] = sizeof(int32_t);
 	packet->m_pos = sizeof(int32_t);
 
 	OverestimatedPayload payload;
@@ -387,29 +459,29 @@ TEST(SerializeTest, StructbytesUsesActualSerializedLength)
 	OverestimatedPayload payload;
 	payload.value = 12345;
 
-	auto packet = ngl::pack::make_pack(nullptr, ngl::pack_head::size() + static_cast<int32_t>(sizeof(int32_t) * 2));
+	auto packet = ngl::pack::make_pack(nullptr, static_cast<int32_t>(sizeof(int32_t) * 2));
 	ASSERT_NE(packet, nullptr);
 	ASSERT_NE(packet->m_buff, nullptr);
 
 	ASSERT_TRUE((ngl::structbytes<OverestimatedPayload>::tobytes(packet, payload, 101, 202)));
-	EXPECT_EQ(packet->m_head.getvalue(ngl::EPH_BYTES), static_cast<int32_t>(sizeof(int32_t)));
-	EXPECT_EQ(packet->m_len, ngl::pack_head::size() + static_cast<int32_t>(sizeof(int32_t)));
+	EXPECT_EQ(packet->m_head->getvalue(ngl::EPH_BYTES), static_cast<int32_t>(sizeof(int32_t)));
+	EXPECT_EQ(packet->m_len, static_cast<int32_t>(sizeof(int32_t)));
 	EXPECT_EQ(packet->m_pos, packet->m_len);
 
 	int32_t roundtrip = 0;
-	ngl::ser::serialize_pop pop(packet->m_buff + ngl::pack_head::size(), packet->m_head.getvalue(ngl::EPH_BYTES));
+	ngl::ser::serialize_pop pop(packet->m_buff, packet->m_head->getvalue(ngl::EPH_BYTES));
 	ASSERT_TRUE(ngl::ser::serialize_format<int32_t>::pop(&pop, roundtrip));
 	EXPECT_EQ(roundtrip, payload.value);
 }
 
-TEST(SerializeTest, StructbytesRejectsBufferSmallerThanHeader)
+TEST(SerializeTest, StructbytesRejectsBufferSmallerThanPayload)
 {
 	RegisterSerializeCustomTypes();
 
 	OverestimatedPayload payload;
 	payload.value = 12345;
 
-	auto packet = ngl::pack::make_pack(nullptr, ngl::pack_head::size() - 1);
+	auto packet = ngl::pack::make_pack(nullptr, static_cast<int32_t>(sizeof(int32_t)) - 1);
 	ASSERT_NE(packet, nullptr);
 	ASSERT_NE(packet->m_buff, nullptr);
 

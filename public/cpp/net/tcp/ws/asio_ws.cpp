@@ -21,6 +21,7 @@
 #include "net/asio_timer.h"
 
 #include <openssl/ssl.h>
+#include <array>
 #include <type_traits>
 #include <utility>
 #include <vector>
@@ -760,8 +761,8 @@ namespace ngl
 				do_send(aservice);
 				return;
 			}
-			ldata = ltext->data();
-			llen = static_cast<int32_t>(ltext->size());
+			ldata = ltemptext->data();
+			llen = static_cast<int32_t>(ltemptext->size());
 		}
 		else if (lnode.is_pack())
 		{
@@ -779,22 +780,49 @@ namespace ngl
 				return;
 			}
 			lpack->m_protocol = ENET_WS;
-			int32_t lpos = 0;
-			if (lpack->m_pos != lpack->m_len)
-			{
-				llen = lpack->m_len - lpack->m_pos;
-				lpos = lpack->m_pos;
-			}
-			else
-			{
-				llen = lpack->m_pos;
-			}
-			if (llen < 0)
+			const char* lbody = lpack->body_ptr();
+			const int32_t lbodylen = lpack->body_len();
+			if (lbodylen < 0 || (lbodylen > 0 && lbody == nullptr))
 			{
 				close(aservice.get());
 				return;
 			}
-			ldata = &lpack->m_buff[lpos];
+			const bool lhashead = lpack->has_head();
+			const std::shared_ptr<pack_head> lhead = lhashead ? lpack->m_head : nullptr;
+			const char* lheadptr = lhead != nullptr ? reinterpret_cast<const char*>(lhead->m_data) : "";
+			const std::size_t lheadlen = lhashead ? static_cast<std::size_t>(pack_head::size()) : 0;
+
+			std::array<basio::const_buffer, 2> lbuffs
+			{
+				basio::buffer(lheadptr, lheadlen),
+				basio::buffer(lbody, static_cast<std::size_t>(lbodylen))
+			};
+
+			aservice->visit_stream([this, aservice, lnode, lbuffs, lhead](auto& astream)
+				{
+					astream.binary(true);
+					astream.async_write(
+						lbuffs,
+						[this, aservice, lnode](const basio_errorcode& ec, std::size_t)
+						{
+							{
+								std::lock_guard<std::mutex> llock(aservice->m_mutex);
+								if (!aservice->m_ws_send_list.empty())
+								{
+									aservice->m_ws_send_list.pop_front();
+								}
+							}
+							handle_write(aservice, ec, lnode);
+							if (ec)
+							{
+								return;
+							}
+							do_send(aservice);
+						}
+					);
+				}
+			);
+			return;
 		}
 		else
 		{

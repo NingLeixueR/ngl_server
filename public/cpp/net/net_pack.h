@@ -32,17 +32,22 @@ namespace ngl
 			// Compute the serialized payload size first so pack::make_pack() can allocate once.
 			ngl::ser::serialize_byte lserialize;
 			ngl::ser::nserialize::bytes(&lserialize, adata);
-			const int lbuffbyte = lserialize.pos() + pack_head::size();
-			if (lbuffbyte <= 0)
+			const int lbuffbyte = lserialize.pos();
+			if (lbuffbyte < 0)
 			{
 				return nullptr;
 			}
 			std::shared_ptr<pack> lpack = pack::make_pack(apool, lbuffbyte);
-			if (lpack == nullptr || lpack->m_buff == nullptr)
+			if (lpack == nullptr)
 			{
 				return nullptr;
 			}
-			// structbytes writes both the pack header and the serialized payload into the buffer.
+			if (lbuffbyte > 0 && lpack->m_buff == nullptr)
+			{
+				return nullptr;
+			}
+			// structbytes writes the serialized payload into the body buffer and
+			// populates the logical pack header separately.
 			if (structbytes<T>::tobytes(lpack, adata, aactorid, arequestactorid) == false)
 			{
 				return nullptr;

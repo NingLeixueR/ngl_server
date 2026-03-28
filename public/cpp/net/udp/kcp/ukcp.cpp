@@ -40,11 +40,15 @@ namespace ngl
 
 	bool ukcp::send_server(const std::set<i64_actorid>& aactors, const std::shared_ptr<pack>& apack)
 	{
+		bool lret = true;
 		for (i64_actorid lactorid : aactors)
 		{
-			send_server(lactorid, apack);
+			if (!send_server(lactorid, apack))
+			{
+				lret = false;
+			}
 		}
-		return true;
+		return lret;
 	}
 
 	bool ukcp::send_server(i64_actorid aactor, const std::shared_ptr<pack>& apack)
@@ -60,18 +64,14 @@ namespace ngl
 		{
 			return true;
 		}
-		if (nconfig.nodetype() != ROBOT)
+		const i64_actorid lactor = nconfig.nodetype() != ROBOT ? lclient : lserver;
+		const i64_actorid lrequest = nconfig.nodetype() != ROBOT ? lserver : lclient;
+		std::shared_ptr<pack> lpack = apack->clone_actor(lactor, lrequest);
+		if (lpack == nullptr)
 		{
-			// Server-side sends target the logical client actor and carry the server as requester.
-			pack_head::head_set_actor((int32_t*)apack->m_buff, lclient, lserver);
+			return false;
 		}
-		else
-		{
-			// Robot-side sends invert the header because the robot acts as the logical client.
-			pack_head::head_set_actor((int32_t*)apack->m_buff, lserver, lclient);
-		}
-		m_kcp.send_server(lsession, apack);
-		return true;
+		return m_kcp.send_server(lsession, lpack);
 	}
 
 	bool ukcp::sendpackbyarea(i16_area aarea, const std::shared_ptr<pack>& apack)

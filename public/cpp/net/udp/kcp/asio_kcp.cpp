@@ -19,6 +19,7 @@
 #include "net/udp/kcp/asio_kcp.h"
 #include "net/udp/kcp/ukcp.h"
 
+#include <cstring>
 #include <vector>
 
 #define USE_WHEEL_TIMER
@@ -151,6 +152,32 @@ namespace ngl
 		}
 	}
 
+	static std::vector<char> pack_data(const pack& apack)
+	{
+		const int32_t lbodylen = apack.body_len();
+		if (lbodylen < 0)
+		{
+			return {};
+		}
+		const bool lhashead = apack.has_head();
+		const int32_t lheadlen = lhashead ? pack_head::size() : 0;
+		std::vector<char> lbuf(static_cast<std::size_t>(lheadlen + lbodylen));
+		if (lhashead)
+		{
+			apack.head_copy(lbuf.data());
+		}
+		if (lbodylen > 0)
+		{
+			const char* lbody = apack.body_ptr();
+			if (lbody == nullptr)
+			{
+				return {};
+			}
+			memcpy(lbuf.data() + lheadlen, lbody, static_cast<std::size_t>(lbodylen));
+		}
+		return lbuf;
+	}
+
 	bool asio_kcp::async_send_copy(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(const basio_errorcode&)>& aerrorfun)
 	{
 		const udp_payload lpayload = make_udp_payload(buf, len);
@@ -188,11 +215,11 @@ namespace ngl
 		}
 		lpack->m_protocol = ENET_KCP;
 		lpack->m_id = apstruct->m_session;
-		if (EPH_HEAD_SUCCESS != lpack->m_head.push(abuff, abufflen))
+		if (EPH_HEAD_SUCCESS != lpack->m_head->push(abuff, abufflen))
 		{
 			return false;
 		}
-		int len = lpack->m_head.getvalue(EPH_BYTES);
+		int len = lpack->m_head->getvalue(EPH_BYTES);
 		if (len < 0 || len != abufflen)
 		{
 			return false;
@@ -206,18 +233,18 @@ namespace ngl
 		if (nconfig.nodetype() != ROBOT)
 		{
 			// Server-side KCP traffic rewrites actor headers to the logical server/client pair.
-			lpack->m_head.set_actor(apstruct->m_server, apstruct->m_client);
+			lpack->m_head->set_actor(apstruct->m_server, apstruct->m_client);
 		}
 		
 		lpack->m_pos = len;
-		if (tools::time::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
+		if (tools::time::gettime() < lpack->m_head->getvalue(EPH_TIME) + sysconfig::net_timeout())
 		{
 			// Valid KCP payloads re-enter the same protocol dispatch path as TCP payloads.
 			protocol::push(lpack);
 		}
 		else
 		{
-			log_error()->print("time[{} < {} + {} ]", tools::time::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout());
+			log_error()->print("time[{} < {} + {} ]", tools::time::gettime(), lpack->m_head->getvalue(EPH_TIME), sysconfig::net_timeout());
 		}
 
 		return true;
@@ -382,20 +409,44 @@ namespace ngl
 	bool asio_kcp::send_server(i32_sessionid asessionid, const std::shared_ptr<pack>& apack)
 	{
 		ptr_se lpstruct = m_session.find(asessionid);
-		if (lpstruct == nullptr)
+		if (lpstruct == nullptr || apack == nullptr)
 		{
 			return false;
 		}
-
-		send(lpstruct->m_endpoint, apack->m_buff, apack->m_len);
-		return true;
+		const int32_t lbodylen = apack->body_len();
+		if (lbodylen < 0)
+		{
+			return false;
+		}
+		const int32_t lheadlen = apack->has_head() ? pack_head::size() : 0;
+		const std::vector<char> lbuf = pack_data(*apack);
+		if (static_cast<int32_t>(lbuf.size()) != lheadlen + lbodylen)
+		{
+			return false;
+		}
+		return send(lpstruct->m_endpoint, lbuf.data(), static_cast<int>(lbuf.size())) >= 0;
 	}
 
 	bool asio_kcp::send_server(const std::shared_ptr<pack>& apack)
 	{
-		m_session.foreach([this, &apack](ptr_se& aptr)
+		if (apack == nullptr)
+		{
+			return false;
+		}
+		const int32_t lbodylen = apack->body_len();
+		if (lbodylen < 0)
+		{
+			return false;
+		}
+		const int32_t lheadlen = apack->has_head() ? pack_head::size() : 0;
+		const std::vector<char> lbuf = pack_data(*apack);
+		if (static_cast<int32_t>(lbuf.size()) != lheadlen + lbodylen)
+		{
+			return false;
+		}
+		m_session.foreach([this, &lbuf](ptr_se& aptr)
 			{
-				send(aptr->m_endpoint, apack->m_buff, apack->m_len);
+				send(aptr->m_endpoint, lbuf.data(), static_cast<int>(lbuf.size()));
 			}
 		);
 		return true;
@@ -403,9 +454,24 @@ namespace ngl
 
 	bool asio_kcp::sendpackbyarea(i16_area aarea, const std::shared_ptr<pack>& apack)
 	{
-		m_session.foreachbyarea(aarea, [this, &apack](ptr_se& aptr)
+		if (apack == nullptr)
+		{
+			return false;
+		}
+		const int32_t lbodylen = apack->body_len();
+		if (lbodylen < 0)
+		{
+			return false;
+		}
+		const int32_t lheadlen = apack->has_head() ? pack_head::size() : 0;
+		const std::vector<char> lbuf = pack_data(*apack);
+		if (static_cast<int32_t>(lbuf.size()) != lheadlen + lbodylen)
+		{
+			return false;
+		}
+		m_session.foreachbyarea(aarea, [this, &lbuf](ptr_se& aptr)
 			{
-				send(aptr->m_endpoint, apack->m_buff, apack->m_len);
+				send(aptr->m_endpoint, lbuf.data(), static_cast<int>(lbuf.size()));
 			}
 		);
 		return true;
@@ -414,19 +480,43 @@ namespace ngl
 	// Route one serialized protocol pack by looking up the remote endpoint.
 	bool asio_kcp::send_server(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack)
 	{
-		send(aendpoint, apack->m_buff, apack->m_len);
-		return true;
+		if (apack == nullptr)
+		{
+			return false;
+		}
+		const int32_t lbodylen = apack->body_len();
+		if (lbodylen < 0)
+		{
+			return false;
+		}
+		const int32_t lheadlen = apack->has_head() ? pack_head::size() : 0;
+		const std::vector<char> lbuf = pack_data(*apack);
+		if (static_cast<int32_t>(lbuf.size()) != lheadlen + lbodylen)
+		{
+			return false;
+		}
+		return send(aendpoint, lbuf.data(), static_cast<int>(lbuf.size())) >= 0;
 	}
 
 	bool asio_kcp::sendpackbyactorid(i64_actorid aactorid, const std::shared_ptr<pack>& apack)
 	{
 		ptr_se lpstruct = m_session.findbyactorid(aactorid);
-		if (lpstruct == nullptr)
+		if (lpstruct == nullptr || apack == nullptr)
 		{
 			return false;
 		}
-		send(lpstruct->m_endpoint, apack->m_buff, apack->m_len);
-		return true;
+		const int32_t lbodylen = apack->body_len();
+		if (lbodylen < 0)
+		{
+			return false;
+		}
+		const int32_t lheadlen = apack->has_head() ? pack_head::size() : 0;
+		const std::vector<char> lbuf = pack_data(*apack);
+		if (static_cast<int32_t>(lbuf.size()) != lheadlen + lbodylen)
+		{
+			return false;
+		}
+		return send(lpstruct->m_endpoint, lbuf.data(), static_cast<int>(lbuf.size())) >= 0;
 	}
 
 	bool asio_kcp::send(i32_sessionid asessionid, const char* buf, int len)

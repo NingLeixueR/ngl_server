@@ -96,7 +96,7 @@ namespace ngl
 			{
 				lmaxcount = esend_max_cout;
 			}
-			i64_actorid lrequestactor = apack->m_head.get_request_actor();
+			i64_actorid lrequestactor = apack->m_head->get_request_actor();
 			np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro;
 			pro.m_id = nguid::make();
 			pro.m_over = false;
@@ -172,7 +172,7 @@ namespace ngl
 					pro.m_data.insert({ adata.m_id, *ldata });
 				}
 
-				i64_actorid lrequestactor = apack->m_head.get_request_actor();
+				i64_actorid lrequestactor = apack->m_head->get_request_actor();
 				ntcp::instance().send(apack->m_id, pro, lrequestactor, nguid::make());
 
 				log_error()->print("load finish {}:{}", tools::type_name<np_actordb_load<TDBTAB_TYPE, TDBTAB>>(), nguid(lrequestactor));
