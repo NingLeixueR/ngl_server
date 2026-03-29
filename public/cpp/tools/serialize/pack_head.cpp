@@ -249,16 +249,16 @@ namespace ngl
 		return aserialize->basetype((void*)m_data, sizeof(m_data));
 	}
 
-	void pack_head::reservebuff(char* abuff, int abufflen, std::pair<char*, int32_t>& apair)
-	{
-		if (abuff == nullptr || abufflen < size())
-		{
-			apair.first = nullptr;
-			apair.second = 0;
-			return;
-		}
-		// Reserve the body span behind the fixed-size packet header.
-		apair.first = &(abuff[size()]);
-		apair.second = abufflen - size();
-	}
+	//void pack_head::reservebuff(char* abuff, int abufflen, std::pair<char*, int32_t>& apair)
+	//{
+	//	if (abuff == nullptr || abufflen < size())
+	//	{
+	//		apair.first = nullptr;
+	//		apair.second = 0;
+	//		return;
+	//	}
+	//	// Reserve the body span behind the fixed-size packet header.
+	//	apair.first = &(abuff[size()]);
+	//	apair.second = abufflen - size();
+	//}
 }// namespace ngl

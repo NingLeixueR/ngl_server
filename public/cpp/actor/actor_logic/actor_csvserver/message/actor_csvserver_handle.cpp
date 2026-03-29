@@ -33,7 +33,7 @@ namespace ngl
 		}
 		if (pro.m_csvcontent.empty() == false)
 		{
-			send(lpack->m_id, pro, lpack->m_head.get_request_actor(), id_guid());
+			send(lpack->m_id, pro, lpack->m_head->get_request_actor(), id_guid());
 		}
 		return true;
 	}

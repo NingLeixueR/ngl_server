@@ -51,9 +51,9 @@ namespace ngl
 
 	bool pack::isready()
 	{
-		if (m_head.isready() == EPH_HEAD_SUCCESS)
+		if (m_head->isready() == EPH_HEAD_SUCCESS)
 		{
-			return m_pos >= m_head.get_bytes();
+			return m_pos >= m_head->get_bytes();
 		}
 		return false;
 	}
@@ -125,13 +125,21 @@ namespace ngl
 
 	void pack::set_actor(i64_actorid aactor, i64_actorid arequestactorid)
 	{
-		if (m_buff == nullptr || m_len < pack_head::size())
+		if (m_buff == nullptr)
 		{
 			return;
 		}
-		// Rewrite the actor fields in-place after the packet body has already
-		// been serialized.
-		pack_head::head_set_actor((int32_t*)m_buff, aactor, arequestactorid);
+		auto lhead = std::make_shared<pack_head>();
+		*lhead = *m_head;
+		lhead->set_actor(aactor, arequestactorid);
+		m_head = lhead;
+		//if (m_buff == nullptr || m_len < pack_head::size())
+		//{
+		//	return;
+		//}
+		//// Rewrite the actor fields in-place after the packet body has already
+		//// been serialized.
+		//pack_head::head_set_actor((int32_t*)m_buff, aactor, arequestactorid);
 	}
 
 	pack::~pack()

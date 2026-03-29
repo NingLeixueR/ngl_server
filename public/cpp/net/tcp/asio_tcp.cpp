@@ -352,29 +352,20 @@ namespace ngl
 		return spack(asessionid, apack);
 	}
 
-	template <typename TPACK>
-	void asio_tcp::async_send(
-		const std::shared_ptr<service_tcp>& atcp
-		, std::shared_ptr<TPACK> apack
-		, char* abuff
-		, int32_t abufflen
-	)
+	void asio_tcp::async_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<pack>& apack)
 	{
 		const auto alive = m_alive;
 		const auto callback_lock = m_callbacklock;
-		atcp->m_socket.async_send(basio::buffer(abuff, abufflen), [this, alive, callback_lock, atcp, apack](const basio_errorcode& ec, std::size_t /*length*/)
+		std::array<basio::const_buffer, 2> bufs{
+			basio::buffer(apack->m_head->m_data, sizeof(apack->m_head->m_data)),
+			basio::buffer(apack->m_buff, apack->m_pos)
+		};
+		atcp->m_socket.async_send(bufs, [this, alive, callback_lock, atcp, apack](const basio_errorcode& ec, std::size_t /*length*/)
 			{
 				std::shared_lock<std::shared_mutex> callback_guard(*callback_lock);
 				if (!ngl::tcp::is_alive(alive))
 				{
 					return;
-				}
-				{
-					std::lock_guard<std::mutex> llock(atcp->m_mutex);
-					if (!atcp->m_list.empty())
-					{
-						atcp->m_list.pop_front();
-					}
 				}
 				handle_write(atcp, ec, apack);
 				if (ec)
@@ -387,6 +378,13 @@ namespace ngl
 		);
 	}
 
+	void asio_tcp::async_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<void>& apack)
+	{
+		const std::shared_ptr<pack> lpack = std::static_pointer_cast<pack>(apack);
+		async_send(atcp, lpack);
+	}
+
+
 	void asio_tcp::do_send(const std::shared_ptr<service_tcp>& atcp)
 	{
 		if (atcp == nullptr)
@@ -394,8 +392,7 @@ namespace ngl
 			return;
 		}
 
-		std::shared_ptr<pack> lpack = nullptr;
-		std::shared_ptr<void> lvoidpack = nullptr;
+		node_pack litem;
 		{
 			std::lock_guard<std::mutex> llock(atcp->m_mutex);
 			if (atcp->m_list.empty())
@@ -403,19 +400,14 @@ namespace ngl
 				atcp->m_issend = false;
 				return;
 			}
-			node_pack& litem = atcp->m_list.front();
-			if (litem.is_pack())
-			{
-				lpack = litem.get_pack();
-			}
-			else
-			{
-				lvoidpack = litem.get_voidpack();
-			}
+			litem = atcp->m_list.front();
+			atcp->m_list.pop_front();
 		}
 
-		if (lpack != nullptr)
+		if (litem.is_pack())
 		{
+			async_send(atcp, litem.get_pack());
+			/*
 			int32_t lsize = 0;
 			int32_t lpos = 0;
 			if (lpack->m_pos != lpack->m_len)
@@ -433,12 +425,17 @@ namespace ngl
 				close(atcp.get());
 				return;
 			}
+			*/
 			// Reuse the pack buffer directly; pack::m_pos/m_len tracks partial sends.
-			async_send(atcp, lpack, &lpack->m_buff[lpos], lsize);
+			//async_send(atcp, lpack, &lpack->m_buff[lpos], lsize);
 			return;
 		}
+		else
+		{
+			async_send(atcp, litem.get_voidpack());
+		}
 
-		if (lvoidpack == nullptr)
+		/*if (lvoidpack == nullptr)
 		{
 			{
 				std::lock_guard<std::mutex> llock(atcp->m_mutex);
@@ -464,7 +461,7 @@ namespace ngl
 			do_send(atcp);
 			return;
 		}
-		async_send(atcp, lvoidpack, lpackptr->m_buff, lpackptr->m_pos);
+		async_send(atcp, lvoidpack, lpackptr->m_buff, lpackptr->m_pos);*/
 	}
 
 	void asio_tcp::handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, std::shared_ptr<pack> apack)

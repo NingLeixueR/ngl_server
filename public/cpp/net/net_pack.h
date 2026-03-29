@@ -32,7 +32,7 @@ namespace ngl
 			// Compute the serialized payload size first so pack::make_pack() can allocate once.
 			ngl::ser::serialize_byte lserialize;
 			ngl::ser::nserialize::bytes(&lserialize, adata);
-			const int lbuffbyte = lserialize.pos() + pack_head::size();
+			const int lbuffbyte = lserialize.pos()/* + pack_head::size()*/;
 			if (lbuffbyte <= 0)
 			{
 				return nullptr;

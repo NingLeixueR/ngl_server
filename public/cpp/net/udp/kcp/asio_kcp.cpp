@@ -188,11 +188,11 @@ namespace ngl
 		}
 		lpack->m_protocol = ENET_KCP;
 		lpack->m_id = apstruct->m_session;
-		if (EPH_HEAD_SUCCESS != lpack->m_head.push(abuff, abufflen))
+		if (EPH_HEAD_SUCCESS != lpack->m_head->push(abuff, abufflen))
 		{
 			return false;
 		}
-		int len = lpack->m_head.getvalue(EPH_BYTES);
+		int len = lpack->m_head->getvalue(EPH_BYTES);
 		if (len < 0 || len != abufflen)
 		{
 			return false;
@@ -206,18 +206,18 @@ namespace ngl
 		if (nconfig.nodetype() != ROBOT)
 		{
 			// Server-side KCP traffic rewrites actor headers to the logical server/client pair.
-			lpack->m_head.set_actor(apstruct->m_server, apstruct->m_client);
+			lpack->m_head->set_actor(apstruct->m_server, apstruct->m_client);
 		}
 		
 		lpack->m_pos = len;
-		if (tools::time::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
+		if (tools::time::gettime() < lpack->m_head->getvalue(EPH_TIME) + sysconfig::net_timeout())
 		{
 			// Valid KCP payloads re-enter the same protocol dispatch path as TCP payloads.
 			protocol::push(lpack);
 		}
 		else
 		{
-			log_error()->print("time[{} < {} + {} ]", tools::time::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout());
+			log_error()->print("time[{} < {} + {} ]", tools::time::gettime(), lpack->m_head->getvalue(EPH_TIME), sysconfig::net_timeout());
 		}
 
 		return true;

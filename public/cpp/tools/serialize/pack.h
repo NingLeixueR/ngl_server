@@ -41,7 +41,8 @@ namespace ngl
 	public:
 		ENET_PROTOCOL		m_protocol = ENET_TCP;
 		i32_session			m_id = 0;
-		pack_head			m_head;
+		//pack_head			m_head;
+		std::shared_ptr<pack_head> m_head = std::make_shared<pack_head>();
 		bpool*				m_bpool = nullptr;
 		// Receive rate limiting is charged once per completed packet, not once
 		// per TCP fragment.

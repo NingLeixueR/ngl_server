@@ -22,11 +22,15 @@ namespace ngl
 {
 	class node_pack
 	{
-		node_pack() = delete;
+		//node_pack() = delete;
 
 		std::shared_ptr<pack>	m_pack		= nullptr; // Typed pack ownership.
 		std::shared_ptr<void>	m_packvoid	= nullptr; // Type-erased pack ownership.
 	public:
+		node_pack()
+		{
+		}
+
 		explicit node_pack(std::shared_ptr<pack>& apack) :
 			m_pack(apack)
 		{}

@@ -67,7 +67,7 @@ namespace ngl
 			{
 				return false;
 			}
-			const int32_t lbytes = apack->m_head.getvalue(EPH_BYTES);
+			const int32_t lbytes = apack->m_head->getvalue(EPH_BYTES);
 			if (lbytes < 0)
 			{
 				return false;
@@ -80,7 +80,7 @@ namespace ngl
 					return false;
 				}
 
-				if (encryption_bytexor::check_xor(apack->m_head.getvalue(EPH_PROTOCOLNUM)))
+				if (encryption_bytexor::check_xor(apack->m_head->getvalue(EPH_PROTOCOLNUM)))
 				{
 					ngl::tools::bytexor(apack->m_buff, apack->m_len, 0);
 				}
@@ -105,12 +105,7 @@ namespace ngl
 			{
 				return false;
 			}
-			std::pair<char*, int> lpair;
-			apack->m_head.reservebuff(apack->m_buff, apack->m_len, lpair);
-			if (lpair.first == nullptr)
-			{
-				return false;
-			}
+			std::pair<char*, int> lpair(apack->m_buff, 0);
 			ngl::ser::serialize_push lser(lpair.first, lpair.second);
 			if (!ngl::ser::nserialize::push(&lser, adata))
 			{
@@ -128,22 +123,56 @@ namespace ngl
 			{
 				ngl::tools::bytexor(lpair.first, lpayloadbytes, 0);
 			}
-			
-			// Finalize the header once payload size, routing, and protocol number are known.
-			apack->m_head.m_data[EPH_BYTES] = lpayloadbytes;
-			apack->m_head.set_mask();
-			apack->m_head.set_time();
-			apack->m_head.set_actor(aactorid, arequestactorid);
-			apack->m_head.set_protocol(tprotocol::protocol<T>());
 
-			ngl::ser::serialize_push lserhead(apack->m_buff, apack->m_len);
-			if (!ngl::ser::nserialize::push(&lserhead, apack->m_head))
-			{
-				return false;
-			}
-			apack->m_len = pack_head::size() + lpayloadbytes;
-			apack->m_pos = apack->m_len;
+			// Finalize the header once payload size, routing, and protocol number are known.
+			apack->m_head->m_data[EPH_BYTES] = lpayloadbytes /*+ pack_head::size()*/;
+			apack->m_head->set_mask();
+			apack->m_head->set_time();
+			apack->m_head->set_actor(aactorid, arequestactorid);
+			apack->m_head->set_protocol(tprotocol::protocol<T>());
+
+			apack->m_len = lpayloadbytes;
+			apack->m_pos = lpayloadbytes;
 			return true;
+			
+			//apack->m_head.reservebuff(apack->m_buff, apack->m_len, lpair);
+			//if (lpair.first == nullptr)
+			//{
+			//	return false;
+			//}
+			//ngl::ser::serialize_push lser(lpair.first, lpair.second);
+			//if (!ngl::ser::nserialize::push(&lser, adata))
+			//{
+			//	std::cout << std::format("[##structbytes::tobytes() {} actorid:{} requestactorid:{}]", tools::type_name<T>(), aactorid, arequestactorid) << std::endl;
+			//	return false;
+			//}
+			//const int32_t lpayloadbytes = lser.pos();
+			//if (lpayloadbytes < 0 || lpayloadbytes > lpair.second)
+			//{
+			//	return false;
+			//}
+
+			//// Apply the optional payload xor after serialization and before the header is emitted.
+			//if (lpayloadbytes > 0 && encryption_bytexor::check_xor<T>())
+			//{
+			//	ngl::tools::bytexor(lpair.first, lpayloadbytes, 0);
+			//}
+			//
+			//// Finalize the header once payload size, routing, and protocol number are known.
+			//apack->m_head.m_data[EPH_BYTES] = lpayloadbytes;
+			//apack->m_head.set_mask();
+			//apack->m_head.set_time();
+			//apack->m_head.set_actor(aactorid, arequestactorid);
+			//apack->m_head.set_protocol(tprotocol::protocol<T>());
+
+			//ngl::ser::serialize_push lserhead(apack->m_buff, apack->m_len);
+			//if (!ngl::ser::nserialize::push(&lserhead, apack->m_head))
+			//{
+			//	return false;
+			//}
+			//apack->m_len = pack_head::size() + lpayloadbytes;
+			//apack->m_pos = apack->m_len;
+			//return true;
 		}
 	};
 }// namespace ngl
