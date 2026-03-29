@@ -115,9 +115,9 @@ bool xml::get(tinyxml2::XMLElement* aele, const char* akey, T& aval)
 			}
 		}
 		const char* val = valElement->GetText();
-		if (!val)
+		if (val == nullptr)
 		{
-			return false;
+			return true;
 		}
 		try
 		{
