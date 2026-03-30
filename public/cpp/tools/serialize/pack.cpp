@@ -14,7 +14,7 @@
 // File overview: Implements logic for serialize.
 
 
-#include "tools/serialize/netbuff_pool.h"
+#include "tools/serialize/socket_buff_pool.h"
 #include "actor/protocol/nprotocol.h"
 #include "tools/serialize/pack.h"
 
@@ -24,13 +24,12 @@ namespace ngl
 {
 	char* bpool::malloc(int32_t alen)
 	{
-		return netbuff_pool::malloc(alen);
+		return optimized_socket_pool::malloc(alen);
 	}
 
 	void bpool::free(char* ap, [[maybe_unused]] int32_t alen)
 	{
-		netbuff_pool::free(ap);
-		return;
+		optimized_socket_pool::free(ap);
 	}
 
 	void pack::set(bpool& apool) 
