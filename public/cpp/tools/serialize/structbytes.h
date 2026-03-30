@@ -105,7 +105,7 @@ namespace ngl
 			{
 				return false;
 			}
-			std::pair<char*, int> lpair(apack->m_buff, 0);
+			std::pair<char*, int> lpair(apack->m_buff, apack->m_len);
 			ngl::ser::serialize_push lser(lpair.first, lpair.second);
 			if (!ngl::ser::nserialize::push(&lser, adata))
 			{
@@ -125,7 +125,7 @@ namespace ngl
 			}
 
 			// Finalize the header once payload size, routing, and protocol number are known.
-			apack->m_head->m_data[EPH_BYTES] = lpayloadbytes + pack_head::size();
+			apack->m_head->m_data[EPH_BYTES] = lpayloadbytes /*+ pack_head::size()*/;
 			apack->m_head->set_mask();
 			apack->m_head->set_time();
 			apack->m_head->set_actor(aactorid, arequestactorid);

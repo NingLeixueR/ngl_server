@@ -307,7 +307,7 @@ TEST(SerializeTest, PackResetClearsAllocatedState)
 	packet.m_id = 99;
 	packet.m_pos = 12;
 	packet.m_rate_accounted = true;
-	packet.m_head.m_data[ngl::EPH_BYTES] = 7;
+	packet.m_head->m_data[ngl::EPH_BYTES] = 7;
 
 	packet.reset();
 

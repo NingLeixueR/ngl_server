@@ -46,7 +46,7 @@ namespace ngl
 		m_len = 0;
 		m_pos = 0;
 		m_rate_accounted = false;
-		m_head.reset();
+		m_head->reset();
 	}
 
 	bool pack::isready()
