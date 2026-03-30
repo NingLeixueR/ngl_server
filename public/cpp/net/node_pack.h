@@ -22,8 +22,6 @@ namespace ngl
 {
 	class node_pack
 	{
-		//node_pack() = delete;
-
 		std::shared_ptr<pack>	m_pack		= nullptr; // Typed pack ownership.
 		std::shared_ptr<void>	m_packvoid	= nullptr; // Type-erased pack ownership.
 	public:
@@ -41,31 +39,23 @@ namespace ngl
 
 		~node_pack() = default;
 
-		inline bool is_pack() const
+		inline const std::shared_ptr<pack>& get_pack()
 		{
-			return m_pack != nullptr;
-		}
-
-		inline const std::shared_ptr<pack>& get_pack() const
-		{
+			if (m_packvoid == nullptr && m_pack == nullptr)
+			{
+				tools::no_core_dump();
+			}
+			if (m_pack != nullptr)
+			{
+				return m_pack;
+			}
+			m_pack = std::static_pointer_cast<pack>(m_packvoid);
 			return m_pack;
 		}
 
-		inline const std::shared_ptr<void>& get_voidpack() const
+		inline pack* get()
 		{
-			return m_packvoid;
-		}
-
-		inline pack* get() const
-		{
-			if (is_pack())
-			{
-				return m_pack.get();
-			}
-			else
-			{
-				return(pack*)(m_packvoid != nullptr ? m_packvoid.get() : nullptr);
-			}
+			return get_pack().get();
 		}
 	};
 }// namespace ngl

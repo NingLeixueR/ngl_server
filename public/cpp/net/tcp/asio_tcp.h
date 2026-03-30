@@ -51,8 +51,6 @@ namespace ngl
 		map_service_tcp						m_data;							// Session id -> service_tcp object.
 		map_ipport							m_ipport;						// Session id -> remote ip/port.
 		map_close							m_close;						// Session-local reconnect/cleanup callbacks.
-		std::shared_ptr<std::shared_mutex>	m_callbacklock = std::make_shared<std::shared_mutex>(); // Gates async callbacks against teardown.
-		std::shared_ptr<std::atomic_bool>	m_alive = std::make_shared<std::atomic_bool>(true); // Shared liveness flag for async callbacks.
 	public:
 		enum
 		{
@@ -87,8 +85,24 @@ namespace ngl
 		template <typename T>
 		bool spack(i32_sessionid asessionid, std::shared_ptr<T>& apack);
 
+	private:
+		template <typename TSEQ>
+		void send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<pack>& apack, const TSEQ& adata)
+		{
+			boost::asio::async_write(atcp->m_socket, adata, [this, atcp, apack](const basio_errorcode& ec, std::size_t /*length*/)
+				{
+					handle_write(atcp, ec, apack);
+					if (ec)
+					{
+						log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
+						return;
+					}
+					do_send(atcp);
+				});
+		}
+	public:
+
 		void async_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<pack>& apack);
-		void async_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<void>& apack);
 
 		void do_send(const std::shared_ptr<service_tcp>& atcp);
 

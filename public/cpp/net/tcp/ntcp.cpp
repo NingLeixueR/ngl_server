@@ -239,6 +239,7 @@ namespace ngl
 		{
 			return false;
 		}
+		lpack->m_head = nullptr;
 		memcpy(lpack->m_buff, amsg.c_str(), lcount);
 		lpack->m_buff[lcount] = '\0';
 		lpack->m_len = lcount + 1;
