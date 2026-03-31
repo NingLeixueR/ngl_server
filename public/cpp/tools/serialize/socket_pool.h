@@ -15,21 +15,21 @@
 
 #pragma once
 
-#include "tools/tools/tools_time.h"
-#include "tools/tools/tools_thread.h"
 #include "tools/tools/tools_time_wheel.h"
+#include "tools/tools/tools_thread.h"
+#include "tools/tools/tools_time.h"
 
+#include <unordered_map>
 #include <algorithm>
-#include <array>
-#include <atomic>
+#include <iostream>
 #include <cstdint>
 #include <cstring>
 #include <format>
-#include <iostream>
+#include <atomic>
+#include <thread>
+#include <array>
 #include <list>
 #include <new>
-#include <thread>
-#include <unordered_map>
 
 namespace ngl
 {
@@ -56,7 +56,7 @@ namespace ngl
 	};
 
 	template <int TINITBYTES, int TCOUNT>
-	class socket_buff_pool
+	class buff_pool
 	{
 		struct block_head
 		{
@@ -162,7 +162,7 @@ namespace ngl
 		}
 
 	public:
-		socket_buff_pool(const std::array<int32_t, TCOUNT>& acounts) : m_counts(acounts)
+		buff_pool(const std::array<int32_t, TCOUNT>& acounts) : m_counts(acounts)
 		{
 			static_assert(TCOUNT > 0, "socket_buff_pool requires at least one bucket");
 			m_bytes[0] = TINITBYTES;
@@ -284,8 +284,8 @@ namespace ngl
 	};
 
 	template <int TINITBYTES, int TCOUNT>
-	thread_local typename socket_buff_pool<TINITBYTES, TCOUNT>::thread_cache*
-		socket_buff_pool<TINITBYTES, TCOUNT>::tl_cache = nullptr;
+	thread_local typename buff_pool<TINITBYTES, TCOUNT>::thread_cache*
+		buff_pool<TINITBYTES, TCOUNT>::tl_cache = nullptr;
 
 	// Optimized bucket sizes for typical socket scenarios
 	enum
@@ -294,19 +294,19 @@ namespace ngl
 		enum_socket_pool_init_bytes = 64,
 	};
 
-	class optimized_socket_pool :
-		public socket_buff_pool<enum_socket_pool_init_bytes, enum_socket_pool_count>
+	class socket_pool :
+		public buff_pool<enum_socket_pool_init_bytes, enum_socket_pool_count>
 	{
-		optimized_socket_pool() :
-			socket_buff_pool<enum_socket_pool_init_bytes, enum_socket_pool_count>(
+		socket_pool() :
+			buff_pool<enum_socket_pool_init_bytes, enum_socket_pool_count>(
 				// Bucket counts: 64, 128, 256, 512, 1K, 2K, 4K, 8K, 16K, 32K, 64K, 128K
 				{100, 80, 60, 50, 40, 30, 25, 20, 15, 10, 5, 3}
 			)
 		{}
 
-		static optimized_socket_pool& instance()
+		static socket_pool& instance()
 		{
-			static optimized_socket_pool lpool;
+			static socket_pool lpool;
 			return lpool;
 		}
 

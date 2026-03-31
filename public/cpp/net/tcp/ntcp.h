@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include "tools/serialize/netbuff_pool.h"
 #include "actor/actor_base/core/handle_pram.h"
 #include "tools/serialize/structbytes.h"
+#include "tools/serialize/socket_pool.h"
 #include "tools/serialize/segpack.h"
 #include "tools/serialize/pack.h"
 #include "net/server_session.h"
@@ -247,7 +247,7 @@ namespace ngl
 		ngl::ser::nserialize::bytes(&lserializebyte, adata);
 
 		lforward.m_bufflen = lserializebyte.pos();
-		char* lbuf = netbuff_pool::malloc(lforward.m_bufflen);
+		char* lbuf = socket_pool::malloc(lforward.m_bufflen);
 		lforward.m_buff = lbuf;
 		if (lbuf == nullptr && lforward.m_bufflen > 0)
 		{
@@ -258,10 +258,10 @@ namespace ngl
 		if (ngl::ser::nserialize::push(&lserializepush, adata))
 		{
 			const bool lsent = send(lsession, pro, nguid::make(), nguid::make());
-			netbuff_pool::free(lbuf);
+			socket_pool::free(lbuf);
 			return lsent;
 		}
-		netbuff_pool::free(lbuf);
+		socket_pool::free(lbuf);
 		return false;
 	}
 }

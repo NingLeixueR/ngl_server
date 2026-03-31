@@ -14,7 +14,7 @@
 // File overview: Implements logic for serialize.
 
 
-#include "tools/serialize/socket_buff_pool.h"
+#include "tools/serialize/socket_pool.h"
 #include "actor/protocol/nprotocol.h"
 #include "tools/serialize/pack.h"
 
@@ -24,12 +24,12 @@ namespace ngl
 {
 	char* bpool::malloc(int32_t alen)
 	{
-		return optimized_socket_pool::malloc(alen);
+		return socket_pool::malloc(alen);
 	}
 
 	void bpool::free(char* ap, [[maybe_unused]] int32_t alen)
 	{
-		optimized_socket_pool::free(ap);
+		socket_pool::free(ap);
 	}
 
 	void pack::set(bpool& apool) 
@@ -132,13 +132,6 @@ namespace ngl
 		*lhead = *m_head;
 		lhead->set_actor(aactor, arequestactorid);
 		m_head = lhead;
-		//if (m_buff == nullptr || m_len < pack_head::size())
-		//{
-		//	return;
-		//}
-		//// Rewrite the actor fields in-place after the packet body has already
-		//// been serialized.
-		//pack_head::head_set_actor((int32_t*)m_buff, aactor, arequestactorid);
 	}
 
 	pack::~pack()

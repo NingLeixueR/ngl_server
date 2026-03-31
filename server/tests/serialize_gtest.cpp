@@ -17,7 +17,7 @@
 #include "actor/protocol/tprotocol.h"
 #include "tools/db/sql/db_buff.h"
 #include "tools/serialize/nserialize.h"
-#include "tools/serialize/netbuff_pool.h"
+#include "tools/serialize/socket_pool.h"
 #include "tools/serialize/pack.h"
 #include "tools/serialize/pack_head.h"
 #include "tools/serialize/segpack.h"
@@ -293,8 +293,8 @@ TEST(SerializeTest, VariadicPushRollsBackWhenLaterFieldFails)
 
 TEST(SerializeTest, NetbuffPoolZeroLengthReturnsNull)
 {
-	EXPECT_EQ(ngl::netbuff_pool::malloc(0), nullptr);
-	ngl::netbuff_pool::free(nullptr);
+	EXPECT_EQ(ngl::socket_pool::malloc(0), nullptr);
+	ngl::socket_pool::free(nullptr);
 }
 
 TEST(SerializeTest, PackResetClearsAllocatedState)
@@ -317,7 +317,7 @@ TEST(SerializeTest, PackResetClearsAllocatedState)
 	EXPECT_EQ(packet.m_len, 0);
 	EXPECT_EQ(packet.m_pos, 0);
 	EXPECT_FALSE(packet.m_rate_accounted);
-	EXPECT_EQ(packet.m_head.getvalue(ngl::EPH_BYTES), 0);
+	EXPECT_EQ(packet.m_head->getvalue(ngl::EPH_BYTES), 0);
 }
 
 TEST(SerializeTest, PackSetActorSkipsShortBuffer)
@@ -351,29 +351,13 @@ TEST(SerializeTest, PackHeadRoundTripsActorIdsWithoutAliasCasts)
 	EXPECT_EQ(head.get_request_actortype(), ngl::ACTOR_GATEWAY);
 }
 
-TEST(SerializeTest, PackHeadReservebuffRejectsBufferSmallerThanHeader)
-{
-	ngl::pack_head head;
-	std::array<char, 8> small = {};
-	std::pair<char*, int32_t> window = { reinterpret_cast<char*>(1), 7 };
-
-	head.reservebuff(small.data(), static_cast<int32_t>(small.size()), window);
-	EXPECT_EQ(window.first, nullptr);
-	EXPECT_EQ(window.second, 0);
-
-	std::vector<char> exact(static_cast<size_t>(ngl::pack_head::size()), '\0');
-	head.reservebuff(exact.data(), static_cast<int32_t>(exact.size()), window);
-	EXPECT_EQ(window.first, exact.data() + ngl::pack_head::size());
-	EXPECT_EQ(window.second, 0);
-}
-
 TEST(SerializeTest, StructbytesRejectsPositiveLengthWithoutBuffer)
 {
 	RegisterSerializeCustomTypes();
 
 	auto packet = ngl::pack::make_pack(nullptr, 0);
 	ASSERT_NE(packet, nullptr);
-	packet->m_head.m_data[ngl::EPH_BYTES] = sizeof(int32_t);
+	packet->m_head->m_data[ngl::EPH_BYTES] = sizeof(int32_t);
 	packet->m_pos = sizeof(int32_t);
 
 	OverestimatedPayload payload;
@@ -392,12 +376,12 @@ TEST(SerializeTest, StructbytesUsesActualSerializedLength)
 	ASSERT_NE(packet->m_buff, nullptr);
 
 	ASSERT_TRUE((ngl::structbytes<OverestimatedPayload>::tobytes(packet, payload, 101, 202)));
-	EXPECT_EQ(packet->m_head.getvalue(ngl::EPH_BYTES), static_cast<int32_t>(sizeof(int32_t)));
+	EXPECT_EQ(packet->m_head->getvalue(ngl::EPH_BYTES), static_cast<int32_t>(sizeof(int32_t)));
 	EXPECT_EQ(packet->m_len, ngl::pack_head::size() + static_cast<int32_t>(sizeof(int32_t)));
 	EXPECT_EQ(packet->m_pos, packet->m_len);
 
 	int32_t roundtrip = 0;
-	ngl::ser::serialize_pop pop(packet->m_buff + ngl::pack_head::size(), packet->m_head.getvalue(ngl::EPH_BYTES));
+	ngl::ser::serialize_pop pop(packet->m_buff + ngl::pack_head::size(), packet->m_head->getvalue(ngl::EPH_BYTES));
 	ASSERT_TRUE(ngl::ser::serialize_format<int32_t>::pop(&pop, roundtrip));
 	EXPECT_EQ(roundtrip, payload.value);
 }

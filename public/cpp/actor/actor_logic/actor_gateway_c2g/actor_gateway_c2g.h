@@ -74,7 +74,12 @@ namespace ngl
 				return false;
 			}
 
-			ntcp::instance().send_server<forward, T>(linfo->m_gameid, lpram->m_data.m_data, nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpack->m_head->get_request_actor());
+			ntcp::instance().send_server<forward, T>(
+				linfo->m_gameid
+				, lpram->m_data.m_data
+				, nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid)
+				, lpack->m_head->get_request_actor()
+			);
 			return true;
 		}
 

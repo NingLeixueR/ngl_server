@@ -15,10 +15,10 @@
 
 
 #include "actor/actor_logic/actor_gateway/actor_gateway.h"
-#include "actor/protocol/protocol.h"
 #include "actor/actor_base/core/nguid.h"
-#include "net/nnet.h"
+#include "actor/protocol/protocol.h"
 #include "net/tcp/ntcp.h"
+#include "net/nnet.h"
 
 namespace ngl
 {
