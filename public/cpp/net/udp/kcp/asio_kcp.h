@@ -77,7 +77,7 @@ namespace ngl
 				{
 					if (ec)
 					{
-						log_error()->print("asio_tcp::handle_write[{}]", ec.message().c_str());
+						log_error()->print("asio_kcp::send[{}]", ec.message().c_str());
 						close(akcp->m_session);
 						return;
 					}
