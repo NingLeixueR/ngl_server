@@ -38,10 +38,6 @@ namespace ngl
 		template <typename T>
 		constexpr bool is_tls_stream_v = std::is_same_v<remove_cvref_t<T>, basio_websocket_tls>;
 
-		bool is_alive(const std::shared_ptr<std::atomic_bool>& aalive)
-		{
-			return aalive != nullptr && aalive->load(std::memory_order_acquire);
-		}
 
 		bool should_ignore_socket_close_error(const basio_errorcode& ec)
 		{
@@ -212,7 +208,6 @@ namespace ngl
 	{
 		try
 		{
-			m_alive->store(false, std::memory_order_release);
 
 			basio_errorcode ec;
 			if (m_acceptor_v4 != nullptr)
@@ -255,7 +250,6 @@ namespace ngl
 
 			for (auto& service : lservices)
 			{
-				service->m_closing.store(true, std::memory_order_release);
 			}
 
 			for (auto& service : lservices)
@@ -437,11 +431,6 @@ namespace ngl
 		const char* astage
 	)
 	{
-		const auto alive = m_alive;
-		if (!ngl::ws::is_alive(alive))
-		{
-			return;
-		}
 
 		if (aservice != nullptr)
 		{
@@ -458,12 +447,8 @@ namespace ngl
 				.m_ms = ngl::ws::ws_connect_interval_ms,
 				.m_intervalms = [](int64_t) { return  ngl::ws::ws_connect_interval_ms; },
 				.m_count = 1,
-				.m_fun = [this, alive, ahost, aport, atarget, afun, acount](const tools::wheel_node*)
+				.m_fun = [this, ahost, aport, atarget, afun, acount](const tools::wheel_node*)
 				{
-					if (!ngl::ws::is_alive(alive))
-					{
-						return;
-					}
 					connect(ahost, aport, atarget, afun, acount - 1);
 				}
 			};
@@ -477,10 +462,6 @@ namespace ngl
 
 	void asio_ws::begin_server_handshake(const std::shared_ptr<service_ws>& aservice)
 	{
-		if (!ngl::ws::is_alive(m_alive))
-		{
-			return;
-		}
 		if (aservice == nullptr)
 		{
 			return;
@@ -564,10 +545,6 @@ namespace ngl
 		int acount
 	)
 	{
-		if (!ngl::ws::is_alive(m_alive))
-		{
-			return;
-		}
 		if (aservice == nullptr)
 		{
 			if (afun != nullptr)
@@ -672,19 +649,10 @@ namespace ngl
 		);
 	}
 
-	bool asio_ws::queue_send(i32_sessionid asessionid, ws_send_node anode)
+	bool asio_ws::queue_send(i32_sessionid asessionid, node_pack anode)
 	{
-		if (!ngl::ws::is_alive(m_alive))
-		{
-			return false;
-		}
-
 		const std::shared_ptr<service_ws> ws = get_ws(asessionid);
 		if (ws == nullptr)
-		{
-			return false;
-		}
-		if (ws->m_closing.load(std::memory_order_acquire))
 		{
 			return false;
 		}
@@ -692,15 +660,10 @@ namespace ngl
 		bool lstart = false;
 		{
 			std::lock_guard<std::mutex> llock(ws->m_mutex);
-			if (ws->m_closing.load(std::memory_order_relaxed))
+			ws->m_list.push_back(std::move(anode));
+			if (!ws->m_issend)
 			{
-				return false;
-			}
-			ws->m_ws_send_list.push_back(std::move(anode));
-			if (!ws->m_ws_sending)
-			{
-				// Only one async_write chain is allowed at a time per websocket session.
-				ws->m_ws_sending = true;
+				ws->m_issend = true;
 				lstart = true;
 			}
 		}
@@ -713,170 +676,83 @@ namespace ngl
 
 	void asio_ws::do_send(const std::shared_ptr<service_ws>& aservice)
 	{
-		if (!ngl::ws::is_alive(m_alive))
-		{
-			return;
-		}
 		if (aservice == nullptr)
 		{
 			return;
 		}
-		if (aservice->m_closing.load(std::memory_order_acquire))
+
+		node_pack litem;
 		{
 			std::lock_guard<std::mutex> llock(aservice->m_mutex);
-			aservice->m_ws_send_list.clear();
-			aservice->m_ws_sending = false;
+			if (aservice->m_list.empty())
+			{
+				aservice->m_issend = false;
+				return;
+			}
+			litem = aservice->m_list.front();
+			aservice->m_list.pop_front();
+		}
+
+		std::shared_ptr<pack> lpack = litem.get_pack();
+		if (lpack == nullptr)
+		{
+			do_send(aservice);
 			return;
 		}
 
-		std::shared_ptr<std::string> ltext = nullptr;
-		ws_send_node lnode(ltext);
-		{
-			std::lock_guard<std::mutex> llock(aservice->m_mutex);
-			if (aservice->m_ws_send_list.empty())
-			{
-				aservice->m_ws_sending = false;
-				return;
-			}
-			lnode = aservice->m_ws_send_list.front();
-		}
+		lpack->m_protocol = ENET_WS;
 
-		const char* ldata = nullptr;
-		int32_t llen = 0;
-		bool lis_text = lnode.is_text();
-
-		if (lnode.is_text())
-		{
-			const auto& ltemptext = lnode.get_text();
-			if (ltemptext == nullptr)
+		aservice->visit_stream([this, aservice, lpack](auto& astream)
 			{
+				if (lpack->m_head != nullptr)
 				{
-					std::lock_guard<std::mutex> llock(aservice->m_mutex);
-					if (!aservice->m_ws_send_list.empty())
-					{
-						aservice->m_ws_send_list.pop_front();
-					}
-				}
-				do_send(aservice);
-				return;
-			}
-			ldata = ltext->data();
-			llen = static_cast<int32_t>(ltext->size());
-		}
-		else if (lnode.is_pack())
-		{
-			std::shared_ptr<pack> lpack = lnode.get_pack();
-			if (lpack == nullptr)
-			{
-				{
-					std::lock_guard<std::mutex> llock(aservice->m_mutex);
-					if (!aservice->m_ws_send_list.empty())
-					{
-						aservice->m_ws_send_list.pop_front();
-					}
-				}
-				do_send(aservice);
-				return;
-			}
-			lpack->m_protocol = ENET_WS;
-			int32_t lpos = 0;
-			if (lpack->m_pos != lpack->m_len)
-			{
-				llen = lpack->m_len - lpack->m_pos;
-				lpos = lpack->m_pos;
-			}
-			else
-			{
-				llen = lpack->m_pos;
-			}
-			if (llen < 0)
-			{
-				close(aservice.get());
-				return;
-			}
-			ldata = &lpack->m_buff[lpos];
-		}
-		else
-		{
-			pack* lpack = lnode.get();
-			if (lpack == nullptr)
-			{
-				{
-					std::lock_guard<std::mutex> llock(aservice->m_mutex);
-					if (!aservice->m_ws_send_list.empty())
-					{
-						aservice->m_ws_send_list.pop_front();
-					}
-				}
-				do_send(aservice);
-				return;
-			}
-			lpack->m_protocol = ENET_WS;
-			ldata = lpack->m_buff;
-			llen = lpack->m_pos;
-		}
-
-		aservice->visit_stream([this, aservice, lnode, ldata, llen, lis_text](auto& astream)
-			{
-				if (lis_text)
-				{
-					// Switch opcode based on payload kind before each write.
-					astream.text(true);
+					astream.binary(true);
+					std::array<basio::const_buffer, 2> bufs{
+						basio::buffer(lpack->m_head->m_data, sizeof(lpack->m_head->m_data)),
+						basio::buffer(lpack->m_buff, lpack->m_pos)
+					};
+					astream.async_write(
+						bufs,
+						[this, aservice, lpack](const basio_errorcode& ec, std::size_t)
+						{
+							handle_write(aservice, ec, lpack);
+							if (ec) return;
+							do_send(aservice);
+						}
+					);
 				}
 				else
 				{
-					astream.binary(true);
+					astream.binary(false);
+					astream.async_write(
+						basio::buffer(lpack->m_buff, lpack->m_pos),
+						[this, aservice, lpack](const basio_errorcode& ec, std::size_t)
+						{
+							handle_write(aservice, ec, lpack);
+							if (ec) return;
+							do_send(aservice);
+						}
+					);
 				}
-
-				astream.async_write(
-					basio::buffer(ldata, llen),
-					[this, aservice, lnode](const basio_errorcode& ec, std::size_t)
-					{
-						{
-							std::lock_guard<std::mutex> llock(aservice->m_mutex);
-							if (!aservice->m_ws_send_list.empty())
-							{
-								aservice->m_ws_send_list.pop_front();
-							}
-						}
-						handle_write(aservice, ec, lnode);
-						if (ec)
-						{
-							return;
-						}
-						do_send(aservice);
-					}
-				);
 			}
 		);
 	}
 
-	void asio_ws::handle_write(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error, const ws_send_node& anode)
+	void asio_ws::handle_write(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error, const std::shared_ptr<pack>& apack)
 	{
-		if (!ngl::ws::is_alive(m_alive))
-		{
-			return;
-		}
 		if (error)
 		{
-			if (!aservice->m_closing.load(std::memory_order_acquire))
-			{
-				log_error()->print("asio_ws::handle_write [{}]", error.message());
-			}
+			log_error()->print("asio_ws::handle_write [{}]", error.message());
 			close(aservice.get());
 		}
 		if (m_sendfinishfun != nullptr)
 		{
-			m_sendfinishfun(aservice->m_sessionid, static_cast<bool>(error), anode.get());
+			m_sendfinishfun(aservice->m_sessionid, error ? true : false, apack.get());
 		}
 	}
 
 	void asio_ws::accept_handle(bool av4, const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error)
 	{
-		if (!ngl::ws::is_alive(m_alive))
-		{
-			return;
-		}
 		if (error)
 		{
 			close_net(aservice->m_sessionid);
@@ -895,10 +771,6 @@ namespace ngl
 
 	void asio_ws::accept(bool av4)
 	{
-		if (!ngl::ws::is_alive(m_alive))
-		{
-			return;
-		}
 
 		if (av4)
 		{
@@ -943,15 +815,7 @@ namespace ngl
 
 	void asio_ws::start(const std::shared_ptr<service_ws>& aservice)
 	{
-		if (!ngl::ws::is_alive(m_alive))
-		{
-			return;
-		}
 		if (aservice == nullptr)
-		{
-			return;
-		}
-		if (aservice->m_closing.load(std::memory_order_acquire))
 		{
 			return;
 		}
@@ -969,7 +833,6 @@ namespace ngl
 									return aws_stream.got_text();
 								}
 							);
-							aservice->set_message_is_text(lis_text);
 
 							const beast::flat_buffer::const_buffers_type ldata = aservice->read_buffer().cdata();
 							const char* lbuf = static_cast<const char*>(ldata.data());
@@ -1013,15 +876,6 @@ namespace ngl
 
 	service_ws* asio_ws::connect(const str_host& ahost, i16_port aport, const std::string& atarget, const ws_connectcallback& afun, int acount)
 	{
-		if (!ngl::ws::is_alive(m_alive))
-		{
-			if (afun != nullptr)
-			{
-				afun(-1);
-			}
-			return nullptr;
-		}
-
 		const std::shared_ptr<service_ws> lservice = create_service();
 		if (lservice == nullptr)
 		{
@@ -1067,12 +921,12 @@ namespace ngl
 
 	bool asio_ws::send(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
 	{
-		return queue_send(asessionid, ws_send_node(apack));
+		return queue_send(asessionid, node_pack(apack));
 	}
 
 	bool asio_ws::send(i32_sessionid asessionid, std::shared_ptr<void>& apack)
 	{
-		return queue_send(asessionid, ws_send_node(apack));
+		return queue_send(asessionid, node_pack(apack));
 	}
 
 	bool asio_ws::sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
@@ -1083,12 +937,6 @@ namespace ngl
 	bool asio_ws::sendpack(i32_sessionid asessionid, std::shared_ptr<void>& apack)
 	{
 		return send(asessionid, apack);
-	}
-
-	bool asio_ws::send_msg(i32_sessionid asessionid, const std::string& amsg)
-	{
-		const auto ltext = std::make_shared<std::string>(amsg);
-		return queue_send(asessionid, ws_send_node(ltext));
 	}
 
 	void asio_ws::close(i32_sessionid sessionid)
@@ -1129,29 +977,19 @@ namespace ngl
 
 		if (lservice != nullptr)
 		{
-			if (!lservice->m_closing.exchange(true, std::memory_order_acq_rel))
+			if (agraceful)
 			{
-				basio::post(lservice->m_ioservice,
-					[lservice, agraceful, anotifyclose, anotifycallback, sessionid, lnotifyclose, lclosefun]()
-					{
-						if (agraceful)
-						{
-							// Graceful close performs a websocket close handshake before force-closing the TCP socket.
-							ngl::ws::close_stream(*lservice);
-						}
-						ngl::ws::force_close_socket(lservice->socket());
+				ngl::ws::close_stream(*lservice);
+			}
+			ngl::ws::force_close_socket(lservice->socket());
 
-						if (anotifyclose && lnotifyclose != nullptr)
-						{
-							lnotifyclose(sessionid);
-						}
-						if (anotifycallback && lclosefun != nullptr)
-						{
-							lclosefun();
-						}
-					}
-				);
-				return;
+			if (anotifyclose && lnotifyclose != nullptr)
+			{
+				lnotifyclose(sessionid);
+			}
+			if (anotifycallback && lclosefun != nullptr)
+			{
+				lclosefun();
 			}
 		}
 

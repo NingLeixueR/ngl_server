@@ -108,73 +108,6 @@ namespace ngl
 		virtual ~service_tcp() = default;
 	};
 
-	class ws_send_node
-	{
-		ws_send_node() = delete;
-
-		std::shared_ptr<pack> m_pack = nullptr;        // Binary pack with typed ownership.
-		std::shared_ptr<void> m_voidpack = nullptr;    // Binary pack with erased ownership.
-		std::shared_ptr<std::string> m_text = nullptr; // Text WebSocket payload.
-	public:
-		explicit ws_send_node(std::shared_ptr<pack>& apack) :
-			m_pack(apack)
-		{
-		}
-
-		explicit ws_send_node(std::shared_ptr<void>& apack) :
-			m_voidpack(apack)
-		{
-		}
-
-		explicit ws_send_node(const std::shared_ptr<std::string>& atext) :
-			m_text(atext)
-		{
-		}
-
-		bool is_pack() const
-		{
-			return m_pack != nullptr;
-		}
-
-		bool is_voidpack() const
-		{
-			return m_voidpack != nullptr;
-		}
-
-		bool is_text() const
-		{
-			return m_text != nullptr;
-		}
-
-		const std::shared_ptr<pack>& get_pack() const
-		{
-			return m_pack;
-		}
-
-		const std::shared_ptr<void>& get_voidpack() const
-		{
-			return m_voidpack;
-		}
-
-		const std::shared_ptr<std::string>& get_text() const
-		{
-			return m_text;
-		}
-
-		pack* get() const
-		{
-			if (m_pack != nullptr)
-			{
-				return m_pack.get();
-			}
-			if (m_voidpack != nullptr)
-			{
-				return static_cast<pack*>(m_voidpack.get());
-			}
-			return nullptr;
-		}
-	};
-
 	class service_ws : public service_io
 	{
 		service_ws() = delete;
@@ -183,13 +116,8 @@ namespace ngl
 
 		ws_stream_variant m_stream;       // Plain or TLS websocket stream.
 		beast::flat_buffer m_read_buffer; // Owns websocket frame bytes between async reads.
-		bool m_message_is_text = false;   // Current outbound/inbound opcode mode.
 		bool m_use_tls = false;           // Whether the stream variant uses TLS.
 	public:
-		std::atomic_bool m_closing = false; // Prevent duplicate close sequences.
-		bool m_ws_sending = false;          // Whether one async WS write is currently in flight.
-		std::deque<ws_send_node> m_ws_send_list; // Pending websocket sends.
-
 		service_ws(serviceio_info& amsi, i32_session asessionid);
 		service_ws(serviceio_info& amsi, i32_session asessionid, basio_sslcontext& acontext);
 		virtual ~service_ws() = default;
@@ -199,8 +127,6 @@ namespace ngl
 		const basio_iptcpsocket& socket() const;
 		// Access per-connection websocket mode and read buffer state.
 		bool using_tls() const;
-		bool message_is_text() const;
-		void set_message_is_text(bool avalue);
 		beast::flat_buffer& read_buffer();
 		void consume_read_buffer(std::size_t asize);
 

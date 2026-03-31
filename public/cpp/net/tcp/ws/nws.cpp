@@ -42,12 +42,6 @@ namespace ngl
 				return false;
 			}
 		}
-		if (ap->message_is_text())
-		{
-			// protocol::telnet_cmd currently routes replies through ntcp, so nws
-			// only accepts binary websocket frames for actor/pack dispatch.
-			return false;
-		}
 		// segpack preserves the existing pack protocol on top of websocket binary frames.
 		return m_segpackvec[ap->m_threadid]->push(ap->m_sessionid, abuff, abufflen, ap->m_is_lanip);
 	}
@@ -251,11 +245,19 @@ namespace ngl
 
 	bool nws::send_msg(i32_sessionid asession, const std::string& amsg)
 	{
-		if (m_server == nullptr)
+		const int lcount = static_cast<int>(amsg.size());
+		auto lpack = pack::make_pack(&m_pool, lcount + 1);
+		if (lpack == nullptr || lpack->m_buff == nullptr)
 		{
 			return false;
 		}
-		return m_server->send_msg(asession, amsg);
+		lpack->m_head = nullptr;
+		memcpy(lpack->m_buff, amsg.c_str(), lcount);
+		lpack->m_buff[lcount] = '\0';
+		lpack->m_len = lcount + 1;
+		lpack->m_pos = lcount + 1;
+		// Telnet/admin traffic uses a raw text buffer instead of the binary pack header format.
+		return send_pack(asession, lpack);
 	}
 
 	bool nws::send_pack(i32_sessionid asession, std::shared_ptr<pack>& lpack)

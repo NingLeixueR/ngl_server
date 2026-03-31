@@ -65,7 +65,6 @@ namespace ngl
 		map_close							m_close;						// Session-local reconnect/cleanup callbacks.
 		std::unique_ptr<basio_sslcontext>	m_tls_context = nullptr;		// Shared TLS context when WSS is enabled.
 		ws_tls_options						m_tls_options;					// TLS configuration.
-		std::shared_ptr<std::atomic_bool>	m_alive = std::make_shared<std::atomic_bool>(true); // Shared liveness flag for async callbacks.
 	public:
 		enum
 		{
@@ -120,9 +119,9 @@ namespace ngl
 			int acount
 		);
 		// Enqueue frames, drive the serialized async-write chain, and manage closure.
-		bool queue_send(i32_sessionid asessionid, ws_send_node anode);
+		bool queue_send(i32_sessionid asessionid, node_pack anode);
 		void do_send(const std::shared_ptr<service_ws>& aservice);
-		void handle_write(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error, const ws_send_node& anode);
+		void handle_write(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error, const std::shared_ptr<pack>& apack);
 		void accept_handle(bool av4, const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error);
 		void accept(bool av4);
 		void start(const std::shared_ptr<service_ws>& aservice);
@@ -139,7 +138,6 @@ namespace ngl
 		bool send(i32_sessionid asessionid, std::shared_ptr<void>& apack);
 		bool sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
 		bool sendpack(i32_sessionid asessionid, std::shared_ptr<void>& apack);
-		bool send_msg(i32_sessionid asessionid, const std::string& amsg);
 
 		void close(i32_sessionid sessionid);
 		void close(service_ws* asession);

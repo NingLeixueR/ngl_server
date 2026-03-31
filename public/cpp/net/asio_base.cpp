@@ -194,16 +194,6 @@ namespace ngl
 		return m_use_tls;
 	}
 
-	bool service_ws::message_is_text() const
-	{
-		return m_message_is_text;
-	}
-
-	void service_ws::set_message_is_text(bool avalue)
-	{
-		m_message_is_text = avalue;
-	}
-
 	beast::flat_buffer& service_ws::read_buffer()
 	{
 		return m_read_buffer;
