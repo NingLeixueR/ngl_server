@@ -359,7 +359,7 @@ namespace ngl
 		return;
 	}
 
-	void asio_tcp::handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, std::shared_ptr<pack> apack)
+	void asio_tcp::handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, const std::shared_ptr<pack>& apack)
 	{
 		if (error)
 		{
@@ -369,19 +369,6 @@ namespace ngl
 		if (m_sendfinishfun != nullptr)
 		{
 			m_sendfinishfun(atcp->m_sessionid, error ? true : false, apack.get());
-		}
-	}
-
-	void asio_tcp::handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, std::shared_ptr<void> apack)
-	{
-		if (error)
-		{
-			log_error()->print("asio_tcp::handle_write[{}]", error.message().c_str());
-			close(atcp.get());
-		}
-		if (m_sendfinishfun != nullptr)
-		{
-			m_sendfinishfun(atcp->m_sessionid, error ? true : false, static_cast<pack*>(apack.get()));
 		}
 	}
 

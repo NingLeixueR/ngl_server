@@ -38,7 +38,7 @@ namespace ngl
 		return m_kcp.send_server(apack);
 	}
 
-	bool ukcp::send_server(const std::set<i64_actorid>& aactors, const std::shared_ptr<pack>& apack)
+	bool ukcp::send_server(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack)
 	{
 		for (i64_actorid lactorid : aactors)
 		{
@@ -47,7 +47,7 @@ namespace ngl
 		return true;
 	}
 
-	bool ukcp::send_server(i64_actorid aactor, const std::shared_ptr<pack>& apack)
+	bool ukcp::send_server(i64_actorid aactor, std::shared_ptr<pack>& apack)
 	{
 		i32_session lsession = m_kcp.find_session(aactor);
 		if (lsession == -1)
@@ -74,17 +74,17 @@ namespace ngl
 		return true;
 	}
 
-	bool ukcp::sendpackbyarea(i16_area aarea, const std::shared_ptr<pack>& apack)
+	bool ukcp::sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack)
 	{
 		return m_kcp.sendpackbyarea(aarea, apack);
 	}
 
-	bool ukcp::sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len)
+	bool ukcp::sendu(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len)
 	{
 		return m_kcp.sendu(aendpoint, buf, len);
 	}
 
-	bool ukcp::sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun)
+	bool ukcp::sendu_waitrecv(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun)
 	{
 		std::unique_ptr<ngl::tools::sem> lsem = std::make_unique<ngl::tools::sem>();
 		m_kcp.sendu_waitrecv(aendpoint, buf, len, [afun, &lsem](char* buff, int len)
@@ -111,7 +111,7 @@ namespace ngl
 	void ukcp::connect(std::string& akcpsess
 		, i64_actorid aserver
 		, i64_actorid aclient
-		, const asio_udp_endpoint& aendpoint
+		, const basio::ip::udp::endpoint& aendpoint
 		, const std::function<void(i32_session)>& afun
 	)
 	{

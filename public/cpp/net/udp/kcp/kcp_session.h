@@ -29,26 +29,24 @@
 
 namespace ngl
 {
-	using ptr_se = std::shared_ptr<kcp_endpoint>;
-
 	class kcp_session
 	{
 		kcp_session() = delete;
 		kcp_session(const kcp_session&) = delete;
 		kcp_session& operator=(const kcp_session&) = delete;
 
-		std::map<i32_sessionid, ptr_se>						m_dataofsession;		// Session id -> endpoint.
+		std::map<i32_sessionid, std::shared_ptr<kcp_endpoint>>						m_dataofsession;		// Session id -> endpoint.
 		std::map<i64_actorid, i32_sessionid>				m_actoridofsession;		// Actor id -> session id for both client and server ids.
 
-		std::map<std::string, std::map<i16_port, ptr_se>>	m_dataofendpoint;		// IP -> port -> endpoint.
+		std::map<std::string, std::map<i16_port, std::shared_ptr<kcp_endpoint>>>	m_dataofendpoint;		// IP -> port -> endpoint.
 		int32_t												m_sessionid = 0;		// Monotonic session id allocator.
 		std::shared_mutex									m_mutex;				// Protects all lookup tables.
 		asio_kcp*											m_asiokcp = nullptr;	// Back-reference used by new endpoints.
 
 		// Internal helpers that assume the caller already holds m_mutex.
-		ptr_se erase_session_nolock(i32_sessionid asession);
-		ptr_se find_info(i32_sessionid asession);
-		ptr_se find_info(const asio_udp_endpoint& aendpoint);
+		std::shared_ptr<kcp_endpoint> erase_session_nolock(i32_sessionid asession);
+		std::shared_ptr<kcp_endpoint> find_info(i32_sessionid asession);
+		std::shared_ptr<kcp_endpoint> find_info(const basio::ip::udp::endpoint& aendpoint);
 	public:
 		enum
 		{
@@ -66,24 +64,24 @@ namespace ngl
 			, i64_actorid aactoridclient
 		);
 
-		ptr_se add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient);
+		std::shared_ptr<kcp_endpoint> add(int32_t aconv, const basio::ip::udp::endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient);
 
-		ptr_se reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient);
+		std::shared_ptr<kcp_endpoint> reset_add(int32_t aconv, const basio::ip::udp::endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient);
 
 		void erasebysession(i32_sessionid asession);
 
 		void erasebyaactorid(i64_actorid aactorid);
 
-		ptr_se find(i32_sessionid asession);
+		std::shared_ptr<kcp_endpoint> find(i32_sessionid asession);
 
-		ptr_se findbyactorid(i64_actorid aactorid);
+		std::shared_ptr<kcp_endpoint> findbyactorid(i64_actorid aactorid);
 
-		ptr_se find(const asio_udp_endpoint& aendpoint);
+		std::shared_ptr<kcp_endpoint> find(const basio::ip::udp::endpoint& aendpoint);
 
-		asio_udp_endpoint* find_endpoint(i32_sessionid asession);
+		basio::ip::udp::endpoint* find_endpoint(i32_sessionid asession);
 
-		void foreach(const std::function<void(ptr_se&)>& acall);
+		void foreach(const std::function<void(std::shared_ptr<kcp_endpoint>&)>& acall);
 
-		void foreachbyarea(i16_area aarea, const std::function<void(ptr_se&)>& acall);
+		void foreachbyarea(i16_area aarea, const std::function<void(std::shared_ptr<kcp_endpoint>&)>& acall);
 	};
 }//namespace ngl

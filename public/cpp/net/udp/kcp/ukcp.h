@@ -61,14 +61,14 @@ namespace ngl
 
 		bool send_server(std::shared_ptr<pack>& apack);
 
-		bool send_server(const std::set<i64_actorid>& aactors, const std::shared_ptr<pack>& apack);
+		bool send_server(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack);
 
-		bool send_server(i64_actorid aactor, const std::shared_ptr<pack>& apack);
+		bool send_server(i64_actorid aactor, std::shared_ptr<pack>& apack);
 
-		bool sendpackbyarea(i16_area aarea, const std::shared_ptr<pack>& apack);
+		bool sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack);
 
 		template <typename T>
-		bool send(const asio_udp_endpoint& aendpoint, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		bool send(const basio::ip::udp::endpoint& aendpoint, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
 			if (lpack == nullptr)
@@ -81,7 +81,7 @@ namespace ngl
 
 #pragma region udp_send
 		template <typename T>
-		bool sendu(const asio_udp_endpoint& aendpoint, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		bool sendu(const basio::ip::udp::endpoint& aendpoint, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
 			if (lpack == nullptr)
@@ -91,10 +91,10 @@ namespace ngl
 			return m_kcp.sendu(aendpoint, lpack->m_buff, lpack->m_len);
 		}
 
-		bool sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len);
+		bool sendu(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len);
 
 		// Send a raw UDP request and block the caller until the matching reply arrives.
-		bool sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun);
+		bool sendu_waitrecv(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun);
 #pragma endregion 
 
 		// Connect and query actor/session relationships.
@@ -110,7 +110,7 @@ namespace ngl
 			std::string& akcpsess
 			, i64_actorid aserver
 			, i64_actorid aclient
-			, const asio_udp_endpoint& aendpoint
+			, const basio::ip::udp::endpoint& aendpoint
 			, const std::function<void(i32_session)>& afun
 		);
 

@@ -19,7 +19,7 @@
 
 namespace ngl
 {
-	bool udp_cmd::run_cmd(asio_kcp* ap, ptr_se& apstruct, const char* abuf, int32_t alen)
+	bool udp_cmd::run_cmd(asio_kcp* ap, std::shared_ptr<kcp_endpoint>& apstruct, const char* abuf, int32_t alen)
 	{
 		if (alen < ecmd_minlen)
 		{

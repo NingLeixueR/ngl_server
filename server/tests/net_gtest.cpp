@@ -525,8 +525,8 @@ TEST(NetTest, KcpSessionMaintainsActorIndexesAndAreaIteration)
 	const ngl::i64_actorid server2 = ngl::nguid::make(ngl::ACTOR_SERVER, 2, 102);
 	const ngl::i64_actorid client2 = ngl::nguid::make(ngl::ACTOR_ROLE, 2, 202);
 
-	auto endpoint1 = ngl::asio_udp_endpoint(basio::ip::make_address("127.0.0.1"), 12001);
-	auto endpoint2 = ngl::asio_udp_endpoint(basio::ip::make_address("127.0.0.1"), 12002);
+	auto endpoint1 = basio::ip::udp::endpoint(basio::ip::make_address("127.0.0.1"), 12001);
+	auto endpoint2 = basio::ip::udp::endpoint(basio::ip::make_address("127.0.0.1"), 12002);
 
 	auto entry1 = session.add(1, endpoint1, server1, client1);
 	auto entry2 = session.add(2, endpoint2, server2, client2);
@@ -541,7 +541,7 @@ TEST(NetTest, KcpSessionMaintainsActorIndexesAndAreaIteration)
 	EXPECT_EQ(session.findbyactorid(server2), entry2);
 
 	std::vector<ngl::i32_sessionid> sessions_in_area;
-	session.foreachbyarea(2, [&sessions_in_area](ngl::ptr_se& entry) {
+	session.foreachbyarea(2, [&sessions_in_area](ngl::std::shared_ptr<kcp_endpoint>& entry) {
 		sessions_in_area.push_back(entry->m_session);
 	});
 	std::sort(sessions_in_area.begin(), sessions_in_area.end());
@@ -565,7 +565,7 @@ TEST(NetTest, AsioKcpRejectsInvalidBuffersAndUnknownSessions)
 {
 	ngl::asio_kcp kcp(0);
 
-	EXPECT_FALSE(kcp.sendu(ngl::asio_udp_endpoint(basio::ip::make_address("127.0.0.1"), 9), nullptr, 1));
+	EXPECT_FALSE(kcp.sendu(basio::ip::udp::endpoint(basio::ip::make_address("127.0.0.1"), 9), nullptr, 1));
 	EXPECT_EQ(kcp.sendbuff(123456, "x", 1), -1);
-	EXPECT_EQ(kcp.sendbuff(ngl::asio_udp_endpoint(basio::ip::make_address("127.0.0.1"), 9), nullptr, 1), -1);
+	EXPECT_EQ(kcp.sendbuff(basio::ip::udp::endpoint(basio::ip::make_address("127.0.0.1"), 9), nullptr, 1), -1);
 }

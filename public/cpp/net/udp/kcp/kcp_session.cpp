@@ -29,7 +29,7 @@ namespace ngl
 	{
 		const auto lpstruct = (kcp_endpoint*)user;
 		// KCP emits raw UDP datagrams through this callback.
-		lpstruct->m_asiokcp->sendbuff(lpstruct->m_endpoint, buf, len);
+		lpstruct->m_asiokcp->sendu(lpstruct->m_endpoint, buf, len);
 		return len;
 	}
 
@@ -64,9 +64,9 @@ namespace ngl
 		return ltemp;
 	}
 
-	ptr_se kcp_session::erase_session_nolock(i32_sessionid asession)
+	std::shared_ptr<kcp_endpoint> kcp_session::erase_session_nolock(i32_sessionid asession)
 	{
-		ptr_se lpse = nullptr;
+		std::shared_ptr<kcp_endpoint> lpse = nullptr;
 		if (!tools::erasemap(m_dataofsession, asession, lpse) || lpse == nullptr)
 		{
 			return nullptr;
@@ -87,7 +87,7 @@ namespace ngl
 		return lpse;
 	}
 
-	ptr_se kcp_session::add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient)
+	std::shared_ptr<kcp_endpoint> kcp_session::add(int32_t aconv, const basio::ip::udp::endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient)
 	{
 		if (aconv <= 0)
 		{
@@ -118,7 +118,7 @@ namespace ngl
 				.m_count = 0x7fffffff,
 				.m_fun = [this, lsessionid, lcreatems](const tools::wheel_node*)
 				{
-					ptr_se* lpse = nullptr;
+					std::shared_ptr<kcp_endpoint>* lpse = nullptr;
 					{
 						lock_write(m_mutex);
 						lpse = tools::findmap(m_dataofsession, lsessionid);
@@ -136,7 +136,7 @@ namespace ngl
 		return ltemp;
 	}
 
-	ptr_se kcp_session::reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient)
+	std::shared_ptr<kcp_endpoint> kcp_session::reset_add(int32_t aconv, const basio::ip::udp::endpoint& aendpoint, i64_actorid aactoridserver, i64_actorid aactoridclient)
 	{
 		return add(aconv, aendpoint, aactoridserver, aactoridclient);
 	}
@@ -158,7 +158,7 @@ namespace ngl
 		erase_session_nolock(*lsessionid);
 	}
 
-	ptr_se kcp_session::find_info(i32_sessionid asession)
+	std::shared_ptr<kcp_endpoint> kcp_session::find_info(i32_sessionid asession)
 	{
 		auto lpse = tools::findmap(m_dataofsession, asession);
 		if (lpse == nullptr)
@@ -168,7 +168,7 @@ namespace ngl
 		return *lpse;
 	}
 
-	ptr_se kcp_session::find_info(const asio_udp_endpoint& aendpoint)
+	std::shared_ptr<kcp_endpoint> kcp_session::find_info(const basio::ip::udp::endpoint& aendpoint)
 	{
 		std::string lip = aendpoint.address().to_string();
 		i16_port lport = aendpoint.port();
@@ -185,13 +185,13 @@ namespace ngl
 		return *lpse;
 	}
 
-	ptr_se kcp_session::find(i32_sessionid asession)
+	std::shared_ptr<kcp_endpoint> kcp_session::find(i32_sessionid asession)
 	{
 		lock_read(m_mutex);
 		return find_info(asession);
 	}
 
-	ptr_se kcp_session::findbyactorid(i64_actorid aactorid)
+	std::shared_ptr<kcp_endpoint> kcp_session::findbyactorid(i64_actorid aactorid)
 	{
 		lock_read(m_mutex);
 		auto lpse = tools::findmap(m_actoridofsession, aactorid);
@@ -202,16 +202,16 @@ namespace ngl
 		return find_info(*lpse);
 	}
 
-	ptr_se kcp_session::find(const asio_udp_endpoint& aendpoint)
+	std::shared_ptr<kcp_endpoint> kcp_session::find(const basio::ip::udp::endpoint& aendpoint)
 	{
 		lock_read(m_mutex);
 		return find_info(aendpoint);
 	}
 
-	asio_udp_endpoint* kcp_session::find_endpoint(i32_sessionid asession)
+	basio::ip::udp::endpoint* kcp_session::find_endpoint(i32_sessionid asession)
 	{
 		lock_read(m_mutex);
-		ptr_se lpstruct = find_info(asession);
+		std::shared_ptr<kcp_endpoint> lpstruct = find_info(asession);
 		if (lpstruct == nullptr)
 		{
 			return nullptr;
@@ -219,9 +219,9 @@ namespace ngl
 		return &lpstruct->m_endpoint;
 	}
 
-	void kcp_session::foreach(const std::function<void(ptr_se&)>& acall)
+	void kcp_session::foreach(const std::function<void(std::shared_ptr<kcp_endpoint>&)>& acall)
 	{
-		std::vector<ptr_se> lsessions;
+		std::vector<std::shared_ptr<kcp_endpoint>> lsessions;
 		{
 			lock_read(m_mutex);
 			// Copy out shared_ptrs first so callbacks can safely mutate session tables.
@@ -238,9 +238,9 @@ namespace ngl
 		}
 	}
 
-	void kcp_session::foreachbyarea(i16_area aarea, const std::function<void(ptr_se&)>& acall)
+	void kcp_session::foreachbyarea(i16_area aarea, const std::function<void(std::shared_ptr<kcp_endpoint>&)>& acall)
 	{
-		std::vector<ptr_se> lsessions;
+		std::vector<std::shared_ptr<kcp_endpoint>> lsessions;
 		{
 			lock_read(m_mutex);
 			lsessions.reserve(m_dataofsession.size());
@@ -259,7 +259,7 @@ namespace ngl
 					continue;
 				}
 
-				ptr_se lptr = find_info(lpair.second);
+				std::shared_ptr<kcp_endpoint> lptr = find_info(lpair.second);
 				if (lptr != nullptr)
 				{
 					lsessions.push_back(lptr);

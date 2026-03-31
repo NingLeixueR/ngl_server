@@ -94,21 +94,18 @@ namespace ngl
 					handle_write(atcp, ec, apack);
 					if (ec)
 					{
-						log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
+						log_error()->print("asio_tcp::send fail [{}]", ec.message().c_str());
 						return;
 					}
 					do_send(atcp);
 				});
 		}
-	public:
 
 		void async_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<pack>& apack);
 
 		void do_send(const std::shared_ptr<service_tcp>& atcp);
 
-		void handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, std::shared_ptr<pack> apack);
-
-		void handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, std::shared_ptr<void> apack);
+		void handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, const std::shared_ptr<pack>& apack);
 
 		void close_socket(basio_iptcpsocket& socket);
 

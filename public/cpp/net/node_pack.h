@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include <utility>
+
 #include "tools/tools/tools_thread.h"
 #include "tools/serialize/pack.h"
 
@@ -29,12 +31,12 @@ namespace ngl
 		{
 		}
 
-		explicit node_pack(std::shared_ptr<pack>& apack) :
-			m_pack(apack)
+		explicit node_pack(std::shared_ptr<pack> apack) :
+			m_pack(std::move(apack))
 		{}
 
-		explicit node_pack(std::shared_ptr<void>& apack) :
-			m_packvoid(apack)
+		explicit node_pack(std::shared_ptr<void> apack) :
+			m_packvoid(std::move(apack))
 		{}
 
 		~node_pack() = default;

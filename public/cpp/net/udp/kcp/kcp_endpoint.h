@@ -23,31 +23,32 @@
 #include "net/asio_base.h"
 #include "tools/type.h"
 #include "ikcp.h"
+#include "net/node_pack.h"
 
 #include <memory>
 #include <map>
 
 namespace ngl
-{
-	using asio_udp = basio::ip::udp;
-	using asio_udp_endpoint = asio_udp::endpoint;
-
+{	
 	class asio_kcp;
 
 	extern tools::time_wheel m_kcptimer;
 
 	struct kcp_endpoint
 	{
-		asio_udp_endpoint	m_endpoint;			// Remote UDP endpoint.
-		i32_sessionid		m_session = 0;		// Local synthetic session id.
-		std::string			m_ip;				// Cached remote IP string.
-		i16_port			m_port = 0;			// Cached remote port.
-		asio_kcp*			m_asiokcp = nullptr; // Owning asio_kcp transport.
-		ikcpcb*				m_kcp = nullptr;	// Underlying KCP control block.
-		bool				m_isconnect = false; // True after the logical KCP handshake completes.
-		i64_actorid			m_client = 0;		// Logical client actor id.
-		i64_actorid			m_server = 0;		// Logical server actor id.
-		int64_t				m_timerid = 0;		// Periodic ikcp_update timer id.
+		basio::ip::udp::endpoint	m_endpoint;			// Remote UDP endpoint.
+		i32_sessionid				m_session = 0;		// Local synthetic session id.
+		std::string					m_ip;				// Cached remote IP string.
+		i16_port					m_port = 0;			// Cached remote port.
+		asio_kcp*					m_asiokcp = nullptr; // Owning asio_kcp transport.
+		ikcpcb*						m_kcp = nullptr;	// Underlying KCP control block.
+		bool						m_isconnect = false; // True after the logical KCP handshake completes.
+		i64_actorid					m_client = 0;		// Logical client actor id.
+		i64_actorid					m_server = 0;		// Logical server actor id.
+		int64_t						m_timerid = 0;		// Periodic ikcp_update timer id.
+		std::deque<node_pack>		m_list;				// Pending send queue drained by async completion handlers.
+		std::mutex					m_mutex;
+		bool						m_issend = false;	// Whether one async send is currently in flight.
 
 		typedef int (*output)(const char* buf, int len, struct IKCPCB* kcp, void* user);
 

@@ -25,24 +25,10 @@
 
 namespace ngl
 {
-	namespace
-	{
-		using udp_payload = std::shared_ptr<std::vector<char>>;
-
-		udp_payload make_udp_payload(const char* buf, int len)
-		{
-			if (buf == nullptr || len <= 0)
-			{
-				return nullptr;
-			}
-			return std::make_shared<std::vector<char>>(buf, buf + len);
-		}
-	}
-
 	// Register the inbound KCP handshake request handler.
 	void asio_kcp::func_ecmd_connect()const
 	{
-		udp_cmd::register_fun(udp_cmd::ecmd_connect, [](asio_kcp* ap, ptr_se& apstruct, const std::string& ajson)
+		udp_cmd::register_fun(udp_cmd::ecmd_connect, [](asio_kcp* ap, std::shared_ptr<kcp_endpoint>& apstruct, const std::string& ajson)
 			{
 				// The first control packet authenticates the logical server/client pair.
 				apstruct->m_isconnect = true;
@@ -74,7 +60,7 @@ namespace ngl
 	// Register the handshake acknowledgement handler for outbound connect attempts.
 	void asio_kcp::func_ecmd_connect_ret()const
 	{
-		udp_cmd::register_fun(udp_cmd::ecmd_connect_ret, [](asio_kcp* ap, ptr_se& apstruct, const std::string&)
+		udp_cmd::register_fun(udp_cmd::ecmd_connect_ret, [](asio_kcp* ap, std::shared_ptr<kcp_endpoint>& apstruct, const std::string&)
 			{
 				apstruct->m_isconnect = true;
 				if (ap->m_connectfun != nullptr)
@@ -89,7 +75,7 @@ namespace ngl
 	// Register the peer-initiated close handler.
 	void asio_kcp::func_ecmd_close()const
 	{
-		udp_cmd::register_fun(udp_cmd::ecmd_close, [](asio_kcp* ap, ptr_se& apstruct, const std::string&)
+		udp_cmd::register_fun(udp_cmd::ecmd_close, [](asio_kcp* ap, std::shared_ptr<kcp_endpoint>& apstruct, const std::string&)
 			{
 				udp_cmd::sendcmd(ap, apstruct->m_session, udp_cmd::ecmd_close_ret, "");
 				int lession = apstruct->m_session;
@@ -113,7 +99,7 @@ namespace ngl
 		: m_session(this)
 		, m_context()
 		, m_work_guard(basio::make_work_guard(m_context))
-		, m_socket(m_context, asio_udp_endpoint(asio_udp::v4(), port))
+		, m_socket(m_context, basio::ip::udp::endpoint(basio::ip::udp::v4(), port))
 		, m_port(port)
 	{
 		func_ecmd_connect();
@@ -136,7 +122,7 @@ namespace ngl
 			{
 				std::scoped_lock llock(m_waitmutex);
 				m_wait = nullptr;
-				m_waitendpoint = asio_udp_endpoint();
+				m_waitendpoint = basio::ip::udp::endpoint();
 			}
 
 			basio_errorcode ec;
@@ -151,30 +137,84 @@ namespace ngl
 		}
 	}
 
-	bool asio_kcp::async_send_copy(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(const basio_errorcode&)>& aerrorfun)
+	bool asio_kcp::async_send(const std::shared_ptr<kcp_endpoint>& akcp, const std::shared_ptr<pack>& apack)
 	{
-		const udp_payload lpayload = make_udp_payload(buf, len);
-		if (lpayload == nullptr)
+		if (apack->m_head != nullptr)
 		{
-			std::lock_guard<std::mutex> llock(m_waitmutex);
-			m_wait = nullptr;
-			m_waitendpoint = asio_udp_endpoint();
-			return false;
+			std::array<basio::const_buffer, 2> bufs{
+				basio::buffer(apack->m_head->m_data, sizeof(apack->m_head->m_data)),
+				basio::buffer(apack->m_buff, apack->m_pos)
+			};
+			return send(akcp, apack, bufs);
 		}
-
-		m_socket.async_send_to(basio::buffer(*lpayload), aendpoint,
-			[lpayload, aerrorfun](const basio_errorcode& ec, std::size_t)
-			{
-				if (ec && aerrorfun != nullptr)
-				{
-					aerrorfun(ec);
-				}
-			}
-		);
-		return true;
+		else
+		{
+			return send(akcp, apack, basio::buffer(apack->m_buff, apack->m_pos));
+		}
 	}
 
-	bool asio_kcp::sempack(const ptr_se& apstruct, const char* abuff, int abufflen)
+	void asio_kcp::do_send(const std::shared_ptr<kcp_endpoint>& akcp)
+	{
+		if (akcp == nullptr)
+		{
+			return;
+		}
+
+		node_pack litem;
+		{
+			std::lock_guard<std::mutex> llock(akcp->m_mutex);
+			if (akcp->m_list.empty())
+			{
+				akcp->m_issend = false;
+				return;
+			}
+			litem = akcp->m_list.front();
+			akcp->m_list.pop_front();
+		}
+
+		async_send(akcp, litem.get_pack());
+		return;
+	}
+
+	bool asio_kcp::send(i32_sessionid asession, std::shared_ptr<pack>& apack)
+	{
+		std::shared_ptr<kcp_endpoint> lpkcp = m_session.find(asession);
+		if (lpkcp == nullptr)
+		{
+			return false;
+		}
+		bool lstart = false;
+		{
+			std::lock_guard<std::mutex> llock(lpkcp->m_mutex);
+			lpkcp->m_list.emplace_back(apack);
+			if (!lpkcp->m_issend)
+			{
+				// Only one async_write chain is allowed at a time per TCP session.
+				lpkcp->m_issend = true;
+				lstart = true;
+			}
+		}
+		if (lstart)
+		{
+			do_send(lpkcp);
+		}
+		return true;
+	}
+	bool asio_kcp::send(i32_sessionid asessionid, const char* buf, int32_t len)
+	{
+		auto lpack = pack::make_pack(&m_pool, len);
+		if (lpack == nullptr || lpack->m_buff == nullptr)
+		{
+			return false;
+		}
+		lpack->m_head = nullptr;
+		memcpy(lpack->m_buff, buf, len);
+		lpack->m_len = len;
+		lpack->m_pos = len;
+		return send(asessionid, lpack);
+	}
+
+	bool asio_kcp::sempack(const std::shared_ptr<kcp_endpoint>& apstruct, const char* abuff, int abufflen)
 	{
 		if (!m_rate.add(apstruct->m_session))
 		{
@@ -236,7 +276,7 @@ namespace ngl
 						if (m_wait != nullptr && m_remoteport == m_waitendpoint)
 						{
 							lwait = m_wait;
-							m_waitendpoint = asio_udp_endpoint();
+							m_waitendpoint = basio::ip::udp::endpoint();
 							m_wait = nullptr;
 						}
 					}
@@ -248,7 +288,7 @@ namespace ngl
 					}
 					else
 					{
-						ptr_se lpstruct = m_session.find(m_remoteport);
+						std::shared_ptr<kcp_endpoint> lpstruct = m_session.find(m_remoteport);
 						if (lpstruct != nullptr)
 						{
 							int linput = lpstruct->input(m_buff, (long)bytes_received);
@@ -326,49 +366,36 @@ namespace ngl
 			});
 	};
 
-	// Send one raw UDP datagram without going through KCP session state.
-	bool asio_kcp::sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len)
+	bool asio_kcp::sendu(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len)
 	{
-		return async_send_copy(aendpoint, buf, len, [](const basio_errorcode& ec)
-			{
-				if (ec)
-				{
-					log_error()->print("sendu err [{}]", ec.message());
-				}
-			}
-		);
-	}
-
-	bool asio_kcp::sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun)
-	{
-		{
-			std::lock_guard<std::mutex> llock(m_waitmutex);
-			// Only one synchronous raw-UDP waiter is tracked at a time.
-			m_wait = afun;
-			m_waitendpoint = aendpoint;
-		}
-
-		const udp_payload lpayload = make_udp_payload(buf, len);
-		if (lpayload == nullptr)
-		{
-			return false;
-		}
-
-		m_socket.async_send_to(basio::buffer(*lpayload), aendpoint, [this, aendpoint, lpayload, afun](const basio_errorcode& ec, std::size_t)
+		m_socket.async_send_to(basio::buffer(buf, len), aendpoint, [this, aendpoint](const basio_errorcode& ec, std::size_t)
 			{
 				if (ec)
 				{
 					log_error()->print("async_send_to err [{}]", ec.message());
-					
+				}
+			}
+		);
+		return true;
+	}
+
+	bool asio_kcp::sendu_waitrecv(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack)
+	{
+		m_socket.async_send_to(basio::buffer(apack->m_buff, apack->m_pos), aendpoint, [this, aendpoint, apack](const basio_errorcode& ec, std::size_t)
+			{
+				if (ec)
+				{
+					log_error()->print("async_send_to err [{}]", ec.message());
+
 					tools::wheel_parm lparm
 					{
 						.m_ms = e_waitrecv_intervalms,
 						.m_intervalms = [](int64_t) {return e_waitrecv_intervalms; } ,
 						.m_count = 1,
-						.m_fun = [this, aendpoint, lpayload, afun](const tools::wheel_node*)
+						.m_fun = [this, aendpoint, apack](const tools::wheel_node*)
 						{
 							// Retry the raw UDP request until one send actually leaves the socket.
-							sendu_waitrecv(aendpoint, lpayload->data(), static_cast<int>(lpayload->size()), afun);
+							sendu_waitrecv(aendpoint, apack);
 						}
 					};
 					m_kcptimer.addtimer(lparm);
@@ -378,111 +405,68 @@ namespace ngl
 		return true;
 	}
 
-	// Route one serialized protocol pack to an existing KCP session.
-	bool asio_kcp::send_server(i32_sessionid asessionid, const std::shared_ptr<pack>& apack)
+	bool asio_kcp::sendu_waitrecv(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun)
 	{
-		ptr_se lpstruct = m_session.find(asessionid);
-		if (lpstruct == nullptr)
+		{
+			std::lock_guard<std::mutex> llock(m_waitmutex);
+			// Only one synchronous raw-UDP waiter is tracked at a time.
+			m_wait = afun;
+			m_waitendpoint = aendpoint;
+		}
+
+		auto lpack = pack::make_pack(&m_pool, len);
+		if (lpack == nullptr || lpack->m_buff == nullptr)
 		{
 			return false;
 		}
-
-		send(lpstruct->m_endpoint, apack->m_buff, apack->m_len);
-		return true;
+		lpack->m_head = nullptr;
+		memcpy(lpack->m_buff, buf, len);
+		lpack->m_len = len;
+		lpack->m_pos = len;
+		return sendu_waitrecv(aendpoint, lpack);
 	}
 
-	bool asio_kcp::send_server(const std::shared_ptr<pack>& apack)
+	bool asio_kcp::send_server(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
 	{
-		m_session.foreach([this, &apack](ptr_se& aptr)
+		return send(asessionid, apack);
+	}
+
+	bool asio_kcp::send_server(std::shared_ptr<pack>& apack)
+	{
+		m_session.foreach([this, &apack](std::shared_ptr<kcp_endpoint>& aptr)
 			{
-				send(aptr->m_endpoint, apack->m_buff, apack->m_len);
+				send(aptr->m_session, apack->m_buff, apack->m_len);
 			}
 		);
 		return true;
 	}
 
-	bool asio_kcp::sendpackbyarea(i16_area aarea, const std::shared_ptr<pack>& apack)
+	bool asio_kcp::sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack)
 	{
-		m_session.foreachbyarea(aarea, [this, &apack](ptr_se& aptr)
+		m_session.foreachbyarea(aarea, [this, &apack](std::shared_ptr<kcp_endpoint>& aptr)
 			{
-				send(aptr->m_endpoint, apack->m_buff, apack->m_len);
+				send(aptr->m_session, apack);
 			}
 		);
 		return true;
 	}
 
 	// Route one serialized protocol pack by looking up the remote endpoint.
-	bool asio_kcp::send_server(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack)
+	/*bool asio_kcp::send_server(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack)
 	{
 		send(aendpoint, apack->m_buff, apack->m_len);
 		return true;
-	}
+	}*/
 
-	bool asio_kcp::sendpackbyactorid(i64_actorid aactorid, const std::shared_ptr<pack>& apack)
+	bool asio_kcp::sendpackbyactorid(i64_actorid aactorid, std::shared_ptr<pack>& apack)
 	{
-		ptr_se lpstruct = m_session.findbyactorid(aactorid);
+		std::shared_ptr<kcp_endpoint> lpstruct = m_session.findbyactorid(aactorid);
 		if (lpstruct == nullptr)
 		{
 			return false;
 		}
-		send(lpstruct->m_endpoint, apack->m_buff, apack->m_len);
+		send(lpstruct->m_session, apack);
 		return true;
-	}
-
-	bool asio_kcp::send(i32_sessionid asessionid, const char* buf, int len)
-	{
-		ptr_se lpstruct = m_session.find(asessionid);
-		if (lpstruct == nullptr)
-		{
-			return false;
-		}
-		send(lpstruct->m_endpoint, buf, len);
-		return true;
-	}
-
-	int asio_kcp::send(const asio_udp_endpoint& aendpoint, const char* buf, int len)
-	{
-		ptr_se lpstruct = m_session.find(aendpoint);
-		if (lpstruct == nullptr)
-		{
-			return -1;
-		}
-		int ret = lpstruct->send(buf, len);
-		// Flush immediately so KCP emits UDP packets without waiting for the next update tick.
-		lpstruct->flush();
-		return ret;
-	}
-
-	// KCP output callback: flush already-segmented UDP bytes through ASIO.
-	int asio_kcp::sendbuff(i32_session asession, const char* buf, int len)
-	{
-		ptr_se lpstruct = m_session.find(asession);
-		if (lpstruct == nullptr)
-		{
-			return -1;
-		}
-		return async_send_copy(lpstruct->m_endpoint, buf, len,
-			[](const basio_errorcode& ec)
-			{
-				if (ec)
-				{
-					log_error()->print("asio_kcp::sendbuff error [{}]", ec.message());
-				}
-			}
-		) ? 0 : -1;
-	}
-
-	int asio_kcp::sendbuff(const asio_udp_endpoint& aendpoint, const char* buf, int len)
-	{
-		return async_send_copy(aendpoint, buf, len,
-			[](const basio_errorcode& ec)
-			{
-				if (ec)
-				{
-					log_error()->print("asio_kcp::sendbuff error [{}]", ec.message());
-				}
-			}
-		) ? 0 : -1;
 	}
 
 	void asio_kcp::connect(int32_t aconv
@@ -494,7 +478,7 @@ namespace ngl
 		, const std::function<void(i32_session)>& afun
 	)
 	{
-		ngl::asio_udp_endpoint lendpoint(basio_ipaddress::from_string(aip), aport);
+		basio::ip::udp::endpoint lendpoint(basio_ipaddress::from_string(aip), aport);
 		connect(aconv, akcpsess, aserver, aclient, lendpoint, afun);
 	}
 
@@ -502,12 +486,12 @@ namespace ngl
 		, std::string& akcpsess
 		, i64_actorid aserver
 		, i64_actorid aclient
-		, const asio_udp_endpoint& aendpoint
+		, const basio::ip::udp::endpoint& aendpoint
 		, const std::function<void(i32_session)>& afun
 	)
 	{
 		// Build the local KCP session first, then send the logical handshake command over it.
-		ptr_se lpstruct = m_session.add(aconv, aendpoint, aserver, aclient);
+		std::shared_ptr<kcp_endpoint> lpstruct = m_session.add(aconv, aendpoint, aserver, aclient);
 		ncjson ltempjson;
 		njson::push(ltempjson, { "actoridserver","actoridclient","session" }, aserver, aclient, akcpsess);
 		m_connectfun = afun;
@@ -516,7 +500,7 @@ namespace ngl
 
 	i64_actorid asio_kcp::find_server(i32_session asession)
 	{
-		ptr_se lpstruct = m_session.find(asession);
+		std::shared_ptr<kcp_endpoint> lpstruct = m_session.find(asession);
 		if (lpstruct == nullptr)
 		{
 			return -1;
@@ -526,7 +510,7 @@ namespace ngl
 
 	i64_actorid asio_kcp::find_client(i32_session asession)
 	{
-		ptr_se lpstruct = m_session.find(asession);
+		std::shared_ptr<kcp_endpoint> lpstruct = m_session.find(asession);
 		if (lpstruct == nullptr)
 		{
 			return nguid::make();
@@ -536,7 +520,7 @@ namespace ngl
 
 	bool asio_kcp::find_actorid(i32_session asession, i64_actorid& aserver, i64_actorid& aclient)
 	{
-		ptr_se lpstruct = m_session.find(asession);
+		std::shared_ptr<kcp_endpoint> lpstruct = m_session.find(asession);
 		if (lpstruct == nullptr)
 		{
 			return false;
@@ -548,7 +532,7 @@ namespace ngl
 
 	i32_session asio_kcp::find_session(i64_actorid aactorid)
 	{
-		ptr_se lpstruct = m_session.findbyactorid(aactorid);
+		std::shared_ptr<kcp_endpoint> lpstruct = m_session.findbyactorid(aactorid);
 		if (lpstruct == nullptr)
 		{
 			return -1;
@@ -563,7 +547,7 @@ namespace ngl
 
 	void asio_kcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aserver, i64_actorid aclient)
 	{
-		ngl::asio_udp_endpoint lendpoint(basio_ipaddress::from_string(aip), aport);
+		basio::ip::udp::endpoint lendpoint(basio_ipaddress::from_string(aip), aport);
 		m_session.reset_add(aconv, lendpoint, aserver, aclient);
 	}
 

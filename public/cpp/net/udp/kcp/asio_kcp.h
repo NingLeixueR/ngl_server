@@ -51,13 +51,13 @@ namespace ngl
 		bpool								m_pool;				// Temporary pack allocation pool.
 		basio::io_context					m_context;			// Dedicated UDP io_context.
 		basio_ioservicework					m_work_guard;		// Keeps m_context alive until shutdown.
-		asio_udp::socket					m_socket;			// Shared UDP socket bound to m_port.
-		asio_udp_endpoint					m_remoteport;		// Source endpoint of the last received datagram.
+		basio::ip::udp::socket					m_socket;			// Shared UDP socket bound to m_port.
+		basio::ip::udp::endpoint					m_remoteport;		// Source endpoint of the last received datagram.
 		char								m_buff[e_buff_byte] = { 0 }; // Raw UDP receive buffer.
 		char								m_buffrecv[e_buffrecv_byte] = { 0 }; // Buffer for packets popped out of KCP.
 		std::mutex							m_waitmutex;		// Protects synchronous wait-recv helper state.
 		std::function<void(char*, int)>		m_wait = nullptr;	// Optional one-shot raw UDP reply callback.
-		asio_udp_endpoint					m_waitendpoint;		// Endpoint expected by m_wait.
+		basio::ip::udp::endpoint					m_waitendpoint;		// Endpoint expected by m_wait.
 		i16_port							m_port = 0;			// Bound UDP port.
 		std::jthread						m_thread;			// Background thread running m_context.
 		nrate								m_rate;				// Per-session traffic limiter.
@@ -66,8 +66,30 @@ namespace ngl
 
 		~asio_kcp() noexcept;
 	private:
+		template <typename TSEQ>
+		bool send(const std::shared_ptr<kcp_endpoint>& akcp
+			, const std::shared_ptr<pack>& apack
+			, const TSEQ& adata
+		)
+		{
+			m_socket.async_send_to(adata, akcp->m_endpoint,
+				[this, apack, akcp](const basio_errorcode& ec, std::size_t)
+				{
+					if (ec)
+					{
+						log_error()->print("asio_tcp::handle_write[{}]", ec.message().c_str());
+						close(akcp->m_session);
+						return;
+					}
+					do_send(akcp);
+				}
+			);
+			return true;
+		}
 		// Register built-in control commands used during KCP handshake/close.
-		bool async_send_copy(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(const basio_errorcode&)>& aerrorfun = {});
+		bool async_send(const std::shared_ptr<kcp_endpoint>& akcp, const std::shared_ptr<pack>& apack);
+
+		void do_send(const std::shared_ptr<kcp_endpoint>& akcp);
 
 		void func_ecmd_connect()const;
 
@@ -76,25 +98,29 @@ namespace ngl
 		void func_ecmd_close()const;
 	public:
 		// Send raw UDP datagrams, KCP packs, or KCP-routed actor traffic.
-		bool sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len);
+		bool sendu(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len);
 
+		bool sendu_waitrecv(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack);
 		// Send one raw UDP datagram and wait for the first reply from the same endpoint.
-		bool sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun);
+		bool sendu_waitrecv(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun);
 
 		// Route one serialized pack through an existing KCP session id.
-		bool send_server(i32_sessionid asessionid, const std::shared_ptr<pack>& apack);
+		bool send_server(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
 
 		// Broadcast one serialized pack to every active KCP session.
-		bool send_server(const std::shared_ptr<pack>& apack);
+		bool send_server(std::shared_ptr<pack>& apack);
 
 		// Broadcast one serialized pack only to sessions in the specified area.
-		bool sendpackbyarea(i16_area aarea, const std::shared_ptr<pack>& apack);
+		bool sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack);
 
 		// Route one serialized pack by looking up the KCP session for a remote endpoint.
-		bool send_server(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack);
+		//bool send_server(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack);
 
 		// Route one serialized pack to the session currently owned by `aactorid`.
-		bool sendpackbyactorid(i64_actorid aactorid, const std::shared_ptr<pack>& apack);
+		bool sendpackbyactorid(i64_actorid aactorid, std::shared_ptr<pack>& apack);
+
+		bool send(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
+		bool send(i32_sessionid asessionid, const char* buf, int32_t len);
 
 		// Start an outbound KCP handshake toward a remote UDP endpoint.
 		void connect(int32_t aconv
@@ -111,7 +137,7 @@ namespace ngl
 			, std::string& akcpsess
 			, i64_actorid aserver
 			, i64_actorid aclient
-			, const asio_udp_endpoint& aendpoint
+			, const basio::ip::udp::endpoint& aendpoint
 			, const std::function<void(i32_session)>& afun
 		);
 
@@ -132,17 +158,17 @@ namespace ngl
 		void reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aserver, i64_actorid aclient);
 
 		// Feed one fully reconstructed KCP payload into the normal protocol pipeline.
-		bool sempack(const ptr_se& apstruct, const char* abuff, int abufflen);
+		bool sempack(const std::shared_ptr<kcp_endpoint>& apstruct, const char* abuff, int abufflen);
 
 		// Start the asynchronous UDP receive loop.
 		void start();
 
-		bool send(i32_sessionid asessionid, const char* buf, int len);
+		/*bool send(i32_sessionid asessionid, const char* buf, int len);
 
-		int send(const asio_udp_endpoint& aendpoint, const char* buf, int len);
+		int send(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len);
 
 		int sendbuff(i32_session asession, const char* buf, int len);
 
-		int sendbuff(const asio_udp_endpoint& aendpoint, const char* buf, int len);
+		int sendbuff(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len);*/
 	};
 }// namespace ngl

@@ -32,12 +32,12 @@ namespace ngl
 			ecmd_close_ret,             // Logical close acknowledgement.
 			ecmd_minlen = sizeof("ecmd*") - 1,
 		};
-		using ecmd_callback = std::function<void(asio_kcp*, ptr_se&, const std::string&)>;
+		using ecmd_callback = std::function<void(asio_kcp*, std::shared_ptr<kcp_endpoint>&, const std::string&)>;
 
-		using handle_cmd = tools::cmd<udp_cmd, ecmd, asio_kcp*, ptr_se&, const std::string&>;
+		using handle_cmd = tools::cmd<udp_cmd, ecmd, asio_kcp*, std::shared_ptr<kcp_endpoint>&, const std::string&>;
 
 		// Parse and dispatch built-in control commands that travel inside the KCP stream.
-		static bool run_cmd(asio_kcp* ap, ptr_se& apstruct, const char* abuf, int32_t alen);
+		static bool run_cmd(asio_kcp* ap, std::shared_ptr<kcp_endpoint>& apstruct, const char* abuf, int32_t alen);
 
 		static void register_fun(ecmd anum, const ecmd_callback& afun);
 
