@@ -127,7 +127,7 @@ namespace ngl
 	template <typename Y, typename T/* = Y*/>
 	bool ntcp::send(i32_sessionid asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
+		std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid, false);
 		if (lpack == nullptr)
 		{
 			return false;
@@ -153,7 +153,7 @@ namespace ngl
 	template <typename Y, typename T/* = Y*/>
 	bool ntcp::send(const std::set<i32_sessionid>& asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, 0);
+		std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, arequestactorid, false);
 		if (lpack == nullptr)
 		{
 			return false;

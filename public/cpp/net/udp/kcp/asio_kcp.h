@@ -51,16 +51,25 @@ namespace ngl
 		bpool								m_pool;				// Temporary pack allocation pool.
 		basio::io_context					m_context;			// Dedicated UDP io_context.
 		basio_ioservicework					m_work_guard;		// Keeps m_context alive until shutdown.
-		basio::ip::udp::socket					m_socket;			// Shared UDP socket bound to m_port.
-		basio::ip::udp::endpoint					m_remoteport;		// Source endpoint of the last received datagram.
+		basio::ip::udp::socket				m_socket;			// Shared UDP socket bound to m_port.
+		basio::ip::udp::endpoint			m_remoteport;		// Source endpoint of the last received datagram.
 		char								m_buff[e_buff_byte] = { 0 }; // Raw UDP receive buffer.
 		char								m_buffrecv[e_buffrecv_byte] = { 0 }; // Buffer for packets popped out of KCP.
 		std::mutex							m_waitmutex;		// Protects synchronous wait-recv helper state.
 		std::function<void(char*, int)>		m_wait = nullptr;	// Optional one-shot raw UDP reply callback.
-		basio::ip::udp::endpoint					m_waitendpoint;		// Endpoint expected by m_wait.
+		basio::ip::udp::endpoint			m_waitendpoint;		// Endpoint expected by m_wait.
 		i16_port							m_port = 0;			// Bound UDP port.
 		std::jthread						m_thread;			// Background thread running m_context.
 		nrate								m_rate;				// Per-session traffic limiter.
+		struct tmpdata
+		{
+			basio::ip::udp::endpoint m_endpoint;
+			const char* m_buff = nullptr;
+			int32_t m_len = 0;
+		};
+		std::mutex							m_mutex;
+		bool								m_issend = false;
+		std::deque<tmpdata>					m_list;				// Pending send queue drained by async completion handlers.
 	public:
 		explicit asio_kcp(i16_port port);
 
@@ -96,9 +105,13 @@ namespace ngl
 		void func_ecmd_connect_ret()const;
 
 		void func_ecmd_close()const;
+
+		bool async_send(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len);
+		void do_send();
 	public:
 		// Send raw UDP datagrams, KCP packs, or KCP-routed actor traffic.
 		bool sendu(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len);
+		bool sendu(kcp_endpoint* akcpe, const char* buf, int len);
 
 		bool sendu_waitrecv(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack);
 		// Send one raw UDP datagram and wait for the first reply from the same endpoint.
@@ -162,13 +175,5 @@ namespace ngl
 
 		// Start the asynchronous UDP receive loop.
 		void start();
-
-		/*bool send(i32_sessionid asessionid, const char* buf, int len);
-
-		int send(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len);
-
-		int sendbuff(i32_session asession, const char* buf, int len);
-
-		int sendbuff(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len);*/
 	};
 }// namespace ngl

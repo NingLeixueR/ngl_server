@@ -106,6 +106,9 @@ namespace ngl
 		EPH_HEAD_VAL push(const char*& abuff, int32_t& alen);
 
 		bool push_format(ngl::ser::serialize_push* aserialize)const;
+
+		// Skips the header prefix when callers need the writable payload span.
+		void reservebuff(char* abuff, int abufflen, std::pair<char*, int32_t>& apair);
 	};
 }// namespace ngl
 

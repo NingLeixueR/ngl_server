@@ -77,7 +77,7 @@ namespace ngl
 			{
 				return true;
 			}
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, 0);
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, 0, false);
 			if (lpack == nullptr)
 			{
 				return false;
@@ -92,7 +92,7 @@ namespace ngl
 			{
 				return true;
 			}
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, 0);
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, arequestactorid);
 			if (lpack == nullptr)
 			{
 				return false;
@@ -128,7 +128,7 @@ namespace ngl
 				{
 					if (lpack == nullptr)
 					{
-						lpack = net_pack<T>::npack(&pool(), adata, aactorid, arequestactorid);
+						lpack = net_pack<T>::npack(&pool(), adata, aactorid, arequestactorid, false);
 						if (lpack == nullptr)
 						{
 							return false;
@@ -198,7 +198,7 @@ namespace ngl
 	template <typename T>
 	std::shared_ptr<pack> actor_base::net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		return ::ngl::net_pack<T>::npack(&nnet::instance().pool(), adata, aactorid, arequestactorid);
+		return ::ngl::net_pack<T>::npack(&nnet::instance().pool(), adata, aactorid, arequestactorid, false);
 	}
 
 	template <typename T>

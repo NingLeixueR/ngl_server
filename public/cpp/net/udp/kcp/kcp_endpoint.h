@@ -15,15 +15,15 @@
 
 #pragma once
 
+#include "tools/tools/tools_time_wheel.h"
+#include "tools/tools/tools_thread.h"
 #include "tools/serialize/nrate.h"
 #include "tools/serialize/pack.h"
-#include "tools/tools/tools_thread.h"
-#include "tools/tools/tools_time_wheel.h"
 #include "tools/log/nlog.h"
 #include "net/asio_base.h"
+#include "net/node_pack.h"
 #include "tools/type.h"
 #include "ikcp.h"
-#include "net/node_pack.h"
 
 #include <memory>
 #include <map>
@@ -34,7 +34,7 @@ namespace ngl
 
 	extern tools::time_wheel m_kcptimer;
 
-	struct kcp_endpoint
+	struct kcp_endpoint :public std::enable_shared_from_this<kcp_endpoint>
 	{
 		basio::ip::udp::endpoint	m_endpoint;			// Remote UDP endpoint.
 		i32_sessionid				m_session = 0;		// Local synthetic session id.

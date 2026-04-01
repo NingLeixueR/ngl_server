@@ -202,6 +202,37 @@ namespace ngl
 			}
 		};
 
+		template <typename T>
+		struct serialize_format<std::shared_ptr<T>>
+		{
+			static bool push(serialize_push* aser, const std::shared_ptr<T>& adata)
+			{
+				if (adata == nullptr)
+				{
+					return false;
+				}
+				return serialize_format<T>::push(aser, *adata);
+			}
+
+			static bool pop(serialize_pop* aser, std::shared_ptr<T>& adata)
+			{
+				if (adata == nullptr)
+				{
+					return false;
+				}
+				return serialize_format<T>::pop(aser, *adata);
+			}
+
+			static void bytes(serialize_byte* aser, const std::shared_ptr<T>& adata)
+			{
+				if (adata == nullptr)
+				{
+					return;
+				}
+				serialize_format<T>::bytes(aser, *adata);
+			}
+		};
+
 		template <>
 		struct serialize_format<int8_t>
 		{

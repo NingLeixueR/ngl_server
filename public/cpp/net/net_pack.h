@@ -27,15 +27,27 @@ namespace ngl
 		net_pack& operator=(const net_pack&) = delete;
 	public:
 		template <typename Y>
-		static std::shared_ptr<pack> npack(bpool* apool, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static std::shared_ptr<pack> npack(bpool* apool, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid, bool ahead)
 		{
 			// Compute the serialized payload size first so pack::make_pack() can allocate once.
 			ngl::ser::serialize_byte lserialize;
 			ngl::ser::nserialize::bytes(&lserialize, adata);
-			const int lbuffbyte = lserialize.pos()/* + pack_head::size()*/;
-			if (lbuffbyte <= 0)
+			int lbuffbyte = 0;
+			if (ahead)
 			{
-				return nullptr;
+				lbuffbyte = lserialize.pos() + pack_head::size();
+				if (lbuffbyte <= 0)
+				{
+					return nullptr;
+				}
+			}
+			else
+			{
+				lbuffbyte = lserialize.pos();
+				if (lbuffbyte < 0)
+				{
+					return nullptr;
+				}
 			}
 			std::shared_ptr<pack> lpack = pack::make_pack(apool, lbuffbyte);
 			if (lpack == nullptr || lpack->m_buff == nullptr)
@@ -43,7 +55,7 @@ namespace ngl
 				return nullptr;
 			}
 			// structbytes writes both the pack header and the serialized payload into the buffer.
-			if (structbytes<T>::tobytes(lpack, adata, aactorid, arequestactorid) == false)
+			if (!structbytes<T>::tobytes(lpack, adata, aactorid, arequestactorid, ahead))
 			{
 				return nullptr;
 			}

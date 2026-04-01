@@ -29,7 +29,7 @@ namespace ngl
 	{
 		const auto lpstruct = (kcp_endpoint*)user;
 		// KCP emits raw UDP datagrams through this callback.
-		lpstruct->m_asiokcp->sendu(lpstruct->m_endpoint, buf, len);
+		lpstruct->m_asiokcp->sendu(lpstruct, buf, len);
 		return len;
 	}
 

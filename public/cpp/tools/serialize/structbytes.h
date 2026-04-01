@@ -99,13 +99,30 @@ namespace ngl
 		}
 
 		template <typename Y>
-		static bool tobytes(std::shared_ptr<pack>& apack, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool tobytes(std::shared_ptr<pack>& apack, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid, bool ahead)
 		{
 			if (apack == nullptr || apack->m_buff == nullptr)
 			{
 				return false;
 			}
-			std::pair<char*, int> lpair(apack->m_buff, apack->m_len);
+
+			std::pair<char*, int> lpair;
+			if (ahead)
+			{
+				// Use reservebuff to get buffer and serialize header separately
+				apack->m_head->reservebuff(apack->m_buff, apack->m_len, lpair);
+				if (lpair.first == nullptr)
+				{
+					return false;
+				}
+			}
+			else
+			{
+				// Direct buffer usage without reservebuff
+				lpair.first = apack->m_buff;
+				lpair.second = apack->m_len;
+			}
+
 			ngl::ser::serialize_push lser(lpair.first, lpair.second);
 			if (!ngl::ser::nserialize::push(&lser, adata))
 			{
@@ -124,15 +141,31 @@ namespace ngl
 				ngl::tools::bytexor(lpair.first, lpayloadbytes, 0);
 			}
 
-			// Finalize the header once payload size, routing, and protocol number are known.
-			apack->m_head->m_data[EPH_BYTES] = lpayloadbytes /*+ pack_head::size()*/;
+
+			apack->m_head->m_data[EPH_BYTES] = lpayloadbytes;
 			apack->m_head->set_mask();
 			apack->m_head->set_time();
 			apack->m_head->set_actor(aactorid, arequestactorid);
 			apack->m_head->set_protocol(tprotocol::protocol<T>());
 
-			apack->m_len = lpayloadbytes;
-			apack->m_pos = lpayloadbytes;
+			// Finalize the header once payload size, routing, and protocol number are known.
+			if (ahead)
+			{
+				// Serialize header when using reservebuff mode
+				ngl::ser::serialize_push lserhead(apack->m_buff, apack->m_len);
+				if (!ngl::ser::nserialize::push(&lserhead, apack->m_head))
+				{
+					return false;
+				}
+				apack->m_len = pack_head::size() + lpayloadbytes;
+				apack->m_pos = apack->m_len;
+			}
+			else
+			{
+
+				apack->m_len = lpayloadbytes;
+				apack->m_pos = lpayloadbytes;
+			}
 			return true;
 		}
 	};

@@ -51,7 +51,7 @@ namespace ngl
 		template <typename T>
 		bool send(i64_actorid aactoridclient, T& adata)
 		{
-			auto lpack = net_pack<T>::npack(&m_pool, adata, 0, 0);
+			auto lpack = net_pack<T>::npack(&m_pool, adata, 0, 0, true);
 			if (lpack == nullptr)
 			{
 				return false;
