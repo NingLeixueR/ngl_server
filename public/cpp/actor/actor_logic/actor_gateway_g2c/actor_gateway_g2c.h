@@ -132,7 +132,7 @@ namespace ngl
 			{
 				if (larea0 == nguid::none_area())
 				{
-					lkcp->send_server(lsendpack);
+					lkcp->send(lsendpack);
 				}
 				else
 				{// if(larea0 != nguid::none_area())
@@ -142,7 +142,7 @@ namespace ngl
 			else if (luid_size == 1)
 			{
 				const i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea0, ldata0);
-				lkcp->send_server(lactorid, lsendpack);
+				lkcp->send(lactorid, lsendpack);
 			}
 			else
 			{
@@ -151,7 +151,7 @@ namespace ngl
 				{
 					lids.emplace(nguid::make(ACTOR_ROBOT, lareas[lidx], luids[lidx]));
 				}
-				lkcp->send_server(lids, lsendpack);
+				lkcp->send(lids, lsendpack);
 			}
 			return true;
 		}

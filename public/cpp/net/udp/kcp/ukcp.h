@@ -40,7 +40,7 @@ namespace ngl
 		template <typename T>
 		bool send(const std::set<i64_actorid>& aactors, T& adata)
 		{
-			auto lpack = net_pack<T>::npack(&m_pool, adata, 0, 0, false);
+			auto lpack = net_pack<T>::npack(&m_pool, adata, nguid::make(), nguid::make(), false);
 			if (lpack == nullptr)
 			{
 				return false;
@@ -59,11 +59,11 @@ namespace ngl
 			return send_server(aactoridclient, lpack);
 		}
 
-		bool send_server(std::shared_ptr<pack>& apack);
+		bool send(std::shared_ptr<pack>& apack);
 
-		bool send_server(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack);
+		bool send(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack);
 
-		bool send_server(i64_actorid aactor, std::shared_ptr<pack>& apack);
+		bool send(i64_actorid aactor, std::shared_ptr<pack>& apack);
 
 		bool sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack);
 
@@ -75,7 +75,7 @@ namespace ngl
 			{
 				return false;
 			}
-			return m_kcp.send_server(aendpoint, lpack);
+			return m_kcp.send(aendpoint, lpack);
 		}
 #pragma endregion 
 
@@ -83,7 +83,7 @@ namespace ngl
 		template <typename T>
 		bool sendu(const basio::ip::udp::endpoint& aendpoint, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid, true);
+			auto lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid, true);
 			if (lpack == nullptr)
 			{
 				return false;

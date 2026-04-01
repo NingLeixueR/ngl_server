@@ -33,21 +33,21 @@ namespace ngl
 		return std::make_shared<ukcp>(aprot);
 	}
 
-	bool ukcp::send_server(std::shared_ptr<pack>& apack)
+	bool ukcp::send(std::shared_ptr<pack>& apack)
 	{
-		return m_kcp.send_server(apack);
+		return m_kcp.send(apack);
 	}
 
-	bool ukcp::send_server(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack)
+	bool ukcp::send(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack)
 	{
 		for (i64_actorid lactorid : aactors)
 		{
-			send_server(lactorid, apack);
+			send(lactorid, apack);
 		}
 		return true;
 	}
 
-	bool ukcp::send_server(i64_actorid aactor, std::shared_ptr<pack>& apack)
+	bool ukcp::send(i64_actorid aactor, std::shared_ptr<pack>& apack)
 	{
 		i32_session lsession = m_kcp.find_session(aactor);
 		if (lsession == -1)
@@ -70,7 +70,7 @@ namespace ngl
 			// Robot-side sends invert the header because the robot acts as the logical client.
 			pack_head::head_set_actor((int32_t*)apack->m_buff, lserver, lclient);
 		}
-		m_kcp.send_server(lsession, apack);
+		m_kcp.send(lsession, apack);
 		return true;
 	}
 

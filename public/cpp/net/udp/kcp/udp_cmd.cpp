@@ -14,8 +14,10 @@
 // File overview: Implements logic for kcp.
 
 
+#include "actor/protocol/nprotocol.h"
 #include "net/udp/kcp/asio_kcp.h"
 #include "net/udp/kcp/udp_cmd.h"
+#include "tools/log/nlog.h"
 
 namespace ngl
 {

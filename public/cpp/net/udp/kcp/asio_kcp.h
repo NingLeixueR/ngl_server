@@ -64,8 +64,7 @@ namespace ngl
 		struct tmpdata
 		{
 			basio::ip::udp::endpoint m_endpoint;
-			const char* m_buff = nullptr;
-			int32_t m_len = 0;
+			std::shared_ptr<pack> m_pack;
 		};
 		std::mutex							m_mutex;
 		bool								m_issend = false;
@@ -106,35 +105,32 @@ namespace ngl
 
 		void func_ecmd_close()const;
 
-		bool async_send(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len);
+		bool async_send(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack);
 		void do_send();
 	public:
 		// Send raw UDP datagrams, KCP packs, or KCP-routed actor traffic.
-		bool sendu(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len);
-		bool sendu(kcp_endpoint* akcpe, const char* buf, int len);
+		bool sendu(const basio::ip::udp::endpoint& aendpoint, const char* buf, int32_t len);
+		bool sendu(kcp_endpoint* akcpe, const char* buf, int32_t len);
+		bool sendu(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack);
+		bool sendu(kcp_endpoint* akcpe, const std::shared_ptr<pack>& apack);
 
 		bool sendu_waitrecv(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack);
 		// Send one raw UDP datagram and wait for the first reply from the same endpoint.
 		bool sendu_waitrecv(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun);
 
-		// Route one serialized pack through an existing KCP session id.
-		bool send_server(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
-
 		// Broadcast one serialized pack to every active KCP session.
-		bool send_server(std::shared_ptr<pack>& apack);
+		bool send(std::shared_ptr<pack>& apack);
 
 		// Broadcast one serialized pack only to sessions in the specified area.
 		bool sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack);
-
-		// Route one serialized pack by looking up the KCP session for a remote endpoint.
-		//bool send_server(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack);
 
 		// Route one serialized pack to the session currently owned by `aactorid`.
 		bool sendpackbyactorid(i64_actorid aactorid, std::shared_ptr<pack>& apack);
 
 		bool send(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
-		bool send(i32_sessionid asessionid, const char* buf, int32_t len);
 
+		bool send(i32_sessionid asessionid, const char* buf, int32_t len);
+	public:
 		// Start an outbound KCP handshake toward a remote UDP endpoint.
 		void connect(int32_t aconv
 			, std::string& akcpsess

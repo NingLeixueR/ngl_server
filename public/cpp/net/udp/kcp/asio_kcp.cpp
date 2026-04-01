@@ -184,6 +184,7 @@ namespace ngl
 	{
 		return send(asession, apack->m_buff, apack->m_pos);
 	}
+
 	bool asio_kcp::send(i32_sessionid asessionid, const char* buf, int32_t len)
 	{
 		std::shared_ptr<kcp_endpoint> lpstruct = m_session.find(asessionid);
@@ -349,10 +350,10 @@ namespace ngl
 			});
 	};
 
-	bool asio_kcp::async_send(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len)
+	bool asio_kcp::async_send(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack)
 	{
-		m_socket.async_send_to(basio::buffer(buf, len), aendpoint,
-			[this](const basio_errorcode& ec, std::size_t)
+		m_socket.async_send_to(basio::buffer(apack->m_buff, apack->m_pos), aendpoint,
+			[this, apack](const basio_errorcode& ec, std::size_t)
 			{
 				if (ec)
 				{
@@ -378,25 +379,10 @@ namespace ngl
 			m_list.pop_front();
 			m_issend = true;
 		}
-		async_send(litem.m_endpoint, litem.m_buff, litem.m_len);
+		async_send(litem.m_endpoint, litem.m_pack);
 	}
 
-	bool asio_kcp::sendu(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len)
-	{
-		{
-			std::lock_guard<std::mutex> llock(m_mutex);
-			m_list.push_back(tmpdata
-				{
-					.m_endpoint = aendpoint,
-					.m_buff = buf,
-					.m_len = len
-				});
-		}
-		do_send();
-		return true;
-	}
-
-	bool asio_kcp::sendu(kcp_endpoint* akcpe, const char* buf, int len)
+	bool asio_kcp::sendu(const basio::ip::udp::endpoint& aendpoint, const char* buf, int32_t len)
 	{
 		auto lpack = pack::make_pack(&m_pool, len);
 		if (lpack == nullptr || lpack->m_buff == nullptr)
@@ -407,8 +393,31 @@ namespace ngl
 		memcpy(lpack->m_buff, buf, len);
 		lpack->m_len = len;
 		lpack->m_pos = len;
+		return sendu(aendpoint, lpack);
+	}
 
-		async_send(akcpe->shared_from_this(), lpack);
+	bool asio_kcp::sendu(kcp_endpoint* akcpe, const char* buf, int32_t len)
+	{
+		return sendu(akcpe->m_endpoint, buf, len);
+	}
+
+	bool asio_kcp::sendu(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack)
+	{
+		{
+			std::lock_guard<std::mutex> llock(m_mutex);
+			m_list.push_back(tmpdata
+				{
+					.m_endpoint = aendpoint,
+					.m_pack = apack
+				});
+		}
+		do_send();
+		return true;
+	}
+
+	bool asio_kcp::sendu(kcp_endpoint* akcpe, const std::shared_ptr<pack>& apack)
+	{
+		async_send(akcpe->shared_from_this(), apack);
 		return true;
 	}
 
@@ -459,12 +468,7 @@ namespace ngl
 		return sendu_waitrecv(aendpoint, lpack);
 	}
 
-	bool asio_kcp::send_server(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
-	{
-		return send(asessionid, apack);
-	}
-
-	bool asio_kcp::send_server(std::shared_ptr<pack>& apack)
+	bool asio_kcp::send(std::shared_ptr<pack>& apack)
 	{
 		m_session.foreach([this, &apack](std::shared_ptr<kcp_endpoint>& aptr)
 			{

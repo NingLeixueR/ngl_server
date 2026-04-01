@@ -137,7 +137,7 @@ namespace ngl
 	template <typename Y, typename T/* = Y*/>
 	bool nws::send(const std::map<i32_sessionid, i64_actorid>& asession, const Y& adata, i64_actorid aactorid)
 	{
-		std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, nguid::make()， false);
+		std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, nguid::make(), false);
 		if (lpack == nullptr)
 		{
 			return false;
