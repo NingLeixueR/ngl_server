@@ -40,7 +40,7 @@ namespace ngl
 		template <typename T>
 		bool send(const std::set<i64_actorid>& aactors, T& adata)
 		{
-			auto lpack = net_pack<T>::npack(&m_pool, adata, 0, 0);
+			auto lpack = net_pack<T>::npack(&m_pool, adata, 0, 0, false);
 			if (lpack == nullptr)
 			{
 				return false;
@@ -70,7 +70,7 @@ namespace ngl
 		template <typename T>
 		bool send(const basio::ip::udp::endpoint& aendpoint, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid, true);
 			if (lpack == nullptr)
 			{
 				return false;
@@ -83,7 +83,7 @@ namespace ngl
 		template <typename T>
 		bool sendu(const basio::ip::udp::endpoint& aendpoint, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid, true);
 			if (lpack == nullptr)
 			{
 				return false;

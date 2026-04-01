@@ -77,7 +77,7 @@ namespace ngl
 			{
 				return true;
 			}
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, 0, false);
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, nguid::make(), false);
 			if (lpack == nullptr)
 			{
 				return false;
@@ -92,7 +92,7 @@ namespace ngl
 			{
 				return true;
 			}
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, arequestactorid);
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(&pool(), adata, aactorid, arequestactorid, false);
 			if (lpack == nullptr)
 			{
 				return false;
