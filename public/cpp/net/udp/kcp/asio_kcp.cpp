@@ -160,7 +160,7 @@ namespace ngl
 			return;
 		}
 
-		node_pack litem;
+		node_pack lnoepack;
 		{
 			std::lock_guard<std::mutex> llock(akcp->m_mutex);
 			if (akcp->m_list.empty())
@@ -172,11 +172,12 @@ namespace ngl
 			{
 				return;
 			}
-			litem = akcp->m_list.front();
+			akcp->m_issend = true;
+			lnoepack = std::move(akcp->m_list.front());
 			akcp->m_list.pop_front();
 		}
 
-		async_send(akcp, litem.get_pack());
+		async_send(akcp, lnoepack.get_pack());
 		return;
 	}
 

@@ -84,7 +84,7 @@ namespace ngl
 			memcpy(apack->m_buff, lhead.m_data, lhead.m_wpos);
 			apack->m_pos += lhead.m_wpos;
 		}
-		if (apack->m_pos + alen >= segpack_telnet_limit)
+		if (apack->m_pos + alen > segpack_telnet_limit - 1)  // 留一个字节给 '\0'
 		{
 			return edopush::e_error;
 		}

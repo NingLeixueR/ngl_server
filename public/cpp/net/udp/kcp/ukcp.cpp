@@ -65,8 +65,7 @@ namespace ngl
 			// Robot-side sends invert the header because the robot acts as the logical client.
 			pack_head::head_set_actor((int32_t*)apack->m_buff, lserver, lclient);
 		}
-		m_kcp.send(lsession, apack);
-		return true;
+		return m_kcp.send(lsession, apack);
 	}
 
 	bool ukcp::sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack)
