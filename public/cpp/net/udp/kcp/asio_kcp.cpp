@@ -375,6 +375,10 @@ namespace ngl
 				m_issend = false;
 				return;
 			}
+			if (m_issend)
+			{
+				return;
+			}
 			litem = m_list.front();
 			m_list.pop_front();
 			m_issend = true;
