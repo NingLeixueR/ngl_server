@@ -195,7 +195,7 @@ namespace ngl
 		int ret = lpstruct->send(buf, len);
 		// Flush immediately so KCP emits UDP packets without waiting for the next update tick.
 		lpstruct->flush();
-		return ret;
+		return ret>=0;
 	}
 
 	bool asio_kcp::sempack(const std::shared_ptr<kcp_endpoint>& apstruct, const char* abuff, int abufflen)
@@ -379,7 +379,7 @@ namespace ngl
 			{
 				return;
 			}
-			litem = m_list.front();
+			litem = std::move(m_list.front());
 			m_list.pop_front();
 			m_issend = true;
 		}

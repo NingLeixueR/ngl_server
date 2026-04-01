@@ -53,7 +53,7 @@ namespace ngl
 		i64_actorid lclient = 0;
 		if (!m_kcp.find_actorid(lsession, lserver, lclient))
 		{
-			return true;
+			return false;
 		}
 		if (nconfig.nodetype() != ROBOT)
 		{

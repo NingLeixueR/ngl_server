@@ -134,6 +134,9 @@ namespace ngl
 		service_ws* connect(const str_host& ahost, i16_port aport, const std::string& atarget, const ws_connectcallback& afun, int acount = 5);
 		service_ws* connect(const str_host& ahost, i16_port aport, const ws_connectcallback& afun, int acount = 5);
 
+		template <typename T>
+		bool spack(i32_sessionid asessionid, std::shared_ptr<T>& apack);
+
 		bool send(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
 		bool send(i32_sessionid asessionid, std::shared_ptr<void>& apack);
 		bool sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack);

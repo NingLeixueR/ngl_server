@@ -87,11 +87,11 @@ namespace ngl
 
 	private:
 		template <typename TSEQ>
-		void send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<pack>& apack, const TSEQ& adata)
+		void send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<node_pack>& anodepack, const TSEQ& adata)
 		{
-			boost::asio::async_write(atcp->m_socket, adata, [this, atcp, apack](const basio_errorcode& ec, std::size_t /*length*/)
+			boost::asio::async_write(atcp->m_socket, adata, [this, atcp, anodepack](const basio_errorcode& ec, std::size_t /*length*/)
 				{
-					handle_write(atcp, ec, apack);
+					handle_write(atcp, ec, anodepack->get_pack());
 					if (ec)
 					{
 						log_error()->print("asio_tcp::send fail [{}]", ec.message().c_str());
@@ -101,7 +101,7 @@ namespace ngl
 				});
 		}
 
-		void async_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<pack>& apack);
+		void async_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<node_pack>& anodepack);
 
 		void do_send(const std::shared_ptr<service_tcp>& atcp);
 

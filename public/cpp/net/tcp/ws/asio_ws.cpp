@@ -649,28 +649,25 @@ namespace ngl
 		);
 	}
 
-	bool asio_ws::queue_send(i32_sessionid asessionid, node_pack anode)
+
+	template <typename T>
+	bool asio_ws::spack(i32_sessionid asessionid, std::shared_ptr<T>& apack)
 	{
 		const std::shared_ptr<service_ws> ws = get_ws(asessionid);
 		if (ws == nullptr)
 		{
 			return false;
 		}
-
-		bool lstart = false;
 		{
 			std::lock_guard<std::mutex> llock(ws->m_mutex);
-			ws->m_list.push_back(std::move(anode));
-			if (!ws->m_issend)
+			ws->m_list.emplace_back(apack);
+			if (ws->m_issend)
 			{
-				ws->m_issend = true;
-				lstart = true;
+				return true;
 			}
+			ws->m_issend = true;
 		}
-		if (lstart)
-		{
-			do_send(ws);
-		}
+		do_send(ws);
 		return true;
 	}
 
@@ -681,7 +678,7 @@ namespace ngl
 			return;
 		}
 
-		node_pack litem;
+		std::shared_ptr<node_pack> lnodepack;
 		{
 			std::lock_guard<std::mutex> llock(aservice->m_mutex);
 			if (aservice->m_list.empty())
@@ -689,33 +686,24 @@ namespace ngl
 				aservice->m_issend = false;
 				return;
 			}
-			litem = aservice->m_list.front();
+			lnodepack = aservice->m_list.front();
 			aservice->m_list.pop_front();
 		}
 
-		std::shared_ptr<pack> lpack = litem.get_pack();
-		if (lpack == nullptr)
-		{
-			do_send(aservice);
-			return;
-		}
-
-		lpack->m_protocol = ENET_WS;
-
-		aservice->visit_stream([this, aservice, lpack](auto& astream)
+		aservice->visit_stream([this, aservice, lnodepack](auto& astream)
 			{
-				if (lpack->m_head != nullptr)
+				if (lnodepack->head() != nullptr)
 				{
 					astream.binary(true);
 					std::array<basio::const_buffer, 2> bufs{
-						basio::buffer(lpack->m_head->m_data, sizeof(lpack->m_head->m_data)),
-						basio::buffer(lpack->m_buff, lpack->m_pos)
+						basio::buffer(lnodepack->head_data(), lnodepack->head_byte()),
+						basio::buffer(lnodepack->buff(), lnodepack->pos())
 					};
 					astream.async_write(
 						bufs,
-						[this, aservice, lpack](const basio_errorcode& ec, std::size_t)
+						[this, aservice, lnodepack](const basio_errorcode& ec, std::size_t)
 						{
-							handle_write(aservice, ec, lpack);
+							handle_write(aservice, ec, lnodepack->get_pack());
 							if (ec) return;
 							do_send(aservice);
 						}
@@ -725,10 +713,10 @@ namespace ngl
 				{
 					astream.binary(false);
 					astream.async_write(
-						basio::buffer(lpack->m_buff, lpack->m_pos),
-						[this, aservice, lpack](const basio_errorcode& ec, std::size_t)
+						basio::buffer(lnodepack->buff(), lnodepack->pos()),
+						[this, aservice, lnodepack](const basio_errorcode& ec, std::size_t)
 						{
-							handle_write(aservice, ec, lpack);
+							handle_write(aservice, ec, lnodepack->get_pack());
 							if (ec) return;
 							do_send(aservice);
 						}

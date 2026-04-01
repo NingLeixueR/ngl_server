@@ -292,21 +292,16 @@ namespace ngl
 		{
 			return false;
 		}
-		bool lstart = false;
 		{
 			std::lock_guard<std::mutex> llock(tcp->m_mutex);
 			tcp->m_list.emplace_back(apack);
-			if (tcp->m_issend == false)
+			if (tcp->m_issend)
 			{
-				// Only one async_write chain is allowed at a time per TCP session.
-				tcp->m_issend = true;
-				lstart = true;
+				return true;
 			}
+			tcp->m_issend = true;
 		}
-		if (lstart)
-		{
-			do_send(tcp);
-		}
+		do_send(tcp);
 		return true;
 	}
 
@@ -320,19 +315,19 @@ namespace ngl
 		return spack(asessionid, apack);
 	}
 
-	void asio_tcp::async_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<pack>& apack)
+	void asio_tcp::async_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<node_pack>& anodepack)
 	{
-		if (apack->m_head != nullptr)
+		if (anodepack->head() != nullptr)
 		{
 			std::array<basio::const_buffer, 2> bufs{
-				basio::buffer(apack->m_head->m_data, sizeof(apack->m_head->m_data)),
-				basio::buffer(apack->m_buff, apack->m_pos)
+				basio::buffer(anodepack->head_data(), anodepack->head_byte()),
+				basio::buffer(anodepack->buff(), anodepack->pos())
 			};
-			send(atcp, apack, bufs);
+			send(atcp, anodepack, bufs);
 		}
 		else
 		{
-			send(atcp, apack, basio::buffer(apack->m_buff, apack->m_pos));
+			send(atcp, anodepack, basio::buffer(anodepack->buff(), anodepack->pos()));
 		}		
 	}
 
@@ -343,7 +338,7 @@ namespace ngl
 			return;
 		}
 
-		node_pack litem;
+		std::shared_ptr<node_pack> litem = nullptr;
 		{
 			std::lock_guard<std::mutex> llock(atcp->m_mutex);
 			if (atcp->m_list.empty())
@@ -355,7 +350,7 @@ namespace ngl
 			atcp->m_list.pop_front();
 		}
 
-		async_send(atcp, litem.get_pack());
+		async_send(atcp, litem);
 		return;
 	}
 
