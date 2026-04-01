@@ -124,9 +124,6 @@ namespace ngl
 		// Broadcast one serialized pack only to sessions in the specified area.
 		bool sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack);
 
-		// Route one serialized pack to the session currently owned by `aactorid`.
-		bool sendpackbyactorid(i64_actorid aactorid, std::shared_ptr<pack>& apack);
-
 		bool send(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
 
 		bool send(i32_sessionid asessionid, const char* buf, int32_t len);

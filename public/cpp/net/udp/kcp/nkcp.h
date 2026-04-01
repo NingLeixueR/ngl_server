@@ -66,7 +66,7 @@ namespace ngl
 		{
 			return false;
 		}
-		return lpukcp->send(aactorid, adata);
+		return lpukcp->sendbyactor(aactorid, adata);
 	}
 
 	template <typename T>
@@ -77,6 +77,6 @@ namespace ngl
 		{
 			return false;
 		}
-		return lpukcp->send(aactorids, adata);
+		return lpukcp->sendbyactor(aactorids, adata);
 	}
 }//namespace ngl

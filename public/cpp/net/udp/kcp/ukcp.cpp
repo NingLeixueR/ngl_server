@@ -33,26 +33,21 @@ namespace ngl
 		return std::make_shared<ukcp>(aprot);
 	}
 
-	bool ukcp::send(std::shared_ptr<pack>& apack)
-	{
-		return m_kcp.send(apack);
-	}
-
-	bool ukcp::send(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack)
+	bool ukcp::sendbyactor(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack)
 	{
 		for (i64_actorid lactorid : aactors)
 		{
-			send(lactorid, apack);
+			sendbyactor(lactorid, apack);
 		}
 		return true;
 	}
 
-	bool ukcp::send(i64_actorid aactor, std::shared_ptr<pack>& apack)
+	bool ukcp::sendbyactor(i64_actorid aactor, std::shared_ptr<pack>& apack)
 	{
 		i32_session lsession = m_kcp.find_session(aactor);
 		if (lsession == -1)
 		{
-			return true;
+			return false;
 		}
 		i64_actorid lserver = 0;
 		i64_actorid lclient = 0;
@@ -77,6 +72,11 @@ namespace ngl
 	bool ukcp::sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack)
 	{
 		return m_kcp.sendpackbyarea(aarea, apack);
+	}
+
+	bool ukcp::send(std::shared_ptr<pack>& apack)
+	{
+		return m_kcp.send(apack);
 	}
 
 	bool ukcp::sendu(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len)

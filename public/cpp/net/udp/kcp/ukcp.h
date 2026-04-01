@@ -38,45 +38,34 @@ namespace ngl
 
 #pragma region kcp_send
 		template <typename T>
-		bool send(const std::set<i64_actorid>& aactors, T& adata)
+		bool sendbyactor(const std::set<i64_actorid>& aactors, T& adata)
 		{
 			auto lpack = net_pack<T>::npack(&m_pool, adata, nguid::make(), nguid::make(), false);
 			if (lpack == nullptr)
 			{
 				return false;
 			}
-			return send_server(aactors, lpack);
+			return sendbyactor(aactors, lpack);
 		}
 
 		template <typename T>
-		bool send(i64_actorid aactoridclient, T& adata)
+		bool sendbyactor(i64_actorid aactoridclient, T& adata)
 		{
-			auto lpack = net_pack<T>::npack(&m_pool, adata, 0, 0, true);
+			auto lpack = net_pack<T>::npack(&m_pool, adata, nguid::make(), nguid::make(), true);
 			if (lpack == nullptr)
 			{
 				return false;
 			}
-			return send_server(aactoridclient, lpack);
+			return sendbyactor(aactoridclient, lpack);
 		}
 
-		bool send(std::shared_ptr<pack>& apack);
+		bool sendbyactor(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack);
 
-		bool send(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack);
-
-		bool send(i64_actorid aactor, std::shared_ptr<pack>& apack);
+		bool sendbyactor(i64_actorid aactor, std::shared_ptr<pack>& apack);
 
 		bool sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack);
 
-		template <typename T>
-		bool send(const basio::ip::udp::endpoint& aendpoint, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid, true);
-			if (lpack == nullptr)
-			{
-				return false;
-			}
-			return m_kcp.send(aendpoint, lpack);
-		}
+		bool send(std::shared_ptr<pack>& apack);
 #pragma endregion 
 
 #pragma region udp_send
