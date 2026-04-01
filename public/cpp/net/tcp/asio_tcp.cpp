@@ -294,7 +294,7 @@ namespace ngl
 		}
 		{
 			std::lock_guard<std::mutex> llock(tcp->m_mutex);
-			tcp->m_list.emplace_back(apack);
+			tcp->m_list.emplace_back(std::make_shared<node_pack>(apack));
 			if (tcp->m_issend)
 			{
 				return true;

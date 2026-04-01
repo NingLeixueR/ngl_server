@@ -660,7 +660,7 @@ namespace ngl
 		}
 		{
 			std::lock_guard<std::mutex> llock(ws->m_mutex);
-			ws->m_list.emplace_back(apack);
+			ws->m_list.emplace_back(std::make_shared<node_pack>(apack));
 			if (ws->m_issend)
 			{
 				return true;
