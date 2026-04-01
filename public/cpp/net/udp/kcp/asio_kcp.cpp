@@ -472,14 +472,6 @@ namespace ngl
 	{
 		m_session.foreach([this, &apack](std::shared_ptr<kcp_endpoint>& aptr)
 			{
-				if (nconfig.nodetype() != ROBOT)
-				{
-					apack->set_actor(aptr->m_server, aptr->m_client);
-				}
-				else
-				{
-					apack->set_actor(aptr->m_client, aptr->m_server);
-				}
 				send(aptr->m_session, apack);
 			}
 		);
@@ -490,14 +482,6 @@ namespace ngl
 	{
 		m_session.foreachbyarea(aarea, [this, &apack](std::shared_ptr<kcp_endpoint>& aptr)
 			{
-				if (nconfig.nodetype() != ROBOT)
-				{
-					apack->set_actor(aptr->m_server, aptr->m_client);
-				}
-				else
-				{
-					apack->set_actor(aptr->m_client, aptr->m_server);
-				}
 				send(aptr->m_session, apack);
 			}
 		);

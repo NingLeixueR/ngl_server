@@ -142,7 +142,7 @@ namespace ngl
 			else if (luid_size == 1)
 			{
 				const i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea0, ldata0);
-				lkcp->send(lactorid, lsendpack);
+				lkcp->sendbyactor(lactorid, lsendpack);
 			}
 			else
 			{
@@ -151,7 +151,7 @@ namespace ngl
 				{
 					lids.emplace(nguid::make(ACTOR_ROBOT, lareas[lidx], luids[lidx]));
 				}
-				lkcp->send(lids, lsendpack);
+				lkcp->sendbyactor(lids, lsendpack);
 			}
 			return true;
 		}
