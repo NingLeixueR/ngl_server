@@ -909,12 +909,12 @@ namespace ngl
 
 	bool asio_ws::send(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
 	{
-		return queue_send(asessionid, node_pack(apack));
+		return spack(asessionid, apack);
 	}
 
 	bool asio_ws::send(i32_sessionid asessionid, std::shared_ptr<void>& apack)
 	{
-		return queue_send(asessionid, node_pack(apack));
+		return spack(asessionid, apack);
 	}
 
 	bool asio_ws::sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
