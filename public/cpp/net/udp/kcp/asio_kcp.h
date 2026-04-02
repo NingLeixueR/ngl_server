@@ -15,12 +15,12 @@
 
 #pragma once
 
+#include "tools/tools/tools_time_wheel.h"
+#include "tools/tools/tools_thread.h"
 #include "net/udp/kcp/kcp_endpoint.h"
 #include "net/udp/kcp/kcp_session.h"
 #include "tools/serialize/pack.h"
 #include "net/udp/kcp/udp_cmd.h"
-#include "tools/tools/tools_thread.h"
-#include "tools/tools/tools_time_wheel.h"
 #include "tools/log/nlog.h"
 #include "net/asio_base.h"
 #include "tools/type.h"
@@ -94,6 +94,7 @@ namespace ngl
 			);
 			return true;
 		}
+
 		// Register built-in control commands used during KCP handshake/close.
 		bool async_send(const std::shared_ptr<kcp_endpoint>& akcp, const std::shared_ptr<pack>& apack);
 
