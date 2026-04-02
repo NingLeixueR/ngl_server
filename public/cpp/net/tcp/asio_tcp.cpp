@@ -295,11 +295,6 @@ namespace ngl
 		{
 			std::lock_guard<std::mutex> llock(tcp->m_mutex);
 			tcp->m_list.emplace_back(std::make_shared<node_pack>(apack));
-			if (tcp->m_issend)
-			{
-				return true;
-			}
-			tcp->m_issend = true;
 		}
 		return do_send(tcp);
 	}
@@ -330,7 +325,7 @@ namespace ngl
 		}		
 	}
 
-	bool asio_tcp::do_send(const std::shared_ptr<service_tcp>& atcp)
+	bool asio_tcp::do_send(const std::shared_ptr<service_tcp>& atcp, bool async/* = false*/)
 	{
 		if (atcp == nullptr)
 		{
@@ -345,6 +340,12 @@ namespace ngl
 				atcp->m_issend = false;
 				return true;
 			}
+
+			if (atcp->m_issend && !async)
+			{
+				return true;
+			}
+
 			atcp->m_issend = true;
 			litem = atcp->m_list.front();
 			atcp->m_list.pop_front();

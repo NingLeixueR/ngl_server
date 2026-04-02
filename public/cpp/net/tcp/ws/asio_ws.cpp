@@ -15,9 +15,9 @@
 
 
 #include "actor/protocol/nprotocol.h"
+#include "tools/tools/tools_time.h"
 #include "net/tcp/ws/asio_ws.h"
 #include "net/net_session.h"
-#include "tools/tools/tools_time.h"
 #include "net/asio_timer.h"
 
 #include <openssl/ssl.h>
@@ -657,17 +657,12 @@ namespace ngl
 		{
 			std::lock_guard<std::mutex> llock(ws->m_mutex);
 			ws->m_list.emplace_back(std::make_shared<node_pack>(apack));
-			if (ws->m_issend)
-			{
-				return true;
-			}
-			ws->m_issend = true;
 		}
 		do_send(ws);
 		return true;
 	}
 
-	void asio_ws::do_send(const std::shared_ptr<service_ws>& aservice)
+	void asio_ws::do_send(const std::shared_ptr<service_ws>& aservice, bool async/* = false*/)
 	{
 		if (aservice == nullptr)
 		{
@@ -680,6 +675,10 @@ namespace ngl
 			if (aservice->m_list.empty())
 			{
 				aservice->m_issend = false;
+				return;
+			}
+			if (aservice->m_issend && !async)
+			{
 				return;
 			}
 			aservice->m_issend = true;
@@ -696,9 +695,7 @@ namespace ngl
 						basio::buffer(lnodepack->head_data(), lnodepack->head_byte()),
 						basio::buffer(lnodepack->buff(), lnodepack->pos())
 					};
-					astream.async_write(
-						bufs,
-						[this, aservice, lnodepack](const basio_errorcode& ec, std::size_t)
+					astream.async_write(bufs, [this, aservice, lnodepack](const basio_errorcode& ec, std::size_t)
 						{
 							handle_write(aservice, ec, lnodepack->get_pack());
 							if (ec)
@@ -707,17 +704,14 @@ namespace ngl
 								close(aservice.get());
 								return;
 							}
-							aservice->m_issend = false;
-							do_send(aservice);
+							do_send(aservice, true);
 						}
 					);
 				}
 				else
 				{
 					astream.binary(false);
-					astream.async_write(
-						basio::buffer(lnodepack->buff(), lnodepack->pos()),
-						[this, aservice, lnodepack](const basio_errorcode& ec, std::size_t)
+					astream.async_write(basio::buffer(lnodepack->buff(), lnodepack->pos()),[this, aservice, lnodepack](const basio_errorcode& ec, std::size_t)
 						{
 							if (ec)
 							{
@@ -725,8 +719,7 @@ namespace ngl
 								close(aservice.get());
 								return;
 							}
-							aservice->m_issend = false;
-							do_send(aservice);
+							do_send(aservice, true);
 						}
 					);
 				}

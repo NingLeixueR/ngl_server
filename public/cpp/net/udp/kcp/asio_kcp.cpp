@@ -153,7 +153,7 @@ namespace ngl
 		}
 	}
 
-	bool asio_kcp::do_send(const std::shared_ptr<kcp_endpoint>& akcp)
+	bool asio_kcp::do_send(const std::shared_ptr<kcp_endpoint>& akcp, bool async/* = false*/)
 	{
 		if (akcp == nullptr)
 		{
@@ -168,7 +168,7 @@ namespace ngl
 				akcp->m_issend = false;
 				return true;
 			}
-			if (akcp->m_issend)
+			if (akcp->m_issend && !async)
 			{
 				return true;
 			}
@@ -358,13 +358,13 @@ namespace ngl
 				{
 					log_error()->print("asio_kcp::async_send2[{}]", ec.message().c_str());
 				}
-				do_send();
+				do_send(true);
 			}
 		);
 		return true;
 	}
 
-	bool asio_kcp::do_send()
+	bool asio_kcp::do_send(bool async/* = false*/)
 	{
 		tmpdata litem;
 		{
@@ -374,7 +374,7 @@ namespace ngl
 				m_issend = false;
 				return true;
 			}
-			if (m_issend)
+			if (m_issend && !async)
 			{
 				return true;
 			}

@@ -97,14 +97,13 @@ namespace ngl
 						log_error()->print("asio_tcp::send fail [{}]", ec.message().c_str());
 						return;
 					}
-					atcp->m_issend = false;
-					do_send(atcp);
+					do_send(atcp, true);
 				});
 		}
 
 		void async_send(const std::shared_ptr<service_tcp>& atcp, const std::shared_ptr<node_pack>& anodepack);
 
-		bool do_send(const std::shared_ptr<service_tcp>& atcp);
+		bool do_send(const std::shared_ptr<service_tcp>& atcp, bool async = false);
 
 		void handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, const std::shared_ptr<pack>& apack);
 
