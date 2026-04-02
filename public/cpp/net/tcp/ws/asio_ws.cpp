@@ -970,10 +970,6 @@ namespace ngl
 			{
 				lnotifyclose(sessionid);
 			}
-			if (anotifycallback && lclosefun != nullptr)
-			{
-				lclosefun();
-			}
 		}
 
 		if (anotifycallback && lclosefun != nullptr)
