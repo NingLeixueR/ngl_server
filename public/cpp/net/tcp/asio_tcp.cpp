@@ -203,22 +203,50 @@ namespace ngl
 	service_tcp* asio_tcp::connect(const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount)
 	{
 		std::shared_ptr<service_tcp> lservice = nullptr;
+		bool lalloc_failed = false;
 		{
 			lock_write(m_maplock);
 			if (!net_session::next(m_sessionid, ENET_TCP))
 			{
 				tools::send_mail("tcp session id exhausted")();
-				return nullptr;
+				lalloc_failed = true;
 			}
-			lservice = std::make_shared<service_tcp>(m_service_ios, m_sessionid);
-			auto [_, success] = m_data.emplace(lservice->m_sessionid, lservice);
-			if (!success)
+			else
 			{
-				tools::send_mail("session id repeat")();
-				return nullptr;
+				lservice = std::make_shared<service_tcp>(m_service_ios, m_sessionid);
+				auto [_, success] = m_data.emplace(lservice->m_sessionid, lservice);
+				if (!success)
+				{
+					tools::send_mail("session id repeat")();
+					lalloc_failed = true;
+					lservice.reset();
+				}
 			}
 		}
-		lservice->m_socket.async_connect(basio_iptcpendpoint(basio_ipaddress::from_string(aip), aport), 
+
+		if (lalloc_failed || lservice == nullptr)
+		{
+			if (afun != nullptr)
+			{
+				afun(-1);
+			}
+			return nullptr;
+		}
+
+		basio_errorcode address_ec;
+		const basio_ipaddress laddress = basio_ipaddress::from_string(aip, address_ec);
+		if (address_ec)
+		{
+			close_net(lservice->m_sessionid);
+			log_error()->print("asio_tcp::connect invalid address [{}] [{}]", aip, address_ec.message());
+			if (afun != nullptr)
+			{
+				afun(-1);
+			}
+			return nullptr;
+		}
+
+		lservice->m_socket.async_connect(basio_iptcpendpoint(laddress, aport), 
 			[this, lservice, aip, aport, afun, acount](const basio_errorcode& ec)
 			{
 				if (ec)

@@ -69,11 +69,13 @@ namespace ngl
 		// Pick public IP for robot nodes, private IP otherwise.
 		const std::string& ip(const net_works& anets);
 
-		// Connect to an endpoint or a server id, with optional wait/reconnect behavior.
+		// Start an asynchronous connect request. Returns true only if the transport
+		// accepted the request for execution.
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun);
 
-		// Full connect API: optionally wait for success and optionally register
-		// automatic reconnect metadata.
+		// Same as above, with optional blocking wait and reconnect registration.
+		// The return value still reports whether the async connect was successfully
+		// started, not whether the remote side eventually accepted it.
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection);
 
 		// Resolve one configured server id and connect to its advertised address.

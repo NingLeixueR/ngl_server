@@ -150,8 +150,8 @@ namespace ngl
 		{
 			return false;
 		}
-		m_server->connect(aip, aport, afun);
-		return true;
+		// Return true only when the transport accepted the async connect request.
+		return m_server->connect(aip, aport, afun) != nullptr;
 	}
 
 	bool ntcp::connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection /* Whether */)

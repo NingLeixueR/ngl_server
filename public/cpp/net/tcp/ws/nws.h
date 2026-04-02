@@ -73,8 +73,12 @@ namespace ngl
 		// Pick public IP for robot nodes, private IP otherwise.
 		const std::string& ip(const net_works& anets);
 
-		// Connect to one websocket endpoint, with optional wait/reconnect behavior.
+		// Start an asynchronous websocket connect request. Returns true only if the
+		// transport accepted the request for execution.
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun);
+		// Same as above, with optional blocking wait and reconnect registration.
+		// The return value still reports whether the async connect was successfully
+		// started, not whether the remote side eventually accepted it.
 		bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection);
 		bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection);
 
