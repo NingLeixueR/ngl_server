@@ -21,6 +21,7 @@
 #include "net/asio_timer.h"
 #include "tools/log/nlog.h"
 
+#include <array>
 #include <utility>
 #include <vector>
 

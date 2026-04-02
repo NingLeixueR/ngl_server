@@ -21,6 +21,7 @@
 #include "net/asio_timer.h"
 
 #include <openssl/ssl.h>
+#include <array>
 #include <type_traits>
 #include <utility>
 #include <vector>

@@ -19,6 +19,7 @@
 #include "net/udp/kcp/asio_kcp.h"
 #include "net/udp/kcp/ukcp.h"
 
+#include <array>
 #include <vector>
 
 #define USE_WHEEL_TIMER
