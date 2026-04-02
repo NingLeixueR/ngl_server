@@ -153,11 +153,11 @@ namespace ngl
 		}
 	}
 
-	void asio_kcp::do_send(const std::shared_ptr<kcp_endpoint>& akcp)
+	bool asio_kcp::do_send(const std::shared_ptr<kcp_endpoint>& akcp)
 	{
 		if (akcp == nullptr)
 		{
-			return;
+			return false;
 		}
 
 		node_pack lnoepack;
@@ -166,19 +166,17 @@ namespace ngl
 			if (akcp->m_list.empty())
 			{
 				akcp->m_issend = false;
-				return;
+				return true;
 			}
 			if (akcp->m_issend)
 			{
-				return;
+				return true;
 			}
 			akcp->m_issend = true;
 			lnoepack = std::move(akcp->m_list.front());
 			akcp->m_list.pop_front();
 		}
-
-		async_send(akcp, lnoepack.get_pack());
-		return;
+		return async_send(akcp, lnoepack.get_pack());
 	}
 
 	bool asio_kcp::send(i32_sessionid asession, std::shared_ptr<pack>& apack)
@@ -366,7 +364,7 @@ namespace ngl
 		return true;
 	}
 
-	void asio_kcp::do_send()
+	bool asio_kcp::do_send()
 	{
 		tmpdata litem;
 		{
@@ -374,17 +372,17 @@ namespace ngl
 			if (m_list.empty())
 			{
 				m_issend = false;
-				return;
+				return true;
 			}
 			if (m_issend)
 			{
-				return;
+				return true;
 			}
 			litem = std::move(m_list.front());
 			m_list.pop_front();
 			m_issend = true;
 		}
-		async_send(litem.m_endpoint, litem.m_pack);
+		return async_send(litem.m_endpoint, litem.m_pack);
 	}
 
 	bool asio_kcp::sendu(const basio::ip::udp::endpoint& aendpoint, const char* buf, int32_t len)
@@ -416,14 +414,12 @@ namespace ngl
 					.m_pack = apack
 				});
 		}
-		do_send();
-		return true;
+		return do_send();
 	}
 
 	bool asio_kcp::sendu(kcp_endpoint* akcpe, const std::shared_ptr<pack>& apack)
 	{
-		async_send(akcpe->shared_from_this(), apack);
-		return true;
+		return async_send(akcpe->shared_from_this(), apack);
 	}
 
 	bool asio_kcp::sendu_waitrecv(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack)
