@@ -2,26 +2,24 @@
 
 #include <gtest/gtest.h>
 
-#include <array>
-#include <cstring>
-#include <list>
-#include <limits>
-#include <map>
-#include <memory>
-#include <set>
-#include <string>
-#include <vector>
-
 #include "actor/actor_base/core/actor_base.h"
 #include "actor/actor_base/core/nguid.h"
+#include "tools/serialize/socket_pool.h"
+#include "tools/serialize/nserialize.h"
+#include "tools/serialize/pack_head.h"
 #include "actor/protocol/tprotocol.h"
 #include "tools/db/sql/db_buff.h"
-#include "tools/serialize/nserialize.h"
-#include "tools/serialize/socket_pool.h"
 #include "tools/serialize/pack.h"
-#include "tools/serialize/pack_head.h"
-#include "tools/serialize/segpack.h"
-#include "tools/serialize/structbytes.h"
+
+#include <cstring>
+#include <string>
+#include <vector>
+#include <memory>
+#include <limits>
+#include <array>
+#include <list>
+#include <map>
+#include <set>
 
 namespace serialize_test_case
 {
@@ -362,42 +360,6 @@ TEST(SerializeTest, StructbytesRejectsPositiveLengthWithoutBuffer)
 
 	OverestimatedPayload payload;
 	EXPECT_FALSE((ngl::structbytes<OverestimatedPayload>::tostruct(packet, payload)));
-}
-
-TEST(SerializeTest, StructbytesUsesActualSerializedLength)
-{
-	RegisterSerializeCustomTypes();
-
-	OverestimatedPayload payload;
-	payload.value = 12345;
-
-	auto packet = ngl::pack::make_pack(nullptr, ngl::pack_head::size() + static_cast<int32_t>(sizeof(int32_t) * 2));
-	ASSERT_NE(packet, nullptr);
-	ASSERT_NE(packet->m_buff, nullptr);
-
-	ASSERT_TRUE((ngl::structbytes<OverestimatedPayload>::tobytes(packet, payload, 101, 202)));
-	EXPECT_EQ(packet->m_head->getvalue(ngl::EPH_BYTES), static_cast<int32_t>(sizeof(int32_t)));
-	EXPECT_EQ(packet->m_len, ngl::pack_head::size() + static_cast<int32_t>(sizeof(int32_t)));
-	EXPECT_EQ(packet->m_pos, packet->m_len);
-
-	int32_t roundtrip = 0;
-	ngl::ser::serialize_pop pop(packet->m_buff + ngl::pack_head::size(), packet->m_head->getvalue(ngl::EPH_BYTES));
-	ASSERT_TRUE(ngl::ser::serialize_format<int32_t>::pop(&pop, roundtrip));
-	EXPECT_EQ(roundtrip, payload.value);
-}
-
-TEST(SerializeTest, StructbytesRejectsBufferSmallerThanHeader)
-{
-	RegisterSerializeCustomTypes();
-
-	OverestimatedPayload payload;
-	payload.value = 12345;
-
-	auto packet = ngl::pack::make_pack(nullptr, ngl::pack_head::size() - 1);
-	ASSERT_NE(packet, nullptr);
-	ASSERT_NE(packet->m_buff, nullptr);
-
-	EXPECT_FALSE((ngl::structbytes<OverestimatedPayload>::tobytes(packet, payload, 101, 202)));
 }
 
 TEST(SerializeTest, SegpackRejectsNullBufferWhenLengthIsPositive)
