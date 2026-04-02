@@ -196,9 +196,9 @@ namespace ngl
 	}
 
 	template <typename T>
-	std::shared_ptr<pack> actor_base::net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+	std::shared_ptr<pack> actor_base::net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid, bool ahead)
 	{
-		return ::ngl::net_pack<T>::npack(&nnet::instance().pool(), adata, aactorid, arequestactorid, false);
+		return ::ngl::net_pack<T>::npack(&nnet::instance().pool(), adata, aactorid, arequestactorid, ahead);
 	}
 
 	template <typename T>

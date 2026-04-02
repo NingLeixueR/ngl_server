@@ -284,11 +284,11 @@ namespace ngl
 #pragma endregion
 
 		// Build a protocol pack from a proto name and JSON payload.
-		static std::shared_ptr<pack> jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid);
+		static std::shared_ptr<pack> jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid, bool ahead = false);
 
 		// Build a protocol pack from a strongly typed message.
 		template <typename T>
-		static std::shared_ptr<pack> net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
+		static std::shared_ptr<pack> net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid, bool ahead = false);
 
 		// Send an already-built pack through a specific session.
 		static bool send_pack(i32_sessionid asession, std::shared_ptr<pack>& apack);
@@ -323,17 +323,21 @@ namespace ngl
 		bool kcp_connect(i16_port auport, const std::string& aip, i16_port aprot, i64_actorid aactoridserver, std::string& akcpsession)const;
 
 		// Send one already-built packet to a specific actor through UDP/KCP.
+		[[nodiscard("check kcp send result")]]
 		static bool kcp_sendpack(i64_actorid aactorid, std::shared_ptr<pack>& adata, i16_port auport = 0);
 
 		// Send one already-built packet to multiple actors through UDP/KCP.
+		[[nodiscard("check kcp send result")]]
 		static bool kcp_sendpack(const std::set<i64_actorid>& aactorids, std::shared_ptr<pack>& adata, i16_port auport = 0);
 
 		// Serialize and send one payload to a specific actor through UDP/KCP.
 		template <typename T>
+		[[nodiscard("check kcp send result")]]
 		static bool kcp_send(i64_actorid aactorid, T& adata, i16_port auport = 0);
 
 		// Serialize and send one payload to multiple actors through UDP/KCP.
 		template <typename T>
+		[[nodiscard("check kcp send result")]]
 		static bool kcp_send(const std::set<i64_actorid>& aactorids, T& adata, i16_port auport = 0);
 #pragma endregion
 

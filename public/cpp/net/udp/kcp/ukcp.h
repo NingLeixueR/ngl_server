@@ -38,9 +38,10 @@ namespace ngl
 
 #pragma region kcp_send
 		template <typename T>
+		[[nodiscard("check kcp send result")]]
 		bool sendbyactor(const std::set<i64_actorid>& aactors, T& adata)
 		{
-			auto lpack = net_pack<T>::npack(&m_pool, adata, nguid::make(), nguid::make(), false);
+			auto lpack = ngl::net_pack<T>::npack(&m_pool, adata, nguid::make(), nguid::make(), true);
 			if (lpack == nullptr)
 			{
 				return false;
@@ -49,6 +50,7 @@ namespace ngl
 		}
 
 		template <typename T>
+		[[nodiscard("check kcp send result")]]
 		bool sendbyactor(i64_actorid aactoridclient, T& adata)
 		{
 			auto lpack = net_pack<T>::npack(&m_pool, adata, nguid::make(), nguid::make(), true);
@@ -59,12 +61,16 @@ namespace ngl
 			return sendbyactor(aactoridclient, lpack);
 		}
 
+		[[nodiscard("check kcp send result")]]
 		bool sendbyactor(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack);
 
+		[[nodiscard("check kcp send result")]]
 		bool sendbyactor(i64_actorid aactor, std::shared_ptr<pack>& apack);
 
+		[[nodiscard("check kcp send result")]]
 		bool sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack);
 
+		[[nodiscard("check kcp send result")]]
 		bool send(std::shared_ptr<pack>& apack);
 #pragma endregion 
 

@@ -235,7 +235,7 @@ namespace ngl
 						return;
 					}
 
-					std::shared_ptr<pack> lpack = actor_base::jsonpack(lpbname, lpbjson, nguid::moreactor(), arobot.m_actor_roleid);
+					std::shared_ptr<pack> lpack = actor_base::jsonpack(lpbname, lpbjson, nguid::moreactor(), arobot.m_actor_roleid, true);
 					if (lpack != nullptr)
 					{
 						actor::kcp_sendpack(arobot.m_robot->id_guid(), lpack, *luport);

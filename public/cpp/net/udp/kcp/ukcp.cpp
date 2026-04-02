@@ -35,15 +35,27 @@ namespace ngl
 
 	bool ukcp::sendbyactor(const std::set<i64_actorid>& aactors, std::shared_ptr<pack>& apack)
 	{
+		if (apack == nullptr || apack->m_head == nullptr)
+		{
+			return false;
+		}
+		bool lret = true;
 		for (i64_actorid lactorid : aactors)
 		{
-			sendbyactor(lactorid, apack);
+			if (!sendbyactor(lactorid, apack))
+			{
+				lret = false;
+			}
 		}
-		return true;
+		return lret;
 	}
 
 	bool ukcp::sendbyactor(i64_actorid aactor, std::shared_ptr<pack>& apack)
 	{
+		if (apack == nullptr || apack->m_head == nullptr)
+		{
+			return false;
+		}
 		i32_session lsession = m_kcp.find_session(aactor);
 		if (lsession == -1)
 		{
@@ -70,11 +82,19 @@ namespace ngl
 
 	bool ukcp::sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack)
 	{
+		if (apack == nullptr || apack->m_head == nullptr)
+		{
+			return false;
+		}
 		return m_kcp.sendpackbyarea(aarea, apack);
 	}
 
 	bool ukcp::send(std::shared_ptr<pack>& apack)
 	{
+		if (apack == nullptr || apack->m_head == nullptr)
+		{
+			return false;
+		}
 		return m_kcp.send(apack);
 	}
 
