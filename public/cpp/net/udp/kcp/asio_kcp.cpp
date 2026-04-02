@@ -30,8 +30,6 @@ namespace ngl
 	{
 		udp_cmd::register_fun(udp_cmd::ecmd_connect, [](asio_kcp* ap, std::shared_ptr<kcp_endpoint>& apstruct, const std::string& ajson)
 			{
-				// The first control packet authenticates the logical server/client pair.
-				apstruct->m_isconnect = true;
 				ncjson ltempjson(ajson.c_str());
 
 				i64_actorid lclient = nguid::make();
@@ -39,13 +37,16 @@ namespace ngl
 				std::string lsession;
 				if (!njson::pop(ltempjson, { "actoridclient","actoridserver","session" }, lclient, lserver, lsession))
 				{
+					log_error()->print("udp_cmd::ecmd_connect fail json [{}]", ajson);
 					return;
 				}
 				if (ukcp::session_check(lserver, lclient, lsession) == false)
 				{
+					log_error()->print("udp_cmd::ecmd_connect ukcp::session_check(server:{}, client:{}, session:{}) fail", lserver, lclient, lsession);
 					return;
 				}
-				
+
+				apstruct->m_isconnect = true;
 				apstruct->m_client = lclient;
 				apstruct->m_server = lserver;
 

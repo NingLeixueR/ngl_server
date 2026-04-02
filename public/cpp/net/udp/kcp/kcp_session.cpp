@@ -14,9 +14,9 @@
 // File overview: Implements logic for kcp.
 
 
+#include "actor/actor_base/core/nguid.h"
 #include "actor/protocol/nprotocol.h"
 #include "net/udp/kcp/kcp_session.h"
-#include "actor/actor_base/core/nguid.h"
 #include "net/udp/kcp/asio_kcp.h"
 #include "tools/log/nlog.h"
 
@@ -118,15 +118,20 @@ namespace ngl
 				.m_count = 0x7fffffff,
 				.m_fun = [this, lsessionid, lcreatems](const tools::wheel_node*)
 				{
-					std::shared_ptr<kcp_endpoint>* lpse = nullptr;
+					std::shared_ptr<kcp_endpoint> lpse = nullptr;
 					{
 						lock_write(m_mutex);
-						lpse = tools::findmap(m_dataofsession, lsessionid);
+						auto itor = m_dataofsession.find(lsessionid);
+						if (itor == m_dataofsession.end())
+						{
+							return;
+						}
+						lpse = itor->second;
 					}
 					if (lpse != nullptr)
 					{
 						// KCP's internal timers are driven by the shared wheel rather than a dedicated thread.
-						(*lpse)->update((IUINT32)(tools::time_wheel::getms() - lcreatems));
+						lpse->update((IUINT32)(tools::time_wheel::getms() - lcreatems));
 					}
 				}
 			};
