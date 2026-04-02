@@ -132,17 +132,26 @@ namespace ngl
 			{
 				if (larea0 == nguid::none_area())
 				{
-					lkcp->send(lsendpack);
+					if (!lkcp->send(lsendpack))
+					{
+						log_error()->print("actor_gateway_g2c::handle_kcp fail area=[nguid::none_area()]");
+					}
 				}
 				else
 				{// if(larea0 != nguid::none_area())
-					lkcp->sendpackbyarea(larea0, lsendpack);
+					if (!lkcp->sendpackbyarea(larea0, lsendpack))
+					{
+						log_error()->print("actor_gateway_g2c::handle_kcp fail area=[{}]", larea0);
+					}
 				}
 			}
 			else if (luid_size == 1)
 			{
 				const i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea0, ldata0);
-				lkcp->sendbyactor(lactorid, lsendpack);
+				if (!lkcp->sendbyactor(lactorid, lsendpack))
+				{
+					log_error()->print("actor_gateway_g2c::handle_kcp fail actorid=[{}]", lactorid);
+				}
 			}
 			else
 			{
@@ -151,7 +160,10 @@ namespace ngl
 				{
 					lids.emplace(nguid::make(ACTOR_ROBOT, lareas[lidx], luids[lidx]));
 				}
-				lkcp->sendbyactor(lids, lsendpack);
+				if (!lkcp->sendbyactor(lids, lsendpack))
+				{
+					log_error()->print("actor_gateway_g2c::handle_kcp fail actorids=[{}]", lids);
+				}
 			}
 			return true;
 		}

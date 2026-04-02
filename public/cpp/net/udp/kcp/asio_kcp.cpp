@@ -181,7 +181,7 @@ namespace ngl
 
 	bool asio_kcp::send(i32_sessionid asession, std::shared_ptr<pack>& apack)
 	{
-		return send(asession, apack->m_buff, apack->m_pos) >= 0;
+		return send(asession, apack->m_buff, apack->m_pos);
 	}
 
 	bool asio_kcp::send(i32_sessionid asessionid, const char* buf, int32_t len)

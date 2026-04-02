@@ -56,6 +56,10 @@ namespace ngl
 		{
 			return false;
 		}
+		if (apack->m_buff == nullptr)
+		{
+			return false;
+		}
 		i32_session lsession = m_kcp.find_session(aactor);
 		if (lsession == -1)
 		{
