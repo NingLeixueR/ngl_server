@@ -472,22 +472,38 @@ namespace ngl
 
 	bool asio_kcp::send(std::shared_ptr<pack>& apack)
 	{
-		m_session.foreach([this, &apack](std::shared_ptr<kcp_endpoint>& aptr)
+		if (apack == nullptr)
+		{
+			return false;
+		}
+		bool lret = true;
+		m_session.foreach([this, &apack, &lret](std::shared_ptr<kcp_endpoint>& aptr)
 			{
-				send(aptr->m_session, apack);
+				if (!send(aptr->m_session, apack))
+				{
+					lret = false;
+				}
 			}
 		);
-		return true;
+		return lret;
 	}
 
 	bool asio_kcp::sendpackbyarea(i16_area aarea, std::shared_ptr<pack>& apack)
 	{
-		m_session.foreachbyarea(aarea, [this, &apack](std::shared_ptr<kcp_endpoint>& aptr)
+		if (apack == nullptr)
+		{
+			return false;
+		}
+		bool lret = true;
+		m_session.foreachbyarea(aarea, [this, &apack, &lret](std::shared_ptr<kcp_endpoint>& aptr)
 			{
-				send(aptr->m_session, apack);
+				if (!send(aptr->m_session, apack))
+				{
+					lret = false;
+				}
 			}
 		);
-		return true;
+		return lret;
 	}
 
 	void asio_kcp::connect(int32_t aconv
