@@ -89,6 +89,7 @@ namespace ngl
 						close(akcp->m_session);
 						return;
 					}
+					akcp->m_issend = false;
 					do_send(akcp);
 				}
 			);
@@ -97,7 +98,7 @@ namespace ngl
 		// Register built-in control commands used during KCP handshake/close.
 		bool async_send(const std::shared_ptr<kcp_endpoint>& akcp, const std::shared_ptr<pack>& apack);
 
-		void do_send(const std::shared_ptr<kcp_endpoint>& akcp);
+		bool do_send(const std::shared_ptr<kcp_endpoint>& akcp);
 
 		void func_ecmd_connect()const;
 
@@ -106,7 +107,7 @@ namespace ngl
 		void func_ecmd_close()const;
 
 		bool async_send(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack);
-		void do_send();
+		bool do_send();
 	public:
 		// Send raw UDP datagrams, KCP packs, or KCP-routed actor traffic.
 		bool sendu(const basio::ip::udp::endpoint& aendpoint, const char* buf, int32_t len);
