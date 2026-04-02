@@ -250,10 +250,6 @@ namespace ngl
 
 			for (auto& service : lservices)
 			{
-			}
-
-			for (auto& service : lservices)
-			{
 				ngl::ws::force_close_socket(service->socket());
 			}
 
@@ -686,6 +682,7 @@ namespace ngl
 				aservice->m_issend = false;
 				return;
 			}
+			aservice->m_issend = true;
 			lnodepack = aservice->m_list.front();
 			aservice->m_list.pop_front();
 		}
@@ -704,7 +701,13 @@ namespace ngl
 						[this, aservice, lnodepack](const basio_errorcode& ec, std::size_t)
 						{
 							handle_write(aservice, ec, lnodepack->get_pack());
-							if (ec) return;
+							if (ec)
+							{
+								log_error()->print("asio_ws::send[{}]", ec.message().c_str());
+								close(aservice.get());
+								return;
+							}
+							aservice->m_issend = false;
 							do_send(aservice);
 						}
 					);
@@ -716,8 +719,13 @@ namespace ngl
 						basio::buffer(lnodepack->buff(), lnodepack->pos()),
 						[this, aservice, lnodepack](const basio_errorcode& ec, std::size_t)
 						{
-							handle_write(aservice, ec, lnodepack->get_pack());
-							if (ec) return;
+							if (ec)
+							{
+								log_error()->print("asio_ws::send[{}]", ec.message().c_str());
+								close(aservice.get());
+								return;
+							}
+							aservice->m_issend = false;
 							do_send(aservice);
 						}
 					);
@@ -816,12 +824,6 @@ namespace ngl
 					{
 						if (!error)
 						{
-							const bool lis_text = aservice->visit_stream([](const auto& aws_stream)
-								{
-									return aws_stream.got_text();
-								}
-							);
-
 							const beast::flat_buffer::const_buffers_type ldata = aservice->read_buffer().cdata();
 							const char* lbuf = static_cast<const char*>(ldata.data());
 							const uint32_t llen = static_cast<uint32_t>(bytes_transferred);

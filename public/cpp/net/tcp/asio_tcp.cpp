@@ -301,8 +301,7 @@ namespace ngl
 			}
 			tcp->m_issend = true;
 		}
-		do_send(tcp);
-		return true;
+		return do_send(tcp);
 	}
 
 	bool asio_tcp::send(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
@@ -331,11 +330,11 @@ namespace ngl
 		}		
 	}
 
-	void asio_tcp::do_send(const std::shared_ptr<service_tcp>& atcp)
+	bool asio_tcp::do_send(const std::shared_ptr<service_tcp>& atcp)
 	{
 		if (atcp == nullptr)
 		{
-			return;
+			return false;
 		}
 
 		std::shared_ptr<node_pack> litem = nullptr;
@@ -344,14 +343,15 @@ namespace ngl
 			if (atcp->m_list.empty())
 			{
 				atcp->m_issend = false;
-				return;
+				return true;
 			}
+			atcp->m_issend = true;
 			litem = atcp->m_list.front();
 			atcp->m_list.pop_front();
 		}
 
 		async_send(atcp, litem);
-		return;
+		return true;
 	}
 
 	void asio_tcp::handle_write(const std::shared_ptr<service_tcp>& atcp, const basio_errorcode& error, const std::shared_ptr<pack>& apack)
