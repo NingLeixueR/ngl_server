@@ -80,16 +80,42 @@ namespace ngl
 		udp_cmd::register_fun(udp_cmd::ecmd_close, [](asio_kcp* ap, std::shared_ptr<kcp_endpoint>& apstruct, const std::string&)
 			{
 				udp_cmd::sendcmd(ap, apstruct->m_session, udp_cmd::ecmd_close_ret, "");
-				int lession = apstruct->m_session;
+				if (ap == nullptr || apstruct == nullptr || apstruct->m_session <= 0)
+				{
+					return;
+				}
 				tools::wheel_parm lparm
 				{
 					.m_ms = e_close_intervalms,
-					.m_intervalms = [](int64_t) {return e_close_intervalms; },
-					.m_count = 0x7fffffff,
-					.m_fun = [ap,lession](const tools::wheel_node*)
+					.m_count = 1,
+					.m_fun = [ap, lsession = apstruct->m_session](const tools::wheel_node*)
 					{
-						// Defer actual teardown slightly so the close reply has time to flush out.
-						ap->close(lession);
+						// Delay teardown slightly so any in-flight close acknowledgement can flush.
+						ap->close_net(lsession);
+					}
+				};
+				m_kcptimer.addtimer(lparm);
+			}
+		);
+	}
+
+	// Register the close acknowledgement handler for locally initiated close requests.
+	void asio_kcp::func_ecmd_close_ret()const
+	{
+		udp_cmd::register_fun(udp_cmd::ecmd_close_ret, [](asio_kcp* ap, std::shared_ptr<kcp_endpoint>& apstruct, const std::string&)
+			{
+				if (ap == nullptr || apstruct == nullptr || apstruct->m_session <= 0)
+				{
+					return;
+				}
+				tools::wheel_parm lparm
+				{
+					.m_ms = e_close_intervalms,
+					.m_count = 1,
+					.m_fun = [ap, lsession = apstruct->m_session](const tools::wheel_node*)
+					{
+						// Delay teardown slightly so any in-flight close acknowledgement can flush.
+						ap->close_net(lsession);
 					}
 				};
 				m_kcptimer.addtimer(lparm);
@@ -107,6 +133,7 @@ namespace ngl
 		func_ecmd_connect();
 		func_ecmd_connect_ret();
 		func_ecmd_close();
+		func_ecmd_close_ret();
 
 		// Begin receiving immediately; the io_context thread starts right after.
 		start();
@@ -286,7 +313,7 @@ namespace ngl
 									if (lrecv == -3)
 									{
 										// Ret == -3 m_buffrecv
-										close(lpstruct->m_session);
+										close_net(lpstruct->m_session);
 										break;
 									}
 									if (lrecv < 0)
@@ -309,7 +336,7 @@ namespace ngl
 
 									if (sempack(lpstruct, m_buffrecv, lrecv) == false)
 									{
-										close(lpstruct->m_session);
+										close_net(lpstruct->m_session);
 										break;
 									}
 								}
@@ -580,7 +607,26 @@ namespace ngl
 
 	void asio_kcp::close(i32_session asession)
 	{
-		m_session.erasebysession(asession);
+		if (asession <= 0)
+		{
+			return;
+		}
+		if (!udp_cmd::sendcmd(this, asession, udp_cmd::ecmd_close, ""))
+		{
+			close_net(asession);
+			return;
+		}
+		tools::wheel_parm lparm
+		{
+			.m_ms = e_close_intervalms,
+			.m_count = 1,
+			.m_fun = [this, asession](const tools::wheel_node*)
+			{
+				// Delay teardown slightly so any in-flight close acknowledgement can flush.
+				close_net(asession);
+			}
+		};
+		m_kcptimer.addtimer(lparm);
 	}
 
 	void asio_kcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport, i64_actorid aserver, i64_actorid aclient)
@@ -591,6 +637,10 @@ namespace ngl
 
 	void asio_kcp::close_net(i32_session asession)
 	{
-		close(asession);
+		if (asession <= 0)
+		{
+			return;
+		}
+		m_session.erasebysession(asession);
 	}
 }// namespace ngl

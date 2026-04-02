@@ -57,13 +57,22 @@ namespace ngl
 
 	bool udp_cmd::sendcmd(asio_kcp* akcp, i32_sessionid asession, udp_cmd::ecmd acmd, const char* ajson)
 	{
-		std::string lbuff = std::format("ecmd*{}*{}", (int)acmd, ajson);
+		const char* ljson = ajson == nullptr ? "" : ajson;
+		std::string lbuff = std::format("ecmd*{}*{}", (int)acmd, ljson);
 		if (lbuff.empty())
 		{
-			log_error()->print("udp_cmd::sendcmd fail [{}][{}]", (int)acmd, ajson);
+			log_error()->print("udp_cmd::sendcmd fail [{}][{}]", (int)acmd, ljson);
 			return false;
 		}
-		akcp->send(asession, lbuff.c_str(), (int)lbuff.size());
-		return true;
+		if (akcp == nullptr)
+		{
+			return false;
+		}
+		const bool lsent = akcp->send(asession, lbuff.c_str(), (int)lbuff.size());
+		if (!lsent)
+		{
+			log_error()->print("udp_cmd::sendcmd send fail [{}][session:{}]", (int)acmd, asession);
+		}
+		return lsent;
 	}
 }//namespace ngl

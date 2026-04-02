@@ -86,7 +86,7 @@ namespace ngl
 					if (ec)
 					{
 						log_error()->print("asio_kcp::send[{}]", ec.message().c_str());
-						close(akcp->m_session);
+						close_net(akcp->m_session);
 						return;
 					}
 					do_send(akcp, true);
@@ -105,6 +105,8 @@ namespace ngl
 		void func_ecmd_connect_ret()const;
 
 		void func_ecmd_close()const;
+
+		void func_ecmd_close_ret()const;
 
 		bool async_send(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack);
 		bool do_send(bool async = false);
@@ -156,9 +158,11 @@ namespace ngl
 		// Resolve an actor id back to its current KCP session id.
 		i32_session find_session(i64_actorid aclient);
 
-		// Remove a KCP session from the session table.
+		// Start a logical close handshake. If the control command cannot be sent,
+		// fall back to immediate local cleanup.
 		void close(i32_session asession);
 
+		// Remove a KCP session from the local session table immediately.
 		void close_net(i32_session asession);
 
 		// Recreate the logical session mapping after reconnecting to the same peer.

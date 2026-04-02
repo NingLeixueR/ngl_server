@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <atomic>
 #include <chrono>
+#include <functional>
 #include <string>
 #include <future>
 #include <memory>
@@ -20,6 +21,7 @@
 #include "net/tcp/ntcp.h"
 #include "net/udp/kcp/asio_kcp.h"
 #include "net/udp/kcp/kcp_session.h"
+#include "net/udp/kcp/ukcp.h"
 #include "test_support.h"
 
 namespace basio = ngl::basio;
@@ -39,9 +41,24 @@ namespace net_test_support
 		packet->m_pos = static_cast<int32_t>(payload.size());
 		return packet;
 	}
+
+	bool wait_for_condition(const std::function<bool()>& predicate, std::chrono::milliseconds timeout)
+	{
+		const auto deadline = std::chrono::steady_clock::now() + timeout;
+		while (std::chrono::steady_clock::now() < deadline)
+		{
+			if (predicate())
+			{
+				return true;
+			}
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		}
+		return predicate();
+	}
 }
 
 using net_test_support::make_test_packet;
+using net_test_support::wait_for_condition;
 using ngl_test_support::try_set;
 
 TEST(NetTest, ServerSessionReplacesExistingMappingsBidirectionally)
@@ -559,6 +576,60 @@ TEST(NetTest, KcpSessionMaintainsActorIndexesAndAreaIteration)
 	EXPECT_EQ(session.find(entry2->m_session), nullptr);
 	EXPECT_EQ(session.findbyactorid(client2), nullptr);
 	EXPECT_EQ(session.findbyactorid(server2), nullptr);
+}
+
+TEST(NetTest, AsioKcpCloseConsumesCloseRetAndRemovesBothSessions)
+{
+	basio::io_context probe_context;
+	basio::ip::udp::socket probe_server(probe_context, basio::ip::udp::endpoint(basio::ip::udp::v4(), 0));
+	basio::ip::udp::socket probe_client(probe_context, basio::ip::udp::endpoint(basio::ip::udp::v4(), 0));
+	const ngl::i16_port server_port = probe_server.local_endpoint().port();
+	const ngl::i16_port client_port = probe_client.local_endpoint().port();
+
+	basio_errorcode ec;
+	probe_server.close(ec);
+	probe_client.close(ec);
+
+	ngl::asio_kcp server(server_port);
+	ngl::asio_kcp client(client_port);
+
+	const ngl::i64_actorid server_actor = ngl::nguid::make(ngl::ACTOR_SERVER, 2, 301);
+	const ngl::i64_actorid client_actor = ngl::nguid::make(ngl::ACTOR_ROLE, 2, 401);
+	server.reset_add(ngl::ukcp::m_conv, "127.0.0.1", client_port, server_actor, client_actor);
+
+	std::string kcp_session_token;
+	ASSERT_TRUE(ngl::ukcp::session_create(server_actor, client_actor, kcp_session_token));
+
+	auto connected = std::make_shared<std::promise<ngl::i32_sessionid>>();
+	std::future<ngl::i32_sessionid> connected_future = connected->get_future();
+	client.connect(
+		ngl::ukcp::m_conv,
+		kcp_session_token,
+		server_actor,
+		client_actor,
+		"127.0.0.1",
+		server_port,
+		[connected](ngl::i32_sessionid sessionid)
+		{
+			try_set(connected, sessionid);
+		}
+	);
+
+	ASSERT_EQ(connected_future.wait_for(std::chrono::seconds(3)), std::future_status::ready);
+	const ngl::i32_sessionid client_sessionid = connected_future.get();
+	ASSERT_GT(client_sessionid, 0);
+	ASSERT_NE(server.find_session(client_actor), -1);
+
+	client.close(client_sessionid);
+
+	EXPECT_TRUE(wait_for_condition(
+		[&client, &server, client_actor]()
+		{
+			return client.find_session(client_actor) == -1 && server.find_session(client_actor) == -1;
+		},
+		std::chrono::seconds(3)));
+	EXPECT_EQ(client.find_session(client_actor), -1);
+	EXPECT_EQ(server.find_session(client_actor), -1);
 }
 
 TEST(NetTest, AsioKcpRejectsInvalidBuffersAndUnknownSessions)
