@@ -21,10 +21,10 @@
 #include "net/asio_timer.h"
 
 #include <openssl/ssl.h>
-#include <array>
 #include <type_traits>
 #include <utility>
 #include <vector>
+#include <array>
 
 namespace ngl
 {
@@ -655,12 +655,31 @@ namespace ngl
 		{
 			return false;
 		}
-		{
-			std::lock_guard<std::mutex> llock(ws->m_mutex);
-			ws->m_list.emplace_back(std::make_shared<node_pack>(apack));
-		}
+		ws->m_npacklist.push(apack);
 		do_send(ws);
 		return true;
+	}
+
+	void asio_ws::async_send(const std::shared_ptr<service_ws>& aservice, const std::shared_ptr<node_pack>& anodepack)
+	{
+		aservice->visit_stream([this, aservice, anodepack](auto& astream)
+			{
+				if (anodepack->head() != nullptr)
+				{
+					astream.binary(true);
+					std::array<basio::const_buffer, 2> lbufs{
+						basio::buffer(anodepack->head_data(), anodepack->head_byte()),
+						basio::buffer(anodepack->buff(), anodepack->pos())
+					};
+					send(aservice, astream, anodepack, lbufs);
+				}
+				else
+				{
+					astream.binary(false);
+					send(aservice, astream, anodepack, basio::buffer(anodepack->buff(), anodepack->pos()));
+				}
+			}
+		);
 	}
 
 	void asio_ws::do_send(const std::shared_ptr<service_ws>& aservice, bool async/* = false*/)
@@ -670,62 +689,7 @@ namespace ngl
 			return;
 		}
 
-		std::shared_ptr<node_pack> lnodepack;
-		{
-			std::lock_guard<std::mutex> llock(aservice->m_mutex);
-			if (aservice->m_list.empty())
-			{
-				aservice->m_issend = false;
-				return;
-			}
-			if (aservice->m_issend && !async)
-			{
-				return;
-			}
-			aservice->m_issend = true;
-			lnodepack = aservice->m_list.front();
-			aservice->m_list.pop_front();
-		}
-
-		aservice->visit_stream([this, aservice, lnodepack](auto& astream)
-			{
-				if (lnodepack->head() != nullptr)
-				{
-					astream.binary(true);
-					std::array<basio::const_buffer, 2> bufs{
-						basio::buffer(lnodepack->head_data(), lnodepack->head_byte()),
-						basio::buffer(lnodepack->buff(), lnodepack->pos())
-					};
-					astream.async_write(bufs, [this, aservice, lnodepack](const basio_errorcode& ec, std::size_t)
-						{
-							handle_write(aservice, ec, lnodepack->get_pack());
-							if (ec)
-							{
-								log_error()->print("asio_ws::send[{}]", ec.message().c_str());
-								close(aservice.get());
-								return;
-							}
-							do_send(aservice, true);
-						}
-					);
-				}
-				else
-				{
-					astream.binary(false);
-					astream.async_write(basio::buffer(lnodepack->buff(), lnodepack->pos()),[this, aservice, lnodepack](const basio_errorcode& ec, std::size_t)
-						{
-							if (ec)
-							{
-								log_error()->print("asio_ws::send[{}]", ec.message().c_str());
-								close(aservice.get());
-								return;
-							}
-							do_send(aservice, true);
-						}
-					);
-				}
-			}
-		);
+		aservice->m_npacklist.send(async, aservice, this, &asio_ws::async_send);
 	}
 
 	void asio_ws::handle_write(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error, const std::shared_ptr<pack>& apack)

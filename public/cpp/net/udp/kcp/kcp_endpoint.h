@@ -46,9 +46,7 @@ namespace ngl
 		i64_actorid					m_client = 0;		// Logical client actor id.
 		i64_actorid					m_server = 0;		// Logical server actor id.
 		int64_t						m_timerid = 0;		// Periodic ikcp_update timer id.
-		std::deque<node_pack>		m_list;				// Pending send queue drained by async completion handlers.
-		std::mutex					m_mutex;
-		bool						m_issend = false;	// Whether one async send is currently in flight.
+		npack_list					m_npacklist;
 
 		typedef int (*output)(const char* buf, int len, struct IKCPCB* kcp, void* user);
 

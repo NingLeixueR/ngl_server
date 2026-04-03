@@ -15,14 +15,14 @@
 
 #pragma once
 
-#include "tools/serialize/pack.h"
 #include "tools/tools/tools_thread.h"
+#include "tools/serialize/pack.h"
 #include "tools/log/nlog.h"
 #include "net/asio_base.h"
 
+#include <unordered_map>
 #include <memory>
 #include <string>
-#include <unordered_map>
 
 namespace ngl
 {
@@ -118,7 +118,27 @@ namespace ngl
 			i16_port aport,
 			int acount
 		);
+
+	private:
+		template <typename TSTREAM,typename TSEQ>
+		void send(const std::shared_ptr<service_ws>& aservice, TSTREAM& aws, const std::shared_ptr<node_pack>& anodepack, const TSEQ& adata)
+		{
+			aws.async_write(adata, [this, aservice, anodepack](const basio_errorcode& ec, std::size_t)
+				{
+					handle_write(aservice, ec, anodepack->get_pack());
+					if (ec)
+					{
+						log_error()->print("asio_ws::send[{}]", ec.message().c_str());
+						close(aservice.get());
+						return;
+					}
+					do_send(aservice, true);
+				}
+			);
+		}
+
 		// Enqueue frames, drive the serialized async-write chain, and manage closure.
+		void async_send(const std::shared_ptr<service_ws>& aservice, const std::shared_ptr<node_pack>& anodepack);
 		void do_send(const std::shared_ptr<service_ws>& aservice, bool async = false);
 		void handle_write(const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error, const std::shared_ptr<pack>& apack);
 		void accept_handle(bool av4, const std::shared_ptr<service_ws>& aservice, const basio_errorcode& error);

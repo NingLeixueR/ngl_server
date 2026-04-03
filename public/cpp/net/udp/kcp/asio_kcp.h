@@ -64,24 +64,22 @@ namespace ngl
 		struct tmpdata
 		{
 			basio::ip::udp::endpoint m_endpoint;
-			std::shared_ptr<pack> m_pack;
+			std::shared_ptr<node_pack> m_pack;
 		};
-		std::mutex							m_mutex;
-		bool								m_issend = false;
-		std::deque<tmpdata>					m_list;				// Pending send queue drained by async completion handlers.
+		send_list<tmpdata>					m_udplist;
 	public:
 		explicit asio_kcp(i16_port port);
 
 		~asio_kcp() noexcept;
 	private:
 		template <typename TSEQ>
-		bool send(const std::shared_ptr<kcp_endpoint>& akcp
-			, const std::shared_ptr<pack>& apack
+		void send(const std::shared_ptr<kcp_endpoint>& akcp
+			, const std::shared_ptr<node_pack>& anodepack
 			, const TSEQ& adata
 		)
 		{
 			m_socket.async_send_to(adata, akcp->m_endpoint,
-				[this, apack, akcp](const basio_errorcode& ec, std::size_t)
+				[this, anodepack, akcp](const basio_errorcode& ec, std::size_t)
 				{
 					if (ec)
 					{
@@ -92,11 +90,10 @@ namespace ngl
 					do_send(akcp, true);
 				}
 			);
-			return true;
 		}
 
 		// Register built-in control commands used during KCP handshake/close.
-		bool async_send(const std::shared_ptr<kcp_endpoint>& akcp, const std::shared_ptr<pack>& apack);
+		void async_send(const std::shared_ptr<kcp_endpoint>& akcp, const std::shared_ptr<node_pack>& apack);
 
 		bool do_send(const std::shared_ptr<kcp_endpoint>& akcp, bool async = false);
 
@@ -108,7 +105,7 @@ namespace ngl
 
 		void func_ecmd_close_ret()const;
 
-		bool async_send(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<pack>& apack);
+		void async_send(const basio::ip::udp::endpoint& aendpoint, const std::shared_ptr<node_pack>& anodepack);
 		bool do_send(bool async = false);
 	public:
 		// Send raw UDP datagrams, KCP packs, or KCP-routed actor traffic.

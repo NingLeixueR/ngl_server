@@ -92,20 +92,66 @@ namespace ngl
 		}
 	};
 
+	template <typename TITEM>
+	class send_list
+	{
+		std::deque<TITEM>	m_list;				// Pending send queue drained by async completion handlers.
+		std::mutex			m_mutex;
+		bool				m_issend = false;	// Whether one async send is currently in flight.
+	public:
+		template <typename TVAL>
+		void push(TVAL&& aitem)
+		{
+			std::lock_guard<std::mutex> llock(m_mutex);
+			m_list.emplace_back(std::forward<TVAL>(aitem));
+		}
+
+		bool pop(TITEM& aitem, bool aasync)
+		{
+			std::lock_guard<std::mutex> llock(m_mutex);
+			if (m_list.empty())
+			{
+				m_issend = false;
+				return false;
+			}
+			if (m_issend && !aasync)
+			{
+				return false;
+			}
+			m_issend = true;
+			aitem = std::move(m_list.front());
+			m_list.pop_front();
+			return true;
+		}
+
+		template <typename TFUN>
+		bool send(bool aasync, TFUN&& afun)
+		{
+			TITEM litem;
+			if (!pop(litem, aasync))
+			{
+				return false;
+			}
+			std::forward<TFUN>(afun)(litem);
+			return true;
+		}
+	};
+
 	class npack_list
 	{
-		std::deque<std::shared_ptr<node_pack>>	m_list;				// Pending send queue drained by async completion handlers.
-		std::mutex								m_mutex;
-		bool									m_issend = false;	// Whether one async send is currently in flight.
+		send_list<std::shared_ptr<node_pack>>	m_list;
 	public:
 
 		template <typename T>
 		void push(std::shared_ptr<T>& apack)
 		{
-			std::lock_guard<std::mutex> llock(m_mutex);
-			m_list.emplace_back(std::make_shared<node_pack>(apack));
+			m_list.push(std::make_shared<node_pack>(apack));
 		}
 
+		bool pop(std::shared_ptr<node_pack>& apack, bool aasync)
+		{
+			return m_list.pop(apack, aasync);
+		}
 
 		template <typename TNET, typename TNDATA>
 		void send(
@@ -115,23 +161,11 @@ namespace ngl
 			void (TNET::* asendfun)(const std::shared_ptr<TNDATA>&, const std::shared_ptr<node_pack>&)
 		)
 		{
-			std::shared_ptr<node_pack> lnodepack = nullptr;
-			{
-				std::lock_guard<std::mutex> llock(m_mutex);
-				if (m_list.empty())
+			m_list.send(aasync, [adata, anet, asendfun](const std::shared_ptr<node_pack>& anodepack)
 				{
-					m_issend = false;
-					return;
+					(anet->*asendfun)(adata, anodepack);
 				}
-				if (m_issend && !aasync)
-				{
-					return;
-				}
-				m_issend = true;
-				lnodepack = m_list.front();
-				m_list.pop_front();
-			}
-			(anet->*asendfun)(adata, lnodepack);
+			);
 		}
 	};
 }// namespace ngl
