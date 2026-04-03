@@ -86,10 +86,8 @@ namespace ngl
 		i32_threadid			m_threadid = 0;
 		i32_sessionid			m_sessionid = 0;
 		bool					m_is_lanip = false;
-		bool					m_issend = false;	// Whether one async send is currently in flight.
-		std::deque<std::shared_ptr<node_pack>>	m_list;				// Pending send queue drained by async completion handlers.
-		std::mutex				m_mutex;
 		basio_ioservice&		m_ioservice;
+		npack_list				m_npacklist;
 
 		service_io(serviceio_info& amsi, i32_session asessionid);
 		virtual ~service_io() =default;

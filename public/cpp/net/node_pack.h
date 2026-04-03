@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include <deque>
+#include <mutex>
 #include <utility>
 
 #include "tools/tools/tools_thread.h"
@@ -87,6 +89,49 @@ namespace ngl
 		int32_t head_byte()const
 		{
 			return sizeof(m_head->m_data);
+		}
+	};
+
+	class npack_list
+	{
+		std::deque<std::shared_ptr<node_pack>>	m_list;				// Pending send queue drained by async completion handlers.
+		std::mutex								m_mutex;
+		bool									m_issend = false;	// Whether one async send is currently in flight.
+	public:
+
+		template <typename T>
+		void push(std::shared_ptr<T>& apack)
+		{
+			std::lock_guard<std::mutex> llock(m_mutex);
+			m_list.emplace_back(std::make_shared<node_pack>(apack));
+		}
+
+
+		template <typename TNET, typename TNDATA>
+		void send(
+			bool aasync,
+			const std::shared_ptr<TNDATA>& adata,
+			TNET* anet,
+			void (TNET::* asendfun)(const std::shared_ptr<TNDATA>&, const std::shared_ptr<node_pack>&)
+		)
+		{
+			std::shared_ptr<node_pack> lnodepack = nullptr;
+			{
+				std::lock_guard<std::mutex> llock(m_mutex);
+				if (m_list.empty())
+				{
+					m_issend = false;
+					return;
+				}
+				if (m_issend && !aasync)
+				{
+					return;
+				}
+				m_issend = true;
+				lnodepack = m_list.front();
+				m_list.pop_front();
+			}
+			(anet->*asendfun)(adata, lnodepack);
 		}
 	};
 }// namespace ngl

@@ -321,10 +321,7 @@ namespace ngl
 		{
 			return false;
 		}
-		{
-			std::lock_guard<std::mutex> llock(tcp->m_mutex);
-			tcp->m_list.emplace_back(std::make_shared<node_pack>(apack));
-		}
+		tcp->m_npacklist.push(apack);
 		return do_send(tcp);
 	}
 
@@ -360,27 +357,8 @@ namespace ngl
 		{
 			return false;
 		}
-
-		std::shared_ptr<node_pack> litem = nullptr;
-		{
-			std::lock_guard<std::mutex> llock(atcp->m_mutex);
-			if (atcp->m_list.empty())
-			{
-				atcp->m_issend = false;
-				return true;
-			}
-
-			if (atcp->m_issend && !async)
-			{
-				return true;
-			}
-
-			atcp->m_issend = true;
-			litem = atcp->m_list.front();
-			atcp->m_list.pop_front();
-		}
-
-		async_send(atcp, litem);
+		
+		atcp->m_npacklist.send(async, atcp, this, &asio_tcp::async_send);
 		return true;
 	}
 

@@ -112,7 +112,6 @@ namespace ngl
 		, m_pbuff2(m_buff2.get())
 		, m_sessionid(asessionid)
 		, m_is_lanip(false)
-		, m_issend(false)
 	{
 	}
 
