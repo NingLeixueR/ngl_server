@@ -47,8 +47,15 @@ namespace ngl
 		// Nodes that must receive a later np_channel_exit<T> when this reader goes away.
 		std::set<i64_actorid>											m_exit;
 
+		// Registration retry timers owned by this reader instance.
+		std::map<i16_area, int64_t>										m_regtimer;
+
 		// Local mirror of synchronized rows.
 		std::map<i64_actorid, T>										m_data;
+
+		void clear_timer(i16_area aarea);
+
+		void clear_timer();
 	public:
 		// Fetch the per-actor reader singleton.
 		static nsp_read<TDerived, TACTOR, T>& instance(i64_actorid aactorid);

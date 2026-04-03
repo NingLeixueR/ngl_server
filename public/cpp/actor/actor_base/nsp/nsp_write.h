@@ -56,11 +56,18 @@ namespace ngl
 		// Nodes that must receive a later np_channel_exit<T> when this writer goes away.
 		std::set<i64_actorid>											m_exit;
 
+		// Registration retry timers owned by this writer instance.
+		std::map<i16_area, int64_t>										m_regtimer;
+
 		// Rows changed since the last incremental broadcast.
 		std::set<i64_dataid>											m_changeids;
 
 		// Rows deleted since the last incremental broadcast.
 		std::set<i64_dataid>											m_delids;
+
+		void clear_timer(i16_area aarea);
+
+		void clear_timer();
 	public:
 		// Fetch the per-actor writer singleton.
 		static nsp_write<TDerived, TACTOR, T>& instance(i64_actorid aactorid);
@@ -99,6 +106,9 @@ namespace ngl
 
 		// Get one row and mark it dirty for the next incremental broadcast.
 		T* get(i64_dataid adataid);
+
+		// Delete one row and mark it for the next incremental broadcast.
+		bool erase(i64_dataid adataid);
 
 		// Read one row or the full mirrored map without marking it dirty.
 		const T* getconst(i64_dataid adataid);

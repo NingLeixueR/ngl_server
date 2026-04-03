@@ -97,6 +97,28 @@ namespace ngl
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
+	void nsp_write<TDerived, TACTOR, T>::clear_timer(i16_area aarea)
+	{
+		auto lptimer = tools::findmap(m_regtimer, aarea);
+		if (lptimer == nullptr)
+		{
+			return;
+		}
+		tools::twheel::wheel().removetimer(*lptimer);
+		m_regtimer.erase(aarea);
+	}
+
+	template <typename TDerived, typename TACTOR, typename T>
+	void nsp_write<TDerived, TACTOR, T>::clear_timer()
+	{
+		for (const auto& lpair : m_regtimer)
+		{
+			tools::twheel::wheel().removetimer(lpair.second);
+		}
+		m_regtimer.clear();
+	}
+
+	template <typename TDerived, typename TACTOR, typename T>
 	void nsp_write<TDerived, TACTOR, T>::init()
 	{
 		// Use the registered actor enum instead of TACTOR::actorid() so NSP templates do
@@ -124,7 +146,7 @@ namespace ngl
 		}
 
 		i64_actorid lactorid = m_actor->id_guid();
-			m_regload.foreach_nspser([lactorid](i16_area aarea, i64_actorid)
+			m_regload.foreach_nspser([this, lactorid](i16_area aarea, i64_actorid)
 				{
 					tools::wheel_parm lparm
 					{
@@ -143,7 +165,7 @@ namespace ngl
 						actor::send_actor(lactorid, nguid::make(), pro);
 					}
 				};
-				tools::twheel::wheel().addtimer(lparm);
+				m_regtimer[aarea] = tools::twheel::wheel().addtimer(lparm);
 			}
 		);
 	}
@@ -170,6 +192,7 @@ namespace ngl
 	T* nsp_write<TDerived, TACTOR, T>::add(i64_dataid adataid)
 	{
 		i64_actorid ldataid = to_actorid(adataid);
+		m_delids.erase(ldataid);
 		m_changeids.insert(ldataid);
 		T* lpdata = &m_data[ldataid];
 		lpdata->set_mid(ldataid);
@@ -183,9 +206,20 @@ namespace ngl
 		auto lpdata = tools::findmap(m_data, ldataid);
 		if (lpdata != nullptr)
 		{
+			m_delids.erase(ldataid);
 			m_changeids.insert(ldataid);
 		}		
 		return lpdata;
+	}
+
+	template <typename TDerived, typename TACTOR, typename T>
+	bool nsp_write<TDerived, TACTOR, T>::erase(i64_dataid adataid)
+	{
+		i64_actorid ldataid = to_actorid(adataid);
+		bool lret = m_data.erase(ldataid) > 0;
+		m_changeids.erase(ldataid);
+		bool lnew = m_delids.insert(ldataid).second;
+		return lret || lnew;
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
@@ -203,107 +237,109 @@ namespace ngl
 	template <typename TDerived, typename TACTOR, typename T>
 	void nsp_write<TDerived, TACTOR, T>::change()
 	{
-		if (!m_changeids.empty())
+		if (m_changeids.empty() && m_delids.empty())
 		{
-			const i16_actortype ltype = nguid::type(m_actor->id_guid());
+			return;
+		}
+		const i16_actortype ltype = nguid::type(m_actor->id_guid());
+		{
+			// First send a combined packet to peers that subscribe to all rows.
+			auto pro = std::make_shared<np_channel_data<T>>();
+			pro->m_actorid = m_actor->id_guid();
+			std::set<i64_nodeid> lnodes;
+			std::ranges::for_each(m_nodereadalls, [&lnodes](i64_nodeid aid)
+				{
+					lnodes.insert(aid);
+				}
+			);
+			std::ranges::for_each(m_nodewritealls, [&lnodes](i64_nodeid aid)
+				{
+					lnodes.insert(aid);
+				}
+			);
+			m_regload.foreach_nspser([&lnodes](i16_area, i64_actorid aactorid)
+				{
+					lnodes.insert(aactorid);
+				}
+			);
+			pro->m_firstsynchronize = false;
+			pro->m_recvfinish = true;
+			for (const i64_dataid ldataid : m_changeids)
 			{
-				// First send a combined packet to peers that subscribe to all rows.
+				const T* lpdata = tools::findmap(m_data, ldataid);
+				if (lpdata == nullptr)
+				{
+					continue;
+				}
+				// Field filtering happens here so each peer sees only allowed columns.
+				T& ldst = pro->m_data[ldataid];
+				m_operator_field.field_copy(ltype, *lpdata, ldst, true);
+			}
+
+			for (const i64_dataid ldataid : m_delids)
+			{
+				pro->m_deldata.emplace_back(ldataid);
+			}
+
+			nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
+			lnodes.erase(m_actor->id_guid());
+			actor::send_actor(lnodes, nguid::make(), pro);
+		}
+
+		{
+			// Then send per-row packets to peers that subscribe only to specific rows.
+			for (const i64_dataid ldataid : m_changeids)
+			{
+				T* lpdata = tools::findmap(m_data, ldataid);
+				if (lpdata == nullptr)
+				{
+					continue;
+				}
+				std::set<i64_nodeid> lnodes;
 				auto pro = std::make_shared<np_channel_data<T>>();
 				pro->m_actorid = m_actor->id_guid();
-				std::set<i64_nodeid> lnodes;
-				std::ranges::for_each(m_nodereadalls, [&lnodes](i64_nodeid aid) 
-					{ 
-						lnodes.insert(aid); 
-					}
-				);
-				std::ranges::for_each(m_nodewritealls, [&lnodes](i64_nodeid aid) 
-					{ 
-						lnodes.insert(aid);
-					}
-				);
-				m_regload.foreach_nspser([&lnodes](i16_area, i64_actorid aactorid)
-					{
-						lnodes.insert(aactorid);
-					}
-				);
 				pro->m_firstsynchronize = false;
 				pro->m_recvfinish = true;
-				for (const i64_dataid ldataid : m_changeids)
+				T& ldst = pro->m_data[ldataid];
+				m_operator_field.field_copy(ltype, *lpdata, ldst, true);
+				for (const auto& [lnodeid, lcare] : m_othercare)
 				{
-					const T* lpdata = tools::findmap(m_data, ldataid);
-					if (lpdata == nullptr)
+					if (lcare.is_care(ldataid))
 					{
-						continue;
+						lnodes.insert(lnodeid);
 					}
-					// Field filtering happens here so each peer sees only allowed columns.
-					T& ldst = pro->m_data[ldataid];
-					m_operator_field.field_copy(ltype, *lpdata, ldst, true);
 				}
-
-				for (const i64_dataid ldataid : m_delids)
-				{
-					pro->m_deldata.emplace_back(ldataid);
-				}
-
-				nsp_handle_print<TDerived>::template msg_info<TACTOR>(*pro);
 				lnodes.erase(m_actor->id_guid());
 				actor::send_actor(lnodes, nguid::make(), pro);
 			}
 
+			for (const i64_dataid ldataid : m_delids)
 			{
-				// Then send per-row packets to peers that subscribe only to specific rows.
-				for (const i64_dataid ldataid : m_changeids)
+				std::set<i64_nodeid> lnodes;
+				auto pro = std::make_shared<np_channel_data<T>>();
+				pro->m_actorid = m_actor->id_guid();
+				pro->m_firstsynchronize = false;
+				pro->m_recvfinish = true;
+				pro->m_deldata.emplace_back(ldataid);
+				for (const auto& [lnodeid, lcare] : m_othercare)
 				{
-					T* lpdata = tools::findmap(m_data, ldataid);
-					if (lpdata == nullptr)
+					if (lcare.is_care(ldataid))
 					{
-						continue;
+						lnodes.insert(lnodeid);
 					}
-					std::set<i64_nodeid> lnodes;
-					auto pro = std::make_shared<np_channel_data<T>>();
-					pro->m_actorid = m_actor->id_guid();
-					pro->m_firstsynchronize = false;
-					pro->m_recvfinish = true;
-					T& ldst = pro->m_data[ldataid];
-					m_operator_field.field_copy(ltype, *lpdata, ldst, true);
-					for (const auto& [lnodeid, lcare] : m_othercare)
-					{
-						if (lcare.is_care(ldataid))
-						{
-							lnodes.insert(lnodeid);
-						}
-					}
-					lnodes.erase(m_actor->id_guid());
-					actor::send_actor(lnodes, nguid::make(), pro);
 				}
-
-				for (const i64_dataid ldataid : m_delids)
-				{
-					std::set<i64_nodeid> lnodes;
-					auto pro = std::make_shared<np_channel_data<T>>();
-					pro->m_actorid = m_actor->id_guid();
-					pro->m_firstsynchronize = false;
-					pro->m_recvfinish = true;
-					pro->m_deldata.emplace_back(ldataid);
-					for (const auto& [lnodeid, lcare] : m_othercare)
-					{
-						if (lcare.is_care(ldataid))
-						{
-							lnodes.insert(lnodeid);
-						}
-					}
-					lnodes.erase(m_actor->id_guid());
-					actor::send_actor(lnodes, nguid::make(), pro);
-				}
+				lnodes.erase(m_actor->id_guid());
+				actor::send_actor(lnodes, nguid::make(), pro);
 			}
-			m_changeids.clear();
-			m_delids.clear();
 		}
+		m_changeids.clear();
+		m_delids.clear();
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
 	void nsp_write<TDerived, TACTOR, T>::exit()
 	{
+		clear_timer();
 		{
 			// Notify node, node
 			auto pro = std::make_shared<np_channel_dataid_sync<T>>();
@@ -418,7 +454,7 @@ namespace ngl
 
 		if (m_regload.is_register(recv->m_area))
 		{
-			tools::twheel::wheel().removetimer(recv->m_timer);
+			clear_timer(recv->m_area);
 			return;
 		}
 		auto pro = std::make_shared<np_channel_register<T>>();
@@ -452,17 +488,21 @@ namespace ngl
 		nsp_handle_print<TDerived>::print("nsp_write", aactor, recv);
 
 		m_regload.set_register(nguid::area(recv->m_actorid));
+		clear_timer(nguid::area(recv->m_actorid));
 		// The reply carries other peers' subscription scopes so change() can target them.
 		m_operator_field.set_field(recv->m_node_fieldnumbers);
 
-		m_nodereadalls = recv->m_nodereadalls;
-		m_nodewritealls = recv->m_nodewritealls;
-
-		m_exit.insert(recv->m_nodewritealls.begin(), recv->m_nodewritealls.end());
+		m_nodereadalls.insert(recv->m_nodereadalls.begin(), recv->m_nodereadalls.end());
+		m_nodewritealls.insert(recv->m_nodewritealls.begin(), recv->m_nodewritealls.end());
 
 		for (const auto& [lnodeid, lcare] : recv->m_care)
 		{
 			m_exit.insert(lnodeid);
+			if (lcare.m_all)
+			{
+				m_othercare.erase(lnodeid);
+				continue;
+			}
 			m_othercare[lnodeid].init(lcare);
 		}
 		return;
@@ -477,15 +517,20 @@ namespace ngl
 	
 		i16_actortype ltype = nguid::type(recv->m_actorid);
 		m_operator_field.set_field(ltype, recv->m_field);
+		m_exit.insert(recv->m_actorid);
 
 		if (recv->m_read)
 		{
 			if (recv->m_all)
 			{
-				m_othercare[recv->m_actorid].init(true);
+				m_nodereadalls.insert(recv->m_actorid);
+				m_nodewritealls.erase(recv->m_actorid);
+				m_othercare.erase(recv->m_actorid);
 			}
 			else
 			{
+				m_nodereadalls.erase(recv->m_actorid);
+				m_nodewritealls.erase(recv->m_actorid);
 				m_othercare[recv->m_actorid].init(recv->m_readpart);
 			}
 		}
@@ -493,13 +538,16 @@ namespace ngl
 		{
 			if (recv->m_all)
 			{
-				m_othercare[recv->m_actorid].init(false);
+				m_nodereadalls.erase(recv->m_actorid);
+				m_nodewritealls.insert(recv->m_actorid);
+				m_othercare.erase(recv->m_actorid);
 			}
 			else
 			{
+				m_nodereadalls.erase(recv->m_actorid);
+				m_nodewritealls.erase(recv->m_actorid);
 				m_othercare[recv->m_actorid].init(recv->m_readpart, recv->m_writepart);
 			}
-			m_exit.insert(recv->m_actorid);
 		}
 	}
 
@@ -510,6 +558,7 @@ namespace ngl
 		i64_actorid lactorid = recv->m_actorid;
 
 		// Once a peer exits, incremental broadcasts should stop targeting it.
+		m_exit.erase(lactorid);
 		m_nodewritealls.erase(lactorid);
 		m_nodereadalls.erase(lactorid);
 		m_othercare.erase(lactorid);

@@ -56,7 +56,7 @@ namespace ngl
 		std::ranges::for_each(aids, [&lids](i64_actorid areadid)
 			{
 				// Data ids are retagged with the DB owner actor type used by the NSP server.
-				lids.insert(nsp_write<TDerived, TACTOR, T>::to_actorid(areadid));
+				lids.insert(nsp_read<TDerived, TACTOR, T>::to_actorid(areadid));
 			}
 		);
 		lpread->m_care.init(lids);
@@ -72,6 +72,28 @@ namespace ngl
 	i64_actorid nsp_read<TDerived, TACTOR, T>::to_actorid(i64_actorid adataid)
 	{
 		return nguid::make_type(adataid, nactor_type<TACTOR>::type());
+	}
+
+	template <typename TDerived, typename TACTOR, typename T>
+	void nsp_read<TDerived, TACTOR, T>::clear_timer(i16_area aarea)
+	{
+		auto lptimer = tools::findmap(m_regtimer, aarea);
+		if (lptimer == nullptr)
+		{
+			return;
+		}
+		tools::twheel::wheel().removetimer(*lptimer);
+		m_regtimer.erase(aarea);
+	}
+
+	template <typename TDerived, typename TACTOR, typename T>
+	void nsp_read<TDerived, TACTOR, T>::clear_timer()
+	{
+		for (const auto& lpair : m_regtimer)
+		{
+			tools::twheel::wheel().removetimer(lpair.second);
+		}
+		m_regtimer.clear();
 	}
 
 	template <typename TDerived, typename TACTOR, typename T>
@@ -117,7 +139,7 @@ namespace ngl
 			>();
 		}
 		i64_actorid lactorid = m_actor->id_guid();
-			m_regload.foreach_nspser([lactorid](i16_area aarea, i64_actorid)
+			m_regload.foreach_nspser([this, lactorid](i16_area aarea, i64_actorid)
 				{
 					tools::wheel_parm lparm
 					{
@@ -136,7 +158,7 @@ namespace ngl
 						actor::send_actor(lactorid, nguid::make(), pro);
 					}
 				};
-				tools::twheel::wheel().addtimer(lparm);
+				m_regtimer[aarea] = tools::twheel::wheel().addtimer(lparm);
 			}
 		);
 	}
@@ -156,6 +178,7 @@ namespace ngl
 	template <typename TDerived, typename TACTOR, typename T>
 	void nsp_read<TDerived, TACTOR, T>::exit()
 	{
+		clear_timer();
 		auto pro = std::make_shared<np_channel_exit<T>>();
 		pro->m_actorid = m_actor->id_guid();
 		actor::send_actor(m_exit, nguid::make(), pro);
@@ -246,7 +269,7 @@ namespace ngl
 
 		if (m_regload.is_register(recv->m_area))
 		{
-			tools::twheel::wheel().removetimer(recv->m_timer);
+			clear_timer(recv->m_area);
 			return;
 		}
 		auto pro = std::make_shared<np_channel_register<T>>();
@@ -280,6 +303,7 @@ namespace ngl
 		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
 		m_regload.set_register(nguid::area(recv->m_actorid));
+		clear_timer(nguid::area(recv->m_actorid));
 		// The reply may include field permissions learned from other peer node types.
 		m_operator_field.set_field(recv->m_node_fieldnumbers);
 
@@ -298,6 +322,7 @@ namespace ngl
 		nsp_handle_print<TDerived>::print("nsp_read", aactor, recv);
 
 		i16_actortype ltype = nguid::type(recv->m_actorid);
+		m_exit.insert(recv->m_actorid);
 		// Keep operator_field up to date as new peer node types join the channel.
 		m_operator_field.set_field(ltype, recv->m_field);
 	}

@@ -72,6 +72,7 @@ namespace ngl
 	void nsp_server<ENUMDB, TDerived, T>::channel_channel_data(i64_actorid aactorid, const np_channel_register<T>* recv)
 	{
 		i64_actorid lnspserver = m_dbmodule->get_actor()->id_guid();
+		const i16_actortype ltype = nguid::type(aactorid);
 		std::function<std::shared_ptr<np_channel_data<T>>()> lmalloc = [lnspserver]()->std::shared_ptr<np_channel_data<T>>
 			{
 				auto pro = std::make_shared<np_channel_data<T>>();
@@ -80,15 +81,23 @@ namespace ngl
 				return pro;
 			};
 		auto pro = lmalloc();
+		auto lpush = [&pro, ltype](const T& adata)
+			{
+				T& ldst = pro->m_data[adata.mid()];
+				if (!m_operator_field.field_copy(ltype, adata, ldst, true))
+				{
+					ldst = adata;
+				}
+			};
 
 		int32_t lindex = 0;
 		if (recv->m_all)
 		{
 			// Full subscribers receive the whole dataset in bounded chunks.
-			m_dbmodule->foreach([&pro, &lindex, &lmalloc, aactorid](const data_modified<T>& adata)
+			m_dbmodule->foreach([&pro, &lindex, &lmalloc, &lpush](const data_modified<T>& adata)
 				{
 					const T& ldata = *adata.getconst();
-					pro->m_data.emplace(ldata.mid(), ldata);
+					lpush(ldata);
 					++lindex;
 					if (lindex % esend_maxcount == 0)
 					{
@@ -100,7 +109,7 @@ namespace ngl
 		else
 		{
 			// Partial subscribers receive only their declared read/write row sets.
-			auto lfun = [&pro, &lindex, &lmalloc, aactorid](const std::set<i64_actorid>& aids)
+			auto lfun = [&pro, &lindex, &lmalloc, &lpush](const std::set<i64_actorid>& aids)
 				{
 					for (i64_actorid id : aids)
 					{
@@ -114,7 +123,7 @@ namespace ngl
 						{
 							continue;
 						}
-						pro->m_data.emplace(lpdata->mid(), *lpdata);
+						lpush(*lpdata);
 						++lindex;
 						if (lindex % esend_maxcount == 0)
 						{
@@ -152,9 +161,14 @@ namespace ngl
 		pro->m_field = recv->m_field;
 
 		std::set<i64_nodeid> lnodes;
-		std::ranges::for_each(m_nodereadalls, [&lnodes](i64_nodeid aid) { lnodes.insert(aid); });
-		std::ranges::for_each(m_nodewritealls, [&lnodes](i64_nodeid aid) { lnodes.insert(aid); });
-		// Existing broad subscribers need the new peer's scope so they can route future deltas.
+		for (const auto& [lnodeid, _] : m_care)
+		{
+			if (lnodeid != aactorid)
+			{
+				lnodes.insert(lnodeid);
+			}
+		}
+		// Every existing peer needs the new peer's scope so route and exit state stay complete.
 		actor::send_actor(lnodes, nguid::make(), pro);
 	}
 

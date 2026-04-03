@@ -257,10 +257,11 @@ namespace ngl
 		static void register_handle()
 		{
 			// Register once per concrete NSP helper type and forward all messages
-			// to the per-actor singleton instance.
+			// to the per-actor singleton instance. Late packets after exit are
+			// tolerated and simply dropped.
 			(actor::register_actor_s<TDerived, TMESSAGES>(e_ready_db, [](TDerived* aacotor, const message<TMESSAGES>& adata)
 				{
-					T* lpclass = nclient(aacotor->id_guid(), true);
+					T* lpclass = nclient(aacotor->id_guid(), false);
 					if (lpclass != nullptr)
 					{
 						lpclass->handle(aacotor, adata);
