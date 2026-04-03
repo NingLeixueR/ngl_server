@@ -94,7 +94,7 @@ namespace ngl
 		if (recv->m_all)
 		{
 			// Full subscribers receive the whole dataset in bounded chunks.
-			m_dbmodule->foreach([&pro, &lindex, &lmalloc, &lpush](const data_modified<T>& adata)
+			m_dbmodule->foreach([&pro, &lindex, &lmalloc, &lpush, aactorid](const data_modified<T>& adata)
 				{
 					const T& ldata = *adata.getconst();
 					lpush(ldata);
@@ -109,7 +109,7 @@ namespace ngl
 		else
 		{
 			// Partial subscribers receive only their declared read/write row sets.
-			auto lfun = [&pro, &lindex, &lmalloc, &lpush](const std::set<i64_actorid>& aids)
+			auto lfun = [&pro, &lindex, &lmalloc, &lpush, aactorid](const std::set<i64_actorid>& aids)
 				{
 					for (i64_actorid id : aids)
 					{
