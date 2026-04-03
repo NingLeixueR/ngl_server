@@ -337,4 +337,31 @@ namespace ngl
 		send(get_robot(lrecv->mroleid()), pro);
 		return true;
 	}
+
+	bool actor_robot_manage::handle([[maybe_unused]] const message<np_ukcp_waitrecv>& adata)
+	{
+		const auto* lrecv = adata.get_data();
+		log_error()->print("Local GetIp Finish : {}", lrecv->m_recv);
+		ukcp::m_localuip = lrecv->m_recv;
+		// Getkcp-session
+		pbnet::PROBUFF_NET_KCPSESSION pro;
+		pro.set_mserverid(lrecv->m_serverid);
+		pro.set_muip(ukcp::m_localuip);
+		_robot* lprobot = get_robot(lrecv->m_robotid);
+		if (lprobot == nullptr || lprobot->m_robot == nullptr)
+		{
+			return false;
+		}
+		auto luport2 = lprobot->m_robot->kcp_index(lrecv->m_serverid, lrecv->m_kcpenum);
+		if (!luport2.has_value())
+		{
+			return;
+		}
+		pro.set_muport(*luport2);
+		pro.set_mconv(ukcp::m_conv);
+		pro.set_mactoridclient(lprobot->m_robot->id_guid());
+		pro.set_mactoridserver(lrecv->m_seractorid);
+		pro.set_m_kcpnum(lrecv->m_kcpenum);
+		nnet::instance().send(lprobot->m_session, pro, nguid::moreactor(), lprobot->m_robot->id_guid());
+	}
 }//namespace ngl

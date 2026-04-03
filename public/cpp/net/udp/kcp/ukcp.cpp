@@ -13,10 +13,9 @@
 */
 // File overview: Implements logic for kcp.
 
-
+#include "actor/actor_base/core/nguid.h"
 #include "actor/protocol/nprotocol.h"
 #include "tools/tab/xml/sysconfig.h"
-#include "actor/actor_base/core/nguid.h"
 #include "net/udp/kcp/ukcp.h"
 #include "tools/log/nlog.h"
 
@@ -109,15 +108,7 @@ namespace ngl
 
 	bool ukcp::sendu_waitrecv(const basio::ip::udp::endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun)
 	{
-		std::unique_ptr<ngl::tools::sem> lsem = std::make_unique<ngl::tools::sem>();
-		m_kcp.sendu_waitrecv(aendpoint, buf, len, [afun, &lsem](char* buff, int len)
-			{
-				afun(buff, len);
-				lsem->post();
-			}
-		);
-		lsem->wait();
-		return true;
+		return m_kcp.sendu_waitrecv(aendpoint, buf, len, afun);
 	}
 
 	void ukcp::connect(std::string& akcpsess

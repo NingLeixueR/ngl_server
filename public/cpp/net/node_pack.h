@@ -39,7 +39,7 @@ namespace ngl
 		{
 			if (m_pack->m_head != nullptr)
 			{
-				m_head = m_pack->m_head;
+				m_head = std::make_shared<pack_head>(*m_pack->m_head);
 			}
 		}
 
@@ -47,7 +47,10 @@ namespace ngl
 			m_packvoid(std::move(apack))
 		{
 			const std::shared_ptr<pack>& lpack = get_pack();
-			m_head = lpack->m_head;
+			if (lpack->m_head != nullptr)
+			{
+				m_head = std::make_shared<pack_head>(*lpack->m_head);
+			}			
 		}
 
 		~node_pack() = default;

@@ -148,12 +148,6 @@ namespace ngl
 	{
 		try
 		{
-			{
-				std::scoped_lock llock(m_waitmutex);
-				m_wait = nullptr;
-				m_waitendpoint = basio::ip::udp::endpoint();
-			}
-
 			basio_errorcode ec;
 			m_socket.cancel(ec);
 			m_socket.close(ec);
@@ -269,11 +263,11 @@ namespace ngl
 					std::function<void(char*, int)> lwait = nullptr;
 					{
 						std::lock_guard<std::mutex> llock(m_waitmutex);
-						if (m_wait != nullptr && m_remoteport == m_waitendpoint)
+						auto itor = m_waitcall.find(m_remoteport);
+						if (itor != m_waitcall.end())
 						{
-							lwait = m_wait;
-							m_waitendpoint = basio::ip::udp::endpoint();
-							m_wait = nullptr;
+							lwait = itor->second.m_wait;
+							m_waitcall.erase(m_remoteport);
 						}
 					}
 
@@ -457,14 +451,15 @@ namespace ngl
 	{
 		{
 			std::lock_guard<std::mutex> llock(m_waitmutex);
-			// Only one synchronous raw-UDP waiter is tracked at a time.
-			m_wait = afun;
-			m_waitendpoint = aendpoint;
+			kwait& ltemp = m_waitcall[aendpoint];
+			ltemp.m_wait = afun;
 		}
 
 		auto lpack = pack::make_pack(&m_pool, len);
 		if (lpack == nullptr || lpack->m_buff == nullptr)
 		{
+			std::lock_guard<std::mutex> llock(m_waitmutex);
+			m_waitcall.erase(aendpoint);
 			return false;
 		}
 		lpack->m_head = nullptr;

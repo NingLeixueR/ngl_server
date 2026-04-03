@@ -589,4 +589,15 @@ namespace ngl
 
 		DPROTOCOL(np_attribute_remove, m_fightid, m_unitid, m_module)
 	};
+
+	struct np_ukcp_waitrecv
+	{
+		std::string m_recv;
+		int32_t m_serverid = 0;
+		i64_actorid m_robotid = 0;
+		pbnet::ENUM_KCP m_kcpenum;
+		i64_actorid m_seractorid = nguid::make();
+
+		DPROTOCOL(np_ukcp_waitrecv, m_recv, m_serverid, m_robotid, m_kcpenum, m_seractorid)
+	};
 }//namespace ngl

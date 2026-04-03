@@ -128,10 +128,7 @@ namespace ngl
 		{
 			return;
 		}
-		auto lhead = std::make_shared<pack_head>();
-		*lhead = *m_head;
-		lhead->set_actor(aactor, arequestactorid);
-		m_head = lhead;
+		m_head->set_actor(aactor, arequestactorid);
 	}
 
 	pack::~pack()

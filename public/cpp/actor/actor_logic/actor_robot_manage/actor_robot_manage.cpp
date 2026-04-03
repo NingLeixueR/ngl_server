@@ -108,6 +108,7 @@ namespace ngl
 		// Bind custom np_ messages.
 		register_handle<actor_robot_manage
 			, np_robot_pram
+			, np_ukcp_waitrecv
 			, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
 			, pbnet::PROBUFF_NET_ROLE_NOT_CREATE
 		>(e_ready_all);
@@ -255,8 +256,8 @@ namespace ngl
 
 		// Get uip
 		basio::ip::udp::endpoint lendpoint(ngl::basio_ipaddress::from_string(lpstructserver.m_ip), luport);
-		i64_actorid robotid = nguid::make_type(arobotid, ACTOR_ROLE);
-		_robot* lprobot = get_robot(robotid);
+		i64_actorid lrobotid = nguid::make_type(arobotid, ACTOR_ROLE);
+		_robot* lprobot = get_robot(lrobotid);
 		if (lprobot == nullptr || lprobot->m_robot == nullptr)
 		{
 			return false;
@@ -274,27 +275,18 @@ namespace ngl
 			return false;
 		}
 
-			lpukcp->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp"), [this, &lprobot, lserverid, akcpenum, aseractorid](char* buff, [[maybe_unused]] int len)
+		auto lfun = [this, lrobotid, lserverid, akcpenum, aseractorid](char* buff, int len)
 			{
-				log_error()->print("Local GetIp Finish : {}", buff);
-				ukcp::m_localuip = buff;
-				// Getkcp-session
-				pbnet::PROBUFF_NET_KCPSESSION pro;
-				pro.set_mserverid(lserverid);
-				pro.set_muip(ukcp::m_localuip);
-				auto luport2 = lprobot->m_robot->kcp_index(lserverid, akcpenum);
-				if (!luport2.has_value())
-				{
-					return;
-				}
-				pro.set_muport(*luport2);
-				pro.set_mconv(ukcp::m_conv);
-				pro.set_mactoridclient(lprobot->m_robot->id_guid());
-				pro.set_mactoridserver(aseractorid);
-				pro.set_m_kcpnum(akcpenum);
-				nnet::instance().send(lprobot->m_session, pro, nguid::moreactor(), lprobot->m_robot->id_guid());
-			}
-		);
+				auto pro = std::make_shared<np_ukcp_waitrecv>();
+				pro->m_recv.assign(buff, len);
+				pro->m_serverid = lserverid;
+				pro->m_robotid = lrobotid;
+				pro->m_kcpenum = akcpenum;
+				pro->m_seractorid = aseractorid;
+				actor::send_actor(id_guid(), nguid::make(), pro);
+			};
+
+		lpukcp->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp"), lfun);
 		return true;
 	}
 

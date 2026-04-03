@@ -56,8 +56,14 @@ namespace ngl
 		char								m_buff[e_buff_byte] = { 0 }; // Raw UDP receive buffer.
 		char								m_buffrecv[e_buffrecv_byte] = { 0 }; // Buffer for packets popped out of KCP.
 		std::mutex							m_waitmutex;		// Protects synchronous wait-recv helper state.
-		std::function<void(char*, int)>		m_wait = nullptr;	// Optional one-shot raw UDP reply callback.
-		basio::ip::udp::endpoint			m_waitendpoint;		// Endpoint expected by m_wait.
+		//std::function<void(char*, int)>	m_wait = nullptr;	// Optional one-shot raw UDP reply callback.
+		//basio::ip::udp::endpoint			m_waitendpoint;		// Endpoint expected by m_wait.
+		struct kwait
+		{
+			std::function<void(char*, int)>		m_wait = nullptr;	// Optional one-shot raw UDP reply callback.
+		};
+		std::map<basio::ip::udp::endpoint, kwait> m_waitcall;
+
 		i16_port							m_port = 0;			// Bound UDP port.
 		std::jthread						m_thread;			// Background thread running m_context.
 		nrate								m_rate;				// Per-session traffic limiter.
