@@ -148,6 +148,11 @@ namespace ngl
 	{
 		try
 		{
+			{
+				std::lock_guard<std::mutex> llock(m_waitmutex);
+				m_waitcall.clear();
+			}
+
 			basio_errorcode ec;
 			m_socket.cancel(ec);
 			m_socket.close(ec);
@@ -428,19 +433,10 @@ namespace ngl
 				if (ec)
 				{
 					log_error()->print("async_send_to err [{}]", ec.message());
-
-					tools::wheel_parm lparm
 					{
-						.m_ms = e_waitrecv_intervalms,
-						.m_intervalms = [](int64_t) {return e_waitrecv_intervalms; } ,
-						.m_count = 1,
-						.m_fun = [this, aendpoint, apack](const tools::wheel_node*)
-						{
-							// Retry the raw UDP request until one send actually leaves the socket.
-							sendu_waitrecv(aendpoint, apack);
-						}
-					};
-					m_kcptimer.addtimer(lparm);
+						std::lock_guard<std::mutex> llock(m_waitmutex);
+						m_waitcall.erase(aendpoint);
+					}
 				}
 			}
 		);
