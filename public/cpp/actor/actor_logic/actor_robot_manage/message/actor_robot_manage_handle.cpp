@@ -355,7 +355,7 @@ namespace ngl
 		auto luport2 = lprobot->m_robot->kcp_index(lrecv->m_serverid, lrecv->m_kcpenum);
 		if (!luport2.has_value())
 		{
-			return;
+			return false;
 		}
 		pro.set_muport(*luport2);
 		pro.set_mconv(ukcp::m_conv);
@@ -363,5 +363,6 @@ namespace ngl
 		pro.set_mactoridserver(lrecv->m_seractorid);
 		pro.set_m_kcpnum(lrecv->m_kcpenum);
 		nnet::instance().send(lprobot->m_session, pro, nguid::moreactor(), lprobot->m_robot->id_guid());
+		return true;
 	}
 }//namespace ngl

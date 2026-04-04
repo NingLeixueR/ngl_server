@@ -286,7 +286,10 @@ namespace ngl
 				actor::send_actor(id_guid(), nguid::make(), pro);
 			};
 
-		lpukcp->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp"), lfun);
+		if (lpukcp->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp"), lfun))
+		{
+			log_error()->print("actor_robot_manage::kcp_connect fial");
+		}
 		return true;
 	}
 
