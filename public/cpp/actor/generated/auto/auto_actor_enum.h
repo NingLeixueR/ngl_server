@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 26-04-06 21:42:48
+// 创建时间 // 创建时间 26-04-06 22:07:06
 #pragma once
 
 #include "actor/actor_base/core/nactortype.h"
