@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 26-03-26 16:39:03
+// 创建时间 // 创建时间 26-04-06 21:43:39
 #pragma once
 
 #include "actor/actor_base/core/ndb_modular.h"
@@ -59,6 +59,7 @@ namespace ngl
 			/*200000078*/, np_get_rank_response
 			/*200000080*/, np_activityrank_operator
 			/*200000082*/, np_attribute_remove
+			/*200000084*/, np_ukcp_waitrecv
 		>();
 		tprotocol::set_customs_index(210000000);
 		tprotocol::tp_customs_script<
@@ -103,6 +104,7 @@ namespace ngl
 			/*210000078*/, mforward<np_get_rank_response>
 			/*210000080*/, mforward<np_activityrank_operator>
 			/*210000082*/, mforward<np_attribute_remove>
+			/*210000084*/, mforward<np_ukcp_waitrecv>
 		>();
 	}
 }//namespace ngl

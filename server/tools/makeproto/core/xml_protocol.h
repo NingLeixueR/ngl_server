@@ -1628,7 +1628,7 @@ namespace ngl
                         {
                             size_t lpos1 = lnr.find(lfindstr1);
                             size_t lpos11 = lnr.find(lfindstr11);
-                            if (lpos1 != std::string::npos || lpos1 != std::string::npos)
+                            if (lpos1 != std::string::npos || lpos11 != std::string::npos)
                             {
                                 lboool1 = true;
                                 continue;

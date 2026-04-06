@@ -91,8 +91,8 @@ namespace ngl
 		void help();
 
 		bool handle([[maybe_unused]] const message<np_robot_pram>& adata);
+		bool handle([[maybe_unused]] const message<np_ukcp_waitrecv>& adata);
 		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata);
 		bool handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_ROLE_NOT_CREATE>& adata);
-		bool handle([[maybe_unused]] const message<np_ukcp_waitrecv>& adata);
 	};
 }//namespace ngl
