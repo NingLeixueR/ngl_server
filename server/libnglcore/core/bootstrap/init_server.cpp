@@ -101,7 +101,7 @@ startup_error init_server([[maybe_unused]] int aid, const std::set<pbnet::ENUM_K
 
 	{
 		// Only gateway nodes accept websocket clients; other nodes stay on TCP-only listeners.
-		if (nconfig.nodetype() == ngl::NODE_TYPE::GATEWAY)
+		if (nconfig.nodetype() == ngl::NODE_TYPE::GATEWAY || nconfig.nodetype() == ngl::NODE_TYPE::LOGIN)
 		{
 			ngl::net_works lwswork;
 			if (ngl::ttab_servers::instance().get_nworks(ngl::ENET_PROTOCOL::ENET_WS, nconfig.tcount(), lwswork))
