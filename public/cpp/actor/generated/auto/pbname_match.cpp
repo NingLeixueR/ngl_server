@@ -10,15 +10,15 @@
 namespace ngl
 {
 	template <typename T>
-	static bool jsontobinarypack(const char* aname, const char* ajson, std::shared_ptr<pack>& apack, i64_actorid aactorid, i64_actorid arequestactorid)
+	static bool jsontobinarypack(const char* aname, const char* ajson, std::shared_ptr<pack>& apack, i64_actorid aactorid, i64_actorid arequestactorid, bool ahead)
 	{
 		T ltemp;
 		if (tools::json2proto(ajson, ltemp))
 		{
-			apack = actor_base::net_pack(ltemp, aactorid, arequestactorid);
+			apack = actor_base::net_pack(ltemp, aactorid, arequestactorid, ahead);
 			return true;
 		}
-        log_error()->print("jsontobinarypack fail pbname[{}] json[{}]", aname, ajson);
+		log_error()->print("jsontobinarypack fail pbname[{}] json[{}]", aname, ajson);
 		return false;
 	}
 
@@ -26,22 +26,22 @@ namespace ngl
 	class j2p
 	{
 	public:
-		static void fun(const std::string& aname, const std::string& ajson, std::shared_ptr<ngl::pack>& apack, i64_actorid aactorid, i64_actorid arequestactorid)
+		static void fun(const std::string& aname, const std::string& ajson, std::shared_ptr<ngl::pack>& apack, i64_actorid aactorid, i64_actorid arequestactorid, bool ahead)
 		{
-			ngl::jsontobinarypack<T>(aname.c_str(), ajson.c_str(), apack, aactorid, arequestactorid);
+			ngl::jsontobinarypack<T>(aname.c_str(), ajson.c_str(), apack, aactorid, arequestactorid, ahead);
 		}
 	};
 
-	std::shared_ptr<pack> actor_base::jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid)
+	std::shared_ptr<pack> actor_base::jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid, bool ahead)
 	{
-		using type_j2pfun = std::function<void(const std::string&, const std::string&, std::shared_ptr<ngl::pack>&, i64_actorid, i64_actorid)>;
+		using type_j2pfun = std::function<void(const std::string&, const std::string&, std::shared_ptr<ngl::pack>&, i64_actorid, i64_actorid, bool)>;
 		static std::map<std::string, type_j2pfun> lmap;
 		if (lmap.empty())
 		{
-            auto fun = [&]<typename ...TARG>()
-            {
-                ((lmap[tools::type_name<TARG>()] = std::bind_front(&j2p<TARG>::fun)), ...);
-            };
+			auto fun = [&]<typename ...TARG>()
+			{
+				((lmap[tools::type_name<TARG>()] = std::bind_front(&j2p<TARG>::fun)), ...);
+			};
             fun.operator()<
                pbnet::PROBUFF_NET_MSG_RESPONSE
                , pbnet::PROBUFF_NET_HEARTBEAT
@@ -136,7 +136,7 @@ namespace ngl
 		if (lpfun != nullptr)
 		{
 			auto lpack = std::make_shared<ngl::pack>();
-			(*lpfun)(apbname, ajson, lpack, aactorid, arequestactorid);
+			(*lpfun)(apbname, ajson, lpack, aactorid, arequestactorid, ahead);
 			return lpack;
 		}
 		return nullptr;
