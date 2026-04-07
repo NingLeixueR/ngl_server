@@ -38,11 +38,6 @@ namespace ngl
 		return true;
 	}
 
-	void nready::set_ready(const std::string& akey, const std::function<bool()>& afun)
-	{
-		m_readyfun.insert_or_assign(akey, afun);
-	}
-
 	int actor_base::m_broadcast = 10 * tools::time::MILLISECOND;
 	int actor_base::m_broadcasttimer = -1;
 

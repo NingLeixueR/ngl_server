@@ -85,7 +85,15 @@ namespace ngl
 		bool is_ready();
 
 		// Register a readiness predicate for a predefined readiness bit.
-		void set_ready(const std::string& akey, const std::function<bool()>& afun);
+		template <typename ...ARGS>
+		void set_ready(const std::string& akey, const std::function<bool()>& afun)
+		{
+			m_readyfun.insert_or_assign(akey, afun);
+			if (!ngl::tprotocol::set_hightvalue<ARGS...>())
+			{
+				log_error()->print("nready set_ready fail!");
+			}
+		}
 	};
 
 	template <typename T>

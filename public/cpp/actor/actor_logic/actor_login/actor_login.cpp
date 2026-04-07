@@ -61,7 +61,7 @@ namespace ngl
 		set_timer(tparm);
 		*/
 
-		ready().set_ready("game or gatewa not connect", [this]()
+		ready().set_ready<np_actorserver_connect>("game or gatewa not connect", [this]()
 			{
 				return !(m_game.empty() || m_gateway.empty());
 			});

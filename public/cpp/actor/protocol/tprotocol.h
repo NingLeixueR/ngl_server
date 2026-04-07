@@ -16,11 +16,11 @@
 #pragma once
 
 #include "actor/protocol/nprotocol_template.h"
-#include "tools/tab/xml/xmlprotocol.h"
 #include "tools/tools/tools_template_arg.h"
+#include "tools/tab/xml/xmlprotocol.h"
 #include "actor/generated/pb/net.pb.h"
-#include "tools/tools.h"
 #include "tools/tools/tools_nhash.h"
+#include "tools/tools.h"
 #include "lua.hpp"
 
 #include <array>
@@ -192,6 +192,20 @@ namespace ngl
 				return nullptr;
 			}
 			return *lpinfo;
+		}
+
+		template <typename T, typename ...TAGES>
+		static bool set_hightvalue()
+		{
+			info* lpinfo = get<T>();
+			if (lpinfo == nullptr)
+			{
+				return false;
+			}
+			lpinfo->m_highvalue = 10;
+			if constexpr (sizeof...(TAGES) > 0)
+				return set_hightvalue<TAGES...>();
+			return true;
 		}
 
 		// Return the protocol number for a C++ type.

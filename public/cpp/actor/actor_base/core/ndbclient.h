@@ -615,8 +615,20 @@ namespace ngl
 		bool handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
 		{
 			using type_message = np_actordb_load_response<DBTYPE, TDBTAB>;
-			log_error()->print("db load respones:[{}] recv_over[{}]", tools::type_name<type_message>(), adata.get_data()->m_over ? "finish" : "don`t finishi");
-			loadfinish(adata.get_data()->data(), adata.get_data()->m_stat, adata.get_data()->m_over);
+			const type_message* lrecv = adata.get_data();
+			if (lrecv->m_stat == enum_dbstat_fail)
+			{
+				log_error()->print("db load fail:[{}] count:{} over:{}", tools::type_name<type_message>(), lrecv->m_data.size(), lrecv->m_over);
+			}
+			else if (!lrecv->m_over)
+			{
+				log_info()->print("db load chunk:[{}] count:{}", tools::type_name<type_message>(), lrecv->m_data.size());
+			}
+			else
+			{
+				log_info()->print("db load finish:[{}] count:{} stat:{}", tools::type_name<type_message>(), lrecv->m_data.size(), (int32_t)lrecv->m_stat);
+			}
+			loadfinish(lrecv->data(), lrecv->m_stat, lrecv->m_over);
 			return true;
 		}
 

@@ -66,7 +66,7 @@ namespace ngl
 
 		if (!m_typedbclientmap.empty())
 		{
-			log_error()->print("on_load_finish !m_typedbclientmap.empty()");
+			log_info()->print("on_load_finish wait other dbclient size:{}", m_typedbclientmap.size());
 			return false;
 		}
 

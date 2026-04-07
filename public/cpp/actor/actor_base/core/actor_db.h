@@ -101,11 +101,11 @@ namespace ngl
 			pro.m_id = nguid::make();
 			pro.m_over = false;
 			pro.m_stat = enum_dbstat_success;
-			ngl::db_data<TDBTAB>::foreach_index([lrequestactor, lmaxcount, apack, &pro](int aindex, TDBTAB& atab)
+			ngl::db_data<TDBTAB>::foreach_index([lrequestactor, lmaxcount, apack, &pro]([[maybe_unused]] int aindex, TDBTAB& atab)
 				{
 					nguid lguid(atab.mid());
 					pro.m_data.emplace(lguid, atab);
-					if (aindex % lmaxcount == 0)
+					if ((int32_t)pro.m_data.size() >= lmaxcount)
 					{
 						ntcp::instance().send(apack->m_id, pro, lrequestactor, nguid::make());
 						pro = np_actordb_load_response<TDBTAB_TYPE, TDBTAB>();
