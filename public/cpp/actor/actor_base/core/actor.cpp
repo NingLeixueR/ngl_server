@@ -67,6 +67,12 @@ namespace ngl
 		return m_list.empty() && m_hightlist.empty();
 	}
 
+	bool actor::high_empty()
+	{
+		lock_read(m_mutex);
+		return m_hightlist.empty();
+	}
+
 	actor_stat actor::activity_stat()
 	{
 		lock_read(m_mutex);

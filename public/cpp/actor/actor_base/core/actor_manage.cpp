@@ -331,7 +331,8 @@ namespace ngl
 			}
 			else
 			{
-				if (!apactor->list_empty() && aready)
+				const bool lhigh = !apactor->high_empty();
+				if (!apactor->list_empty() && (aready || lhigh))
 				{
 					// More messages arrived while the actor was running, so queue it again.
 					m_actorlist.emplace_back(apactor);

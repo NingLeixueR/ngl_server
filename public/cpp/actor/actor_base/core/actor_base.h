@@ -89,9 +89,12 @@ namespace ngl
 		void set_ready(const std::string& akey, const std::function<bool()>& afun)
 		{
 			m_readyfun.insert_or_assign(akey, afun);
-			if (!ngl::tprotocol::set_hightvalue<ARGS...>())
+			if constexpr (sizeof...(ARGS) > 0)
 			{
-				log_error()->print("nready set_ready fail!");
+				if (!ngl::tprotocol::set_hightvalue<ARGS...>())
+				{
+					log_error()->print("nready set_ready fail!");
+				}
 			}
 		}
 	};
@@ -191,6 +194,9 @@ namespace ngl
 
 		// Return whether the actor currently has pending tasks.
 		virtual bool list_empty() = 0;
+
+		// Return whether the actor currently has pending high-priority tasks.
+		virtual bool high_empty() = 0;
 
 		// Process the actor's pending work on the given worker thread.
 		virtual bool actor_handle(i32_threadid athreadid) = 0;
