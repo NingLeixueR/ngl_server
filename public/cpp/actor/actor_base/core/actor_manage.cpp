@@ -119,8 +119,7 @@ namespace ngl
 			std::cout << std::format("actor_manage push task fail actor:{} stat:{}", lpactor->guid(), static_cast<int32_t>(lstat)) << std::endl;
 			return;
 		}
-		lpactor->push(apram);
-		if (lstat == actor_stat_free)
+		if (lpactor->push(apram) && lstat == actor_stat_free)
 		{
 			// Only transition free actors into the ready queue. Running/list actors will be
 			// rescheduled by the worker thread once they finish the current batch.
@@ -299,7 +298,7 @@ namespace ngl
 		return m_actorbyid.contains(aguid);
 	}
 
-	void actor_manage::push(const ptractor& apactor, ptrnthread atorthread/* = nullptr*/)
+	void actor_manage::push(const ptractor& apactor, ptrnthread atorthread/* = nullptr*/, bool aready/* = true*/)
 	{
 		std::function<void()> deferred_release_callback = nullptr;
 		bool should_release_actor = false;
@@ -332,7 +331,7 @@ namespace ngl
 			}
 			else
 			{
-				if (!apactor->list_empty())
+				if (!apactor->list_empty() && aready)
 				{
 					// More messages arrived while the actor was running, so queue it again.
 					m_actorlist.emplace_back(apactor);

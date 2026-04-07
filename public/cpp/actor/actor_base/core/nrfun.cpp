@@ -52,12 +52,6 @@ namespace ngl
 			}
 			return false;
 		}
-		if (lpfun->m_ready != e_ready_null && !aactor->ready().is_ready(lpfun->m_ready))
-		{
-			// The message stays queued at the actor level until the relevant ready bits flip.
-			log_error()->print("{}::handle_switch isloadfinish() == {}", aactor->guid(), lpfun->m_ready);
-			return false;
-		}
 		// tools::consume measures per-message dispatch latency for diagnostics.
 		tools::consume lconsuming(std::format("{}-{}-{}", aactor->guid(), apram.m_enum, tprotocol::name(apram.m_enum)));
 		lconsuming.start();
@@ -69,11 +63,10 @@ namespace ngl
 		return true;
 	}
 
-	void nrfunbase::register_logic(i32_protocolnum aprotocol, int32_t aready, const tlogicfun& afun)
+	void nrfunbase::register_logic(i32_protocolnum aprotocol, const tlogicfun& afun)
 	{
 		m_fun.insert_or_assign(aprotocol, nlogicfun
 			{
-				.m_ready = aready,
 				.m_fun = afun
 			}
 		);

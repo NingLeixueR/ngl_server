@@ -80,7 +80,7 @@ namespace ngl
 		// Bind custom np_ messages.
 		register_handle<actor_keyvalue
 			, mforward<np_gm>
-		>(e_ready_all);
+		>();
 	}
 
 	bool actor_keyvalue::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)

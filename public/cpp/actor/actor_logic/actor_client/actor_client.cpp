@@ -65,7 +65,7 @@ namespace ngl
 			, np_actor_server_register
 			, np_connect_actor_server
 			, np_actornode_update
-		>(e_ready_all);
+		>();
 	}
 
 	void set_node(int32_t aserverid, int asession)

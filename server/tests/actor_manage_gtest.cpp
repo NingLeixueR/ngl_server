@@ -37,14 +37,16 @@ public:
 		return true;
 	}
 
-	void actor_handle(ngl::i32_threadid) override
+	bool actor_handle(ngl::i32_threadid) override
 	{
 		// Test double: scheduling behavior is validated elsewhere in these tests.
+		return false;
 	}
 
-	void push(ngl::handle_pram&) override
+	bool push(ngl::handle_pram&) override
 	{
 		// Test double: no queueing is needed for the metadata-only assertions below.
+		return false;
 	}
 
 	void release() override

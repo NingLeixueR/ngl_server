@@ -303,7 +303,7 @@ namespace ngl
 				, np_actordb_save<TDBTAB_TYPE, TDBTAB>
 				, np_actortime_db_cache<TDBTAB>
 				, mforward<np_gm>
-			>(e_ready_all);
+			>();
 		}
 
 		// Handle one logical load request message.

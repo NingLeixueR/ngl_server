@@ -61,7 +61,7 @@ namespace ngl
 		set_timer(tparm);
 		*/
 
-		ready().set_readybycustom([this]()
+		ready().set_ready("game or gatewa not connect", [this]()
 			{
 				return !(m_game.empty() || m_gateway.empty());
 			});
@@ -84,11 +84,11 @@ namespace ngl
 		// Bind custom np_ messages.
 		register_handle<actor_login
 			, np_actorserver_connect
-		>(e_ready_null);
+		>();
 		register_handle<actor_login
 			, np_actor_disconnect_close
 			, pbnet::PROBUFF_NET_ACOUNT_LOGIN
-		>(e_ready_all);
+		>();
 	}
 
 	data_modified<pbdb::db_account>* actor_login::get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate)

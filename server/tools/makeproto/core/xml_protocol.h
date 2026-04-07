@@ -1178,7 +1178,7 @@ namespace ngl
 
         // Bind custom np_ messages.
         register_handle<{0}
-		>(e_ready_all);
+		>();
         
         // Bindscriptmessage
         register_script_handle<{0}

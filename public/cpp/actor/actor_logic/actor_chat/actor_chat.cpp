@@ -83,7 +83,7 @@ namespace ngl
 		// Bind custom np_ messages.
 		register_handle<actor_chat
 			, mforward<pbnet::PROBUFF_NET_CHAT>
-		>(e_ready_all);
+		>();
 	}
 	
 	bool actor_chat::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)

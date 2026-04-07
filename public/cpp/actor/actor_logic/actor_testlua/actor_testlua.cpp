@@ -89,10 +89,10 @@ namespace ngl
 
 		register_script_handle<actor_testlua
 			, np_testlua
-		>(e_ready_all);
+		>();
 		register_script_handle<actor_testlua
 			, mforward<pbnet::PROBUFF_NET_TESTLUA>
-		>(e_ready_all);
+		>();
 	}
 
 	bool actor_testlua::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)

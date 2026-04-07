@@ -118,7 +118,7 @@ namespace ngl
 			, np_example_equit
 			, np_login_request_info
 			, mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>
-		>(e_ready_all);
+		>();
 	}
 
 	bool actor_example_manage::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)

@@ -107,7 +107,7 @@ namespace ngl
 		bool is_have_actor(const nguid& aguid);
 
 		// Return a worker to the pool and reschedule the actor if more work remains.
-		void push(const ptractor& apactor, ptrnthread atorthread = nullptr);
+		void push(const ptractor& apactor, ptrnthread atorthread = nullptr, bool aready = true);
 
 		// Route work to one actor or a set of actors.
 		void push_task_id(const nguid& aguid, handle_pram& apram);

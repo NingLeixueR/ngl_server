@@ -106,7 +106,7 @@ namespace ngl
 			, np_ukcp_waitrecv
 			, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
 			, pbnet::PROBUFF_NET_ROLE_NOT_CREATE
-		>(e_ready_all);
+		>();
 	}
 
 	std::shared_ptr<actor_robot> actor_robot_manage::create(i16_area aarea, i32_actordataid aroleid)

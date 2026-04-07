@@ -69,18 +69,6 @@ namespace ngl
 	template <typename T>
 	struct message;
 
-	// Bit flags that gate whether an actor is ready to process work.
-	enum enum_ready
-	{
-		e_ready_all		= 0xFFFFFFFF,			// Require every registered gate to pass.
-		e_ready_null	= 0x00000000,			// Skip readiness checks.
-		e_ready_db		= 0x00000001,			// Database state loaded.
-		e_ready_nsp		= 0x00000002,			// NSP synchronization completed.
-		e_ready_custom	= 0x00008000,			// First custom readiness bit.
-
-		e_max_custom	= 10,					// Maximum number of custom readiness gates.
-	};
-
 	/**
 	 * Actor readiness state checker.
 	 *
@@ -91,19 +79,13 @@ namespace ngl
 	class nready
 	{
 	private:
-		std::map<int32_t, std::function<bool()>> m_readyfun;
-		int32_t m_custom = 0;
-
-		bool check_readybit(int32_t anum, int32_t aready);
+		std::map<std::string, std::function<bool()>> m_readyfun;
 	public:
 		// Return true when the requested readiness bits are satisfied.
-		bool is_ready(int32_t aready = e_ready_all);
+		bool is_ready();
 
 		// Register a readiness predicate for a predefined readiness bit.
-		void set_ready(enum_ready aready, const std::function<bool()>& afun);
-
-		// Register a readiness predicate using the next available custom bit.
-		void set_readybycustom(const std::function<bool()>& afun);
+		void set_ready(const std::string& akey, const std::function<bool()>& afun);
 	};
 
 	template <typename T>
@@ -203,10 +185,10 @@ namespace ngl
 		virtual bool list_empty() = 0;
 
 		// Process the actor's pending work on the given worker thread.
-		virtual void actor_handle(i32_threadid athreadid) = 0;
+		virtual bool actor_handle(i32_threadid athreadid) = 0;
 
 		// Enqueue one new message/task for this actor.
-		virtual void push(handle_pram& apram) = 0;
+		virtual bool push(handle_pram& apram) = 0;
 
 		// Optional hook after one handle_pram item is processed.
 		virtual void handle_after(handle_pram&) {/* Function,if base class */ }

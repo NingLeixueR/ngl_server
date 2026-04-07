@@ -58,12 +58,12 @@ namespace ngl
 			{
 				// Actors that opt into shared broadcasts receive a synthetic maintenance message.
 				register_actornonet<TDerived, np_actor_broadcast>(
-					e_ready_all, (Tfun<actor, np_actor_broadcast>) & actor::handle_broadcast
+					(Tfun<actor, np_actor_broadcast>) & actor::handle_broadcast
 				);
 			}
 			// Every actor handles the generic close event through the same local hook.
 			register_actornonet<TDerived, np_actor_close>(
-				e_ready_all, (Tfun<actor, np_actor_close>) & actor::handle_close
+				(Tfun<actor, np_actor_close>) & actor::handle_close
 			);
 		}
 
@@ -77,42 +77,42 @@ namespace ngl
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, np_timerparm> afun = &TDerived::timer_handle)
 		{
-			nrf<TDerived>().template rfun_nonet<TDerived, np_timerparm>(afun, e_ready_all);
+			nrf<TDerived>().template rfun_nonet<TDerived, np_timerparm>(afun);
 		}
 
 		// Register one std::function-based message handler for this actor type.
 		template <typename TDerived, typename T>
-		static void register_actor_s(int32_t aready, const std::function<void(TDerived*, const message<T>&)>& afun)
+		static void register_actor_s(const std::function<void(TDerived*, const message<T>&)>& afun)
 		{
-			nrf<TDerived>().template rfun<TDerived, T>(afun, aready);
+			nrf<TDerived>().template rfun<TDerived, T>(afun);
 		}
 
 		// Register one or more strongly typed message handlers for this actor type.
 		template <typename TDerived, typename ...ARG>
-		static void register_actor(int32_t aready, ARG... afun)
+		static void register_actor(ARG... afun)
 		{
-			(nrf<TDerived>().template rfun<TDerived, ARG>(afun, aready), ...);
+			(nrf<TDerived>().template rfun<TDerived, ARG>(afun), ...);
 		}
 
 		// Register one or more local-only handlers that do not come from network protocol dispatch.
 		template <typename TDerived, typename T>
-		static void register_actornonet(enum_ready aready, const Tfun<TDerived, T> afun)
+		static void register_actornonet(const Tfun<TDerived, T> afun)
 		{
-			nrf<TDerived>().template rfun_nonet<TDerived, T>(afun, aready);
+			nrf<TDerived>().template rfun_nonet<TDerived, T>(afun);
 		}
 
 		// Register TDerived::handle for every listed message type.
 		template <typename TDerived, typename ...ARG>
-		static void register_handle(enum_ready aready)
+		static void register_handle()
 		{
-			(nrf<TDerived>().template rfun<TDerived, ARG>((Tfun<TDerived, ARG>) & TDerived::handle, aready), ...);
+			(nrf<TDerived>().template rfun<TDerived, ARG>((Tfun<TDerived, ARG>) & TDerived::handle), ...);
 		}
 
 		// Register script-backed handlers that forward messages into the actor's scripting runtime.
 		template <typename TDerived, typename ...ARG>
-		static void register_script_handle(enum_ready aready)
+		static void register_script_handle()
 		{
-			(nrf<TDerived>().template rfun<actor, ARG>((Tfun<actor, ARG>) & actor::handle_script<ARG>, aready), ...);
+			(nrf<TDerived>().template rfun<actor, ARG>((Tfun<actor, ARG>) & actor::handle_script<ARG>), ...);
 		}
 
 		// Register client-to-gateway forwarding handlers.
@@ -133,7 +133,7 @@ namespace ngl
 		template <typename TDerived, ENUM_ACTOR ACTOR, typename ...ARG>
 		static void register_secondary_forward_c2g()
 		{
-			(nrf<TDerived>().template rfun<TDerived, ARG>((Tfun<TDerived, ARG>) & TDerived::template handle_forward<ACTOR, ARG>, e_ready_all), ...);
+			(nrf<TDerived>().template rfun<TDerived, ARG>((Tfun<TDerived, ARG>) & TDerived::template handle_forward<ACTOR, ARG>), ...);
 		}
 
 		explicit actor(const actorparm& aparm);
@@ -151,10 +151,10 @@ namespace ngl
 		bool list_empty() final;
 
 		// Enqueue one incoming task into the appropriate priority queue.
-		void push(handle_pram& apram) final;
+		bool push(handle_pram& apram) final;
 
 		// Run one scheduling slice on the specified worker thread id.
-		void actor_handle(i32_threadid athreadid) final;
+		bool actor_handle(i32_threadid athreadid) final;
 
 		template <typename T>
 		bool ahandle(const std::shared_ptr<T>& aparm)

@@ -72,7 +72,7 @@ namespace ngl
 		// Bind custom np_ messages.
 		register_handle<actor_csvserver
 			, np_actor_csv_verify_version
-		>(e_ready_all);
+		>();
 	}
 
 	bool actor_csvserver::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)

@@ -75,7 +75,7 @@ namespace ngl
 		// Bind custom np_ messages.
 		register_handle<actor_kcp
 			, np_actor_kcp
-		>(e_ready_all);
+		>();
 	}
 
 	bool actor_kcp::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)

@@ -101,10 +101,11 @@ namespace ngl
 				continue;
 			}
 
+			bool lready = false;
 			if (!lpactor->list_empty())
 			{
 				// An actor handles a batch of queued messages on exactly one worker at a time.
-				lpactor->actor_handle(m_id);
+				lready = lpactor->actor_handle(m_id);
 			}
 
 			{
@@ -120,7 +121,7 @@ namespace ngl
 
 			// Return both the actor and this worker to actor_manage so it can decide
 			// whether the actor should be rescheduled immediately.
-			actor_manage::instance().push(lpactor, shared_from_this());
+			actor_manage::instance().push(lpactor, shared_from_this(), lready);
 			lpactor = nullptr;
 		}
 	}

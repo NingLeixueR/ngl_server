@@ -84,7 +84,7 @@ namespace ngl
 
 		register_script_handle<actor_testlua2
 			, np_testlua
-		>(e_ready_all);
+		>();
 	}
 
 	bool actor_testlua2::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)

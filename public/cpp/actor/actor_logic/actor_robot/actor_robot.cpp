@@ -102,7 +102,7 @@ namespace ngl
 		register_handle<actor_robot
 			, np_thruput_test
 			, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE
-		>(e_ready_all);
+		>();
 
 		nforward::g2c();
 	}

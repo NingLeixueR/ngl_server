@@ -113,7 +113,7 @@ namespace ngl
 		register_handle<actor_role_manage
 			, mforward<np_gm>
 			, pbnet::PROBUFF_NET_ROLE_LOGIN
-		>(e_ready_all);
+		>();
 	}
 
 	bool actor_role_manage::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)

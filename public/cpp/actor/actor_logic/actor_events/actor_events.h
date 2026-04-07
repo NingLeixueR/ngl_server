@@ -90,7 +90,7 @@ namespace ngl
 		{
 			register_handle<tactor_events
 				, tactor_events::np_event_register
-			> (e_ready_all);
+			> ();
 		}
 
 		// # Type
@@ -98,7 +98,7 @@ namespace ngl
 		static void register_parm(E_EVENTS atype)
 		{
 			m_parmtype[atype]= typeid(TPARM).hash_code();
-			actor::register_actor_s<tactor_events, TPARM>(e_ready_all, [atype](tactor_events*, const message<TPARM>& adata)
+			actor::register_actor_s<tactor_events, TPARM>([atype](tactor_events*, const message<TPARM>& adata)
 				{
 					std::set<i64_actorid>* lmember = tools::findmap(m_eventmember, atype);
 					if (lmember == nullptr)

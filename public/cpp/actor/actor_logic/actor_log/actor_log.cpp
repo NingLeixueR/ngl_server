@@ -104,7 +104,7 @@ namespace ngl
 		// Bind custom np_ messages.
 		register_handle<actor_log
 			, np_logitem
-		>(e_ready_all);
+		>();
 	}
 	
 	bool actor_log::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)

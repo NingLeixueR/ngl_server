@@ -411,7 +411,7 @@ namespace ngl
 			{
 				// Register the DB load response handler only once per concrete actor/dbclient pair.
 				nrfun<TACTOR>::instance().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(
-					&actor_base::template handle_db<DBTYPE, TDBTAB, TACTOR>, e_ready_null
+					&actor_base::template handle_db<DBTYPE, TDBTAB, TACTOR>
 				);
 			}
 			init_load();

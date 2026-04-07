@@ -75,7 +75,7 @@ namespace ngl
 		// Bind custom np_ messages.
 		register_handle<actor_csvclient
 			, np_actor_reloadcsv
-		>(e_ready_all);
+		>();
 	}
 
 	bool actor_csvclient::timer_handle([[maybe_unused]] const message<np_timerparm>&)

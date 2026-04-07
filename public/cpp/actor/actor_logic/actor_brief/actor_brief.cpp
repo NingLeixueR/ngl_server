@@ -79,7 +79,7 @@ namespace ngl
 		actor::register_timer<actor_brief>(&actor_brief::timer_handle);
 
 		// Bind custom np_ messages.
-		register_handle<actor_activity_manage>(e_ready_all);
+		register_handle<actor_activity_manage>();
 	}
 	
 	bool actor_brief::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)

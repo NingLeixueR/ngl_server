@@ -67,7 +67,7 @@ namespace ngl
 		void init(TDerived* aactor)
 		{
 			m_actor = aactor;
-			actor::register_actor_s<TDerived, np_attribute_remove>(e_ready_all, [](TDerived* aactor, const ngl::message<np_attribute_remove>& adata)
+			actor::register_actor_s<TDerived, np_attribute_remove>([](TDerived* aactor, const ngl::message<np_attribute_remove>& adata)
 				{
 					auto recv = adata.get_data();
 					fight_example* lpfight = fight_get(recv->m_fightid);

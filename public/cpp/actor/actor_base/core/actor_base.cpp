@@ -25,89 +25,22 @@
 
 namespace ngl
 {
-	bool nready::check_readybit(int32_t anum, int32_t aready)
+	bool nready::is_ready()
 	{
-		if (anum < 0 || anum >= 32)
+		for (auto itor = m_readyfun.begin(); itor != m_readyfun.end(); )
 		{
-			return true;
-		}
-
-		const uint32_t lready = static_cast<uint32_t>(aready);
-		const uint32_t lmask = (uint32_t{ 1 } << static_cast<uint32_t>(anum));
-		if ((lmask & lready) != 0u)
-		{
-			const int32_t lkey = static_cast<int32_t>(lmask);
-			auto itor = m_readyfun.find(lkey);
-			if (itor == m_readyfun.end())
-			{
-				return true;
-			}
-			if (!itor->second())
+			if(!itor->second())
 			{
 				return false;
 			}
-			m_readyfun.erase(itor);
+			itor = m_readyfun.erase(itor);
 		}
 		return true;
 	}
 
-	bool nready::is_ready(int32_t aready /*= e_ready_all*/)
+	void nready::set_ready(const std::string& akey, const std::function<bool()>& afun)
 	{
-		if (aready == e_ready_null || m_readyfun.empty())
-		{
-			return true;
-		}
-		if (aready == e_ready_all)
-		{
-			for (auto itor = m_readyfun.begin(); itor != m_readyfun.end(); )
-			{
-				if (!itor->second())
-				{
-					return false;
-				}
-				itor = m_readyfun.erase(itor);
-			}
-			return true;
-		}
-		const uint32_t lready = static_cast<uint32_t>(aready);
-		for (int32_t i = 0; i < 32; ++i)
-		{
-			// Walk the requested bit mask from low to high until there are no more bits set.
-			if ((lready >> static_cast<uint32_t>(i)) != 0u)
-			{
-				if (!check_readybit(i, aready))
-				{
-					return false;
-				}
-			}
-			else
-			{
-				break;
-			}
-		}
-		return true;
-	}
-
-	void nready::set_ready(enum_ready aready, const std::function<bool()>& afun)
-	{
-		m_readyfun.insert_or_assign(aready, afun);
-	}
-
-	void nready::set_readybycustom(const std::function<bool()>& afun)
-	{
-		if (m_custom >= e_max_custom)
-		{
-			log_error()->print("set_readybycustom fail [{}]", m_custom);
-			return;
-		}
-		const enum_ready lvalue = static_cast<enum_ready>(e_ready_custom << m_custom);
-		auto [_, lnew] = m_readyfun.try_emplace(lvalue, afun);
-		if (!lnew)
-		{
-			log_error()->print("set_readybycustom fail [{}:{}]", m_custom, (int32_t)lvalue);
-			return;
-		}
-		++m_custom;
+		m_readyfun.insert_or_assign(akey, afun);
 	}
 
 	int actor_base::m_broadcast = 10 * tools::time::MILLISECOND;
@@ -132,7 +65,7 @@ namespace ngl
 					loaddb_finish(atype, astat);
 				}
 			);
-			ready().set_ready(e_ready_db, [this]() 
+			ready().set_ready("db load", [this]()
 				{
 					return m_dbclient == nullptr || m_dbclient->isloadfinish();
 				}

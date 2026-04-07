@@ -79,7 +79,7 @@ namespace ngl
 		m_stat = astat;
 	}
 
-	void actor::push(handle_pram& apram)
+	bool actor::push(handle_pram& apram)
 	{
 		int8_t highvalue = tprotocol::highvalue(apram.m_enum);
 		lock_write(m_mutex);
@@ -87,11 +87,13 @@ namespace ngl
 		{
 			// Default traffic is processed in FIFO order.
 			m_list.emplace_back(apram);
+			return ready().is_ready();
 		}
 		else
 		{
 			// High-priority traffic is grouped by protocol priority and handled first.
 			m_hightlist[highvalue].emplace_back(apram);
+			return true;
 		}
 	}
 
@@ -112,16 +114,14 @@ namespace ngl
 		return true;
 	}
 
-	void actor::actor_handle(i32_threadid athreadid)
+	bool actor::actor_handle(i32_threadid athreadid)
 	{
-		std::list<handle_pram> locallist;
 		std::map<int32_t, std::list<handle_pram>> localhightlist;
 		{
 			lock_write(m_mutex);
 			// Move work out of the shared queues so handlers can enqueue more messages without
 			// holding the actor mutex for the whole batch.
 			m_hightlist.swap(localhightlist);
-			m_list.swap(locallist);
 		}
 
 		if (!localhightlist.empty())
@@ -136,7 +136,16 @@ namespace ngl
 			}
 			localhightlist.clear();
 		}
-		
+
+		if (!ready().is_ready())
+		{
+			return false;
+		}
+		std::list<handle_pram> locallist;
+		{
+			lock_write(m_mutex);
+			m_list.swap(locallist);
+		}
 		auto llistcount = (int32_t)locallist.size();
 		if (m_weight < llistcount || llistcount >= 0x7F)
 		{
@@ -160,6 +169,7 @@ namespace ngl
 			// Unprocessed normal-priority messages go back to the front so ordering is preserved.
 			m_list.splice(m_list.begin(), locallist);
 		}
+		return true;
 	}
 
 	bool actor::handle_broadcast([[maybe_unused]] const message<np_actor_broadcast>& adata)

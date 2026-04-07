@@ -38,7 +38,7 @@ namespace ngl
 			}
 			if (ngl::GAME == nconfig.nodetype())
 			{
-				actor::register_handle<actor_role, ARG...>(e_ready_all);
+				actor::register_handle<actor_role, ARG...>();
 				return;
 			}
 		}
@@ -71,7 +71,7 @@ namespace ngl
 			}
 			if (ngl::ROBOT == nconfig.nodetype())
 			{
-				actor::register_handle<actor_robot, ARG...>(e_ready_null);
+				actor::register_handle<actor_robot, ARG...>();
 				return;
 			}
 		}

@@ -31,7 +31,6 @@ namespace ngl
 
 	struct nlogicfun
 	{
-		int32_t m_ready = e_ready_all; // Readiness mask that must pass before the handler can run.
 		tlogicfun m_fun = nullptr;     // Type-erased handler implementation.
 	};
 
@@ -44,7 +43,7 @@ namespace ngl
 		tnotfindfun								m_notfindfun;		// Optional fallback for unknown protocols.
 	protected:
 		// Insert or replace one protocol handler entry.
-		void register_logic(i32_protocolnum aprotocol, int32_t aready, const tlogicfun& afun);
+		void register_logic(i32_protocolnum aprotocol, const tlogicfun& afun);
 	public:
 		nrfunbase() = default;
 
@@ -145,19 +144,19 @@ namespace ngl
 
 		// Register a std::function-based handler for a typed actor message.
 		template <typename TTTDerived, typename T>
-		nrfun& rfun(const std::function<void(TTTDerived*, message<T>&)>& afun, int32_t aready = e_ready_all);
+		nrfun& rfun(const std::function<void(TTTDerived*, message<T>&)>& afun);
 
 		// Register a member-function handler gated by the requested readiness mask.
 		template <typename TTTDerived, typename T>
-		nrfun& rfun(const Tfun<TTTDerived, T> afun, int32_t aready = e_ready_all);
+		nrfun& rfun(const Tfun<TTTDerived, T> afun);
 
 		// Register a handler but associate the protocol with an explicit actor type.
 		template <typename TTTDerived, typename T>
-		nrfun& rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, int32_t aready = e_ready_all);
+		nrfun& rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype);
 
 		// Register a local-only handler that skips protocol registry metadata.
 		template <typename TTTDerived, typename T>
-		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun, int32_t aready = e_ready_all);
+		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun);
 
 		// Register the synthetic protocol used for client-to-gateway forwarding.
 		template <typename T>
