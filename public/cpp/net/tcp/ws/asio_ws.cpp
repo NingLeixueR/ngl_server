@@ -696,7 +696,10 @@ namespace ngl
 	{
 		if (error)
 		{
-			log_error()->print("asio_ws::handle_write [{}]", error.message());
+			if (!ngl::ws::should_ignore_ws_close_error(error))
+			{
+				log_error()->print("asio_ws::handle_write [{}]", error.message());
+			}
 			close(aservice.get());
 		}
 		if (m_sendfinishfun != nullptr)

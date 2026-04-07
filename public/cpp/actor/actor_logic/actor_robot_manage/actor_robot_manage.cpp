@@ -22,11 +22,6 @@ namespace ngl
 {
 	namespace
 	{
-		ENET_PROTOCOL normalize_robot_protocol(ENET_PROTOCOL aprotocol)
-		{
-			return aprotocol == ENET_WS ? ENET_WS : ENET_TCP;
-		}
-
 		bool robot_gateway_use_tls()
 		{
 			const xarg_wss& lwss = nconfig.wss();
@@ -123,7 +118,7 @@ namespace ngl
 	{
 		auto& lrobot = instance().m_maprobot[aaccount];
 		lrobot.m_account = aaccount;
-		lrobot.m_protocol = normalize_robot_protocol(aprotocol);
+		lrobot.m_protocol = aprotocol;
 
 		pbnet::PROBUFF_NET_ACOUNT_LOGIN pro;
 		pro.set_marea(tab_self_area);
@@ -135,7 +130,7 @@ namespace ngl
 			tools::no_core_dump();
 			return;
 		}
-		ntcp::instance().send_server(nnodeid::nodeid(static_cast<int16_t>(tab->m_login), 1), pro, nguid::moreactor(), instance().id_guid());
+		nnet::instance().send_server(nnodeid::nodeid(static_cast<int16_t>(tab->m_login), 1), pro, nguid::moreactor(), instance().id_guid());
 	}
 
 	bool actor_robot_manage::check_connect(i32_serverid aserverid, ENET_PROTOCOL aprotocol) const
@@ -147,10 +142,9 @@ namespace ngl
 			return false;
 		}
 
-		const ENET_PROTOCOL lprotocol = normalize_robot_protocol(aprotocol);
-		if (lprotocol == ENET_WS)
+		if (aprotocol == ENET_WS)
 		{
-			if (ltab->m_type != NODE_TYPE::GATEWAY)
+			if (ltab->m_type != NODE_TYPE::GATEWAY && ltab->m_type != NODE_TYPE::LOGIN)
 			{
 				log_warn()->print("robot ws connect only supports gateway, server[{}] type[{}]", aserverid, static_cast<int32_t>(ltab->m_type));
 				return false;
@@ -166,27 +160,33 @@ namespace ngl
 		return ttab_servers::instance().connect(aserverid, lnets);
 	}
 
-	void actor_robot_manage::connect(i32_serverid aserverid, ENET_PROTOCOL aprotocol, const std::function<void(i32_sessionid)>& afun) const
+	bool actor_robot_manage::connect(i32_serverid aserverid, ENET_PROTOCOL aprotocol, const std::function<void(i32_sessionid)>& afun) const
 	{
-		const ENET_PROTOCOL lprotocol = normalize_robot_protocol(aprotocol);
-		if (!check_connect(aserverid, lprotocol))
+		if (!check_connect(aserverid, aprotocol))
 		{
-			return;
+			return false;
 		}
 
-		if (lprotocol == ENET_WS)
+		if (aprotocol == ENET_WS)
 		{
 			const tab_servers* llocaltab = ttab_servers::instance().const_tab();
 			if (llocaltab == nullptr)
 			{
-				return;
+				return false;
 			}
 			nws::instance().init(0, llocaltab->m_threadnum, llocaltab->m_outernet, robot_gateway_use_tls(), robot_gateway_tls_options());
 			nws::instance().connect(aserverid, afun, true, false);
-			return;
 		}
-
-		ntcp::instance().connect(aserverid, afun, true, false);
+		else if (aprotocol == ENET_TCP)
+		{
+			ntcp::instance().connect(aserverid, afun, true, false);
+		}
+		else
+		{
+			log_error()->print("actor_robot_manage::connect fail!");
+			return false;
+		}
+		return true;
 	}
 
 	bool actor_robot_manage::parse_command(std::string aparm)

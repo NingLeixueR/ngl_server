@@ -212,7 +212,7 @@ namespace ngl
 			// Or
 			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid());
 			pbnet::PROBUFF_NET_ROLE_SYNC ltemp;
-			ntcp::instance().send_server(linfo->m_gameid, ltemp, lroleactor, nguid::make());
+			nnet::instance().send_server(linfo->m_gameid, ltemp, lroleactor, nguid::make());
 			return true;
 		}
 
@@ -230,7 +230,7 @@ namespace ngl
 		pbnet::PROBUFF_NET_ROLE_LOGIN lprampro = *lpram;
 		lprampro.set_mgatewayid(nconfig.nodeid());
 		lprampro.set_marea(linfo->m_area);
-		ntcp::instance().send_server(linfo->m_gameid, lprampro, nguid::moreactor(), id_guid());
+		nnet::instance().send_server(linfo->m_gameid, lprampro, nguid::moreactor(), id_guid());
 		return true;
 	}
 

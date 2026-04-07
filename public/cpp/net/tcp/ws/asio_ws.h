@@ -126,13 +126,10 @@ namespace ngl
 			aws.async_write(adata, [this, aservice, anodepack](const basio_errorcode& ec, std::size_t)
 				{
 					handle_write(aservice, ec, anodepack->get_pack());
-					if (ec)
+					if (!ec)
 					{
-						log_error()->print("asio_ws::send[{}]", ec.message().c_str());
-						close(aservice.get());
-						return;
+						do_send(aservice, true);
 					}
-					do_send(aservice, true);
 				}
 			);
 		}

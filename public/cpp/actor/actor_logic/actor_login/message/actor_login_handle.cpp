@@ -106,7 +106,7 @@ namespace ngl
 				.m_socketid		= lpack->m_id,
 				.m_request_actor = lpack->m_head->get_request_actor(),
 			};
-			ntcp::instance().send_server(pro.m_gatewayid, pro, nguid::moreactor(), id_guid());
+			nnet::instance().send_server(pro.m_gatewayid, pro, nguid::moreactor(), id_guid());
 		}	
 
 		// # Notifyclient
@@ -118,7 +118,7 @@ namespace ngl
 			pro.set_maccount(lparm->maccount());
 			pro.set_mgatewayid(lppair_account->m_gatewayserverid);
 			pro.set_mgameid(lppair_account->m_gameserverid);
-			ntcp::instance().send(lpack->m_id, pro, lpack->m_head->get_request_actor(), id_guid());
+			nnet::instance().send(lpack->m_id, pro, lpack->m_head->get_request_actor(), id_guid());
 		}
 		
 		return true;

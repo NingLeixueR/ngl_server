@@ -41,7 +41,7 @@ namespace ngl
 		}
 		else
 		{
-			ntcp::instance().send(lpack->m_id, *lpram, nguid::make(), nguid::make());
+			nnet::instance().send(lpack->m_id, *lpram, nguid::make(), nguid::make());
 		}
 		return true;
 	}

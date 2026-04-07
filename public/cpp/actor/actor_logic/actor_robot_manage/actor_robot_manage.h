@@ -52,7 +52,7 @@ namespace ngl
 
 		bool check_connect(i32_serverid aserverid, ENET_PROTOCOL aprotocol) const;
 
-		void connect(i32_serverid aserverid, ENET_PROTOCOL aprotocol, const std::function<void(i32_sessionid)>& afun) const;
+		bool connect(i32_serverid aserverid, ENET_PROTOCOL aprotocol, const std::function<void(i32_sessionid)>& afun) const;
 
 		static bool parse_command(std::string aparm);
 
