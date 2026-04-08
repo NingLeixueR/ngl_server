@@ -87,9 +87,9 @@ namespace ngl
 
 	bool actor::push(handle_pram& apram)
 	{
-		int32_t highvalue = tprotocol::highvalue(apram.m_enum);
+		int32_t lhigh = tprotocol::highvalue(apram.m_enum);
 		lock_write(m_mutex);
-		if (highvalue <= 0)
+		if (lhigh <= 0)
 		{
 			// Default traffic is processed in FIFO order.
 			m_list.emplace_back(apram);
@@ -97,8 +97,8 @@ namespace ngl
 		}
 		else
 		{
-			// High-priority traffic is grouped by protocol priority and handled first.
-			m_hightlist[highvalue].emplace_back(apram);
+			// Lower privilege values are allowed to pass earlier readiness gates.
+			m_hightlist[lhigh].emplace_back(apram);
 			return true;
 		}
 	}
@@ -136,8 +136,8 @@ namespace ngl
 		{
 			for(auto itor = localhightlist.begin();itor != localhightlist.end();)
 			{
-				// Drain priority buckets before normal traffic.
-				if (lvalue == -1 || lvalue >= itor->first)
+				// Lower privilege values are allowed to pass earlier readiness gates.
+				if (lvalue == -1 || lvalue > itor->first)
 				{
 					for (auto& lharm : itor->second)
 					{

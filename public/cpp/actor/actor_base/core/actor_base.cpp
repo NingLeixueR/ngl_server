@@ -27,11 +27,14 @@ namespace ngl
 {
 	bool nready::is_ready()
 	{
-		for (auto& [key, value] : m_ready)
+		for (auto& [lkey, lvec] : m_ready)
 		{
-			if (!value.m_fun())
+			for (auto& litem : lvec)
 			{
-				return false;
+				if (!litem.m_fun())
+				{
+					return false;
+				}
 			}
 		}
 		return true;
@@ -39,11 +42,14 @@ namespace ngl
 
 	int32_t nready::hightlevel_ready()
 	{
-		for (auto& [key, value] : m_ready)
+		for (auto& [lkey, lvec] : m_ready)
 		{
-			if (!value.m_fun())
+			for (auto& litem : lvec)
 			{
-				return key;
+				if (!litem.m_fun())
+				{
+					return lkey;
+				}
 			}
 		}
 		return -1;

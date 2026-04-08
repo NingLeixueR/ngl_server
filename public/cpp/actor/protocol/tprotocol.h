@@ -47,7 +47,7 @@ namespace ngl
 			using funclientc = std::function<bool(int64_t, const char*, void*)>;
 
 			i32_protocolnum	m_protocol = 0;
-			int32_t			m_highvalue = 0; // Higher values are drained earlier by actor::push().
+			int32_t			m_highvalue = 0; // Lower values may pass earlier readiness gates.
 			std::string		m_name;          // Debug/display name.
 
 			// Script bridge callbacks for sending the protocol to clients.
@@ -244,7 +244,7 @@ namespace ngl
 			return linfo->m_name.c_str();
 		}
 
-		// Return the scheduler priority for a protocol id.
+		// Return the scheduler privilege level for a protocol id.
 		static int32_t highvalue(i32_protocolnum aprotocol)
 		{
 			info* linfo = get(aprotocol);

@@ -91,7 +91,7 @@ namespace ngl
 			std::string m_name;
 			std::function<bool()> m_fun;
 		};
-		std::map<int32_t, ready> m_ready;
+		std::map<int32_t, std::vector<ready>> m_ready;
 	public:
 		// Return true when the requested readiness bits are satisfied.
 		bool is_ready();
@@ -102,14 +102,16 @@ namespace ngl
 		template <typename ...ARGS>
 		void set_ready(const std::string& akey, const std::function<bool()>& afun, int32_t athresholdhightlevel)
 		{
-			m_ready[athresholdhightlevel] = ready
-			{
-				.m_name = akey,
-				.m_fun = afun,
-			};
+			auto& lvec = m_ready[athresholdhightlevel];
+			lvec.emplace_back(ready
+				{
+					.m_name = akey,
+					.m_fun = afun,
+				}
+			);
 			if constexpr (sizeof...(ARGS) > 0)
 			{
-				if (!ngl::tprotocol::set_hightvalue<ARGS...>(athresholdhightlevel))
+				if (!ngl::tprotocol::set_hightvalue<ARGS...>(athresholdhightlevel - 1))
 				{
 					log_error()->print("nready set_ready fail!");
 				}
