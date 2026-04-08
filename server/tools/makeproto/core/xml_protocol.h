@@ -835,8 +835,7 @@ namespace ngl
 		static void func()
 		{
 			tprotocol::tp_customs<
-				np_channel_check<T>
-				, np_channel_data<T>
+				np_channel_data<T>
 				, np_channel_register<T>
 				, np_channel_register_reply<T>
 				, np_channel_exit<T>
@@ -844,7 +843,7 @@ namespace ngl
 			>(-1, e_thresholdhightlevel_nsp);
 
 			tprotocol::tp_customs<
-				
+				np_channel_check<T>
 			>(-1, 0);
 		}
 

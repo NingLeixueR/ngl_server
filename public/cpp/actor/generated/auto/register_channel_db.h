@@ -6,13 +6,16 @@ namespace ngl
 		static void func()
 		{
 			tprotocol::tp_customs<
-				np_channel_check<T>
-				, np_channel_data<T>
+				np_channel_data<T>
 				, np_channel_register<T>
 				, np_channel_register_reply<T>
 				, np_channel_exit<T>
 				, np_channel_dataid_sync<T>
 			>(-1, e_thresholdhightlevel_nsp);
+
+			tprotocol::tp_customs<
+				np_channel_check<T>
+			>(-1, 0);
 		}
 
 		template <typename ...TAGS>
