@@ -50,7 +50,7 @@ namespace ngl
 		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;	// Lookup by actor type, then guid.
 
 		std::shared_mutex			m_mutex;
-		ngl::tools::sem					m_sem;
+		ngl::tools::sem				m_sem;
 		std::jthread				m_thread;			// Start last so the dispatcher sees initialized state.
 
 		actor_manage();
