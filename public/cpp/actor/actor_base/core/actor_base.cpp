@@ -27,14 +27,12 @@ namespace ngl
 {
 	bool nready::is_ready()
 	{
-		nlock(m_mutex);
-		for (auto itor = m_readyfun.begin(); itor != m_readyfun.end(); )
+		for (auto& [key, fun] : m_readyfun)
 		{
-			if(!itor->second())
+			if (!fun())
 			{
 				return false;
 			}
-			itor = m_readyfun.erase(itor);
 		}
 		return true;
 	}
