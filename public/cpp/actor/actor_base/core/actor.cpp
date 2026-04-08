@@ -87,7 +87,7 @@ namespace ngl
 
 	bool actor::push(handle_pram& apram)
 	{
-		int8_t highvalue = tprotocol::highvalue(apram.m_enum);
+		int32_t highvalue = tprotocol::highvalue(apram.m_enum);
 		lock_write(m_mutex);
 		if (highvalue <= 0)
 		{
@@ -130,17 +130,33 @@ namespace ngl
 			m_hightlist.swap(localhightlist);
 		}
 
+		int32_t lvalue = ready().hightlevel_ready() - 1;
+
 		if (!localhightlist.empty())
 		{
-			for (auto& lpair : localhightlist)
+			for(auto itor = localhightlist.begin();itor != localhightlist.end();)
 			{
 				// Drain priority buckets before normal traffic.
-				for (auto& lharm : lpair.second)
+				if (lvalue == -1 || lvalue >= itor->first)
 				{
-					ahandle(athreadid, lharm);
+					for (auto& lharm : itor->second)
+					{
+						ahandle(athreadid, lharm);
+					}
+					itor = localhightlist.erase(itor);
+				}
+				else
+				{
+					break;
 				}
 			}
-			localhightlist.clear();
+
+			lock_write(m_mutex);
+			for (auto& [key, value] : localhightlist)
+			{
+				auto& lmap = m_hightlist[key];
+				lmap.splice(lmap.begin(), std::move(value));
+			}
 		}
 
 		if (!ready().is_ready())

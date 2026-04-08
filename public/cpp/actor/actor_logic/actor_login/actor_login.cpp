@@ -64,7 +64,8 @@ namespace ngl
 		ready().set_ready<np_actorserver_connect>("game or gatewa not connect", [this]()
 			{
 				return !(m_game.empty() || m_gateway.empty());
-			});
+			}, e_thresholdhightlevel_custom
+		);
 	}
 
 	void actor_login::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)

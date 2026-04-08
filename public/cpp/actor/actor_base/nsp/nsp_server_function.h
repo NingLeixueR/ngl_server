@@ -178,17 +178,17 @@ namespace ngl
 		const np_channel_register<T>* recv = adata.get_data();
 		i64_actorid lactorid = recv->m_actorid;
 
-		if (m_care.find(lactorid) != m_care.end())
+		if (m_care.contains(lactorid))
 		{
 			return;
 		}
 
-		if (m_nodewritealls.find(lactorid) != m_nodewritealls.end())
+		if (m_nodewritealls.contains(lactorid))
 		{
 			return;
 		}
 
-		if (m_nodereadalls.find(lactorid) != m_nodereadalls.end())
+		if (m_nodereadalls.contains(lactorid))
 		{
 			return;
 		}

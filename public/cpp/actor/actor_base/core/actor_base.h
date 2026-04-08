@@ -69,6 +69,14 @@ namespace ngl
 	template <typename T>
 	struct message;
 
+	// High privilege threshold
+	enum e_thresholdhightlevel
+	{
+		e_thresholdhightlevel_db = 1,
+		e_thresholdhightlevel_nsp = 2,
+		e_thresholdhightlevel_custom = 3,
+	};
+
 	/**
 	 * Actor readiness state checker.
 	 *
@@ -78,19 +86,30 @@ namespace ngl
 	 */
 	class nready
 	{
-		std::map<std::string, std::function<bool()>>	m_readyfun;
+		struct ready
+		{
+			std::string m_name;
+			std::function<bool()> m_fun;
+		};
+		std::map<int32_t, ready> m_ready;
 	public:
 		// Return true when the requested readiness bits are satisfied.
 		bool is_ready();
 
+		int32_t hightlevel_ready();
+
 		// Register a readiness predicate for a predefined readiness bit.
 		template <typename ...ARGS>
-		void set_ready(const std::string& akey, const std::function<bool()>& afun)
+		void set_ready(const std::string& akey, const std::function<bool()>& afun, int32_t athresholdhightlevel)
 		{
-			m_readyfun.insert_or_assign(akey, afun);
+			m_ready[athresholdhightlevel] = ready
+			{
+				.m_name = akey,
+				.m_fun = afun,
+			};
 			if constexpr (sizeof...(ARGS) > 0)
 			{
-				if (!ngl::tprotocol::set_hightvalue<ARGS...>())
+				if (!ngl::tprotocol::set_hightvalue<ARGS...>(athresholdhightlevel))
 				{
 					log_error()->print("nready set_ready fail!");
 				}
@@ -581,7 +600,7 @@ namespace ngl
 
 	template <bool SCRIPT>
 	template <typename T>
-	tprotocol::info* tprotocol::tcustoms<SCRIPT>::func(int32_t aprotocolnum /*= -1*/, int8_t ahigh /*= 0*/)
+	tprotocol::info* tprotocol::tcustoms<SCRIPT>::func(int32_t aprotocolnum /*= -1*/, int32_t ahigh /*= 0*/)
 	{
 		info* linfo = funcx<T>(aprotocolnum, ahigh);
 		if (linfo != nullptr)

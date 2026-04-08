@@ -27,14 +27,26 @@ namespace ngl
 {
 	bool nready::is_ready()
 	{
-		for (auto& [key, fun] : m_readyfun)
+		for (auto& [key, value] : m_ready)
 		{
-			if (!fun())
+			if (!value.m_fun())
 			{
 				return false;
 			}
 		}
 		return true;
+	}
+
+	int32_t nready::hightlevel_ready()
+	{
+		for (auto& [key, value] : m_ready)
+		{
+			if (!value.m_fun())
+			{
+				return key;
+			}
+		}
+		return -1;
 	}
 
 	int actor_base::m_broadcast = 10 * tools::time::MILLISECOND;
@@ -62,7 +74,7 @@ namespace ngl
 			ready().set_ready("db load", [this]()
 				{
 					return m_dbclient == nullptr || m_dbclient->isloadfinish();
-				}
+				}, e_thresholdhightlevel_db
 			);
 		}
 		if (aparm.m_enscript != enscript_none)

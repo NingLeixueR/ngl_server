@@ -47,7 +47,7 @@ namespace ngl
 			using funclientc = std::function<bool(int64_t, const char*, void*)>;
 
 			i32_protocolnum	m_protocol = 0;
-			int8_t			m_highvalue = 0; // Higher values are drained earlier by actor::push().
+			int32_t			m_highvalue = 0; // Higher values are drained earlier by actor::push().
 			std::string		m_name;          // Debug/display name.
 
 			// Script bridge callbacks for sending the protocol to clients.
@@ -92,7 +92,7 @@ namespace ngl
 		class tcustoms
 		{
 			template <typename T>
-			static info* func_base(int32_t aprotocolnum = -1, int8_t ahigh = 0)
+			static info* func_base(int32_t aprotocolnum = -1, int32_t ahigh = 0)
 			{
 				tools::nhashcode lcode = tools::nhash::code<T>();
 				if (m_keyval.contains(lcode))
@@ -109,7 +109,7 @@ namespace ngl
 			}
 
 			template <typename T>
-			static info* funcx(int32_t aprotocolnum = -1, int8_t ahigh = 0)
+			static info* funcx(int32_t aprotocolnum = -1, int32_t ahigh = 0)
 			{
 				info* lpinfo = func_base<T>(aprotocolnum, ahigh);
 				func_base<np_mass_actor<T>>(-1);
@@ -117,7 +117,7 @@ namespace ngl
 			}
 		public:
 			template <typename T>
-			static info* func(int32_t aprotocolnum = -1, int8_t ahigh = 0);
+			static info* func(int32_t aprotocolnum = -1, int32_t ahigh = 0);
 		};
 
 		struct tforward
@@ -135,14 +135,14 @@ namespace ngl
 
 		// Register one or more custom C++ protocols.
 		template <typename ...ARGS>
-		static void tp_customs(int32_t aprotocolnum = -1, int8_t ahigh = 0)
+		static void tp_customs(int32_t aprotocolnum = -1, int32_t ahigh = 0)
 		{
 			(tcustoms<false>::func<ARGS>(aprotocolnum, ahigh), ...);
 		}
 
 		// Register one or more custom protocols and expose script send bridges for them.
 		template <typename ...ARGS>
-		static void tp_customs_script(int32_t aprotocolnum = -1, int8_t ahigh = 0)
+		static void tp_customs_script(int32_t aprotocolnum = -1, int32_t ahigh = 0)
 		{
 			(tcustoms<true>::func<ARGS>(aprotocolnum, ahigh), ...);
 		}
@@ -195,16 +195,18 @@ namespace ngl
 		}
 
 		template <typename T, typename ...TAGES>
-		static bool set_hightvalue()
+		static bool set_hightvalue(int32_t ahightlevel)
 		{
 			info* lpinfo = get<T>();
 			if (lpinfo == nullptr)
 			{
 				return false;
 			}
-			lpinfo->m_highvalue = 10;
+			lpinfo->m_highvalue = ahightlevel;
 			if constexpr (sizeof...(TAGES) > 0)
-				return set_hightvalue<TAGES...>();
+			{
+				return set_hightvalue<TAGES...>(ahightlevel);
+			}
 			return true;
 		}
 
@@ -243,7 +245,7 @@ namespace ngl
 		}
 
 		// Return the scheduler priority for a protocol id.
-		static int8_t highvalue(i32_protocolnum aprotocol)
+		static int32_t highvalue(i32_protocolnum aprotocol)
 		{
 			info* linfo = get(aprotocol);
 			if (linfo == nullptr)
