@@ -79,8 +79,8 @@ namespace ngl
 	class nready
 	{
 	private:
-		std::map<std::string, std::function<bool()>> m_readyfun;
-		std::shared_mutex			m_mutex;
+		std::map<std::string, std::function<bool()>>	m_readyfun;
+		std::shared_mutex								m_mutex;
 	public:
 		// Return true when the requested readiness bits are satisfied.
 		bool is_ready();
