@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include "tools/log/nactor_logitem.h"
 #include "tools/tab/xml/sysconfig.h"
 #include "tools/tools/tools_time.h"
 #include "tools/log/logprintf.h"
@@ -36,8 +37,6 @@ namespace ngl
 	public:
 		static const char* get(ELOGLEVEL atype);
 	};
-
-	struct nactor_logitem;
 
 	using ptr_logitem = std::shared_ptr<nactor_logitem>;
 

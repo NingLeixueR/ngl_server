@@ -16,7 +16,6 @@
 
 #include "actor/actor_logic/actor_log/actor_log.h"
 #include "actor/actor_base/core/actor_base.h"
-#include "actor/protocol/nprotocol.h"
 #include "tools/log/logprintf.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/log/nlog.h"
@@ -57,6 +56,32 @@ namespace ngl
 		}
 	}
 
+	bool nactor_logitem::m_init = false;
+
+	void nactor_logitem::send_log(std::string&& adata, int32_t atime)
+	{
+		auto lpro = std::make_shared<np_logitem>();
+		lpro->m_loglevel = m_level;
+		lpro->m_type = m_logtype;
+		lpro->m_serverid = nconfig.nodeid();
+		lpro->m_time = atime;
+		lpro->m_src.swap(m_src);
+		lpro->m_data.swap(adata);
+		send(lpro, m_isnet);
+	}
+
+	void nactor_logitem::send(std::shared_ptr<np_logitem> apro, bool aisnet)
+	{
+		if (aisnet)
+		{
+			actor::send_actor(actor_log::actorid(ttab_servers::instance().const_tab()->m_log), nguid::make(), apro);
+		}
+		else
+		{
+			actor::send_actor(actor_log::actorid(nconfig.tid()), nguid::make(), apro);
+		}
+	}
+
 	ptr_logitem g_nonelog = std::make_shared<nactor_logitem>();
 
 	ptr_logitem get_log(const std::source_location& asource, ELOGLEVEL alevel, ELOG_TYPE atype, bool anet)
@@ -65,7 +90,7 @@ namespace ngl
 		// call sites can keep the same fluent API without branching.
 		if (nactor_logitem::check_level(alevel))
 		{
-			return std::make_shared<nactor_logitem>(alevel, ACTOR_NONE, atype, anet, asource);
+			return std::make_shared<nactor_logitem>(alevel, atype, anet, asource);
 		}
 		else
 		{
