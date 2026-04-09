@@ -67,40 +67,45 @@ namespace ngl
 #include "actor/actor_logic/actor_testlua2/actor_testlua2.h"
 namespace ngl
 {
-	void auto_actor_enum()
+	class auto_actor_enum
 	{
-		autoactor::func<
-			actor_role
-			, actor_robot
-			, actor_log
-			, actor_example_guess_number
-			, actor_server
-			, actor_client
-			, actor_login
-			, actor_gateway
-			, actor_gateway_c2g
-			, actor_gateway_g2c
-			, actor_create
-			, actor_role_manage
-			, actor_kcp
-			, actor_robot_manage
-			, actor_csvserver
-			, actor_csvclient
-			, actor_notice
-			, actor_gm
-			, actor_gmclient
-			, actor_mail
-			, actor_chat
-			, actor_ranklist
-			, actor_activity_manage
-			, actor_brief
-			, actor_keyvalue
-			, actor_family
-			, actor_friends
-			, actor_example_match
-			, actor_example_manage
-			, actor_testlua
-			, actor_testlua2
-		>({ACTOR_ROLE, ACTOR_ROBOT, ACTOR_LOG, ACTOR_EXAMPLE_GUESS_NUMBER, ACTOR_SERVER, ACTOR_CLIENT, ACTOR_LOGIN, ACTOR_GATEWAY, ACTOR_GATEWAY_C2G, ACTOR_GATEWAY_G2C, ACTOR_CREATE, ACTOR_ROLE_MANAGE, ACTOR_KCP, ACTOR_ROBOT_MANAGE, ACTOR_CSVSERVER, ACTOR_CSVCLIENT, ACTOR_NOTICE, ACTOR_GM, ACTOR_GMCLIENT, ACTOR_MAIL, ACTOR_CHAT, ACTOR_RANKLIST, ACTOR_ACTIVITY_MANAGE, ACTOR_BRIEF, ACTOR_KEYVALUE, ACTOR_FAMILY, ACTOR_FRIENDS, ACTOR_EXAMPLE_MATCH, ACTOR_EXAMPLE_MANAGE, ACTOR_TESTLUA, ACTOR_TESTLUA2});
-	}
+	public:
+		static void fun()
+		{
+			autoactor::func <
+				actor_role
+				, actor_robot
+				, actor_log
+				, actor_example_guess_number
+				, actor_server
+				, actor_client
+				, actor_login
+				, actor_gateway
+				, actor_gateway_c2g
+				, actor_gateway_g2c
+				, actor_create
+				, actor_role_manage
+				, actor_kcp
+				, actor_robot_manage
+				, actor_csvserver
+				, actor_csvclient
+				, actor_notice
+				, actor_gm
+				, actor_gmclient
+				, actor_mail
+				, actor_chat
+				, actor_ranklist
+				, actor_activity_manage
+				, actor_brief
+				, actor_keyvalue
+				, actor_family
+				, actor_friends
+				, actor_example_match
+				, actor_example_manage
+				, actor_testlua
+				, actor_testlua2
+			> ({ ACTOR_ROLE, ACTOR_ROBOT, ACTOR_LOG, ACTOR_EXAMPLE_GUESS_NUMBER, ACTOR_SERVER, ACTOR_CLIENT, ACTOR_LOGIN, ACTOR_GATEWAY, ACTOR_GATEWAY_C2G, ACTOR_GATEWAY_G2C, ACTOR_CREATE, ACTOR_ROLE_MANAGE, ACTOR_KCP, ACTOR_ROBOT_MANAGE, ACTOR_CSVSERVER, ACTOR_CSVCLIENT, ACTOR_NOTICE, ACTOR_GM, ACTOR_GMCLIENT, ACTOR_MAIL, ACTOR_CHAT, ACTOR_RANKLIST, ACTOR_ACTIVITY_MANAGE, ACTOR_BRIEF, ACTOR_KEYVALUE, ACTOR_FAMILY, ACTOR_FRIENDS, ACTOR_EXAMPLE_MATCH, ACTOR_EXAMPLE_MANAGE, ACTOR_TESTLUA, ACTOR_TESTLUA2 });
+		}
+	};
+	
 }//namespace ngl

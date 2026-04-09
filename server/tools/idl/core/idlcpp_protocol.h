@@ -277,12 +277,15 @@ public:
 
 namespace ngl
 {
-	void tprotocol_customs_200000000()
+	class tprotocol_customs_200000000
 	{
-		tprotocol::set_customs_index(200000000);
-		// Newly added protocolneed to
-		// RegisterTand"np_mass_actor<T>"
-		tprotocol::tp_customs_script<
+	public:
+		static void fun()
+		{
+			tprotocol::set_customs_index(200000000);
+			// Newly added protocolneed to
+			// RegisterTand"np_mass_actor<T>"
+			tprotocol::tp_customs_script<
 )";
 		int lindex = 200000000;
 		std::map<std::string, idl_file>& lmap = idl::instance().data();
@@ -332,7 +335,8 @@ namespace ngl
 			}
 		}
 		m_stream << R"(		>();)" << std::endl;
-		m_stream << "	}" << std::endl;
+		m_stream << "		}" << std::endl;
+		m_stream << "	};" << std::endl;
 		m_stream << "}//namespace ngl" << std::endl;
 		lfile.write(m_stream.str());
 	}
@@ -408,9 +412,12 @@ namespace ngl
 		}
 		m_stream << R"(namespace ngl
 {
-	void auto_actor_enum()
+	class auto_actor_enum
 	{
-		autoactor::func<
+	public:
+		static void fun()
+		{
+			autoactor::func<
 )";
 		bool isdouhao = false;
 		for (std::pair<const std::string, idl_file>& item : lmap)
@@ -489,7 +496,8 @@ namespace ngl
 				}
 			}
 		}
-		m_stream << "});\n	}\n}//namespace ngl" << std::endl;
+
+		m_stream << "});\n		}\n	};\n}//namespace ngl" << std::endl;
 		lfile.write(m_stream.str());
 	}
 

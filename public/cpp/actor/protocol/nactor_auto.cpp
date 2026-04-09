@@ -84,7 +84,7 @@ namespace ngl
 	void auto_actor()
 	{
 		// Generated actor enum/type registration lives in auto_*.cpp outputs.
-		auto_actor_enum();
+		auto_actor_enum::fun();
 		autoactor::func<actor_events_logic, actor_events_map>(
 			{ em_events_null(actor_events_logic), em_events_null(actor_events_map) }
 		);
@@ -93,7 +93,7 @@ namespace ngl
 	void tprotocol_customs()
 	{
 		// Generated custom protocols reserve the 200000000 range.
-		tprotocol_customs_200000000();
+		tprotocol_customs_200000000::fun();
 
 		tprotocol::set_customs_index(100000000);
 		// Register script-visible GM protocols and their np_mass_actor<T> wrappers.

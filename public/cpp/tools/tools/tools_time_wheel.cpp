@@ -215,6 +215,16 @@ namespace ngl::tools
 			}
 		}
 
+		void finish_node(wheel_node* anode)
+		{
+			if (anode == nullptr)
+			{
+				return;
+			}
+			m_timer.erase(anode->m_timerid);
+			push(anode);
+		}
+
 		int64_t all_slot_ms() const
 		{
 			return m_wheel[m_config.m_time_wheel_count - 1]->all_slot_ms();
@@ -264,7 +274,7 @@ namespace ngl::tools
 					}
 					else
 					{
-						push(node);
+						finish_node(node);
 						scheduled = true;
 					}
 					continue;
@@ -605,7 +615,7 @@ namespace ngl::tools
 
 			if (node->m_parm.m_intervalms == nullptr)
 			{
-				impl->push(node);
+				impl->finish_node(node);
 				continue;
 			}
 
@@ -613,7 +623,7 @@ namespace ngl::tools
 			--node->m_parm.m_count;
 			if (interval_ms <= 0 || node->m_parm.m_count <= 0)
 			{
-				impl->push(node);
+				impl->finish_node(node);
 				continue;
 			}
 
