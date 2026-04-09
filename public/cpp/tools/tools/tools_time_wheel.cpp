@@ -343,11 +343,12 @@ namespace ngl::tools
 			const int32_t tick_precision_ms = m_config.m_time_wheel_precision;
 			while (!m_stop.load(std::memory_order_relaxed))
 			{
-				const int64_t elapsed_since_tick_ms = getms() - m_current_ms;
-				const int64_t sleep_ms = tick_precision_ms - elapsed_since_tick_ms;
-				if (sleep_ms > 0)
+				const int64_t lnow = getms();
+				const int64_t lnext_tick_ms = m_current_ms + tick_precision_ms;
+				const int64_t lsleep_ms = lnext_tick_ms - lnow;
+				if (lsleep_ms > 0)
 				{
-					std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
+					std::this_thread::sleep_for(std::chrono::milliseconds(lsleep_ms));
 				}
 
 				lock_write(m_mutex);
@@ -356,14 +357,25 @@ namespace ngl::tools
 					continue;
 				}
 
-				wheel_node* rescheduled_nodes = m_wheel[0]->shift_current_pos(nullptr);
-				if (rescheduled_nodes != nullptr)
+				const int64_t lnow_locked = getms();
+				const int64_t ldelay_ms = lnow_locked - m_current_ms;
+				const int64_t ltick_count = ldelay_ms / tick_precision_ms;
+				if (ltick_count <= 0)
 				{
-					// Periodic timers returned by the current slot are scheduled
-					// again on the same absolute timeline.
-					schedule_locked(rescheduled_nodes);
+					continue;
 				}
-				m_current_ms += tick_precision_ms;
+
+				for (int64_t ltick = 0; ltick < ltick_count; ++ltick)
+				{
+					wheel_node* lrescheduled_nodes = m_wheel[0]->shift_current_pos(nullptr);
+					if (lrescheduled_nodes != nullptr)
+					{
+						// When the wheel thread falls behind, consume every missed
+						// slot in this pass so due timers catch up immediately.
+						schedule_locked(lrescheduled_nodes);
+					}
+					m_current_ms += tick_precision_ms;
+				}
 			}
 		}
 
