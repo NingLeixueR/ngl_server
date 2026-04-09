@@ -15,7 +15,9 @@
 
 
 #include "tools/tab/xml/xmlprotocol.h"
+#include "actor/protocol/nprotocol.h"
 #include "tools/tab/xml/xml.h"
+#include "tools/log/nlog.h"
 
 namespace ngl
 {
