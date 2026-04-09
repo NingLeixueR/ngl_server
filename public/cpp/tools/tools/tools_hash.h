@@ -15,14 +15,11 @@
 
 #pragma once
 
-#include "tools_core.h"
+#include "tools/tools/tools_core.h"
 
-namespace ngl
+namespace ngl::tools
 {
-	namespace tools
-	{
-		std::string md5(const std::string& atext);
-		std::string sh1(std::string_view atext);
-		std::string hmac_sha1(const std::string& akey, const std::string& atext);
-	}
-}
+	std::string md5(const std::string& atext);
+	std::string sh1(std::string_view atext);
+	std::string hmac_sha1(const std::string& akey, const std::string& atext);
+}//namespace ngl::tools

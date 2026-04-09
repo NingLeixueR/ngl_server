@@ -13,7 +13,7 @@
 */
 // File overview: Implements base, endian, and base64 helpers for tools.
 
-#include "tools_base.h"
+#include "tools/tools/tools_base.h"
 
 #include <cstdio>
 
@@ -353,4 +353,4 @@ namespace ngl
 #endif
 		}
 	}
-}
+}//namespace ngl

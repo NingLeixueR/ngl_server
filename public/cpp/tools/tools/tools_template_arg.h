@@ -36,4 +36,4 @@ namespace ngl::tools
 			(TF::template func<ARG>(args...), ...);
 		}
 	};
-}//namespace ngl
+}//namespace ngl::tools

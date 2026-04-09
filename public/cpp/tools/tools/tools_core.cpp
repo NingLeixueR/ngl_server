@@ -13,8 +13,9 @@
 */
 // File overview: Implements shared non-template helpers for tools.
 
-#include "tools_core.h"
+#include "actor/protocol/nprotocol.h"
 #include "tools/log/nlog.h"
+#include "tools_core.h"
 
 namespace ngl
 {
@@ -29,4 +30,4 @@ namespace ngl
 			log_error(asource)->print("tools::lexical_cast<{}> failed from <{}> : {}", atotype, afromtype, aerror);
 		}
 	}
-}
+}//namespace ngl

@@ -20,4 +20,4 @@ namespace ngl::tools
 {
 	std::map<int64_t, std::map<std::string, int32_t>> nhash::m_hash;
 	std::shared_mutex nhash::m_mutex;
-}//namespace ngl
+}//namespace ngl::tools

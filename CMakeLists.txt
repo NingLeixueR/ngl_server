@@ -15,7 +15,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Require C++20 and fail if the compiler is
 # Set(CMAKE_CXX_EXTENSIONS OFF) # close C++, [ C++20]
 option(NGL_ENABLE_STRONG_WARNINGS "Enable stronger compiler warnings for project targets" ON)
 option(NGL_ENABLE_SANITIZERS "Enable AddressSanitizer and UndefinedBehaviorSanitizer on supported toolchains" OFF)
-option(NGL_ENABLE_NATIVE_UNITY_BUILD "Enable CMake native unity build for large targets" OFF)
+option(NGL_ENABLE_NATIVE_UNITY_BUILD "Enable CMake native unity build for large targets" ON)
 option(NGLCORE_BUILD_SHARED "Build nglcore as a shared library instead of a static library" OFF)
 set(NGL_UNITY_BUILD_BATCH_SIZE 100 CACHE STRING "Maximum number of non-protobuf source files per native unity batch")
 

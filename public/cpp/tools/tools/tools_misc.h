@@ -15,102 +15,99 @@
 
 #pragma once
 
-#include "tools_core.h"
+#include "tools/tools/tools_core.h"
 
-namespace ngl
+namespace ngl::tools
 {
-	namespace tools
+	std::size_t strlen(const char* astr);
+
+	std::string& type_name_handle(std::string& aname);
+
+	template <typename T>
+	std::string& type_name()
 	{
-		std::size_t strlen(const char* astr);
-
-		std::string& type_name_handle(std::string& aname);
-
-		template <typename T>
-		std::string& type_name()
+		static std::string lname = std::string(detail::comp_type<T>());
+		static std::atomic_bool lfirst = true;
+		if (lfirst.exchange(false))
 		{
-			static std::string lname = std::string(detail::comp_type<T>());
-			static std::atomic_bool lfirst = true;
-			if (lfirst.exchange(false))
-			{
-				type_name_handle(lname);
-			}
-			return lname;
+			type_name_handle(lname);
+		}
+		return lname;
+	}
+
+	template <typename T>
+	std::string& type_name(const T*)
+	{
+		return type_name<T>();
+	}
+
+	std::vector<const char*> split_str(char* apbuff, int32_t abuff_cnt);
+
+	template <std::size_t N>
+	void split_str(char* apbuff, int32_t abuff_cnt, std::array<const char*, N>& aarr)
+	{
+		aarr.fill(nullptr);
+		if (apbuff == nullptr || abuff_cnt <= 0)
+		{
+			return;
 		}
 
-		template <typename T>
-		std::string& type_name(const T*)
+		std::size_t lidx = 0;
+		int32_t lbeg = 0;
+		for (int32_t li = 0; li < abuff_cnt; ++li)
 		{
-			return type_name<T>();
-		}
-
-		std::vector<const char*> split_str(char* apbuff, int32_t abuff_cnt);
-
-		template <std::size_t N>
-		void split_str(char* apbuff, int32_t abuff_cnt, std::array<const char*, N>& aarr)
-		{
-			aarr.fill(nullptr);
-			if (apbuff == nullptr || abuff_cnt <= 0)
+			if (apbuff[li] != ',')
 			{
-				return;
+				continue;
 			}
 
-			std::size_t lidx = 0;
-			int32_t lbeg = 0;
-			for (int32_t li = 0; li < abuff_cnt; ++li)
-			{
-				if (apbuff[li] != ',')
-				{
-					continue;
-				}
-
-				apbuff[li] = '\0';
-				if (lidx < N)
-				{
-					aarr[lidx++] = &apbuff[lbeg];
-				}
-				lbeg = li + 1;
-				if (lbeg < abuff_cnt && apbuff[lbeg] == ' ')
-				{
-					++lbeg;
-				}
-			}
-
+			apbuff[li] = '\0';
 			if (lidx < N)
 			{
-				aarr[lidx] = &apbuff[lbeg];
+				aarr[lidx++] = &apbuff[lbeg];
 			}
-		}
-
-		bool bit(int32_t atype, int32_t acjson);
-
-		void erase_repeat(std::string& astr, char ach);
-
-		template <typename ETYPE>
-		bool equal(ETYPE av1, ETYPE av2)
-		{
-			return av1 == av2;
-		}
-
-		int32_t less_member();
-
-		template <typename T>
-		auto less_member(const T& alhs, const T& arhs)
-		{
-			return alhs <=> arhs;
-		}
-
-		template <typename T, typename... TARGS>
-		auto less_member(const T& alhs, const T& arhs, const TARGS&... amems)
-		{
-			if (alhs != arhs)
+			lbeg = li + 1;
+			if (lbeg < abuff_cnt && apbuff[lbeg] == ' ')
 			{
-				return less_member(alhs, arhs);
+				++lbeg;
 			}
-			return less_member(amems...);
 		}
 
-		std::string_view trim_ascii_spaces(std::string_view avalue);
+		if (lidx < N)
+		{
+			aarr[lidx] = &apbuff[lbeg];
+		}
 	}
+
+	bool bit(int32_t atype, int32_t acjson);
+
+	void erase_repeat(std::string& astr, char ach);
+
+	template <typename ETYPE>
+	bool equal(ETYPE av1, ETYPE av2)
+	{
+		return av1 == av2;
+	}
+
+	int32_t less_member();
+
+	template <typename T>
+	auto less_member(const T& alhs, const T& arhs)
+	{
+		return alhs <=> arhs;
+	}
+
+	template <typename T, typename... TARGS>
+	auto less_member(const T& alhs, const T& arhs, const TARGS&... amems)
+	{
+		if (alhs != arhs)
+		{
+			return less_member(alhs, arhs);
+		}
+		return less_member(amems...);
+	}
+
+	std::string_view trim_ascii_spaces(std::string_view avalue);
 
 	template <typename T, typename = void>
 	struct has_pb_desc : std::false_type
@@ -129,4 +126,4 @@ namespace ngl
 		has_pb_desc<std::remove_cv_t<std::remove_reference_t<T>>>
 	>
 	{};
-}
+}//namespace ngl::tools

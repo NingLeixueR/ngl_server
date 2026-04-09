@@ -13,7 +13,6 @@
 */
 // File overview: Implements system and filesystem helpers for tools.
 
-#include "tools_sys.h"
 
 #include "actor/actor_base/core/nguid.h"
 #include "tools/tools/tools_thread.h"
@@ -21,6 +20,7 @@
 #include "actor/tab/ttab_servers.h"
 #include "tools/tools/tools_curl.h"
 #include "tools/tools/tools_time.h"
+#include "tools/tools/tools_sys.h"
 #include "tools_split.h"
 
 #include <shared_mutex>
@@ -33,7 +33,7 @@
 #include <memory>
 #include <mutex>
 
-namespace ngl
+namespace ngl::tools
 {
 	namespace rand_detail
 	{
@@ -103,89 +103,75 @@ namespace ngl
 		}
 	}
 
-	namespace tools
+	std::string time2str(int autc, const char* aformat)
 	{
-		std::string time2str(int autc, const char* aformat)
-		{
-			char lbuf[1024] = { 0 };
-			tools::time::time2str(lbuf, 1024, autc, aformat);
-			return lbuf;
-		}
+		char lbuf[1024] = { 0 };
+		tools::time::time2str(lbuf, 1024, autc, aformat);
+		return lbuf;
+	}
 
-		const std::string& server_name()
+	const std::string& server_name()
+	{
+		const tab_servers* ltab = ttab_servers::instance().const_tab();
+		if (ltab == nullptr)
 		{
-			const tab_servers* ltab = ttab_servers::instance().const_tab();
-			if (ltab == nullptr)
-			{
-				no_core_dump();
-				static std::string ltmp;
-				return ltmp;
-			}
-			return ltab->m_name;
+			no_core_dump();
+			static std::string ltmp;
+			return ltmp;
 		}
+		return ltab->m_name;
+	}
 
-		int rand()
-		{
-			thread_local std::mt19937_64 lgen(rand_detail::next_seed());
-			static thread_local std::uniform_int_distribution<int> ldist(0, RAND_MAX);
-			return ldist(lgen);
-		}
+	int rand()
+	{
+		thread_local std::mt19937_64 lgen(rand_detail::next_seed());
+		static thread_local std::uniform_int_distribution<int> ldist(0, RAND_MAX);
+		return ldist(lgen);
+	}
 
-		bool directories_exists(const std::string& apath)
+	bool directories_exists(const std::string& apath)
+	{
+		std::error_code lec;
+		return std::filesystem::is_directory(apath, lec);
+	}
+
+	bool file_exists(const std::string& apath)
+	{
+		std::error_code lec;
+		return std::filesystem::is_regular_file(apath, lec);
+	}
+
+	bool create_dir(const std::string& apath)
+	{
+		std::error_code lec;
+		if (std::filesystem::exists(apath, lec))
 		{
-			std::error_code lec;
 			return std::filesystem::is_directory(apath, lec);
 		}
-
-		bool file_exists(const std::string& apath)
+		if (lec)
 		{
-			std::error_code lec;
-			return std::filesystem::is_regular_file(apath, lec);
+			return false;
+		}
+		return std::filesystem::create_directories(apath, lec) && !lec;
+	}
+
+	bool file_remove(const std::string& afile)
+	{
+		std::error_code lec;
+		return std::filesystem::remove(afile, lec);
+	}
+
+	void dir(const std::string& apath, std::vector<std::string>& afiles, bool aiter)
+	{
+		std::error_code lec;
+		if (!std::filesystem::is_directory(apath, lec))
+		{
+			return;
 		}
 
-		bool create_dir(const std::string& apath)
+		if (aiter)
 		{
-			std::error_code lec;
-			if (std::filesystem::exists(apath, lec))
-			{
-				return std::filesystem::is_directory(apath, lec);
-			}
-			if (lec)
-			{
-				return false;
-			}
-			return std::filesystem::create_directories(apath, lec) && !lec;
-		}
-
-		bool file_remove(const std::string& afile)
-		{
-			std::error_code lec;
-			return std::filesystem::remove(afile, lec);
-		}
-
-		void dir(const std::string& apath, std::vector<std::string>& afiles, bool aiter)
-		{
-			std::error_code lec;
-			if (!std::filesystem::is_directory(apath, lec))
-			{
-				return;
-			}
-
-			if (aiter)
-			{
-				for (std::filesystem::recursive_directory_iterator liter(apath, std::filesystem::directory_options::skip_permission_denied, lec), lend;
-					!lec && liter != lend;
-					liter.increment(lec))
-				{
-					if (liter->is_regular_file(lec))
-					{
-						afiles.push_back(liter->path().string());
-					}
-				}
-				return;
-			}
-
-			for (std::filesystem::directory_iterator liter(apath, std::filesystem::directory_options::skip_permission_denied, lec), lend;
+			for (std::filesystem::recursive_directory_iterator liter(apath, std::filesystem::directory_options::skip_permission_denied, lec), lend;
 				!lec && liter != lend;
 				liter.increment(lec))
 			{
@@ -194,19 +180,31 @@ namespace ngl
 					afiles.push_back(liter->path().string());
 				}
 			}
+			return;
 		}
 
-		void no_core_dump(bool anocreate)
+		for (std::filesystem::directory_iterator liter(apath, std::filesystem::directory_options::skip_permission_denied, lec), lend;
+			!lec && liter != lend;
+			liter.increment(lec))
 		{
-			if (!anocreate)
+			if (liter->is_regular_file(lec))
 			{
-				*(int*)(nullptr) = 19890519;
+				afiles.push_back(liter->path().string());
 			}
 		}
+	}
 
-		std::function<void()> send_mail(const std::string& acontent)
+	void no_core_dump(bool anocreate)
+	{
+		if (!anocreate)
 		{
-			return [acontent]()
+			*(int*)(nullptr) = 19890519;
+		}
+	}
+
+	std::function<void()> send_mail(const std::string& acontent)
+	{
+		return [acontent]()
 			{
 				const int32_t lnow = static_cast<int32_t>(tools::time::gettime());
 				{
@@ -235,25 +233,24 @@ namespace ngl
 				lparm->set_wait();
 				tools::curl::sendemail(lparm);
 			};
-		}
-
-		int64_t nguidstr2int64(const char* anguid)
-		{
-			if (anguid == nullptr)
-			{
-				return ngl::nguid::make();
-			}
-
-			ENUM_ACTOR lact_type{};
-			std::string ltype_str;
-			i16_area larea = nguid::none_area();
-			i32_actordataid ldataid = nguid::none_actordataid();
-			if (!tools::splite(anguid, "#", ltype_str, larea, ldataid))
-			{
-				return nguid::make();
-			}
-			lact_type = tools::em<ngl::ENUM_ACTOR>::get_enum(ltype_str.c_str());
-			return nguid::make(lact_type, larea, ldataid);
-		}
 	}
-}
+
+	int64_t nguidstr2int64(const char* anguid)
+	{
+		if (anguid == nullptr)
+		{
+			return ngl::nguid::make();
+		}
+
+		ENUM_ACTOR lact_type{};
+		std::string ltype_str;
+		i16_area larea = nguid::none_area();
+		i32_actordataid ldataid = nguid::none_actordataid();
+		if (!tools::splite(anguid, "#", ltype_str, larea, ldataid))
+		{
+			return nguid::make();
+		}
+		lact_type = tools::em<ngl::ENUM_ACTOR>::get_enum(ltype_str.c_str());
+		return nguid::make(lact_type, larea, ldataid);
+	}
+}//namespace ngl::tools

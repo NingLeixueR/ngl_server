@@ -392,4 +392,4 @@ namespace ngl
 			parm& operator=(const parm&) = delete;
 		};
 	}
-}
+}//namespace ngl

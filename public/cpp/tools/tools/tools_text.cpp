@@ -13,8 +13,7 @@
 */
 // File overview: Implements text, regex, url, and casing helpers for tools.
 
-#include "tools_text.h"
-
+#include "tools/tools/tools_text.h"
 #include "utf8cpp/utf8.h"
 
 #include <codecvt>
@@ -373,5 +372,5 @@ namespace ngl
 				return static_cast<char>(std::toupper(ach));
 			});
 		}
-	}
-}
+	}//namespace tools
+}//namespace ngl

@@ -17,7 +17,7 @@
 
 #include <cstdio>
 
-namespace ngl
+namespace ngl::tools
 {
 	namespace hash_detail
 	{
@@ -461,26 +461,23 @@ namespace ngl
 		}
 	}
 
-	namespace tools
+	std::string md5(const std::string& atext)
 	{
-		std::string md5(const std::string& atext)
-		{
-			hash_detail::md5_sum lsum(atext);
-			return lsum.hexdigest();
-		}
-
-		std::string sh1(std::string_view atext)
-		{
-			std::string lret;
-			hash_detail::sha1_raw(atext, lret);
-			return lret;
-		}
-
-		std::string hmac_sha1(const std::string& akey, const std::string& atext)
-		{
-			std::string lret;
-			hash_detail::hmac_raw(akey, atext, lret);
-			return lret;
-		}
+		hash_detail::md5_sum lsum(atext);
+		return lsum.hexdigest();
 	}
-}
+
+	std::string sh1(std::string_view atext)
+	{
+		std::string lret;
+		hash_detail::sha1_raw(atext, lret);
+		return lret;
+	}
+
+	std::string hmac_sha1(const std::string& akey, const std::string& atext)
+	{
+		std::string lret;
+		hash_detail::hmac_raw(akey, atext, lret);
+		return lret;
+	}
+}//namespace ngl::tools

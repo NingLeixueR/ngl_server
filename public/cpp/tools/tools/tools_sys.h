@@ -17,26 +17,23 @@
 
 #include "tools_core.h"
 
-namespace ngl
+namespace ngl::tools
 {
-	namespace tools
-	{
-		std::string time2str(int autc, const char* aformat = "%y/%m/%d %H:%M:%S");
+	std::string time2str(int autc, const char* aformat = "%y/%m/%d %H:%M:%S");
 
-		const std::string& server_name();
+	const std::string& server_name();
 
-		int rand();
+	int rand();
 
-		bool directories_exists(const std::string& apath);
-		bool file_exists(const std::string& apath);
-		bool create_dir(const std::string& apath);
-		bool file_remove(const std::string& afile);
-		void dir(const std::string& apath, std::vector<std::string>& afiles, bool aiter = false);
+	bool directories_exists(const std::string& apath);
+	bool file_exists(const std::string& apath);
+	bool create_dir(const std::string& apath);
+	bool file_remove(const std::string& afile);
+	void dir(const std::string& apath, std::vector<std::string>& afiles, bool aiter = false);
 
-		void no_core_dump(bool anocreate = false);
+	void no_core_dump(bool anocreate = false);
 
-		std::function<void()> send_mail(const std::string& acontent);
+	std::function<void()> send_mail(const std::string& acontent);
 
-		int64_t nguidstr2int64(const char* anguid);
-	}
-}
+	int64_t nguidstr2int64(const char* anguid);
+}//namespace ngl::tools

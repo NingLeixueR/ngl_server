@@ -16,8 +16,8 @@
 #pragma once
 
 #include "tools/tab/xml/sysconfig.h"
-#include "tools/log/logprintf.h"
 #include "tools/tools/tools_time.h"
+#include "tools/log/logprintf.h"
 #include "tools/tools.h"
 
 #include <source_location>

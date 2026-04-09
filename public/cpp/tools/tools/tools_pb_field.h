@@ -155,4 +155,4 @@ namespace ngl::tools
             );
         }
     };
-}
+}//namespace ngl::tools

@@ -80,4 +80,4 @@ namespace ngl::tools
 			return lsets;
 		}
 	};
-}//namespace ngl
+}//namespace ngl::tools

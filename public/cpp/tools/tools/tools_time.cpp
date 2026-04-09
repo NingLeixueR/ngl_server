@@ -462,4 +462,4 @@ namespace ngl::tools::time
 			std::cout << getmoon(ltemp2) << "." << getmoonday(ltemp2) << ":" << (issameweek(ltemp1, ltemp2) ? "yes" : "no") << std::endl;
 		}
 	}
-}// namespace ngl
+}// namespace ngl::tools::time

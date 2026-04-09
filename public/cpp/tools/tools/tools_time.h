@@ -179,4 +179,4 @@ namespace ngl::tools::time
 	bool issameweek(time_t timestamp1, time_t timestamp2);
 
 	void test_isweek();
-}// namespace ngl
+}// namespace ngl::tools::time

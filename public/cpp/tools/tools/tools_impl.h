@@ -42,4 +42,4 @@ namespace ngl::tools
 			return m_impl;
 		}
 	};
-}// namespace ngl
+}// namespace ngl::tools

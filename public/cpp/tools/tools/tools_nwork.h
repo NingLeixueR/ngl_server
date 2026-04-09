@@ -93,4 +93,4 @@ namespace ngl::tools
 			m_sem.post();
 		}
 	};
-}//namespace ngl
+}//namespace ngl::tools

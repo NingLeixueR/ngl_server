@@ -46,5 +46,5 @@ namespace ngl
 		bool isnumber(const std::string& anum);
 		void transform_tolower(std::string& adata);
 		void transform_toupper(std::string& adata);
-	}
-}
+	}//namespace tools
+}//namespace ngl

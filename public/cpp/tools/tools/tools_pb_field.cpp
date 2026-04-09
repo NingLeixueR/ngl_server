@@ -271,4 +271,4 @@ namespace ngl::tools
             break;
         }
     }
-}//namespace ngl
+}//namespace ngl::tools

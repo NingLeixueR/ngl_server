@@ -73,4 +73,4 @@ namespace ngl::tools
 			return nhashcode(lcode, lindex);
 		}
 	};
-}//namespace ngl
+}//namespace ngl::tools

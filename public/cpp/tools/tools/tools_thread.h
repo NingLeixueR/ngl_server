@@ -77,7 +77,7 @@ namespace ngl::tools
 			std::this_thread::sleep_for(std::chrono::milliseconds(avalue));
 		}
 	};
-}// namespace ngl
+}// namespace ngl::tools
 
 #define CONCAT_(a, b) a##b
 #define CONCAT(a, b) CONCAT_(a, b)
