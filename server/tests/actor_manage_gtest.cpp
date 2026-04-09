@@ -37,6 +37,11 @@ public:
 		return true;
 	}
 
+	bool high_empty() override
+	{
+		return true;
+	}
+
 	bool actor_handle(ngl::i32_threadid) override
 	{
 		// Test double: scheduling behavior is validated elsewhere in these tests.
