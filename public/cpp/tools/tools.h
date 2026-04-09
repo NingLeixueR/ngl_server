@@ -17,6 +17,7 @@
 
 #include "tools/tools/tools_filterword.h"
 #include "tools/tools/tools_split.h"
+#include "tools/tools/tools_time.h"
 #include "tools/tools/tools_core.h"
 #include "tools/tools/tools_base.h"
 #include "tools/tools/tools_text.h"

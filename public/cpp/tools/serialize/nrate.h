@@ -16,7 +16,9 @@
 
 #pragma once
 
+#include "tools/tab/xml/sysconfig.h"
 #include "tools/tools.h"
+#include "tools/type.h"
 
 #include <unordered_map>
 

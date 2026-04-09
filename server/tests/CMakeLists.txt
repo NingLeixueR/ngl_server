@@ -66,7 +66,7 @@ endif()
 ngl_apply_msvc_defaults(ngl_test)
 
 add_custom_command(TARGET ngl_test POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E remove_directory $<TARGET_FILE_DIR:ngl_test>/config
+	COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:ngl_test>/config
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
 		${CMAKE_SOURCE_DIR}/bin/configure/config
 		$<TARGET_FILE_DIR:ngl_test>/config
