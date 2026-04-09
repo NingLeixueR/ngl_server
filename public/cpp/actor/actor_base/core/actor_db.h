@@ -279,7 +279,6 @@ namespace ngl
 			if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)
 			{
 				nmysql_manage::del<TDBTAB>(nmysql_pool::instance().get(athread), aid);
-				return;
 			}
 			if (nconfig.dbedb() == ngl::xarg_db::edb_postgresql)
 			{

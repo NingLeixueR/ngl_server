@@ -23,8 +23,8 @@
 #include "tools/serialize/ndefine.h"
 #include "tools/serialize/pack.h"
 
-#include <deque>
 #include <atomic>
+#include <deque>
 #include <map>
 #include <set>
 
