@@ -20,6 +20,13 @@
 
 namespace ngl::tools
 {
+	static int64_t steadyms()
+	{
+		return std::chrono::duration_cast<std::chrono::milliseconds>(
+			std::chrono::steady_clock::now().time_since_epoch()
+		).count();
+	}
+
 	class wheel
 	{
 		friend class time_wheel;
@@ -57,6 +64,8 @@ namespace ngl::tools
 		time_wheel_config m_config;
 		int64_t m_server_start_ms = 0;
 		int64_t m_current_ms = 0;
+		int64_t m_sched_start_ms = 0;
+		int64_t m_sched_current_ms = 0;
 		std::vector<std::shared_ptr<wheel>> m_wheel;
 		std::unique_ptr<std::jthread> m_thread = nullptr;
 		std::shared_mutex m_mutex;
@@ -103,6 +112,8 @@ namespace ngl::tools
 
 			m_server_start_ms = getms();
 			m_current_ms = m_server_start_ms;
+			m_sched_start_ms = steadyms();
+			m_sched_current_ms = m_sched_start_ms;
 
 			int64_t lms = m_config.m_time_wheel_precision;
 			m_wheel.resize(m_config.m_time_wheel_count);
@@ -237,7 +248,7 @@ namespace ngl::tools
 
 		int64_t duration_ms() const
 		{
-			return m_current_ms - m_server_start_ms;
+			return m_sched_current_ms - m_sched_start_ms;
 		}
 
 		bool schedule_locked(wheel_node* apnode)
@@ -343,8 +354,8 @@ namespace ngl::tools
 			const int32_t tick_precision_ms = m_config.m_time_wheel_precision;
 			while (!m_stop.load(std::memory_order_relaxed))
 			{
-				const int64_t lnow = getms();
-				const int64_t lnext_tick_ms = m_current_ms + tick_precision_ms;
+				const int64_t lnow = steadyms();
+				const int64_t lnext_tick_ms = m_sched_current_ms + tick_precision_ms;
 				const int64_t lsleep_ms = lnext_tick_ms - lnow;
 				if (lsleep_ms > 0)
 				{
@@ -357,8 +368,8 @@ namespace ngl::tools
 					continue;
 				}
 
-				const int64_t lnow_locked = getms();
-				const int64_t ldelay_ms = lnow_locked - m_current_ms;
+				const int64_t lnow_locked = steadyms();
+				const int64_t ldelay_ms = lnow_locked - m_sched_current_ms;
 				const int64_t ltick_count = ldelay_ms / tick_precision_ms;
 				if (ltick_count <= 0)
 				{
@@ -374,6 +385,7 @@ namespace ngl::tools
 						// slot in this pass so due timers catch up immediately.
 						schedule_locked(lrescheduled_nodes);
 					}
+					m_sched_current_ms += tick_precision_ms;
 					m_current_ms += tick_precision_ms;
 				}
 			}
@@ -453,11 +465,13 @@ namespace ngl::tools
 		int64_t addtimer(const wheel_parm& apram)
 		{
 			wheel_parm lparm = apram;
-			const int64_t lnow = getms();
-			lparm.m_timerstart = lnow;
-			// Convert the relative delay into the absolute timeline tracked by
-			// the hierarchical wheel.
-			lparm.m_ms += lnow - m_server_start_ms;
+			const int64_t lwall_now = getms();
+			const int64_t lsched_now = steadyms();
+			lparm.m_timerstart = lwall_now;
+			// Keep external timestamps on wall clock, but convert scheduling onto
+			// the steady-clock timeline so NTP or manual clock jumps do not skew
+			// insertion or wheel advancement.
+			lparm.m_ms += lsched_now - m_sched_start_ms;
 			if (lparm.m_ms < 0)
 			{
 				return -1;
