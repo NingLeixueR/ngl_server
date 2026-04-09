@@ -54,7 +54,7 @@ namespace ngl
 		// Debug helpers for the actor -> server routing table.
 		static void print_address();
 		static void print_address(const char* ainfo, i32_serverid aserverid, const nguid& aguid);
-public:
+	public:
 #pragma region base
 		// Register or update one node entry.
 		static bool set_node(const nactornode& anode);

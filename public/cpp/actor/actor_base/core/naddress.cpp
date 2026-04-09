@@ -21,14 +21,6 @@
 
 namespace ngl
 {
-	namespace
-	{
-		i16_actortype address_actor_type(i64_actorid aactorid) noexcept
-		{
-			return nguid::type(aactorid);
-		}
-	}
-
 	naddress::map_guidserver	naddress::m_actorserver;
 	naddress::map_typeguid		naddress::m_actortypeserver;
 	naddress::map_servernode	naddress::m_session;
@@ -84,7 +76,7 @@ namespace ngl
 	void naddress::nosafe_actor_address_add(i32_serverid aserverid, i64_actorid adataid)
 	{
 		const nguid actor_guid(adataid);
-		const i16_actortype ltype = address_actor_type(adataid);
+		const i16_actortype ltype = nguid::type(adataid);
 		// Maintain both direct lookup and reverse lookup by actor type.
 		m_actorserver.insert_or_assign(actor_guid, aserverid);
 		m_actortypeserver[ltype].insert(adataid);
@@ -111,7 +103,7 @@ namespace ngl
 	void naddress::nosafe_actor_address_del(i64_actorid adataid)
 	{
 		const nguid actor_guid(adataid);
-		const i16_actortype ltype = address_actor_type(adataid);
+		const i16_actortype ltype = nguid::type(adataid);
 #ifdef _DEBUG
 		auto lpserverid = tools::findmap(m_actorserver, adataid);
 		if (lpserverid != nullptr)

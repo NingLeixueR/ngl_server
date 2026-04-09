@@ -644,7 +644,6 @@ namespace ngl
 
 namespace ngl
 {
-
 	template <pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
 	ndbclient<ENUM, TDATA, TACTOR>* nmanage_dbclient::data(bool aloadfinish)
 	{
