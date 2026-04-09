@@ -23,7 +23,7 @@ namespace ngl
 		i64_actorid lidguid = actor->id_guid();
 		tools::wheel_parm lparm
 		{
-			.m_ms			= (int32_t)(aparm->m_ms),
+			.m_ms			= aparm->m_ms,
 			.m_intervalms	= aparm->m_intervalms,
 			.m_count		= aparm->m_count,
 			.m_fun			= [lidguid, aparm](const tools::wheel_node* anode)

@@ -40,7 +40,7 @@ namespace ngl
 		int								m_timerid = 0;
 		int64_t							m_ms = 0;					// Current wall-clock time in milliseconds.
 		int								m_count = 1;				// Remaining trigger count; <= 0 means infinite in some callers.
-		std::function<int32_t(int64_t)> m_intervalms = nullptr;		// Computes the next interval after one trigger.
+		std::function<int64_t(int64_t)> m_intervalms = nullptr;		// Computes the next interval after one trigger.
 		std::shared_ptr<void>			m_parm = nullptr;			// Optional user payload.
 		int64_t							m_triggerms = 0;			// Absolute trigger time of the current firing.
 

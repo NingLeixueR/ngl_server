@@ -250,7 +250,7 @@ namespace ngl::tools
 					// Already-due timers are delivered immediately. Repeating
 					// timers clone the next instance before the current callback
 					// is queued.
-					const int interval_ms = node->m_parm.m_intervalms != nullptr
+					const int64_t interval_ms = node->m_parm.m_intervalms != nullptr
 						? node->m_parm.m_intervalms(m_current_ms)
 						: 0;
 					const bool should_repeat = interval_ms > 0 && node->m_parm.m_count - 1 > 0;
@@ -430,7 +430,7 @@ namespace ngl::tools
 			lparm.m_timerstart = lnow;
 			// Convert the relative delay into the absolute timeline tracked by
 			// the hierarchical wheel.
-			lparm.m_ms += static_cast<int32_t>(lnow - m_server_start_ms);
+			lparm.m_ms += lnow - m_server_start_ms;
 			if (lparm.m_ms < 0)
 			{
 				return -1;
@@ -609,7 +609,7 @@ namespace ngl::tools
 				continue;
 			}
 
-			const int interval_ms = node->m_parm.m_intervalms(impl->m_current_ms);
+			const int64_t interval_ms = node->m_parm.m_intervalms(impl->m_current_ms);
 			--node->m_parm.m_count;
 			if (interval_ms <= 0 || node->m_parm.m_count <= 0)
 			{

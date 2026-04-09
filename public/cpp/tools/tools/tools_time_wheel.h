@@ -34,10 +34,10 @@ namespace ngl::tools
 		// `m_ms` becomes an absolute due time relative to server start once the
 		// timer is inserted into the wheel.
 		int64_t m_timerstart = 0;
-		int32_t m_ms = 0;
+		int64_t m_ms = 0;
 		// Returning a positive interval reschedules the timer. Returning <= 0
 		// stops repeat scheduling after the current firing.
-		std::function<int(int64_t)> m_intervalms = nullptr;
+		std::function<int64_t(int64_t)> m_intervalms = nullptr;
 		int m_count = 0;
 		void* m_pram = nullptr;
 		std::function<void(const wheel_node*)> m_fun = nullptr;
