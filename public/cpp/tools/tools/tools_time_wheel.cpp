@@ -476,7 +476,7 @@ namespace ngl::tools
 			{
 				return -1;
 			}
-			if (lparm.m_count == -1)
+			if (lparm.m_count <= 0)
 			{
 				lparm.m_count = std::numeric_limits<int>::max();
 			}

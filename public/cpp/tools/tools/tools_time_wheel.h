@@ -38,6 +38,8 @@ namespace ngl::tools
 		// Returning a positive interval reschedules the timer. Returning <= 0
 		// stops repeat scheduling after the current firing.
 		std::function<int64_t(int64_t)> m_intervalms = nullptr;
+		// `m_count <= 0` means "repeat forever". Positive values are the total
+		// number of firings, including the first one.
 		int m_count = 0;
 		void* m_pram = nullptr;
 		std::function<void(const wheel_node*)> m_fun = nullptr;
@@ -148,7 +150,7 @@ namespace ngl::tools
 		bool empty();
 		int64_t server_start_ms();
 		int64_t server_current_ms();
-		// Returns a stable timer id. `m_count == -1` means "repeat forever".
+		// Returns a stable timer id. `m_count <= 0` means "repeat forever".
 		int64_t addtimer(const wheel_parm& apram);
 		// Removal is lazy and marks the shared cancel flag instead of scanning
 		// every wheel slot.
