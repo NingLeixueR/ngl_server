@@ -49,7 +49,7 @@ namespace ngl
 			, np_actordb_save<DBTYPE, TDB>
 			, np_actordb_delete<DBTYPE, TDB>
 			, np_actortime_db_cache<TDB>
-		>(-1, 1);
+		>(-1, e_hightlevel_db);
 	}
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>

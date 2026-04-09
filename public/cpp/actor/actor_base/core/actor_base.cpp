@@ -80,7 +80,7 @@ namespace ngl
 			ready().set_ready("db load", [this]()
 				{
 					return m_dbclient == nullptr || m_dbclient->isloadfinish();
-				}, e_thresholdhightlevel_db
+				}, e_hightlevel_db
 			);
 		}
 		if (aparm.m_enscript != enscript_none)

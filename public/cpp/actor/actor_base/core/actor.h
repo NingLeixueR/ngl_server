@@ -153,6 +153,8 @@ namespace ngl
 		// Return true when the priority queue is empty.
 		bool high_empty() final;
 
+		int32_t hight_value();
+
 		// Enqueue one incoming task into the appropriate priority queue.
 		bool push(handle_pram& apram) final;
 

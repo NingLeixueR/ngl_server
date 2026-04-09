@@ -85,6 +85,15 @@ namespace ngl
 		m_stat = astat;
 	}
 
+	int32_t actor::hight_value()
+	{
+		if (m_hightlist.empty())
+		{
+			return -1;
+		}
+		return m_hightlist.begin()->first;
+	}
+
 	bool actor::push(handle_pram& apram)
 	{
 		int32_t lhigh = tprotocol::highvalue(apram.m_enum);
@@ -98,8 +107,9 @@ namespace ngl
 		else
 		{
 			// Lower privilege values are allowed to pass earlier readiness gates.
+			const int32_t loldhigh = hight_value();
 			m_hightlist[lhigh].emplace_back(apram);
-			return true;
+			return loldhigh == -1 || lhigh < loldhigh;
 		}
 	}
 
@@ -130,7 +140,7 @@ namespace ngl
 			m_hightlist.swap(localhightlist);
 		}
 
-		int32_t lvalue = ready().hightlevel_ready() - 1;
+		int32_t lvalue = ready().hightlevel_ready();
 
 		if (!localhightlist.empty())
 		{

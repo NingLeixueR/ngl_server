@@ -64,7 +64,7 @@ namespace ngl
 		ready().set_ready<np_actorserver_connect>("game or gatewa not connect", [this]()
 			{
 				return !(m_game.empty() || m_gateway.empty());
-			}, e_thresholdhightlevel_custom
+			}, e_hightlevel_custom
 		);
 	}
 

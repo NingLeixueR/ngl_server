@@ -70,11 +70,11 @@ namespace ngl
 	struct message;
 
 	// High privilege threshold
-	enum e_thresholdhightlevel
+	enum e_hightlevel
 	{
-		e_thresholdhightlevel_db = 1,
-		e_thresholdhightlevel_nsp = 2,
-		e_thresholdhightlevel_custom = 3,
+		e_hightlevel_db = 1,
+		e_hightlevel_nsp = 2,
+		e_hightlevel_custom = 10,
 	};
 
 	/**
@@ -100,9 +100,9 @@ namespace ngl
 
 		// Register a readiness predicate for a predefined readiness bit.
 		template <typename ...ARGS>
-		void set_ready(const std::string& akey, const std::function<bool()>& afun, int32_t athresholdhightlevel)
+		void set_ready(const std::string& akey, const std::function<bool()>& afun, e_hightlevel ahightlevel)
 		{
-			auto& lvec = m_ready[athresholdhightlevel];
+			auto& lvec = m_ready[ahightlevel+1];
 			lvec.emplace_back(ready
 				{
 					.m_name = akey,
@@ -111,7 +111,7 @@ namespace ngl
 			);
 			if constexpr (sizeof...(ARGS) > 0)
 			{
-				if (!ngl::tprotocol::set_hightvalue<ARGS...>(athresholdhightlevel - 1))
+				if (!ngl::tprotocol::set_hightvalue<ARGS...>(ahightlevel))
 				{
 					log_error()->print("nready set_ready fail!");
 				}
