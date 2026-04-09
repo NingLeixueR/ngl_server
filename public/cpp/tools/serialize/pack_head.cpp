@@ -14,8 +14,9 @@
 // File overview: Implements logic for serialize.
 
 
-#include "tools/serialize/pack_head.h"
 #include "actor/actor_base/core/nguid.h"
+#include "tools/serialize/pack_head.h"
+#include "actor/protocol/nprotocol.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/log/nlog.h"
 

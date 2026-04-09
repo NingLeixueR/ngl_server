@@ -1049,7 +1049,7 @@ namespace ngl
 			adata = static_cast<T>(lvalue);
 			return true;
 		}
-		else if constexpr (is_protobuf_message<T>::value)
+		else if constexpr (tools::is_protobuf_message<T>::value)
 		{
 			std::string lstr = ncjson::vstr(ljson);
 			if (lstr.empty())
@@ -1085,7 +1085,7 @@ namespace ngl
 			}
 			return true;
 		}
-		else if constexpr (is_protobuf_message<T>::value)
+		else if constexpr (tools::is_protobuf_message<T>::value)
 		{
 			std::string lstr;
 			if (!tools::proto2json(adata, lstr))
@@ -1128,7 +1128,7 @@ namespace ngl
 			}
 			return true;
 		}
-		else if constexpr (is_protobuf_message<T>::value)
+		else if constexpr (tools::is_protobuf_message<T>::value)
 		{
 			std::string lstr;
 			if (!tools::proto2json(adata, lstr))

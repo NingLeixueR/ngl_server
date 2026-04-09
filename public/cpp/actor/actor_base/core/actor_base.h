@@ -510,7 +510,7 @@ namespace ngl
 	template <typename T>
 	void actor_base::handle_print(const message<T>& adata)const
 	{
-		if constexpr (is_protobuf_message<T>::value)
+		if constexpr (tools::is_protobuf_message<T>::value)
 		{
 			tools::print_json(*adata.get_data(), true);
 		}

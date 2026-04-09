@@ -14,6 +14,7 @@
 // File overview: Implements logic for csv.
 
 
+#include "actor/protocol/nprotocol.h"
 #include "tools/tab/csv/ncsv.h"
 #include "tools/log/nlog.h"
 

@@ -15,10 +15,11 @@
 
 #pragma once
 
+#include "actor/protocol/nprotocol.h"
 #include "tools/log/nlog.h"
 
-#include <cstddef>
 #include <functional>
+#include <cstddef>
 #include <cstdint>
 #include <limits>
 #include <list>
@@ -150,7 +151,7 @@ namespace ngl
 				// Text mode keeps protobuf rows in JSON so they stay readable in
 				// external tools and manual SQL inspection.
 				std::string ltemp;
-				if constexpr (is_protobuf_message<T>::value)
+				if constexpr (tools::is_protobuf_message<T>::value)
 				{
 					if (!tools::proto2json(adata, ltemp))
 					{
@@ -202,7 +203,7 @@ namespace ngl
 			}
 			else
 			{
-				if constexpr (is_protobuf_message<T>::value)
+				if constexpr (tools::is_protobuf_message<T>::value)
 				{
 					return tools::json2proto(abuff, adata);
 				}

@@ -14,6 +14,7 @@
 // File overview: Implements logic for net.
 
 
+#include "actor/protocol/nprotocol.h"
 #include "net/asio_timer.h"
 #include "tools/log/nlog.h"
 

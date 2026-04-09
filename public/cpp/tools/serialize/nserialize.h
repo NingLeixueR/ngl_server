@@ -883,7 +883,7 @@ namespace ngl
 			{
 				return serialize_format<int32_t>::push(aser, (int32_t)adata);
 			}
-			else if constexpr (is_protobuf_message<T>::value)
+			else if constexpr (tools::is_protobuf_message<T>::value)
 			{
 				const int32_t lpos = aser->pos();
 				const size_t lbytes_long = adata.ByteSizeLong();
@@ -929,7 +929,7 @@ namespace ngl
 				adata = (T)lvalues;
 				return true;
 			}
-			else if constexpr (is_protobuf_message<T>::value)
+			else if constexpr (tools::is_protobuf_message<T>::value)
 			{
 				int32_t lbytes = 0;
 				if (!serialize_format<int32_t>::pop(aser, lbytes))
@@ -962,7 +962,7 @@ namespace ngl
 			{
 				serialize_format<int32_t>::bytes(aser, (int32_t)adata);
 			}
-			else if constexpr (is_protobuf_message<T>::value)
+			else if constexpr (tools::is_protobuf_message<T>::value)
 			{
 				const auto lbytes = adata.ByteSizeLong();
 				const int32_t lvalue = lbytes > (size_t)std::numeric_limits<int32_t>::max()

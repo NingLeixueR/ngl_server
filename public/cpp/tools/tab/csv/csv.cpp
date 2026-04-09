@@ -14,9 +14,10 @@
 // File overview: Implements logic for csv.
 
 
+#include "actor/protocol/nprotocol.h"
 #include "tools/tools/tools_file.h"
-#include "tools/log/nlog.h"
 #include "tools/tab/csv/csv.h"
+#include "tools/log/nlog.h"
 #include "tools/tools.h"
 
 namespace ngl

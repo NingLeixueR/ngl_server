@@ -14,6 +14,7 @@
 // File overview: Implements logic for serialize.
 
 
+#include "actor/protocol/nprotocol.h"
 #include "actor/protocol/protocol.h"
 #include "tools/serialize/segpack.h"
 #include "tools/tools/tools_time.h"

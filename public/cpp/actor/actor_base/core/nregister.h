@@ -42,7 +42,7 @@ namespace ngl
 		);
 		// Registry metadata is used by the protocol reflection / routing layers.
 		protocol::registry_actor<T>(nactor_type<TDerived>::type(), tools::type_name<T>().c_str());
-		if constexpr (!is_protobuf_message<T>::value)
+		if constexpr (!tools::is_protobuf_message<T>::value)
 		{
 			protocol::registry_mass<T>(tprotocol::protocol<np_mass_actor<T>>(), tools::type_name<T>().c_str());
 		}
