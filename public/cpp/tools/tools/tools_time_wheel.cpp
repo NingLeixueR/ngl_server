@@ -95,6 +95,11 @@ namespace ngl::tools
 			{
 				m_config.m_time_wheel_count = 1;
 			}
+			const int32_t lsafe_count = m_config.safe_count();
+			if (m_config.m_time_wheel_count > lsafe_count)
+			{
+				m_config.m_time_wheel_count = lsafe_count;
+			}
 
 			m_server_start_ms = getms();
 			m_current_ms = m_server_start_ms;

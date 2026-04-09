@@ -72,7 +72,27 @@ namespace ngl::tools
 		// higher round covers the full time range of the round below it.
 		int32_t m_time_wheel_precision = 10;
 		int32_t m_time_wheel_bit = 8;
-		int32_t m_time_wheel_count = 4;
+		int32_t m_time_wheel_count = 7;
+
+		int32_t safe_count() const
+		{
+			const int64_t lprecision = std::max<int64_t>(m_time_wheel_precision, 1);
+			const int32_t lbit = std::clamp(m_time_wheel_bit, 0, 30);
+			const int64_t lscale = int64_t{ 1 } << static_cast<std::uint32_t>(lbit);
+			if (lscale <= 1)
+			{
+				return (std::numeric_limits<int32_t>::max)();
+			}
+
+			int32_t lcount = 0;
+			int64_t lround_ms = lprecision;
+			while (lround_ms <= std::numeric_limits<int64_t>::max() / lscale)
+			{
+				lround_ms *= lscale;
+				++lcount;
+			}
+			return std::max(lcount, 1);
+		}
 
 		int64_t max_time()
 		{

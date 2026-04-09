@@ -24,7 +24,7 @@ namespace ngl
 		{
 			.m_time_wheel_precision = 5,
 			.m_time_wheel_bit = 8,
-			.m_time_wheel_count = 4,
+			.m_time_wheel_count = 7,
 		}
 	);
 

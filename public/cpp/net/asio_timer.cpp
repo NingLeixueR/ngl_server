@@ -25,7 +25,7 @@ namespace ngl
 		{ 
 			.m_time_wheel_precision = 1000, // 1 ms precision bucket size.
 			.m_time_wheel_bit = 8,          // 256 slots per wheel level.
-			.m_time_wheel_count = 4         // Four cascading levels for a wide timer range.
+			.m_time_wheel_count = 7         // Seven levels stay within int64_t and greatly extend the range.
 		}
 	);
 
