@@ -138,7 +138,7 @@ namespace ngl
 		bool has_route_actor = false;
 		{
 			nlock(m_mutex);
-			if (m_actorbyid.try_emplace(actor_guid, apactor).second)
+			if (!m_actorbyid.try_emplace(actor_guid, apactor).second)
 			{
 				std::cout << std::format("actor_manage add_actor duplicate guid:{}", actor_guid) << std::endl;
 				return false;
