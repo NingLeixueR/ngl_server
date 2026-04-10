@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       run_id:
-        description: Build workflow run id
-        required: true
+        description: 'Build workflow run id (leave empty to use latest successful build)'
+        required: false
         type: string
       artifact_name:
         description: Build artifact to test
@@ -79,7 +79,7 @@ jobs:
         path: ${{ github.workspace }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
         repository: ${{ github.repository }}
-        run-id: ${{ inputs.run_id }}
+        run-id: ${{ inputs.run_id || github.run_id }}
 
     - name: Prepare Conan environment
       run: |
@@ -133,7 +133,7 @@ jobs:
         path: ${{ github.workspace }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
         repository: ${{ github.repository }}
-        run-id: ${{ inputs.run_id }}
+        run-id: ${{ inputs.run_id || github.run_id }}
 
     - name: Prepare Conan environment
       run: |
