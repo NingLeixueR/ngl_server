@@ -3,8 +3,30 @@ name: linux-build
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - 'bin/**'
+      - 'doc/**'
+      - 'docs/**'
+      - '.github/**'
+      - '.claude/**'
+      - '*.md'
+      - '**/*.md'
+      - '.editorconfig'
+      - '.gitattributes'
+      - '.gitignore'
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - 'bin/**'
+      - 'doc/**'
+      - 'docs/**'
+      - '.github/**'
+      - '.claude/**'
+      - '*.md'
+      - '**/*.md'
+      - '.editorconfig'
+      - '.gitattributes'
+      - '.gitignore'
   workflow_dispatch:
 
 jobs:
