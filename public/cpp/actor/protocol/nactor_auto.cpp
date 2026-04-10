@@ -33,53 +33,9 @@
 
 namespace ngl
 {
-	ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE)
-	{
-		// DB actors are laid out contiguously after ACTOR_DB.
-		return static_cast<ENUM_ACTOR>(static_cast<int>(ACTOR_DB) + static_cast<int>(TDBTAB_TYPE));
-	}
-
-	template <pbdb::ENUM_DB DBTYPE, typename TDB>
-	void init_customs_db()
-	{
-		// Each DB table gets a load / response / save / delete / cache protocol family.
-		tprotocol::tp_customs<
-			np_actordb_load<DBTYPE, TDB>
-			, np_actordb_load_response<DBTYPE, TDB>
-			, np_actordb_save<DBTYPE, TDB>
-			, np_actordb_delete<DBTYPE, TDB>
-			, np_actortime_db_cache<TDB>
-		>(-1, e_hightlevel_db);
-	}
-
-	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
-	void typedb<TDBTAB_TYPE, TDBTAB, TACTOR>::init(bool ainit)
-	{
-		if (ainit)
-		{
-			// First phase: define actor type metadata and protocol ids.
-			using type_actor_db = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
-			ENUM_ACTOR lenum = db_enum(TDBTAB_TYPE);
-			nactor_type<type_actor_db>::inits(lenum);
-			std::string ldbname("actor_");
-			std::string ltemp = tools::type_name<TDBTAB>();
-			if (auto pos = ltemp.rfind(":"); pos != std::string_view::npos)
-			{
-				ldbname += ltemp.substr(pos + 1);
-			}
-			else
-			{
-				ldbname += ltemp;
-			}
-			tools::em<ENUM_ACTOR>::set(lenum, ldbname.c_str());
-			init_customs_db<TDBTAB_TYPE, TDBTAB>();
-		}
-		else
-		{
-			// Second phase: force singleton initialization of the DB actor registration holder.
-			db_actor::instance();
-		}
-	}
+	// NOTE: db_enum(), init_customs_db<>(), and typedb<>::init() have been moved to nactor_auto.h
+	// for non-unity build visibility. They were previously defined here but caused linker errors
+	// when nactor_auto_tdb.cpp couldn't see the template bodies.
 
 	void auto_actor()
 	{

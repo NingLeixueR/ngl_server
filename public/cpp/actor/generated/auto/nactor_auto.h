@@ -6,6 +6,7 @@
 #include "actor/actor_base/core/ndb_modular.h"
 #include "actor/actor_base/core/actor_db.h"
 #include "actor/generated/pb/db.pb.h"
+#include "actor/protocol/tprotocol.h"
 
 namespace ngl
 {
@@ -79,4 +80,53 @@ namespace ngl
 		// # Nactor_auto.cppin,becausecross-server
 		static void tcrossdb_init(bool ainstance);
 	};
+
+	// Helper: Convert DB enum to actor enum (DB actors are laid out after ACTOR_DB).
+	inline ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE)
+	{
+		return static_cast<ENUM_ACTOR>(static_cast<int>(ACTOR_DB) + static_cast<int>(TDBTAB_TYPE));
+	}
+
+	// Helper: Register the 5-protocol DB family for one table type.
+	template <pbdb::ENUM_DB DBTYPE, typename TDB>
+	void init_customs_db()
+	{
+		tprotocol::tp_customs<
+			np_actordb_load<DBTYPE, TDB>
+			, np_actordb_load_response<DBTYPE, TDB>
+			, np_actordb_save<DBTYPE, TDB>
+			, np_actordb_delete<DBTYPE, TDB>
+			, np_actortime_db_cache<TDB>
+		>(-1, e_hightlevel_db);
+	}
+
+	// typedb<>::init() implementation (moved from nactor_auto.cpp for non-unity build visibility).
+	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
+	void typedb<TDBTAB_TYPE, TDBTAB, TACTOR>::init(bool ainit)
+	{
+		if (ainit)
+		{
+			// First phase: define actor type metadata and protocol ids.
+			using type_actor_db = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
+			ENUM_ACTOR lenum = db_enum(TDBTAB_TYPE);
+			nactor_type<type_actor_db>::inits(lenum);
+			std::string ldbname("actor_");
+			std::string ltemp = tools::type_name<TDBTAB>();
+			if (auto pos = ltemp.rfind(":"); pos != std::string_view::npos)
+			{
+				ldbname += ltemp.substr(pos + 1);
+			}
+			else
+			{
+				ldbname += ltemp;
+			}
+			tools::em<ENUM_ACTOR>::set(lenum, ldbname.c_str());
+			init_customs_db<TDBTAB_TYPE, TDBTAB>();
+		}
+		else
+		{
+			// Second phase: force singleton initialization of the DB actor registration holder.
+			db_actor::instance();
+		}
+	}
 }//namespace ngl
