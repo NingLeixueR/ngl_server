@@ -465,12 +465,10 @@ namespace ngl::tools
 		int64_t addtimer(const wheel_parm& apram)
 		{
 			wheel_parm lparm = apram;
-			const int64_t lwall_now = getms();
 			const int64_t lsched_now = steadyms();
-			lparm.m_timerstart = lwall_now;
-			// Keep external timestamps on wall clock, but convert scheduling onto
-			// the steady-clock timeline so NTP or manual clock jumps do not skew
-			// insertion or wheel advancement.
+			// Keep `m_timerstart + m_ms` equal to the absolute wall-clock due time.
+			// The scheduler itself runs on the steady timeline below.
+			lparm.m_timerstart = m_server_start_ms;
 			lparm.m_ms += lsched_now - m_sched_start_ms;
 			if (lparm.m_ms < 0)
 			{

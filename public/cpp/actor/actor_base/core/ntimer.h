@@ -163,6 +163,6 @@ namespace ngl
 		ntimer& operator=(const ntimer&) = delete;
 	public:
 		// Register one actor-owned timer and route expirations back as actor messages.
-		static int addtimer(actor_base* actor, const std::shared_ptr<np_timerparm>& aparm);
+		static int64_t addtimer(actor_base* actor, const std::shared_ptr<np_timerparm>& aparm);
 	};
 }//namespace ngl

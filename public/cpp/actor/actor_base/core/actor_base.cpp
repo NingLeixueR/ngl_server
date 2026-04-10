@@ -56,7 +56,7 @@ namespace ngl
 	}
 
 	int actor_base::m_broadcast = 10 * tools::time::MILLISECOND;
-	int actor_base::m_broadcasttimer = -1;
+	int64_t actor_base::m_broadcasttimer = -1;
 
 	i64_actorid actor_base::actorclient_guid()
 	{
@@ -274,10 +274,10 @@ namespace ngl
 				actor_manage::instance().broadcast_task(lpram);
 			}
 		};
-		m_broadcasttimer = (int32_t)tools::twheel::wheel().addtimer(lparm);
+		m_broadcasttimer = tools::twheel::wheel().addtimer(lparm);
 	}
 
-	int32_t actor_base::set_timer(const np_timerparm& aparm)
+	int64_t actor_base::set_timer(const np_timerparm& aparm)
 	{
 		auto lparm = std::make_shared<np_timerparm>(aparm);
 		return ntimer::addtimer(this, lparm);

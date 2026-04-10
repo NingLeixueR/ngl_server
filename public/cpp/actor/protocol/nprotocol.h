@@ -37,7 +37,7 @@ namespace ngl
 	struct np_timerparm
 	{
 		int								m_type = 0;
-		int								m_timerid = 0;
+		int64_t							m_timerid = 0;
 		int64_t							m_ms = 0;					// Current wall-clock time in milliseconds.
 		int								m_count = 1;				// Total trigger count; <= 0 means infinite.
 		std::function<int64_t(int64_t)> m_intervalms = nullptr;		// Computes the next interval after one trigger.

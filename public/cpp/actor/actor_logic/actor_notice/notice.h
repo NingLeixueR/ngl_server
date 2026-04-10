@@ -62,7 +62,7 @@ namespace ngl
 					remove_notice();
 				}
 			};
-			m_removetimer = (int32_t)tools::twheel::wheel().addtimer(lparm);
+			m_removetimer = tools::twheel::wheel().addtimer(lparm);
 		}
 
 		void notice_add(const std::string& anotice, int32_t abeg, int32_t aend)

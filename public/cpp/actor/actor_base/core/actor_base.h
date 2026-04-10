@@ -168,7 +168,7 @@ namespace ngl
 
 		// Shared periodic broadcast tick used by actors that opt in for maintenance work.
 		static int									m_broadcast;					// Broadcast interval in milliseconds.
-		static int									m_broadcasttimer;				// Timer id for the shared broadcast task.
+		static int64_t								m_broadcasttimer;				// Timer id for the shared broadcast task.
 		bool										m_isbroadcast = false;			// Whether this actor receives broadcast ticks.
 				
 		nready										m_ready;						// Readiness gate collection.
@@ -404,7 +404,7 @@ namespace ngl
 #pragma endregion
 
 		// Register a timer task for this actor.
-		int32_t set_timer(const np_timerparm& aparm);
+		int64_t set_timer(const np_timerparm& aparm);
 
 		// Return whether this actor participates in the shared broadcast tick.
 		bool isbroadcast()const;

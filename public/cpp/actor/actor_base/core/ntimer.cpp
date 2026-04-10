@@ -18,7 +18,7 @@
 
 namespace ngl
 {
-	int ntimer::addtimer(actor_base* actor, const std::shared_ptr<np_timerparm>& aparm)
+	int64_t ntimer::addtimer(actor_base* actor, const std::shared_ptr<np_timerparm>& aparm)
 	{
 		i64_actorid lidguid = actor->id_guid();
 		tools::wheel_parm lparm
@@ -38,7 +38,7 @@ namespace ngl
 				actor::send_actor<np_timerparm, false>(lidguid, nguid::make(), aparm);
 			}
 		};
-		aparm->m_timerid = (int)tools::twheel::wheel().addtimer(lparm);
+		aparm->m_timerid = tools::twheel::wheel().addtimer(lparm);
 		return aparm->m_timerid;
 	}
 }//namespace ngl
