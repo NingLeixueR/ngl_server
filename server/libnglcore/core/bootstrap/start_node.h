@@ -1,3 +1,4 @@
+// File overview: Declares shared node bootstrap helpers, startup options, and the generic start_node template.
 #pragma once
 
 #include "actor/actor_logic/actor_client/actor_client.h"

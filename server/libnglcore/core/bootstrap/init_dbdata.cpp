@@ -1,3 +1,4 @@
+// File overview: Implements helpers that seed demo and test data into bootstrap database tables.
 #include "actor/actor_base/core/ndbclient.h"
 #include "actor/actor_base/core/actor_db.h"
 #include "init_dbdata.h"

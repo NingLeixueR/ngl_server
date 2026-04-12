@@ -1,3 +1,4 @@
+// File overview: Implements the bootstrap entry point for robot-node startup.
 #include "actor/actor_logic/actor_robot_manage/actor_robot_manage.h"
 #include "actor/actor_logic/actor_gmclient/actor_gmclient.h"
 

@@ -1,3 +1,4 @@
+// File overview: Implements the bootstrap entry point for csv-server startup.
 #include "actor/actor_logic/actor_csvserver/actor_csvserver.h"
 #include "actor/actor_logic/actor_gmclient/actor_gmclient.h"
 #include "actor/generated/auto/nactor_auto.h"

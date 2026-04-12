@@ -11,6 +11,7 @@
 * For full license details, see the LICENSE file in the project root directory:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
+// File overview: Declares XML-backed runtime configuration accessors used during server bootstrap and networking setup.
 #pragma once
 
 #include "actor/tab/csvtable.h"

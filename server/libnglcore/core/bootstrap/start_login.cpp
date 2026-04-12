@@ -1,3 +1,4 @@
+// File overview: Implements the bootstrap entry point for login-node startup.
 #include "actor/actor_logic/actor_gmclient/actor_gmclient.h"
 #include "actor/actor_logic/actor_login/actor_login.h"
 #include "actor/generated/auto/nactor_auto.h"

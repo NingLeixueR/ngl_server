@@ -1,3 +1,4 @@
+// File overview: Implements shared node bootstrap helpers used by the per-node startup entry points.
 #include "actor/actor_logic/actor_activity_manage/actor_activity_manage.h"
 #include "actor/actor_logic/actor_example_manage/actor_example_manage.h"
 #include "actor/actor_logic/actor_example_match/actor_example_match.h"

@@ -27,6 +27,14 @@
 
 namespace ngl
 {
+	/**
+	 * Constructor for actor_role.
+	 * Initializes the role actor with specified area, role ID, and gateway information.
+	 *
+	 * @param aarea The logical area/shard this role belongs to
+	 * @param aroleid The unique role ID within the area
+	 * @param adata Pointer to np_actorswitch_process_role containing gateway ID
+	 */
 	actor_role::actor_role(i16_area aarea, i32_actordataid aroleid, void* adata) :
 		actor(
 			actorparm
@@ -46,16 +54,29 @@ namespace ngl
 	{
 	}
 
+	/**
+	 * Get the actor type for role actors.
+	 * @return ACTOR_ROLE enum value
+	 */
 	ENUM_ACTOR actor_role::actor_type()
 	{
 		return ACTOR_ROLE;
 	}
 
+	/**
+	 * Generate a full actor ID from a role data ID.
+	 * @param adata The role data ID
+	 * @return The complete actor ID (GUID)
+	 */
 	i64_actorid actor_role::actorid(int32_t adata)
 	{
 		return nguid::make(actor_type(), tab_self_area, adata);
 	}
 
+	/**
+	 * Initialize role actor components.
+	 * Sets up info, bag, task, and key-value storage modules.
+	 */
 	void actor_role::init()
 	{
 		m_info.set(this);
@@ -73,22 +94,34 @@ namespace ngl
 		*/
 	}
 
+	/**
+	 * Cleanup hook called before the actor is removed.
+	 * Triggers offline events, exits NSP synchronization, and cleans up drop system.
+	 */
 	void actor_role::erase_actor_before()
 	{
+		// Trigger role offline event
 		np_eevents_logic_roleoffline lparm;
 		lparm.m_actorid = id_guid();
 		actor_events_logic::trigger_event(lparm);
 
+		// Exit NSP brief synchronization
 		tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).exit();
 
+		// Clean up drop system
 		m_drop.exit();
 	}
 
+	/**
+	 * Reset and update the daily login time.
+	 * Checks if this is the first login of the day and updates task progress.
+	 */
 	void actor_role::reset_logintime()
 	{
 		time_t lloginutc = 0;
 		time_t lnow = tools::time::gettime();
 		bool isloginutc = false;
+		// Check if last login was on a different day
 		if (m_rolekv.get_value("base", { "loginutc" }, lloginutc))
 		{
 			if (tools::time::issameday(lnow, lloginutc) == false)
@@ -101,6 +134,7 @@ namespace ngl
 			isloginutc = true;
 		}
 
+		// Update login time and task progress for new day
 		if (isloginutc)
 		{
 			m_rolekv.set_value("base", { "loginutc" }, lnow);
@@ -108,28 +142,40 @@ namespace ngl
 		}
 	}
 
+	/**
+	 * Callback when database loading finishes for this actor.
+	 * Handles initialization after DB load and triggers login completion.
+	 *
+	 * @param atype The database table type that finished loading
+	 * @param astat The load status (success, create, or failure)
+	 */
 	void actor_role::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
 	{
 		if (atype == pbdb::ENUM_DB::ENUM_DB_ALL)
 		{
 			log_error()->print("actor_role###loaddb_finish#[{}]", guid());
 		}
-		
+
+		// Initialize after all DB tables are loaded
 		if (atype == pbdb::ENUM_DB_ALL)
 		{
+			// Set up NSP synchronization for brief data
 			std::set<i32_fieldnumber> lfieldset;
 			tdb_brief::nsp_cwrite<actor_role>::instance_writepart(this, {}, tools::pb_field::field_number<pbdb::db_brief>(lfieldset, "mbase"), {}, { id_guid() });
 			tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).set_changedatafun([this, astat](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 				{
+					// Trigger login finish on first synchronization
 					if (afirstsynchronize && astat == enum_dbstat_success)
 					{
 						login_finish();
 					}
 				}
 			);
+			// Initialize drop system
 			m_drop.init(this, {});
 		}
-		
+
+		// Handle new role creation case
 		if (astat == enum_dbstat_create && atype == pbdb::ENUM_DB::ENUM_DB_ALL)
 		{
 			pbnet::PROBUFF_NET_ROLE_NOT_CREATE pro;
@@ -139,9 +185,15 @@ namespace ngl
 		}
 	}
 
+	/**
+	 * Hook called after each message is handled.
+	 * Synchronizes bag and attribute changes to the client.
+	 */
 	void actor_role::handle_after(handle_pram&)
 	{
+		// Sync bag changes to client
 		m_bag.sync_client();
+		// Sync attribute changes if modified
 		if (m_attribute.sync())
 		{
 			m_attribute.set_sync(false);
@@ -149,27 +201,42 @@ namespace ngl
 			m_attribute.topb(pro);
 			send_client(id_guid(), pro);
 		}
+		// Trigger NSP brief data change notification
 		tdb_brief::nsp_cwrite<actor_role>::change(id_guid());
 	}
 
+	/**
+	 * Complete the login process after all data is loaded and synchronized.
+	 * Sends initial data to client and triggers login events.
+	 */
 	void actor_role::login_finish()
 	{
 		log_error()->print("actor_role###login_finish#[{}]", guid());
+		// Send all role data to client
 		sync_data_client();
 		//m_info.sync_actor_brief();
+		// Process login payment/rewards
 		loginpay();
 
+		// Trigger role login event
 		np_eevents_logic_rolelogin lparm;
 		lparm.m_actorid = id_guid();
 		actor_events_logic::trigger_event(lparm);
 
+		// Update daily login tracking
 		reset_logintime();
 	}
 
+	/**
+	 * Register message handlers for actor_role.
+	 * Sets up protocol handlers and forwarding rules.
+	 */
 	void actor_role::nregister()
 	{
+		// Register timer handler
 		actor::register_timer<actor_role>(&actor_role::timer_handle);
 
+		// Register message handlers
 		register_handle<actor_role
 			, np_actor_disconnect_close
 			, mforward<np_gm>
@@ -180,14 +247,26 @@ namespace ngl
 			, pbnet::PROBUFF_NET_ROLE_CREATE
 		>();
 
+		// Set up client-to-gateway forwarding
 		nforward::c2g();
 	}
 
+	/**
+	 * Get the gateway server ID for this role.
+	 * @return The gateway server ID
+	 */
 	i32_serverid actor_role::get_getwayserverid()
 	{
 		return m_gatewayid;
 	}
 
+	/**
+	 * Send an HTTP GET request for GM (Game Master) operations.
+	 *
+	 * @param aurl The URL to request
+	 * @param aparm The query parameters
+	 * @param acall Callback function to handle the response
+	 */
 	void actor_role::requestgm(const char* aurl, const std::string& aparm, const std::function<void(int, tools::http_parm&)>& acall)
 	{
 		auto lhttp = tools::curl::http();

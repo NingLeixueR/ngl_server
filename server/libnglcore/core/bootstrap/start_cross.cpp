@@ -1,3 +1,4 @@
+// File overview: Implements the bootstrap entry point for cross-node startup.
 #include "actor/actor_logic/actor_gmclient/actor_gmclient.h"
 #include "actor/actor_logic/actor_ranklist/actor_ranklist.h"
 #include "actor/actor_logic/actor_chat/actor_chat.h"

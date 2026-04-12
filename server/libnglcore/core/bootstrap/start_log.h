@@ -1,3 +1,4 @@
+// File overview: Declares the bootstrap entry point for log-node startup.
 #pragma once
 
 #include "start_node.h"

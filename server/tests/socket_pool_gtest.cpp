@@ -4,6 +4,7 @@
 * Project name: ngl_server
 * Project URL: https://github.com/NingLeixueR/ngl_server
 */
+// File overview: Implements GoogleTest coverage for socket_pool allocation and free behavior.
 
 #include "tools/serialize/socket_pool.h"
 #include <gtest/gtest.h>

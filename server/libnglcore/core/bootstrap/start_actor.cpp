@@ -1,3 +1,4 @@
+// File overview: Implements the bootstrap entry point for actor-server startup.
 #include "actor/actor_logic/actor_gmclient/actor_gmclient.h"
 #include "actor/actor_logic/actor_server/actor_server.h"
 #include "actor/generated/auto/nactor_auto.h"

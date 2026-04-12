@@ -1,3 +1,4 @@
+// File overview: Declares the bootstrap entry point for database-node startup.
 #pragma once
 
 #include "start_node.h"

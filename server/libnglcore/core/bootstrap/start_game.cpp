@@ -1,3 +1,4 @@
+// File overview: Implements the bootstrap entry point for game-node startup.
 #include "actor/actor_logic/actor_role_manage/actor_role_manage.h"
 #include "actor/actor_logic/actor_gmclient/actor_gmclient.h"
 #include "actor/actor_logic/actor_create/actor_create.h"

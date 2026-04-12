@@ -1,3 +1,4 @@
+// File overview: Implements the bootstrap entry point for gateway-node startup.
 #include "actor/actor_logic/actor_gateway_g2c/actor_gateway_g2c.h"
 #include "actor/actor_logic/actor_gateway_c2g/actor_gateway_c2g.h"
 #include "actor/actor_logic/actor_gmclient/actor_gmclient.h"

@@ -1,3 +1,4 @@
+// File overview: Declares helpers that seed demo and test data into bootstrap database tables.
 #pragma once
 
 #include "actor/generated/pb/db.pb.h"
