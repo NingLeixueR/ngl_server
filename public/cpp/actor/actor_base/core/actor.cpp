@@ -63,8 +63,24 @@ namespace ngl
 
 	bool actor::list_empty()
 	{
+		
 		lock_read(m_mutex);
-		return m_list.empty() && m_hightlist.empty();
+		int32_t lhight = ready().hightlevel_ready();
+		if(lhight == -1)
+		{
+			return m_list.empty() && m_hightlist.empty();
+		}
+		else
+		{
+			if (m_hightlist.empty())
+			{
+				return false;
+			}
+			else
+			{
+				return m_hightlist.begin()->first < lhight;
+			}
+		}
 	}
 
 	bool actor::high_empty()
