@@ -170,6 +170,7 @@ namespace ngl
 			else
 			{
 				std::cout << std::format("actor_manage add_actor skip route sync guid:{} route_actor:{}", actor_guid, route_actor_guid) << std::endl;
+				tools::no_core_dump();
 			}
 		}
 		else
