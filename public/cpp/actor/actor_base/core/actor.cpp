@@ -74,11 +74,18 @@ namespace ngl
 		{
 			if (m_hightlist.empty())
 			{
-				return false;
+				return true;
 			}
 			else
 			{
-				return m_hightlist.begin()->first < lhight;
+				if (m_hightlist.begin()->first < lhight)
+				{//列表不为空因为有可执行的
+					return false;
+				}
+				else
+				{
+					return true;
+				}
 			}
 		}
 	}
