@@ -24,15 +24,6 @@
 
 namespace ngl
 {
-	namespace actor_manage_detail
-	{
-		bool actor_is_unavailable(ngl::actor_stat astat) noexcept
-		{
-			// init/close states cannot accept new work and should never be queued.
-			return astat == ngl::actor_stat_close || astat == ngl::actor_stat_init;
-		}
-	} // namespace actor_manage_detail
-
 	actor_manage::actor_manage():
 		m_thread([this](std::stop_token astop)
 			{
@@ -84,6 +75,12 @@ namespace ngl
 		}
 	}
 
+	bool actor_manage::is_unavailable(ngl::actor_stat astat) noexcept
+	{
+		// init/close states cannot accept new work and should never be queued.
+		return astat == ngl::actor_stat_close || astat == ngl::actor_stat_init;
+	}
+
 	void actor_manage::init(i32_threadsize apthreadnum)
 	{
 		if (!m_workthreads.empty())
@@ -109,7 +106,7 @@ namespace ngl
 	void actor_manage::nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram)
 	{
 		const actor_stat lstat = lpactor->activity_stat();
-		if (actor_manage_detail::actor_is_unavailable(lstat))
+		if (is_unavailable(lstat))
 		{
 			std::cout << std::format("actor_manage push task fail actor:{} stat:{}", lpactor->guid(), static_cast<int32_t>(lstat)) << std::endl;
 			return;
@@ -337,11 +334,6 @@ namespace ngl
 		}
 	}
 
-	ptractor* actor_manage::nosafe_get_actor(const nguid& aguid)
-	{
-		return tools::findmap(m_actorbyid, aguid);
-	}
-
 	ptractor* actor_manage::nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram)
 	{
 		ptractor* actor_ref = tools::findmap(m_actorbyid, aguid);
@@ -368,7 +360,7 @@ namespace ngl
 		nlock(m_mutex);
 		// Lookup is done under the scheduler lock so actor removal and enqueue stay atomic.
 		auto lpactor = nosafe_get_actorbyid(aguid, apram);
-		if (lpactor == nullptr || actor_manage_detail::actor_is_unavailable((*lpactor)->activity_stat()))
+		if (lpactor == nullptr || is_unavailable((*lpactor)->activity_stat()))
 		{
 			std::cout << std::format("actor_manage push_task_id fail actor:{}", aguid) << std::endl;
 			return;
@@ -385,7 +377,7 @@ namespace ngl
 		for (i64_actorid actorid : asetguid)
 		{
 			auto lpactor = nosafe_get_actorbyid(actorid, apram);
-			if (lpactor == nullptr || actor_manage_detail::actor_is_unavailable((*lpactor)->activity_stat()))
+			if (lpactor == nullptr || is_unavailable((*lpactor)->activity_stat()))
 			{
 				continue;
 			}
@@ -411,15 +403,15 @@ namespace ngl
 	{
 		nlock(m_mutex);
 		// 1. Deliver locally to every actor of the requested type on this node.
-		auto type_it = m_actorbytype.find(atype);
-		if (type_it != m_actorbytype.end())
+		auto litor = m_actorbytype.find(atype);
+		if (litor != m_actorbytype.end())
 		{
-			for (const auto& lpair : type_it->second)
+			for (const auto& lpair : litor->second)
 			{
-				const ptractor& actor_ref = lpair.second;
-				if (!actor_manage_detail::actor_is_unavailable(actor_ref->activity_stat()))
+				const ptractor& lpactors = lpair.second;
+				if (!is_unavailable(lpactors->activity_stat()))
 				{
-					nosafe_push_task_id(actor_ref, apram);
+					nosafe_push_task_id(lpactors, apram);
 				}
 			}
 		}
@@ -443,7 +435,7 @@ namespace ngl
 		{
 			const ptractor& actor_ref = lpair.second;
 			// Broadcast ticks are opt-in and still respect the actor lifecycle state.
-			if (actor_ref->isbroadcast() && !actor_manage_detail::actor_is_unavailable(actor_ref->activity_stat()))
+			if (actor_ref->isbroadcast() && !is_unavailable(actor_ref->activity_stat()))
 			{
 				nosafe_push_task_id(actor_ref, apram);
 			}
@@ -550,25 +542,23 @@ namespace ngl
 			{
 				break;
 			}
+			for (;;)
 			{
-				for (;;)
 				{
+					nlock(m_mutex);
+					if (astop.stop_requested() || m_actorlist.empty() || m_workthreads.empty() || m_suspend)
 					{
-						nlock(m_mutex);
-						if (astop.stop_requested() || m_actorlist.empty() || m_workthreads.empty() || m_suspend)
-						{
-							break;
-						}
-						// The scheduler is single-threaded: it pops one ready actor and one idle
-						// worker, then lets the worker run independently.
-						worker_thread = m_workthreads.front();
-						ready_actor = m_actorlist.front();
-						m_actorlist.pop_front();
-						m_workthreads.pop_front();
-						ready_actor->set_activity_stat(actor_stat_run);
+						break;
 					}
-					worker_thread->push(ready_actor);
+					// The scheduler is single-threaded: it pops one ready actor and one idle
+					// worker, then lets the worker run independently.
+					worker_thread = m_workthreads.front();
+					ready_actor = m_actorlist.front();
+					m_actorlist.pop_front();
+					m_workthreads.pop_front();
+					ready_actor->set_activity_stat(actor_stat_run);
 				}
+				worker_thread->push(ready_actor);
 			}
 		}				
 	}

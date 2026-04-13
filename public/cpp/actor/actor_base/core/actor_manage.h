@@ -65,8 +65,7 @@ namespace ngl
 		actor_manage();
 		~actor_manage() noexcept;
 
-		// Internal helpers require the caller to already hold m_mutex.
-		ptractor* nosafe_get_actor(const nguid& aguid);
+		bool is_unavailable(ngl::actor_stat astat) noexcept;
 
 		// Resolve a local actor or fall back to the route actor for forwarded traffic.
 		ptractor* nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram);
