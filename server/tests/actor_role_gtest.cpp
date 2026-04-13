@@ -8,6 +8,7 @@
 #include <string>
 
 #include "actor/actor_logic/actor_role/actor_role.h"
+#include "actor/tab/ttab_servers.h"
 
 namespace actor_role_test
 {
@@ -24,7 +25,7 @@ std::unique_ptr<ngl::actor_role> make_role()
 	ngl::np_actorswitch_process_role lparm;
 	lparm.m_gatewayid = 321;
 
-	auto lrole = std::make_unique<ngl::actor_role>(ngl::tab_self_area, next_roleid(), &lparm);
+	auto lrole = std::make_unique<ngl::actor_role>(tab_self_area, next_roleid(), &lparm);
 	lrole->init();
 	return lrole;
 }
@@ -114,7 +115,7 @@ TEST(ActorRoleTest, ExampleForwardTypeTracksStateAndCrossFlag)
 	ljoin.set_mcross(pbexample::ECROSS::ECROSS_CROSS_ORDINARY);
 	EXPECT_EQ(lrole->forward_type(ljoin), ngl::ecross_cross_ordinary);
 
-	lrole->m_example.second = ngl::nguid::make(ngl::ACTOR_EXAMPLE_GUESS_NUMBER, ngl::tab_self_area, 77);
+	lrole->m_example.second = ngl::nguid::make(ngl::ACTOR_EXAMPLE_GUESS_NUMBER, tab_self_area, 77);
 	EXPECT_EQ(lrole->forward_type(ljoin), ngl::ecross_none);
 
 	pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE lenter;
@@ -138,13 +139,13 @@ TEST(ActorRoleTest, ForwardGuidSelectsTargetAreaOrExample)
 
 	EXPECT_TRUE(lrole->forward_guid(ngl::ACTOR_CHAT, ngl::ecross_ordinary, lguid, ldata));
 	EXPECT_EQ(lguid.type(), ngl::ACTOR_CHAT);
-	EXPECT_EQ(lguid.area(), ngl::tab_self_area);
+	EXPECT_EQ(lguid.area(), tab_self_area);
 
 	EXPECT_TRUE(lrole->forward_guid(ngl::ACTOR_CHAT, ngl::ecross_cross_ordinary, lguid, ldata));
 	EXPECT_EQ(lguid.type(), ngl::ACTOR_CHAT);
-	EXPECT_EQ(lguid.area(), ngl::tab_self_cros_area);
+	EXPECT_EQ(lguid.area(), tab_self_cros_area);
 
-	lrole->m_example.second = ngl::nguid::make(ngl::ACTOR_EXAMPLE_GUESS_NUMBER, ngl::tab_self_area, 88);
+	lrole->m_example.second = ngl::nguid::make(ngl::ACTOR_EXAMPLE_GUESS_NUMBER, tab_self_area, 88);
 	EXPECT_TRUE(lrole->forward_guid(ngl::ACTOR_CHAT, ngl::ecross_cross_example, lguid, ldata));
 	EXPECT_EQ(lguid, ngl::nguid(lrole->m_example.second));
 
