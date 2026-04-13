@@ -27,12 +27,21 @@
 #include <deque>
 #include <map>
 #include <set>
+#include <unordered_map>
 
 namespace ngl
 {
 	class actor_manage
 	{
 	private:
+		struct guid_hash
+		{
+			std::size_t operator()(const nguid& aguid) const noexcept
+			{
+				return std::hash<i64_actorid>{}(aguid.id());
+			}
+		};
+
 		actor_manage(const actor_manage&) = delete;
 		actor_manage& operator=(const actor_manage&) = delete;
 
@@ -42,12 +51,12 @@ namespace ngl
 		bool						m_suspend = false;	// Freeze dispatch while world-state critical sections run.
 		std::deque<ptrnthread>		m_suspendthreads;	// Workers parked during suspension.
 		i32_threadsize				m_threadnum = -1;	// Configured worker count.
-		std::map<nguid, ptractor>	m_actorbyid;		// Fast lookup by full actor guid.
+		std::unordered_map<nguid, ptractor, guid_hash> m_actorbyid;		// Fast lookup by full actor guid.
 		std::map<nguid, ptractor>	m_actorbroadcast;	// Actors that receive periodic broadcast ticks.
 		std::deque<ptractor>		m_actorlist;		// Actors waiting for a worker.
 		std::set<i16_actortype>		m_actortype;		// Distinct actor types currently registered.
 		std::map<nguid, std::function<void()>>			m_delactorfun;	// Deferred callbacks to run after in-flight actors finish.
-		std::map<ENUM_ACTOR, std::map<nguid, ptractor>> m_actorbytype;	// Lookup by actor type, then guid.
+		std::map<ENUM_ACTOR, std::map<i64_actorid, ptractor>> m_actorbytype;	// Lookup by actor type, then guid.
 
 		std::shared_mutex			m_mutex;
 		ngl::tools::sem				m_sem;
