@@ -125,25 +125,26 @@ namespace ngl
 		// not require the DB owner actor to be a complete type at every instantiation site.
 		m_regload.init(nguid::make_self(nactor_type<TACTOR>::type()));
 
-			m_regload.foreach_nspser([this](i16_area, i64_actorid aactorid)
-				{
-					m_exit.insert(aactorid);
-				}
-			);
+		m_regload.foreach_nspser([this](i16_area, i64_actorid aactorid)
+			{
+				m_exit.insert(aactorid);
+			}
+		);
 
-		if (m_isregister.exchange(false))
-		{
-			// One registration per concrete writer type is enough because instances are
-			// keyed by actor id in nsp_instance<>.
-			nsp_instance<nsp_write<TDerived, TACTOR, T>>::template register_handle<
-				TDerived
-				, np_channel_data<T>					// Data
-				, np_channel_check<T>					// Whethertonspserverregister
-				, np_channel_register_reply<T>			// Handleregisterresponse
-				, np_channel_dataid_sync<T>				// Nodeinfo
-				, np_channel_exit<T>					// Nodeexit
-			>();		
-		}
+		std::call_once(m_isregister, []()
+			{
+				// One registration per concrete writer type is enough because instances are
+				// keyed by actor id in nsp_instance<>.
+				nsp_instance<nsp_write<TDerived, TACTOR, T>>::template register_handle<
+					TDerived
+					, np_channel_data<T>					// Data
+					, np_channel_check<T>					// Whethertonspserverregister
+					, np_channel_register_reply<T>			// Handleregisterresponse
+					, np_channel_dataid_sync<T>				// Nodeinfo
+					, np_channel_exit<T>					// Nodeexit
+				>();
+			}
+		);
 
 		i64_actorid lactorid = m_actor->id_guid();
 			m_regload.foreach_nspser([this, lactorid](i16_area aarea, i64_actorid)

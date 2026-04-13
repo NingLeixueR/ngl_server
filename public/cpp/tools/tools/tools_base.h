@@ -17,29 +17,26 @@
 
 #include "tools/tools/tools_core.h"
 
-namespace ngl
+namespace ngl::tools
 {
-	namespace tools
+	bool is_lanip(const std::string& aip);
+
+	constexpr bool islittle()
 	{
-		bool is_lanip(const std::string& aip);
-
-		constexpr bool islittle()
-		{
-			return std::endian::native == std::endian::little;
-		}
-
-		int16_t transformlittle(parm<int16_t>& avalues);
-		uint16_t transformlittle(parm<uint16_t>& avalues);
-		int32_t transformlittle(parm<int32_t>& avalues);
-		uint32_t transformlittle(parm<uint32_t>& avalues);
-		int64_t transformlittle(parm<int64_t>& avalues);
-		uint64_t transformlittle(parm<uint64_t>& avalues);
-
-		std::string base64_encode(const char* adata, std::size_t alen);
-		std::string base64_encode(const std::string& astr);
-		std::string base64_decode(const char* adata, std::size_t alen);
-		std::string base64_decode(const std::string& adata);
-
-		bool uuid_make(std::string& astr);
+		return std::endian::native == std::endian::little;
 	}
-}
+
+	int16_t transformlittle(parm<int16_t>& avalues);
+	uint16_t transformlittle(parm<uint16_t>& avalues);
+	int32_t transformlittle(parm<int32_t>& avalues);
+	uint32_t transformlittle(parm<uint32_t>& avalues);
+	int64_t transformlittle(parm<int64_t>& avalues);
+	uint64_t transformlittle(parm<uint64_t>& avalues);
+
+	std::string base64_encode(const char* adata, std::size_t alen);
+	std::string base64_encode(const std::string& astr);
+	std::string base64_decode(const char* adata, std::size_t alen);
+	std::string base64_decode(const std::string& adata);
+
+	bool uuid_make(std::string& astr);
+}//namespace ngl::tools

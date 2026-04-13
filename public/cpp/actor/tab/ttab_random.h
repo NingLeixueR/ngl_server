@@ -48,11 +48,12 @@ namespace ngl
 
 		static ttab_random& instance()
 		{
-			static std::atomic lload = true;
-			if (lload.exchange(false))
-			{
-				ncsv::loadcsv<ttab_random>();
-			}
+			static std::once_flag lfirst;
+			std::call_once(lfirst, []()
+				{
+					ncsv::loadcsv<ttab_random>();
+				}
+			);
 			return *ncsv::get<ttab_random>();
 		}
 

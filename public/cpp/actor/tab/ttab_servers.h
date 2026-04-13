@@ -20,16 +20,16 @@
 #include "tools/tab/xml/xml.h"
 #include "tools/type.h"
 
-#include <array>
-#include <atomic>
-#include <bit>
+#include <unordered_map>
 #include <functional>
+#include <atomic>
 #include <limits>
+#include <string>
+#include <vector>
+#include <array>
+#include <bit>
 #include <map>
 #include <set>
-#include <string>
-#include <unordered_map>
-#include <vector>
 
 namespace ngl
 {
@@ -215,11 +215,12 @@ namespace ngl
 
 		static ttab_servers& instance()
 		{
-			static std::atomic lload = true;
-			if (lload.exchange(false))
-			{
-				ncsv::loadcsv<ttab_servers>();
-			}
+			static std::once_flag lfirst;
+			std::call_once(lfirst, []()
+				{
+					ncsv::loadcsv<ttab_servers>();
+				}
+			);
 			return *ncsv::get<ttab_servers>();
 		}
 

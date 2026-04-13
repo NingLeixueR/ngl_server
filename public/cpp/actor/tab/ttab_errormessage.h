@@ -38,11 +38,12 @@ namespace ngl
 
 		static ttab_errormessage& instance()
 		{
-			static std::atomic lload = true;
-			if (lload.exchange(false))
-			{
-				ncsv::loadcsv<ttab_errormessage>();
-			}
+			static std::once_flag lfirst;
+			std::call_once(lfirst, []()
+				{
+					ncsv::loadcsv<ttab_errormessage>();
+				}
+			);
 			return *ncsv::get<ttab_errormessage>();
 		}
 

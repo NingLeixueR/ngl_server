@@ -27,11 +27,12 @@ namespace ngl::tools
 	std::string& type_name()
 	{
 		static std::string lname = std::string(detail::comp_type<T>());
-		static std::atomic_bool lfirst = true;
-		if (lfirst.exchange(false))
-		{
-			type_name_handle(lname);
-		}
+		static std::once_flag lfirst;
+		std::call_once(lfirst, []()
+			{
+				type_name_handle(lname);
+			}
+		);
 		return lname;
 	}
 

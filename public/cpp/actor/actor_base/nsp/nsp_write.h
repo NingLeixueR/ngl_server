@@ -24,7 +24,7 @@ namespace ngl
 	template <typename TDerived, typename TACTOR, typename T>
 	class nsp_write
 	{
-		static std::atomic<bool>										m_isregister;
+		static std::once_flag											m_isregister;
 
 		// Actor that owns this NSP writer instance.
 		TDerived*														m_actor = nullptr;
@@ -146,5 +146,5 @@ namespace ngl
 	};
 
 	template <typename TDerived, typename TACTOR, typename T>
-	std::atomic<bool> nsp_write<TDerived, TACTOR, T>::m_isregister = true;
+	std::once_flag nsp_write<TDerived, TACTOR, T>::m_isregister;
 }//namespace ngl

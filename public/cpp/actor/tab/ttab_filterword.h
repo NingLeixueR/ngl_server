@@ -47,11 +47,12 @@ namespace ngl
 
 		static ttab_filterword& instance()
 		{
-			static std::atomic lload = true;
-			if (lload.exchange(false))
-			{
-				ncsv::loadcsv<ttab_filterword>();
-			}
+			static std::once_flag lfirst;
+			std::call_once(lfirst, []()
+				{
+					ncsv::loadcsv<ttab_filterword>();
+				}
+			);
 			return *ncsv::get<ttab_filterword>();
 		}
 

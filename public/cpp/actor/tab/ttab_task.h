@@ -16,9 +16,9 @@
 #pragma once
 
 #include "actor/tab/ttab_specialid.h"
-#include "tools/log/nlog.h"
 #include "tools/tab/csv/ncsv.h"
 #include "tools/tab/xml/xml.h"
+#include "tools/log/nlog.h"
 #include "tools/type.h"
 
 namespace ngl
@@ -67,11 +67,12 @@ namespace ngl
 
 		static ttab_task& instance()
 		{
-			static std::atomic lload = true;
-			if (lload.exchange(false))
-			{
-				ncsv::loadcsv<ttab_task>();
-			}
+			static std::once_flag lfirst;
+			std::call_once(lfirst, []()
+				{
+					ncsv::loadcsv<ttab_task>();
+				}
+			);
 			return *ncsv::get<ttab_task>();
 		}
 

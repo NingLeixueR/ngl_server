@@ -15,8 +15,8 @@
 
 #pragma once
 
-#include "actor/protocol/nprotocol.h"
 #include "actor/actor_base/core/nguid.h"
+#include "actor/protocol/nprotocol.h"
 #include "tools/tab/csv/ncsv.h"
 #include "tools/tab/xml/xml.h"
 #include "tools/log/nlog.h"
@@ -24,13 +24,13 @@
 #include "tools/type.h"
 
 #include <algorithm>
-#include <array>
-#include <atomic>
-#include <cstdint>
 #include <functional>
+#include <cstdint>
+#include <vector>
+#include <atomic>
+#include <array>
 #include <map>
 #include <set>
-#include <vector>
 
 namespace ngl
 {
@@ -139,11 +139,12 @@ namespace ngl
 
 		static ttab_mergearea& instance()
 		{
-			static std::atomic lload = true;
-			if (lload.exchange(false))
-			{
-				ncsv::loadcsv<ttab_mergearea>();
-			}
+			static std::once_flag lfirst;
+			std::call_once(lfirst, []()
+				{
+					ncsv::loadcsv<ttab_mergearea>();
+				}
+			);
 			return *ncsv::get<ttab_mergearea>();
 		}
 

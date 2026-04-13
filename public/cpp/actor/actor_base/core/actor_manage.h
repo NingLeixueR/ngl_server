@@ -146,20 +146,21 @@ namespace ngl
 	T& actor_instance<T>::instance()
 	{
 		static T ltemp;
-		static std::atomic lfirst = true;
-		if (lfirst.exchange(false))
-		{
-			T* lptemp = &ltemp;
-			actor_manage::instance().add_actor(&ltemp, [lptemp]()
-				{
-					lptemp->set_activity_stat(actor_stat_free);
-					lptemp->init();
-					lptemp->init_db_component(false);
-				}
-			);
-			ltemp.template init_rfun<T>();
-			T::nregister();
-		}
+		static std::once_flag lfirst;
+		std::call_once(lfirst, []()
+			{
+				T* lptemp = &ltemp;
+				actor_manage::instance().add_actor(&ltemp, [lptemp]()
+					{
+						lptemp->set_activity_stat(actor_stat_free);
+						lptemp->init();
+						lptemp->init_db_component(false);
+					}
+				);
+				ltemp.template init_rfun<T>();
+				T::nregister();
+			}
+		);
 		return ltemp;
 	}
 }//namespace ngl

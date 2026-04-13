@@ -525,11 +525,12 @@ namespace ngl
 	template <typename TDerived>
 	void actor_base::first_nregister([[maybe_unused]] ENUM_ACTOR atype)
 	{
-		static std::atomic lfirst = true;
-		if (lfirst.exchange(false))
-		{
-			TDerived::nregister();
-		}
+		static std::once_flag lfirst;
+		std::call_once(lfirst, []()
+			{
+				TDerived::nregister();
+			}
+		);
 	}
 }
 

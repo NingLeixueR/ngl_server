@@ -139,23 +139,24 @@ namespace ngl
 		static const char* where_area()
 		{
 			static std::string lareastr;
-			static std::atomic linit = true;
-			if (linit.exchange(false))
-			{
-				if (lareastr.empty())
+			static std::once_flag lfirst;
+			std::call_once(lfirst, []()
 				{
-					const std::set<i16_area>* lareaset = ttab_servers::instance().get_area(nconfig.area());
-					if (lareaset == nullptr || lareaset->empty())
+					if (lareastr.empty())
 					{
-						lareastr = " 1 = 1 ";
-					}
-					else
-					{
-						tools::splicing(*lareaset, " OR area = ", lareastr);
-						lareastr = " area = " + lareastr;
+						const std::set<i16_area>* lareaset = ttab_servers::instance().get_area(nconfig.area());
+						if (lareaset == nullptr || lareaset->empty())
+						{
+							lareastr = " 1 = 1 ";
+						}
+						else
+						{
+							tools::splicing(*lareaset, " OR area = ", lareastr);
+							lareastr = " area = " + lareastr;
+						}
 					}
 				}
-			}
+			);
 			return lareastr.c_str();
 		}
 

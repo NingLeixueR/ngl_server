@@ -75,11 +75,12 @@ namespace ngl
 
 		static ttab_specialid& instance()
 		{
-			static std::atomic lload = true;
-			if (lload.exchange(false))
-			{
-				ncsv::loadcsv<ttab_specialid>();
-			}
+			static std::once_flag lfirst;
+			std::call_once(lfirst, []()
+				{
+					ncsv::loadcsv<ttab_specialid>();
+				}
+			);
 			return *ncsv::get<ttab_specialid>();
 		}
 

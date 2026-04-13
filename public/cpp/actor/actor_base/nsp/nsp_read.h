@@ -27,7 +27,7 @@ namespace ngl
 	public:
 		using tnsp_read = nsp_read<TDerived, TACTOR, T>;
 	private:
-		static std::atomic<bool>										m_isregister;
+		static std::once_flag											m_isregister;
 				
 		// Actor that owns this NSP reader instance.
 		TDerived*														m_actor = nullptr;
@@ -100,5 +100,5 @@ namespace ngl
 	};
 
 	template <typename TDerived, typename TACTOR, typename T>
-	std::atomic<bool> nsp_read<TDerived, TACTOR, T>::m_isregister = true;
+	std::once_flag nsp_read<TDerived, TACTOR, T>::m_isregister;
 }//namespace ngl

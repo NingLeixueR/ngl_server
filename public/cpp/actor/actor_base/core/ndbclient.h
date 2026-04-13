@@ -405,15 +405,15 @@ namespace ngl
 				tools::no_core_dump();
 				return;
 			}
-
-			static std::atomic lregister = true;
-			if (lregister.exchange(false))
-			{
-				// Register the DB load response handler only once per concrete actor/dbclient pair.
-				nrfun<TACTOR>::instance().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(
-					&actor_base::template handle_db<DBTYPE, TDBTAB, TACTOR>
-				);
-			}
+			static std::once_flag lfirst;
+			std::call_once(lfirst, []()
+				{
+					// Register the DB load response handler only once per concrete actor/dbclient pair.
+					nrfun<TACTOR>::instance().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(
+						&actor_base::template handle_db<DBTYPE, TDBTAB, TACTOR>
+					);
+				}
+			);
 			init_load();
 		}
 

@@ -43,27 +43,30 @@
 
 #define NUMARGS(...)  std::tuple_size<decltype(std::make_tuple(__VA_ARGS__))>::value
 
-#define DEF_PARMNAME_(ISMG,...)																		\
-static std::array<const char*, NUMARGS(__VA_ARGS__)>& parms()										\
-{																									\
-	static std::array<const char*, NUMARGS(__VA_ARGS__)> tempvec{};									\
-	static std::string tempstr(#__VA_ARGS__);														\
-	static std::atomic_bool lregister = true;														\
-	if (lregister.exchange(false) && !tempstr.empty())												\
-	{																								\
-		ngl::tools::split_str<NUMARGS(__VA_ARGS__)>(&tempstr[0], (int32_t)tempstr.size(), tempvec);	\
-		if constexpr(ISMG)																			\
-		{																							\
-			for (const char*& item : tempvec)														\
-			{																						\
-				if (memcmp("m_", item, 2) == 0)														\
-				{																					\
-					item = &(item[2]);																\
-				}																					\
-			}																						\
-		}																							\
-	}																								\
-	return tempvec;																					\
+#define DEF_PARMNAME_(ISMG,...)																			\
+static std::array<const char*, NUMARGS(__VA_ARGS__)>& parms()											\
+{																										\
+	static std::array<const char*, NUMARGS(__VA_ARGS__)> tempvec{};										\
+	static std::string tempstr(#__VA_ARGS__);															\
+	if(!tempstr.empty())																				\
+	{																									\
+		static std::once_flag lfirst;																	\
+		std::call_once(lfirst, [&]()																	\
+		{																								\
+			ngl::tools::split_str<NUMARGS(__VA_ARGS__)>(&tempstr[0], (int32_t)tempstr.size(), tempvec);	\
+			if constexpr(ISMG)																			\
+			{																							\
+				for (const char*& item : tempvec)														\
+				{																						\
+					if (memcmp("m_", item, 2) == 0)														\
+					{																					\
+						item = &(item[2]);																\
+					}																					\
+				}																						\
+			}																							\
+		});																								\
+	}																									\
+	return tempvec;																						\
 }
 
 #define DEF_PARMNAME(...)	DEF_PARMNAME_(false __VA_OPT__(, )__VA_ARGS__)

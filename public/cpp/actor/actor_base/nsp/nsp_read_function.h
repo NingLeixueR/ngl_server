@@ -126,18 +126,19 @@ namespace ngl
 				}
 			);
 
-		if (m_isregister.exchange(false))
-		{
-			// One registration per concrete reader type is enough because instances are
-			// keyed by actor id in nsp_instance<>.
-			nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<
-				TDerived
-				, np_channel_data<T>				// Data
-				, np_channel_check<T>				// Whethertonspserverregister
-				, np_channel_register_reply<T>		// Handleregisterresponse
-				, np_channel_dataid_sync<T>			// Nodeinfo
-			>();
-		}
+		std::call_once(m_isregister, []()
+			{
+				// One registration per concrete reader type is enough because instances are
+				// keyed by actor id in nsp_instance<>.
+				nsp_instance<nsp_read<TDerived, TACTOR, T>>::template register_handle<
+					TDerived
+					, np_channel_data<T>				// Data
+					, np_channel_check<T>				// Whethertonspserverregister
+					, np_channel_register_reply<T>		// Handleregisterresponse
+					, np_channel_dataid_sync<T>			// Nodeinfo
+				>();
+			}
+		);
 		i64_actorid lactorid = m_actor->id_guid();
 			m_regload.foreach_nspser([this, lactorid](i16_area aarea, i64_actorid)
 				{

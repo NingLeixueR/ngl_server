@@ -38,11 +38,12 @@ namespace ngl
 
 		static ttab_equiplv& instance()
 		{
-			static std::atomic lload = true;
-			if (lload.exchange(false))
-			{
-				ncsv::loadcsv<ttab_equiplv>();
-			}
+			static std::once_flag lfirst;
+			std::call_once(lfirst, []()
+				{
+					ncsv::loadcsv<ttab_equiplv>();
+				}
+			);
 			return *ncsv::get<ttab_equiplv>();
 		}
 

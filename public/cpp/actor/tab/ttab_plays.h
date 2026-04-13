@@ -38,11 +38,12 @@ namespace ngl
 
 		static ttab_plays& instance()
 		{
-			static std::atomic lload = true;
-			if (lload.exchange(false))
-			{
-				ncsv::loadcsv<ttab_plays>();
-			}
+			static std::once_flag lfirst;
+			std::call_once(lfirst, []()
+				{
+					ncsv::loadcsv<ttab_plays>();
+				}
+			);
 			return *ncsv::get<ttab_plays>();
 		}
 

@@ -38,11 +38,12 @@ namespace ngl
 
 		static ttab_activity_drawcompliance& instance()
 		{
-			static std::atomic lload = true;
-			if (lload.exchange(false))
-			{
-				ncsv::loadcsv<ttab_activity_drawcompliance>();
-			}
+			static std::once_flag lfirst;
+			std::call_once(lfirst, []()
+				{
+					ncsv::loadcsv<ttab_activity_drawcompliance>();
+				}
+			);
 			return *ncsv::get<ttab_activity_drawcompliance>();
 		}
 

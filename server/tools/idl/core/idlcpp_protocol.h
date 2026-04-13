@@ -547,11 +547,11 @@ namespace ngl
 
 		static t{0}& instance()
 		{
-			static std::atomic lload = true;
-			if (lload.exchange(false))
+			static std::once_flag lload;
+			std::call_once(lload, []()
 			{
 				ncsv::loadcsv<t{0}>();
-			}	
+			});
 			return *ncsv::get<t{0}>();
 		}
 

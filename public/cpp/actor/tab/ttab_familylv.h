@@ -50,11 +50,12 @@ namespace ngl
 
 		static ttab_familylv& instance()
 		{
-			static std::atomic lload = true;
-			if (lload.exchange(false))
-			{
-				ncsv::loadcsv<ttab_familylv>();
-			}
+			static std::once_flag lfirst;
+			std::call_once(lfirst, []()
+				{
+					ncsv::loadcsv<ttab_familylv>();
+				}
+			);
 			return *ncsv::get<ttab_familylv>();
 		}
 
