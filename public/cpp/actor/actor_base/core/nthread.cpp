@@ -72,13 +72,15 @@ namespace ngl
 			tools::no_core_dump();
 			return;
 		}
-		lock_write(m_mutex);
-		if (m_shutdown.load(std::memory_order_relaxed))
 		{
-			return;
+			lock_write(m_mutex);
+			if (m_shutdown.load(std::memory_order_relaxed))
+			{
+				return;
+			}
+			m_actor = aactor;
+			m_isactivity = true;
 		}
-		m_actor = aactor;
-		m_isactivity = true;
 		m_sem.post();
 	}
 

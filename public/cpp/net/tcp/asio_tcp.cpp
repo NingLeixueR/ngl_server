@@ -208,7 +208,7 @@ namespace ngl
 			lock_write(m_maplock);
 			if (!net_session::next(m_sessionid, ENET_TCP))
 			{
-				tools::send_mail("tcp session id exhausted")();
+				tools::send_mail("tcp session id exhausted", false)();
 				lalloc_failed = true;
 			}
 			else
@@ -217,7 +217,7 @@ namespace ngl
 				auto [_, success] = m_data.emplace(lservice->m_sessionid, lservice);
 				if (!success)
 				{
-					tools::send_mail("session id repeat")();
+					tools::send_mail("session id repeat", false)();
 					lalloc_failed = true;
 					lservice.reset();
 				}
@@ -529,14 +529,14 @@ namespace ngl
 			lock_write(m_maplock);
 			if (!net_session::next(m_sessionid, ENET_TCP))
 			{
-				tools::send_mail("tcp session id exhausted")();
+				tools::send_mail("tcp session id exhausted", false)();
 				return;
 			}
 			lservice = std::make_shared<service_tcp>(m_service_ios, m_sessionid);
 			auto [_, success] = m_data.emplace(lservice->m_sessionid, lservice);
 			if (!success)
 			{
-				tools::send_mail("session id repeat")();
+				tools::send_mail("session id repeat", false)();
 				return;
 			}
 		}
