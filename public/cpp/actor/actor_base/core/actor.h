@@ -33,6 +33,8 @@ namespace ngl
 		int32_t			m_weight	= 0x7fffffff;	// Maximum number of normal-priority messages per scheduler slice.
 		int32_t			m_timeout	= 0x7fffffff;	// Soft time budget for one actor_handle() batch in milliseconds.
 		bool			m_broadcast	= false;		// Enable participation in the shared periodic broadcast tick.
+		int32_t			m_normalwarn = 1024;			// Normal queue backlog warning threshold; 0 disables, < 0 is invalid.
+		int32_t			m_highwarn = 1024;				// High queue backlog warning threshold; 0 disables, < 0 is invalid.
 	};
 
 	template <typename T>
@@ -41,8 +43,46 @@ namespace ngl
 	class actor : 
 		public actor_base
 	{
-		std::list<handle_pram>						m_list;							// FIFO queue for regular-priority messages.
-		std::map<int32_t, std::list<handle_pram>>	m_hightlist;					// Buckets for priority messages, keyed by protocol priority.
+		static constexpr int32_t e_warngap = 60 * tools::time::MILLISECOND;	// Minimum interval (ms) between consecutive queue-overflow warnings of the same priority class.
+
+		// Tracks queue depth and rate-limits overflow warnings for one priority class (normal or high).
+		// All fields are only accessed under the actor's m_mutex write lock.
+		struct queue_warn
+		{
+			bool			m_hight = false;				// true = high-priority queue, false = normal queue.
+			time_t			m_lastms = 0;					// Timestamp (ms) of the last emitted warning; 0 means no warning yet.
+			int32_t			m_skipcnt = 0;					// Warnings suppressed by rate-limiting since the last emission.
+			int32_t			m_cnt = 0;						// Current number of messages sitting in this queue.
+			int32_t			m_warncnt = 1024;				// Overflow threshold; 0 disables warnings.
+
+			// Check whether a queue-overflow warning should fire now.
+			// On true: snapshots the current state into awarn (for lock-free logging)
+			//          and resets the suppression counter and timestamp.
+			// On false: either the queue is below threshold or the rate-limit window has not elapsed.
+			bool iswarn(queue_warn& awarn, int32_t awarngap)
+			{
+				if (m_warncnt > 0 && m_cnt > m_warncnt)
+				{
+					const time_t lnow = tools::time::gettimems();
+					if (m_lastms != 0 && (lnow - m_lastms) < awarngap)
+					{
+						++m_skipcnt;
+						return false;
+					}
+					awarn = *this;
+					m_skipcnt = 0;
+					m_lastms = lnow;
+					return true;
+				}
+				return false;
+			}
+		};
+
+
+		std::list<handle_pram>						m_list;							// Normal-priority message queue, processed in FIFO order.
+		std::map<int32_t, std::list<handle_pram>>	m_hightlist;					// High-priority message buckets, keyed by priority level (lower = more urgent).
+		queue_warn									m_normalstat;					// Overflow warning state for m_list.
+		queue_warn									m_highstat;						// Overflow warning state for m_hightlist.
 		actor_stat									m_stat = actor_stat_init;		// Scheduler-visible actor state.
 		std::shared_mutex							m_mutex;						// Protects both pending-message queues and release state.
 		int32_t										m_weight = 0;					// Max number of regular messages handled in one batch.
@@ -154,7 +194,6 @@ namespace ngl
 		bool high_empty() final;
 
 		int32_t hight_value();
-
 		// Enqueue one incoming task into the appropriate priority queue.
 		bool push(handle_pram& apram) final;
 

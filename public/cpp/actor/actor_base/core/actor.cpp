@@ -17,6 +17,9 @@
 #include "actor/actor_base/core/ndbclient.h"
 #include "actor/actor_base/core/actor.h"
 #include "net/tcp/ntcp.h"
+#include "tools/tools/tools_sys.h"
+
+#include <format>
 
 namespace ngl
 {
@@ -25,7 +28,11 @@ namespace ngl
 		, m_weight(aparm.m_weight)
 		, m_timeout(aparm.m_timeout)
 	{
-		if (aparm.m_weight <= 0 || m_timeout <= 0)
+		m_normalstat.m_warncnt = aparm.m_normalwarn;
+		m_normalstat.m_hight = false;
+		m_highstat.m_warncnt = aparm.m_highwarn;
+		m_highstat.m_hight = true;
+		if (aparm.m_weight <= 0 || m_timeout <= 0 || aparm.m_normalwarn < 0 || aparm.m_highwarn < 0)
 		{
 			tools::no_core_dump();
 		}
@@ -58,6 +65,13 @@ namespace ngl
 			lock_write(m_mutex);
 			m_list.clear();
 			m_hightlist.clear();
+			// Reset warning state so a recycled actor does not carry stale counters.
+			m_normalstat.m_lastms = 0;
+			m_highstat.m_lastms = 0;
+			m_normalstat.m_skipcnt = 0;
+			m_highstat.m_skipcnt = 0;
+			m_normalstat.m_cnt = 0;
+			m_highstat.m_cnt = 0;
 		}
 	}
 
@@ -118,21 +132,50 @@ namespace ngl
 
 	bool actor::push(handle_pram& apram)
 	{
-		int32_t lhigh = tprotocol::highvalue(apram.m_enum);
-		lock_write(m_mutex);
-		if (lhigh <= 0)
+		const int32_t lhigh = tprotocol::highvalue(apram.m_enum);
+		bool lret = false;
+		bool lsendmail = false;
+		queue_warn lqwarn;
 		{
-			// Default traffic is processed in FIFO order.
-			m_list.emplace_back(apram);
-			return ready().is_ready();
+			lock_write(m_mutex);
+			if (lhigh <= 0)
+			{
+				// Normal-priority: append to FIFO tail and bump the depth counter.
+				m_list.emplace_back(apram);
+				++m_normalstat.m_cnt;
+				lret = ready().is_ready();
+				lsendmail = m_normalstat.iswarn(lqwarn, e_warngap);
+			}
+			else
+			{
+				// High-priority: insert into the bucket for this priority level.
+				// A newly arrived priority lower than the current head may advance readiness.
+				const int32_t loldhigh = hight_value();
+				m_hightlist[lhigh].emplace_back(apram);
+				++m_highstat.m_cnt;
+				lret = loldhigh == -1 || lhigh < loldhigh;
+				lsendmail = m_highstat.iswarn(lqwarn, e_warngap);
+			}
 		}
-		else
+
+		// Logging and mail are done outside the lock to avoid blocking other producers.
+		if (lsendmail)
 		{
-			// Lower privilege values are allowed to pass earlier readiness gates.
-			const int32_t loldhigh = hight_value();
-			m_hightlist[lhigh].emplace_back(apram);
-			return loldhigh == -1 || lhigh < loldhigh;
+			std::string lmessage;
+			lmessage = std::format(
+				"actor queue warn [{}] actor:{} protocol:{} request:{} count:{}/{} suppressed:{}"
+				, lqwarn.m_hight ? "high" : "normal"
+				, id_guid()
+				, apram.m_enum
+				, apram.m_requestactor
+				, lqwarn.m_cnt
+				, lqwarn.m_warncnt
+				, lqwarn.m_skipcnt
+			);
+			log_error()->print("{}", lmessage);
+			//tools::send_mail(lmessage)();
 		}
+		return lret;
 	}
 
 	bool actor::ahandle(i32_threadid athreadid, handle_pram& aparm)
@@ -154,12 +197,14 @@ namespace ngl
 
 	bool actor::actor_handle(i32_threadid athreadid)
 	{
+		// --- Phase 1: drain high-priority messages ---
+		// Swap the entire high-priority map into a local copy so handlers can freely
+		// enqueue new messages without contending on the actor mutex.
 		std::map<int32_t, std::list<handle_pram>> localhightlist;
 		{
 			lock_write(m_mutex);
-			// Move work out of the shared queues so handlers can enqueue more messages without
-			// holding the actor mutex for the whole batch.
 			m_hightlist.swap(localhightlist);
+			m_highstat.m_cnt = 0;
 		}
 
 		int32_t lvalue = ready().hightlevel_ready();
@@ -168,7 +213,7 @@ namespace ngl
 		{
 			for(auto itor = localhightlist.begin();itor != localhightlist.end();)
 			{
-				// Lower privilege values are allowed to pass earlier readiness gates.
+				// Dispatch buckets whose priority is more urgent than the readiness gate.
 				if (lvalue == -1 || lvalue > itor->first)
 				{
 					for (auto& lharm : itor->second)
@@ -183,10 +228,12 @@ namespace ngl
 				}
 			}
 
+			// Return unconsumed high-priority messages to the shared map and restore the depth counter.
 			lock_write(m_mutex);
 			for (auto& [key, value] : localhightlist)
 			{
 				auto& lmap = m_hightlist[key];
+				m_highstat.m_cnt += static_cast<int32_t>(value.size());
 				lmap.splice(lmap.begin(), std::move(value));
 			}
 		}
@@ -195,10 +242,14 @@ namespace ngl
 		{
 			return false;
 		}
+		// --- Phase 2: drain normal-priority messages ---
+		// Same swap pattern: take ownership of the list, reset the depth counter,
+		// then process up to m_weight messages within the m_timeout budget.
 		std::list<handle_pram> locallist;
 		{
 			lock_write(m_mutex);
 			m_list.swap(locallist);
+			m_normalstat.m_cnt = 0;
 		}
 		auto llistcount = (int32_t)locallist.size();
 		if (m_weight < llistcount || llistcount >= 0x7F)
@@ -220,7 +271,9 @@ namespace ngl
 		if (!locallist.empty())
 		{
 			lock_write(m_mutex);
-			// Unprocessed normal-priority messages go back to the front so ordering is preserved.
+			// Splice unprocessed messages back to the front to preserve FIFO ordering,
+			// and restore the depth counter for accurate overflow detection.
+			m_normalstat.m_cnt += static_cast<int32_t>(locallist.size());
 			m_list.splice(m_list.begin(), locallist);
 		}
 		return true;

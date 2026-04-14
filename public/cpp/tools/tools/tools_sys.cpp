@@ -221,7 +221,7 @@ namespace ngl::tools
 					mail_detail::g_mailmap[acontent] = lnow;
 				}
 
-				std::cout << "dump_logic()" << std::endl;
+				std::cout << "send email" << acontent << std::endl;
 				std::shared_ptr<tools::mail_param> lparm = tools::curl::mail();
 				lparm->m_smtp = nconfig.mail().m_smtp;
 				lparm->m_email = nconfig.mail().m_email;
