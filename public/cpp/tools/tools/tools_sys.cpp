@@ -202,9 +202,9 @@ namespace ngl::tools
 		}
 	}
 
-	std::function<void()> send_mail(const std::string& acontent)
+	std::function<void()> send_mail(const std::string& acontent, bool asynchronize /*= true*/)
 	{
-		return [acontent]()
+		return [acontent, asynchronize]()
 			{
 				const int32_t lnow = static_cast<int32_t>(tools::time::gettime());
 				{
@@ -230,7 +230,10 @@ namespace ngl::tools
 				lparm->m_title = nconfig.servername();
 				lparm->m_content = acontent;
 				lparm->m_recvs.emplace_back(std::make_pair("348634371@qq.com", "QQ"));
-				lparm->set_wait();
+				if (!asynchronize)
+				{
+					lparm->set_wait();
+				}
 				tools::curl::sendemail(lparm);
 			};
 	}

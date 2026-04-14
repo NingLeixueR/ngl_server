@@ -33,7 +33,7 @@ namespace ngl::tools
 
 	void no_core_dump(bool anocreate = false);
 
-	std::function<void()> send_mail(const std::string& acontent);
+	std::function<void()> send_mail(const std::string& acontent, bool asynchronize = true);
 
 	int64_t nguidstr2int64(const char* anguid);
 }//namespace ngl::tools

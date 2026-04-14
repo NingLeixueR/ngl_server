@@ -173,7 +173,7 @@ namespace ngl
 				, lqwarn.m_skipcnt
 			);
 			log_error()->print("{}", lmessage);
-			//tools::send_mail(lmessage)();
+			tools::send_mail(lmessage, false)();
 		}
 		return lret;
 	}
