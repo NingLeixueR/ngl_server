@@ -60,7 +60,7 @@ namespace ngl
 
 	i64_actorid actor_base::actorclient_guid()
 	{
-		return actor_manage::instance().get_clientguid();
+		return schedule_layer::get_clientguid();
 	}
 
 	actor_base::actor_base(const actorparmbase& aparm):

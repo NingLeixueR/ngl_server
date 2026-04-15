@@ -23,29 +23,29 @@
 #include "tools/serialize/ndefine.h"
 #include "tools/serialize/pack.h"
 
+#include <unordered_map>
 #include <atomic>
 #include <deque>
 #include <map>
 #include <set>
-#include <unordered_map>
 
 namespace ngl
 {
-	class actor_manage
+	struct guid_hash
+	{
+		std::size_t operator()(const nguid& aguid) const noexcept
+		{
+			return std::hash<i64_actorid>{}(aguid.id());
+		}
+	};
+	using ptrnthread = std::shared_ptr<nthread>;
+
+	class schedule_layer
 	{
 	private:
-		struct guid_hash
-		{
-			std::size_t operator()(const nguid& aguid) const noexcept
-			{
-				return std::hash<i64_actorid>{}(aguid.id());
-			}
-		};
+		schedule_layer(const schedule_layer&) = delete;
+		schedule_layer& operator=(const schedule_layer&) = delete;
 
-		actor_manage(const actor_manage&) = delete;
-		actor_manage& operator=(const actor_manage&) = delete;
-
-		using ptrnthread = std::shared_ptr<nthread>;
 		std::deque<ptrnthread>		m_workthreads;		// Idle workers available for scheduling.
 		std::deque<ptrnthread>		m_workthreadscopy;	// Full worker set kept for bookkeeping/debugging.
 		bool						m_suspend = false;	// Freeze dispatch while world-state critical sections run.
@@ -62,13 +62,10 @@ namespace ngl
 		ngl::tools::sem				m_sem;
 		std::jthread				m_thread;			// Start last so the dispatcher sees initialized state.
 
-		actor_manage();
-		~actor_manage() noexcept;
-
 		bool is_unavailable(ngl::actor_stat astat) noexcept;
 
 		// Resolve a local actor or fall back to the route actor for forwarded traffic.
-		ptractor* nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram);
+		ptractor* nosafe_get_actorbyid(const nguid& aguid);
 
 		// Push work into an actor queue and schedule it if the actor was idle.
 		void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram);
@@ -76,14 +73,83 @@ namespace ngl
 		// Dispatcher loop: pair queued actors with available workers.
 		void run(std::stop_token astop);
 	public:
+
+		schedule_layer();
+
+		~schedule_layer() noexcept;
+
+		// Return the actor id used as the node-level routing endpoint.
+		static nguid get_clientguid();
+
+		// Resolve the routing actor for this node type.
+		static nguid nodetypebyguid();
+
+		// Create the worker pool once during startup.
+		void init(i32_threadsize apthreadnum, int32_t alayer);
+
+		// Return the set of currently registered actor types.
+		void get_type(std::set<i16_actortype>& aactortype);
+
+		// Register a newly created actor instance.
+		bool add_actor(const ptractor& apactor, const std::function<void()>& afun);
+
+		// Remove an actor and optionally run a callback after release.
+		void erase_actor(const nguid& aguid, const std::function<void()>& afun = nullptr);
+
+		// Return whether the actor is still registered.
+		bool is_have_actor(const nguid& aguid);
+
+		// Return a worker to the pool and reschedule the actor if more work remains.
+		void push(const ptractor& apactor, ptrnthread atorthread = nullptr, bool aready = true);
+
+		// Route work to one actor or a set of actors.
+		bool push_task_id(const nguid& aguid, handle_pram& apram, bool aismass = true);
+		bool push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram);
+
+		// Broadcast work to all actors of a given type.
+		void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
+
+		// Deliver the periodic broadcast task to actors that opted in.
+		void broadcast_task(handle_pram& apram);
+
+		// Pause and resume dispatch while critical shared state is updated.
+		// Suspension intentionally leaves one worker outside the parked pool.
+		void statrt_suspend_thread();
+		void finish_suspend_thread();
+
+		// Return the number of registered actors.
+		int32_t actor_count();
+
+		// Collect scheduler statistics grouped by actor type.
+		void get_actor_stat(msg_actor_stat& adata);
+	};
+
+	class actor_manage
+	{
+		static constexpr int32_t LAYER_COUNT = 4;
+
+		actor_manage(const actor_manage&) = delete;
+		actor_manage& operator=(const actor_manage&) = delete;
+		actor_manage() = default;
+		~actor_manage() = default;
+
+		std::array<std::shared_ptr<schedule_layer>, LAYER_COUNT> m_layers;
+
+		int32_t layer_index(int64_t actorid) const noexcept
+		{
+			return static_cast<int32_t>(static_cast<uint64_t>(actorid) % LAYER_COUNT);
+		}
+
+		std::shared_ptr<schedule_layer>& get_layer(int64_t actorid)
+		{
+			return m_layers[layer_index(actorid)];
+		}
+	public:
 		static actor_manage& instance()
 		{
 			static actor_manage ltemp;
 			return ltemp;
 		}
-
-		// Return the actor id used as the node-level routing endpoint.
-		nguid get_clientguid();
 
 		// Create the worker pool once during startup.
 		void init(i32_threadsize apthreadnum);
@@ -91,15 +157,12 @@ namespace ngl
 		// Return the set of currently registered actor types.
 		void get_type(std::vector<i16_actortype>& aactortype);
 
-		// Resolve the routing actor for this node type.
-		nguid nodetypebyguid();
-
 		// Build a handle_pram from a typed payload and enqueue it for the target actor.
 		template <typename T, bool IS_SEND = true>
 		inline void push_task_id(const nguid& aguid, std::shared_ptr<T>& apram)
 		{
 			handle_pram lparm = handle_pram::create<T, IS_SEND>(aguid, nguid::make(), apram);
-			push_task_id(aguid, lparm);
+			m_layers[layer_index(aguid)]->push_task_id(aguid, lparm);
 		}
 
 		// Register a newly created actor instance.
@@ -138,6 +201,7 @@ namespace ngl
 		// Collect scheduler statistics grouped by actor type.
 		void get_actor_stat(msg_actor_stat& adata);
 	};
+
 
 	// RAII helper that pauses actor dispatch for the lifetime of the object.
 	class actor_suspend

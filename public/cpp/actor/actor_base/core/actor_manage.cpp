@@ -24,7 +24,7 @@
 
 namespace ngl
 {
-	actor_manage::actor_manage():
+	schedule_layer::schedule_layer():
 		m_thread([this](std::stop_token astop)
 			{
 				run(astop);
@@ -32,7 +32,7 @@ namespace ngl
 	{
 	}
 
-	actor_manage::~actor_manage() noexcept
+	schedule_layer::~schedule_layer() noexcept
 	{
 		try
 		{
@@ -75,13 +75,13 @@ namespace ngl
 		}
 	}
 
-	bool actor_manage::is_unavailable(ngl::actor_stat astat) noexcept
+	bool schedule_layer::is_unavailable(ngl::actor_stat astat) noexcept
 	{
 		// init/close states cannot accept new work and should never be queued.
 		return astat == ngl::actor_stat_close || astat == ngl::actor_stat_init;
 	}
 
-	void actor_manage::init(i32_threadsize apthreadnum)
+	void schedule_layer::init(i32_threadsize apthreadnum, int32_t alayer)
 	{
 		if (!m_workthreads.empty())
 		{
@@ -91,19 +91,18 @@ namespace ngl
 		for (int32_t i = 0; i < m_threadnum; ++i)
 		{
 			// Workers start idle and are handed actors only by the dispatcher thread.
-			m_workthreads.emplace_back(std::make_shared<nthread>(i));
+			m_workthreads.emplace_back(std::make_shared<nthread>(alayer* apthreadnum + i));
 		}
 		m_workthreadscopy = m_workthreads;
 	}
 
-	void actor_manage::get_type(std::vector<i16_actortype>& aactortype)
+	void schedule_layer::get_type(std::set<i16_actortype>& aactortype)
 	{
 		lock_read(m_mutex);
-		std::vector<i16_actortype> ltypes(m_actortype.begin(), m_actortype.end());
-		aactortype.swap(ltypes);
+		aactortype.insert(m_actortype.begin(), m_actortype.end());
 	}
 
-	void actor_manage::nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram)
+	void schedule_layer::nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram)
 	{
 		const actor_stat lstat = lpactor->activity_stat();
 		if (is_unavailable(lstat))
@@ -124,7 +123,7 @@ namespace ngl
 		}
 	}
 
-	bool actor_manage::add_actor(const ptractor& apactor, const std::function<void()>& afun)
+	bool schedule_layer::add_actor(const ptractor& apactor, const std::function<void()>& afun)
 	{
 		const nguid actor_guid = apactor->guid();
 		const ENUM_ACTOR actor_type = apactor->type();
@@ -132,7 +131,6 @@ namespace ngl
 		// announce their existence through the route actor.
 		const bool needs_route_sync = actor_type != ACTOR_CLIENT && actor_type != ACTOR_SERVER;
 		const nguid route_actor_guid = nodetypebyguid();
-		bool has_route_actor = false;
 		{
 			lock_write(m_mutex);
 			if (!m_actorbyid.try_emplace(actor_guid, apactor).second)
@@ -146,29 +144,20 @@ namespace ngl
 			{
 				m_actorbroadcast.try_emplace(actor_guid, apactor);
 			}
-			has_route_actor = needs_route_sync && m_actorbyid.contains(route_actor_guid);
 		}
 		if (needs_route_sync)
 		{
 			// Notify the route actor so other nodes can discover the new actor location.
-			if (has_route_actor)
-			{
-				auto pro = std::make_shared<np_actornode_update_mass>(np_actornode_update_mass{
+			auto pro = std::make_shared<np_actornode_update_mass>(np_actornode_update_mass{
 						.m_mass = np_actornode_update
 						{
 							.m_id = nconfig.nodeid(),
 							.m_add = {actor_guid},
 						},
 						.m_fun = afun
-					}
-				);
-				push_task_id<np_actornode_update_mass, false>(route_actor_guid, pro);
-			}
-			else
-			{
-				std::cout << std::format("actor_manage add_actor skip route sync guid:{} route_actor:{}", actor_guid, route_actor_guid) << std::endl;
-				tools::no_core_dump();
-			}
+				}
+			);
+			actor_manage::instance().push_task_id<np_actornode_update_mass, false>(route_actor_guid, pro);
 		}
 		else
 		{
@@ -178,40 +167,18 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_manage::add_actor(actor_base* apactor, const std::function<void()>& afun)
-	{
-		if (apactor == nullptr)
-		{
-			return false;
-		}
-		ptractor actor_ref(apactor, [](actor_base*)
-			{
-				// The raw pointer is only aliased long enough to forward into the shared_ptr overload.
-			});
-		return add_actor(actor_ref, afun);
-	}
-
-	void actor_manage::erase_actor(const nguid& aguid, const std::function<void()>& afun /*= nullptr*/)
+	void schedule_layer::erase_actor(const nguid& aguid, const std::function<void()>& afun /*= nullptr*/)
 	{
 		const nguid route_actor_guid = nodetypebyguid();
-		bool has_route_actor = false;
-		{
-			lock_read(m_mutex);
-			has_route_actor =m_actorbyid.contains(route_actor_guid);
-		}
-		// Inform the route actor first so remote nodes stop targeting this actor.
-		if (has_route_actor)
-		{
-			auto pro = std::make_shared<np_actornode_update_mass>(np_actornode_update_mass{
+		auto pro = std::make_shared<np_actornode_update_mass>(np_actornode_update_mass{
 					.m_mass = np_actornode_update
 					{
 						.m_id = nconfig.nodeid(),
 						.m_del = {aguid}
 					}
-				}
-			);
-			push_task_id<np_actornode_update_mass, false>(route_actor_guid, pro);
-		}
+			}
+		);
+		actor_manage::instance().push_task_id<np_actornode_update_mass, false>(route_actor_guid, pro);
 
 		bool should_run_callback = false;
 		ptractor lpactor = nullptr;
@@ -269,13 +236,13 @@ namespace ngl
 		}
 	}
 
-	bool actor_manage::is_have_actor(const nguid& aguid)
+	bool schedule_layer::is_have_actor(const nguid& aguid)
 	{
 		lock_read(m_mutex);
 		return m_actorbyid.contains(aguid);
 	}
 
-	void actor_manage::push(const ptractor& apactor, ptrnthread atorthread/* = nullptr*/, bool aready/* = true*/)
+	void schedule_layer::push(const ptractor& apactor, ptrnthread atorthread/* = nullptr*/, bool aready/* = true*/)
 	{
 		std::function<void()> ldefcallback = nullptr;
 		bool lshould_release_actor = false;
@@ -334,101 +301,77 @@ namespace ngl
 		}
 	}
 
-	ptractor* actor_manage::nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram)
+	ptractor* schedule_layer::nosafe_get_actorbyid(const nguid& aguid)
 	{
-		ptractor* lpactor = tools::findmap(m_actorbyid, aguid);
-		if (lpactor == nullptr)
+		return tools::findmap(m_actorbyid, aguid);
+	}
+
+	bool schedule_layer::push_task_id(const nguid& aguid, handle_pram& apram, bool aismass/* = true*/)
+	{
+		do
 		{
-			if (!apram.m_issend)
-			{
-				return nullptr;
-			}
-			// Forwarded messages fall back to the node-level routing actor when the target
-			// actor does not exist on this process.
-			const nguid lroute_actor_guid = nodetypebyguid();
-			lpactor = tools::findmap(m_actorbyid, lroute_actor_guid);
+			lock_write(m_mutex);
+			// Lookup is done under the scheduler lock so actor removal and enqueue stay atomic.
+			auto lpactor = nosafe_get_actorbyid(aguid);
 			if (lpactor == nullptr)
 			{
-				return nullptr;
+				if (!apram.m_issend)
+				{
+					std::cout << std::format("actor_manage push_task_id fail actor:{}", aguid) << std::endl;
+					return false;
+				}
+				break;
 			}
-		}
-		return lpactor;
-	}
-
-	void actor_manage::push_task_id(const nguid& aguid, handle_pram& apram)
-	{
-		lock_write(m_mutex);
-		// Lookup is done under the scheduler lock so actor removal and enqueue stay atomic.
-		auto lpactor = nosafe_get_actorbyid(aguid, apram);
-		if (lpactor == nullptr || is_unavailable((*lpactor)->activity_stat()))
+			if (is_unavailable((*lpactor)->activity_stat()))
+			{
+				std::cout << std::format("actor_manage push_task_id fail actor:{}", aguid) << std::endl;
+				return false;
+			}
+			nosafe_push_task_id(*lpactor, apram);
+			return false;
+		} while (false);		
+		
+		// Forwarded messages fall back to the node-level routing actor when the target
+		// actor does not exist on this process.
+		if (aismass)
 		{
-			std::cout << std::format("actor_manage push_task_id fail actor:{}", aguid) << std::endl;
-			return;
+			actor_manage::instance().push_task_id(nodetypebyguid(), apram);
 		}
-		nosafe_push_task_id(*lpactor, apram);
+
+		return true;
 	}
 
-	void actor_manage::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram)
+	bool schedule_layer::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram)
 	{
-		lock_write(m_mutex);
 		bool lmass = false;
-		ptractor lpclient = nullptr;
-		const nguid lnodetypeguid = nodetypebyguid();
 		for (i64_actorid actorid : asetguid)
 		{
-			auto lpactor = nosafe_get_actorbyid(actorid, apram);
-			if (lpactor == nullptr || is_unavailable((*lpactor)->activity_stat()))
-			{
-				continue;
-			}
-			if ((*lpactor)->id_guid() == lnodetypeguid)
-			{
-				// Preserve the original mass-send payload only for the route actor.
-				lmass = true;
-				lpclient = *lpactor;
-				continue;
-			}
-
-			// Local actors should not see the remote mass-send metadata.
-			handle_pram llocal = handle_pram::shallow_copy_without_massactors(apram);
-			nosafe_push_task_id(*lpactor, llocal);
+			lmass = lmass || push_task_id(actorid, apram, false);
 		}
-		if (lmass && lpclient != nullptr)
-		{
-			nosafe_push_task_id(lpclient, apram);
-		}
+		return lmass;		
 	}
 
-	void actor_manage::push_task_type(ENUM_ACTOR atype, handle_pram& apram)
+	void schedule_layer::push_task_type(ENUM_ACTOR atype, handle_pram& apram)
 	{
-		lock_write(m_mutex);
-		// 1. Deliver locally to every actor of the requested type on this node.
-		auto litor = m_actorbytype.find(atype);
-		if (litor != m_actorbytype.end())
 		{
-			for (const auto& lpair : litor->second)
+			lock_write(m_mutex);
+			// 1. Deliver locally to every actor of the requested type on this node.
+			auto litor = m_actorbytype.find(atype);
+			if (litor != m_actorbytype.end())
 			{
-				const ptractor& lpactors = lpair.second;
-				if (!is_unavailable(lpactors->activity_stat()))
+				for (const auto& lpair : litor->second)
 				{
-					nosafe_push_task_id(lpactors, apram);
+					const ptractor& lpactors = lpair.second;
+					if (!is_unavailable(lpactors->activity_stat()))
+					{
+						nosafe_push_task_id(lpactors, apram);
+					}
 				}
 			}
 		}
-		if (apram.m_issend)
-		{
-			// 2. Forward the same message to the route actor so remote nodes can receive it too.
-			const nguid route_actor_guid = nodetypebyguid();
-			ptractor* route_actor = tools::findmap(m_actorbyid, route_actor_guid);
-			if (route_actor == nullptr)
-			{
-				return;
-			}
-			nosafe_push_task_id(*route_actor, apram);
-		}
 	}
 
-	void actor_manage::broadcast_task(handle_pram& apram)
+	void schedule_layer::broadcast_task(handle_pram& apram)
 	{
 		lock_write(m_mutex);
 		for (const auto& lpair : m_actorbroadcast)
@@ -442,7 +385,7 @@ namespace ngl
 		}
 	}
 
-	void actor_manage::statrt_suspend_thread()
+	void schedule_layer::statrt_suspend_thread()
 	{
 		int lthreadnum = 0;
 		while (lthreadnum + 1 < m_threadnum)
@@ -466,7 +409,7 @@ namespace ngl
 		}
 	}
 
-	void actor_manage::finish_suspend_thread()
+	void schedule_layer::finish_suspend_thread()
 	{
 		lock_write(m_mutex);
 		m_suspend = false;
@@ -475,13 +418,13 @@ namespace ngl
 		m_sem.post();
 	}
 
-	int32_t actor_manage::actor_count()
+	int32_t schedule_layer::actor_count()
 	{
 		lock_read(m_mutex);
 		return (int32_t)m_actorbyid.size();
 	}
 
-	void actor_manage::get_actor_stat(msg_actor_stat& adata)
+	void schedule_layer::get_actor_stat(msg_actor_stat& adata)
 	{
 		lock_read(m_mutex);
 		std::vector<msg_actor> lstats;
@@ -498,17 +441,16 @@ namespace ngl
 			{
 				actor_stat_entry.m_actor[nguid::area(actor_guid)].push_back(nguid::actordataid(actor_guid));
 			}
-			lstats.emplace_back(std::move(actor_stat_entry));
+			adata.m_vec.emplace_back(std::move(actor_stat_entry));
 		}
-		adata.m_vec = std::move(lstats);
 	}
 
-	nguid actor_manage::nodetypebyguid()
+	nguid schedule_layer::nodetypebyguid()
 	{
 		return nconfig.nodetype() == ACTORSERVER ? actor_server::actorid() : actor_client::actorid();
 	}
 
-	nguid actor_manage::get_clientguid()
+	nguid schedule_layer::get_clientguid()
 	{
 		return nodetypebyguid();
 	}
@@ -529,7 +471,7 @@ namespace ngl
 		Catch
 	}
 
-	void actor_manage::run(std::stop_token astop)
+	void schedule_layer::run(std::stop_token astop)
 	{
 		ptrnthread worker_thread = nullptr;
 		ptractor ready_actor = nullptr;
@@ -561,5 +503,145 @@ namespace ngl
 				worker_thread->push(ready_actor);
 			}
 		}				
+	}
+
+	void actor_manage::init(i32_threadsize apthreadnum)
+	{
+		int32_t lpthreads = apthreadnum / LAYER_COUNT;
+		if (lpthreads <= 0)
+		{
+			lpthreads = 1;
+		}
+		for (int i = 0; i < LAYER_COUNT; ++i)
+		{
+			m_layers[i] = std::make_shared<schedule_layer>();
+			m_layers[i]->init(lpthreads, i);
+		}
+	}
+
+	void actor_manage::get_type(std::vector<i16_actortype>& aactortype)
+	{
+		std::set<i16_actortype> lset;
+		for (int i = 0; i < LAYER_COUNT; ++i)
+		{
+			std::set<i16_actortype> lsettemp;
+			m_layers[i]->get_type(lsettemp);
+			lset.merge(lsettemp);
+		}
+		aactortype.clear();
+		aactortype.insert(aactortype.begin(), lset.begin(), lset.end());
+	}
+
+	bool actor_manage::add_actor(actor_base* apactor, const std::function<void()>& afun)
+	{
+		if (apactor == nullptr)
+		{
+			return false;
+		}
+		ptractor actor_ref(apactor, [](actor_base*)
+			{
+				// The raw pointer is only aliased long enough to forward into the shared_ptr overload.
+			});
+		return get_layer(apactor->id_guid())->add_actor(actor_ref, afun);
+	}
+
+	bool actor_manage::add_actor(const ptractor& apactor, const std::function<void()>& afun)
+	{
+		return get_layer(apactor->id_guid())->add_actor(apactor, afun);
+	}
+
+	void actor_manage::erase_actor(const nguid& aguid, const std::function<void()>& afun /*= nullptr*/)
+	{
+		get_layer(aguid.id())->erase_actor(aguid, afun);
+	}
+
+	bool actor_manage::is_have_actor(const nguid& aguid)
+	{
+		return get_layer(aguid.id())->is_have_actor(aguid);
+	}
+
+	void actor_manage::push(const ptractor& apactor, ptrnthread atorthread /*= nullptr*/, bool aready /*= true*/)
+	{
+		get_layer(apactor->id_guid())->push(apactor, atorthread, aready);
+	}
+
+	void actor_manage::push_task_id(const nguid& aguid, handle_pram& apram)
+	{
+		get_layer(aguid.id())->push_task_id(aguid, apram);
+	}
+
+	void actor_manage::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram)
+	{
+		std::array<std::set<i64_actorid>, LAYER_COUNT> larray;
+		for (i64_actorid actorid : asetguid)
+		{
+			larray[layer_index(actorid)].insert(actorid);
+		}
+
+		bool lmass = false;
+		for (int i = 0; i < LAYER_COUNT; ++i)
+		{
+			if (!larray[i].empty())
+			{
+				lmass = lmass || m_layers[i]->push_task_id(larray[i], apram);
+			}
+		}
+		if (lmass)
+		{
+			push_task_id(schedule_layer::nodetypebyguid(), apram);
+		}
+	}
+
+	void actor_manage::push_task_type(ENUM_ACTOR atype, handle_pram& apram)
+	{
+		for (int i = 0; i < LAYER_COUNT; ++i)
+		{
+			m_layers[i]->push_task_type(atype, apram);
+		}
+		if (apram.m_issend)
+		{
+			actor_manage::instance().push_task_id(schedule_layer::nodetypebyguid(), apram);
+		}
+	}
+
+	void actor_manage::broadcast_task(handle_pram& apram)
+	{
+		for (int i = 0; i < LAYER_COUNT; ++i)
+		{
+			m_layers[i]->broadcast_task(apram);
+		}
+	}
+
+	void actor_manage::statrt_suspend_thread()
+	{
+		for (int i = 0; i < LAYER_COUNT; ++i)
+		{
+			m_layers[i]->statrt_suspend_thread();
+		}
+	}
+	void actor_manage::finish_suspend_thread()
+	{
+		for (int i = 0; i < LAYER_COUNT; ++i)
+		{
+			m_layers[i]->finish_suspend_thread();
+		}
+	}
+
+	int32_t actor_manage::actor_count()
+	{
+		int32_t lsun = 0;
+		for (int i = 0; i < LAYER_COUNT; ++i)
+		{
+			lsun += m_layers[i]->actor_count();
+		}
+		return lsun;
+	}
+
+	void actor_manage::get_actor_stat(msg_actor_stat& adata)
+	{
+		for (int i = 0; i < LAYER_COUNT; ++i)
+		{
+			m_layers[i]->get_actor_stat(adata);
+		}
 	}
 }//namespace ngl
