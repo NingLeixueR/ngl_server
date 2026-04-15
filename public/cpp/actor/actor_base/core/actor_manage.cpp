@@ -424,24 +424,21 @@ namespace ngl
 		return (int32_t)m_actorbyid.size();
 	}
 
-	void schedule_layer::get_actor_stat(msg_actor_stat& adata)
+	void schedule_layer::get_actor_stat(std::map<ENUM_ACTOR, msg_actor>& astatmap)
 	{
 		lock_read(m_mutex);
-		std::vector<msg_actor> lstats;
-		lstats.reserve(m_actorbytype.size());
 		for (auto& [actor_type, actors_by_guid] : m_actorbytype)
 		{
 			if (actors_by_guid.empty())
 			{
 				continue;
 			}
-			msg_actor actor_stat_entry;
-			actor_stat_entry.m_actor_name = tools::em<ENUM_ACTOR>::name(actor_type);
+			msg_actor& lstat = astatmap[actor_type];
+			lstat.m_actor_name = tools::em<ENUM_ACTOR>::name(actor_type);
 			for (auto& [actor_guid, _] : actors_by_guid)
 			{
-				actor_stat_entry.m_actor[nguid::area(actor_guid)].push_back(nguid::actordataid(actor_guid));
+				lstat.m_actor[nguid::area(actor_guid)].push_back(nguid::actordataid(actor_guid));
 			}
-			adata.m_vec.emplace_back(std::move(actor_stat_entry));
 		}
 	}
 
@@ -639,9 +636,17 @@ namespace ngl
 
 	void actor_manage::get_actor_stat(msg_actor_stat& adata)
 	{
+		std::map<ENUM_ACTOR, msg_actor> lstatmap;
 		for (int i = 0; i < LAYER_COUNT; ++i)
 		{
-			m_layers[i]->get_actor_stat(adata);
+			m_layers[i]->get_actor_stat(lstatmap);
 		}
+		std::vector<msg_actor> lstats;
+		lstats.reserve(lstatmap.size());
+		for (auto& [ltype, lstat] : lstatmap)
+		{
+			lstats.emplace_back(std::move(lstat));
+		}
+		adata.m_vec = std::move(lstats);
 	}
 }//namespace ngl

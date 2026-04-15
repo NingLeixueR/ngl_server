@@ -64,7 +64,7 @@ namespace ngl
 
 		bool is_unavailable(ngl::actor_stat astat) noexcept;
 
-		// Resolve a local actor or fall back to the route actor for forwarded traffic.
+		// Resolve a local actor (no route-actor fallback).
 		ptractor* nosafe_get_actorbyid(const nguid& aguid);
 
 		// Push work into an actor queue and schedule it if the actor was idle.
@@ -120,8 +120,8 @@ namespace ngl
 		// Return the number of registered actors.
 		int32_t actor_count();
 
-		// Collect scheduler statistics grouped by actor type.
-		void get_actor_stat(msg_actor_stat& adata);
+		// Collect scheduler statistics grouped by actor type for this layer.
+		void get_actor_stat(std::map<ENUM_ACTOR, msg_actor>& astatmap);
 	};
 
 	class actor_manage
