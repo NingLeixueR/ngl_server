@@ -11,7 +11,10 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor base.
+// File overview: Layered actor scheduling implementation.
+//
+// schedule_layer: self-contained scheduling unit (dispatcher + workers + actor tables).
+// actor_manage:   singleton routing layer that fans out to schedule_layer instances.
 
 #include "actor/actor_logic/actor_client/actor_client.h"
 #include "actor/actor_logic/actor_server/actor_server.h"
@@ -24,6 +27,10 @@
 
 namespace ngl
 {
+	// ========================================================================
+	// schedule_layer — one independent scheduling unit
+	// ========================================================================
+
 	schedule_layer::schedule_layer():
 		m_thread([this](std::stop_token astop)
 			{
@@ -71,7 +78,6 @@ namespace ngl
 		}
 		catch (...)
 		{
-			// Process teardown must not fail because actor cleanup raised an exception.
 		}
 	}
 
@@ -112,8 +118,7 @@ namespace ngl
 		}
 		if (lpactor->push(apram) && lstat == actor_stat_free)
 		{
-			// Only transition free actors into the ready queue. Running/list actors will be
-			// rescheduled by the worker thread once they finish the current batch.
+			// Actor was idle — move it to the ready queue so the dispatcher picks it up.
 			m_actorlist.emplace_back(lpactor);
 			lpactor->set_activity_stat(actor_stat_list);
 			if (!m_suspend && !m_workthreads.empty())
@@ -127,8 +132,7 @@ namespace ngl
 	{
 		const nguid actor_guid = apactor->guid();
 		const ENUM_ACTOR actor_type = apactor->type();
-		// actor_client and actor_server are the routing actors themselves, so they do not
-		// announce their existence through the route actor.
+		// Route actors (actor_client / actor_server) skip the route-sync notification.
 		const bool needs_route_sync = actor_type != ACTOR_CLIENT && actor_type != ACTOR_SERVER;
 		const nguid route_actor_guid = nodetypebyguid();
 		{
@@ -137,7 +141,7 @@ namespace ngl
 			{
 				std::cout << std::format("actor_manage add_actor duplicate guid:{}", actor_guid) << std::endl;
 				return false;
-			} 
+			}
 			m_actortype.insert(static_cast<i16_actortype>(actor_type));
 			m_actorbytype[actor_type].try_emplace(actor_guid, apactor);
 			if (apactor->isbroadcast())
@@ -147,7 +151,7 @@ namespace ngl
 		}
 		if (needs_route_sync)
 		{
-			// Notify the route actor so other nodes can discover the new actor location.
+			// Tell the route actor about the new actor so remote nodes can discover it.
 			auto pro = std::make_shared<np_actornode_update_mass>(np_actornode_update_mass{
 						.m_mass = np_actornode_update
 						{
@@ -161,7 +165,7 @@ namespace ngl
 		}
 		else
 		{
-			// Route actors become immediately available because nothing needs to sync them first.
+			// Route actors are immediately available — no sync needed.
 			apactor->set_activity_stat(actor_stat_free);
 		}
 		return true;
@@ -169,6 +173,7 @@ namespace ngl
 
 	void schedule_layer::erase_actor(const nguid& aguid, const std::function<void()>& afun /*= nullptr*/)
 	{
+		// Notify the route actor so remote nodes stop targeting this actor.
 		const nguid route_actor_guid = nodetypebyguid();
 		auto pro = std::make_shared<np_actornode_update_mass>(np_actornode_update_mass{
 					.m_mass = np_actornode_update
@@ -184,7 +189,7 @@ namespace ngl
 		ptractor lpactor = nullptr;
 		{
 			lock_write(m_mutex);
-			// Remove the actor from all manager-side lookup tables before scheduling teardown.
+			// Remove from all lookup tables before scheduling teardown.
 			if(!tools::erasemap(m_actorbyid, aguid, lpactor))
 			{
 				std::cout << std::format("actor_manage erase_actor missing guid:{}", aguid) << std::endl;
@@ -205,7 +210,7 @@ namespace ngl
 
 			if (lpactor->activity_stat() == actor_stat_list)
 			{
-				// If the actor is waiting in the scheduler queue, remove it immediately.
+				// Waiting in the ready queue — pull it out now.
 				std::erase_if(m_actorlist, [&aguid](const auto& actor) {
 					return aguid == actor->id_guid();
 				});
@@ -218,7 +223,7 @@ namespace ngl
 			}
 			else
 			{
-				// The actor is currently running, so delay the callback until the worker returns it.
+				// Actor is running — defer the callback until the worker returns it.
 				if (afun != nullptr)
 				{
 					m_delactorfun.try_emplace(lpactor->id_guid(), afun);
@@ -252,7 +257,7 @@ namespace ngl
 			lock_write(m_mutex);
 			if (atorthread != nullptr)
 			{
-				// Workers return themselves here after finishing an actor batch.
+				// Park the worker during suspension, otherwise return it to the idle pool.
 				if (m_suspend)
 				{
 					m_suspendthreads.emplace_back(atorthread);
@@ -263,7 +268,8 @@ namespace ngl
 				}
 			}
 			if (!m_actorbyid.contains(lguid))
-			{//erase_actor
+			{
+				// Actor was erased while running — execute the deferred callback.
 				auto lcallback = tools::findmap(m_delactorfun, lguid);
 				if (lcallback != nullptr)
 				{
@@ -278,13 +284,13 @@ namespace ngl
 				const bool lhigh = !apactor->high_empty();
 				if (!apactor->list_empty() && (aready || lhigh))
 				{
-					// More messages arrived while the actor was running, so queue it again.
+					// More messages arrived while running — re-queue.
 					m_actorlist.emplace_back(apactor);
 					apactor->set_activity_stat(actor_stat_list);
 				}
 				else
 				{
-					// No pending work left; the actor goes back to the idle pool.
+					// No pending work — return to idle.
 					apactor->set_activity_stat(actor_stat_free);
 				}
 			}
@@ -311,7 +317,6 @@ namespace ngl
 		do
 		{
 			lock_write(m_mutex);
-			// Lookup is done under the scheduler lock so actor removal and enqueue stay atomic.
 			auto lpactor = nosafe_get_actorbyid(aguid);
 			if (lpactor == nullptr)
 			{
@@ -331,8 +336,7 @@ namespace ngl
 			return false;
 		} while (false);		
 		
-		// Forwarded messages fall back to the node-level routing actor when the target
-		// actor does not exist on this process.
+		// Actor not found locally — forward to the route actor for remote delivery.
 		if (aismass)
 		{
 			actor_manage::instance().push_task_id(nodetypebyguid(), apram);
@@ -353,19 +357,16 @@ namespace ngl
 
 	void schedule_layer::push_task_type(ENUM_ACTOR atype, handle_pram& apram)
 	{
+		lock_write(m_mutex);
+		auto litor = m_actorbytype.find(atype);
+		if (litor != m_actorbytype.end())
 		{
-			lock_write(m_mutex);
-			// 1. Deliver locally to every actor of the requested type on this node.
-			auto litor = m_actorbytype.find(atype);
-			if (litor != m_actorbytype.end())
+			for (const auto& lpair : litor->second)
 			{
-				for (const auto& lpair : litor->second)
+				const ptractor& lpactors = lpair.second;
+				if (!is_unavailable(lpactors->activity_stat()))
 				{
-					const ptractor& lpactors = lpair.second;
-					if (!is_unavailable(lpactors->activity_stat()))
-					{
-						nosafe_push_task_id(lpactors, apram);
-					}
+					nosafe_push_task_id(lpactors, apram);
 				}
 			}
 		}
@@ -377,7 +378,6 @@ namespace ngl
 		for (const auto& lpair : m_actorbroadcast)
 		{
 			const ptractor& actor_ref = lpair.second;
-			// Broadcast ticks are opt-in and still respect the actor lifecycle state.
 			if (actor_ref->isbroadcast() && !is_unavailable(actor_ref->activity_stat()))
 			{
 				nosafe_push_task_id(actor_ref, apram);
@@ -392,7 +392,6 @@ namespace ngl
 		{
 			{
 				lock_write(m_mutex);
-				// Keep one thread outside the suspended pool so the caller can continue making progress.
 				m_suspend = true;
 				if (!m_workthreads.empty())
 				{
@@ -475,12 +474,12 @@ namespace ngl
 
 		while (!astop.stop_requested())
 		{
-			// The semaphore is posted whenever there may be at least one ready actor and one idle worker.
 			m_sem.wait();
 			if (astop.stop_requested())
 			{
 				break;
 			}
+			// Drain the ready queue: pop one actor + one worker per iteration.
 			for (;;)
 			{
 				{
@@ -489,8 +488,6 @@ namespace ngl
 					{
 						break;
 					}
-					// The scheduler is single-threaded: it pops one ready actor and one idle
-					// worker, then lets the worker run independently.
 					worker_thread = m_workthreads.front();
 					ready_actor = m_actorlist.front();
 					m_actorlist.pop_front();
@@ -499,8 +496,12 @@ namespace ngl
 				}
 				worker_thread->push(ready_actor);
 			}
-		}				
+		}
 	}
+
+	// ========================================================================
+	// actor_manage — singleton routing layer
+	// ========================================================================
 
 	void actor_manage::init(i32_threadsize apthreadnum)
 	{
@@ -537,7 +538,6 @@ namespace ngl
 		}
 		ptractor actor_ref(apactor, [](actor_base*)
 			{
-				// The raw pointer is only aliased long enough to forward into the shared_ptr overload.
 			});
 		return get_layer(apactor->id_guid())->add_actor(actor_ref, afun);
 	}
@@ -595,6 +595,7 @@ namespace ngl
 		{
 			m_layers[i]->push_task_type(atype, apram);
 		}
+		// Forward once to the route actor so remote nodes receive the type-broadcast.
 		if (apram.m_issend)
 		{
 			actor_manage::instance().push_task_id(schedule_layer::nodetypebyguid(), apram);

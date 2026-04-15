@@ -11,7 +11,14 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor base.
+// File overview: Layered actor scheduling.
+//
+// Actors are distributed across LAYER_COUNT independent schedule_layer instances,
+// each with its own mutex, dispatcher thread, and worker pool. An actor is assigned
+// to a layer by guid.id() % LAYER_COUNT, so layers operate in parallel without
+// contention. actor_manage is the singleton routing layer that dispatches calls to
+// the correct schedule_layer and handles cross-layer concerns (route-actor fallback,
+// statistics merging, suspension coordination).
 
 #pragma once
 
@@ -40,37 +47,42 @@ namespace ngl
 	};
 	using ptrnthread = std::shared_ptr<nthread>;
 
+	// One independent scheduling unit. Owns a dispatcher thread, a worker pool,
+	// and all actor lookup tables for the actors assigned to this layer.
+	// All public methods are thread-safe (guarded by m_mutex).
 	class schedule_layer
 	{
 	private:
 		schedule_layer(const schedule_layer&) = delete;
 		schedule_layer& operator=(const schedule_layer&) = delete;
 
-		std::deque<ptrnthread>		m_workthreads;		// Idle workers available for scheduling.
-		std::deque<ptrnthread>		m_workthreadscopy;	// Full worker set kept for bookkeeping/debugging.
-		bool						m_suspend = false;	// Freeze dispatch while world-state critical sections run.
+		std::deque<ptrnthread>		m_workthreads;		// Idle workers ready to run an actor.
+		std::deque<ptrnthread>		m_workthreadscopy;	// Snapshot of all workers (for shutdown).
+		bool						m_suspend = false;	// True while dispatch is frozen.
 		std::deque<ptrnthread>		m_suspendthreads;	// Workers parked during suspension.
-		i32_threadsize				m_threadnum = -1;	// Configured worker count.
-		std::unordered_map<nguid, ptractor, guid_hash> m_actorbyid;		// Fast lookup by full actor guid.
-		std::map<nguid, ptractor>	m_actorbroadcast;	// Actors that receive periodic broadcast ticks.
-		std::deque<ptractor>		m_actorlist;		// Actors waiting for a worker.
-		std::set<i16_actortype>		m_actortype;		// Distinct actor types currently registered.
-		std::map<nguid, std::function<void()>>			m_delactorfun;	// Deferred callbacks to run after in-flight actors finish.
-		std::map<ENUM_ACTOR, std::map<i64_actorid, ptractor>> m_actorbytype;	// Lookup by actor type, then guid.
+		i32_threadsize				m_threadnum = -1;	// Worker count for this layer.
+		std::unordered_map<nguid, ptractor, guid_hash> m_actorbyid;		// guid -> actor.
+		std::map<nguid, ptractor>	m_actorbroadcast;	// Actors that opted into broadcast ticks.
+		std::deque<ptractor>		m_actorlist;		// Ready queue: actors waiting for a worker.
+		std::set<i16_actortype>		m_actortype;		// Distinct actor types in this layer.
+		std::map<nguid, std::function<void()>>			m_delactorfun;	// Deferred erase callbacks for in-flight actors.
+		std::map<ENUM_ACTOR, std::map<i64_actorid, ptractor>> m_actorbytype;	// type -> (guid -> actor).
 
-		std::shared_mutex			m_mutex;
-		ngl::tools::sem				m_sem;
-		std::jthread				m_thread;			// Start last so the dispatcher sees initialized state.
+		std::shared_mutex			m_mutex;			// Guards all mutable state above.
+		ngl::tools::sem				m_sem;				// Wakes the dispatcher when work is available.
+		std::jthread				m_thread;			// Dispatcher thread (must be last member).
 
+		// Return true if the actor state cannot accept new work.
 		bool is_unavailable(ngl::actor_stat astat) noexcept;
 
-		// Resolve a local actor (no route-actor fallback).
+		// Look up an actor in this layer only. Returns nullptr if not found.
 		ptractor* nosafe_get_actorbyid(const nguid& aguid);
 
-		// Push work into an actor queue and schedule it if the actor was idle.
+		// Enqueue a message and transition the actor to the ready queue if idle.
+		// Caller must hold m_mutex.
 		void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram);
 
-		// Dispatcher loop: pair queued actors with available workers.
+		// Dispatcher loop: pairs ready actors with idle workers until stopped.
 		void run(std::stop_token astop);
 	public:
 
@@ -78,52 +90,59 @@ namespace ngl
 
 		~schedule_layer() noexcept;
 
-		// Return the actor id used as the node-level routing endpoint.
+		// Return the guid of the node-level routing actor (actor_client or actor_server).
 		static nguid get_clientguid();
-
-		// Resolve the routing actor for this node type.
 		static nguid nodetypebyguid();
 
-		// Create the worker pool once during startup.
+		// Create workers and start the dispatcher. alayer is used to offset worker IDs.
 		void init(i32_threadsize apthreadnum, int32_t alayer);
 
-		// Return the set of currently registered actor types.
+		// Append this layer's actor types into aactortype.
 		void get_type(std::set<i16_actortype>& aactortype);
 
-		// Register a newly created actor instance.
+		// Register an actor in this layer and notify the route actor (via actor_manage).
 		bool add_actor(const ptractor& apactor, const std::function<void()>& afun);
 
-		// Remove an actor and optionally run a callback after release.
+		// Remove an actor, notify the route actor, and run afun when safe.
 		void erase_actor(const nguid& aguid, const std::function<void()>& afun = nullptr);
 
-		// Return whether the actor is still registered.
+		// Check whether an actor is registered in this layer.
 		bool is_have_actor(const nguid& aguid);
 
-		// Return a worker to the pool and reschedule the actor if more work remains.
+		// Return a finished worker to the pool and reschedule the actor if it has pending work.
+		// Called by nthread after processing an actor batch.
 		void push(const ptractor& apactor, ptrnthread atorthread = nullptr, bool aready = true);
 
-		// Route work to one actor or a set of actors.
+		// Push a message to a specific actor in this layer.
+		// Returns false if delivered locally, true if the caller should forward to the route actor.
+		// When aismass is true and the actor is missing, forwards to the route actor directly.
 		bool push_task_id(const nguid& aguid, handle_pram& apram, bool aismass = true);
+
+		// Push a message to each actor in asetguid that belongs to this layer.
+		// Returns true if any actor was missing and needs route-actor forwarding.
 		bool push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram);
 
-		// Broadcast work to all actors of a given type.
+		// Deliver a message to every actor of the given type in this layer.
 		void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
-		// Deliver the periodic broadcast task to actors that opted in.
+		// Deliver a broadcast tick to all opted-in actors in this layer.
 		void broadcast_task(handle_pram& apram);
 
-		// Pause and resume dispatch while critical shared state is updated.
-		// Suspension intentionally leaves one worker outside the parked pool.
+		// Suspend / resume dispatch. Suspension parks all workers except one.
 		void statrt_suspend_thread();
 		void finish_suspend_thread();
 
-		// Return the number of registered actors.
+		// Return the number of actors registered in this layer.
 		int32_t actor_count();
 
-		// Collect scheduler statistics grouped by actor type for this layer.
+		// Merge this layer's per-type statistics into astatmap.
 		void get_actor_stat(std::map<ENUM_ACTOR, msg_actor>& astatmap);
 	};
 
+	// Singleton routing layer. Routes every call to the correct schedule_layer
+	// by guid.id() % LAYER_COUNT, and handles cross-layer concerns such as
+	// route-actor fallback, statistics merging, and coordinated suspension.
+	// External callers use this class exclusively; schedule_layer is an internal detail.
 	class actor_manage
 	{
 		static constexpr int32_t LAYER_COUNT = 4;
@@ -135,6 +154,7 @@ namespace ngl
 
 		std::array<std::shared_ptr<schedule_layer>, LAYER_COUNT> m_layers;
 
+		// Map an actor id to a layer index in [0, LAYER_COUNT).
 		int32_t layer_index(int64_t actorid) const noexcept
 		{
 			return static_cast<int32_t>(static_cast<uint64_t>(actorid) % LAYER_COUNT);
@@ -151,13 +171,13 @@ namespace ngl
 			return ltemp;
 		}
 
-		// Create the worker pool once during startup.
+		// Distribute apthreadnum workers evenly across layers and start dispatchers.
 		void init(i32_threadsize apthreadnum);
 
-		// Return the set of currently registered actor types.
+		// Collect the union of actor types across all layers.
 		void get_type(std::vector<i16_actortype>& aactortype);
 
-		// Build a handle_pram from a typed payload and enqueue it for the target actor.
+		// Convenience: build a handle_pram from a typed payload and route it.
 		template <typename T, bool IS_SEND = true>
 		inline void push_task_id(const nguid& aguid, std::shared_ptr<T>& apram)
 		{
@@ -165,40 +185,41 @@ namespace ngl
 			m_layers[layer_index(aguid)]->push_task_id(aguid, lparm);
 		}
 
-		// Register a newly created actor instance.
+		// Register an actor (raw-pointer overload wraps into shared_ptr).
 		bool add_actor(actor_base* apactor, const std::function<void()>& afun);
 
-		// Register a newly created actor instance.
+		// Register an actor in the layer determined by its guid.
 		bool add_actor(const ptractor& apactor, const std::function<void()>& afun);
 
-		// Remove an actor and optionally run a callback after release.
+		// Remove an actor and run afun when safe.
 		void erase_actor(const nguid& aguid, const std::function<void()>& afun = nullptr);
 
-		// Return whether the actor is still registered.
+		// Check whether an actor exists in any layer.
 		bool is_have_actor(const nguid& aguid);
 
-		// Return a worker to the pool and reschedule the actor if more work remains.
+		// Return a finished worker and actor to the correct layer.
 		void push(const ptractor& apactor, ptrnthread atorthread = nullptr, bool aready = true);
 
-		// Route work to one actor or a set of actors.
+		// Route a message to one actor, falling back to the route actor if missing.
 		void push_task_id(const nguid& aguid, handle_pram& apram);
+
+		// Partition a set of targets by layer, deliver locally, and forward misses to the route actor.
 		void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram);
 
-		// Broadcast work to all actors of a given type.
+		// Deliver to all actors of a type across all layers, then forward to the route actor if needed.
 		void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
-		// Deliver the periodic broadcast task to actors that opted in.
+		// Deliver a broadcast tick to all opted-in actors across all layers.
 		void broadcast_task(handle_pram& apram);
 
-		// Pause and resume dispatch while critical shared state is updated.
-		// Suspension intentionally leaves one worker outside the parked pool.
+		// Suspend / resume all layers. Suspension leaves one worker active per layer.
 		void statrt_suspend_thread();
 		void finish_suspend_thread();
 
-		// Return the number of registered actors.
+		// Return the total number of actors across all layers.
 		int32_t actor_count();
 
-		// Collect scheduler statistics grouped by actor type.
+		// Collect and merge per-type statistics from all layers.
 		void get_actor_stat(msg_actor_stat& adata);
 	};
 
