@@ -71,38 +71,35 @@ namespace ngl
 
 	bool schedule_layer::add_actor(const ptractor& apactor, const std::function<void()>& afun)
 	{
-		const nguid actor_guid = apactor->guid();
-		const ENUM_ACTOR actor_type = apactor->type();
-		// Route actors (actor_client / actor_server) skip the route-sync notification.
-		const bool needs_route_sync = actor_type != ACTOR_CLIENT && actor_type != ACTOR_SERVER;
-		const nguid route_actor_guid = nodetypebyguid();
+		const nguid lguid = apactor->guid();
+		const ENUM_ACTOR ltype = apactor->type();
 		{
 			lock_write(m_mutex);
-			if (!m_actorbyid.try_emplace(actor_guid, apactor).second)
+			if (!m_actorbyid.try_emplace(lguid, apactor).second)
 			{
-				std::cout << std::format("actor_manage add_actor duplicate guid:{}", actor_guid) << std::endl;
+				std::cout << std::format("actor_manage add_actor duplicate guid:{}", lguid) << std::endl;
 				return false;
 			}
-			m_actortype.insert(static_cast<i16_actortype>(actor_type));
-			m_actorbytype[actor_type].try_emplace(actor_guid, apactor);
+			m_actortype.insert(static_cast<i16_actortype>(ltype));
+			m_actorbytype[ltype].try_emplace(lguid, apactor);
 			if (apactor->isbroadcast())
 			{
-				m_actorbroadcast.try_emplace(actor_guid, apactor);
+				m_actorbroadcast.try_emplace(lguid, apactor);
 			}
 		}
-		if (needs_route_sync)
+		if (ltype != ACTOR_CLIENT && ltype != ACTOR_SERVER)
 		{
 			// Tell the route actor about the new actor so remote nodes can discover it.
 			auto pro = std::make_shared<np_actornode_update_mass>(np_actornode_update_mass{
 						.m_mass = np_actornode_update
 						{
 							.m_id = nconfig.nodeid(),
-							.m_add = {actor_guid},
+							.m_add = {lguid},
 						},
 						.m_fun = afun
 				}
 			);
-			actor_manage::instance().push_task_id<np_actornode_update_mass, false>(route_actor_guid, pro);
+			actor_manage::instance().push_task_id<np_actornode_update_mass, false>(nodetypebyguid(), pro);
 		}
 		else
 		{
@@ -114,8 +111,6 @@ namespace ngl
 
 	void schedule_layer::erase_actor(const nguid& aguid, const std::function<void()>& afun /*= nullptr*/)
 	{
-		// Notify the route actor so remote nodes stop targeting this actor.
-		const nguid route_actor_guid = nodetypebyguid();
 		auto pro = std::make_shared<np_actornode_update_mass>(np_actornode_update_mass{
 					.m_mass = np_actornode_update
 					{
@@ -124,9 +119,9 @@ namespace ngl
 					}
 			}
 		);
-		actor_manage::instance().push_task_id<np_actornode_update_mass, false>(route_actor_guid, pro);
+		actor_manage::instance().push_task_id<np_actornode_update_mass, false>(nodetypebyguid(), pro);
 
-		bool should_run_callback = false;
+		bool lshould_run_callback = false;
 		ptractor lpactor = nullptr;
 		{
 			lock_write(m_mutex);
@@ -156,11 +151,11 @@ namespace ngl
 					return aguid == actor->id_guid();
 				});
 				lpactor->set_activity_stat(actor_stat_close);
-				should_run_callback = true;
+				lshould_run_callback = true;
 			}
 			else if (lpactor->activity_stat() == actor_stat_free)
 			{
-				should_run_callback = true;
+				lshould_run_callback = true;
 			}
 			else
 			{
@@ -172,7 +167,7 @@ namespace ngl
 			}
 			lpactor->set_activity_stat(actor_stat_close);
 		}
-		if (should_run_callback)
+		if (lshould_run_callback)
 		{
 			lpactor->release();
 			if (afun != nullptr)
@@ -306,10 +301,10 @@ namespace ngl
 		lock_write(m_mutex);
 		for (const auto& lpair : m_actorbroadcast)
 		{
-			const ptractor& actor_ref = lpair.second;
-			if (actor_ref->isbroadcast() && !is_unavailable(actor_ref->activity_stat()))
+			const ptractor& lpactor = lpair.second;
+			if (lpactor->isbroadcast() && !is_unavailable(lpactor->activity_stat()))
 			{
-				nosafe_push_task_id(actor_ref, apram);
+				nosafe_push_task_id(lpactor, apram);
 			}
 		}
 	}
@@ -354,20 +349,10 @@ namespace ngl
 		actor_manage::instance().statrt_suspend_thread();
 	}
 
-	actor_suspend::~actor_suspend()
-	{		
-		Try
-		{
-			actor_manage::instance().finish_suspend_thread();
-			log_info()->print("finish actor_suspend");
-		}
-		Catch
-	}
-
 	void schedule_layer::run()
 	{
-		ptrnthread worker_thread = nullptr;
-		ptractor ready_actor = nullptr;
+		ptrnthread lpthread = nullptr;
+		ptractor lpactor = nullptr;
 
 		for (;;)
 		{
@@ -375,20 +360,20 @@ namespace ngl
 			// Drain the ready queue: acquire a worker first, then pop an actor.
 			for (;;)
 			{
-				worker_thread = actor_manage::instance().pop_free_hreads();
+				lpthread = actor_manage::instance().pop_free_hreads();
 				{
 					lock_write(m_mutex);
 					if (m_actorlist.empty())
 					{
 						// No actor to dispatch — return the worker to the pool.
-						actor_manage::instance().push_workthreads(worker_thread);
+						actor_manage::instance().push_workthreads(lpthread);
 						break;
 					}
-					ready_actor = m_actorlist.front();
+					lpactor = m_actorlist.front();
 					m_actorlist.pop_front();
-					ready_actor->set_activity_stat(actor_stat_run);
+					lpactor->set_activity_stat(actor_stat_run);
 				}
-				worker_thread->push(ready_actor);
+				lpthread->push(lpactor);
 			}
 		}
 	}
@@ -410,8 +395,7 @@ namespace ngl
 		for (int i = 0; i < LAYER_COUNT; ++i)
 		{
 			m_layers[i] = std::make_shared<schedule_layer>();
-		}
-		
+		}		
 	}
 
 	void actor_manage::get_type(std::vector<i16_actortype>& aactortype)
