@@ -11,7 +11,11 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements actor worker-thread scheduling.
+// File overview: Actor worker thread implementation.
+//
+// The worker loop: wait on sem → process actor messages → return worker
+// and actor to actor_manage via push(). The thread is detached at
+// construction and runs for the process lifetime.
 
 #include "actor/actor_base/core/actor_manage.h"
 #include "actor/actor_base/core/nthread.h"

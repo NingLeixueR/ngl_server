@@ -11,7 +11,16 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares actor worker-thread scheduling support.
+// File overview: Actor worker thread.
+//
+// Each nthread is a detached worker that waits for an actor assignment,
+// processes its message batch, then returns both itself and the actor to
+// actor_manage. Workers are pooled in actor_manage and shared across all
+// schedule_layer instances.
+//
+// Lifetime: created once during actor_manage::init(), never destroyed.
+// The thread is detached — no join or stop logic. See actor_manage.h
+// file-level comment for the rationale behind this design choice.
 
 #pragma once
 

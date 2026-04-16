@@ -13,12 +13,31 @@
 */
 // File overview: Layered actor scheduling.
 //
-// Actors are distributed across LAYER_COUNT independent schedule_layer instances,
-// each with its own mutex, dispatcher thread, and worker pool. An actor is assigned
-// to a layer by guid.id() % LAYER_COUNT, so layers operate in parallel without
-// contention. actor_manage is the singleton routing layer that dispatches calls to
-// the correct schedule_layer and handles cross-layer concerns (route-actor fallback,
-// statistics merging, suspension coordination).
+// Architecture:
+//   schedule_layer  — independent scheduling unit (own mutex, dispatcher thread,
+//                     actor tables). Multiple instances run in parallel.
+//   actor_manage    — singleton routing layer that fans out to schedule_layer
+//                     instances and owns the shared worker pool.
+//
+// Layer assignment:
+//   Singleton actors (type >= ACTOR_SIGNLE_START): type & (LAYER_COUNT-1)
+//   Dynamic   actors (ACTOR_ROLE, ACTOR_ROBOT…):   dataid & (LAYER_COUNT-1)
+//   This ensures dynamic actors of the same type are spread across layers
+//   rather than all landing on one (which would happen with raw id % N,
+//   because the type field occupies the lowest bits of the packed nguid).
+//
+// Worker pool:
+//   Workers live in actor_manage and are shared across all layers.
+//   A dispatcher acquires a worker via pop_free_hreads(), pairs it with a
+//   ready actor, and the worker returns itself via push_workthreads() when done.
+//
+// Lifetime:
+//   Both actor_manage and schedule_layer are designed to live for the entire
+//   process lifetime. Their threads are detached (not joinable) and their
+//   destructors perform no cleanup. This is intentional: adding graceful
+//   shutdown would require stop-token plumbing, drain logic, and ordering
+//   constraints across layers and workers — complexity that buys nothing
+//   when the OS reclaims all resources at process exit anyway.
 
 #pragma once
 
@@ -47,9 +66,14 @@ namespace ngl
 	};
 	using ptrnthread = std::shared_ptr<nthread>;
 
-	// One independent scheduling unit. Owns a dispatcher thread, a worker pool,
-	// and all actor lookup tables for the actors assigned to this layer.
+	// One independent scheduling unit. Owns a dispatcher thread and all actor
+	// lookup tables for the actors assigned to this layer.
+	// Workers are borrowed from the shared pool in actor_manage.
 	// All public methods are thread-safe (guarded by m_mutex).
+	//
+	// Lifetime: constructed once, never destroyed. The dispatcher thread is
+	// detached at construction and runs for the process lifetime. No graceful
+	// shutdown is implemented — see file-level comment for rationale.
 	class schedule_layer
 	{
 	private:
@@ -77,12 +101,15 @@ namespace ngl
 		// Caller must hold m_mutex.
 		void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram);
 
-		// Dispatcher loop: pairs ready actors with idle workers until stopped.
+		// Dispatcher loop: drains the ready queue by pairing actors with workers.
+		// Runs forever on a detached thread — no stop condition by design.
 		void run();
 	public:
 
 		schedule_layer();
 
+		// Destructor is trivial — the detached dispatcher thread is abandoned at
+		// process exit. No drain or join logic needed (see file-level comment).
 		~schedule_layer() noexcept = default;
 
 		// Return the guid of the node-level routing actor (actor_client or actor_server).
@@ -127,28 +154,28 @@ namespace ngl
 		void get_actor_stat(std::map<ENUM_ACTOR, msg_actor>& astatmap);
 	};
 
-	// Singleton routing layer. Routes every call to the correct schedule_layer
-	// by guid.id() % LAYER_COUNT, and handles cross-layer concerns such as
+	// Singleton routing layer that owns the shared worker pool and routes every
+	// call to the correct schedule_layer. Handles cross-layer concerns:
 	// route-actor fallback, statistics merging, and coordinated suspension.
-	// External callers use this class exclusively; schedule_layer is an internal detail.
+	// External callers use this class exclusively; schedule_layer is internal.
+	//
+	// Lifetime: heap-allocated singleton, never destroyed. See file-level comment.
 	class actor_manage
 	{
-		static constexpr int32_t LAYER_COUNT = 8;
-		static_assert((LAYER_COUNT& (LAYER_COUNT - 1)) == 0, "LAYER_COUNT must be power of 2");
-
 		actor_manage(const actor_manage&) = delete;
 		actor_manage& operator=(const actor_manage&) = delete;
-		
+
+		static constexpr int32_t LAYER_COUNT = 8;	// Must be power of 2 for bit-mask routing.
+		static_assert((LAYER_COUNT& (LAYER_COUNT - 1)) == 0, "LAYER_COUNT must be power of 2");
 
 		std::array<std::shared_ptr<schedule_layer>, LAYER_COUNT> m_layers;
-		int32_t						m_threadcount = 0;
+		int32_t				m_threadcount = 0;
 		struct threadindex
 		{
-			ptrnthread m_work;
-			bool m_free = true;
+			ptrnthread	m_work = nullptr;
+			bool		m_free = true;
 
-			threadindex():
-				m_work(nullptr)
+			threadindex()
 			{}
 
 			threadindex(int32_t aindex) :
@@ -156,15 +183,19 @@ namespace ngl
 			{}
 
 		};
-		std::vector<threadindex>	m_workthreads;		// Idle workers ready to run an actor.
-		std::shared_mutex			m_mutex;			// Guards all mutable state above.
-		ngl::tools::sem				m_sem;				// Wakes the dispatcher when work is available.
+		std::vector<threadindex>	m_workthreads;		// Shared worker pool across all layers.
+		std::shared_mutex			m_mutex;			// Guards m_workthreads and m_suspend.
+		ngl::tools::sem				m_sem;				// Token count tracks free workers.
 		bool						m_suspend = false;	// True while dispatch is frozen.
+		// Trivial constructor/destructor — singleton is heap-allocated and never freed.
 		actor_manage() = default;
 		~actor_manage() = default;
 
 
 		// Map an actor id to a layer index in [0, LAYER_COUNT).
+		// Singleton actors are routed by type (sequential enum values cycle evenly).
+		// Dynamic actors are routed by dataid (e.g. player id) so that actors of
+		// the same type spread across layers instead of clustering on one.
 		int32_t layer_index(int64_t actorid) const noexcept
 		{
 			nguid lguid(actorid);
@@ -208,6 +239,8 @@ namespace ngl
 			return *ltemp;
 		}
 
+		// Block until a free worker is available, then mark it busy and return it.
+		// Called by schedule_layer dispatchers from their detached threads.
 		ptrnthread pop_free_hreads()
 		{
 			for (;;)
@@ -226,6 +259,7 @@ namespace ngl
 			}
 		}
 
+		// Return a worker to the shared pool after it finishes processing an actor.
 		void push_workthreads(ptrnthread atorthread)
 		{
 			{
@@ -236,13 +270,13 @@ namespace ngl
 			m_sem.post();
 		}
 
-		// Distribute apthreadnum workers evenly across layers and start dispatchers.
+		// Create apthreadnum workers (shared pool) and LAYER_COUNT dispatcher layers.
 		void init(i32_threadsize apthreadnum);
 
 		// Collect the union of actor types across all layers.
 		void get_type(std::vector<i16_actortype>& aactortype);
 
-		// Convenience: build a handle_pram from a typed payload and route it.
+		// Convenience: build a handle_pram from a typed payload and route it to the target layer.
 		template <typename T, bool IS_SEND = true>
 		inline void push_task_id(const nguid& aguid, std::shared_ptr<T>& apram)
 		{
@@ -277,7 +311,8 @@ namespace ngl
 		// Deliver a broadcast tick to all opted-in actors across all layers.
 		void broadcast_task(handle_pram& apram);
 
-		// Suspend / resume all layers. Suspension leaves one worker active per layer.
+		// Suspend / resume all dispatch. statrt_suspend_thread() spin-waits until
+		// every worker is idle; finish_suspend_thread() releases them.
 		void statrt_suspend_thread();
 		void finish_suspend_thread();
 

@@ -13,8 +13,14 @@
 */
 // File overview: Layered actor scheduling implementation.
 //
-// schedule_layer: self-contained scheduling unit (dispatcher + workers + actor tables).
-// actor_manage:   singleton routing layer that fans out to schedule_layer instances.
+// schedule_layer: independent scheduling unit (dispatcher thread + actor tables).
+// actor_manage:   singleton routing layer + shared worker pool.
+//
+// Lifetime policy: both classes live for the entire process. Threads are
+// detached at construction and never joined. Destructors are trivial.
+// This eliminates stop-token plumbing, drain ordering, and shutdown races
+// that would add complexity with no practical benefit — the OS reclaims
+// everything at process exit.
 
 #include "actor/actor_logic/actor_client/actor_client.h"
 #include "actor/actor_logic/actor_server/actor_server.h"
@@ -31,6 +37,10 @@ namespace ngl
 	// schedule_layer — one independent scheduling unit
 	// ========================================================================
 
+	// Start the dispatcher thread immediately. It blocks on m_sem until
+	// actors are pushed, so there is no race with actor_manage::init().
+	// The thread is detached — it runs for the process lifetime with no
+	// join or stop logic (see file-level comment).
 	schedule_layer::schedule_layer():
 		m_thread([this]()
 			{
@@ -343,6 +353,10 @@ namespace ngl
 		return nodetypebyguid();
 	}
 
+	// Dispatcher loop — runs forever on a detached thread.
+	// Outer loop: wait for the layer's sem (posted when an actor enters the ready queue).
+	// Inner loop: borrow a worker from the shared pool, pop an actor, dispatch.
+	//             If the queue is already drained, return the worker and break.
 	void schedule_layer::run()
 	{
 		ptrnthread lpthread = nullptr;
@@ -389,9 +403,11 @@ namespace ngl
 	}
 
 	// ========================================================================
-	// actor_manage — singleton routing layer
+	// actor_manage — singleton routing layer + shared worker pool
 	// ========================================================================
 
+	// Create the shared worker pool first (each worker starts a detached thread
+	// that blocks on its own sem), then create LAYER_COUNT dispatcher layers.
 	void actor_manage::init(i32_threadsize apthreadnum)
 	{
 		m_threadcount = apthreadnum;
@@ -457,6 +473,9 @@ namespace ngl
 		get_layer(apactor->id_guid())->push(apactor, aready);
 	}
 
+	// Guard against forwarding to a route actor that hasn't been registered yet.
+	// Without this check, schedule_layer::push_task_id would forward a miss back
+	// here, creating an infinite loop when the route actor doesn't exist.
 	void actor_manage::push_task_id(const nguid& aguid, handle_pram& apram)
 	{
 		if (schedule_layer::nodetypebyguid() == aguid && !is_have_actor(aguid))
@@ -466,6 +485,8 @@ namespace ngl
 		get_layer(aguid.id())->push_task_id(aguid, apram);
 	}
 
+	// Partition targets by layer, deliver locally, then forward any misses
+	// to the route actor in a single batch.
 	void actor_manage::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram)
 	{
 		std::array<std::set<i64_actorid>, LAYER_COUNT> larray;
@@ -535,6 +556,8 @@ namespace ngl
 		adata.m_vec = std::move(lstats);
 	}
 
+	// Spin-wait until every worker in the shared pool is idle, then set the
+	// suspend flag so pop_free_hreads() stops handing out workers.
 	void actor_manage::statrt_suspend_thread()
 	{
 		int lthreadnum = 0;
@@ -563,6 +586,8 @@ namespace ngl
 		}
 	}
 
+	// Clear the suspend flag and wake all dispatchers that may be blocked
+	// inside pop_free_hreads() waiting for a worker.
 	void actor_manage::finish_suspend_thread()
 	{
 		lock_write(m_mutex);
