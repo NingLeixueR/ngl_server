@@ -214,7 +214,7 @@ namespace ngl
 			{
 				{
 					lock_write(m_mutex);
-					if (m_shutdown.load(std::memory_order_relaxed))
+					if (m_suspend || m_shutdown.load(std::memory_order_relaxed))
 					{
 						return nullptr;
 					}
