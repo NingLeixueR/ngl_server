@@ -196,42 +196,13 @@ namespace ngl
 		// Singleton actors are routed by type (sequential enum values cycle evenly).
 		// Dynamic actors are routed by dataid (e.g. player id) so that actors of
 		// the same type spread across layers instead of clustering on one.
-		int32_t layer_index(int64_t actorid) const noexcept
-		{
-			nguid lguid(actorid);
-			if (enum_actor::is_signle(lguid.type()))
-			{
-				return static_cast<uint16_t>(lguid.type()) & (LAYER_COUNT - 1);
-			}
-			else
-			{
-				return static_cast<uint32_t>(lguid.actordataid()) & (LAYER_COUNT - 1);
-			}
-		}
+		int32_t layer_index(int64_t actorid) const noexcept;
 
-		std::shared_ptr<schedule_layer>& get_layer(int64_t actorid)
-		{
-			return m_layers[layer_index(actorid)];
-		}
+		std::shared_ptr<schedule_layer>& get_layer(int64_t actorid);
 
 		// Find a free worker index. Returns -1 if none available or suspended.
 		// Caller must hold m_mutex.
-		int32_t free_threads()
-		{
-			if (m_suspend)
-			{
-				return -1;
-			}
-			for (int32_t i = 0; i < m_threadcount; ++i)
-			{
-				if (m_workthreads[i].m_free)
-				{
-					return i;
-				}
-			}
-			return -1;
-		}
-
+		int32_t free_threads();
 	public:
 		static actor_manage& instance()
 		{
@@ -241,34 +212,10 @@ namespace ngl
 
 		// Block until a free worker is available, then mark it busy and return it.
 		// Called by schedule_layer dispatchers from their detached threads.
-		ptrnthread pop_free_hreads()
-		{
-			for (;;)
-			{
-				m_sem.wait();
-				{
-					lock_write(m_mutex);
-					int32_t lindex = free_threads();
-					if (lindex != -1)
-					{
-						m_workthreads[lindex].m_free = false;
-						return m_workthreads[lindex].m_work;
-					}
-				}
-				// suspend caused no available worker, signal consumed, retry.
-			}
-		}
+		ptrnthread pop_free_hreads();
 
 		// Return a worker to the shared pool after it finishes processing an actor.
-		void push_workthreads(ptrnthread atorthread)
-		{
-			{
-				lock_write(m_mutex);
-				m_workthreads[atorthread->id()].m_free = true;
-			}
-
-			m_sem.post();
-		}
+		void push_workthreads(ptrnthread atorthread);
 
 		// Create apthreadnum workers (shared pool) and LAYER_COUNT dispatcher layers.
 		void init(i32_threadsize apthreadnum);

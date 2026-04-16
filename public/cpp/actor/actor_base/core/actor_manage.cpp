@@ -406,6 +406,68 @@ namespace ngl
 	// actor_manage — singleton routing layer + shared worker pool
 	// ========================================================================
 
+	int32_t actor_manage::layer_index(int64_t actorid) const noexcept
+	{
+		nguid lguid(actorid);
+		if (enum_actor::is_signle(lguid.type()))
+		{
+			return static_cast<uint16_t>(lguid.type()) & (LAYER_COUNT - 1);
+		}
+		else
+		{
+			return static_cast<uint32_t>(lguid.actordataid()) & (LAYER_COUNT - 1);
+		}
+	}
+
+	std::shared_ptr<schedule_layer>& actor_manage::get_layer(int64_t actorid)
+	{
+		return m_layers[layer_index(actorid)];
+	}
+
+	int32_t actor_manage::free_threads()
+	{
+		if (m_suspend)
+		{
+			return -1;
+		}
+		for (int32_t i = 0; i < m_threadcount; ++i)
+		{
+			if (m_workthreads[i].m_free)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	ptrnthread actor_manage::pop_free_hreads()
+	{
+		for (;;)
+		{
+			m_sem.wait();
+			{
+				lock_write(m_mutex);
+				int32_t lindex = free_threads();
+				if (lindex != -1)
+				{
+					m_workthreads[lindex].m_free = false;
+					return m_workthreads[lindex].m_work;
+				}
+			}
+			// suspend caused no available worker, signal consumed, retry.
+		}
+	}
+
+	void actor_manage::push_workthreads(ptrnthread atorthread)
+	{
+		{
+			lock_write(m_mutex);
+			m_workthreads[atorthread->id()].m_free = true;
+		}
+
+		m_sem.post();
+	}
+
 	// Create the shared worker pool first (each worker starts a detached thread
 	// that blocks on its own sem), then create LAYER_COUNT dispatcher layers.
 	void actor_manage::init(i32_threadsize apthreadnum)
