@@ -414,10 +414,6 @@ namespace ngl
 					ready_actor->set_activity_stat(actor_stat_run);
 				}
 				worker_thread = actor_manage::instance().pop_free_hreads();
-				if (worker_thread == nullptr)
-				{
-					break;
-				}
 				worker_thread->push(ready_actor);
 			}
 		}
@@ -426,34 +422,6 @@ namespace ngl
 	// ========================================================================
 	// actor_manage — singleton routing layer
 	// ========================================================================
-
-	void actor_manage::shutdown()
-	{
-		bool lexpect = false;
-		if (!m_shutdown.compare_exchange_strong(lexpect, true, std::memory_order_relaxed))
-		{
-			return;
-		}
-
-		for (int32_t li = 0; li < LAYER_COUNT; ++li)
-		{
-			m_sem.post();
-		}
-
-		for (auto& llayer : m_layers)
-		{
-			llayer.reset();
-		}
-
-		for (const auto& lworker : m_workthreads)
-		{
-			if (lworker.m_work != nullptr)
-			{
-				lworker.m_work->shutdown();
-			}
-		}
-		m_workthreads.clear();
-	}
 
 	void actor_manage::init(i32_threadsize apthreadnum)
 	{
@@ -515,10 +483,6 @@ namespace ngl
 
 	void actor_manage::push(const ptractor& apactor, ptrnthread atorthread /*= nullptr*/, bool aready /*= true*/)
 	{
-		if (m_shutdown.load(std::memory_order_relaxed))
-		{
-			return;
-		}
 		if (atorthread != nullptr)
 		{
 			push_workthreads(atorthread);

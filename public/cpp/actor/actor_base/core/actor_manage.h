@@ -56,7 +56,6 @@ namespace ngl
 		schedule_layer(const schedule_layer&) = delete;
 		schedule_layer& operator=(const schedule_layer&) = delete;
 
-		i32_threadsize				m_threadnum = -1;	// Worker count for this layer.
 		std::unordered_map<nguid, ptractor, guid_hash> m_actorbyid;		// guid -> actor.
 		std::map<nguid, ptractor>	m_actorbroadcast;	// Actors that opted into broadcast ticks.
 		std::deque<ptractor>		m_actorlist;		// Ready queue: actors waiting for a worker.
@@ -141,7 +140,7 @@ namespace ngl
 		
 
 		std::array<std::shared_ptr<schedule_layer>, LAYER_COUNT> m_layers;
-		int32_t						m_threadcount;
+		int32_t						m_threadcount = 0;
 		struct threadindex
 		{
 			ptrnthread m_work;
@@ -161,13 +160,8 @@ namespace ngl
 		std::shared_mutex			m_mutex;			// Guards all mutable state above.
 		ngl::tools::sem				m_sem;				// Wakes the dispatcher when work is available.
 		bool						m_suspend = false;	// True while dispatch is frozen.
-		std::atomic_bool			m_shutdown = false;	// True while actor_manage is tearing down.
 		actor_manage() = default;
-		void shutdown();
-		~actor_manage()
-		{
-			shutdown();
-		}
+		~actor_manage() = default;
 
 
 		// Map an actor id to a layer index in [0, LAYER_COUNT).
@@ -183,8 +177,8 @@ namespace ngl
 	public:
 		static actor_manage& instance()
 		{
-			static actor_manage ltemp;
-			return ltemp;
+			static actor_manage* ltemp = new actor_manage();
+			return *ltemp;
 		}
 
 		int32_t free_threads()
@@ -214,10 +208,6 @@ namespace ngl
 			{
 				{
 					lock_write(m_mutex);
-					if (m_shutdown.load(std::memory_order_relaxed))
-					{
-						return nullptr;
-					}
 					int32_t lindex = free_threads();
 					if (lindex != -1)
 					{
@@ -227,10 +217,6 @@ namespace ngl
 					}
 				}
 				wait_free_hreads();
-				if (m_shutdown.load(std::memory_order_relaxed))
-				{
-					return nullptr;
-				}
 			}
 		}
 
