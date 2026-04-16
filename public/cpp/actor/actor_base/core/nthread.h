@@ -32,24 +32,20 @@ namespace ngl
 		i32_threadid		m_id = 0;				// Stable worker index assigned by actor_manage.
 		ptractor			m_actor = nullptr;		// Actor currently borrowed by this worker.
 		bool				m_isactivity = false;	// Legacy activity flag preserved for diagnostics/API compatibility.
-		std::atomic_bool	m_shutdown = false;		// Prevents double-stop races during teardown.
 		std::shared_mutex	m_mutex;				// Protects the current actor pointer and activity flag.
 		ngl::tools::sem			m_sem;					// Wakes the worker when a new actor is assigned.
-		std::jthread		m_thread;				// Start last so synchronization members already exist.
+		std::thread			m_thread;				// Detached worker thread owned for process lifetime.
 
-		void run(std::stop_token astop);
+		void run();
 	public:
 		explicit nthread(i32_threadid aid);
-		~nthread();
+		~nthread() = default;
 
 		// Return the worker id used in actor_handle callbacks.
 		i32_threadid id();
 
 		// Return the legacy activity flag for this worker.
 		bool isactivity();
-
-		// Stop the worker thread and wait for it to exit.
-		void shutdown();
 
 		// Assign an actor to this worker and wake the thread.
 		void push(ptractor aactor);

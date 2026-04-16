@@ -65,7 +65,7 @@ namespace ngl
 
 		std::shared_mutex			m_mutex;			// Guards all mutable state above.
 		ngl::tools::sem				m_sem;				// Wakes the dispatcher when work is available.
-		std::jthread				m_thread;			// Dispatcher thread (must be last member).
+		std::thread					m_thread;			// Detached dispatcher thread owned for process lifetime.
 
 		// Return true if the actor state cannot accept new work.
 		bool is_unavailable(ngl::actor_stat astat) noexcept;
@@ -78,12 +78,12 @@ namespace ngl
 		void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram);
 
 		// Dispatcher loop: pairs ready actors with idle workers until stopped.
-		void run(std::stop_token astop);
+		void run();
 	public:
 
 		schedule_layer();
 
-		~schedule_layer() noexcept;
+		~schedule_layer() noexcept = default;
 
 		// Return the guid of the node-level routing actor (actor_client or actor_server).
 		static nguid get_clientguid();

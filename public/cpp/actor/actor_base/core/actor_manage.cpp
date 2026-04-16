@@ -32,36 +32,12 @@ namespace ngl
 	// ========================================================================
 
 	schedule_layer::schedule_layer():
-		m_thread([this](std::stop_token astop)
+		m_thread([this]()
 			{
-				run(astop);
+				run();
 			})
 	{
-	}
-
-	schedule_layer::~schedule_layer() noexcept
-	{
-		try
-		{
-			m_thread.request_stop();
-			m_sem.post();
-
-			if (m_thread.joinable())
-			{
-				m_thread.join();
-			}
-
-			lock_write(m_mutex);
-			m_actorlist.clear();
-			m_actorbroadcast.clear();
-			m_actorbyid.clear();
-			m_delactorfun.clear();
-			m_actorbytype.clear();
-			m_actortype.clear();
-		}
-		catch (...)
-		{
-		}
+		m_thread.detach();
 	}
 
 	bool schedule_layer::is_unavailable(ngl::actor_stat astat) noexcept
@@ -388,25 +364,21 @@ namespace ngl
 		Catch
 	}
 
-	void schedule_layer::run(std::stop_token astop)
+	void schedule_layer::run()
 	{
 		ptrnthread worker_thread = nullptr;
 		ptractor ready_actor = nullptr;
 
-		while (!astop.stop_requested())
+		for (;;)
 		{
 			m_sem.wait();
-			if (astop.stop_requested())
-			{
-				break;
-			}
 			// Drain the ready queue: acquire a worker first, then pop an actor.
 			for (;;)
 			{
 				worker_thread = actor_manage::instance().pop_free_hreads();
 				{
 					lock_write(m_mutex);
-					if (astop.stop_requested() || m_actorlist.empty())
+					if (m_actorlist.empty())
 					{
 						// No actor to dispatch — return the worker to the pool.
 						actor_manage::instance().push_workthreads(worker_thread);
