@@ -263,7 +263,11 @@ namespace ngl
 		// Actor not found locally — forward to the route actor for remote delivery.
 		if (aismass)
 		{
-			actor_manage::instance().push_task_id(nodetypebyguid(), apram);
+			nguid lforward = nodetypebyguid();
+			if (is_have_actor(lforward))
+			{
+				actor_manage::instance().push_task_id(lforward, apram);
+			}
 		}
 
 		return true;
