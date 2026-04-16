@@ -51,24 +51,7 @@ namespace ngl
 				m_thread.join();
 			}
 
-			std::deque<ptrnthread> lworkers;
-			{
-				nlock(m_mutex);
-				lworkers = m_workthreadscopy;
-			}
-
-			for (const ptrnthread& lworker : lworkers)
-			{
-				if (lworker != nullptr)
-				{
-					lworker->shutdown();
-				}
-			}
-
-			nlock(m_mutex);
-			m_workthreads.clear();
-			m_workthreadscopy.clear();
-			m_suspendthreads.clear();
+			lock_write(m_mutex);
 			m_actorlist.clear();
 			m_actorbroadcast.clear();
 			m_actorbyid.clear();
@@ -85,21 +68,6 @@ namespace ngl
 	{
 		// init/close states cannot accept new work and should never be queued.
 		return astat == ngl::actor_stat_close || astat == ngl::actor_stat_init;
-	}
-
-	void schedule_layer::init(i32_threadsize apthreadnum, int32_t alayer)
-	{
-		if (!m_workthreads.empty())
-		{
-			return;
-		}
-		m_threadnum = apthreadnum > 0 ? apthreadnum : 1;
-		for (int32_t i = 0; i < m_threadnum; ++i)
-		{
-			// Workers start idle and are handed actors only by the dispatcher thread.
-			m_workthreads.emplace_back(std::make_shared<nthread>(alayer* apthreadnum + i));
-		}
-		m_workthreadscopy = m_workthreads;
 	}
 
 	void schedule_layer::get_type(std::set<i16_actortype>& aactortype)
@@ -121,10 +89,7 @@ namespace ngl
 			// Actor was idle — move it to the ready queue so the dispatcher picks it up.
 			m_actorlist.emplace_back(lpactor);
 			lpactor->set_activity_stat(actor_stat_list);
-			if (!m_suspend && !m_workthreads.empty())
-			{
-				m_sem.post();
-			}
+			m_sem.post();
 		}
 	}
 
@@ -247,7 +212,7 @@ namespace ngl
 		return m_actorbyid.contains(aguid);
 	}
 
-	void schedule_layer::push(const ptractor& apactor, ptrnthread atorthread/* = nullptr*/, bool aready/* = true*/)
+	void schedule_layer::push(const ptractor& apactor, bool aready/* = true*/)
 	{
 		std::function<void()> ldefcallback = nullptr;
 		bool lshould_release_actor = false;
@@ -255,18 +220,6 @@ namespace ngl
 		const nguid lguid = apactor->id_guid();
 		{
 			lock_write(m_mutex);
-			if (atorthread != nullptr)
-			{
-				// Park the worker during suspension, otherwise return it to the idle pool.
-				if (m_suspend)
-				{
-					m_suspendthreads.emplace_back(atorthread);
-				}
-				else
-				{
-					m_workthreads.emplace_back(atorthread);
-				}
-			}
 			if (!m_actorbyid.contains(lguid))
 			{
 				// Actor was erased while running — execute the deferred callback.
@@ -294,7 +247,7 @@ namespace ngl
 					apactor->set_activity_stat(actor_stat_free);
 				}
 			}
-			lshould_wake_dispatcher = !m_suspend && !m_actorlist.empty() && !m_workthreads.empty();
+			lshould_wake_dispatcher = !m_actorlist.empty();
 		}
 		if (lshould_wake_dispatcher)
 		{
@@ -385,38 +338,6 @@ namespace ngl
 		}
 	}
 
-	void schedule_layer::statrt_suspend_thread()
-	{
-		int lthreadnum = 0;
-		while (lthreadnum + 1 < m_threadnum)
-		{
-			{
-				lock_write(m_mutex);
-				m_suspend = true;
-				if (!m_workthreads.empty())
-				{
-					m_suspendthreads.insert(m_suspendthreads.end(), m_workthreads.begin(), m_workthreads.end());
-					m_workthreads.clear();
-				}
-				lthreadnum = (int)m_suspendthreads.size();
-			}
-
-			if (lthreadnum + 1 < m_threadnum)
-			{
-				std::this_thread::yield();
-			}
-		}
-	}
-
-	void schedule_layer::finish_suspend_thread()
-	{
-		lock_write(m_mutex);
-		m_suspend = false;
-		m_workthreads.insert(m_workthreads.end(), m_suspendthreads.begin(), m_suspendthreads.end());
-		m_suspendthreads.clear();
-		m_sem.post();
-	}
-
 	int32_t schedule_layer::actor_count()
 	{
 		lock_read(m_mutex);
@@ -484,16 +405,15 @@ namespace ngl
 			{
 				{
 					lock_write(m_mutex);
-					if (astop.stop_requested() || m_actorlist.empty() || m_workthreads.empty() || m_suspend)
+					if (astop.stop_requested() || m_actorlist.empty())
 					{
 						break;
 					}
-					worker_thread = m_workthreads.front();
-					ready_actor = m_actorlist.front();
+					ready_actor = *m_actorlist.begin();
 					m_actorlist.pop_front();
-					m_workthreads.pop_front();
 					ready_actor->set_activity_stat(actor_stat_run);
 				}
+				worker_thread = actor_manage::instance().pop_free_hreads();
 				worker_thread->push(ready_actor);
 			}
 		}
@@ -505,16 +425,20 @@ namespace ngl
 
 	void actor_manage::init(i32_threadsize apthreadnum)
 	{
-		int32_t lpthreads = apthreadnum / LAYER_COUNT;
-		if (lpthreads <= 0)
+		m_threadcount = apthreadnum;
+		m_workthreads.resize(apthreadnum);
+		for (int i = 0; i < m_threadcount; ++i)
 		{
-			lpthreads = 1;
+			m_workthreads[i].m_free = true;
+			m_workthreads[i].m_suspend = false;
+			m_workthreads[i].m_work = std::make_shared<nthread>(i);
+			m_sem.post();
 		}
 		for (int i = 0; i < LAYER_COUNT; ++i)
 		{
 			m_layers[i] = std::make_shared<schedule_layer>();
-			m_layers[i]->init(lpthreads, i);
 		}
+		
 	}
 
 	void actor_manage::get_type(std::vector<i16_actortype>& aactortype)
@@ -559,7 +483,11 @@ namespace ngl
 
 	void actor_manage::push(const ptractor& apactor, ptrnthread atorthread /*= nullptr*/, bool aready /*= true*/)
 	{
-		get_layer(apactor->id_guid())->push(apactor, atorthread, aready);
+		if (atorthread != nullptr)
+		{
+			push_workthreads(atorthread);
+		}
+		get_layer(apactor->id_guid())->push(apactor, aready);
 	}
 
 	void actor_manage::push_task_id(const nguid& aguid, handle_pram& apram)
@@ -610,21 +538,6 @@ namespace ngl
 		}
 	}
 
-	void actor_manage::statrt_suspend_thread()
-	{
-		for (int i = 0; i < LAYER_COUNT; ++i)
-		{
-			m_layers[i]->statrt_suspend_thread();
-		}
-	}
-	void actor_manage::finish_suspend_thread()
-	{
-		for (int i = 0; i < LAYER_COUNT; ++i)
-		{
-			m_layers[i]->finish_suspend_thread();
-		}
-	}
-
 	int32_t actor_manage::actor_count()
 	{
 		int32_t lsun = 0;
@@ -649,5 +562,45 @@ namespace ngl
 			lstats.emplace_back(std::move(lstat));
 		}
 		adata.m_vec = std::move(lstats);
+	}
+
+	void actor_manage::statrt_suspend_thread()
+	{
+		int lthreadnum = 0;
+		for (;;)
+		{
+			{
+				lock_write(m_mutex);
+				m_suspend = true;
+				lthreadnum = 0;
+				for (int32_t i = 0; i < m_threadcount; ++i)
+				{
+					if (m_workthreads[i].m_free)
+					{
+						m_workthreads[i].m_suspend = true;
+						++lthreadnum;
+					}
+				}
+			}
+			if (lthreadnum < m_threadcount)
+			{
+				std::this_thread::yield();
+			}
+			else
+			{
+				return;
+			}
+		}
+	}
+
+	void actor_manage::finish_suspend_thread()
+	{
+		lock_write(m_mutex);
+		m_suspend = false;
+		for (int32_t i = 0; i < m_threadcount; ++i)
+		{
+			m_workthreads[i].m_suspend = false;
+			m_sem.post();
+		}
 	}
 }//namespace ngl

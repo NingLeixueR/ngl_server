@@ -56,10 +56,6 @@ namespace ngl
 		schedule_layer(const schedule_layer&) = delete;
 		schedule_layer& operator=(const schedule_layer&) = delete;
 
-		std::deque<ptrnthread>		m_workthreads;		// Idle workers ready to run an actor.
-		std::deque<ptrnthread>		m_workthreadscopy;	// Snapshot of all workers (for shutdown).
-		bool						m_suspend = false;	// True while dispatch is frozen.
-		std::deque<ptrnthread>		m_suspendthreads;	// Workers parked during suspension.
 		i32_threadsize				m_threadnum = -1;	// Worker count for this layer.
 		std::unordered_map<nguid, ptractor, guid_hash> m_actorbyid;		// guid -> actor.
 		std::map<nguid, ptractor>	m_actorbroadcast;	// Actors that opted into broadcast ticks.
@@ -94,9 +90,6 @@ namespace ngl
 		static nguid get_clientguid();
 		static nguid nodetypebyguid();
 
-		// Create workers and start the dispatcher. alayer is used to offset worker IDs.
-		void init(i32_threadsize apthreadnum, int32_t alayer);
-
 		// Append this layer's actor types into aactortype.
 		void get_type(std::set<i16_actortype>& aactortype);
 
@@ -111,7 +104,7 @@ namespace ngl
 
 		// Return a finished worker to the pool and reschedule the actor if it has pending work.
 		// Called by nthread after processing an actor batch.
-		void push(const ptractor& apactor, ptrnthread atorthread = nullptr, bool aready = true);
+		void push(const ptractor& apactor, bool aready = true);
 
 		// Push a message to a specific actor in this layer.
 		// Returns false if delivered locally, true if the caller should forward to the route actor.
@@ -127,10 +120,6 @@ namespace ngl
 
 		// Deliver a broadcast tick to all opted-in actors in this layer.
 		void broadcast_task(handle_pram& apram);
-
-		// Suspend / resume dispatch. Suspension parks all workers except one.
-		void statrt_suspend_thread();
-		void finish_suspend_thread();
 
 		// Return the number of actors registered in this layer.
 		int32_t actor_count();
@@ -149,10 +138,42 @@ namespace ngl
 
 		actor_manage(const actor_manage&) = delete;
 		actor_manage& operator=(const actor_manage&) = delete;
-		actor_manage() = default;
-		~actor_manage() = default;
+		
 
 		std::array<std::shared_ptr<schedule_layer>, LAYER_COUNT> m_layers;
+		int32_t						m_threadcount;
+		struct threadindex
+		{
+			ptrnthread m_work;
+			bool m_free = true;
+			bool m_suspend = false;
+
+			threadindex():
+				m_work(nullptr)
+			{}
+
+			threadindex(int32_t aindex) :
+				m_work(std::make_shared<nthread>(aindex))
+			{}
+
+		};
+		std::vector<threadindex>	m_workthreads;		// Idle workers ready to run an actor.
+		std::shared_mutex			m_mutex;			// Guards all mutable state above.
+		ngl::tools::sem				m_sem;				// Wakes the dispatcher when work is available.
+		bool						m_suspend = false;	// True while dispatch is frozen.
+		actor_manage() = default;
+		~actor_manage()
+		{
+			for (const auto& lworker : m_workthreads)
+			{
+				if (lworker.m_work != nullptr)
+				{
+					lworker.m_work->shutdown();
+				}
+			}
+			m_workthreads.clear();
+		}
+
 
 		// Map an actor id to a layer index in [0, LAYER_COUNT).
 		int32_t layer_index(int64_t actorid) const noexcept
@@ -169,6 +190,59 @@ namespace ngl
 		{
 			static actor_manage ltemp;
 			return ltemp;
+		}
+
+		int32_t free_threads()
+		{
+			if (m_suspend)
+			{
+				return -1;
+			}
+			for (int32_t i = 0; i < m_threadcount; ++i)
+			{
+				if (m_workthreads[i].m_free)
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+
+		void wait_free_hreads()
+		{
+			m_sem.wait();
+		}
+
+		ptrnthread pop_free_hreads()
+		{
+			do
+			{
+				lock_write(m_mutex);
+				int32_t lindex = free_threads();
+				if (lindex == -1)
+				{
+					break;
+				}
+				auto& ltemp = m_workthreads[lindex];
+				ltemp.m_free = false;
+				return ltemp.m_work;
+			} while (false);
+			wait_free_hreads();
+			return pop_free_hreads();
+		}
+
+		void push_workthreads(ptrnthread atorthread)
+		{
+			{
+				lock_write(m_mutex);
+				m_workthreads[atorthread->id()].m_free = true;
+				if (m_suspend)
+				{
+					m_workthreads[atorthread->id()].m_suspend = true;
+				}
+			}
+			
+			m_sem.post();
 		}
 
 		// Distribute apthreadnum workers evenly across layers and start dispatchers.
