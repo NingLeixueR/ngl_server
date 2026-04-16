@@ -74,20 +74,20 @@ namespace ngl
 		void set_source()
 		{
 			std::string_view lname = m_source.file_name();
-#ifdef WIN32
-			auto lpos = lname.rfind("\\");
-#else
-			auto lpos = lname.rfind("/");
-#endif
-			if (lpos != std::string_view::npos)
+			// Truncate to "public/..." for readability.
+			// Handles both forward and backward slashes from different compilers.
+			auto lpos = lname.find("public");
+			if (lpos == std::string_view::npos)
 			{
-				m_src = lname.substr(lpos + 1);
+				// Fallback: extract just the filename.
+				auto lsep = lname.find_last_of("/\\");
+				lname = (lsep != std::string_view::npos) ? lname.substr(lsep + 1) : lname;
 			}
 			else
 			{
-				m_src = lname;
+				lname = lname.substr(lpos);
 			}
-			m_src = std::format("{:^20}:{:^5}", m_src, m_source.line());
+			m_src = std::format("{}:{}", lname, m_source.line());
 		}
 
 		void send_log(std::string&& adata, int32_t atime);
