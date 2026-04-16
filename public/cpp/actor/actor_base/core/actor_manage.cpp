@@ -515,6 +515,10 @@ namespace ngl
 
 	void actor_manage::push(const ptractor& apactor, ptrnthread atorthread /*= nullptr*/, bool aready /*= true*/)
 	{
+		if (m_shutdown.load(std::memory_order_relaxed))
+		{
+			return;
+		}
 		if (atorthread != nullptr)
 		{
 			push_workthreads(atorthread);

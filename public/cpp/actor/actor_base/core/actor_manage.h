@@ -195,7 +195,7 @@ namespace ngl
 			}
 			for (int32_t i = 0; i < m_threadcount; ++i)
 			{
-				if (m_workthreads[i].m_free)
+				if (m_workthreads[i].m_free && !m_workthreads[i].m_suspend)
 				{
 					return i;
 				}
@@ -214,7 +214,7 @@ namespace ngl
 			{
 				{
 					lock_write(m_mutex);
-					if (m_suspend || m_shutdown.load(std::memory_order_relaxed))
+					if (m_shutdown.load(std::memory_order_relaxed))
 					{
 						return nullptr;
 					}
