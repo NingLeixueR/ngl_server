@@ -161,17 +161,12 @@ namespace ngl
 		std::shared_mutex			m_mutex;			// Guards all mutable state above.
 		ngl::tools::sem				m_sem;				// Wakes the dispatcher when work is available.
 		bool						m_suspend = false;	// True while dispatch is frozen.
+		std::atomic_bool			m_shutdown = false;	// True while actor_manage is tearing down.
 		actor_manage() = default;
+		void shutdown();
 		~actor_manage()
 		{
-			for (const auto& lworker : m_workthreads)
-			{
-				if (lworker.m_work != nullptr)
-				{
-					lworker.m_work->shutdown();
-				}
-			}
-			m_workthreads.clear();
+			shutdown();
 		}
 
 
@@ -215,20 +210,28 @@ namespace ngl
 
 		ptrnthread pop_free_hreads()
 		{
-			do
+			for (;;)
 			{
-				lock_write(m_mutex);
-				int32_t lindex = free_threads();
-				if (lindex == -1)
 				{
-					break;
+					lock_write(m_mutex);
+					if (m_shutdown.load(std::memory_order_relaxed))
+					{
+						return nullptr;
+					}
+					int32_t lindex = free_threads();
+					if (lindex != -1)
+					{
+						auto& ltemp = m_workthreads[lindex];
+						ltemp.m_free = false;
+						return ltemp.m_work;
+					}
 				}
-				auto& ltemp = m_workthreads[lindex];
-				ltemp.m_free = false;
-				return ltemp.m_work;
-			} while (false);
-			wait_free_hreads();
-			return pop_free_hreads();
+				wait_free_hreads();
+				if (m_shutdown.load(std::memory_order_relaxed))
+				{
+					return nullptr;
+				}
+			}
 		}
 
 		void push_workthreads(ptrnthread atorthread)
