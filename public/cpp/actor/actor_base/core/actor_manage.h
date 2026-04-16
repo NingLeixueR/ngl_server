@@ -133,7 +133,8 @@ namespace ngl
 	// External callers use this class exclusively; schedule_layer is an internal detail.
 	class actor_manage
 	{
-		static constexpr int32_t LAYER_COUNT = 4;
+		static constexpr int32_t LAYER_COUNT = 8;
+		static_assert((LAYER_COUNT& (LAYER_COUNT - 1)) == 0, "LAYER_COUNT must be power of 2");
 
 		actor_manage(const actor_manage&) = delete;
 		actor_manage& operator=(const actor_manage&) = delete;
@@ -166,7 +167,15 @@ namespace ngl
 		// Map an actor id to a layer index in [0, LAYER_COUNT).
 		int32_t layer_index(int64_t actorid) const noexcept
 		{
-			return static_cast<int32_t>(static_cast<uint64_t>(actorid) % LAYER_COUNT);
+			nguid lguid(actorid);
+			if (enum_actor::is_signle(lguid.type()))
+			{
+				return static_cast<uint16_t>(lguid.type()) & (LAYER_COUNT - 1);
+			}
+			else
+			{
+				return static_cast<uint32_t>(lguid.actordataid()) & (LAYER_COUNT - 1);
+			}
 		}
 
 		std::shared_ptr<schedule_layer>& get_layer(int64_t actorid)
