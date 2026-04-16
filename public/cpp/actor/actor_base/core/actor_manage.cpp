@@ -400,20 +400,22 @@ namespace ngl
 			{
 				break;
 			}
-			// Drain the ready queue: pop one actor + one worker per iteration.
+			// Drain the ready queue: acquire a worker first, then pop an actor.
 			for (;;)
 			{
+				worker_thread = actor_manage::instance().pop_free_hreads();
 				{
 					lock_write(m_mutex);
 					if (astop.stop_requested() || m_actorlist.empty())
 					{
+						// No actor to dispatch — return the worker to the pool.
+						actor_manage::instance().push_workthreads(worker_thread);
 						break;
 					}
-					ready_actor = *m_actorlist.begin();
+					ready_actor = m_actorlist.front();
 					m_actorlist.pop_front();
 					ready_actor->set_activity_stat(actor_stat_run);
 				}
-				worker_thread = actor_manage::instance().pop_free_hreads();
 				worker_thread->push(ready_actor);
 			}
 		}
@@ -430,7 +432,6 @@ namespace ngl
 		for (int i = 0; i < m_threadcount; ++i)
 		{
 			m_workthreads[i].m_free = true;
-			m_workthreads[i].m_suspend = false;
 			m_workthreads[i].m_work = std::make_shared<nthread>(i);
 			m_sem.post();
 		}
@@ -577,7 +578,6 @@ namespace ngl
 				{
 					if (m_workthreads[i].m_free)
 					{
-						m_workthreads[i].m_suspend = true;
 						++lthreadnum;
 					}
 				}
@@ -599,7 +599,6 @@ namespace ngl
 		m_suspend = false;
 		for (int32_t i = 0; i < m_threadcount; ++i)
 		{
-			m_workthreads[i].m_suspend = false;
 			m_sem.post();
 		}
 	}

@@ -145,7 +145,6 @@ namespace ngl
 		{
 			ptrnthread m_work;
 			bool m_free = true;
-			bool m_suspend = false;
 
 			threadindex():
 				m_work(nullptr)
@@ -174,13 +173,9 @@ namespace ngl
 		{
 			return m_layers[layer_index(actorid)];
 		}
-	public:
-		static actor_manage& instance()
-		{
-			static actor_manage* ltemp = new actor_manage();
-			return *ltemp;
-		}
 
+		// Find a free worker index. Returns -1 if none available or suspended.
+		// Caller must hold m_mutex.
 		int32_t free_threads()
 		{
 			if (m_suspend)
@@ -189,7 +184,7 @@ namespace ngl
 			}
 			for (int32_t i = 0; i < m_threadcount; ++i)
 			{
-				if (m_workthreads[i].m_free && !m_workthreads[i].m_suspend)
+				if (m_workthreads[i].m_free)
 				{
 					return i;
 				}
@@ -197,26 +192,28 @@ namespace ngl
 			return -1;
 		}
 
-		void wait_free_hreads()
+	public:
+		static actor_manage& instance()
 		{
-			m_sem.wait();
+			static actor_manage* ltemp = new actor_manage();
+			return *ltemp;
 		}
 
 		ptrnthread pop_free_hreads()
 		{
 			for (;;)
 			{
+				m_sem.wait();
 				{
 					lock_write(m_mutex);
 					int32_t lindex = free_threads();
 					if (lindex != -1)
 					{
-						auto& ltemp = m_workthreads[lindex];
-						ltemp.m_free = false;
-						return ltemp.m_work;
+						m_workthreads[lindex].m_free = false;
+						return m_workthreads[lindex].m_work;
 					}
 				}
-				wait_free_hreads();
+				// suspend caused no available worker, signal consumed, retry.
 			}
 		}
 
@@ -225,12 +222,8 @@ namespace ngl
 			{
 				lock_write(m_mutex);
 				m_workthreads[atorthread->id()].m_free = true;
-				if (m_suspend)
-				{
-					m_workthreads[atorthread->id()].m_suspend = true;
-				}
 			}
-			
+
 			m_sem.post();
 		}
 
