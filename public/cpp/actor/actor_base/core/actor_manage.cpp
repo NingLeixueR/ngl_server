@@ -343,12 +343,6 @@ namespace ngl
 		return nodetypebyguid();
 	}
 
-	actor_suspend::actor_suspend()
-	{
-		log_info()->print("start actor_suspend");
-		actor_manage::instance().statrt_suspend_thread();
-	}
-
 	void schedule_layer::run()
 	{
 		ptrnthread lpthread = nullptr;
@@ -376,6 +370,22 @@ namespace ngl
 				lpthread->push(lpactor);
 			}
 		}
+	}
+
+	actor_suspend::actor_suspend()
+	{
+		log_info()->print("start actor_suspend");
+		actor_manage::instance().statrt_suspend_thread();
+	}
+
+	actor_suspend::~actor_suspend()
+	{
+		Try
+		{
+			actor_manage::instance().finish_suspend_thread();
+			log_info()->print("finish actor_suspend");
+		}
+			Catch
 	}
 
 	// ========================================================================
