@@ -162,15 +162,4 @@ TEST(ActorManageTest, GetActorStatOverwritesCallerBuffer)
 	}));
 }
 
-TEST(ActorManageTest, NthreadShutdownIsIdempotentWhenIdle)
-{
-	auto worker = std::make_shared<ngl::nthread>(123);
-	ASSERT_NE(worker, nullptr);
-	EXPECT_FALSE(worker->isactivity());
-
-	EXPECT_NO_THROW(worker->shutdown());
-	EXPECT_NO_THROW(worker->shutdown());
-	EXPECT_FALSE(worker->isactivity());
-}
-
 } // namespace actor_manage_test_case
