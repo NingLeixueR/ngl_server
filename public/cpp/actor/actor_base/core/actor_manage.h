@@ -206,8 +206,8 @@ namespace ngl
 	public:
 		static actor_manage& instance()
 		{
-			static actor_manage* ltemp = new actor_manage();
-			return *ltemp;
+			static actor_manage ltemp;
+			return ltemp;
 		}
 
 		// Block until a free worker is available, then mark it busy and return it.
