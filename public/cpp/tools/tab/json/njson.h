@@ -317,13 +317,20 @@ namespace ngl
 			{
 				return false;
 			}
-			
-			if (!ljson->IsInt64())
+
+			if (ljson->IsInt64())
 			{
-				return false;
+				adata = ljson->GetInt64();
+				return true;
 			}
-			adata = ljson->GetInt64();
-			return true;
+
+			if (ljson->IsInt())
+			{
+				adata = ljson->GetInt();
+				return true;
+			}
+			
+			return false;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, int64_t adata)
@@ -351,12 +358,24 @@ namespace ngl
 				return false;
 			}
 			rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
-			if (ljson == nullptr || !ljson->IsUint64())
+			if (ljson == nullptr)
 			{
 				return false;
 			}
-			adata = ljson->GetUint64();
-			return true;
+
+			if (ljson->IsUint64())
+			{
+				adata = ljson->GetUint64();
+				return true;
+			}
+
+			if (ljson->IsUint())
+			{
+				adata = ljson->GetUint();
+				return true;
+			}
+
+			return false;
 		}
 
 		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, uint64_t adata)
