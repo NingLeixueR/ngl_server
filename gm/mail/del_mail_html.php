@@ -1,10 +1,10 @@
 <html>
-	<h2>É¾³ýÓÊ¼þ</h2>
+	<h2>åˆ é™¤é‚®ä»¶</h2>
 	<form action="./del_mail.php" method="post" accept-charset="UTF-8">
 		<?php require_once "../serverls.php";?>
-		Íæ¼Òid:<input name="m_roleid" type="text"/><br/>
-		ÓÊ¼þid:<input name="m_mailid" type="text"/><br/>
-		<input type="submit" value="É¾³ý"/><br/>
+		çŽ©å®¶id:<input name="m_roleid" type="text"/><br/>
+		é‚®ä»¶id:<input name="m_mailid" type="text"/><br/>
+		<input type="submit" value="åˆ é™¤"/><br/>
 	</form>
 </body>
 </html>

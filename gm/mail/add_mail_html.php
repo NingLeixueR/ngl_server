@@ -1,13 +1,13 @@
 <html>
-	<h2>·¢ËÍÓÊ¼þ</h2>
+	<h2>å‘é€é‚®ä»¶</h2>
 	<form action="./add_mail.php" method="post" accept-charset="UTF-8">
 		<?php require_once "../serverls.php";?>
-		Íæ¼Òid:<input name="m_roleid" type="text"/><br/>
-		ÓÊ¼þÄÚÈÝ:<br/>
+		çŽ©å®¶id:<input name="m_roleid" type="text"/><br/>
+		é‚®ä»¶å†…å®¹:<br/>
 		<textarea id="m_content" name="m_content" rows="10" cols="100"></textarea><br/>
-		ÓÊ¼þ¸½¼þ(ÎïÆ·id*ÎïÆ·ÊýÁ¿ µ¥ÐÐ*ºÅ·Ö¸î):<br/>
+		é‚®ä»¶é™„ä»¶(ç‰©å“id*ç‰©å“æ•°é‡ å•è¡Œ*å·åˆ†å‰²):<br/>
 		<textarea id="m_items" name="m_items" rows="5" cols="100"></textarea><br/>
-		<input type="submit" value="Ìí¼Ó"/><br/>
+		<input type="submit" value="æ·»åŠ "/><br/>
 	</form>
 </body>
 </html>

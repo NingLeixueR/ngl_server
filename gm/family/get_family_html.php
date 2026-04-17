@@ -1,9 +1,9 @@
 <html>
-	<h2>²é¿´¹¤»á</h2>
+	<h2>æŸ¥çœ‹å·¥ä¼š</h2>
 	<form action="./get_family.php" method="post" accept-charset="UTF-8">
 		<?php require_once "../serverls.php";?>
-		¹¤»áid(-1ËùÓÐ¹«»á):<input name="m_familyid" type="text"/><br/>
-		<input type="submit" value="²é¿´"/><br/>
+		å·¥ä¼šid(-1æ‰€æœ‰å…¬ä¼š):<input name="m_familyid" type="text"/><br/>
+		<input type="submit" value="æŸ¥çœ‹"/><br/>
 	</form>
 </body>
 </html>

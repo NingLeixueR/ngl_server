@@ -1,10 +1,10 @@
 <html>
-	<h2>³äÖµ</h2>
+	<h2>å……å€¼</h2>
 	<form action="./gmpay.php" method="post" accept-charset="UTF-8">
 		<?php require_once "../serverls.php";?>
-		³äÖµid:<input name="rechangeid" type="text" size="32"/><br/>
-		Íæ¼Òid:<input name="roleid" type="text" size="32"/><br/>
-		<input type="submit" value="³äÖµ"/><br/>
+		å……å€¼id:<input name="rechangeid" type="text" size="32"/><br/>
+		çŽ©å®¶id:<input name="roleid" type="text" size="32"/><br/>
+		<input type="submit" value="å……å€¼"/><br/>
 	</form>
 </body>
 </html>

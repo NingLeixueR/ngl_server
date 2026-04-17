@@ -29,7 +29,7 @@
 	} 
 	else 
 	{
-		echo 'ÎÄ¼þ²»´æÔÚ';
+		echo 'æ–‡ä»¶ä¸å­˜åœ¨';
 	}
 	file_put_contents($file, $jsonstr, FILE_APPEND);
 ?>
