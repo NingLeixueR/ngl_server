@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor gateway.
+// File overview: Gateway session info tracking connected clients and their routing metadata.
 
 #pragma once
 
@@ -38,25 +38,25 @@ namespace ngl
 
 		std::map<i16_area, std::map<i32_actordataid, gateway_socket>>& info();
 
-		// # Connection
+		// Remove a client connection by socket id.
 		void remove_socket(i32_socket asocket);
 
-		// # Deleteconnectioninfo
+		// Remove a client connection by actor id.
 		void remove_actorid(i64_actorid aactorid);
 
-		// # Area dataidgetgateway_socket
+		// Look up a gateway_socket by area and role id.
 		gateway_socket* get(i16_area aarea, i32_actordataid aroleid);
 
-		// # Socketgetgateway_socket
+		// Look up a gateway_socket by socket id.
 		gateway_socket* get(i32_socket asocket);
 
-		// # Actoridgetgatewayid
+		// Get the gateway id for a given actor id.
 		int64_t gatewayid(i64_actorid aid);
 
-		// # Allsocket
+		// Iterate over all connected client sockets.
 		void foreach(const std::function<void(gateway_socket*)>& afun);
 
-		// # Data
+		// Update gateway info from a sync message.
 		void updata(const np_actor_gatewayinfo_updata& adata);
 	};
 }//namespace ngl

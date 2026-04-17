@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor chat.
+// File overview: Implements chat actor construction and channel dispatch.
 
 
 #include "actor/actor_logic/actor_brief/actor_brief.h"

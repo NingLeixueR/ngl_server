@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for attribute.
+// File overview: Implements attribute value storage and modifier application.
 
 
 #include "actor/actor_logic/actor_role/logic/attribute/attribute_value.h"

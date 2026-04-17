@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for tools.
+// File overview: Implements file and directory I/O operations.
 
 
 #include "actor/protocol/nprotocol.h"

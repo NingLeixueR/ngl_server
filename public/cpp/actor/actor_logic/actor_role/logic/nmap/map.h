@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for nmap.
+// File overview: Game map that owns grids and manages entity placement and movement.
 
 #pragma once
 
@@ -30,43 +30,43 @@ namespace ngl
 	public:
 		aoimap();
 
-		// # Findrole
+		// Find a role unit by actor ID
 		unit_role*		find_role(i64_actorid aid);
 
-		// # Findmonster
+		// Find a monster unit by actor ID
 		unit_monster*	find_monster(i64_actorid aid);
 
-		// # Findunit
+		// Find any unit (role or monster) by actor ID
 		unit*			find_unit(i64_actorid aid);
 
-		// # Initialize
+		// Initialize the map from a table config ID
 		bool init(int32_t atid);
 
-		// # Copy unit => pbdb::UNIT
+		// Copy a unit's data into a pbdb::UNIT protobuf
 		bool copy_unit(unit* aunit, pbdb::UNIT* aUNIT);
 
-		// # Unit idgetpbnet::UNIT
+		// Get a unit's protobuf data by actor ID
 		bool copy_unit(i64_actorid aid, pbdb::UNIT* aunit);
 
-		// # Map
+		// Enter the map at a given position
 		virtual bool enter(unit* aunit, int32_t ax, int32_t ay);
 
-		// # Leavemap
+		// Leave the map
 		virtual void leave(unit* aunit);
 
-		// # Synchronizepositioninfo
+		// Synchronize position info to nearby units
 		void sync_position(unit* aunit, int32_t agridid);
 
 		// Translated comment.
 		bool move(unit* aunit, int32_t ax, int32_t ay);
 
-		// # Direction
+		// Change a unit's facing direction
 		void change_angle(i64_actorid aunitid, int32_t aangle);
 
 		// Translated comment.
 		void change_speed(i64_actorid aunitid, int32_t aspeed);
 		
-		// # Position
+		// Update a unit's position
 		void change(i64_actorid aunitid, pbdb::POSITION& aposition);
 
 		void update(int64_t ams);

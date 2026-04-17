@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for kcp.
+// File overview: Implements KCP transport facade, session management, and update loop.
 
 #include "actor/actor_base/core/nguid.h"
 #include "actor/protocol/nprotocol.h"

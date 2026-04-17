@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor base.
+// File overview: Implements actor construction, message queue drain, and priority scheduling.
 
 #include "actor/actor_base/core/actor_manage.h"
 #include "actor/actor_base/core/ndbclient.h"
@@ -92,7 +92,7 @@ namespace ngl
 			else
 			{
 				if (m_hightlist.begin()->first < lhight)
-				{//列表不为空因为有可执行的
+				{// Non-empty: priority below threshold, ready to run.
 					return false;
 				}
 				else

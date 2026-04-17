@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor role.
+// File overview: Player role actor — one instance per online player, owns all per-player state and logic sub-modules.
 
 #pragma once
 
@@ -93,7 +93,7 @@ namespace ngl
 
 		virtual i32_serverid get_getwayserverid();
 
-		// # Executehandle after
+		// Execute post-handle logic
 		virtual void handle_after(handle_pram&);
 
 		virtual void erase_actor_before();
@@ -105,21 +105,21 @@ namespace ngl
 			return m_drop;
 		}
 
-		// # Set roleattribute
+		// Set role attribute for a given module
 		void update_attribute(EnumModule amodule, attribute_value& avalue);
 
 		void sync_data_client();
 
 #pragma region forward // Forwardingrelated
 		
-		// # Forward_type specifiedforwardingtype
+		// Default forwarding type for a message
 		template <typename T>
 			ecross forward_type([[maybe_unused]] const T& adata)
 		{
 			return ecross_ordinary;
 		}
 
-		// # Chat forwardingtype
+		// Chat message forwarding type
 		ecross forward_type(const pbnet::PROBUFF_NET_CHAT& adata)
 		{
 			if (m_info.bantalk())
@@ -138,13 +138,13 @@ namespace ngl
 			return ecross_none;
 		}
 
-		// # Ranklist forwardingtype
+		// Ranklist forwarding type
 		ecross forward_type(const pbnet::PROBUFF_NET_RANKLIST& adata)
 		{
 			return adata.miscross() ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
-		// # Join forwardingtype
+		// Join-example forwarding type
 		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN& adata)
 		{
 			if (m_example.second != 0)
@@ -159,7 +159,7 @@ namespace ngl
 			return tools::equal(adata.mcross(), pbexample::ECROSS_CROSS_ORDINARY) ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
-		// # Forwardingtype
+		// Get the example forwarding type
 		ecross example_type()
 		{
 			if (m_example.second == nguid::make())
@@ -177,17 +177,17 @@ namespace ngl
 				return example_type();
 			}
 
-		// # Forward_before specifiedforwardingbeforeevent
+		// Pre-forward hook for specific message types
 		template <typename T>
 			bool forward_before([[maybe_unused]] const T& adata)
 			{
 				return true;
 			}
 
-		// # Forwarding"createguild"before
+		// Pre-forward check before creating a guild
 		bool forward_before(const pbnet::PROBUFF_NET_FAMIL_CREATE& adata);
 
-		// # Dataid specifiedforwardingmodule dataid
+		// Get the forwarding target data ID for a message
 		template <typename T>
 			int32_t forward_dataid([[maybe_unused]] const T& adata)
 			{
@@ -240,34 +240,34 @@ namespace ngl
 		}
 #pragma endregion
 
-		// # Time
+		// Reset login time
 		void reset_logintime();
 
-		// # Toclient string
+		// Send a string message to the client
 		void echo_msg(const char* amsg);
 
 		int32_t rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting);
 
-		// # Loginrequest
+		// Request pending payments on login
 		void loginpay();
 
 		void requestgm(const char* aurl, const std::string& aparm, const std::function<void(int32_t, tools::http_parm&)>& acall);
 
-		// # Requestcreate
+		// Create a recharge order
 		void createorder(std::string& aorder, int32_t arechargeid);
 
-		// # Whether
+		// Check whether this is the first recharge
 		bool is_first_recharge(int32_t arechargeid);
 
-		// # CMDprotocol
+		// CMD protocol handler
 		using handle_cmd = tools::cmd<actor_role, std::string, const std::shared_ptr<pack>&, actor_role*, const char*>;
-		// # GMprotocol
+		// GM protocol handler
 		using handle_gm = tools::cmd<actor_role, std::string, int, ncjson&>;
 
-		// # Timer
+		// Timer callback handler
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 
-		// # Rolecreateinitialize
+		// Initialize a newly created role
 		void create_init(const std::string& aname);
 
 		bool handle([[maybe_unused]] const message<mforward<np_gm>>& adata);

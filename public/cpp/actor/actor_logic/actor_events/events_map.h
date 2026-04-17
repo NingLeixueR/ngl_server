@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor events.
+// File overview: Event-to-handler mapping that routes event types to their processing functions.
 
 #pragma once
 

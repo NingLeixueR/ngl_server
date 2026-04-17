@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor activity manage.
+// File overview: Implements rank-based activity scoring and reward distribution.
 
 
 #include "actor/actor_logic/actor_activity_manage/actor_activity_manage.h"
@@ -31,9 +31,9 @@ namespace ngl
 
 	void activity_rank::finish()
 	{
-		// # Sendrankreward
-		// ## 1, Torankmodulesendmessage, playerrankinfo
-		// ## 2, Sendreward
+		// Send rank rewards
+		// 1. Request player rank info from the rank module
+		// 2. Distribute rewards based on rank
 		auto pro = std::make_shared<np_get_rank>();
 		pro->m_rankid = m_tab->m_id;
 

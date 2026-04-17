@@ -1,1 +1,1 @@
-// File overview: Declares interfaces for attribute.
+// File overview: Buff manager for applying, removing, and ticking active buffs.

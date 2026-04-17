@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor example match.
+// File overview: Implements example match actor player pairing logic.
 
 
 #include "actor/actor_logic/actor_example_manage/actor_example_manage.h"
@@ -293,7 +293,7 @@ namespace ngl
 
 	void actor_example_match::matching_finish(room* aroom)
 	{
-		// ### Notifygameplaymanage createcorrespondinggameplayactor
+		// Notify the game play manager to create the corresponding gameplay actor
 		auto pro = std::make_shared<np_create_example>();
 		for (const auto& lpair : aroom->m_players)
 		{
@@ -319,7 +319,7 @@ namespace ngl
 
 	bool actor_example_match::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
-		// Ready
+		// Process ready rooms
 		for (auto& lpair : m_roomindex)
 		{
 			std::list<int32_t> lreadyids = lpair.second.m_readyroomlist;
@@ -336,7 +336,7 @@ namespace ngl
 					matching_finish(lproom);
 				}
 				else
-				{// M_readyroomlist ready table, if totime after totime
+				{// Ready list is sorted by time, so if this room hasn't timed out, later ones won't either
 					break;
 				}
 			}

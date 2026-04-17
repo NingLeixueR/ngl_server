@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor friends.
+// File overview: Implements friends actor construction and friend-list management.
 
 
 #include "actor/actor_logic/actor_friends/actor_friends.h"

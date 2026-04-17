@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for attribute.
+// File overview: Combat unit that aggregates attributes, buffs, and skills into a fightable entity.
 
 #pragma once
 
@@ -43,21 +43,21 @@ namespace ngl
 			m_dynamic.init(m_attribute.get_attribute());
 		}
 
-		// # [Set/get]unittype
+		// Set/get unit type
 		bool set_type(pbdb::EUNIT atype);
 		pbdb::EUNIT type();
 
-		// # Getunitattribute
+		// Get the unit's static attribute container
 		attribute& get_attribute();
 
-		// # [Set/get]unit id
+		// Set/get unit ID
 			bool set_id(i64_actorid aid);
 			i64_actorid id();
 
-		// # Getunit attribute
+		// Get the unit's dynamic (combat) attributes
 		dynamic_attribute& dynamic();
 
-		// # [Set/get]unit position
+		// Set/get unit position
 		void set_x(int32_t ax);
 		void set_y(int32_t ay);
 		int32_t x();
@@ -65,11 +65,11 @@ namespace ngl
 		pbdb::POSITION& position();
 		bool is_position_invalid();
 
-		// # [Set/get]unit direction
+		// Set/get unit facing direction
 		void set_angle(int32_t aangle);
 		int32_t angle();
 
-		// # [Set/get]unit
+		// Set/get unit movement speed
 		void set_speed(int32_t aspeed);
 		int32_t speed();
 

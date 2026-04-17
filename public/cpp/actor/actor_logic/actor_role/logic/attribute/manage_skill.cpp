@@ -1,1 +1,1 @@
-// File overview: Implements logic for attribute.
+// File overview: Implements skill manager for cooldown tracking and skill slot management.

@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor client.
+// File overview: Implements client-type route actor construction and cross-node forwarding.
 
 #include "actor/actor_logic/actor_client/actor_client.h"
 #include "actor/actor_logic/actor_server/actor_server.h"
@@ -47,7 +47,7 @@ namespace ngl
 
 	void actor_client::nregister()
 	{
-		// # Set toprotocol handler
+		// Set fallback handler for unregistered protocols (forward to target node)
 		nrfun<actor_client>::instance().set_notfindfun(
 			[](int, handle_pram& apram) 
 			{
@@ -55,7 +55,7 @@ namespace ngl
 			}
 		);
 
-		// # Registerprotocol
+		// Register protocol handlers
 		register_handle<actor_client
 			, np_actornode_register_response
 			, np_actorclient_node_connect
@@ -154,7 +154,7 @@ namespace ngl
 
 	bool actor_client::handle([[maybe_unused]] const message<np_actor_server_register>& adata)
 	{
-		// # Need to connectionActorServernode andto register
+		// Connect to ActorServer nodes and register this node
 		if (auto ltype = ttab_servers::instance().nodetype(); nconfig.nodetype() != ltype || ltype == ngl::ACTORSERVER || ltype == ngl::ROBOT)
 		{
 			tools::no_core_dump();
@@ -203,7 +203,7 @@ namespace ngl
 		{
 			if (nconfig.nodeid() != lnode.m_serverid && server_session::sessionid(lnode.m_serverid) == -1)
 			{
-				// # Compareid( connection )
+				// Compare node IDs to decide which side initiates the connection
 				activ_connect(lnode.m_serverid);
 			}
 		}

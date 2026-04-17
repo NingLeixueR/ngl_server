@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor robot manage.
+// File overview: Implements robot manager actor construction and instance coordination.
 
 
 #include "actor/actor_logic/actor_robot_manage/actor_robot_manage.h"

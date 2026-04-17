@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor kcp.
+// File overview: Implements KCP actor construction and UDP session management.
 
 
 #include "actor/actor_logic/actor_kcp/actor_kcp.h"

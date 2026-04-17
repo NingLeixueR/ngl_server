@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements message handlers for message.
+// File overview: Message handler registration and dispatch for the role actor.
 #include "actor/actor_logic/actor_testlua/actor_testlua.h"
 #include "actor/actor_logic/actor_events/actor_events.h"
 #include "actor/actor_logic/actor_role/logic/bag/drop.h"

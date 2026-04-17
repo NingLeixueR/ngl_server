@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements message handlers for message.
+// File overview: Message handler registration and dispatch for the gateway actor.
 
 
 #include "actor/actor_logic/actor_gateway_c2g/actor_gateway_c2g.h"
@@ -49,9 +49,9 @@ namespace ngl
 		{
 			auto pro = std::make_shared<np_actor_disconnect_close>();
 			pro->m_actorid = nguid::make(ACTOR_ROLE, larea, lroleid);
-			// # Notifygameserver player connection
+			// Notify the game server about the player disconnect.
 			send_actor(pro->m_actorid, id_guid(), pro);
-			// # Notifyloginserver player connection
+			// Notify the login server about the player disconnect.
 			ttab_servers::instance().foreach_server(LOGIN, tab_self_area, [&pro, this](const tab_servers* atab)
 				{
 					nguid lguid(ACTOR_LOGIN, tab_self_area, atab->m_id);
@@ -245,7 +245,7 @@ namespace ngl
 			return true;
 		}
 
-		// ### Notifykcpservercreateconnection
+		// Notify the KCP server to create a connection.
 		auto pro = std::make_shared<np_actor_kcp>();
 		pro->m_kcpsession		= lkcpsession;
 		pro->m_sessionid		= lpack->m_id;

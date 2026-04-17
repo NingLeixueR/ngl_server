@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor family.
+// File overview: Family data structures and operations for guild state management.
 
 #pragma once
 
@@ -44,7 +44,7 @@ namespace ngl
 			log_error()->print("{}", data());
 		}
 
-		// Whethercancreateguild
+		// Whether the player can create a guild
 		bool check_createfamily(i64_actorid aroleid)
 		{
 			data_modified<pbdb::db_familyer>& lpdbfamilyer = get(aroleid);
@@ -71,7 +71,7 @@ namespace ngl
 		int32_t									m_maxid = 0;
 		std::map<int64_t, int64_t>				m_rolefamily;	// key:roleid value:familyid
 		std::map<int64_t, std::set<int64_t>>	m_applylist;	// key:roleid value:std::set<familyid>
-		std::set<std::string>					m_familyname;	// Used to guildnamewhether
+		std::set<std::string>					m_familyname;	// Used to check if guild name already exists
 	public:
 		family():
 			m_maxid(0)
@@ -112,31 +112,31 @@ namespace ngl
 			}
 		}
 
-		// # Createguild
+		// Create a guild
 		int32_t create_family(i64_actorid aroleid, const std::string& aname);
 
-		// # Applyjoinguild
+		// Apply to join a guild
 		int32_t join_family(i64_actorid aroleid, i64_actorid afamilyid);
 
-		// # Fromguild[afamilyid]inapplylistinremove[aroleid]
+		// Remove a player from a guild's apply list
 		int32_t erase_applylist(i64_actorid aroleid, i64_actorid afamilyid);
 
-		// # Canceljoinguild
+		// Cancel a guild join application
 		int32_t cancel_join_family(i64_actorid aroleid, i64_actorid afamilyid);
 
-		// # Guild accept/rejectplayerjoinguild
+		// Accept or reject a player's guild join request
 		int32_t ratify_join_family(i64_actorid aroleid, i64_actorid ajoinroleid, bool aratify);
 
-		// # Guild transferguild
+		// Transfer guild leadership to another member
 		int32_t cede_family(i64_actorid aroleid, i64_actorid acederoleid);
 
-		// # Exitguild
+		// Leave a guild
 		int32_t leave_family(i64_actorid aroleid, i64_actorid afamilyid);
 
-		// # Guildname
+		// Change guild name
 		int32_t change_familyname(i64_actorid aroleid, i64_actorid afamilyid, const std::string& afamilyname);
 
-		// # Guildsign in
+		// Guild daily sign-in
 		int32_t sign_family(i64_actorid aroleid, i64_actorid afamilyid);
 
 		bool get_familylist(i64_actorid afamilyid, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& apro);
@@ -145,7 +145,7 @@ namespace ngl
 
 		void sync_family(i64_actorid aroleid);
 
-		// # Getguildall
+		// Get all members of a guild
 		bool get_familyers(i64_actorid aroleid, std::vector<i64_actorid>& afamilyers);
 	};
 }// namespace ngl

@@ -20,8 +20,8 @@
 
 namespace ngl
 {
-	// # Registerclienttogame message
-	// # Registergateway forwardingandgame handle
+	// Register client-to-game message forwarding.
+	// Sets up gateway forwarding handlers and game-side message handlers.
 	void nforward::c2g()
 	{
 		register_c2g<

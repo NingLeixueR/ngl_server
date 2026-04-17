@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for attribute.
+// File overview: Example combat scenario for testing the attribute and skill systems.
 
 #pragma once 
 
@@ -76,7 +76,7 @@ namespace ngl
 			);
 		}
 
-		// # Remove[attribute]
+		// Remove an attribute module from a unit
 		template <typename TDerived>
 		void handle(TDerived* aactor, const np_attribute_remove* adata)
 		{

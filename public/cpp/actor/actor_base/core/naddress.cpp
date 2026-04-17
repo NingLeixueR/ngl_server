@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor base.
+// File overview: Implements address table lookups and cross-node message forwarding.
 
 #include "actor/actor_base/core/actor_base.h"
 #include "actor/actor_base/core/nactortype.h"

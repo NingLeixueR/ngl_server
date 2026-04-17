@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor mail.
+// File overview: Mail actor that manages asynchronous player-to-player mail with attachments.
 
 #pragma once
 
@@ -67,7 +67,7 @@ namespace ngl
 			return m_drop;
 		}
 
-		// # Sendmail, id, position
+		// Send a mail with a drop reward to the specified actor
 		static bool sendmail(i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm);
 
 		using handle_cmd = tools::cmd<actor_mail, std::string, int, ncjson&>;

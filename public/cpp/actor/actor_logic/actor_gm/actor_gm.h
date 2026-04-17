@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor gm.
+// File overview: GM command actor that processes administrative commands from authorized operators.
 
 #pragma once
 
@@ -59,10 +59,10 @@ namespace ngl
 
 		static void nregister();
 
-		// # Forwardingtosingleton
+		// Forward a GM command to a singleton actor by type.
 		void sendbytype(ENUM_ACTOR atype, const pack* apack, const ngl::np_gm& apro);
 
-		// # Forwardingto actor
+		// Forward a GM command to a specific actor by id.
 		void sendbyactorid(i64_actorid aactorid, const pack* apack, const ngl::np_gm& apro);
 
 		static bool checklocalbytype(NODE_TYPE atype);

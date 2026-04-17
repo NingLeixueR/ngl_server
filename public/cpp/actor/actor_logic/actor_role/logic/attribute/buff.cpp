@@ -1,1 +1,1 @@
-// File overview: Implements logic for attribute.
+// File overview: Implements buff effects, duration tracking, and stacking rules.

@@ -1,1 +1,1 @@
-// File overview: Declares interfaces for attribute.
+// File overview: Skill manager for cooldown tracking and skill slot management.

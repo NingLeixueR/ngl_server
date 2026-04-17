@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor server.
+// File overview: Implements server-type route actor construction and cross-node forwarding.
 
 #include "actor/actor_logic/actor_server/actor_server.h"
 #include "actor/actor_base/core/nregister.h"
@@ -39,7 +39,7 @@ namespace ngl
 
 	void actor_server::nregister()
 	{
-		// # Set toprotocol handler
+		// Set fallback handler for unregistered protocols (forward to target node).
 		nrfun<actor_server>::instance().set_notfindfun(
 			[](int, handle_pram& apram)
 			{
@@ -155,7 +155,7 @@ namespace ngl
 		const i32_serverid lserverid = lrecv->m_data.m_id;
 		naddress::actor_address_add(lserverid, lrecv->m_data.m_add);
 		naddress::actor_address_del(lrecv->m_data.m_del);
-		// # To node
+		// Broadcast the update to all other connected nodes.
 		std::set<i32_sessionid> lsession;
 		naddress::foreach([lserverid, &lsession](const nnode_session& anode)->bool
 			{

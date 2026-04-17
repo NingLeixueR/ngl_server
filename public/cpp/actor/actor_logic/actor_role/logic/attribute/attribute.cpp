@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for attribute.
+// File overview: Implements player attribute calculation and stat aggregation.
 
 
 #include "actor/actor_logic/actor_role/logic/attribute/attribute.h"
@@ -206,7 +206,7 @@ namespace ngl
 	{
 		attribute lattr;
 
-		// ## E_ModuleBuff
+		// Initialize all modules except E_ModuleBuff (which expands into a range)
 		for (EnumModule i = EnumModule::E_ModuleRoot;i < EnumModule::E_ModuleCount; i = (EnumModule)(i+1))
 		{
 			attribute_value lvalue = init_attribute_value(i, 10);

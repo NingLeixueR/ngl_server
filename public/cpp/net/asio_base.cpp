@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for net.
+// File overview: Implements Asio I/O context initialization and run-loop.
 
 #include "net/asio_base.h"
 

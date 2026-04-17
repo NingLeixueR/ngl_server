@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor base.
+// File overview: Implements handle_pram construction and protocol-type resolution.
 
 #include "actor/actor_base/core/handle_pram.h"
 #include "actor/actor_base/core/naddress.h"

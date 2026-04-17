@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements message handlers for message.
+// File overview: Message handler registration and dispatch for the robot actor.
 #include "actor/actor_logic/actor_robot_manage/actor_robot_manage.h"
 #include "actor/actor_logic/actor_robot/actor_robot.h"
 #include "actor/actor_base/core/nregister.h"

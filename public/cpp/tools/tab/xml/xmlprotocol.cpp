@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for xml.
+// File overview: Implements XML protocol definition loading.
 
 
 #include "tools/tab/xml/xmlprotocol.h"

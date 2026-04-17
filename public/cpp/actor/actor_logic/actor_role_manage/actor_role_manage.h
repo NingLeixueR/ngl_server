@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor role manage.
+// File overview: Role manager actor that tracks online player roles and coordinates role lifecycle.
 
 #pragma once
 
@@ -57,10 +57,10 @@ namespace ngl
 
 		static void nregister();
 
-		// # Executehandle after
+		// Post-processing hook called after each message is handled.
 		virtual void handle_after(handle_pram&);
 
-		// # Gmrequest
+		// GM command handler type alias.
 		using handle_gm = tools::cmd<actor_role, std::string, int, ncjson&>;
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);

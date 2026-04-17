@@ -1,4 +1,4 @@
-// File overview: Declares interfaces for attribute.
+// File overview: Buff effect definitions, duration tracking, and stacking rules.
 
 // clang-format off
 /*

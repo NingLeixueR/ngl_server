@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for attribute.
+// File overview: Combat skill definitions, targeting, and damage formulas.
 
 
 #pragma once
@@ -89,14 +89,14 @@ namespace ngl
 				return nullptr;
 			}
 
-		// # [Set/get] level
+		// Set/get skill level
 		bool set_lv(int32_t askilllv);
 		int32_t lv();
 
-		// # Get time
+		// Get cooldown time in milliseconds
 		int32_t cooldown();
 
-		// # Whethercan
+		// Check whether the skill can be released
 		virtual bool release_check();
 	
 		// Translated comment.

@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for kcp.
+// File overview: Implements KCP endpoint address resolution and conversation management.
 
 #include "net/udp/kcp/kcp_endpoint.h"
 #include "actor/protocol/nprotocol.h"

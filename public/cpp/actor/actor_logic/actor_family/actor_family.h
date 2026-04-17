@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor family.
+// File overview: Family/guild actor that manages guild membership, ranks, and guild-wide operations.
 
 #pragma once
 
@@ -74,7 +74,7 @@ namespace ngl
 			return m_drop;
 		}
 		
-		// # GM
+		// GM command handler
 		using handle_cmd = tools::cmd<actor_mail, std::string, int, ncjson&>;
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);

@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for bag.
+// File overview: Implements item synthesis and crafting recipes.
 
 
 #include "actor/actor_logic/actor_role/logic/bag/synthesis.h"

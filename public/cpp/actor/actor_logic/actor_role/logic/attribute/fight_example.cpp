@@ -1,4 +1,4 @@
-// File overview: Implements logic for attribute.
+// File overview: Implements an example combat scenario for testing the attribute and skill systems.
 
 // clang-format off
 /*

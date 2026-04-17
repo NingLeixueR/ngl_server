@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor login.
+// File overview: Login actor that authenticates client credentials and coordinates session creation.
 
 #pragma once
 
@@ -78,28 +78,28 @@ namespace ngl
 
 		static void nregister();
 
-		// # Account getpbdb::db_account
+		// Look up or create a db_account record for the given credentials.
 		data_modified<pbdb::db_account>* get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate);
 
-		// # Getamapin server
+		// Find the least-loaded server from a server map.
 		bool get_freeserver(std::map<i32_serverid, server_info>& amap, std::pair<i32_serverid, int32_t>& apair);
 
-		// # Getgameserverin server
+		// Find the least-loaded game server.
 		bool get_freeserver_game(std::pair<i32_serverid, int32_t>& apair);
 
-		// # Getgatewayserverin server
+		// Find the least-loaded gateway server.
 		bool get_freeserver_gateway(std::pair<int32_t, int32_t>& apair);
 
-		// # Amapinaserveridcorrespondingserver
+		// Decrement the free-slot count for a server in the map.
 		bool dec_freeserver(std::map<i32_serverid, server_info>& amap, i32_serverid aserverid);
 
-		// # Gameserverinaserveridcorrespondingserver
+		// Decrement the free-slot count for a game server.
 		bool dec_freeserver_game(i32_serverid aserverid);
 
-		// # Gatewayserverinaserveridcorrespondingserver
+		// Decrement the free-slot count for a gateway server.
 		bool dec_freeserver_gateway(i32_serverid aserverid);
 
-		// # Serverdata
+		// Print current server load data for debugging.
 		void printf_freeserver();
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);

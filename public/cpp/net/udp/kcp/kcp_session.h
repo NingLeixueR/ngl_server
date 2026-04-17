@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for kcp.
+// File overview: KCP session that wraps ikcp state and manages retransmission timers.
 
 #pragma once
 

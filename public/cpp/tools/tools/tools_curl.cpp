@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for curl.
+// File overview: Implements HTTP GET/POST requests and email sending via libcurl.
 
 
 #include "actor/protocol/nprotocol.h"

@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for attribute.
+// File overview: Player attribute system with base stats, modifiers, and derived values.
 
 #pragma once 
 
@@ -34,27 +34,27 @@ namespace ngl
 {
 	class attribute
 	{
-		// # Moduleattribute( module changethroughupdata[EnumModule,attribute_value])
+		// Per-module attribute data (modules update via updata(EnumModule, attribute_value))
 		std::map<EnumModule, attribute_value> m_moduledata;
 		bool m_sync = false;
 		int64_t m_unitid = 0;
 
-		// # Node
+		// Get the root attribute node
 		attribute_value& root();
 
-		// # Addmodule, and attributeaddto
+		// Add a module and merge its attributes into the root
 		void module_add(EnumModule aenum);
 
-		// # Removemodule,and addto on attribute
+		// Remove a module and subtract its attributes from the root
 		void module_dec(EnumModule aenum);
 
-		// # CheckEnumModulewhether node
+		// Check whether the module is the root node
 		bool module_is_root(EnumModule aenum);
 
-		// # CheckEnumModulewhether
+		// Check whether the module is null
 		bool module_is_null(EnumModule aenum);
 
-		// # Module
+		// Recalculate and update the specified module's attributes
 		void module_update(EnumModule aenum);
 	public:
 		attribute() = default;
@@ -63,16 +63,16 @@ namespace ngl
 
 		void set_sync(bool async);
 
-		// # Initializedata moduleattribute
+		// Initialize a module's attribute data
 		void init_data(EnumModule aenum, attribute_value& avalue);
 
-		// # Moduleattribute attributeand
+		// Aggregate all module attributes and compute totals
 		void init();
 
-		// # Moduleattribute
+		// Update a module's attribute values and recalculate
 		void updata(EnumModule aenum, attribute_value& avalue);
 
-		// # Removeattributemodule
+		// Remove an attribute module
 		void remove(EnumModule aenum);
 
 		// Translated comment.
@@ -98,7 +98,7 @@ namespace ngl
 
 	class aoimap;
 
-	// Attribute,can in attribute
+	// Dynamic attribute container for runtime combat values
 	class dynamic_attribute
 	{
 	private:
@@ -113,20 +113,20 @@ namespace ngl
 		{
 		}
 
-		// [Moduleattribute] attribute
+		// Initialize dynamic attributes from module attributes
 		void init(const std::map<EnumAttribute, int64_t>& aattribute)
 		{
 			m_base = aattribute;
 			m_dynamic = m_base;
 		}
 
-		// Whether
+		// Check whether the unit is dead
 		bool is_death()
 		{
 			return m_dynamic[E_Hp] <= 0;
 		}
 
-		// Attribute
+		// Modify an attribute value by a delta
 			void change_attribute(EnumAttribute aattribute, int64_t avalue, [[maybe_unused]] bool adynamic)
 		{
 			m_dynamic[aattribute] += avalue;
@@ -159,19 +159,19 @@ namespace ngl
 			return m_stat[astat];
 		}
 
-		// Whethercan
+		// Check whether the unit can move
 		bool is_move()
 		{
 			return get_fightstst(E_FightMove);
 		}
 
-		// Whethercan
+		// Check whether the unit can normal-attack
 		bool is_normalattack()
 		{
 			return get_fightstst(E_FightNormalAttack);
 		}
 
-		// Whethercan
+		// Check whether the unit can release a skill
 		bool is_releaseskill()
 		{
 			return get_fightstst(E_FightReleaseSkill);

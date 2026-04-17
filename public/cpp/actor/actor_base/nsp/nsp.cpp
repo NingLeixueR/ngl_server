@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for nsp.
+// File overview: Implements NSP registration and protocol dispatch.
 
 #include "tools/tools/tools_pb_field.h"
 #include "actor/actor_base/nsp/nsp.h"

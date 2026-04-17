@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for net.
+// File overview: Implements server session lifecycle and connection-to-actor binding.
 
 
 #include "actor/protocol/nprotocol.h"

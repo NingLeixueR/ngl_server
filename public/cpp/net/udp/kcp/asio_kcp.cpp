@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for kcp.
+// File overview: Implements Asio UDP socket I/O for KCP packet send/receive.
 
 #include "tools/tab/xml/sysconfig.h"
 #include "actor/protocol/protocol.h"

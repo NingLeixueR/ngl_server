@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements message handlers for message.
+// File overview: Message handler registration and dispatch for the login actor.
 #include "actor/actor_logic/actor_login/actor_login.h"
 #include "actor/actor_base/core/nregister.h"
 namespace ngl
@@ -91,7 +91,7 @@ namespace ngl
 			lppair_account->m_gatewayserverid = lpairgateway.first;
 		}
 
-		// # Notifygatewayserver
+		// Notify the gateway server about the login.
 		{
 			np_actorrole_login pro
 			{
@@ -109,7 +109,7 @@ namespace ngl
 			nnet::instance().send_server(pro.m_gatewayid, pro, nguid::moreactor(), id_guid());
 		}	
 
-		// # Notifyclient
+		// Notify the client with the login response.
 		{
 			pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE pro;
 			pro.set_mroleid(lpdbaccount->mroleid());

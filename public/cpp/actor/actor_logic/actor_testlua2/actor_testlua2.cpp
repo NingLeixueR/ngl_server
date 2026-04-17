@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor testlua2.
+// File overview: Implements extended Lua test actor for advanced binding scenarios.
 
 
 #include "actor/actor_logic/actor_testlua2/actor_testlua2.h"
@@ -59,7 +59,7 @@ namespace ngl
 		set_timer(tparm);
 		*/
 
-		// # Csvdatawritelua
+		// Export CSV table data to Lua (commented out).
 		//nscript_data_csv<tab_servers> ltab(ttab_servers::instance().tablecsv());
 		//nscript_data_push("csv", ltab);
 	}

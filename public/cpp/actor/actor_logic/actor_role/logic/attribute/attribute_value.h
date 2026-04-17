@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for attribute.
+// File overview: Attribute value container with modifier stacking and dirty-flag tracking.
 
 #pragma once
 
@@ -55,7 +55,7 @@ namespace ngl
 		std::map<EnumAttribute, float>		m_rattr;	// Attribute[ ]
 		std::map<EnumAttribute, float>		m_orattr;	// Attribute[ ]
 		
-		// ## Under attribute onadd attribute ##
+		// Attributes from other modules added onto this module
 		std::map<EnumAttribute, int64_t>	m_fight;						// [M_attr+m_rattr] generate attribute
 		int64_t								m_fightscore = 0;				// Translated comment.
 		EnumModule							m_module = EnumModule::E_ModuleNull;

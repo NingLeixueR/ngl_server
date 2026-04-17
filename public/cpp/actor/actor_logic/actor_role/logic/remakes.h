@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for logic.
+// File overview: Player remark/note storage for user-defined annotations.
 
 #pragma once
 
@@ -21,8 +21,8 @@
 
 namespace ngl
 {
-	// # remakes
-	// In "remakes"string
+	// Scoped remark stack for tracking operation context
+	// Pushes a "remakes" string on construction, pops on destruction
 	// For example:
 	//  local_remakes(role, "test_1");
 	//  std::string lremakes = local_get_remakes(role); //lremakes == "test_1"

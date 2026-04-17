@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor ranklist.
+// File overview: Implements ranking actor construction and leaderboard management.
 
 
 #include "actor/actor_logic/actor_ranklist/actor_ranklist.h"

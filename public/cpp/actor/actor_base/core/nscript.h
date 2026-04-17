@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor base.
+// File overview: Lua script binding component for actors with scripted behavior.
 
 #pragma once
 

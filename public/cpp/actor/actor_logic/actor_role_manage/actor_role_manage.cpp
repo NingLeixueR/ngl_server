@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor role manage.
+// File overview: Implements role manager actor construction and online-player tracking.
 
 
 #include "actor/actor_logic/actor_role_manage/actor_role_manage.h"

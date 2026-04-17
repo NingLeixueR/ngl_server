@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor family.
+// File overview: Implements family/guild actor construction and membership management.
 
 
 #include "actor/actor_logic/actor_family/actor_family.h"

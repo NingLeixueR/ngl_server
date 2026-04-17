@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for nmap.
+// File overview: Single grid cell that tracks entities within its spatial bounds.
 
 #pragma once
 
@@ -35,10 +35,10 @@ namespace ngl
 		// Translated comment.
 		bool enter(i64_actorid aunitid);
 
-		// # Leave
+		// Remove a unit from this grid
 		void leave(i64_actorid aunitid);
 
-		// # Getunitlist
+		// Get the set of unit IDs in this grid
 		const std::set<i64_actorid>& get_unitlist();
 
 		void clear();

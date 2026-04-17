@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor activity manage.
+// File overview: Activity management actor that coordinates game-wide activity lifecycle (start, end, rewards).
 
 #pragma once
 
@@ -82,7 +82,7 @@ namespace ngl
 
 		static void nregister();
 
-		// # Executehandle after
+		// Post-processing hook called after handling a message
 		virtual void handle_after(handle_pram&);
 
 		std::shared_ptr<activity>& get_activity(i64_actorid aactivityid);

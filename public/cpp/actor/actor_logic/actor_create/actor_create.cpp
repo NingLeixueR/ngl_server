@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor create.
+// File overview: Implements character creation actor and initial player data setup.
 
 #include "actor/actor_logic/actor_create/actor_create.h"
 

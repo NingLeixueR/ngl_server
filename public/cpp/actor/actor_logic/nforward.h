@@ -43,9 +43,9 @@ namespace ngl
 			}
 		}
 		
-		// Secondaryforwarding [client]->[gateway] -> [game] -> [module]
-		// ############################## Forwarding ###### secondaryforwarding #######
-		// Need tosupportsecondaryforwarding
+		// Two-hop forwarding: [client] -> [gateway] -> [game] -> [module]
+		// ====================== Secondary forwarding ======================
+		// Protocols that require an extra hop through the gateway.
 		template <ENUM_ACTOR ACTOR, typename ...ARG>
 		static void register_c2g_2()
 		{
@@ -76,10 +76,10 @@ namespace ngl
 			}
 		}
 	public:
-		// # client->gateway->game
+		// Register client-to-game forwarding protocols.
 		static void c2g();
 
-		// # game->gateway->client
+		// Register game-to-client forwarding protocols.
 		static void g2c();
 	};
 }//namespace ngl

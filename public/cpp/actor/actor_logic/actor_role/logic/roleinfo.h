@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for logic.
+// File overview: Player profile info queries and display-name management.
 
 #pragma once
 
@@ -40,11 +40,11 @@ namespace ngl
 
 		void change_event(eevents_logic type, int abegvalue, int32_t anowvalue);
 
-		// # Level
+		// Get/set player level
 		int32_t lv();
 		void change_lv(int avalues);
 
-		// # vip
+		// Get/set VIP level
 		int32_t vip();
 		void change_vip(int avalues);
 

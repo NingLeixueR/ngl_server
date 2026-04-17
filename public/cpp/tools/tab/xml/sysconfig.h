@@ -69,7 +69,7 @@ namespace ngl
 		static int32_t		m_gamecount;			// Game node count
 		static std::string	m_gmurl;				// GM URL
 
-		// # Gateway list
+		// Gateway server ids for this node.
 		static std::set<i32_serverid> m_gatewayids;
 
 		static std::string m_lua;					// Lua directory path

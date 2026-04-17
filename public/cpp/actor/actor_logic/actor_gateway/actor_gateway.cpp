@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor gateway.
+// File overview: Implements gateway actor construction and client session management.
 
 
 #include "actor/actor_logic/actor_gateway_c2g/actor_gateway_c2g.h"

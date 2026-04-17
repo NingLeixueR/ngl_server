@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for mysql.
+// File overview: Implements MySQL connection pool checkout, return, and health checks.
 
 #include "tools/db/sql/mysql/nmysql_pool.h"
 

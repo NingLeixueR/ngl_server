@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for task.
+// File overview: Player task/quest system with progress tracking and completion rewards.
 
 #pragma once
 
@@ -31,38 +31,38 @@ namespace ngl
 	class static_task
 	{
 	public:
-		// # Conditionwhether complete
+		// Check whether all conditions are met
 		static bool check_condition(actor_role* arole, const std::vector<task_condition>& acondition);
 
-		// # Get completetask
+		// Get completed tasks map
 		static google::protobuf::Map<int32_t, pbdb::db_task_complete>& complete(actor_role* arole);
 		static const google::protobuf::Map<int32_t, pbdb::db_task_complete>& const_complete(actor_role* arole);
 
-		// # Get executeintask
+		// Get in-progress tasks map
 		static google::protobuf::Map<int32_t, pbdb::db_task_data>& run(actor_role* arole);
 		static const google::protobuf::Map<int32_t, pbdb::db_task_data>& const_run(actor_role* arole);
 
-		// # Taskwhethercomplete
+		// Check whether the task is already completed
 		static bool isfinish_task(actor_role* arole, i32_taskid ataskid);
 
-		// # Taskwhether
+		// Check whether the task has been received
 		static bool isreceive_task(actor_role* arole, i32_taskid ataskid);
 
-		// # Completetask
+		// Complete a task and grant rewards
 		static bool finish_task(actor_role* arole, i32_taskid ataskid);
 
-		// # Task
+		// Receive (accept) a task
 		static bool receive_task(actor_role* arole, i32_taskid ataskid);
 
-		// # Removetask
+		// Remove a task from the active list
 		static bool erase_task(actor_role* arole, i32_taskid ataskid);
 
-		// # Whether can task
-		// # Because conditioncomplete
+		// Update tasks when a condition changes (may trigger receive or complete)
+		// Checks whether condition completion enables new tasks
 		static bool update_change(actor_role* arole, ETask atype, std::set<i32_taskid>* ataskset);
 		static bool update_change(actor_role* arole, ETask atype, int32_t avalues);
 
-		// # Task
+		// Reset a task (erase and re-receive)
 		static bool reset_task(actor_role* arole, i32_taskid ataskid);
 	};
 }// namespace ngl

@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor create.
+// File overview: Character creation actor that handles new player registration and initial data setup.
 
 #pragma once
 
@@ -26,8 +26,8 @@
 
 namespace ngl
 {
-	// Actorswitch
-	// Actor datacannot
+	// Handles actor migration between servers
+	// Actor data must be removed from the source before being created on the target
 	class actor_create : 
 		public actor
 	{
@@ -48,11 +48,11 @@ namespace ngl
 
 		static i64_actorid actorid(i32_serverid aserverid);
 
-		// # Specified[Server]oncreate[Actor]
+		// Create the specified actor on the target server
 		template <typename T>
 		static void switch_process_send(std::shared_ptr<np_actorswitch_process<T>>& pro)
 		{
-			// # 2 If actor_role togateway
+			// Step 2: If actor is ACTOR_ROLE, forward to the gateway
 			ENUM_ACTOR ltype = (ENUM_ACTOR)nguid::type(pro->m_actor);
 			if (ltype == ENUM_ACTOR::ACTOR_ROLE)
 			{
@@ -61,7 +61,7 @@ namespace ngl
 				i64_actorid lactorgatewayid = nguid::make(ACTOR_GATEWAY, tab_self_area, nnodeid::tcount(lp->m_gatewayid));
 				send_actor(lactorgatewayid, nguid::make(), pro);
 			}
-			// # 3 To
+			// Step 3: Send to the target server's actor_create
 			i64_actorid lactortoserverid = actor_create::actorid(nnodeid::tcount(pro->m_toserverid));
 			send_actor(lactortoserverid, nguid::make(), pro);
 		}
@@ -82,7 +82,7 @@ namespace ngl
 
 			if (aserverid > 0)
 			{
-				// # 1 Toactor before
+				// Step 1: Remove the actor from the source server first
 				i64_actorid lcreateactor = actor_create::actorid(nnodeid::tcount(aserverid));
 				send_actor(lcreateactor, nguid::make(), pro);
 			}

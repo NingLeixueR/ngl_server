@@ -1,1 +1,1 @@
-// File overview: Implements logic for attribute.
+// File overview: Implements buff manager for applying, removing, and ticking active buffs.

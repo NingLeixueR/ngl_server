@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor chat.
+// File overview: Chat actor that dispatches messages across channels (world, guild, private).
 
 #pragma once
 

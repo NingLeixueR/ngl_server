@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor gateway g2c.
+// File overview: Gateway-to-client protocol actor that serializes outbound messages to clients.
 
 #pragma once
 
@@ -56,10 +56,10 @@ namespace ngl
 
 		static void nregister();
 
-		// # Getallclient
+		// Get all connected client sessions.
 		void get_allclient(std::map<i32_sessionid, i64_actorid>& amap);
 
-		// # Getspecifiedarea allclient
+		// Get all connected client sessions in a specific area.
 		void get_allclientbyarea(std::map<i32_sessionid, i64_actorid>& amap, i16_area aarea);
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);

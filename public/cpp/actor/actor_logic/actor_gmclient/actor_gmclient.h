@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor gmclient.
+// File overview: GM client actor that relays GM commands from an external tool to the GM actor.
 
 #pragma once
 
@@ -68,7 +68,7 @@ namespace ngl
 
 		static void allprotocol(protocols& apro);
 
-		// # GM
+		// GM command handler type alias.
 		using handle_cmd = tools::cmd<actor_gmclient, std::string, int, ncjson&>;
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);

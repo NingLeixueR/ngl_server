@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor example match.
+// File overview: Example match actor that pairs players into game sessions.
 
 #pragma once
 
@@ -75,7 +75,7 @@ namespace ngl
 	struct player
 	{
 		i64_actorid		m_roleid = 0;
-		bool			m_isconfirm = false; // Whetherconfirm
+		bool			m_isconfirm = false; // Whether the player has confirmed
 		int32_t			m_index = 0;
 	};
 
@@ -83,12 +83,12 @@ namespace ngl
 	{
 		pbexample::EPLAY_TYPE			m_type = pbexample::EPLAY_TYPE::EPLAY_NULL;
 		int32_t							m_roomid = 0;
-		int32_t							m_totalnumber = 0;		// Need to
-		std::map<i64_actorid, player>	m_players;				// And player
-		std::set<i64_actorid>			m_playersset;			// And player
-		time_t							m_roomcreate = 0;		// Roomcreatetime
-		time_t							m_roomready = 0;		// Roomreadytime
-		int32_t							m_index = 0;			// Room
+		int32_t							m_totalnumber = 0;		// Required number of players
+		std::map<i64_actorid, player>	m_players;				// Players in the room
+		std::set<i64_actorid>			m_playersset;			// Player ID set
+		time_t							m_roomcreate = 0;		// Room creation time
+		time_t							m_roomready = 0;		// Room ready time
+		int32_t							m_index = 0;			// Room index
 	};
 
 	struct room_index
@@ -96,11 +96,11 @@ namespace ngl
 		int32_t				m_index = 0;
 		enum eroom_stat
 		{
-			eroom_matching,		// In
-			eroom_ready,		// Ready
+			eroom_matching,		// Currently matching players
+			eroom_ready,		// All players joined, waiting for confirmation
 		};
 		std::map<int32_t, eroom_stat>	m_roomlist;
-		std::list<int32_t>				m_readyroomlist;	// Readylist( list)
+		std::list<int32_t>				m_readyroomlist;	// List of rooms in ready state
 	};
 
 	class actor_example_match : public actor
@@ -108,7 +108,7 @@ namespace ngl
 		actor_example_match(const actor_example_match&) = delete;
 		actor_example_match& operator=(const actor_example_match&) = delete;
 
-		std::map<pbexample::EPLAY_TYPE, room_index>						m_roomindex;			// Room
+		std::map<pbexample::EPLAY_TYPE, room_index>						m_roomindex;			// Room index by play type
 		/////////roomid////////
 		std::map<pbexample::EPLAY_TYPE, std::map<int32_t, room>>		m_room;
 		std::map<i64_actorid, int32_t>									m_matching;				// key:roleid value:room id
@@ -136,40 +136,40 @@ namespace ngl
 
 		static void nregister();
 
-		// # Synchronizeroominfo
+		// Synchronize room info to players
 		void sync_match_info(room* aroom, i64_actorid aroleid = nguid::make());
 
-		// # Synchronize[PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT]
+		// Send a matching error result to players
 		static void send_error(pbexample::PLAY_MATCHING_EERROR_CODE acode, std::set<i64_actorid>* aplayer = nullptr, int32_t aroomid = 0, i64_actorid aroleid = nguid::make());
 
-		// # Roomwhether ready
+		// Check whether the room has enough players to be ready
 		bool room_count_ready(room* aroom);
 
-		// # Player data room
+		// Assign a player to a matching room
 		room* matching_room(i64_actorid aroleid, pbexample::EPLAY_TYPE atype);
 
-		// # Findroom
+		// Find a room by room ID (searches all types)
 		room* find_room(int32_t aroomid);
 
-		// # Findroom
+		// Find a room by play type and room ID
 		room* find_room(pbexample::EPLAY_TYPE atype, int32_t aroomid);
 
-		// # Room
+		// Create a new room
 		room* add_room(pbexample::EPLAY_TYPE atype);
 
-		// # Deleteroom
+		// Delete a room and notify players
 		void erase_room(room* aroom, pbexample::PLAY_MATCHING_EERROR_CODE aerrorcode = pbexample::PLAY_MATCHING_EERROR_CODE::EERROR_CODE_ROOM_DESTORY);
 
-		// # Playercancel
+		// Remove a player from a room (cancel matching)
 		void erase_player_room(room* aroom, i64_actorid aroleid);
 
-		// # Whether
+		// Check whether a time interval has elapsed
 		bool check_timeout(time_t atime, int32_t ainterval);
 
-		// # Successful
+		// Matching completed successfully, start the game
 		void matching_finish(room* aroom);
 
-		// # Ready
+		// Check if all players in the room have confirmed
 		bool check_ready(room* aroom);
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);

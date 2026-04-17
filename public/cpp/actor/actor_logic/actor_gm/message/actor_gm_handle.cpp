@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements message handlers for message.
+// File overview: Message handler registration and dispatch for the gm actor.
 #include "actor/actor_logic/actor_gmclient/actor_gmclient.h"
 #include "actor/actor_logic/actor_gm/actor_gm.h"
 namespace ngl
@@ -165,7 +165,7 @@ namespace ngl
 		i64_actorid lactorid = -1;
 		if (njson::pop(lreadjson, { "actor_name" }, lactorname))
 		{
-			// ### Singleton
+			// Forward to singleton actor by name.
 			if (lactorname == "ACTOR_GM")
 			{
 				std::string loperator;
@@ -206,7 +206,7 @@ namespace ngl
 			return true;
 		}
 		else if (njson::pop(lreadjson, { "actor_id" }, lactorid))
-		{// ### Singleton
+		{// Forward to specific actor by id.
 			sendbyactorid(lactorid, lpack, *lparm);
 			return true;
 		}

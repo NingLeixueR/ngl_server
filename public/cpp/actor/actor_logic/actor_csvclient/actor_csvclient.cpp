@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor csvclient.
+// File overview: Implements CSV client actor construction and table data caching.
 
 
 #include "actor/actor_logic/actor_csvclient/actor_csvclient.h"

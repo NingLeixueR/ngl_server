@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor example manage.
+// File overview: Implements example game manager matchmaking and room lifecycle.
 
 
 #include "actor/actor_logic/actor_example_manage/actor_example_manage.h"

@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor base.
+// File overview: Implements nguid string conversion and factory methods.
 
 #include "actor/actor_base/core/nguid.h"
 #include "actor/tab/ttab_servers.h"

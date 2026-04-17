@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor keyvalue.
+// File overview: Key-value store actor that provides persistent named storage shared across actors.
 
 #pragma once
 
@@ -60,7 +60,7 @@ namespace ngl
 
 		static void nregister();
 
-		// # GM
+		// GM command handler type alias.
 		using handle_cmd = tools::cmd<actor_keyvalue, std::string, int, ncjson&>;
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);

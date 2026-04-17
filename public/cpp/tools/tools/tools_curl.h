@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for curl.
+// File overview: HTTP client wrapper around libcurl for GET/POST requests and email sending.
 
 #pragma once
 

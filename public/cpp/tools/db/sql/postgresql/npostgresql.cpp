@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for postgresql.
+// File overview: Implements PostgreSQL connection lifecycle and query execution.
 
 
 #include "tools/db/sql/postgresql/npostgresql.h"

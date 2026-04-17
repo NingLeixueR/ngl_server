@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for task.
+// File overview: Implements player task/quest progress tracking and completion.
 
 
 #include "actor/actor_logic/actor_role/logic/task/task.h"
@@ -155,15 +155,15 @@ namespace ngl
 	bool static_task::receive_task(actor_role* arole, i32_taskid ataskid)
 	{
 		if (ttab_task::instance().repeat(arole, ataskid) == false)
-		{// ## Completetask
-			// ## Taskbeforefirst whether complete
+		{// Non-repeatable task
+			// Check whether the task was already completed before
 			if (isfinish_task(arole, ataskid))
 			{
 				return false;
 			}
 		}
 		
-		// ## This taskwhether
+		// Check whether this task is already received
 		if (isreceive_task(arole, ataskid))
 		{
 			return true;
@@ -212,14 +212,14 @@ namespace ngl
 	{
 		if (ttab_task::instance().repeat(arole, ataskid) == false)
 		{
-			// # Completetaskbeforefirst whether complete
+			// Check whether the task was already completed before
 			if (isfinish_task(arole, ataskid))
 			{
 				return false;
 			}
 		}
 		
-		// # This taskwhether
+		// Check whether this task has been received
 		if (isreceive_task(arole, ataskid) == false)
 		{
 			return false;
@@ -233,7 +233,7 @@ namespace ngl
 			{
 				return false;
 			}
-			// # Sendreward
+			// Send reward to the player
 			const tab_task* tab = ttab_task::instance().tab(ataskid);
 			if (tab == nullptr)
 			{
@@ -269,11 +269,11 @@ namespace ngl
 		const auto& lconstrun = const_run(arole);
 		for (const i32_taskid ltaskid : *ataskset)
 		{
-			// ## Taskbeforefirst whether
+			// Check whether the task was already received before
 			auto litrun = lconstrun.find(ltaskid);
 			if (litrun != lconstrun.end())
 			{
-				// ## Task
+				// Update task progress
 				auto& lrun = run(arole);
 				for (auto itor = lrun.begin(); itor != lrun.end(); ++itor)
 				{
@@ -323,13 +323,13 @@ namespace ngl
 	void task::initdata()
 	{
 		log_error()->print("task load finish {}", data());
-		// ### Whether task
+		// Try to receive and complete each task on load
 		ttab_task::instance().foreach([&](tab_task& atab)
 			{
-				// # Taskwhether
+				// Try to receive the task
 				if (static_task::receive_task(nactor(), atab.m_id) == true)
 				{// Or
-					// # Taskwhether complete
+					// Try to complete the task
 					if (static_task::finish_task(nactor(), atab.m_id))
 					{
 						return;

@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for tools.
+// File overview: Threading primitives: shared_mutex RAII macros, semaphore wrapper, and thread helpers.
 
 #pragma once
 

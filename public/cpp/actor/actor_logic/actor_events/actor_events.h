@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor events.
+// File overview: Events actor that manages timed game events and activity scheduling.
 
 #pragma once
 
@@ -21,19 +21,19 @@
 
 namespace ngl
 {
-	// ENUM_EVENTS actor.m_type
-	// Can actor_eventsto
-	// ENUM_EVENTSandE_EVENTS
+	// ENUM_EVENTS determines the actor's m_type offset.
+	// Multiple actor_events instances can coexist by using
+	// different ENUM_EVENTS and E_EVENTS type combinations.
 	enum ENUM_EVENTS
 	{
-		ENUM_EVENTS_LOGIC,		// Correspondingeevents_logic
-		ENUM_EVENTS_MAP,		// Correspondingeevents_map
+		ENUM_EVENTS_LOGIC,		// Corresponds to eevents_logic
+		ENUM_EVENTS_MAP,		// Corresponds to eevents_map
 	};
 
 	template <
-		ENUM_EVENTS ETYPE			// Eventtype
-		, typename E_EVENTS			// Eventtype
-		, int E_EVENTS_COUNT		// Event
+		ENUM_EVENTS ETYPE			// Event category type
+		, typename E_EVENTS			// Event enum type
+		, int E_EVENTS_COUNT		// Number of event types
 	>
 	class actor_events : 
 		public actor
@@ -93,7 +93,7 @@ namespace ngl
 			> ();
 		}
 
-		// # Type
+		// Register a parameter type for an event type
 		template <typename TPARM>
 		static void register_parm(E_EVENTS atype)
 		{
@@ -133,7 +133,7 @@ namespace ngl
 			actor::send_actor(actorid(), aactorid, pro);
 		}
 
-		// # Event
+		// Trigger an event and dispatch to registered listeners
 		struct tnactor {};
 		template <typename TPARM, typename TACTOR = tnactor>
 		static bool trigger_event(const TPARM& apram, TACTOR* aactor = nullptr)

@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor server.
+// File overview: Route actor for server-type nodes, handles cross-node message forwarding and actor discovery.
 
 #pragma once
 
@@ -43,21 +43,20 @@ namespace ngl
 
 		void print(const std::vector<i64_actorid>& avec)const;
 
-		// # Response/forwarding[np_actornode_register]request
+		// Respond to a node registration request and forward it to other known nodes.
 		void reply_register(const pack* apack, i32_serverid aserverid);
 		void forward_register(const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd);
 
-		// # [actor client -> actor server] register
-		// # Registernode
+		// Handle: actor_client registers its node with this actor_server.
 		bool handle([[maybe_unused]] const message<np_actornode_register>& adata);
 
-		// # Nodeinactor
+		// Handle: update the actor set hosted on a remote node.
 		bool handle([[maybe_unused]] const message<np_actornode_update_server>& adata);
 
-		// # Toactorclientsynchronizenodeinfo( )
+		// Handle: batch node-info update (with optional completion callback).
 		bool handle([[maybe_unused]] const message<np_actornode_update_mass>& adata);
 
-		// # Gatewaytable actor_role.guididandgateway server idcorresponding
+		// Handle: synchronize actor_role guid to gateway server id mapping.
 		bool handle([[maybe_unused]] const message<np_actor_gatewayid_updata>& adata);
 	};
 }//namespace ngl

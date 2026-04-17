@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for nmap.
+// File overview: Grid collection providing spatial partitioning over the game map.
 
 #pragma once
 
@@ -35,22 +35,22 @@ namespace ngl
 	public:
 		virtual void init(int32_t aw, int32_t al, int32_t anx, int32_t any);
 
-		// # (Ax,ay)
+		// Enter the grid at position (ax, ay)
 		bool enter(i64_actorid aunitid, int32_t ax, int32_t ay);
 
 		// Translated comment.
 		bool enter(i64_actorid aunitid, int32_t agid);
 
-		// # (Ax,ay)leave
+		// Leave the grid at position (ax, ay)
 		void leave(i64_actorid aunitid, int32_t ax, int32_t ay);
 
-		// # Leave
+		// Leave the grid by grid ID
 		void leave(i64_actorid aunitid, int32_t agid);
 
-		// # Get
+		// Get a grid by grid ID
 		grid* get_grid(int32_t agid);
 
-		// # (Ax,ay)get
+		// Get a grid by position (ax, ay)
 		grid* get_grid(int32_t ax, int32_t ay);
 	};
 

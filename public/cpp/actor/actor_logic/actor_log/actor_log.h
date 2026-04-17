@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor log.
+// File overview: Log actor that receives log entries from other actors and writes them to persistent storage.
 
 #pragma once
 

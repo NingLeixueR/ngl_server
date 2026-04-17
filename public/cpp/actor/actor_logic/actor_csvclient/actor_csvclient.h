@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor csvclient.
+// File overview: CSV client actor that requests and caches configuration table data from the CSV server.
 
 #pragma once
 

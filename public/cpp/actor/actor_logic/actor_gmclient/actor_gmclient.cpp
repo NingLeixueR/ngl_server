@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor gmclient.
+// File overview: Implements GM client actor construction and command relay.
 
 
 #include "actor/actor_logic/actor_gmclient/actor_gmclient.h"

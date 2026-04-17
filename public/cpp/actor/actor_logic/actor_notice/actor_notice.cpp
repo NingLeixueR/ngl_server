@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor notice.
+// File overview: Implements notice actor construction and broadcast scheduling.
 
 
 #include "actor/actor_logic/actor_notice/actor_notice.h"

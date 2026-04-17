@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for actor robot.
+// File overview: Robot actor that simulates a player client for automated testing and stress testing.
 
 #pragma once
 

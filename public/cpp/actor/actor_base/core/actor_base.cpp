@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Implements logic for actor base.
+// File overview: Implements actor_base stat transitions and message push.
 
 #include "actor/actor_logic/actor_log/actor_log.h"
 #include "actor/actor_base/core/actor_manage.h"

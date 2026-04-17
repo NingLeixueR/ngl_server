@@ -11,7 +11,7 @@
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
-// File overview: Declares interfaces for logic.
+// File overview: Per-role key-value storage for lightweight persistent flags.
 
 #pragma once
 
