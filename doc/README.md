@@ -14,7 +14,15 @@
 6. [idl 代码生成工具](./module-idl.md)
 7. [makeproto 协议生成工具](./module-makeproto.md)
 8. [client TypeScript 客户端](./module-client.md)
-9. [项目主干调用类图](./project-call-class-diagram.md)
+9. [Actor 系统架构](./actor-system-architecture.md)
+10. [消息流与协议系统](./message-flow-and-protocol.md)
+11. [网络层](./network-layer.md)
+12. [网关架构](./gateway-architecture.md)
+13. [数据库层](./database-layer.md)
+14. [配置系统](./configuration-system.md)
+15. [新增 Actor 开发指南](./guide-adding-new-actor.md)
+16. [Actor 就绪与高优先级调度](./actor-ready-hightlevel.md)
+17. [项目主干调用类图](./project-call-class-diagram.md)
 
 ## 模块分层
 
