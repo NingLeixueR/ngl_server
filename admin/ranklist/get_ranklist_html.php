@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
+<?php require_once dirname(__FILE__) . '/../auth.php'; check_action(1301); ?>
 <html>
 	<h2>查询排行榜</h2>
 	<form action="./get_ranklist.php" method="post" accept-charset="UTF-8">

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../auth.php'; check_login();
+require_once dirname(__FILE__) . '/../auth.php'; check_action(803);
  include '../socketbyte.php';
  
 $so = new socketbyte();

@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
+<?php require_once dirname(__FILE__) . '/../auth.php'; check_action(1201); ?>
 <html>
 	<h2>查看协议</h2>
 

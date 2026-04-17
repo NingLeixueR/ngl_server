@@ -1,23 +1,53 @@
 <?php
-require_once __DIR__ . '/auth.php';
+require_once dirname(__FILE__) . '/auth.php';
 check_login();
 
-$modules = array(
-    'ban'         => array('name' => '封号管理',     'pages' => array('roleban_html.php' => '封号', 'get_roleban_html.php' => '查询封号')),
-    'bantalk'     => array('name' => '禁言管理',     'pages' => array('bantalk_html.php' => '禁言')),
-    'db'          => array('name' => '数据库查询',   'pages' => array('db_html.php' => '查询', 'dball_html.php' => '分页查询', 'changedb_html.php' => '修改数据')),
-    'family'      => array('name' => '家族管理',     'pages' => array('get_family_html.php' => '查询家族', 'changname_family_html.php' => '改名')),
-    'guid'        => array('name' => 'GUID查询',     'pages' => array('get_guid_html.php' => '获取GUID')),
-    'mail'        => array('name' => '邮件管理',     'pages' => array('add_mail_html.php' => '发送邮件', 'get_mail_html.php' => '查询邮件', 'del_mail_html.php' => '删除邮件')),
-    'notice'      => array('name' => '公告管理',     'pages' => array('add_notice_html.php' => '添加公告', 'get_notice_html.php' => '查询公告', 'del_notice_html.php' => '删除公告')),
-    'openserver'  => array('name' => '开服管理',     'pages' => array('set_openserver_html.php' => '设置开服', 'get_openserver_html.php' => '查询开服')),
-    'pay'         => array('name' => '充值管理',     'pages' => array('gmpay_html.php' => 'GM充值')),
-    'protocol'    => array('name' => '协议查询',     'pages' => array('get_allprotocol_html.php' => '全部协议')),
-    'ranklist'    => array('name' => '排行榜',       'pages' => array('get_ranklist_html.php' => '查询排行')),
-    'server_stat' => array('name' => '服务器状态',   'pages' => array('server_stat_html.php' => '查看状态')),
-    'sys'         => array('name' => '系统操作',     'pages' => array('close_actor_html.php' => '关闭Actor')),
-    'time'        => array('name' => '时间管理',     'pages' => array('get_time_html.php' => '查询时间', 'set_time_html.php' => '设置时间')),
-);
+$a = isset($_GET['a']) ? $_GET['a'] : '';
+
+if ($a === 'updatelist')
+{
+    update_actionlist();
+    header('Location: index.php');
+    exit;
+}
+
+if ($a === 'chpass')
+{
+    include dirname(__FILE__) . '/account/chpass.php';
+    exit;
+}
+
+if ($a === 'gmuser')
+{
+    check_action(201);
+    include dirname(__FILE__) . '/account/gmuser.php';
+    exit;
+}
+
+if ($a === 'chmod')
+{
+    check_action(201);
+    include dirname(__FILE__) . '/account/chmod.php';
+    exit;
+}
+
+$actionlist = isset($_SESSION['actionlist']) ? $_SESSION['actionlist'] : array();
+
+$groups = array();
+foreach ($actionlist as $id => $action)
+{
+    if ($action['pid'] == 0)
+    {
+        $groups[$id] = array('name' => $action['name'], 'children' => array());
+    }
+}
+foreach ($actionlist as $id => $action)
+{
+    if ($action['pid'] != 0 && isset($groups[$action['pid']]) && isset($action['page']))
+    {
+        $groups[$action['pid']]['children'][$id] = $action;
+    }
+}
 ?>
 <html>
 <head>
@@ -41,12 +71,12 @@ body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; }
     <span class="user"><?php echo htmlspecialchars($_SESSION['admin_username']); ?> | <a href="logout.php">退出</a></span>
 </div>
 <div class="container">
-<?php foreach ($modules as $key => $mod): ?>
-<?php if (check_permission($key)): ?>
+<?php foreach ($groups as $gid => $group): ?>
+<?php if (!empty($group['children'])): ?>
 <div class="module">
-    <h3><?php echo $mod['name']; ?></h3>
-    <?php foreach ($mod['pages'] as $file => $label): ?>
-    <a href="<?php echo $key . '/' . $file; ?>"><?php echo $label; ?></a>
+    <h3><?php echo htmlspecialchars($group['name']); ?></h3>
+    <?php foreach ($group['children'] as $aid => $act): ?>
+    <a href="<?php echo htmlspecialchars($act['page']); ?>"><?php echo htmlspecialchars($act['name']); ?></a>
     <?php endforeach; ?>
 </div>
 <?php endif; ?>

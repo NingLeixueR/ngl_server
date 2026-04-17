@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
+<?php require_once dirname(__FILE__) . '/../auth.php'; check_action(701); ?>
 <html>
 	<h2>获取GUID</h2>
 	<form action="./get_guid.php" method="post" accept-charset="UTF-8">

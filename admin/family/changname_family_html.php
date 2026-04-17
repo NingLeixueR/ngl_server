@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
+<?php require_once dirname(__FILE__) . '/../auth.php'; check_action(602); ?>
 <html>
 	<h2>修改军团名称</h2>
 	<form action="./changname_family.php" method="post" accept-charset="UTF-8">

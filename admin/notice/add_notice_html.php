@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
+<?php require_once dirname(__FILE__) . '/../auth.php'; check_action(901); ?>
 <html>
 	<h2>添加公告</h2>
 	<form action="./add_notice.php" method="post" accept-charset="UTF-8">

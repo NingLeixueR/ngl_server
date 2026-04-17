@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
+<?php require_once dirname(__FILE__) . '/../auth.php'; check_action(301); ?>
 <html>
 	<h2>封号</h2>
 	<form action="./roleban.php" method="post" accept-charset="UTF-8">

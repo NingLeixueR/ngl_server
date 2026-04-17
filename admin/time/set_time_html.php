@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
+<?php require_once dirname(__FILE__) . '/../auth.php'; check_action(1602); ?>
 <html>
 	<h2>设置服务器时间</h2>
 	<form action="./set_time.php" method="post" accept-charset="UTF-8">

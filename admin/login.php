@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/auth.php';
+require_once dirname(__FILE__) . '/auth.php';
 
 if (!empty($_SESSION['admin_logged_in']))
 {

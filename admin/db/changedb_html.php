@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
+<?php require_once dirname(__FILE__) . '/../auth.php'; check_action(503); ?>
 <html>
 	<h2>更新数据</h2>
 	<form action="./changedb.php" method="post" accept-charset="UTF-8">

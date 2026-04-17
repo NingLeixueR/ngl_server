@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
+<?php require_once dirname(__FILE__) . '/../auth.php'; check_action(801); ?>
 <html>
 	<h2>发送邮件</h2>
 	<form action="./add_mail.php" method="post" accept-charset="UTF-8">

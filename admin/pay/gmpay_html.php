@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
+<?php require_once dirname(__FILE__) . '/../auth.php'; check_action(1101); ?>
 <html>
 	<h2>充值</h2>
 	<form action="./gmpay.php" method="post" accept-charset="UTF-8">

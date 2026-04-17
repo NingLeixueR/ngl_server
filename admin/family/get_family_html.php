@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
+<?php require_once dirname(__FILE__) . '/../auth.php'; check_action(601); ?>
 <html>
 	<h2>查看工会</h2>
 	<form action="./get_family.php" method="post" accept-charset="UTF-8">

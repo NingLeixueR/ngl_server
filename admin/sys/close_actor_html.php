@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
+<?php require_once dirname(__FILE__) . '/../auth.php'; check_action(1501); ?>
 <html>
 	<h2>关闭guid</h2>
 	<form action="./close_actor.php" method="post" accept-charset="UTF-8">

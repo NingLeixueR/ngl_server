@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../auth.php'; check_login();
+require_once dirname(__FILE__) . '/../auth.php'; check_action(801);
  include '../socketbyte.php';
  
  $array = explode("\r\n",$_POST['m_items']);
