@@ -57,20 +57,16 @@ namespace ngl
 			servertype lservertype;
 			if (njson::pop(aos, { "data" }, lservertype))
 			{
-				bool lret = false;
 				for (int32_t lstypeid : lservertype.servertype)
 				{
 					NODE_TYPE lstype = (NODE_TYPE)lstypeid;
 					if (actor_gm::checklocalbytype(lstype))
 					{
-						lret = true;
 						continue;
 					}
 					sendtogmclient(lstype, adata, agm);
 				}
-				return lret;
 			}
-			return false;
 		}
 	};
 	void actor_gm::init_handle_cmd()
