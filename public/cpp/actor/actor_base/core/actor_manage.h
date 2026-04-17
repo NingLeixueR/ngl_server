@@ -80,11 +80,11 @@ namespace ngl
 		schedule_layer(const schedule_layer&) = delete;
 		schedule_layer& operator=(const schedule_layer&) = delete;
 
-		std::unordered_map<nguid, ptractor, guid_hash> m_actorbyid;		// guid -> actor.
-		std::map<nguid, ptractor>	m_actorbroadcast;	// Actors that opted into broadcast ticks.
-		std::deque<ptractor>		m_actorlist;		// Ready queue: actors waiting for a worker.
-		std::set<i16_actortype>		m_actortype;		// Distinct actor types in this layer.
-		std::map<nguid, std::function<void()>>			m_delactorfun;	// Deferred erase callbacks for in-flight actors.
+		std::unordered_map<nguid, ptractor, guid_hash>	m_actorbyid;		// guid -> actor.
+		std::map<nguid, ptractor>						m_actorbroadcast;	// Actors that opted into broadcast ticks.
+		std::deque<ptractor>							m_actorlist;		// Ready queue: actors waiting for a worker.
+		std::set<i16_actortype>							m_actortype;		// Distinct actor types in this layer.
+		std::map<nguid, std::function<void()>>			m_delactorfun;		// Deferred erase callbacks for in-flight actors.
 		std::map<ENUM_ACTOR, std::map<i64_actorid, ptractor>> m_actorbytype;	// type -> (guid -> actor).
 
 		std::shared_mutex			m_mutex;			// Guards all mutable state above.
@@ -170,20 +170,20 @@ namespace ngl
 
 		std::array<std::shared_ptr<schedule_layer>, LAYER_COUNT> m_layers;
 		int32_t				m_threadcount = 0;
-		struct threadindex
+		struct nwork
 		{
 			ptrnthread	m_work = nullptr;
 			bool		m_free = true;
 
-			threadindex()
+			nwork()
 			{}
 
-			threadindex(int32_t aindex) :
+			nwork(int32_t aindex) :
 				m_work(std::make_shared<nthread>(aindex))
 			{}
 
 		};
-		std::vector<threadindex>	m_workthreads;		// Shared worker pool across all layers.
+		std::vector<nwork>			m_workthreads;		// Shared worker pool across all layers.
 		std::shared_mutex			m_mutex;			// Guards m_workthreads and m_suspend.
 		ngl::tools::sem				m_sem;				// Token count tracks free workers.
 		bool						m_suspend = false;	// True while dispatch is frozen.

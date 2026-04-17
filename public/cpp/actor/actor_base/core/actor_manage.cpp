@@ -142,13 +142,13 @@ namespace ngl
 				return;
 			}
 			const ENUM_ACTOR ltype = lpactor->type();
-			auto type_it = m_actorbytype.find(ltype);
-			if (type_it != m_actorbytype.end())
+			auto itor = m_actorbytype.find(ltype);
+			if (itor != m_actorbytype.end())
 			{
-				type_it->second.erase(aguid);
-				if (type_it->second.empty())
+				itor->second.erase(aguid);
+				if (itor->second.empty())
 				{
-					m_actorbytype.erase(type_it);
+					m_actorbytype.erase(itor);
 					m_actortype.erase(static_cast<i16_actortype>(ltype));
 				}
 			}
@@ -196,8 +196,6 @@ namespace ngl
 	void schedule_layer::push(const ptractor& apactor, bool aready/* = true*/)
 	{
 		std::function<void()> ldefcallback = nullptr;
-		bool lshould_release_actor = false;
-		bool lshould_wake_dispatcher = false;
 		const nguid lguid = apactor->id_guid();
 		{
 			lock_write(m_mutex);
@@ -210,13 +208,11 @@ namespace ngl
 					ldefcallback.swap(*lcallback);
 					m_delactorfun.erase(lguid);
 					apactor->set_activity_stat(actor_stat_close);
-					lshould_release_actor = true;
 				}
 			}
 			else
 			{
-				const bool lhigh = !apactor->high_empty();
-				if (!apactor->list_empty() && (aready || lhigh))
+				if (!apactor->list_empty() && (aready || !apactor->high_empty()))
 				{
 					// More messages arrived while running — re-queue.
 					m_actorlist.emplace_back(apactor);
@@ -228,13 +224,12 @@ namespace ngl
 					apactor->set_activity_stat(actor_stat_free);
 				}
 			}
-			lshould_wake_dispatcher = !m_actorlist.empty();
 		}
-		if (lshould_wake_dispatcher)
+		if (!m_actorlist.empty())
 		{
 			m_sem.post();
 		}
-		if (lshould_release_actor)
+		if (ldefcallback != nullptr)
 		{
 			apactor->release();
 			ldefcallback();
@@ -639,7 +634,7 @@ namespace ngl
 			}
 			if (lthreadnum < m_threadcount)
 			{
-				std::this_thread::yield();
+				tools::sleep::milliseconds(100);
 			}
 			else
 			{
