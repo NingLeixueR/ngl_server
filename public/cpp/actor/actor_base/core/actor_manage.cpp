@@ -419,37 +419,20 @@ namespace ngl
 		return m_layers[layer_index(actorid)];
 	}
 
-	int32_t actor_manage::free_threads()
-	{
-		if (m_suspend)
-		{
-			return -1;
-		}
-		for (int32_t i = 0; i < m_threadcount; ++i)
-		{
-			if (m_workthreads[i].m_free)
-			{
-				return i;
-			}
-		}
-		return -1;
-	}
-
 	ptrnthread actor_manage::pop_free_hreads()
 	{
 		for (;;)
 		{
-			m_sem.wait();
 			{
 				lock_write(m_mutex);
-				int32_t lindex = free_threads();
-				if (lindex != -1)
+				if (m_workthreadpos != m_threadcount)
 				{
-					m_workthreads[lindex].m_free = false;
-					return m_workthreads[lindex].m_work;
+					ptrnthread lthread = m_workthreads[m_workthreadpos];
+					++m_workthreadpos;
+					return lthread;
 				}
 			}
-			// suspend caused no available worker, signal consumed, retry.
+			m_sem.wait();
 		}
 	}
 
@@ -457,7 +440,8 @@ namespace ngl
 	{
 		{
 			lock_write(m_mutex);
-			m_workthreads[atorthread->id()].m_free = true;
+			--m_workthreadpos;
+			m_workthreads[m_workthreadpos] = atorthread;
 		}
 
 		m_sem.post();
@@ -471,8 +455,7 @@ namespace ngl
 		m_workthreads.resize(apthreadnum);
 		for (int i = 0; i < m_threadcount; ++i)
 		{
-			m_workthreads[i].m_free = true;
-			m_workthreads[i].m_work = std::make_shared<nthread>(i);
+			m_workthreads[i] = std::make_shared<nthread>(i);
 			m_sem.post();
 		}
 		for (int i = 0; i < LAYER_COUNT; ++i)
@@ -623,13 +606,9 @@ namespace ngl
 			{
 				lock_write(m_mutex);
 				m_suspend = true;
-				lthreadnum = 0;
-				for (int32_t i = 0; i < m_threadcount; ++i)
+				if (m_workthreadpos == 0)
 				{
-					if (m_workthreads[i].m_free)
-					{
-						++lthreadnum;
-					}
+					return;
 				}
 			}
 			if (lthreadnum < m_threadcount)

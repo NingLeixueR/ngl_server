@@ -172,20 +172,10 @@ namespace ngl
 
 		std::array<std::shared_ptr<schedule_layer>, LAYER_COUNT> m_layers;
 		int32_t				m_threadcount = 0;
-		struct nwork
-		{
-			ptrnthread	m_work = nullptr;
-			bool		m_free = true;
+		std::vector<ptrnthread>			m_workthreads;			// Shared worker pool across all layers.
+		int32_t							m_workthreadpos = 0;
+		std::vector<ptrnthread>			m_m_workthreads;		// Shared worker pool across all layers.
 
-			nwork()
-			{}
-
-			nwork(int32_t aindex) :
-				m_work(std::make_shared<nthread>(aindex))
-			{}
-
-		};
-		std::vector<nwork>			m_workthreads;		// Shared worker pool across all layers.
 		std::shared_mutex			m_mutex;			// Guards m_workthreads and m_suspend.
 		ngl::tools::sem				m_sem;				// Token count tracks free workers.
 		bool						m_suspend = false;	// True while dispatch is frozen.
@@ -200,10 +190,6 @@ namespace ngl
 		int32_t layer_index(int64_t actorid) const noexcept;
 
 		std::shared_ptr<schedule_layer>& get_layer(int64_t actorid);
-
-		// Find a free worker index. Returns -1 if none available or suspended.
-		// Caller must hold m_mutex.
-		int32_t free_threads();
 
 		// Block until a free worker is available, then mark it busy and return it.
 		// Called by schedule_layer dispatchers from their detached threads.
