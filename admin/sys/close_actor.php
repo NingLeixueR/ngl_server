@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(1501);
+ gm_log('关闭Actor', 'actor=' . $_POST['actor_name'] . ' area=' . $_POST['area'] . ' dataid=' . $_POST['dataid']);
  include '../socketbyte.php';
  
  $so = new socketbyte();

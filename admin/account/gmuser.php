@@ -8,12 +8,14 @@ $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
 if ($t === 1 && $id > 0)
 {
+    gm_log('删除GM账号', 'id=' . $id);
     mysql_query("DELETE FROM db_admin WHERE id={$id}");
     echo "<script>alert('删除成功');location.href='index.php?a=gmuser';</script>";
     exit;
 }
 else if ($t === 2 && $id > 0)
 {
+    gm_log('重置GM密码', 'id=' . $id);
     $new_pass = md5('123456');
     mysql_query("UPDATE db_admin SET password='{$new_pass}' WHERE id={$id}");
     echo "<script>alert('密码已重置为 123456');location.href='index.php?a=gmuser';</script>";
@@ -35,6 +37,7 @@ else if ($t === 3 && $_SERVER['REQUEST_METHOD'] === 'POST')
         exit;
     }
     mysql_query("INSERT INTO db_admin (username, password, permissions) VALUES ('{$name}', '{$pass}', '[]')");
+    gm_log('添加GM账号', 'username=' . $name);
     echo "<script>alert('添加成功');location.href='index.php?a=gmuser';</script>";
     exit;
 }

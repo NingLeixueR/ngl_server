@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     }
     $safe = mysql_real_escape_string($perm_str);
     mysql_query("UPDATE db_admin SET permissions='{$safe}' WHERE id={$id}");
+    gm_log('修改权限', 'target_id=' . $id . ' permissions=' . $perm_str);
     echo "<script>alert('权限更新成功');location.href='index.php?a=gmuser';</script>";
     exit;
 }

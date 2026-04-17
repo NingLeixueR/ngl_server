@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(1401);
+ gm_log('查看服务器状态', '');
  include '../socketbyte.php';
  
  $so = new socketbyte();

@@ -39,6 +39,7 @@ function do_login($username, $password)
         $_SESSION['admin_username'] = $row['username'];
         $_SESSION['admin_id'] = $row['id'];
         $_SESSION['actionlist'] = ActionManager::getAllowActionList($row['id']);
+        gm_log('登录', 'username=' . $row['username']);
         return true;
     }
     return false;
@@ -46,6 +47,7 @@ function do_login($username, $password)
 
 function do_logout()
 {
+    gm_log('退出登录', '');
     session_destroy();
 }
 
@@ -63,5 +65,30 @@ function check_action($actionid)
         echo '<h3>无权限访问此功能</h3>';
         exit;
     }
+}
+
+function gm_log($action_name, $detail = '')
+{
+    $admin_id = isset($_SESSION['admin_id']) ? intval($_SESSION['admin_id']) : 0;
+    $admin_name = isset($_SESSION['admin_username']) ? $_SESSION['admin_username'] : '';
+    $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+
+    $uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+    $path = parse_url($uri, PHP_URL_PATH);
+    $base = basename(dirname(__FILE__));
+    $pos = strpos($path, $base . '/');
+    $rel = ($pos !== false) ? substr($path, $pos + strlen($base) + 1) : $path;
+    $action_id = ActionManager::findActionByPage($rel);
+
+    $con = mysql_connect(DB_IP . ':' . DB_PORT, DB_USER, DB_PASS);
+    if (!$con) return;
+    mysql_select_db(GMSYS, $con);
+    mysql_query("set names 'utf8'");
+
+    $safe_name = mysql_real_escape_string($admin_name);
+    $safe_action = mysql_real_escape_string($action_name);
+    $safe_detail = mysql_real_escape_string($detail);
+    $safe_ip = mysql_real_escape_string($ip);
+    mysql_query("INSERT INTO db_gmlog (admin_id, admin_name, action_id, action_name, detail, ip) VALUES ({$admin_id}, '{$safe_name}', {$action_id}, '{$safe_action}', '{$safe_detail}', '{$safe_ip}')");
 }
 ?>

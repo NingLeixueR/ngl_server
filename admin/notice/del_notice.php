@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(903);
+ gm_log('删除公告', 'id=' . $_POST['id']);
  include '../socketbyte.php';
  
 $so = new socketbyte();

@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_login();
+gm_log('发送系统邮件', 'title=' . filter_input(INPUT_GET, "title"));
 
 $title = filter_input(INPUT_GET, "title");
 $msg = filter_input(INPUT_GET, "msg");

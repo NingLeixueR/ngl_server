@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(1301);
+ gm_log('查询排行', 'type=' . $_POST['type'] . ' page=' . $_POST['page']);
  include '../socketbyte.php';
  
  $so = new socketbyte();

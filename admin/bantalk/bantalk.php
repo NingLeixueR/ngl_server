@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(401);
+ gm_log('禁言', 'roleid=' . $_POST['m_roleid'] . ' duration=' . $_POST['m_duration']);
  include '../socketbyte.php';
  
  $so = new socketbyte();

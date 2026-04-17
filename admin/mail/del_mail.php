@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(803);
+ gm_log('删除邮件', 'roleid=' . $_POST['m_roleid'] . ' mailid=' . $_POST['m_mailid']);
  include '../socketbyte.php';
  
 $so = new socketbyte();

@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(1002);
+ gm_log('查询开服', '');
  include '../socketbyte.php';
  
  $so = new socketbyte();

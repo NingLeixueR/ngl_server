@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(503);
+ gm_log('修改数据', 'db=' . $_POST['db'] . ' data=' . $_POST['m_data']);
  include '../socketbyte.php';
  
  $so = new socketbyte();

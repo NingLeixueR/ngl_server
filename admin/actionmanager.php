@@ -61,6 +61,9 @@ class ActionManager
         16 => array('name' => '时间管理', 'pid' => 0),
             1601 => array('name' => '查询时间', 'pid' => 16, 'page' => 'time/get_time_html.php'),
             1602 => array('name' => '设置时间', 'pid' => 16, 'page' => 'time/set_time_html.php'),
+
+        17 => array('name' => '操作日志', 'pid' => 0),
+            1701 => array('name' => '查看日志', 'pid' => 17, 'page' => 'log/gmlog_html.php'),
     );
 
     public static function getAllowActionIDList($id)

@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(802);
+ gm_log('查询邮件', 'roleid=' . $_POST['m_roleid']);
  include '../socketbyte.php';
  
  $so = new socketbyte();

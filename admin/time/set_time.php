@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(1602);
+ gm_log('设置时间', $_POST['year'] . '-' . $_POST['mon'] . '-' . $_POST['day'] . ' ' . $_POST['hour'] . ':' . $_POST['min'] . ':' . $_POST['sec']);
  include '../socketbyte.php';
  
  date_default_timezone_set('Asia/Shanghai');

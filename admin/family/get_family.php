@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(601);
+ gm_log('查询家族', 'familyid=' . $_POST['m_familyid']);
  include '../socketbyte.php';
  
  $so = new socketbyte();

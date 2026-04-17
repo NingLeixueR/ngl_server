@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(801);
+ gm_log('发送邮件', 'roleid=' . $_POST['m_roleid'] . ' items=' . $_POST['m_items']);
  include '../socketbyte.php';
  
  $array = explode("\r\n",$_POST['m_items']);

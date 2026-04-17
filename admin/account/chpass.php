@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         {
             $new_md5 = md5($new_pass);
             mysql_query("UPDATE db_admin SET password='{$new_md5}' WHERE id={$uid}");
+            gm_log('修改密码', '');
             $success = '密码修改成功，请重新登录';
             do_logout();
             header('Location: ../login.php');

@@ -12,6 +12,23 @@ CREATE TABLE IF NOT EXISTS db_admin (
 INSERT INTO db_admin (username, password, permissions) VALUES ('admin', MD5('admin123'), 'all');
 
 -- ----------------------------
+-- Table structure for `db_gmlog`
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `db_gmlog` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `admin_id` INT NOT NULL,
+  `admin_name` VARCHAR(32) NOT NULL,
+  `action_id` INT NOT NULL DEFAULT 0,
+  `action_name` VARCHAR(64) NOT NULL DEFAULT '',
+  `detail` TEXT,
+  `ip` VARCHAR(64) NOT NULL DEFAULT '',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  KEY `idx_admin_id` (`admin_id`),
+  KEY `idx_action_id` (`action_id`),
+  KEY `idx_created_at` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for `db_recharge`
 -- ----------------------------
 DROP TABLE IF EXISTS `db_recharge`;

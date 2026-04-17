@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(302);
+ gm_log('查询封号', '');
  include '../socketbyte.php';
  
  $so = new socketbyte();

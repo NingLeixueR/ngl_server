@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(1601);
+ gm_log('查询时间', '');
  include '../socketbyte.php';
  
  date_default_timezone_set('Asia/Shanghai');

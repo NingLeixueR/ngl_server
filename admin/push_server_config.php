@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/auth.php'; check_login();
+	gm_log('推送服务器配置', 'id=' . $_GET['id'] . ' name=' . $_GET['name'] . ' ip=' . $_GET['ip'] . ' port=' . $_GET['port']);
 	require_once 'config.php';
 
 	$con = mysql_connect(DB_IP . ":" . DB_PORT, DB_USER, DB_PASS);

@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(1001);
+ gm_log('设置开服', 'time=' . $_POST['m_time']);
  include '../socketbyte.php';
  
  $so = new socketbyte();

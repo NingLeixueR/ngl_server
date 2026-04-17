@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(901);
+ gm_log('添加公告', 'notice=' . $_POST['m_notice']);
  include '../socketbyte.php';
  
  $so = new socketbyte();
