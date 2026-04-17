@@ -1,70 +1,66 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(1602);
- gm_log('设置时间', $_POST['year'] . '-' . $_POST['mon'] . '-' . $_POST['day'] . ' ' . $_POST['hour'] . ':' . $_POST['min'] . ':' . $_POST['sec']);
- include '../socketbyte.php';
- 
- date_default_timezone_set('Asia/Shanghai');
- 
- $so = new socketbyte();
- if($so->connectServer($_POST['server']) == false)
- {
-	 echo "connect err!!!";
-	 return;
- }
- 
- $year = $_POST['year'];
- $mon = $_POST['mon'];
- $day = $_POST['day'];
- $hour = $_POST['hour'];
- $min = $_POST['min'];
- $sec = $_POST['sec'];
- echo "{$year}-{$mon}-{$day} {$hour}:{$min}:{$sec}<br/>";
- $totime = mktime($hour, $min, $sec, $mon, $day, $year);
- echo "utc:{$totime}<br/>";
+gm_log('设置时间', $_POST['year'] . '-' . $_POST['mon'] . '-' . $_POST['day'] . ' ' . $_POST['hour'] . ':' . $_POST['min'] . ':' . $_POST['sec']);
+include '../socketbyte.php';
 
- /*
-	需要发送给服务器的字段包括
-	actor_name  指定actor的类型  单例必须
-	actor_id	操作制定actor    非单例必须
-	servertype  指定服务器类型(int,不填默认只有WORLD)
-	enum NODE_TYPE
-	{
-		DB = 1,	// Databaseserver
-		ACTORSERVER = 2,	// Actor server
-		GAME = 3,	// Server
-		GATEWAY = 4,	// Gatewayserver
-		LOGIN = 5,	// Loginserver
-		ROBOT = 6,	// Test server
-		WORLD = 7,	// Server
-		LOG = 8,	// Logserver
-		RELOADCSV = 9,	// Csvserver
-		CROSS = 10,	// Cross-serverserver
-		CROSSDB = 11,	// Cross-serverdatabaseserver
-		PUSHSERVERCONFIG = 12,	// Serverconfigon lbgmsys
-		NODE_TYPE_COUNT,
-		FAIL = -1,	// Servertype
-	};
-	operator	制定操作类型（自定义字符串）
-	data        可选数据
- */
- 
- 
- $arr = array(
-	'actor_name' => 'ACTOR_GM',
-	'operator' => 'set_time',
-	'data' => array(
-		'servertype' => $_POST['servertype'],
-		'time' => "{$totime}"
-	)
- );
- 
- $json = json_encode($arr); 
- $so->send($json);
- 
- $count = count($_POST['servertype']);
- while(--$count >= 0)
- {
-	$response = $so->wait_response();	 
- }
+date_default_timezone_set('Asia/Shanghai');
 
+$so = new socketbyte();
+if($so->connectServer($_POST['server']) == false)
+{
+    echo "connect err!!!";
+    return;
+}
+
+$year = $_POST['year'];
+$mon = $_POST['mon'];
+$day = $_POST['day'];
+$hour = $_POST['hour'];
+$min = $_POST['min'];
+$sec = $_POST['sec'];
+$time_str = "{$year}-{$mon}-{$day} {$hour}:{$min}:{$sec}";
+$totime = mktime($hour, $min, $sec, $mon, $day, $year);
+
+$arr = array(
+    'actor_name' => 'ACTOR_GM',
+    'operator' => 'set_time',
+    'servertype' => $_POST['servertype'],
+    'data' => array(
+        'time' => "{$totime}"
+    )
+);
+
+$json = json_encode($arr);
+$so->send($json);
+$results = $so->wait_response_all(count($_POST['servertype']));
 ?>
+<html>
+<head><meta charset="UTF-8"><title>设置时间结果</title>
+<style>
+body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; }
+table { border-collapse: collapse; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+th, td { border: 1px solid #e8e8e8; padding: 8px 16px; text-align: left; font-size: 14px; }
+th { background: #fafafa; }
+a { color: #1890ff; text-decoration: none; }
+.ok { color: #52c41a; }
+.fail { color: #ff4d4f; }
+</style>
+</head>
+<body>
+<h2>设置时间结果 <a href="set_time_html.php">返回</a></h2>
+<p>目标时间: <?php echo htmlspecialchars($time_str); ?> (UTC: <?php echo $totime; ?>)</p>
+<table>
+<tr><th>服务器</th><th>结果</th></tr>
+<?php foreach ($results as $resp): ?>
+<tr>
+<td><?php echo htmlspecialchars(isset($resp['server_name']) ? $resp['server_name'] : '未知'); ?></td>
+<td><?php if (isset($resp['data']) && $resp['data']): ?>
+<span class="ok">成功</span>
+<?php else: ?>
+<span class="fail">失败</span>
+<?php endif; ?></td>
+</tr>
+<?php endforeach; ?>
+</table>
+</body>
+</html>

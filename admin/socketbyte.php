@@ -191,6 +191,20 @@ class socketbyte {
 		
 		return json_decode($rst, true);
 	}
-	
+
+	public function wait_response_all($count)
+	{
+		$results = array();
+		for ($i = 0; $i < $count; $i++)
+		{
+			$resp = $this->wait_response(false);
+			if ($resp !== false)
+			{
+				$results[] = $resp;
+			}
+		}
+		return $results;
+	}
+
 }
 ?>

@@ -39,8 +39,8 @@ require_once dirname(__FILE__) . '/../auth.php'; check_action(1501);
  $arr = array(
 	'actor_name' => 'ACTOR_GM',
 	'operator' => 'close_actor',
+	'servertype' => array(7),
 	'data' => array(
-		'servertype' => array(7),
 		'actor_name' => $_POST['actor_name'],
 		'area' => $_POST['area'],
 		'dataid' => $_POST['dataid'],

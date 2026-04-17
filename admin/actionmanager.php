@@ -45,6 +45,7 @@ class ActionManager
 
         11 => array('name' => '充值管理', 'pid' => 0),
             1101 => array('name' => 'GM充值', 'pid' => 11, 'page' => 'pay/gmpay_html.php'),
+            1102 => array('name' => '订单查询', 'pid' => 11, 'page' => 'pay/order_html.php'),
 
         12 => array('name' => '协议查询', 'pid' => 0),
             1201 => array('name' => '全部协议', 'pid' => 12, 'page' => 'protocol/get_allprotocol_html.php'),
