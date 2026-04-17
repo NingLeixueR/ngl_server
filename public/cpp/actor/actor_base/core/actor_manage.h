@@ -174,7 +174,7 @@ namespace ngl
 		int32_t				m_threadcount = 0;
 		std::vector<ptrnthread>			m_workthreads;			// Shared worker pool across all layers.
 		int32_t							m_workthreadpos = 0;
-		std::vector<ptrnthread>			m_m_workthreads;		// Shared worker pool across all layers.
+		std::vector<ptrnthread>			m_works;		// Shared worker pool across all layers.
 
 		std::shared_mutex			m_mutex;			// Guards m_workthreads and m_suspend.
 		ngl::tools::sem				m_sem;				// Token count tracks free workers.

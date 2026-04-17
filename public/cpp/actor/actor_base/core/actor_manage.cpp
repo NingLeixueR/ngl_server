@@ -458,6 +458,7 @@ namespace ngl
 			m_workthreads[i] = std::make_shared<nthread>(i);
 			m_sem.post();
 		}
+		m_works = m_workthreads;
 		for (int i = 0; i < LAYER_COUNT; ++i)
 		{
 			m_layers[i] = std::make_shared<schedule_layer>();
