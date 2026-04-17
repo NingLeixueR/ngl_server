@@ -56,7 +56,7 @@ class pay_recharge {
 		$QueryResult = mysql_query($QueryStr);
 		if ($Row = mysql_fetch_array($QueryResult, MYSQL_ASSOC))
 		{
-			$controller = new SocketByte;
+			$controller = new socketbyte;
 			if ($controller->connect($Row['nip'],$Row['port']))
 			{
 				/*

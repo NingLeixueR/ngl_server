@@ -1,9 +1,9 @@
 <?php
- include '../SocketByte.php';
+ include '../socketbyte.php';
  
  date_default_timezone_set('Asia/Shanghai');
  
- $so = new SocketByte();
+ $so = new socketbyte();
  if($so->connectServer($_POST['server']) == false)
  {
 	 echo "connect err!!!";

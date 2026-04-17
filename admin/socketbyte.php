@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php';
 
-class SocketByte {
+class socketbyte {
 	private $socket;
 	private $earea = 0;
 	

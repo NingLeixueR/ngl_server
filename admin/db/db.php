@@ -1,7 +1,7 @@
 <?php
- include '../SocketByte.php';
+ include '../socketbyte.php';
  
- $so = new SocketByte();
+ $so = new socketbyte();
  if($so->connectServer($_POST['server']) == false)
  {
 	 echo "connect err!!!";

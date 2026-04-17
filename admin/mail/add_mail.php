@@ -1,5 +1,5 @@
 <?php
- include '../SocketByte.php';
+ include '../socketbyte.php';
  
  $array = explode("\r\n",$_POST['m_items']);
  $arrayitem = array();
@@ -12,7 +12,7 @@
 	 );
  }
  
- $so = new SocketByte();
+ $so = new socketbyte();
  if($so->connectServer($_POST['server']) == false)
  {
 	 echo "connect err!!!";
