@@ -33,7 +33,9 @@ namespace ngl
 					.m_id	= nconfig.tcount(),
 					.m_manage_dbclient = false
 				},
-				.m_weight = 0x7fffffff
+				.m_weight = 0x7fffffff,
+				.m_normalwarn = 0x7fffffff,
+				.m_highwarn = 0x7fffffff,
 			})
 	{
 	}

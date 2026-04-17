@@ -28,7 +28,9 @@ namespace ngl
 					.m_area = tab_self_area,
 					.m_id = nconfig.tid()
 				},
-				.m_weight = 0x7fffffff
+				.m_weight = 0x7fffffff,
+				.m_normalwarn = 0x7fffffff,
+				.m_highwarn = 0x7fffffff,
 			})
 	{
 		for (int i = ELOG_DEFAULT;i< ELOG_COUNT;i = i<<1)

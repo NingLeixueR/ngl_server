@@ -244,6 +244,8 @@ namespace ngl
 						.m_area = tab_self_area,
 					},
 					.m_weight = 0x7fffffff,
+					.m_normalwarn = 0x7fffffff,
+					.m_highwarn = 0x7fffffff,
 				})
 		{
 			if (nconfig.dbedb() == ngl::xarg_db::edb_mysql)

@@ -33,9 +33,11 @@ namespace ngl
 				{
 					.m_type = ACTOR_CLIENT,
 					.m_area = tab_self_area,
-					.m_id	= nconfig.nodeid(),
+					.m_id	= nconfig.nodeid()
 				},
-				.m_weight	= 0x7fffffff
+				.m_weight	= 0x7fffffff,
+				.m_normalwarn = 0x7fffffff,
+				.m_highwarn = 0x7fffffff,
 			})
 	{
 	}
