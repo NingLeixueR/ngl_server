@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
 <html>
 	<h2>封号</h2>
 	<form action="./roleban.php" method="post" accept-charset="UTF-8">

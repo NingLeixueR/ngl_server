@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
 <html>
 	<h2>充值</h2>
 	<form action="./gmpay.php" method="post" accept-charset="UTF-8">

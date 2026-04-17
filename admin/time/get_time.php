@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../auth.php'; check_login();
  include '../socketbyte.php';
  
  date_default_timezone_set('Asia/Shanghai');

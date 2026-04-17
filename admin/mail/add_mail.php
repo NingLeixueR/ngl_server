@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../auth.php'; check_login();
  include '../socketbyte.php';
  
  $array = explode("\r\n",$_POST['m_items']);

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/auth.php'; check_login();
 	require_once 'config.php';
 
 	$con = mysql_connect(DB_IP . ":" . DB_PORT, DB_USER, DB_PASS);

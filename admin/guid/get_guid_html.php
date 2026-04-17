@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
 <html>
 	<h2>获取GUID</h2>
 	<form action="./get_guid.php" method="post" accept-charset="UTF-8">

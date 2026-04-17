@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../auth.php'; check_login();
 
 $title = filter_input(INPUT_GET, "title");
 $msg = filter_input(INPUT_GET, "msg");

@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
 <html>
 	<h2>获取服务器开启时间</h2>
 	<form action="./get_openserver.php" method="post" accept-charset="UTF-8">

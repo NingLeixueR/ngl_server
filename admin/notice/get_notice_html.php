@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
 <html>
 	<h2>查看公告</h2>
 	<form action="./get_notice.php" method="post" accept-charset="UTF-8">

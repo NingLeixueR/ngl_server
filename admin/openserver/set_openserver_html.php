@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../auth.php'; check_login(); ?>
 <html>
 	<h2>开启服务器</h2>
 	<form action="./set_openserver.php" method="post" accept-charset="UTF-8">

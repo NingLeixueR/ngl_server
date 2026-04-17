@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/auth.php'; check_login();
 // SMTP 配置
 $smtp_server = 'smtp.163.com';    // 你的SMTP服务器地址
 $smtp_port = 25;                // SMTP端口（587为SMTP使用STARTTLS加密连接的端口）
