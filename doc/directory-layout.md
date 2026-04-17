@@ -51,7 +51,7 @@ public/cpp/actor/
     example/    example and tutorial actors
     forward/    c2g / g2c forwarding registration
     misc/       fallback bucket for newly generated uncategorized actors
-    ops/        gm, log, robot, test and operation-facing actors
+    ops/        admin, log, robot, test and operation-facing actors
     player/     role, create, brief, keyvalue and player-facing actors
     social/     family, friends, chat, mail, notice, ranklist
     world/      world events and activity management

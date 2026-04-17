@@ -36,7 +36,7 @@ code, tests, and local tools all depend on it directly.
   - `example`: sample and tutorial actors
   - `forward`: c2g and g2c forward registration
   - `misc`: fallback location for newly generated uncategorized actors
-  - `ops`: gm, log, robot, and test-facing actors
+  - `ops`: admin, log, robot, and test-facing actors
   - `player`: role, create, brief, and keyvalue actors
   - `social`: family, friends, chat, mail, notice, and ranklist actors
   - `world`: world events and activity management

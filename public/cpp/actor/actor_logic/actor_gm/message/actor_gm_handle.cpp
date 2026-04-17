@@ -55,18 +55,22 @@ namespace ngl
 				DPROTOCOL(servertype, servertype)
 			};
 			servertype lservertype;
-			if (njson::pop(aos, { "data" }, lservertype))
+			if (njson::pop(aos, { "servertype" }, lservertype))
 			{
+				bool llocal = false;
 				for (int32_t lstypeid : lservertype.servertype)
 				{
 					NODE_TYPE lstype = (NODE_TYPE)lstypeid;
 					if (actor_gm::checklocalbytype(lstype))
 					{
+						llocal = true;
 						continue;
 					}
 					sendtogmclient(lstype, adata, agm);
 				}
+				return llocal;
 			}
+			return true;
 		}
 	};
 	void actor_gm::init_handle_cmd()
