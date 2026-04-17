@@ -329,6 +329,20 @@ namespace ngl
 				adata = ljson->GetInt();
 				return true;
 			}
+
+			if (ljson->IsString())
+			{
+				std::string lvalue = ljson->GetString();
+				try
+				{
+					adata = tools::lexical_cast<int64_t>(lvalue);
+				}
+				catch (...)
+				{
+					return false;
+				}
+				return true;
+			}
 			
 			return false;
 		}
