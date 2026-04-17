@@ -162,6 +162,8 @@ namespace ngl
 	// Lifetime: heap-allocated singleton, never destroyed. See file-level comment.
 	class actor_manage
 	{
+		friend class schedule_layer;
+
 		actor_manage(const actor_manage&) = delete;
 		actor_manage& operator=(const actor_manage&) = delete;
 
@@ -191,7 +193,6 @@ namespace ngl
 		actor_manage() = default;
 		~actor_manage() = default;
 
-
 		// Map an actor id to a layer index in [0, LAYER_COUNT).
 		// Singleton actors are routed by type (sequential enum values cycle evenly).
 		// Dynamic actors are routed by dataid (e.g. player id) so that actors of
@@ -203,12 +204,6 @@ namespace ngl
 		// Find a free worker index. Returns -1 if none available or suspended.
 		// Caller must hold m_mutex.
 		int32_t free_threads();
-	public:
-		static actor_manage& instance()
-		{
-			static actor_manage ltemp;
-			return ltemp;
-		}
 
 		// Block until a free worker is available, then mark it busy and return it.
 		// Called by schedule_layer dispatchers from their detached threads.
@@ -216,6 +211,13 @@ namespace ngl
 
 		// Return a worker to the shared pool after it finishes processing an actor.
 		void push_workthreads(ptrnthread atorthread);
+
+	public:
+		static actor_manage& instance()
+		{
+			static actor_manage ltemp;
+			return ltemp;
+		}
 
 		// Create apthreadnum workers (shared pool) and LAYER_COUNT dispatcher layers.
 		void init(i32_threadsize apthreadnum);
