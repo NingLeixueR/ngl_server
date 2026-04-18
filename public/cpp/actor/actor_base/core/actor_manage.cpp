@@ -427,9 +427,7 @@ namespace ngl
 				lock_write(m_mutex);
 				if (m_workthreadpos != m_threadcount)
 				{
-					ptrnthread lthread = m_workthreads[m_workthreadpos];
-					++m_workthreadpos;
-					return lthread;
+					return m_workthreads[m_workthreadpos++];
 				}
 			}
 			m_sem.wait();
@@ -440,8 +438,7 @@ namespace ngl
 	{
 		{
 			lock_write(m_mutex);
-			--m_workthreadpos;
-			m_workthreads[m_workthreadpos] = atorthread;
+			m_workthreads[m_workthreadpos--] = atorthread;
 		}
 
 		m_sem.post();
