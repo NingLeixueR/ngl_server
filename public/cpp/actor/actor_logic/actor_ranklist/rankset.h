@@ -84,9 +84,9 @@ namespace ngl
 	{
 		using setitor = std::set<rank_item*, operator_value<ETYPE>>::iterator;
 		std::set<rank_item*, operator_value<ETYPE>> m_rankdata;
-		int64_t							m_time = 0;			// Time
+		int64_t							m_version = 0;		// version
 		std::vector<setitor>			m_page;				// Index
-		int64_t							m_pagetime = 0;		// M_page time
+		int64_t							m_pageversion = 0;	// page version
 		std::map<i64_actorid, int32_t>	m_rolerank;			// Key:roleid value:
 
 		const tab_ranklist* tab()
@@ -117,7 +117,15 @@ namespace ngl
 					m_rolerank[(*litor)->m_actorid] = i * leverypagecount + j;
 				}
 			}
-			m_pagetime = m_time;
+			m_pageversion = m_version;
+		}
+
+		void ensure_cache()
+		{
+			if (m_version != m_pageversion)
+			{
+				init();
+			}
 		}
 	public:
 		rankset() :
@@ -127,7 +135,7 @@ namespace ngl
 		virtual void erase(rank_item* aitem)
 		{
 			m_rankdata.erase(aitem);
-			m_time = tools::time::gettime();
+			++m_version;
 		}
 
 		virtual void insert(rank_item* aitem)
@@ -143,7 +151,7 @@ namespace ngl
 				auto itor = std::prev(m_rankdata.end());
 				m_rankdata.erase(itor);
 			}
-			m_time = tools::time::gettime();
+			++m_version;
 		}
 
 		virtual void foreach(const std::function<void(int32_t, const rank_item*)>& afun)
@@ -162,12 +170,9 @@ namespace ngl
 			return lshow > lcount ? lcount : lshow;
 		}
 
-			virtual int32_t getpage([[maybe_unused]] i64_actorid aroleid, int32_t apage, const std::function<void(int32_t, const rank_item*)>& afun)
+		virtual int32_t getpage([[maybe_unused]] i64_actorid aroleid, int32_t apage, const std::function<void(int32_t, const rank_item*)>& afun)
 		{
-			if (m_time != m_pagetime)
-			{
-				init();
-			}
+			ensure_cache();
 
 			if (apage <= 0)
 			{
@@ -196,6 +201,7 @@ namespace ngl
 
 		virtual int32_t role_rank(i64_actorid aroleid)
 		{
+			ensure_cache();
 			auto itor = m_rolerank.find(aroleid);
 			if (itor == m_rolerank.end())
 			{
