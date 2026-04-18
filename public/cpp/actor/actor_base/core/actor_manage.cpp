@@ -438,7 +438,7 @@ namespace ngl
 	{
 		{
 			lock_write(m_mutex);
-			m_workthreads[m_workthreadpos--] = atorthread;
+			m_workthreads[--m_workthreadpos] = atorthread;
 		}
 
 		m_sem.post();
