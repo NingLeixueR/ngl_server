@@ -171,14 +171,14 @@ namespace ngl
 		static_assert((LAYER_COUNT& (LAYER_COUNT - 1)) == 0, "LAYER_COUNT must be power of 2");
 
 		std::array<std::shared_ptr<schedule_layer>, LAYER_COUNT> m_layers;
-		int32_t				m_threadcount = 0;
+		int32_t							m_threadcount = 0;
 		std::vector<ptrnthread>			m_workthreads;			// Shared worker pool across all layers.
 		int32_t							m_workthreadpos = 0;
-		std::vector<ptrnthread>			m_works;		// Shared worker pool across all layers.
+		std::vector<ptrnthread>			m_works;				// Shared worker pool across all layers.
+		std::shared_mutex				m_mutex;				// Guards m_workthreads and m_suspend.
+		ngl::tools::sem					m_sem;					// Token count tracks free workers.
+		bool							m_suspend = false;		// True while dispatch is frozen.
 
-		std::shared_mutex			m_mutex;			// Guards m_workthreads and m_suspend.
-		ngl::tools::sem				m_sem;				// Token count tracks free workers.
-		bool						m_suspend = false;	// True while dispatch is frozen.
 		// Trivial constructor/destructor — singleton is heap-allocated and never freed.
 		actor_manage() = default;
 		~actor_manage() = default;

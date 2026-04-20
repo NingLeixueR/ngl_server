@@ -448,6 +448,7 @@ namespace ngl
 	// that blocks on its own sem), then create LAYER_COUNT dispatcher layers.
 	void actor_manage::init(i32_threadsize apthreadnum)
 	{
+		assert((LAYER_COUNT & (LAYER_COUNT - 1)) == 0 && "LAYER_COUNT must be power of 2");
 		m_threadcount = apthreadnum;
 		m_workthreads.resize(apthreadnum);
 		for (int i = 0; i < m_threadcount; ++i)
