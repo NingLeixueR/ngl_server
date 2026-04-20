@@ -69,7 +69,7 @@ static std::array<const char*, NUMARGS(__VA_ARGS__)>& parms()											\
 	return tempvec;																						\
 }
 
-#define DEF_PARMNAME(...)	DEF_PARMNAME_(false __VA_OPT__(, )__VA_ARGS__)
+#define DEF_PARMNAME(...)	DEF_PARMNAME_(true __VA_OPT__(, )__VA_ARGS__)
 
 
 // Special
