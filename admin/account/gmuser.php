@@ -51,14 +51,11 @@ while ($row = mysql_fetch_assoc($result))
 ?>
 <html>
 <head><meta charset="UTF-8"><title>GM账号管理</title>
+<link rel="stylesheet" href="style.css">
 <style>
-body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; }
-table { border-collapse: collapse; width: 100%; background: #fff; }
-th, td { border: 1px solid #e8e8e8; padding: 8px 12px; text-align: left; font-size: 14px; }
-th { background: #fafafa; }
-a { color: #1890ff; text-decoration: none; margin-right: 8px; }
 input[type="text"], input[type="password"] { padding: 6px 10px; border: 1px solid #d9d9d9; border-radius: 4px; margin-right: 8px; }
 input[type="submit"] { padding: 6px 16px; background: #1890ff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+a { margin-right: 8px; }
 </style>
 </head>
 <body>

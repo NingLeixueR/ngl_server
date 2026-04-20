@@ -65,20 +65,7 @@ function build_query_string($overrides = array())
 ?>
 <html>
 <head><meta charset="UTF-8"><title>操作日志</title>
-<style>
-body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; }
-.filter { background: #fff; padding: 16px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-.filter label { font-size: 14px; margin-right: 8px; }
-.filter input[type="text"], .filter input[type="date"] { padding: 6px 10px; border: 1px solid #d9d9d9; border-radius: 4px; margin-right: 12px; }
-.filter input[type="submit"] { padding: 6px 16px; background: #1890ff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-table { border-collapse: collapse; width: 100%; background: #fff; }
-th, td { border: 1px solid #e8e8e8; padding: 8px 12px; text-align: left; font-size: 13px; }
-th { background: #fafafa; }
-.pager { margin-top: 12px; text-align: center; }
-.pager a { display: inline-block; padding: 4px 12px; margin: 0 2px; border: 1px solid #d9d9d9; border-radius: 4px; color: #1890ff; text-decoration: none; font-size: 13px; }
-.pager a.cur { background: #1890ff; color: #fff; border-color: #1890ff; }
-td.detail { max-width: 300px; word-break: break-all; }
-</style>
+<link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <h2>操作日志 <a href="../index.php" style="font-size:14px;color:#1890ff;text-decoration:none;">返回首页</a></h2>

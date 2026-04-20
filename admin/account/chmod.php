@@ -34,8 +34,8 @@ $all_actions = ActionManager::$ActionList;
 ?>
 <html>
 <head><meta charset="UTF-8"><title>设置权限</title>
+<link rel="stylesheet" href="style.css">
 <style>
-body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; }
 .group { background: #fff; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
 .group h3 { margin: 0 0 8px; font-size: 15px; color: #333; }
 .group label { display: inline-block; margin-right: 16px; font-size: 14px; cursor: pointer; }

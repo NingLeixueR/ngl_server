@@ -24,13 +24,7 @@ $results = $so->wait_response_all(count($_POST['servertype']));
 ?>
 <html>
 <head><meta charset="UTF-8"><title>服务器时间</title>
-<style>
-body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; }
-table { border-collapse: collapse; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-th, td { border: 1px solid #e8e8e8; padding: 8px 16px; text-align: left; font-size: 14px; }
-th { background: #fafafa; }
-a { color: #1890ff; text-decoration: none; }
-</style>
+<link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <h2>服务器时间 <a href="get_time_html.php">返回</a></h2>

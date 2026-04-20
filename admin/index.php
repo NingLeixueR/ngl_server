@@ -53,8 +53,9 @@ foreach ($actionlist as $id => $action)
 <head>
 <meta charset="UTF-8">
 <title>NGL Admin</title>
+<link rel="stylesheet" href="style.css">
 <style>
-body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; }
+body { margin: 0; }
 .header { background: #001529; color: #fff; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; }
 .header .title { font-size: 18px; font-weight: bold; }
 .header .user a { color: #69c0ff; text-decoration: none; }

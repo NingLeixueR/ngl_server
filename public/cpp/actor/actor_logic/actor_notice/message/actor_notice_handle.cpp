@@ -37,7 +37,7 @@ namespace ngl
 
 		if (handle_cmd::empty())
 		{
-				handle_cmd::add("get_notice") = [this](int id, [[maybe_unused]] ncjson& aos)
+			handle_cmd::add("get_notice") = [this](int id, [[maybe_unused]] ncjson& aos)
 				{// Return {"notice":gm_notice[]}
 					gcmd<std::vector<std::string>> pro(id, "get_notice");
 					for (auto& lpair : m_notice.data())
@@ -49,9 +49,9 @@ namespace ngl
 					pro.m_istoutf8 = false;
 				};
 
-			handle_cmd::add("notice_add") = [this](int id, ncjson& aos)
+			handle_cmd::add("add_notice") = [this](int id, ncjson& aos)
 				{
-					gcmd<bool> pro(id, "notice_add", false);
+					gcmd<bool> pro(id, "add_notice", false);
 					gm_notice recv;
 					if (!njson::pop(aos, { "data" }, recv))
 					{
@@ -61,9 +61,9 @@ namespace ngl
 					pro.m_data = true;
 				};
 
-			handle_cmd::add("notice_del") = [this](int id, ncjson& aos)
+			handle_cmd::add("del_notice") = [this](int id, ncjson& aos)
 				{
-					gcmd<bool> pro(id, "notice_del", false);
+					gcmd<bool> pro(id, "del_notice", false);
 					int64_t lid = 0;
 					if (!njson::pop(aos, { "data" }, lid))
 					{

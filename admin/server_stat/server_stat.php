@@ -28,15 +28,7 @@ $type_names = array(
 ?>
 <html>
 <head><meta charset="UTF-8"><title>服务器状态</title>
-<style>
-body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; }
-.card { background: #fff; border-radius: 6px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-.card h3 { margin: 0 0 12px; font-size: 15px; color: #333; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; }
-table { border-collapse: collapse; width: 100%; }
-th, td { border: 1px solid #e8e8e8; padding: 6px 12px; text-align: left; font-size: 13px; }
-th { background: #fafafa; }
-a { color: #1890ff; text-decoration: none; }
-</style>
+<link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <h2>服务器状态 <a href="server_stat_html.php">返回</a></h2>

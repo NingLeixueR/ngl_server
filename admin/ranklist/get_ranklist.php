@@ -1,52 +1,27 @@
 <?php
 require_once dirname(__FILE__) . '/../auth.php'; check_action(1301);
- gm_log('查询排行', 'type=' . $_POST['type'] . ' page=' . $_POST['page']);
- include '../socketbyte.php';
- 
- $so = new socketbyte();
- if($so->connectServer($_POST['server']) == false)
- {
-	 echo "connect err!!!";
-	 return;
- }
- 
- /*
-	需要发送给服务器的字段包括
-	actor_name  指定actor的类型  单例必须
-	actor_id	操作制定actor    非单例必须
-	servertype  指定服务器类型(int,不填默认只有WORLD)
-	enum NODE_TYPE
-	{
-		DB = 1,	// Databaseserver
-		ACTORSERVER = 2,	// Actor server
-		GAME = 3,	// Server
-		GATEWAY = 4,	// Gatewayserver
-		LOGIN = 5,	// Loginserver
-		ROBOT = 6,	// Test server
-		WORLD = 7,	// Server
-		LOG = 8,	// Logserver
-		RELOADCSV = 9,	// Csvserver
-		CROSS = 10,	// Cross-serverserver
-		CROSSDB = 11,	// Cross-serverdatabaseserver
-		PUSHSERVERCONFIG = 12,	// Serverconfigon lbgmsys
-		NODE_TYPE_COUNT,
-		FAIL = -1,	// Servertype
-	};
-	operator	制定操作类型（自定义字符串）
-	data        可选数据
- */
- 
- $arr = array(
-	'actor_name' => 'ACTOR_RANKLIST',
-	'operator' => 'ranklist',
-	'data' => array(
-		'type'=>$_POST['type'],
-		'page'=>$_POST['page'],
-	)
- );
- $json = json_encode($arr); 
- $so->send($json);
- $response = $so->wait_response();
- 
+gm_log('查询排行', 'type=' . $_POST['type'] . ' page=' . $_POST['page']);
+include '../socketbyte.php';
 
+$so = new socketbyte();
+if($so->connectServer($_POST['server']) == false)
+{
+    echo "connect err!!!";
+    return;
+}
+
+$arr = array(
+    'actor_name' => 'ACTOR_RANKLIST',
+    'operator' => 'ranklist',
+    'data' => array(
+        'type' => $_POST['type'],
+        'page' => $_POST['page'],
+    )
+);
+$json = json_encode($arr);
+$so->send($json);
+$results = $so->wait_response_all(1);
+
+include '../render.php';
+render_response($results, '排行榜', 'get_ranklist_html.php');
 ?>

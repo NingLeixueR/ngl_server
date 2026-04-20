@@ -42,8 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 ?>
 <html>
 <head><meta charset="UTF-8"><title>修改密码</title>
+<link rel="stylesheet" href="style.css">
 <style>
-body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding-top: 80px; }
+body { display: flex; justify-content: center; padding-top: 80px; }
 .box { background: #fff; padding: 32px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); width: 320px; }
 .box h2 { margin: 0 0 20px; font-size: 18px; }
 .box input[type="password"] { width: 100%; padding: 8px; margin-bottom: 12px; border: 1px solid #d9d9d9; border-radius: 4px; box-sizing: border-box; }

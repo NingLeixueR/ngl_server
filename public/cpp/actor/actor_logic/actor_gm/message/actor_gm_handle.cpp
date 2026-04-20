@@ -79,7 +79,7 @@ namespace ngl
 				int32_t dataid = 0;
 				DPROTOCOL(gm_guid, actor_name, area, dataid)
 			};
-				handle_cmd::add("server_stat") = [this]([[maybe_unused]] ncjson& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::add("server_stat") = [this]([[maybe_unused]] ncjson& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<msg_actor_stat> lpro(adata->get_pack()->m_id, "server_stat", this);
 					actor_manage::instance().get_actor_stat(lpro.m_data);
@@ -99,7 +99,7 @@ namespace ngl
 						lresponse.m_data = tools::lexical_cast<std::string>(nguid::make(ltype, lguid.area, lguid.dataid));
 					}
 				};
-				handle_cmd::add("all_protocol") = [this]([[maybe_unused]] ncjson& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::add("all_protocol") = [this]([[maybe_unused]] ncjson& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<protocols> lresponse(adata->get_pack()->m_id, "all_protocol", this);
 					actor_gmclient::allprotocol(lresponse.m_data);
@@ -122,7 +122,7 @@ namespace ngl
 						lresponse.m_data = true;
 					}
 				};
-				handle_cmd::add("get_time") = [this]([[maybe_unused]] ncjson& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::add("get_time") = [this]([[maybe_unused]] ncjson& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<std::string> lresponse(adata->get_pack()->m_id, "get_time", tools::time::time2str("%Y-%m-%d %H:%M:%S"), this);
 					return;

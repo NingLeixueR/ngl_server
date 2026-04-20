@@ -31,8 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 <head>
 <meta charset="UTF-8">
 <title>管理后台登录</title>
+<link rel="stylesheet" href="style.css">
 <style>
-body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
 .login-box { background: #fff; padding: 32px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); width: 320px; }
 .login-box h2 { text-align: center; margin: 0 0 24px; color: #333; }
 .login-box input[type="text"], .login-box input[type="password"] { width: 100%; padding: 10px; margin-bottom: 16px; border: 1px solid #d9d9d9; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
