@@ -468,9 +468,7 @@ namespace ngl
 		std::set<i16_actortype> lset;
 		for (int i = 0; i < LAYER_COUNT; ++i)
 		{
-			std::set<i16_actortype> lsettemp;
-			m_layers[i]->get_type(lsettemp);
-			lset.merge(lsettemp);
+			m_layers[i]->get_type(lset);
 		}
 		aactortype.clear();
 		aactortype.insert(aactortype.begin(), lset.begin(), lset.end());

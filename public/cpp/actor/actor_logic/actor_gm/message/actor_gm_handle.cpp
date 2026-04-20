@@ -49,16 +49,11 @@ namespace ngl
 		// Return:whether need toactor_gmhandle
 		bool distribute([[maybe_unused]] std::string akey, ncjson& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
-			struct servertype
-			{
-				std::vector<int32_t> servertype;
-				DPROTOCOL(servertype, servertype)
-			};
-			servertype lservertype;
+			std::vector<int32_t> lservertype;
 			if (njson::pop(aos, { "servertype" }, lservertype))
 			{
 				bool llocal = false;
-				for (int32_t lstypeid : lservertype.servertype)
+				for (int32_t lstypeid : lservertype)
 				{
 					NODE_TYPE lstype = (NODE_TYPE)lstypeid;
 					if (actor_gm::checklocalbytype(lstype))
