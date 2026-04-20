@@ -172,12 +172,12 @@ namespace ngl
 
 		std::array<std::shared_ptr<schedule_layer>, LAYER_COUNT> m_layers;
 		int32_t							m_threadcount = 0;
-		std::vector<ptrnthread>			m_workthreads;			// Shared worker pool across all layers.
-		int32_t							m_workthreadpos = 0;
-		std::vector<ptrnthread>			m_works;				// Shared worker pool across all layers.
-		std::shared_mutex				m_mutex;				// Guards m_workthreads and m_suspend.
-		ngl::tools::sem					m_sem;					// Token count tracks free workers.
-		bool							m_suspend = false;		// True while dispatch is frozen.
+		std::vector<ptrnthread>			m_workthreads;			// Stack-based pool: [0, pos) = borrowed, [pos, count) = available.
+		int32_t							m_workthreadpos = 0;	// Stack top — next slot to lend from.
+		std::vector<ptrnthread>			m_works;				// Immutable snapshot for pool reset after suspend.
+		std::shared_mutex				m_mutex;				// Guards m_workthreads, m_workthreadpos, and m_suspend.
+		ngl::tools::sem					m_sem;					// Token count = available workers; blocks dispatchers when empty.
+		bool							m_suspend = false;		// True while dispatch is frozen (DB flush, hot-reload, etc.).
 
 		// Trivial constructor/destructor — singleton is heap-allocated and never freed.
 		actor_manage() = default;
@@ -191,11 +191,11 @@ namespace ngl
 
 		std::shared_ptr<schedule_layer>& get_layer(int64_t actorid);
 
-		// Block until a free worker is available, then mark it busy and return it.
-		// Called by schedule_layer dispatchers from their detached threads.
+		// Block until a free worker is available and dispatch is not suspended.
+		// Returns a worker from the top of the stack (m_workthreadpos++).
 		ptrnthread pop_free_hreads();
 
-		// Return a worker to the shared pool after it finishes processing an actor.
+		// Return a worker to the pool (--m_workthreadpos) and signal m_sem.
 		void push_workthreads(ptrnthread atorthread);
 
 	public:

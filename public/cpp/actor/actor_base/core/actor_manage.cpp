@@ -419,13 +419,17 @@ namespace ngl
 		return m_layers[layer_index(actorid)];
 	}
 
+	// Acquire a worker from the shared pool (stack-based).
+	// m_workthreads[0..m_workthreadpos) = borrowed (in use by dispatchers).
+	// m_workthreads[m_workthreadpos..m_threadcount) = available.
+	// Blocks on m_sem when the pool is empty or suspended.
 	ptrnthread actor_manage::pop_free_hreads()
 	{
 		for (;;)
 		{
 			{
 				lock_write(m_mutex);
-				if (m_workthreadpos != m_threadcount)
+				if (!m_suspend && m_workthreadpos != m_threadcount)
 				{
 					return m_workthreads[m_workthreadpos++];
 				}
@@ -434,6 +438,7 @@ namespace ngl
 		}
 	}
 
+	// Return a worker to the available portion of the stack.
 	void actor_manage::push_workthreads(ptrnthread atorthread)
 	{
 		{
@@ -593,11 +598,11 @@ namespace ngl
 		adata.m_vec = std::move(lstats);
 	}
 
-	// Spin-wait until every worker in the shared pool is idle, then set the
-	// suspend flag so pop_free_hreads() stops handing out workers.
+	// Spin-wait until every worker has been returned to the pool, then freeze
+	// dispatch. pop_free_hreads() checks m_suspend and will stop handing out
+	// workers once the flag is set.
 	void actor_manage::statrt_suspend_thread()
 	{
-		int lthreadnum = 0;
 		for (;;)
 		{
 			{
@@ -608,23 +613,18 @@ namespace ngl
 					return;
 				}
 			}
-			if (lthreadnum < m_threadcount)
-			{
-				tools::sleep::milliseconds(100);
-			}
-			else
-			{
-				return;
-			}
+			tools::sleep::milliseconds(100);
 		}
 	}
 
-	// Clear the suspend flag and wake all dispatchers that may be blocked
-	// inside pop_free_hreads() waiting for a worker.
+	// Clear the suspend flag, restore the pool to its initial state, and wake
+	// all dispatchers that may be blocked inside pop_free_hreads().
 	void actor_manage::finish_suspend_thread()
 	{
 		lock_write(m_mutex);
 		m_suspend = false;
+		m_workthreads = m_works;
+		m_workthreadpos = 0;
 		for (int32_t i = 0; i < m_threadcount; ++i)
 		{
 			m_sem.post();
