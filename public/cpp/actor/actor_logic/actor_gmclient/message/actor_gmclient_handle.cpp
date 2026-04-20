@@ -27,13 +27,13 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-				handle_cmd::add("all_protocol") = [this](int id, [[maybe_unused]] ncjson& aos)
+			handle_cmd::add("all_protocol") = [this](int id, [[maybe_unused]] ncjson& aos)
 				{
 					gcmd<protocols> lpro(id, "all_protocol");
 					allprotocol(lpro.m_data);
 				};
 
-				handle_cmd::add("server_stat") = [this](int id, [[maybe_unused]] ncjson& aos)
+			handle_cmd::add("server_stat") = [this](int id, [[maybe_unused]] ncjson& aos)
 				{
 					gcmd<msg_actor_stat> lpro(id, "server_stat");
 					actor_manage::instance().get_actor_stat(lpro.m_data);
