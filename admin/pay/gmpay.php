@@ -13,11 +13,7 @@ if($so->connectServer($_POST['server']) == false)
 $arr = array(
     'actor_id' => $_POST['roleid'],
     'operator' => 'gmrechange',
-    'data' => array(
-        'rechangeid' => $_POST['rechangeid'],
-        'area' => $_POST['area'],
-        'dataid' => $_POST['dataid'],
-    )
+    'data' => intval($_POST['rechangeid'])
 );
 
 $json = json_encode($arr);

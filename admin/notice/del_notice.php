@@ -11,9 +11,9 @@ if($so->connectServer($_POST['server']) == false)
 }
 
 $arr = array(
-    'm_actor_name' => 'ACTOR_NOTICE',
+    'actor_name' => 'ACTOR_NOTICE',
     'operator' => 'del_notice',
-    'm_data' => $_POST['id']
+    'data' => intval($_POST['id'])
 );
 
 $json = json_encode($arr);

@@ -46,7 +46,21 @@ namespace ngl
 		{
 			data_modified<pbdb::db_keyvalue>& ldata = get(aid);
 			MODIFIED_RETURN_CONST(lpdkeyvalue, ldata, false);
-			adata = tools::lexical_cast<T>(lpdkeyvalue->mvalue());
+			if (lpdkeyvalue->mvalue() == "")
+			{
+				adata = T();
+			}
+			else
+			{
+				try
+				{
+					adata = tools::lexical_cast<T>(lpdkeyvalue->mvalue());
+				}
+				catch (...)
+				{
+					return false;
+				}
+			}
 			return true;
 		}
 

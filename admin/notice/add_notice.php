@@ -14,10 +14,10 @@ $arr = array(
     'actor_name' => 'ACTOR_NOTICE',
     'operator' => 'add_notice',
     'data' => array(
-        'id' => '-1',
-        'm_notice' => $_POST['m_notice'],
-        'm_starttime' => intval($_POST['m_starttime']),
-        'm_finishtime' => intval($_POST['m_finishtime']),
+        'id' => -1,
+        'notice' => $_POST['m_notice'],
+        'starttime' => intval($_POST['m_starttime']),
+        'finishtime' => intval($_POST['m_finishtime']),
     )
 );
 

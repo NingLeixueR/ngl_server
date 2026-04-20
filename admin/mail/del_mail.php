@@ -14,8 +14,8 @@ $arr = array(
     'actor_name' => 'ACTOR_MAIL',
     'operator' => 'del_mail',
     'data' => array(
-        "m_roleid" => $_POST['m_roleid'],
-        "m_mailid" => $_POST['m_mailid']
+        "roleid" => $_POST['m_roleid'],
+        "mailid" => $_POST['m_mailid']
     )
 );
 

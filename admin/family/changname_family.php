@@ -14,8 +14,8 @@ $arr = array(
     'actor_name' => 'ACTOR_FAMILY',
     'operator' => 'change_familyname',
     'data' => array(
-        "m_familyid" => $_POST['m_familyid'],
-        "m_familyname" => $_POST['m_familyname']
+        "familid" => $_POST['m_familyid'],
+        "familname" => $_POST['m_familyname']
     )
 );
 

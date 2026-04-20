@@ -11,9 +11,9 @@ if($so->connectServer($_POST['server']) == false)
 }
 
 $arr = array(
-    'm_actor_name' => 'actor_keyvalue',
+    'actor_name' => 'actor_keyvalue',
     'operator' => 'set_openserver',
-    'm_data' => $_POST['m_time'],
+    'data' => intval($_POST['m_time']),
 );
 
 $json = json_encode($arr);

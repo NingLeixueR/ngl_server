@@ -14,8 +14,8 @@ $arr = array(
     'actor_name' => 'actor_role_manage',
     'operator' => 'roleban',
     'data' => array(
-        'm_roleid' => $_POST['m_roleid'],
-        'm_stat' => $_POST['m_stat'],
+        'roleid' => $_POST['m_roleid'],
+        'stat' => intval($_POST['m_stat']),
     )
 );
 

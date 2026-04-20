@@ -9,8 +9,8 @@ foreach($array as $id => $item)
 {
     $items = explode("*", $item);
     $arrayitem[] = array(
-        "m_itemtid" => $items[0],
-        "m_itemtcount" => $items[1],
+        "itemtid" => intval($items[0]),
+        "count" => intval($items[1]),
     );
 }
 
@@ -25,9 +25,9 @@ $arr = array(
     'actor_name' => 'ACTOR_MAIL',
     'operator' => 'add_mail',
     'data' => array(
-        'm_roleid' => $_POST['m_roleid'],
-        'm_content' => $_POST['m_content'],
-        'm_items' => $arrayitem,
+        'roleid' => $_POST['m_roleid'],
+        'content' => $_POST['m_content'],
+        'items' => $arrayitem,
     )
 );
 

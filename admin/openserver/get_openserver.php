@@ -11,7 +11,7 @@ if($so->connectServer($_POST['server']) == false)
 }
 
 $arr = array(
-    'm_actor_name' => 'actor_keyvalue',
+    'actor_name' => 'actor_keyvalue',
     'operator' => 'get_openserver',
     'data' => array(),
 );

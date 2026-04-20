@@ -13,7 +13,7 @@ if($so->connectServer($_POST['server']) == false)
 $arr = array(
     'actor_name' => 'ACTOR_NOTICE',
     'operator' => 'get_notice',
-    'm_data' => ''
+    'data' => ''
 );
 $json = json_encode($arr);
 $so->send($json);
