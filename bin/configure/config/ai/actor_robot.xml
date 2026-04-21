@@ -1,0 +1,10 @@
+<root BTCPP_format="4">
+    <BehaviorTree ID="RobotBootstrap">
+        <ReactiveSequence>
+            <HasSession/>
+            <HasRoleSync/>
+            <EnsureGatewayKcp/>
+            <EnsureRoleKcp/>
+        </ReactiveSequence>
+    </BehaviorTree>
+</root>

@@ -38,6 +38,7 @@ namespace ngl
 		ACTOR_ROBOT								= 2, // One actor per robot/test client.
 		ACTOR_LOG								= 3, // Log
 		ACTOR_EXAMPLE_GUESS_NUMBER				= 4, // Example gameplay actor.
+		ACTOR_TESTAI							= 5, // Test AI behavior tree actor.
 
 		// Singleton/system actors.
 		ACTOR_SIGNLE_START						= 1000,

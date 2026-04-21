@@ -18,6 +18,7 @@
 #include "actor/actor_logic/actor_robot/actor_robot.h"
 #include "actor/actor_base/core/nregister.h"
 #include "actor/actor_logic/nforward.h"
+#include "tools/tools/tools_file.h"
 #include "net/udp/kcp/nkcp.h"
 
 namespace ngl
@@ -26,21 +27,6 @@ namespace ngl
 	{
 		constexpr int32_t erobot_bt_tick_interval_sec = 1;
 		constexpr int64_t erobot_kcp_retry_interval_ms = 3 * tools::time::MILLISECOND;
-
-		const char* robot_behavior_tree_xml()
-		{
-			return R"(
-<root BTCPP_format="4">
-    <BehaviorTree ID="RobotBootstrap">
-        <ReactiveSequence>
-            <HasSession/>
-            <HasRoleSync/>
-            <EnsureGatewayKcp/>
-            <EnsureRoleKcp/>
-        </ReactiveSequence>
-    </BehaviorTree>
-</root>)";
-		}
 	}
 
 	actor_robot::actor_robot(i16_area aarea, i32_actordataid arobotid, void*) :
@@ -133,7 +119,16 @@ namespace ngl
 				return ensure_kcp_connected(pbnet::ENUM_KCP::KCP_ROLE);
 			}
 		);
-		m_behavior_tree = m_behavior_factory.create_from_text(robot_behavior_tree_xml(), BT::Blackboard::create());
+		//# 读取xml
+		tools::readfile lread("./config/ai/actor_robot.xml");
+		std::string lrobot;
+		if (!lread.readcurrent(lrobot))
+		{
+			log_error()->print("actor_robot::init_behavior_tree fail");
+			return;
+		}
+
+		m_behavior_tree = m_behavior_factory.create_from_text(lrobot, BT::Blackboard::create());
 		sync_behavior_blackboard();
 	}
 
