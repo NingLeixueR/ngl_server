@@ -188,6 +188,7 @@ namespace ngl
 				{
 					return true;
 				}
+				// KCP failed, trying TCP or WS
 			}
 			return handle_socket(lparm, lpack);
 		}
