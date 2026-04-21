@@ -118,13 +118,14 @@ namespace ngl
 			if (luids.empty() || lareas.empty() || luid_size != lareas.size())
 			{
 				log_error()->print("actor_gatewayg2c uidsize[{}]!=areasize[{}]", luid_size, lareas.size());
-				return true;
+				return false;
 			}
 			auto lkcp = nkcp::instance().serkcp(pbnet::KCP_GATEWAY, nconfig.tcount());
 			std::shared_ptr<pack> lsendpack = ngl::net_pack<T>::npack(&nnet::instance().pool(), ldata.m_data, apack->m_head->get_request_actor(), 0, true);
 			if (lsendpack == nullptr)
 			{
-				return true;
+				log_error()->print("actor_gateway_g2c::handle_kcp fail ngl::net_pack<T>::npack");
+				return false;
 			}
 			const i16_area larea0 = lareas[0];
 			const i32_actordataid ldata0 = luids[0];
@@ -135,6 +136,7 @@ namespace ngl
 					if (!lkcp->send(lsendpack))
 					{
 						log_error()->print("actor_gateway_g2c::handle_kcp fail area=[nguid::none_area()]");
+						return false;
 					}
 				}
 				else
@@ -142,6 +144,7 @@ namespace ngl
 					if (!lkcp->sendpackbyarea(larea0, lsendpack))
 					{
 						log_error()->print("actor_gateway_g2c::handle_kcp fail area=[{}]", larea0);
+						return false;
 					}
 				}
 			}
@@ -151,6 +154,7 @@ namespace ngl
 				if (!lkcp->sendbyactor(lactorid, lsendpack))
 				{
 					log_error()->print("actor_gateway_g2c::handle_kcp fail actorid=[{}]", lactorid);
+					return false;
 				}
 			}
 			else
@@ -163,6 +167,7 @@ namespace ngl
 				if (!lkcp->sendbyactor(lids, lsendpack))
 				{
 					log_error()->print("actor_gateway_g2c::handle_kcp fail actorids=[{}]", lids);
+					return false;
 				}
 			}
 			return true;
@@ -180,7 +185,10 @@ namespace ngl
 			// Game->Gate need tothis message toClientserver
 			if (lparm->m_data.m_protocol == ENET_KCP)
 			{
-				return handle_kcp(lparm, lpack);
+				if (handle_kcp(lparm, lpack))
+				{
+					return true;
+				}
 			}
 			return handle_socket(lparm, lpack);
 		}
