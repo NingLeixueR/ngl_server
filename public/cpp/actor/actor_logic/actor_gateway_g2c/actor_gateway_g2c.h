@@ -182,7 +182,6 @@ namespace ngl
 			{
 				return true;
 			}
-			// Game->Gate need tothis message toClientserver
 			if (lparm->m_data.m_protocol == ENET_KCP)
 			{
 				if (handle_kcp(lparm, lpack))
