@@ -14,6 +14,7 @@
 // File overview: Implements dynamic actor creation and registration.
 
 #include "actor/actor_logic/actor_example_guess_number/actor_example_guess_number.h"
+#include "actor/actor_logic/actor_testai/actor_testai.h"
 #include "actor/actor_logic/actor_robot/actor_robot.h"
 #include "actor/actor_logic/actor_role/actor_role.h"
 #include "actor/actor_logic/actor_log/actor_log.h"
@@ -56,6 +57,8 @@ namespace ngl
 				return linitfun.operator()<actor_log>(ACTOR_LOG, *(int32_t*)aparm);
 			case ACTOR_EXAMPLE_GUESS_NUMBER:
 				return linitfun.operator()<actor_example_guess_number>(ACTOR_EXAMPLE_GUESS_NUMBER, *(const std::map<int32_t, i64_actorid>*)aparm, aid);
+			case ACTOR_TESTAI:
+				return linitfun.operator()<actor_testai>(ACTOR_TESTAI, tab_self_area, aid);
 			default:
 			{
 				ngl::log_error()->print("actor_base::create fail ({},{})", tools::em<ENUM_ACTOR>::name(atype), aid);

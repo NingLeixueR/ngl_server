@@ -77,7 +77,7 @@ namespace ngl
 
 		actor_role(i16_area aarea, i32_actordataid aroleid, void* adata);
 
-		virtual ~actor_role() = default;
+		virtual ~actor_role();
 
 		static ENUM_ACTOR actor_type();
 

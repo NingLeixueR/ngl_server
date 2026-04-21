@@ -23,7 +23,7 @@ namespace ngl
 		}
 	}
 
-	actor_testai::actor_testai(i16_area aarea, i32_actordataid aid, void*) :
+	actor_testai::actor_testai(i16_area aarea, i32_actordataid aid) :
 		actor(
 			actorparm
 			{

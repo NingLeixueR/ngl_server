@@ -142,6 +142,15 @@ namespace ngl
 		}
 	}
 
+	actor_role::~actor_role()
+	{
+		nguid lguid = nguid::make(ACTOR_TESTAI, area(), id());
+		actor_manage::instance().erase_actor(lguid, [lguid]()
+			{
+				log_error()->print("delete actor {}", lguid);
+			});
+	}
+
 	/**
 	 * Callback when database loading finishes for this actor.
 	 * Handles initialization after DB load and triggers login completion.
@@ -173,6 +182,8 @@ namespace ngl
 			);
 			// Initialize drop system
 			m_drop.init(this, {});
+			
+			actor::create(ACTOR_TESTAI, area(), id());
 		}
 
 		// Handle new role creation case

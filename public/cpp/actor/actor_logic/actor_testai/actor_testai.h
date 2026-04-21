@@ -17,7 +17,7 @@ namespace ngl
 		int32_t m_patrol_index = 0;
 		int32_t m_hp = 100;
 	public:
-		actor_testai(i16_area aarea, i32_actordataid aid, void*);
+		actor_testai(i16_area aarea, i32_actordataid aid);
 
 		virtual ~actor_testai() = default;
 
