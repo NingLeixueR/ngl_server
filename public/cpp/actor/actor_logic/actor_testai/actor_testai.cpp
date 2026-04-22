@@ -50,10 +50,8 @@ namespace ngl
 
 	void actor_testai::init()
 	{
-		register_bt_nodes();
-
 		m_bt.init(this);
-		m_bt.load_tree("testai_main");
+		m_bt.load_tree("actor_testai");
 		m_bt.set<int32_t>("patrol_index", 0);
 		m_bt.set<int32_t>("hp", m_hp);
 
@@ -80,24 +78,18 @@ namespace ngl
 	void actor_testai::nregister()
 	{
 		actor::register_timer<actor_testai>(&actor_testai::timer_handle);
-	}
 
-	void actor_testai::register_bt_nodes()
-	{
-		static bool lregistered = false;
-		if (lregistered)
-		{
-			return;
-		}
-		lregistered = true;
-
-		auto& lfactory = ai2::nbt_factory::instance();
+		auto& lfactory = nbt_factory::instance();
 
 		// condition: 30% 概率发现敌人
 		lfactory.register_condition("CheckEnemy",
-			[](ai2::nbt_context& actx, BT::TreeNode&) -> ai2::nbt_status
+			[](nbt_context& actx, BT::TreeNode&) -> nbt_status
 			{
-				auto* lactor = static_cast<actor_testai*>(actx.get_actor());
+				auto* lactor = actx.get_actor<actor_testai>();
+				if (lactor == nullptr)
+				{
+					return BT::NodeStatus::FAILURE;
+				}
 				bool lfound = random_chance(30);
 				if (lfound)
 				{
@@ -108,9 +100,13 @@ namespace ngl
 
 		// action: 攻击
 		lfactory.register_action("Attack",
-			[](ai2::nbt_context& actx, BT::TreeNode&) -> ai2::nbt_status
+			[](nbt_context& actx, BT::TreeNode&) -> nbt_status
 			{
-				auto* lactor = static_cast<actor_testai*>(actx.get_actor());
+				auto* lactor = actx.get_actor<actor_testai>();
+				if (lactor == nullptr)
+				{
+					return BT::NodeStatus::FAILURE;
+				}
 				int32_t ldamage = std::uniform_int_distribution<int32_t>(10, 30)(rng());
 				log_error()->print("[TESTAI:{}] attacking enemy! damage={}", lactor->id_guid(), ldamage);
 				return BT::NodeStatus::SUCCESS;
@@ -118,7 +114,7 @@ namespace ngl
 
 		// condition: 检查是否有巡逻点
 		lfactory.register_condition("CheckPatrolPoint",
-			[](ai2::nbt_context& actx, BT::TreeNode&) -> ai2::nbt_status
+			[](nbt_context& actx, BT::TreeNode&) -> nbt_status
 			{
 				int32_t lidx = actx.get<int32_t>("patrol_index");
 				return lidx < etestai_patrol_max ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
@@ -126,9 +122,13 @@ namespace ngl
 
 		// action: 巡逻
 		lfactory.register_action("Patrol",
-			[](ai2::nbt_context& actx, BT::TreeNode&) -> ai2::nbt_status
+			[](nbt_context& actx, BT::TreeNode&) -> nbt_status
 			{
-				auto* lactor = static_cast<actor_testai*>(actx.get_actor());
+				auto* lactor = actx.get_actor<actor_testai>();
+				if (lactor == nullptr)
+				{
+					return BT::NodeStatus::FAILURE;
+				}
 				int32_t lidx = actx.get<int32_t>("patrol_index");
 				lidx = (lidx + 1) % etestai_patrol_max;
 				actx.set<int32_t>("patrol_index", lidx);
@@ -138,37 +138,24 @@ namespace ngl
 
 		// action: 待机
 		lfactory.register_action("Idle",
-			[](ai2::nbt_context& actx, BT::TreeNode&) -> ai2::nbt_status
+			[](nbt_context& actx, BT::TreeNode&) -> nbt_status
 			{
-				auto* lactor = static_cast<actor_testai*>(actx.get_actor());
+				auto* lactor = actx.get_actor<actor_testai>();
+				if (lactor == nullptr)
+				{
+					return BT::NodeStatus::FAILURE;
+				}
 				log_error()->print("[TESTAI:{}] idle... waiting", lactor->id_guid());
 				return BT::NodeStatus::SUCCESS;
 			});
 
-		// 注册行为树 XML
-		const std::string lxml = R"(
-<root BTCPP_format="4" main_tree_to_execute="testai_main">
-  <BehaviorTree ID="testai_main">
-    <Fallback>
-      <Sequence>
-        <CheckEnemy/>
-        <Attack/>
-      </Sequence>
-      <Sequence>
-        <CheckPatrolPoint/>
-        <Patrol/>
-      </Sequence>
-      <Idle/>
-    </Fallback>
-  </BehaviorTree>
-</root>
-)";
-		lfactory.register_tree("testai_main", lxml);
+		// 注册行为树 XML		
+		lfactory.register_tree_file("config/ai/actor_testai.xml");
 	}
 
 	bool actor_testai::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
-		ai2::nbt_status lstatus = m_bt.tick();
+		nbt_status lstatus = m_bt.tick();
 		log_error()->print("[TESTAI:{}] tick result={}", id_guid(), BT::toStr(lstatus));
 		return true;
 	}

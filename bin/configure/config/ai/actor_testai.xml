@@ -1,0 +1,15 @@
+<root BTCPP_format="4" main_tree_to_execute="actor_testai">
+  <BehaviorTree ID="actor_testai">
+    <Fallback>
+      <Sequence>
+        <CheckEnemy/>
+        <Attack/>
+      </Sequence>
+      <Sequence>
+        <CheckPatrolPoint/>
+        <Patrol/>
+      </Sequence>
+      <Idle/>
+    </Fallback>
+  </BehaviorTree>
+</root>

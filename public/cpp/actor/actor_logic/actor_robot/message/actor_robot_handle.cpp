@@ -212,7 +212,6 @@ namespace ngl
 			, lpstructserver.m_ip, nkcp::instance().kcp_port(ltid, ltcount, lpram->m_kcpnum())
 			, lpram->mactoridserver(), lkcpsession
 		);
-		sync_behavior_blackboard();
 		return lconnected;
 	}
 	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
@@ -305,12 +304,15 @@ namespace ngl
 		log_error()->print("[LOGIC_ROLE_SYNC:{}:{}]", adata.get_data()->mbrief().mbase().mname(), adata.get_data()->mbrief().mbase().mlv());
 		m_data = *adata.get_data();
 		handle_print(adata);
+
 		if (!m_firstsync)
 		{
 			m_firstsync = true;
 		}
-		sync_behavior_blackboard();
-		tick_behavior_tree();
+		if (!m_bt.empty())
+		{
+			m_bt.tick();
+		}
 		return true;
 	}
 	bool actor_robot::handle([[maybe_unused]] const message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata)

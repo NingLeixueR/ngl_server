@@ -15,16 +15,16 @@
 
 #pragma once
 
-#include "tools/db/sql/mysql/nmysql_manage.h"
-#include "tools/db/sql/mysql/nmysql_pool.h"
 #include "actor/actor_base/core/actor_manage.h"
+#include "tools/db/sql/mysql/nmysql_manage.h"
 #include "actor/actor_base/core/ndbclient.h"
-#include "tools/db/sql/mysql/nmysql.h"
-#include "tools/ai/behavior_tree.h"
-#include "actor/protocol/nprotocol.h"
-#include "tools/db/sql/db_data.h"
+#include "tools/db/sql/mysql/nmysql_pool.h"
 #include "actor/generated/pb/example.pb.h"
 #include "actor/generated/pb/net.pb.h"
+#include "tools/db/sql/mysql/nmysql.h"
+#include "actor/protocol/nprotocol.h"
+#include "tools/db/sql/db_data.h"
+#include "tools/ai/nbt.h"
 #include "net/tcp/ntcp.h"
 
 namespace ngl
@@ -94,19 +94,14 @@ namespace ngl
 	{
 		// ----- Data Begin -----
 		pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE	m_data;
-		ai::behavior_tree_factory				m_behavior_factory;
-		ai::behavior_tree						m_behavior_tree;
+		nbt_context								m_bt;
 		bool									m_gateway_kcp_requested = false;
 		bool									m_role_kcp_requested = false;
 		int64_t									m_gateway_kcp_request_ms = 0;
 		int64_t									m_role_kcp_request_ms = 0;
 		// ----- Data End   -----
-		void init_behavior_tree();
-		void sync_behavior_blackboard();
-		BT::Blackboard::Ptr behavior_blackboard();
 		bool is_kcp_connected(pbnet::ENUM_KCP akcpenum);
-		ai::bt_status ensure_kcp_connected(pbnet::ENUM_KCP akcpenum);
-		ai::bt_status tick_behavior_tree();
+		nbt_status ensure_kcp_connected(pbnet::ENUM_KCP akcpenum);
 	public:
 		i32_session								m_session = 0;
 		_robot*									m_robot = nullptr;

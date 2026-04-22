@@ -3,7 +3,7 @@
 #include "actor/actor_base/core/actor_manage.h"
 #include "actor/actor_base/core/ntimer.h"
 #include "actor/protocol/nprotocol.h"
-#include "tools/ai2/nbt.h"
+#include "tools/ai/nbt.h"
 
 namespace ngl
 {
@@ -13,7 +13,7 @@ namespace ngl
 		actor_testai(const actor_testai&) = delete;
 		actor_testai& operator=(const actor_testai&) = delete;
 
-		ai2::nbt_context m_bt;
+		nbt_context m_bt;
 		int32_t m_patrol_index = 0;
 		int32_t m_hp = 100;
 	public:
@@ -30,8 +30,6 @@ namespace ngl
 		virtual void loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat);
 
 		static void nregister();
-
-		static void register_bt_nodes();
 
 		bool timer_handle([[maybe_unused]] const message<np_timerparm>& adata);
 	};
