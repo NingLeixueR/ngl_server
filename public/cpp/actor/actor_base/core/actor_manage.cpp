@@ -354,7 +354,7 @@ namespace ngl
 	//             If the queue is already drained, return the worker and break.
 	void schedule_layer::run()
 	{
-		ptrnthread lpthread = nullptr;
+		nthread* lpthread = nullptr;
 		ptractor lpactor = nullptr;
 
 		for (;;)
@@ -363,7 +363,7 @@ namespace ngl
 			// Drain the ready queue: acquire a worker first, then pop an actor.
 			for (;;)
 			{
-				lpthread = actor_manage::instance().pop_free_hreads();
+				lpthread = actor_manage::instance().pop_workthreads();
 				{
 					lock_write(m_mutex);
 					if (m_actorlist.empty())
@@ -423,7 +423,7 @@ namespace ngl
 	// m_workthreads[0..m_workthreadpos) = borrowed (in use by dispatchers).
 	// m_workthreads[m_workthreadpos..m_threadcount) = available.
 	// Blocks on m_sem when the pool is empty or suspended.
-	ptrnthread actor_manage::pop_free_hreads()
+	nthread* actor_manage::pop_workthreads()
 	{
 		for (;;)
 		{
@@ -439,7 +439,7 @@ namespace ngl
 	}
 
 	// Return a worker to the available portion of the stack.
-	void actor_manage::push_workthreads(ptrnthread atorthread)
+	void actor_manage::push_workthreads(nthread* atorthread)
 	{
 		{
 			lock_write(m_mutex);
@@ -456,12 +456,13 @@ namespace ngl
 		assert((LAYER_COUNT & (LAYER_COUNT - 1)) == 0 && "LAYER_COUNT must be power of 2");
 		m_threadcount = apthreadnum;
 		m_workthreads.resize(apthreadnum);
+		m_works.resize(apthreadnum);
 		for (int i = 0; i < m_threadcount; ++i)
 		{
-			m_workthreads[i] = std::make_shared<nthread>(i);
+			m_works[i] = std::make_shared<nthread>(i);
+			m_workthreads[i] = m_works[i].get();
 			m_sem.post();
 		}
-		m_works = m_workthreads;
 		for (int i = 0; i < LAYER_COUNT; ++i)
 		{
 			m_layers[i] = std::make_shared<schedule_layer>();
@@ -506,7 +507,7 @@ namespace ngl
 		return get_layer(aguid.id())->is_have_actor(aguid);
 	}
 
-	void actor_manage::push(const ptractor& apactor, ptrnthread atorthread /*= nullptr*/, bool aready /*= true*/)
+	void actor_manage::push(const ptractor& apactor, nthread* atorthread /*= nullptr*/, bool aready /*= true*/)
 	{
 		if (atorthread != nullptr)
 		{
@@ -623,7 +624,11 @@ namespace ngl
 	{
 		lock_write(m_mutex);
 		m_suspend = false;
-		m_workthreads = m_works;
+		for (int32_t i = 0; i < m_threadcount; ++i)
+		{
+			m_workthreads[i] = m_works[i].get();
+		}
+		
 		m_workthreadpos = 0;
 		for (int32_t i = 0; i < m_threadcount; ++i)
 		{

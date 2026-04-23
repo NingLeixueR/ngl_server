@@ -172,7 +172,7 @@ namespace ngl
 
 		std::array<std::shared_ptr<schedule_layer>, LAYER_COUNT> m_layers;
 		int32_t							m_threadcount = 0;
-		std::vector<ptrnthread>			m_workthreads;			// Stack-based pool: [0, pos) = borrowed, [pos, count) = available.
+		std::vector<nthread*>			m_workthreads;			// Stack-based pool: [0, pos) = borrowed, [pos, count) = available.
 		int32_t							m_workthreadpos = 0;	// Stack top — next slot to lend from.
 		std::vector<ptrnthread>			m_works;				// Immutable snapshot for pool reset after suspend.
 		std::shared_mutex				m_mutex;				// Guards m_workthreads, m_workthreadpos, and m_suspend.
@@ -193,10 +193,10 @@ namespace ngl
 
 		// Block until a free worker is available and dispatch is not suspended.
 		// Returns a worker from the top of the stack (m_workthreadpos++).
-		ptrnthread pop_free_hreads();
+		nthread* pop_workthreads();
 
 		// Return a worker to the pool (--m_workthreadpos) and signal m_sem.
-		void push_workthreads(ptrnthread atorthread);
+		void push_workthreads(nthread* atorthread);
 
 	public:
 		static actor_manage& instance()
@@ -232,7 +232,7 @@ namespace ngl
 		bool is_have_actor(const nguid& aguid);
 
 		// Return a finished worker and actor to the correct layer.
-		void push(const ptractor& apactor, ptrnthread atorthread = nullptr, bool aready = true);
+		void push(const ptractor& apactor, nthread* atorthread = nullptr, bool aready = true);
 
 		// Route a message to one actor, falling back to the route actor if missing.
 		void push_task_id(const nguid& aguid, handle_pram& apram);
