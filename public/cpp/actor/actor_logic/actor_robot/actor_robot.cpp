@@ -25,9 +25,10 @@ namespace ngl
 {
 	namespace
 	{
-		constexpr int32_t erobot_bt_tick_interval_sec = 1;
 		constexpr int64_t erobot_kcp_retry_interval_ms = 3 * tools::time::MILLISECOND;
 	}
+
+	nbt_factory<actor_robot> actor_robot::m_factory;
 
 	actor_robot::actor_robot(i16_area aarea, i32_actordataid arobotid, void*) :
 		actor(
@@ -61,18 +62,18 @@ namespace ngl
 
 	void actor_robot::init()
 	{
-		m_bt.init(this);
+		m_bt.init(this, &m_factory);
 		m_bt.load_tree("actor_robot");
 
 		np_timerparm ltimerparm;
-		if (!make_timerparm::make_interval(ltimerparm, erobot_bt_tick_interval_sec))
+		if (!make_timerparm::make_interval(ltimerparm, 1))
 		{
 			log_error()->print("actor_robot::init() make_timerparm failed");
 			return;
 		}
 		set_timer(ltimerparm);
 
-		log_error()->print("[ROBOT:{}] behavior tree initialized, tick interval={}s", id_guid(), erobot_bt_tick_interval_sec);
+		log_error()->print("[ROBOT:{}] behavior tree initialized, tick interval={}s", id_guid(), 1);
 	}
 
 	void actor_robot::loaddb_finish(pbdb::ENUM_DB atype, enum_dbstat astat)
@@ -95,60 +96,66 @@ namespace ngl
 
 		nforward::g2c();
 
-		auto& lfactory = nbt_factory::instance();
-		lfactory.register_condition("HasSession",
-			[](nbt_context& actx, BT::TreeNode&)
+		static std::once_flag lfirst;
+		std::call_once(lfirst, []()
 			{
-				auto lpactor = actx.get_actor<actor_robot>();
-				if (lpactor == nullptr)
-				{
-					return BT::NodeStatus::FAILURE;
-				}
-				return lpactor->m_session > 0 ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
+				m_factory.register_condition("HasSession",
+					[](nbt_context<actor_robot>& actx, BT::TreeNode&)
+					{
+						auto lpactor = actx.get_actor();
+						if (lpactor == nullptr)
+						{
+							return BT::NodeStatus::FAILURE;
+						}
+						return lpactor->m_session > 0 ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
+					}
+				);
+				m_factory.register_condition("HasRoleSync",
+					[](nbt_context<actor_robot>& actx, BT::TreeNode&)
+					{
+						auto lpactor = actx.get_actor();
+						if (lpactor == nullptr)
+						{
+							return BT::NodeStatus::FAILURE;
+						}
+						return lpactor->m_firstsync ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
+					}
+				);
+				m_factory.register_stateful_action("EnsureGatewayKcp",
+					[](nbt_context<actor_robot>& actx, BT::TreeNode&)
+					{
+						auto lpactor = actx.get_actor();
+						if (lpactor == nullptr)
+						{
+							return BT::NodeStatus::FAILURE;
+						}
+						return lpactor->ensure_kcp_connected(pbnet::ENUM_KCP::KCP_GATEWAY);
+					}
+				);
+				m_factory.register_stateful_action("EnsureRoleKcp",
+					[](nbt_context<actor_robot>& actx, BT::TreeNode&)
+					{
+						auto lpactor = actx.get_actor();
+						if (lpactor == nullptr)
+						{
+							return BT::NodeStatus::FAILURE;
+						}
+						return lpactor->ensure_kcp_connected(pbnet::ENUM_KCP::KCP_ROLE);
+					}
+				);
+				// 注册行为树 XML		
+				m_factory.register_tree_file("config/ai/actor_robot.xml");
 			}
 		);
-		lfactory.register_condition("HasRoleSync",
-			[](nbt_context& actx, BT::TreeNode&)
-			{
-				auto lpactor = actx.get_actor<actor_robot>();
-				if (lpactor == nullptr)
-				{
-					return BT::NodeStatus::FAILURE;
-				}
-				return lpactor->m_firstsync ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
-			}
-		);
-		lfactory.register_action("EnsureGatewayKcp",
-			[](nbt_context& actx, BT::TreeNode&)
-			{
-				auto lpactor = actx.get_actor<actor_robot>();
-				if (lpactor == nullptr)
-				{
-					return BT::NodeStatus::FAILURE;
-				}
-				return lpactor->ensure_kcp_connected(pbnet::ENUM_KCP::KCP_GATEWAY);
-			}
-		);
-		lfactory.register_action("EnsureRoleKcp",
-			[](nbt_context& actx, BT::TreeNode&)
-			{
-				auto lpactor = actx.get_actor<actor_robot>();
-				if (lpactor == nullptr)
-				{
-					return BT::NodeStatus::FAILURE;
-				}
-				return lpactor->ensure_kcp_connected(pbnet::ENUM_KCP::KCP_ROLE);
-			}
-		);
-		// 注册行为树 XML		
-		lfactory.register_tree_file("config/ai/actor_robot.xml");
+		
+		
 	}
 
-	bool actor_robot::is_kcp_connected(pbnet::ENUM_KCP akcpenum)
+	nbt_status actor_robot::is_kcp_connected(pbnet::ENUM_KCP akcpenum)
 	{
 		if (m_robot == nullptr)
 		{
-			return false;
+			return BT::NodeStatus::FAILURE;
 		}
 
 		i32_serverid lserverid = 0;
@@ -161,46 +168,30 @@ namespace ngl
 			lserverid = m_robot->m_gameid;
 			break;
 		default:
-			return false;
+			return BT::NodeStatus::FAILURE;
 		}
 		if (lserverid <= 0)
 		{
-			return false;
+			return BT::NodeStatus::FAILURE;
 		}
 
 		auto luport = kcp_index(lserverid, akcpenum);
 		if (!luport.has_value())
 		{
-			return false;
+			return BT::NodeStatus::FAILURE;
 		}
 
 		auto lpukcp = nkcp::instance().kcp(*luport);
 		if (lpukcp == nullptr)
 		{
-			return false;
+			return BT::NodeStatus::FAILURE;
 		}
-		return lpukcp->find_session(id_guid()) != -1;
+		return (lpukcp->find_session(id_guid()) != -1? BT::NodeStatus::SUCCESS: BT::NodeStatus::FAILURE);
 	}
 
 	nbt_status actor_robot::ensure_kcp_connected(pbnet::ENUM_KCP akcpenum)
 	{
-		bool* lrequested = nullptr;
-		int64_t* lrequestms = nullptr;
-		switch (akcpenum)
-		{
-		case pbnet::ENUM_KCP::KCP_GATEWAY:
-			lrequested = &m_gateway_kcp_requested;
-			lrequestms = &m_gateway_kcp_request_ms;
-			break;
-		case pbnet::ENUM_KCP::KCP_ROLE:
-			lrequested = &m_role_kcp_requested;
-			lrequestms = &m_role_kcp_request_ms;
-			break;
-		default:
-			return BT::NodeStatus::FAILURE;
-		}
-
-		if (is_kcp_connected(akcpenum))
+		if (is_kcp_connected(akcpenum) == BT::NodeStatus::SUCCESS)
 		{
 			return BT::NodeStatus::SUCCESS;
 		}
@@ -208,17 +199,8 @@ namespace ngl
 		{
 			return BT::NodeStatus::FAILURE;
 		}
-
-		const int64_t lnow = tools::time_wheel::getms();
-		if (*lrequested && lnow - *lrequestms < erobot_kcp_retry_interval_ms)
-		{
-			return BT::NodeStatus::RUNNING;
-		}
-
 		ukcp_connect(akcpenum);
-		*lrequested = true;
-		*lrequestms = lnow;
-		return BT::NodeStatus::RUNNING;
+		return BT::NodeStatus::SUCCESS;
 	}
 
 	void actor_robot::ukcp_connect(pbnet::ENUM_KCP akcpenum)
@@ -253,8 +235,11 @@ namespace ngl
 
 	bool actor_robot::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
-		nbt_status lstatus = m_bt.tick();
-		log_error()->print("[ROBOT:{}] tick result={}", id_guid(), BT::toStr(lstatus));
+		if (m_status != BT::NodeStatus::SUCCESS)
+		{
+			m_status = m_bt.tick();
+			log_error()->print("[ROBOT:{}] tick result={}", id_guid(), BT::toStr(m_status));
+		}
 		return true;
 	}
 }//namespace ngl

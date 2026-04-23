@@ -13,7 +13,8 @@ namespace ngl
 		actor_testai(const actor_testai&) = delete;
 		actor_testai& operator=(const actor_testai&) = delete;
 
-		nbt_context m_bt;
+		static nbt_factory<actor_testai>	m_factory;
+		nbt_context<actor_testai>			m_bt;
 		int32_t m_patrol_index = 0;
 		int32_t m_hp = 100;
 	public:

@@ -1,5 +1,8 @@
 #include "actor/actor_logic/actor_testai/actor_testai.h"
 #include "actor/actor_base/core/nregister.h"
+#include "tools/log/nactor_logitem.h"
+#include "tools/log/nlog.h"
+
 
 #include <random>
 
@@ -22,6 +25,9 @@ namespace ngl
 			return ldist(rng()) <= apercent;
 		}
 	}
+
+
+	nbt_factory<actor_testai> actor_testai::m_factory;
 
 	actor_testai::actor_testai(i16_area aarea, i32_actordataid aid) :
 		actor(
@@ -50,7 +56,7 @@ namespace ngl
 
 	void actor_testai::init()
 	{
-		m_bt.init(this);
+		m_bt.init(this, &m_factory);
 		m_bt.load_tree("actor_testai");
 		m_bt.set<int32_t>("patrol_index", 0);
 		m_bt.set<int32_t>("hp", m_hp);
@@ -79,78 +85,81 @@ namespace ngl
 	{
 		actor::register_timer<actor_testai>(&actor_testai::timer_handle);
 
-		auto& lfactory = nbt_factory::instance();
-
-		// condition: 30% 概率发现敌人
-		lfactory.register_condition("CheckEnemy",
-			[](nbt_context& actx, BT::TreeNode&) -> nbt_status
+		static std::once_flag lfirst;
+		std::call_once(lfirst, []()
 			{
-				auto* lactor = actx.get_actor<actor_testai>();
-				if (lactor == nullptr)
-				{
-					return BT::NodeStatus::FAILURE;
-				}
-				bool lfound = random_chance(30);
-				if (lfound)
-				{
-					log_error()->print("[TESTAI:{}] detected enemy nearby!", lactor->id_guid());
-				}
-				return lfound ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
-			});
+				// condition: 30% 概率发现敌人
+				m_factory.register_condition("CheckEnemy",
+					[](nbt_context<actor_testai>& actx, BT::TreeNode&) -> nbt_status
+					{
+						auto* lactor = actx.get_actor();
+						if (lactor == nullptr)
+						{
+							return BT::NodeStatus::FAILURE;
+						}
+						bool lfound = random_chance(30);
+						if (lfound)
+						{
+							log_error()->print("[TESTAI:{}] detected enemy nearby!", lactor->id_guid());
+						}
+						return lfound ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
+					});
 
-		// action: 攻击
-		lfactory.register_action("Attack",
-			[](nbt_context& actx, BT::TreeNode&) -> nbt_status
-			{
-				auto* lactor = actx.get_actor<actor_testai>();
-				if (lactor == nullptr)
-				{
-					return BT::NodeStatus::FAILURE;
-				}
-				int32_t ldamage = std::uniform_int_distribution<int32_t>(10, 30)(rng());
-				log_error()->print("[TESTAI:{}] attacking enemy! damage={}", lactor->id_guid(), ldamage);
-				return BT::NodeStatus::SUCCESS;
-			});
+				// action: 攻击
+				m_factory.register_action("Attack",
+					[](nbt_context<actor_testai>& actx, BT::TreeNode&) -> nbt_status
+					{
+						auto* lactor = actx.get_actor();
+						if (lactor == nullptr)
+						{
+							return BT::NodeStatus::FAILURE;
+						}
+						int32_t ldamage = std::uniform_int_distribution<int32_t>(10, 30)(rng());
+						log_error()->print("[TESTAI:{}] attacking enemy! damage={}", lactor->id_guid(), ldamage);
+						return BT::NodeStatus::SUCCESS;
+					});
 
-		// condition: 检查是否有巡逻点
-		lfactory.register_condition("CheckPatrolPoint",
-			[](nbt_context& actx, BT::TreeNode&) -> nbt_status
-			{
-				int32_t lidx = actx.get<int32_t>("patrol_index");
-				return lidx < etestai_patrol_max ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
-			});
+				// condition: 检查是否有巡逻点
+				m_factory.register_condition("CheckPatrolPoint",
+					[](nbt_context<actor_testai>& actx, BT::TreeNode&) -> nbt_status
+					{
+						int32_t lidx = actx.get<int32_t>("patrol_index");
+						return lidx < etestai_patrol_max ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
+					});
 
-		// action: 巡逻
-		lfactory.register_action("Patrol",
-			[](nbt_context& actx, BT::TreeNode&) -> nbt_status
-			{
-				auto* lactor = actx.get_actor<actor_testai>();
-				if (lactor == nullptr)
-				{
-					return BT::NodeStatus::FAILURE;
-				}
-				int32_t lidx = actx.get<int32_t>("patrol_index");
-				lidx = (lidx + 1) % etestai_patrol_max;
-				actx.set<int32_t>("patrol_index", lidx);
-				log_error()->print("[TESTAI:{}] patrolling to point {}/{}", lactor->id_guid(), lidx, etestai_patrol_max);
-				return BT::NodeStatus::SUCCESS;
-			});
+				// action: 巡逻
+				m_factory.register_action("Patrol",
+					[](nbt_context<actor_testai>& actx, BT::TreeNode&) -> nbt_status
+					{
+						auto* lactor = actx.get_actor();
+						if (lactor == nullptr)
+						{
+							return BT::NodeStatus::FAILURE;
+						}
+						int32_t lidx = actx.get<int32_t>("patrol_index");
+						lidx = (lidx + 1) % etestai_patrol_max;
+						actx.set<int32_t>("patrol_index", lidx);
+						log_error()->print("[TESTAI:{}] patrolling to point {}/{}", lactor->id_guid(), lidx, etestai_patrol_max);
+						return BT::NodeStatus::SUCCESS;
+					});
 
-		// action: 待机
-		lfactory.register_action("Idle",
-			[](nbt_context& actx, BT::TreeNode&) -> nbt_status
-			{
-				auto* lactor = actx.get_actor<actor_testai>();
-				if (lactor == nullptr)
-				{
-					return BT::NodeStatus::FAILURE;
-				}
-				log_error()->print("[TESTAI:{}] idle... waiting", lactor->id_guid());
-				return BT::NodeStatus::SUCCESS;
-			});
+				// action: 待机
+				m_factory.register_action("Idle",
+					[](nbt_context<actor_testai>& actx, BT::TreeNode&) -> nbt_status
+					{
+						auto* lactor = actx.get_actor();
+						if (lactor == nullptr)
+						{
+							return BT::NodeStatus::FAILURE;
+						}
+						log_error()->print("[TESTAI:{}] idle... waiting", lactor->id_guid());
+						return BT::NodeStatus::SUCCESS;
+					});
 
-		// 注册行为树 XML		
-		lfactory.register_tree_file("config/ai/actor_testai.xml");
+				// 注册行为树 XML		
+				m_factory.register_tree_file("config/ai/actor_testai.xml");
+			}
+		);
 	}
 
 	bool actor_testai::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)

@@ -94,13 +94,11 @@ namespace ngl
 	{
 		// ----- Data Begin -----
 		pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE	m_data;
-		nbt_context								m_bt;
-		bool									m_gateway_kcp_requested = false;
-		bool									m_role_kcp_requested = false;
-		int64_t									m_gateway_kcp_request_ms = 0;
-		int64_t									m_role_kcp_request_ms = 0;
+		static nbt_factory<actor_robot>			m_factory;
+		nbt_context<actor_robot>				m_bt;
+		nbt_status								m_status = BT::NodeStatus::FAILURE;
 		// ----- Data End   -----
-		bool is_kcp_connected(pbnet::ENUM_KCP akcpenum);
+		nbt_status is_kcp_connected(pbnet::ENUM_KCP akcpenum);
 		nbt_status ensure_kcp_connected(pbnet::ENUM_KCP akcpenum);
 	public:
 		i32_session								m_session = 0;

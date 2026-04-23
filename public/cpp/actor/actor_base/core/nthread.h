@@ -32,7 +32,7 @@
 
 namespace ngl
 {
-	class nthread :public std::enable_shared_from_this<nthread>
+	class nthread
 	{
 		nthread() = delete;
 		nthread(const nthread&) = delete;

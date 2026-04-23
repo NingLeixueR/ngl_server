@@ -90,7 +90,7 @@ namespace ngl
 
 			// Return both the actor and this worker to actor_manage so it can decide
 			// whether the actor should be rescheduled immediately.
-			actor_manage::instance().push(lpactor, shared_from_this(), lready);
+			actor_manage::instance().push(lpactor, this, lready);
 			lpactor = nullptr;
 		}
 	}
