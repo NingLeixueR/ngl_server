@@ -19,6 +19,7 @@ class NglServerConan(ConanFile):
     def requirements(self):
         self.requires("boost/1.86.0")
         self.requires("behaviortree.cpp/4.9.0")
+        self.requires("tinyxml2/11.0.0")
         self.requires("lua/5.4.6")
         self.requires("protobuf/3.21.12")
         self.requires("libcurl/8.9.1")

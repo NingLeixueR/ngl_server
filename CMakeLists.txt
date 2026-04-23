@@ -64,8 +64,10 @@ target_include_directories(ngl_build_options SYSTEM INTERFACE
 	${CMAKE_SOURCE_DIR}/public/cpp/third_party
 	${CMAKE_SOURCE_DIR}/public/cpp/third_party/kcp
 	${CMAKE_SOURCE_DIR}/public/cpp/third_party/utf8cpp
-	${CMAKE_SOURCE_DIR}/public/cpp/third_party/tinyxml2
 )
+# tinyxml2 由 conan (behaviortree.cpp 传递依赖) 提供，不再使用 third_party 本地副本
+find_package(tinyxml2 REQUIRED)
+target_link_libraries(ngl_build_options INTERFACE tinyxml2::tinyxml2)
 target_compile_definitions(ngl_build_options INTERFACE
 	_WEBSOCKETPP_CPP11_TYPE_TRAITS_
 	USE_BOOST_INTERPROCESS
