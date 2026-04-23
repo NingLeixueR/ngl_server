@@ -600,7 +600,7 @@ namespace ngl
 	}
 
 	// Spin-wait until every worker has been returned to the pool, then freeze
-	// dispatch. pop_free_hreads() checks m_suspend and will stop handing out
+	// dispatch. pop_workthreads() checks m_suspend and will stop handing out
 	// workers once the flag is set.
 	void actor_manage::statrt_suspend_thread()
 	{
@@ -619,7 +619,7 @@ namespace ngl
 	}
 
 	// Clear the suspend flag, restore the pool to its initial state, and wake
-	// all dispatchers that may be blocked inside pop_free_hreads().
+	// all dispatchers that may be blocked inside pop_workthreads().
 	void actor_manage::finish_suspend_thread()
 	{
 		lock_write(m_mutex);
