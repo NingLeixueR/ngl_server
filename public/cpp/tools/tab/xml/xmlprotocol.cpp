@@ -58,13 +58,13 @@ namespace ngl
 		read("./config/example_protocol.xml");
 	}
 
-	int32_t xmlprotocol::protocol(const std::string& aname)
+	std::optional<int32_t> xmlprotocol::protocol(const std::string& aname)
 	{
 		std::map<std::string, int32_t>& lmap = m_protocol;
 		auto itor = lmap.find(aname);
 		if (itor == lmap.end())
 		{
-			return -1;
+			return std::nullopt;
 		}
 		return itor->second;
 	}

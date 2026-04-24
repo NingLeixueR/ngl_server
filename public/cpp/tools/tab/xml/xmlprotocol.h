@@ -20,6 +20,7 @@
 #include "tools/type.h"
 
 #include <functional>
+#include <optional>
 #include <string>
 #include <map>
 
@@ -50,7 +51,7 @@ namespace ngl
 		static void load();
 
 		// Looks up a protocol number by name.
-		static int32_t protocol(const std::string& aname);
+		static std::optional<int32_t> protocol(const std::string& aname);
 
 		// Allocates a runtime-only protocol id outside the configured XML set.
 		static int32_t free_protocol();

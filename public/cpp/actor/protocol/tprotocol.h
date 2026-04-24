@@ -152,14 +152,14 @@ namespace ngl
 		template <typename T>
 		static bool init_protobufs()
 		{
-			i32_protocolnum lprotocol = xmlprotocol::protocol(tools::type_name<T>());
-			if (lprotocol == -1)
+			auto lprotocol = xmlprotocol::protocol(tools::type_name<T>());
+			if (!lprotocol.has_value())
 			{
 				return false;
 			}
 			info& linfo = m_keyval[tools::nhash::code<T>()];
 			linfo.m_name = tools::type_name<T>();
-			linfo.m_protocol = lprotocol;
+			linfo.m_protocol = *lprotocol;
 			m_protocol[linfo.m_protocol] = &linfo;
 			m_nameprotocol[linfo.m_name] = &linfo;
 			return true;

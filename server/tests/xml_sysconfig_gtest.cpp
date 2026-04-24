@@ -176,7 +176,7 @@ TEST(XmlProtocolEdgeTest, LoadSkipsMalformedProtocolFilesWithoutCrash)
 	{
 		ngl_test_support::scoped_path lpath(ldir);
 		ngl::xmlprotocol::load();
-		EXPECT_EQ(ngl::xmlprotocol::protocol("missing_proto"), -1);
+		EXPECT_EQ(ngl::xmlprotocol::protocol("missing_proto"), std::nullopt);
 	}
 
 	ngl::xmlprotocol::load();
