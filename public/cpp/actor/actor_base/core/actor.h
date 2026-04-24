@@ -30,11 +30,11 @@ namespace ngl
 	struct actorparm
 	{
 		actorparmbase	m_parm;							// Base identity plus DB/script options owned by actor_base.
-		int32_t			m_weight	= 0x7fffffff;	// Maximum number of normal-priority messages per scheduler slice.
-		int32_t			m_timeout	= 0x7fffffff;	// Soft time budget for one actor_handle() batch in milliseconds.
-		bool			m_broadcast	= false;		// Enable participation in the shared periodic broadcast tick.
-		int32_t			m_normalwarn = 1024;			// Normal queue backlog warning threshold; 0 disables, < 0 is invalid.
-		int32_t			m_highwarn = 1024;				// High queue backlog warning threshold; 0 disables, < 0 is invalid.
+		int32_t			m_weight		= 0x7fffffff;	// Maximum number of normal-priority messages per scheduler slice.
+		int32_t			m_timeout		= 0x7fffffff;	// Soft time budget for one actor_handle() batch in milliseconds.
+		bool			m_broadcast		= false;		// Enable participation in the shared periodic broadcast tick.
+		int32_t			m_normalwarn	= 1024;			// Normal queue backlog warning threshold; 0 disables, < 0 is invalid.
+		int32_t			m_highwarn		= 1024;			// High queue backlog warning threshold; 0 disables, < 0 is invalid.
 	};
 
 	template <typename T>
@@ -49,29 +49,28 @@ namespace ngl
 		// All fields are only accessed under the actor's m_mutex write lock.
 		struct queue_warn
 		{
-			bool			m_hight = false;				// true = high-priority queue, false = normal queue.
-			time_t			m_lastms = 0;					// Timestamp (ms) of the last emitted warning; 0 means no warning yet.
-			int32_t			m_skipcnt = 0;					// Warnings suppressed by rate-limiting since the last emission.
-			int32_t			m_cnt = 0;						// Current number of messages sitting in this queue.
-			int32_t			m_warncnt = 1024;				// Overflow threshold; 0 disables warnings.
+			bool		m_hight		= false;			// true = high-priority queue, false = normal queue.
+			time_t		m_lastms	= 0;				// Timestamp (ms) of the last emitted warning; 0 means no warning yet.
+			int32_t		m_skipcnt	= 0;				// Warnings suppressed by rate-limiting since the last emission.
+			int32_t		m_cnt		= 0;				// Current number of messages sitting in this queue.
+			int32_t		m_warncnt	= 1024;				// Overflow threshold; 0 disables warnings.
 
 			// Check whether a queue-overflow warning should fire now.
 			// On true: snapshots the current state into awarn (for lock-free logging)
 			//          and resets the suppression counter and timestamp.
 			// On false: either the queue is below threshold or the rate-limit window has not elapsed.
-			bool iswarn(queue_warn& awarn, int32_t awarngap)
+			bool iswarn(queue_warn& awarn, time_t anow, int32_t awarngap)
 			{
 				if (m_warncnt > 0 && m_cnt > m_warncnt)
 				{
-					const time_t lnow = tools::time::gettimems();
-					if (m_lastms != 0 && (lnow - m_lastms) < awarngap)
+					if (m_lastms != 0 && (anow - m_lastms) < awarngap)
 					{
 						++m_skipcnt;
 						return false;
 					}
 					awarn = *this;
 					m_skipcnt = 0;
-					m_lastms = lnow;
+					m_lastms = anow;
 					return true;
 				}
 				return false;
@@ -193,7 +192,8 @@ namespace ngl
 		// Return true when the priority queue is empty.
 		bool high_empty() final;
 
-		int32_t hight_value();
+		std::optional<int32_t> hight_value();
+
 		// Enqueue one incoming task into the appropriate priority queue.
 		bool push(handle_pram& apram) final;
 
@@ -215,6 +215,7 @@ namespace ngl
 
 		// Called from the shared process-wide broadcast event after DB state has been flushed.
 		virtual void broadcast() {}
+
 		// Internal entry point for the synthetic broadcast message.
 		bool handle_broadcast(const message<np_actor_broadcast>& adata);
 		

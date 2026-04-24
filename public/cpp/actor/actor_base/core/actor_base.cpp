@@ -40,7 +40,7 @@ namespace ngl
 		return true;
 	}
 
-	int32_t nready::hightlevel_ready()
+	std::optional<int32_t> nready::hightlevel_ready()
 	{
 		for (auto& [lkey, lvec] : m_ready)
 		{
@@ -52,7 +52,7 @@ namespace ngl
 				}
 			}
 		}
-		return -1;
+		return std::nullopt;
 	}
 
 	int actor_base::m_broadcast = 10 * tools::time::MILLISECOND;

@@ -96,7 +96,7 @@ namespace ngl
 		// Return true when the requested readiness bits are satisfied.
 		bool is_ready();
 
-		int32_t hightlevel_ready();
+		std::optional<int32_t> hightlevel_ready();
 
 		// Register a readiness predicate for a predefined readiness bit.
 		template <typename ...ARGS>
@@ -162,7 +162,7 @@ namespace ngl
 	class actor_base
 	{
 		nguid										m_guid = nguid::make();			// Immutable actor identity.
-		std::unique_ptr<nmanage_dbclient>		m_dbclient = nullptr;			// Optional DB component manager.
+		std::unique_ptr<nmanage_dbclient>			m_dbclient = nullptr;			// Optional DB component manager.
 		bool										m_isload = false;				// Whether this actor participates in DB loading.
 		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;					// Registered DB-backed subcomponents.
 
@@ -172,10 +172,10 @@ namespace ngl
 		bool										m_isbroadcast = false;			// Whether this actor receives broadcast ticks.
 				
 		nready										m_ready;						// Readiness gate collection.
-		nscript_manage::script_ptr				m_script = nullptr;				// Backend-neutral script runtime handle, if enabled.
+		nscript_manage::script_ptr					m_script = nullptr;				// Backend-neutral script runtime handle, if enabled.
 		enscript									m_enscript = enscript_none;		// Active scripting backend.
 
-		std::map<i32_serverid, kcpport>				m_kcpindex;					// Cached KCP routing metadata by server.
+		std::map<i32_serverid, kcpport>				m_kcpindex;						// Cached KCP routing metadata by server.
 	public:
 		explicit actor_base(const actorparmbase& aparm);
 

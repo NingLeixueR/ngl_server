@@ -78,8 +78,8 @@ namespace ngl
 	bool actor::list_empty()
 	{
 		lock_read(m_mutex);
-		int32_t lhight = ready().hightlevel_ready();
-		if(lhight == -1)
+		auto lhight = ready().hightlevel_ready();
+		if(!lhight.has_value())
 		{
 			return m_list.empty() && m_hightlist.empty();
 		}
@@ -91,7 +91,7 @@ namespace ngl
 			}
 			else
 			{
-				if (m_hightlist.begin()->first < lhight)
+				if (m_hightlist.begin()->first < *lhight)
 				{// Non-empty: priority below threshold, ready to run.
 					return false;
 				}
@@ -121,40 +121,41 @@ namespace ngl
 		m_stat = astat;
 	}
 
-	int32_t actor::hight_value()
+	std::optional<int32_t> actor::hight_value()
 	{
 		if (m_hightlist.empty())
 		{
-			return -1;
+			return std::nullopt;
 		}
 		return m_hightlist.begin()->first;
 	}
 
 	bool actor::push(handle_pram& apram)
 	{
-		const int32_t lhigh = tprotocol::highvalue(apram.m_enum);
+		auto lhigh = tprotocol::highvalue(apram.m_enum);
 		bool lret = false;
 		bool lsendmail = false;
 		queue_warn lqwarn;
+		const time_t lnow = tools::time::gettimems();
 		{
 			lock_write(m_mutex);
-			if (lhigh <= 0)
+			if (lhigh.has_value() && *lhigh > 0)
+			{
+				// High-priority: insert into the bucket for this priority level.
+				// A newly arrived priority lower than the current head may advance readiness.
+				auto loldhigh = hight_value();
+				m_hightlist[*lhigh].emplace_back(apram);
+				++m_highstat.m_cnt;
+				lret = !loldhigh.has_value() || *lhigh < loldhigh;
+				lsendmail = m_highstat.iswarn(lqwarn, lnow, e_warngap);
+			}
+			else
 			{
 				// Normal-priority: append to FIFO tail and bump the depth counter.
 				m_list.emplace_back(apram);
 				++m_normalstat.m_cnt;
 				lret = ready().is_ready();
-				lsendmail = m_normalstat.iswarn(lqwarn, e_warngap);
-			}
-			else
-			{
-				// High-priority: insert into the bucket for this priority level.
-				// A newly arrived priority lower than the current head may advance readiness.
-				const int32_t loldhigh = hight_value();
-				m_hightlist[lhigh].emplace_back(apram);
-				++m_highstat.m_cnt;
-				lret = loldhigh == -1 || lhigh < loldhigh;
-				lsendmail = m_highstat.iswarn(lqwarn, e_warngap);
+				lsendmail = m_normalstat.iswarn(lqwarn, lnow, e_warngap);
 			}
 		}
 
@@ -207,14 +208,14 @@ namespace ngl
 			m_highstat.m_cnt = 0;
 		}
 
-		int32_t lvalue = ready().hightlevel_ready();
+		auto lvalue = ready().hightlevel_ready();
 
 		if (!localhightlist.empty())
 		{
 			for(auto itor = localhightlist.begin();itor != localhightlist.end();)
 			{
 				// Dispatch buckets whose priority is more urgent than the readiness gate.
-				if (lvalue == -1 || lvalue > itor->first)
+				if(!lvalue.has_value() || *lvalue > itor->first)
 				{
 					for (auto& lharm : itor->second)
 					{
@@ -251,10 +252,14 @@ namespace ngl
 			m_list.swap(locallist);
 			m_normalstat.m_cnt = 0;
 		}
+		
 		auto llistcount = (int32_t)locallist.size();
 		if (m_weight < llistcount || llistcount >= 0x7F)
 		{
-			log_error()->print("actor::actor_handle({}) {}:[weight:{}/count:{}]", athreadid, nguid(id_guid()), m_weight, locallist.size());
+			if (type() != ACTOR_LOG)
+			{
+				log_error()->print("actor::actor_handle({}) {}:[weight:{}/count:{}]", athreadid, nguid(id_guid()), m_weight, locallist.size());
+			}
 		}
 		const time_t lbeg = tools::time::gettimems();
 		int32_t lweight = m_weight;
