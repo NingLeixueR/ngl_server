@@ -42,7 +42,7 @@ namespace ngl
 		ptractor			m_actor = nullptr;		// Actor currently borrowed by this worker.
 		bool				m_isactivity = false;	// Legacy activity flag preserved for diagnostics/API compatibility.
 		std::shared_mutex	m_mutex;				// Protects the current actor pointer and activity flag.
-		ngl::tools::sem			m_sem;					// Wakes the worker when a new actor is assigned.
+		ngl::tools::sem		m_sem;					// Wakes the worker when a new actor is assigned.
 		std::thread			m_thread;				// Detached worker thread owned for process lifetime.
 
 		void run();
