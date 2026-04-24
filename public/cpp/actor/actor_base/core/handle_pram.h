@@ -293,10 +293,9 @@ namespace ngl
 		std::vector<i16_area>& lareas = ldata->m_data.m_area;
 		std::set<i32_serverid> lgateways;
 		const std::size_t lcount = luid.size() < lareas.size() ? luid.size() : lareas.size();
-		for (std::size_t li = 0; li < lcount; ++li)
+		for (std::size_t i = 0; i < lcount; ++i)
 		{
-			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lareas[li], luid[li]);
-			i32_serverid lserverid = handle_pram::gatewayid(lroleactor);
+			i32_serverid lserverid = handle_pram::gatewayid(nguid::make(ACTOR_ROLE, lareas[i], luid[i]));
 			if (lserverid > 0)
 			{
 				lgateways.insert(lserverid);
