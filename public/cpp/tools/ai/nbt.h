@@ -14,6 +14,8 @@
 #pragma once
 
 #include <behaviortree_cpp/bt_factory.h>
+#include <behaviortree_cpp/decorator_node.h>
+#include <behaviortree_cpp/control_node.h>
 #include <unordered_map>
 #include <functional>
 #include <memory>
@@ -30,6 +32,10 @@ namespace ngl
 
 	template <typename TACTOR>
 	using nbt_node_callback = std::function<nbt_status(nbt_context<TACTOR>&, BT::TreeNode&)>;
+
+	// Decorator callback receives the child's tick result in addition to context and node.
+	template <typename TACTOR>
+	using nbt_decorator_callback = std::function<nbt_status(nbt_context<TACTOR>&, nbt_status, BT::TreeNode&)>;
 
 	// Shared behavior tree factory (singleton per actor type).
 	// Node types are registered once at startup; all actor instances share the same factory.
@@ -73,6 +79,34 @@ namespace ngl
 
 		// Register a condition node.
 		void register_condition(
+			const std::string& aname,
+			nbt_node_callback<TACTOR> afun,
+			const BT::PortsList& aports = {}
+		);
+
+		// Register a decorator node (single child, transforms/gates child result).
+		void register_decorator(
+			const std::string& aname,
+			nbt_decorator_callback<TACTOR> afun,
+			const BT::PortsList& aports = {}
+		);
+
+		// Register a control node (multiple children, determines tick order and flow).
+		void register_control(
+			const std::string& aname,
+			nbt_node_callback<TACTOR> afun,
+			const BT::PortsList& aports = {}
+		);
+
+		// Register a coroutine action node (can yield via setStatusRunningAndYield()).
+		void register_coro_action(
+			const std::string& aname,
+			nbt_node_callback<TACTOR> afun,
+			const BT::PortsList& aports = {}
+		);
+
+		// Register a threaded action node (runs tick() on a separate thread).
+		void register_threaded_action(
 			const std::string& aname,
 			nbt_node_callback<TACTOR> afun,
 			const BT::PortsList& aports = {}
@@ -220,8 +254,6 @@ namespace ngl
 		}
 	};
 
-	
-
 	template <typename TACTOR>
 	class nbt_action_node final : public BT::SyncActionNode
 	{
@@ -240,8 +272,10 @@ namespace ngl
 		}
 	};
 
-	// Stateful action node wrapper (supports RUNNING status).
-	// Used for async operations such as waiting on KCP connections.
+	// Stateful action node wrapper (state-machine lifecycle).
+	// Transitions from IDLE → onStart(); if RUNNING is returned, subsequent ticks
+	// call onRunning(). When halted externally, onHalted() is invoked for cleanup.
+	// Preferred for request-reply patterns where the action must wait across ticks.
 	template <typename TACTOR>
 	class nbt_stateful_action_node final : public BT::StatefulActionNode
 	{
@@ -285,6 +319,94 @@ namespace ngl
 		}
 	};
 
+	// Decorator node wrapper (exactly one child).
+	// Ticks the child first, then passes the child's result to the callback.
+	// The callback decides the final status — e.g. inverting SUCCESS/FAILURE,
+	// repeating the child, or adding timeout logic.
+	template <typename TACTOR>
+	class nbt_decorator_node final : public BT::DecoratorNode
+	{
+		nbt_decorator_callback<TACTOR> m_fun;
+	public:
+		nbt_decorator_node(const std::string& aname, const BT::NodeConfig& aconfig,
+			nbt_decorator_callback<TACTOR> afun)
+			: BT::DecoratorNode(aname, aconfig)
+			, m_fun(std::move(afun))
+		{}
+
+		nbt_status tick() override
+		{
+			auto child_status = child()->executeTick();
+			auto* lctx = config().blackboard->get<nbt_context<TACTOR>*>(tools::type_name<TACTOR>());
+			return m_fun(*lctx, child_status, *this);
+		}
+	};
+
+	// Control node wrapper (multiple children).
+	// Determines the order and conditions under which children are ticked.
+	// The callback has full access to children() and haltChildren() via the
+	// TreeNode reference, enabling custom flow logic (sequence, fallback, parallel, etc.).
+	template <typename TACTOR>
+	class nbt_control_node final : public BT::ControlNode
+	{
+		nbt_node_callback<TACTOR> m_fun;
+	public:
+		nbt_control_node(const std::string& aname, const BT::NodeConfig& aconfig,
+			nbt_node_callback<TACTOR> afun)
+			: BT::ControlNode(aname, aconfig)
+			, m_fun(std::move(afun))
+		{}
+
+		nbt_status tick() override
+		{
+			auto* lctx = config().blackboard->get<nbt_context<TACTOR>*>(tools::type_name<TACTOR>());
+			return m_fun(*lctx, *this);
+		}
+	};
+
+	// Coroutine action node wrapper.
+	// Allows the callback to suspend mid-execution by calling
+	// setStatusRunningAndYield() on the node, returning RUNNING to the parent.
+	// On the next tick the coroutine resumes where it left off.
+	template <typename TACTOR>
+	class nbt_coro_action_node final : public BT::CoroActionNode
+	{
+		nbt_node_callback<TACTOR> m_fun;
+	public:
+		nbt_coro_action_node(const std::string& aname, const BT::NodeConfig& aconfig,
+			nbt_node_callback<TACTOR> afun)
+			: BT::CoroActionNode(aname, aconfig)
+			, m_fun(std::move(afun))
+		{}
+
+		nbt_status tick() override
+		{
+			auto* lctx = config().blackboard->get<nbt_context<TACTOR>*>(tools::type_name<TACTOR>());
+			return m_fun(*lctx, *this);
+		}
+	};
+
+	// Threaded action node wrapper.
+	// Runs tick() on a dedicated thread. The callback must periodically check
+	// isHaltRequested() on the node and return promptly when true.
+	// Suitable for blocking I/O or CPU-intensive work that should not stall the tree.
+	template <typename TACTOR>
+	class nbt_threaded_action_node final : public BT::ThreadedAction
+	{
+		nbt_node_callback<TACTOR> m_fun;
+	public:
+		nbt_threaded_action_node(const std::string& aname, const BT::NodeConfig& aconfig,
+			nbt_node_callback<TACTOR> afun)
+			: BT::ThreadedAction(aname, aconfig)
+			, m_fun(std::move(afun))
+		{}
+
+		nbt_status tick() override
+		{
+			auto* lctx = config().blackboard->get<nbt_context<TACTOR>*>(tools::type_name<TACTOR>());
+			return m_fun(*lctx, *this);
+		}
+	};
 
 	template <typename TACTOR>
 	void nbt_factory<TACTOR>::register_action(
@@ -342,6 +464,86 @@ namespace ngl
 
 		m_factory->registerBuilder(
 			BT::TreeNodeManifest{ BT::NodeType::CONDITION, aname, aports, {} },
+			lbuilder
+		);
+	}
+
+	template <typename TACTOR>
+	void nbt_factory<TACTOR>::register_decorator(
+		const std::string& aname,
+		nbt_decorator_callback<TACTOR> afun,
+		const BT::PortsList& aports /*= {}*/
+	)
+	{
+		BT::NodeBuilder lbuilder =
+			[afun = std::move(afun)](const std::string& ainstance_name, const BT::NodeConfig& aconfig)
+			-> std::unique_ptr<BT::TreeNode>
+			{
+				return std::make_unique<nbt_decorator_node<TACTOR>>(ainstance_name, aconfig, afun);
+			};
+
+		m_factory->registerBuilder(
+			BT::TreeNodeManifest{ BT::NodeType::DECORATOR, aname, aports, {} },
+			lbuilder
+		);
+	}
+
+	template <typename TACTOR>
+	void nbt_factory<TACTOR>::register_control(
+		const std::string& aname,
+		nbt_node_callback<TACTOR> afun,
+		const BT::PortsList& aports /*= {}*/
+	)
+	{
+		BT::NodeBuilder lbuilder =
+			[afun = std::move(afun)](const std::string& ainstance_name, const BT::NodeConfig& aconfig)
+			-> std::unique_ptr<BT::TreeNode>
+			{
+				return std::make_unique<nbt_control_node<TACTOR>>(ainstance_name, aconfig, afun);
+			};
+
+		m_factory->registerBuilder(
+			BT::TreeNodeManifest{ BT::NodeType::CONTROL, aname, aports, {} },
+			lbuilder
+		);
+	}
+
+	template <typename TACTOR>
+	void nbt_factory<TACTOR>::register_coro_action(
+		const std::string& aname,
+		nbt_node_callback<TACTOR> afun,
+		const BT::PortsList& aports /*= {}*/
+	)
+	{
+		BT::NodeBuilder lbuilder =
+			[afun = std::move(afun)](const std::string& ainstance_name, const BT::NodeConfig& aconfig)
+			-> std::unique_ptr<BT::TreeNode>
+			{
+				return std::make_unique<nbt_coro_action_node<TACTOR>>(ainstance_name, aconfig, afun);
+			};
+
+		m_factory->registerBuilder(
+			BT::TreeNodeManifest{ BT::NodeType::ACTION, aname, aports, {} },
+			lbuilder
+		);
+	}
+
+	template <typename TACTOR>
+	void nbt_factory<TACTOR>::register_threaded_action(
+		const std::string& aname,
+		nbt_node_callback<TACTOR> afun,
+		const BT::PortsList& aports /*= {}*/
+	)
+	{
+		BT::NodeBuilder lbuilder =
+			[afun = std::move(afun)](const std::string& ainstance_name, const BT::NodeConfig& aconfig)
+			-> std::unique_ptr<BT::TreeNode>
+			{
+				return std::make_unique<nbt_threaded_action_node<TACTOR>>(ainstance_name, aconfig, afun);
+			};
+
+		m_factory->registerBuilder(
+			BT::TreeNodeManifest{ BT::NodeType::ACTION, aname, aports, {} },
 			lbuilder
 		);
 	}
