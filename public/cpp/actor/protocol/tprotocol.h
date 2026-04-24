@@ -23,6 +23,7 @@
 #include "tools/tools.h"
 #include "lua.hpp"
 
+#include <optional>
 #include <array>
 #include <map>
 
@@ -245,12 +246,12 @@ namespace ngl
 		}
 
 		// Return the scheduler privilege level for a protocol id.
-		static int32_t highvalue(i32_protocolnum aprotocol)
+		static std::optional<int32_t> highvalue(i32_protocolnum aprotocol)
 		{
 			info* linfo = get(aprotocol);
 			if (linfo == nullptr)
 			{
-				return -1;
+				return std::nullopt;
 			}
 			return linfo->m_highvalue;
 		}
