@@ -14,6 +14,11 @@ class NglServerConan(ConanFile):
         "behaviortree.cpp/*:enable_groot_interface": False,
         "behaviortree.cpp/*:enable_sqlite_logging": False,
         "behaviortree.cpp/*:with_tools": False,
+        "mimalloc/*:shared": False,
+        "mimalloc/*:secure": False,
+        "mimalloc/*:override": False,
+        "mimalloc/*:guarded": False,
+        "mimalloc/*:win_redirect": False,
     }
 
     def requirements(self):
@@ -27,6 +32,7 @@ class NglServerConan(ConanFile):
         self.requires("hiredis/1.2.0")
         self.requires("libpq/17.7")
         self.requires("rapidjson/1.1.0")
+        self.requires("mimalloc/2.2.4")
 
         if self.settings.os == "Linux":
             self.requires("libuuid/1.0.3")

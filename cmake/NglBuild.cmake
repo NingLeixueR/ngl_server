@@ -2,6 +2,26 @@
 
 include_guard(GLOBAL)
 
+function(ngl_add_mi target_name)
+	if(NOT NGL_ENABLE_MIMALLOC)
+		return()
+	endif()
+
+	if(NOT DEFINED NGL_MI_SRC)
+		message(FATAL_ERROR "NGL_MI_SRC is not configured")
+	endif()
+
+	if(NOT DEFINED NGL_MI_LIB OR NOT TARGET ${NGL_MI_LIB})
+		message(FATAL_ERROR "NGL_MI_LIB is not configured")
+	endif()
+
+	set_source_files_properties(${NGL_MI_SRC} PROPERTIES
+		SKIP_UNITY_BUILD_INCLUSION ON
+	)
+	target_sources(${target_name} PRIVATE ${NGL_MI_SRC})
+	target_link_libraries(${target_name} PRIVATE ${NGL_MI_LIB})
+endfunction()
+
 function(ngl_collect_imported_target_include_dirs out_var)
 	set(result)
 	foreach(target_name IN LISTS ARGN)
