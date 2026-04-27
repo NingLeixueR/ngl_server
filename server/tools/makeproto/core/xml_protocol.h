@@ -353,7 +353,7 @@ public:
         {
             const google::protobuf::Descriptor* messageDescriptor = fileDescriptor->message_type(i);
             std::cout << "name: " << messageDescriptor->name() << std::endl;
-            int32_t lprotocol = ngl::xmlprotocol::protocol(messageDescriptor->name());
+            auto lprotocol = ngl::xmlprotocol::protocol(messageDescriptor->name());
             if (messageDescriptor->name().find("PROBUFF_NET_") != std::string::npos
                 || messageDescriptor->name().find("PROBUFF_GM_") != std::string::npos
                 || messageDescriptor->name().find("PROBUFF_EXAMPLE_") != std::string::npos
@@ -364,7 +364,7 @@ public:
                     {
                         .m_client = 1,
                         .m_name = std::format("{}::{}", lnamespace, messageDescriptor->name()),
-                        .m_number = (lprotocol == -1 ? ngl::xmlprotocol::free_protocol() : lprotocol)
+                        .m_number = (lprotocol.has_value() ? *lprotocol : ngl::xmlprotocol::free_protocol())
                     }
                 );
             }
@@ -399,7 +399,7 @@ public:
         {
             const google::protobuf::Descriptor* messageDescriptor = fileDescriptor->message_type(i);
             std::cout << "name: " << messageDescriptor->name() << std::endl;
-            int32_t lprotocol = ngl::xmlprotocol::protocol(messageDescriptor->name());
+            //auto lprotocol = ngl::xmlprotocol::protocol(messageDescriptor->name());
             if (messageDescriptor->name().find("PROBUFF_NET_") != std::string::npos
                 || messageDescriptor->name().find("PROBUFF_GM_") != std::string::npos
                 || messageDescriptor->name().find("PROBUFF_EXAMPLE_") != std::string::npos
@@ -437,7 +437,7 @@ public:
         {
             const google::protobuf::Descriptor* messageDescriptor = fileDescriptor->message_type(i);
             std::cout << "name: " << messageDescriptor->name() << std::endl;
-            int32_t lprotocol = ngl::xmlprotocol::protocol(messageDescriptor->name());
+            //auto lprotocol = ngl::xmlprotocol::protocol(messageDescriptor->name());
             if (messageDescriptor->name().find("PROBUFF_NET_") != std::string::npos
                 || messageDescriptor->name().find("PROBUFF_GM_") != std::string::npos
                 || messageDescriptor->name().find("PROBUFF_EXAMPLE_") != std::string::npos
