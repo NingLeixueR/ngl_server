@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 26-04-06 22:07:06
+// 创建时间 // 创建时间 26-04-27 11:40:23
 #pragma once
 
 #include "actor/actor_base/core/nactortype.h"
@@ -38,6 +38,7 @@ namespace ngl
 #include "actor/actor_logic/actor_robot/actor_robot.h"
 #include "actor/actor_logic/actor_log/actor_log.h"
 #include "actor/actor_logic/actor_example_guess_number/actor_example_guess_number.h"
+#include "actor/actor_logic/actor_testai/actor_testai.h"
 #include "actor/actor_logic/actor_server/actor_server.h"
 #include "actor/actor_logic/actor_client/actor_client.h"
 #include "actor/actor_logic/actor_login/actor_login.h"
@@ -65,7 +66,6 @@ namespace ngl
 #include "actor/actor_logic/actor_example_manage/actor_example_manage.h"
 #include "actor/actor_logic/actor_testlua/actor_testlua.h"
 #include "actor/actor_logic/actor_testlua2/actor_testlua2.h"
-#include "actor/actor_logic/actor_testai/actor_testai.h"
 namespace ngl
 {
 	class auto_actor_enum
@@ -73,41 +73,40 @@ namespace ngl
 	public:
 		static void fun()
 		{
-			autoactor::func <
-				actor_role
-				, actor_robot
-				, actor_log
-				, actor_example_guess_number
-				, actor_server
-				, actor_client
-				, actor_login
-				, actor_gateway
-				, actor_gateway_c2g
-				, actor_gateway_g2c
-				, actor_create
-				, actor_role_manage
-				, actor_kcp
-				, actor_robot_manage
-				, actor_csvserver
-				, actor_csvclient
-				, actor_notice
-				, actor_gm
-				, actor_gmclient
-				, actor_mail
-				, actor_chat
-				, actor_ranklist
-				, actor_activity_manage
-				, actor_brief
-				, actor_keyvalue
-				, actor_family
-				, actor_friends
-				, actor_example_match
-				, actor_example_manage
-				, actor_testlua
-				, actor_testlua2
-				, actor_testai
-			> ({ ACTOR_ROLE, ACTOR_ROBOT, ACTOR_LOG, ACTOR_EXAMPLE_GUESS_NUMBER, ACTOR_SERVER, ACTOR_CLIENT, ACTOR_LOGIN, ACTOR_GATEWAY, ACTOR_GATEWAY_C2G, ACTOR_GATEWAY_G2C, ACTOR_CREATE, ACTOR_ROLE_MANAGE, ACTOR_KCP, ACTOR_ROBOT_MANAGE, ACTOR_CSVSERVER, ACTOR_CSVCLIENT, ACTOR_NOTICE, ACTOR_GM, ACTOR_GMCLIENT, ACTOR_MAIL, ACTOR_CHAT, ACTOR_RANKLIST, ACTOR_ACTIVITY_MANAGE, ACTOR_BRIEF, ACTOR_KEYVALUE, ACTOR_FAMILY, ACTOR_FRIENDS, ACTOR_EXAMPLE_MATCH, ACTOR_EXAMPLE_MANAGE, ACTOR_TESTLUA, ACTOR_TESTLUA2, ACTOR_TESTAI });
+			autoactor::func<
+			actor_role
+			, actor_robot
+			, actor_log
+			, actor_example_guess_number
+			, actor_testai
+			, actor_server
+			, actor_client
+			, actor_login
+			, actor_gateway
+			, actor_gateway_c2g
+			, actor_gateway_g2c
+			, actor_create
+			, actor_role_manage
+			, actor_kcp
+			, actor_robot_manage
+			, actor_csvserver
+			, actor_csvclient
+			, actor_notice
+			, actor_gm
+			, actor_gmclient
+			, actor_mail
+			, actor_chat
+			, actor_ranklist
+			, actor_activity_manage
+			, actor_brief
+			, actor_keyvalue
+			, actor_family
+			, actor_friends
+			, actor_example_match
+			, actor_example_manage
+			, actor_testlua
+			, actor_testlua2
+		>({ACTOR_ROLE, ACTOR_ROBOT, ACTOR_LOG, ACTOR_EXAMPLE_GUESS_NUMBER, ACTOR_TESTAI, ACTOR_SERVER, ACTOR_CLIENT, ACTOR_LOGIN, ACTOR_GATEWAY, ACTOR_GATEWAY_C2G, ACTOR_GATEWAY_G2C, ACTOR_CREATE, ACTOR_ROLE_MANAGE, ACTOR_KCP, ACTOR_ROBOT_MANAGE, ACTOR_CSVSERVER, ACTOR_CSVCLIENT, ACTOR_NOTICE, ACTOR_GM, ACTOR_GMCLIENT, ACTOR_MAIL, ACTOR_CHAT, ACTOR_RANKLIST, ACTOR_ACTIVITY_MANAGE, ACTOR_BRIEF, ACTOR_KEYVALUE, ACTOR_FAMILY, ACTOR_FRIENDS, ACTOR_EXAMPLE_MATCH, ACTOR_EXAMPLE_MANAGE, ACTOR_TESTLUA, ACTOR_TESTLUA2});
 		}
 	};
-	
 }//namespace ngl
