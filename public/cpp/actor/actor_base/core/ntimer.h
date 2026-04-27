@@ -51,7 +51,7 @@ namespace ngl
 				aparm.m_ms = month_ms(tools::time::gettime(), amonthday, ahour, amin, asec);
 				aparm.m_intervalms = [amonthday, ahour, amin, asec](int64_t ams)
 					{
-						return (int32_t)make_timerparm::month_ms(ams / 1000 + 1, amonthday, ahour, amin, asec);
+						return (int32_t)make_timerparm::month_ms(ams / ngl::tools::time::MILLISECOND + 1, amonthday, ahour, amin, asec);
 					};
 				aparm.m_count = acount;
 				return true;
@@ -66,8 +66,8 @@ namespace ngl
 			if (tools::time::check_week(aweek) && tools::time::check_hour(ahour) && tools::time::check_minute(amin) && tools::time::check_sec(asec))
 			{
 				aparm.m_type = E_ACTOR_TIMER::ET_WEEK;
-				time_t lnow = tools::time::gettime();
-				time_t lfirst = tools::time::getweekday(aweek >= 7 ? 0 : aweek, ahour, amin, asec);
+				time_t lnow = tools::time::gettime();				
+				time_t lfirst = tools::time::getweekday(aweek >= ngl::tools::time::WEEK_DAY ? 0 : aweek, ahour, amin, asec);
 				aparm.m_ms = (lfirst - lnow) * tools::time::MILLISECOND;
 				aparm.m_intervalms = [](int64_t)
 					{
