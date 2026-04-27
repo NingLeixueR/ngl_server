@@ -16,12 +16,12 @@
 
 #include "actor/actor_logic/actor_events/events_logic.h"
 #include "actor/actor_logic/actor_events/events_map.h"
+#include "actor/generated/auto/register_channel_db.h"
 #include "actor/actor_logic/actor_kcp/actor_kcp.h"
 #include "actor/generated/auto/auto_actor_enum.h"
 #include "actor/generated/auto/nprotocol_auto.h"
 #include "actor/generated/auto/nactor_auto.h"
 #include "actor/actor_base/core/nactortype.h"
-#include "actor/generated/auto/nactor_auto.h"
 #include "actor/actor_base/core/actor_db.h"
 #include "actor/actor_base/core/ntimer.h"
 #include "actor/actor_base/core/actor.h"
