@@ -720,12 +720,12 @@ namespace ngl
 	auto NAME = (DATA).get();								\
 	if(NAME == nullptr)										\
 	{														\
-		ngl::tools::no_core_dump();						\
+		ngl::tools::no_core_dump();							\
 	}
 
 #define MODIFIED_DUMP_CONST(NAME, DATA)						\
 	auto NAME = (DATA).getconst();							\
 	if(NAME == nullptr)										\
 	{														\
-		ngl::tools::no_core_dump();						\
+		ngl::tools::no_core_dump();							\
 	}
