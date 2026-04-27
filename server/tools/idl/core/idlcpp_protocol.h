@@ -289,7 +289,7 @@ namespace ngl
 )";
 		int lindex = 200000000;
 		std::map<std::string, idl_file>& lmap = idl::instance().data();
-		bool isdouhao = false;
+		m_stream << "			/*" << (lindex += 2) << "*/" << "np_logitem" << std::endl;
 		for (std::pair<const std::string, idl_file>& item : lmap)
 		{
 			for (const auto& item2 : item.second.m_struct)
@@ -297,15 +297,7 @@ namespace ngl
 				if (item2.name.find("np_") != std::string::npos)
 				{
 					std::cout << item2.name << std::endl;
-					if (isdouhao)
-					{
-						m_stream << "			/*" << (lindex +=2) << "*/, " << item2.name << std::endl;
-					}
-					else
-					{
-						m_stream << "			/*" << (lindex += 2) << "*/" << item2.name << std::endl;
-						isdouhao = true;
-					}
+					m_stream << "			/*" << (lindex += 2) << "*/, " << item2.name << std::endl;
 				}				
 			}
 		}
@@ -314,7 +306,7 @@ namespace ngl
 		m_stream << "		tprotocol::set_customs_index(210000000);" << std::endl;
 		m_stream << "		tprotocol::tp_customs_script<" << std::endl;
 		lindex = 210000000;
-		isdouhao = false;
+		m_stream << std::format("			/*{}*/ mforward<{}>", lindex += 2, "np_logitem") << std::endl;
 		for (std::pair<const std::string, idl_file>& item : lmap)
 		{
 			for (const auto& item2 : item.second.m_struct)
@@ -322,15 +314,7 @@ namespace ngl
 				if (item2.name.find("np_") != std::string::npos)
 				{
 					std::cout << item2.name << std::endl;
-					if (isdouhao)
-					{
-						m_stream << std::format("			/*{}*/, mforward<{}>", lindex += 2, item2.name) << std::endl;
-					}
-					else
-					{
-						m_stream << std::format("			/*{}*/mforward<{}>", lindex += 2, item2.name) << std::endl;
-						isdouhao = true;
-					}
+					m_stream << std::format("			/*{}*/, mforward<{}>", lindex += 2, item2.name) << std::endl;
 				}
 			}
 		}
