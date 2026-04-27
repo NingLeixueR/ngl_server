@@ -58,6 +58,7 @@ class ActionManager
 
         15 => array('name' => '系统操作', 'pid' => 0),
             1501 => array('name' => '关闭Actor', 'pid' => 15, 'page' => 'sys/close_actor_html.php'),
+            1502 => array('name' => 'Socket缓冲池状态', 'pid' => 15, 'page' => 'sys/socket_pool_stats_html.php'),
 
         16 => array('name' => '时间管理', 'pid' => 0),
             1601 => array('name' => '查询时间', 'pid' => 16, 'page' => 'time/get_time_html.php'),

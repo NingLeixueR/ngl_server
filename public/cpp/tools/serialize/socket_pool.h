@@ -19,16 +19,14 @@
 #include "tools/tools/tools_thread.h"
 #include "tools/tools/tools_time.h"
 
-#include <unordered_map>
 #include <algorithm>
 #include <iostream>
 #include <cstdint>
 #include <cstring>
 #include <format>
 #include <atomic>
-#include <thread>
+#include <vector>
 #include <array>
-#include <list>
 #include <new>
 
 namespace ngl
@@ -67,26 +65,23 @@ namespace ngl
 		// Thread-local cache for lock-free fast path
 		struct thread_cache
 		{
-			std::array<std::list<char*>, TCOUNT> m_local_pool;
-			std::array<int32_t, TCOUNT> m_local_count{};
+			std::array<std::vector<char*>, TCOUNT> m_local_pool;
 		};
 
-		std::array<std::list<char*>, TCOUNT>	m_pool;
+		std::array<std::vector<char*>, TCOUNT>	m_pool;
 		std::array<int32_t, TCOUNT>				m_bytes;
 		const std::array<int32_t, TCOUNT>		m_counts;
 		std::shared_mutex						m_mutex;
 		pool_stats								m_stats;
 
-		// Thread-local storage
-		thread_local static thread_cache* tl_cache;
-		std::unordered_map<std::thread::id, std::unique_ptr<thread_cache>> m_thread_caches;
-		std::shared_mutex m_cache_mutex;
+		// Thread-local storage (no map/lock needed — each thread owns its cache directly)
+		thread_local static thread_cache tl_cache;
 
 		enum
 		{
-			enum_block_magic = 0x534F434B,  // 'SOCK'
+			enum_block_magic = 0x534F434B,
 			enum_head_bytes = sizeof(block_head),
-			enum_tl_cache_max = 8,  // Max items per bucket in thread-local cache
+			enum_tl_cache_max = 8,
 		};
 
 		static void write_head(char* abuff, int32_t aindex)
@@ -97,7 +92,10 @@ namespace ngl
 
 		static bool read_head(const char* abuff, block_head& ahead)
 		{
-			if (abuff == nullptr) return false;
+			if (abuff == nullptr)
+			{
+				return false;
+			}
 			memcpy(&ahead, abuff, sizeof(ahead));
 			return ahead.m_magic == enum_block_magic;
 		}
@@ -108,7 +106,10 @@ namespace ngl
 				? m_bytes[aindex] + enum_head_bytes
 				: abytes + enum_head_bytes;
 
-			if (lbytes <= 0) return nullptr;
+			if (lbytes <= 0)
+			{
+				return nullptr;
+			}
 
 			char* lpbuff = new(std::nothrow) char[lbytes];
 			if (lpbuff == nullptr)
@@ -122,7 +123,10 @@ namespace ngl
 
 		void nfree(char* abuff, bool areturn_to_pool = true)
 		{
-			if (abuff == nullptr) return;
+			if (abuff == nullptr)
+			{
+				return;
+			}
 
 			char* lbuff = abuff - enum_head_bytes;
 			block_head lhead;
@@ -145,22 +149,6 @@ namespace ngl
 			}
 		}
 
-		thread_cache* get_thread_cache()
-		{
-			if (tl_cache == nullptr)
-			{
-				auto tid = std::this_thread::get_id();
-				lock_write(m_cache_mutex);
-				auto& cache_ptr = m_thread_caches[tid];
-				if (!cache_ptr)
-				{
-					cache_ptr = std::make_unique<thread_cache>();
-				}
-				tl_cache = cache_ptr.get();
-			}
-			return tl_cache;
-		}
-
 	public:
 		buff_pool(const std::array<int32_t, TCOUNT>& acounts) : m_counts(acounts)
 		{
@@ -168,12 +156,19 @@ namespace ngl
 			m_bytes[0] = TINITBYTES;
 			for (int32_t i = 0; i < TCOUNT; ++i)
 			{
-				if (i != 0) m_bytes[i] = m_bytes[i - 1] * 2;
+				if (i != 0)
+				{
+					m_bytes[i] = m_bytes[i - 1] * 2;
+				}
 
+				m_pool[i].reserve(m_counts[i] * 2);
 				for (int j = 0; j < m_counts[i]; ++j)
 				{
 					char* lbuff = nmalloc(i);
-					if (lbuff != nullptr) m_pool[i].push_back(lbuff);
+					if (lbuff != nullptr)
+					{
+						m_pool[i].push_back(lbuff);
+					}
 				}
 			}
 
@@ -189,7 +184,10 @@ namespace ngl
 
 		char* malloc_private(int32_t abytes)
 		{
-			if (abytes <= 0) return nullptr;
+			if (abytes <= 0)
+			{
+				return nullptr;
+			}
 
 			m_stats.m_alloc_count.fetch_add(1, std::memory_order_relaxed);
 
@@ -202,13 +200,10 @@ namespace ngl
 
 			int32_t lpos = static_cast<int32_t>(itor - m_bytes.begin());
 
-			// Try thread-local cache first
-			thread_cache* cache = get_thread_cache();
-			if (cache && !cache->m_local_pool[lpos].empty())
+			if (!tl_cache.m_local_pool[lpos].empty())
 			{
-				char* ret = cache->m_local_pool[lpos].front();
-				cache->m_local_pool[lpos].pop_front();
-				cache->m_local_count[lpos]--;
+				char* ret = tl_cache.m_local_pool[lpos].back();
+				tl_cache.m_local_pool[lpos].pop_back();
 				m_stats.m_cache_hit.fetch_add(1, std::memory_order_relaxed);
 				return ret;
 			}
@@ -220,8 +215,8 @@ namespace ngl
 				lock_write(m_mutex);
 				if (!m_pool[lpos].empty())
 				{
-					char* ret = m_pool[lpos].front();
-					m_pool[lpos].pop_front();
+					char* ret = m_pool[lpos].back();
+					m_pool[lpos].pop_back();
 					return ret;
 				}
 			}
@@ -231,7 +226,10 @@ namespace ngl
 
 		void free_private(char* abuff)
 		{
-			if (abuff == nullptr) return;
+			if (abuff == nullptr)
+			{
+				return;
+			}
 
 			m_stats.m_free_count.fetch_add(1, std::memory_order_relaxed);
 
@@ -251,12 +249,9 @@ namespace ngl
 				return;
 			}
 
-			// Return to thread-local cache if not full
-			thread_cache* cache = get_thread_cache();
-			if (cache && cache->m_local_count[lindex] < enum_tl_cache_max)
+			if (tl_cache.m_local_pool[lindex].size() < enum_tl_cache_max)
 			{
-				cache->m_local_pool[lindex].push_back(abuff);
-				cache->m_local_count[lindex]++;
+				tl_cache.m_local_pool[lindex].push_back(abuff);
 				return;
 			}
 
@@ -270,11 +265,11 @@ namespace ngl
 			for (int32_t i = 0; i < TCOUNT; ++i)
 			{
 				int32_t lcount = m_counts[i] * 2;
-				std::list<char*>& ls = m_pool[i];
+				std::vector<char*>& ls = m_pool[i];
 				while (ls.size() > static_cast<size_t>(lcount))
 				{
-					nfree(ls.front(), false);
-					ls.pop_front();
+					nfree(ls.back(), false);
+					ls.pop_back();
 				}
 			}
 		}
@@ -284,8 +279,8 @@ namespace ngl
 	};
 
 	template <int TINITBYTES, int TCOUNT>
-	thread_local typename buff_pool<TINITBYTES, TCOUNT>::thread_cache*
-		buff_pool<TINITBYTES, TCOUNT>::tl_cache = nullptr;
+	thread_local typename buff_pool<TINITBYTES, TCOUNT>::thread_cache
+		buff_pool<TINITBYTES, TCOUNT>::tl_cache{};
 
 	// Optimized bucket sizes for typical socket scenarios
 	enum
@@ -324,6 +319,11 @@ namespace ngl
 		static void print_stats()
 		{
 			instance().stats().print();
+		}
+
+		static const pool_stats& get_stats()
+		{
+			return instance().stats();
 		}
 	};
 

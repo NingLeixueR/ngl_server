@@ -23,6 +23,7 @@
 #include "actor/actor_base/core/ndbclient.h"
 #include "tools/db/sql/mysql/nmysql_pool.h"
 #include "actor/actor_base/core/ntimer.h"
+#include "tools/serialize/socket_pool.h"
 #include "tools/db/sql/mysql/nmysql.h"
 #include "actor/protocol/nprotocol.h"
 #include "actor/protocol/tprotocol.h"
@@ -67,6 +68,21 @@ namespace ngl
 		static void nregister();
 
 		static void allprotocol(protocols& apro);
+
+		struct socket_pool_stats
+		{
+			uint64_t alloc_count = 0;
+			uint64_t free_count = 0;
+			uint64_t cache_hit = 0;
+			uint64_t cache_miss = 0;
+			uint64_t large_alloc = 0;
+			uint64_t alloc_fail = 0;
+			double hit_rate = 0.0;
+
+			DPROTOCOL(socket_pool_stats, alloc_count, free_count, cache_hit, cache_miss, large_alloc, alloc_fail, hit_rate)
+		};
+
+		static socket_pool_stats get_socket_pool_stats();
 
 		// GM command handler type alias.
 		using handle_cmd = tools::cmd<actor_gmclient, std::string, int, ncjson&>;

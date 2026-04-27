@@ -14,6 +14,7 @@
 // File overview: Message handler registration and dispatch for the gm actor.
 #include "actor/actor_logic/actor_gmclient/actor_gmclient.h"
 #include "actor/actor_logic/actor_gm/actor_gm.h"
+#include "tools/serialize/socket_pool.h"
 namespace ngl
 {
 	// To request
@@ -141,6 +142,11 @@ namespace ngl
 						tools::time::settime(ltime.time);
 						lresponse.m_data = true;
 					}
+				};
+			handle_cmd::add("socket_pool_stats") = [this]([[maybe_unused]] ncjson& aos, const message<ngl::np_gm>* adata)
+				{
+					gcmd<actor_gmclient::socket_pool_stats> lresponse(adata->get_pack()->m_id, "socket_pool_stats", this);
+					lresponse.m_data = actor_gmclient::get_socket_pool_stats();
 				};
 		}
 	}

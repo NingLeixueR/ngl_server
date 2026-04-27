@@ -59,6 +59,12 @@ namespace ngl
 				{
 					gcmd<std::string> lpro(id, "get_time", tools::time::time2str("%Y-%m-%d %H:%M:%S"));
 				};
+
+				handle_cmd::add("socket_pool_stats") = [this](int id, [[maybe_unused]] ncjson& aos)
+					{
+						gcmd<actor_gmclient::socket_pool_stats> lresponse(id, "socket_pool_stats");
+						lresponse.m_data = actor_gmclient::get_socket_pool_stats();
+					};
 		}
 
 		if (handle_cmd::function(loperator, (int32_t)lparm->identifier(), lojson) == false)

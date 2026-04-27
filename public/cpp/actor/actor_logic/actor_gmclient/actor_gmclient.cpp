@@ -83,6 +83,21 @@ namespace ngl
 		>();
 	}
 
+	actor_gmclient::socket_pool_stats actor_gmclient::get_socket_pool_stats()
+	{
+		socket_pool_stats lresponse;
+		const pool_stats& lstats = socket_pool::get_stats();
+		lresponse.alloc_count = lstats.m_alloc_count.load(std::memory_order_relaxed);
+		lresponse.free_count = lstats.m_free_count.load(std::memory_order_relaxed);
+		lresponse.cache_hit = lstats.m_cache_hit.load(std::memory_order_relaxed);
+		lresponse.cache_miss = lstats.m_cache_miss.load(std::memory_order_relaxed);
+		lresponse.large_alloc = lstats.m_large_alloc.load(std::memory_order_relaxed);
+		lresponse.alloc_fail = lstats.m_alloc_fail.load(std::memory_order_relaxed);
+		uint64_t ltotal = lresponse.cache_hit + lresponse.cache_miss;
+		lresponse.hit_rate = ltotal > 0 ? (100.0 * lresponse.cache_hit / ltotal) : 0.0;
+		return lresponse;
+	}
+
 	bool actor_gmclient::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
 	{
 		return true;
