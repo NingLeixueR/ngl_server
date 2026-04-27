@@ -83,7 +83,7 @@ namespace ngl
 			}
 		};
 	private:
-		static std::map<tools::nhashcode, info>			m_keyval;
+		static std::map<tools::nhashcode, info>		m_keyval;
 		static std::map<i32_protocolnum, info*>		m_protocol;
 		static std::map<std::string, info*>			m_nameprotocol;
 		static int32_t								m_customs;

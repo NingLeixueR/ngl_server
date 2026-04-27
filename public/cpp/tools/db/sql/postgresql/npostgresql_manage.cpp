@@ -16,7 +16,6 @@
 
 #include "tools/db/sql/postgresql/npostgresql_manage.h"
 
-
 namespace ngl
 {
 	bool npostgresql_manage::m_dbprotobinary = true;

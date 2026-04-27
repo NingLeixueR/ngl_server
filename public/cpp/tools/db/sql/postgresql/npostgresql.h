@@ -54,6 +54,4 @@ namespace ngl
 
 		db_buff m_malloc;
 	};
-
-
 }//namespace ngl

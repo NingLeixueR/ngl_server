@@ -22,10 +22,7 @@
 
 namespace ngl
 {
-	namespace
-	{
-		constexpr int32_t segpack_telnet_limit = 10240;
-	}
+	constexpr int32_t segpack_telnet_limit = 10240;
 
 	bool segpack_heartbeat::is_heartbeat(i32_protocolnum aprotocolnum)
 	{

@@ -1,17 +1,24 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 *
-* Project: ngl_server
-* License: MIT
+* Project Name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
+*
+* This file is part of the ngl_server project, released under the MIT License.
+* You are free to use, modify, and distribute this project in accordance with the license terms,
+* including for commercial purposes, provided that you retain the original copyright and license notice.
+*
+* For full license details, see the LICENSE file in the project root directory:
+* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // File overview: Declares interfaces for xml.
 
 #pragma once
 
-#include "actor/tab/csvtable.h"
-#include "tools/log/nlog.h"
 #include "tools/tab/xml/xml_serialize.h"
 #include "tools/tab/xml/xmlinfo.h"
+#include "actor/tab/csvtable.h"
+#include "tools/log/nlog.h"
 #include "tools/tools.h"
 #include "tools/type.h"
 

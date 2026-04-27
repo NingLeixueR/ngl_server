@@ -132,8 +132,7 @@ namespace ngl
 			block_head lhead;
 			if (!read_head(lbuff, lhead))
 			{
-				std::cout << std::format("socket_buff_pool<{},{}>::nfree invalid head\n",
-					TINITBYTES, TCOUNT);
+				std::cout << std::format("socket_buff_pool<{},{}>::nfree invalid head\n", TINITBYTES, TCOUNT);
 				return;
 			}
 
@@ -237,8 +236,7 @@ namespace ngl
 			block_head lhead;
 			if (!read_head(lbuff, lhead))
 			{
-				std::cout << std::format("socket_buff_pool<{},{}>::free_private invalid head\n",
-					TINITBYTES, TCOUNT);
+				std::cout << std::format("socket_buff_pool<{},{}>::free_private invalid head\n", TINITBYTES, TCOUNT);
 				return;
 			}
 
@@ -274,8 +272,15 @@ namespace ngl
 			}
 		}
 
-		const pool_stats& stats() const { return m_stats; }
-		void print_stats() const { m_stats.print(); }
+		const pool_stats& stats() const
+		{
+			return m_stats;
+		}
+
+		void print_stats() const
+		{
+			m_stats.print();
+		}
 	};
 
 	template <int TINITBYTES, int TCOUNT>
@@ -326,5 +331,4 @@ namespace ngl
 			return instance().stats();
 		}
 	};
-
 }// namespace ngl

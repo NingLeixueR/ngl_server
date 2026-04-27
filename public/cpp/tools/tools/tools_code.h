@@ -15,32 +15,29 @@
 
 #pragma once
 
-#include "tools_core.h"
+#include "tools/tools_core.h"
 
-namespace ngl
+namespace ngl::tools
 {
-	namespace tools
+	int varint_length(parm<int32_t>& avalues);
+	int varint_length(parm<int64_t>& avalues);
+
+	template <typename T>
+	struct varint_parm
 	{
-		int varint_length(parm<int32_t>& avalues);
-		int varint_length(parm<int64_t>& avalues);
+		T m_value;
+		char* m_buf = nullptr;
+		int m_len = 0;
+		int32_t* m_bytes = nullptr;
+	};
 
-		template <typename T>
-		struct varint_parm
-		{
-			T m_value;
-			char* m_buf = nullptr;
-			int m_len = 0;
-			int32_t* m_bytes = nullptr;
-		};
+	bool varint_encode(varint_parm<int64_t>& aparm);
+	bool varint_decode(varint_parm<int64_t>& aparm);
+	bool varint_encode(varint_parm<int32_t>& aparm);
+	bool varint_decode(varint_parm<int32_t>& aparm);
 
-		bool varint_encode(varint_parm<int64_t>& aparm);
-		bool varint_decode(varint_parm<int64_t>& aparm);
-		bool varint_encode(varint_parm<int32_t>& aparm);
-		bool varint_decode(varint_parm<int32_t>& aparm);
+	int to_hex(void* apso, int alen, void* apto);
+	bool to_bytes(void* apso, int alen, void* apto, int& aout_len);
 
-		int to_hex(void* apso, int alen, void* apto);
-		bool to_bytes(void* apso, int alen, void* apto, int& aout_len);
-
-		void bytexor(char* ap, int32_t aplen, int apos);
-	}
-}
+	void bytexor(char* ap, int32_t aplen, int apos);
+}//namespace ngl::tools

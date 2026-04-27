@@ -13,9 +13,9 @@
 */
 #pragma once
 
-#include <behaviortree_cpp/bt_factory.h>
 #include <behaviortree_cpp/decorator_node.h>
 #include <behaviortree_cpp/control_node.h>
+#include <behaviortree_cpp/bt_factory.h>
 #include <unordered_map>
 #include <functional>
 #include <memory>
@@ -547,5 +547,4 @@ namespace ngl
 			lbuilder
 		);
 	}
-
 }// namespace ngl

@@ -20,10 +20,10 @@
 #include "tools/tab/json/njson.h"
 #include "lua.hpp"
 
-#include <array>
 #include <atomic>
 #include <string>
 #include <tuple>
+#include <array>
 
 #define DEF_PROTOCOL(...)														\
 	bool push_format(ngl::ser::serialize_push* aser)const						\

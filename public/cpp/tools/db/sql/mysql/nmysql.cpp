@@ -13,8 +13,8 @@
 */
 // File overview: Implements MySQL connection lifecycle and query execution.
 
-#include "actor/protocol/nprotocol.h"
 #include "tools/db/sql/mysql/nmysql.h"
+#include "actor/protocol/nprotocol.h"
 #include "tools/log/nlog.h"
 
 #include <limits>

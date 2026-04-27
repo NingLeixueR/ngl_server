@@ -58,5 +58,4 @@ namespace ngl
 		}
 		return m_dbs[aindex].get();
 	}
-
 }// namespace ngl

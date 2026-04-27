@@ -36,7 +36,7 @@ namespace ngl
 	class ncjson
 	{
 		rapidjson::Document m_doc;
-		rapidjson::Document::AllocatorType* m_allocator;
+		rapidjson::Document::AllocatorType* m_allocator = nullptr;
 		std::string m_nonformat_str;
 		std::string m_str;
 		bool m_parsecheck = true;
@@ -300,9 +300,7 @@ namespace ngl
 			return true;
 		}
 	}
-
 	
-
 	template <>
 	struct json_format<int64_t>
 	{

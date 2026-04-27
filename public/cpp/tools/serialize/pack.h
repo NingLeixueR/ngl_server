@@ -18,8 +18,8 @@
 #include "tools/serialize/pack_head.h"
 #include "tools/type.h"
 
-#include <cstdint>
 #include <functional>
+#include <cstdint>
 #include <memory>
 #include <vector>
 

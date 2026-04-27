@@ -13,7 +13,6 @@
 */
 // File overview: Implements PostgreSQL connection pool checkout, return, and health checks.
 
-
 #include "tools/db/sql/postgresql/npostgresql_pool.h"
 
 namespace ngl
@@ -59,5 +58,4 @@ namespace ngl
 		}
 		return m_dbs[aindex].get();
 	}
-
 }// namespace ngl

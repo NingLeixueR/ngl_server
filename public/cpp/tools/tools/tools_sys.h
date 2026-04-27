@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "tools_core.h"
+#include "tools/tools/tools_core.h"
 
 namespace ngl::tools
 {

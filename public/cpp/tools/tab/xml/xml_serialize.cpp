@@ -1,8 +1,15 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
 *
-* Project: ngl_server
-* License: MIT
+* Project Name: ngl_server
+* Project URL: https://github.com/NingLeixueR/ngl_server
+*
+* This file is part of the ngl_server project, released under the MIT License.
+* You are free to use, modify, and distribute this project in accordance with the license terms,
+* including for commercial purposes, provided that you retain the original copyright and license notice.
+*
+* For full license details, see the LICENSE file in the project root directory:
+* https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // File overview: Implements logic for xml.
 

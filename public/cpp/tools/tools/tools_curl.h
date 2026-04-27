@@ -21,12 +21,12 @@
 #include "tools/log/nlog.h"
 
 #include <curl/curl.h>
-#include <array>
 #include <functional>
+#include <vector>
 #include <memory>
 #include <string>
+#include <array>
 #include <list>
-#include <vector>
 
 #ifdef WIN32
 #pragma comment ( lib, "ws2_32.lib" )

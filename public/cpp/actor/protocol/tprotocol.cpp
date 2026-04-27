@@ -14,11 +14,11 @@
 // File overview: Implements logic for protocol.
 
 
-#include "actor/protocol/tprotocol.h"
-#include "actor/protocol/nprotocol.h"
 #include "actor/actor_base/core/ntimer.h"
 #include "actor/actor_base/core/actor.h"
 #include "actor/generated/pb/net.pb.h"
+#include "actor/protocol/tprotocol.h"
+#include "actor/protocol/nprotocol.h"
 
 namespace ngl
 {

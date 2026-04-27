@@ -18,47 +18,44 @@
 #include "tools/tools/tools_curl.h"
 
 #include <algorithm>
-#include <cstring>
-#include <format>
 #include <iostream>
 #include <sstream>
+#include <cstring>
+#include <format>
 #include <thread>
 
 namespace ngl::tools
 {
-	namespace
+	struct mail_payload_state
 	{
-		struct mail_payload_state
-		{
-			const std::string* m_payload = nullptr;
-			size_t m_offset = 0;
-		};
+		const std::string* m_payload = nullptr;
+		size_t m_offset = 0;
+	};
 
-		std::string make_request_url(const http_parm& ahttp)
+	std::string make_request_url(const http_parm& ahttp)
+	{
+		if (ahttp.m_param.empty())
 		{
-			if (ahttp.m_param.empty())
-			{
-				return ahttp.m_url;
-			}
-
-			// GET parameters are appended onto the URL, while POST keeps them in
-			// the request body.
-			std::string lurl = ahttp.m_url;
-			if (lurl.empty())
-			{
-				return std::string();
-			}
-			if (lurl.find('?') == std::string::npos)
-			{
-				lurl += '?';
-			}
-			else if (!lurl.ends_with('?') && !lurl.ends_with('&'))
-			{
-				lurl += '&';
-			}
-			lurl += ahttp.m_param;
-			return lurl;
+			return ahttp.m_url;
 		}
+
+		// GET parameters are appended onto the URL, while POST keeps them in
+		// the request body.
+		std::string lurl = ahttp.m_url;
+		if (lurl.empty())
+		{
+			return std::string();
+		}
+		if (lurl.find('?') == std::string::npos)
+		{
+			lurl += '?';
+		}
+		else if (!lurl.ends_with('?') && !lurl.ends_with('&'))
+		{
+			lurl += '&';
+		}
+		lurl += ahttp.m_param;
+		return lurl;
 	}
 
 	curl::curl() :
