@@ -100,7 +100,7 @@ namespace ngl
 		>(-1, e_hightlevel_db);
 	}
 
-	// typedb<>::init() implementation (inline for non-unity build visibility).
+	// typedb<>::init() implementation (moved from nactor_auto.cpp for non-unity build visibility).
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
 	void typedb<TDBTAB_TYPE, TDBTAB, TACTOR>::init(bool ainit)
 	{
