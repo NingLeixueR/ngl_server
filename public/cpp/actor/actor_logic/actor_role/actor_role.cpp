@@ -183,7 +183,7 @@ namespace ngl
 			// Initialize drop system
 			m_drop.init(this, {});
 
-			//actor::create(ACTOR_TESTAI, area(), id());
+			actor::create(ACTOR_TESTAI, area(), id());
 		}
 
 		// Handle new role creation case
