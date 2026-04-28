@@ -206,15 +206,19 @@ namespace ngl
 				acache.m_local_pool[h->m_index].push_back(p);
 			}
 
-			// Trim: if any bucket exceeds 2x configured count, delete the excess.
+			// Trim: if bucket exceeds 3x, trim to 2x to reduce churn.
 			for (int32_t i = 0; i < TCOUNT; ++i)
 			{
 				auto& bucket = acache.m_local_pool[i];
-				size_t limit = static_cast<size_t>(m_counts[i]) * 2;
-				while (bucket.size() > limit)
+				size_t trigger = static_cast<size_t>(m_counts[i]) * 3;
+				if (bucket.size() > trigger)
 				{
-					delete[](bucket.back() - enum_head_bytes);
-					bucket.pop_back();
+					size_t target = static_cast<size_t>(m_counts[i]) * 2;
+					while (bucket.size() > target)
+					{
+						delete[](bucket.back() - enum_head_bytes);
+						bucket.pop_back();
+					}
 				}
 			}
 		}
