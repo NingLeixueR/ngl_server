@@ -128,7 +128,10 @@ namespace ngl
 					handle_write(aservice, ec, anodepack->get_pack());
 					if (!ec)
 					{
-						do_send(aservice, true);
+						basio::post(aservice->m_ioservice, [this, aservice]()
+						{
+							do_send(aservice, true);
+						});
 					}
 				}
 			);
