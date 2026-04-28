@@ -45,4 +45,47 @@ namespace ngl
 		ASSERT_NE(buff, nullptr);
 		socket_pool::free(buff);
 	}
+
+	TEST(SocketPoolTest, CrossThreadFree)
+	{
+		char* buff = socket_pool::malloc(128);
+		ASSERT_NE(buff, nullptr);
+		memset(buff, 0xCD, 128);
+
+		std::thread t([buff]()
+		{
+			socket_pool::free(buff);
+		});
+		t.join();
+
+		// The freed buffer should be reclaimed by the allocating thread
+		// on the next malloc via pending queue drain.
+		char* buff2 = socket_pool::malloc(128);
+		ASSERT_NE(buff2, nullptr);
+		socket_pool::free(buff2);
+	}
+
+	TEST(SocketPoolTest, CrossThreadBatch)
+	{
+		constexpr int count = 32;
+		std::vector<char*> buffers(count);
+		for (int i = 0; i < count; ++i)
+		{
+			buffers[i] = socket_pool::malloc(256);
+			ASSERT_NE(buffers[i], nullptr);
+		}
+
+		// Free all from a different thread.
+		std::thread t([&buffers]()
+		{
+			for (char* p : buffers)
+				socket_pool::free(p);
+		});
+		t.join();
+
+		// Allocating thread drains pending on next malloc.
+		char* check = socket_pool::malloc(256);
+		ASSERT_NE(check, nullptr);
+		socket_pool::free(check);
+	}
 }
