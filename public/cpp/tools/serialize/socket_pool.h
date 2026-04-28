@@ -147,12 +147,14 @@ namespace ngl
 			memcpy(abuff, &h, sizeof(h));
 		}
 
-		static bool read_head(const char* abuff, block_head& ahead)
+		static block_head* read_head(const char* abuff)
 		{
 			if (abuff == nullptr)
-				return false;
-			memcpy(&ahead, abuff, sizeof(ahead));
-			return ahead.m_magic == enum_block_magic;
+				return nullptr;
+			auto lphead = (block_head*)(abuff - enum_head_bytes);
+			if (lphead->m_magic != enum_block_magic)
+				return nullptr;
+			return lphead;
 		}
 
 		tl_holder& ensure_tl()
@@ -195,13 +197,13 @@ namespace ngl
 
 			for (char* p : ltmp)
 			{
-				block_head h;
-				if (!read_head(p - enum_head_bytes, h) || h.m_index < 0 || h.m_index >= TCOUNT)
+				block_head* h = read_head(p);
+				if (h == nullptr || h->m_index < 0 || h->m_index >= TCOUNT)
 				{
 					delete[](p - enum_head_bytes);
 					continue;
 				}
-				acache.m_local_pool[h.m_index].push_back(p);
+				acache.m_local_pool[h->m_index].push_back(p);
 			}
 
 			// Trim: if any bucket exceeds 2x configured count, delete the excess.
@@ -276,8 +278,8 @@ namespace ngl
 			m_stats.m_free_count.fetch_add(1, std::memory_order_relaxed);
 
 			char* lraw = abuff - enum_head_bytes;
-			block_head h;
-			if (!read_head(lraw, h))
+			block_head* h = read_head(abuff);
+			if (h == nullptr)
 			{
 				assert(false && "buff_pool::free_private: invalid block_head magic");
 				std::cout << std::format(
@@ -286,8 +288,11 @@ namespace ngl
 				return;
 			}
 
+			int16_t lindex = h->m_index;
+			int16_t lslot = h->m_slot;
+
 			// Oversized: just delete.
-			if (h.m_index < 0 || h.m_index >= TCOUNT)
+			if (lindex < 0 || lindex >= TCOUNT)
 			{
 				delete[] lraw;
 				return;
@@ -296,21 +301,21 @@ namespace ngl
 			auto& tl = ensure_tl();
 
 			// Same-thread fast path (only for registered slots).
-			if (h.m_slot >= 0 && h.m_slot == tl.m_slot)
+			if (lslot >= 0 && lslot == tl.m_slot)
 			{
-				tl.m_cache.m_local_pool[h.m_index].push_back(abuff);
+				tl.m_cache.m_local_pool[lindex].push_back(abuff);
 				return;
 			}
 
 			// Cross-thread: push into owner's pending queue.
-			if (h.m_slot >= 0 && h.m_slot < enum_max_threads)
+			if (lslot >= 0 && lslot < enum_max_threads)
 			{
-				thread_cache* owner = s_slots[h.m_slot].load(std::memory_order_acquire);
-				if (owner != nullptr)
+				thread_cache* lcache = s_slots[lslot].load(std::memory_order_acquire);
+				if (lcache != nullptr)
 				{
-					std::lock_guard<std::mutex> lk(owner->m_pending_mutex);
-					owner->m_pending.push_back(abuff);
-					owner->m_has_pending.store(true, std::memory_order_relaxed);
+					std::lock_guard<std::mutex> lk(lcache->m_pending_mutex);
+					lcache->m_pending.push_back(abuff);
+					lcache->m_has_pending.store(true, std::memory_order_relaxed);
 					return;
 				}
 			}
