@@ -76,31 +76,15 @@ namespace ngl
 		};
 
 		// Per-thread: local buckets + pending queue for cross-thread returns.
+		// No destructor: the pool is process-lifetime. Thread-local caches are
+		// intentionally leaked on thread exit — the OS reclaims all memory when
+		// the process terminates. This also avoids destructor-order races between
+		// tl_holder, thread_cache, and cross-thread free() callers.
 		struct thread_cache
 		{
 			std::array<std::vector<char*>, TCOUNT> m_local_pool;
 			std::vector<char*>  m_pending;
 			std::mutex          m_pending_mutex;
-			bool                m_alive = true;
-
-			~thread_cache()
-			{
-				m_alive = false;
-				for (int i = 0; i < TCOUNT; ++i)
-				{
-					for (char* p : m_local_pool[i])
-					{
-						delete[](p - enum_head_bytes);
-					}						
-					m_local_pool[i].clear();
-				}
-				std::lock_guard<std::mutex> lk(m_pending_mutex);
-				for (char* p : m_pending)
-				{
-					delete[](p - enum_head_bytes);
-				}
-				m_pending.clear();
-			}
 		};
 
 		// Global slot table: O(1) lookup by int16 index.
@@ -120,12 +104,6 @@ namespace ngl
 				m_slot = s_slot_next.fetch_add(1, std::memory_order_relaxed);
 				if (m_slot < enum_max_threads)
 					s_slots[m_slot].store(&m_cache, std::memory_order_release);
-			}
-
-			~tl_holder()
-			{
-				if (m_slot >= 0 && m_slot < enum_max_threads)
-					s_slots[m_slot].store(nullptr, std::memory_order_release);
 			}
 		};
 
@@ -291,7 +269,7 @@ namespace ngl
 			if (h.m_slot >= 0 && h.m_slot < enum_max_threads)
 			{
 				thread_cache* owner = s_slots[h.m_slot].load(std::memory_order_acquire);
-				if (owner != nullptr && owner->m_alive)
+				if (owner != nullptr)
 				{
 					std::lock_guard<std::mutex> lk(owner->m_pending_mutex);
 					owner->m_pending.push_back(abuff);
@@ -353,5 +331,4 @@ namespace ngl
 			return instance().stats();
 		}
 	};
-
 }// namespace ngl
