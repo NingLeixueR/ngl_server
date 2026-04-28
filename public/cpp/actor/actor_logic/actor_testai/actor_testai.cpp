@@ -26,7 +26,6 @@ namespace ngl
 		}
 	}
 
-
 	nbt_factory<actor_testai> actor_testai::m_factory;
 
 	actor_testai::actor_testai(i16_area aarea, i32_actordataid aid) :

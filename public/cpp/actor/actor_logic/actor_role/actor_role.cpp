@@ -1,13 +1,13 @@
 /*
 * Copyright (c) [2020-2025] NingLeixueR
-* 
+*
 * Project name: ngl_server
 * Project URL: https://github.com/NingLeixueR/ngl_server
-* 
+*
 * This file is part of the ngl_server project and is distributed under the MIT License.
 * You may use, modify, and distribute this project under the license, including commercial use,
 * but you must retain the original copyright and license notice.
-* 
+*
 * For license details, see the LICENSE file in the project root:
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
@@ -41,9 +41,9 @@ namespace ngl
 			{
 				.m_parm
 				{
-					.m_type		= ACTOR_ROLE,
-					.m_area		= aarea,
-					.m_id		= aroleid,
+					.m_type = ACTOR_ROLE,
+					.m_area = aarea,
+					.m_id = aroleid,
 					.m_manage_dbclient = true
 				},
 				.m_weight = 0x7fffffff,
@@ -182,8 +182,8 @@ namespace ngl
 			);
 			// Initialize drop system
 			m_drop.init(this, {});
-			
-			actor::create(ACTOR_TESTAI, area(), id());
+
+			//actor::create(ACTOR_TESTAI, area(), id());
 		}
 
 		// Handle new role creation case
@@ -309,7 +309,7 @@ namespace ngl
 					std::string lorderid;
 					int32_t lrechargeid = -1;
 					int64_t lroleid = -1;
-					if (!njson::pop(ltempjson, { "orderid", "rechargeid", "roleid"}, lorderid, lrechargeid, lroleid))
+					if (!njson::pop(ltempjson, { "orderid", "rechargeid", "roleid" }, lorderid, lrechargeid, lroleid))
 					{
 						return;
 					}
@@ -367,7 +367,7 @@ namespace ngl
 				}
 				catch (...) {}
 			});
-		
+
 	}
 
 	i64_actorid actor_role::roleid()
@@ -386,9 +386,9 @@ namespace ngl
 		MODIFIED_RETURN_CONST(lpdinfo, m_info.get());
 		MODIFIED_RETURN_CONST(lpdbag, m_bag.get());
 		MODIFIED_RETURN_CONST(lpdtask, m_task.get());
-		*pro.mutable_mrole()	= *lpdinfo;
-		*pro.mutable_mbag()	= *lpdbag;
-		*pro.mutable_mtask()	= *lpdtask;
+		*pro.mutable_mrole() = *lpdinfo;
+		*pro.mutable_mbag() = *lpdbag;
+		*pro.mutable_mtask() = *lpdtask;
 		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cwrite<actor_role>::instance(id_guid()).getconst(id_guid());
 		if (lpbrief != nullptr)
 		{
@@ -400,7 +400,7 @@ namespace ngl
 	void actor_role::createorder(std::string& aorder, int32_t arechargeid)
 	{
 		static std::atomic<int32_t> billnoindex = 0;
-		aorder = std::format("{:05d}{:010d}{:010d}{:010d}{:02d}",area(), id(), arechargeid, tools::time::gettime(), billnoindex.fetch_add(1));
+		aorder = std::format("{:05d}{:010d}{:010d}{:010d}{:02d}", area(), id(), arechargeid, tools::time::gettime(), billnoindex.fetch_add(1));
 	}
 
 	int32_t actor_role::rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting)
@@ -431,7 +431,7 @@ namespace ngl
 		{
 			lstat = 2;
 		}
-		
+
 		if (areporting && lstat == 0)
 		{
 			auto lhttp = tools::curl::http();
@@ -440,7 +440,7 @@ namespace ngl
 			std::string lurl = std::format("{}/pay/pay_update.php", sysconfig::gmurl());
 			tools::curl::set_url(lhttp, lurl);
 
-			std::string lparm = std::format("orderid={}&gm={}&roleid={}&stat={}",aorderid, (agm ? 1 : 0), id_guid(), lstat);
+			std::string lparm = std::format("orderid={}&gm={}&roleid={}&stat={}", aorderid, (agm ? 1 : 0), id_guid(), lstat);
 
 			tools::curl::set_param(lhttp, lparm.c_str());
 			tools::curl::send(lhttp);
@@ -458,17 +458,17 @@ namespace ngl
 				(*litemmap)[lpair.first] = lpair.second;
 			}
 			send_client(id_guid(), cpro);
-		}	
+		}
 
 		return lstat;
 	}
 
-		bool actor_role::is_first_recharge(int32_t arechargeid)
+	bool actor_role::is_first_recharge(int32_t arechargeid)
+	{
+		MODIFIED_RETURN_CONST(lpdinfoconst, m_info.get(), false);
+		for (auto& recharge : lpdinfoconst->mrecharge())
 		{
-			MODIFIED_RETURN_CONST(lpdinfoconst, m_info.get(), false);
-			for (auto& recharge : lpdinfoconst->mrecharge())
-			{
-				if (recharge.mrechargeid() == arechargeid)
+			if (recharge.mrechargeid() == arechargeid)
 			{
 				return false;
 			}
@@ -476,7 +476,7 @@ namespace ngl
 		return true;
 	}
 
-		bool actor_role::forward_before([[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_CREATE& adata)
+	bool actor_role::forward_before([[maybe_unused]] const pbnet::PROBUFF_NET_FAMIL_CREATE& adata)
 	{
 		if (ttab_specialid::instance().m_createfamilconsume > m_info.gold())
 		{
@@ -493,10 +493,10 @@ namespace ngl
 		send_client(id_guid(), pro);
 	}
 
-		bool actor_role::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
-		{
-			return true;
-		}
+	bool actor_role::timer_handle([[maybe_unused]] const message<np_timerparm>& adata)
+	{
+		return true;
+	}
 
 	void actor_role::create_init(const std::string& aname)
 	{
@@ -511,7 +511,7 @@ namespace ngl
 			return;
 		}
 		lpbriefbase->set_mlv(1);
-			lpbriefbase->set_mcreateutc(static_cast<int32_t>(tools::time::gettime()));
+		lpbriefbase->set_mcreateutc(static_cast<int32_t>(tools::time::gettime()));
 		lpbriefbase->set_mmoneygold(0);
 		lpbriefbase->set_mmoneysilver(0);
 		lpbriefbase->set_mname(aname);

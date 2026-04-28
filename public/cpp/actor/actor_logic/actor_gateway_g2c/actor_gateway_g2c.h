@@ -138,6 +138,11 @@ namespace ngl
 						log_error()->print("actor_gateway_g2c::handle_kcp fail area=[nguid::none_area()]");
 						return false;
 					}
+					//全局发且发送，robot test强制返回false
+					if (sysconfig::robot_test())
+					{
+						return false;
+					}
 				}
 				else
 				{// if(larea0 != nguid::none_area())

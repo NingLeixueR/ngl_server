@@ -25,6 +25,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <cassert>
 #include <cstdint>
 #include <cstring>
 #include <format>
@@ -32,6 +33,7 @@
 #include <vector>
 #include <mutex>
 #include <array>
+#include <bit>
 #include <new>
 
 namespace ngl
@@ -47,12 +49,17 @@ namespace ngl
 
 		void print() const
 		{
-			uint64_t total = m_cache_hit.load() + m_cache_miss.load();
-			double hit_rate = total > 0 ? (100.0 * m_cache_hit.load() / total) : 0.0;
+			uint64_t hit = m_cache_hit.load(std::memory_order_relaxed);
+			uint64_t miss = m_cache_miss.load(std::memory_order_relaxed);
+			uint64_t total = hit + miss;
+			double hit_rate = total > 0 ? (100.0 * hit / total) : 0.0;
 			std::cout << std::format(
 				"SocketPool Stats: alloc={} free={} hit_rate={:.2f}% large={} fail={}\n",
-				m_alloc_count.load(), m_free_count.load(), hit_rate,
-				m_large_alloc.load(), m_alloc_fail.load()
+				m_alloc_count.load(std::memory_order_relaxed),
+				m_free_count.load(std::memory_order_relaxed),
+				hit_rate,
+				m_large_alloc.load(std::memory_order_relaxed),
+				m_alloc_fail.load(std::memory_order_relaxed)
 			);
 		}
 	};
@@ -85,6 +92,7 @@ namespace ngl
 			std::array<std::vector<char*>, TCOUNT> m_local_pool;
 			std::vector<char*>  m_pending;
 			std::mutex          m_pending_mutex;
+			std::atomic<bool>   m_has_pending{false};
 		};
 
 		// Global slot table: O(1) lookup by int16 index.
@@ -101,15 +109,33 @@ namespace ngl
 			{
 				if (m_slot >= 0)
 					return;
-				m_slot = s_slot_next.fetch_add(1, std::memory_order_relaxed);
-				if (m_slot < enum_max_threads)
-					s_slots[m_slot].store(&m_cache, std::memory_order_release);
+				int16_t expected = s_slot_next.load(std::memory_order_relaxed);
+				while (expected < enum_max_threads)
+				{
+					if (s_slot_next.compare_exchange_weak(expected,
+						static_cast<int16_t>(expected + 1),
+						std::memory_order_relaxed, std::memory_order_relaxed))
+					{
+						m_slot = expected;
+						s_slots[m_slot].store(&m_cache, std::memory_order_release);
+						return;
+					}
+				}
 			}
 		};
 
 		thread_local static tl_holder tl_data;
 
-		std::array<int32_t, TCOUNT>       m_bytes;
+		static constexpr std::array<int32_t, TCOUNT> make_bytes()
+		{
+			std::array<int32_t, TCOUNT> bytes{};
+			bytes[0] = TINITBYTES;
+			for (int32_t i = 1; i < TCOUNT; ++i)
+				bytes[i] = bytes[i - 1] * 2;
+			return bytes;
+		}
+
+		static constexpr std::array<int32_t, TCOUNT> m_bytes = make_bytes();
 		const std::array<int32_t, TCOUNT> m_counts;
 		pool_stats                        m_stats;
 
@@ -157,10 +183,14 @@ namespace ngl
 		// Drain pending queue into local pool, then trim oversized buckets.
 		void drain_pending(thread_cache& acache)
 		{
+			if (!acache.m_has_pending.load(std::memory_order_relaxed))
+				return;
+
 			std::vector<char*> ltmp;
 			{
 				std::lock_guard<std::mutex> lk(acache.m_pending_mutex);
 				ltmp.swap(acache.m_pending);
+				acache.m_has_pending.store(false, std::memory_order_relaxed);
 			}
 
 			for (char* p : ltmp)
@@ -191,9 +221,7 @@ namespace ngl
 		buff_pool(const std::array<int32_t, TCOUNT>& acounts) : m_counts(acounts)
 		{
 			static_assert(TCOUNT > 0, "buff_pool requires at least one bucket");
-			m_bytes[0] = TINITBYTES;
-			for (int32_t i = 1; i < TCOUNT; ++i)
-				m_bytes[i] = m_bytes[i - 1] * 2;
+			static_assert((TINITBYTES & (TINITBYTES - 1)) == 0, "TINITBYTES must be power of 2");
 		}
 
 		char* malloc_private(int32_t abytes)
@@ -203,15 +231,23 @@ namespace ngl
 
 			m_stats.m_alloc_count.fetch_add(1, std::memory_order_relaxed);
 
-			auto itor = std::lower_bound(m_bytes.begin(), m_bytes.end(), abytes);
-			if (itor == m_bytes.end())
+			int16_t lpos;
+			if (abytes <= TINITBYTES)
 			{
-				m_stats.m_large_alloc.fetch_add(1, std::memory_order_relaxed);
-				auto& tl = ensure_tl();
-				return nmalloc(-1, tl.m_slot, abytes);
+				lpos = 0;
 			}
-
-			int16_t lpos = static_cast<int16_t>(itor - m_bytes.begin());
+			else
+			{
+				constexpr int base_shift = std::countr_zero(static_cast<uint32_t>(TINITBYTES));
+				int shift = std::bit_width(static_cast<uint32_t>(abytes - 1));
+				lpos = static_cast<int16_t>(shift - base_shift);
+				if (lpos >= TCOUNT)
+				{
+					m_stats.m_large_alloc.fetch_add(1, std::memory_order_relaxed);
+					auto& tl = ensure_tl();
+					return nmalloc(-1, tl.m_slot, abytes);
+				}
+			}
 			auto& tl = ensure_tl();
 			auto& cache = tl.m_cache;
 
@@ -243,9 +279,10 @@ namespace ngl
 			block_head h;
 			if (!read_head(lraw, h))
 			{
+				assert(false && "buff_pool::free_private: invalid block_head magic");
 				std::cout << std::format(
-					"buff_pool<{},{}>::free_private invalid head\n",
-					TINITBYTES, TCOUNT);
+					"buff_pool<{},{}>::free_private invalid head, ptr={}\n",
+					TINITBYTES, TCOUNT, static_cast<void*>(lraw));
 				return;
 			}
 
@@ -258,8 +295,8 @@ namespace ngl
 
 			auto& tl = ensure_tl();
 
-			// Same-thread fast path.
-			if (h.m_slot == tl.m_slot)
+			// Same-thread fast path (only for registered slots).
+			if (h.m_slot >= 0 && h.m_slot == tl.m_slot)
 			{
 				tl.m_cache.m_local_pool[h.m_index].push_back(abuff);
 				return;
@@ -273,6 +310,7 @@ namespace ngl
 				{
 					std::lock_guard<std::mutex> lk(owner->m_pending_mutex);
 					owner->m_pending.push_back(abuff);
+					owner->m_has_pending.store(true, std::memory_order_relaxed);
 					return;
 				}
 			}
