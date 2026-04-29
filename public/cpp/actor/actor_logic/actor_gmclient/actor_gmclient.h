@@ -69,6 +69,17 @@ namespace ngl
 
 		static void allprotocol(protocols& apro);
 
+		struct bucket_info
+		{
+			int32_t bucket_size = 0;           // Bucket size in bytes (64, 128, 256, etc.)
+			int32_t bucket_capacity = 0;       // Configured capacity (100, 80, 60, etc.)
+			uint64_t current_allocated = 0;    // Currently held externally
+			uint64_t peak_allocated = 0;       // Historical peak allocation
+			uint64_t current_cached = 0;       // Currently in pool cache
+
+			DPROTOCOL(bucket_info, bucket_size, bucket_capacity, current_allocated, peak_allocated, current_cached)
+		};
+
 		struct socket_pool_stats
 		{
 			uint64_t alloc_count = 0;
@@ -78,8 +89,9 @@ namespace ngl
 			uint64_t large_alloc = 0;
 			uint64_t alloc_fail = 0;
 			double hit_rate = 0.0;
+			std::vector<bucket_info> buckets;
 
-			DPROTOCOL(socket_pool_stats, alloc_count, free_count, cache_hit, cache_miss, large_alloc, alloc_fail, hit_rate)
+			DPROTOCOL(socket_pool_stats, alloc_count, free_count, cache_hit, cache_miss, large_alloc, alloc_fail, hit_rate, buckets)
 		};
 
 		static socket_pool_stats get_socket_pool_stats();

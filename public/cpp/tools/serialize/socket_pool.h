@@ -38,6 +38,13 @@
 
 namespace ngl
 {
+	struct bucket_stats
+	{
+		std::atomic<uint64_t> m_current_allocated{0};  // Currently held externally (alloc - free for this bucket).
+		std::atomic<uint64_t> m_peak_allocated{0};     // Historical peak of m_current_allocated.
+		std::atomic<uint64_t> m_current_cached{0};     // Currently sitting in local_pool (updated on drain).
+	};
+
 	struct pool_stats
 	{
 		std::atomic<uint64_t> m_alloc_count{0};
@@ -138,6 +145,7 @@ namespace ngl
 		static constexpr std::array<int32_t, TCOUNT> m_bytes = make_bytes();
 		const std::array<int32_t, TCOUNT> m_counts;
 		pool_stats                        m_stats;
+		std::array<bucket_stats, TCOUNT>  m_bucket_stats;
 
 		// ---- internal helpers ----
 
@@ -206,19 +214,23 @@ namespace ngl
 				acache.m_local_pool[h->m_index].push_back(p);
 			}
 
-			// Trim: if bucket exceeds 3x, trim to 2x to reduce churn.
+			// Update cached count and trim: if cached exceeds 3x current_allocated, trim to 2x.
 			for (int32_t i = 0; i < TCOUNT; ++i)
 			{
 				auto& bucket = acache.m_local_pool[i];
-				size_t trigger = static_cast<size_t>(m_counts[i]) * 3;
-				if (bucket.size() > trigger)
+				m_bucket_stats[i].m_current_cached.store(bucket.size(), std::memory_order_relaxed);
+
+				uint64_t allocated = m_bucket_stats[i].m_current_allocated.load(std::memory_order_relaxed);
+				size_t trigger = static_cast<size_t>(allocated) * 3;
+				if (bucket.size() > trigger && allocated > 0)
 				{
-					size_t target = static_cast<size_t>(m_counts[i]) * 2;
+					size_t target = static_cast<size_t>(allocated) * 2;
 					while (bucket.size() > target)
 					{
 						delete[](bucket.back() - enum_head_bytes);
 						bucket.pop_back();
 					}
+					m_bucket_stats[i].m_current_cached.store(bucket.size(), std::memory_order_relaxed);
 				}
 			}
 		}
@@ -228,6 +240,28 @@ namespace ngl
 		{
 			static_assert(TCOUNT > 0, "buff_pool requires at least one bucket");
 			static_assert((TINITBYTES & (TINITBYTES - 1)) == 0, "TINITBYTES must be power of 2");
+		}
+
+		void track_alloc(int16_t aindex)
+		{
+			if (aindex >= 0 && aindex < TCOUNT)
+			{
+				uint64_t cur = m_bucket_stats[aindex].m_current_allocated.fetch_add(1, std::memory_order_relaxed) + 1;
+				uint64_t peak = m_bucket_stats[aindex].m_peak_allocated.load(std::memory_order_relaxed);
+				while (cur > peak)
+				{
+					if (m_bucket_stats[aindex].m_peak_allocated.compare_exchange_weak(peak, cur, std::memory_order_relaxed))
+						break;
+				}
+			}
+		}
+
+		void track_free(int16_t aindex)
+		{
+			if (aindex >= 0 && aindex < TCOUNT)
+			{
+				m_bucket_stats[aindex].m_current_allocated.fetch_sub(1, std::memory_order_relaxed);
+			}
 		}
 
 		char* malloc_private(int32_t abytes)
@@ -266,12 +300,16 @@ namespace ngl
 				char* ret = cache.m_local_pool[lpos].back();
 				cache.m_local_pool[lpos].pop_back();
 				m_stats.m_cache_hit.fetch_add(1, std::memory_order_relaxed);
+				track_alloc(lpos);
 				return ret;
 			}
 
 			// 3) Allocate fresh.
 			m_stats.m_cache_miss.fetch_add(1, std::memory_order_relaxed);
-			return nmalloc(lpos, tl.m_slot);
+			char* ret = nmalloc(lpos, tl.m_slot);
+			if (ret != nullptr)
+				track_alloc(lpos);
+			return ret;
 		}
 
 		void free_private(char* abuff)
@@ -302,6 +340,9 @@ namespace ngl
 				return;
 			}
 
+			// Track free for bucket stats.
+			track_free(lindex);
+
 			auto& tl = ensure_tl();
 
 			// Same-thread fast path (only for registered slots).
@@ -329,6 +370,9 @@ namespace ngl
 		}
 
 		const pool_stats& stats() const { return m_stats; }
+		const std::array<bucket_stats, TCOUNT>& get_bucket_stats() const { return m_bucket_stats; }
+		static constexpr const std::array<int32_t, TCOUNT>& get_bytes() { return m_bytes; }
+		const std::array<int32_t, TCOUNT>& get_counts() const { return m_counts; }
 		void print_stats() const { m_stats.print(); }
 	};
 
@@ -347,7 +391,7 @@ namespace ngl
 	{
 		socket_pool() :
 			buff_pool<enum_socket_pool_init_bytes, enum_socket_pool_count>(
-				{100, 80, 60, 50, 40, 30, 25, 20, 15, 10, 5, 3}
+				{100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100}
 			)
 		{}
 
@@ -376,6 +420,21 @@ namespace ngl
 		static const pool_stats& get_stats()
 		{
 			return instance().stats();
+		}
+
+		static const std::array<bucket_stats, enum_socket_pool_count>& get_bucket_stats()
+		{
+			return instance().buff_pool::get_bucket_stats();
+		}
+
+		static const std::array<int32_t, enum_socket_pool_count>& get_bucket_bytes()
+		{
+			return buff_pool<enum_socket_pool_init_bytes, enum_socket_pool_count>::get_bytes();
+		}
+
+		static const std::array<int32_t, enum_socket_pool_count>& get_bucket_counts()
+		{
+			return instance().get_counts();
 		}
 	};
 }// namespace ngl

@@ -95,6 +95,21 @@ namespace ngl
 		lresponse.alloc_fail = lstats.m_alloc_fail.load(std::memory_order_relaxed);
 		uint64_t ltotal = lresponse.cache_hit + lresponse.cache_miss;
 		lresponse.hit_rate = ltotal > 0 ? (100.0 * lresponse.cache_hit / ltotal) : 0.0;
+
+		const auto& lbucket_stats = socket_pool::get_bucket_stats();
+		const auto& lbucket_bytes = socket_pool::get_bucket_bytes();
+		const auto& lbucket_counts = socket_pool::get_bucket_counts();
+		for (size_t i = 0; i < lbucket_stats.size(); ++i)
+		{
+			bucket_info linfo;
+			linfo.bucket_size = lbucket_bytes[i];
+			linfo.bucket_capacity = lbucket_counts[i];
+			linfo.current_allocated = lbucket_stats[i].m_current_allocated.load(std::memory_order_relaxed);
+			linfo.peak_allocated = lbucket_stats[i].m_peak_allocated.load(std::memory_order_relaxed);
+			linfo.current_cached = lbucket_stats[i].m_current_cached.load(std::memory_order_relaxed);
+			lresponse.buckets.push_back(linfo);
+		}
+
 		return lresponse;
 	}
 
