@@ -656,7 +656,10 @@ namespace ngl
 			return false;
 		}
 		ws->m_npacklist.push(apack);
-		do_send(ws);
+		basio::post(ws->m_ioservice, [this, ws]()
+		{
+			do_send(ws);
+		});
 		return true;
 	}
 
