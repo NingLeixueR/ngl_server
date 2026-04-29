@@ -266,7 +266,6 @@ namespace ngl
 	std::shared_ptr<service_ws> asio_ws::create_service()
 	{
 		lock_write(m_maplock);
-
 		std::shared_ptr<service_ws> lservice = nullptr;
 		if (!net_session::next(m_sessionid, ENET_WS))
 		{

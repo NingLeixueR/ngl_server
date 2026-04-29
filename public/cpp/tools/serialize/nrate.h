@@ -12,8 +12,6 @@
 * https://github.com/NingLeixueR/ngl_server/blob/main/LICENSE
 */
 // File overview: Rate limiter for per-socket message frequency control.
-
-
 #pragma once
 
 #include "tools/tab/xml/sysconfig.h"

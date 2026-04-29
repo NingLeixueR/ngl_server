@@ -15,12 +15,13 @@
 
 #pragma once
 
-#include <deque>
-#include <mutex>
-#include <utility>
 
 #include "tools/tools/tools_thread.h"
 #include "tools/serialize/pack.h"
+
+#include <utility>
+#include <deque>
+#include <mutex>
 
 namespace ngl
 {
