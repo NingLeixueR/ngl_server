@@ -116,7 +116,7 @@ namespace ngl
 		i32_serverid m_id = -1;				// Server that owns the add/del sets.
 		std::vector<i64_actorid> m_add;
 		std::vector<i64_actorid> m_del;
-		std::map<nguid, i32_serverid> m_rolegateway;
+		std::unordered_map<nguid, i32_serverid> m_rolegateway;
 
 		DPROTOCOL(np_actornode_update, m_id, m_add, m_del, m_rolegateway)
 	};

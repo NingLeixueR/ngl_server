@@ -20,7 +20,8 @@
 #include "tools/type.h"
 
 #include <shared_mutex>
-#include <map>
+#include <unordered_map>
+#include <unordered_set>
 
 namespace ngl
 {
@@ -33,13 +34,13 @@ namespace ngl
 		naddress& operator=(const naddress&) = delete;
 	public:
 		// Full actor guid -> owning server id.
-		using map_guidserver		= std::map<nguid, i32_serverid>;
+		using map_guidserver		= std::unordered_map<nguid, i32_serverid>;
 		// Actor type -> all known actor guids of that type.
-		using map_typeguid			= std::map<i16_actortype, std::set<nguid>>;
+		using map_typeguid			= std::unordered_map<i16_actortype, std::unordered_set<nguid>>;
 		// Server id -> live node/session metadata.
-		using map_servernode		= std::map<i32_serverid, nnode_session>;
+		using map_servernode		= std::unordered_map<i32_serverid, nnode_session>;
 		// Role actor guid -> gateway server currently serving that role.
-		using map_rolegateway		= std::map<nguid, i32_serverid>;
+		using map_rolegateway		= std::unordered_map<nguid, i32_serverid>;
 		// Snapshot-style callback that can inspect all routing tables together.
 		using ergodic_callbackfun	= std::function<bool(const map_guidserver&, const map_servernode&, const map_rolegateway&)>;
 		// Iteration callback over known server/session entries.
@@ -49,7 +50,9 @@ namespace ngl
 		static naddress::map_typeguid		m_actortypeserver;
 		static naddress::map_servernode		m_session;
 		static naddress::map_rolegateway	m_rolegateway;
-		static std::shared_mutex			m_mutex;
+		static std::shared_mutex			m_actor_mutex;		// Protects m_actorserver + m_actortypeserver
+		static std::shared_mutex			m_session_mutex;	// Protects m_session
+		static std::shared_mutex			m_gateway_mutex;	// Protects m_rolegateway
 
 		// Debug helpers for the actor -> server routing table.
 		static void print_address();

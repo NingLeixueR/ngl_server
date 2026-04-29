@@ -194,6 +194,33 @@ struct std::formatter<std::map<TKEY, TVAL>>
 	}
 };
 
+template <typename TKEY, typename TVAL>
+struct std::formatter<std::unordered_map<TKEY, TVAL>>
+{
+	constexpr auto parse(const std::format_parse_context& ctx)
+	{
+		return ctx.begin();
+	}
+
+	auto format(const std::unordered_map<TKEY, TVAL>& vec, std::format_context& ctx)const
+	{
+		auto out = ctx.out();
+		std::format_to(out, "unordered_map[");
+		bool lfirst = true;
+		for (auto it = vec.begin(); it != vec.end(); ++it) 
+		{
+			if (!lfirst)
+			{
+				std::format_to(out, ",");
+			}
+			std::format_to(out, "({}:{})", it->first, it->second);
+			lfirst = false;
+		}
+		format_to(out, "]");
+		return out;
+	}
+};
+
 template <typename T>
 struct std::formatter<google::protobuf::RepeatedField<T>>
 {

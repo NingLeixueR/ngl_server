@@ -25,11 +25,13 @@ namespace ngl
 	naddress::map_typeguid		naddress::m_actortypeserver;
 	naddress::map_servernode	naddress::m_session;
 	naddress::map_rolegateway	naddress::m_rolegateway;
-	std::shared_mutex			naddress::m_mutex;
+	std::shared_mutex			naddress::m_actor_mutex;
+	std::shared_mutex			naddress::m_session_mutex;
+	std::shared_mutex			naddress::m_gateway_mutex;
 
 	bool naddress::set_node(const nactornode& anode)
 	{
-		lock_write(m_mutex);
+		lock_write(m_session_mutex);
 		nnode_session* lpsession = tools::findmap(m_session, anode.m_serverid);
 		if (lpsession != nullptr)
 		{
@@ -87,13 +89,13 @@ namespace ngl
 
 	void naddress::actor_address_add(i32_serverid aserverid, i64_actorid adataid)
 	{
-		lock_write(m_mutex);
+		lock_write(m_actor_mutex);
 		nosafe_actor_address_add(aserverid, adataid);
 	}
 
 	void naddress::actor_address_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
 	{
-		lock_write(m_mutex);
+		lock_write(m_actor_mutex);
 		for (const i64_actorid lactorid : avec)
 		{
 			nosafe_actor_address_add(aserverid, lactorid);
@@ -121,13 +123,13 @@ namespace ngl
 
 	void naddress::actor_address_del(i64_actorid adataid)
 	{
-		lock_write(m_mutex);
+		lock_write(m_actor_mutex);
 		nosafe_actor_address_del(adataid);
 	}
 
 	void naddress::actor_address_del(const std::vector<i64_actorid>& avec)
 	{
-		lock_write(m_mutex);
+		lock_write(m_actor_mutex);
 		for (const i64_actorid lactorid : avec)
 		{
 			nosafe_actor_address_del(lactorid);
@@ -136,7 +138,7 @@ namespace ngl
 
 	void naddress::set_session(i32_serverid aserverid, i32_sessionid asession)
 	{
-		lock_write(m_mutex);
+		lock_write(m_session_mutex);
 		nnode_session* lpsession = tools::findmap(m_session, aserverid);
 		if (lpsession == nullptr)
 		{
@@ -149,7 +151,7 @@ namespace ngl
 
 	i32_sessionid naddress::sessionid(i32_serverid aserverid)
 	{
-		lock_read(m_mutex);
+		lock_read(m_session_mutex);
 		nnode_session* lpsession = tools::findmap(m_session, aserverid);
 		if (lpsession == nullptr)
 		{
@@ -161,7 +163,7 @@ namespace ngl
 
 	i32_serverid naddress::serverid(const nguid& aguid)
 	{
-		lock_read(m_mutex);
+		lock_read(m_actor_mutex);
 		i32_serverid* lpserverid = tools::findmap(m_actorserver, aguid);
 		if (lpserverid == nullptr)
 		{
@@ -173,9 +175,9 @@ namespace ngl
 
 	void naddress::serveridlist(ENUM_ACTOR atype, std::set<i32_serverid>& aservers)
 	{
-		lock_read(m_mutex);
+		lock_read(m_actor_mutex);
 		const i16_actortype ltype = static_cast<i16_actortype>(atype);
-		std::set<nguid>* actor_guids = tools::findmap(m_actortypeserver, ltype);
+		auto actor_guids = tools::findmap(m_actortypeserver, ltype);
 		if (actor_guids == nullptr)
 		{
 			return;
@@ -195,7 +197,7 @@ namespace ngl
 
 	void naddress::foreach(const foreach_callbackfun& afun)
 	{
-		lock_read(m_mutex);
+		lock_read(m_session_mutex);
 		for (const auto& lpair : m_session)
 		{
 			if (afun(lpair.second) == false)
@@ -207,19 +209,22 @@ namespace ngl
 
 	void naddress::ergodic(const ergodic_callbackfun& afun)
 	{
-		lock_read(m_mutex);
+		// TODO: needs multi-lock strategy after lock split
+		lock_read(m_actor_mutex);
+		lock_read(m_session_mutex);
+		lock_read(m_gateway_mutex);
 		afun(m_actorserver, m_session, m_rolegateway);
 	}
 
 	naddress::map_guidserver naddress::get_actorserver_map()
 	{
-		lock_read(m_mutex);
+		lock_read(m_actor_mutex);
 		return m_actorserver;
 	}
 
 	i32_serverid naddress::gatewayid(const nguid& aguid)
 	{
-		lock_read(m_mutex);
+		lock_read(m_gateway_mutex);
 		const i32_serverid* lpserverid = tools::findmap(m_rolegateway, aguid);
 		if (lpserverid == nullptr)
 		{
@@ -230,19 +235,19 @@ namespace ngl
 
 	void naddress::gatewayid_add(const nguid& aguid, i32_serverid aserverid)
 	{
-		lock_write(m_mutex);
+		lock_write(m_gateway_mutex);
 		m_rolegateway.insert_or_assign(aguid, aserverid);
 	}
 
 	void naddress::gatewayid_del(const nguid& aguid)
 	{
-		lock_write(m_mutex);
+		lock_write(m_gateway_mutex);
 		m_rolegateway.erase(aguid);
 	}
 
 	void naddress::gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
 	{
-		lock_read(m_mutex);
+		lock_read(m_gateway_mutex);
 		for (const nguid& lguid : aactorset)
 		{
 			const i32_serverid* lserverid = tools::findmap(m_rolegateway, lguid);

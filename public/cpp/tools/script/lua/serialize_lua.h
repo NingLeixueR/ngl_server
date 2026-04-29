@@ -637,6 +637,29 @@ namespace ngl
 			}
 			return true;
 		}
+
+		template <typename KEY, typename VAL>
+		static bool keyvalues(lua_State* L, std::unordered_map<KEY, VAL>& amap)
+		{
+			if (!lua_istable(L, -1))
+			{
+				return false;
+			}
+
+			lua_pushnil(L);
+			while (lua_next(L, -2) != 0)
+			{
+				KEY lkey;
+				VAL lvalue;
+				// `lua_next` leaves value on top and key below it.
+				if (!(serialize_lua<VAL>::stack_pop(L, lvalue) && serialize_lua<KEY>::stack_pop(L, lkey, false)))
+				{
+					return false;
+				}
+				amap[lkey] = lvalue;
+			}
+			return true;
+		}
 	};
 
 	template <typename T>
@@ -797,6 +820,51 @@ namespace ngl
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, std::map<KEY, VAL>& adata)
+		{
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
+			return stack_pop(L, adata);
+		}
+	};
+
+	template <typename KEY, typename VAL>
+	struct serialize_lua<std::unordered_map<KEY, VAL>>
+	{
+		static void stack_push(lua_State* L, const std::unordered_map<KEY, VAL>& adata)
+		{
+			lua_newtable(L);
+			for (auto& [_key, _value] : adata)
+			{
+				serialize_lua<VAL>::table_push(L, nullptr, _value);
+				serialize_lua_table_key<KEY>::key(L, _key);
+			}
+		}
+
+		static void table_push(lua_State* L, const char* aname, const std::unordered_map<KEY, VAL>& adata)
+		{
+			stack_push(L, adata);
+			lua_setfield(L, -2, aname);
+		}
+
+		static bool stack_pop(lua_State* L, std::unordered_map<KEY, VAL>& adata, bool apop = true)
+		{
+			if (!lua_isnil(L, -1))
+			{
+				if (!serialize_lua_map::keyvalues(L, adata))
+				{
+					return false;
+				}
+			}
+			if (apop)
+			{
+				lua_pop(L, 1);
+			}
+			return true;
+		}
+
+		static bool table_pop(lua_State* L, const char* aname, std::unordered_map<KEY, VAL>& adata)
 		{
 			if (aname != nullptr)
 			{

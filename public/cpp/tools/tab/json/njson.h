@@ -985,6 +985,74 @@ namespace ngl
 		}
 	};
 
+	template <typename TKEY, typename TVALUE>
+	struct json_format<std::unordered_map<TKEY, TVALUE>>
+	{
+		static bool pop(rapidjson::Value* ajson, const char* akey, std::unordered_map<TKEY, TVALUE>& adata)
+		{
+			if (ajson == nullptr)
+			{
+				return false;
+			}
+			rapidjson::Value* ljson = tool_rapidjson_value::find(ajson, akey);
+			if (ljson == nullptr)
+			{
+				return false;
+			}
+			if (!ljson->IsArray())
+			{
+				return false;
+			}
+			auto ltemparray = ljson->GetArray();
+			std::unordered_map<TKEY, TVALUE> lparsed;
+			for (auto& item : ltemparray)
+			{
+				TKEY lkey;
+				TVALUE lvalue;
+				if (!json_format<TKEY>::pop(&item, "key", lkey))
+				{
+					return false;
+				}
+				if (!json_format<TVALUE>::pop(&item, "value", lvalue))
+				{
+					return false;
+				}
+				if (!lparsed.emplace(std::move(lkey), std::move(lvalue)).second)
+				{
+					return false;
+				}
+			}
+			adata = std::move(lparsed);
+			return true;
+		}
+
+		static bool push(rapidjson::Value* ajson, rapidjson::Document::AllocatorType* aallocator, const char* akey, const std::unordered_map<TKEY, TVALUE>& adata)
+		{
+			if (ajson == nullptr || aallocator == nullptr || akey == nullptr || !ajson->IsObject())
+			{
+				return false;
+			}
+			rapidjson::Value val;
+			val.SetArray();
+
+			for (const auto& [_key, _value] : adata)
+			{
+				rapidjson::Value item;
+				item.SetObject();
+				if (!json_format<TKEY>::push(&item, aallocator, "key", _key))
+				{
+					return false;
+				}
+				if (!json_format<TVALUE>::push(&item, aallocator, "value", _value))
+				{
+					return false;
+				}
+				val.PushBack(item, *aallocator);
+			}
+			return njson_detail::add_member(ajson, aallocator, akey, val);
+		}
+	};
+
 	class njson
 	{
 		template <std::size_t... INDEX, typename ...TARGS>

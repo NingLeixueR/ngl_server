@@ -831,6 +831,82 @@ namespace ngl
 			}
 		};
 
+
+		template <typename TKEY, typename TVAL>
+		struct serialize_format<std::unordered_map<TKEY, TVAL>>
+		{
+			static bool push(serialize_push* aser, const std::unordered_map<TKEY, TVAL>& adata)
+			{
+				const int32_t lpos = aser->pos();
+				if (adata.size() > (size_t)std::numeric_limits<int32_t>::max())
+				{
+					return false;
+				}
+				const int32_t lsize = (int32_t)adata.size();
+				if (!serialize_format<int32_t>::push(aser, lsize))
+				{
+					return false;
+				}
+				for (auto& [_key, _value] : adata)
+				{
+					if (!serialize_format<TKEY>::push(aser, _key))
+					{
+						aser->pos() = lpos;
+						return false;
+					}
+					if (!serialize_format<TVAL>::push(aser, _value))
+					{
+						aser->pos() = lpos;
+						return false;
+					}
+				}
+				return true;
+			}
+
+			static bool pop(serialize_pop* aser, std::unordered_map<TKEY, TVAL>& adata)
+			{
+				int32_t lsize = 0;
+				if (!serialize_format<int32_t>::pop(aser, lsize))
+				{
+					return false;
+				}
+				if (lsize < 0)
+				{
+					return false;
+				}
+				std::unordered_map<TKEY, TVAL> ltemp;
+				for (int32_t i = 0; i < lsize; ++i)
+				{
+					std::pair<TKEY, TVAL> lpair;
+					if (!serialize_format<TKEY>::pop(aser, lpair.first))
+					{
+						return false;
+					}
+					if (!serialize_format<TVAL>::pop(aser, lpair.second))
+					{
+						return false;
+					}
+					const auto [_it, inserted] = ltemp.insert(std::move(lpair));
+					if (!inserted)
+					{
+						return false;
+					}
+				}
+				adata.swap(ltemp);
+				return true;
+			}
+
+			static void bytes(serialize_byte* aser, const std::unordered_map<TKEY, TVAL>& adata)
+			{
+				serialize_format<int32_t>::bytes(aser, (int32_t)adata.size());
+				for (auto& [_key, _value] : adata)
+				{
+					serialize_format<TKEY>::bytes(aser, _key);
+					serialize_format<TVAL>::bytes(aser, _value);
+				}
+			}
+		};
+
 		struct nserialize
 		{
 			template <typename ...ARGS>

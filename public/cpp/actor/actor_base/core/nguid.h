@@ -293,9 +293,31 @@ namespace ngl
 			return m_id <=> r.m_id;
 		}
 
+		inline bool operator==(const nguid& r)const
+		{
+			return m_id == r.m_id;
+		}
+
+		inline bool operator==(int64_t r)const
+		{
+			return m_id == r;
+		}
+
 		DPROTOCOL(nguid, m_id)
 	};
 }//namespace ngl
+
+namespace std
+{
+	template <>
+	struct hash<ngl::nguid>
+	{
+		size_t operator()(const ngl::nguid& aguid)const noexcept
+		{
+			return std::hash<int64_t>{}(aguid.id());
+		}
+	};
+}
 
 namespace ngl
 {
